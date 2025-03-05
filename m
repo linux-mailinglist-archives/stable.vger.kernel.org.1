@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BC5A509B5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E108A5081C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B368A1888156
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DADF53AFDD2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B1A24CEE3;
-	Wed,  5 Mar 2025 18:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F1B2512D9;
+	Wed,  5 Mar 2025 18:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQjZ1BhT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7lQ5B4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CD214884C;
-	Wed,  5 Mar 2025 18:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383751FC7D0;
+	Wed,  5 Mar 2025 18:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198622; cv=none; b=MpP8HRnNitW27o7hMivDLvjj14U40Zh8fLOCgQxsUvIbgB3JOiFgRlOGHhWQPKWLEc8uVolKNFOm8nYDj+hL7Xy1NK702io+MpqUWxHulIukdDVLnouepH3+iJG5xFAtsbydvUKUvlQeLzB4i2TuGofczOtQnTgaM6y0aAo7R8k=
+	t=1741197815; cv=none; b=VXto9GT3pmDlQOL1bTf9IKyxMoqyw345PJmUg1jPl3Cn25vEVFM1tGtKnLJWd86eUs1P+zD14zpGerysi6Ck8dLOTkUTLTlL4UQL3Eke+ilGOjRWcDb2DOUqv+0ALK7PDCo4vxKjiTpnv6fmvXrjwf9mNxsl92kHMgN9HJGvG74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198622; c=relaxed/simple;
-	bh=Otk++TUzDuLMDd2A6fNwUHXAFaKZU7L4WNwCgh6jTh0=;
+	s=arc-20240116; t=1741197815; c=relaxed/simple;
+	bh=7tCTKNOzt7Hirz182VlCIk1pMAGu0AgV7z5jVezZKuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQBQNzUZi7+vlqw6biypr/QQ1EJHrTgrwyMzNqWCBpmu2AwJYizxeBkPJKBPB9nxnyEN4wUYGLrBLDvH70PYzzIRUC6GNvEJcW1kw0h8zqyoYP4ubXug5QAX0/mpguznzH0AcPBdrGZLeMVr0dPvMfqAF+aMMGL/Cu58Hb7nOck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQjZ1BhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0090C4CED1;
-	Wed,  5 Mar 2025 18:17:01 +0000 (UTC)
+	 MIME-Version; b=UGac2hNn81jb6YmB8wZrbcUoNuEZUh2jtBJpqlMQkJtbnPSyAATqbozBXTP2C/gwrqlBLJomO1D7BnE17wMVBBolvuy5Ex1T4g+IdkdTkbdwcK4NLzvvp3rUw40ojAEd/DZkiIIP8JBkztEZHqj9ZmMe+i/omxcDpRtkHijkZSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7lQ5B4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EABBC4CED1;
+	Wed,  5 Mar 2025 18:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198622;
-	bh=Otk++TUzDuLMDd2A6fNwUHXAFaKZU7L4WNwCgh6jTh0=;
+	s=korg; t=1741197814;
+	bh=7tCTKNOzt7Hirz182VlCIk1pMAGu0AgV7z5jVezZKuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQjZ1BhTF2JbV+8jWvu9ZTZzkqp8uTc1OGyfLv6/vJefHBVBiWkHB2ZOwnvXQLWgI
-	 RWjtmPUsVBKHDP1B231+xh/whE42OuUDkLJMd9UwZbdWVg4QxuRmr/r3GF1tNNLj/o
-	 lUCEJUhNRdURdQemvlkBAGyOy78afh7hWVnAW0Hg=
+	b=k7lQ5B4QHrqAKYgvYTGWTVGcizTcZN3AP+auioJsJiWg3RCazr8iI2olA7nTJE69v
+	 2xW4cXoHXrfbTJQE2OPsoZv5pL4JD0EImxhgy864yz40jJH0BIRo0ZF5eHkAmWBtRY
+	 SMRJs8J3OX5/uOJgnPeJxG9YkC6qIMqODSGWeQcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <jdamato@fastly.com>,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 060/157] selftests: drv-net: Check if combined-count exists
-Date: Wed,  5 Mar 2025 18:48:16 +0100
-Message-ID: <20250305174507.717766446@linuxfoundation.org>
+	BH Hsieh <bhsieh@nvidia.com>,
+	Henry Lin <henryl@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 078/142] phy: tegra: xusb: reset VBUS & ID OVERRIDE
+Date: Wed,  5 Mar 2025 18:48:17 +0100
+Message-ID: <20250305174503.470245260@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Damato <jdamato@fastly.com>
+From: BH Hsieh <bhsieh@nvidia.com>
 
-[ Upstream commit 1cbddbddee68d17feb6467fc556c144777af91ef ]
+commit 55f1a5f7c97c3c92ba469e16991a09274410ceb7 upstream.
 
-Some drivers, like tg3, do not set combined-count:
+Observed VBUS_OVERRIDE & ID_OVERRIDE might be programmed
+with unexpected value prior to XUSB PADCTL driver, this
+could also occur in virtualization scenario.
 
-$ ethtool -l enp4s0f1
-Channel parameters for enp4s0f1:
-Pre-set maximums:
-RX:		4
-TX:		4
-Other:		n/a
-Combined:	n/a
-Current hardware settings:
-RX:		4
-TX:		1
-Other:		n/a
-Combined:	n/a
+For example, UEFI firmware programs ID_OVERRIDE=GROUNDED to set
+a type-c port to host mode and keeps the value to kernel.
+If the type-c port is connected a usb host, below errors can be
+observed right after usb host mode driver gets probed. The errors
+would keep until usb role class driver detects the type-c port
+as device mode and notifies usb device mode driver to set both
+ID_OVERRIDE and VBUS_OVERRIDE to correct value by XUSB PADCTL
+driver.
 
-In the case where combined-count is not set, the ethtool netlink code
-in the kernel elides the value and the code in the test:
+[  173.765814] usb usb3-port2: Cannot enable. Maybe the USB cable is bad?
+[  173.765837] usb usb3-port2: config error
 
-  netnl.channels_get(...)
+Taking virtualization into account, asserting XUSB PADCTL
+reset would break XUSB functions used by other guest OS,
+hence only reset VBUS & ID OVERRIDE of the port in
+utmi_phy_init.
 
-With a tg3 device, the returned dictionary looks like:
-
-{'header': {'dev-index': 3, 'dev-name': 'enp4s0f1'},
- 'rx-max': 4,
- 'rx-count': 4,
- 'tx-max': 4,
- 'tx-count': 1}
-
-Note that the key 'combined-count' is missing. As a result of this
-missing key the test raises an exception:
-
- # Exception|     if channels['combined-count'] == 0:
- # Exception|        ~~~~~~~~^^^^^^^^^^^^^^^^^^
- # Exception| KeyError: 'combined-count'
-
-Change the test to check if 'combined-count' is a key in the dictionary
-first and if not assume that this means the driver has separate RX and
-TX queues.
-
-With this change, the test now passes successfully on tg3 and mlx5
-(which does have a 'combined-count').
-
-Fixes: 1cf270424218 ("net: selftest: add test for netdev netlink queue-get API")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250226181957.212189-1-jdamato@fastly.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
+Cc: stable@vger.kernel.org
+Change-Id: Ic63058d4d49b4a1f8f9ab313196e20ad131cc591
+Signed-off-by: BH Hsieh <bhsieh@nvidia.com>
+Signed-off-by: Henry Lin <henryl@nvidia.com>
+Link: https://lore.kernel.org/r/20250122105943.8057-1-henryl@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/drivers/net/queues.py | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/phy/tegra/xusb-tegra186.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
-index 38303da957ee5..8a518905a9f9c 100755
---- a/tools/testing/selftests/drivers/net/queues.py
-+++ b/tools/testing/selftests/drivers/net/queues.py
-@@ -45,10 +45,9 @@ def addremove_queues(cfg, nl) -> None:
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -928,6 +928,7 @@ static int tegra186_utmi_phy_init(struct
+ 	unsigned int index = lane->index;
+ 	struct device *dev = padctl->dev;
+ 	int err;
++	u32 reg;
  
-     netnl = EthtoolFamily()
-     channels = netnl.channels_get({'header': {'dev-index': cfg.ifindex}})
--    if channels['combined-count'] == 0:
--        rx_type = 'rx'
--    else:
--        rx_type = 'combined'
-+    rx_type = 'rx'
-+    if channels.get('combined-count', 0) > 0:
-+            rx_type = 'combined'
+ 	port = tegra_xusb_find_usb2_port(padctl, index);
+ 	if (!port) {
+@@ -935,6 +936,16 @@ static int tegra186_utmi_phy_init(struct
+ 		return -ENODEV;
+ 	}
  
-     expected = curr_queues - 1
-     cmd(f"ethtool -L {cfg.dev['ifname']} {rx_type} {expected}", timeout=10)
--- 
-2.39.5
-
++	if (port->mode == USB_DR_MODE_OTG ||
++	    port->mode == USB_DR_MODE_PERIPHERAL) {
++		/* reset VBUS&ID OVERRIDE */
++		reg = padctl_readl(padctl, USB2_VBUS_ID);
++		reg &= ~VBUS_OVERRIDE;
++		reg &= ~ID_OVERRIDE(~0);
++		reg |= ID_OVERRIDE_FLOATING;
++		padctl_writel(padctl, reg, USB2_VBUS_ID);
++	}
++
+ 	if (port->supply && port->mode == USB_DR_MODE_HOST) {
+ 		err = regulator_enable(port->supply);
+ 		if (err) {
 
 
 
