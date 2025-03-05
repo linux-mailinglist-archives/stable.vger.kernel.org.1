@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D3BA508A1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:10:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4B8A50769
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD47F16F874
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD473AF6BE
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D7C250C1A;
-	Wed,  5 Mar 2025 18:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD2B2517B4;
+	Wed,  5 Mar 2025 17:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cir5gRS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6ZZm9d1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD0C1ACEDD;
-	Wed,  5 Mar 2025 18:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6412512C7;
+	Wed,  5 Mar 2025 17:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198126; cv=none; b=Eq6Iu4bF++VQtd8EQ5f/Gli2jO4qE999JoQcteZw+AjcjauOwGXESilY4xg/4wcGBvhraJB/yrpb/ynQPWQ1XEfA+To6VI16HjkxMGwChyRiAxF/Vuei/PlhEFuBdIHKv7c9M8HrCfaHFZkeNy5kTrR1sFCCC7SrZYyRVjmZjds=
+	t=1741197373; cv=none; b=qFzsK6BXJpGeoVM5j1oNgTlMCnRwTaoU4KZ42bXa6yZ5GvrFyLoeIZ7f+6fazyBJEzYqVxo3o5EkVDaUItDfZpzUmKJpZrJdGfFR0ri92vW8OQswzqdVPaEdg1dovrYD9mWAs74yFGc/TlaSvnCQbIWlIHgEzSd49BJK7enRPg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198126; c=relaxed/simple;
-	bh=BD4t53IrIWqMJSgQ9p75y1vonFjVDMgc/M7vHNTUX1s=;
+	s=arc-20240116; t=1741197373; c=relaxed/simple;
+	bh=r7JTRsrOZ1KOc4IFt29SHwgFMuM7cc2lifcKx30lvAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFPCWoeKRVZW458fXVX1anRe0G5sZI3jCRWCMdjM3J1/56ge/YQYc7AdQcd6B8MmBj0hskXHj2HQUmAd323bHJ0m+JhhGV1cxBa5Ot/ajyauVWzGWvFEf+nmc0ezt+Vfct9yft3qY2BMGNxPvYzyruhO23N5vOQeI8ZFOQQfzHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cir5gRS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDCFC4CED1;
-	Wed,  5 Mar 2025 18:08:45 +0000 (UTC)
+	 MIME-Version; b=R3cRqBPOGhc1uw7uC39LUFbGYIGnOT2fCS9/vcGp3bP23PWWz30IE4C6sq9pZEdsJgckEbU1YAXYDw+qBBjTHF3T0Il/YujvN9vZ1vu4KGQwtvT2JHmLW4AO0FQYrnpwaBz5FRY/2eZeGQucLbmy+9yCp+gbSwCRMVpG7dk0yyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6ZZm9d1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A973C4CED1;
+	Wed,  5 Mar 2025 17:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198126;
-	bh=BD4t53IrIWqMJSgQ9p75y1vonFjVDMgc/M7vHNTUX1s=;
+	s=korg; t=1741197373;
+	bh=r7JTRsrOZ1KOc4IFt29SHwgFMuM7cc2lifcKx30lvAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cir5gRS9nHWre2pAATWoQW2DIVX56uJL2kzIFcdc3Nv7nAQ2D+izl5UdAHl/vBTEd
-	 l5684XEn1iyv9MxEjJkSFOiXVB5cir6m/YBntMImr5pFt9ItgTdsvonlKsWdg8u8lU
-	 H9znqmIcOruAX6oFnvx0T/MxNtbq4Ju12EWS6Lz4=
+	b=n6ZZm9d1y121rXvpCmL+GUACVxhbQP5BYb97q4LgINtEzb/+CYxniRKArzxHXHFK5
+	 TXYAaw3v0LdlLVhgD04yvXZVpk+BZucJNod4ZDQAxYjSyKSclw4ohwMNG4YpKrqLsa
+	 IneFfI3cHuV6m2eT99jh2NzcetkdZytdZcU/WzcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/150] thermal: core: Move lists of thermal instances to trip descriptors
+Subject: [PATCH 6.1 132/176] ASoC: es8328: fix route from DAC to output
 Date: Wed,  5 Mar 2025 18:48:21 +0100
-Message-ID: <20250305174506.706497920@linuxfoundation.org>
+Message-ID: <20250305174510.747333268@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,461 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-[ Upstream commit 0dc23567c20639049ad57fd8cc2165ee9f493ab6 ]
+[ Upstream commit 5b0c02f9b8acf2a791e531bbc09acae2d51f4f9b ]
 
-In almost all places where a thermal zone's list of thermal instances
-is walked, there is a check to match a specific trip point and it is
-walked in vain whenever there are no cooling devices associated with
-the given trip.
+The ES8328 codec driver, which is also used for the ES8388 chip that
+appears to have an identical register map, claims that the output can
+either take the route from DAC->Mixer->Output or through DAC->Output
+directly. To the best of what I could find, this is not true, and
+creates problems.
 
-To address this, store the lists of thermal instances in trip point
-descriptors instead of storing them in thermal zones and adjust all
-code using those lists accordingly.
+Without DACCONTROL17 bit index 7 set for the left channel, as well as
+DACCONTROL20 bit index 7 set for the right channel, I cannot get any
+analog audio out on Left Out 2 and Right Out 2 respectively, despite the
+DAPM routes claiming that this should be possible. Furthermore, the same
+is the case for Left Out 1 and Right Out 1, showing that those two don't
+have a direct route from DAC to output bypassing the mixer either.
 
-No intentional functional impact.
+Those control bits toggle whether the DACs are fed (stale bread?) into
+their respective mixers. If one "unmutes" the mixer controls in
+alsamixer, then sure, the audio output works, but if it doesn't work
+without the mixer being fed the DAC input then evidently it's not a
+direct output from the DAC.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/5522726.Sb9uPGUboI@rjwysocki.net
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Stable-dep-of: 0cde378a10c1 ("thermal: gov_power_allocator: Update total_weight on bind and cdev updates")
+ES8328/ES8388 are seemingly not alone in this. ES8323, which uses a
+separate driver for what appears to be a very similar register map,
+simply flips those two bits on in its probe function, and then pretends
+there is no power management whatsoever for the individual controls.
+Fair enough.
+
+My theory as to why nobody has noticed this up to this point is that
+everyone just assumes it's their fault when they had to unmute an
+additional control in ALSA.
+
+Fix this in the es8328 driver by removing the erroneous direct route,
+then get rid of the playback switch controls and have those bits tied to
+the mixer's widget instead, which until now had no register to play
+with.
+
+Fixes: 567e4f98922c ("ASoC: add es8328 codec driver")
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Link: https://patch.msgid.link/20250222-es8328-route-bludgeoning-v1-1-99bfb7fb22d9@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/gov_bang_bang.c       | 11 ++++----
- drivers/thermal/gov_fair_share.c      | 16 ++++-------
- drivers/thermal/gov_power_allocator.c | 40 +++++++++++++--------------
- drivers/thermal/gov_step_wise.c       | 16 +++++------
- drivers/thermal/thermal_core.c        | 33 ++++++++++++----------
- drivers/thermal/thermal_core.h        |  5 ++--
- drivers/thermal/thermal_helpers.c     |  5 ++--
- 7 files changed, 62 insertions(+), 64 deletions(-)
+ sound/soc/codecs/es8328.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/thermal/gov_bang_bang.c b/drivers/thermal/gov_bang_bang.c
-index 863e7a4272e66..b887e48e8c7e6 100644
---- a/drivers/thermal/gov_bang_bang.c
-+++ b/drivers/thermal/gov_bang_bang.c
-@@ -67,6 +67,7 @@ static void bang_bang_control(struct thermal_zone_device *tz,
- 			      const struct thermal_trip *trip,
- 			      bool crossed_up)
- {
-+	const struct thermal_trip_desc *td = trip_to_trip_desc(trip);
- 	struct thermal_instance *instance;
+diff --git a/sound/soc/codecs/es8328.c b/sound/soc/codecs/es8328.c
+index 160adc706cc69..8182e9b37c03d 100644
+--- a/sound/soc/codecs/es8328.c
++++ b/sound/soc/codecs/es8328.c
+@@ -234,7 +234,6 @@ static const struct snd_kcontrol_new es8328_right_line_controls =
  
- 	lockdep_assert_held(&tz->lock);
-@@ -75,10 +76,8 @@ static void bang_bang_control(struct thermal_zone_device *tz,
- 		thermal_zone_trip_id(tz, trip), trip->temperature,
- 		tz->temperature, trip->hysteresis);
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
--		if (instance->trip == trip)
--			bang_bang_set_instance_target(instance, crossed_up);
--	}
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+		bang_bang_set_instance_target(instance, crossed_up);
- }
- 
- static void bang_bang_manage(struct thermal_zone_device *tz)
-@@ -104,8 +103,8 @@ static void bang_bang_manage(struct thermal_zone_device *tz)
- 		 * to the thermal zone temperature and the trip point threshold.
- 		 */
- 		turn_on = tz->temperature >= td->threshold;
--		list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
--			if (!instance->initialized && instance->trip == trip)
-+		list_for_each_entry(instance, &td->thermal_instances, trip_node) {
-+			if (!instance->initialized)
- 				bang_bang_set_instance_target(instance, turn_on);
- 		}
- 	}
-diff --git a/drivers/thermal/gov_fair_share.c b/drivers/thermal/gov_fair_share.c
-index ce0ea571ed67a..d37d57d48c389 100644
---- a/drivers/thermal/gov_fair_share.c
-+++ b/drivers/thermal/gov_fair_share.c
-@@ -44,7 +44,7 @@ static int get_trip_level(struct thermal_zone_device *tz)
- /**
-  * fair_share_throttle - throttles devices associated with the given zone
-  * @tz: thermal_zone_device
-- * @trip: trip point
-+ * @td: trip point descriptor
-  * @trip_level: number of trips crossed by the zone temperature
-  *
-  * Throttling Logic: This uses three parameters to calculate the new
-@@ -61,29 +61,23 @@ static int get_trip_level(struct thermal_zone_device *tz)
-  * new_state of cooling device = P3 * P2 * P1
-  */
- static void fair_share_throttle(struct thermal_zone_device *tz,
--				const struct thermal_trip *trip,
-+				const struct thermal_trip_desc *td,
- 				int trip_level)
- {
- 	struct thermal_instance *instance;
- 	int total_weight = 0;
- 	int nr_instances = 0;
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
--		if (instance->trip != trip)
--			continue;
--
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
- 		total_weight += instance->weight;
- 		nr_instances++;
- 	}
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
- 		struct thermal_cooling_device *cdev = instance->cdev;
- 		u64 dividend;
- 		u32 divisor;
- 
--		if (instance->trip != trip)
--			continue;
--
- 		dividend = trip_level;
- 		dividend *= cdev->max_state;
- 		divisor = tz->num_trips;
-@@ -116,7 +110,7 @@ static void fair_share_manage(struct thermal_zone_device *tz)
- 		    trip->type == THERMAL_TRIP_HOT)
- 			continue;
- 
--		fair_share_throttle(tz, trip, trip_level);
-+		fair_share_throttle(tz, td, trip_level);
- 	}
- }
- 
-diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
-index d59549e616399..b00da17c66a90 100644
---- a/drivers/thermal/gov_power_allocator.c
-+++ b/drivers/thermal/gov_power_allocator.c
-@@ -97,11 +97,9 @@ struct power_allocator_params {
- 	struct power_actor *power;
+ /* Left Mixer */
+ static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
+-	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL17, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL17, 6, 1, 0),
+ 	SOC_DAPM_SINGLE("Right Playback Switch", ES8328_DACCONTROL18, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL18, 6, 1, 0),
+@@ -244,7 +243,6 @@ static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
+ static const struct snd_kcontrol_new es8328_right_mixer_controls[] = {
+ 	SOC_DAPM_SINGLE("Left Playback Switch", ES8328_DACCONTROL19, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL19, 6, 1, 0),
+-	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL20, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL20, 6, 1, 0),
  };
  
--static bool power_actor_is_valid(struct power_allocator_params *params,
--				 struct thermal_instance *instance)
-+static bool power_actor_is_valid(struct thermal_instance *instance)
- {
--	return (instance->trip == params->trip_max &&
--		 cdev_is_power_actor(instance->cdev));
-+	return cdev_is_power_actor(instance->cdev);
- }
+@@ -337,10 +335,10 @@ static const struct snd_soc_dapm_widget es8328_dapm_widgets[] = {
+ 	SND_SOC_DAPM_DAC("Left DAC", "Left Playback", ES8328_DACPOWER,
+ 			ES8328_DACPOWER_LDAC_OFF, 1),
  
- /**
-@@ -118,13 +116,14 @@ static bool power_actor_is_valid(struct power_allocator_params *params,
- static u32 estimate_sustainable_power(struct thermal_zone_device *tz)
- {
- 	struct power_allocator_params *params = tz->governor_data;
-+	const struct thermal_trip_desc *td = trip_to_trip_desc(params->trip_max);
- 	struct thermal_cooling_device *cdev;
- 	struct thermal_instance *instance;
- 	u32 sustainable_power = 0;
- 	u32 min_power;
+-	SND_SOC_DAPM_MIXER("Left Mixer", SND_SOC_NOPM, 0, 0,
++	SND_SOC_DAPM_MIXER("Left Mixer", ES8328_DACCONTROL17, 7, 0,
+ 		&es8328_left_mixer_controls[0],
+ 		ARRAY_SIZE(es8328_left_mixer_controls)),
+-	SND_SOC_DAPM_MIXER("Right Mixer", SND_SOC_NOPM, 0, 0,
++	SND_SOC_DAPM_MIXER("Right Mixer", ES8328_DACCONTROL20, 7, 0,
+ 		&es8328_right_mixer_controls[0],
+ 		ARRAY_SIZE(es8328_right_mixer_controls)),
  
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
--		if (!power_actor_is_valid(params, instance))
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
-+		if (!power_actor_is_valid(instance))
- 			continue;
+@@ -419,19 +417,14 @@ static const struct snd_soc_dapm_route es8328_dapm_routes[] = {
+ 	{ "Right Line Mux", "PGA", "Right PGA Mux" },
+ 	{ "Right Line Mux", "Differential", "Differential Mux" },
  
- 		cdev = instance->cdev;
-@@ -400,6 +399,7 @@ static void divvy_up_power(struct power_actor *power, int num_actors,
- static void allocate_power(struct thermal_zone_device *tz, int control_temp)
- {
- 	struct power_allocator_params *params = tz->governor_data;
-+	const struct thermal_trip_desc *td = trip_to_trip_desc(params->trip_max);
- 	unsigned int num_actors = params->num_actors;
- 	struct power_actor *power = params->power;
- 	struct thermal_cooling_device *cdev;
-@@ -417,10 +417,10 @@ static void allocate_power(struct thermal_zone_device *tz, int control_temp)
- 	/* Clean all buffers for new power estimations */
- 	memset(power, 0, params->buffer_size);
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
- 		struct power_actor *pa = &power[i];
- 
--		if (!power_actor_is_valid(params, instance))
-+		if (!power_actor_is_valid(instance))
- 			continue;
- 
- 		cdev = instance->cdev;
-@@ -454,10 +454,10 @@ static void allocate_power(struct thermal_zone_device *tz, int control_temp)
- 		       power_range);
- 
- 	i = 0;
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
- 		struct power_actor *pa = &power[i];
- 
--		if (!power_actor_is_valid(params, instance))
-+		if (!power_actor_is_valid(instance))
- 			continue;
- 
- 		power_actor_set_power(instance->cdev, instance,
-@@ -538,12 +538,13 @@ static void reset_pid_controller(struct power_allocator_params *params)
- static void allow_maximum_power(struct thermal_zone_device *tz)
- {
- 	struct power_allocator_params *params = tz->governor_data;
-+	const struct thermal_trip_desc *td = trip_to_trip_desc(params->trip_max);
- 	struct thermal_cooling_device *cdev;
- 	struct thermal_instance *instance;
- 	u32 req_power;
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
--		if (!power_actor_is_valid(params, instance))
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
-+		if (!power_actor_is_valid(instance))
- 			continue;
- 
- 		cdev = instance->cdev;
-@@ -581,13 +582,11 @@ static void allow_maximum_power(struct thermal_zone_device *tz)
- static int check_power_actors(struct thermal_zone_device *tz,
- 			      struct power_allocator_params *params)
- {
-+	const struct thermal_trip_desc *td = trip_to_trip_desc(params->trip_max);
- 	struct thermal_instance *instance;
- 	int ret = 0;
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
--		if (instance->trip != params->trip_max)
--			continue;
+-	{ "Left Out 1", NULL, "Left DAC" },
+-	{ "Right Out 1", NULL, "Right DAC" },
+-	{ "Left Out 2", NULL, "Left DAC" },
+-	{ "Right Out 2", NULL, "Right DAC" },
 -
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
- 		if (!cdev_is_power_actor(instance->cdev)) {
- 			dev_warn(&tz->device, "power_allocator: %s is not a power actor\n",
- 				 instance->cdev->type);
-@@ -635,14 +634,15 @@ static void power_allocator_update_tz(struct thermal_zone_device *tz,
- 				      enum thermal_notify_event reason)
- {
- 	struct power_allocator_params *params = tz->governor_data;
-+	const struct thermal_trip_desc *td = trip_to_trip_desc(params->trip_max);
- 	struct thermal_instance *instance;
- 	int num_actors = 0;
+-	{ "Left Mixer", "Playback Switch", "Left DAC" },
++	{ "Left Mixer", NULL, "Left DAC" },
+ 	{ "Left Mixer", "Left Bypass Switch", "Left Line Mux" },
+ 	{ "Left Mixer", "Right Playback Switch", "Right DAC" },
+ 	{ "Left Mixer", "Right Bypass Switch", "Right Line Mux" },
  
- 	switch (reason) {
- 	case THERMAL_TZ_BIND_CDEV:
- 	case THERMAL_TZ_UNBIND_CDEV:
--		list_for_each_entry(instance, &tz->thermal_instances, tz_node)
--			if (power_actor_is_valid(params, instance))
-+		list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+			if (power_actor_is_valid(instance))
- 				num_actors++;
+ 	{ "Right Mixer", "Left Playback Switch", "Left DAC" },
+ 	{ "Right Mixer", "Left Bypass Switch", "Left Line Mux" },
+-	{ "Right Mixer", "Playback Switch", "Right DAC" },
++	{ "Right Mixer", NULL, "Right DAC" },
+ 	{ "Right Mixer", "Right Bypass Switch", "Right Line Mux" },
  
- 		if (num_actors == params->num_actors)
-@@ -652,8 +652,8 @@ static void power_allocator_update_tz(struct thermal_zone_device *tz,
- 		break;
- 	case THERMAL_INSTANCE_WEIGHT_CHANGED:
- 		params->total_weight = 0;
--		list_for_each_entry(instance, &tz->thermal_instances, tz_node)
--			if (power_actor_is_valid(params, instance))
-+		list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+			if (power_actor_is_valid(instance))
- 				params->total_weight += instance->weight;
- 		break;
- 	default:
-diff --git a/drivers/thermal/gov_step_wise.c b/drivers/thermal/gov_step_wise.c
-index fd5527188cf91..ea4bf88d37f33 100644
---- a/drivers/thermal/gov_step_wise.c
-+++ b/drivers/thermal/gov_step_wise.c
-@@ -66,9 +66,10 @@ static unsigned long get_target_state(struct thermal_instance *instance,
- }
- 
- static void thermal_zone_trip_update(struct thermal_zone_device *tz,
--				     const struct thermal_trip *trip,
-+				     const struct thermal_trip_desc *td,
- 				     int trip_threshold)
- {
-+	const struct thermal_trip *trip = &td->trip;
- 	enum thermal_trend trend = get_tz_trend(tz, trip);
- 	int trip_id = thermal_zone_trip_id(tz, trip);
- 	struct thermal_instance *instance;
-@@ -82,12 +83,9 @@ static void thermal_zone_trip_update(struct thermal_zone_device *tz,
- 	dev_dbg(&tz->device, "Trip%d[type=%d,temp=%d]:trend=%d,throttle=%d\n",
- 		trip_id, trip->type, trip_threshold, trend, throttle);
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node) {
- 		int old_target;
- 
--		if (instance->trip != trip)
--			continue;
--
- 		old_target = instance->target;
- 		instance->target = get_target_state(instance, trend, throttle);
- 
-@@ -127,11 +125,13 @@ static void step_wise_manage(struct thermal_zone_device *tz)
- 		    trip->type == THERMAL_TRIP_HOT)
- 			continue;
- 
--		thermal_zone_trip_update(tz, trip, td->threshold);
-+		thermal_zone_trip_update(tz, td, td->threshold);
- 	}
- 
--	list_for_each_entry(instance, &tz->thermal_instances, tz_node)
--		thermal_cdev_update(instance->cdev);
-+	for_each_trip_desc(tz, td) {
-+		list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+			thermal_cdev_update(instance->cdev);
-+	}
- }
- 
- static struct thermal_governor thermal_gov_step_wise = {
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 1d2f2b307bac5..c2fa236e10cda 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -490,7 +490,7 @@ static void thermal_zone_device_check(struct work_struct *work)
- 
- static void thermal_zone_device_init(struct thermal_zone_device *tz)
- {
--	struct thermal_instance *pos;
-+	struct thermal_trip_desc *td;
- 
- 	INIT_DELAYED_WORK(&tz->poll_queue, thermal_zone_device_check);
- 
-@@ -498,8 +498,12 @@ static void thermal_zone_device_init(struct thermal_zone_device *tz)
- 	tz->passive = 0;
- 	tz->prev_low_trip = -INT_MAX;
- 	tz->prev_high_trip = INT_MAX;
--	list_for_each_entry(pos, &tz->thermal_instances, tz_node)
--		pos->initialized = false;
-+	for_each_trip_desc(tz, td) {
-+		struct thermal_instance *instance;
-+
-+		list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+			instance->initialized = false;
-+	}
- }
- 
- static void thermal_governor_trip_crossed(struct thermal_governor *governor,
-@@ -764,12 +768,12 @@ struct thermal_zone_device *thermal_zone_get_by_id(int id)
-  * Return: 0 on success, the proper error value otherwise.
-  */
- static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
--				     const struct thermal_trip *trip,
-+				     struct thermal_trip *trip,
- 				     struct thermal_cooling_device *cdev,
- 				     struct cooling_spec *cool_spec)
- {
--	struct thermal_instance *dev;
--	struct thermal_instance *pos;
-+	struct thermal_trip_desc *td = trip_to_trip_desc(trip);
-+	struct thermal_instance *dev, *instance;
- 	bool upper_no_limit;
- 	int result;
- 
-@@ -832,13 +836,13 @@ static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
- 		goto remove_trip_file;
- 
- 	mutex_lock(&cdev->lock);
--	list_for_each_entry(pos, &tz->thermal_instances, tz_node)
--		if (pos->trip == trip && pos->cdev == cdev) {
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+		if (instance->cdev == cdev) {
- 			result = -EEXIST;
- 			break;
- 		}
- 	if (!result) {
--		list_add_tail(&dev->tz_node, &tz->thermal_instances);
-+		list_add_tail(&dev->trip_node, &td->thermal_instances);
- 		list_add_tail(&dev->cdev_node, &cdev->thermal_instances);
- 		atomic_set(&tz->need_update, 1);
- 
-@@ -872,15 +876,16 @@ static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
-  * This function is usually called in the thermal zone device .unbind callback.
-  */
- static void thermal_unbind_cdev_from_trip(struct thermal_zone_device *tz,
--					  const struct thermal_trip *trip,
-+					  struct thermal_trip *trip,
- 					  struct thermal_cooling_device *cdev)
- {
-+	struct thermal_trip_desc *td = trip_to_trip_desc(trip);
- 	struct thermal_instance *pos, *next;
- 
- 	mutex_lock(&cdev->lock);
--	list_for_each_entry_safe(pos, next, &tz->thermal_instances, tz_node) {
--		if (pos->trip == trip && pos->cdev == cdev) {
--			list_del(&pos->tz_node);
-+	list_for_each_entry_safe(pos, next, &td->thermal_instances, trip_node) {
-+		if (pos->cdev == cdev) {
-+			list_del(&pos->trip_node);
- 			list_del(&pos->cdev_node);
- 
- 			thermal_governor_update_tz(tz, THERMAL_TZ_UNBIND_CDEV);
-@@ -1435,7 +1440,6 @@ thermal_zone_device_register_with_trips(const char *type,
- 		}
- 	}
- 
--	INIT_LIST_HEAD(&tz->thermal_instances);
- 	INIT_LIST_HEAD(&tz->node);
- 	ida_init(&tz->ida);
- 	mutex_init(&tz->lock);
-@@ -1459,6 +1463,7 @@ thermal_zone_device_register_with_trips(const char *type,
- 	tz->num_trips = num_trips;
- 	for_each_trip_desc(tz, td) {
- 		td->trip = *trip++;
-+		INIT_LIST_HEAD(&td->thermal_instances);
- 		/*
- 		 * Mark all thresholds as invalid to start with even though
- 		 * this only matters for the trips that start as invalid and
-diff --git a/drivers/thermal/thermal_core.h b/drivers/thermal/thermal_core.h
-index 421522a2bb9d4..163871699a602 100644
---- a/drivers/thermal/thermal_core.h
-+++ b/drivers/thermal/thermal_core.h
-@@ -30,6 +30,7 @@ struct thermal_trip_desc {
- 	struct thermal_trip trip;
- 	struct thermal_trip_attrs trip_attrs;
- 	struct list_head notify_list_node;
-+	struct list_head thermal_instances;
- 	int notify_temp;
- 	int threshold;
- };
-@@ -99,7 +100,6 @@ struct thermal_governor {
-  * @tzp:	thermal zone parameters
-  * @governor:	pointer to the governor for this thermal zone
-  * @governor_data:	private pointer for governor data
-- * @thermal_instances:	list of &struct thermal_instance of this thermal zone
-  * @ida:	&struct ida to generate unique id for this zone's cooling
-  *		devices
-  * @lock:	lock to protect thermal_instances list
-@@ -133,7 +133,6 @@ struct thermal_zone_device {
- 	struct thermal_zone_params *tzp;
- 	struct thermal_governor *governor;
- 	void *governor_data;
--	struct list_head thermal_instances;
- 	struct ida ida;
- 	struct mutex lock;
- 	struct list_head node;
-@@ -230,7 +229,7 @@ struct thermal_instance {
- 	struct device_attribute attr;
- 	char weight_attr_name[THERMAL_NAME_LENGTH];
- 	struct device_attribute weight_attr;
--	struct list_head tz_node; /* node in tz->thermal_instances */
-+	struct list_head trip_node; /* node in trip->thermal_instances */
- 	struct list_head cdev_node; /* node in cdev->thermal_instances */
- 	unsigned int weight; /* The weight of the cooling device */
- 	bool upper_no_limit;
-diff --git a/drivers/thermal/thermal_helpers.c b/drivers/thermal/thermal_helpers.c
-index dc374a7a1a659..403d62d3ce77e 100644
---- a/drivers/thermal/thermal_helpers.c
-+++ b/drivers/thermal/thermal_helpers.c
-@@ -43,10 +43,11 @@ static bool thermal_instance_present(struct thermal_zone_device *tz,
- 				     struct thermal_cooling_device *cdev,
- 				     const struct thermal_trip *trip)
- {
-+	const struct thermal_trip_desc *td = trip_to_trip_desc(trip);
- 	struct thermal_instance *ti;
- 
--	list_for_each_entry(ti, &tz->thermal_instances, tz_node) {
--		if (ti->trip == trip && ti->cdev == cdev)
-+	list_for_each_entry(ti, &td->thermal_instances, trip_node) {
-+		if (ti->cdev == cdev)
- 			return true;
- 	}
- 
+ 	{ "DAC DIG", NULL, "DAC STM" },
 -- 
 2.39.5
 
