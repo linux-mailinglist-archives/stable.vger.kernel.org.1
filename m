@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F29A507B6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9160A50736
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E0A8188AB1D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8C5B7A99B3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EB5250C0E;
-	Wed,  5 Mar 2025 17:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940F0250C0E;
+	Wed,  5 Mar 2025 17:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We6SlWpZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuyS+aV/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2EB14884C;
-	Wed,  5 Mar 2025 17:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D522505A7;
+	Wed,  5 Mar 2025 17:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197595; cv=none; b=BtGSb8+a7CDvgvZxvU3pL3Bz2lkQSo4sqtAGeBxFj+c5+G3SES5wZqfpHKKQUQmnNsY2hP5ChRSHXNImbdhD/giiU/QvfqcZgF1BkVfk9X8YUaZnbNiLGb4yFQY1swsjoEgP124brCh7nIHpn6tncJ5tPBjeuAadbb5Q0HbGd2o=
+	t=1741197223; cv=none; b=i9BwBUxpKFxHRrhZppa+jigoBPan/CMmbL14U8cMydgM1Me0Xu0x1r/CdX8WSVkq5+paxyaD8XvomyZpnH7HfMifzMt5VOREmBWZKSRFoYudUtZmmdxBNQ5n5niZT5099kVq+xKcPtjVgtDQn3iwRK4zQ9fo4mRbgcsx7VURmUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197595; c=relaxed/simple;
-	bh=c8mHP7Yk9L5X1kLnRJTs5uv/aB1oZyuajacj6L48ImI=;
+	s=arc-20240116; t=1741197223; c=relaxed/simple;
+	bh=u59SEu7VMY48kDInrLCYe+rUrCrWQOhGiHPIG+au2yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkWm6ENEUZ6IvDnGP4uIbw+f4HavEAgElusbERVBcQf3agG8izlpXs7qV4Ndz9kxrlgBemF27CNStgmvMvBNcKGVOOxHO8gswggjwDOC/PshpNHg9iFJCY0r+WkNfGAAz+z6tjic0yNvd7hR6iQKZFOKe94TZ0zD9WpbC44FnOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We6SlWpZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C00C4CEE9;
-	Wed,  5 Mar 2025 17:59:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GSHXBpxeDbqeUKkcLSRyUtTAwi8TYIC8pgbe7I8jnR6YrAeATjOgCk8XiawWsOe0ZbiGBc3lKlCZYRysofCqm81SsAFaewtYEN2E+oIWl6Kbi+v1BQB6xfpBP0HCMeGxfDWGGon29EtuEwXBCxkaVmmLmJIfVVS0A47L8oeuULo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuyS+aV/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E2FC4CED1;
+	Wed,  5 Mar 2025 17:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197594;
-	bh=c8mHP7Yk9L5X1kLnRJTs5uv/aB1oZyuajacj6L48ImI=;
+	s=korg; t=1741197221;
+	bh=u59SEu7VMY48kDInrLCYe+rUrCrWQOhGiHPIG+au2yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=We6SlWpZADntlclTKyDUxSt8NvairebBzoF7iTn519Zlu+YpICYWYDBVnohemhiNM
-	 9ubTQoyPdZCPPa8t3iqz8uQwQBRFnqAzDvHtLbm9p/4LmCZaFaY0DdV/GdQWI2dKjc
-	 HubvImsjbLlxZ1glKXXj4LJz8pEet73fo1vJ6g+k=
+	b=nuyS+aV/GP16/s8/P1FnXf6rvlvw6g28b4pmBci46WGAmhO4SDRrXaCy2+rx6TuD6
+	 7SZ+ihNVXqFHIuI6b6Cp9DjxWIMSbN5pcSX6zmf74QWPG727dggjJaIXlsFIxLZCvN
+	 beel/3bnzIgplmUJDxC1lKcA6tzwxcxKRlCJfQaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/142] net: cadence: macb: Synchronize stats calculations
+	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Florent Revest <revest@google.com>,
+	Rik van Riel <riel@surriel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 082/176] mm,madvise,hugetlb: check for 0-length range after end address adjustment
 Date: Wed,  5 Mar 2025 18:47:31 +0100
-Message-ID: <20250305174501.630033536@linuxfoundation.org>
+Message-ID: <20250305174508.758474931@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,122 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Ricardo Cañuelo Navarro <rcn@igalia.com>
 
-[ Upstream commit fa52f15c745ce55261b92873676f64f7348cfe82 ]
+commit 2ede647a6fde3e54a6bfda7cf01c716649655900 upstream.
 
-Stats calculations involve a RMW to add the stat update to the existing
-value. This is currently not protected by any synchronization mechanism,
-so data races are possible. Add a spinlock to protect the update. The
-reader side could be protected using u64_stats, but we would still need
-a spinlock for the update side anyway. And we always do an update
-immediately before reading the stats anyway.
+Add a sanity check to madvise_dontneed_free() to address a corner case in
+madvise where a race condition causes the current vma being processed to
+be backed by a different page size.
 
-Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250220162950.95941-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+During a madvise(MADV_DONTNEED) call on a memory region registered with a
+userfaultfd, there's a period of time where the process mm lock is
+temporarily released in order to send a UFFD_EVENT_REMOVE and let
+userspace handle the event.  During this time, the vma covering the
+current address range may change due to an explicit mmap done concurrently
+by another thread.
+
+If, after that change, the memory region, which was originally backed by
+4KB pages, is now backed by hugepages, the end address is rounded down to
+a hugepage boundary to avoid data loss (see "Fixes" below).  This rounding
+may cause the end address to be truncated to the same address as the
+start.
+
+Make this corner case follow the same semantics as in other similar cases
+where the requested region has zero length (ie.  return 0).
+
+This will make madvise_walk_vmas() continue to the next vma in the range
+(this time holding the process mm lock) which, due to the prev pointer
+becoming stale because of the vma change, will be the same hugepage-backed
+vma that was just checked before.  The next time madvise_dontneed_free()
+runs for this vma, if the start address isn't aligned to a hugepage
+boundary, it'll return -EINVAL, which is also in line with the madvise
+api.
+
+>From userspace perspective, madvise() will return EINVAL because the start
+address isn't aligned according to the new vma alignment requirements
+(hugepage), even though it was correctly page-aligned when the call was
+issued.
+
+Link: https://lkml.kernel.org/r/20250203075206.1452208-1-rcn@igalia.com
+Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
+Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Florent Revest <revest@google.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb.h      |  2 ++
- drivers/net/ethernet/cadence/macb_main.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ mm/madvise.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 78c972bb1d962..9fb5a18e056d4 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -1270,6 +1270,8 @@ struct macb {
- 	struct clk		*rx_clk;
- 	struct clk		*tsu_clk;
- 	struct net_device	*dev;
-+	/* Protects hw_stats and ethtool_stats */
-+	spinlock_t		stats_lock;
- 	union {
- 		struct macb_stats	macb;
- 		struct gem_stats	gem;
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 8f61731e4554b..4325d0ace1f26 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1992,10 +1992,12 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
- 
- 		if (status & MACB_BIT(ISR_ROVR)) {
- 			/* We missed at least one packet */
-+			spin_lock(&bp->stats_lock);
- 			if (macb_is_gem(bp))
- 				bp->hw_stats.gem.rx_overruns++;
- 			else
- 				bp->hw_stats.macb.rx_overruns++;
-+			spin_unlock(&bp->stats_lock);
- 
- 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 				queue_writel(queue, ISR, MACB_BIT(ISR_ROVR));
-@@ -3084,6 +3086,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	if (!netif_running(bp->dev))
- 		return nstat;
- 
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 
- 	nstat->rx_errors = (hwstat->rx_frame_check_sequence_errors +
-@@ -3113,6 +3116,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	nstat->tx_aborted_errors = hwstat->tx_excessive_collisions;
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_sense_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underrun;
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
- }
-@@ -3120,12 +3124,13 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- static void gem_get_ethtool_stats(struct net_device *dev,
- 				  struct ethtool_stats *stats, u64 *data)
- {
--	struct macb *bp;
-+	struct macb *bp = netdev_priv(dev);
- 
--	bp = netdev_priv(dev);
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
- 			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+	spin_unlock_irq(&bp->stats_lock);
- }
- 
- static int gem_get_sset_count(struct net_device *dev, int sset)
-@@ -3175,6 +3180,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 		return gem_get_stats(bp);
- 
- 	/* read stats from hardware */
-+	spin_lock_irq(&bp->stats_lock);
- 	macb_update_stats(bp);
- 
- 	/* Convert HW stats into netdevice stats */
-@@ -3208,6 +3214,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underruns;
- 	/* Don't know about heartbeat or window errors... */
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
- }
-@@ -5063,6 +5070,7 @@ static int macb_probe(struct platform_device *pdev)
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -879,7 +879,16 @@ static long madvise_dontneed_free(struct
+ 			 */
+ 			end = vma->vm_end;
  		}
+-		VM_WARN_ON(start >= end);
++		/*
++		 * If the memory region between start and end was
++		 * originally backed by 4kB pages and then remapped to
++		 * be backed by hugepages while mmap_lock was dropped,
++		 * the adjustment for hugetlb vma above may have rounded
++		 * end down to the start address.
++		 */
++		if (start == end)
++			return 0;
++		VM_WARN_ON(start > end);
  	}
- 	spin_lock_init(&bp->lock);
-+	spin_lock_init(&bp->stats_lock);
  
- 	/* setup capabilities */
- 	macb_configure_caps(bp, macb_config);
--- 
-2.39.5
-
+ 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
 
 
 
