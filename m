@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-120595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D66A50775
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0D6A50815
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 543273A332D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD2A3A6E03
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F51250C0E;
-	Wed,  5 Mar 2025 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0A1253B47;
+	Wed,  5 Mar 2025 18:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj3AaSkw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhnQb7Qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BCE481DD;
-	Wed,  5 Mar 2025 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3CD25335F;
+	Wed,  5 Mar 2025 18:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197416; cv=none; b=lMsN3WxBQP1Fj0UbEv6kX/H7ndsSwepEmTb2u64jtDsWAAKuMLQ2jl1/UfHY7bV/ABouolFH3qqLZHFRVSllmWsShoqKgHB2vPd+uZJyrrdsHdmTE43Md090xJCoJgQkCkdUG1i6CxhTa+dPZ+p5qcNVEiO0FhKldiSJWc4ofYA=
+	t=1741197788; cv=none; b=QmvFN/FAegm9UuV++hWeuhooKgfYwhKkD2w/sMJsv44x6wmPvGXlz0ULrO1llCnFgSEXd7lY0W3wwjZhwRubBjbwwHA2tuxiwLyfABl5Nuhprcnx8GfAOlQWuOPK7Eok1NamC5ARygbGt0jslK4PM+8ggTiuazNL4fNnQxNC1Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197416; c=relaxed/simple;
-	bh=Sc9iCEQV53M/eXpKUb44WkKZZL07qOr/X1EkeOeE44c=;
+	s=arc-20240116; t=1741197788; c=relaxed/simple;
+	bh=CPCyfmDtUjYUb7oJ+NAaXkCt0420waRCSB0T0BV35NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPJeXQ0VIFyuGa2QJ2kWGQjXDBNVdi35NAJojGpFm3lQc2QDzYEnn+j2+6eFoDa/4CZ7IJTgcHM/8r77VJ3CvRMBIy24qpfQk+3vCBeyFoZWBV6pfbBSBbFrgq4LcaoVdn/ObzIWqwDSi+SQ8W5U1qatjRiiVuaHnkdNJz2ISJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj3AaSkw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC157C4CEE0;
-	Wed,  5 Mar 2025 17:56:55 +0000 (UTC)
+	 MIME-Version; b=HYONovxW6zM63RJCLv/RRtnZSLG+V62U9EtROu2Gq0D1faA5aGD8bb3KhL7ld3n0uVZ2/yUH5nkJPSWZnUiPXevIbhpCuSgGDgPhVjjfkVnq3Q18dhzrQa44W8PEjH+R3FtM7h3ElOlJ56BAXBnoWVlVqCE2NuTSkOcS9zb638Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhnQb7Qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5152FC4CED1;
+	Wed,  5 Mar 2025 18:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197416;
-	bh=Sc9iCEQV53M/eXpKUb44WkKZZL07qOr/X1EkeOeE44c=;
+	s=korg; t=1741197788;
+	bh=CPCyfmDtUjYUb7oJ+NAaXkCt0420waRCSB0T0BV35NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tj3AaSkwiCXmMifkJ2ojfoRdCAzW/HBYHjKXmi4rzyM5mM22Qtxld7yVyngUfvRxg
-	 XUphBRFC53h9yMiVhcXA+KY9zbD6um7dCSEi/poVBCmRUjS+FHAlLbfVr2IXNtoOXN
-	 kxKpyfzWAOgq7VmoeFj3yNNRwBw0sZfC9VKAcuWo=
+	b=ZhnQb7QfrmJZKMuTextn9DULGU87+OXaCtVB0oxcg8AAsD/JsTvLRG69wmkQdC+O5
+	 Pf3wXspwWXqEbuO40e4wc6SPLtJ9QuXayfTa5Ya8jwbGFOQltstTLdRdHQD6P53LLE
+	 xfE3QsDlr3gb5GVL6WKU62NMSNeDjbzluXFOQX+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Yang <wenyang@linux.alibaba.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 149/176] ftrace: Avoid potential division by zero in function_stat_show()
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 099/142] x86/microcode/intel: Simplify scan_microcode()
 Date: Wed,  5 Mar 2025 18:48:38 +0100
-Message-ID: <20250305174511.422580325@linuxfoundation.org>
+Message-ID: <20250305174504.312449416@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit a1a7eb89ca0b89dc1c326eeee2596f263291aca3 upstream.
+commit b0f0bf5eef5fac6ba30b7cac15ca4cb01f8a6ca9 upstream
 
-Check whether denominator expression x * (x - 1) * 1000 mod {2^32, 2^64}
-produce zero and skip stddev computation in that case.
+Make it readable and comprehensible.
 
-For now don't care about rec->counter * rec->counter overflow because
-rec->time * rec->time overflow will likely happen earlier.
-
-Cc: stable@vger.kernel.org
-Cc: Wen Yang <wenyang@linux.alibaba.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250206090156.1561783-1-kniv@yandex-team.ru
-Fixes: e31f7939c1c27 ("ftrace: Avoid potential division by zero in function profiler")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115902.271940980@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ arch/x86/kernel/cpu/microcode/intel.c |   28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -507,6 +507,7 @@ static int function_stat_show(struct seq
- 	static struct trace_seq s;
- 	unsigned long long avg;
- 	unsigned long long stddev;
-+	unsigned long long stddev_denom;
- #endif
- 	mutex_lock(&ftrace_profile_lock);
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -266,22 +266,16 @@ static void save_microcode_patch(void *d
+ 	intel_ucode_patch = (struct microcode_intel *)p;
+ }
  
-@@ -528,23 +529,19 @@ static int function_stat_show(struct seq
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- 	seq_puts(m, "    ");
+-/*
+- * Get microcode matching with BSP's model. Only CPUs with the same model as
+- * BSP can stay in the platform.
+- */
+-static struct microcode_intel *
+-scan_microcode(void *data, size_t size, struct ucode_cpu_info *uci, bool save)
++/* Scan CPIO for microcode matching the boot CPU's family, model, stepping */
++static struct microcode_intel *scan_microcode(void *data, size_t size,
++					      struct ucode_cpu_info *uci, bool save)
+ {
+ 	struct microcode_header_intel *mc_header;
+ 	struct microcode_intel *patch = NULL;
+ 	u32 cur_rev = uci->cpu_sig.rev;
+ 	unsigned int mc_size;
  
--	/* Sample standard deviation (s^2) */
--	if (rec->counter <= 1)
--		stddev = 0;
--	else {
--		/*
--		 * Apply Welford's method:
--		 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
--		 */
-+	/*
-+	 * Variance formula:
-+	 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
-+	 * Maybe Welford's method is better here?
-+	 * Divide only by 1000 for ns^2 -> us^2 conversion.
-+	 * trace_print_graph_duration will divide by 1000 again.
-+	 */
-+	stddev = 0;
-+	stddev_denom = rec->counter * (rec->counter - 1) * 1000;
-+	if (stddev_denom) {
- 		stddev = rec->counter * rec->time_squared -
- 			 rec->time * rec->time;
+-	while (size) {
+-		if (size < sizeof(struct microcode_header_intel))
+-			break;
 -
--		/*
--		 * Divide only 1000 for ns^2 -> us^2 conversion.
--		 * trace_print_graph_duration will divide 1000 again.
--		 */
--		stddev = div64_ul(stddev,
--				  rec->counter * (rec->counter - 1) * 1000);
-+		stddev = div64_ul(stddev, stddev_denom);
++	for (; size >= sizeof(struct microcode_header_intel); size -= mc_size, data += mc_size) {
+ 		mc_header = (struct microcode_header_intel *)data;
+ 
+ 		mc_size = get_totalsize(mc_header);
+@@ -289,27 +283,19 @@ scan_microcode(void *data, size_t size,
+ 		    intel_microcode_sanity_check(data, false, MC_HEADER_TYPE_MICROCODE) < 0)
+ 			break;
+ 
+-		size -= mc_size;
+-
+-		if (!intel_find_matching_signature(data, uci->cpu_sig.sig,
+-						   uci->cpu_sig.pf)) {
+-			data += mc_size;
++		if (!intel_find_matching_signature(data, uci->cpu_sig.sig, uci->cpu_sig.pf))
+ 			continue;
+-		}
+ 
+ 		/* BSP scan: Check whether there is newer microcode */
+ 		if (!save && cur_rev >= mc_header->rev)
+-			goto next;
++			continue;
+ 
+ 		/* Save scan: Check whether there is newer or matching microcode */
+ 		if (save && cur_rev != mc_header->rev)
+-			goto next;
++			continue;
+ 
+ 		patch = data;
+ 		cur_rev = mc_header->rev;
+-
+-next:
+-		data += mc_size;
  	}
  
- 	trace_seq_init(&s);
+ 	if (size)
 
 
 
