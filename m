@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4A1A507F8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4D0A5076B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C21463AF7CE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 896D4174531
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92C32517AA;
-	Wed,  5 Mar 2025 18:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34298250C1C;
+	Wed,  5 Mar 2025 17:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1/+lnGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDbHPoRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B332512F7;
-	Wed,  5 Mar 2025 18:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64D91C6FFE;
+	Wed,  5 Mar 2025 17:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197742; cv=none; b=SvKaLtEZBWcZuwjmow6+8pfk9sISw4kHzTJUOEWr8c9r0yRDUrYMywycpGz8EOAMzplSdLywud2xaSNk0GVCrcXZDHBBvqr5+zfp1NgyyYnsyzevb+qd2W+AnwEV9joI3nh3oLzebtqL9zi/TeR4OcZQk63Oo9z7gSMuB3UU82Q=
+	t=1741197399; cv=none; b=oMHY3Iz+M/Ogib218RCqE2oPKiVOTKlqxGrovpvJzLS4O1qFgVMebj/48j4CQOKqFtZMUAYLVPwXmKd14lqF+n1ci8G5OZJwSr+U08kwgQsa4Cauwi+WTAt8A1CXNj+vEpyV02u+GOhiK89jBLnq5S56j0TqtcxemqihJ9jm4fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197742; c=relaxed/simple;
-	bh=+elkL7mLwOGOHZ7RZIf6xa80gVxP0TYuUVI0+48LPvI=;
+	s=arc-20240116; t=1741197399; c=relaxed/simple;
+	bh=PRaXLp3TksWT/wyk8FoaaP3ZYyvQbvsq4abx7CDvFPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ueW00SD75d2IJCDIV8jvKk70bfv7AfUshcDwxhh+9oou/WZZxhZFBLDktqyWFp/74ClDaRNJtOVxG7xHlyfgjiI4riJkSPk7xazHfpdHxEh+C0mfFZ57FNkwaIy6Kz+scutbIyMGl9rHv6uCHzyWUnLUy4Ms7iS516l7Vqs6MrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1/+lnGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B54C4CED1;
-	Wed,  5 Mar 2025 18:02:21 +0000 (UTC)
+	 MIME-Version; b=cGYbAbn/mqpvrILFWJktNccDzb8AMDqoqfPRG4+s+ljKWfMWhmW0QRz2UTuxCiwj4Hu+YF83oulFIyNEMFOFZFpCSoxKacHgQU5Cgasjbxbd/D39a9tdTRTHo684C9kLudqoyPlTchfrfpSIFKYL61vOhW0kt3G/jucPPKJp5jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDbHPoRQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB8AC4CED1;
+	Wed,  5 Mar 2025 17:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197742;
-	bh=+elkL7mLwOGOHZ7RZIf6xa80gVxP0TYuUVI0+48LPvI=;
+	s=korg; t=1741197398;
+	bh=PRaXLp3TksWT/wyk8FoaaP3ZYyvQbvsq4abx7CDvFPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1/+lnGhgSauxV7Q1SGRX2Q3GqNpxhxiLCUwMHq2sVes6WLiJJI9LDAKapgG6eeiE
-	 sWYo2BTpLjncuOSQbeweUELf+o575ea/zYxkrjOgChUNcWPmH0VV4zfJA8qpWgtx0i
-	 DNfOKdCseH1reGn859aCVFuab3wDRSufVtSUXGYc=
+	b=WDbHPoRQXBBMee3D3CIl61h0E1sIqddMQLlHxUdkRIn0ZlFclZVPa3xCPGWP5Fooo
+	 O8L/BrwwAJVHLMj/G9mPn1FVhkVJOQRc6aWUp8dPCcVfXrO5ePTDOdj9fFJ7M95ey+
+	 ygmtiod2qattNNPbZK7rCxvl9NYVRfbaROTbjZtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bean Huo <beanhuo@micron.com>,
-	Arthur Simchaev <arthur.simchaev@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 085/142] scsi: ufs: core: bsg: Fix crash when arpmb command fails
+	Mohammad Heib <mheib@redhat.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 135/176] net: Clear old fragment checksum value in napi_reuse_skb
 Date: Wed,  5 Mar 2025 18:48:24 +0100
-Message-ID: <20250305174503.752694800@linuxfoundation.org>
+Message-ID: <20250305174510.865356997@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur Simchaev <arthur.simchaev@sandisk.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-commit f27a95845b01e86d67c8b014b4f41bd3327daa63 upstream.
+[ Upstream commit 49806fe6e61b045b5be8610e08b5a3083c109aa0 ]
 
-If the device doesn't support arpmb we'll crash due to copying user data in
-bsg_transport_sg_io_fn().
+In certain cases, napi_get_frags() returns an skb that points to an old
+received fragment, This skb may have its skb->ip_summed, csum, and other
+fields set from previous fragment handling.
 
-In the case where ufs_bsg_exec_advanced_rpmb_req() returns an error, do not
-set the job's reply_len.
+Some network drivers set skb->ip_summed to either CHECKSUM_COMPLETE or
+CHECKSUM_UNNECESSARY when getting skb from napi_get_frags(), while
+others only set skb->ip_summed when RX checksum offload is enabled on
+the device, and do not set any value for skb->ip_summed when hardware
+checksum offload is disabled, assuming that the skb->ip_summed
+initiated to zero by napi_reuse_skb, ionic driver for example will
+ignore/unset any value for the ip_summed filed if HW checksum offload is
+disabled, and if we have a situation where the user disables the
+checksum offload during a traffic that could lead to the following
+errors shown in the kernel logs:
+<IRQ>
+dump_stack_lvl+0x34/0x48
+ __skb_gro_checksum_complete+0x7e/0x90
+tcp6_gro_receive+0xc6/0x190
+ipv6_gro_receive+0x1ec/0x430
+dev_gro_receive+0x188/0x360
+? ionic_rx_clean+0x25a/0x460 [ionic]
+napi_gro_frags+0x13c/0x300
+? __pfx_ionic_rx_service+0x10/0x10 [ionic]
+ionic_rx_service+0x67/0x80 [ionic]
+ionic_cq_service+0x58/0x90 [ionic]
+ionic_txrx_napi+0x64/0x1b0 [ionic]
+ __napi_poll+0x27/0x170
+net_rx_action+0x29c/0x370
+handle_softirqs+0xce/0x270
+__irq_exit_rcu+0xa3/0xc0
+common_interrupt+0x80/0xa0
+</IRQ>
 
-Memory crash backtrace:
-3,1290,531166405,-;ufshcd 0000:00:12.5: ARPMB OP failed: error code -22
+This inconsistency sometimes leads to checksum validation issues in the
+upper layers of the network stack.
 
-4,1308,531166555,-;Call Trace:
+To resolve this, this patch clears the skb->ip_summed value for each
+reused skb in by napi_reuse_skb(), ensuring that the caller is responsible
+for setting the correct checksum status. This eliminates potential
+checksum validation issues caused by improper handling of
+skb->ip_summed.
 
-4,1309,531166559,-; <TASK>
-
-4,1310,531166565,-; ? show_regs+0x6d/0x80
-
-4,1311,531166575,-; ? die+0x37/0xa0
-
-4,1312,531166583,-; ? do_trap+0xd4/0xf0
-
-4,1313,531166593,-; ? do_error_trap+0x71/0xb0
-
-4,1314,531166601,-; ? usercopy_abort+0x6c/0x80
-
-4,1315,531166610,-; ? exc_invalid_op+0x52/0x80
-
-4,1316,531166622,-; ? usercopy_abort+0x6c/0x80
-
-4,1317,531166630,-; ? asm_exc_invalid_op+0x1b/0x20
-
-4,1318,531166643,-; ? usercopy_abort+0x6c/0x80
-
-4,1319,531166652,-; __check_heap_object+0xe3/0x120
-
-4,1320,531166661,-; check_heap_object+0x185/0x1d0
-
-4,1321,531166670,-; __check_object_size.part.0+0x72/0x150
-
-4,1322,531166679,-; __check_object_size+0x23/0x30
-
-4,1323,531166688,-; bsg_transport_sg_io_fn+0x314/0x3b0
-
-Fixes: 6ff265fc5ef6 ("scsi: ufs: core: bsg: Add advanced RPMB support in ufs_bsg")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Signed-off-by: Arthur Simchaev <arthur.simchaev@sandisk.com>
-Link: https://lore.kernel.org/r/20250220142039.250992-1-arthur.simchaev@sandisk.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76620aafd66f ("gro: New frags interface to avoid copying shinfo")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250225112852.2507709-1-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs_bsg.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/core/gro.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/ufs/core/ufs_bsg.c
-+++ b/drivers/ufs/core/ufs_bsg.c
-@@ -194,10 +194,12 @@ out:
- 	ufshcd_rpm_put_sync(hba);
- 	kfree(buff);
- 	bsg_reply->result = ret;
--	job->reply_len = !rpmb ? sizeof(struct ufs_bsg_reply) : sizeof(struct ufs_rpmb_reply);
- 	/* complete the job here only if no error */
--	if (ret == 0)
-+	if (ret == 0) {
-+		job->reply_len = rpmb ? sizeof(struct ufs_rpmb_reply) :
-+					sizeof(struct ufs_bsg_reply);
- 		bsg_job_done(job, ret, bsg_reply->reply_payload_rcv_len);
-+	}
+diff --git a/net/core/gro.c b/net/core/gro.c
+index 47118e97ecfdd..c4cbf398c5f78 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -679,6 +679,7 @@ static void napi_reuse_skb(struct napi_struct *napi, struct sk_buff *skb)
+ 	skb->pkt_type = PACKET_HOST;
  
- 	return ret;
- }
+ 	skb->encapsulation = 0;
++	skb->ip_summed = CHECKSUM_NONE;
+ 	skb_shinfo(skb)->gso_type = 0;
+ 	skb_shinfo(skb)->gso_size = 0;
+ 	if (unlikely(skb->slow_gro)) {
+-- 
+2.39.5
+
 
 
 
