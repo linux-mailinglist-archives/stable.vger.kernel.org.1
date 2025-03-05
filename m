@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-120718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980AAA50805
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D288BA50756
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2916F3AFF3C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F10618935DB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8BF20C004;
-	Wed,  5 Mar 2025 18:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB332512EB;
+	Wed,  5 Mar 2025 17:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGqSv9Za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frxzOyFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1541C6FF9;
-	Wed,  5 Mar 2025 18:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE3A2512D6;
+	Wed,  5 Mar 2025 17:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197771; cv=none; b=KeF0xCpXKP0VtLzVDREyWnwzS+713iC5UyhFIqBiE8fx6XOp7ik3PLxqMeNb4/xSuRXeesJPQsBq6FVm0Q9pc3PYPRF2HJVykxY8jabJVr5Ix4+Ja9964sHhQPY2C7jOlOhPOYilR6cx84dLWBmckh7HNJZBfpy9gaCpFIpOIsk=
+	t=1741197401; cv=none; b=tG8evHBF8Wq4OSDpiOQrsrgNCkG46synodyhx4xQRuYtCqqfRJXN1LJtXow7u1v4ZB2xkSO1pgiRsGUnKSnLo9G9PwpjfAiCekRUfEyzaFVx4eNQJFC32cuNgR5aQHw0kcmOpNr8hIQmL5enJtvAEy93NgRBC+leLIWTNJZZniI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197771; c=relaxed/simple;
-	bh=XpDUp+fPowDhNOJ3hH7G6hYwKEbSdrGoQIZ9A47aa2A=;
+	s=arc-20240116; t=1741197401; c=relaxed/simple;
+	bh=z1V1H7KJzJQIeJzRn7dkr4Y1F0KavGtOWUzJgkxx1a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhGGv6A0haiCC7A5q+7WJ8t5qVi0ZUtcypQiEzcDbnevjYJRlP1CP/u5AuujiTFZ8SP0FCs05eJELNBVTjvYJq0fYsCrPYpjkqoNJPd37OiDQbUaMds1Rn9sKpZEDOCdz/wrwMLoFf1R5mtbA6W6kZfqHCwAVgLHVienPYKy2QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGqSv9Za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F54C4CED1;
-	Wed,  5 Mar 2025 18:02:50 +0000 (UTC)
+	 MIME-Version; b=RdfMrtMmrQwR01mDAI+hTPQt+sD4QdZg2pEhDkZVUzS2CrpD7rYX3+4V6n90P4FgBIiwGz+GVb6KN5jeBz/USTdUppnHD5KBkyL/BDZi1aPAmkuv04nRibQWEEeEsQhcKwtol5cbRxglnjv7REooCoRzurrmBl3LxaogBQwVW6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frxzOyFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473E6C4CED1;
+	Wed,  5 Mar 2025 17:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197771;
-	bh=XpDUp+fPowDhNOJ3hH7G6hYwKEbSdrGoQIZ9A47aa2A=;
+	s=korg; t=1741197401;
+	bh=z1V1H7KJzJQIeJzRn7dkr4Y1F0KavGtOWUzJgkxx1a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGqSv9ZaellH8X7WLBRtg78SDvGcOZkaz3X1wBoeOnpwg92uJLxBZys610/PVGaV5
-	 x3t1ws/PaBZ6/yb269mTHGeqqngttYoJYfelgwJ1BuqY4vonOihvR1XnX6FVxn6dTd
-	 j6m0NO/KMeaywnbxiNbBME4/PFm65LAtMBaPFxM0=
+	b=frxzOyFR+xGq2hzazdbhWM5P+aFrSNI/eM0q5ZZzYB9TeYTIO688b/Icv5dggsNlf
+	 lLXfptYawZ+8wUd+o11nOtJXoUey4OkovfCk/Gncxxw8J2xnrVmd/2Sdcs2676DGrd
+	 tvxmyI66MRU9SJSInU1mS6Zd8EfHjTUolqHzlvUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 094/142] gve: set xdp redirect target only when it is available
+	Tong Tiangen <tongtiangen@huawei.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 144/176] uprobes: Reject the shared zeropage in uprobe_write_opcode()
 Date: Wed,  5 Mar 2025 18:48:33 +0100
-Message-ID: <20250305174504.108721946@linuxfoundation.org>
+Message-ID: <20250305174511.227270097@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +66,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
 
-commit 415cadd505464d9a11ff5e0f6e0329c127849da5 upstream.
+[ Upstream commit bddf10d26e6e5114e7415a0e442ec6f51a559468 ]
 
-Before this patch the NETDEV_XDP_ACT_NDO_XMIT XDP feature flag is set by
-default as part of driver initialization, and is never cleared. However,
-this flag differs from others in that it is used as an indicator for
-whether the driver is ready to perform the ndo_xdp_xmit operation as
-part of an XDP_REDIRECT. Kernel helpers
-xdp_features_(set|clear)_redirect_target exist to convey this meaning.
+We triggered the following crash in syzkaller tests:
 
-This patch ensures that the netdev is only reported as a redirect target
-when XDP queues exist to forward traffic.
+  BUG: Bad page state in process syz.7.38  pfn:1eff3
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1eff3
+  flags: 0x3fffff00004004(referenced|reserved|node=0|zone=1|lastcpupid=0x1fffff)
+  raw: 003fffff00004004 ffffe6c6c07bfcc8 ffffe6c6c07bfcc8 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000fffffffe 0000000000000000
+  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x32/0x50
+   bad_page+0x69/0xf0
+   free_unref_page_prepare+0x401/0x500
+   free_unref_page+0x6d/0x1b0
+   uprobe_write_opcode+0x460/0x8e0
+   install_breakpoint.part.0+0x51/0x80
+   register_for_each_vma+0x1d9/0x2b0
+   __uprobe_register+0x245/0x300
+   bpf_uprobe_multi_link_attach+0x29b/0x4f0
+   link_create+0x1e2/0x280
+   __sys_bpf+0x75f/0xac0
+   __x64_sys_bpf+0x1a/0x30
+   do_syscall_64+0x56/0x100
+   entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-Fixes: 39a7f4aa3e4a ("gve: Add XDP REDIRECT support for GQI-QPL format")
-Cc: stable@vger.kernel.org
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Jeroen de Borst <jeroendb@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Link: https://patch.msgid.link/20250214224417.1237818-1-joshwash@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   BUG: Bad rss-counter state mm:00000000452453e0 type:MM_FILEPAGES val:-1
+
+The following syzkaller test case can be used to reproduce:
+
+  r2 = creat(&(0x7f0000000000)='./file0\x00', 0x8)
+  write$nbd(r2, &(0x7f0000000580)=ANY=[], 0x10)
+  r4 = openat(0xffffffffffffff9c, &(0x7f0000000040)='./file0\x00', 0x42, 0x0)
+  mmap$IORING_OFF_SQ_RING(&(0x7f0000ffd000/0x3000)=nil, 0x3000, 0x0, 0x12, r4, 0x0)
+  r5 = userfaultfd(0x80801)
+  ioctl$UFFDIO_API(r5, 0xc018aa3f, &(0x7f0000000040)={0xaa, 0x20})
+  r6 = userfaultfd(0x80801)
+  ioctl$UFFDIO_API(r6, 0xc018aa3f, &(0x7f0000000140))
+  ioctl$UFFDIO_REGISTER(r6, 0xc020aa00, &(0x7f0000000100)={{&(0x7f0000ffc000/0x4000)=nil, 0x4000}, 0x2})
+  ioctl$UFFDIO_ZEROPAGE(r5, 0xc020aa04, &(0x7f0000000000)={{&(0x7f0000ffd000/0x1000)=nil, 0x1000}})
+  r7 = bpf$PROG_LOAD(0x5, &(0x7f0000000140)={0x2, 0x3, &(0x7f0000000200)=ANY=[@ANYBLOB="1800000000120000000000000000000095"], &(0x7f0000000000)='GPL\x00', 0x7, 0x0, 0x0, 0x0, 0x0, '\x00', 0x0, @fallback=0x30, 0xffffffffffffffff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, @void, @value}, 0x94)
+  bpf$BPF_LINK_CREATE_XDP(0x1c, &(0x7f0000000040)={r7, 0x0, 0x30, 0x1e, @val=@uprobe_multi={&(0x7f0000000080)='./file0\x00', &(0x7f0000000100)=[0x2], 0x0, 0x0, 0x1}}, 0x40)
+
+The cause is that zero pfn is set to the PTE without increasing the RSS
+count in mfill_atomic_pte_zeropage() and the refcount of zero folio does
+not increase accordingly. Then, the operation on the same pfn is performed
+in uprobe_write_opcode()->__replace_page() to unconditional decrease the
+RSS count and old_folio's refcount.
+
+Therefore, two bugs are introduced:
+
+ 1. The RSS count is incorrect, when process exit, the check_mm() report
+    error "Bad rss-count".
+
+ 2. The reserved folio (zero folio) is freed when folio->refcount is zero,
+    then free_pages_prepare->free_page_is_bad() report error
+    "Bad page state".
+
+There is more, the following warning could also theoretically be triggered:
+
+  __replace_page()
+    -> ...
+      -> folio_remove_rmap_pte()
+        -> VM_WARN_ON_FOLIO(is_zero_folio(folio), folio)
+
+Considering that uprobe hit on the zero folio is a very rare case, just
+reject zero old folio immediately after get_user_page_vma_remote().
+
+[ mingo: Cleaned up the changelog ]
+
+Fixes: 7396fa818d62 ("uprobes/core: Make background page replacement logic account for rss_stat counters")
+Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
+Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250224031149.1598949-1-tongtiangen@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve.h      |   10 ++++++++++
- drivers/net/ethernet/google/gve/gve_main.c |    6 +++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ kernel/events/uprobes.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -1030,6 +1030,16 @@ static inline u32 gve_xdp_tx_start_queue
- 	return gve_xdp_tx_queue_id(priv, 0);
- }
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 9ee25351cecac..7a22db17f3b5e 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -484,6 +484,11 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
+ 	if (ret <= 0)
+ 		goto put_old;
  
-+static inline bool gve_supports_xdp_xmit(struct gve_priv *priv)
-+{
-+	switch (priv->queue_format) {
-+	case GVE_GQI_QPL_FORMAT:
-+		return true;
-+	default:
-+		return false;
++	if (is_zero_page(old_page)) {
++		ret = -EINVAL;
++		goto put_old;
 +	}
-+}
 +
- /* buffers */
- int gve_alloc_page(struct gve_priv *priv, struct device *dev,
- 		   struct page **page, dma_addr_t *dma,
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1753,6 +1753,8 @@ static void gve_turndown(struct gve_priv
- 	/* Stop tx queues */
- 	netif_tx_disable(priv->dev);
- 
-+	xdp_features_clear_redirect_target(priv->dev);
-+
- 	gve_clear_napi_enabled(priv);
- 	gve_clear_report_stats(priv);
- 
-@@ -1793,6 +1795,9 @@ static void gve_turnup(struct gve_priv *
- 		}
- 	}
- 
-+	if (priv->num_xdp_queues && gve_supports_xdp_xmit(priv))
-+		xdp_features_set_redirect_target(priv->dev, false);
-+
- 	gve_set_napi_enabled(priv);
- }
- 
-@@ -2014,7 +2019,6 @@ static void gve_set_netdev_xdp_features(
- 	if (priv->queue_format == GVE_GQI_QPL_FORMAT) {
- 		xdp_features = NETDEV_XDP_ACT_BASIC;
- 		xdp_features |= NETDEV_XDP_ACT_REDIRECT;
--		xdp_features |= NETDEV_XDP_ACT_NDO_XMIT;
- 		xdp_features |= NETDEV_XDP_ACT_XSK_ZEROCOPY;
- 	} else {
- 		xdp_features = 0;
+ 	if (WARN(!is_register && PageCompound(old_page),
+ 		 "uprobe unregister should never work on compound page\n")) {
+ 		ret = -EINVAL;
+-- 
+2.39.5
+
 
 
 
