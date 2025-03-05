@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3DEA507DF
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B438A5074E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35D593A73A6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C000A3AD630
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB88F1386B4;
-	Wed,  5 Mar 2025 18:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC292512F7;
+	Wed,  5 Mar 2025 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAyd0Nrc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nd19xrEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7640B14B075;
-	Wed,  5 Mar 2025 18:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29812252911;
+	Wed,  5 Mar 2025 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197687; cv=none; b=Ylww8XeaJO41l/22YdyYuGKSNLKKo0WZnEp6jq7DjReR8RIP4CONvyokoSyYXaRF/G1ut4/8wXXO5r1y5n0Lq5QnFg78LQbzvfrHvB2RTF21xOKHJVcIVeuuHJyjeot8YhKdH5O4MYN14kSP5u3Pf6tVlztm/3J6BEsgCibqFUg=
+	t=1741197315; cv=none; b=b93UY2avpnszpchDlMCtgR+9NJFoH/zoLmqj0DgPMhw626lgXeZEXOkuz0TM5FJbu48dIvgVwWuY5mGUGQV/HxnsA+P1FHS0yVaUzEXjRAfta9F+XwERRh3Dpf8fGfxzAJiMHs0BjtZ4sLIAJDOkDrUwGEvltWc3N8dv81qFUGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197687; c=relaxed/simple;
-	bh=fJxgqOsDjBZjJwBRmHWc0XyStTJTEcSncBAFaDErS4k=;
+	s=arc-20240116; t=1741197315; c=relaxed/simple;
+	bh=URcO7h0Wssk0siK5SMdd8ubWSN3dadNcwwiy+nEBuZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l/qM+8WsevmJ8Tqfk2FmITCCdG5z6TH9acBux8hqvmePJfFiDHt51bIDBJiBjuvGkNo7wtfeBeDR57JBUS7Oce30MODjoZ8Ohz6eZBvj4fDWHY7sXaua3SXEf8wqOjKx5AzyMKYXjxH+OdEgisDT5tzW/KZWz1STL+rwe3BsJYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAyd0Nrc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E76C4CEE2;
-	Wed,  5 Mar 2025 18:01:26 +0000 (UTC)
+	 MIME-Version; b=m24CvOiLQzSWHfcY0bSe4VAZTYeZoWl83o5oS4AfVRs4WVZ242fvvst487Dv0cxN54VklF3A3OTj7CJHLUo58NAmSoxeGMsT2+4HTXx97t/l3ZDBZh/7Sa6V22V6EuEDlMLTdQ7jOUklccpD4azHHIS3P4hgVVgGEyTc/nuM/f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nd19xrEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A573AC4CED1;
+	Wed,  5 Mar 2025 17:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197687;
-	bh=fJxgqOsDjBZjJwBRmHWc0XyStTJTEcSncBAFaDErS4k=;
+	s=korg; t=1741197315;
+	bh=URcO7h0Wssk0siK5SMdd8ubWSN3dadNcwwiy+nEBuZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BAyd0Nrcq+5ZCpj26sET6aHD0jo5RwIh0eKnUzFsxWW0GDN3GXxVBDy3UVR8H2mg3
-	 sPCGrVEfWCiyxGNLykoTohqkJM0QNvXeMgKr2sp59d092mOMn4qZYit7iSONbQf5RV
-	 hSvkXwmTajz7qVP9AD3z5JA6NeKEsak9TO0/tpZk=
+	b=nd19xrECKmkflvMRH5an8bZh+mk+IsvX4YkrMbxlDrGN0mbi4Oq0Ga5zxtQW0AeWe
+	 /t8xYIPSTRLDf0SO8b4KfhdRokoZhcKgAF9sa8H/V1bgDQQjOfnsDmY2op4Ap9hymh
+	 ECbixB5ECFGQRwKHABcukfq6aX1NLSVR/C01YSkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Chris Chiu <chris.chiu@canonical.com>,
-	=?UTF-8?q?Adrien=20Verg=C3=A9?= <adrienverge@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 064/142] ALSA: hda/realtek: Fix microphone regression on ASUS N705UD
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 114/176] RDMA/mlx5: Fix bind QP error cleanup flow
 Date: Wed,  5 Mar 2025 18:48:03 +0100
-Message-ID: <20250305174502.910827632@linuxfoundation.org>
+Message-ID: <20250305174510.040855394@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrien Vergé <adrienverge@gmail.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit c6557ccf8094ce2e1142c6e49cd47f5d5e2933a8 upstream.
+[ Upstream commit e1a0bdbdfdf08428f0ede5ae49c7f4139ac73ef5 ]
 
-This fixes a regression introduced a few weeks ago in stable kernels
-6.12.14 and 6.13.3. The internal microphone on ASUS Vivobook N705UD /
-X705UD laptops is broken: the microphone appears in userspace (e.g.
-Gnome settings) but no sound is detected.
-I bisected it to commit 3b4309546b48 ("ALSA: hda: Fix headset detection
-failure due to unstable sort").
+When there is a failure during bind QP, the cleanup flow destroys the
+counter regardless if it is the one that created it or not, which is
+problematic since if it isn't the one that created it, that counter could
+still be in use.
 
-I figured out the cause:
-1. The initial pins enabled for the ALC256 driver are:
-       cfg->inputs == {
-         { pin=0x19, type=AUTO_PIN_MIC,
-           is_headset_mic=1, is_headphone_mic=0, has_boost_on_pin=1 },
-         { pin=0x1a, type=AUTO_PIN_MIC,
-           is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 } }
-2. Since 2017 and commits c1732ede5e8 ("ALSA: hda/realtek - Fix headset
-   and mic on several ASUS laptops with ALC256") and 28e8af8a163 ("ALSA:
-   hda/realtek: Fix mic and headset jack sense on ASUS X705UD"), the
-   quirk ALC256_FIXUP_ASUS_MIC is also applied to ASUS X705UD / N705UD
-   laptops.
-   This added another internal microphone on pin 0x13:
-       cfg->inputs == {
-         { pin=0x13, type=AUTO_PIN_MIC,
-           is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 },
-         { pin=0x19, type=AUTO_PIN_MIC,
-           is_headset_mic=1, is_headphone_mic=0, has_boost_on_pin=1 },
-         { pin=0x1a, type=AUTO_PIN_MIC,
-           is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 } }
-   I don't know what this pin 0x13 corresponds to. To the best of my
-   knowledge, these laptops have only one internal microphone.
-3. Before 2025 and commit 3b4309546b48 ("ALSA: hda: Fix headset
-   detection failure due to unstable sort"), the sort function would let
-   the microphone of pin 0x1a (the working one) *before* the microphone
-   of pin 0x13 (the phantom one).
-4. After this commit 3b4309546b48, the fixed sort function puts the
-   working microphone (pin 0x1a) *after* the phantom one (pin 0x13). As
-   a result, no sound is detected anymore.
+Fix that by destroying the counter only if it was created during this call.
 
-It looks like the quirk ALC256_FIXUP_ASUS_MIC is not needed anymore for
-ASUS Vivobook X705UD / N705UD laptops. Without it, everything works
-fine:
-- the internal microphone is detected and records actual sound,
-- plugging in a jack headset is detected and can record actual sound
-  with it,
-- unplugging the jack headset makes the system go back to internal
-  microphone and can record actual sound.
-
-Cc: stable@vger.kernel.org
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Chris Chiu <chris.chiu@canonical.com>
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Tested-by: Adrien Vergé <adrienverge@gmail.com>
-Signed-off-by: Adrien Vergé <adrienverge@gmail.com>
-Link: https://patch.msgid.link/20250226135515.24219-1-adrienverge@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 45842fc627c7 ("IB/mlx5: Support statistic q counter configuration")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://patch.msgid.link/25dfefddb0ebefa668c32e06a94d84e3216257cf.1740033937.git.leon@kernel.org
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/infiniband/hw/mlx5/counters.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10115,7 +10115,6 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1043, 0x19ce, "ASUS B9450FA", ALC294_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x19e1, "ASUS UX581LV", ALC295_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
--	SND_PCI_QUIRK(0x1043, 0x1a30, "ASUS X705UD", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
+diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
+index 3e1272695d993..9915504ad1e18 100644
+--- a/drivers/infiniband/hw/mlx5/counters.c
++++ b/drivers/infiniband/hw/mlx5/counters.c
+@@ -444,6 +444,7 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
+ 				   struct ib_qp *qp)
+ {
+ 	struct mlx5_ib_dev *dev = to_mdev(qp->device);
++	bool new = false;
+ 	int err;
+ 
+ 	if (!counter->id) {
+@@ -458,6 +459,7 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
+ 			return err;
+ 		counter->id =
+ 			MLX5_GET(alloc_q_counter_out, out, counter_set_id);
++		new = true;
+ 	}
+ 
+ 	err = mlx5_ib_qp_set_counter(qp, counter);
+@@ -467,8 +469,10 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
+ 	return 0;
+ 
+ fail_set_counter:
+-	mlx5_ib_counter_dealloc(counter);
+-	counter->id = 0;
++	if (new) {
++		mlx5_ib_counter_dealloc(counter);
++		counter->id = 0;
++	}
+ 
+ 	return err;
+ }
+-- 
+2.39.5
+
 
 
 
