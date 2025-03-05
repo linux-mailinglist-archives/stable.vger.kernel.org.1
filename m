@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD1A508BF
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72296A50956
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7DC3A5A1D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B435316607B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BA31A5BB7;
-	Wed,  5 Mar 2025 18:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8F124CEE3;
+	Wed,  5 Mar 2025 18:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9S/whgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvIAzdl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EEB1ACEDD;
-	Wed,  5 Mar 2025 18:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FE714884C;
+	Wed,  5 Mar 2025 18:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198243; cv=none; b=eXUyNsbnuCmWY4cteuGbalM9pCta3pKtm5akdL/vbH49SjRkTV4zl/UMpgdGPGqdY8TtEcwNtt7l3i6fFxdJ+VPZT8IbJoNVkuNHozS3MMwadBEiHLubgIwKu45qHq1JbCK8KBfefudEX3YQFi0ATLywCIqxgP/bnIdEVr1VCGk=
+	t=1741198570; cv=none; b=PVTgzqubyFZnbsgAAnEbSrDOMNTOjTvkjcdI0t46o1T0TkiPH4drL4xZ7w/dwhwJGnCfWQB9MWLJ+SkDsiPYiN+b7pY1NgGo16jQw56qo+2DezlzXs5Azoq03WylXSh0ruh1AlEwTzQv8vOZUFOTJsl0k8uowPo4eOYFTBB1FVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198243; c=relaxed/simple;
-	bh=BTYjEr8IIITGdQXSAlhms/fCkFkL++jRdWykOywahZM=;
+	s=arc-20240116; t=1741198570; c=relaxed/simple;
+	bh=1E5E8yKNhyKaquklQe1o5DZWIKYWqch2BhwdolLpv6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmQnC5kHymLLsYuhzkm6mEdaRZ1U1b1Pop2aPeaSEsfknwJ3KD6W6k6nNDFxq9tqTqo5KMRJBDNUxNYWcnzWMwnb0H3/XLTHliLgsQPx/m1p+fGcISbvV/4EndUA/ERAfQmeE1BDbbnGmEdB9m4XWLSMVTdt+B5Bqhy/H3BguUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9S/whgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EA9C4CEE0;
-	Wed,  5 Mar 2025 18:10:42 +0000 (UTC)
+	 MIME-Version; b=EqOf8R59k057cGeXXfkdxwYuPOP9cUEywbt96NI/YB/TYamuwYv1ICraHWVzHSrk63TJ9E+q6c45EJ1Q9LWPpWznLl2o7r1NPE6Llzn6dddEyJsmaF/hnIYxowX/fHvFeKAt6eWWEE6rZ2/oY3fE0TR360FaMRzwBNW1QQE6W3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvIAzdl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B897C4CED1;
+	Wed,  5 Mar 2025 18:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198243;
-	bh=BTYjEr8IIITGdQXSAlhms/fCkFkL++jRdWykOywahZM=;
+	s=korg; t=1741198570;
+	bh=1E5E8yKNhyKaquklQe1o5DZWIKYWqch2BhwdolLpv6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9S/whgtqgeZXjexUB7pck1FiPjgwZXnKebNvBCy4ahiQKyrn2oRO14AMbV3bDGX1
-	 JsZUobyLi1j53bkwl2OsuyJM6yphGaqWopHr4U7tP0VJVfCANyV5vP64DMNTNIZ/HR
-	 cNLTRen5xWjPMwhBWaQwyOGqYW4L8+Cf/E0jt2zs=
+	b=XvIAzdl881hI0Rni7/KHDimtkvmanTODjbBRZrf0tpTh+5ZNgBT2Bff1kNSIZnFBV
+	 +piW8/7y9v8xocp5wL+UWnHjEgMkb2OAgEse66jvQR2CFUAIBSEFZIH3n4xBSjwW4b
+	 WgQ3vmP86cFF9RvD48eQ6+CSTcva2nPj+DNROsXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/150] riscv: KVM: Fix hart suspend status check
+Subject: [PATCH 6.13 074/157] phy: rockchip: fix Kconfig dependency more
 Date: Wed,  5 Mar 2025 18:48:30 +0100
-Message-ID: <20250305174507.069717732@linuxfoundation.org>
+Message-ID: <20250305174508.278528771@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit c7db342e3b4744688be1e27e31254c1d31a35274 ]
+[ Upstream commit fcf5d353b09b3fc212ab24b89ef23a7a8f7b308e ]
 
-"Not stopped" means started or suspended so we need to check for
-a single state in order to have a chance to check for each state.
-Also, we need to use target_vcpu when checking for the suspend
-state.
+A previous patch ensured that USB Type C connector support is enabled,
+but it is still possible to build the phy driver without enabling
+CONFIG_USB (host support) or CONFIG_USB_GADGET (device support), and
+in that case the common helper functions are unavailable:
 
-Fixes: 763c8bed8c05 ("RISC-V: KVM: Implement SBI HSM suspend call")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20250217084506.18763-8-ajones@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+aarch64-linux-ld: drivers/phy/rockchip/phy-rockchip-usbdp.o: in function `rk_udphy_probe':
+phy-rockchip-usbdp.c:(.text+0xe74): undefined reference to `usb_get_maximum_speed'
+
+Select CONFIG_USB_COMMON directly here, like we do in some other phy
+drivers, to make sure this is available even when actual USB support
+is disabled or in a loadable module that cannot be reached from a
+built-in phy driver.
+
+Fixes: 9c79b779643e ("phy: rockchip: fix CONFIG_TYPEC dependency")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250122065249.1390081-1-arnd@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_sbi_hsm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/phy/rockchip/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.c
-index dce667f4b6ab0..13a35eb77e8e3 100644
---- a/arch/riscv/kvm/vcpu_sbi_hsm.c
-+++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
-@@ -79,12 +79,12 @@ static int kvm_sbi_hsm_vcpu_get_status(struct kvm_vcpu *vcpu)
- 	target_vcpu = kvm_get_vcpu_by_id(vcpu->kvm, target_vcpuid);
- 	if (!target_vcpu)
- 		return SBI_ERR_INVALID_PARAM;
--	if (!kvm_riscv_vcpu_stopped(target_vcpu))
--		return SBI_HSM_STATE_STARTED;
--	else if (vcpu->stat.generic.blocking)
-+	if (kvm_riscv_vcpu_stopped(target_vcpu))
-+		return SBI_HSM_STATE_STOPPED;
-+	else if (target_vcpu->stat.generic.blocking)
- 		return SBI_HSM_STATE_SUSPENDED;
- 	else
--		return SBI_HSM_STATE_STOPPED;
-+		return SBI_HSM_STATE_STARTED;
- }
- 
- static int kvm_sbi_ext_hsm_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
+index 2f7a05f21dc59..dcb8e1628632e 100644
+--- a/drivers/phy/rockchip/Kconfig
++++ b/drivers/phy/rockchip/Kconfig
+@@ -125,6 +125,7 @@ config PHY_ROCKCHIP_USBDP
+ 	depends on ARCH_ROCKCHIP && OF
+ 	depends on TYPEC
+ 	select GENERIC_PHY
++	select USB_COMMON
+ 	help
+ 	  Enable this to support the Rockchip USB3.0/DP combo PHY with
+ 	  Samsung IP block. This is required for USB3 support on RK3588.
 -- 
 2.39.5
 
