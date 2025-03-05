@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA54A5092C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB003A507EC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCED33A3B7A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CDC71891F25
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597492517AF;
-	Wed,  5 Mar 2025 18:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C851D95B3;
+	Wed,  5 Mar 2025 18:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZeeOmqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onnFM1o6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CFA250C1A;
-	Wed,  5 Mar 2025 18:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9012714B075;
+	Wed,  5 Mar 2025 18:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198525; cv=none; b=dtdJy5Ybku5A/ThRQlRyljcy2VKOHQPjJDkqKWP2ANOigLcJzSDYbcDQbI2kJ3+7+zaQVyd3DhrqINNqF66sAz3aGdyffAbsrkjZBBMBMhKaMOGAg/1hPe/E+OY6II9G7au7THmhp4Ubkaav22OPgHJPKiLGIx4alC2jN9v8JqM=
+	t=1741197716; cv=none; b=NoceOF5vo5aeUxtgrFq810yY12yaeF8o4iyCTsCsLSXbFHA4PErQlaNg2xxg6v0nIC6ONgm1trsKRwVLdqsSytmEuRCRpVP1rej7pupoVP2GgPzVhr0dpCuFQG8FwB2pfDQbZR/SIa/7JC7tVP7r+33DQr/LGVP+p2yZIMsxm9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198525; c=relaxed/simple;
-	bh=fH3O6cr0AqvCzEer7gy8WQr1PyIWza4QDOnkkw2dSHs=;
+	s=arc-20240116; t=1741197716; c=relaxed/simple;
+	bh=JY7Gij6oONr68iDEqLaeZM6zzV4op7qTYt/q8WwIt5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCq4EzyVgiK8bl9p2wdKPuiRQufMdn+yUW6qQjCwKueEq9uSZWvY6IWurcNeQGF4yh4S8CxRlwQ8DtuEDFuVHBiaLXlWNBNH1kzRN3uFfsjJovhQTKEWHOQUwGICz7yASavCrfJpO/F3l0kXa+zim3JZMLT38zNgtbITOTtG/Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZeeOmqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F10DC4CED1;
-	Wed,  5 Mar 2025 18:15:24 +0000 (UTC)
+	 MIME-Version; b=ISWFM8UDcn02k+GXL2GnksIqTWlWjWLBFTnbn/duWIpTufOjjdH1UEzmL2FR3Og4et3qk1i9zLFOLfU+1KV4wKuBTUZoRW619XrxWEHLay9LFvYPDeHybdl9ROSqvAdvUTv8LT44cctyB52m/YImzyG1q8+7PrGA3koWF/HUrQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onnFM1o6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D9DC4CEE0;
+	Wed,  5 Mar 2025 18:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198524;
-	bh=fH3O6cr0AqvCzEer7gy8WQr1PyIWza4QDOnkkw2dSHs=;
+	s=korg; t=1741197716;
+	bh=JY7Gij6oONr68iDEqLaeZM6zzV4op7qTYt/q8WwIt5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZeeOmqrnD3r3QDYyLAbj+msF3+/2x8Z2iTGxQ8RuxX7AUVXg1qbLX3LTvoOstlwT
-	 EflHiZYmgSoz6Iqn+4cwcKCfyeBItNpt2G1SqzVb+evQ6SCHBsVBZ6pXy2iwlseRXC
-	 prE9tZb/L9mym5wW4p51ib5X9Oy1BhQVBL2ggOEw=
+	b=onnFM1o6rtacezmcrsRITpOpl8bVkKxkWx8R3wsWQGpRAnZBzlj6E0ntZeh6qhcg2
+	 St+grdvQh5MfoBIIhWbUFwgkR96pBRzHR1rxXgzlCxpI7kOhJBCle3gW3hx3EPaU1J
+	 Hz1uwyBa5+3nGsxVsLrqObyD8nqSfoyXaTlMESlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>
-Subject: [PATCH 6.13 025/157] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
-Date: Wed,  5 Mar 2025 18:47:41 +0100
-Message-ID: <20250305174506.306420418@linuxfoundation.org>
+	Harshal Chaudhari <hchaudhari@marvell.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 043/142] net: mvpp2: cls: Fixed Non IP flow, with vlan tag flow defination.
+Date: Wed,  5 Mar 2025 18:47:42 +0100
+Message-ID: <20250305174502.067828261@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Harshal Chaudhari <hchaudhari@marvell.com>
 
-[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
+[ Upstream commit 2d253726ff7106b39a44483b6864398bba8a2f74 ]
 
-We fixed the UAF issue in USB MIDI code by canceling the pending work
-at closing each MIDI output device in the commit below.  However, this
-assumed that it's the only one that is tied with the endpoint, and it
-resulted in unexpected data truncations when multiple devices are
-assigned to a single endpoint and opened simultaneously.
+Non IP flow, with vlan tag not working as expected while
+running below command for vlan-priority. fixed that.
 
-For addressing the unexpected MIDI message drops, simply replace
-cancel_work_sync() with flush_work().  The drain callback should have
-been already invoked before the close callback, hence the port->active
-flag must be already cleared.  So this just assures that the pending
-work is finished before freeing the resources.
+ethtool -N eth1 flow-type ether vlan 0x8000 vlan-mask 0x1fff action 0 loc 0
 
-Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
-Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
-Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
-Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 1274daede3ef ("net: mvpp2: cls: Add steering based on vlan Id and priority.")
+Signed-off-by: Harshal Chaudhari <hchaudhari@marvell.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250225042058.2643838-1-hchaudhari@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi.c | 2 +-
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-index 737dd00e97b14..779d97d31f170 100644
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1145,7 +1145,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
- {
- 	struct usbmidi_out_port *port = substream->runtime->private_data;
- 
--	cancel_work_sync(&port->ep->work);
-+	flush_work(&port->ep->work);
- 	return substream_open(substream, 0, 0);
- }
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+index 40aeaa7bd739f..d2757cc116139 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+@@ -324,7 +324,7 @@ static const struct mvpp2_cls_flow cls_flows[MVPP2_N_PRS_FLOWS] = {
+ 		       MVPP2_PRS_RI_VLAN_MASK),
+ 	/* Non IP flow, with vlan tag */
+ 	MVPP2_DEF_FLOW(MVPP22_FLOW_ETHERNET, MVPP2_FL_NON_IP_TAG,
+-		       MVPP22_CLS_HEK_OPT_VLAN,
++		       MVPP22_CLS_HEK_TAGGED,
+ 		       0, 0),
+ };
  
 -- 
 2.39.5
