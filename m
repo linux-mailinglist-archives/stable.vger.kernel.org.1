@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA4DA50768
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9920A508A0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:10:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94C5017443E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75EB93B0AC4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3692512F2;
-	Wed,  5 Mar 2025 17:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9A61C6FF9;
+	Wed,  5 Mar 2025 18:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4WMLbuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSHFpS7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979B7250BE9;
-	Wed,  5 Mar 2025 17:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8C818D65C;
+	Wed,  5 Mar 2025 18:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197387; cv=none; b=PGmW8PTHzg2rgf3XtoYzQPve3R2jyxU9RNRL/tKwQ2v2AFw0AhIG9xuW+L2g+AtOSxaqrrHBobcpoXK5MIpVV4fZb5qhGm8B5cEn0sGHVWUz4B7OkvlqirXapfJC0IMhFqurn5vP+kZYhiWf5Dv+WmN6lwkuGRF3iZQDJuYvBns=
+	t=1741198141; cv=none; b=sTD/LaOeJxtNFT2hULe0QriVGgptS8frJAjHl0Vai2vxYNiXP++6VHeFqpXuK2giuvz+pRTbKj3O1mYZirRiS10l2RB7P/kHSxfzv/l8OAWk9IXmitFVjs3JVI5wP9bWMLIS0vf845vJwhNzTVVbCOYPOYUJX26KPiacs99OAik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197387; c=relaxed/simple;
-	bh=myBNTETfZgw+1WAPwOnNTezAGYPwp7ZjfbiYCyQzdhA=;
+	s=arc-20240116; t=1741198141; c=relaxed/simple;
+	bh=h1LmIEozX1AOkHaxOnLETMdPiAalhZhOiCr+hZbBuFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKTNmkcQ+YmS4Vbs+G87e5IETCKGMI8TR8RA+F4rYW8NHqy+yJH4iFcVXSawkM/JMPki4TuzDfmI6WfZNZGS63byq/sgFvhk8qEFEPuZDr5phMpZGKsb10tcNtz9qflnYqgejJ4y2X62lXCgNQBUacDnctiBAQarCx4bljjyD7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4WMLbuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A04C4CEE0;
-	Wed,  5 Mar 2025 17:56:26 +0000 (UTC)
+	 MIME-Version; b=VqAGYtrnUH+4il/FGztHGJSxC5/6aVmRpj3oyAe4enx1XAQ2I2cqKTkl2pk+rHV2hiMSK8M24KSn2ONBZjC6rKdIG/LBwKtCwPzJKaX/2K20KR8f1iZfRqBGUsdstr+EubO+YEkXKW2y7SkOnzn4thM5p2WdeVoXb1EWbSin7zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSHFpS7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AF8C4CED1;
+	Wed,  5 Mar 2025 18:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197387;
-	bh=myBNTETfZgw+1WAPwOnNTezAGYPwp7ZjfbiYCyQzdhA=;
+	s=korg; t=1741198141;
+	bh=h1LmIEozX1AOkHaxOnLETMdPiAalhZhOiCr+hZbBuFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4WMLbuDkj28NIoT+uRHdsHJ7x9yvTRWH1vV379rHNVL4K2PGX1vMyRkjo7KVqokg
-	 LKQr+kCR4evvk015vphvZaeg3GijeWxJPyaWMZwJH80UgCL9zVyp9zfctLnTnUXU27
-	 muqkBa9q1lptgI700AUuYQCmlDtmu2bwOO1zP4QI=
+	b=JSHFpS7YGR4QeUKoMfR6KDyXxARrMsUlJkE6xNPdxehEpR77s005kB4dE+YHAmS2h
+	 ZGjRW5usOpW37kep+NqbAXqQDdTGByYyiLwvnqWKDTX7bRjp3dcsDpf2URPNIRCUzv
+	 ruRyJ1QEAbyOQq7ZfGzzap3WR3+uWbn7Q+LudnPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/176] SUNRPC: convert RPC_TASK_* constants to enum
+Subject: [PATCH 6.12 047/150] drm/xe/oa: Allow only certain property changes from config
 Date: Wed,  5 Mar 2025 18:47:56 +0100
-Message-ID: <20250305174509.761747012@linuxfoundation.org>
+Message-ID: <20250305174505.712675066@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-[ Upstream commit 0b108e83795c9c23101f584ef7e3ab4f1f120ef0 ]
+[ Upstream commit 85d3f9e84e0628c412b69aa99b63654dfa08ad68 ]
 
-The RPC_TASK_* constants are defined as macros, which means that most
-kernel builds will not contain their definitions in the debuginfo.
-However, it's quite useful for debuggers to be able to view the task
-state constant and interpret it correctly. Conversion to an enum will
-ensure the constants are present in debuginfo and can be interpreted by
-debuggers without needing to hard-code them and track their changes.
+Whereas all properties can be specified during OA stream open, when the OA
+stream is reconfigured only the config_id and syncs can be specified.
 
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: 5bbd6e863b15 ("SUNRPC: Prevent looping due to rpc_signal_task() races")
+v2: Use separate function table for reconfig case (Jonathan)
+    Change bool function args to enum (Matt B)
+v3: s/xe_oa_set_property_funcs/xe_oa_set_property_funcs_open/ (Jonathan)
+
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Suggested-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241022200352.1192560-8-ashutosh.dixit@intel.com
+Stable-dep-of: 5bd566703e16 ("drm/xe/oa: Allow oa_exponent value of 0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c | 60 +++++++++++++++++++++++++++++---------
+ 1 file changed, 46 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 8f9bee0e21c3b..f80b90aca380a 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -140,13 +140,15 @@ struct rpc_task_setup {
- #define RPC_WAS_SENT(t)		((t)->tk_flags & RPC_TASK_SENT)
- #define RPC_IS_MOVEABLE(t)	((t)->tk_flags & RPC_TASK_MOVEABLE)
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index 78f662fd197c4..210b8bae59102 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -47,6 +47,11 @@ enum xe_oa_submit_deps {
+ 	XE_OA_SUBMIT_ADD_DEPS,
+ };
  
--#define RPC_TASK_RUNNING	0
--#define RPC_TASK_QUEUED		1
--#define RPC_TASK_ACTIVE		2
--#define RPC_TASK_NEED_XMIT	3
--#define RPC_TASK_NEED_RECV	4
--#define RPC_TASK_MSG_PIN_WAIT	5
--#define RPC_TASK_SIGNALLED	6
-+enum {
-+	RPC_TASK_RUNNING,
-+	RPC_TASK_QUEUED,
-+	RPC_TASK_ACTIVE,
-+	RPC_TASK_NEED_XMIT,
-+	RPC_TASK_NEED_RECV,
-+	RPC_TASK_MSG_PIN_WAIT,
-+	RPC_TASK_SIGNALLED,
++enum xe_oa_user_extn_from {
++	XE_OA_USER_EXTN_FROM_OPEN,
++	XE_OA_USER_EXTN_FROM_CONFIG,
 +};
++
+ struct xe_oa_reg {
+ 	struct xe_reg addr;
+ 	u32 value;
+@@ -1205,9 +1210,15 @@ static int xe_oa_set_prop_syncs_user(struct xe_oa *oa, u64 value,
+ 	return 0;
+ }
  
- #define rpc_test_and_set_running(t) \
- 				test_and_set_bit(RPC_TASK_RUNNING, &(t)->tk_runstate)
++static int xe_oa_set_prop_ret_inval(struct xe_oa *oa, u64 value,
++				    struct xe_oa_open_param *param)
++{
++	return -EINVAL;
++}
++
+ typedef int (*xe_oa_set_property_fn)(struct xe_oa *oa, u64 value,
+ 				     struct xe_oa_open_param *param);
+-static const xe_oa_set_property_fn xe_oa_set_property_funcs[] = {
++static const xe_oa_set_property_fn xe_oa_set_property_funcs_open[] = {
+ 	[DRM_XE_OA_PROPERTY_OA_UNIT_ID] = xe_oa_set_prop_oa_unit_id,
+ 	[DRM_XE_OA_PROPERTY_SAMPLE_OA] = xe_oa_set_prop_sample_oa,
+ 	[DRM_XE_OA_PROPERTY_OA_METRIC_SET] = xe_oa_set_prop_metric_set,
+@@ -1221,8 +1232,22 @@ static const xe_oa_set_property_fn xe_oa_set_property_funcs[] = {
+ 	[DRM_XE_OA_PROPERTY_SYNCS] = xe_oa_set_prop_syncs_user,
+ };
+ 
+-static int xe_oa_user_ext_set_property(struct xe_oa *oa, u64 extension,
+-				       struct xe_oa_open_param *param)
++static const xe_oa_set_property_fn xe_oa_set_property_funcs_config[] = {
++	[DRM_XE_OA_PROPERTY_OA_UNIT_ID] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_SAMPLE_OA] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_OA_METRIC_SET] = xe_oa_set_prop_metric_set,
++	[DRM_XE_OA_PROPERTY_OA_FORMAT] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_OA_DISABLED] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_NO_PREEMPT] = xe_oa_set_prop_ret_inval,
++	[DRM_XE_OA_PROPERTY_NUM_SYNCS] = xe_oa_set_prop_num_syncs,
++	[DRM_XE_OA_PROPERTY_SYNCS] = xe_oa_set_prop_syncs_user,
++};
++
++static int xe_oa_user_ext_set_property(struct xe_oa *oa, enum xe_oa_user_extn_from from,
++				       u64 extension, struct xe_oa_open_param *param)
+ {
+ 	u64 __user *address = u64_to_user_ptr(extension);
+ 	struct drm_xe_ext_set_property ext;
+@@ -1233,23 +1258,30 @@ static int xe_oa_user_ext_set_property(struct xe_oa *oa, u64 extension,
+ 	if (XE_IOCTL_DBG(oa->xe, err))
+ 		return -EFAULT;
+ 
+-	if (XE_IOCTL_DBG(oa->xe, ext.property >= ARRAY_SIZE(xe_oa_set_property_funcs)) ||
++	BUILD_BUG_ON(ARRAY_SIZE(xe_oa_set_property_funcs_open) !=
++		     ARRAY_SIZE(xe_oa_set_property_funcs_config));
++
++	if (XE_IOCTL_DBG(oa->xe, ext.property >= ARRAY_SIZE(xe_oa_set_property_funcs_open)) ||
+ 	    XE_IOCTL_DBG(oa->xe, ext.pad))
+ 		return -EINVAL;
+ 
+-	idx = array_index_nospec(ext.property, ARRAY_SIZE(xe_oa_set_property_funcs));
+-	return xe_oa_set_property_funcs[idx](oa, ext.value, param);
++	idx = array_index_nospec(ext.property, ARRAY_SIZE(xe_oa_set_property_funcs_open));
++
++	if (from == XE_OA_USER_EXTN_FROM_CONFIG)
++		return xe_oa_set_property_funcs_config[idx](oa, ext.value, param);
++	else
++		return xe_oa_set_property_funcs_open[idx](oa, ext.value, param);
+ }
+ 
+-typedef int (*xe_oa_user_extension_fn)(struct xe_oa *oa, u64 extension,
+-				       struct xe_oa_open_param *param);
++typedef int (*xe_oa_user_extension_fn)(struct xe_oa *oa,  enum xe_oa_user_extn_from from,
++				       u64 extension, struct xe_oa_open_param *param);
+ static const xe_oa_user_extension_fn xe_oa_user_extension_funcs[] = {
+ 	[DRM_XE_OA_EXTENSION_SET_PROPERTY] = xe_oa_user_ext_set_property,
+ };
+ 
+ #define MAX_USER_EXTENSIONS	16
+-static int xe_oa_user_extensions(struct xe_oa *oa, u64 extension, int ext_number,
+-				 struct xe_oa_open_param *param)
++static int xe_oa_user_extensions(struct xe_oa *oa, enum xe_oa_user_extn_from from, u64 extension,
++				 int ext_number, struct xe_oa_open_param *param)
+ {
+ 	u64 __user *address = u64_to_user_ptr(extension);
+ 	struct drm_xe_user_extension ext;
+@@ -1268,12 +1300,12 @@ static int xe_oa_user_extensions(struct xe_oa *oa, u64 extension, int ext_number
+ 		return -EINVAL;
+ 
+ 	idx = array_index_nospec(ext.name, ARRAY_SIZE(xe_oa_user_extension_funcs));
+-	err = xe_oa_user_extension_funcs[idx](oa, extension, param);
++	err = xe_oa_user_extension_funcs[idx](oa, from, extension, param);
+ 	if (XE_IOCTL_DBG(oa->xe, err))
+ 		return err;
+ 
+ 	if (ext.next_extension)
+-		return xe_oa_user_extensions(oa, ext.next_extension, ++ext_number, param);
++		return xe_oa_user_extensions(oa, from, ext.next_extension, ++ext_number, param);
+ 
+ 	return 0;
+ }
+@@ -1419,7 +1451,7 @@ static long xe_oa_config_locked(struct xe_oa_stream *stream, u64 arg)
+ 	struct xe_oa_config *config;
+ 	int err;
+ 
+-	err = xe_oa_user_extensions(stream->oa, arg, 0, &param);
++	err = xe_oa_user_extensions(stream->oa, XE_OA_USER_EXTN_FROM_CONFIG, arg, 0, &param);
+ 	if (err)
+ 		return err;
+ 
+@@ -1970,7 +2002,7 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
+ 	}
+ 
+ 	param.xef = xef;
+-	ret = xe_oa_user_extensions(oa, data, 0, &param);
++	ret = xe_oa_user_extensions(oa, XE_OA_USER_EXTN_FROM_OPEN, data, 0, &param);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.39.5
 
