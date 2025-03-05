@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-120531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6188A50714
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E408EA50718
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E670818934F6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241D4188D5AD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532C02512C7;
-	Wed,  5 Mar 2025 17:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8DC6ADD;
+	Wed,  5 Mar 2025 17:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/NeTN++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZZm9AIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118FB2505A7;
-	Wed,  5 Mar 2025 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3C6481DD;
+	Wed,  5 Mar 2025 17:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197231; cv=none; b=eKHXZ1uAsfAYLXAq5gOssM8H9rsjOxR188jd3tXC9O4k6RcO1+xtcwlCuASzg4U+S6sr6Zd/GppTerY0EnJAYp5kXuEbM3y+TVut4Gja2k87SG2A+y9Y5P8FX/Zvs8Af1kdslKrm0UeFY/SdyasKjVQozHrIAELh5agvTLwLq+U=
+	t=1741197262; cv=none; b=jlrXVvYqOhMII2eJG48k8UEmAu4JeYiDUZ13XHe1Cgbx7k6+71cfujgt/S9ytIPpzMdi4Iqn3e/vd0+cMLBljIhy5jpneroi4FfOJsA8H9AOk0KIO8bV4bzkyKNNR6KjlGwHHqgOpy2ZP+WcJQt+w5N+DOVfutehTEYKcKRZjxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197231; c=relaxed/simple;
-	bh=lv7A4BiFSaJuSpYcIj7QN6tumXJrMMegefy88z263QA=;
+	s=arc-20240116; t=1741197262; c=relaxed/simple;
+	bh=sXqw6DldVzYdPB3r3XrdNLoRe0hWHnY8LvoAofpWwmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jsq4WZV7gYua8Mz2P9Yuy138zRVNKBUHWJdoK3j/LT2Y+kN6uF81FdKQSp/PXzt59b6YTkkhDpR1sEuBkoLBmXJkBsXLVWplipGBiFKBKOFVcxBlN094A5h4Gc0kOUM5Eb/8+rQHDZbKJk5cKskd/THBDhkGiMhzEP3syqznzTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/NeTN++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252A2C4CED1;
-	Wed,  5 Mar 2025 17:53:49 +0000 (UTC)
+	 MIME-Version; b=dyzZnvDBDEgp34Vt6fQ4JFJWeS9k8FT4HVxJFrIr6vgxfYnlcWnBl0nKX6Bb0iBu46Nk+bGsUTcmDdUccZCY4bwnlF4vZE9lhWZDIwv3cQgbsVnVe/i5y7RMp8hN9h5ynJvhFbiYb2me7zUAP1L9CFhH08Aqk/A87/WneX3KwV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZZm9AIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A107C4CED1;
+	Wed,  5 Mar 2025 17:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197230;
-	bh=lv7A4BiFSaJuSpYcIj7QN6tumXJrMMegefy88z263QA=;
+	s=korg; t=1741197262;
+	bh=sXqw6DldVzYdPB3r3XrdNLoRe0hWHnY8LvoAofpWwmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/NeTN++gaLWL4TWoZAnUK95YzRencmKDuxQhdTp2u/le0+BSDXnKEq+bLP2E3O+g
-	 7a0GGn9EZ4U1RQ2gYx9rDouYAJtUoVuwP4QOj7YGgKbVfN/QPRpcbvDedYPplfJ3+h
-	 iNPGCNmt3Evx4PLDPqnlrncg3+h1BQQmLvYjV52s=
+	b=kZZm9AIb7daFH0dUIKa4eot5shmO5j+Jl1wsCsTaymApIIzTNfXdXMgk21nqX5DT3
+	 DCB/gZfrrUwXF/MgQwUdoN73X+Cw7jj/MBm72Cgrs0vxDrBvXUTgDRM/bwmEm+w+Et
+	 An0BgjDfGOGjU/+kO4PoJ5IWLdvqXwzeXWJ9eRkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/176] power: supply: da9150-fg: fix potential overflow
-Date: Wed,  5 Mar 2025 18:47:16 +0100
-Message-ID: <20250305174508.146226764@linuxfoundation.org>
+Subject: [PATCH 6.1 068/176] nouveau/svm: fix missing folio unlock + put after make_device_exclusive_range()
+Date: Wed,  5 Mar 2025 18:47:17 +0100
+Message-ID: <20250305174508.187112142@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
 References: <20250305174505.437358097@linuxfoundation.org>
@@ -66,54 +67,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 3fb3cb4350befc4f901c54e0cb4a2a47b1302e08 ]
+[ Upstream commit b3fefbb30a1691533cb905006b69b2a474660744 ]
 
-Size of variable sd_gain equals four bytes - DA9150_QIF_SD_GAIN_SIZE.
-Size of variable shunt_val equals two bytes - DA9150_QIF_SHUNT_VAL_SIZE.
+In case we have to retry the loop, we are missing to unlock+put the
+folio. In that case, we will keep failing make_device_exclusive_range()
+because we cannot grab the folio lock, and even return from the function
+with the folio locked and referenced, effectively never succeeding the
+make_device_exclusive_range().
 
-The expression sd_gain * shunt_val is currently being evaluated using
-32-bit arithmetic. So during the multiplication an overflow may occur.
+While at it, convert the other unlock+put to use a folio as well.
 
-As the value of type 'u64' is used as storage for the eventual result, put
-ULL variable at the first position of each expression in order to give the
-compiler complete information about the proper arithmetic to use. According
-to C99 the guaranteed width for a variable of type 'unsigned long long' >=
-64 bits.
+This was found by code inspection.
 
-Remove the explicit cast to u64 as it is meaningless.
-
-Just for the sake of consistency, perform the similar trick with another
-expression concerning 'iavg'.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: a419b4fd9138 ("power: Add support for DA9150 Fuel-Gauge")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://lore.kernel.org/r/20250130090030.53422-1-a.vatoropin@crpt.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 8f187163eb89 ("nouveau/svm: implement atomic SVM access")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Tested-by: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250124181524.3584236-2-david@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/da9150-fg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_svm.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/da9150-fg.c b/drivers/power/supply/da9150-fg.c
-index 8c5e2c49d6c1c..9d0a6ab698f58 100644
---- a/drivers/power/supply/da9150-fg.c
-+++ b/drivers/power/supply/da9150-fg.c
-@@ -248,9 +248,9 @@ static int da9150_fg_current_avg(struct da9150_fg *fg,
- 				      DA9150_QIF_SD_GAIN_SIZE);
- 	da9150_fg_read_sync_end(fg);
+diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
+index be6674fb1af71..d0bff13ac758d 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_svm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
+@@ -592,6 +592,7 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+ 	unsigned long timeout =
+ 		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+ 	struct mm_struct *mm = svmm->notifier.mm;
++	struct folio *folio;
+ 	struct page *page;
+ 	unsigned long start = args->p.addr;
+ 	unsigned long notifier_seq;
+@@ -618,12 +619,16 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
++		folio = page_folio(page);
  
--	div = (u64) (sd_gain * shunt_val * 65536ULL);
-+	div = 65536ULL * sd_gain * shunt_val;
- 	do_div(div, 1000000);
--	res = (u64) (iavg * 1000000ULL);
-+	res = 1000000ULL * iavg;
- 	do_div(res, div);
+ 		mutex_lock(&svmm->mutex);
+ 		if (!mmu_interval_read_retry(&notifier->notifier,
+ 					     notifier_seq))
+ 			break;
+ 		mutex_unlock(&svmm->mutex);
++
++		folio_unlock(folio);
++		folio_put(folio);
+ 	}
  
- 	val->intval = (int) res;
+ 	/* Map the page on the GPU. */
+@@ -639,8 +644,8 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+ 	ret = nvif_object_ioctl(&svmm->vmm->vmm.object, args, size, NULL);
+ 	mutex_unlock(&svmm->mutex);
+ 
+-	unlock_page(page);
+-	put_page(page);
++	folio_unlock(folio);
++	folio_put(folio);
+ 
+ out:
+ 	mmu_interval_notifier_remove(&notifier->notifier);
 -- 
 2.39.5
 
