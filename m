@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-120590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D288BA50756
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1474CA5094E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F10618935DB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 558EB3A4DD1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB332512EB;
-	Wed,  5 Mar 2025 17:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4766525290B;
+	Wed,  5 Mar 2025 18:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frxzOyFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRhmIVGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE3A2512D6;
-	Wed,  5 Mar 2025 17:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B3C2528F6;
+	Wed,  5 Mar 2025 18:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197401; cv=none; b=tG8evHBF8Wq4OSDpiOQrsrgNCkG46synodyhx4xQRuYtCqqfRJXN1LJtXow7u1v4ZB2xkSO1pgiRsGUnKSnLo9G9PwpjfAiCekRUfEyzaFVx4eNQJFC32cuNgR5aQHw0kcmOpNr8hIQmL5enJtvAEy93NgRBC+leLIWTNJZZniI=
+	t=1741198582; cv=none; b=tJ8dkzePYiSaJ+Q7+0YXmlvr50kW21/dZPdHcdH0ZsSMBpayNXg05h0vSInLxdV1lF5Iyqf9PLJQPa6Cj4lo7uITmcO2LkLeYZ2vz5OL3FTJkzg72iMsvsj6Wnh1LLNCnKejMry+nXLl0zyzwNb/iCUr+yXtLh5HuFrkssjsQdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197401; c=relaxed/simple;
-	bh=z1V1H7KJzJQIeJzRn7dkr4Y1F0KavGtOWUzJgkxx1a8=;
+	s=arc-20240116; t=1741198582; c=relaxed/simple;
+	bh=GTvxdUAe4UdCQ3bVsxAp7rlIAJT1nFaXCa87mkPvaNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdfMrtMmrQwR01mDAI+hTPQt+sD4QdZg2pEhDkZVUzS2CrpD7rYX3+4V6n90P4FgBIiwGz+GVb6KN5jeBz/USTdUppnHD5KBkyL/BDZi1aPAmkuv04nRibQWEEeEsQhcKwtol5cbRxglnjv7REooCoRzurrmBl3LxaogBQwVW6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frxzOyFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473E6C4CED1;
-	Wed,  5 Mar 2025 17:56:41 +0000 (UTC)
+	 MIME-Version; b=Qz3D0lo6OOd4VkeI3ozL8e0GLj/EEwKxtGlJvrl2rKp4SPEthFkZz5dzxBYIS3oNbozJ3uiOS1oY4MALOiu2p25EqPav9U2081cabUh28lnulSc/hIGqYpxBRL+sq9rpOgbaiaLDFGFF3UF1JMB9DECOxpbAUr2U22hqkXkWNUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRhmIVGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BA9C4CEE0;
+	Wed,  5 Mar 2025 18:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197401;
-	bh=z1V1H7KJzJQIeJzRn7dkr4Y1F0KavGtOWUzJgkxx1a8=;
+	s=korg; t=1741198581;
+	bh=GTvxdUAe4UdCQ3bVsxAp7rlIAJT1nFaXCa87mkPvaNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frxzOyFR+xGq2hzazdbhWM5P+aFrSNI/eM0q5ZZzYB9TeYTIO688b/Icv5dggsNlf
-	 lLXfptYawZ+8wUd+o11nOtJXoUey4OkovfCk/Gncxxw8J2xnrVmd/2Sdcs2676DGrd
-	 tvxmyI66MRU9SJSInU1mS6Zd8EfHjTUolqHzlvUs=
+	b=CRhmIVGjg3Zwrz9T+A/yJXWZ9b+O0CE9F1a3ejmljzlxpwYyGifNjIEmU5o8rpgHM
+	 SSisJ7Id/QWi6Ii3VA1ciOwama3N0nsNlMtXHPsJWMoHfMKPRySCqYwS2Rgz0nU7xY
+	 YbpKck5HW1Bc5vPY9TJijRGQbJW9cL6i6TVXsAI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tong Tiangen <tongtiangen@huawei.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/176] uprobes: Reject the shared zeropage in uprobe_write_opcode()
+Subject: [PATCH 6.13 077/157] riscv: KVM: Fix hart suspend status check
 Date: Wed,  5 Mar 2025 18:48:33 +0100
-Message-ID: <20250305174511.227270097@linuxfoundation.org>
+Message-ID: <20250305174508.402952004@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tong Tiangen <tongtiangen@huawei.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit bddf10d26e6e5114e7415a0e442ec6f51a559468 ]
+[ Upstream commit c7db342e3b4744688be1e27e31254c1d31a35274 ]
 
-We triggered the following crash in syzkaller tests:
+"Not stopped" means started or suspended so we need to check for
+a single state in order to have a chance to check for each state.
+Also, we need to use target_vcpu when checking for the suspend
+state.
 
-  BUG: Bad page state in process syz.7.38  pfn:1eff3
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1eff3
-  flags: 0x3fffff00004004(referenced|reserved|node=0|zone=1|lastcpupid=0x1fffff)
-  raw: 003fffff00004004 ffffe6c6c07bfcc8 ffffe6c6c07bfcc8 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000fffffffe 0000000000000000
-  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x32/0x50
-   bad_page+0x69/0xf0
-   free_unref_page_prepare+0x401/0x500
-   free_unref_page+0x6d/0x1b0
-   uprobe_write_opcode+0x460/0x8e0
-   install_breakpoint.part.0+0x51/0x80
-   register_for_each_vma+0x1d9/0x2b0
-   __uprobe_register+0x245/0x300
-   bpf_uprobe_multi_link_attach+0x29b/0x4f0
-   link_create+0x1e2/0x280
-   __sys_bpf+0x75f/0xac0
-   __x64_sys_bpf+0x1a/0x30
-   do_syscall_64+0x56/0x100
-   entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-   BUG: Bad rss-counter state mm:00000000452453e0 type:MM_FILEPAGES val:-1
-
-The following syzkaller test case can be used to reproduce:
-
-  r2 = creat(&(0x7f0000000000)='./file0\x00', 0x8)
-  write$nbd(r2, &(0x7f0000000580)=ANY=[], 0x10)
-  r4 = openat(0xffffffffffffff9c, &(0x7f0000000040)='./file0\x00', 0x42, 0x0)
-  mmap$IORING_OFF_SQ_RING(&(0x7f0000ffd000/0x3000)=nil, 0x3000, 0x0, 0x12, r4, 0x0)
-  r5 = userfaultfd(0x80801)
-  ioctl$UFFDIO_API(r5, 0xc018aa3f, &(0x7f0000000040)={0xaa, 0x20})
-  r6 = userfaultfd(0x80801)
-  ioctl$UFFDIO_API(r6, 0xc018aa3f, &(0x7f0000000140))
-  ioctl$UFFDIO_REGISTER(r6, 0xc020aa00, &(0x7f0000000100)={{&(0x7f0000ffc000/0x4000)=nil, 0x4000}, 0x2})
-  ioctl$UFFDIO_ZEROPAGE(r5, 0xc020aa04, &(0x7f0000000000)={{&(0x7f0000ffd000/0x1000)=nil, 0x1000}})
-  r7 = bpf$PROG_LOAD(0x5, &(0x7f0000000140)={0x2, 0x3, &(0x7f0000000200)=ANY=[@ANYBLOB="1800000000120000000000000000000095"], &(0x7f0000000000)='GPL\x00', 0x7, 0x0, 0x0, 0x0, 0x0, '\x00', 0x0, @fallback=0x30, 0xffffffffffffffff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, @void, @value}, 0x94)
-  bpf$BPF_LINK_CREATE_XDP(0x1c, &(0x7f0000000040)={r7, 0x0, 0x30, 0x1e, @val=@uprobe_multi={&(0x7f0000000080)='./file0\x00', &(0x7f0000000100)=[0x2], 0x0, 0x0, 0x1}}, 0x40)
-
-The cause is that zero pfn is set to the PTE without increasing the RSS
-count in mfill_atomic_pte_zeropage() and the refcount of zero folio does
-not increase accordingly. Then, the operation on the same pfn is performed
-in uprobe_write_opcode()->__replace_page() to unconditional decrease the
-RSS count and old_folio's refcount.
-
-Therefore, two bugs are introduced:
-
- 1. The RSS count is incorrect, when process exit, the check_mm() report
-    error "Bad rss-count".
-
- 2. The reserved folio (zero folio) is freed when folio->refcount is zero,
-    then free_pages_prepare->free_page_is_bad() report error
-    "Bad page state".
-
-There is more, the following warning could also theoretically be triggered:
-
-  __replace_page()
-    -> ...
-      -> folio_remove_rmap_pte()
-        -> VM_WARN_ON_FOLIO(is_zero_folio(folio), folio)
-
-Considering that uprobe hit on the zero folio is a very rare case, just
-reject zero old folio immediately after get_user_page_vma_remote().
-
-[ mingo: Cleaned up the changelog ]
-
-Fixes: 7396fa818d62 ("uprobes/core: Make background page replacement logic account for rss_stat counters")
-Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
-Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20250224031149.1598949-1-tongtiangen@huawei.com
+Fixes: 763c8bed8c05 ("RISC-V: KVM: Implement SBI HSM suspend call")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20250217084506.18763-8-ajones@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/kvm/vcpu_sbi_hsm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 9ee25351cecac..7a22db17f3b5e 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -484,6 +484,11 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
- 	if (ret <= 0)
- 		goto put_old;
+diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.c
+index dce667f4b6ab0..13a35eb77e8e3 100644
+--- a/arch/riscv/kvm/vcpu_sbi_hsm.c
++++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
+@@ -79,12 +79,12 @@ static int kvm_sbi_hsm_vcpu_get_status(struct kvm_vcpu *vcpu)
+ 	target_vcpu = kvm_get_vcpu_by_id(vcpu->kvm, target_vcpuid);
+ 	if (!target_vcpu)
+ 		return SBI_ERR_INVALID_PARAM;
+-	if (!kvm_riscv_vcpu_stopped(target_vcpu))
+-		return SBI_HSM_STATE_STARTED;
+-	else if (vcpu->stat.generic.blocking)
++	if (kvm_riscv_vcpu_stopped(target_vcpu))
++		return SBI_HSM_STATE_STOPPED;
++	else if (target_vcpu->stat.generic.blocking)
+ 		return SBI_HSM_STATE_SUSPENDED;
+ 	else
+-		return SBI_HSM_STATE_STOPPED;
++		return SBI_HSM_STATE_STARTED;
+ }
  
-+	if (is_zero_page(old_page)) {
-+		ret = -EINVAL;
-+		goto put_old;
-+	}
-+
- 	if (WARN(!is_register && PageCompound(old_page),
- 		 "uprobe unregister should never work on compound page\n")) {
- 		ret = -EINVAL;
+ static int kvm_sbi_ext_hsm_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
 -- 
 2.39.5
 
