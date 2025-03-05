@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EEDAA5076A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633C8A508CD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3E871893633
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7832F189650A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE2C250BE9;
-	Wed,  5 Mar 2025 17:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E342512D9;
+	Wed,  5 Mar 2025 18:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpSuQs/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tstwp2dJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293C324C07D;
-	Wed,  5 Mar 2025 17:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5318A18D65C;
+	Wed,  5 Mar 2025 18:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197445; cv=none; b=nIiv+ZjL8JoDwLsJu+dDSenNxOdb2Zk52pJfvYpo6bHNVPYcfdGSneyIcrMY8BBkQcu2NWwWQAhuiBa8VgaSYX7TccQpVRyTYCSsVU+zBV+mnGixBfZ4yDC20lVtbskLwRD5LFAhvkLltaPRfUAwkWGFgAsK/6jQolpvXIXcb+A=
+	t=1741198201; cv=none; b=WlhRPLVn4IQFoW0QqlgSIy58mxFD5VfDp4riW2I168emYUIJciFa2j+As1wtf391t3r79F0kI1RGxzqIgoES8u2cYiF96K7IDPi9l6i75sZCqL1BtUufYvUDWfPKLiV35zwVBEoNjj+6dENuS7P1pKkE13Z4Re8Um5Xv0DcdJQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197445; c=relaxed/simple;
-	bh=KQ8JiqOaQfVwrIDNfcOeTPBhPgn57rDXHwjvFXcLuMs=;
+	s=arc-20240116; t=1741198201; c=relaxed/simple;
+	bh=bQaIMLfY7IIws/vtVW6aM37t+xCgjIuiPLnoM7yihS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmxqzT703uhCPRLTVOMlULzgOF4ILY5ApyTVGibD3oKSAiwO0O8aQNCGZcTLgLXLKv6B8JtfH3XJLWIFiY4MCb6Wke/dwVVOOIFjUJGgj+xJSkRgQhoBbiuCGR4CVQ+02EDZAUhzWmHuBIymW5z5nCInR/7Zf1yNJtWVn/t2tVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpSuQs/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F12C4CED1;
-	Wed,  5 Mar 2025 17:57:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LxDftGlRxu1j76M4C1UbUyKP3yAjTgU293KBHnnIQADMMtrYz3fv5gllEJj9xgn5HONC8c3y2KxbO17CRSYlcxAwWTeVSsNck+mSjlOYlxIjyMBqgPxtlxhc8CtvvJAp+aVhq7FtxbPRIn7mTOgVf8168jRSisH4sCt1bI5U3NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tstwp2dJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8E5C4CEE2;
+	Wed,  5 Mar 2025 18:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197444;
-	bh=KQ8JiqOaQfVwrIDNfcOeTPBhPgn57rDXHwjvFXcLuMs=;
+	s=korg; t=1741198200;
+	bh=bQaIMLfY7IIws/vtVW6aM37t+xCgjIuiPLnoM7yihS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpSuQs/ouNPbrWrqNLVonuX1XzwTIRKZcCFg9OTxcv6TbEEjYUyDaTTBGpHC4mq3e
-	 cIyVhq6g4tX5y6/Q/13F/yscO4HPmUjEFWcc+taxES6E+sYki9OYV6DEcA/yHb0bgU
-	 Tt32mBpCkYLl/Sc6LZw2e749ogL7NIO9Mab7z/XM=
+	b=Tstwp2dJ60mLcq5Vf34Eoa1/WaqMVS8LfSebjtsu1NZWtFNxZdlPIJfWSPJbsnuIN
+	 bheMsqV3UgvAZ2wEWRajkxgyHU8Krut/+AZx7SZxXNrTsmP7mLM3KQ1QolSZIGvzDy
+	 YwTin97jXcHJ2qzdC2Zb20iHRJ4fPhEF90LXJnV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 158/176] net: enetc: keep track of correct Tx BD count in enetc_map_tx_tso_buffs()
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.12 098/150] drm/amdgpu: init return value in amdgpu_ttm_clear_buffer
 Date: Wed,  5 Mar 2025 18:48:47 +0100
-Message-ID: <20250305174511.783796829@linuxfoundation.org>
+Message-ID: <20250305174507.748621326@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
-commit da291996b16ebd10626d4b20288327b743aff110 upstream.
+commit d3c7059b6a8600fc62cd863f1ea203b8675e63e1 upstream.
 
-When creating a TSO header, if the skb is VLAN tagged, the extended BD
-will be used and the 'count' should be increased by 2 instead of 1.
-Otherwise, when an error occurs, less tx_swbd will be freed than the
-actual number.
+Otherwise an uninitialized value can be returned if
+amdgpu_res_cleared returns true for all regions.
 
-Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
+Possibly closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
+
+Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7c62aacc3b452f73a1284198c81551035fac6d71)
 Cc: stable@vger.kernel.org
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-3-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -329,14 +329,15 @@ dma_err:
- 	return 0;
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -2280,7 +2280,7 @@ int amdgpu_ttm_clear_buffer(struct amdgp
+ 	struct amdgpu_ring *ring = adev->mman.buffer_funcs_ring;
+ 	struct amdgpu_res_cursor cursor;
+ 	u64 addr;
+-	int r;
++	int r = 0;
  
--static void enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
--				 struct enetc_tx_swbd *tx_swbd,
--				 union enetc_tx_bd *txbd, int *i, int hdr_len,
--				 int data_len)
-+static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
-+				struct enetc_tx_swbd *tx_swbd,
-+				union enetc_tx_bd *txbd, int *i, int hdr_len,
-+				int data_len)
- {
- 	union enetc_tx_bd txbd_tmp;
- 	u8 flags = 0, e_flags = 0;
- 	dma_addr_t addr;
-+	int count = 1;
- 
- 	enetc_clear_tx_bd(&txbd_tmp);
- 	addr = tx_ring->tso_headers_dma + *i * TSO_HEADER_SIZE;
-@@ -379,7 +380,10 @@ static void enetc_map_tx_tso_hdr(struct
- 		/* Write the BD */
- 		txbd_tmp.ext.e_flags = e_flags;
- 		*txbd = txbd_tmp;
-+		count++;
- 	}
-+
-+	return count;
- }
- 
- static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
-@@ -511,9 +515,9 @@ static int enetc_map_tx_tso_buffs(struct
- 
- 		/* compute the csum over the L4 header */
- 		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
--		enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd, &i, hdr_len, data_len);
-+		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
-+					      &i, hdr_len, data_len);
- 		bd_data_num = 0;
--		count++;
- 
- 		while (data_len > 0) {
- 			int size;
+ 	if (!adev->mman.buffer_funcs_enabled)
+ 		return -EINVAL;
 
 
 
