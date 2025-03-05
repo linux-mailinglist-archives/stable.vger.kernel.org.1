@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AE7A50927
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18547A507E4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BD51884C30
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C21B216B027
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE7C25333B;
-	Wed,  5 Mar 2025 18:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046A11D6DB4;
+	Wed,  5 Mar 2025 18:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsSKRtny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFILiaqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7E5253338;
-	Wed,  5 Mar 2025 18:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FC31C863D;
+	Wed,  5 Mar 2025 18:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198411; cv=none; b=bfzLvAIH3MF3+HKdzzNXe42ftRyHjap1F1h+pvA4oAFk8Lqr/kmf2dJ7YhHOPvDrQQ5ijZrPrBkIDXshH8Vz5VPlbaXky7UfZwKTD+sBgHMHyQcWqq6wlIGmjwrGj0jJcPDmPjDjk4QC8jTBME9ZoMF1LKb9l5Wg/8hvHmEZd7A=
+	t=1741197684; cv=none; b=Qhb3PirMAZUC+fCnEopKAd7TA+NVKiBmujjnI9LFdhXiXW+4Sw8IR9b47AhOUBZuXDrnFJutwUpotHzmX26CUGH2slp4rbFNP6nVsx+c3NYKYyLp15XdzHlAg3InifFsanIx2bu4aOucsCLD0t67qRSdIyRJDg/fjfv4TvSW3Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198411; c=relaxed/simple;
-	bh=Ukw6pboOhDJhKJZBg+G92epl4WdExiZegRiNeXx7+1c=;
+	s=arc-20240116; t=1741197684; c=relaxed/simple;
+	bh=fFh94Apvi7MeSl4GAYvJV6GndkTMzACJLDAI6ONmMRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOHsEfkg4ILPTJ/ab/01UNClygaxA3qmDzf2vV6S50iQDSKOg0PSDkBgsROPztFhnCV5B6Dwyz3AWzea0h95hGsLofv9ODPYSQui6o6PZH3sLHdXftm/caMj6J1u2cPN4Uq1oqUYeRV04GzV9SdjXOgIV0BGyAm6U4mRk7XSz2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsSKRtny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15647C4CED1;
-	Wed,  5 Mar 2025 18:13:29 +0000 (UTC)
+	 MIME-Version; b=pfW/VQS0PFKpWiNz9poqrH6VJzD6IcIpY9W5r+SCig37TGsui8SHVT0bFzNbAATucV/hgR4ggmXiw7x+UfGYQAlMa6velvQpAx58WH6VN6aKCnEo/BHSITlu5U4F4mLFbdojIJ95EYBdgf2Tzc2q7AaMFG1Zt/XKKCTKhfAWgZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFILiaqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECFFC4CED1;
+	Wed,  5 Mar 2025 18:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198410;
-	bh=Ukw6pboOhDJhKJZBg+G92epl4WdExiZegRiNeXx7+1c=;
+	s=korg; t=1741197684;
+	bh=fFh94Apvi7MeSl4GAYvJV6GndkTMzACJLDAI6ONmMRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsSKRtnySPebMVPr7EoovThMD/2k0l2FMEUWq9FAM2TSqK8LaYYdCtLa6TvsLOyzc
-	 yptpJ/brLGEiu0JjvKoTJ3KKRsZnKBTEArCGVzujithXH9U68rPTYyGB1XbYp+O1cn
-	 NVuJXIEBKceD/vGClpX8KdoLwKPp1Xyulv2L8hR4=
+	b=jFILiaqOTUSXAVmTCicBXmW03qQQRAieKIOUFpeT9pexTvhTI9YjcEqCOMq+L/h+U
+	 eDXn+IFHzzUDeVzcFLqr3M48Ey+P2dOffcGQzVti536+SleCTp3rfqLtUeZz2RGWMz
+	 3wvyWUGgxEJTTwbCPwrON+9E1J8zJvhi8jBkKtw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 019/157] RDMA/mlx5: Fix AH static rate parsing
-Date: Wed,  5 Mar 2025 18:47:35 +0100
-Message-ID: <20250305174506.062530355@linuxfoundation.org>
+Subject: [PATCH 6.6 037/142] ALSA: hda/realtek: Fix wrong mic setup for ASUS VivoBook 15
+Date: Wed,  5 Mar 2025 18:47:36 +0100
+Message-ID: <20250305174501.828654923@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c534ffda781f44a1c6ac25ef6e0e444da38ca8af ]
+[ Upstream commit 9e7c6779e3530bbdd465214afcd13f19c33e51a2 ]
 
-Previously static rate wasn't translated according to our PRM but simply
-used the 4 lower bytes.
+ASUS VivoBook 15 with SSID 1043:1460 took an incorrect quirk via the
+pin pattern matching for ASUS (ALC256_FIXUP_ASUS_MIC), resulting in
+the two built-in mic pins (0x13 and 0x1b).  This had worked without
+problems casually in the past because the right pin (0x1b) was picked
+up as the primary device.  But since we fixed the pin enumeration for
+other bugs, the bogus one (0x13) is picked up as the primary device,
+hence the bug surfaced now.
 
-Correctly translate static rate value passed in AH creation attribute
-according to our PRM expected values.
+For addressing the regression, this patch explicitly specifies the
+quirk entry with ALC256_FIXUP_ASUS_MIC_NO_PRESENCE, which sets up only
+the headset mic pin.
 
-In addition change 800GB mapping to zero, which is the PRM
-specified value.
-
-Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Link: https://patch.msgid.link/18ef4cc5396caf80728341eb74738cd777596f60.1739187089.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219807
+Link: https://patch.msgid.link/20250225154540.13543-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/ah.c | 3 ++-
- drivers/infiniband/hw/mlx5/qp.c | 6 +++---
- drivers/infiniband/hw/mlx5/qp.h | 1 +
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
-index 505bc47fd575d..99036afb3aef0 100644
---- a/drivers/infiniband/hw/mlx5/ah.c
-+++ b/drivers/infiniband/hw/mlx5/ah.c
-@@ -67,7 +67,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
- 		ah->av.tclass = grh->traffic_class;
- 	}
- 
--	ah->av.stat_rate_sl = (rdma_ah_get_static_rate(ah_attr) << 4);
-+	ah->av.stat_rate_sl =
-+		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
- 
- 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
- 		if (init_attr->xmit_slave)
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 08d22db8dca91..88724d15705d4 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -3447,11 +3447,11 @@ static int ib_to_mlx5_rate_map(u8 rate)
- 	return 0;
- }
- 
--static int ib_rate_to_mlx5(struct mlx5_ib_dev *dev, u8 rate)
-+int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate)
- {
- 	u32 stat_rate_support;
- 
--	if (rate == IB_RATE_PORT_CURRENT)
-+	if (rate == IB_RATE_PORT_CURRENT || rate == IB_RATE_800_GBPS)
- 		return 0;
- 
- 	if (rate < IB_RATE_2_5_GBPS || rate > IB_RATE_800_GBPS)
-@@ -3596,7 +3596,7 @@ static int mlx5_set_path(struct mlx5_ib_dev *dev, struct mlx5_ib_qp *qp,
- 		       sizeof(grh->dgid.raw));
- 	}
- 
--	err = ib_rate_to_mlx5(dev, rdma_ah_get_static_rate(ah));
-+	err = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah));
- 	if (err < 0)
- 		return err;
- 	MLX5_SET(ads, path, stat_rate, err);
-diff --git a/drivers/infiniband/hw/mlx5/qp.h b/drivers/infiniband/hw/mlx5/qp.h
-index b6ee7c3ee1ca1..2530e7730635f 100644
---- a/drivers/infiniband/hw/mlx5/qp.h
-+++ b/drivers/infiniband/hw/mlx5/qp.h
-@@ -56,4 +56,5 @@ int mlx5_core_xrcd_dealloc(struct mlx5_ib_dev *dev, u32 xrcdn);
- int mlx5_ib_qp_set_counter(struct ib_qp *qp, struct rdma_counter *counter);
- int mlx5_ib_qp_event_init(void);
- void mlx5_ib_qp_event_cleanup(void);
-+int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate);
- #endif /* _MLX5_IB_QP_H */
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3310871ed9cc3..cb1f559303631 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10085,6 +10085,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
+ 	SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1460, "Asus VivoBook 15", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1463, "Asus GA402X/GA402N", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1473, "ASUS GU604VI/VC/VE/VG/VJ/VQ/VU/VV/VY/VZ", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1483, "ASUS GU603VQ/VU/VV/VJ/VI", ALC285_FIXUP_ASUS_HEADSET_MIC),
 -- 
 2.39.5
 
