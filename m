@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-120713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AF3A507FD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94679A50955
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A2E43B00ED
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAFF51659F2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241D5250BFC;
-	Wed,  5 Mar 2025 18:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CADA2505BD;
+	Wed,  5 Mar 2025 18:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcyNLGbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMptg8ia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17C120C004;
-	Wed,  5 Mar 2025 18:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7DE230BC6;
+	Wed,  5 Mar 2025 18:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197756; cv=none; b=SJ9fNDtsW6xBrehkKBmUC3PVkv79ucAUB1/50h+Gk+iteEhkLC2PG+hHshYRnoDmZkilzQLykJD2e3P73oThS+JNEFG3f1TZeMwfmaPoRG8vPw/e8+IfUDuzGOTv7seTFZWIwSwcw9NK74kQFeIaExtlSeOLubfCRVwBD3QuR2s=
+	t=1741198564; cv=none; b=OLp/5R28l76gbBd5ZNacx0Ikj1h0GLHSGEOS2jcm+3LlNSOaT7bU7kV7JTkX+7uGuzzwNNvyeGYCH1apOOgxS4QNfm2WlgI9I4F892yzcI/kM02b9M4RwuYuGZrofiC03ImT9dmm671UXTWXzqKCPyJuPqjTdeI8ZFzQTmFhu5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197756; c=relaxed/simple;
-	bh=P0fzaIEz7l5MrUTFfJINgUaCvJsBR65G/YLWXpfGggM=;
+	s=arc-20240116; t=1741198564; c=relaxed/simple;
+	bh=UTaBqSy9B+UtNlGSZY6nB6/MveFCK85PQ2Nzx6c323Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBtvsxnrE3UBFWilEgBv5HYnFxSKicCSdiHJ0sRGedIaaW8llaIymT9FgFmytTFdH0swOK3vRTP91uv9tlFve6d/Xrz5YNF1UH0rV5yNjKvTH3bm+OjiRH0POnAJuERvc1br+1nuonFIPwlB3HzcsVT3Zvmb19UZiUZVac493Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcyNLGbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47936C4CED1;
-	Wed,  5 Mar 2025 18:02:36 +0000 (UTC)
+	 MIME-Version; b=N/RLVi8do5b5djQJg2DI8l+oPvODO2kiG7gKhGqn6ynKGX83JaeP/RhtcCO3LkZMa38XJyO7PyHCxFzU7CqPkGh4piP7KMl319tFjxi5+AV8KAdVaZvlh6S98uaYTAoUMnVDu6kbaKpyZtS6CuCRO8kmc20qpJpXeZ0TxhBSOiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMptg8ia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539ABC4CED1;
+	Wed,  5 Mar 2025 18:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197756;
-	bh=P0fzaIEz7l5MrUTFfJINgUaCvJsBR65G/YLWXpfGggM=;
+	s=korg; t=1741198564;
+	bh=UTaBqSy9B+UtNlGSZY6nB6/MveFCK85PQ2Nzx6c323Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LcyNLGbOV4WnJFPhYVcVjjkMNy2FfnAbd2CO0TJvEwwDVLTy9Vu1HLWz7ytd45RYV
-	 WsZypifiyhMEwleDSd2VWnI3Jij9vmD3yZdqbLbZNw3FNpI1M9SGdOkkA+/m0gJ0qB
-	 qho8kj9l6ftWK5NAsCIAMclvZQsdnMpOT/Ht4x4M=
+	b=XMptg8iazE9zpE3vs7L8W2fbfI9zbwgCxagFeAHFLl8HZv9kyZz34LSa5eWsxs2nL
+	 /JnCQakCPpmGrjuyhX1xNMjQEwOH3xfiMNR2eud7Siu60UOAOJYoXD2vb9rRVXkYD8
+	 z6zOYweufjMQ/XaxebT0gUoLqjg9TGVpfpDoQr/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Glozar <tglozar@redhat.com>
-Subject: [PATCH 6.6 089/142] Revert "rtla/timerlat_top: Set OSNOISE_WORKLOAD for kernel threads"
+	Russell Senior <russell@personaltelco.net>,
+	Ingo Molnar <mingo@kernel.org>,
+	Matthew Whitehead <tedheadster@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>
+Subject: [PATCH 6.13 072/157] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
 Date: Wed,  5 Mar 2025 18:48:28 +0100
-Message-ID: <20250305174503.909373226@linuxfoundation.org>
+Message-ID: <20250305174508.196047399@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Russell Senior <russell@personaltelco.net>
 
-This reverts commit 41955b6c268154f81e34f9b61cf8156eec0730c0.
+[ Upstream commit bebe35bb738b573c32a5033499cd59f20293f2a3 ]
 
-The commit breaks rtla build, since params->kernel_workload is not
-present on 6.6-stable.
+I still have some Soekris net4826 in a Community Wireless Network I
+volunteer with. These devices use an AMD SC1100 SoC. I am running
+OpenWrt on them, which uses a patched kernel, that naturally has
+evolved over time.  I haven't updated the ones in the field in a
+number of years (circa 2017), but have one in a test bed, where I have
+intermittently tried out test builds.
 
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A few years ago, I noticed some trouble, particularly when "warm
+booting", that is, doing a reboot without removing power, and noticed
+the device was hanging after the kernel message:
+
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
+
+If I removed power and then restarted, it would boot fine, continuing
+through the message above, thusly:
+
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
+  [    0.090076] Enable Memory-Write-back mode on Cyrix/NSC processor.
+  [    0.100000] Enable Memory access reorder on Cyrix/NSC processor.
+  [    0.100070] Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
+  [    0.110058] Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
+  [    0.120037] CPU: NSC Geode(TM) Integrated Processor by National Semi (family: 0x5, model: 0x9, stepping: 0x1)
+  [...]
+
+In order to continue using modern tools, like ssh, to interact with
+the software on these old devices, I need modern builds of the OpenWrt
+firmware on the devices. I confirmed that the warm boot hang was still
+an issue in modern OpenWrt builds (currently using a patched linux
+v6.6.65).
+
+Last night, I decided it was time to get to the bottom of the warm
+boot hang, and began bisecting. From preserved builds, I narrowed down
+the bisection window from late February to late May 2019. During this
+period, the OpenWrt builds were using 4.14.x. I was able to build
+using period-correct Ubuntu 18.04.6. After a number of bisection
+iterations, I identified a kernel bump from 4.14.112 to 4.14.113 as
+the commit that introduced the warm boot hang.
+
+  https://github.com/openwrt/openwrt/commit/07aaa7e3d62ad32767d7067107db64b6ade81537
+
+Looking at the upstream changes in the stable kernel between 4.14.112
+and 4.14.113 (tig v4.14.112..v4.14.113), I spotted a likely suspect:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=20afb90f730982882e65b01fb8bdfe83914339c5
+
+So, I tried reverting just that kernel change on top of the breaking
+OpenWrt commit, and my warm boot hang went away.
+
+Presumably, the warm boot hang is due to some register not getting
+cleared in the same way that a loss of power does. That is
+approximately as much as I understand about the problem.
+
+More poking/prodding and coaching from Jonas Gorski, it looks
+like this test patch fixes the problem on my board: Tested against
+v6.6.67 and v4.14.113.
+
+Fixes: 18fb053f9b82 ("x86/cpu/cyrix: Use correct macros for Cyrix calls on Geode processors")
+Debugged-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Russell Senior <russell@personaltelco.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/CAHP3WfOgs3Ms4Z+L9i0-iBOE21sdMk5erAiJurPjnrL9LSsgRA@mail.gmail.com
+Cc: Matthew Whitehead <tedheadster@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ arch/x86/kernel/cpu/cyrix.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -679,15 +679,12 @@ timerlat_top_apply_config(struct osnoise
- 		auto_house_keeping(&params->monitored_cpus);
- 	}
+diff --git a/arch/x86/kernel/cpu/cyrix.c b/arch/x86/kernel/cpu/cyrix.c
+index 9651275aecd1b..dfec2c61e3547 100644
+--- a/arch/x86/kernel/cpu/cyrix.c
++++ b/arch/x86/kernel/cpu/cyrix.c
+@@ -153,8 +153,8 @@ static void geode_configure(void)
+ 	u8 ccr3;
+ 	local_irq_save(flags);
  
--	/*
--	* Set workload according to type of thread if the kernel supports it.
--	* On kernels without support, user threads will have already failed
--	* on missing timerlat_fd, and kernel threads do not need it.
--	*/
--	retval = osnoise_set_workload(top->context, params->kernel_workload);
--	if (retval < -1) {
--		err_msg("Failed to set OSNOISE_WORKLOAD option\n");
--		goto out_err;
-+	if (params->user_top) {
-+		retval = osnoise_set_workload(top->context, 0);
-+		if (retval) {
-+			err_msg("Failed to set OSNOISE_WORKLOAD option\n");
-+			goto out_err;
-+		}
- 	}
+-	/* Suspend on halt power saving and enable #SUSP pin */
+-	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x88);
++	/* Suspend on halt power saving */
++	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x08);
  
- 	return 0;
+ 	ccr3 = getCx86(CX86_CCR3);
+ 	setCx86(CX86_CCR3, (ccr3 & 0x0f) | 0x10);	/* enable MAPEN */
+-- 
+2.39.5
+
 
 
 
