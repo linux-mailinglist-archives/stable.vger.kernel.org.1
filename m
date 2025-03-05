@@ -1,153 +1,115 @@
-Return-Path: <stable+bounces-120398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA21A4F4A4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 03:22:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F337A4F63D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 06:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DF21889B63
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 02:22:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEB4416F623
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 05:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812C6156669;
-	Wed,  5 Mar 2025 02:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581FB1A317A;
+	Wed,  5 Mar 2025 05:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bmaqccG/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XwVbWvR7"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822AC155300
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 02:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA004A06;
+	Wed,  5 Mar 2025 05:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741141349; cv=none; b=EPmV8OR2gn2oV+DMtoVn75rDM814PW6XU11Su9NoGc5T7seiXyYYbHsZw0zmQTsQ6VEaWz/fFDYXLbdJ1pVM32YcfACDfNak2CzsoVS+aOgvo1h+DQDZMuRjWFn2fzd9notZkPx92dDsxSPjBI4wF5ae6El6us7S2JkspC6Ha2I=
+	t=1741150823; cv=none; b=a/B4LDrfNT3bNDoJWVqEKbCO8ndqyfsPOlDC8uqI7SsOvorOiAAW7bIbsvVYSDYTQVrCOzQ7nyvJQWGaRld7nv8h1iiUaClwWGytZ9lEt9x2khNH3b7oDoOJY6MBblChkdoql3n58tD35AdGlPHl4rkAfxy1xW4YGLPssepMPHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741141349; c=relaxed/simple;
-	bh=rqRlavxmZUaLIf4yVkniFSJFKnQ5oM/LDJ7eUVpTdCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ku7S0YaM6EMyb+SFGV6VUDar4cBmyKBRWBQSyOO4I5VVsEXwZVP8qE/NlDG2UpM/K3I9V8g4YNBRqrHf2RNBZUorHvYt4lgur0ZyprAJpt6xjJ+g2j4sTZLMDWQB2Ir8LQ7P070pRYSM0e3J6UZ7CDZFbWEGsPJOk0TuwynbF60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bmaqccG/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741141345;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=z9exZRKmyKrZHf+rgrYcQi5Z7IXeB7+IoeNx/2M67zs=;
-	b=bmaqccG/e4KKkg3N+A/WBZSEqlecyvGV8weIVDYbPbslCwLUx4z8MyX8qgVI1/L5fF2GrY
-	sU7CCPL+fnvxiOMXNdRRZYxR1svixWYwDWB1VCgqLL61hlsFj478CPRA9drVHCNKkljjRP
-	oXMqEGT0WZKziWaSuDB1exlePCkWfZk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-250-z9zjwkIPMNmIySsZeITidw-1; Tue,
- 04 Mar 2025 21:22:13 -0500
-X-MC-Unique: z9zjwkIPMNmIySsZeITidw-1
-X-Mimecast-MFC-AGG-ID: z9zjwkIPMNmIySsZeITidw_1741141331
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1826A1955BFC;
-	Wed,  5 Mar 2025 02:22:11 +0000 (UTC)
-Received: from localhost (unknown [10.72.120.23])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C58D31954B00;
-	Wed,  5 Mar 2025 02:22:08 +0000 (UTC)
-From: Ming Lei <ming.lei@redhat.com>
-To: Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org
-Cc: linux-efi@vger.kernel.org,
-	Olivier Gayot <olivier.gayot@canonical.com>,
-	Mulhern <amulhern@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	stable@vger.kernel.org,
-	Ming Lei <ming.lei@redhat.com>
-Subject: [PATCH V3] block: fix conversion of GPT partition name to 7-bit
-Date: Wed,  5 Mar 2025 10:21:54 +0800
-Message-ID: <20250305022154.3903128-1-ming.lei@redhat.com>
+	s=arc-20240116; t=1741150823; c=relaxed/simple;
+	bh=Tu9pHHMhYpuvyvA4UcT8a/MRI55uAHM1EzWCIW5bxXc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=INUGUFOeGW5cPky96bL9U2EO3i9xBBmzzVE7N/Vhm2e+uihicUwRM4akKGJe68hYHoe9ehqf5mB7uEhLWMLGZkMq5kz5wCAtp7L0GQ6CUz4sAm0yOlBKdlFEPaL5Jsx49wuvStjNHRkVQ/Nnf7hWh82RlGIkICzVlOWG1g/3lMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XwVbWvR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46ECCC4CEE2;
+	Wed,  5 Mar 2025 05:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741150822;
+	bh=Tu9pHHMhYpuvyvA4UcT8a/MRI55uAHM1EzWCIW5bxXc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XwVbWvR7rGQYmhkjddx9319FAP7mfMYhh/7rU0uE/Dqh1myjLuzWr/XfC75jOAO5Y
+	 G9NO7jpSiYPZuIxgerUP+6sASYSaRGjHA3Z4OdIp1AQBsUzeWA9jN99ARkrAj0NWBb
+	 VWaEJI1beXhBgyEKcY1G/fH4mJWTYemzuap5JFgRm+wEnJTYVjohKcmmSSR6ilp1DM
+	 sqBg8o6zU/8sfDqd9wD7cqhmHKZ2VaKiLYdhgnKyvuZsho9/XB9ZDk5ByudmjrK/+/
+	 vjNHkQhmaUydnn1RJzcMoC5JXorw006MiJoj4x9ii4Z7fy+jnlFaBzzaFZJj9x/H2q
+	 quCV/lQwGCVYg==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-sgx@vger.kernel.org,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Borislav Petkov <bp@suse.de>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] arch/x86: Fix size overflows in sgx_encl_create()
+Date: Wed,  5 Mar 2025 07:00:05 +0200
+Message-ID: <20250305050006.43896-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Olivier Gayot <olivier.gayot@canonical.com>
+The total size calculated for EPC can overflow u64 given the added up page
+for SECS.  Further, the total size calculated for shmem can overflow even
+when the EPC size stays within limits of u64, given that it adds the extra
+space for 128 byte PCMD structures (one for each page).
 
-The utf16_le_to_7bit function claims to, naively, convert a UTF-16
-string to a 7-bit ASCII string. By naively, we mean that it:
- * drops the first byte of every character in the original UTF-16 string
- * checks if all characters are printable, and otherwise replaces them
-   by exclamation mark "!".
+Address this by pre-evaluating the micro-architectural requirement of
+SGX: the address space size must be power of two. This is eventually
+checked up by ECREATE but the pre-check has the additional benefit of
+making sure that there is some space for additional data.
 
-This means that theoretically, all characters outside the 7-bit ASCII
-range should be replaced by another character. Examples:
-
- * lower-case alpha (ɒ) 0x0252 becomes 0x52 (R)
- * ligature OE (œ) 0x0153 becomes 0x53 (S)
- * hangul letter pieup (ㅂ) 0x3142 becomes 0x42 (B)
- * upper-case gamma (Ɣ) 0x0194 becomes 0x94 (not printable) so gets
-   replaced by "!"
-
-The result of this conversion for the GPT partition name is passed to
-user-space as PARTNAME via udev, which is confusing and feels questionable.
-
-However, there is a flaw in the conversion function itself. By dropping
-one byte of each character and using isprint() to check if the remaining
-byte corresponds to a printable character, we do not actually guarantee
-that the resulting character is 7-bit ASCII.
-
-This happens because we pass 8-bit characters to isprint(), which
-in the kernel returns 1 for many values > 0x7f - as defined in ctype.c.
-
-This results in many values which should be replaced by "!" to be kept
-as-is, despite not being valid 7-bit ASCII. Examples:
-
- * e with acute accent (é) 0x00E9 becomes 0xE9 - kept as-is because
-   isprint(0xE9) returns 1.
- * euro sign (€) 0x20AC becomes 0xAC - kept as-is because isprint(0xAC)
-   returns 1.
-
-This way has broken pyudev utility[1], fixes it by using a mask of 7 bits
-instead of 8 bits before calling isprint.
-
-Link: https://github.com/pyudev/pyudev/issues/490#issuecomment-2685794648 [1]
-Link: https://lore.kernel.org/linux-block/4cac90c2-e414-4ebb-ae62-2a4589d9dc6e@canonical.com/
-Cc: Mulhern <amulhern@redhat.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Olivier Gayot <olivier.gayot@canonical.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Cc: stable@vger.kernel.org # v5.11+
+Fixes: 888d24911787 ("x86/sgx: Add SGX_IOC_ENCLAVE_CREATE")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-sgx/c87e01a0-e7dd-4749-a348-0980d3444f04@stanley.mountain/
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
-V3:
-	- userspace break words in commit log
-	- Cc more list and guys
+v3: Updated the commit message according to Dave's suggestion and added
+    fixes tag.
+v2: Simply check the micro-architetural requirement in order to address
+    Dave's comment:
+    https://lore.kernel.org/linux-sgx/45e68dea-af6a-4b2a-8249-420f14de3424@intel.com/
+---
+ arch/x86/kernel/cpu/sgx/ioctl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-V2:
-	- No change - resubmitted with subsystem maintainers in CC
-
- block/partitions/efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/block/partitions/efi.c b/block/partitions/efi.c
-index 5e9be13a56a8..7acba66eed48 100644
---- a/block/partitions/efi.c
-+++ b/block/partitions/efi.c
-@@ -682,7 +682,7 @@ static void utf16_le_to_7bit(const __le16 *in, unsigned int size, u8 *out)
- 	out[size] = 0;
+diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
+index b65ab214bdf5..776a20172867 100644
+--- a/arch/x86/kernel/cpu/sgx/ioctl.c
++++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+@@ -64,6 +64,13 @@ static int sgx_encl_create(struct sgx_encl *encl, struct sgx_secs *secs)
+ 	struct file *backing;
+ 	long ret;
  
- 	while (i < size) {
--		u8 c = le16_to_cpu(in[i]) & 0xff;
-+		u8 c = le16_to_cpu(in[i]) & 0x7f;
- 
- 		if (c && !isprint(c))
- 			c = '!';
++	/*
++	 * ECREATE would detect this too, but checking here also ensures
++	 * that the 'encl_size' calculations below can never overflow.
++	 */
++	if (!is_power_of_2(secs->size))
++		return -EINVAL;
++
+ 	va_page = sgx_encl_grow(encl, true);
+ 	if (IS_ERR(va_page))
+ 		return PTR_ERR(va_page);
 -- 
-2.47.0
+2.48.1
 
 
