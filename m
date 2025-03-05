@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-120979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD46A50943
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF344A50863
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AFE57A919D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3337E1660D3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964D42512C9;
-	Wed,  5 Mar 2025 18:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DDC1C6FF6;
+	Wed,  5 Mar 2025 18:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGvasc3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct3XVd0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B33250C1A;
-	Wed,  5 Mar 2025 18:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D365217B505;
+	Wed,  5 Mar 2025 18:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198530; cv=none; b=gVgr3pDpsmgNIxyo+TeSe8G1bGnyXSuAUMy2UipKOTs9XmeHsLKJM9DngF10mapPdaoPHNlQKnkBfTotIzFLTg4uN8ahmss5Cpxw5c1g2FnIbTXWsE6rre9wZgzU2F82Gkd2uCl/Ag+pSrtPc0HgJm+pWFf1qd+pbSWbiUixZJk=
+	t=1741198012; cv=none; b=Z/hDyrN40uXexJlg3hAm+a1yTdZnxZj5bjfxlh8/MP23Lgv1syFKqDO05+vFPP1DpODCACFG8KVJmuEMYpMJyMCM+4nRJ60UJwUJTrbSa59ihM4YuPN6BfOHmXyaCNu431HrXWBw42jknQ/gmgs8wAVnP7Hv4JYsacgl9hG7LOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198530; c=relaxed/simple;
-	bh=ImIQcrhIC52yCbhpKLw+EEuE5m5pmhAdXgdGPUgL5mo=;
+	s=arc-20240116; t=1741198012; c=relaxed/simple;
+	bh=TTYcWq/LXJciIM7GSOIrN10x69xUG0gi6shufEaAugQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ho3GsTkU6ij/2Qugo7HLrZJJaKRSMHBK9HP9md0jL4sxacGtTDBVeF50j7A/aJXbD62JhRhTl5OsdvmMO93dnkaroaKoFRVhDL1OHjhynomV9Vse3IupCK+ozwywpAPMLbW55BMXoKFLbkxWLY2cB25P4uU2/6rRFd3rK2dUAWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGvasc3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2B2C4CED1;
-	Wed,  5 Mar 2025 18:15:29 +0000 (UTC)
+	 MIME-Version; b=UFgpm62EOMXhOgVl30ioS7YvXaYgTKtnK0gc27ebblSU/01KFr8aFAmRHPB8cMMIB2XqzWlTuE5THzMjbWty5StNlOgl9DWwBiDnmYeVGpjD+xWkEbPlMFlCOoO3OQAH8FuZH2ZfXFF5U/1bWWCdfBHRTpAc+ORqzU6EgXeIQTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct3XVd0O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B072C4CED1;
+	Wed,  5 Mar 2025 18:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198530;
-	bh=ImIQcrhIC52yCbhpKLw+EEuE5m5pmhAdXgdGPUgL5mo=;
+	s=korg; t=1741198012;
+	bh=TTYcWq/LXJciIM7GSOIrN10x69xUG0gi6shufEaAugQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGvasc3TDqCt7Jw7zC5EqhDTTn9rrxKlKzINheRZWlBNQ7ru808tZ3b5ZF4qitQeD
-	 NCzsHTBYegXgkZy8xUx6ylPwlRFVgrrkCTHwBSrpKLv+fK55OUeaz7c8w3b3AYUeAl
-	 qUP13hPQUzE6TQOLVjd1YTV66x3xmyw5FStOPCbA=
+	b=ct3XVd0OudX5SCZHWsbdpOpMr6SW1ZWMtwYuy6QMz66SJky8rb/BqxgJUwP80TpOS
+	 coeVNbz+eXFFx0qsZ6LYzwMiQZ07jfDjoBLoUnfiYuq51RKn2V3BVwvIO9/SWTSRiu
+	 o1rMtOetzLDg2+YyFMjhpyGjq24Mwhx7qnXWL31Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Dmitry Yakunin <zeil@yandex-team.ru>,
+	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 027/157] rxrpc: rxperf: Fix missing decoding of terminal magic cookie
+Subject: [PATCH 6.12 034/150] net: set the minimum for net_hotdata.netdev_budget_usecs
 Date: Wed,  5 Mar 2025 18:47:43 +0100
-Message-ID: <20250305174506.385189068@linuxfoundation.org>
+Message-ID: <20250305174505.185552710@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit c34d999ca3145d9fe858258cc3342ec493f47d2e ]
+[ Upstream commit c180188ec02281126045414e90d08422a80f75b4 ]
 
-The rxperf RPCs seem to have a magic cookie at the end of the request that
-was failing to be taken account of by the unmarshalling of the request.
-Fix the rxperf code to expect this.
+Commit 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs
+to enable softirq tuning") added a possibility to set
+net_hotdata.netdev_budget_usecs, but added no lower bound checking.
 
-Fixes: 75bfdbf2fca3 ("rxrpc: Implement an in-kernel rxperf server for testing purposes")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250218192250.296870-2-dhowells@redhat.com
+Commit a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
+made the *initial* value HZ-dependent, so the initial value is at least
+2 jiffies even for lower HZ values (2 ms for 1000 Hz, 8ms for 250 Hz, 20
+ms for 100 Hz).
+
+But a user still can set improper values by a sysctl. Set .extra1
+(the lower bound) for net_hotdata.netdev_budget_usecs to the same value
+as in the latter commit. That is to 2 jiffies.
+
+Fixes: a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
+Fixes: 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs to enable softirq tuning")
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Dmitry Yakunin <zeil@yandex-team.ru>
+Cc: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+Link: https://patch.msgid.link/20250220110752.137639-1-jirislaby@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/rxperf.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/core/sysctl_net_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/rxperf.c b/net/rxrpc/rxperf.c
-index 085e7892d3104..b1536da2246b8 100644
---- a/net/rxrpc/rxperf.c
-+++ b/net/rxrpc/rxperf.c
-@@ -478,6 +478,18 @@ static int rxperf_deliver_request(struct rxperf_call *call)
- 		call->unmarshal++;
- 		fallthrough;
- 	case 2:
-+		ret = rxperf_extract_data(call, true);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* Deal with the terminal magic cookie. */
-+		call->iov_len = 4;
-+		call->kvec[0].iov_len	= call->iov_len;
-+		call->kvec[0].iov_base	= call->tmp;
-+		iov_iter_kvec(&call->iter, READ, call->kvec, 1, call->iov_len);
-+		call->unmarshal++;
-+		fallthrough;
-+	case 3:
- 		ret = rxperf_extract_data(call, false);
- 		if (ret < 0)
- 			return ret;
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 5dd54a8133980..47e2743ffe228 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -34,6 +34,7 @@ static int min_sndbuf = SOCK_MIN_SNDBUF;
+ static int min_rcvbuf = SOCK_MIN_RCVBUF;
+ static int max_skb_frags = MAX_SKB_FRAGS;
+ static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
++static int netdev_budget_usecs_min = 2 * USEC_PER_SEC / HZ;
+ 
+ static int net_msg_warn;	/* Unused, but still a sysctl */
+ 
+@@ -580,7 +581,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(unsigned int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+-		.extra1		= SYSCTL_ZERO,
++		.extra1		= &netdev_budget_usecs_min,
+ 	},
+ 	{
+ 		.procname	= "fb_tunnels_only_for_init_net",
 -- 
 2.39.5
 
