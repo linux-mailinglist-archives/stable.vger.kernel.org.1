@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C56A5090B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80276A50857
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C1693AB49E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E1923AFE9D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C91A2512C9;
-	Wed,  5 Mar 2025 18:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F271A840E;
+	Wed,  5 Mar 2025 18:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReGnFyjb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1Q8UCm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1691ACEDD;
-	Wed,  5 Mar 2025 18:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF0E1ACEDD;
+	Wed,  5 Mar 2025 18:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198401; cv=none; b=QxIkrRmdu52JpsM3PA4+ng6cocCglz6LK4SPI0MUOYVnMeg9R8MsQ1jFDWoU7EH7F0L+hLuyLBPWWea30sZrfaZfxZlVYwVdMzKSrxd2yFILvD9UVBf4b5cTlZ5sruLb/XH9nebMc/rQtlArapimWEQ7ep7yxWLy/8IZm81eUzI=
+	t=1741197978; cv=none; b=npZRMQLsNYoTIoVNQqZ4AguqruiKgKU1EArkxftXXC8Xjw0H1wzhKd1UUsX01Q8cyY5hb9Ti6OPaZ82x1sK+zyTNH+RsFfcs5w+RAHUBYcOMq5EGnK76Q2FisBG8betry+1GzAD6I6u4SypN+knDNvENEa3919yCHsHwEd11Qfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198401; c=relaxed/simple;
-	bh=G7yY2RrMuCBbvUWrZtOW9IH3mUeu80XjvjGpkJY6l9U=;
+	s=arc-20240116; t=1741197978; c=relaxed/simple;
+	bh=rheAOM3p8ft55Q71uARPnC2yJp+i+GGTymvOmsmDoJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i71G/fMzidG5xHe0EOuwH3Isz8rMvZ6lMd5XlwUua6EOigeiCTKA8nHXwQ5fqmezsoMHuTYWkAmsqEaseGFbSr8YNfDYWW7Pns16Zj1Z5rvPqs7Am+ntcgURpxrKUufXmR/FvZyM2pEjuArwEKZQbqmtQftevb/Nma9Fryqvikw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReGnFyjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA54C4CED1;
-	Wed,  5 Mar 2025 18:13:21 +0000 (UTC)
+	 MIME-Version; b=IXkD/rR8m5VWos0dGZa+hEl3zFjjtc8sa7ng9KVPJ3qIw88Mced0IoP8X5ZBuO9thk99FR0DDYjJFoTRZiosvnUZftdgGKZTkaAp9yFX44yCKcNcC53ZUauhwId17Q/ANoaRGJX6my55xwJLVayxZW73NHRAc0ut/jvuWLlHyZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1Q8UCm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB128C4CED1;
+	Wed,  5 Mar 2025 18:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198401;
-	bh=G7yY2RrMuCBbvUWrZtOW9IH3mUeu80XjvjGpkJY6l9U=;
+	s=korg; t=1741197978;
+	bh=rheAOM3p8ft55Q71uARPnC2yJp+i+GGTymvOmsmDoJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReGnFyjbuVCkR6IpnergZ1tIMkyT5BS5EXL6zS4wkNWKF8b6Oi9FK+lYOHu35RJWG
-	 tHXKJnd100fukW2sIDOiJdSKDcbwV5fEdEAHi4F3XtdvlcwN1taF7xUcD8GMpgmafi
-	 Xrm9ejrKQ3jXKr/nBh1owCOjuLuP8UwqtHpG3YG4=
+	b=O1Q8UCm/6PRbKWW7jsFBFbDzPBku76QKXbq6yNNozX1XhlNUwO7slkmkrhdhvTdle
+	 rqx9kYucakFFZ6gVMobhjna63SNAA7zfZSnMFKyuzsPK0qU1KpzSFFgYS2uezomQbi
+	 Vurlqf8YPhPpsE5mV15Dbri2W4+NvCMV4H2HoUPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 016/157] NFSv4: Fix a deadlock when recovering state on a sillyrenamed file
+Subject: [PATCH 6.12 023/150] scsi: core: Clear driver private data when retrying request
 Date: Wed,  5 Mar 2025 18:47:32 +0100
-Message-ID: <20250305174505.938772356@linuxfoundation.org>
+Message-ID: <20250305174504.742837962@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 8f8df955f078e1a023ee55161935000a67651f38 ]
+[ Upstream commit dce5c4afd035e8090a26e5d776b1682c0e649683 ]
 
-If the file is sillyrenamed, and slated for delete on close, it is
-possible for a server reboot to triggeer an open reclaim, with can again
-race with the application call to close(). When that happens, the call
-to put_nfs_open_context() can trigger a synchronous delegreturn call
-which deadlocks because it is not marked as privileged.
+After commit 1bad6c4a57ef ("scsi: zero per-cmd private driver data for each
+MQ I/O"), the xen-scsifront/virtio_scsi/snic drivers all removed code that
+explicitly zeroed driver-private command data.
 
-Instead, ensure that the call to nfs4_inode_return_delegation_on_close()
-catches the delegreturn, and schedules it asynchronously.
+In combination with commit 464a00c9e0ad ("scsi: core: Kill DRIVER_SENSE"),
+after virtio_scsi performs a capacity expansion, the first request will
+return a unit attention to indicate that the capacity has changed. And then
+the original command is retried. As driver-private command data was not
+cleared, the request would return UA again and eventually time out and fail.
 
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: adb4b42d19ae ("Return the delegation when deleting sillyrenamed files")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Zero driver-private command data when a request is retried.
+
+Fixes: f7de50da1479 ("scsi: xen-scsifront: Remove code that zeroes driver-private command data")
+Fixes: c2bb87318baa ("scsi: virtio_scsi: Remove code that zeroes driver-private command data")
+Fixes: c3006a926468 ("scsi: snic: Remove code that zeroes driver-private command data")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250217021628.2929248-1-yebin@huaweicloud.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 37 +++++++++++++++++++++++++++++++++++++
- fs/nfs/delegation.h |  1 +
- fs/nfs/nfs4proc.c   |  3 +++
- 3 files changed, 41 insertions(+)
+ drivers/scsi/scsi_lib.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 035ba52742a50..4db912f562305 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -780,6 +780,43 @@ int nfs4_inode_return_delegation(struct inode *inode)
- 	return 0;
- }
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index c9dde1ac9523e..3023b07dc483b 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1653,13 +1653,6 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
+ 	if (in_flight)
+ 		__set_bit(SCMD_STATE_INFLIGHT, &cmd->state);
  
-+/**
-+ * nfs4_inode_set_return_delegation_on_close - asynchronously return a delegation
-+ * @inode: inode to process
-+ *
-+ * This routine is called to request that the delegation be returned as soon
-+ * as the file is closed. If the file is already closed, the delegation is
-+ * immediately returned.
-+ */
-+void nfs4_inode_set_return_delegation_on_close(struct inode *inode)
-+{
-+	struct nfs_delegation *delegation;
-+	struct nfs_delegation *ret = NULL;
+-	/*
+-	 * Only clear the driver-private command data if the LLD does not supply
+-	 * a function to initialize that data.
+-	 */
+-	if (!shost->hostt->init_cmd_priv)
+-		memset(cmd + 1, 0, shost->hostt->cmd_size);
+-
+ 	cmd->prot_op = SCSI_PROT_NORMAL;
+ 	if (blk_rq_bytes(req))
+ 		cmd->sc_data_direction = rq_dma_dir(req);
+@@ -1826,6 +1819,13 @@ static blk_status_t scsi_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	if (!scsi_host_queue_ready(q, shost, sdev, cmd))
+ 		goto out_dec_target_busy;
+ 
++	/*
++	 * Only clear the driver-private command data if the LLD does not supply
++	 * a function to initialize that data.
++	 */
++	if (shost->hostt->cmd_size && !shost->hostt->init_cmd_priv)
++		memset(cmd + 1, 0, shost->hostt->cmd_size);
 +
-+	if (!inode)
-+		return;
-+	rcu_read_lock();
-+	delegation = nfs4_get_valid_delegation(inode);
-+	if (!delegation)
-+		goto out;
-+	spin_lock(&delegation->lock);
-+	if (!delegation->inode)
-+		goto out_unlock;
-+	if (list_empty(&NFS_I(inode)->open_files) &&
-+	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
-+		/* Refcount matched in nfs_end_delegation_return() */
-+		ret = nfs_get_delegation(delegation);
-+	} else
-+		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
-+out_unlock:
-+	spin_unlock(&delegation->lock);
-+	if (ret)
-+		nfs_clear_verifier_delegated(inode);
-+out:
-+	rcu_read_unlock();
-+	nfs_end_delegation_return(inode, ret, 0);
-+}
-+
- /**
-  * nfs4_inode_return_delegation_on_close - asynchronously return a delegation
-  * @inode: inode to process
-diff --git a/fs/nfs/delegation.h b/fs/nfs/delegation.h
-index 71524d34ed207..8ff5ab9c5c256 100644
---- a/fs/nfs/delegation.h
-+++ b/fs/nfs/delegation.h
-@@ -49,6 +49,7 @@ void nfs_inode_reclaim_delegation(struct inode *inode, const struct cred *cred,
- 				  unsigned long pagemod_limit, u32 deleg_type);
- int nfs4_inode_return_delegation(struct inode *inode);
- void nfs4_inode_return_delegation_on_close(struct inode *inode);
-+void nfs4_inode_set_return_delegation_on_close(struct inode *inode);
- int nfs_async_inode_return_delegation(struct inode *inode, const nfs4_stateid *stateid);
- void nfs_inode_evict_delegation(struct inode *inode);
- 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 405f17e6e0b45..e7bc99c69743c 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3898,8 +3898,11 @@ nfs4_atomic_open(struct inode *dir, struct nfs_open_context *ctx,
- 
- static void nfs4_close_context(struct nfs_open_context *ctx, int is_sync)
- {
-+	struct dentry *dentry = ctx->dentry;
- 	if (ctx->state == NULL)
- 		return;
-+	if (dentry->d_flags & DCACHE_NFSFS_RENAMED)
-+		nfs4_inode_set_return_delegation_on_close(d_inode(dentry));
- 	if (is_sync)
- 		nfs4_close_sync(ctx->state, _nfs4_ctx_to_openmode(ctx));
- 	else
+ 	if (!(req->rq_flags & RQF_DONTPREP)) {
+ 		ret = scsi_prepare_cmd(req);
+ 		if (ret != BLK_STS_OK)
 -- 
 2.39.5
 
