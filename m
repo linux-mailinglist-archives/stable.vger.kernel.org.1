@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-120592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155CFA5078A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43039A5096E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:19:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 625E17A8BFA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD3118856CE
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C222C481DD;
-	Wed,  5 Mar 2025 17:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7A7253B67;
+	Wed,  5 Mar 2025 18:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykkUbsnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoYIfBOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C101250C0E;
-	Wed,  5 Mar 2025 17:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983CD254840;
+	Wed,  5 Mar 2025 18:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197407; cv=none; b=WZ6PHVu6GrBysaMIvr70gkmS3ZmstS4c1d+8nTutSMAUwVrZIC76FKly6+2O2wUzZmwAr1jm908oOs3l0N55c72/XPu3UZo1iZgyql7dLdHh5hkPX1wn93pq8sB2fqeN1E7fmrzm5fTJxJGPhOEr/Dsh4EdB3xD2jkNRSswv1d8=
+	t=1741198587; cv=none; b=nOCehBNRWbqonYOyGehKjEUg6CUsGFOVkBmVYGS+vLo2hqDmu5AdQ+T/Auct8wyLY0mCJiIsCK9uo7oUVlvtyhUq7aPIC7QYlS3JuIzyioarCMv0V8u5wURJs/uLJwATJQ4q6Sn7bbbnfF4BnWAXeKhY/s6VQqfl4NbONbfdqek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197407; c=relaxed/simple;
-	bh=4mfgfTfoaVor642YPKq1tm20SA/rzZPm7IurPUiY3xc=;
+	s=arc-20240116; t=1741198587; c=relaxed/simple;
+	bh=Ljirv+FxH60ZpfH+0gIfuPRmr1NH+GBWfJlQh81swJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2bABubLRzipqGW6LD6iZplPeUor5DgKnCZot+d3upLUE321A3WcQ9CCwxobxHJzkU/GnFXr7TK6iP7+/sLbNMNZ7bep0Ag/nIEG3qqf+lS2Hid+xCa9AmWfF65n4mN2Xk/oSQibSusoMuJv6+tP497rLYFfMFgEEsOohC8X7Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykkUbsnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F39C4CED1;
-	Wed,  5 Mar 2025 17:56:46 +0000 (UTC)
+	 MIME-Version; b=txR4VnvL5n1ypiBc3jGkh8PY4Dx7EDcHdfXINjjuGBbsLaLb4IiU3WUHAVKRL6c0/zx9olwSgEIoszwAyubOrIspE0Y3iiEZkc5DoYiuCcBH000rzG8Uh32PzdT5lOPI6NS8PZAQ88o92moBvL44QyM2clBRRiRsr6FL6sWhOfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoYIfBOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E1AC4CEEC;
+	Wed,  5 Mar 2025 18:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197407;
-	bh=4mfgfTfoaVor642YPKq1tm20SA/rzZPm7IurPUiY3xc=;
+	s=korg; t=1741198587;
+	bh=Ljirv+FxH60ZpfH+0gIfuPRmr1NH+GBWfJlQh81swJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykkUbsnfy9xe9jHcUcqf/mO6nDoDEfsQ/YDRy2kEoIHMt3rlWa/hWULBAL174N3XP
-	 mls/SGjg+YG5VJWYmABtviIBoHjMKMtpUsgBYDBOURoENCGkqEzbAGlnGKWWI4YW34
-	 sQcQtoUQtDHnOTaGY2w4MllZH+78FT6MxyOrPWE0=
+	b=DoYIfBObHFtE/b77k/psbLEBC4evbKyKrtrzlcJW0WRiToxglbTWAm8xEhF2oknVa
+	 3BHmqKYYm69vgf07sh1yp84bzZ01yDYxnlazL4KrZiOg/+W8s/bySDfKGajfRsCcdF
+	 dnZCa4x7LPbT826k69Nqxl6l8ev9TTT5pAdjM8Kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell Senior <russell@personaltelco.net>,
-	Ingo Molnar <mingo@kernel.org>,
-	Matthew Whitehead <tedheadster@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jonas Gorski <jonas.gorski@gmail.com>
-Subject: [PATCH 6.1 146/176] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 079/157] riscv: KVM: Fix SBI IPI error generation
 Date: Wed,  5 Mar 2025 18:48:35 +0100
-Message-ID: <20250305174511.304920713@linuxfoundation.org>
+Message-ID: <20250305174508.485532646@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Senior <russell@personaltelco.net>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit bebe35bb738b573c32a5033499cd59f20293f2a3 ]
+[ Upstream commit 0611f78f83c93c000029ab01daa28166d03590ed ]
 
-I still have some Soekris net4826 in a Community Wireless Network I
-volunteer with. These devices use an AMD SC1100 SoC. I am running
-OpenWrt on them, which uses a patched kernel, that naturally has
-evolved over time.  I haven't updated the ones in the field in a
-number of years (circa 2017), but have one in a test bed, where I have
-intermittently tried out test builds.
+When an invalid function ID of an SBI extension is used we should
+return not-supported, not invalid-param. Also, when we see that at
+least one hartid constructed from the base and mask parameters is
+invalid, then we should return invalid-param. Finally, rather than
+relying on overflowing a left shift to result in zero and then using
+that zero in a condition which [correctly] skips sending an IPI (but
+loops unnecessarily), explicitly check for overflow and exit the loop
+immediately.
 
-A few years ago, I noticed some trouble, particularly when "warm
-booting", that is, doing a reboot without removing power, and noticed
-the device was hanging after the kernel message:
-
-  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
-
-If I removed power and then restarted, it would boot fine, continuing
-through the message above, thusly:
-
-  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
-  [    0.090076] Enable Memory-Write-back mode on Cyrix/NSC processor.
-  [    0.100000] Enable Memory access reorder on Cyrix/NSC processor.
-  [    0.100070] Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
-  [    0.110058] Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
-  [    0.120037] CPU: NSC Geode(TM) Integrated Processor by National Semi (family: 0x5, model: 0x9, stepping: 0x1)
-  [...]
-
-In order to continue using modern tools, like ssh, to interact with
-the software on these old devices, I need modern builds of the OpenWrt
-firmware on the devices. I confirmed that the warm boot hang was still
-an issue in modern OpenWrt builds (currently using a patched linux
-v6.6.65).
-
-Last night, I decided it was time to get to the bottom of the warm
-boot hang, and began bisecting. From preserved builds, I narrowed down
-the bisection window from late February to late May 2019. During this
-period, the OpenWrt builds were using 4.14.x. I was able to build
-using period-correct Ubuntu 18.04.6. After a number of bisection
-iterations, I identified a kernel bump from 4.14.112 to 4.14.113 as
-the commit that introduced the warm boot hang.
-
-  https://github.com/openwrt/openwrt/commit/07aaa7e3d62ad32767d7067107db64b6ade81537
-
-Looking at the upstream changes in the stable kernel between 4.14.112
-and 4.14.113 (tig v4.14.112..v4.14.113), I spotted a likely suspect:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=20afb90f730982882e65b01fb8bdfe83914339c5
-
-So, I tried reverting just that kernel change on top of the breaking
-OpenWrt commit, and my warm boot hang went away.
-
-Presumably, the warm boot hang is due to some register not getting
-cleared in the same way that a loss of power does. That is
-approximately as much as I understand about the problem.
-
-More poking/prodding and coaching from Jonas Gorski, it looks
-like this test patch fixes the problem on my board: Tested against
-v6.6.67 and v4.14.113.
-
-Fixes: 18fb053f9b82 ("x86/cpu/cyrix: Use correct macros for Cyrix calls on Geode processors")
-Debugged-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Russell Senior <russell@personaltelco.net>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/CAHP3WfOgs3Ms4Z+L9i0-iBOE21sdMk5erAiJurPjnrL9LSsgRA@mail.gmail.com
-Cc: Matthew Whitehead <tedheadster@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 5f862df5585c ("RISC-V: KVM: Add v0.1 replacement SBI extensions defined in v0.2")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20250217084506.18763-10-ajones@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/cyrix.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/cyrix.c b/arch/x86/kernel/cpu/cyrix.c
-index 9651275aecd1b..dfec2c61e3547 100644
---- a/arch/x86/kernel/cpu/cyrix.c
-+++ b/arch/x86/kernel/cpu/cyrix.c
-@@ -153,8 +153,8 @@ static void geode_configure(void)
- 	u8 ccr3;
- 	local_irq_save(flags);
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 9c2ab3dfa93aa..74e3a38c6a29e 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -51,9 +51,10 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	struct kvm_cpu_context *cp = &vcpu->arch.guest_context;
+ 	unsigned long hmask = cp->a0;
+ 	unsigned long hbase = cp->a1;
++	unsigned long hart_bit = 0, sentmask = 0;
  
--	/* Suspend on halt power saving and enable #SUSP pin */
--	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x88);
-+	/* Suspend on halt power saving */
-+	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x08);
+ 	if (cp->a6 != SBI_EXT_IPI_SEND_IPI) {
+-		retdata->err_val = SBI_ERR_INVALID_PARAM;
++		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
+ 		return 0;
+ 	}
  
- 	ccr3 = getCx86(CX86_CCR3);
- 	setCx86(CX86_CCR3, (ccr3 & 0x0f) | 0x10);	/* enable MAPEN */
+@@ -62,15 +63,23 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		if (hbase != -1UL) {
+ 			if (tmp->vcpu_id < hbase)
+ 				continue;
+-			if (!(hmask & (1UL << (tmp->vcpu_id - hbase))))
++			hart_bit = tmp->vcpu_id - hbase;
++			if (hart_bit >= __riscv_xlen)
++				goto done;
++			if (!(hmask & (1UL << hart_bit)))
+ 				continue;
+ 		}
+ 		ret = kvm_riscv_vcpu_set_interrupt(tmp, IRQ_VS_SOFT);
+ 		if (ret < 0)
+ 			break;
++		sentmask |= 1UL << hart_bit;
+ 		kvm_riscv_vcpu_pmu_incr_fw(tmp, SBI_PMU_FW_IPI_RCVD);
+ 	}
+ 
++done:
++	if (hbase != -1UL && (hmask ^ sentmask))
++		retdata->err_val = SBI_ERR_INVALID_PARAM;
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
