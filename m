@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-121051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02664A509A2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DEC3A509B8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 887B716BEFE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB523AD1FD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C212566E6;
-	Wed,  5 Mar 2025 18:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBBE2571A1;
+	Wed,  5 Mar 2025 18:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8TCPuWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQAKtz9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045732528E4;
-	Wed,  5 Mar 2025 18:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49593256C64;
+	Wed,  5 Mar 2025 18:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198740; cv=none; b=f90VeLgZOqWTlacO+UdpC3Y3/3RyPCZydNJ9MDyXf/ANsV3eC3Gk+qI8c5Ufg6P2lbeNoAJQdHtzUymALzOA5Pu4+/pdeIdxhYkuy7E6xjnocvBzvr6vyv4Acc9znDoUwR64k2zamYsDisPcZW9zi1sphM/a2GO7KtQRV7jPlfI=
+	t=1741198772; cv=none; b=Po2XtluA1EdxJ/XYJMJEl1UxAgFvKGBotjUKSeyqC3bAlJ6TfdfJ30M3CeXrlNutC6VD83uv101TEd/ZoPaGaPbpTUMiRFfXPJNu6o70t7z2JpMgq6XC5o9lZVa8As16uK4RogPE1KLIENYtSIsLAJ1LfK+QelSlNBleTKrJOxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198740; c=relaxed/simple;
-	bh=UjdgYKl84kipd0d5iNEJDgAdUySG12P8fZWaAnn40AA=;
+	s=arc-20240116; t=1741198772; c=relaxed/simple;
+	bh=Az6PIg+1Nm5nMICPTEnuA/wwMXoIDqUcmGKtItsBa18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMJeJCtCi2H65IcMQudoOu0OGPall0zv6R+3UaiK2x6lbtfmwM5pUzPKES6sBuijbu4DrmIXU5iEVaau3MLLU5dK9Tx6Uaiw1PD7cBzBNjfU5GGYGWojymhKU+I6Ip0Yzhk8QsRynQhdjb6TDsx5pU9Fdr63/uudE2txaGdOLMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8TCPuWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE3BC4CED1;
-	Wed,  5 Mar 2025 18:18:59 +0000 (UTC)
+	 MIME-Version; b=KoDqQMNJuUlI8+/zgLmqeFhYvJuSoiSKWaxKo29xaBIj17fI5WhLCes/SkC0hnmNXmPi2H6iyxp2Ukf0KLWwBZXmnOPInpCvjegOH8GcpnEyqpaSR3aZi/H9/38rHgdGkfQH69yJLwBmWf/hQIvVLuvGUyqV00l1vAl3deB3eao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQAKtz9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CBAC4CED1;
+	Wed,  5 Mar 2025 18:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198739;
-	bh=UjdgYKl84kipd0d5iNEJDgAdUySG12P8fZWaAnn40AA=;
+	s=korg; t=1741198772;
+	bh=Az6PIg+1Nm5nMICPTEnuA/wwMXoIDqUcmGKtItsBa18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8TCPuWNtE/tGm5j+o9J383UUik5lEMe44VZbdSONp7gWMrqG7tE5aDCE8hw8asvg
-	 b/BlEFtV5BOfgYLSENfQ1AFSMqlLYp7QXarEmrvnfw10J8VMWO1rI/7mxL0jHTuewY
-	 3JjQCYrfyhZ5W5zu0elCl/XP7+PRkubnVXGIEOiI=
+	b=WQAKtz9gy4R/4j20FaSCs4XgTYV/uBJdnQsuKliULb8flo0LX+Ix/dZCO5S6eZ5Si
+	 ib/4H5QD+V8eU0DvtN6W/Q5O6CSQnDibvQqwRKgd5ujIyg2jZRu6DKRCr49S9z4T7j
+	 h8vQLBSCmEYJlcJwx0x6BOfGDhdA7e5a2iz1cvjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 124/157] gve: unlink old napi when stopping a queue using queue API
-Date: Wed,  5 Mar 2025 18:49:20 +0100
-Message-ID: <20250305174510.289962948@linuxfoundation.org>
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.13 125/157] iommu/vt-d: Remove device comparison in context_setup_pass_through_cb
+Date: Wed,  5 Mar 2025 18:49:21 +0100
+Message-ID: <20250305174510.329639575@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
 References: <20250305174505.268725418@linuxfoundation.org>
@@ -67,49 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Harshitha Ramamurthy <hramamurthy@google.com>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-commit de70981f295e7eab86325db3bf349fa676f16c42 upstream.
+commit 64f792981e35e191eb619f6f2fefab76cc7d6112 upstream.
 
-When a queue is stopped using the ndo queue API, before
-destroying its page pool, the associated NAPI instance
-needs to be unlinked to avoid warnings.
+Remove the device comparison check in context_setup_pass_through_cb.
+pci_for_each_dma_alias already makes a decision on whether the
+callback function should be called for a device. With the check
+in place it will fail to create context entries for aliases as
+it walks up to the root bus.
 
-Handle this by calling page_pool_disable_direct_recycling()
-when stopping a queue.
-
+Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
+Closes: https://lore.kernel.org/linux-iommu/82499eb6-00b7-4f83-879a-e97b4144f576@linux.intel.com/
 Cc: stable@vger.kernel.org
-Fixes: ebdfae0d377b ("gve: adopt page pool for DQ RDA mode")
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250226003526.1546854-1-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/20250224180316.140123-1-jsnitsel@redhat.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_rx_dqo.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/intel/iommu.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 8ac0047f1ada..f0674a443567 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -109,10 +109,12 @@ static void gve_rx_reset_ring_dqo(struct gve_priv *priv, int idx)
- void gve_rx_stop_ring_dqo(struct gve_priv *priv, int idx)
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4380,9 +4380,6 @@ static int context_setup_pass_through_cb
  {
- 	int ntfy_idx = gve_rx_idx_to_ntfy(priv, idx);
-+	struct gve_rx_ring *rx = &priv->rx[idx];
+ 	struct device *dev = data;
  
- 	if (!gve_rx_was_added_to_block(priv, idx))
- 		return;
+-	if (dev != &pdev->dev)
+-		return 0;
+-
+ 	return context_setup_pass_through(dev, PCI_BUS_NUM(alias), alias & 0xff);
+ }
  
-+	page_pool_disable_direct_recycling(rx->dqo.page_pool);
- 	gve_remove_napi(priv, ntfy_idx);
- 	gve_rx_remove_from_block(priv, idx);
- 	gve_rx_reset_ring_dqo(priv, idx);
--- 
-2.48.1
-
 
 
 
