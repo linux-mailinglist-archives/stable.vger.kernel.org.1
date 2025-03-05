@@ -1,53 +1,84 @@
-Return-Path: <stable+bounces-121087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B15A509F0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:26:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B67A509F9
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 885BE7A4355
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41551885B1D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43754253326;
-	Wed,  5 Mar 2025 18:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743122505BD;
+	Wed,  5 Mar 2025 18:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTAv9JB6"
+	dkim=pass (2048-bit key) header.d=swine.de header.i=@swine.de header.b="QXL78SbR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0102A1C863D;
-	Wed,  5 Mar 2025 18:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5451C863D
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 18:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741199197; cv=none; b=R5WCI5EFXzW3le+1bXGaa6RQju6lwUY0BCex5GTEwjlUsskOtZtRf0GjSM9bJDJpKeaL/FXGWB04s6tD8aH5yVmu/zoDx75KJnNHB90tSzdPAD717Re9q9Zuu/uT7YlHRi4+d5Y2FJ9L6hyWpfXcTuclL6kO6elVMZS2KVAKNtM=
+	t=1741199237; cv=none; b=A8v1Ess1MKZdyWkIe5tAOqYbuAHF/9HI5hXPVKmdEdio66c1tLE97xQ0lnFrw87UhLeNm0gHBlvZ1nRgkta94JtYJL5qk3K7crFg7y8AdCvZbloaMdXH/nxPXpspB2dlFtU480Qvd+HOvPpdr7zDZQ+vkX+AlHYn4nXpWhVoiHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741199197; c=relaxed/simple;
-	bh=cjZzUA/41ixgEf8cjgnXTpFrNQUJKjT9kMH9ovjM4AE=;
+	s=arc-20240116; t=1741199237; c=relaxed/simple;
+	bh=vWcv/K1l+K3p4EVcMon7mT4ILCLwGIlbh8EAZLG7OWg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ci5TeeClwXkLXRf+pTmzYIMGEecWUnhNnwJMXHJDYvgCP3KII5bjeqnEWks3S3ntcrRcY3CowHYtPjgUe2ai1/dIdcwaUI/HlNrP03slNKzi0DjtmiIfKK8sDwnkYdeYhcOyCndX0i1lKcDls+MwdvJos68oFUCoxXrbkggMMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTAv9JB6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F9BC4CED1;
-	Wed,  5 Mar 2025 18:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741199196;
-	bh=cjZzUA/41ixgEf8cjgnXTpFrNQUJKjT9kMH9ovjM4AE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eTAv9JB6YrxQ63TqHhOVF1LkVp1ffdvswKCZS+EScUgCV5w67oezPSF4QTZw6Q4pt
-	 zggZ+XzTAAObSVnHQjCdYh+hFexAVYGsW04FenhzAH7srsBR659lau/Fxn98C77J6L
-	 xBx2RM3otqxZlHZVraX4tb+08SCPYp6RZUPEJntQ=
-Date: Wed, 5 Mar 2025 19:22:29 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, kuni1840@gmail.com, llfamsec@gmail.com,
-	netdev@vger.kernel.org, sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH stable 5.15/6.1/6.6] af_unix: Clear oob_skb in
- scan_inflight().
-Message-ID: <2025030533-craving-hunk-afa3@gregkh>
-References: <2025030543-banker-impale-9c08@gregkh>
- <20250305181050.17199-1-kuniyu@amazon.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AUBDhEKi9pyLfZYZDtG7S9oozbRnJ+i/19viFR/At3gQA+nSwiBCKQslf16zxewjmaGuh0lQ2qbazQf8KkSTrtqOtpvNbLOIl7MsqZzMRv4RaYT0Fp3VnNYHUCWkRdBLMPEpXHUruTOaKIlSMfWZFJ+m0ypVhveJYPw3P35SEfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=swine.de; spf=pass smtp.mailfrom=swine.de; dkim=pass (2048-bit key) header.d=swine.de header.i=@swine.de header.b=QXL78SbR; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=swine.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swine.de
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43bc63876f1so29624135e9.3
+        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 10:27:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=swine.de; s=google; t=1741199233; x=1741804033; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LmqsPVj3zigw5SJlik1KEdOrtnV+X6vHrAHhUsdQ+jM=;
+        b=QXL78SbRVu641Bk7BJe3roc7V5v/VxqsNlueoURPrSFSp0Y1r3czzSrXCJt/iWlWn9
+         TZ9PpD5BaCxh7fmGo1qKvPSq8XbsnsyvL1yJwsNutiQPYBzI/STC6cJz491pu5stHAGC
+         hDHjAoVBOETABBO5sY51MEOQGQKC5ihTvnuZhpclWnKElJUjxhWi5UtxOifGajqCv5gh
+         85bocc5RqQgbJ6dUOM/QR0vleJOQMzAZDqwpimmZNW2trjXlfbbqt3LSwJmjJgiaDpib
+         Lw1xmi+fBacEnsUKmE7B0arQwZ7ekywKRHE3CjxQ/7MOZ+AAC+FGr1iNJ+0gsAiRIQqt
+         GuuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741199233; x=1741804033;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LmqsPVj3zigw5SJlik1KEdOrtnV+X6vHrAHhUsdQ+jM=;
+        b=gH4yYFCsA5XYsqbIwIt9ftd823GiBq5hOJeh3yT68mj99hROBhPmp3k0XttROG077P
+         D3Xi48B8ti/sKhb+qpRadWvEPUuArO5VmoW+YkOGd+6RBjegdKnkFXbg2r7O0/3Hpk9G
+         VyYrv+Nvy2+uHZY+d1yiBl92S/AZ9behLZe+D3dv/oGFDWFt2RHVfu6QcJ/QxWoUH6Pe
+         t03mN9BvWdJP9lH0GwaE0tspRgJCTUOaso3NaLEXNvE7bFb3w5p4hLiWmgq7AYfr+4b2
+         JyoPHJo6MTdiBMmKhVtWTWZXmi/98GWRWONb0nKLZe++RHHEdfK5LlUapP651NKfrDoj
+         tVAg==
+X-Forwarded-Encrypted: i=1; AJvYcCW2pFaqWZfilBqOQ20peMvQj2ojQqnR6xuDTgMK+3TEbpfV4fYJxpAG2bI4Rh1anGvkRPYfqDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWry4et1vJFO8c792ERxIviuK+UgVtw9PDpCRq5+wRCCluZD9i
+	rQOje29AMHZiAjyYyZZDLDnBuqMOJgMz4ia5qINsHR9JJiZiPuNL6p1MHLaDkxE=
+X-Gm-Gg: ASbGncvy2/rUWDerly5rZMW3JA6jpNOhW9gm8ezv9Xu7ibELF537HB3wOSLty50LP6J
+	cdb6ff+4nFHLJiw/xME8tEtYHpcH1G0McOe9GXMbt07xaQ+ybkW7QssnkE9LhWIhpS/hKALEUIw
+	0zRv+4WPZrr9O2VVoWFkr7YuN6lW5m/6U/BINQkt73VgHhr0WHhKxVafGOValmHWdBnEq/I2l20
+	Safwxb/mb9QY/vvQXseWqb0hhTSZYCAXBkxOr5APqH+BhJffoUXGEsTWjZGz3puAkN/Bm+OkoHd
+	F3d0u/Mx390OEjO9Vs9BOTCgBM2ovnwXweATP8mEjnRrEDurAjQJ7nlrsW4pB1b2CbGU
+X-Google-Smtp-Source: AGHT+IGU8nWcRtr2B4UqfYOtk0TV+SeXAVWhv3bRuc0d3YJPXNqkxv9KOLJ7m+TP6j8MyKd8pDQEnA==
+X-Received: by 2002:a05:600c:1c94:b0:439:7c0b:13f6 with SMTP id 5b1f17b1804b1-43bd2ae52d7mr35655225e9.31.1741199233420;
+        Wed, 05 Mar 2025 10:27:13 -0800 (PST)
+Received: from christian-m2.local ([2a02:6b67:d118:f400:558a:d339:d765:49fa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bcc135676sm44022965e9.1.2025.03.05.10.27.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 10:27:12 -0800 (PST)
+Date: Wed, 5 Mar 2025 18:27:11 +0000
+From: Christian Simon <simon@swine.de>
+To: gregkh@linuxfoundation.org
+Cc: jolsa@kernel.org, regressions@lists.linux.dev, simon@swine.de, 
+	stable@vger.kernel.org
+Subject: [PATCH 6.6.y] uprobes: Fix race in uprobe_free_utask
+Message-ID: <f2x6zmel57ijjmvy7fqy2h4uaffm2cptpnj3ei7ythdmwi6vd7@h4ohwls4p77f>
+References: <2025030550-last-fit-9d20@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,110 +87,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250305181050.17199-1-kuniyu@amazon.com>
+In-Reply-To: <2025030550-last-fit-9d20@gregkh>
 
-On Wed, Mar 05, 2025 at 10:10:41AM -0800, Kuniyuki Iwashima wrote:
-> +Paolo
-> 
-> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Date: Wed, 5 Mar 2025 15:08:26 +0100
-> > On Mon, Mar 03, 2025 at 07:01:49PM -0800, Kuniyuki Iwashima wrote:
-> > > Embryo socket is not queued in gc_candidates, so we can't drop
-> > > a reference held by its oob_skb.
-> > > 
-> > > Let's say we create listener and embryo sockets, send the
-> > > listener's fd to the embryo as OOB data, and close() them
-> > > without recv()ing the OOB data.
-> > > 
-> > > There is a self-reference cycle like
-> > > 
-> > >   listener -> embryo.oob_skb -> listener
-> > > 
-> > > , so this must be cleaned up by GC.  Otherwise, the listener's
-> > > refcnt is not released and sockets are leaked:
-> > > 
-> > >   # unshare -n
-> > >   # cat /proc/net/protocols | grep UNIX-STREAM
-> > >   UNIX-STREAM 1024      0      -1   NI       0   yes  kernel ...
-> > > 
-> > >   # python3
-> > >   >>> from array import array
-> > >   >>> from socket import *
-> > >   >>>
-> > >   >>> s = socket(AF_UNIX, SOCK_STREAM)
-> > >   >>> s.bind('\0test\0')
-> > >   >>> s.listen()
-> > >   >>>
-> > >   >>> c = socket(AF_UNIX, SOCK_STREAM)
-> > >   >>> c.connect(s.getsockname())
-> > >   >>> c.sendmsg([b'x'], [(SOL_SOCKET, SCM_RIGHTS, array('i', [s.fileno()]))], MSG_OOB)
-> > >   1
-> > >   >>> quit()
-> > > 
-> > >   # cat /proc/net/protocols | grep UNIX-STREAM
-> > >   UNIX-STREAM 1024      3      -1   NI       0   yes  kernel ...
-> > >                         ^^^
-> > >                         3 sockets still in use after FDs are close()d
-> > > 
-> > > Let's drop the embryo socket's oob_skb ref in scan_inflight().
-> > > 
-> > > This also fixes a racy access to oob_skb that commit 9841991a446c
-> > > ("af_unix: Update unix_sk(sk)->oob_skb under sk_receive_queue
-> > > lock.") fixed for the new Tarjan's algo-based GC.
-> > > 
-> > > Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-> > > Reported-by: Lei Lu <llfamsec@gmail.com>
-> > > Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> > > ---
-> > > This has no upstream commit because I replaced the entire GC in
-> > > 6.10 and the new GC does not have this bug, and this fix is only
-> > > applicable to the old GC (<= 6.9), thus for 5.15/6.1/6.6.
-> > 
-> > You need to get the networking maintainers to review and agree that this
-> > is ok for us to take, as we really don't want to take "custom" stuff
-> > like thi s at all.
-> 
-> Paolo, could you take a look at this patch ?
-> https://lore.kernel.org/netdev/20250304030149.82265-1-kuniyu@amazon.com/
-> 
-> 
-> > Why not just take the commits that are in newer
-> > kernels instead?
-> 
-> That will be about 20 patches that rewrite the most lines of
-> net/unix/garbage.c and cannot be applied cleanly.
-> 
-> I think backporting these commits is overkill to fix a small
-> bug that can be fixed with a much smaller diff.
-> 
-> 927fa5b3e4f5 af_unix: Fix uninit-value in __unix_walk_scc()
-> 041933a1ec7b af_unix: Fix garbage collection of embryos carrying OOB with SCM_RIGHTS
-> 7172dc93d621 af_unix: Add dead flag to struct scm_fp_list.
-> 1af2dface5d2 af_unix: Don't access successor in unix_del_edges() during GC.
-> fd86344823b5 af_unix: Try not to hold unix_gc_lock during accept().
-> 118f457da9ed af_unix: Remove lock dance in unix_peek_fds().
-> 4090fa373f0e af_unix: Replace garbage collection algorithm.
-> a15702d8b3aa af_unix: Detect dead SCC.
-> bfdb01283ee8 af_unix: Assign a unique index to SCC.
-> ad081928a8b0 af_unix: Avoid Tarjan's algorithm if unnecessary.
-> 77e5593aebba af_unix: Skip GC if no cycle exists.
-> ba31b4a4e101 af_unix: Save O(n) setup of Tarjan's algo.
-> dcf70df2048d af_unix: Fix up unix_edge.successor for embryo socket.
-> 3484f063172d af_unix: Detect Strongly Connected Components.
-> 6ba76fd2848e af_unix: Iterate all vertices by DFS.
-> 22c3c0c52d32 af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
-> 42f298c06b30 af_unix: Link struct unix_edge when queuing skb.
-> 29b64e354029 af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
-> 1fbfdfaa5902 af_unix: Allocate struct unix_vertex for each inflight AF_UNIX fd.
+commit b583ef82b671c9a752fbe3e95bd4c1c51eab764d upstream.
 
-Sure, but now all fixes made upstream after these changes will not apply
-to older kernels at all, making supporting this old one-off change
-harder and harder over time.
+Christian Simon verified the regression exists in v6.6.80 as per method
+below and backported the mainline fix to the older version of
+uprobe_free_utask. After that change I can no longer reproduce
+the race with this method within 1h, while before it would show the
+panic under a minute.
 
-But I'll defer to the maintainers here as to what they want.  Taking 20+
-patches in a stable tree is trivial for us, not a problem at all.
+Max Makarov reported kernel panic [1] in perf user callchain code.
 
-thanks,
+The reason for that is the race between uprobe_free_utask and bpf
+profiler code doing the perf user stack unwind and is triggered
+within uprobe_free_utask function:
+  - after current->utask is freed and
+  - before current->utask is set to NULL
 
-greg k-h
+ general protection fault, probably for non-canonical address 0x9e759c37ee555c76: 0000 [#1] SMP PTI
+ RIP: 0010:is_uprobe_at_func_entry+0x28/0x80
+ ...
+  ? die_addr+0x36/0x90
+  ? exc_general_protection+0x217/0x420
+  ? asm_exc_general_protection+0x26/0x30
+  ? is_uprobe_at_func_entry+0x28/0x80
+  perf_callchain_user+0x20a/0x360
+  get_perf_callchain+0x147/0x1d0
+  bpf_get_stackid+0x60/0x90
+  bpf_prog_9aac297fb833e2f5_do_perf_event+0x434/0x53b
+  ? __smp_call_single_queue+0xad/0x120
+  bpf_overflow_handler+0x75/0x110
+  ...
+  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+ RIP: 0010:__kmem_cache_free+0x1cb/0x350
+ ...
+  ? uprobe_free_utask+0x62/0x80
+  ? acct_collect+0x4c/0x220
+  uprobe_free_utask+0x62/0x80
+  mm_release+0x12/0xb0
+  do_exit+0x26b/0xaa0
+  __x64_sys_exit+0x1b/0x20
+  do_syscall_64+0x5a/0x80
+
+It can be easily reproduced by running following commands in
+separate terminals:
+
+  # while :; do bpftrace -e 'uprobe:/bin/ls:_start  { printf("hit\n"); }' -c ls; done
+  # bpftrace -e 'profile:hz:100000 { @[ustack()] = count(); }'
+
+Fixing this by making sure current->utask pointer is set to NULL
+before we start to release the utask object.
+
+[1] https://github.com/grafana/pyroscope/issues/3673
+
+Fixes: cfa7f3d2c526 ("perf,x86: avoid missing caller address in stack traces captured in uprobe")
+Reported-by: Max Makarov <maxpain@linux.com>
+(cherry picked from commit b583ef82b671c9a752fbe3e95bd4c1c51eab764d)
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250109141440.2692173-1-jolsa@kernel.org
+[Christian Simon: Rebased for 6.6.y, due to mainline change https://lore.kernel.org/all/20240929144239.GA9475@redhat.com/]
+Signed-off-by: Christian Simon <simon@swine.de>
+---
+ kernel/events/uprobes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 6dac0b579821..70fae75c48ca 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1716,6 +1716,7 @@ void uprobe_free_utask(struct task_struct *t)
+ 	if (!utask)
+ 		return;
+ 
++	t->utask = NULL;
+ 	if (utask->active_uprobe)
+ 		put_uprobe(utask->active_uprobe);
+ 
+@@ -1725,7 +1726,6 @@ void uprobe_free_utask(struct task_struct *t)
+ 
+ 	xol_free_insn_slot(t);
+ 	kfree(utask);
+-	t->utask = NULL;
+ }
+ 
+ /*
+-- 
+2.47.1
+
 
