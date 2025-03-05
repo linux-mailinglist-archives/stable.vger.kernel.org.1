@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-120896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34512A508EE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843B6A509DA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91ADB1894DB9
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E497618980F8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE62A25178A;
-	Wed,  5 Mar 2025 18:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6AB2561BD;
+	Wed,  5 Mar 2025 18:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjF+JEKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NswrZsXb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4511A5BB7;
-	Wed,  5 Mar 2025 18:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B72199E89;
+	Wed,  5 Mar 2025 18:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198288; cv=none; b=SHC8TF3mxEjLhgQnoUIOZVUcQMRHYdKtnertTte6ah3lj6Ansmht1Wx0UFCCzv9fUQ3T8FfjwHsLhkIrNcx82Pb6A+BpRa0iQzmgUvJbf/SoFjmxQJVuyfE47TeLudIRS3fSCvTRK5Y5+bqWX3v+dClIuoZFp6zDjXnVtDQNjUQ=
+	t=1741198713; cv=none; b=JWjTFIiDoS7Gy9n98cGqsXHcvjuLNHiKXP1Yq406xq30dsouRhOkhCxXc9YoQooZ/9oan+Ib8h+yAyR9ZSJ/jVYV1sSue4fU7XpkHrDOH0i5jwfh7HnDWRPy1/OttkNHNJ76Tq4EyD+2FVz1aDctqTkn/m78/S4lxSYVyF9qjFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198288; c=relaxed/simple;
-	bh=HWCkRrlYs4P6g7+J9vSTS4WHTW6S3pbbV/TSQNrJieQ=;
+	s=arc-20240116; t=1741198713; c=relaxed/simple;
+	bh=4BFzAOePrwlW7ulp00xLByXYbb1dRgW8V7maoWsbZ5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+hJtRkIRaiDGUT2pzxyAA6U0WvVhXdI1hEq+y+iZvr8CMsg7eoxxhFkVSa7Rgw0ryVPeCUOLLMhq758Sa6zMERSCfLdnKUEop8gtThS2OfUBTI4WiXqDW2xhNz6++F+LVPzGyCn1eTICQDHqJTanIDZZepTc9r9kNKxKBlD6/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjF+JEKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338B2C4CED1;
-	Wed,  5 Mar 2025 18:11:28 +0000 (UTC)
+	 MIME-Version; b=JIGHC1uom62Y+9jxl6i6iDj4LqMPZgK86m8LaBmYEWdep3uoowPOamQT8NEeJ21ZSRSHWs/2K41hYlOjfsPWzZMsMaH/JwudfCZl0fNGHTCR1w7ArDNXGMDN1+UtJTPhAbI9Y3QTdXE6WbYygmsnI+bil4pOBOSO80tcYLz1Oss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NswrZsXb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346A6C4CEEB;
+	Wed,  5 Mar 2025 18:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198288;
-	bh=HWCkRrlYs4P6g7+J9vSTS4WHTW6S3pbbV/TSQNrJieQ=;
+	s=korg; t=1741198713;
+	bh=4BFzAOePrwlW7ulp00xLByXYbb1dRgW8V7maoWsbZ5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KjF+JEKirve+BuCfDQU3RW+PEeMvToxh7o62PvV5oN2+fKix82LjIlKR6slJ7+dVU
-	 u2T6PIssBoXekqf2bvcTf6uhRko8K4w22rp5JVlJZ86vVmILrhAEgD1w680suQIDiB
-	 SfZ0KWI8To16nsFnKx5VJNO68LgZ0D8V4aQ6Es10=
+	b=NswrZsXbyzVbdq0w9x9DzRYn2HcZeFv/NuJgIRg/u60e1t1Jg+CGe+nHekmX1VcVk
+	 mm7qr2DywJ4uc6aplrDgDDVR3q3d0ERDbYvNn28S4y56i2LhLZYW6LLnl9o/ynuPOd
+	 hi1oBVCzrk0HXKaiIbBWgVG51edHukcbod2H8Nq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 128/150] sched/core: Prevent rescheduling when interrupts are disabled
+	BH Hsieh <bhsieh@nvidia.com>,
+	Henry Lin <henryl@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.13 121/157] phy: tegra: xusb: reset VBUS & ID OVERRIDE
 Date: Wed,  5 Mar 2025 18:49:17 +0100
-Message-ID: <20250305174508.956984427@linuxfoundation.org>
+Message-ID: <20250305174510.170035983@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: BH Hsieh <bhsieh@nvidia.com>
 
-commit 82c387ef7568c0d96a918a5a78d9cad6256cfa15 upstream.
+commit 55f1a5f7c97c3c92ba469e16991a09274410ceb7 upstream.
 
-David reported a warning observed while loop testing kexec jump:
+Observed VBUS_OVERRIDE & ID_OVERRIDE might be programmed
+with unexpected value prior to XUSB PADCTL driver, this
+could also occur in virtualization scenario.
 
-  Interrupts enabled after irqrouter_resume+0x0/0x50
-  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
-   kernel_kexec+0xf6/0x180
-   __do_sys_reboot+0x206/0x250
-   do_syscall_64+0x95/0x180
+For example, UEFI firmware programs ID_OVERRIDE=GROUNDED to set
+a type-c port to host mode and keeps the value to kernel.
+If the type-c port is connected a usb host, below errors can be
+observed right after usb host mode driver gets probed. The errors
+would keep until usb role class driver detects the type-c port
+as device mode and notifies usb device mode driver to set both
+ID_OVERRIDE and VBUS_OVERRIDE to correct value by XUSB PADCTL
+driver.
 
-The corresponding interrupt flag trace:
+[  173.765814] usb usb3-port2: Cannot enable. Maybe the USB cable is bad?
+[  173.765837] usb usb3-port2: config error
 
-  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
-  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
+Taking virtualization into account, asserting XUSB PADCTL
+reset would break XUSB functions used by other guest OS,
+hence only reset VBUS & ID OVERRIDE of the port in
+utmi_phy_init.
 
-That means __up_console_sem() was invoked with interrupts enabled. Further
-instrumentation revealed that in the interrupt disabled section of kexec
-jump one of the syscore_suspend() callbacks woke up a task, which set the
-NEED_RESCHED flag. A later callback in the resume path invoked
-cond_resched() which in turn led to the invocation of the scheduler:
-
-  __cond_resched+0x21/0x60
-  down_timeout+0x18/0x60
-  acpi_os_wait_semaphore+0x4c/0x80
-  acpi_ut_acquire_mutex+0x3d/0x100
-  acpi_ns_get_node+0x27/0x60
-  acpi_ns_evaluate+0x1cb/0x2d0
-  acpi_rs_set_srs_method_data+0x156/0x190
-  acpi_pci_link_set+0x11c/0x290
-  irqrouter_resume+0x54/0x60
-  syscore_resume+0x6a/0x200
-  kernel_kexec+0x145/0x1c0
-  __do_sys_reboot+0xeb/0x240
-  do_syscall_64+0x95/0x180
-
-This is a long standing problem, which probably got more visible with
-the recent printk changes. Something does a task wakeup and the
-scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
-invokes schedule() from a completely bogus context. The scheduler
-enables interrupts after context switching, which causes the above
-warning at the end.
-
-Quite some of the code paths in syscore_suspend()/resume() can result in
-triggering a wakeup with the exactly same consequences. They might not
-have done so yet, but as they share a lot of code with normal operations
-it's just a question of time.
-
-The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
-models. Full preemption is not affected as cond_resched() is disabled and
-the preemption check preemptible() takes the interrupt disabled flag into
-account.
-
-Cure the problem by adding a corresponding check into cond_resched().
-
-Reported-by: David Woodhouse <dwmw@amazon.co.uk>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
+Change-Id: Ic63058d4d49b4a1f8f9ab313196e20ad131cc591
+Signed-off-by: BH Hsieh <bhsieh@nvidia.com>
+Signed-off-by: Henry Lin <henryl@nvidia.com>
+Link: https://lore.kernel.org/r/20250122105943.8057-1-henryl@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/tegra/xusb-tegra186.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7229,7 +7229,7 @@ out_unlock:
- #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
- int __sched __cond_resched(void)
- {
--	if (should_resched(0)) {
-+	if (should_resched(0) && !irqs_disabled()) {
- 		preempt_schedule_common();
- 		return 1;
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -928,6 +928,7 @@ static int tegra186_utmi_phy_init(struct
+ 	unsigned int index = lane->index;
+ 	struct device *dev = padctl->dev;
+ 	int err;
++	u32 reg;
+ 
+ 	port = tegra_xusb_find_usb2_port(padctl, index);
+ 	if (!port) {
+@@ -935,6 +936,16 @@ static int tegra186_utmi_phy_init(struct
+ 		return -ENODEV;
  	}
+ 
++	if (port->mode == USB_DR_MODE_OTG ||
++	    port->mode == USB_DR_MODE_PERIPHERAL) {
++		/* reset VBUS&ID OVERRIDE */
++		reg = padctl_readl(padctl, USB2_VBUS_ID);
++		reg &= ~VBUS_OVERRIDE;
++		reg &= ~ID_OVERRIDE(~0);
++		reg |= ID_OVERRIDE_FLOATING;
++		padctl_writel(padctl, reg, USB2_VBUS_ID);
++	}
++
+ 	if (port->supply && port->mode == USB_DR_MODE_HOST) {
+ 		err = regulator_enable(port->supply);
+ 		if (err) {
 
 
 
