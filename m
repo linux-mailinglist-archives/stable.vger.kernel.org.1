@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-120615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D53A5077B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D939EA50833
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 550AA1893677
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05CD0188C283
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42190250C0E;
-	Wed,  5 Mar 2025 17:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553C02517B4;
+	Wed,  5 Mar 2025 18:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jZdknIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCGy6eHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005AA1C6FFE;
-	Wed,  5 Mar 2025 17:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1110A539A;
+	Wed,  5 Mar 2025 18:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197474; cv=none; b=JD456hbWi1lZyfgc54T5W5Th4mA9+juJ8a8ZYnuLw9hsoQUvK2mAWiMvQzLGRrd0NF2DvYV85XdVpMWqX6vVT8DViOlg1cPtL3EhB1yadzI2m4NUaxlBUQ76E3Zf5DQklAnbmHknL2qMEEiDhoCijOIziBohmQK4rU/pypkk6ho=
+	t=1741197835; cv=none; b=s1kSDIIU/xIovt02QDJcUYWcIWUd2OpP0AZ8HGoJplV/MDHdamw1xMQido70fkuBxT15N6WTSIbUm0IuTdAIqVl+Q8FZN4gtd5SIQLB0KlQRTQ454PSO4osdNmrokeLui+jEcj+6gRk0xJ2x7jaAwEEIdF5vjYQh9LFcf3In4x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197474; c=relaxed/simple;
-	bh=H6Z5WQwS0uNIKaDiZOspOkGoMHze4eHHLPaB5mLqAms=;
+	s=arc-20240116; t=1741197835; c=relaxed/simple;
+	bh=XD3rvtUW3S+4rZD0muipZK4KaLwPPVEzVCDaXnI7Q98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1RG3bgoPad4HP3ViA9NZ8kk2/oFdphtx98l8rspRzsjqys+0rFwz6CcPu1lX86DCNiM1GClFg9n6uCBuisvEmx79AZzmGN2/mqI9JcjC4Qd3i04omuY1Hx86SgMsY7sNXeSS73L9H+5sNb7zBsRWCWPWAKgeJvHOJh6bN1+tdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jZdknIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8E1C4CED1;
-	Wed,  5 Mar 2025 17:57:52 +0000 (UTC)
+	 MIME-Version; b=tIuYiYm23xwWb5i3DoXGCGOqH+JJDCigJNLzsrK7mFxK9X/Et9jPtITwSZuKznnYNwXnECrf42zkzpuV81D0FEWaslgNqxnuyVcftbS5TxPncM95L0OuBrEjeDfCZSmO6Ctve6EBKF/u9OsZ6V3fUSJ2JQPZseS9PYFB2b2wOFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCGy6eHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91072C4CEE0;
+	Wed,  5 Mar 2025 18:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197473;
-	bh=H6Z5WQwS0uNIKaDiZOspOkGoMHze4eHHLPaB5mLqAms=;
+	s=korg; t=1741197834;
+	bh=XD3rvtUW3S+4rZD0muipZK4KaLwPPVEzVCDaXnI7Q98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jZdknIxKy+QIC+rtq1Gl+2p7mTyt8A7+cmRO0dO9J23DYge/yZpe8Pvga3STRQ7d
-	 OZ2J7usfk/oNHP78KiEFHm+WSRmcDc3FcMGcD7pzeoTJXLy20BsHb+whBlxkEidqze
-	 YhBG2mnUAleGUnDcK1jM3Yjhfnrli9AYHI4bvV2M=
+	b=QCGy6eHJYb2R3AmgHNjCKVNrMwxH21rsCaLmjbT2G09Wy1OvEYr+UqT98rbVVIe9M
+	 whlWmAFstBbqORz9yF3xz2IwqZSFru8B6yAcAlp0wuvC4PG2gi0+4hr+oZFEnMob2B
+	 EBRwtsxyEwvUXigCuXFn9O0dK6TWigbgDcLmMlz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Peter Zijlstra <peterz@infradead.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 167/176] sched/core: Prevent rescheduling when interrupts are disabled
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 117/142] x86/microcode: Handle "nosmt" correctly
 Date: Wed,  5 Mar 2025 18:48:56 +0100
-Message-ID: <20250305174512.146553672@linuxfoundation.org>
+Message-ID: <20250305174505.031217169@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +61,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 82c387ef7568c0d96a918a5a78d9cad6256cfa15 upstream.
+commit 634ac23ad609b3ddd9e0e478bd5afbf49d3a2556 upstream
 
-David reported a warning observed while loop testing kexec jump:
+On CPUs where microcode loading is not NMI-safe the SMT siblings which
+are parked in one of the play_dead() variants still react to NMIs.
 
-  Interrupts enabled after irqrouter_resume+0x0/0x50
-  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
-   kernel_kexec+0xf6/0x180
-   __do_sys_reboot+0x206/0x250
-   do_syscall_64+0x95/0x180
+So if an NMI hits while the primary thread updates the microcode the
+resulting behaviour is undefined. The default play_dead() implementation on
+modern CPUs is using MWAIT which is not guaranteed to be safe against
+a microcode update which affects MWAIT.
 
-The corresponding interrupt flag trace:
+Take the cpus_booted_once_mask into account to detect this case and
+refuse to load late if the vendor specific driver does not advertise
+that late loading is NMI safe.
 
-  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
-  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
+AMD stated that this is safe, so mark the AMD driver accordingly.
 
-That means __up_console_sem() was invoked with interrupts enabled. Further
-instrumentation revealed that in the interrupt disabled section of kexec
-jump one of the syscore_suspend() callbacks woke up a task, which set the
-NEED_RESCHED flag. A later callback in the resume path invoked
-cond_resched() which in turn led to the invocation of the scheduler:
+This requirement will be partially lifted in later changes.
 
-  __cond_resched+0x21/0x60
-  down_timeout+0x18/0x60
-  acpi_os_wait_semaphore+0x4c/0x80
-  acpi_ut_acquire_mutex+0x3d/0x100
-  acpi_ns_get_node+0x27/0x60
-  acpi_ns_evaluate+0x1cb/0x2d0
-  acpi_rs_set_srs_method_data+0x156/0x190
-  acpi_pci_link_set+0x11c/0x290
-  irqrouter_resume+0x54/0x60
-  syscore_resume+0x6a/0x200
-  kernel_kexec+0x145/0x1c0
-  __do_sys_reboot+0xeb/0x240
-  do_syscall_64+0x95/0x180
-
-This is a long standing problem, which probably got more visible with
-the recent printk changes. Something does a task wakeup and the
-scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
-invokes schedule() from a completely bogus context. The scheduler
-enables interrupts after context switching, which causes the above
-warning at the end.
-
-Quite some of the code paths in syscore_suspend()/resume() can result in
-triggering a wakeup with the exactly same consequences. They might not
-have done so yet, but as they share a lot of code with normal operations
-it's just a question of time.
-
-The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
-models. Full preemption is not affected as cond_resched() is disabled and
-the preemption check preemptible() takes the interrupt disabled flag into
-account.
-
-Cure the problem by adding a corresponding check into cond_resched().
-
-Reported-by: David Woodhouse <dwmw@amazon.co.uk>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115903.087472735@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Kconfig                         |    2 -
+ arch/x86/kernel/cpu/microcode/amd.c      |    9 +++--
+ arch/x86/kernel/cpu/microcode/core.c     |   51 +++++++++++++++++++------------
+ arch/x86/kernel/cpu/microcode/internal.h |   13 +++----
+ 4 files changed, 44 insertions(+), 31 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -8369,7 +8369,7 @@ SYSCALL_DEFINE0(sched_yield)
- #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
- int __sched __cond_resched(void)
- {
--	if (should_resched(0)) {
-+	if (should_resched(0) && !irqs_disabled()) {
- 		preempt_schedule_common();
- 		return 1;
- 	}
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1317,7 +1317,7 @@ config MICROCODE
+ config MICROCODE_LATE_LOADING
+ 	bool "Late microcode loading (DANGEROUS)"
+ 	default n
+-	depends on MICROCODE
++	depends on MICROCODE && SMP
+ 	help
+ 	  Loading microcode late, when the system is up and executing instructions
+ 	  is a tricky business and should be avoided if possible. Just the sequence
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -917,10 +917,11 @@ static void microcode_fini_cpu_amd(int c
+ }
+ 
+ static struct microcode_ops microcode_amd_ops = {
+-	.request_microcode_fw             = request_microcode_amd,
+-	.collect_cpu_info                 = collect_cpu_info_amd,
+-	.apply_microcode                  = apply_microcode_amd,
+-	.microcode_fini_cpu               = microcode_fini_cpu_amd,
++	.request_microcode_fw	= request_microcode_amd,
++	.collect_cpu_info	= collect_cpu_info_amd,
++	.apply_microcode	= apply_microcode_amd,
++	.microcode_fini_cpu	= microcode_fini_cpu_amd,
++	.nmi_safe		= true,
+ };
+ 
+ struct microcode_ops * __init init_amd_microcode(void)
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -254,23 +254,6 @@ static struct platform_device	*microcode
+  */
+ #define SPINUNIT 100 /* 100 nsec */
+ 
+-static int check_online_cpus(void)
+-{
+-	unsigned int cpu;
+-
+-	/*
+-	 * Make sure all CPUs are online.  It's fine for SMT to be disabled if
+-	 * all the primary threads are still online.
+-	 */
+-	for_each_present_cpu(cpu) {
+-		if (topology_is_primary_thread(cpu) && !cpu_online(cpu)) {
+-			pr_err("Not all CPUs online, aborting microcode update.\n");
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return 0;
+-}
+ 
+ static atomic_t late_cpus_in;
+ static atomic_t late_cpus_out;
+@@ -387,6 +370,35 @@ static int microcode_reload_late(void)
+ 	return ret;
+ }
+ 
++/*
++ *  Ensure that all required CPUs which are present and have been booted
++ *  once are online.
++ *
++ *    To pass this check, all primary threads must be online.
++ *
++ *    If the microcode load is not safe against NMI then all SMT threads
++ *    must be online as well because they still react to NMIs when they are
++ *    soft-offlined and parked in one of the play_dead() variants. So if a
++ *    NMI hits while the primary thread updates the microcode the resulting
++ *    behaviour is undefined. The default play_dead() implementation on
++ *    modern CPUs uses MWAIT, which is also not guaranteed to be safe
++ *    against a microcode update which affects MWAIT.
++ */
++static bool ensure_cpus_are_online(void)
++{
++	unsigned int cpu;
++
++	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
++		if (!cpu_online(cpu)) {
++			if (topology_is_primary_thread(cpu) || !microcode_ops->nmi_safe) {
++				pr_err("CPU %u not online\n", cpu);
++				return false;
++			}
++		}
++	}
++	return true;
++}
++
+ static ssize_t reload_store(struct device *dev,
+ 			    struct device_attribute *attr,
+ 			    const char *buf, size_t size)
+@@ -402,9 +414,10 @@ static ssize_t reload_store(struct devic
+ 
+ 	cpus_read_lock();
+ 
+-	ret = check_online_cpus();
+-	if (ret)
++	if (!ensure_cpus_are_online()) {
++		ret = -EBUSY;
+ 		goto put;
++	}
+ 
+ 	tmp_ret = microcode_ops->request_microcode_fw(bsp, &microcode_pdev->dev);
+ 	if (tmp_ret != UCODE_NEW)
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -20,18 +20,17 @@ enum ucode_state {
+ 
+ struct microcode_ops {
+ 	enum ucode_state (*request_microcode_fw)(int cpu, struct device *dev);
+-
+ 	void (*microcode_fini_cpu)(int cpu);
+ 
+ 	/*
+-	 * The generic 'microcode_core' part guarantees that
+-	 * the callbacks below run on a target cpu when they
+-	 * are being called.
++	 * The generic 'microcode_core' part guarantees that the callbacks
++	 * below run on a target CPU when they are being called.
+ 	 * See also the "Synchronization" section in microcode_core.c.
+ 	 */
+-	enum ucode_state (*apply_microcode)(int cpu);
+-	int (*collect_cpu_info)(int cpu, struct cpu_signature *csig);
+-	void (*finalize_late_load)(int result);
++	enum ucode_state	(*apply_microcode)(int cpu);
++	int			(*collect_cpu_info)(int cpu, struct cpu_signature *csig);
++	void			(*finalize_late_load)(int result);
++	unsigned int		nmi_safe	: 1;
+ };
+ 
+ extern struct ucode_cpu_info ucode_cpu_info[];
 
 
 
