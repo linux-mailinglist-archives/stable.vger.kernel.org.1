@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-120589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4D0A5076B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13040A507FA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 896D4174531
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8E21893D87
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34298250C1C;
-	Wed,  5 Mar 2025 17:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E581FC7D0;
+	Wed,  5 Mar 2025 18:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDbHPoRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODFPwvjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64D91C6FFE;
-	Wed,  5 Mar 2025 17:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B561C860D;
+	Wed,  5 Mar 2025 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197399; cv=none; b=oMHY3Iz+M/Ogib218RCqE2oPKiVOTKlqxGrovpvJzLS4O1qFgVMebj/48j4CQOKqFtZMUAYLVPwXmKd14lqF+n1ci8G5OZJwSr+U08kwgQsa4Cauwi+WTAt8A1CXNj+vEpyV02u+GOhiK89jBLnq5S56j0TqtcxemqihJ9jm4fQ=
+	t=1741197747; cv=none; b=bIjwTxReOLJZ4FiRpEP4Fd5U7buZgBMW8lTwdELe7qdx/v/at+6BhH3e3qIpbP5xbIFL4+8NMCSUNYV12EQSOsCaIpZj0h2E7qd/L3g11cAf57ah4Tb31QR4JXB1mPm+8+MwRNvBosAG2H4o6+63yuL56W5lrVLxf3prCvC2UkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197399; c=relaxed/simple;
-	bh=PRaXLp3TksWT/wyk8FoaaP3ZYyvQbvsq4abx7CDvFPk=;
+	s=arc-20240116; t=1741197747; c=relaxed/simple;
+	bh=DEq9nrs+My/tdKQTCAVq7jlr0IkVAu0l9fNzn61iCtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGYbAbn/mqpvrILFWJktNccDzb8AMDqoqfPRG4+s+ljKWfMWhmW0QRz2UTuxCiwj4Hu+YF83oulFIyNEMFOFZFpCSoxKacHgQU5Cgasjbxbd/D39a9tdTRTHo684C9kLudqoyPlTchfrfpSIFKYL61vOhW0kt3G/jucPPKJp5jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDbHPoRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB8AC4CED1;
-	Wed,  5 Mar 2025 17:56:38 +0000 (UTC)
+	 MIME-Version; b=NTjEEIpEEvHUoGXi+cTBDfiCNTKyOBKV3ywt2IKMQNwRTciw3iEa0RilCg/AJ+62hX7hozKyr0lpfkgGG4WR+WlaRPDrmbCjeKULb0XEFw77sIOE/6HGB3lfNMi9in6B3Eoe3zdTee/dPXOAc96fvC4M/DkagLbf9y0dMIIZJf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODFPwvjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E58C4CED1;
+	Wed,  5 Mar 2025 18:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197398;
-	bh=PRaXLp3TksWT/wyk8FoaaP3ZYyvQbvsq4abx7CDvFPk=;
+	s=korg; t=1741197745;
+	bh=DEq9nrs+My/tdKQTCAVq7jlr0IkVAu0l9fNzn61iCtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDbHPoRQXBBMee3D3CIl61h0E1sIqddMQLlHxUdkRIn0ZlFclZVPa3xCPGWP5Fooo
-	 O8L/BrwwAJVHLMj/G9mPn1FVhkVJOQRc6aWUp8dPCcVfXrO5ePTDOdj9fFJ7M95ey+
-	 ygmtiod2qattNNPbZK7rCxvl9NYVRfbaROTbjZtI=
+	b=ODFPwvjVO9Y5vDiNdfHORrunxJWZUmLkjxlObHw7tZ8Kl+1xZ94YgHky1GEP/KgTB
+	 Ecwqa5+kJoBLfFTEpKA4LNFHpPCaapGKLDGoNtyKUBPkO3U6mMfA5BfLwBwFgpYbhx
+	 15BP9/cg+7qo5hVa+SUmxiHqxft/YzZlbGzQc4qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/176] net: Clear old fragment checksum value in napi_reuse_skb
-Date: Wed,  5 Mar 2025 18:48:24 +0100
-Message-ID: <20250305174510.865356997@linuxfoundation.org>
+	Stafford Horne <shorne@gmail.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 086/142] rseq/selftests: Fix riscv rseq_offset_deref_addv inline asm
+Date: Wed,  5 Mar 2025 18:48:25 +0100
+Message-ID: <20250305174503.791961291@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Stafford Horne <shorne@gmail.com>
 
-[ Upstream commit 49806fe6e61b045b5be8610e08b5a3083c109aa0 ]
+commit 713e788c0e07e185fd44dd581f74855ef149722f upstream.
 
-In certain cases, napi_get_frags() returns an skb that points to an old
-received fragment, This skb may have its skb->ip_summed, csum, and other
-fields set from previous fragment handling.
+When working on OpenRISC support for restartable sequences I noticed
+and fixed these two issues with the riscv support bits.
 
-Some network drivers set skb->ip_summed to either CHECKSUM_COMPLETE or
-CHECKSUM_UNNECESSARY when getting skb from napi_get_frags(), while
-others only set skb->ip_summed when RX checksum offload is enabled on
-the device, and do not set any value for skb->ip_summed when hardware
-checksum offload is disabled, assuming that the skb->ip_summed
-initiated to zero by napi_reuse_skb, ionic driver for example will
-ignore/unset any value for the ip_summed filed if HW checksum offload is
-disabled, and if we have a situation where the user disables the
-checksum offload during a traffic that could lead to the following
-errors shown in the kernel logs:
-<IRQ>
-dump_stack_lvl+0x34/0x48
- __skb_gro_checksum_complete+0x7e/0x90
-tcp6_gro_receive+0xc6/0x190
-ipv6_gro_receive+0x1ec/0x430
-dev_gro_receive+0x188/0x360
-? ionic_rx_clean+0x25a/0x460 [ionic]
-napi_gro_frags+0x13c/0x300
-? __pfx_ionic_rx_service+0x10/0x10 [ionic]
-ionic_rx_service+0x67/0x80 [ionic]
-ionic_cq_service+0x58/0x90 [ionic]
-ionic_txrx_napi+0x64/0x1b0 [ionic]
- __napi_poll+0x27/0x170
-net_rx_action+0x29c/0x370
-handle_softirqs+0xce/0x270
-__irq_exit_rcu+0xa3/0xc0
-common_interrupt+0x80/0xa0
-</IRQ>
+ 1 The 'inc' argument to RSEQ_ASM_OP_R_DEREF_ADDV was being implicitly
+   passed to the macro.  Fix this by adding 'inc' to the list of macro
+   arguments.
+ 2 The inline asm input constraints for 'inc' and 'off' use "er",  The
+   riscv gcc port does not have an "e" constraint, this looks to be
+   copied from the x86 port.  Fix this by just using an "r" constraint.
 
-This inconsistency sometimes leads to checksum validation issues in the
-upper layers of the network stack.
+I have compile tested this only for riscv.  However, the same fixes I
+use in the OpenRISC rseq selftests and everything passes with no issues.
 
-To resolve this, this patch clears the skb->ip_summed value for each
-reused skb in by napi_reuse_skb(), ensuring that the caller is responsible
-for setting the correct checksum status. This eliminates potential
-checksum validation issues caused by improper handling of
-skb->ip_summed.
-
-Fixes: 76620aafd66f ("gro: New frags interface to avoid copying shinfo")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250225112852.2507709-1-mheib@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 171586a6ab66 ("selftests/rseq: riscv: Template memory ordering and percpu access mode")
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250114170721.3613280-1-shorne@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/gro.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/rseq/rseq-riscv-bits.h |    6 +++---
+ tools/testing/selftests/rseq/rseq-riscv.h      |    2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 47118e97ecfdd..c4cbf398c5f78 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -679,6 +679,7 @@ static void napi_reuse_skb(struct napi_struct *napi, struct sk_buff *skb)
- 	skb->pkt_type = PACKET_HOST;
+--- a/tools/testing/selftests/rseq/rseq-riscv-bits.h
++++ b/tools/testing/selftests/rseq/rseq-riscv-bits.h
+@@ -243,7 +243,7 @@ int RSEQ_TEMPLATE_IDENTIFIER(rseq_offset
+ #ifdef RSEQ_COMPARE_TWICE
+ 				  RSEQ_ASM_CMP_CPU_ID(cpu_id, current_cpu_id, "%l[error1]")
+ #endif
+-				  RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, 3)
++				  RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, inc, 3)
+ 				  RSEQ_INJECT_ASM(4)
+ 				  RSEQ_ASM_DEFINE_ABORT(4, abort)
+ 				  : /* gcc asm goto does not allow outputs */
+@@ -251,8 +251,8 @@ int RSEQ_TEMPLATE_IDENTIFIER(rseq_offset
+ 				    [current_cpu_id]		"m" (rseq_get_abi()->RSEQ_TEMPLATE_CPU_ID_FIELD),
+ 				    [rseq_cs]			"m" (rseq_get_abi()->rseq_cs.arch.ptr),
+ 				    [ptr]			"r" (ptr),
+-				    [off]			"er" (off),
+-				    [inc]			"er" (inc)
++				    [off]			"r" (off),
++				    [inc]			"r" (inc)
+ 				    RSEQ_INJECT_INPUT
+ 				  : "memory", RSEQ_ASM_TMP_REG_1
+ 				    RSEQ_INJECT_CLOBBER
+--- a/tools/testing/selftests/rseq/rseq-riscv.h
++++ b/tools/testing/selftests/rseq/rseq-riscv.h
+@@ -158,7 +158,7 @@ do {									\
+ 	"bnez	" RSEQ_ASM_TMP_REG_1 ", 222b\n"				\
+ 	"333:\n"
  
- 	skb->encapsulation = 0;
-+	skb->ip_summed = CHECKSUM_NONE;
- 	skb_shinfo(skb)->gso_type = 0;
- 	skb_shinfo(skb)->gso_size = 0;
- 	if (unlikely(skb->slow_gro)) {
--- 
-2.39.5
-
+-#define RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, post_commit_label)		\
++#define RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, inc, post_commit_label)	\
+ 	"mv	" RSEQ_ASM_TMP_REG_1 ", %[" __rseq_str(ptr) "]\n"	\
+ 	RSEQ_ASM_OP_R_ADD(off)						\
+ 	REG_L	  RSEQ_ASM_TMP_REG_1 ", 0(" RSEQ_ASM_TMP_REG_1 ")\n"	\
 
 
 
