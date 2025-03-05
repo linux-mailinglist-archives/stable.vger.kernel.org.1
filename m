@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-120668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B897DA507C4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4147A50946
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9DE21893B85
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A09B47A38BA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D481C860D;
-	Wed,  5 Mar 2025 18:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD8252910;
+	Wed,  5 Mar 2025 18:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PviVZ4cf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxs4SWJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5858E155A2F;
-	Wed,  5 Mar 2025 18:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F3B13C67E;
+	Wed,  5 Mar 2025 18:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197627; cv=none; b=Z0j2gNX3ERmIXnLQ9ET95bZjuCf2wkIXrt3i1PUq/7wswgdfVDgPUTwmPixK3y9u1WbU9GZkthpUupUAM9LKyr2sAkfua5YrEk96A7E0pQYb0FD/mVxAglCGJQklWDUrwy0oHM9+WAej6YcorJFj/wXvn1YygnxDlqfRmJEvqDE=
+	t=1741198536; cv=none; b=k4v9VyHGSnYKzKHhhZyOwN2h3Z/Qkm2YDVllnvOCyss1gpPysjr5uvBZFXFJYQhX8yCzZcBKxfyyBQoViCxMjZMNAMS7OhYGAWuD8rSQgMHHmvLCcwKkRvPKneKzEyEUaRJPGtx8PcX2jX8UPOdotpFX9QDZAyUk1eQwyKGMMvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197627; c=relaxed/simple;
-	bh=6ersQOe7jzVkDGycgW0WYIrqZ6RSpgwMXDa65dndJUY=;
+	s=arc-20240116; t=1741198536; c=relaxed/simple;
+	bh=TX/aoo435JmCXpsSjNwlFAW7+StRxx0haTiUpQs54CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEqseolbpcUdGLeVSt0VYoM0bhH/ewj+PUkkweXenTlCI/NV3f1BfFjJ6Gus74gTcgZuA5KH2G+eVMYOVy8IZMbcqS2xlk+0LiMtDA6pBKQaAGWPOp3JEOHWeoqxWcoVWaxk+Uw0rqhzXrcKKCrtBMDzj1NAtepEH7k72lY4ZNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PviVZ4cf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D360FC4CED1;
-	Wed,  5 Mar 2025 18:00:26 +0000 (UTC)
+	 MIME-Version; b=DRZOC5c06he2VTwTdmb/woAJEDRyIwFIvb317olBePcUjcIPnHFpbzXmCYoRH85+IwNQktA3smWGv0vVQhS5+XWpg04KRITF2ifkpjnQB0hLrHIdMPuRfH9tyC8bXLh89MPuTMHKYNEiUCKrXs+cDm/1F0eP4yMN4hSgHcQI44g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxs4SWJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75291C4CED1;
+	Wed,  5 Mar 2025 18:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197627;
-	bh=6ersQOe7jzVkDGycgW0WYIrqZ6RSpgwMXDa65dndJUY=;
+	s=korg; t=1741198535;
+	bh=TX/aoo435JmCXpsSjNwlFAW7+StRxx0haTiUpQs54CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PviVZ4cfX0j8dxjkSJjofuY/Xxnf539vca3LF3ZZfx8Hj3RMmD5kn/v+71HtpypUW
-	 ZocwEh2uCL38WOtn7Su0/0mTk3u8HP93lxFs/Dcpxpv59oGsvLcn41ElWNH5HUz2BX
-	 Hlxf7NxJPpZEtjpYSS7QRqY/pzmfxyNV4m8nSALM=
+	b=qxs4SWJblZTowXuf+GR9cjdkwU3m6xs169PXnSD7kmaMKFCJKUpTkdSaKL7HSemMt
+	 Tcto0eCB3F/s/6c9o8SeQQe/UxveZ+OxQEEJdSAgC+HapsRYllgQ+ADjxF/qzEX2xr
+	 lgAg64exGfHxebFR2xrQ2FpWZPS+2m4ePbcu3mTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/142] include: net: add static inline dst_dev_overhead() to dst.h
-Date: Wed,  5 Mar 2025 18:47:44 +0100
-Message-ID: <20250305174502.150554353@linuxfoundation.org>
+Subject: [PATCH 6.13 029/157] afs: Give an afs_server object a ref on the afs_cell object it points to
+Date: Wed,  5 Mar 2025 18:47:45 +0100
+Message-ID: <20250305174506.464144866@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 0600cf40e9b36fe17f9c9f04d4f9cef249eaa5e7 ]
+[ Upstream commit 1f0fc3374f3345ff1d150c5c56ac5016e5d3826a ]
 
-Add static inline dst_dev_overhead() function to include/net/dst.h. This
-helper function is used by ioam6_iptunnel, rpl_iptunnel and
-seg6_iptunnel to get the dev's overhead based on a cache entry
-(dst_entry). If the cache is empty, the default and generic value
-skb->mac_len is returned. Otherwise, LL_RESERVED_SPACE() over dst's dev
-is returned.
+Give an afs_server object a ref on the afs_cell object it points to so that
+the cell doesn't get deleted before the server record.
 
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: c64a0727f9b1 ("net: ipv6: fix dst ref loop on input in seg6 lwt")
+Whilst this is circular (cell -> vol -> server_list -> server -> cell), the
+ref only pins the memory, not the lifetime as that's controlled by the
+activity counter.  When the volume's activity counter reaches 0, it
+detaches from the cell and discards its server list; when a cell's activity
+counter reaches 0, it discards its root volume.  At that point, the
+circularity is cut.
+
+Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250218192250.296870-6-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/afs/server.c            | 3 +++
+ include/trace/events/afs.h | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 78884429deed8..16b7b99b5f309 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -448,6 +448,15 @@ static inline void dst_set_expires(struct dst_entry *dst, int timeout)
- 		dst->expires = expires;
+diff --git a/fs/afs/server.c b/fs/afs/server.c
+index 038f9d0ae3af8..4504e16b458cc 100644
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -163,6 +163,8 @@ static struct afs_server *afs_install_server(struct afs_cell *cell,
+ 	rb_insert_color(&server->uuid_rb, &net->fs_servers);
+ 	hlist_add_head_rcu(&server->proc_link, &net->fs_proc);
+ 
++	afs_get_cell(cell, afs_cell_trace_get_server);
++
+ added_dup:
+ 	write_seqlock(&net->fs_addr_lock);
+ 	estate = rcu_dereference_protected(server->endpoint_state,
+@@ -442,6 +444,7 @@ static void afs_server_rcu(struct rcu_head *rcu)
+ 			 atomic_read(&server->active), afs_server_trace_free);
+ 	afs_put_endpoint_state(rcu_access_pointer(server->endpoint_state),
+ 			       afs_estate_trace_put_server);
++	afs_put_cell(server->cell, afs_cell_trace_put_server);
+ 	kfree(server);
  }
  
-+static inline unsigned int dst_dev_overhead(struct dst_entry *dst,
-+					    struct sk_buff *skb)
-+{
-+	if (likely(dst))
-+		return LL_RESERVED_SPACE(dst->dev);
-+
-+	return skb->mac_len;
-+}
-+
- INDIRECT_CALLABLE_DECLARE(int ip6_output(struct net *, struct sock *,
- 					 struct sk_buff *));
- INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
+diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
+index 9a75590227f26..3dddfc6abf0ee 100644
+--- a/include/trace/events/afs.h
++++ b/include/trace/events/afs.h
+@@ -173,6 +173,7 @@ enum yfs_cm_operation {
+ 	EM(afs_cell_trace_get_queue_dns,	"GET q-dns ") \
+ 	EM(afs_cell_trace_get_queue_manage,	"GET q-mng ") \
+ 	EM(afs_cell_trace_get_queue_new,	"GET q-new ") \
++	EM(afs_cell_trace_get_server,		"GET server") \
+ 	EM(afs_cell_trace_get_vol,		"GET vol   ") \
+ 	EM(afs_cell_trace_insert,		"INSERT    ") \
+ 	EM(afs_cell_trace_manage,		"MANAGE    ") \
+@@ -180,6 +181,7 @@ enum yfs_cm_operation {
+ 	EM(afs_cell_trace_put_destroy,		"PUT destry") \
+ 	EM(afs_cell_trace_put_queue_work,	"PUT q-work") \
+ 	EM(afs_cell_trace_put_queue_fail,	"PUT q-fail") \
++	EM(afs_cell_trace_put_server,		"PUT server") \
+ 	EM(afs_cell_trace_put_vol,		"PUT vol   ") \
+ 	EM(afs_cell_trace_see_source,		"SEE source") \
+ 	EM(afs_cell_trace_see_ws,		"SEE ws    ") \
 -- 
 2.39.5
 
