@@ -1,74 +1,75 @@
-Return-Path: <stable+bounces-121104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE8BA50BD5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:46:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC45A50BDB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E7063A788A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:46:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D30017A3AA7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8A9253353;
-	Wed,  5 Mar 2025 19:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB50253F24;
+	Wed,  5 Mar 2025 19:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="hvct229f"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="wc9itJER"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986582512D9
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 19:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA77255E3A
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 19:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741203983; cv=none; b=fKYo1kg9+maC3T4teFiqIijohOIC3ZBZhyoOkMD74GGmRfuZgnCVZRcczaGHeht9cnUMnWW9z14Gkw0mSHe9oU6Azyt5S0Mr4mAuTOU+xPkgMW1Wghmhqu6Qm8X1h7C0VyNVvbW/0JKC9FcAb6H8382IoTfXPhUcUL3xAAeZ7TQ=
+	t=1741203998; cv=none; b=RK7uu/jsV3e7qY9732iWyN+D0OXEKiZZHro2w30HAy5mn/TxwhBrfAEigDq4Mi7n0+/9iJo/+qiY1+Wjs1Jn8kkDnS0YaBT9xEI6zTua7d4aMm1rgQvFti9B825K9lUDtBMo1nW6oaONFAqm4HqS4g2jYpNILnu2+9si1n3Gjio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741203983; c=relaxed/simple;
-	bh=l13/SqgboJjJorbj8CHcCalccA5umSzD7yjYLAXBwmE=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=SWgZ757e7v6c4NYaqzLwWHIIIvS5n4m0KySTUSqP6VYqBUnOCtsVLgctSfOX70YAHGtfJ/I39p+pVoiCb+603dJm4EE5NLnPvG1OBfoeqeAMGFk4VauMy/vtQ9oVGr4oEAi6eDsR9NtUsmxPjjqaXpRSmbJZpYJdeXB6yL79S7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=hvct229f; arc=none smtp.client-ip=209.85.219.182
+	s=arc-20240116; t=1741203998; c=relaxed/simple;
+	bh=jPA2i+F4hRjHuSWzj2EOMzpztuncA4pQxoasR3d67js=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=u7lkThRsIBNWjyKN7lkhsaPmFV8MlihvbLSD+mq+3QTMSgaadhLXwijsdKPpGBNAX9LYfoGC+Qnct4YOMG5+5Lu4aSPIC+QnWXR8eHAMB1qMWNJ38Vft1noWaaLuc9Ai6fByVzS13he+zvMnewxh71OX5E+ECghM+g3D1KVbTDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=wc9itJER; arc=none smtp.client-ip=209.85.219.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e549be93d5eso7694186276.1
-        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 11:46:21 -0800 (PST)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e5dcc411189so6310384276.0
+        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 11:46:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1741203980; x=1741808780; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Em9CgQSt7+q2HGO2A0bmg2tb6kcqBtQd/5LnJubDwMs=;
-        b=hvct229ft123M9iHPHycgobg90qjfBvH9XFloJDfoKJmOZ0tSEpnz76ZK0G/A9umtp
-         uD9Y6fwjC8RyeIC49f+wlSEdf0Pi4bYWVFSrfNNw/VDDcC81Sw+L1gj7BT3rSD0mOMQF
-         V9GOQ6ib+4vjCSlEEmSi4TMufCcX+LBuFsuZfwo75xmJlMpWdRjtDOYIYNpuZU6S4HfQ
-         jap/LaVY3besmI0yrRrpkMLrfcGN4jkmjRyDOvK+x46ooyx3Vi90UU+4gkJlM1mnW8QC
-         gAtwSYHV6ukFbBIjS+/QcXT5iPXgcXtJkUumcClB7ekV/4MAG1b8tn3AHkPT8DHTvS5t
-         GUZQ==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1741203996; x=1741808796; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=suaL3V2MdE0GYOzY2Sxig0jr7iJ7bfmKLmsYXc76Hj8=;
+        b=wc9itJERpJEL4HcAsJFdFpHQijbMBkzG2lPOaRlaZCs7MKOAIsdvrWaXS6Ml37kLP7
+         l1a3WtFewezlbYdiWS82afUBjS9GF6MancHt1GlXl5dGeeuPtEmTbwyrKp/VDd8j9WAv
+         w69e3rhnis/S2yWWYTnDqUhy0PODcv80wAOfKY1fCXuBIqRqAQY5rgj6ZBS0aOB5lg20
+         RFfpnDOO5gYOJW9avb68ONRhZQEkfbKydHsIO3qOaLnq6RHPFgWt8NyJz46n/tn8HPWu
+         4FYG9/WYtNi+cAX2ruraylwS7hCW1oXjLmuk1XUfMRKlHefrn3FkNPJ5QIkTrgDZDhwB
+         Q+FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741203980; x=1741808780;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Em9CgQSt7+q2HGO2A0bmg2tb6kcqBtQd/5LnJubDwMs=;
-        b=u9FMPVsVTpqOAZAOXjEfPd+UmExQRyqcuONnxizg4tlz5lFwIVS2eUQMtp+cQoFoPy
-         1Lt/Gra4R8erAo2AeWVSEz+N5+h9UFJYo8qpSqqFzcVgBjVg7A4NKbLfIeo/3rSnhKA6
-         xdhRS865IEl9GRJ1SG/6M0ycjBseKHdcxoX5X12FkKeQhyrUz1k57MXmUptTG4KophbJ
-         EhDnTyyjzHEAvS/3/+x+NCjVIdMfPGgN8EMeHR2N3DUaPcnBO9A38XETxl0iX1Hn4vN4
-         WU+5cFciwP93WNNgA90zlx6dDwmyiwv51/pGfB3er7rPNTWAEl1zArwko1P0byQXIVIR
-         YX9A==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ4IN0lkpe3NboPAyTK/4yGO2Ge3GOwcyP7ZEBfPwtJKyVz0MIN7tl+5cEdXKpjyMv8txNs/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMwjPlX3TyAKWqIs12RvaC/YFFliRbVia2YvLL3GykzRtW5Ngi
-	cH2xyhBx4JDnXOdmNlZtzsU2/ehtwkYdxx/wDlbTf97bvmod1i/cC0chRTK9TTEfw+2zxc+yAso
-	nKMnfx5lSUddrQh+WuzLg96MEh5CPKrJdMnfeoNXEOm/gW3ENX3M=
-X-Gm-Gg: ASbGncvqE0c4XN+hfY8wQl4d7HMtrsiPenM1+8t8pQXvcSRyAQ6cBDARKuOqChScRBN
-	dpdH0PZcFRe5bBJgj/JzNrmeVIcYbmrPOM4YbMZniBJXpiwabyRttceKfNGhZjbqaCNH8dRG7wU
-	NftpidxTpQDeutl5YzgJ+wlhG1s+F7ycRLmo1gt8kFJGHbyLC7jZm5MDxnjFc=
-X-Google-Smtp-Source: AGHT+IHnxwZAyNP8hlaBKopEJsHsTSZXC52ysAsg7PYLDVDp0vf79cMKLjtFE8/j/3iao19F14U/7CpbX4uN2SgZHhE=
-X-Received: by 2002:a05:6902:90d:b0:e60:a3f1:b13c with SMTP id
- 3f1490d57ef6-e611e30fb4fmr6471003276.39.1741203980556; Wed, 05 Mar 2025
- 11:46:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741203996; x=1741808796;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=suaL3V2MdE0GYOzY2Sxig0jr7iJ7bfmKLmsYXc76Hj8=;
+        b=rI35EWdLRvIQGNcfPS0wudbHZuAx9JHXkK0BzKLzZQjbdmqP6kGz9gi2mM+yoI2d1+
+         NeOrPWsHzDQ+gN/15o4OUo0aYyKbhwS0HOlwa3plAoVzYBovQKqQDhGrvrwVoeh3Da/A
+         3N08zBQc8cPSM0UexLz/zjb2cIdHGrh8/k9a7bfGT8CE5AfxUovVbYwb/YQSI1ZZKA0R
+         F/8ZLDrkb36SZ2nafttzOHB/4dEV5bVUGQw8MKX3iEv1D6TeTxeLPqPc3nJMHwngMNmJ
+         a8PwoVAygP8sHRomCpYtERp4ejvA3tQucKgtrkU+X1ELzsNmiHN416G8lVnfA6bHiGjN
+         s5ew==
+X-Forwarded-Encrypted: i=1; AJvYcCWC/XwHcHfKK75iHEdBrcro7jWo5yTbm61Lv6RFY0z0SAVaaYCB9p0C8YLfU8R7SEH/D6/HKpA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOibRG2MuPE9FhREU/y3wX+dGp+clt4ONRID0dyS+vGpO7AK/N
+	ItbuCyXZVJw0yDt1CmsagAwmpaf/l3/bwNFJ0FzxL4M9t7NR4RjNlA0cTK9Xiqe99qdvc0+Hozb
+	GDIRovr1t7sdcK+OeZ2XWvjoHRn1yswmDTk5xRQ==
+X-Gm-Gg: ASbGnctSUPBcOwNmoVuSf+F/novPEN0O+OCMJumyyf87pHkpFpR/ghMA4S2ZE2sQ1J+
+	nGCrK/eWbTaOSZCnBLN/7KQRjDQb12aN6z+9sg2R3v9vqz8gI1s/1IyJkcl6/I7RMqNq8Z/ndk0
+	XyNta83FFZKkKDlCXlJ8S80JUGrjjij4V1vkwTAyxK3HYQ1fYo3CW1wbsfb6s=
+X-Google-Smtp-Source: AGHT+IFe9teX/QKXhOJUaYoYSVmbfitnj3x2RJWl6fMePLVzHQNdPT1MPl3xDxIwnYxxVkZ7u7y+mKF3Yhq9HDThSkI=
+X-Received: by 2002:a05:6902:2605:b0:e5d:d765:38ca with SMTP id
+ 3f1490d57ef6-e611e3667e9mr5343591276.41.1741203996078; Wed, 05 Mar 2025
+ 11:46:36 -0800 (PST)
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 5 Mar 2025 19:46:19 +0000
+ HTTPREST; Wed, 5 Mar 2025 11:46:34 -0800
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 5 Mar 2025 19:46:19 +0000
+ HTTPREST; Wed, 5 Mar 2025 11:46:34 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,68 +78,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 from: KernelCI bot <bot@kernelci.org>
 Reply-To: kernelci@lists.linux.dev
-Date: Wed, 5 Mar 2025 19:46:19 +0000
-X-Gm-Features: AQ5f1JrPFQvhOpVFe4pk2HQ19KSaZH6RGKW0HYrp0_ol8eWWGObBP7RT4IDbR6s
-Message-ID: <CACo-S-3ESjq-1gji9tovx-=se94dAErczQLngz5-ZMJdEj5G3g@mail.gmail.com>
-Subject: [REGRESSION] stable-rc/linux-6.6.y: (build) variable 'equiv_id' is
- used uninitialized whenever 'if' condition ...
+Date: Wed, 5 Mar 2025 11:46:34 -0800
+X-Gm-Features: AQ5f1JqmwE3vuXqF7MhxFdAgCzxhtdAHFuEjXRHU9tJTSAaZJ7Pp96bjHp-je1w
+Message-ID: <CACo-S-37vvL1ATSu15DH-OeosSwTrbWTwKqQedO_87dHuE_mbA@mail.gmail.com>
+Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjYueTogKGJ1aWxkKSDigJhpbml0cg==?=
+	=?UTF-8?B?ZF9zdGFydF9lYXJseeKAmSB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4gdGhpcyBmdW5jdGlvbik7IGRp?=
+	=?UTF-8?B?ZCAuLi4=?=
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
 New build issue found on stable-rc/linux-6.6.y:
 
 ---
- variable 'equiv_id' is used uninitialized whenever 'if' condition is
-false [-Werror,-Wsometimes-uninitialized] in
-arch/x86/kernel/cpu/microcode/amd.o
-(arch/x86/kernel/cpu/microcode/amd.c)
+ =E2=80=98initrd_start_early=E2=80=99 undeclared (first use in this functio=
+n); did you
+mean =E2=80=98initrd_start=E2=80=99? in arch/x86/kernel/cpu/microcode/core.=
+o
+(arch/x86/kernel/cpu/microcode/core.c)
 [logspec:kbuild,kbuild.compiler.error]
 ---
 
-- dashboard: https://d.kernelci.org/issue/maestro:b7c225f752a4128f41d922c0181dcbac4f66eb98
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- dashboard: https://d.kernelci.org/issue/maestro:b19e4ff21824fec766ed87bd9=
+7bf937236992087
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git
 - commit HEAD:  9f243f9dd2684b4b27f8be0cbed639052bc9b22e
 
 
 Log excerpt:
-=====================================================
-arch/x86/kernel/cpu/microcode/amd.c:820:6: error: variable 'equiv_id'
-is used uninitialized whenever 'if' condition is false
-[-Werror,-Wsometimes-uninitialized]
-  820 |         if (x86_family(bsp_cpuid_1_eax) < 0x17) {
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/x86/kernel/cpu/microcode/amd.c:826:31: note: uninitialized use occurs here
-  826 |         return cache_find_patch(uci, equiv_id);
-      |                                      ^~~~~~~~
-arch/x86/kernel/cpu/microcode/amd.c:820:2: note: remove the 'if' if
-its condition is always true
-  820 |         if (x86_family(bsp_cpuid_1_eax) < 0x17) {
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/x86/kernel/cpu/microcode/amd.c:816:14: note: initialize the
-variable 'equiv_id' to silence this warning
-  816 |         u16 equiv_id;
-      |                     ^
-      |                      = 0
-1 error generated.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+arch/x86/kernel/cpu/microcode/core.c:198:25: error:
+=E2=80=98initrd_start_early=E2=80=99 undeclared (first use in this function=
+); did you
+mean =E2=80=98initrd_start=E2=80=99?
+  198 |                 start =3D initrd_start_early;
+      |                         ^~~~~~~~~~~~~~~~~~
+      |                         initrd_start
+arch/x86/kernel/cpu/microcode/core.c:198:25: note: each undeclared
+identifier is reported only once for each function it appears in
 
-=====================================================
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
 
 
 # Builds where the incident occurred:
 
-## x86_64_defconfig on (x86_64):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:67c89e7f18018371956c7fda
-
-## x86_64_defconfig+allmodconfig on (x86_64):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:67c89e8318018371956c7fe7
+## i386_defconfig+kselftest on (i386):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:67c89ed518018371956c816d
 
 
-#kernelci issue maestro:b7c225f752a4128f41d922c0181dcbac4f66eb98
+#kernelci issue maestro:b19e4ff21824fec766ed87bd97bf937236992087
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
