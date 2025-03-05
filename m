@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-120830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55862A50894
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF82A50757
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ED32188BFFD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12069175452
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BA5253324;
-	Wed,  5 Mar 2025 18:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD82250C1C;
+	Wed,  5 Mar 2025 17:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9JXh+Ks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEARTYrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3AF2512D6;
-	Wed,  5 Mar 2025 18:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BB1250C07;
+	Wed,  5 Mar 2025 17:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198097; cv=none; b=i37XmE+uq0q3tlm4Y1K7jCukB5IWZNMKTw36S40wMYAswF6XwX+9++zdn0Qu0IO04HnGPjKNRXId3hF6ju+I9dWDN4DJMkPAh5CyCfdV4+9gr26hE/gP1JRTzwjr9i9ys8oH4dqJvYBNMLPqNushzZum0u/cUQc5fqjbivPtc5k=
+	t=1741197344; cv=none; b=DBrccJtAygwpCmm1L/ThYLa0jzxwRZtCJAIjWpjvlKyOS7bAqRCzRCpaWx+Gq5NcXGMJD3PPrT6LKWF6JhsghpwdP4ZcK4IBteQ/iVtIPru2tBK5PHGPP/yt/qV/I070mAhgOwM1rwfAFIAV0kuFI8JIH2hz5depe2J6a0SEQgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198097; c=relaxed/simple;
-	bh=T7DFJOBUsepXelEabAhGEJEGruVQMcmflc8QEVHzC0E=;
+	s=arc-20240116; t=1741197344; c=relaxed/simple;
+	bh=PjA5dVl/TgqzKXWBF5zB65EBYXyVDChjPM0Req7NMsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYQHlasQ2HnTUjPhQA7JhNGpP2isAo+BCnRxCfzHmkqMsuRzzFqMYqIV5J8O6dEuY93KCYybWA9OjzalSxYcldnd7kXlnsscY05yy+hSAJ3wQl+uHyofsMe+GgWk4Y0UP8d9lG89b3a7uUoSQPwK0hU8OnkZmjLRwI7guJvYyxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9JXh+Ks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56D2C4CEE0;
-	Wed,  5 Mar 2025 18:08:16 +0000 (UTC)
+	 MIME-Version; b=HdT7rRNMecxpWt6JsTHKjuUbPIWODl/CWWurBSYP+QtBHj7jLj+eRwc6otD1WZ2ceozghnXHuetru4gODOTIy7GbpTzFmyt2ElFLVAjfy7cuQWG/hlxUREKalPhGlU8mdTJ4QqRYVTw+TlP6uSGEgCHF7oYCJ+I84gX5h8kjht8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEARTYrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928CFC4CED1;
+	Wed,  5 Mar 2025 17:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198097;
-	bh=T7DFJOBUsepXelEabAhGEJEGruVQMcmflc8QEVHzC0E=;
+	s=korg; t=1741197343;
+	bh=PjA5dVl/TgqzKXWBF5zB65EBYXyVDChjPM0Req7NMsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9JXh+KsXaVQGtOWwSE3vyFK7di+4CD1oUdoEH73WJWvl10RYv3QxgR4WNPsKVQlx
-	 T/lvRbYgSdHEn4DVvpohE5mq4ZU1O5YXRdzyFvMxlwSzMr4vrgzZ7YRC4Lm4kVslIe
-	 Iu1+Zz4hSdh2REHKNede/Ci/Ci2oPUL3Iluy5uXQ=
+	b=TEARTYrtaODUFTUM2IGZs7MsQEsQArb/0+DHsZHMJkig0Xa4wnlHj2nNQn3dxCKfu
+	 GMjU5lb4g1jiYlMJ36Hg16Ayx/AX5HKmvwc/hzxtlHWnmDPt3+XsiYueEmYH8OIMfO
+	 5lzOU3X7krvAPswtSMp9bNRt6kh/7FF+hId94GGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <alex.aring@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Peilin He <he.peilin@zte.com.cn>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Yunkai Zhang <zhang.yunkai@zte.com.cn>,
+	Yang Yang <yang.yang29@zte.com.cn>,
+	Liu Chun <liu.chun2@zte.com.cn>,
+	Xuexin Jiang <jiang.xuexin@zte.com.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/150] net: ipv6: fix dst ref loop on input in rpl lwt
+Subject: [PATCH 6.1 123/176] net/ipv4: add tracepoint for icmp_send
 Date: Wed,  5 Mar 2025 18:48:12 +0100
-Message-ID: <20250305174506.352448661@linuxfoundation.org>
+Message-ID: <20250305174510.392345019@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +68,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Peilin He <he.peilin@zte.com.cn>
 
-[ Upstream commit 13e55fbaec176119cff68a7e1693b251c8883c5f ]
+[ Upstream commit db3efdcf70c752e8a8deb16071d8e693c3ef8746 ]
 
-Prevent a dst ref loop on input in rpl_iptunnel.
+Introduce a tracepoint for icmp_send, which can help users to get more
+detail information conveniently when icmp abnormal events happen.
 
-Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-Cc: Alexander Aring <alex.aring@gmail.com>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+1. Giving an usecase example:
+=============================
+When an application experiences packet loss due to an unreachable UDP
+destination port, the kernel will send an exception message through the
+icmp_send function. By adding a trace point for icmp_send, developers or
+system administrators can obtain detailed information about the UDP
+packet loss, including the type, code, source address, destination address,
+source port, and destination port. This facilitates the trouble-shooting
+of UDP packet loss issues especially for those network-service
+applications.
+
+2. Operation Instructions:
+==========================
+Switch to the tracing directory.
+        cd /sys/kernel/tracing
+Filter for destination port unreachable.
+        echo "type==3 && code==3" > events/icmp/icmp_send/filter
+Enable trace event.
+        echo 1 > events/icmp/icmp_send/enable
+
+3. Result View:
+================
+ udp_client_erro-11370   [002] ...s.12   124.728002:
+ icmp_send: icmp_send: type=3, code=3.
+ From 127.0.0.1:41895 to 127.0.0.1:6666 ulen=23
+ skbaddr=00000000589b167a
+
+Signed-off-by: Peilin He <he.peilin@zte.com.cn>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Reviewed-by: Yunkai Zhang <zhang.yunkai@zte.com.cn>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+Cc: Liu Chun <liu.chun2@zte.com.cn>
+Cc: Xuexin Jiang <jiang.xuexin@zte.com.cn>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/rpl_iptunnel.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ include/trace/events/icmp.h | 67 +++++++++++++++++++++++++++++++++++++
+ net/ipv4/icmp.c             |  4 +++
+ 2 files changed, 71 insertions(+)
+ create mode 100644 include/trace/events/icmp.h
 
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index 0ac4283acdf20..7c05ac846646f 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -262,10 +262,18 @@ static int rpl_input(struct sk_buff *skb)
- {
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
-+	struct lwtunnel_state *lwtst;
- 	struct rpl_lwt *rlwt;
- 	int err;
- 
--	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
-+	/* We cannot dereference "orig_dst" once ip6_route_input() or
-+	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
-+	 * need the address of its lwtstate. So, save the address of lwtstate
-+	 * now and use it later as a comparison.
-+	 */
-+	lwtst = orig_dst->lwtstate;
+diff --git a/include/trace/events/icmp.h b/include/trace/events/icmp.h
+new file mode 100644
+index 0000000000000..31559796949a7
+--- /dev/null
++++ b/include/trace/events/icmp.h
+@@ -0,0 +1,67 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM icmp
 +
-+	rlwt = rpl_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
-@@ -280,7 +288,9 @@ static int rpl_input(struct sk_buff *skb)
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
--		if (!dst->error) {
++#if !defined(_TRACE_ICMP_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_ICMP_H
 +
-+		/* cache only if we don't create a dst reference loop */
-+		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&rlwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
++#include <linux/icmp.h>
++#include <linux/tracepoint.h>
++
++TRACE_EVENT(icmp_send,
++
++		TP_PROTO(const struct sk_buff *skb, int type, int code),
++
++		TP_ARGS(skb, type, code),
++
++		TP_STRUCT__entry(
++			__field(const void *, skbaddr)
++			__field(int, type)
++			__field(int, code)
++			__array(__u8, saddr, 4)
++			__array(__u8, daddr, 4)
++			__field(__u16, sport)
++			__field(__u16, dport)
++			__field(unsigned short, ulen)
++		),
++
++		TP_fast_assign(
++			struct iphdr *iph = ip_hdr(skb);
++			struct udphdr *uh = udp_hdr(skb);
++			int proto_4 = iph->protocol;
++			__be32 *p32;
++
++			__entry->skbaddr = skb;
++			__entry->type = type;
++			__entry->code = code;
++
++			if (proto_4 != IPPROTO_UDP || (u8 *)uh < skb->head ||
++				(u8 *)uh + sizeof(struct udphdr)
++				> skb_tail_pointer(skb)) {
++				__entry->sport = 0;
++				__entry->dport = 0;
++				__entry->ulen = 0;
++			} else {
++				__entry->sport = ntohs(uh->source);
++				__entry->dport = ntohs(uh->dest);
++				__entry->ulen = ntohs(uh->len);
++			}
++
++			p32 = (__be32 *) __entry->saddr;
++			*p32 = iph->saddr;
++
++			p32 = (__be32 *) __entry->daddr;
++			*p32 = iph->daddr;
++		),
++
++		TP_printk("icmp_send: type=%d, code=%d. From %pI4:%u to %pI4:%u ulen=%d skbaddr=%p",
++			__entry->type, __entry->code,
++			__entry->saddr, __entry->sport, __entry->daddr,
++			__entry->dport, __entry->ulen, __entry->skbaddr)
++);
++
++#endif /* _TRACE_ICMP_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
++
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index a21d32b3ae6c3..b05fa424ad5ce 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -93,6 +93,8 @@
+ #include <net/ip_fib.h>
+ #include <net/l3mdev.h>
+ #include <net/addrconf.h>
++#define CREATE_TRACE_POINTS
++#include <trace/events/icmp.h>
+ 
+ /*
+  *	Build xmit assembly blocks
+@@ -778,6 +780,8 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
+ 	if (!fl4.saddr)
+ 		fl4.saddr = htonl(INADDR_DUMMY);
+ 
++	trace_icmp_send(skb_in, type, code);
++
+ 	icmp_push_reply(sk, &icmp_param, &fl4, &ipc, &rt);
+ ende:
+ 	ip_rt_put(rt);
 -- 
 2.39.5
 
