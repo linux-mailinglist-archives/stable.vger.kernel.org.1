@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-121053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F21AA509B2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD57A508EB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E94C93AB47D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7D4E169648
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5009E2566E4;
-	Wed,  5 Mar 2025 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040931A5BB7;
+	Wed,  5 Mar 2025 18:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3LcofPF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwXkpTJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A26E2512D6;
-	Wed,  5 Mar 2025 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34F41AAE2E;
+	Wed,  5 Mar 2025 18:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198746; cv=none; b=mN8+WojJ4NQS3UytNJhtfbXPwF9gehf82kkiqUtp4AWO8/VT5ZE1HRIfdS/CYj++hJO1vTaVEG2flPT/iYP/rmwcudTGioSWXI2FgzOn2wx1B72zIJ5I5yCm468ny/uyUKA/nBGlJkt5gaSWDN1/8Y7iBWMfchsQiJ6Tj+AkkZE=
+	t=1741198334; cv=none; b=Xoz/JycsdIavHhVxq2WAkekQNniM5d0QCFx0WKbxPhGNnOqJeuGpu6jUKgnOP1EQPIAhZNNGvG6g073ChrGXkxJKrH6aBOesLE49kwdRnACPBVvRB1eewr6MLdb4HitUJJGd1vSMVBz89LIMP7lZJ341nSaX8j1S4UgLA/aUAo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198746; c=relaxed/simple;
-	bh=9Tm59dTf3LZKRishnARiGS+DXSxI6BjF7vcrGMGrDo4=;
+	s=arc-20240116; t=1741198334; c=relaxed/simple;
+	bh=sFtd5gPj2DSlv6fdNuLBW7oY4tu6j/cZVl9BYN2Mzp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzMEV4adxr4G4++lXVDrnvqxQvhEiRQkOESUWDlvE1puaG+Le8TsDOw7SICOBmtmKmt0Mh88j7EQjcW5ljZVLsXq8s2/AaYB7tgiDE68DHtQtDEDbvkzJqJs1drzDTf08x6aRap5Qz8R1LpVTTkmzhAPZK6vMMIQkwb8vnrMBBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3LcofPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88135C4CED1;
-	Wed,  5 Mar 2025 18:19:05 +0000 (UTC)
+	 MIME-Version; b=LqhCzj8gkgxHUc28rIxfWt5a8SazrWbloLVYV805DoRLabH+czJ6ajwCAfyA3+9w6YVpt9NoX//CMKYQPiMOkiGj9vvZOWR29VoH32u/niUl9CJ2b8H2wqW0xOZrlRfrvsP2iXVFyi4I8x77unCnsPWqNXCiLV4KPgd2LfbxvYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwXkpTJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF2DC4CED1;
+	Wed,  5 Mar 2025 18:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198745;
-	bh=9Tm59dTf3LZKRishnARiGS+DXSxI6BjF7vcrGMGrDo4=;
+	s=korg; t=1741198334;
+	bh=sFtd5gPj2DSlv6fdNuLBW7oY4tu6j/cZVl9BYN2Mzp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3LcofPF0y6+Jh0Rm3qpy7F16sRsdAug7FDIlKGxwreku82EFshBDG+O0JpWx3eNo
-	 2T3+c9qnS9GD6IVW+uOy1DhZtv5zLAFxES0VRWKGMlwnZMo6h0wdrQ2qPsCVBKZejt
-	 wXTcN8oSliZu/0nqMqo/YJxbeu/Q73TFJLLSANNc=
+	b=nwXkpTJE5FmxvwE/L9uN/hS4BG+hRObDvkLoYI1EZmQzZFwaJOppWsGdRiiKNRH4l
+	 VYDBtasmMwhQAWArzv/g8VyRZFlSxzkH4SNdgJPUbvnWRLX6iqR2KyO/9pqqLq5Uw3
+	 kqYEoM8N1L0senXu9LCNNNFc8uSJ6yPm1f+FRYCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.13 134/157] sched/core: Prevent rescheduling when interrupts are disabled
-Date: Wed,  5 Mar 2025 18:49:30 +0100
-Message-ID: <20250305174510.687400636@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	"chr[]" <chris@rudorff.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: [PATCH 6.12 142/150] amdgpu/pm/legacy: fix suspend/resume issues
+Date: Wed,  5 Mar 2025 18:49:31 +0100
+Message-ID: <20250305174509.518124159@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: chr[] <chris@rudorff.com>
 
-commit 82c387ef7568c0d96a918a5a78d9cad6256cfa15 upstream.
+commit 91dcc66b34beb72dde8412421bdc1b4cd40e4fb8 upstream.
 
-David reported a warning observed while loop testing kexec jump:
+resume and irq handler happily races in set_power_state()
 
-  Interrupts enabled after irqrouter_resume+0x0/0x50
-  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
-   kernel_kexec+0xf6/0x180
-   __do_sys_reboot+0x206/0x250
-   do_syscall_64+0x95/0x180
+* amdgpu_legacy_dpm_compute_clocks() needs lock
+* protect irq work handler
+* fix dpm_enabled usage
 
-The corresponding interrupt flag trace:
+v2: fix clang build, integrate Lijo's comments (Alex)
 
-  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
-  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
-
-That means __up_console_sem() was invoked with interrupts enabled. Further
-instrumentation revealed that in the interrupt disabled section of kexec
-jump one of the syscore_suspend() callbacks woke up a task, which set the
-NEED_RESCHED flag. A later callback in the resume path invoked
-cond_resched() which in turn led to the invocation of the scheduler:
-
-  __cond_resched+0x21/0x60
-  down_timeout+0x18/0x60
-  acpi_os_wait_semaphore+0x4c/0x80
-  acpi_ut_acquire_mutex+0x3d/0x100
-  acpi_ns_get_node+0x27/0x60
-  acpi_ns_evaluate+0x1cb/0x2d0
-  acpi_rs_set_srs_method_data+0x156/0x190
-  acpi_pci_link_set+0x11c/0x290
-  irqrouter_resume+0x54/0x60
-  syscore_resume+0x6a/0x200
-  kernel_kexec+0x145/0x1c0
-  __do_sys_reboot+0xeb/0x240
-  do_syscall_64+0x95/0x180
-
-This is a long standing problem, which probably got more visible with
-the recent printk changes. Something does a task wakeup and the
-scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
-invokes schedule() from a completely bogus context. The scheduler
-enables interrupts after context switching, which causes the above
-warning at the end.
-
-Quite some of the code paths in syscore_suspend()/resume() can result in
-triggering a wakeup with the exactly same consequences. They might not
-have done so yet, but as they share a lot of code with normal operations
-it's just a question of time.
-
-The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
-models. Full preemption is not affected as cond_resched() is disabled and
-the preemption check preemptible() takes the interrupt disabled flag into
-account.
-
-Cure the problem by adding a corresponding check into cond_resched().
-
-Reported-by: David Woodhouse <dwmw@amazon.co.uk>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2524
+Fixes: 3712e7a49459 ("drm/amd/pm: unified lock protections in amdgpu_dpm.c")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Tested-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name> # on Oland PRO
+Signed-off-by: chr[] <chris@rudorff.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ee3dc9e204d271c9c7a8d4d38a0bce4745d33e71)
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c     |   25 ++++++++++++++++++------
+ drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c |    8 +++++--
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c     |   26 +++++++++++++++++++------
+ 3 files changed, 45 insertions(+), 14 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7278,7 +7278,7 @@ out_unlock:
- #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
- int __sched __cond_resched(void)
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -3043,6 +3043,7 @@ static int kv_dpm_hw_init(void *handle)
+ 	if (!amdgpu_dpm)
+ 		return 0;
+ 
++	mutex_lock(&adev->pm.mutex);
+ 	kv_dpm_setup_asic(adev);
+ 	ret = kv_dpm_enable(adev);
+ 	if (ret)
+@@ -3050,6 +3051,8 @@ static int kv_dpm_hw_init(void *handle)
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
++
+ 	return ret;
+ }
+ 
+@@ -3067,32 +3070,42 @@ static int kv_dpm_suspend(void *handle)
  {
--	if (should_resched(0)) {
-+	if (should_resched(0) && !irqs_disabled()) {
- 		preempt_schedule_common();
- 		return 1;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
++
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		kv_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
  	}
+ 	return 0;
+ }
+ 
+ static int kv_dpm_resume(void *handle)
+ {
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
++
++	if (!adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
+ 		/* asic init will reset to the boot state */
+ 		kv_dpm_setup_asic(adev);
+ 		ret = kv_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
++		}
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+-	return 0;
++	return ret;
+ }
+ 
+ static bool kv_dpm_is_idle(void *handle)
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
+@@ -1009,9 +1009,12 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	enum amd_pm_state_type dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 	int temp, size = sizeof(temp);
+ 
+-	if (!adev->pm.dpm_enabled)
+-		return;
++	mutex_lock(&adev->pm.mutex);
+ 
++	if (!adev->pm.dpm_enabled) {
++		mutex_unlock(&adev->pm.mutex);
++		return;
++	}
+ 	if (!pp_funcs->read_sensor(adev->powerplay.pp_handle,
+ 				   AMDGPU_PP_SENSOR_GPU_TEMP,
+ 				   (void *)&temp,
+@@ -1033,4 +1036,5 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	adev->pm.dpm.state = dpm_state;
+ 
+ 	amdgpu_legacy_dpm_compute_clocks(adev->powerplay.pp_handle);
++	mutex_unlock(&adev->pm.mutex);
+ }
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -7783,6 +7783,7 @@ static int si_dpm_hw_init(void *handle)
+ 	if (!amdgpu_dpm)
+ 		return 0;
+ 
++	mutex_lock(&adev->pm.mutex);
+ 	si_dpm_setup_asic(adev);
+ 	ret = si_dpm_enable(adev);
+ 	if (ret)
+@@ -7790,6 +7791,7 @@ static int si_dpm_hw_init(void *handle)
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
+ 	return ret;
+ }
+ 
+@@ -7807,32 +7809,44 @@ static int si_dpm_suspend(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
++
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		si_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
+ 	}
++
+ 	return 0;
+ }
+ 
+ static int si_dpm_resume(void *handle)
+ {
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
++
++	if (!adev->pm.dpm_enabled) {
+ 		/* asic init will reset to the boot state */
++		mutex_lock(&adev->pm.mutex);
+ 		si_dpm_setup_asic(adev);
+ 		ret = si_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
++		}
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+-	return 0;
++
++	return ret;
+ }
+ 
+ static bool si_dpm_is_idle(void *handle)
 
 
 
