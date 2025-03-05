@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B45A5077C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BC5A509B5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA15C7AA091
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B368A1888156
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B6E2528FD;
-	Wed,  5 Mar 2025 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B1A24CEE3;
+	Wed,  5 Mar 2025 18:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhNK0ffA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQjZ1BhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FDF2517AF;
-	Wed,  5 Mar 2025 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CD214884C;
+	Wed,  5 Mar 2025 18:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197355; cv=none; b=hDeEmx8q0dp6B8Qx5ShBPmYy1QQdKKyLEYauYbjKQxQI8zoYdlOVthRYzoyb1UuoHCoHulO39t0iRfyVSDwtjYYkkCxDIYHL85bmxy7zsq9r4e/S92WhY48eJ0ikxu2s68uxUH3uQxss6mL8XZ+ngwRfB6mcEvZlTCbBpOZA9Jo=
+	t=1741198622; cv=none; b=MpP8HRnNitW27o7hMivDLvjj14U40Zh8fLOCgQxsUvIbgB3JOiFgRlOGHhWQPKWLEc8uVolKNFOm8nYDj+hL7Xy1NK702io+MpqUWxHulIukdDVLnouepH3+iJG5xFAtsbydvUKUvlQeLzB4i2TuGofczOtQnTgaM6y0aAo7R8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197355; c=relaxed/simple;
-	bh=KidvwaX1iuC8NN2LzrRBD8JWDuwP3iby9bl2RUXs7Yc=;
+	s=arc-20240116; t=1741198622; c=relaxed/simple;
+	bh=Otk++TUzDuLMDd2A6fNwUHXAFaKZU7L4WNwCgh6jTh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqtOK+z/W0xMQqqbIuf5xUsOOXOvFV+wkyii5CQgof1Opk2KN592cbRTbYlGYN8n4wWtGk0YucI9jCaRNJj4RWVXK8b0h8MhSjGakwM0qC5zRPLLB7J9wn851tHQEST56wZJK+EK78q6XJONz7TwqRbkFizg1vpFVgpJCRG7QlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhNK0ffA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2422DC4CEE2;
-	Wed,  5 Mar 2025 17:55:54 +0000 (UTC)
+	 MIME-Version; b=DQBQNzUZi7+vlqw6biypr/QQ1EJHrTgrwyMzNqWCBpmu2AwJYizxeBkPJKBPB9nxnyEN4wUYGLrBLDvH70PYzzIRUC6GNvEJcW1kw0h8zqyoYP4ubXug5QAX0/mpguznzH0AcPBdrGZLeMVr0dPvMfqAF+aMMGL/Cu58Hb7nOck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQjZ1BhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0090C4CED1;
+	Wed,  5 Mar 2025 18:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197355;
-	bh=KidvwaX1iuC8NN2LzrRBD8JWDuwP3iby9bl2RUXs7Yc=;
+	s=korg; t=1741198622;
+	bh=Otk++TUzDuLMDd2A6fNwUHXAFaKZU7L4WNwCgh6jTh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhNK0ffASZZsfX8EKzxY146lwB5KWf7hi6Dv7w3cdeySG2pbt4krw5V9HxtAqQA2n
-	 7phsgs8VObAnMESfGrT8dzP1w/GJpXlJ25XLpKU8sTUvZGH+/DV7AaeRJ3LdRYAhd+
-	 zbv39B6EqJmY+DkYv9U1s5vN4XepWwAfROaI5FZI=
+	b=wQjZ1BhTF2JbV+8jWvu9ZTZzkqp8uTc1OGyfLv6/vJefHBVBiWkHB2ZOwnvXQLWgI
+	 RWjtmPUsVBKHDP1B231+xh/whE42OuUDkLJMd9UwZbdWVg4QxuRmr/r3GF1tNNLj/o
+	 lUCEJUhNRdURdQemvlkBAGyOy78afh7hWVnAW0Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
+	Joe Damato <jdamato@fastly.com>,
+	David Wei <dw@davidwei.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/176] ipv4: Convert icmp_route_lookup() to dscp_t.
+Subject: [PATCH 6.13 060/157] selftests: drv-net: Check if combined-count exists
 Date: Wed,  5 Mar 2025 18:48:16 +0100
-Message-ID: <20250305174510.550676050@linuxfoundation.org>
+Message-ID: <20250305174507.717766446@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit 913c83a610bb7dd8e5952a2b4663e1feec0b5de6 ]
+[ Upstream commit 1cbddbddee68d17feb6467fc556c144777af91ef ]
 
-Pass a dscp_t variable to icmp_route_lookup(), instead of a plain u8,
-to prevent accidental setting of ECN bits in ->flowi4_tos. Rename that
-variable ("tos" -> "dscp") to make the intent clear.
+Some drivers, like tg3, do not set combined-count:
 
-While there, reorganise the function parameters to fill up horizontal
-space.
+$ ethtool -l enp4s0f1
+Channel parameters for enp4s0f1:
+Pre-set maximums:
+RX:		4
+TX:		4
+Other:		n/a
+Combined:	n/a
+Current hardware settings:
+RX:		4
+TX:		1
+Other:		n/a
+Combined:	n/a
 
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/294fead85c6035bcdc5fcf9a6bb4ce8798c45ba1.1727807926.git.gnault@redhat.com
+In the case where combined-count is not set, the ethtool netlink code
+in the kernel elides the value and the code in the test:
+
+  netnl.channels_get(...)
+
+With a tg3 device, the returned dictionary looks like:
+
+{'header': {'dev-index': 3, 'dev-name': 'enp4s0f1'},
+ 'rx-max': 4,
+ 'rx-count': 4,
+ 'tx-max': 4,
+ 'tx-count': 1}
+
+Note that the key 'combined-count' is missing. As a result of this
+missing key the test raises an exception:
+
+ # Exception|     if channels['combined-count'] == 0:
+ # Exception|        ~~~~~~~~^^^^^^^^^^^^^^^^^^
+ # Exception| KeyError: 'combined-count'
+
+Change the test to check if 'combined-count' is a key in the dictionary
+first and if not assume that this means the driver has separate RX and
+TX queues.
+
+With this change, the test now passes successfully on tg3 and mlx5
+(which does have a 'combined-count').
+
+Fixes: 1cf270424218 ("net: selftest: add test for netdev netlink queue-get API")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250226181957.212189-1-jdamato@fastly.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ tools/testing/selftests/drivers/net/queues.py | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index a154339845dd4..855fcef829e2c 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -484,13 +484,11 @@ static struct net_device *icmp_get_route_lookup_dev(struct sk_buff *skb)
- 	return route_lookup_dev;
- }
+diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
+index 38303da957ee5..8a518905a9f9c 100755
+--- a/tools/testing/selftests/drivers/net/queues.py
++++ b/tools/testing/selftests/drivers/net/queues.py
+@@ -45,10 +45,9 @@ def addremove_queues(cfg, nl) -> None:
  
--static struct rtable *icmp_route_lookup(struct net *net,
--					struct flowi4 *fl4,
-+static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 					struct sk_buff *skb_in,
--					const struct iphdr *iph,
--					__be32 saddr, u8 tos, u32 mark,
--					int type, int code,
--					struct icmp_bxm *param)
-+					const struct iphdr *iph, __be32 saddr,
-+					dscp_t dscp, u32 mark, int type,
-+					int code, struct icmp_bxm *param)
- {
- 	struct net_device *route_lookup_dev;
- 	struct rtable *rt, *rt2;
-@@ -503,7 +501,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
- 	fl4->saddr = saddr;
- 	fl4->flowi4_mark = mark;
- 	fl4->flowi4_uid = sock_net_uid(net, NULL);
--	fl4->flowi4_tos = tos & INET_DSCP_MASK;
-+	fl4->flowi4_tos = inet_dscp_to_dsfield(dscp);
- 	fl4->flowi4_proto = IPPROTO_ICMP;
- 	fl4->fl4_icmp_type = type;
- 	fl4->fl4_icmp_code = code;
-@@ -551,7 +549,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
- 		orefdst = skb_in->_skb_refdst; /* save old refdst */
- 		skb_dst_set(skb_in, NULL);
- 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
--				     tos, rt2->dst.dev);
-+				     inet_dscp_to_dsfield(dscp), rt2->dst.dev);
+     netnl = EthtoolFamily()
+     channels = netnl.channels_get({'header': {'dev-index': cfg.ifindex}})
+-    if channels['combined-count'] == 0:
+-        rx_type = 'rx'
+-    else:
+-        rx_type = 'combined'
++    rx_type = 'rx'
++    if channels.get('combined-count', 0) > 0:
++            rx_type = 'combined'
  
- 		dst_release(&rt2->dst);
- 		rt2 = skb_rtable(skb_in);
-@@ -747,8 +745,9 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
- 	ipc.opt = &icmp_param.replyopts.opt;
- 	ipc.sockc.mark = mark;
- 
--	rt = icmp_route_lookup(net, &fl4, skb_in, iph, saddr, tos, mark,
--			       type, code, &icmp_param);
-+	rt = icmp_route_lookup(net, &fl4, skb_in, iph, saddr,
-+			       inet_dsfield_to_dscp(tos), mark, type, code,
-+			       &icmp_param);
- 	if (IS_ERR(rt))
- 		goto out_unlock;
- 
+     expected = curr_queues - 1
+     cmd(f"ethtool -L {cfg.dev['ifname']} {rx_type} {expected}", timeout=10)
 -- 
 2.39.5
 
