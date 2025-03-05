@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324CAA508D7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D53A5077B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 451871885E8B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 550AA1893677
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79CB250C1A;
-	Wed,  5 Mar 2025 18:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42190250C0E;
+	Wed,  5 Mar 2025 17:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3UGYzVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jZdknIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52C61A5BB7;
-	Wed,  5 Mar 2025 18:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005AA1C6FFE;
+	Wed,  5 Mar 2025 17:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198229; cv=none; b=BmtNxaIbRYZ3VDHp8gTLx8ZlVJK3pWe9SCjy7pnRWdjPHm7FCAAYmmDtUAAd0dUoJbikdYn7pe+oEdXeKQ2haNIlNHgpR1eYoUeSRv9OlnmAhJPK9U0RuAgEyV7yxrLZZWzXtIQjPOovFj3Itmiz4ZJcNBXuz4mZq4XHooK7pDY=
+	t=1741197474; cv=none; b=JD456hbWi1lZyfgc54T5W5Th4mA9+juJ8a8ZYnuLw9hsoQUvK2mAWiMvQzLGRrd0NF2DvYV85XdVpMWqX6vVT8DViOlg1cPtL3EhB1yadzI2m4NUaxlBUQ76E3Zf5DQklAnbmHknL2qMEEiDhoCijOIziBohmQK4rU/pypkk6ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198229; c=relaxed/simple;
-	bh=7sfTGDax39TT3x+0O0+tWH9YIUDXOBIzCI0q/7SG6Fc=;
+	s=arc-20240116; t=1741197474; c=relaxed/simple;
+	bh=H6Z5WQwS0uNIKaDiZOspOkGoMHze4eHHLPaB5mLqAms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfhHPB9CRZYIos9dcCmIywo7FKIRpzWfx+ftjMYKtBZB0kf6W9tsjdkgIRKZS9ps1EhHL4CErTu3wFRMMZbBmsW+lu11Kr9tt7GESMTAIkvNVYMqaC8/ZsoDnwoe9EsILjfRzQtq7yh0vkFsfWDgVwSFV/rGkSJqwVUtf4QHt6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3UGYzVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDC7C4CEE0;
-	Wed,  5 Mar 2025 18:10:29 +0000 (UTC)
+	 MIME-Version; b=b1RG3bgoPad4HP3ViA9NZ8kk2/oFdphtx98l8rspRzsjqys+0rFwz6CcPu1lX86DCNiM1GClFg9n6uCBuisvEmx79AZzmGN2/mqI9JcjC4Qd3i04omuY1Hx86SgMsY7sNXeSS73L9H+5sNb7zBsRWCWPWAKgeJvHOJh6bN1+tdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jZdknIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8E1C4CED1;
+	Wed,  5 Mar 2025 17:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198229;
-	bh=7sfTGDax39TT3x+0O0+tWH9YIUDXOBIzCI0q/7SG6Fc=;
+	s=korg; t=1741197473;
+	bh=H6Z5WQwS0uNIKaDiZOspOkGoMHze4eHHLPaB5mLqAms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V3UGYzVsKkhgxcpwAC/4AVLE9ZXJ/rA2pKf7COi6d/k2BxyMCVc4UPqtToOU65Os3
-	 wL+qqHbvdQfrB1OXMM1OIvM1zjirOPOXVAxvPxCvwC24+zQa/RXtbgVuq4rpRKnXod
-	 1jB9GmD7aAC2b+iJByt42lWp/nyJUPMy+J6zMw20=
+	b=1jZdknIxKy+QIC+rtq1Gl+2p7mTyt8A7+cmRO0dO9J23DYge/yZpe8Pvga3STRQ7d
+	 OZ2J7usfk/oNHP78KiEFHm+WSRmcDc3FcMGcD7pzeoTJXLy20BsHb+whBlxkEidqze
+	 YhBG2mnUAleGUnDcK1jM3Yjhfnrli9AYHI4bvV2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongliang Wang <wanghongliang@loongson.cn>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 107/150] i2c: ls2x: Fix frequency division register access
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 167/176] sched/core: Prevent rescheduling when interrupts are disabled
 Date: Wed,  5 Mar 2025 18:48:56 +0100
-Message-ID: <20250305174508.112909451@linuxfoundation.org>
+Message-ID: <20250305174512.146553672@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 71c49ee9bb41e1709abac7e2eb05f9193222e580 upstream.
+commit 82c387ef7568c0d96a918a5a78d9cad6256cfa15 upstream.
 
-According to the chip manual, the I2C register access type of
-Loongson-2K2000/LS7A is "B", so we can only access registers in byte
-form (readb()/writeb()).
+David reported a warning observed while loop testing kexec jump:
 
-Although Loongson-2K0500/Loongson-2K1000 do not have similar
-constraints, register accesses in byte form also behave correctly.
+  Interrupts enabled after irqrouter_resume+0x0/0x50
+  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
+   kernel_kexec+0xf6/0x180
+   __do_sys_reboot+0x206/0x250
+   do_syscall_64+0x95/0x180
 
-Also, in hardware, the frequency division registers are defined as two
-separate registers (high 8-bit and low 8-bit), so we just access them
-directly as bytes.
+The corresponding interrupt flag trace:
 
-Fixes: 015e61f0bffd ("i2c: ls2x: Add driver for Loongson-2K/LS7A I2C controller")
-Co-developed-by: Hongliang Wang <wanghongliang@loongson.cn>
-Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Cc: stable@vger.kernel.org # v6.3+
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250220125612.1910990-1-zhoubinbin@loongson.cn
+  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
+  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
+
+That means __up_console_sem() was invoked with interrupts enabled. Further
+instrumentation revealed that in the interrupt disabled section of kexec
+jump one of the syscore_suspend() callbacks woke up a task, which set the
+NEED_RESCHED flag. A later callback in the resume path invoked
+cond_resched() which in turn led to the invocation of the scheduler:
+
+  __cond_resched+0x21/0x60
+  down_timeout+0x18/0x60
+  acpi_os_wait_semaphore+0x4c/0x80
+  acpi_ut_acquire_mutex+0x3d/0x100
+  acpi_ns_get_node+0x27/0x60
+  acpi_ns_evaluate+0x1cb/0x2d0
+  acpi_rs_set_srs_method_data+0x156/0x190
+  acpi_pci_link_set+0x11c/0x290
+  irqrouter_resume+0x54/0x60
+  syscore_resume+0x6a/0x200
+  kernel_kexec+0x145/0x1c0
+  __do_sys_reboot+0xeb/0x240
+  do_syscall_64+0x95/0x180
+
+This is a long standing problem, which probably got more visible with
+the recent printk changes. Something does a task wakeup and the
+scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
+invokes schedule() from a completely bogus context. The scheduler
+enables interrupts after context switching, which causes the above
+warning at the end.
+
+Quite some of the code paths in syscore_suspend()/resume() can result in
+triggering a wakeup with the exactly same consequences. They might not
+have done so yet, but as they share a lot of code with normal operations
+it's just a question of time.
+
+The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
+models. Full preemption is not affected as cond_resched() is disabled and
+the preemption check preemptible() takes the interrupt disabled flag into
+account.
+
+Cure the problem by adding a corresponding check into cond_resched().
+
+Reported-by: David Woodhouse <dwmw@amazon.co.uk>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-ls2x.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ kernel/sched/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-ls2x.c
-+++ b/drivers/i2c/busses/i2c-ls2x.c
-@@ -10,6 +10,7 @@
-  * Rewritten for mainline by Binbin Zhou <zhoubinbin@loongson.cn>
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/completion.h>
- #include <linux/device.h>
-@@ -26,7 +27,8 @@
- #include <linux/units.h>
- 
- /* I2C Registers */
--#define I2C_LS2X_PRER		0x0 /* Freq Division Register(16 bits) */
-+#define I2C_LS2X_PRER_LO	0x0 /* Freq Division Low Byte Register */
-+#define I2C_LS2X_PRER_HI	0x1 /* Freq Division High Byte Register */
- #define I2C_LS2X_CTR		0x2 /* Control Register */
- #define I2C_LS2X_TXR		0x3 /* Transport Data Register */
- #define I2C_LS2X_RXR		0x3 /* Receive Data Register */
-@@ -93,6 +95,7 @@ static irqreturn_t ls2x_i2c_isr(int this
-  */
- static void ls2x_i2c_adjust_bus_speed(struct ls2x_i2c_priv *priv)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8369,7 +8369,7 @@ SYSCALL_DEFINE0(sched_yield)
+ #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
+ int __sched __cond_resched(void)
  {
-+	u16 val;
- 	struct i2c_timings *t = &priv->i2c_t;
- 	struct device *dev = priv->adapter.dev.parent;
- 	u32 acpi_speed = i2c_acpi_find_bus_speed(dev);
-@@ -104,9 +107,14 @@ static void ls2x_i2c_adjust_bus_speed(st
- 	else
- 		t->bus_freq_hz = LS2X_I2C_FREQ_STD;
- 
--	/* Calculate and set i2c frequency. */
--	writew(LS2X_I2C_PCLK_FREQ / (5 * t->bus_freq_hz) - 1,
--	       priv->base + I2C_LS2X_PRER);
-+	/*
-+	 * According to the chip manual, we can only access the registers as bytes,
-+	 * otherwise the high bits will be truncated.
-+	 * So set the I2C frequency with a sequential writeb() instead of writew().
-+	 */
-+	val = LS2X_I2C_PCLK_FREQ / (5 * t->bus_freq_hz) - 1;
-+	writeb(FIELD_GET(GENMASK(7, 0), val), priv->base + I2C_LS2X_PRER_LO);
-+	writeb(FIELD_GET(GENMASK(15, 8), val), priv->base + I2C_LS2X_PRER_HI);
- }
- 
- static void ls2x_i2c_init(struct ls2x_i2c_priv *priv)
+-	if (should_resched(0)) {
++	if (should_resched(0) && !irqs_disabled()) {
+ 		preempt_schedule_common();
+ 		return 1;
+ 	}
 
 
 
