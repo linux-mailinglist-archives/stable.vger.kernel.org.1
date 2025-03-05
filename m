@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E4DA50766
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1479A507F5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AECB63AD70C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46DD33AFD99
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4A8250C07;
-	Wed,  5 Mar 2025 17:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA101C863D;
+	Wed,  5 Mar 2025 18:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiSI5HV5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="db9ZZrbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7071C6FFE;
-	Wed,  5 Mar 2025 17:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC4A14B075;
+	Wed,  5 Mar 2025 18:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197370; cv=none; b=IodqgauR7t0zyoFn6j+Jc2gN/iBak3v3lUBY/8wjNDIE6HcmyYxDqoYzyHGOeJHpLbUD7kqIn/jp/btSW9A2efA+DHsUWWmRxQHY6Tex80p8Hsl/0ezFiud/xLfUQCkGPYfxzjH1xdNscaY1yADHnh2vNjWP1kEz5SFnaHiXhD0=
+	t=1741197731; cv=none; b=ueLf2RV1yHhNYC9EzQlG4JRzleTs6wKGq1WpD7bTe0aU8w/JmrO9C1kauIvg1rrEEFe9AqN+7H1kZDOWIZfNptJzpmONfticuz2IPnVkNVGUxgZsQ9qMFuErcXJDxgeFVAFd4qXLYlgex/lCu2vaw6h148YnMFXQcfglO5G7jV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197370; c=relaxed/simple;
-	bh=SNVP032vHmFXS/WmVJt6GLGbV5gelbF7iB2ApA19E+w=;
+	s=arc-20240116; t=1741197731; c=relaxed/simple;
+	bh=hvr1T8wfnSRemDBp8GU78M+Y7Xu+COZIQTr7VnUfXpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKAHLfjXzZhKmbNmKP1iAbmfxCNA5UaA2eNybgsLKy6UX/Etb+N4TbLEZ2bS0spJ+GOqSdhPYeeY3WZD8qUyjzb454sxJ+mz8+DujB0PNBBlyPi6TMfgtrqc7FYZIi9upOjauU/HDAjaPfS8BrNqgL1LvEj03UcoDhPMqqeOtBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiSI5HV5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0B1C4CED1;
-	Wed,  5 Mar 2025 17:56:09 +0000 (UTC)
+	 MIME-Version; b=iwes6YGLgcOnc8m/dAbY2s53gkuMXwaHW7AM5f0wNdXDx3eJ9Mfs75PXjOgeJg2BsEDcLRLLqBMXPaQ3ChKsebUAWi2zfd7x8XMpDFAtmGb7G8SB/lr3Wqwbu68ui+PDo0Qa/jUxdk6ftUB3NYuqhRYKK91wPNhLrvN0SNe2m6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=db9ZZrbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F2FC4CED1;
+	Wed,  5 Mar 2025 18:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197370;
-	bh=SNVP032vHmFXS/WmVJt6GLGbV5gelbF7iB2ApA19E+w=;
+	s=korg; t=1741197730;
+	bh=hvr1T8wfnSRemDBp8GU78M+Y7Xu+COZIQTr7VnUfXpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WiSI5HV57bmT5yIVHKOQ6l41d94Y+ZoqEMUKGlK32DYyB4Bdy1Il5e66YyyfHMUkI
-	 XiYKa8BLpHC8FX45nGzBIhJqsx/y2JnOuAju9cb7CiJ+ymqnsoUGUWbhw6RSe9Lli8
-	 EebxBAndl1gylfnVOJexcdED8iwU4g1D+fggmO40=
+	b=db9ZZrbYzqgPlRLgm1kDtsuZ/0bNA64EzKOe2OdgV3WcNyoJ/GjRsOXSq0yVmYuxA
+	 rwkpbLO0cTxKdaO6eAA2JqQqRXXYUW3ia1HBo1L5Nbavn42tak9/emM93mt6SgVLpr
+	 mkBvc80NuP2C7YzVgRbSqo0pzzJa1+g58kVbAUfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/176] net: cadence: macb: Synchronize stats calculations
+	"Chester A. Unal" <chester.a.unal@xpedite-tech.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 081/142] mptcp: reset when MPTCP opts are dropped after join
 Date: Wed,  5 Mar 2025 18:48:20 +0100
-Message-ID: <20250305174510.707639121@linuxfoundation.org>
+Message-ID: <20250305174503.591140120@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit fa52f15c745ce55261b92873676f64f7348cfe82 ]
+commit 8668860b0ad32a13fcd6c94a0995b7aa7638c9ef upstream.
 
-Stats calculations involve a RMW to add the stat update to the existing
-value. This is currently not protected by any synchronization mechanism,
-so data races are possible. Add a spinlock to protect the update. The
-reader side could be protected using u64_stats, but we would still need
-a spinlock for the update side anyway. And we always do an update
-immediately before reading the stats anyway.
+Before this patch, if the checksum was not used, the subflow was only
+reset if map_data_len was != 0. If there were no MPTCP options or an
+invalid mapping, map_data_len was not set to the data len, and then the
+subflow was not reset as it should have been, leaving the MPTCP
+connection in a wrong fallback mode.
 
-Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250220162950.95941-1-sean.anderson@linux.dev
+This map_data_len condition has been introduced to handle the reception
+of the infinite mapping. Instead, a new dedicated mapping error could
+have been returned and treated as a special case. However, the commit
+31bf11de146c ("mptcp: introduce MAPPING_BAD_CSUM") has been introduced
+by Paolo Abeni soon after, and backported later on to stable. It better
+handle the csum case, and it means the exception for valid_csum_seen in
+subflow_can_fallback(), plus this one for the infinite mapping in
+subflow_check_data_avail(), are no longer needed.
+
+In other words, the code can be simplified there: a fallback should only
+be done if msk->allow_infinite_fallback is set. This boolean is set to
+false once MPTCP-specific operations acting on the whole MPTCP
+connection vs the initial path have been done, e.g. a second path has
+been created, or an MPTCP re-injection -- yes, possible even with a
+single subflow. The subflow_can_fallback() helper can then be dropped,
+and replaced by this single condition.
+
+This also makes the code clearer: a fallback should only be done if it
+is possible to do so.
+
+While at it, no need to set map_data_len to 0 in get_mapping_status()
+for the infinite mapping case: it will be set to skb->len just after, at
+the end of subflow_check_data_avail(), and not read in between.
+
+Fixes: f8d4bcacff3b ("mptcp: infinite mapping receiving")
+Cc: stable@vger.kernel.org
+Reported-by: Chester A. Unal <chester.a.unal@xpedite-tech.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/544
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Tested-by: Chester A. Unal <chester.a.unal@xpedite-tech.com>
+Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-2-f550f636b435@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb.h      |  2 ++
- drivers/net/ethernet/cadence/macb_main.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ net/mptcp/subflow.c |   15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 1aa578c1ca4ad..8d66de71ea604 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -1271,6 +1271,8 @@ struct macb {
- 	struct clk		*rx_clk;
- 	struct clk		*tsu_clk;
- 	struct net_device	*dev;
-+	/* Protects hw_stats and ethtool_stats */
-+	spinlock_t		stats_lock;
- 	union {
- 		struct macb_stats	macb;
- 		struct gem_stats	gem;
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index d44d53d697620..fc3342944dbcc 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1936,10 +1936,12 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1109,7 +1109,6 @@ static enum mapping_status get_mapping_s
+ 	if (data_len == 0) {
+ 		pr_debug("infinite mapping received\n");
+ 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_INFINITEMAPRX);
+-		subflow->map_data_len = 0;
+ 		return MAPPING_INVALID;
+ 	}
  
- 		if (status & MACB_BIT(ISR_ROVR)) {
- 			/* We missed at least one packet */
-+			spin_lock(&bp->stats_lock);
- 			if (macb_is_gem(bp))
- 				bp->hw_stats.gem.rx_overruns++;
- 			else
- 				bp->hw_stats.macb.rx_overruns++;
-+			spin_unlock(&bp->stats_lock);
- 
- 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 				queue_writel(queue, ISR, MACB_BIT(ISR_ROVR));
-@@ -2999,6 +3001,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	if (!netif_running(bp->dev))
- 		return nstat;
- 
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 
- 	nstat->rx_errors = (hwstat->rx_frame_check_sequence_errors +
-@@ -3028,6 +3031,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	nstat->tx_aborted_errors = hwstat->tx_excessive_collisions;
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_sense_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underrun;
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
+@@ -1251,18 +1250,6 @@ static void subflow_sched_work_if_closed
+ 		mptcp_schedule_work(sk);
  }
-@@ -3035,12 +3039,13 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- static void gem_get_ethtool_stats(struct net_device *dev,
- 				  struct ethtool_stats *stats, u64 *data)
+ 
+-static bool subflow_can_fallback(struct mptcp_subflow_context *subflow)
+-{
+-	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
+-
+-	if (subflow->mp_join)
+-		return false;
+-	else if (READ_ONCE(msk->csum_enabled))
+-		return !subflow->valid_csum_seen;
+-	else
+-		return READ_ONCE(msk->allow_infinite_fallback);
+-}
+-
+ static void mptcp_subflow_fail(struct mptcp_sock *msk, struct sock *ssk)
  {
--	struct macb *bp;
-+	struct macb *bp = netdev_priv(dev);
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+@@ -1358,7 +1345,7 @@ fallback:
+ 			return true;
+ 		}
  
--	bp = netdev_priv(dev);
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
- 			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+	spin_unlock_irq(&bp->stats_lock);
- }
- 
- static int gem_get_sset_count(struct net_device *dev, int sset)
-@@ -3090,6 +3095,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 		return gem_get_stats(bp);
- 
- 	/* read stats from hardware */
-+	spin_lock_irq(&bp->stats_lock);
- 	macb_update_stats(bp);
- 
- 	/* Convert HW stats into netdevice stats */
-@@ -3123,6 +3129,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underruns;
- 	/* Don't know about heartbeat or window errors... */
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
- }
-@@ -4949,6 +4956,7 @@ static int macb_probe(struct platform_device *pdev)
- 	bp->usrio = macb_config->usrio;
- 
- 	spin_lock_init(&bp->lock);
-+	spin_lock_init(&bp->stats_lock);
- 
- 	/* setup capabilities */
- 	macb_configure_caps(bp, macb_config);
--- 
-2.39.5
-
+-		if (!subflow_can_fallback(subflow) && subflow->map_data_len) {
++		if (!READ_ONCE(msk->allow_infinite_fallback)) {
+ 			/* fatal protocol error, close the socket.
+ 			 * subflow_error_report() will introduce the appropriate barriers
+ 			 */
 
 
 
