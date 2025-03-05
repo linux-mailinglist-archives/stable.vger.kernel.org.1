@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE699A5081D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71854A508C8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7BA7175311
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92E01884C17
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561F12517A0;
-	Wed,  5 Mar 2025 18:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EC92517B4;
+	Wed,  5 Mar 2025 18:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdsUZXtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYki+jKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D5C24FBE8;
-	Wed,  5 Mar 2025 18:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F33F2517B3;
+	Wed,  5 Mar 2025 18:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197822; cv=none; b=mbumuwAwJXBVVfeSHNFEiV/Dzgv8QPuvOpgTtfBwSLigy2qctRbnRsXF/GN3gtDtv8A7ojIu4n331PFD9cuw/OFWh89kT40eyUw3ognaKu+XFg9mm12gqniKprt2cQ7uIvWWBa/2yPYNpJMHQc4gaHRz0i7ksiTpeTJXSA4718o=
+	t=1741198186; cv=none; b=dUyxLDgYf7nq8kWx1jotRcyO70Q9foVMhdtfGJp0+WahtpX42Gi0J4veGPyYOfTZ0WbGGu57Mi8GqkZjHuiwU5DipLcINSqiTeNe9Zff2y3mKy9bqGFoQUtD9NFUn5aWATHnt+5Kg9gbi9c1+Q5i50BEeeMcBAfs0TJBSuGvyTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197822; c=relaxed/simple;
-	bh=LWU1swHedvZNkOoR6R5AEBvo2Wj4x9bF0tVkHKAHark=;
+	s=arc-20240116; t=1741198186; c=relaxed/simple;
+	bh=4Gp9gFrzyAJM4ufknPVueEb+G7Tx0hb0AUEzwza/k+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOPD1H0jhgRCdWyojVvvyAyHTZ/LWMCsAdGVTiShhC/O8ks2epHis/x+C8LXHtyiOvE/vuuSmigcDW5dgr5+61jJ0NsDd3CAYLFCIagCkGWVL7e+lamx+QcMnH+bxs0DFTUcaCXvcpVfW+Rwt0HczH4hixS4IvpApXychZL17JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdsUZXtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FB9C4CED1;
-	Wed,  5 Mar 2025 18:03:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=px0zD1OI1jSOBl3odKMca0xxAj+HbBZhfe7Ne4F8cuS6YAm6FDNM1/5CJWcmxeY5NW6+CC4A5dlAD+sNCI8RGe9cgULIWBVB0Dy48y98BuPVNbxTuXP8jMvJjq2xi90m5NPJ0GZ/Re5dW0mDtNIoQNBch6ts/AlIfnkVQj/xj68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYki+jKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2A3C4CED1;
+	Wed,  5 Mar 2025 18:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197820;
-	bh=LWU1swHedvZNkOoR6R5AEBvo2Wj4x9bF0tVkHKAHark=;
+	s=korg; t=1741198186;
+	bh=4Gp9gFrzyAJM4ufknPVueEb+G7Tx0hb0AUEzwza/k+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdsUZXtHkyWjymHq52LBagTaPBfG4RVL8iA5YtBq0W+B15iP9PJ4S85LW9IdudvKZ
-	 3KvnetD+OMmkJSKJayAvW/XT6obFR9twlztL8Q/LApy+kOU1DTmDzZ5x139vNuA5Il
-	 tIOYxOimEH2668WALR73tQdOPwXP2dAhPBAfGa1M=
+	b=iYki+jKT28ed+GMXX4j8deC1/mVd6cpLqP8T+sRyvV4S0Jd6DWw4XJiY13tEMRhgE
+	 MUWODVSc+5PQPzXwzSCFGTFrC6AEjAIKxgfhLwsx7hOI7Kt82l2PzPw0HWSUmr8usM
+	 o8twvgnPI896quCkTlGhndkpqyPr6SGHUaV3qfPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 104/142] x86/microcode/intel: Switch to kvmalloc()
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12 094/150] drm/xe/userptr: restore invalidation list on error
 Date: Wed,  5 Mar 2025 18:48:43 +0100
-Message-ID: <20250305174504.509249115@linuxfoundation.org>
+Message-ID: <20250305174507.585603557@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,154 +62,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit f24f204405f9875bc539c6e88553fd5ac913c867 upstream
+commit e043dc16c28c8446e66c55adfe7c6e862a6a7bb7 upstream.
 
-Microcode blobs are getting larger and might soon reach the kmalloc()
-limit. Switch over kvmalloc().
+On error restore anything still on the pin_list back to the invalidation
+list on error. For the actual pin, so long as the vma is tracked on
+either list it should get picked up on the next pin, however it looks
+possible for the vma to get nuked but still be present on this per vm
+pin_list leading to corruption. An alternative might be then to instead
+just remove the link when destroying the vma.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115902.564323243@linutronix.de
+v2:
+ - Also add some asserts.
+ - Keep the overzealous locking so that we are consistent with the docs;
+   updating the docs and related bits will be done as a follow up.
+
+Fixes: ed2bdf3b264d ("drm/xe/vm: Subclass userptr vmas")
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250221143840.167150-4-matthew.auld@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 4e37e928928b730de9aa9a2f5dc853feeebc1742)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/intel.c |   48 +++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -14,7 +14,6 @@
- #include <linux/earlycpio.h>
- #include <linux/firmware.h>
- #include <linux/uaccess.h>
--#include <linux/vmalloc.h>
- #include <linux/initrd.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -245,7 +244,7 @@ EXPORT_SYMBOL_GPL(intel_microcode_sanity
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -667,15 +667,16 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
  
- static void update_ucode_pointer(struct microcode_intel *mc)
- {
--	kfree(ucode_patch_va);
-+	kvfree(ucode_patch_va);
+ 	/* Collect invalidated userptrs */
+ 	spin_lock(&vm->userptr.invalidated_lock);
++	xe_assert(vm->xe, list_empty(&vm->userptr.repin_list));
+ 	list_for_each_entry_safe(uvma, next, &vm->userptr.invalidated,
+ 				 userptr.invalidate_link) {
+ 		list_del_init(&uvma->userptr.invalidate_link);
+-		list_move_tail(&uvma->userptr.repin_link,
+-			       &vm->userptr.repin_list);
++		list_add_tail(&uvma->userptr.repin_link,
++			      &vm->userptr.repin_list);
+ 	}
+ 	spin_unlock(&vm->userptr.invalidated_lock);
  
- 	/*
- 	 * Save the virtual address for early loading and for eventual free
-@@ -256,11 +255,14 @@ static void update_ucode_pointer(struct
+-	/* Pin and move to temporary list */
++	/* Pin and move to bind list */
+ 	list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
+ 				 userptr.repin_link) {
+ 		err = xe_vma_userptr_pin_pages(uvma);
+@@ -691,10 +692,10 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+ 			err = xe_vm_invalidate_vma(&uvma->vma);
+ 			xe_vm_unlock(vm);
+ 			if (err)
+-				return err;
++				break;
+ 		} else {
+-			if (err < 0)
+-				return err;
++			if (err)
++				break;
  
- static void save_microcode_patch(struct microcode_intel *patch)
- {
-+	unsigned int size = get_totalsize(&patch->hdr);
- 	struct microcode_intel *mc;
- 
--	mc = kmemdup(patch, get_totalsize(&patch->hdr), GFP_KERNEL);
-+	mc = kvmemdup(patch, size, GFP_KERNEL);
- 	if (mc)
- 		update_ucode_pointer(mc);
-+	else
-+		pr_err("Unable to allocate microcode memory size: %u\n", size);
- }
- 
- /* Scan blob for microcode matching the boot CPUs family, model, stepping */
-@@ -539,36 +541,34 @@ static enum ucode_state parse_microcode_
- 
- 		if (!copy_from_iter_full(&mc_header, sizeof(mc_header), iter)) {
- 			pr_err("error! Truncated or inaccessible header in microcode data file\n");
--			break;
-+			goto fail;
+ 			list_del_init(&uvma->userptr.repin_link);
+ 			list_move_tail(&uvma->vma.combined_links.rebind,
+@@ -702,7 +703,19 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
  		}
- 
- 		mc_size = get_totalsize(&mc_header);
- 		if (mc_size < sizeof(mc_header)) {
- 			pr_err("error! Bad data in microcode data file (totalsize too small)\n");
--			break;
-+			goto fail;
- 		}
--
- 		data_size = mc_size - sizeof(mc_header);
- 		if (data_size > iov_iter_count(iter)) {
- 			pr_err("error! Bad data in microcode data file (truncated file?)\n");
--			break;
-+			goto fail;
- 		}
- 
- 		/* For performance reasons, reuse mc area when possible */
- 		if (!mc || mc_size > curr_mc_size) {
--			vfree(mc);
--			mc = vmalloc(mc_size);
-+			kvfree(mc);
-+			mc = kvmalloc(mc_size, GFP_KERNEL);
- 			if (!mc)
--				break;
-+				goto fail;
- 			curr_mc_size = mc_size;
- 		}
- 
- 		memcpy(mc, &mc_header, sizeof(mc_header));
- 		data = mc + sizeof(mc_header);
- 		if (!copy_from_iter_full(data, data_size, iter) ||
--		    intel_microcode_sanity_check(mc, true, MC_HEADER_TYPE_MICROCODE) < 0) {
--			break;
--		}
-+		    intel_microcode_sanity_check(mc, true, MC_HEADER_TYPE_MICROCODE) < 0)
-+			goto fail;
- 
- 		if (cur_rev >= mc_header.rev)
- 			continue;
-@@ -576,24 +576,26 @@ static enum ucode_state parse_microcode_
- 		if (!intel_find_matching_signature(mc, uci->cpu_sig.sig, uci->cpu_sig.pf))
- 			continue;
- 
--		vfree(new_mc);
-+		kvfree(new_mc);
- 		cur_rev = mc_header.rev;
- 		new_mc  = mc;
- 		mc = NULL;
  	}
  
--	vfree(mc);
--
--	if (iov_iter_count(iter)) {
--		vfree(new_mc);
--		return UCODE_ERROR;
--	}
-+	if (iov_iter_count(iter))
-+		goto fail;
- 
-+	kvfree(mc);
- 	if (!new_mc)
- 		return UCODE_NFOUND;
- 
- 	ucode_patch_late = (struct microcode_intel *)new_mc;
- 	return UCODE_NEW;
-+
-+fail:
-+	kvfree(mc);
-+	kvfree(new_mc);
-+	return UCODE_ERROR;
+-	return 0;
++	if (err) {
++		down_write(&vm->userptr.notifier_lock);
++		spin_lock(&vm->userptr.invalidated_lock);
++		list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
++					 userptr.repin_link) {
++			list_del_init(&uvma->userptr.repin_link);
++			list_move_tail(&uvma->userptr.invalidate_link,
++				       &vm->userptr.invalidated);
++		}
++		spin_unlock(&vm->userptr.invalidated_lock);
++		up_write(&vm->userptr.notifier_lock);
++	}
++	return err;
  }
  
- static bool is_blacklisted(unsigned int cpu)
-@@ -652,9 +654,9 @@ static enum ucode_state request_microcod
- static void finalize_late_load(int result)
- {
- 	if (!result)
--		save_microcode_patch(ucode_patch_late);
--
--	vfree(ucode_patch_late);
-+		update_ucode_pointer(ucode_patch_late);
-+	else
-+		kvfree(ucode_patch_late);
- 	ucode_patch_late = NULL;
- }
+ /**
+@@ -1066,6 +1079,7 @@ static void xe_vma_destroy(struct xe_vma
+ 		xe_assert(vm->xe, vma->gpuva.flags & XE_VMA_DESTROYED);
  
+ 		spin_lock(&vm->userptr.invalidated_lock);
++		xe_assert(vm->xe, list_empty(&to_userptr_vma(vma)->userptr.repin_link));
+ 		list_del(&to_userptr_vma(vma)->userptr.invalidate_link);
+ 		spin_unlock(&vm->userptr.invalidated_lock);
+ 	} else if (!xe_vma_is_null(vma)) {
 
 
 
