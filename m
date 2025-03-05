@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BABFA5086A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D2FA50720
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169431888893
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF03C188EBA1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104BE1ACEDD;
-	Wed,  5 Mar 2025 18:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFAC2505CF;
+	Wed,  5 Mar 2025 17:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doM82BOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sV3ZF1cf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C307517B505;
-	Wed,  5 Mar 2025 18:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F166E2505A7;
+	Wed,  5 Mar 2025 17:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197989; cv=none; b=B7EjyqgtknUD2ZDh1And2i9r5BqN6eR3HMJWW8VDI+PE/DOI0j3kf9diL1TdAafUaRTT+zpxVYUBIkDWYw7vuS0VxNqQs14LRhF/fJJ1xtVensCUjfikA7gxUKqYWEHdTZ6BldCw4BO/MxjIIPOrHJlFbU3WNRRVxMI3Tyfp9a0=
+	t=1741197280; cv=none; b=cBdPcPZslwQ1WdJJZYyKVZymQmA+B6uVQwnpnO91mby3SPvPLBwY1e7VQLIMrOyRFwBgcMgzl4UwT3eJnIo+erLgte/fsMLyymF3WFn/12zGFDUqWcRa+MsF0Q/dZBV2k5pAlcqfYYou+BK/CcArUkbAkfISeiLaBg/xrMFbwjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197989; c=relaxed/simple;
-	bh=WAoNCD6rK83N3GSql8ynx+Ch9LYhmNkxmC9i3+vbGcI=;
+	s=arc-20240116; t=1741197280; c=relaxed/simple;
+	bh=CiArs+uF6qFGVfHgMkP8VyXDf0sJzhv3X6Hr1EM99vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JRVFGUCoI/Vk7whzhV7s77HIQb0NUBczwq/uWW8mGZh0pm97DL2SdkPF92qvkdfNLfEmPZPrXbwFloRM1zu4XeNdQB13kZ2CWn8a5zIrCVATU7zAuSBGW5OF9TwMwQTmLILvlcaCuRAADsvG8/8262g1Z3UGO/n4KUEjRVr6eXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doM82BOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC03C4CED1;
-	Wed,  5 Mar 2025 18:06:29 +0000 (UTC)
+	 MIME-Version; b=Kwt/70FFxKBSXTksznxh5r+njig52fkKPYyqsOdZdOAZw6B6WVM7auhom1BwwfWZMdR3b24g+HpjiDoqGNZYmtR/+/ZuK3396LL01WUCWc5sJcZMjHTZIPWzOjoyqJ/mMdV6AdVWI1At9FQUNhdFTdJIzwCHcQhbst6IyB0f3Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sV3ZF1cf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEB0C4CEE2;
+	Wed,  5 Mar 2025 17:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197989;
-	bh=WAoNCD6rK83N3GSql8ynx+Ch9LYhmNkxmC9i3+vbGcI=;
+	s=korg; t=1741197279;
+	bh=CiArs+uF6qFGVfHgMkP8VyXDf0sJzhv3X6Hr1EM99vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doM82BOEvSCAtfQfxTDJDoIiOEXPZwb1+8nhUY+hS7MeXFrwEpUhOfwDtFfDMXuBP
-	 suh/bN9CzFh6WgPCJrSfqK3HGTAXPZjrjGpK+AZgDLhQqQr3nzHvqezAC/TLwhOlhl
-	 jVQtMtdeYn4deoxDXnjPt6ls/NnpoRWOXuJ9RGpo=
+	b=sV3ZF1cf4zQKMyzFroLATJaD27buLmo1nRu4r7+oblwqEEOmpZyCG1y0lmt9Hoy1u
+	 1VJ8O1TSMRKjVf6EuQq1pka4OIumLBVipg3tNGE+OYA0atp/CKTcrisl4ZAKGKuCs2
+	 53+AbHhZ1dxLS9DH5r9FOHDdSCc5SkPCNxG+Wggw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/150] RDMA/bnxt_re: Cache MSIx info to a local structure
+Subject: [PATCH 6.1 069/176] drm/msm/dpu: Dont leak bits_per_component into random DSC_ENC fields
 Date: Wed,  5 Mar 2025 18:47:18 +0100
-Message-ID: <20250305174504.180634314@linuxfoundation.org>
+Message-ID: <20250305174508.227785303@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit 31bad59805c388f92f3a13174a149c2228301c15 ]
+[ Upstream commit 144429831f447223253a0e4376489f84ff37d1a7 ]
 
-L2 driver allocates the vectors for RoCE and pass it through the
-en_dev structure to RoCE. During probe, cache the MSIx related
-info to a local structure.
+What used to be the input_10_bits boolean - feeding into the lowest
+bit of DSC_ENC - on MSM downstream turned into an accidental OR with
+the full bits_per_component number when it was ported to the upstream
+kernel.
 
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/1731577748-1804-5-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: f0df225d12fc ("RDMA/bnxt_re: Add sanity checks on rdev validity")
+On typical bpc=8 setups we don't notice this because line_buf_depth is
+always an odd value (it contains bpc+1) and will also set the 4th bit
+after left-shifting by 3 (hence this |= bits_per_component is a no-op).
+
+Now that guards are being removed to allow more bits_per_component
+values besides 8 (possible since commit 49fd30a7153b ("drm/msm/dsi: use
+DRM DSC helpers for DSC setup")), a bpc of 10 will instead clash with
+the 5th bit which is convert_rgb.  This is "fortunately" also always set
+to true by MSM's dsi_populate_dsc_params() already, but once a bpc of 12
+starts being used it'll write into simple_422 which is normally false.
+
+To solve all these overlaps, simply replicate downstream code and only
+set this lowest bit if bits_per_component is equal to 10.  It is unclear
+why DSC requires this only for bpc=10 but not bpc=12, and also notice
+that this lowest bit wasn't set previously despite having a panel and
+patch on the list using it without any mentioned issues.
+
+Fixes: c110cfd1753e ("drm/msm/disp/dpu1: Add support for DSC")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/636311/
+Link: https://lore.kernel.org/r/20250211-dsc-10-bit-v1-1-1c85a9430d9a@somainline.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/bnxt_re.h |  1 +
- drivers/infiniband/hw/bnxt_re/main.c    | 18 ++++++++++--------
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/bnxt_re.h b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-index 2a5cb66402860..784dc0fbd5268 100644
---- a/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-+++ b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-@@ -157,6 +157,7 @@ struct bnxt_re_pacing {
- #define BNXT_RE_MIN_MSIX		2
- #define BNXT_RE_MAX_MSIX		BNXT_MAX_ROCE_MSIX
- struct bnxt_re_nq_record {
-+	struct bnxt_msix_entry	msix_entries[BNXT_RE_MAX_MSIX];
- 	struct bnxt_qplib_nq	nq[BNXT_RE_MAX_MSIX];
- 	int			num_msix;
- };
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index 310a80962d0eb..08cc9ea175276 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -334,7 +334,7 @@ static void bnxt_re_start_irq(void *handle, struct bnxt_msix_entry *ent)
- 	int indx, rc;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
+index c8f14555834a8..70a6dfe94faa5 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
+@@ -46,6 +46,7 @@ static void dpu_hw_dsc_config(struct dpu_hw_dsc *hw_dsc,
+ 	u32 slice_last_group_size;
+ 	u32 det_thresh_flatness;
+ 	bool is_cmd_mode = !(mode & DSC_MODE_VIDEO);
++	bool input_10_bits = dsc->bits_per_component == 10;
  
- 	rdev = en_info->rdev;
--	msix_ent = rdev->en_dev->msix_entries;
-+	msix_ent = rdev->nqr->msix_entries;
- 	rcfw = &rdev->rcfw;
- 	if (!ent) {
- 		/* Not setting the f/w timeout bit in rcfw.
-@@ -350,7 +350,7 @@ static void bnxt_re_start_irq(void *handle, struct bnxt_msix_entry *ent)
- 	 * in device sctructure.
- 	 */
- 	for (indx = 0; indx < rdev->nqr->num_msix; indx++)
--		rdev->en_dev->msix_entries[indx].vector = ent[indx].vector;
-+		rdev->nqr->msix_entries[indx].vector = ent[indx].vector;
+ 	DPU_REG_WRITE(c, DSC_COMMON_MODE, mode);
  
- 	rc = bnxt_qplib_rcfw_start_irq(rcfw, msix_ent[BNXT_RE_AEQ_IDX].vector,
- 				       false);
-@@ -1292,9 +1292,9 @@ static int bnxt_re_init_res(struct bnxt_re_dev *rdev)
- 	bnxt_qplib_init_res(&rdev->qplib_res);
+@@ -62,7 +63,7 @@ static void dpu_hw_dsc_config(struct dpu_hw_dsc *hw_dsc,
+ 	data |= (dsc->line_buf_depth << 3);
+ 	data |= (dsc->simple_422 << 2);
+ 	data |= (dsc->convert_rgb << 1);
+-	data |= dsc->bits_per_component;
++	data |= input_10_bits;
  
- 	for (i = 1; i < rdev->nqr->num_msix ; i++) {
--		db_offt = rdev->en_dev->msix_entries[i].db_offset;
-+		db_offt = rdev->nqr->msix_entries[i].db_offset;
- 		rc = bnxt_qplib_enable_nq(rdev->en_dev->pdev, &rdev->nqr->nq[i - 1],
--					  i - 1, rdev->en_dev->msix_entries[i].vector,
-+					  i - 1, rdev->nqr->msix_entries[i].vector,
- 					  db_offt, &bnxt_re_cqn_handler,
- 					  &bnxt_re_srqn_handler);
- 		if (rc) {
-@@ -1381,7 +1381,7 @@ static int bnxt_re_alloc_res(struct bnxt_re_dev *rdev)
- 		rattr.type = type;
- 		rattr.mode = RING_ALLOC_REQ_INT_MODE_MSIX;
- 		rattr.depth = BNXT_QPLIB_NQE_MAX_CNT - 1;
--		rattr.lrid = rdev->en_dev->msix_entries[i + 1].ring_idx;
-+		rattr.lrid = rdev->nqr->msix_entries[i + 1].ring_idx;
- 		rc = bnxt_re_net_ring_alloc(rdev, &rattr, &nq->ring_id);
- 		if (rc) {
- 			ibdev_err(&rdev->ibdev,
-@@ -1698,6 +1698,8 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 op_type)
- 		return rc;
- 	}
- 	rdev->nqr->num_msix = rdev->en_dev->ulp_tbl->msix_requested;
-+	memcpy(rdev->nqr->msix_entries, rdev->en_dev->msix_entries,
-+	       sizeof(struct bnxt_msix_entry) * rdev->nqr->num_msix);
+ 	DPU_REG_WRITE(c, DSC_ENC, data);
  
- 	/* Check whether VF or PF */
- 	bnxt_re_get_sriov_func_type(rdev);
-@@ -1723,14 +1725,14 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 op_type)
- 	rattr.type = type;
- 	rattr.mode = RING_ALLOC_REQ_INT_MODE_MSIX;
- 	rattr.depth = BNXT_QPLIB_CREQE_MAX_CNT - 1;
--	rattr.lrid = rdev->en_dev->msix_entries[BNXT_RE_AEQ_IDX].ring_idx;
-+	rattr.lrid = rdev->nqr->msix_entries[BNXT_RE_AEQ_IDX].ring_idx;
- 	rc = bnxt_re_net_ring_alloc(rdev, &rattr, &creq->ring_id);
- 	if (rc) {
- 		ibdev_err(&rdev->ibdev, "Failed to allocate CREQ: %#x\n", rc);
- 		goto free_rcfw;
- 	}
--	db_offt = rdev->en_dev->msix_entries[BNXT_RE_AEQ_IDX].db_offset;
--	vid = rdev->en_dev->msix_entries[BNXT_RE_AEQ_IDX].vector;
-+	db_offt = rdev->nqr->msix_entries[BNXT_RE_AEQ_IDX].db_offset;
-+	vid = rdev->nqr->msix_entries[BNXT_RE_AEQ_IDX].vector;
- 	rc = bnxt_qplib_enable_rcfw_channel(&rdev->rcfw,
- 					    vid, db_offt,
- 					    &bnxt_re_aeq_handler);
 -- 
 2.39.5
 
