@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-121002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D81A5096D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:19:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D66A50775
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74B89165942
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 543273A332D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB232505BD;
-	Wed,  5 Mar 2025 18:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F51250C0E;
+	Wed,  5 Mar 2025 17:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQmnkAzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj3AaSkw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C49D2571A8;
-	Wed,  5 Mar 2025 18:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BCE481DD;
+	Wed,  5 Mar 2025 17:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198596; cv=none; b=Z6/LSJTnpVwfwuHlSk6nU6h+AeweFTZGp4e3ZWhlIJXzteuUhz67rsxt3OWuPlmpiIsdDxvC13Fr28RlubWpS9kyvJw8aYkqZxK/2apV3zB6mKz2LOPzupLpOUVaNNPHxO66tpdIQ+qai1g7rloVwrG06ukxkDFftdgApGWLbqk=
+	t=1741197416; cv=none; b=lMsN3WxBQP1Fj0UbEv6kX/H7ndsSwepEmTb2u64jtDsWAAKuMLQ2jl1/UfHY7bV/ABouolFH3qqLZHFRVSllmWsShoqKgHB2vPd+uZJyrrdsHdmTE43Md090xJCoJgQkCkdUG1i6CxhTa+dPZ+p5qcNVEiO0FhKldiSJWc4ofYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198596; c=relaxed/simple;
-	bh=hAjq3KaoG77IJ+DH3whJOuckz0uXV5r95wAr/pC7JII=;
+	s=arc-20240116; t=1741197416; c=relaxed/simple;
+	bh=Sc9iCEQV53M/eXpKUb44WkKZZL07qOr/X1EkeOeE44c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkfDkKPt8MlVh9H1HQOwLJBwc+zb5G7m9KGX+iKMiV5dI08vH1bAlTj9Osdtffj6Hj2s0KlR9FJDXkj+kjDTasZounb7N5ZZ9vjpezGvcTb/sloZ69XnF25Em/mIGwAR3UTD5x4iwM+nLRxUB5oB4VCphFgu6E5SsJ9wKAo3qEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQmnkAzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8029C4CEE0;
-	Wed,  5 Mar 2025 18:16:35 +0000 (UTC)
+	 MIME-Version; b=fPJeXQ0VIFyuGa2QJ2kWGQjXDBNVdi35NAJojGpFm3lQc2QDzYEnn+j2+6eFoDa/4CZ7IJTgcHM/8r77VJ3CvRMBIy24qpfQk+3vCBeyFoZWBV6pfbBSBbFrgq4LcaoVdn/ObzIWqwDSi+SQ8W5U1qatjRiiVuaHnkdNJz2ISJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj3AaSkw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC157C4CEE0;
+	Wed,  5 Mar 2025 17:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198596;
-	bh=hAjq3KaoG77IJ+DH3whJOuckz0uXV5r95wAr/pC7JII=;
+	s=korg; t=1741197416;
+	bh=Sc9iCEQV53M/eXpKUb44WkKZZL07qOr/X1EkeOeE44c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQmnkAzmSfWtwIzAB/Kvz3HHH9l0EM/3qxCU3z7cYTl0wxusX4gjJWxuoCB95Hbbt
-	 PmFRcRblaAepW+2GljlWlMc7HMJdPsrvsgZo7bpteoyeHXJcbO8NsuxNPgBqnCnv7q
-	 GNQFbR4sdGnT7gIumLPxQZmeN2iH3x8aX95Go18o=
+	b=Tj3AaSkwiCXmMifkJ2ojfoRdCAzW/HBYHjKXmi4rzyM5mM22Qtxld7yVyngUfvRxg
+	 XUphBRFC53h9yMiVhcXA+KY9zbD6um7dCSEi/poVBCmRUjS+FHAlLbfVr2IXNtoOXN
+	 kxKpyfzWAOgq7VmoeFj3yNNRwBw0sZfC9VKAcuWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Nikolay Kuratov <kniv@yandex-team.ru>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.13 082/157] ftrace: Avoid potential division by zero in function_stat_show()
+Subject: [PATCH 6.1 149/176] ftrace: Avoid potential division by zero in function_stat_show()
 Date: Wed,  5 Mar 2025 18:48:38 +0100
-Message-ID: <20250305174508.604815876@linuxfoundation.org>
+Message-ID: <20250305174511.422580325@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,7 +93,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/trace/ftrace.c
 +++ b/kernel/trace/ftrace.c
-@@ -541,6 +541,7 @@ static int function_stat_show(struct seq
+@@ -507,6 +507,7 @@ static int function_stat_show(struct seq
  	static struct trace_seq s;
  	unsigned long long avg;
  	unsigned long long stddev;
@@ -101,7 +101,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #endif
  	mutex_lock(&ftrace_profile_lock);
  
-@@ -562,23 +563,19 @@ static int function_stat_show(struct seq
+@@ -528,23 +529,19 @@ static int function_stat_show(struct seq
  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
  	seq_puts(m, "    ");
  
