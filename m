@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D153A507AC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891A3A50731
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE1F1885E1F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FFDE7A8B42
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAE7250C14;
-	Wed,  5 Mar 2025 17:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DB225290D;
+	Wed,  5 Mar 2025 17:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/BmKEVr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gez2VFNB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD821A83E4;
-	Wed,  5 Mar 2025 17:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B09252908;
+	Wed,  5 Mar 2025 17:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197578; cv=none; b=ldl7Z0sjmbIZjxvAd1sX39er3mf7C3BLvbU2kjHItbPp9Q5zB3ioyVLn4rHmH2/auMSpCYbJZFiqq6Y8lsc9qpIpPQIcu1Do2cy+TpCo26Pvd8R3YOiHq93XfVAb1vZQwipUEGNpQnDBtlG6QeDtwOnCpnV+C3BkIZWUHpWGiLg=
+	t=1741197206; cv=none; b=F4QWdO8yhHPjqXLk8FXnxBATUUIAR7wb/TVZuZYFYO/2x4JwkmFcWdJHC4kCPvR+GFGaJSWcNmAJTrkmBO2kCBicEfdA4Vw5A7nhsH1cvRut/imgpFaYfjDFVlbVJNVMGX26CeOxxvNfMrySKnNF7BjaBcWhCBFxh5qjRFnwzmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197578; c=relaxed/simple;
-	bh=zEXgY0q/wpxLSUJQ9olm1EjvqfUj37N78Rn0gr8ecEE=;
+	s=arc-20240116; t=1741197206; c=relaxed/simple;
+	bh=vq9IsntABmKwvMXG+04JJhIzZ2d3Gpj8Z+bl9kN1P0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfxvSPeU19+q3szlyQ86dsDG58gn9QwR1n4wPK0HFL2cmg6uBxZ3KFOvmwFt8Lp9+Ktxl3oAUk0WZXlWGy1KoltpJ52L6SKe32bjdNhL1ea7w4I0DClNoeo/dqzk2CK8fOY7MgXfGn7XKQ0NtRC8yEfuwS0gzw1YPm6923/UFAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/BmKEVr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E07C4CED1;
-	Wed,  5 Mar 2025 17:59:36 +0000 (UTC)
+	 MIME-Version; b=kOWb1VsOgT01iQndWqxqt5/iQWFqKLxN2ewqufzHKtDBGbAPliF6Qz0+apjomzyZGLTSpW/oeMvahnslnLXalO4/aWw1NFuZWZ57oYhsE4bLaTg5PJYzcNkugW0jy1pAapN1EnXjrDyvVbrHh5UOBnQSYxiigTFtV9vSSQn0n5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gez2VFNB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41354C4CED1;
+	Wed,  5 Mar 2025 17:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197577;
-	bh=zEXgY0q/wpxLSUJQ9olm1EjvqfUj37N78Rn0gr8ecEE=;
+	s=korg; t=1741197206;
+	bh=vq9IsntABmKwvMXG+04JJhIzZ2d3Gpj8Z+bl9kN1P0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/BmKEVrJmfC1A5cNIxwVhNJvKRLdUEszugpKa6Xjf3bEndLYWRMZi+22Nu3HNHtQ
-	 KzJN3YvogquED/NdMQslNxmVsUXsij954PRFHSYRd7QR+bdEetJaId6CwH3GVbpuSj
-	 0V8n5BTbUwOpWdYN2q4AmFZLlztcofMIFYnbL6FE=
+	b=Gez2VFNBO1En+2d2UJ7ES3Ik4/4wAUr8uGikxIJcp/udfDdLnMCly8f2g88oqutKH
+	 mCrG+TQvYT6GjuGUu01ouOL+E7m5Ss3DePBAdPquxTJbXHPF55gZ6AucKKwP2ecopI
+	 bttKs2wjwy62KEtE2ak89tKUMOo7r/vymKPdj5fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/142] ipvlan: Unmask upper DSCP bits in ipvlan_process_v4_outbound()
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 077/176] ASoC: fsl_micfil: Enable default case in micfil_set_quality()
 Date: Wed,  5 Mar 2025 18:47:26 +0100
-Message-ID: <20250305174501.432761560@linuxfoundation.org>
+Message-ID: <20250305174508.556083843@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 939cd1abf080c629552a9c5e6db4c0509d13e4c7 ]
+commit a8c9a453387640dbe45761970f41301a6985e7fa upstream.
 
-Unmask the upper DSCP bits when calling ip_route_output_flow() so that
-in the future it could perform the FIB lookup according to the full DSCP
-value.
+If 'micfil->quality' received from micfil_quality_set() somehow ends
+up with an unpredictable value, switch() operator will fail to
+initialize local variable qsel before regmap_update_bits() tries
+to utilize it.
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While it is unlikely, play it safe and enable a default case that
+returns -EINVAL error.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: bea1d61d5892 ("ASoC: fsl_micfil: rework quality setting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250116142436.22389-1-n.zhandarovich@fintech.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_micfil.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index fef4eff7753a7..b1afcb8740de1 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -2,6 +2,8 @@
- /* Copyright (c) 2014 Mahesh Bandewar <maheshb@google.com>
-  */
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -123,6 +123,8 @@ static int micfil_set_quality(struct fsl
+ 	case QUALITY_VLOW2:
+ 		qsel = MICFIL_QSEL_VLOW2_QUALITY;
+ 		break;
++	default:
++		return -EINVAL;
+ 	}
  
-+#include <net/inet_dscp.h>
-+
- #include "ipvlan.h"
- 
- static u32 ipvlan_jhash_secret __read_mostly;
-@@ -420,7 +422,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
- 	int err, ret = NET_XMIT_DROP;
- 	struct flowi4 fl4 = {
- 		.flowi4_oif = dev->ifindex,
--		.flowi4_tos = RT_TOS(ip4h->tos),
-+		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
- 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
- 		.flowi4_mark = skb->mark,
- 		.daddr = ip4h->daddr,
--- 
-2.39.5
-
+ 	return regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL2,
 
 
 
