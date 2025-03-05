@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-120477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760C0A506E0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:51:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0D1A506E2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4781686E0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:51:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D74507A62C7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EAE2505B8;
-	Wed,  5 Mar 2025 17:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2C01946C7;
+	Wed,  5 Mar 2025 17:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRIVe9Ox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQ2NfEcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A56198A0D;
-	Wed,  5 Mar 2025 17:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA572505A7;
+	Wed,  5 Mar 2025 17:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197074; cv=none; b=CIH79mmUCRnTYfxwz//LYFCup+K98plfhB1IEg7n2i3NaDJtdWo2k6o+ikrGK/+4NocBLcNde2yx27xJIrDbdbNKQHAgC+9MxOdlwSezFXennWOAqxcuT6SX7bDcvIyOdkMt1KdG44oOrk9uksU5ZhOs46IfNjTtRoE8BoytLUI=
+	t=1741197080; cv=none; b=SUlJ6Ry6ObgevofjhIJxoZTNim0mQ1lmZOB+GXVb9321+UtgwDPQGyaxt6oWAJOixQaSBs6yDgaJqTgqHYo4tfIpyFxT8SKgLhxHTximWHpLgJVen7KXBzXFH75QhVRwbezAY7GvPeybK8PzHT9MKm59QGOLvyRIJGIhPGz072E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197074; c=relaxed/simple;
-	bh=t+1KIkb/chcv1EKPjtFDBcUN/H5YSovWiI+IUKE2Jfk=;
+	s=arc-20240116; t=1741197080; c=relaxed/simple;
+	bh=OgmOHbxpeAQH0LEnhtJr4VEJQN0FW0jYDP0U0LKp4OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVqxw72S+8EW6Hggx7AePJHEmZ//A62+oGpTFut8D1P5qLtDSpxlyT0pn3Oo/Zfq16l2FLFriuQ4qe5iaSw6GQlKdWwho4kB6mIGQZEqRf/vbV+3cL4p5NXWBDEPq9dLoBrKhCn76SIqoNWKNXibv6Sk1a/74YroUrgD4YYgv+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRIVe9Ox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCDBC4CED1;
-	Wed,  5 Mar 2025 17:51:14 +0000 (UTC)
+	 MIME-Version; b=NBsrIjCh+fvvbOo8yCAuJK3IvekKzGVmSDp7YRQLQf0vYGXwXF8TsOX2BB38dU3Q2kCRZBTL6BKFzvMs0f8ZrGHPR0CAZSPpja7bsHhdk3Is0MZmdpBvJry+i/fpyeLw02EoOmSOOkBb0DVx4/WlCMmzeQNSg4NreKgZkv2iI2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQ2NfEcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCA8C4CEE2;
+	Wed,  5 Mar 2025 17:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197074;
-	bh=t+1KIkb/chcv1EKPjtFDBcUN/H5YSovWiI+IUKE2Jfk=;
+	s=korg; t=1741197080;
+	bh=OgmOHbxpeAQH0LEnhtJr4VEJQN0FW0jYDP0U0LKp4OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sRIVe9OxQc6nRe5tAnm/zn8B1icXmUOceTnQ/ZBgNFpRoW5+4lcLoNX8Fi1/53rDL
-	 drwMvlxYeqjpgjkpDG2EIYJDNGjulm90Efv23WzI+2Uan9ro+nKa7zGroq/k+ZW9RY
-	 II739xU1xIFzIIKuMsUemmOQWZkUQge38q4YMQyk=
+	b=FQ2NfEcy6Jo7pEjhZwDZsSO8DC7ntiQKow3v7IlrBnkXryLCgEkFynJMr/SUHllzC
+	 Af9pixVszUWWRDXWCAQF94ML53xuI5FWL4OdCXnTNVIsvv/1YjwkmNwCpPdMTzQzzZ
+	 qekybEqEyiv6tikLvmBqXD9jlhkRSp2q8KPjkFoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yu Kuai <yukuai3@huawei.com>,
 	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/176] md: factor out a helper from mddev_put()
-Date: Wed,  5 Mar 2025 18:46:12 +0100
-Message-ID: <20250305174505.584755957@linuxfoundation.org>
+Subject: [PATCH 6.1 004/176] md: simplify md_seq_ops
+Date: Wed,  5 Mar 2025 18:46:13 +0100
+Message-ID: <20250305174505.629628698@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
 References: <20250305174505.437358097@linuxfoundation.org>
@@ -68,65 +68,177 @@ Content-Transfer-Encoding: 8bit
 
 From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 3d8d32873c7b6d9cec5b40c2ddb8c7c55961694f ]
+[ Upstream commit cf1b6d4441fffd0ba8ae4ced6a12f578c95ca049 ]
 
-There are no functional changes, prepare to simplify md_seq_ops in next
-patch.
+Before this patch, the implementation is hacky and hard to understand:
+
+1) md_seq_start set pos to 1;
+2) md_seq_show found pos is 1, then print Personalities;
+3) md_seq_next found pos is 1, then it update pos to the first mddev;
+4) md_seq_show found pos is not 1 or 2, show mddev;
+5) md_seq_next found pos is not 1 or 2, update pos to next mddev;
+6) loop 4-5 until the last mddev, then md_seq_next update pos to 2;
+7) md_seq_show found pos is 2, then print unused devices;
+8) md_seq_next found pos is 2, stop;
+
+This patch remove the magic value and use seq_list_start/next/stop()
+directly, and move printing "Personalities" to md_seq_start(),
+"unsed devices" to md_seq_stop():
+
+1) md_seq_start print Personalities, and then set pos to first mddev;
+2) md_seq_show show mddev;
+3) md_seq_next update pos to next mddev;
+4) loop 2-3 until the last mddev;
+5) md_seq_stop print unsed devices;
 
 Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230927061241.1552837-2-yukuai1@huaweicloud.com
+Link: https://lore.kernel.org/r/20230927061241.1552837-3-yukuai1@huaweicloud.com
 Stable-dep-of: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ drivers/md/md.c | 100 +++++++++++-------------------------------------
+ 1 file changed, 22 insertions(+), 78 deletions(-)
 
 diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 4b629b7a540f7..44bac1e7d47e2 100644
+index 44bac1e7d47e2..743244b06f679 100644
 --- a/drivers/md/md.c
 +++ b/drivers/md/md.c
-@@ -667,23 +667,28 @@ static inline struct mddev *mddev_get(struct mddev *mddev)
- 
- static void mddev_delayed_delete(struct work_struct *ws);
- 
-+static void __mddev_put(struct mddev *mddev)
-+{
-+	if (mddev->raid_disks || !list_empty(&mddev->disks) ||
-+	    mddev->ctime || mddev->hold_active)
-+		return;
-+
-+	/* Array is not configured at all, and not held active, so destroy it */
-+	set_bit(MD_DELETED, &mddev->flags);
-+
-+	/*
-+	 * Call queue_work inside the spinlock so that flush_workqueue() after
-+	 * mddev_find will succeed in waiting for the work to be done.
-+	 */
-+	queue_work(md_misc_wq, &mddev->del_work);
-+}
-+
- void mddev_put(struct mddev *mddev)
- {
- 	if (!atomic_dec_and_lock(&mddev->active, &all_mddevs_lock))
- 		return;
--	if (!mddev->raid_disks && list_empty(&mddev->disks) &&
--	    mddev->ctime == 0 && !mddev->hold_active) {
--		/* Array is not configured at all, and not held active,
--		 * so destroy it */
--		set_bit(MD_DELETED, &mddev->flags);
- 
--		/*
--		 * Call queue_work inside the spinlock so that
--		 * flush_workqueue() after mddev_find will succeed in waiting
--		 * for the work to be done.
--		 */
--		queue_work(md_misc_wq, &mddev->del_work);
--	}
-+	__mddev_put(mddev);
- 	spin_unlock(&all_mddevs_lock);
+@@ -8250,105 +8250,46 @@ static int status_resync(struct seq_file *seq, struct mddev *mddev)
  }
  
+ static void *md_seq_start(struct seq_file *seq, loff_t *pos)
++	__acquires(&all_mddevs_lock)
+ {
+-	struct list_head *tmp;
+-	loff_t l = *pos;
+-	struct mddev *mddev;
++	struct md_personality *pers;
+ 
+-	if (l == 0x10000) {
+-		++*pos;
+-		return (void *)2;
+-	}
+-	if (l > 0x10000)
+-		return NULL;
+-	if (!l--)
+-		/* header */
+-		return (void*)1;
++	seq_puts(seq, "Personalities : ");
++	spin_lock(&pers_lock);
++	list_for_each_entry(pers, &pers_list, list)
++		seq_printf(seq, "[%s] ", pers->name);
++
++	spin_unlock(&pers_lock);
++	seq_puts(seq, "\n");
++	seq->poll_event = atomic_read(&md_event_count);
+ 
+ 	spin_lock(&all_mddevs_lock);
+-	list_for_each(tmp,&all_mddevs)
+-		if (!l--) {
+-			mddev = list_entry(tmp, struct mddev, all_mddevs);
+-			if (!mddev_get(mddev))
+-				continue;
+-			spin_unlock(&all_mddevs_lock);
+-			return mddev;
+-		}
+-	spin_unlock(&all_mddevs_lock);
+-	if (!l--)
+-		return (void*)2;/* tail */
+-	return NULL;
++
++	return seq_list_start(&all_mddevs, *pos);
+ }
+ 
+ static void *md_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+-	struct list_head *tmp;
+-	struct mddev *next_mddev, *mddev = v;
+-	struct mddev *to_put = NULL;
+-
+-	++*pos;
+-	if (v == (void*)2)
+-		return NULL;
+-
+-	spin_lock(&all_mddevs_lock);
+-	if (v == (void*)1) {
+-		tmp = all_mddevs.next;
+-	} else {
+-		to_put = mddev;
+-		tmp = mddev->all_mddevs.next;
+-	}
+-
+-	for (;;) {
+-		if (tmp == &all_mddevs) {
+-			next_mddev = (void*)2;
+-			*pos = 0x10000;
+-			break;
+-		}
+-		next_mddev = list_entry(tmp, struct mddev, all_mddevs);
+-		if (mddev_get(next_mddev))
+-			break;
+-		mddev = next_mddev;
+-		tmp = mddev->all_mddevs.next;
+-	}
+-	spin_unlock(&all_mddevs_lock);
+-
+-	if (to_put)
+-		mddev_put(to_put);
+-	return next_mddev;
+-
++	return seq_list_next(v, &all_mddevs, pos);
+ }
+ 
+ static void md_seq_stop(struct seq_file *seq, void *v)
++	__releases(&all_mddevs_lock)
+ {
+-	struct mddev *mddev = v;
+-
+-	if (mddev && v != (void*)1 && v != (void*)2)
+-		mddev_put(mddev);
++	status_unused(seq);
++	spin_unlock(&all_mddevs_lock);
+ }
+ 
+ static int md_seq_show(struct seq_file *seq, void *v)
+ {
+-	struct mddev *mddev = v;
++	struct mddev *mddev = list_entry(v, struct mddev, all_mddevs);
+ 	sector_t sectors;
+ 	struct md_rdev *rdev;
+ 
+-	if (v == (void*)1) {
+-		struct md_personality *pers;
+-		seq_printf(seq, "Personalities : ");
+-		spin_lock(&pers_lock);
+-		list_for_each_entry(pers, &pers_list, list)
+-			seq_printf(seq, "[%s] ", pers->name);
+-
+-		spin_unlock(&pers_lock);
+-		seq_printf(seq, "\n");
+-		seq->poll_event = atomic_read(&md_event_count);
++	if (!mddev_get(mddev))
+ 		return 0;
+-	}
+-	if (v == (void*)2) {
+-		status_unused(seq);
+-		return 0;
+-	}
+ 
++	spin_unlock(&all_mddevs_lock);
+ 	spin_lock(&mddev->lock);
+ 	if (mddev->pers || mddev->raid_disks || !list_empty(&mddev->disks)) {
+ 		seq_printf(seq, "%s : %sactive", mdname(mddev),
+@@ -8419,6 +8360,9 @@ static int md_seq_show(struct seq_file *seq, void *v)
+ 		seq_printf(seq, "\n");
+ 	}
+ 	spin_unlock(&mddev->lock);
++	spin_lock(&all_mddevs_lock);
++	if (atomic_dec_and_test(&mddev->active))
++		__mddev_put(mddev);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
