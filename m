@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B78A50930
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBCAA5086C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2556C3A4093
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0082B1888B99
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B38625332A;
-	Wed,  5 Mar 2025 18:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B8A20C004;
+	Wed,  5 Mar 2025 18:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/PjdQJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hretjlSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8C82512EF;
-	Wed,  5 Mar 2025 18:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A643A1A3174;
+	Wed,  5 Mar 2025 18:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198538; cv=none; b=TTmbRRh/KURIvrqE6UtCBQPmNpAzCixg2ERcMJiGUUvU/quJeWbSoY3kZduQJCrFUg8x/Tfw1/YGWxR3BbrlKsM4LZzcCE+aqeaJSz76qoSrdWV309/Vo7IVYQ+HhU9hlkW0VQU5Ke9zou4QNVNZ1+QAkDMu1+/qQI8xGEelu1A=
+	t=1741197992; cv=none; b=qzCWJB3jW3z+WbMhmea6jg6v61xVuCJKH16YTfrND8SlzD2cL2BNvoE5XHLj/zGjfI6GAz2d0ScokcYxzqMak5qp6tqrEl8fcsWi0PqyKyvOFf5uHXlMUOKtgz1ev2cyhRCGRfGE7G8PtrZXMlRv8vPZbaIWUVrgSQ9mQ3WQIp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198538; c=relaxed/simple;
-	bh=gW+XLf4IdWU7b6PIjBIGtRM6yAcsbs3TbHnDg/CVcl4=;
+	s=arc-20240116; t=1741197992; c=relaxed/simple;
+	bh=MuE0pvc6GDey2JjfB4A+RfSdq6hF427vZ32FmHXGbeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcSqbBOI50VPxVNWmIvFhXV7Pvl0FmKQhX150ZNXxqRMUjqWmt6A/Db4QdhwRzC6J8Bo7a28tObbfzdYXqR1/fP/D6qMQkuylKwxgI1D08Cf41XtWeQYVys2h1JZQ7MoA1WMZjNkB8TvM00M88SrsnjEk/qMHG2Bolj6i0nq3KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/PjdQJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56598C4CED1;
-	Wed,  5 Mar 2025 18:15:38 +0000 (UTC)
+	 MIME-Version; b=XSJlb70kX8If0axgo14YZ0Nb9tNkAl1BkKI1F9dbGCgw3Nx6eWXovhKPkkVu7xI00doJXAUtqlBzG50DmmCsATIqsTbApUlcoxDRYgE3IH6DjSZxAgFR3JnBSvytM6idL2NE4vEVwAph+gfWyCLLTzlvpcF/hsUHDzYYFpv1KPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hretjlSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB65C4CED1;
+	Wed,  5 Mar 2025 18:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198538;
-	bh=gW+XLf4IdWU7b6PIjBIGtRM6yAcsbs3TbHnDg/CVcl4=;
+	s=korg; t=1741197992;
+	bh=MuE0pvc6GDey2JjfB4A+RfSdq6hF427vZ32FmHXGbeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/PjdQJMJTKg9JwJPmoLe9CL3xiKx7RBFkmzCZJ+ETkRLzGmLE5XWRX1BLaYeMR9m
-	 GgMyYJrMk5UuGT5meASJr2CXpCHL6MGR7zUGUjLiBy/wi7Df9uhFhdoGZbXQp1TyvI
-	 fWt/oZPpLt5LnDmcOmvGoMxd3MRrXAwuqDmDJEU8=
+	b=hretjlSpqPA6y8m8AivWSCczWYXtMoHG5YMlnEB8hQAdhSw+Am8ueSXKP/BFR4TDx
+	 83bxwpSBJFKR/DdQpNxTwFhudLkAX+P31F0t/ac0w425/T3BbzU5NXUBxpkx7GurU2
+	 Ovkvw09+LoFZnI7TLBLLf08MKTTXok5E84cxaNC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 020/157] scsi: core: Clear driver private data when retrying request
+Subject: [PATCH 6.12 027/150] sunrpc: suppress warnings for unused procfs functions
 Date: Wed,  5 Mar 2025 18:47:36 +0100
-Message-ID: <20250305174506.101734745@linuxfoundation.org>
+Message-ID: <20250305174504.907460050@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit dce5c4afd035e8090a26e5d776b1682c0e649683 ]
+[ Upstream commit 1f7a4f98c11fbeb18ed21f3b3a497e90a50ad2e0 ]
 
-After commit 1bad6c4a57ef ("scsi: zero per-cmd private driver data for each
-MQ I/O"), the xen-scsifront/virtio_scsi/snic drivers all removed code that
-explicitly zeroed driver-private command data.
+There is a warning about unused variables when building with W=1 and no procfs:
 
-In combination with commit 464a00c9e0ad ("scsi: core: Kill DRIVER_SENSE"),
-after virtio_scsi performs a capacity expansion, the first request will
-return a unit attention to indicate that the capacity has changed. And then
-the original command is retried. As driver-private command data was not
-cleared, the request would return UA again and eventually time out and fail.
+net/sunrpc/cache.c:1660:30: error: 'cache_flush_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1660 | static const struct proc_ops cache_flush_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~~~~~
+net/sunrpc/cache.c:1622:30: error: 'content_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1622 | static const struct proc_ops content_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~
+net/sunrpc/cache.c:1598:30: error: 'cache_channel_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1598 | static const struct proc_ops cache_channel_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
 
-Zero driver-private command data when a request is retried.
+These are used inside of an #ifdef, so replacing that with an
+IS_ENABLED() check lets the compiler see how they are used while
+still dropping them during dead code elimination.
 
-Fixes: f7de50da1479 ("scsi: xen-scsifront: Remove code that zeroes driver-private command data")
-Fixes: c2bb87318baa ("scsi: virtio_scsi: Remove code that zeroes driver-private command data")
-Fixes: c3006a926468 ("scsi: snic: Remove code that zeroes driver-private command data")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20250217021628.2929248-1-yebin@huaweicloud.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: dbf847ecb631 ("knfsd: allow cache_register to return error on failure")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/sunrpc/cache.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 5f9b107ae267f..43766589bfc6e 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1656,13 +1656,6 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
- 	if (in_flight)
- 		__set_bit(SCMD_STATE_INFLIGHT, &cmd->state);
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 059f6ef1ad189..7fcb0574fc79e 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -1669,12 +1669,14 @@ static void remove_cache_proc_entries(struct cache_detail *cd)
+ 	}
+ }
  
--	/*
--	 * Only clear the driver-private command data if the LLD does not supply
--	 * a function to initialize that data.
--	 */
--	if (!shost->hostt->init_cmd_priv)
--		memset(cmd + 1, 0, shost->hostt->cmd_size);
--
- 	cmd->prot_op = SCSI_PROT_NORMAL;
- 	if (blk_rq_bytes(req))
- 		cmd->sc_data_direction = rq_dma_dir(req);
-@@ -1829,6 +1822,13 @@ static blk_status_t scsi_queue_rq(struct blk_mq_hw_ctx *hctx,
- 	if (!scsi_host_queue_ready(q, shost, sdev, cmd))
- 		goto out_dec_target_busy;
+-#ifdef CONFIG_PROC_FS
+ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+ {
+ 	struct proc_dir_entry *p;
+ 	struct sunrpc_net *sn;
  
-+	/*
-+	 * Only clear the driver-private command data if the LLD does not supply
-+	 * a function to initialize that data.
-+	 */
-+	if (shost->hostt->cmd_size && !shost->hostt->init_cmd_priv)
-+		memset(cmd + 1, 0, shost->hostt->cmd_size);
++	if (!IS_ENABLED(CONFIG_PROC_FS))
++		return 0;
 +
- 	if (!(req->rq_flags & RQF_DONTPREP)) {
- 		ret = scsi_prepare_cmd(req);
- 		if (ret != BLK_STS_OK)
+ 	sn = net_generic(net, sunrpc_net_id);
+ 	cd->procfs = proc_mkdir(cd->name, sn->proc_net_rpc);
+ 	if (cd->procfs == NULL)
+@@ -1702,12 +1704,6 @@ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+ 	remove_cache_proc_entries(cd);
+ 	return -ENOMEM;
+ }
+-#else /* CONFIG_PROC_FS */
+-static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+-{
+-	return 0;
+-}
+-#endif
+ 
+ void __init cache_initialize(void)
+ {
 -- 
 2.39.5
 
