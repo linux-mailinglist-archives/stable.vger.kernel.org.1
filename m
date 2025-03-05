@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4837AA5090C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F309A50854
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B317163005
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DE513B0128
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B83D2517A0;
-	Wed,  5 Mar 2025 18:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9981B24C07D;
+	Wed,  5 Mar 2025 18:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evpz9e91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0e9vfmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3783678F3A;
-	Wed,  5 Mar 2025 18:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5795417B505;
+	Wed,  5 Mar 2025 18:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198393; cv=none; b=huenFvG2IxlDGuEg+ip9wWlNY3YZwsIUVcsvmCNPUjXoKchzqRE1Mz7m8QQy3AfWyS0V+p1fXCSDtx1xxlo0tkViTMfOrSM5EiHlOntP8EHaG6r35asuOWTprXBf0wx/FuQq47IhFJKFRpVC16eNQQSrwjjkUslmgm8f0qwmcqg=
+	t=1741197969; cv=none; b=GHm7DjUBM2X3Oyv6fyTTurm1gHTdpS5GN1peXRJZkLH2uXbXInW4HEjND6IFq4cEQS0oDyQ4Bz666QYz6Zwkid3NBtOKahJkM9C4tbIBp7ur5O9MQNf3i65iwVLcgoGb2uI3FEMNsiuZyi5LC2Z0aIZyp3IkEc00BoHYwDjPYys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198393; c=relaxed/simple;
-	bh=8bWcm94E2memMbaZZKS35c8PeZYPZ+v0LpgtU8iqWpI=;
+	s=arc-20240116; t=1741197969; c=relaxed/simple;
+	bh=+x9pgCc9yuVjQ+98H89tn7F9aH4ov/4inOkD/n0Sl4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shgb72uAmbG3U9qtO+PpV5aBxT53GJ3vfwYxFhSNXMdJvPndGE4eqAUrIhu8FGGWjMOQ3AhqSCkvIw/7D94iQI8WqVk1BuCsk9j59wo9nOzeWchnduPAy8BG0abCNUQuaeefCn8k7GQTcg0RoxZ3DB0JnHaY/DJ9m4YaCuU/lok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evpz9e91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B312FC4CED1;
-	Wed,  5 Mar 2025 18:13:12 +0000 (UTC)
+	 MIME-Version; b=hBmWjH0aaIAoSmI3rF6Tnz2u+mIASruU21BN4wxvh39CH2zah0/sCPT/SBzgd2BICs1BtINimk4ds6q8dfNCu2KY0d+uDsPENfPfD8Jf5BEKfIhB65SEM97wqgTlxGX8sU0+3dAOgQoqmGAhtsdDIFEwLe8/QqsGBGQArAGo+1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0e9vfmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D558DC4CED1;
+	Wed,  5 Mar 2025 18:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198393;
-	bh=8bWcm94E2memMbaZZKS35c8PeZYPZ+v0LpgtU8iqWpI=;
+	s=korg; t=1741197969;
+	bh=+x9pgCc9yuVjQ+98H89tn7F9aH4ov/4inOkD/n0Sl4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evpz9e91pGmFGTt8gc6VpgweuRZUNXB9uHYZpOk0hVQfHakhfba5N6cyOnZPKxKv2
-	 AAtAt7D3iuVaPa1MQBT1m8+ay8cSTj1uX38sT104PmaXRgCzB8NkrvsUNH49k/wjA4
-	 9HVF3WTL/zfxjY9WGMSabwNjR/Xn/PAuUZi3POAI=
+	b=c0e9vfmrNSxRfHqf/ounmSb+K8040kVZvDqug+cCql7WnxKxpggAskmWndCJ4ONcs
+	 2V44omKu1Eg6e55ojs6sTnymn9s6FZp+55gBmqUe6Ryd8X21kzaZnlErbo3200Trrf
+	 Aorl4DoQykWqyaqaoCNHQ8JfiMbtOgkLUj4p8De4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
 	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 013/157] NFS: O_DIRECT writes must check and adjust the file length
+Subject: [PATCH 6.12 020/150] SUNRPC: Handle -ETIMEDOUT return from tlshd
 Date: Wed,  5 Mar 2025 18:47:29 +0100
-Message-ID: <20250305174505.816324359@linuxfoundation.org>
+Message-ID: <20250305174504.622610278@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit fcf857ee1958e9247298251f7615d0c76f1e9b38 ]
+[ Upstream commit 7a2f6f7687c5f7083a35317cddec5ad9fa491443 ]
 
-While it is uncommon for delegations to be held while O_DIRECT writes
-are in progress, it is possible. The xfstests generic/647 and
-generic/729 both end up triggering that state, and end up failing due to
-the fact that the file size is not adjusted.
+If the TLS handshake attempt returns -ETIMEDOUT, we currently translate
+that error into -EACCES.  This becomes problematic for cases where the RPC
+layer is attempting to re-connect in paths that don't resonably handle
+-EACCES, for example: writeback.  The RPC layer can handle -ETIMEDOUT quite
+well, however - so if the handshake returns this error let's just pass it
+along.
 
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219738
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 75eb6af7acdf ("SUNRPC: Add a TCP-with-TLS RPC transport class")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: 88025c67fe3c ("NFS: Adjust delegated timestamps for O_DIRECT reads and writes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ net/sunrpc/xprtsock.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index b08dbe96bc579..8f2aa2bf45659 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -130,6 +130,20 @@ static void nfs_direct_truncate_request(struct nfs_direct_req *dreq,
- 		dreq->count = req_start;
- }
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index b69e6290acfab..171ad4e2523f1 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2580,7 +2580,15 @@ static void xs_tls_handshake_done(void *data, int status, key_serial_t peerid)
+ 	struct sock_xprt *lower_transport =
+ 				container_of(lower_xprt, struct sock_xprt, xprt);
  
-+static void nfs_direct_file_adjust_size_locked(struct inode *inode,
-+					       loff_t offset, size_t count)
-+{
-+	loff_t newsize = offset + (loff_t)count;
-+	loff_t oldsize = i_size_read(inode);
-+
-+	if (newsize > oldsize) {
-+		i_size_write(inode, newsize);
-+		NFS_I(inode)->cache_validity &= ~NFS_INO_INVALID_SIZE;
-+		trace_nfs_size_grow(inode, newsize);
-+		nfs_inc_stats(inode, NFSIOS_EXTENDWRITE);
+-	lower_transport->xprt_err = status ? -EACCES : 0;
++	switch (status) {
++	case 0:
++	case -EACCES:
++	case -ETIMEDOUT:
++		lower_transport->xprt_err = status;
++		break;
++	default:
++		lower_transport->xprt_err = -EACCES;
 +	}
-+}
-+
- /**
-  * nfs_swap_rw - NFS address space operation for swap I/O
-  * @iocb: target I/O control block
-@@ -740,6 +754,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
- 	struct nfs_direct_req *dreq = hdr->dreq;
- 	struct nfs_commit_info cinfo;
- 	struct nfs_page *req = nfs_list_entry(hdr->pages.next);
-+	struct inode *inode = dreq->inode;
- 	int flags = NFS_ODIRECT_DONE;
- 
- 	trace_nfs_direct_write_completion(dreq);
-@@ -761,6 +776,10 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
- 	}
- 	spin_unlock(&dreq->lock);
- 
-+	spin_lock(&inode->i_lock);
-+	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
-+	spin_unlock(&inode->i_lock);
-+
- 	while (!list_empty(&hdr->pages)) {
- 
- 		req = nfs_list_entry(hdr->pages.next);
+ 	complete(&lower_transport->handshake_done);
+ 	xprt_put(lower_xprt);
+ }
 -- 
 2.39.5
 
