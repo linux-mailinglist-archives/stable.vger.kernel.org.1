@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC3BA5079A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB7DA508D1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87B5E1692B3
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 658B416AB2B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF862512FE;
-	Wed,  5 Mar 2025 17:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7E0230BC6;
+	Wed,  5 Mar 2025 18:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MLzowoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKOhrPDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDA82512D9;
-	Wed,  5 Mar 2025 17:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5BE1A5BB7;
+	Wed,  5 Mar 2025 18:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197502; cv=none; b=ivx5QgHe7nGHn0REwX3gqelFFUakpBod4Dihm0HxKbGZsAS6bu5FRWzPqER3gB0xFO+9YTSRtcyPZTtHqDpaVEF69NQN9HLD20cunWJYXBWt73DpVOprMbppA9wrr6nEVbdm1Yg2I1V9W0U4+xchFBaW+qL+X43esK2CyHwuU3o=
+	t=1741198260; cv=none; b=klTcuunqAceNw2SjjLG1P1/N+LahTq24AXpjBP3tbnr/jtA+XMb3k/GBmg5CP34ieP9nvIyHwVa5zVcOPx6kk4Wm7V/JxWGVXVGb6p39pgugjYbQp3JWCbzFiEN2G3Fzy1sgNUbNlTORrlwcwDrufrZTJJyiHpVMAFFOf640xzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197502; c=relaxed/simple;
-	bh=NcgPlvMtesUwBxf20c1CqTpmDuUfUBZDcl/2P1Ms3gc=;
+	s=arc-20240116; t=1741198260; c=relaxed/simple;
+	bh=N4eCURzchOLq7p9MRWji8wnEYKkRn0I338IXUyIapfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GB24LYeiKzL+/fO6IRH8i/WDwalcl0KYIIO6JpSP6r9Nww/C5ze1RVvwiDY00uHSPTMR8ac0lRL0ij48YQum8qelOefegO2+ivQVm4QmwE3isxs7WLyUVP5FaBB2pU9vHDew/wMAgQgru+UGfyN+3pgnrf/uCEB8D32a94gpevs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MLzowoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B6AC4CED1;
-	Wed,  5 Mar 2025 17:58:21 +0000 (UTC)
+	 MIME-Version; b=OkPzR/+vSGTzkcLJQdPETDXFsr6pjMldAopnjyci585oZMwhlIUmTQkAUVRgWTgA6RKSL4SojUMfDWZVASDsgP3JonBB2Owuby+pL8LRojJw2eqMuz19yCNo3nInpSkuweOKqgH1kV+yYfzcUf2E/64/gup1A9WEseq96Yf1FC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKOhrPDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3943C4CEE0;
+	Wed,  5 Mar 2025 18:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197502;
-	bh=NcgPlvMtesUwBxf20c1CqTpmDuUfUBZDcl/2P1Ms3gc=;
+	s=korg; t=1741198260;
+	bh=N4eCURzchOLq7p9MRWji8wnEYKkRn0I338IXUyIapfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1MLzowoXkQzBmBZ7MWQp/Y3I4+BjiEZxXtPET1wpfcydhdqx6s7NmQxboZ1YVMzAK
-	 z2lcnTt8jauZVF7wrZgg+G9LRg32YStE0Tbc7qTO2WJ+7JOqZeWmP+7FbpNGrUKo8O
-	 4mLDDEzoP996/j+3xVSM4+2F7l5NJhxJeZ71ybjI=
+	b=eKOhrPDbLHfAMo//aZzK4Wru8UnoNhK6OXbql/2TZjLqmKEIdeCxC4DV8hpavhUxj
+	 nM8RctWjTBbIKlB/rx5w1FsWWjzTfDWr3zihmr66J8KCYQtBGIkdJ2dFjf1SIbypXO
+	 WEdABT7uX2AgljZxmZkbRWTgEZPjY9D/P/dcj80Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fab Stz <fabstz-it@yahoo.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 171/176] intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 111/150] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
 Date: Wed,  5 Mar 2025 18:49:00 +0100
-Message-ID: <20250305174512.304392737@linuxfoundation.org>
+Message-ID: <20250305174508.274644768@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit c157d351460bcf202970e97e611cb6b54a3dd4a4 upstream.
+commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
 
-The Intel idle driver is preferred over the ACPI processor idle driver,
-but fails to implement the work around for Core2 generation CPUs, where
-the TSC stops in C2 and deeper C-states. This causes stalls and boot
-delays, when the clocksource watchdog does not catch the unstable TSC
-before the CPU goes deep idle for the first time.
+When a DMA mapping error occurs while processing skb frags, it will free
+one more tx_swbd than expected, so fix this off-by-one issue.
 
-The ACPI driver marks the TSC unstable when it detects that the CPU
-supports C2 or deeper and the CPU does not have a non-stop TSC.
-
-Add the equivivalent work around to the Intel idle driver to cure that.
-
-Fixes: 18734958e9bf ("intel_idle: Use ACPI _CST for processor models without C-state tables")
-Reported-by: Fab Stz <fabstz-it@yahoo.fr>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Fab Stz <fabstz-it@yahoo.fr>
-Cc: All applicable <stable@vger.kernel.org>
-Closes: https://lore.kernel.org/all/10cf96aa-1276-4bd4-8966-c890377030c3@yahoo.fr
-Link: https://patch.msgid.link/87bjupfy7f.ffs@tglx
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/idle/intel_idle.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -56,6 +56,7 @@
- #include <asm/nospec-branch.h>
- #include <asm/mwait.h>
- #include <asm/msr.h>
-+#include <asm/tsc.h>
- #include <asm/fpu/api.h>
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -145,6 +145,24 @@ static int enetc_ptp_parse(struct sk_buf
+ 	return 0;
+ }
  
- #define INTEL_IDLE_VERSION "0.5.1"
-@@ -1583,6 +1584,9 @@ static void __init intel_idle_init_cstat
- 		if (intel_idle_state_needs_timer_stop(state))
- 			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
- 
-+		if (cx->type > ACPI_STATE_C1 && !boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
-+			mark_tsc_unstable("TSC halts in idle");
++/**
++ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
++ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
++ * @count: Number of Tx buffer descriptors which need to be unmapped
++ * @i: Index of the last successfully mapped Tx buffer descriptor
++ */
++static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
++{
++	while (count--) {
++		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
 +
- 		state->enter = intel_idle;
- 		state->enter_s2idle = intel_idle_s2idle;
- 	}
++		enetc_free_tx_frame(tx_ring, tx_swbd);
++		if (i == 0)
++			i = tx_ring->bd_count;
++		i--;
++	}
++}
++
+ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ {
+ 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
+@@ -328,13 +346,7 @@ static int enetc_map_tx_buffs(struct ene
+ dma_err:
+ 	dev_err(tx_ring->dev, "DMA map error");
+ 
+-	do {
+-		tx_swbd = &tx_ring->tx_swbd[i];
+-		enetc_free_tx_frame(tx_ring, tx_swbd);
+-		if (i == 0)
+-			i = tx_ring->bd_count;
+-		i--;
+-	} while (count--);
++	enetc_unwind_tx_frame(tx_ring, count, i);
+ 
+ 	return 0;
+ }
 
 
 
