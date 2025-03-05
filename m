@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C90A50895
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97D9A50818
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D56416C855
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2268B17496B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC4F2512D6;
-	Wed,  5 Mar 2025 18:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82BA250BFB;
+	Wed,  5 Mar 2025 18:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6dlv/jR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQNmd85T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B50225179E;
-	Wed,  5 Mar 2025 18:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971E9250BE9;
+	Wed,  5 Mar 2025 18:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198100; cv=none; b=Grss57BvHTvRBO5ghVfIZcfUO5pFPsM0/PsqofxICh5ZQWqLmjp3jXdqPIePbWsH2aa5S8qw0M7BO9aHRFQXxnbB05ynqvaVmzNyrJ/SRXMILVHdGwX1zajebZ7/Rko1ZDVd+7GFymiY6rPp7ouMFhn4NAhorm7grfDPxDlovjE=
+	t=1741197803; cv=none; b=IoipBbnr4Saf/RWFeKIbwJ4gYzF7xgzFC3wzqX8X30yiWvBATCeZz5Tbo7QPf+b5M6WDVOHSKOpQOuT1DWb0N/bvOBUc1ZJgvLNxCR6jzoE2HhHTgTa7Bugt/IYKnWtmbEynBx5ElwrTxGzezNJCb1ZsOQdl3cKRgtJ3gVtvJH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198100; c=relaxed/simple;
-	bh=7puEq7QkPGAsg1F2K2slKdcM83SlK7oyHaKR+BKLsmQ=;
+	s=arc-20240116; t=1741197803; c=relaxed/simple;
+	bh=BjVGJp2aFwLZbq68WPRjzWg3gYUAOroneRQrAQnfaHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4Y0zVfPoscioYO3W8+5lOj/ImYTdZG3Znmgu1IkH+RNYAppsM43BE8blZtnF33f+0QUsws1CErVxUhOFyWebx6CwrDVZRiLPrx3gGBkfJsRXVgxPmMmO3Cow0hpww2jTYERcHHivoRg6Hn6Ez5kXDkIddlJnEMdX1bzey7pz5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6dlv/jR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7956C4CED1;
-	Wed,  5 Mar 2025 18:08:19 +0000 (UTC)
+	 MIME-Version; b=A71sYJ1A5W0BOUO5Dtny3DYA2xIG+qSHXb0bHIUKH9D19MRGLy9MgQogyzT6TXEq4VFfQZubcCa8mcJi0phA7afnnHt750gzvgZSRY8zMef4AhysdNKfJmkFf+hTvNHvDarihNteofJnds/t1bfpnK+/DuvDG2udp58IqCDtxeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQNmd85T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC4AC4CED1;
+	Wed,  5 Mar 2025 18:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198100;
-	bh=7puEq7QkPGAsg1F2K2slKdcM83SlK7oyHaKR+BKLsmQ=;
+	s=korg; t=1741197803;
+	bh=BjVGJp2aFwLZbq68WPRjzWg3gYUAOroneRQrAQnfaHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6dlv/jRWU5x2qFAAy5w0KBll4sqXQcHwGX4Xdr2qrZ8xQzLjZ7Sm5qn5rYaLTuqM
-	 zzfNxiawhs5UvNHNqEBlCXpjYlk5MFk7x2tnHx2SFDlL9YVKCKR9ZrCttbjkX5ZvNq
-	 uQ17/JTOBBi3Bo9M4cWBcoThLoK1eN8RlWjcGJIU=
+	b=dQNmd85TPIcWaMIFBsF6pAmuskChZqRIO+xqYVUDZEeIxdSf9xBKfcMyCJsfrBw0c
+	 HyTtctzd3Ok3WZuh84Vo8KmlFgVNlk0/lorkIPljQMcLhLCyeZa9w+/fQMS9k18ouI
+	 V+qm8yQwfRGVxOcBuGUgx3wCZdec4P8Njlmaww74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <jdamato@fastly.com>,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/150] selftests: drv-net: Check if combined-count exists
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 074/142] net: enetc: keep track of correct Tx BD count in enetc_map_tx_tso_buffs()
 Date: Wed,  5 Mar 2025 18:48:13 +0100
-Message-ID: <20250305174506.392627484@linuxfoundation.org>
+Message-ID: <20250305174503.308760810@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Damato <jdamato@fastly.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 1cbddbddee68d17feb6467fc556c144777af91ef ]
+commit da291996b16ebd10626d4b20288327b743aff110 upstream.
 
-Some drivers, like tg3, do not set combined-count:
+When creating a TSO header, if the skb is VLAN tagged, the extended BD
+will be used and the 'count' should be increased by 2 instead of 1.
+Otherwise, when an error occurs, less tx_swbd will be freed than the
+actual number.
 
-$ ethtool -l enp4s0f1
-Channel parameters for enp4s0f1:
-Pre-set maximums:
-RX:		4
-TX:		4
-Other:		n/a
-Combined:	n/a
-Current hardware settings:
-RX:		4
-TX:		1
-Other:		n/a
-Combined:	n/a
-
-In the case where combined-count is not set, the ethtool netlink code
-in the kernel elides the value and the code in the test:
-
-  netnl.channels_get(...)
-
-With a tg3 device, the returned dictionary looks like:
-
-{'header': {'dev-index': 3, 'dev-name': 'enp4s0f1'},
- 'rx-max': 4,
- 'rx-count': 4,
- 'tx-max': 4,
- 'tx-count': 1}
-
-Note that the key 'combined-count' is missing. As a result of this
-missing key the test raises an exception:
-
- # Exception|     if channels['combined-count'] == 0:
- # Exception|        ~~~~~~~~^^^^^^^^^^^^^^^^^^
- # Exception| KeyError: 'combined-count'
-
-Change the test to check if 'combined-count' is a key in the dictionary
-first and if not assume that this means the driver has separate RX and
-TX queues.
-
-With this change, the test now passes successfully on tg3 and mlx5
-(which does have a 'combined-count').
-
-Fixes: 1cf270424218 ("net: selftest: add test for netdev netlink queue-get API")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250226181957.212189-1-jdamato@fastly.com
+Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
+Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-3-wei.fang@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/drivers/net/queues.py | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
-index 30f29096e27c2..4868b514ae78d 100755
---- a/tools/testing/selftests/drivers/net/queues.py
-+++ b/tools/testing/selftests/drivers/net/queues.py
-@@ -40,10 +40,9 @@ def addremove_queues(cfg, nl) -> None:
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -351,14 +351,15 @@ dma_err:
+ 	return 0;
+ }
  
-     netnl = EthtoolFamily()
-     channels = netnl.channels_get({'header': {'dev-index': cfg.ifindex}})
--    if channels['combined-count'] == 0:
--        rx_type = 'rx'
--    else:
--        rx_type = 'combined'
-+    rx_type = 'rx'
-+    if channels.get('combined-count', 0) > 0:
-+            rx_type = 'combined'
+-static void enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+-				 struct enetc_tx_swbd *tx_swbd,
+-				 union enetc_tx_bd *txbd, int *i, int hdr_len,
+-				 int data_len)
++static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
++				struct enetc_tx_swbd *tx_swbd,
++				union enetc_tx_bd *txbd, int *i, int hdr_len,
++				int data_len)
+ {
+ 	union enetc_tx_bd txbd_tmp;
+ 	u8 flags = 0, e_flags = 0;
+ 	dma_addr_t addr;
++	int count = 1;
  
-     expected = curr_queues - 1
-     cmd(f"ethtool -L {cfg.dev['ifname']} {rx_type} {expected}", timeout=10)
--- 
-2.39.5
-
+ 	enetc_clear_tx_bd(&txbd_tmp);
+ 	addr = tx_ring->tso_headers_dma + *i * TSO_HEADER_SIZE;
+@@ -401,7 +402,10 @@ static void enetc_map_tx_tso_hdr(struct
+ 		/* Write the BD */
+ 		txbd_tmp.ext.e_flags = e_flags;
+ 		*txbd = txbd_tmp;
++		count++;
+ 	}
++
++	return count;
+ }
+ 
+ static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+@@ -533,9 +537,9 @@ static int enetc_map_tx_tso_buffs(struct
+ 
+ 		/* compute the csum over the L4 header */
+ 		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
+-		enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd, &i, hdr_len, data_len);
++		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
++					      &i, hdr_len, data_len);
+ 		bd_data_num = 0;
+-		count++;
+ 
+ 		while (data_len > 0) {
+ 			int size;
 
 
 
