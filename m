@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80606A508C6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7332A50811
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A431896197
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B7D07A411E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B422517AE;
-	Wed,  5 Mar 2025 18:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FE81A3174;
+	Wed,  5 Mar 2025 18:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uB0+TcvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ik0KpPdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FA619E7D1;
-	Wed,  5 Mar 2025 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82D6251798;
+	Wed,  5 Mar 2025 18:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198177; cv=none; b=iuTAgktfcPOaQQ+BRqu2KAJkWlm2CcfYQ+Ju4lIACTqnxX4CM6Js7Q853YMPDSN+QQkqFQrkVGeSlFeBlqFs6yt83FjiZ7+4C5asNUoFzqpLwPpM7D934wmljWKaHKiIaweTPal/3u7QqVW412TqEUKk+92S1/2E1GH7rKnDyJ4=
+	t=1741197797; cv=none; b=cyEpfsxgTD32i2e6rTgFwc4uU2Hm+ISF2PAF8TTVGb1Mdx4wSDEmWVfv7GvppnL8NrlB+frR9jaR9Di4xBXTvFfOLoZURM1lpDSlApK3UxoDDNLaVVxBTLFeIphIbd6mcY0eOF8y+5pgOAaKPmWAw4okV5sVUGYGcRCxdBSsOYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198177; c=relaxed/simple;
-	bh=7sNqrlv5ShrvLZHiq5ha6wjR7G6zUebM6TnzNfLNlXo=;
+	s=arc-20240116; t=1741197797; c=relaxed/simple;
+	bh=Sba602fPNSeI3wnVE+nxwCiRNag9VcLUvhK3nwOINJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtIJQSlUpTWcpfSCzjG5LBMtW2+azwfnD12b0dkjGhV7jmt5BoNxAbPXnGTc996VM09lK0fOfNIXKpWPfyPMZc5sNNaWv591XCtSL8lClEx7bfoiWT2GIXDbIl9M//SBXau/jFlS0xTnVDnluCHv9nn2cGA0wWCgL0HLBBh3wNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uB0+TcvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AABC4CEE0;
-	Wed,  5 Mar 2025 18:09:36 +0000 (UTC)
+	 MIME-Version; b=mOJYZnIeIogm/W61OB7DHg9kIll3Hh7IQHfrPuFgwR6HOKv24eeVe+RBJENr/MogHzjNaxsmwHqJtITvuw3rgh+X0x7UvTbrCXTUHRjCji6P5MqLnrTFkKZoqaBkJYAnMd7VgZmlvJWqpBbm0Vwl1uW1QO/kPQ/vE/6N/mGLnuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ik0KpPdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005DAC4CED1;
+	Wed,  5 Mar 2025 18:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198177;
-	bh=7sNqrlv5ShrvLZHiq5ha6wjR7G6zUebM6TnzNfLNlXo=;
+	s=korg; t=1741197794;
+	bh=Sba602fPNSeI3wnVE+nxwCiRNag9VcLUvhK3nwOINJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uB0+TcvS/Owyol91tzjEY+pCkDKocSZ9iFVt6dJqreZaIikF7J4USKGfLeip774Xo
-	 pS9pEWTV95uxGNafyyBOSGDiZ2UjBYfmDuzxTKO6fVJNXf7Pp4wxKbk3SRw7Y9NNBd
-	 G+V1eoxioPSdWOjkYWhA77PpUZQm2CHOUlUjlSwk=
+	b=Ik0KpPdGdaxkqp4/by1dukTjY4kdcRsNtfgNkqMENWW0UokzpNZfna5EVaRDgbUed
+	 TsOx9kUrph9ekaMv0A33fmXNKKGUCu8FS8v91TY9URtWzrpJqLQ6GklganZo7oYgRd
+	 enmSlE9J43mnLQZgQ/LfNflNPPykU3ipSs3qrLHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.12 091/150] perf/x86: Fix low freqency setting issue
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 101/142] x86/microcode/intel: Cleanup code further
 Date: Wed,  5 Mar 2025 18:48:40 +0100
-Message-ID: <20250305174507.467590478@linuxfoundation.org>
+Message-ID: <20250305174504.391558962@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 88ec7eedbbd21cad38707620ad6c48a4e9a87c18 upstream.
+commit 0177669ee61de4dc641f9ad86a3df6f22327cf6c upstream
 
-Perf doesn't work at low frequencies:
+Sanitize the microcode scan loop, fixup printks and move the loading
+function for builtin microcode next to the place where it is used and mark
+it __init.
 
-  $ perf record -e cpu_core/instructions/ppp -F 120
-  Error:
-  The sys_perf_event_open() syscall returned with 22 (Invalid argument)
-  for event (cpu_core/instructions/ppp).
-  "dmesg | grep -i perf" may provide additional information.
-
-The limit_period() check avoids a low sampling period on a counter. It
-doesn't intend to limit the frequency.
-
-The check in the x86_pmu_hw_config() should be limited to non-freq mode.
-The attr.sample_period and attr.sample_freq are union. The
-attr.sample_period should not be used to indicate the frequency mode.
-
-Fixes: c46e665f0377 ("perf/x86: Add INST_RETIRED.ALL workarounds")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250117151913.3043942-1-kan.liang@linux.intel.com
-Closes: https://lore.kernel.org/lkml/20250115154949.3147-1-ravi.bangoria@amd.com/
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115902.389400871@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/intel.c |   76 ++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 44 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -628,7 +628,7 @@ int x86_pmu_hw_config(struct perf_event
- 	if (event->attr.type == event->pmu->type)
- 		event->hw.config |= x86_pmu_get_event_config(event);
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -36,7 +36,7 @@ static const char ucode_path[] = "kernel
+ static struct microcode_intel *intel_ucode_patch __read_mostly;
  
--	if (event->attr.sample_period && x86_pmu.limit_period) {
-+	if (!event->attr.freq && x86_pmu.limit_period) {
- 		s64 left = event->attr.sample_period;
- 		x86_pmu.limit_period(event, &left);
- 		if (left > event->attr.sample_period)
+ /* last level cache size per core */
+-static int llc_size_per_core __ro_after_init;
++static unsigned int llc_size_per_core __ro_after_init;
+ 
+ /* microcode format is extended from prescott processors */
+ struct extended_signature {
+@@ -294,29 +294,6 @@ static struct microcode_intel *scan_micr
+ 	return patch;
+ }
+ 
+-static bool load_builtin_intel_microcode(struct cpio_data *cp)
+-{
+-	unsigned int eax = 1, ebx, ecx = 0, edx;
+-	struct firmware fw;
+-	char name[30];
+-
+-	if (IS_ENABLED(CONFIG_X86_32))
+-		return false;
+-
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-
+-	sprintf(name, "intel-ucode/%02x-%02x-%02x",
+-		      x86_family(eax), x86_model(eax), x86_stepping(eax));
+-
+-	if (firmware_request_builtin(&fw, name)) {
+-		cp->size = fw.size;
+-		cp->data = (void *)fw.data;
+-		return true;
+-	}
+-
+-	return false;
+-}
+-
+ static int apply_microcode_early(struct ucode_cpu_info *uci)
+ {
+ 	struct microcode_intel *mc;
+@@ -360,6 +337,28 @@ static int apply_microcode_early(struct
+ 	return 0;
+ }
+ 
++static bool load_builtin_intel_microcode(struct cpio_data *cp)
++{
++	unsigned int eax = 1, ebx, ecx = 0, edx;
++	struct firmware fw;
++	char name[30];
++
++	if (IS_ENABLED(CONFIG_X86_32))
++		return false;
++
++	native_cpuid(&eax, &ebx, &ecx, &edx);
++
++	sprintf(name, "intel-ucode/%02x-%02x-%02x",
++		x86_family(eax), x86_model(eax), x86_stepping(eax));
++
++	if (firmware_request_builtin(&fw, name)) {
++		cp->size = fw.size;
++		cp->data = (void *)fw.data;
++		return true;
++	}
++	return false;
++}
++
+ int __init save_microcode_in_initrd_intel(void)
+ {
+ 	struct ucode_cpu_info uci;
+@@ -432,25 +431,16 @@ void load_ucode_intel_ap(void)
+ 	apply_microcode_early(&uci);
+ }
+ 
+-/* Accessor for microcode pointer */
+-static struct microcode_intel *ucode_get_patch(void)
+-{
+-	return intel_ucode_patch;
+-}
+-
+ void reload_ucode_intel(void)
+ {
+-	struct microcode_intel *p;
+ 	struct ucode_cpu_info uci;
+ 
+ 	intel_cpu_collect_info(&uci);
+ 
+-	p = ucode_get_patch();
+-	if (!p)
++	uci.mc = intel_ucode_patch;
++	if (!uci.mc)
+ 		return;
+ 
+-	uci.mc = p;
+-
+ 	apply_microcode_early(&uci);
+ }
+ 
+@@ -488,8 +478,7 @@ static enum ucode_state apply_microcode_
+ 	if (WARN_ON(raw_smp_processor_id() != cpu))
+ 		return UCODE_ERROR;
+ 
+-	/* Look for a newer patch in our cache: */
+-	mc = ucode_get_patch();
++	mc = intel_ucode_patch;
+ 	if (!mc) {
+ 		mc = uci->mc;
+ 		if (!mc)
+@@ -680,18 +669,17 @@ static enum ucode_state request_microcod
+ }
+ 
+ static struct microcode_ops microcode_intel_ops = {
+-	.request_microcode_fw             = request_microcode_fw,
+-	.collect_cpu_info                 = collect_cpu_info,
+-	.apply_microcode                  = apply_microcode_intel,
++	.request_microcode_fw	= request_microcode_fw,
++	.collect_cpu_info	= collect_cpu_info,
++	.apply_microcode	= apply_microcode_intel,
+ };
+ 
+-static int __init calc_llc_size_per_core(struct cpuinfo_x86 *c)
++static __init void calc_llc_size_per_core(struct cpuinfo_x86 *c)
+ {
+ 	u64 llc_size = c->x86_cache_size * 1024ULL;
+ 
+ 	do_div(llc_size, c->x86_max_cores);
+-
+-	return (int)llc_size;
++	llc_size_per_core = (unsigned int)llc_size;
+ }
+ 
+ struct microcode_ops * __init init_intel_microcode(void)
+@@ -704,7 +692,7 @@ struct microcode_ops * __init init_intel
+ 		return NULL;
+ 	}
+ 
+-	llc_size_per_core = calc_llc_size_per_core(c);
++	calc_llc_size_per_core(c);
+ 
+ 	return &microcode_intel_ops;
+ }
 
 
 
