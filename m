@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4EFA50873
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60724A507E2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE36416681E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C47817483A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C451C6FF6;
-	Wed,  5 Mar 2025 18:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F47F78F3A;
+	Wed,  5 Mar 2025 18:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIwiPvC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7/nURLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9347119C542;
-	Wed,  5 Mar 2025 18:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF96250C1A;
+	Wed,  5 Mar 2025 18:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198062; cv=none; b=UWuy7k/1LBOmavKsAXksynTDqmJ0Uts49gW6NcYoa52b82DzJ2Q3oLDMxQn1JXAwnd4eNFzlnXkHWVoyu7BCccFyjzY+lQzHqTNSnhjp117b9krY2ZNE20H6qnZR2XjACkV0mN/3LKSnoBV/Ez6kOF+gcMFR2PEvyUTBz2VS+ZA=
+	t=1741197679; cv=none; b=OBh+5kdzgz00OqWNYEI0Mn02TE96teAwxOOOw+ejsniYgL7SFp2u7C3T8mZzsd9QvoLaq08z2rz63mcgF7ua0nPK1/YzKW2LKvJoYJDDdx1q2F6Jt80EAKVbY71pyN6eiOPj6bngkVbr3kodFK7TBjHZdXa43ZzD4GKteVQc/gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198062; c=relaxed/simple;
-	bh=ZX/i6anOEqVF6MWpmVXY1n4KznvWPgk1No/dRoXT6Kc=;
+	s=arc-20240116; t=1741197679; c=relaxed/simple;
+	bh=ZdSpyPsMk5TiEvzkbNIRHg2wzwy6ITuV96wVqPngvAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrD7CTa9zV0JEUvy3KaAdL5OvxRrMw37gJRY/pbzomAmfhSYPSwEZm8InrFGO/FJZZ60s34ZtEibyNDCAmzIJiUMfXRSnhtJnrZYGCqkQBv9w7+oF9y+2XXGvSpWSo9WZxkv2zxWk/JPaDIMEH5u/ITe7Mr10zo3wgOXYGO8mvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIwiPvC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CD9C4CED1;
-	Wed,  5 Mar 2025 18:07:41 +0000 (UTC)
+	 MIME-Version; b=auK2trMsfS1uOPX4flbfjTIkzxXMfPPaoEMfjI9f31FVePQCbC/9lA6pHdrrl1/IvYIQxHsWcC6ZbqTJ6drxjPe9a6rOTO5kxjcd3L24ZLZsRUdCkxMB6QEGM0Hn/JmtJSq4f4XV4kaYVzaJDlZciwAL5jfw+bvDomb45o0BQD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7/nURLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F36EC4CEE0;
+	Wed,  5 Mar 2025 18:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198062;
-	bh=ZX/i6anOEqVF6MWpmVXY1n4KznvWPgk1No/dRoXT6Kc=;
+	s=korg; t=1741197679;
+	bh=ZdSpyPsMk5TiEvzkbNIRHg2wzwy6ITuV96wVqPngvAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIwiPvC+9Uuni2O90jwv+C3zVLaHKh4lye1My6pFCqQbZSi/4I+wojr9qKz3mE6Pn
-	 vML3xK3seR0vbzFo8HOee4lF/xQQjtDhzkCPhaOi9IRlIJxBRd4wQPDaDFTkX8ZmX+
-	 /654g4kIMEetxkXQz+Gs8YwphkDwxDkZjalPmIRE=
+	b=Y7/nURLHIWD61Pz63Nf+GWf4SyDAJwbeEQCP48fXNcJyYSdnX5ElcXack6eOUrjeH
+	 If3rzRVnUAL6ryeJqlMzIsx36KJBGjMmN+bcg9UL8KMt/RhyNywafGPuDsUHb0tBJo
+	 1wpFGbGdgedefLmNmwm4MDZwymd1CXeDskxDjs5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/150] net: ethernet: ti: am65-cpsw: select PAGE_POOL
+	Wen Yang <wenyang@linux.alibaba.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 062/142] ftrace: Avoid potential division by zero in function_stat_show()
 Date: Wed,  5 Mar 2025 18:48:01 +0100
-Message-ID: <20250305174505.914607309@linuxfoundation.org>
+Message-ID: <20250305174502.830142337@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit bab3a6e9ffd600f9db0ebaf8f45e1c6111cf314c ]
+commit a1a7eb89ca0b89dc1c326eeee2596f263291aca3 upstream.
 
-am65-cpsw uses page_pool_dev_alloc_pages(), thus needs PAGE_POOL
-selected to avoid linker errors. This is missing since the driver
-started to use page_pool helpers in 8acacc40f733 ("net: ethernet:
-ti: am65-cpsw: Add minimal XDP support")
+Check whether denominator expression x * (x - 1) * 1000 mod {2^32, 2^64}
+produce zero and skip stddev computation in that case.
 
-Fixes: 8acacc40f733 ("net: ethernet: ti: am65-cpsw: Add minimal XDP support")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250224-net-am654-nuss-kconfig-v2-1-c124f4915c92@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For now don't care about rec->counter * rec->counter overflow because
+rec->time * rec->time overflow will likely happen earlier.
+
+Cc: stable@vger.kernel.org
+Cc: Wen Yang <wenyang@linux.alibaba.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250206090156.1561783-1-kniv@yandex-team.ru
+Fixes: e31f7939c1c27 ("ftrace: Avoid potential division by zero in function profiler")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/ftrace.c |   27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
-index 0d5a862cd78a6..3a13d60a947a8 100644
---- a/drivers/net/ethernet/ti/Kconfig
-+++ b/drivers/net/ethernet/ti/Kconfig
-@@ -99,6 +99,7 @@ config TI_K3_AM65_CPSW_NUSS
- 	select NET_DEVLINK
- 	select TI_DAVINCI_MDIO
- 	select PHYLINK
-+	select PAGE_POOL
- 	select TI_K3_CPPI_DESC_POOL
- 	imply PHY_TI_GMII_SEL
- 	depends on TI_K3_AM65_CPTS || !TI_K3_AM65_CPTS
--- 
-2.39.5
-
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -538,6 +538,7 @@ static int function_stat_show(struct seq
+ 	static struct trace_seq s;
+ 	unsigned long long avg;
+ 	unsigned long long stddev;
++	unsigned long long stddev_denom;
+ #endif
+ 	mutex_lock(&ftrace_profile_lock);
+ 
+@@ -559,23 +560,19 @@ static int function_stat_show(struct seq
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ 	seq_puts(m, "    ");
+ 
+-	/* Sample standard deviation (s^2) */
+-	if (rec->counter <= 1)
+-		stddev = 0;
+-	else {
+-		/*
+-		 * Apply Welford's method:
+-		 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
+-		 */
++	/*
++	 * Variance formula:
++	 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
++	 * Maybe Welford's method is better here?
++	 * Divide only by 1000 for ns^2 -> us^2 conversion.
++	 * trace_print_graph_duration will divide by 1000 again.
++	 */
++	stddev = 0;
++	stddev_denom = rec->counter * (rec->counter - 1) * 1000;
++	if (stddev_denom) {
+ 		stddev = rec->counter * rec->time_squared -
+ 			 rec->time * rec->time;
+-
+-		/*
+-		 * Divide only 1000 for ns^2 -> us^2 conversion.
+-		 * trace_print_graph_duration will divide 1000 again.
+-		 */
+-		stddev = div64_ul(stddev,
+-				  rec->counter * (rec->counter - 1) * 1000);
++		stddev = div64_ul(stddev, stddev_denom);
+ 	}
+ 
+ 	trace_seq_init(&s);
 
 
 
