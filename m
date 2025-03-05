@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9160A50736
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C56A5090B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8C5B7A99B3
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C1693AB49E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940F0250C0E;
-	Wed,  5 Mar 2025 17:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C91A2512C9;
+	Wed,  5 Mar 2025 18:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuyS+aV/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReGnFyjb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D522505A7;
-	Wed,  5 Mar 2025 17:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1691ACEDD;
+	Wed,  5 Mar 2025 18:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197223; cv=none; b=i9BwBUxpKFxHRrhZppa+jigoBPan/CMmbL14U8cMydgM1Me0Xu0x1r/CdX8WSVkq5+paxyaD8XvomyZpnH7HfMifzMt5VOREmBWZKSRFoYudUtZmmdxBNQ5n5niZT5099kVq+xKcPtjVgtDQn3iwRK4zQ9fo4mRbgcsx7VURmUo=
+	t=1741198401; cv=none; b=QxIkrRmdu52JpsM3PA4+ng6cocCglz6LK4SPI0MUOYVnMeg9R8MsQ1jFDWoU7EH7F0L+hLuyLBPWWea30sZrfaZfxZlVYwVdMzKSrxd2yFILvD9UVBf4b5cTlZ5sruLb/XH9nebMc/rQtlArapimWEQ7ep7yxWLy/8IZm81eUzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197223; c=relaxed/simple;
-	bh=u59SEu7VMY48kDInrLCYe+rUrCrWQOhGiHPIG+au2yo=;
+	s=arc-20240116; t=1741198401; c=relaxed/simple;
+	bh=G7yY2RrMuCBbvUWrZtOW9IH3mUeu80XjvjGpkJY6l9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GSHXBpxeDbqeUKkcLSRyUtTAwi8TYIC8pgbe7I8jnR6YrAeATjOgCk8XiawWsOe0ZbiGBc3lKlCZYRysofCqm81SsAFaewtYEN2E+oIWl6Kbi+v1BQB6xfpBP0HCMeGxfDWGGon29EtuEwXBCxkaVmmLmJIfVVS0A47L8oeuULo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuyS+aV/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E2FC4CED1;
-	Wed,  5 Mar 2025 17:53:41 +0000 (UTC)
+	 MIME-Version; b=i71G/fMzidG5xHe0EOuwH3Isz8rMvZ6lMd5XlwUua6EOigeiCTKA8nHXwQ5fqmezsoMHuTYWkAmsqEaseGFbSr8YNfDYWW7Pns16Zj1Z5rvPqs7Am+ntcgURpxrKUufXmR/FvZyM2pEjuArwEKZQbqmtQftevb/Nma9Fryqvikw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReGnFyjb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA54C4CED1;
+	Wed,  5 Mar 2025 18:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197221;
-	bh=u59SEu7VMY48kDInrLCYe+rUrCrWQOhGiHPIG+au2yo=;
+	s=korg; t=1741198401;
+	bh=G7yY2RrMuCBbvUWrZtOW9IH3mUeu80XjvjGpkJY6l9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nuyS+aV/GP16/s8/P1FnXf6rvlvw6g28b4pmBci46WGAmhO4SDRrXaCy2+rx6TuD6
-	 7SZ+ihNVXqFHIuI6b6Cp9DjxWIMSbN5pcSX6zmf74QWPG727dggjJaIXlsFIxLZCvN
-	 beel/3bnzIgplmUJDxC1lKcA6tzwxcxKRlCJfQaA=
+	b=ReGnFyjbuVCkR6IpnergZ1tIMkyT5BS5EXL6zS4wkNWKF8b6Oi9FK+lYOHu35RJWG
+	 tHXKJnd100fukW2sIDOiJdSKDcbwV5fEdEAHi4F3XtdvlcwN1taF7xUcD8GMpgmafi
+	 Xrm9ejrKQ3jXKr/nBh1owCOjuLuP8UwqtHpG3YG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Florent Revest <revest@google.com>,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 082/176] mm,madvise,hugetlb: check for 0-length range after end address adjustment
-Date: Wed,  5 Mar 2025 18:47:31 +0100
-Message-ID: <20250305174508.758474931@linuxfoundation.org>
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 016/157] NFSv4: Fix a deadlock when recovering state on a sillyrenamed file
+Date: Wed,  5 Mar 2025 18:47:32 +0100
+Message-ID: <20250305174505.938772356@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +61,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Cañuelo Navarro <rcn@igalia.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 2ede647a6fde3e54a6bfda7cf01c716649655900 upstream.
+[ Upstream commit 8f8df955f078e1a023ee55161935000a67651f38 ]
 
-Add a sanity check to madvise_dontneed_free() to address a corner case in
-madvise where a race condition causes the current vma being processed to
-be backed by a different page size.
+If the file is sillyrenamed, and slated for delete on close, it is
+possible for a server reboot to triggeer an open reclaim, with can again
+race with the application call to close(). When that happens, the call
+to put_nfs_open_context() can trigger a synchronous delegreturn call
+which deadlocks because it is not marked as privileged.
 
-During a madvise(MADV_DONTNEED) call on a memory region registered with a
-userfaultfd, there's a period of time where the process mm lock is
-temporarily released in order to send a UFFD_EVENT_REMOVE and let
-userspace handle the event.  During this time, the vma covering the
-current address range may change due to an explicit mmap done concurrently
-by another thread.
+Instead, ensure that the call to nfs4_inode_return_delegation_on_close()
+catches the delegreturn, and schedules it asynchronously.
 
-If, after that change, the memory region, which was originally backed by
-4KB pages, is now backed by hugepages, the end address is rounded down to
-a hugepage boundary to avoid data loss (see "Fixes" below).  This rounding
-may cause the end address to be truncated to the same address as the
-start.
-
-Make this corner case follow the same semantics as in other similar cases
-where the requested region has zero length (ie.  return 0).
-
-This will make madvise_walk_vmas() continue to the next vma in the range
-(this time holding the process mm lock) which, due to the prev pointer
-becoming stale because of the vma change, will be the same hugepage-backed
-vma that was just checked before.  The next time madvise_dontneed_free()
-runs for this vma, if the start address isn't aligned to a hugepage
-boundary, it'll return -EINVAL, which is also in line with the madvise
-api.
-
->From userspace perspective, madvise() will return EINVAL because the start
-address isn't aligned according to the new vma alignment requirements
-(hugepage), even though it was correctly page-aligned when the call was
-issued.
-
-Link: https://lkml.kernel.org/r/20250203075206.1452208-1-rcn@igalia.com
-Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Florent Revest <revest@google.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: adb4b42d19ae ("Return the delegation when deleting sillyrenamed files")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/madvise.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/nfs/delegation.c | 37 +++++++++++++++++++++++++++++++++++++
+ fs/nfs/delegation.h |  1 +
+ fs/nfs/nfs4proc.c   |  3 +++
+ 3 files changed, 41 insertions(+)
 
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -879,7 +879,16 @@ static long madvise_dontneed_free(struct
- 			 */
- 			end = vma->vm_end;
- 		}
--		VM_WARN_ON(start >= end);
-+		/*
-+		 * If the memory region between start and end was
-+		 * originally backed by 4kB pages and then remapped to
-+		 * be backed by hugepages while mmap_lock was dropped,
-+		 * the adjustment for hugetlb vma above may have rounded
-+		 * end down to the start address.
-+		 */
-+		if (start == end)
-+			return 0;
-+		VM_WARN_ON(start > end);
- 	}
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 035ba52742a50..4db912f562305 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -780,6 +780,43 @@ int nfs4_inode_return_delegation(struct inode *inode)
+ 	return 0;
+ }
  
- 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
++/**
++ * nfs4_inode_set_return_delegation_on_close - asynchronously return a delegation
++ * @inode: inode to process
++ *
++ * This routine is called to request that the delegation be returned as soon
++ * as the file is closed. If the file is already closed, the delegation is
++ * immediately returned.
++ */
++void nfs4_inode_set_return_delegation_on_close(struct inode *inode)
++{
++	struct nfs_delegation *delegation;
++	struct nfs_delegation *ret = NULL;
++
++	if (!inode)
++		return;
++	rcu_read_lock();
++	delegation = nfs4_get_valid_delegation(inode);
++	if (!delegation)
++		goto out;
++	spin_lock(&delegation->lock);
++	if (!delegation->inode)
++		goto out_unlock;
++	if (list_empty(&NFS_I(inode)->open_files) &&
++	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
++		/* Refcount matched in nfs_end_delegation_return() */
++		ret = nfs_get_delegation(delegation);
++	} else
++		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
++out_unlock:
++	spin_unlock(&delegation->lock);
++	if (ret)
++		nfs_clear_verifier_delegated(inode);
++out:
++	rcu_read_unlock();
++	nfs_end_delegation_return(inode, ret, 0);
++}
++
+ /**
+  * nfs4_inode_return_delegation_on_close - asynchronously return a delegation
+  * @inode: inode to process
+diff --git a/fs/nfs/delegation.h b/fs/nfs/delegation.h
+index 71524d34ed207..8ff5ab9c5c256 100644
+--- a/fs/nfs/delegation.h
++++ b/fs/nfs/delegation.h
+@@ -49,6 +49,7 @@ void nfs_inode_reclaim_delegation(struct inode *inode, const struct cred *cred,
+ 				  unsigned long pagemod_limit, u32 deleg_type);
+ int nfs4_inode_return_delegation(struct inode *inode);
+ void nfs4_inode_return_delegation_on_close(struct inode *inode);
++void nfs4_inode_set_return_delegation_on_close(struct inode *inode);
+ int nfs_async_inode_return_delegation(struct inode *inode, const nfs4_stateid *stateid);
+ void nfs_inode_evict_delegation(struct inode *inode);
+ 
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 405f17e6e0b45..e7bc99c69743c 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3898,8 +3898,11 @@ nfs4_atomic_open(struct inode *dir, struct nfs_open_context *ctx,
+ 
+ static void nfs4_close_context(struct nfs_open_context *ctx, int is_sync)
+ {
++	struct dentry *dentry = ctx->dentry;
+ 	if (ctx->state == NULL)
+ 		return;
++	if (dentry->d_flags & DCACHE_NFSFS_RENAMED)
++		nfs4_inode_set_return_delegation_on_close(d_inode(dentry));
+ 	if (is_sync)
+ 		nfs4_close_sync(ctx->state, _nfs4_ctx_to_openmode(ctx));
+ 	else
+-- 
+2.39.5
+
 
 
 
