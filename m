@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35301A50888
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0C1A50752
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 547241887861
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5835174DDE
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBFB19066D;
-	Wed,  5 Mar 2025 18:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AFC2512EB;
+	Wed,  5 Mar 2025 17:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+2+Hy0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkXoSkb/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFA21A840E;
-	Wed,  5 Mar 2025 18:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF97F2505A7;
+	Wed,  5 Mar 2025 17:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198080; cv=none; b=pJVE8JTVW4qSroPMKsyVZb9ME7YECN+Il8ciZk21CS7faT6RhMRtbLiwXAX1igXDz3cdoa1AMbP4HJKAJSo2i5IuqHKEmobBzvs1j9kzle31x/FU2SuOIP31g5rRrRwVEDMyMHyOKwNOadtyVZ6HseSL4+WbDQ3I8W6OYo4N/ps=
+	t=1741197326; cv=none; b=g2MCdrQu2wppnvHRrggfQcHZ8Rzwey3y7HuManJnE/qxknimAOGeTqMMylWjZ1j9jnoUf2AHNoBLlaFL817//Y+dyDlAyzxgDshFj18fJH7F6accLL+2Bc9qWG+Ofl0PHwBvrWyiAzF1TFJ0449a7rI9WT0iQ3bHFq2aLDSmYHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198080; c=relaxed/simple;
-	bh=w67TLsNIhvYRQl+eku/O1OAvWEAUH8TT1xVRTrUJqbg=;
+	s=arc-20240116; t=1741197326; c=relaxed/simple;
+	bh=2mmBXDJ3hI8LnoJB4FsrWF8QosQ/JasnnqrC2gmD+6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcYUe8tuA3nZcxC38PGY8Pa1AbWFZ28nYICS8L8hbRCmRIcIkDmytujP8MlJK7ZbPIo9/ddpEfGlXvI5I5HqTMMTHYcDBVOSH85ez6GpVa9DHPbTB77e1aSWpVwD1SGZeizfUnlZn8etblAgnTQOUdIkeRjpUx8V3OS3KjTtQI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+2+Hy0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83418C4CEE2;
-	Wed,  5 Mar 2025 18:07:59 +0000 (UTC)
+	 MIME-Version; b=TmDqNZuaDESyINZFU8trSzdYnsZRiR8jGgRfhAhQbtZp10SxscCov3Pa5kdEwIZUaruwfkGRVMWfwC1GceNtsdZk3aplu2wu/QPBaFwfxfUrzzmmAz9fVoVRshESbExmVfoMx/FWmkELp1WYXVMi3BaHsRmC2BLKc/Yf9wxCyLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkXoSkb/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9F7C4CED1;
+	Wed,  5 Mar 2025 17:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198079;
-	bh=w67TLsNIhvYRQl+eku/O1OAvWEAUH8TT1xVRTrUJqbg=;
+	s=korg; t=1741197326;
+	bh=2mmBXDJ3hI8LnoJB4FsrWF8QosQ/JasnnqrC2gmD+6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+2+Hy0UNVJqZLzcEIu0xoPJzyay30jwmgCeFJ+HLWdRRqN8J0mO5rR/vSIgjcKEz
-	 ma2kAhftk7VmZabwDOhVHs/0fVYDQUZnATWKzD1jCIihnMniX0BSU6HzgnLULRQUQk
-	 lbBXGhm1tBQCkf/VO+RiHge6W/GxtiQ1+AWXjgv0=
+	b=xkXoSkb/EKfj0fZ20jXyQ9L7MTY45wEnIai9W1E8G9ggC1AobzyCltesSJ4783Jkf
+	 iDSOPOQE2U8CmQQ0LLGsbB+p68Rickgb52LHjxTACZZ9TxPQHmZeW3w9WXrFVIV7zW
+	 6Ir02ippN2YoCMJBI26j9n0ckveLM/2jHR3GyFkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/150] drm/xe: cancel pending job timer before freeing scheduler
+Subject: [PATCH 6.1 118/176] afs: remove variable nr_servers
 Date: Wed,  5 Mar 2025 18:48:07 +0100
-Message-ID: <20250305174506.154179603@linuxfoundation.org>
+Message-ID: <20250305174510.197015940@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 12c2f962fe71f390951d9242725bc7e608f55927 ]
+[ Upstream commit 318b83b71242998814a570c3420c042ee6165fca ]
 
-The async call to __guc_exec_queue_fini_async frees the scheduler
-while a submission may time out and restart. To prevent this race
-condition, the pending job timer should be canceled before freeing
-the scheduler.
+Variable nr_servers is no longer being used, the last reference
+to it was removed in commit 45df8462730d ("afs: Fix server list handling")
+so clean up the code by removing it.
 
-V3(MattB):
- - Adjust position of cancel pending job
- - Remove gitlab issue# from commit message
-V2(MattB):
- - Cancel pending jobs before scheduler finish
-
-Fixes: a20c75dba192 ("drm/xe: Call __guc_exec_queue_fini_async direct for KERNEL exec_queues")
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250225045754.600905-1-tejas.upadhyay@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 18fbd567e75f9b97b699b2ab4f1fa76b7cf268f6)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20221020173923.21342-1-colin.i.king@gmail.com/
+Stable-dep-of: add117e48df4 ("afs: Fix the server_list to unuse a displaced server rather than putting it")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/afs/volume.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index fed23304e4da5..3fd2b28b91ab9 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1215,6 +1215,8 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
+diff --git a/fs/afs/volume.c b/fs/afs/volume.c
+index a146d70efa650..c028598a903c9 100644
+--- a/fs/afs/volume.c
++++ b/fs/afs/volume.c
+@@ -76,11 +76,7 @@ static struct afs_volume *afs_alloc_volume(struct afs_fs_context *params,
+ {
+ 	struct afs_server_list *slist;
+ 	struct afs_volume *volume;
+-	int ret = -ENOMEM, nr_servers = 0, i;
+-
+-	for (i = 0; i < vldb->nr_servers; i++)
+-		if (vldb->fs_mask[i] & type_mask)
+-			nr_servers++;
++	int ret = -ENOMEM;
  
- 	if (xe_exec_queue_is_lr(q))
- 		cancel_work_sync(&ge->lr_tdr);
-+	/* Confirm no work left behind accessing device structures */
-+	cancel_delayed_work_sync(&ge->sched.base.work_tdr);
- 	release_guc_id(guc, q);
- 	xe_sched_entity_fini(&ge->entity);
- 	xe_sched_fini(&ge->sched);
+ 	volume = kzalloc(sizeof(struct afs_volume), GFP_KERNEL);
+ 	if (!volume)
 -- 
 2.39.5
 
