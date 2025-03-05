@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-120825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FD9A5087B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EB2A5094A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8DE3166900
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94D2616C158
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB6720C004;
-	Wed,  5 Mar 2025 18:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE14324CEE3;
+	Wed,  5 Mar 2025 18:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dgnta3D7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9huihNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1CD1A840E;
-	Wed,  5 Mar 2025 18:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8B0178CC8;
+	Wed,  5 Mar 2025 18:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198083; cv=none; b=E2ZhpRLkI/flOw6qH18l4qdnBgRU2gGxDdfpOzKeiC08hvHpPVFeLCkntTLCLKIhdKmd2pHeRfXVCQ/gqscHGnaT1L3a7WJGiZWEA9uRvJv9XTLbHpUAaddvE9MbNSzy6HSIJFgwzUJkye001uGkO8U79OtuNeYdFzKCnOvkM1U=
+	t=1741198516; cv=none; b=fwbXL4fh6nwomd8KSZoADVAM0C1uDTISZOXqQjkFVeO2bcPs4SD1+mdB5RCYkZLqhC7VFJ92YMPmXf1VZM2KDWQekxtp3WaH8y8l2B2v7lav9BBln/8GDMCMak9eAf2oOnOXSSO6BCFzsql6y31JLFUt5G0qTkiU0BRIBu5FD38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198083; c=relaxed/simple;
-	bh=zUm0mZr2wXe5VXTn29yJIxjVFbv2flHeEzs8jxQzb1o=;
+	s=arc-20240116; t=1741198516; c=relaxed/simple;
+	bh=b5iGVCYEAkB5KYn9uheNan4xPocF43y7J89FDoZapoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSenEyfAsVTK+usNwce4KdSRUy9UTpZXmmEqAovk47vvQ/HCKyJEWs5DBp6nztmPI/SnLkgTGvDfZwF7eGcRlybN6w1ckwunqqdbSVH1Dx3TnBUi4zyRh7EuQ3GO7SucjqA00GZ7ZIx4FMOd6ugGdSESo/rpazrCA+Ua03znn80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dgnta3D7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E35C4CED1;
-	Wed,  5 Mar 2025 18:08:02 +0000 (UTC)
+	 MIME-Version; b=eAGh4rOPiUQKDLyJwISWfFIfap0wGcuJLssT5vw2aauQLHS++JkEtz07ACkAo9WV6Gz11eNmlkj1kN+Ds4TT51o9CPGcCA2PvyXWp2ILTB6bgkuSrOIT22591Hl3I8AT1HfCcMwbHg5LFil9AcqQmZWj+t73vMg/Bfw6O15JbeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9huihNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A1CC4CED1;
+	Wed,  5 Mar 2025 18:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198082;
-	bh=zUm0mZr2wXe5VXTn29yJIxjVFbv2flHeEzs8jxQzb1o=;
+	s=korg; t=1741198516;
+	bh=b5iGVCYEAkB5KYn9uheNan4xPocF43y7J89FDoZapoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dgnta3D7arNHLy4F1xFirzgKjUtGW4y8NI9PkpFUYFt08CDFzvmJi4cU9U1MgGOZ+
-	 jSMaac4CPFjFmYTK1bbxVs2VC5oZhj1eqKBBEHyRGsZRuvETILwoqWUxmxtM/mNKtx
-	 T5tK367fwRi4yET5FHg4LoAXVTVEnkJC107Gqf0g=
+	b=j9huihNCB7qmvmcbMvcEf3IPLSKZydiM9Ong0mJ/xrKFCdHrVZtciweGMLFF1T7B6
+	 Tw0ZKl0mhxINL29PXX5aZ+0poBVwSB9S3hA2nzyfta7SUvJtlShdoMT0qwdstvYD0i
+	 LMszqs3D9p5jvrc5dDQvjCHewMxR3U/V4+VyfZwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/150] net: Clear old fragment checksum value in napi_reuse_skb
-Date: Wed,  5 Mar 2025 18:48:08 +0100
-Message-ID: <20250305174506.195002522@linuxfoundation.org>
+Subject: [PATCH 6.13 053/157] net: Clear old fragment checksum value in napi_reuse_skb
+Date: Wed,  5 Mar 2025 18:48:09 +0100
+Message-ID: <20250305174507.439977574@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
