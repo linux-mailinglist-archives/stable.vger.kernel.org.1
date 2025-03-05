@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D2FA50720
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B3AA50916
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF03C188EBA1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0FD23A5C2B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFAC2505CF;
-	Wed,  5 Mar 2025 17:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CCE2528F6;
+	Wed,  5 Mar 2025 18:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sV3ZF1cf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ne2t7WGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F166E2505A7;
-	Wed,  5 Mar 2025 17:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2101E24CEE3;
+	Wed,  5 Mar 2025 18:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197280; cv=none; b=cBdPcPZslwQ1WdJJZYyKVZymQmA+B6uVQwnpnO91mby3SPvPLBwY1e7VQLIMrOyRFwBgcMgzl4UwT3eJnIo+erLgte/fsMLyymF3WFn/12zGFDUqWcRa+MsF0Q/dZBV2k5pAlcqfYYou+BK/CcArUkbAkfISeiLaBg/xrMFbwjI=
+	t=1741198416; cv=none; b=V9zTHFmDXwbyZj5uqr61V+KacjTNiOqShlQn/OBrg1px8Ned9OrPI33flkmiKvnKW+h5iCnpziMkSl4U6Zb2kjpHvVkZwk4nBXo7VFKP3Mg6HvhKA93NmomnlJsQwN9I7z1tADWBduS9Ni82XN+eEcbv2dzjLaXYueXZCSVkX90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197280; c=relaxed/simple;
-	bh=CiArs+uF6qFGVfHgMkP8VyXDf0sJzhv3X6Hr1EM99vg=;
+	s=arc-20240116; t=1741198416; c=relaxed/simple;
+	bh=TxuoITLROdd8Ju2ljB7rBHQIuwn+fYM74m48gOPeAoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kwt/70FFxKBSXTksznxh5r+njig52fkKPYyqsOdZdOAZw6B6WVM7auhom1BwwfWZMdR3b24g+HpjiDoqGNZYmtR/+/ZuK3396LL01WUCWc5sJcZMjHTZIPWzOjoyqJ/mMdV6AdVWI1At9FQUNhdFTdJIzwCHcQhbst6IyB0f3Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sV3ZF1cf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEB0C4CEE2;
-	Wed,  5 Mar 2025 17:54:39 +0000 (UTC)
+	 MIME-Version; b=RSw2TW66P21goILp8lUfgKZNzEoIeW1CcSZXEuGDYTIi+OO9akIwleibmzhJDgCIm/uJBQnQRgeL8HE0hM51SrL/T/rNBED6MqKijLv0fepph+55XuUhUahZyyIlXDAzjfyCSlog9IqyFY3FDNVdPwXXImFDAzOIWXOTrVWINlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ne2t7WGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDF4C4CED1;
+	Wed,  5 Mar 2025 18:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197279;
-	bh=CiArs+uF6qFGVfHgMkP8VyXDf0sJzhv3X6Hr1EM99vg=;
+	s=korg; t=1741198416;
+	bh=TxuoITLROdd8Ju2ljB7rBHQIuwn+fYM74m48gOPeAoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sV3ZF1cf4zQKMyzFroLATJaD27buLmo1nRu4r7+oblwqEEOmpZyCG1y0lmt9Hoy1u
-	 1VJ8O1TSMRKjVf6EuQq1pka4OIumLBVipg3tNGE+OYA0atp/CKTcrisl4ZAKGKuCs2
-	 53+AbHhZ1dxLS9DH5r9FOHDdSCc5SkPCNxG+Wggw=
+	b=ne2t7WGXAHClCaG7NEymfANxfw+FF0t/6s99LDoTEip/0PRM2XvDB/0w9FbPGFq1Y
+	 c8IFLuiX02Y6M+uHO2P6I1ib3u1WjQ9ztnS/Y4+GzYWm/+hh4ZH/PA7JfACrGuzI8c
+	 UaCD/oXz34ec3mszoFrLUQHEyl+COqNsHJ8BK8Tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Artemy Kovalyov <artemyko@mnvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/176] drm/msm/dpu: Dont leak bits_per_component into random DSC_ENC fields
-Date: Wed,  5 Mar 2025 18:47:18 +0100
-Message-ID: <20250305174508.227785303@linuxfoundation.org>
+Subject: [PATCH 6.13 003/157] RDMA/mlx5: Fix a race for DMABUF MR which can lead to CQE with error
+Date: Wed,  5 Mar 2025 18:47:19 +0100
+Message-ID: <20250305174505.413930234@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-[ Upstream commit 144429831f447223253a0e4376489f84ff37d1a7 ]
+[ Upstream commit cc668a11e6ac8adb0e016711080d3f314722cc91 ]
 
-What used to be the input_10_bits boolean - feeding into the lowest
-bit of DSC_ENC - on MSM downstream turned into an accidental OR with
-the full bits_per_component number when it was ported to the upstream
-kernel.
+This patch addresses a potential race condition for a DMABUF MR that can
+result in a CQE with an error on the UMR QP.
 
-On typical bpc=8 setups we don't notice this because line_buf_depth is
-always an odd value (it contains bpc+1) and will also set the 4th bit
-after left-shifting by 3 (hence this |= bits_per_component is a no-op).
+During the __mlx5_ib_dereg_mr() flow, the following sequence of calls
+occurs:
+mlx5_revoke_mr()
+mlx5r_umr_revoke_mr()
+mlx5r_umr_post_send_wait()
+At this point, the lkey is freed from the hardware's perspective.
 
-Now that guards are being removed to allow more bits_per_component
-values besides 8 (possible since commit 49fd30a7153b ("drm/msm/dsi: use
-DRM DSC helpers for DSC setup")), a bpc of 10 will instead clash with
-the 5th bit which is convert_rgb.  This is "fortunately" also always set
-to true by MSM's dsi_populate_dsc_params() already, but once a bpc of 12
-starts being used it'll write into simple_422 which is normally false.
+However, concurrently, mlx5_ib_dmabuf_invalidate_cb() might be triggered
+by another task attempting to invalidate the MR having that freed lkey.
 
-To solve all these overlaps, simply replicate downstream code and only
-set this lowest bit if bits_per_component is equal to 10.  It is unclear
-why DSC requires this only for bpc=10 but not bpc=12, and also notice
-that this lowest bit wasn't set previously despite having a panel and
-patch on the list using it without any mentioned issues.
+Since the lkey has already been freed, this can lead to a CQE error,
+causing the UMR QP to enter an error state.
 
-Fixes: c110cfd1753e ("drm/msm/disp/dpu1: Add support for DSC")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/636311/
-Link: https://lore.kernel.org/r/20250211-dsc-10-bit-v1-1-1c85a9430d9a@somainline.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+To resolve this race condition, the dma_resv_lock() which was hold as
+part of the mlx5_ib_dmabuf_invalidate_cb() is now also acquired as part
+of the mlx5_revoke_mr() scope.
+
+Upon a successful revoke, we set umem_dmabuf->private which points to
+that MR to NULL, preventing any further invalidation attempts on its
+lkey.
+
+Fixes: e6fb246ccafb ("RDMA/mlx5: Consolidate MR destruction to mlx5_ib_dereg_mr()")
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Artemy Kovalyov <artemyko@mnvidia.com>
+Link: https://patch.msgid.link/70617067abbfaa0c816a2544c922e7f4346def58.1738587016.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mr.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-index c8f14555834a8..70a6dfe94faa5 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-@@ -46,6 +46,7 @@ static void dpu_hw_dsc_config(struct dpu_hw_dsc *hw_dsc,
- 	u32 slice_last_group_size;
- 	u32 det_thresh_flatness;
- 	bool is_cmd_mode = !(mode & DSC_MODE_VIDEO);
-+	bool input_10_bits = dsc->bits_per_component == 10;
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index bb02b6adbf2c2..0a3cbb14e1839 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1550,7 +1550,7 @@ static void mlx5_ib_dmabuf_invalidate_cb(struct dma_buf_attachment *attach)
  
- 	DPU_REG_WRITE(c, DSC_COMMON_MODE, mode);
+ 	dma_resv_assert_held(umem_dmabuf->attach->dmabuf->resv);
  
-@@ -62,7 +63,7 @@ static void dpu_hw_dsc_config(struct dpu_hw_dsc *hw_dsc,
- 	data |= (dsc->line_buf_depth << 3);
- 	data |= (dsc->simple_422 << 2);
- 	data |= (dsc->convert_rgb << 1);
--	data |= dsc->bits_per_component;
-+	data |= input_10_bits;
+-	if (!umem_dmabuf->sgt)
++	if (!umem_dmabuf->sgt || !mr)
+ 		return;
  
- 	DPU_REG_WRITE(c, DSC_ENC, data);
+ 	mlx5r_umr_update_mr_pas(mr, MLX5_IB_UPD_XLT_ZAP);
+@@ -2022,11 +2022,16 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
+ 	struct mlx5_ib_dev *dev = to_mdev(mr->ibmr.device);
+ 	struct mlx5_cache_ent *ent = mr->mmkey.cache_ent;
+ 	bool is_odp = is_odp_mr(mr);
++	bool is_odp_dma_buf = is_dmabuf_mr(mr) &&
++			!to_ib_umem_dmabuf(mr->umem)->pinned;
+ 	int ret = 0;
+ 
+ 	if (is_odp)
+ 		mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
+ 
++	if (is_odp_dma_buf)
++		dma_resv_lock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv, NULL);
++
+ 	if (mr->mmkey.cacheable && !mlx5r_umr_revoke_mr(mr) && !cache_ent_find_and_store(dev, mr)) {
+ 		ent = mr->mmkey.cache_ent;
+ 		/* upon storing to a clean temp entry - schedule its cleanup */
+@@ -2054,6 +2059,12 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
+ 		mutex_unlock(&to_ib_umem_odp(mr->umem)->umem_mutex);
+ 	}
+ 
++	if (is_odp_dma_buf) {
++		if (!ret)
++			to_ib_umem_dmabuf(mr->umem)->private = NULL;
++		dma_resv_unlock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv);
++	}
++
+ 	return ret;
+ }
  
 -- 
 2.39.5
