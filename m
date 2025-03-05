@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-120421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD66A4FD18
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 12:04:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F24BA4FD19
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 12:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E723164C4A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 11:04:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFC06189195E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 11:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7308214A68;
-	Wed,  5 Mar 2025 11:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FF020C499;
+	Wed,  5 Mar 2025 11:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="XwbEm6zv"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Kj8xU0KZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D149A1A2397
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 11:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375B12AD2D
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 11:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741172662; cv=none; b=kO9SVVh53K4rMxY+dGfNaQnJFXMch1OWY/b5DRByLx7oX5IwDnw4s4M/Cklo13Sr65eoCPnkKMJbsLnH0Dl5YGCUE/jMIZdReaRv2fAXQKKvNwxS+EUlpLikK2taIv8TTHTGc79hpjjjL1QrLzPRZDnulWSDG89haLJjbJ2aIUs=
+	t=1741172660; cv=none; b=RK8KLIoSHsLfKO12VAZMWAXaobuFOmcxyVfMcHN3MI4W+22902oe8XO70KO+M+T9+vUD8w6kokv5t+45lDnhOsX8uxklFjd0tmK8NQGkosLZ0VrxzQGORc/cqdv+IyIjvVHve48FjHvU3aDvKHL9WfOfHMjG+/uz/oHUSEwPBoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741172662; c=relaxed/simple;
-	bh=bggFJF3ulwRjZNVIxJZxjc80ekuhnWLejll0RlJy5HM=;
+	s=arc-20240116; t=1741172660; c=relaxed/simple;
+	bh=PR31kus9xQo3DR+vZg7XYgeTiAV9e/9YJqCWfoma3Zo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YGs5Ym5z4dYQbFAp7EUQhXSwSQ+Nd/pXfghgOqQm72WMnG/5lOCcE0WvX3jM2IIgE418FiZVVaalLvLOfjasoz15yLzcsgqd5GrLPFTHtTkD7SiIjaf+R6R8mYRDpCuM/xcIypzbT3lzTXN2UbwnguSoawEg+ZNLgmrBtleumG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=XwbEm6zv; arc=none smtp.client-ip=207.171.184.29
+	 MIME-Version:Content-Type; b=EVMVRJocSCYQo0lguxR21wLTNeyixLeQK9ioesSY14svo9uTZLoz2VbSDkH7OO0E2DXA67LjPm/GBGsmMgpGm+6blzARHGF/8ZHhuoqXYst9yXwoz9/v1rSMFovVlmo7yLm0fZ1+V1+ULXRAhfXp+bnJ9fm204pyuy3gNBtrqro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Kj8xU0KZ; arc=none smtp.client-ip=99.78.197.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1741172661; x=1772708661;
+  t=1741172659; x=1772708659;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=i/UDfLthC0tgtFuspoSxU7A6jRjvwgMKFP8a2W+G2jQ=;
-  b=XwbEm6zv1KTZAufRbygoGTwx70lbZiLfybMzLwnBv2aoi2JJSTAJnRQm
-   bYOEBI3nYUDdJ+muZPhCFMJIyplRJl9TvufToFD3r+sMzvZlrPujPDgHF
-   gYW1NaJIMBh1NPO4VtErxzgu3darvTRqiSW+jRpJco+rD6McTNphTM+S3
-   8=;
+  bh=I5ekH5t2likBGw8npv32Yenbsbp3OeaQxRx1r7qr+tw=;
+  b=Kj8xU0KZcyeMa9oJq7nbEsV2Fp9WKrIBMlB6BU/V+o+JjWOG6x/fvBmF
+   1DkBIE44rhlb8TzTEBvi7RwEpV0WB6lpbTxE6niefhmVO0xVJu/jPT4jl
+   R+KXqXEqdofxeRROmr1cqy6+wlbla4HsqJGv/LSlckWFo+z5fkT2ISWwT
+   o=;
 X-IronPort-AV: E=Sophos;i="6.14,222,1736812800"; 
-   d="scan'208";a="499670045"
+   d="scan'208";a="175786556"
 Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 11:04:15 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:42758]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.102:2525] with esmtp (Farcaster)
- id 076ca3c1-300e-42a8-aad1-a9a0f17311ad; Wed, 5 Mar 2025 11:04:13 +0000 (UTC)
-X-Farcaster-Flow-ID: 076ca3c1-300e-42a8-aad1-a9a0f17311ad
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 11:04:16 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:48629]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.162:2525] with esmtp (Farcaster)
+ id 95e93e9e-4152-4225-a250-a6e2c3f66d19; Wed, 5 Mar 2025 11:04:16 +0000 (UTC)
+X-Farcaster-Flow-ID: 95e93e9e-4152-4225-a250-a6e2c3f66d19
 Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 5 Mar 2025 11:04:13 +0000
-Received: from email-imr-corp-prod-pdx-1box-2b-ecca39fb.us-west-2.amazon.com
+ Wed, 5 Mar 2025 11:04:15 +0000
+Received: from email-imr-corp-prod-iad-all-1b-af42e9ba.us-east-1.amazon.com
  (10.25.36.214) by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1544.14 via Frontend Transport; Wed, 5 Mar 2025 11:04:13 +0000
+ 15.2.1544.14 via Frontend Transport; Wed, 5 Mar 2025 11:04:15 +0000
 Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
-	by email-imr-corp-prod-pdx-1box-2b-ecca39fb.us-west-2.amazon.com (Postfix) with ESMTP id 5C3248021D;
-	Wed,  5 Mar 2025 11:04:13 +0000 (UTC)
+	by email-imr-corp-prod-iad-all-1b-af42e9ba.us-east-1.amazon.com (Postfix) with ESMTP id 469A0404A7;
+	Wed,  5 Mar 2025 11:04:15 +0000 (UTC)
 Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id E964920DAD; Wed,  5 Mar 2025 11:04:12 +0000 (UTC)
+	id 07C3220DAD; Wed,  5 Mar 2025 11:04:15 +0000 (UTC)
 From: Hagar Hemdan <hagarhem@amazon.com>
 To:
 CC: <stable@vger.kernel.org>, =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=
 	<toke@redhat.com>, <syzbot+f63600d288bfb7057424@syzkaller.appspotmail.com>,
 	Dave Taht <dave.taht@gmail.com>, Jakub Kicinski <kuba@kernel.org>, "Hagar
  Hemdan" <hagarhem@amazon.com>
-Subject: [PATCH 5.10] sched: sch_cake: add bounds checks to host bulk flow fairness counts
-Date: Wed, 5 Mar 2025 11:03:31 +0000
-Message-ID: <20250305110334.31305-2-hagarhem@amazon.com>
+Subject: [PATCH 5.4] sched: sch_cake: add bounds checks to host bulk flow fairness counts
+Date: Wed, 5 Mar 2025 11:03:32 +0000
+Message-ID: <20250305110334.31305-3-hagarhem@amazon.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305110334.31305-1-hagarhem@amazon.com>
 References: <20250305110334.31305-1-hagarhem@amazon.com>
@@ -121,10 +121,10 @@ Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
  1 file changed, 75 insertions(+), 65 deletions(-)
 
 diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 8d9c0b98a747..d9535129f4e9 100644
+index f2a49bccb5ef..fc96ec46e6f6 100644
 --- a/net/sched/sch_cake.c
 +++ b/net/sched/sch_cake.c
-@@ -643,6 +643,63 @@ static bool cake_ddst(int flow_mode)
+@@ -622,6 +622,63 @@ static bool cake_ddst(int flow_mode)
  	return (flow_mode & CAKE_FLOW_DUAL_DST) == CAKE_FLOW_DUAL_DST;
  }
  
@@ -188,7 +188,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
  		     int flow_mode, u16 flow_override, u16 host_override)
  {
-@@ -789,10 +846,8 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+@@ -753,10 +810,8 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
  		allocate_dst = cake_ddst(flow_mode);
  
  		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
@@ -201,7 +201,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  		}
  found:
  		/* reserve queue for future packets in same flow */
-@@ -817,9 +872,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+@@ -781,9 +836,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
  			q->hosts[outer_hash + k].srchost_tag = srchost_hash;
  found_src:
  			srchost_idx = outer_hash + k;
@@ -214,7 +214,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  		}
  
  		if (allocate_dst) {
-@@ -840,9 +896,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+@@ -804,9 +860,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
  			q->hosts[outer_hash + k].dsthost_tag = dsthost_hash;
  found_dst:
  			dsthost_idx = outer_hash + k;
@@ -227,7 +227,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  		}
  	}
  
-@@ -1855,10 +1912,6 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+@@ -1821,10 +1878,6 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  
  	/* flowchain */
  	if (!flow->set || flow->set == CAKE_SET_DECAYING) {
@@ -238,7 +238,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  		if (!flow->set) {
  			list_add_tail(&flow->flowchain, &b->new_flows);
  		} else {
-@@ -1868,18 +1921,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+@@ -1834,18 +1887,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  		flow->set = CAKE_SET_SPARSE;
  		b->sparse_flow_count++;
  
@@ -258,7 +258,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  		/* this flow was empty, accounted as a sparse flow, but actually
  		 * in the bulk rotation.
  		 */
-@@ -1887,12 +1930,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+@@ -1853,12 +1896,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  		b->sparse_flow_count--;
  		b->bulk_flow_count++;
  
@@ -273,7 +273,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  	}
  
  	if (q->buffer_used > q->buffer_max_used)
-@@ -1949,13 +1988,11 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+@@ -1915,13 +1954,11 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
  {
  	struct cake_sched_data *q = qdisc_priv(sch);
  	struct cake_tin_data *b = &q->tins[q->cur_tin];
@@ -287,7 +287,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  	u64 delay;
  	u32 len;
  
-@@ -2055,11 +2092,6 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+@@ -2021,11 +2058,6 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
  	q->cur_flow = flow - b->flows;
  	first_flow = false;
  
@@ -299,7 +299,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  	/* flow isolation (DRR++) */
  	if (flow->deficit <= 0) {
  		/* Keep all flows with deficits out of the sparse and decaying
-@@ -2071,11 +2103,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+@@ -2037,11 +2069,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
  				b->sparse_flow_count--;
  				b->bulk_flow_count++;
  
@@ -313,7 +313,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  
  				flow->set = CAKE_SET_BULK;
  			} else {
-@@ -2087,19 +2116,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+@@ -2053,19 +2082,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
  			}
  		}
  
@@ -334,7 +334,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  		list_move_tail(&flow->flowchain, &b->old_flows);
  
  		goto retry;
-@@ -2123,11 +2140,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+@@ -2089,11 +2106,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
  				if (flow->set == CAKE_SET_BULK) {
  					b->bulk_flow_count--;
  
@@ -348,7 +348,7 @@ index 8d9c0b98a747..d9535129f4e9 100644
  
  					b->decaying_flow_count++;
  				} else if (flow->set == CAKE_SET_SPARSE ||
-@@ -2145,12 +2159,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+@@ -2111,12 +2125,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
  				else if (flow->set == CAKE_SET_BULK) {
  					b->bulk_flow_count--;
  
