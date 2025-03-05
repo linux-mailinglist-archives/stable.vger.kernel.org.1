@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-121033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B8BA509CF
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F05E0A5082D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3A9188ED93
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DD03ABB75
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E7E254B09;
-	Wed,  5 Mar 2025 18:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B901314B075;
+	Wed,  5 Mar 2025 18:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybcK7/dk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hR4ICIPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92560253F3C;
-	Wed,  5 Mar 2025 18:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779481A3176;
+	Wed,  5 Mar 2025 18:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198686; cv=none; b=IgNpvWIDlBr5MM51nnyX85VRroaJjpK+SJX91JP3gJXQioQx+2Vh0QPvJY+4H3HuvT7ErfxlIVZ31YzuzhqeasOfJiXtTXKwlePCJjB+CvvO05frUEo3W9XbWbjNkGts3EsiKx4xzs7ACSB/KhRDsp4ToKOUkwTkGLSg4ESYau0=
+	t=1741197876; cv=none; b=THieDDmF5W5lNlspqk2yp010adbC4T9LeZVCcAd5Tb5Fug2a7FV8KOxLiscr/zwAWWUbybnbLFAtA2RDobBAnPIY5TjqRFwVPKfO1rZytZcgkBwYBhIdg3mkwrmiAS02H3XA/cudNm4dlLQ04ZSLu/SQrGVLvFNlDOAB6rW8GlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198686; c=relaxed/simple;
-	bh=c17wcLg/LI5zC/nCFJrClfu2+P1tUkAcv9KtgBFjFYo=;
+	s=arc-20240116; t=1741197876; c=relaxed/simple;
+	bh=VAw4DXgyx6tHyDyX+0KR7MnMPnTGFZ/nh82mKjQy2hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHsPCJz7qN3li2U3YBS1uuR/hsSmXNKyAyDmuL68CWxtRy4af0UfBas5jxS2eM3pKkqEEhs69AKxDFuDXvj2wDyBo6TI02Klw3FwxR/LEH+OMg5sP/FYtrcME0ZRu7nYxs/ndjbTthVmg0RZdFonT0+U73rViIfps+d2qKyES+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybcK7/dk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0E9C4CED1;
-	Wed,  5 Mar 2025 18:18:05 +0000 (UTC)
+	 MIME-Version; b=dwGiQeT9XxO5YI25cLmk5OHiGSSG3sww3N/coGfB5tCPy7l8ZyJkk7E1pw6nHO7QGrFmL7Azk5/PifgH24S9k/FEjP0XXsM3BmS3MEk2yvJ3ArnfSAi7/RF02i8/1NMJ4wrHwDzzHZbrVwoY64Ymb1VNQfX1HoSSkZDP2h0UWX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hR4ICIPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1443C4CED1;
+	Wed,  5 Mar 2025 18:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198686;
-	bh=c17wcLg/LI5zC/nCFJrClfu2+P1tUkAcv9KtgBFjFYo=;
+	s=korg; t=1741197876;
+	bh=VAw4DXgyx6tHyDyX+0KR7MnMPnTGFZ/nh82mKjQy2hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybcK7/dkjQ/Q5eHc58aerYpqeBbF1sRXeZqF1dbPfwdTirl5BCly8vHrethoIKajS
-	 LJ/H67wry5Gw3Wy0LXg/n/TO3JdFYqZhLozORlzdpKmvDhKjl97Ml55SCwMRZc1GvW
-	 Mzzf8bPhy9LgfB8mqT+YSwUan2V0iXavjRD5t7sY=
+	b=hR4ICIPAsP8wtLKvYMmTmMRlcu3YisfyqPcZ7bN2S7MzXVSHp6BHdVc82fxRXu9zf
+	 XDqkSZ8myPp7DUOFCRItPtN2iQyVXiXgvFD2wQeCp/WNU/aaON7dAJunyHk9w6BLOG
+	 DWgwbWVvya4WwUhglOEkZrkaTjEn/Y1dEspPy/tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 113/157] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+	Ashok Raj <ashok.raj@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 130/142] x86/microcode/intel: Set new revision only after a successful update
 Date: Wed,  5 Mar 2025 18:49:09 +0100
-Message-ID: <20250305174509.854421132@linuxfoundation.org>
+Message-ID: <20250305174505.558543585@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
+commit 9c21ea53e6bd1104c637b80a0688040f184cc761 upstream
 
-When a DMA mapping error occurs while processing skb frags, it will free
-one more tx_swbd than expected, so fix this off-by-one issue.
+This was meant to be done only when early microcode got updated
+successfully. Move it into the if-branch.
 
-Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-Cc: stable@vger.kernel.org
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also, make sure the current revision is read unconditionally and only
+once.
+
+Fixes: 080990aa3344 ("x86/microcode: Rework early revisions reporting")
+Reported-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Ashok Raj <ashok.raj@intel.com>
+Link: https://lore.kernel.org/r/ZWjVt5dNRjbcvlzR@a4bf019067fa.jf.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ arch/x86/kernel/cpu/microcode/intel.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -146,6 +146,24 @@ static int enetc_ptp_parse(struct sk_buf
- 	return 0;
- }
- 
-+/**
-+ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
-+ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
-+ * @count: Number of Tx buffer descriptors which need to be unmapped
-+ * @i: Index of the last successfully mapped Tx buffer descriptor
-+ */
-+static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
-+{
-+	while (count--) {
-+		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
-+
-+		enetc_free_tx_frame(tx_ring, tx_swbd);
-+		if (i == 0)
-+			i = tx_ring->bd_count;
-+		i--;
-+	}
-+}
-+
- static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -370,14 +370,14 @@ static __init struct microcode_intel *ge
  {
- 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
-@@ -329,13 +347,7 @@ static int enetc_map_tx_buffs(struct ene
- dma_err:
- 	dev_err(tx_ring->dev, "DMA map error");
+ 	struct cpio_data cp;
  
--	do {
--		tx_swbd = &tx_ring->tx_swbd[i];
--		enetc_free_tx_frame(tx_ring, tx_swbd);
--		if (i == 0)
--			i = tx_ring->bd_count;
--		i--;
--	} while (count--);
-+	enetc_unwind_tx_frame(tx_ring, count, i);
++	intel_collect_cpu_info(&uci->cpu_sig);
++
+ 	if (!load_builtin_intel_microcode(&cp))
+ 		cp = find_microcode_in_initrd(ucode_path);
  
- 	return 0;
+ 	if (!(cp.data && cp.size))
+ 		return NULL;
+ 
+-	intel_collect_cpu_info(&uci->cpu_sig);
+-
+ 	return scan_microcode(cp.data, cp.size, uci, save);
  }
+ 
+@@ -410,13 +410,13 @@ void __init load_ucode_intel_bsp(struct
+ {
+ 	struct ucode_cpu_info uci;
+ 
+-	ed->old_rev = intel_get_microcode_revision();
+-
+ 	uci.mc = get_microcode_blob(&uci, false);
+-	if (uci.mc && apply_microcode_early(&uci) == UCODE_UPDATED)
+-		ucode_patch_va = UCODE_BSP_LOADED;
++	ed->old_rev = uci.cpu_sig.rev;
+ 
+-	ed->new_rev = uci.cpu_sig.rev;
++	if (uci.mc && apply_microcode_early(&uci) == UCODE_UPDATED) {
++		ucode_patch_va = UCODE_BSP_LOADED;
++		ed->new_rev = uci.cpu_sig.rev;
++	}
+ }
+ 
+ void load_ucode_intel_ap(void)
 
 
 
