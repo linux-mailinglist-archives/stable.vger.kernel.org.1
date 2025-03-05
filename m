@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D5FA507CD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DC6A5075A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9113A649F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3F817A9C9C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDB878F3A;
-	Wed,  5 Mar 2025 18:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6A52512EB;
+	Wed,  5 Mar 2025 17:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUIs3xpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2iicfaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD7F1C6FF9;
-	Wed,  5 Mar 2025 18:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EB21C5F2C;
+	Wed,  5 Mar 2025 17:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197645; cv=none; b=i70O+PPSwMeQXCJjGbmc5ZVkVlFfCTp9BTnRLzcqTGzo9Jaz0szCgkvO/9ix8FYMYrFZD13i1SO/Kwl55V3MxIurVOAOwcyhHr+s2m9N2dk8MaZVfrTqH3nta/M82XJV6eM9t7hd3mgW68psjIEjxIosbF96qWoVDm4hE6UqJe8=
+	t=1741197300; cv=none; b=K6B7J7EpEj0AWnXlNAWraVs24OsUT9pJrJCmwNaIBZlOV1zfqpO1wr5f2F9sA2V0/jnq9AElXX09Eu+v/DUZUz35i1fD/RqgmcLIvf5GbJda4Hu1q1pHR99EkVn9KvS9mCNNrW/RWKXlGHcOZAv31o1/U55MnXdQhiCkpkG+5vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197645; c=relaxed/simple;
-	bh=uAmPkXbfWvSbv5R6RuQXHnUNtr4VRWk5DbLWi1+Jai8=;
+	s=arc-20240116; t=1741197300; c=relaxed/simple;
+	bh=NN57pOU6/B7DtChFcJM2Uva/2Zbkk3uGn+ra4EIksdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nX0iAjKEsmIRSFkIva9yyYHWyfZ8LoVmveygw9afnvOIY0N4A/jdSkCR9vgmzaKnxBquRG6ewKYoIJnt4IRIWkrEh+4+NdldeE9wRDi4J66ynTOXFxKqKnOVrKIokruaU7VbayT1oXP5/Ku4lo0YhqWvPwHjFsmTWMLR29VQv18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUIs3xpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487A1C4CED1;
-	Wed,  5 Mar 2025 18:00:44 +0000 (UTC)
+	 MIME-Version; b=oegvhjunVtxVIrIfHgqruuztR9sIxiPNFDxm6JOzYHYw8Q61QZqQabmDsHoTvwuSKiLYr0eOd2gnq6pI1W0BP/uRVolQ7d44a8lWNfitS4JBNQm1JyWAZVQkOa/lOiFd2Wp3qrXGYE9vA9JNj70dd5qKKe5Nu/z15WsSPcTPYws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2iicfaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A812FC4CED1;
+	Wed,  5 Mar 2025 17:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197644;
-	bh=uAmPkXbfWvSbv5R6RuQXHnUNtr4VRWk5DbLWi1+Jai8=;
+	s=korg; t=1741197300;
+	bh=NN57pOU6/B7DtChFcJM2Uva/2Zbkk3uGn+ra4EIksdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUIs3xpL51epAoMDa4wbhPUtjl46GiGG7pnA1GaZtD/z1DXvUMHCBtObUZKcPZC2K
-	 UuLj59SvSXy+yai7ipXXTzE7EHlmloQEItlFDo0ahAzG0X2OCxLJ8mAVvpnEt3WTYC
-	 Rx5EIgT4TKL3u3jrmwsySvYTYPxoUSsXmAxRK6Kw=
+	b=W2iicfaAQ+9QkSHpVElDDG19AUOZFjXqRduzmebNmM+k93wfnR8jr776ytnGIarhH
+	 SUgYTLOnJLTVoMCDaR2nZBhXv9GXg5pLcqmtqREaj08bDBymWSt7x7LEpWzUNcv+6C
+	 4vtIvK3VRKa9h5LPLEqxH1u7XQZZWYDiRlpiVVIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/142] net: ti: icss-iep: Reject perout generation request
+Subject: [PATCH 6.1 101/176] RDMA/mlx5: Cache all user cacheable mkeys on dereg MR flow
 Date: Wed,  5 Mar 2025 18:47:50 +0100
-Message-ID: <20250305174502.388950296@linuxfoundation.org>
+Message-ID: <20250305174509.519454849@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit 54e1b4becf5e220be03db4e1be773c1310e8cbbd ]
+[ Upstream commit dd1b913fb0d0e3e6d55e92d2319d954474dd66ac ]
 
-IEP driver supports both perout and pps signal generation
-but perout feature is faulty with half-cooked support
-due to some missing configuration. Remove perout
-support from the driver and reject perout requests with
-"not supported" error code.
+Currently, when dereging an MR, if the mkey doesn't belong to a cache
+entry, it will be destroyed.  As a result, the restart of applications
+with many non-cached mkeys is not efficient since all the mkeys are
+destroyed and then recreated.  This process takes a long time (for 100,000
+MRs, it is ~20 seconds for dereg and ~28 seconds for re-reg).
 
-Fixes: c1e0230eeaab2 ("net: ti: icss-iep: Add IEP driver")
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250227092441.1848419-1-m-malladi@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To shorten the restart runtime, insert all cacheable mkeys to the cache.
+If there is no fitting entry to the mkey properties, create a temporary
+entry that fits it.
+
+After a predetermined timeout, the cache entries will shrink to the
+initial high limit.
+
+The mkeys will still be in the cache when consuming them again after an
+application restart. Therefore, the registration will be much faster
+(for 100,000 MRs, it is ~4 seconds for dereg and ~5 seconds for re-reg).
+
+The temporary cache entries created to store the non-cache mkeys are not
+exposed through sysfs like the default cache entries.
+
+Link: https://lore.kernel.org/r/20230125222807.6921-6-michaelgur@nvidia.com
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: d97505baea64 ("RDMA/mlx5: Fix the recovery flow of the UMR QP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h |  2 +
+ drivers/infiniband/hw/mlx5/mr.c      | 55 +++++++++++++++++++++-------
+ 2 files changed, 44 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index b491d89de8fb2..3f9a030471fe2 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -544,26 +544,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- static int icss_iep_perout_enable(struct icss_iep *iep,
- 				  struct ptp_perout_request *req, int on)
- {
--	int ret = 0;
--
--	mutex_lock(&iep->ptp_clk_mutex);
--
--	if (iep->pps_enabled) {
--		ret = -EBUSY;
--		goto exit;
--	}
--
--	if (iep->perout_enabled == !!on)
--		goto exit;
--
--	ret = icss_iep_perout_enable_hw(iep, req, on);
--	if (!ret)
--		iep->perout_enabled = !!on;
--
--exit:
--	mutex_unlock(&iep->ptp_clk_mutex);
--
--	return ret;
-+	return -EOPNOTSUPP;
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 7c9d5648947e9..f345e2ae394d2 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -650,6 +650,8 @@ struct mlx5_ib_mkey {
+ 	unsigned int ndescs;
+ 	struct wait_queue_head wait;
+ 	refcount_t usecount;
++	/* User Mkey must hold either a rb_key or a cache_ent. */
++	struct mlx5r_cache_rb_key rb_key;
+ 	struct mlx5_cache_ent *cache_ent;
+ };
+ 
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index 1060b30a837a0..bf1ca7565be67 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1110,15 +1110,14 @@ static struct mlx5_ib_mr *alloc_cacheable_mr(struct ib_pd *pd,
+ 	rb_key.access_flags = get_unchangeable_access_flags(dev, access_flags);
+ 	ent = mkey_cache_ent_from_rb_key(dev, rb_key);
+ 	/*
+-	 * Matches access in alloc_cache_mr(). If the MR can't come from the
+-	 * cache then synchronously create an uncached one.
++	 * If the MR can't come from the cache then synchronously create an uncached
++	 * one.
+ 	 */
+-	if (!ent || ent->limit == 0 ||
+-	    !mlx5r_umr_can_reconfig(dev, 0, access_flags) ||
+-	    mlx5_umem_needs_ats(dev, umem, access_flags)) {
++	if (!ent) {
+ 		mutex_lock(&dev->slow_path_mutex);
+ 		mr = reg_create(pd, umem, iova, access_flags, page_size, false);
+ 		mutex_unlock(&dev->slow_path_mutex);
++		mr->mmkey.rb_key = rb_key;
+ 		return mr;
+ 	}
+ 
+@@ -1209,6 +1208,7 @@ static struct mlx5_ib_mr *reg_create(struct ib_pd *pd, struct ib_umem *umem,
+ 		goto err_2;
+ 	}
+ 	mr->mmkey.type = MLX5_MKEY_MR;
++	mr->mmkey.ndescs = get_octo_len(iova, umem->length, mr->page_shift);
+ 	mr->umem = umem;
+ 	set_mr_fields(dev, mr, umem->length, access_flags, iova);
+ 	kvfree(in);
+@@ -1747,6 +1747,40 @@ mlx5_free_priv_descs(struct mlx5_ib_mr *mr)
+ 	}
  }
  
- static int icss_iep_pps_enable(struct icss_iep *iep, int on)
++static int cache_ent_find_and_store(struct mlx5_ib_dev *dev,
++				    struct mlx5_ib_mr *mr)
++{
++	struct mlx5_mkey_cache *cache = &dev->cache;
++	struct mlx5_cache_ent *ent;
++
++	if (mr->mmkey.cache_ent) {
++		xa_lock_irq(&mr->mmkey.cache_ent->mkeys);
++		mr->mmkey.cache_ent->in_use--;
++		xa_unlock_irq(&mr->mmkey.cache_ent->mkeys);
++		goto end;
++	}
++
++	mutex_lock(&cache->rb_lock);
++	ent = mkey_cache_ent_from_rb_key(dev, mr->mmkey.rb_key);
++	mutex_unlock(&cache->rb_lock);
++	if (ent) {
++		if (ent->rb_key.ndescs == mr->mmkey.rb_key.ndescs) {
++			mr->mmkey.cache_ent = ent;
++			goto end;
++		}
++	}
++
++	ent = mlx5r_cache_create_ent(dev, mr->mmkey.rb_key, false);
++	if (IS_ERR(ent))
++		return PTR_ERR(ent);
++
++	mr->mmkey.cache_ent = ent;
++
++end:
++	return push_mkey(mr->mmkey.cache_ent, false,
++			 xa_mk_value(mr->mmkey.key));
++}
++
+ int mlx5_ib_dereg_mr(struct ib_mr *ibmr, struct ib_udata *udata)
+ {
+ 	struct mlx5_ib_mr *mr = to_mmr(ibmr);
+@@ -1792,16 +1826,11 @@ int mlx5_ib_dereg_mr(struct ib_mr *ibmr, struct ib_udata *udata)
+ 	}
+ 
+ 	/* Stop DMA */
+-	if (mr->mmkey.cache_ent) {
+-		xa_lock_irq(&mr->mmkey.cache_ent->mkeys);
+-		mr->mmkey.cache_ent->in_use--;
+-		xa_unlock_irq(&mr->mmkey.cache_ent->mkeys);
+-
++	if (mr->umem && mlx5r_umr_can_load_pas(dev, mr->umem->length))
+ 		if (mlx5r_umr_revoke_mr(mr) ||
+-		    push_mkey(mr->mmkey.cache_ent, false,
+-			      xa_mk_value(mr->mmkey.key)))
++		    cache_ent_find_and_store(dev, mr))
+ 			mr->mmkey.cache_ent = NULL;
+-	}
++
+ 	if (!mr->mmkey.cache_ent) {
+ 		rc = destroy_mkey(to_mdev(mr->ibmr.device), mr);
+ 		if (rc)
 -- 
 2.39.5
 
