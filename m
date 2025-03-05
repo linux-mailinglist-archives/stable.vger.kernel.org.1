@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-120884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4FCA508C5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155CFA5078A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E769E3A83AD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 625E17A8BFA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1754D17B401;
-	Wed,  5 Mar 2025 18:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C222C481DD;
+	Wed,  5 Mar 2025 17:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeKbCEr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykkUbsnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E821A5BB7;
-	Wed,  5 Mar 2025 18:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C101250C0E;
+	Wed,  5 Mar 2025 17:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198254; cv=none; b=g5HTp8AS/7P9EY0qVAU9tAwBFYBt7/751LiVIBCOEWEnc5ZaIy/OiDWjBuK3/9tMRKT/Ey1RWhi00LfnSl0R0RlK3ZgqImDhsAwYnihEeIjRpwpa4cd45Nwnu48MbPxFJt+FZuhbnHuUn978G1edVmSmHO26YtWFrQAJ3/6guVs=
+	t=1741197407; cv=none; b=WZ6PHVu6GrBysaMIvr70gkmS3ZmstS4c1d+8nTutSMAUwVrZIC76FKly6+2O2wUzZmwAr1jm908oOs3l0N55c72/XPu3UZo1iZgyql7dLdHh5hkPX1wn93pq8sB2fqeN1E7fmrzm5fTJxJGPhOEr/Dsh4EdB3xD2jkNRSswv1d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198254; c=relaxed/simple;
-	bh=AJTqoxwZs172gkNXcBTL0JZHS5510sR1ge8VXXdAB0c=;
+	s=arc-20240116; t=1741197407; c=relaxed/simple;
+	bh=4mfgfTfoaVor642YPKq1tm20SA/rzZPm7IurPUiY3xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XApteBTrawz0aYfwlR+6/EMiDq9g36tU6hgJibJRPaGNeU/gnls4mp9r3IHweMC+TEfFvf+iEiS9mY3mXKwhzApG9JOhJZuOX2BwcorzzfGmsh/aQwlp0pvEF0sK/kyVR3oWrdtODRY4f9gvaDoZbJ90DL8ys2YOUrd9xGUf/98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeKbCEr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D189C4CEE0;
-	Wed,  5 Mar 2025 18:10:54 +0000 (UTC)
+	 MIME-Version; b=m2bABubLRzipqGW6LD6iZplPeUor5DgKnCZot+d3upLUE321A3WcQ9CCwxobxHJzkU/GnFXr7TK6iP7+/sLbNMNZ7bep0Ag/nIEG3qqf+lS2Hid+xCa9AmWfF65n4mN2Xk/oSQibSusoMuJv6+tP497rLYFfMFgEEsOohC8X7Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykkUbsnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F39C4CED1;
+	Wed,  5 Mar 2025 17:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198254;
-	bh=AJTqoxwZs172gkNXcBTL0JZHS5510sR1ge8VXXdAB0c=;
+	s=korg; t=1741197407;
+	bh=4mfgfTfoaVor642YPKq1tm20SA/rzZPm7IurPUiY3xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeKbCEr5g2ej5rH0EzhblbkYjkcNLR098068ukJt93sRdCeGtS1tBOr3BZyfpLrl/
-	 RxalcnpUhz66lzrhuYqugfsuMRL9N3B7K0iH5DSLg3uJzieRETNQrqcgP1jxZh/Rf4
-	 c8tk2MAyvOBR85xkToqDtTyuX6BCAA28R2Jj/3qc=
+	b=ykkUbsnfy9xe9jHcUcqf/mO6nDoDEfsQ/YDRy2kEoIHMt3rlWa/hWULBAL174N3XP
+	 mls/SGjg+YG5VJWYmABtviIBoHjMKMtpUsgBYDBOURoENCGkqEzbAGlnGKWWI4YW34
+	 sQcQtoUQtDHnOTaGY2w4MllZH+78FT6MxyOrPWE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 085/150] tracing: Fix bad hist from corrupting named_triggers list
-Date: Wed,  5 Mar 2025 18:48:34 +0100
-Message-ID: <20250305174507.230238769@linuxfoundation.org>
+	Russell Senior <russell@personaltelco.net>,
+	Ingo Molnar <mingo@kernel.org>,
+	Matthew Whitehead <tedheadster@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>
+Subject: [PATCH 6.1 146/176] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
+Date: Wed,  5 Mar 2025 18:48:35 +0100
+Message-ID: <20250305174511.304920713@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,142 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Russell Senior <russell@personaltelco.net>
 
-commit 6f86bdeab633a56d5c6dccf1a2c5989b6a5e323e upstream.
+[ Upstream commit bebe35bb738b573c32a5033499cd59f20293f2a3 ]
 
-The following commands causes a crash:
+I still have some Soekris net4826 in a Community Wireless Network I
+volunteer with. These devices use an AMD SC1100 SoC. I am running
+OpenWrt on them, which uses a patched kernel, that naturally has
+evolved over time.  I haven't updated the ones in the field in a
+number of years (circa 2017), but have one in a test bed, where I have
+intermittently tried out test builds.
 
- ~# cd /sys/kernel/tracing/events/rcu/rcu_callback
- ~# echo 'hist:name=bad:keys=common_pid:onmax(bogus).save(common_pid)' > trigger
- bash: echo: write error: Invalid argument
- ~# echo 'hist:name=bad:keys=common_pid' > trigger
+A few years ago, I noticed some trouble, particularly when "warm
+booting", that is, doing a reboot without removing power, and noticed
+the device was hanging after the kernel message:
 
-Because the following occurs:
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
 
-event_trigger_write() {
-  trigger_process_regex() {
-    event_hist_trigger_parse() {
+If I removed power and then restarted, it would boot fine, continuing
+through the message above, thusly:
 
-      data = event_trigger_alloc(..);
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
+  [    0.090076] Enable Memory-Write-back mode on Cyrix/NSC processor.
+  [    0.100000] Enable Memory access reorder on Cyrix/NSC processor.
+  [    0.100070] Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
+  [    0.110058] Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
+  [    0.120037] CPU: NSC Geode(TM) Integrated Processor by National Semi (family: 0x5, model: 0x9, stepping: 0x1)
+  [...]
 
-      event_trigger_register(.., data) {
-        cmd_ops->reg(.., data, ..) [hist_register_trigger()] {
-          data->ops->init() [event_hist_trigger_init()] {
-            save_named_trigger(name, data) {
-              list_add(&data->named_list, &named_triggers);
-            }
-          }
-        }
-      }
+In order to continue using modern tools, like ssh, to interact with
+the software on these old devices, I need modern builds of the OpenWrt
+firmware on the devices. I confirmed that the warm boot hang was still
+an issue in modern OpenWrt builds (currently using a patched linux
+v6.6.65).
 
-      ret = create_actions(); (return -EINVAL)
-      if (ret)
-        goto out_unreg;
-[..]
-      ret = hist_trigger_enable(data, ...) {
-        list_add_tail_rcu(&data->list, &file->triggers); <<<---- SKIPPED!!! (this is important!)
-[..]
- out_unreg:
-      event_hist_unregister(.., data) {
-        cmd_ops->unreg(.., data, ..) [hist_unregister_trigger()] {
-          list_for_each_entry(iter, &file->triggers, list) {
-            if (!hist_trigger_match(data, iter, named_data, false))   <- never matches
-                continue;
-            [..]
-            test = iter;
-          }
-          if (test && test->ops->free) <<<-- test is NULL
+Last night, I decided it was time to get to the bottom of the warm
+boot hang, and began bisecting. From preserved builds, I narrowed down
+the bisection window from late February to late May 2019. During this
+period, the OpenWrt builds were using 4.14.x. I was able to build
+using period-correct Ubuntu 18.04.6. After a number of bisection
+iterations, I identified a kernel bump from 4.14.112 to 4.14.113 as
+the commit that introduced the warm boot hang.
 
-            test->ops->free(test) [event_hist_trigger_free()] {
-              [..]
-              if (data->name)
-                del_named_trigger(data) {
-                  list_del(&data->named_list);  <<<<-- NEVER gets removed!
-                }
-              }
-           }
-         }
+  https://github.com/openwrt/openwrt/commit/07aaa7e3d62ad32767d7067107db64b6ade81537
 
-         [..]
-         kfree(data); <<<-- frees item but it is still on list
+Looking at the upstream changes in the stable kernel between 4.14.112
+and 4.14.113 (tig v4.14.112..v4.14.113), I spotted a likely suspect:
 
-The next time a hist with name is registered, it causes an u-a-f bug and
-the kernel can crash.
+  https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=20afb90f730982882e65b01fb8bdfe83914339c5
 
-Move the code around such that if event_trigger_register() succeeds, the
-next thing called is hist_trigger_enable() which adds it to the list.
+So, I tried reverting just that kernel change on top of the breaking
+OpenWrt commit, and my warm boot hang went away.
 
-A bunch of actions is called if get_named_trigger_data() returns false.
-But that doesn't need to be called after event_trigger_register(), so it
-can be moved up, allowing event_trigger_register() to be called just
-before hist_trigger_enable() keeping them together and allowing the
-file->triggers to be properly populated.
+Presumably, the warm boot hang is due to some register not getting
+cleared in the same way that a loss of power does. That is
+approximately as much as I understand about the problem.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250227163944.1c37f85f@gandalf.local.home
-Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
-Reported-by: Tomas Glozar <tglozar@redhat.com>
-Tested-by: Tomas Glozar <tglozar@redhat.com>
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Closes: https://lore.kernel.org/all/CAP4=nvTsxjckSBTz=Oe_UYh8keD9_sZC4i++4h72mJLic4_W4A@mail.gmail.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+More poking/prodding and coaching from Jonas Gorski, it looks
+like this test patch fixes the problem on my board: Tested against
+v6.6.67 and v4.14.113.
+
+Fixes: 18fb053f9b82 ("x86/cpu/cyrix: Use correct macros for Cyrix calls on Geode processors")
+Debugged-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Russell Senior <russell@personaltelco.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/CAHP3WfOgs3Ms4Z+L9i0-iBOE21sdMk5erAiJurPjnrL9LSsgRA@mail.gmail.com
+Cc: Matthew Whitehead <tedheadster@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c |   30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ arch/x86/kernel/cpu/cyrix.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -6652,27 +6652,27 @@ static int event_hist_trigger_parse(stru
- 	if (existing_hist_update_only(glob, trigger_data, file))
- 		goto out_free;
+diff --git a/arch/x86/kernel/cpu/cyrix.c b/arch/x86/kernel/cpu/cyrix.c
+index 9651275aecd1b..dfec2c61e3547 100644
+--- a/arch/x86/kernel/cpu/cyrix.c
++++ b/arch/x86/kernel/cpu/cyrix.c
+@@ -153,8 +153,8 @@ static void geode_configure(void)
+ 	u8 ccr3;
+ 	local_irq_save(flags);
  
--	ret = event_trigger_register(cmd_ops, file, glob, trigger_data);
--	if (ret < 0)
--		goto out_free;
-+	if (!get_named_trigger_data(trigger_data)) {
+-	/* Suspend on halt power saving and enable #SUSP pin */
+-	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x88);
++	/* Suspend on halt power saving */
++	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x08);
  
--	if (get_named_trigger_data(trigger_data))
--		goto enable;
-+		ret = create_actions(hist_data);
-+		if (ret)
-+			goto out_free;
- 
--	ret = create_actions(hist_data);
--	if (ret)
--		goto out_unreg;
-+		if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
-+			ret = save_hist_vars(hist_data);
-+			if (ret)
-+				goto out_free;
-+		}
- 
--	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
--		ret = save_hist_vars(hist_data);
-+		ret = tracing_map_init(hist_data->map);
- 		if (ret)
--			goto out_unreg;
-+			goto out_free;
- 	}
- 
--	ret = tracing_map_init(hist_data->map);
--	if (ret)
--		goto out_unreg;
--enable:
-+	ret = event_trigger_register(cmd_ops, file, glob, trigger_data);
-+	if (ret < 0)
-+		goto out_free;
-+
- 	ret = hist_trigger_enable(trigger_data, file);
- 	if (ret)
- 		goto out_unreg;
+ 	ccr3 = getCx86(CX86_CCR3);
+ 	setCx86(CX86_CCR3, (ccr3 & 0x0f) | 0x10);	/* enable MAPEN */
+-- 
+2.39.5
+
 
 
 
