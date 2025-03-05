@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-120762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83FB7A5083F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D348AA508ED
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A753B0404
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE6E1894E05
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C074A1ACEDD;
-	Wed,  5 Mar 2025 18:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D12B250C0A;
+	Wed,  5 Mar 2025 18:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSZb4/AU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOVOTT00"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED8017B505;
-	Wed,  5 Mar 2025 18:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF841C6FF6;
+	Wed,  5 Mar 2025 18:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197899; cv=none; b=g6usjaZX5cSjTITKxWp88jvrfGUM/h90Qka36ubXcIHu0wkF3d2I90FUIE0uhELIAqFBTJCkwaZ7in8q3aovyZU23F/+N5o+AMPe1LjMTLGdXaLdwcc8Qag1imz4nwj203CQi8GBFeSaKVTRUsBcfBqhBSBmJZIPAFodr8fa5eI=
+	t=1741198285; cv=none; b=vDJbrsQMn157z6uQd2LTCzJxiftoiD8To0i3/i+Z6J8JP79jph9Q38iBTbuAhT4Cq8467g6Ds1cNuGivozaGAGx/B347Hz1r52Z67rHKZbWYtNBifrkXwHRUTIkjZA10KbPGM773Jza0t6gdP9lsHWQESO6Izf3kn8Iw9qPQln4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197899; c=relaxed/simple;
-	bh=gYGH5yMEoTb+PFHKjkvVpt53gcmZdRWC/bpeRYnvIx4=;
+	s=arc-20240116; t=1741198285; c=relaxed/simple;
+	bh=M31jkOAwdqDAASKkju8MgehSnP2UI7EKRsllFmvmvEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSnrvfPg/2M8XZrfFaaPDps3Wt11lDRBVCs1uAWr+/FWgjdaNtFxsiS8oOBVpEjJzTJZaedSPk+R+t/eRNRuUBgfEUpmpcqTl8+Gcgd9KMT03bRRXNg2OnrmtabUe7JVpETzFVS+gPIKEnQ0tvDp9uk6jBOMPLOg6efZYXfgr4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSZb4/AU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0731BC4CED1;
-	Wed,  5 Mar 2025 18:04:58 +0000 (UTC)
+	 MIME-Version; b=PS2MyIfJbSqwXqMWNjZ5tKfAMpVuDEtv0msMvbVgXGuh1WociTKoabnPhPzYTsUdUbiE4wDTjzCBpGJfVPNI4kaNf+qAeHCXazVjSHn8eQCy34lxJn1VuiE+dp3IKPy48z94nwz03BwE3ds3F7D9jq3MYCK+yN3r53ZA0djLAyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOVOTT00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E92C4CED1;
+	Wed,  5 Mar 2025 18:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197899;
-	bh=gYGH5yMEoTb+PFHKjkvVpt53gcmZdRWC/bpeRYnvIx4=;
+	s=korg; t=1741198285;
+	bh=M31jkOAwdqDAASKkju8MgehSnP2UI7EKRsllFmvmvEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSZb4/AUj7mX0irSTvczWc9X9bQhtd0PJlQ3r4d6bD6p3NeCg8Gdqg8M/vJi9m1ol
-	 F+uyDSajNw9jaOvWZNBWyuWFh2WgNXcgvtbF8YtswhPD/1EawvAKz8qdt0b3FpZCDm
-	 3BNk7RtVVXSrmdZ9/h1UWKx3EMDnTO3tZJM/sSew=
+	b=xOVOTT000ZO1y1vTkNFn/gb8YPatDDydhuzUDCwuGiitIyC3ojqqYTPcEbgf0qSJv
+	 SEfYPLeyuCoXuCdqa4boHBATf9yiJnsPrWL+w0/sEc4423+3rJ1tJkX3iJM/T57qqU
+	 sVCevpbfylduVTuMpp3IREviMMqM03g1OS1DyNbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 137/142] x86/microcode/AMD: Make __verify_patch_size() return bool
+	kernel test robot <oliver.sang@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.12 127/150] rcuref: Plug slowpath race in rcuref_put()
 Date: Wed,  5 Mar 2025 18:49:16 +0100
-Message-ID: <20250305174505.838726869@linuxfoundation.org>
+Message-ID: <20250305174508.917285601@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Borisov <nik.borisov@suse.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit d8317f3d8e6b412ff51ea66f1de2b2f89835f811 upstream
+commit b9a49520679e98700d3d89689cc91c08a1c88c1d upstream.
 
-The result of that function is in essence boolean, so simplify to return the
-result of the relevant expression. It also makes it follow the convention used
-by __verify_patch_section().
+Kernel test robot reported an "imbalanced put" in the rcuref_put() slow
+path, which turned out to be a false positive. Consider the following race:
 
-No functional changes.
+            ref  = 0 (via rcuref_init(ref, 1))
+ T1                                      T2
+ rcuref_put(ref)
+ -> atomic_add_negative_release(-1, ref)                                         # ref -> 0xffffffff
+ -> rcuref_put_slowpath(ref)
+                                         rcuref_get(ref)
+                                         -> atomic_add_negative_relaxed(1, &ref->refcnt)
+                                           -> return true;                       # ref -> 0
 
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241018155151.702350-3-nik.borisov@suse.com
+                                         rcuref_put(ref)
+                                         -> atomic_add_negative_release(-1, ref) # ref -> 0xffffffff
+                                         -> rcuref_put_slowpath()
+
+    -> cnt = atomic_read(&ref->refcnt);                                          # cnt -> 0xffffffff / RCUREF_NOREF
+    -> atomic_try_cmpxchg_release(&ref->refcnt, &cnt, RCUREF_DEAD))              # ref -> 0xe0000000 / RCUREF_DEAD
+       -> return true
+                                           -> cnt = atomic_read(&ref->refcnt);   # cnt -> 0xe0000000 / RCUREF_DEAD
+                                           -> if (cnt > RCUREF_RELEASED)         # 0xe0000000 > 0xc0000000
+                                             -> WARN_ONCE(cnt >= RCUREF_RELEASED, "rcuref - imbalanced put()")
+
+The problem is the additional read in the slow path (after it
+decremented to RCUREF_NOREF) which can happen after the counter has been
+marked RCUREF_DEAD.
+
+Prevent this by reusing the return value of the decrement. Now every "final"
+put uses RCUREF_NOREF in the slow path and attempts the final cmpxchg() to
+RCUREF_DEAD.
+
+[ bigeasy: Add changelog ]
+
+Fixes: ee1ee6db07795 ("atomics: Provide rcuref - scalable reference counting")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Debugged-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/oe-lkp/202412311453.9d7636a2-lkp@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ include/linux/rcuref.h |    9 ++++++---
+ lib/rcuref.c           |    5 ++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -285,13 +285,13 @@ __verify_patch_section(const u8 *buf, si
-  * exceed the per-family maximum). @sh_psize is the size read from the section
-  * header.
-  */
--static unsigned int __verify_patch_size(u32 sh_psize, size_t buf_size)
-+static bool __verify_patch_size(u32 sh_psize, size_t buf_size)
- {
- 	u8 family = x86_family(bsp_cpuid_1_eax);
- 	u32 max_size;
- 
- 	if (family >= 0x15)
--		return min_t(u32, sh_psize, buf_size);
-+		goto ret;
- 
- #define F1XH_MPB_MAX_SIZE 2048
- #define F14H_MPB_MAX_SIZE 1824
-@@ -305,13 +305,15 @@ static unsigned int __verify_patch_size(
- 		break;
- 	default:
- 		WARN(1, "%s: WTF family: 0x%x\n", __func__, family);
--		return 0;
-+		return false;
- 	}
- 
--	if (sh_psize > min_t(u32, buf_size, max_size))
--		return 0;
-+	if (sh_psize > max_size)
-+		return false;
- 
--	return sh_psize;
-+ret:
-+	/* Working with the whole buffer so < is ok. */
-+	return sh_psize <= buf_size;
+--- a/include/linux/rcuref.h
++++ b/include/linux/rcuref.h
+@@ -71,27 +71,30 @@ static inline __must_check bool rcuref_g
+ 	return rcuref_get_slowpath(ref);
  }
  
- /*
-@@ -326,7 +328,6 @@ static int verify_patch(const u8 *buf, s
- {
- 	u8 family = x86_family(bsp_cpuid_1_eax);
- 	struct microcode_header_amd *mc_hdr;
--	unsigned int ret;
- 	u32 sh_psize;
- 	u16 proc_id;
- 	u8 patch_fam;
-@@ -350,8 +351,7 @@ static int verify_patch(const u8 *buf, s
- 		return -1;
- 	}
+-extern __must_check bool rcuref_put_slowpath(rcuref_t *ref);
++extern __must_check bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt);
  
--	ret = __verify_patch_size(sh_psize, buf_size);
--	if (!ret) {
-+	if (!__verify_patch_size(sh_psize, buf_size)) {
- 		pr_debug("Per-family patch size mismatch.\n");
- 		return -1;
- 	}
+ /*
+  * Internal helper. Do not invoke directly.
+  */
+ static __always_inline __must_check bool __rcuref_put(rcuref_t *ref)
+ {
++	int cnt;
++
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() && preemptible(),
+ 			 "suspicious rcuref_put_rcusafe() usage");
+ 	/*
+ 	 * Unconditionally decrease the reference count. The saturation and
+ 	 * dead zones provide enough tolerance for this.
+ 	 */
+-	if (likely(!atomic_add_negative_release(-1, &ref->refcnt)))
++	cnt = atomic_sub_return_release(1, &ref->refcnt);
++	if (likely(cnt >= 0))
+ 		return false;
+ 
+ 	/*
+ 	 * Handle the last reference drop and cases inside the saturation
+ 	 * and dead zones.
+ 	 */
+-	return rcuref_put_slowpath(ref);
++	return rcuref_put_slowpath(ref, cnt);
+ }
+ 
+ /**
+--- a/lib/rcuref.c
++++ b/lib/rcuref.c
+@@ -220,6 +220,7 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
+ /**
+  * rcuref_put_slowpath - Slowpath of __rcuref_put()
+  * @ref:	Pointer to the reference count
++ * @cnt:	The resulting value of the fastpath decrement
+  *
+  * Invoked when the reference count is outside of the valid zone.
+  *
+@@ -233,10 +234,8 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
+  *	with a concurrent get()/put() pair. Caller is not allowed to
+  *	deconstruct the protected object.
+  */
+-bool rcuref_put_slowpath(rcuref_t *ref)
++bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt)
+ {
+-	unsigned int cnt = atomic_read(&ref->refcnt);
+-
+ 	/* Did this drop the last reference? */
+ 	if (likely(cnt == RCUREF_NOREF)) {
+ 		/*
 
 
 
