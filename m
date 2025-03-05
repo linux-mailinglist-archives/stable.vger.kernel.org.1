@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1F9A507C8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B3CA5070D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4F0516BB17
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FE0D3A42BA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCC3250C1A;
-	Wed,  5 Mar 2025 18:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA2F2517B3;
+	Wed,  5 Mar 2025 17:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KywVaXcU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnYcIDUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12241C860D;
-	Wed,  5 Mar 2025 18:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD7B250C0E;
+	Wed,  5 Mar 2025 17:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197613; cv=none; b=rvYjAu6/a4yXTwHLFFXNgE37e2+08YaB0ILzqmC7Zty3HdTvE1tSSZXeYH3pa7O3lTRcftE2lKPyYaoDekD0Vm03e+/Sr5PYWl16Hc3vCfwwvVc5NhPU635FhDpJ1DZb6nmeic/uXDir+BVNB6WuBLqhx37EUIzMlCMNWzhMM8Y=
+	t=1741197158; cv=none; b=NnH9dpKKNVc/tunQuT2QgfuUHwSBtLdtR1Y2XaxAbPDzuG4V1GG5IipsYHGZmVxfPot3gFYDgCT6QazI9tf0lRmAGQ1S+4pXIMH1rsmYumB6DlaqtAIqc5M/eX3wM+auQyElh/9O1IN4MZ+QX4STNHGVZL0OWjkO9dg0YE8jPo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197613; c=relaxed/simple;
-	bh=l7r3f8uYsaOZGskMPS43LoeR/tFJbv0SxHGRo64cWtI=;
+	s=arc-20240116; t=1741197158; c=relaxed/simple;
+	bh=U8Y7uj95MccMJ1DZV8E1IdQI08zNHfS3b0ZSdYDx8Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlNfritZF4pDccwSGhxs2R5X9CdNj1CgLOButeRLP1euJNronX3y4rd5xABRA//OeOrh1EMvpBA3GxqBVQ+5Y9rIJeeyHPO7uDQ8SQb8RuwjuFiCampAr6mVVDxsznRZ9CXIuH4+braBxTEiK773wrK5RStVsNz+6iA6xEqeGQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KywVaXcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC28C4CED1;
-	Wed,  5 Mar 2025 18:00:12 +0000 (UTC)
+	 MIME-Version; b=EjlZSgqfSpj6NabAZQBZeSQyC+oxfOu/E6JnXPaxYQGp0ZDS7mYsaFgwqxL7MNNZuen0xo6oyfWvpQtu6/FmyKF747Ges99bQMRRLG3d+CUYLy4vs57XmoLI6rj7G66sC42PZldaJXN3rLmM+dHihhefpAebXTpbzhdQ2SinquY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnYcIDUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F75C4CED1;
+	Wed,  5 Mar 2025 17:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197612;
-	bh=l7r3f8uYsaOZGskMPS43LoeR/tFJbv0SxHGRo64cWtI=;
+	s=korg; t=1741197157;
+	bh=U8Y7uj95MccMJ1DZV8E1IdQI08zNHfS3b0ZSdYDx8Z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KywVaXcUT3wdFbLBukDCMG+dCpJ4kb1iWqc8uqI8nNVG9JqLEcVAMFc7goHVLwf5J
-	 JwJ/fmzFmygOhqR2COcug4HYGmsudxlpwtM+gkekUGOz+SZsBcqXL110y5DPCc1HDt
-	 lS6n2oOHkOrOUYUE4NJOBq54I1IEZozYCScrgneE=
+	b=ZnYcIDUqiaihnSw7nI/7ebrPF7KlxkcbZQJ3GnYCFi5yPRu8+Lwrb+1oD13dpTvXU
+	 VbdOHPruC7R+kYLrvYcBriaKDj6ICp0vdvVsVIHaJg+PeUu1bfVTajnFuG33GIx83E
+	 R9/2PcKJBmQGY9cDUuyuq+JUHJjAVkhm9ktvXJy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Nick Hu <nick.hu@sifive.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/142] SUNRPC: convert RPC_TASK_* constants to enum
+Subject: [PATCH 6.1 059/176] net: axienet: Set mac_managed_pm
 Date: Wed,  5 Mar 2025 18:47:08 +0100
-Message-ID: <20250305174500.710755586@linuxfoundation.org>
+Message-ID: <20250305174507.828722596@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
+From: Nick Hu <nick.hu@sifive.com>
 
-[ Upstream commit 0b108e83795c9c23101f584ef7e3ab4f1f120ef0 ]
+[ Upstream commit a370295367b55662a32a4be92565fe72a5aa79bb ]
 
-The RPC_TASK_* constants are defined as macros, which means that most
-kernel builds will not contain their definitions in the debuginfo.
-However, it's quite useful for debuggers to be able to view the task
-state constant and interpret it correctly. Conversion to an enum will
-ensure the constants are present in debuginfo and can be interpreted by
-debuggers without needing to hard-code them and track their changes.
+The external PHY will undergo a soft reset twice during the resume process
+when it wake up from suspend. The first reset occurs when the axienet
+driver calls phylink_of_phy_connect(), and the second occurs when
+mdio_bus_phy_resume() invokes phy_init_hw(). The second soft reset of the
+external PHY does not reinitialize the internal PHY, which causes issues
+with the internal PHY, resulting in the PHY link being down. To prevent
+this, setting the mac_managed_pm flag skips the mdio_bus_phy_resume()
+function.
 
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: 5bbd6e863b15 ("SUNRPC: Prevent looping due to rpc_signal_task() races")
+Fixes: a129b41fe0a8 ("Revert "net: phy: dp83867: perform soft reset and retain established link"")
+Signed-off-by: Nick Hu <nick.hu@sifive.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250217055843.19799-1-nick.hu@sifive.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 8f9bee0e21c3b..f80b90aca380a 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -140,13 +140,15 @@ struct rpc_task_setup {
- #define RPC_WAS_SENT(t)		((t)->tk_flags & RPC_TASK_SENT)
- #define RPC_IS_MOVEABLE(t)	((t)->tk_flags & RPC_TASK_MOVEABLE)
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index a957721581761..f227ed8e99345 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -2159,6 +2159,7 @@ static int axienet_probe(struct platform_device *pdev)
  
--#define RPC_TASK_RUNNING	0
--#define RPC_TASK_QUEUED		1
--#define RPC_TASK_ACTIVE		2
--#define RPC_TASK_NEED_XMIT	3
--#define RPC_TASK_NEED_RECV	4
--#define RPC_TASK_MSG_PIN_WAIT	5
--#define RPC_TASK_SIGNALLED	6
-+enum {
-+	RPC_TASK_RUNNING,
-+	RPC_TASK_QUEUED,
-+	RPC_TASK_ACTIVE,
-+	RPC_TASK_NEED_XMIT,
-+	RPC_TASK_NEED_RECV,
-+	RPC_TASK_MSG_PIN_WAIT,
-+	RPC_TASK_SIGNALLED,
-+};
+ 	lp->phylink_config.dev = &ndev->dev;
+ 	lp->phylink_config.type = PHYLINK_NETDEV;
++	lp->phylink_config.mac_managed_pm = true;
+ 	lp->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
+ 		MAC_10FD | MAC_100FD | MAC_1000FD;
  
- #define rpc_test_and_set_running(t) \
- 				test_and_set_bit(RPC_TASK_RUNNING, &(t)->tk_runstate)
 -- 
 2.39.5
 
