@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AE5A50874
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED75A5074D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E673E7A2898
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89B083AAFC0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A39F1C6FF6;
-	Wed,  5 Mar 2025 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AEF25290C;
+	Wed,  5 Mar 2025 17:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N08SzIyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFh8mF2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB33539A;
-	Wed,  5 Mar 2025 18:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429AB252907;
+	Wed,  5 Mar 2025 17:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198065; cv=none; b=RcT2I25guJxtRHYvXBHUqUFMK4LCHj1GBcZQKHA6QVeQBDzgsydv4pWCBp1aXg87AX4MFJsEFOUfSY4hM4UYoUckYUdHZbXwJvigbtcu1mOM4Xlri8bt4MQB7c3lvg39tSNlSi/OjoWr4vmEXvtB1vjG6u+62NBMEa2N3xPwREI=
+	t=1741197312; cv=none; b=VgsohsoGd+sU7kFwsYeP5R9Z/Djvdre1vtAVToTKHjh0fYqzugsZj3bWbugStPRxgNo57Sf7uz55z8kCiQUFcwPRBPbKPfm/Kec5ZiFQkTaq3KNGikS9tQj0W6ngZvp0KG9g68tnX4SPpLQVnLjuS3GQ7TXWRwEbNQDh5okuSfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198065; c=relaxed/simple;
-	bh=OIRPf3zjFGv1yi7IMOduB0MyBGv3hhvYXj/Ol8PiHOw=;
+	s=arc-20240116; t=1741197312; c=relaxed/simple;
+	bh=HDAG2f+HM3obWq9n4GHj+wZeLtfm0j6/kUfK/pgCn5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjB5oZGn3Mf2zkWWRxPGCHfplfG11jAKnWISEmHzRQqYMLamVltI2WS3/H/O1gv3xEBCDPpds+uE9kILZt3JNPXKsLVJqsq2jgR0azLE1gzYIOhLj4vPpdWH4LF+2WMUm0CCuCYOlQQYQOZne8eF3WM2LJH7DbXzuHbsOMGu6Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N08SzIyx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC31C4CED1;
-	Wed,  5 Mar 2025 18:07:44 +0000 (UTC)
+	 MIME-Version; b=NtBo3kFJAehKiwbsJ6M97thXG+6teQFrqW5ZKtmlonapIZAVgF3OuZgxTCkQsX7oqhYJJrpNkXtSAN7bh//eBn87OBwnsBazgmNscMAX75ySEJXldIli9nVLaweA92gewccq6MAGehAPF/4KUAnXvBj7EzmGu2emLg/mg/oOBbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFh8mF2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EE3C4CED1;
+	Wed,  5 Mar 2025 17:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198065;
-	bh=OIRPf3zjFGv1yi7IMOduB0MyBGv3hhvYXj/Ol8PiHOw=;
+	s=korg; t=1741197312;
+	bh=HDAG2f+HM3obWq9n4GHj+wZeLtfm0j6/kUfK/pgCn5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N08SzIyx+t8W0YMNc9/ik8Stm/JmZWlTHC6b95WTdie7AMf1gXh84Hw/wnv+R8Pr6
-	 krpwqiGXOwYGdFOxnMzwlUVk9QdOb01A7COIyE5GWjbonA88Xe3OksQ78BsG/g5rfZ
-	 /bo8Z4A6DGuK6LcxEWswfvujiS7Tey03DI8ccjQY=
+	b=AFh8mF2hQp38ps/sb5r08ajyvp4H/Te1IMGjkUdzh3+tEzM+YkbWQiNJRCGI/e4Wh
+	 MQW2Y6FVIYuyYmhm0tYLGVIIi1q6murLYorPi/fMnj+OaL3AwqanSIRIiVXuFnb8NN
+	 KaF19HCD6mBaPm+M3Fc/3xfYyR88pJmY8ELFlf3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mina Almasry <almasrymina@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ye Bin <yebin10@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 053/150] tcp: devmem: dont write truncated dmabuf CMSGs to userspace
+Subject: [PATCH 6.1 113/176] scsi: core: Clear driver private data when retrying request
 Date: Wed,  5 Mar 2025 18:48:02 +0100
-Message-ID: <20250305174505.955893284@linuxfoundation.org>
+Message-ID: <20250305174510.001983270@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 18912c520674ec4d920fe3826e7e4fefeecdf5ae ]
+[ Upstream commit dce5c4afd035e8090a26e5d776b1682c0e649683 ]
 
-Currently, we report -ETOOSMALL (err) only on the first iteration
-(!sent). When we get put_cmsg error after a bunch of successful
-put_cmsg calls, we don't signal the error at all. This might be
-confusing on the userspace side which will see truncated CMSGs
-but no MSG_CTRUNC signal.
+After commit 1bad6c4a57ef ("scsi: zero per-cmd private driver data for each
+MQ I/O"), the xen-scsifront/virtio_scsi/snic drivers all removed code that
+explicitly zeroed driver-private command data.
 
-Consider the following case:
-- sizeof(struct cmsghdr) = 16
-- sizeof(struct dmabuf_cmsg) = 24
-- total cmsg size (CMSG_LEN) = 40 (16+24)
+In combination with commit 464a00c9e0ad ("scsi: core: Kill DRIVER_SENSE"),
+after virtio_scsi performs a capacity expansion, the first request will
+return a unit attention to indicate that the capacity has changed. And then
+the original command is retried. As driver-private command data was not
+cleared, the request would return UA again and eventually time out and fail.
 
-When calling recvmsg with msg_controllen=60, the userspace
-will receive two(!) dmabuf_cmsg(s), the first one will
-be a valid one and the second one will be silently truncated. There is no
-easy way to discover the truncation besides doing something like
-"cm->cmsg_len != CMSG_LEN(sizeof(dmabuf_cmsg))".
+Zero driver-private command data when a request is retried.
 
-Introduce new put_devmem_cmsg wrapper that reports an error instead
-of doing the truncation. Mina suggests that it's the intended way
-this API should work.
-
-Note that we might now report MSG_CTRUNC when the users (incorrectly)
-call us with msg_control == NULL.
-
-Fixes: 8f0b3cc9a4c1 ("tcp: RX path for devmem TCP")
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250224174401.3582695-1-sdf@fomichev.me
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f7de50da1479 ("scsi: xen-scsifront: Remove code that zeroes driver-private command data")
+Fixes: c2bb87318baa ("scsi: virtio_scsi: Remove code that zeroes driver-private command data")
+Fixes: c3006a926468 ("scsi: snic: Remove code that zeroes driver-private command data")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250217021628.2929248-1-yebin@huaweicloud.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/socket.h |  2 ++
- net/core/scm.c         | 10 ++++++++++
- net/ipv4/tcp.c         | 26 ++++++++++----------------
- 3 files changed, 22 insertions(+), 16 deletions(-)
+ drivers/scsi/scsi_lib.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/socket.h b/include/linux/socket.h
-index d18cc47e89bd0..c3322eb3d6865 100644
---- a/include/linux/socket.h
-+++ b/include/linux/socket.h
-@@ -392,6 +392,8 @@ struct ucred {
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 72d31b2267ef4..8e75eb1b6eab8 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1579,13 +1579,6 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
+ 	if (in_flight)
+ 		__set_bit(SCMD_STATE_INFLIGHT, &cmd->state);
  
- extern int move_addr_to_kernel(void __user *uaddr, int ulen, struct sockaddr_storage *kaddr);
- extern int put_cmsg(struct msghdr*, int level, int type, int len, void *data);
-+extern int put_cmsg_notrunc(struct msghdr *msg, int level, int type, int len,
-+			    void *data);
+-	/*
+-	 * Only clear the driver-private command data if the LLD does not supply
+-	 * a function to initialize that data.
+-	 */
+-	if (!shost->hostt->init_cmd_priv)
+-		memset(cmd + 1, 0, shost->hostt->cmd_size);
+-
+ 	cmd->prot_op = SCSI_PROT_NORMAL;
+ 	if (blk_rq_bytes(req))
+ 		cmd->sc_data_direction = rq_dma_dir(req);
+@@ -1747,6 +1740,13 @@ static blk_status_t scsi_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	if (!scsi_host_queue_ready(q, shost, sdev, cmd))
+ 		goto out_dec_target_busy;
  
- struct timespec64;
- struct __kernel_timespec;
-diff --git a/net/core/scm.c b/net/core/scm.c
-index 4f6a14babe5ae..733c0cbd393d2 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -282,6 +282,16 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
- }
- EXPORT_SYMBOL(put_cmsg);
- 
-+int put_cmsg_notrunc(struct msghdr *msg, int level, int type, int len,
-+		     void *data)
-+{
-+	/* Don't produce truncated CMSGs */
-+	if (!msg->msg_control || msg->msg_controllen < CMSG_LEN(len))
-+		return -ETOOSMALL;
++	/*
++	 * Only clear the driver-private command data if the LLD does not supply
++	 * a function to initialize that data.
++	 */
++	if (shost->hostt->cmd_size && !shost->hostt->init_cmd_priv)
++		memset(cmd + 1, 0, shost->hostt->cmd_size);
 +
-+	return put_cmsg(msg, level, type, len, data);
-+}
-+
- void put_cmsg_scm_timestamping64(struct msghdr *msg, struct scm_timestamping_internal *tss_internal)
- {
- 	struct scm_timestamping64 tss;
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 68cb6a966b18b..b731a4a8f2b0d 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2456,14 +2456,12 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
- 			 */
- 			memset(&dmabuf_cmsg, 0, sizeof(dmabuf_cmsg));
- 			dmabuf_cmsg.frag_size = copy;
--			err = put_cmsg(msg, SOL_SOCKET, SO_DEVMEM_LINEAR,
--				       sizeof(dmabuf_cmsg), &dmabuf_cmsg);
--			if (err || msg->msg_flags & MSG_CTRUNC) {
--				msg->msg_flags &= ~MSG_CTRUNC;
--				if (!err)
--					err = -ETOOSMALL;
-+			err = put_cmsg_notrunc(msg, SOL_SOCKET,
-+					       SO_DEVMEM_LINEAR,
-+					       sizeof(dmabuf_cmsg),
-+					       &dmabuf_cmsg);
-+			if (err)
- 				goto out;
--			}
- 
- 			sent += copy;
- 
-@@ -2517,16 +2515,12 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
- 				offset += copy;
- 				remaining_len -= copy;
- 
--				err = put_cmsg(msg, SOL_SOCKET,
--					       SO_DEVMEM_DMABUF,
--					       sizeof(dmabuf_cmsg),
--					       &dmabuf_cmsg);
--				if (err || msg->msg_flags & MSG_CTRUNC) {
--					msg->msg_flags &= ~MSG_CTRUNC;
--					if (!err)
--						err = -ETOOSMALL;
-+				err = put_cmsg_notrunc(msg, SOL_SOCKET,
-+						       SO_DEVMEM_DMABUF,
-+						       sizeof(dmabuf_cmsg),
-+						       &dmabuf_cmsg);
-+				if (err)
- 					goto out;
--				}
- 
- 				atomic_long_inc(&niov->pp_ref_count);
- 				tcp_xa_pool.netmems[tcp_xa_pool.idx++] = skb_frag_netmem(frag);
+ 	if (!(req->rq_flags & RQF_DONTPREP)) {
+ 		ret = scsi_prepare_cmd(req);
+ 		if (ret != BLK_STS_OK)
 -- 
 2.39.5
 
