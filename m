@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-120946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BC4A50931
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9CBA5071E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7407B1885FB9
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CCB43AD5A7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2752517AA;
-	Wed,  5 Mar 2025 18:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9992512EB;
+	Wed,  5 Mar 2025 17:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0HUJHjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="an4oolNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E09D1D6DB4;
-	Wed,  5 Mar 2025 18:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6E52512D9;
+	Wed,  5 Mar 2025 17:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198433; cv=none; b=FH3RONbLF5zegCZw68gM7coamt/y5gIzeZ5buuruDxYIVdL4v/6Tpu9b9ipAm4wgtoOQstMuRMQsl8nyZ9Pmi2X/WnBkkm0V0dF5Ry2l4DGnZCd6eyBmzabPysybbrPKpgJxQeiMitvIv7zCVUknx8tmAP/KlfnkAnaVDxrZYeE=
+	t=1741197204; cv=none; b=FznxYHEYrIPmkcfT2AaX45zQ1LSS/36SxjgQi0D+ufKzrebtLqXHAeW6ePxXZ2qQuQoquKVtK7kWLZ0god74pK64DncreXp0BPhDybEudcMTo+GFTxh+2SlKUIZZtGz98ufxgKhKM+drocFTG49X892ikmQeQZWoPAZw1aW/3iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198433; c=relaxed/simple;
-	bh=zezXWg4nbPR/w/UqkVXSwFoJGxUhzwqD1QIDFZ6l5Sg=;
+	s=arc-20240116; t=1741197204; c=relaxed/simple;
+	bh=ekg0bUtxHmeus5ip3i5xr3AcwSq8lx28uIernxmjeT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKp/1h6lwz+C5oF1aO08N2BdZZbwhiErtz2fL/CHw8I9XS2LXgE2OHl5NwuIpdQVLyyoV5rBT7bd4c/WYkZwHQk8Rwyvg5rzM4X6E3lXrS5uAOmWJfi42TGWRbvx66tkbnxPc5y9NDA8pgY+A32iI0iiZ41r/S82CtK5EYugoqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0HUJHjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E89C4CED1;
-	Wed,  5 Mar 2025 18:13:52 +0000 (UTC)
+	 MIME-Version; b=dbH0tVdWv49AEsrhbGVWSRu5Xwy2FYRr0MM2PMzv1MLDFMxXnYs2uQUaJZfhYD6d+7cVNgf94b1E8AfQ0qWIJHWYgWWkfMh275jYvyVDkOiMw3t56mJI+BhE0nwVI5yPmt30URRCPQMXtF2IwBgxu2b6hQI7qkCZqetmj/jEK7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=an4oolNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDCDC4CED1;
+	Wed,  5 Mar 2025 17:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198433;
-	bh=zezXWg4nbPR/w/UqkVXSwFoJGxUhzwqD1QIDFZ6l5Sg=;
+	s=korg; t=1741197203;
+	bh=ekg0bUtxHmeus5ip3i5xr3AcwSq8lx28uIernxmjeT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0HUJHjMkFrwyaN03uOZJB6ErFs0Pj5FmccQp56a9/h6JJNFZnhgNAUV9HceO3gy1
-	 JvpWrpg0br6T3T53EyPkHlhDZlvdNvqukoDF+qO3Ia3e7jwNUubwHdsBJPxUdfNTem
-	 kVr37YD0bZfjRitzxquRK4WWPWA8yfYpXGJyrNEk=
+	b=an4oolNF+ZUaUscWPoZfJSiVrgsZlhVm7zuxLolkampI0LsPumshPidTAyXH17lQc
+	 X8770IxrO5Z+gBQn86dhPiMT0/iwjZk1SP8HXO+LlX/GJI5v17JfDzZvpiuWt4Ukt0
+	 3ct6yjjazF6dz4vc+3vM6fW0lxByxlsj5TQJFqKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 009/157] RDMA/bnxt_re: Fix the statistics for Gen P7 VF
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 076/176] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
 Date: Wed,  5 Mar 2025 18:47:25 +0100
-Message-ID: <20250305174505.653107121@linuxfoundation.org>
+Message-ID: <20250305174508.517505899@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 8238c7bd84209c8216b1381ab0dbe6db9e203769 ]
+commit 878e7b11736e062514e58f3b445ff343e6705537 upstream.
 
-Gen P7 VF support the extended stats and is prevented
-by a VF check. Fix the check to issue the FW command
-for GenP7 VFs also.
+Add check for the return value of nfp_app_ctrl_msg_alloc() in
+nfp_bpf_cmsg_alloc() to prevent null pointer dereference.
 
-Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1738657285-23968-5-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ff3d43f7568c ("nfp: bpf: implement helpers for FW map ops")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250218030409.2425798-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/hw_counters.c | 4 ++--
- drivers/infiniband/hw/bnxt_re/qplib_res.h   | 8 ++++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/netronome/nfp/bpf/cmsg.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/hw_counters.c b/drivers/infiniband/hw/bnxt_re/hw_counters.c
-index 656c150e38e6f..f51adb0a97e66 100644
---- a/drivers/infiniband/hw/bnxt_re/hw_counters.c
-+++ b/drivers/infiniband/hw/bnxt_re/hw_counters.c
-@@ -357,8 +357,8 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
- 			goto done;
- 		}
- 		bnxt_re_copy_err_stats(rdev, stats, err_s);
--		if (_is_ext_stats_supported(rdev->dev_attr->dev_cap_flags) &&
--		    !rdev->is_virtfn) {
-+		if (bnxt_ext_stats_supported(rdev->chip_ctx, rdev->dev_attr->dev_cap_flags,
-+					     rdev->is_virtfn)) {
- 			rc = bnxt_re_get_ext_stat(rdev, stats);
- 			if (rc) {
- 				clear_bit(BNXT_RE_FLAG_ISSUE_ROCE_STATS,
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.h b/drivers/infiniband/hw/bnxt_re/qplib_res.h
-index be5d907a036b6..711990232de1c 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.h
-@@ -547,6 +547,14 @@ static inline bool _is_ext_stats_supported(u16 dev_cap_flags)
- 		CREQ_QUERY_FUNC_RESP_SB_EXT_STATS;
- }
+--- a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
++++ b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
+@@ -20,6 +20,8 @@ nfp_bpf_cmsg_alloc(struct nfp_app_bpf *b
+ 	struct sk_buff *skb;
  
-+static inline int bnxt_ext_stats_supported(struct bnxt_qplib_chip_ctx *ctx,
-+					   u16 flags, bool virtfn)
-+{
-+	/* ext stats supported if cap flag is set AND is a PF OR a Thor2 VF */
-+	return (_is_ext_stats_supported(flags) &&
-+		((virtfn && bnxt_qplib_is_chip_gen_p7(ctx)) || (!virtfn)));
-+}
-+
- static inline bool _is_hw_retx_supported(u16 dev_cap_flags)
- {
- 	return dev_cap_flags &
--- 
-2.39.5
-
+ 	skb = nfp_app_ctrl_msg_alloc(bpf->app, size, GFP_KERNEL);
++	if (!skb)
++		return NULL;
+ 	skb_put(skb, size);
+ 
+ 	return skb;
 
 
 
