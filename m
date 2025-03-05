@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-120860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EC0A508C7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14499A5083B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE2C518849BA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFBC166B69
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D08251785;
-	Wed,  5 Mar 2025 18:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E3819067C;
+	Wed,  5 Mar 2025 18:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsniSFxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkuKQ2u+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E29C24887A;
-	Wed,  5 Mar 2025 18:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4BE20C004;
+	Wed,  5 Mar 2025 18:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198183; cv=none; b=UiK6LrXOp5KEjREYPwz0rnrM2aZ8f2Zls7koGHNm8k1P4oUxndmyHXveKlu5j5RWpiirhlwG1qNgJFJo4Dtqp4PsFnd2l+HW4nl/NiqThp2dv6K7TwKlX16Y1HLB2lnqNvJAatoKQx6zXsKrs/599EVVTVwRZoy5EJW3FXWTSQo=
+	t=1741197919; cv=none; b=sDIH/2Sbppls8A0j7kjM0LKOiA17y6paZM21F5GXs6TIV2MLjMTlSUBgwrkjO4VrNfMzOOB/0FMB5iVXEKNEYOx6JaSJ4Ucbgjs4ccl8Gk6L/RwvJjBusHL4SGDtSNmm0Ro/EN1jbJcLZ9qdj+urKMMYwrySSO+lcspL4YkjC1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198183; c=relaxed/simple;
-	bh=l1HYFf9StVRhduSejHgkm/sepkYzIp+n3Kb9sCt4VVE=;
+	s=arc-20240116; t=1741197919; c=relaxed/simple;
+	bh=pOCk9WfbEz7OLnFs2P8iF5iiCz9e6BejIA5dr81EZ14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThihXgesnS9rfxs3YhtZxQubNod+ide3vcKdTkq5qe2ZHmeu1Z1hv/+12JowzyMxdsbFWZWTpdwgYhPKhsMnOyZCILiz9a2m76yBmurxRemYvKN7RXNr4h1wnjm3EfXaiPAW1jdJ3lvE4TZKLu0Adt8CYBzOATsun08wbliiraM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsniSFxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB68DC4CED1;
-	Wed,  5 Mar 2025 18:09:42 +0000 (UTC)
+	 MIME-Version; b=uYy+0MK5sM0AG1x14WxKcOceuzMR8aU1wmj+0/Al0w8H8ZQt/fxKh2mCTwCKqhEZP6bnNeUya18uilZQ0K//WsmJMGN6fKkQau23r5FzM+6fQQkPqE7kdSXg3mFQQC2QR/THi2zGfkzor6PUXebt4EzFF57MeqUPzHPRZBzrwDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkuKQ2u+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42186C4CED1;
+	Wed,  5 Mar 2025 18:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198183;
-	bh=l1HYFf9StVRhduSejHgkm/sepkYzIp+n3Kb9sCt4VVE=;
+	s=korg; t=1741197919;
+	bh=pOCk9WfbEz7OLnFs2P8iF5iiCz9e6BejIA5dr81EZ14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RsniSFxN5L0iRNwggaILngp045CAPnTaijWITfmBw6NRI9bCHkJuWA3jRmVxVNVMC
-	 XNgn60yRTY0wFJUSkhJErsrGY4qP0Mw4Xidc6TKBCMyg9CGz+il1gKrD6bQtJBACe4
-	 uMiooxUsyuhyUqqnhPvQVtLDtd5ITywLyb7wNNzY=
+	b=FkuKQ2u+v39cTT17vHzLOrBgtnG073XOIDDk5ZDYLoT/boDQ+sI4QL6Pz082NWIH9
+	 8BGG1KC6oY7nqPdQAZoE3+PSKZILFurgLsfZP31Lnrd0kIi1GrmYWLWlmJZVmZeB4F
+	 vdEpOBuwUluDbbOxBGwcqCs3YHZQcp4q82Y4bX/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.12 093/150] drm/xe/regs: remove a duplicate definition for RING_CTL_SIZE(size)
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 103/142] x86/microcode/intel: Save the microcode only after a successful late-load
 Date: Wed,  5 Mar 2025 18:48:42 +0100
-Message-ID: <20250305174507.544314012@linuxfoundation.org>
+Message-ID: <20250305174504.469123010@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit f2ba0cf1ca32e075617813de98c826ab55d57f11 upstream.
+commit 2a1dada3d1cf8f80a27663653a371d99dbf5d540 upstream
 
-Commit b79e8fd954c4 ("drm/xe: Remove dependency on intel_engine_regs.h")
-introduced an internal set of engine registers, however, as part of this
-change, it has also introduced two duplicate `define' lines for
-`RING_CTL_SIZE(size)'. This commit was introduced to the tree in v6.8-rc1.
+There are situations where the late microcode is loaded into memory but
+is not applied:
 
-While this is harmless as the definitions did not change, so no compiler
-warning was observed.
+  1) The rendezvous fails
+  2) The microcode is rejected by the CPUs
 
-Drop this line anyway for the sake of correctness.
+If any of this happens then the pointer which was updated at firmware
+load time is stale and subsequent CPU hotplug operations either fail to
+update or create inconsistent microcode state.
 
-Cc: stable@vger.kernel.org # v6.8-rc1+
-Fixes: b79e8fd954c4 ("drm/xe: Remove dependency on intel_engine_regs.h")
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250225073104.865230-1-jeffbai@aosc.io
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 6b68c4542ffecc36087a9e14db8fc990c88bb01b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Save the loaded microcode in a separate pointer before the late load is
+attempted and when successful, update the hotplug pointer accordingly
+via a new microcode_ops callback.
+
+Remove the pointless fallback in the loader to a microcode pointer which
+is never populated.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115902.505491309@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/regs/xe_engine_regs.h |    1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/core.c     |    4 ++++
+ arch/x86/kernel/cpu/microcode/intel.c    |   30 +++++++++++++++---------------
+ arch/x86/kernel/cpu/microcode/internal.h |    1 +
+ 3 files changed, 20 insertions(+), 15 deletions(-)
 
---- a/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-@@ -53,7 +53,6 @@
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -403,6 +403,10 @@ static int microcode_reload_late(void)
+ 	store_cpu_caps(&prev_info);
  
- #define RING_CTL(base)				XE_REG((base) + 0x3c)
- #define   RING_CTL_SIZE(size)			((size) - PAGE_SIZE) /* in bytes -> pages */
--#define   RING_CTL_SIZE(size)			((size) - PAGE_SIZE) /* in bytes -> pages */
+ 	ret = stop_machine_cpuslocked(__reload_late, NULL, cpu_online_mask);
++
++	if (microcode_ops->finalize_late_load)
++		microcode_ops->finalize_late_load(ret);
++
+ 	if (!ret) {
+ 		pr_info("Reload succeeded, microcode revision: 0x%x -> 0x%x\n",
+ 			old, boot_cpu_data.microcode);
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -36,6 +36,7 @@ static const char ucode_path[] = "kernel
  
- #define RING_START_UDW(base)			XE_REG((base) + 0x48)
+ /* Current microcode patch used in early patching on the APs. */
+ static struct microcode_intel *ucode_patch_va __read_mostly;
++static struct microcode_intel *ucode_patch_late __read_mostly;
  
+ /* last level cache size per core */
+ static unsigned int llc_size_per_core __ro_after_init;
+@@ -470,12 +471,9 @@ static enum ucode_state apply_microcode_
+ 	if (WARN_ON(raw_smp_processor_id() != cpu))
+ 		return UCODE_ERROR;
+ 
+-	mc = ucode_patch_va;
+-	if (!mc) {
+-		mc = uci->mc;
+-		if (!mc)
+-			return UCODE_NFOUND;
+-	}
++	mc = ucode_patch_late;
++	if (!mc)
++		return UCODE_NFOUND;
+ 
+ 	/*
+ 	 * Save us the MSR write below - which is a particular expensive
+@@ -594,15 +592,7 @@ static enum ucode_state parse_microcode_
+ 	if (!new_mc)
+ 		return UCODE_NFOUND;
+ 
+-	/* Save for CPU hotplug */
+-	save_microcode_patch((struct microcode_intel *)new_mc);
+-	uci->mc = ucode_patch_va;
+-
+-	vfree(new_mc);
+-
+-	pr_debug("CPU%d found a matching microcode update with version 0x%x (current=0x%x)\n",
+-		 cpu, cur_rev, uci->cpu_sig.rev);
+-
++	ucode_patch_late = (struct microcode_intel *)new_mc;
+ 	return UCODE_NEW;
+ }
+ 
+@@ -659,10 +649,20 @@ static enum ucode_state request_microcod
+ 	return ret;
+ }
+ 
++static void finalize_late_load(int result)
++{
++	if (!result)
++		save_microcode_patch(ucode_patch_late);
++
++	vfree(ucode_patch_late);
++	ucode_patch_late = NULL;
++}
++
+ static struct microcode_ops microcode_intel_ops = {
+ 	.request_microcode_fw	= request_microcode_fw,
+ 	.collect_cpu_info	= collect_cpu_info,
+ 	.apply_microcode	= apply_microcode_intel,
++	.finalize_late_load	= finalize_late_load,
+ };
+ 
+ static __init void calc_llc_size_per_core(struct cpuinfo_x86 *c)
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -31,6 +31,7 @@ struct microcode_ops {
+ 	 */
+ 	enum ucode_state (*apply_microcode)(int cpu);
+ 	int (*collect_cpu_info)(int cpu, struct cpu_signature *csig);
++	void (*finalize_late_load)(int result);
+ };
+ 
+ extern struct ucode_cpu_info ucode_cpu_info[];
 
 
 
