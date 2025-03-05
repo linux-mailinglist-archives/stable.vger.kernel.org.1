@@ -1,89 +1,51 @@
-Return-Path: <stable+bounces-120445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71D4A502CB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 15:55:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1CDA503D6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 16:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 186CE3B1158
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:50:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44E3D16D8AC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 15:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F40A24A067;
-	Wed,  5 Mar 2025 14:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QSAfo7+7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E192250BFD;
+	Wed,  5 Mar 2025 15:51:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2A51DFDAE
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 14:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC5C24EA94;
+	Wed,  5 Mar 2025 15:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741186186; cv=none; b=QEJuulqKOJmbbh7//DLDL9+8qMZ44ReFmndTpfY+xxH8y5+x4uLRkb4IQQWolM87haM1cyM6szvYjnl2gDkLfIggBHSD0zhhPsrEO+gtH937mUS/sq8u68e54m0lyKhTVFlW1FlT6VAm0moq0kWgcJ9owtoBShFP6/XJc9kMOI0=
+	t=1741189873; cv=none; b=eL0TFLYJgQxMLX9QchE92G5ZbbAwpF/gzxOpItdS1kVlUcB+rgm5v6HhUCrWOoFpDzFpA4WYrLdnH19kzxxMquJyI0S5j4qC9TEC8lxzg3JaoCDwVhdCd4WqVdBNyN7xmuMbDZn1y1CPqsnh49DQijtGbgeG8W4YfkxzsmIzbdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741186186; c=relaxed/simple;
-	bh=x29h9M6n8nq7NdPnqRKffAT+4udR1rBlR+7/BBJPG6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VCgAnPdgbHSBw9NA3BrEZjKVld4/oepNYMz5PlY0WU++kN4huWDubY5JaD943WIQTTHVAIlJHbNaaNAbJ4BDrC2OqGVW02iYVzkuiUY7RTseaGzbKeas8X35e6gUrZftFKe8mvzp8YKiM3Be2lzyP7zjKO0CmZ6yQ+91W8vdRFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QSAfo7+7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741186183;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YM84sfhKyVCM1WHnPi0ugQYCezGBxRCWusGn++RPss0=;
-	b=QSAfo7+7LuRPUhfqQNWhMzhC63e5ic6X16RP/kLgOABKXcLnpapr4qkOETKZSkwgiEmxaO
-	HqWxRrMjrZSOfzEAoJghQhFaA9VjcBj2GMWsKIyuig+YGv24lognoBTf+Ue908uWBOcisD
-	w3RhOyE1o1mCLrcJ6VqzFhjm1KKaUb4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-6Pey5zYQNq-rSxVR1Go-2Q-1; Wed, 05 Mar 2025 09:49:41 -0500
-X-MC-Unique: 6Pey5zYQNq-rSxVR1Go-2Q-1
-X-Mimecast-MFC-AGG-ID: 6Pey5zYQNq-rSxVR1Go-2Q_1741186181
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-390df5962e1so461236f8f.0
-        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 06:49:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741186180; x=1741790980;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YM84sfhKyVCM1WHnPi0ugQYCezGBxRCWusGn++RPss0=;
-        b=JAMdqcT3a8qYPlkZoC2aECZsF4XkuvR6PV783UpHHU9jBcYz4w67RkmWMEKrcVxAlM
-         zyTx/EBRxZHcnN11AVnf2vIS7ZcLyyD2J9FjHLc2ry9UtNLSMGnGUAlGXcbUgPe26l0q
-         gyYR2u0/JuT9ISQcKCRtoJAwFnv6ZlUaiUphCtY/v2rJe/8rA2xe/EUK6ss4kgPUg1TH
-         ZAFGPTibCAtcjMiIw4AHN9UUQVsaUMiVKE4rbJAZCgPVBaTdFCc+AZN9Z7fdgA9BAAQ/
-         wJFfOn+GZWmtDHHp/8S+25YH49IYBQiuqtaZVWubvG1ZMY+0hits7mkUNFwXcNUfvfmq
-         FS2A==
-X-Gm-Message-State: AOJu0Yzh2lXGMwjc7wwIt1c3mYtzZ6e4vb2H2RccS+pLhppCHaaS+JHJ
-	W30eHgYw18Mgd2gKm45q2zbEWQLqJ7EGCS/Alr2HIwYjRSe3b1rdbTeBIkrbFQGKb1aRuA9uF24
-	zamOPTgKziD1rsQmoBaDRx3vJxnfaVZcSTiC6SY19txWGv/522kDAd5YssyRk/wH5N20=
-X-Gm-Gg: ASbGncthao1S9uSHSVdZmVCxKrEIzE1BwyJpJYynOWNHlaBBc1nByWDY2y0jwxktGnm
-	sNmy1PKbp8nW1Q7UdCf02ib0SoXt+6OxeUax04hsnqmoRxwgNFFsoeF0g2gWtdyyop5//niDOqt
-	WjpkLs9NxO4xSyYTVEbUahyqYgg7J7OfdaEiXDForuRw4L8I2bT5DMvF+eBSqPyeyJY7zZxqCIA
-	vQsxFJKiXmwMJe9FRc0yLzdOr7W30bsLzx3V90D0knSib3LOBADOOrej3zQ/Eh+1K8tDd2iGTqb
-	IZkfI6e0OD9jTg+ch8wHF1KqUX3y7A8ZEFaDqjGS8W0530Q=
-X-Received: by 2002:adf:e183:0:b0:391:22e2:ccd2 with SMTP id ffacd0b85a97d-39122e2d080mr1812868f8f.3.1741186180342;
-        Wed, 05 Mar 2025 06:49:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHpZB4BYpB9A76P4a45l7m/RU6UnuwhTcw/rRDIfT7W5uDFJhJmK1bfyR7MVaBtIvxiEQk6Ng==
-X-Received: by 2002:adf:e183:0:b0:391:22e2:ccd2 with SMTP id ffacd0b85a97d-39122e2d080mr1812850f8f.3.1741186180022;
-        Wed, 05 Mar 2025 06:49:40 -0800 (PST)
-Received: from [192.168.224.123] (nat-pool-mxp-t.redhat.com. [149.6.153.186])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e479609asm20954791f8f.2.2025.03.05.06.49.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 06:49:39 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.12] KVM: e500: always restore irqs
-Date: Wed,  5 Mar 2025 15:49:38 +0100
-Message-ID: <20250305144938.212918-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1741189873; c=relaxed/simple;
+	bh=bcZ3Y1maZR/FkCTZAmhpnI9rOg3F5c8NqHwJtJ8fpwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R1HUgGwIWFzvUouB3DiuOjXqQR9/PB+JwzgPIASYmAqP5QIIaeoB9AgZKoKRenGRpkLRE7w+xCLlvX+4sLV86krp2VjiJQDuojgURqhFNelQQj+cuNdc2ZHHTZW38yANH8DbN1FwOaw1igmaiyvjCl0vIOW73bpcrUEezulvnhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowACXfTAAcchnVHqTEg--.44952S2;
+	Wed, 05 Mar 2025 23:43:02 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: thierry.reding@gmail.com,
+	mperttunen@nvidia.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	jonathanh@nvidia.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/tegra: Handle EDID allocation failures in tegra_output_connector_get_modes()
+Date: Wed,  5 Mar 2025 23:40:38 +0800
+Message-ID: <20250305154038.2062-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,44 +53,56 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACXfTAAcchnVHqTEg--.44952S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww1UWryxArWrXFyxuF1Utrb_yoW8JFWUpF
+	srtFyY9ryktrWFkF1jyF18uFy3uas2kFWUK3s5Ca1q9rs0yr9Fqr45tw1UWFWUGr98JF13
+	tanFqrW7JFyxCF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUb8hL5UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4MA2fILwlxYQABsQ
 
-[ Upstream commit 87ecfdbc699cc95fac73291b52650283ddcf929d ]
+The return values of `drm_edid_dup()` and `drm_edid_read_ddc()` must
+be checked in `tegra_output_connector_get_modes()` to prevent NULL
+pointer dereferences. If either function fails, the function should
+immediately return 0, indicating that no display modes can be retrieved.
 
-If find_linux_pte fails, IRQs will not be restored.  This is unlikely
-to happen in practice since it would have been reported as hanging
-hosts, but it should of course be fixed anyway.
+A proper implementation can be found in `vidi_get_modes()`, where the
+return values are carefully validated, and the function returns 0 upon
+failure.
 
-Cc: stable@vger.kernel.org
-Reported-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 98365ca74cbf ("drm/tegra: convert to struct drm_edid")
+Cc: stable@vger.kernel.org # 6.12+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- arch/powerpc/kvm/e500_mmu_host.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tegra/output.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index c664fdec75b1..3708fa48bee9 100644
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -481,7 +481,6 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 		if (pte_present(pte)) {
- 			wimg = (pte_val(pte) >> PTE_WIMGE_SHIFT) &
- 				MAS2_WIMGE_MASK;
--			local_irq_restore(flags);
- 		} else {
- 			local_irq_restore(flags);
- 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
-@@ -490,8 +489,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 			goto out;
- 		}
- 	}
-+	local_irq_restore(flags);
-+
- 	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
--
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
+diff --git a/drivers/gpu/drm/tegra/output.c b/drivers/gpu/drm/tegra/output.c
+index 49e4f63a5550..360c4f83a4f8 100644
+--- a/drivers/gpu/drm/tegra/output.c
++++ b/drivers/gpu/drm/tegra/output.c
+@@ -39,6 +39,9 @@ int tegra_output_connector_get_modes(struct drm_connector *connector)
+ 	else if (output->ddc)
+ 		drm_edid = drm_edid_read_ddc(connector, output->ddc);
  
++	if (!drm_edid)
++		return 0;
++
+ 	drm_edid_connector_update(connector, drm_edid);
+ 	cec_notifier_set_phys_addr(output->cec,
+ 				   connector->display_info.source_physical_address);
 -- 
-2.48.1
+2.42.0.windows.2
 
 
