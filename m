@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C43A5076D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287D4A508AC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F30903AE177
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D398518889D7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4382528E0;
-	Wed,  5 Mar 2025 17:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B9B2512D9;
+	Wed,  5 Mar 2025 18:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzM+sl1d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7S6nmly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8622517B0;
-	Wed,  5 Mar 2025 17:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B62250C1F;
+	Wed,  5 Mar 2025 18:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197390; cv=none; b=uk+F/UXOyWCoaZnCZB1W50GwTqQgoatQGagADhPfOaJclyNVR5SHUwR749+lsF6kp+ADbHxdTbXeUeIGbvuCs9BeNS33O8HcCXktTHTUDxQ86T0/WHsyS2bxO8Vd4kE2jv+oOyj6FTWzePNU4yncIHoS3RcDGkHCZaBuaQVk7Mk=
+	t=1741198144; cv=none; b=m4oKb4hyxaNRW5wpqgV1NkHnJnxxorcOYaBQUw8QOTJuXO0EjyjB2aeodnUPVZ6qK0fBA6YZp7iNlu+xYRvaXAOf+vDd/BEahOmpjFXVFivKWl5n41I1Lk/S/aCggp8lhabPIRmZN4+GdZovttnpIHqTyl7rQPQ3eP4W6mqBKbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197390; c=relaxed/simple;
-	bh=hGMfOxKuezrZUiJVf7DVOJyjyMpwQyTK9eo2BQzDylg=;
+	s=arc-20240116; t=1741198144; c=relaxed/simple;
+	bh=nhWzzkD6psF7gJtJab64KrxAnj3cJmqSp62EordTOhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPxQAFxP+MGPGVQTxGb5s1HyePS+PITBkgFqmJI/+qg6nwWa8CKJOKFHVdXJzrcPKHySvRLwVLFyoMePGmH5Bb4GSIcc6chMU/bYwYcMMz8dp6DS9FyB5+spAOSM+W2r9iAAmr0iQXxyyJLxGdnZbXdEI6TIX7oVmWIEAYUThA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzM+sl1d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C838AC4CED1;
-	Wed,  5 Mar 2025 17:56:29 +0000 (UTC)
+	 MIME-Version; b=iXZAfxXLJyPXEIWsP0pSnp8/IPeTpPSLO2T77vCv7dHimdVkF3pDXvNYxE8Hka2NZlc82g7KRlHJLLZ6Q6Vddy1RK+TLXL7mVGES4fcRpwdKxG+1OxkDYwUQ0p+hxFTVFP7wRQ0KnJ8ZeNfmyBQ9WUEt6ZWIuszQMeIa/q+jJis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7S6nmly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C05C4CED1;
+	Wed,  5 Mar 2025 18:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197390;
-	bh=hGMfOxKuezrZUiJVf7DVOJyjyMpwQyTK9eo2BQzDylg=;
+	s=korg; t=1741198144;
+	bh=nhWzzkD6psF7gJtJab64KrxAnj3cJmqSp62EordTOhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzM+sl1dbzN8oUvozppNkxv18vhx8h8A7Cv6B4yUI+kSXexYML7bMeUYc9rJEHWku
-	 HKcDkHtkxN4iOQeFd8bSO7a3RZTFGEA18a6BqeAVjEctBqFX1wOK/0pcO12w907BSF
-	 hTemJoa9unzdQyPHQEze8I54TmcM5rq5QJKs//Dw=
+	b=R7S6nmlyeEY9vxHpoLnqMD8cNtAhIwxlKBNe0thrPaXYiXFex4BeoN1uokbqsye/r
+	 kc7zzDn9vQ92k83mGpSUDAcmGUa3pUguPdQ3Ra1oqKlDhkZxzkd/BmWH3wz/5p+ex4
+	 XwPo0UxDn2S8v7NCkfuA5KJZzT7DFRzCA05oJCOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/176] SUNRPC: Prevent looping due to rpc_signal_task() races
+Subject: [PATCH 6.12 048/150] drm/xe/oa: Allow oa_exponent value of 0
 Date: Wed,  5 Mar 2025 18:47:57 +0100
-Message-ID: <20250305174509.802756671@linuxfoundation.org>
+Message-ID: <20250305174505.754743607@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-[ Upstream commit 5bbd6e863b15a85221e49b9bdb2d5d8f0bb91f3d ]
+[ Upstream commit 5bd566703e16b17d17f4fb648440d54f8967462c ]
 
-If rpc_signal_task() is called while a task is in an rpc_call_done()
-callback function, and the latter calls rpc_restart_call(), the task can
-end up looping due to the RPC_TASK_SIGNALLED flag being set without the
-tk_rpc_status being set.
-Removing the redundant mechanism for signalling the task fixes the
-looping behaviour.
+OA exponent value of 0 is a valid value for periodic reports. Allow user
+to pass 0 for the OA sampling interval since it gets converted to 2 gt
+clock ticks.
 
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 39494194f93b ("SUNRPC: Fix races with rpc_killall_tasks()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+v2: Update the check in xe_oa_stream_init as well (Ashutosh)
+v3: Fix mi-rpc failure by setting default exponent to -1 (CI)
+v4: Add the Fixes tag
+
+Fixes: b6fd51c62119 ("drm/xe/oa/uapi: Define and parse OA stream properties")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250221213352.1712932-1-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit 30341f0b8ea71725cc4ab2c43e3a3b749892fc92)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h  | 3 +--
- include/trace/events/sunrpc.h | 3 +--
- net/sunrpc/sched.c            | 2 --
- 3 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index f80b90aca380a..a220b28904ca5 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -147,7 +147,6 @@ enum {
- 	RPC_TASK_NEED_XMIT,
- 	RPC_TASK_NEED_RECV,
- 	RPC_TASK_MSG_PIN_WAIT,
--	RPC_TASK_SIGNALLED,
- };
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index 210b8bae59102..448766033690c 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -1716,7 +1716,7 @@ static int xe_oa_stream_init(struct xe_oa_stream *stream,
+ 	stream->oa_buffer.format = &stream->oa->oa_formats[param->oa_format];
  
- #define rpc_test_and_set_running(t) \
-@@ -160,7 +159,7 @@ enum {
+ 	stream->sample = param->sample;
+-	stream->periodic = param->period_exponent > 0;
++	stream->periodic = param->period_exponent >= 0;
+ 	stream->period_exponent = param->period_exponent;
+ 	stream->no_preempt = param->no_preempt;
  
- #define RPC_IS_ACTIVATED(t)	test_bit(RPC_TASK_ACTIVE, &(t)->tk_runstate)
+@@ -2002,6 +2002,7 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
+ 	}
  
--#define RPC_SIGNALLED(t)	test_bit(RPC_TASK_SIGNALLED, &(t)->tk_runstate)
-+#define RPC_SIGNALLED(t)	(READ_ONCE(task->tk_rpc_status) == -ERESTARTSYS)
+ 	param.xef = xef;
++	param.period_exponent = -1;
+ 	ret = xe_oa_user_extensions(oa, XE_OA_USER_EXTN_FROM_OPEN, data, 0, &param);
+ 	if (ret)
+ 		return ret;
+@@ -2056,7 +2057,7 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
+ 		goto err_exec_q;
+ 	}
  
- /*
-  * Task priorities.
-diff --git a/include/trace/events/sunrpc.h b/include/trace/events/sunrpc.h
-index ffe2679a13ced..b70f47a57bf6d 100644
---- a/include/trace/events/sunrpc.h
-+++ b/include/trace/events/sunrpc.h
-@@ -328,8 +328,7 @@ TRACE_EVENT(rpc_request,
- 		{ (1UL << RPC_TASK_ACTIVE), "ACTIVE" },			\
- 		{ (1UL << RPC_TASK_NEED_XMIT), "NEED_XMIT" },		\
- 		{ (1UL << RPC_TASK_NEED_RECV), "NEED_RECV" },		\
--		{ (1UL << RPC_TASK_MSG_PIN_WAIT), "MSG_PIN_WAIT" },	\
--		{ (1UL << RPC_TASK_SIGNALLED), "SIGNALLED" })
-+		{ (1UL << RPC_TASK_MSG_PIN_WAIT), "MSG_PIN_WAIT" })
+-	if (param.period_exponent > 0) {
++	if (param.period_exponent >= 0) {
+ 		u64 oa_period, oa_freq_hz;
  
- DECLARE_EVENT_CLASS(rpc_task_running,
- 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index cef623ea15060..9b45fbdc90cab 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -864,8 +864,6 @@ void rpc_signal_task(struct rpc_task *task)
- 	if (!rpc_task_set_rpc_status(task, -ERESTARTSYS))
- 		return;
- 	trace_rpc_task_signalled(task, task->tk_action);
--	set_bit(RPC_TASK_SIGNALLED, &task->tk_runstate);
--	smp_mb__after_atomic();
- 	queue = READ_ONCE(task->tk_waitqueue);
- 	if (queue)
- 		rpc_wake_up_queued_task(queue, task);
+ 		/* Requesting samples from OAG buffer is a privileged operation */
 -- 
 2.39.5
 
