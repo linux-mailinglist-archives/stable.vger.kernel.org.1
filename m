@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6CD4A507DC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AE5A50874
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E797A337D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E673E7A2898
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A46A1C6FF9;
-	Wed,  5 Mar 2025 18:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A39F1C6FF6;
+	Wed,  5 Mar 2025 18:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EthSHLct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N08SzIyx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F2A14B075;
-	Wed,  5 Mar 2025 18:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB33539A;
+	Wed,  5 Mar 2025 18:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197682; cv=none; b=laU6LA5ZB/N9Rg9NY2Ly+X0AXfPFKpNqI7c7sYkcnCp9pMWEV5yx4qPeVtRiNIhGODJi9EbnRA92RcHGEMt5R3XBGCpjXWgOB85M89yRkhQs263q47VygRhvRc7T1yGMngXfgfRIzdo6YVRRA2AMTZOkRyFeX6dLIJmeR1+MZCQ=
+	t=1741198065; cv=none; b=RcT2I25guJxtRHYvXBHUqUFMK4LCHj1GBcZQKHA6QVeQBDzgsydv4pWCBp1aXg87AX4MFJsEFOUfSY4hM4UYoUckYUdHZbXwJvigbtcu1mOM4Xlri8bt4MQB7c3lvg39tSNlSi/OjoWr4vmEXvtB1vjG6u+62NBMEa2N3xPwREI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197682; c=relaxed/simple;
-	bh=hu/lBWcLZzEuFFm1hTIrRnb8/xlWJAx8vhrSKkLyg7c=;
+	s=arc-20240116; t=1741198065; c=relaxed/simple;
+	bh=OIRPf3zjFGv1yi7IMOduB0MyBGv3hhvYXj/Ol8PiHOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OH5x4x/TDX16edKEyPjDLbmNiPuz0Ysj2yv7Bl8NiMosvPT4oRGpdPwbIdUMGD1OzjrnlPA3t7+AC7pVoWtzXMxrcXxIrSs91JmRNu1QzWpd4hr6xKZdU9BxOVDSB0I0nW+0+0REjkF1GAY0plSE99lHUV20iYapfIJt2yWFX9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EthSHLct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EE0C4CED1;
-	Wed,  5 Mar 2025 18:01:21 +0000 (UTC)
+	 MIME-Version; b=ZjB5oZGn3Mf2zkWWRxPGCHfplfG11jAKnWISEmHzRQqYMLamVltI2WS3/H/O1gv3xEBCDPpds+uE9kILZt3JNPXKsLVJqsq2jgR0azLE1gzYIOhLj4vPpdWH4LF+2WMUm0CCuCYOlQQYQOZne8eF3WM2LJH7DbXzuHbsOMGu6Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N08SzIyx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC31C4CED1;
+	Wed,  5 Mar 2025 18:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197681;
-	bh=hu/lBWcLZzEuFFm1hTIrRnb8/xlWJAx8vhrSKkLyg7c=;
+	s=korg; t=1741198065;
+	bh=OIRPf3zjFGv1yi7IMOduB0MyBGv3hhvYXj/Ol8PiHOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EthSHLcthPkwFWdImTbUMLErOrmvJAof3WS3pmAVfQFOg6of6nNE5I8DA9ZGmfdOz
-	 k58wFRJtoX64Q08y11T2yz2gsSMZZSA/1l2/pqAK4s/2yqCs14bANspY1LnryFqlrR
-	 nRTYC9C+scm52CUpobbdHtB5OMetV4OM5RHno70M=
+	b=N08SzIyx+t8W0YMNc9/ik8Stm/JmZWlTHC6b95WTdie7AMf1gXh84Hw/wnv+R8Pr6
+	 krpwqiGXOwYGdFOxnMzwlUVk9QdOb01A7COIyE5GWjbonA88Xe3OksQ78BsG/g5rfZ
+	 /bo8Z4A6DGuK6LcxEWswfvujiS7Tey03DI8ccjQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Panchenko <dmitry@d-systems.ee>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 063/142] ALSA: usb-audio: Re-add sample rate quirk for Pioneer DJM-900NXS2
+	Mina Almasry <almasrymina@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/150] tcp: devmem: dont write truncated dmabuf CMSGs to userspace
 Date: Wed,  5 Mar 2025 18:48:02 +0100
-Message-ID: <20250305174502.870864877@linuxfoundation.org>
+Message-ID: <20250305174505.955893284@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Panchenko <dmitry@d-systems.ee>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-commit 9af3b4f2d879da01192d6168e6c651e7fb5b652d upstream.
+[ Upstream commit 18912c520674ec4d920fe3826e7e4fefeecdf5ae ]
 
-Re-add the sample-rate quirk for the Pioneer DJM-900NXS2. This
-device does not work without setting sample-rate.
+Currently, we report -ETOOSMALL (err) only on the first iteration
+(!sent). When we get put_cmsg error after a bunch of successful
+put_cmsg calls, we don't signal the error at all. This might be
+confusing on the userspace side which will see truncated CMSGs
+but no MSG_CTRUNC signal.
 
-Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250220161540.3624660-1-dmitry@d-systems.ee
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Consider the following case:
+- sizeof(struct cmsghdr) = 16
+- sizeof(struct dmabuf_cmsg) = 24
+- total cmsg size (CMSG_LEN) = 40 (16+24)
+
+When calling recvmsg with msg_controllen=60, the userspace
+will receive two(!) dmabuf_cmsg(s), the first one will
+be a valid one and the second one will be silently truncated. There is no
+easy way to discover the truncation besides doing something like
+"cm->cmsg_len != CMSG_LEN(sizeof(dmabuf_cmsg))".
+
+Introduce new put_devmem_cmsg wrapper that reports an error instead
+of doing the truncation. Mina suggests that it's the intended way
+this API should work.
+
+Note that we might now report MSG_CTRUNC when the users (incorrectly)
+call us with msg_control == NULL.
+
+Fixes: 8f0b3cc9a4c1 ("tcp: RX path for devmem TCP")
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250224174401.3582695-1-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/socket.h |  2 ++
+ net/core/scm.c         | 10 ++++++++++
+ net/ipv4/tcp.c         | 26 ++++++++++----------------
+ 3 files changed, 22 insertions(+), 16 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1775,6 +1775,7 @@ void snd_usb_set_format_quirk(struct snd
- 	case USB_ID(0x534d, 0x2109): /* MacroSilicon MS2109 */
- 		subs->stream_offset_adj = 2;
- 		break;
-+	case USB_ID(0x2b73, 0x000a): /* Pioneer DJM-900NXS2 */
- 	case USB_ID(0x2b73, 0x0013): /* Pioneer DJM-450 */
- 		pioneer_djm_set_format_quirk(subs, 0x0082);
- 		break;
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index d18cc47e89bd0..c3322eb3d6865 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -392,6 +392,8 @@ struct ucred {
+ 
+ extern int move_addr_to_kernel(void __user *uaddr, int ulen, struct sockaddr_storage *kaddr);
+ extern int put_cmsg(struct msghdr*, int level, int type, int len, void *data);
++extern int put_cmsg_notrunc(struct msghdr *msg, int level, int type, int len,
++			    void *data);
+ 
+ struct timespec64;
+ struct __kernel_timespec;
+diff --git a/net/core/scm.c b/net/core/scm.c
+index 4f6a14babe5ae..733c0cbd393d2 100644
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -282,6 +282,16 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
+ }
+ EXPORT_SYMBOL(put_cmsg);
+ 
++int put_cmsg_notrunc(struct msghdr *msg, int level, int type, int len,
++		     void *data)
++{
++	/* Don't produce truncated CMSGs */
++	if (!msg->msg_control || msg->msg_controllen < CMSG_LEN(len))
++		return -ETOOSMALL;
++
++	return put_cmsg(msg, level, type, len, data);
++}
++
+ void put_cmsg_scm_timestamping64(struct msghdr *msg, struct scm_timestamping_internal *tss_internal)
+ {
+ 	struct scm_timestamping64 tss;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 68cb6a966b18b..b731a4a8f2b0d 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2456,14 +2456,12 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+ 			 */
+ 			memset(&dmabuf_cmsg, 0, sizeof(dmabuf_cmsg));
+ 			dmabuf_cmsg.frag_size = copy;
+-			err = put_cmsg(msg, SOL_SOCKET, SO_DEVMEM_LINEAR,
+-				       sizeof(dmabuf_cmsg), &dmabuf_cmsg);
+-			if (err || msg->msg_flags & MSG_CTRUNC) {
+-				msg->msg_flags &= ~MSG_CTRUNC;
+-				if (!err)
+-					err = -ETOOSMALL;
++			err = put_cmsg_notrunc(msg, SOL_SOCKET,
++					       SO_DEVMEM_LINEAR,
++					       sizeof(dmabuf_cmsg),
++					       &dmabuf_cmsg);
++			if (err)
+ 				goto out;
+-			}
+ 
+ 			sent += copy;
+ 
+@@ -2517,16 +2515,12 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+ 				offset += copy;
+ 				remaining_len -= copy;
+ 
+-				err = put_cmsg(msg, SOL_SOCKET,
+-					       SO_DEVMEM_DMABUF,
+-					       sizeof(dmabuf_cmsg),
+-					       &dmabuf_cmsg);
+-				if (err || msg->msg_flags & MSG_CTRUNC) {
+-					msg->msg_flags &= ~MSG_CTRUNC;
+-					if (!err)
+-						err = -ETOOSMALL;
++				err = put_cmsg_notrunc(msg, SOL_SOCKET,
++						       SO_DEVMEM_DMABUF,
++						       sizeof(dmabuf_cmsg),
++						       &dmabuf_cmsg);
++				if (err)
+ 					goto out;
+-				}
+ 
+ 				atomic_long_inc(&niov->pp_ref_count);
+ 				tcp_xa_pool.netmems[tcp_xa_pool.idx++] = skb_frag_netmem(frag);
+-- 
+2.39.5
+
 
 
 
