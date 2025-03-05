@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC08AA508F2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B7DA50856
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03D1B7A4BEF
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 513343B01A0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCC71D6DB4;
-	Wed,  5 Mar 2025 18:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44051C6FF6;
+	Wed,  5 Mar 2025 18:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFj1lh4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNlvIQpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E71E78F3A;
-	Wed,  5 Mar 2025 18:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8245619C542;
+	Wed,  5 Mar 2025 18:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198396; cv=none; b=SUkDdw3r4uddTmQmRaLfe57iPQOmpRaP4Co6DCHrmdATh0/H6VOXsBUipZhtGA5K5X6A134uzIaJB9BDp5RLdiRTUzQOMJ4ofgK/UjV10LTQUEyPZJ6WRmTY7FFnWSKMCrQOgsCRMvVPnODU0yIusrkwIO98ph+RMbg+btzb04U=
+	t=1741197975; cv=none; b=gQUdlk5P0rJ471zBljl6M72o4rACKtMx4BeV2elpQRZ8zHL0c0neTDwj+kuQ3nThyPZ/yfzZZ71BA4LD8t/5RKMjwNwdK2zWBUCgIJgdJFrI5Rfk2WqLIDhOJf1SNXs7j0GYe7M4la5odD1pKxt13AuZTac5SUNve8AY6iABs50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198396; c=relaxed/simple;
-	bh=ZCc1k3ExwTqCPBIBp48kUUTK7cIFiOoP9pqjj8bcLng=;
+	s=arc-20240116; t=1741197975; c=relaxed/simple;
+	bh=9+kxyz16AMhJGOy4ELXxxJMUD/HAiOeocdY+tVc3IYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVgKi88UsYJNwUnbqAdhgg/TxA2wap7fOTmdTxBEdLWDySshlEL39UZ0Vz1Trlo9qOBzajmFl7viii+sCUsMuJWg0ItHP2rqpdkavRoFuv7Gzu0qHzTPsaRhon96swogSHs+5VfH6jrX3iVm1vHChkuRU+V7gMjwF8310+xOogk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFj1lh4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DDBC4CED1;
-	Wed,  5 Mar 2025 18:13:15 +0000 (UTC)
+	 MIME-Version; b=ItnlsjEs0tbCDSKtmKPLlDqS/AS+jMVlgiunN7UnAlZeivukHG0RqVa9wh/v/PpocYEKcqv8LeyPhzCdIh3RNjDmp0fwInkHLTC9Vay/2K8aXl2VEZr+A1vr9mUsloRniHoU2GCXg9tlekYDslhU/+R6NOpu6kjgdH+LZ1yTPqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNlvIQpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21F2C4CEEC;
+	Wed,  5 Mar 2025 18:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198396;
-	bh=ZCc1k3ExwTqCPBIBp48kUUTK7cIFiOoP9pqjj8bcLng=;
+	s=korg; t=1741197975;
+	bh=9+kxyz16AMhJGOy4ELXxxJMUD/HAiOeocdY+tVc3IYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFj1lh4DXkSbwiInonlX08BWlhqcimr4HSk139uWSXtO3GNna1wZcJQK07FGNXbT4
-	 V+OOk+BbTk+keuXBxgzy/cT2FfezER9pShWJxzv2Ds6LYsff9slkd+6sDnicRI4KP5
-	 k1sD1Ao0qfmNX6EPlxRJ06Y8GNBN+8mM3rbolNB8=
+	b=jNlvIQpFfXY15frpB8C3Let2wjysFSQXcG03TmSpfrDgMTAHV2f+aBdLXOVgX82SR
+	 leN12Ax5CME0BpbtjVhJsdB9fKKp15IIdNFbIO88cuXKJP8DkuMjBG2Z1bh7exCghz
+	 xAXuMBAgrBtWZJWfwitfuEHffO4QNAIZg3McxbHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 014/157] NFS: Adjust delegated timestamps for O_DIRECT reads and writes
-Date: Wed,  5 Mar 2025 18:47:30 +0100
-Message-ID: <20250305174505.858492108@linuxfoundation.org>
+Subject: [PATCH 6.12 022/150] RDMA/mlx5: Fix AH static rate parsing
+Date: Wed,  5 Mar 2025 18:47:31 +0100
+Message-ID: <20250305174504.702665498@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 88025c67fe3c025a0123bc7af50535b97f7af89a ]
+[ Upstream commit c534ffda781f44a1c6ac25ef6e0e444da38ca8af ]
 
-Adjust the timestamps if O_DIRECT is being combined with attribute
-delegations.
+Previously static rate wasn't translated according to our PRM but simply
+used the 4 lower bytes.
 
-Fixes: e12912d94137 ("NFSv4: Add support for delegated atime and mtime attributes")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Correctly translate static rate value passed in AH creation attribute
+according to our PRM expected values.
+
+In addition change 800GB mapping to zero, which is the PRM
+specified value.
+
+Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Link: https://patch.msgid.link/18ef4cc5396caf80728341eb74738cd777596f60.1739187089.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/hw/mlx5/ah.c | 3 ++-
+ drivers/infiniband/hw/mlx5/qp.c | 6 +++---
+ drivers/infiniband/hw/mlx5/qp.h | 1 +
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 8f2aa2bf45659..6a6e758841336 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -56,6 +56,7 @@
- #include <linux/uaccess.h>
- #include <linux/atomic.h>
+diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
+index 505bc47fd575d..99036afb3aef0 100644
+--- a/drivers/infiniband/hw/mlx5/ah.c
++++ b/drivers/infiniband/hw/mlx5/ah.c
+@@ -67,7 +67,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.tclass = grh->traffic_class;
+ 	}
  
-+#include "delegation.h"
- #include "internal.h"
- #include "iostat.h"
- #include "pnfs.h"
-@@ -286,6 +287,8 @@ static void nfs_direct_read_completion(struct nfs_pgio_header *hdr)
- 	nfs_direct_count_bytes(dreq, hdr);
- 	spin_unlock(&dreq->lock);
+-	ah->av.stat_rate_sl = (rdma_ah_get_static_rate(ah_attr) << 4);
++	ah->av.stat_rate_sl =
++		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
  
-+	nfs_update_delegated_atime(dreq->inode);
-+
- 	while (!list_empty(&hdr->pages)) {
- 		struct nfs_page *req = nfs_list_entry(hdr->pages.next);
- 		struct page *page = req->wb_page;
-@@ -778,6 +781,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
+ 		if (init_attr->xmit_slave)
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index 0d8a8b109a751..ded139b4e87aa 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -3420,11 +3420,11 @@ static int ib_to_mlx5_rate_map(u8 rate)
+ 	return 0;
+ }
  
- 	spin_lock(&inode->i_lock);
- 	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
-+	nfs_update_delegated_mtime_locked(dreq->inode);
- 	spin_unlock(&inode->i_lock);
+-static int ib_rate_to_mlx5(struct mlx5_ib_dev *dev, u8 rate)
++int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate)
+ {
+ 	u32 stat_rate_support;
  
- 	while (!list_empty(&hdr->pages)) {
+-	if (rate == IB_RATE_PORT_CURRENT)
++	if (rate == IB_RATE_PORT_CURRENT || rate == IB_RATE_800_GBPS)
+ 		return 0;
+ 
+ 	if (rate < IB_RATE_2_5_GBPS || rate > IB_RATE_800_GBPS)
+@@ -3569,7 +3569,7 @@ static int mlx5_set_path(struct mlx5_ib_dev *dev, struct mlx5_ib_qp *qp,
+ 		       sizeof(grh->dgid.raw));
+ 	}
+ 
+-	err = ib_rate_to_mlx5(dev, rdma_ah_get_static_rate(ah));
++	err = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah));
+ 	if (err < 0)
+ 		return err;
+ 	MLX5_SET(ads, path, stat_rate, err);
+diff --git a/drivers/infiniband/hw/mlx5/qp.h b/drivers/infiniband/hw/mlx5/qp.h
+index b6ee7c3ee1ca1..2530e7730635f 100644
+--- a/drivers/infiniband/hw/mlx5/qp.h
++++ b/drivers/infiniband/hw/mlx5/qp.h
+@@ -56,4 +56,5 @@ int mlx5_core_xrcd_dealloc(struct mlx5_ib_dev *dev, u32 xrcdn);
+ int mlx5_ib_qp_set_counter(struct ib_qp *qp, struct rdma_counter *counter);
+ int mlx5_ib_qp_event_init(void);
+ void mlx5_ib_qp_event_cleanup(void);
++int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate);
+ #endif /* _MLX5_IB_QP_H */
 -- 
 2.39.5
 
