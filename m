@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-120577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F759A5074C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748FCA507CE
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61F581893548
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B52713A4075
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362EB2517B1;
-	Wed,  5 Mar 2025 17:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA96E78F3A;
+	Wed,  5 Mar 2025 18:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WI262Dl/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhZcVrEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66892517B0;
-	Wed,  5 Mar 2025 17:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A2014B075;
+	Wed,  5 Mar 2025 18:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197365; cv=none; b=EHq1K3UQZmh47K1dY3aDTCDzAxlM48BJIGcxcmK2P4cdS08j8OzfOPd+BV3zrD1bAHZvGhKIE4UU+8faNGaww9Xc3LWtbTpvI41++uiwXRkiVal0MXoxX805uWHrRjPhGG7qOGL6Nakw+COcTt8foiiXu80E2zcPWW3ZZWdsCG4=
+	t=1741197650; cv=none; b=SwLFlqqHZATqng5bLygpggX4KI+diAAa2s4PUmogD2KQbhC9FOgKQGPx2GcrVMxbcb0mX4sKnVacdWg2TRxWP39ZXMsNhWsr/uBvu6emZHLiUOfBJaIllexc302RtyHDrJ0CYTAZUwBeEDPj9+zradWGzHrbxqfkhRCoSBZfPhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197365; c=relaxed/simple;
-	bh=Im8mnzPlYEasT+FL6rmNdFV/GJlwFZfE1XIEowFBbbA=;
+	s=arc-20240116; t=1741197650; c=relaxed/simple;
+	bh=13DtybAkjUmKqDEBq8Q7l/B3on1ZTxlmL/dDJeV4ogE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlalYd80P304rr/P8rZ2YbxcKX3+YHHiESXRb0aVNKkhoCQyHCqftX1pMUkwMWf/wSsPajWepXrR9N9AVhUaKqu17KE/rZb6jjRiRvSsQBlivK4V6PfK3uDGRTKs0AQAkzIJZBd1ZzloN88CoG8oVqGt/2mDFOVnEFfUUv6U18k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WI262Dl/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8CFC4CED1;
-	Wed,  5 Mar 2025 17:56:03 +0000 (UTC)
+	 MIME-Version; b=MuDvUEKNa2LSgzJPRNqrS1KsZUOk2hZbYdNswN1c0MDeN7XKwt97vDN/uQtg5XEQTraAD9961TQSIv2up+hmY0B4uRFDUjP+xC3MUlUTFiTtzaWfUSE/JaBIO3R460iPyZHf8GtuN2goV0aJwioOax6WlbuTWvWqcprMVYy7xNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhZcVrEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB11C4CED1;
+	Wed,  5 Mar 2025 18:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197364;
-	bh=Im8mnzPlYEasT+FL6rmNdFV/GJlwFZfE1XIEowFBbbA=;
+	s=korg; t=1741197650;
+	bh=13DtybAkjUmKqDEBq8Q7l/B3on1ZTxlmL/dDJeV4ogE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WI262Dl/liBa8OJGQHodzk1SuFjwq/ch6csibsKiglCknnAYcBm5g2LkXlVOXdv7e
-	 LDtTHN0Kq9VrxRnS12wxS2yaDtDucs/Um9Id+KPfv8DvQQOldd+Yo/e5pL2Y1Ev7mt
-	 5MojX5QzJix//OGGNqB7Xrcga+e8ksZXIazu1Nl0=
+	b=JhZcVrEKCbtahQ/0PyFmZPhlYVN52FvS62SJlDFatiqoO0ZHixqNUcc4NNec08cxM
+	 87izibhGxwbgLVluvCyQvbjw3+fCNfBdqyr4uaF37v1lhOJmfCQdrxkFon51sIHL0N
+	 lX/t3c8c3RmX09fSFR1eIPCkwglQo8X8JHaPALGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Tong Tiangen <tongtiangen@huawei.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/176] RDMA/mlx5: Implement mkeys management via LIFO queue
+Subject: [PATCH 6.6 053/142] uprobes: Reject the shared zeropage in uprobe_write_opcode()
 Date: Wed,  5 Mar 2025 18:47:52 +0100
-Message-ID: <20250305174509.599391410@linuxfoundation.org>
+Message-ID: <20250305174502.468970216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,706 +66,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
 
-[ Upstream commit 57e7071683ef6148c9f5ea0ba84598d2ba681375 ]
+[ Upstream commit bddf10d26e6e5114e7415a0e442ec6f51a559468 ]
 
-Currently, mkeys are managed via xarray. This implementation leads to
-a degradation in cases many MRs are unregistered in parallel, due to xarray
-internal implementation, for example: deregistration 1M MRs via 64 threads
-is taking ~15% more time[1].
+We triggered the following crash in syzkaller tests:
 
-Hence, implement mkeys management via LIFO queue, which solved the
-degradation.
+  BUG: Bad page state in process syz.7.38  pfn:1eff3
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1eff3
+  flags: 0x3fffff00004004(referenced|reserved|node=0|zone=1|lastcpupid=0x1fffff)
+  raw: 003fffff00004004 ffffe6c6c07bfcc8 ffffe6c6c07bfcc8 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000fffffffe 0000000000000000
+  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x32/0x50
+   bad_page+0x69/0xf0
+   free_unref_page_prepare+0x401/0x500
+   free_unref_page+0x6d/0x1b0
+   uprobe_write_opcode+0x460/0x8e0
+   install_breakpoint.part.0+0x51/0x80
+   register_for_each_vma+0x1d9/0x2b0
+   __uprobe_register+0x245/0x300
+   bpf_uprobe_multi_link_attach+0x29b/0x4f0
+   link_create+0x1e2/0x280
+   __sys_bpf+0x75f/0xac0
+   __x64_sys_bpf+0x1a/0x30
+   do_syscall_64+0x56/0x100
+   entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-[1]
-2.8us in kernel v5.19 compare to 3.2us in kernel v6.4
+   BUG: Bad rss-counter state mm:00000000452453e0 type:MM_FILEPAGES val:-1
 
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Link: https://lore.kernel.org/r/fde3d4cfab0f32f0ccb231cd113298256e1502c5.1695283384.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: d97505baea64 ("RDMA/mlx5: Fix the recovery flow of the UMR QP")
+The following syzkaller test case can be used to reproduce:
+
+  r2 = creat(&(0x7f0000000000)='./file0\x00', 0x8)
+  write$nbd(r2, &(0x7f0000000580)=ANY=[], 0x10)
+  r4 = openat(0xffffffffffffff9c, &(0x7f0000000040)='./file0\x00', 0x42, 0x0)
+  mmap$IORING_OFF_SQ_RING(&(0x7f0000ffd000/0x3000)=nil, 0x3000, 0x0, 0x12, r4, 0x0)
+  r5 = userfaultfd(0x80801)
+  ioctl$UFFDIO_API(r5, 0xc018aa3f, &(0x7f0000000040)={0xaa, 0x20})
+  r6 = userfaultfd(0x80801)
+  ioctl$UFFDIO_API(r6, 0xc018aa3f, &(0x7f0000000140))
+  ioctl$UFFDIO_REGISTER(r6, 0xc020aa00, &(0x7f0000000100)={{&(0x7f0000ffc000/0x4000)=nil, 0x4000}, 0x2})
+  ioctl$UFFDIO_ZEROPAGE(r5, 0xc020aa04, &(0x7f0000000000)={{&(0x7f0000ffd000/0x1000)=nil, 0x1000}})
+  r7 = bpf$PROG_LOAD(0x5, &(0x7f0000000140)={0x2, 0x3, &(0x7f0000000200)=ANY=[@ANYBLOB="1800000000120000000000000000000095"], &(0x7f0000000000)='GPL\x00', 0x7, 0x0, 0x0, 0x0, 0x0, '\x00', 0x0, @fallback=0x30, 0xffffffffffffffff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, @void, @value}, 0x94)
+  bpf$BPF_LINK_CREATE_XDP(0x1c, &(0x7f0000000040)={r7, 0x0, 0x30, 0x1e, @val=@uprobe_multi={&(0x7f0000000080)='./file0\x00', &(0x7f0000000100)=[0x2], 0x0, 0x0, 0x1}}, 0x40)
+
+The cause is that zero pfn is set to the PTE without increasing the RSS
+count in mfill_atomic_pte_zeropage() and the refcount of zero folio does
+not increase accordingly. Then, the operation on the same pfn is performed
+in uprobe_write_opcode()->__replace_page() to unconditional decrease the
+RSS count and old_folio's refcount.
+
+Therefore, two bugs are introduced:
+
+ 1. The RSS count is incorrect, when process exit, the check_mm() report
+    error "Bad rss-count".
+
+ 2. The reserved folio (zero folio) is freed when folio->refcount is zero,
+    then free_pages_prepare->free_page_is_bad() report error
+    "Bad page state".
+
+There is more, the following warning could also theoretically be triggered:
+
+  __replace_page()
+    -> ...
+      -> folio_remove_rmap_pte()
+        -> VM_WARN_ON_FOLIO(is_zero_folio(folio), folio)
+
+Considering that uprobe hit on the zero folio is a very rare case, just
+reject zero old folio immediately after get_user_page_vma_remote().
+
+[ mingo: Cleaned up the changelog ]
+
+Fixes: 7396fa818d62 ("uprobes/core: Make background page replacement logic account for rss_stat counters")
+Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
+Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250224031149.1598949-1-tongtiangen@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mlx5_ib.h |  21 +-
- drivers/infiniband/hw/mlx5/mr.c      | 324 ++++++++++++---------------
- drivers/infiniband/hw/mlx5/umr.c     |   4 +-
- 3 files changed, 169 insertions(+), 180 deletions(-)
+ kernel/events/uprobes.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 7c72e0e9db54a..024d2071c6a5d 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -760,10 +760,25 @@ struct umr_common {
- 	unsigned int state;
- };
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 6dac0b5798213..7e2edd1b06939 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -481,6 +481,11 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
+ 	if (ret <= 0)
+ 		goto put_old;
  
-+#define NUM_MKEYS_PER_PAGE \
-+	((PAGE_SIZE - sizeof(struct list_head)) / sizeof(u32))
++	if (is_zero_page(old_page)) {
++		ret = -EINVAL;
++		goto put_old;
++	}
 +
-+struct mlx5_mkeys_page {
-+	u32 mkeys[NUM_MKEYS_PER_PAGE];
-+	struct list_head list;
-+};
-+static_assert(sizeof(struct mlx5_mkeys_page) == PAGE_SIZE);
-+
-+struct mlx5_mkeys_queue {
-+	struct list_head pages_list;
-+	u32 num_pages;
-+	unsigned long ci;
-+	spinlock_t lock; /* sync list ops */
-+};
-+
- struct mlx5_cache_ent {
--	struct xarray		mkeys;
--	unsigned long		stored;
--	unsigned long		reserved;
-+	struct mlx5_mkeys_queue	mkeys_queue;
-+	u32			pending;
- 
- 	char                    name[4];
- 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 2c1a935734273..b66b8346c2dc6 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -140,110 +140,47 @@ static void create_mkey_warn(struct mlx5_ib_dev *dev, int status, void *out)
- 	mlx5_cmd_out_err(dev->mdev, MLX5_CMD_OP_CREATE_MKEY, 0, out);
- }
- 
--static int push_mkey_locked(struct mlx5_cache_ent *ent, bool limit_pendings,
--			    void *to_store)
-+static int push_mkey_locked(struct mlx5_cache_ent *ent, u32 mkey)
- {
--	XA_STATE(xas, &ent->mkeys, 0);
--	void *curr;
-+	unsigned long tmp = ent->mkeys_queue.ci % NUM_MKEYS_PER_PAGE;
-+	struct mlx5_mkeys_page *page;
- 
--	if (limit_pendings &&
--	    (ent->reserved - ent->stored) > MAX_PENDING_REG_MR)
--		return -EAGAIN;
--
--	while (1) {
--		/*
--		 * This is cmpxchg (NULL, XA_ZERO_ENTRY) however this version
--		 * doesn't transparently unlock. Instead we set the xas index to
--		 * the current value of reserved every iteration.
--		 */
--		xas_set(&xas, ent->reserved);
--		curr = xas_load(&xas);
--		if (!curr) {
--			if (to_store && ent->stored == ent->reserved)
--				xas_store(&xas, to_store);
--			else
--				xas_store(&xas, XA_ZERO_ENTRY);
--			if (xas_valid(&xas)) {
--				ent->reserved++;
--				if (to_store) {
--					if (ent->stored != ent->reserved)
--						__xa_store(&ent->mkeys,
--							   ent->stored,
--							   to_store,
--							   GFP_KERNEL);
--					ent->stored++;
--					queue_adjust_cache_locked(ent);
--					WRITE_ONCE(ent->dev->cache.last_add,
--						   jiffies);
--				}
--			}
--		}
--		xa_unlock_irq(&ent->mkeys);
--
--		/*
--		 * Notice xas_nomem() must always be called as it cleans
--		 * up any cached allocation.
--		 */
--		if (!xas_nomem(&xas, GFP_KERNEL))
--			break;
--		xa_lock_irq(&ent->mkeys);
-+	lockdep_assert_held(&ent->mkeys_queue.lock);
-+	if (ent->mkeys_queue.ci >=
-+	    ent->mkeys_queue.num_pages * NUM_MKEYS_PER_PAGE) {
-+		page = kzalloc(sizeof(*page), GFP_ATOMIC);
-+		if (!page)
-+			return -ENOMEM;
-+		ent->mkeys_queue.num_pages++;
-+		list_add_tail(&page->list, &ent->mkeys_queue.pages_list);
-+	} else {
-+		page = list_last_entry(&ent->mkeys_queue.pages_list,
-+				       struct mlx5_mkeys_page, list);
- 	}
--	xa_lock_irq(&ent->mkeys);
--	if (xas_error(&xas))
--		return xas_error(&xas);
--	if (WARN_ON(curr))
--		return -EINVAL;
--	return 0;
--}
--
--static int push_mkey(struct mlx5_cache_ent *ent, bool limit_pendings,
--		     void *to_store)
--{
--	int ret;
--
--	xa_lock_irq(&ent->mkeys);
--	ret = push_mkey_locked(ent, limit_pendings, to_store);
--	xa_unlock_irq(&ent->mkeys);
--	return ret;
--}
--
--static void undo_push_reserve_mkey(struct mlx5_cache_ent *ent)
--{
--	void *old;
--
--	ent->reserved--;
--	old = __xa_erase(&ent->mkeys, ent->reserved);
--	WARN_ON(old);
--}
--
--static void push_to_reserved(struct mlx5_cache_ent *ent, u32 mkey)
--{
--	void *old;
- 
--	old = __xa_store(&ent->mkeys, ent->stored, xa_mk_value(mkey), 0);
--	WARN_ON(old);
--	ent->stored++;
-+	page->mkeys[tmp] = mkey;
-+	ent->mkeys_queue.ci++;
-+	return 0;
- }
- 
--static u32 pop_stored_mkey(struct mlx5_cache_ent *ent)
-+static int pop_mkey_locked(struct mlx5_cache_ent *ent)
- {
--	void *old, *xa_mkey;
--
--	ent->stored--;
--	ent->reserved--;
-+	unsigned long tmp = (ent->mkeys_queue.ci - 1) % NUM_MKEYS_PER_PAGE;
-+	struct mlx5_mkeys_page *last_page;
-+	u32 mkey;
- 
--	if (ent->stored == ent->reserved) {
--		xa_mkey = __xa_erase(&ent->mkeys, ent->stored);
--		WARN_ON(!xa_mkey);
--		return (u32)xa_to_value(xa_mkey);
-+	lockdep_assert_held(&ent->mkeys_queue.lock);
-+	last_page = list_last_entry(&ent->mkeys_queue.pages_list,
-+				    struct mlx5_mkeys_page, list);
-+	mkey = last_page->mkeys[tmp];
-+	last_page->mkeys[tmp] = 0;
-+	ent->mkeys_queue.ci--;
-+	if (ent->mkeys_queue.num_pages > 1 && !tmp) {
-+		list_del(&last_page->list);
-+		ent->mkeys_queue.num_pages--;
-+		kfree(last_page);
- 	}
--
--	xa_mkey = __xa_store(&ent->mkeys, ent->stored, XA_ZERO_ENTRY,
--			     GFP_KERNEL);
--	WARN_ON(!xa_mkey || xa_is_err(xa_mkey));
--	old = __xa_erase(&ent->mkeys, ent->reserved);
--	WARN_ON(old);
--	return (u32)xa_to_value(xa_mkey);
-+	return mkey;
- }
- 
- static void create_mkey_callback(int status, struct mlx5_async_work *context)
-@@ -257,10 +194,10 @@ static void create_mkey_callback(int status, struct mlx5_async_work *context)
- 	if (status) {
- 		create_mkey_warn(dev, status, mkey_out->out);
- 		kfree(mkey_out);
--		xa_lock_irqsave(&ent->mkeys, flags);
--		undo_push_reserve_mkey(ent);
-+		spin_lock_irqsave(&ent->mkeys_queue.lock, flags);
-+		ent->pending--;
- 		WRITE_ONCE(dev->fill_delay, 1);
--		xa_unlock_irqrestore(&ent->mkeys, flags);
-+		spin_unlock_irqrestore(&ent->mkeys_queue.lock, flags);
- 		mod_timer(&dev->delay_timer, jiffies + HZ);
- 		return;
- 	}
-@@ -269,11 +206,12 @@ static void create_mkey_callback(int status, struct mlx5_async_work *context)
- 		MLX5_GET(create_mkey_out, mkey_out->out, mkey_index));
- 	WRITE_ONCE(dev->cache.last_add, jiffies);
- 
--	xa_lock_irqsave(&ent->mkeys, flags);
--	push_to_reserved(ent, mkey_out->mkey);
-+	spin_lock_irqsave(&ent->mkeys_queue.lock, flags);
-+	push_mkey_locked(ent, mkey_out->mkey);
- 	/* If we are doing fill_to_high_water then keep going. */
- 	queue_adjust_cache_locked(ent);
--	xa_unlock_irqrestore(&ent->mkeys, flags);
-+	ent->pending--;
-+	spin_unlock_irqrestore(&ent->mkeys_queue.lock, flags);
- 	kfree(mkey_out);
- }
- 
-@@ -329,24 +267,28 @@ static int add_keys(struct mlx5_cache_ent *ent, unsigned int num)
- 		set_cache_mkc(ent, mkc);
- 		async_create->ent = ent;
- 
--		err = push_mkey(ent, true, NULL);
--		if (err)
-+		spin_lock_irq(&ent->mkeys_queue.lock);
-+		if (ent->pending >= MAX_PENDING_REG_MR) {
-+			err = -EAGAIN;
- 			goto free_async_create;
-+		}
-+		ent->pending++;
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 
- 		err = mlx5_ib_create_mkey_cb(async_create);
- 		if (err) {
- 			mlx5_ib_warn(ent->dev, "create mkey failed %d\n", err);
--			goto err_undo_reserve;
-+			goto err_create_mkey;
- 		}
- 	}
- 
- 	return 0;
- 
--err_undo_reserve:
--	xa_lock_irq(&ent->mkeys);
--	undo_push_reserve_mkey(ent);
--	xa_unlock_irq(&ent->mkeys);
-+err_create_mkey:
-+	spin_lock_irq(&ent->mkeys_queue.lock);
-+	ent->pending--;
- free_async_create:
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
- 	kfree(async_create);
- 	return err;
- }
-@@ -379,36 +321,36 @@ static void remove_cache_mr_locked(struct mlx5_cache_ent *ent)
- {
- 	u32 mkey;
- 
--	lockdep_assert_held(&ent->mkeys.xa_lock);
--	if (!ent->stored)
-+	lockdep_assert_held(&ent->mkeys_queue.lock);
-+	if (!ent->mkeys_queue.ci)
- 		return;
--	mkey = pop_stored_mkey(ent);
--	xa_unlock_irq(&ent->mkeys);
-+	mkey = pop_mkey_locked(ent);
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
- 	mlx5_core_destroy_mkey(ent->dev->mdev, mkey);
--	xa_lock_irq(&ent->mkeys);
-+	spin_lock_irq(&ent->mkeys_queue.lock);
- }
- 
- static int resize_available_mrs(struct mlx5_cache_ent *ent, unsigned int target,
- 				bool limit_fill)
--	 __acquires(&ent->mkeys) __releases(&ent->mkeys)
-+	__acquires(&ent->mkeys_queue.lock) __releases(&ent->mkeys_queue.lock)
- {
- 	int err;
- 
--	lockdep_assert_held(&ent->mkeys.xa_lock);
-+	lockdep_assert_held(&ent->mkeys_queue.lock);
- 
- 	while (true) {
- 		if (limit_fill)
- 			target = ent->limit * 2;
--		if (target == ent->reserved)
-+		if (target == ent->pending + ent->mkeys_queue.ci)
- 			return 0;
--		if (target > ent->reserved) {
--			u32 todo = target - ent->reserved;
-+		if (target > ent->pending + ent->mkeys_queue.ci) {
-+			u32 todo = target - (ent->pending + ent->mkeys_queue.ci);
- 
--			xa_unlock_irq(&ent->mkeys);
-+			spin_unlock_irq(&ent->mkeys_queue.lock);
- 			err = add_keys(ent, todo);
- 			if (err == -EAGAIN)
- 				usleep_range(3000, 5000);
--			xa_lock_irq(&ent->mkeys);
-+			spin_lock_irq(&ent->mkeys_queue.lock);
- 			if (err) {
- 				if (err != -EAGAIN)
- 					return err;
-@@ -436,7 +378,7 @@ static ssize_t size_write(struct file *filp, const char __user *buf,
- 	 * cannot free MRs that are in use. Compute the target value for stored
- 	 * mkeys.
- 	 */
--	xa_lock_irq(&ent->mkeys);
-+	spin_lock_irq(&ent->mkeys_queue.lock);
- 	if (target < ent->in_use) {
- 		err = -EINVAL;
- 		goto err_unlock;
-@@ -449,12 +391,12 @@ static ssize_t size_write(struct file *filp, const char __user *buf,
- 	err = resize_available_mrs(ent, target, false);
- 	if (err)
- 		goto err_unlock;
--	xa_unlock_irq(&ent->mkeys);
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
- 
- 	return count;
- 
- err_unlock:
--	xa_unlock_irq(&ent->mkeys);
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
- 	return err;
- }
- 
-@@ -465,7 +407,8 @@ static ssize_t size_read(struct file *filp, char __user *buf, size_t count,
- 	char lbuf[20];
- 	int err;
- 
--	err = snprintf(lbuf, sizeof(lbuf), "%ld\n", ent->stored + ent->in_use);
-+	err = snprintf(lbuf, sizeof(lbuf), "%ld\n",
-+		       ent->mkeys_queue.ci + ent->in_use);
- 	if (err < 0)
- 		return err;
- 
-@@ -494,10 +437,10 @@ static ssize_t limit_write(struct file *filp, const char __user *buf,
- 	 * Upon set we immediately fill the cache to high water mark implied by
- 	 * the limit.
- 	 */
--	xa_lock_irq(&ent->mkeys);
-+	spin_lock_irq(&ent->mkeys_queue.lock);
- 	ent->limit = var;
- 	err = resize_available_mrs(ent, 0, true);
--	xa_unlock_irq(&ent->mkeys);
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
- 	if (err)
- 		return err;
- 	return count;
-@@ -533,9 +476,9 @@ static bool someone_adding(struct mlx5_mkey_cache *cache)
- 	mutex_lock(&cache->rb_lock);
- 	for (node = rb_first(&cache->rb_root); node; node = rb_next(node)) {
- 		ent = rb_entry(node, struct mlx5_cache_ent, node);
--		xa_lock_irq(&ent->mkeys);
--		ret = ent->stored < ent->limit;
--		xa_unlock_irq(&ent->mkeys);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
-+		ret = ent->mkeys_queue.ci < ent->limit;
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 		if (ret) {
- 			mutex_unlock(&cache->rb_lock);
- 			return true;
-@@ -552,26 +495,26 @@ static bool someone_adding(struct mlx5_mkey_cache *cache)
-  */
- static void queue_adjust_cache_locked(struct mlx5_cache_ent *ent)
- {
--	lockdep_assert_held(&ent->mkeys.xa_lock);
-+	lockdep_assert_held(&ent->mkeys_queue.lock);
- 
- 	if (ent->disabled || READ_ONCE(ent->dev->fill_delay) || ent->is_tmp)
- 		return;
--	if (ent->stored < ent->limit) {
-+	if (ent->mkeys_queue.ci < ent->limit) {
- 		ent->fill_to_high_water = true;
- 		mod_delayed_work(ent->dev->cache.wq, &ent->dwork, 0);
- 	} else if (ent->fill_to_high_water &&
--		   ent->reserved < 2 * ent->limit) {
-+		   ent->mkeys_queue.ci + ent->pending < 2 * ent->limit) {
- 		/*
- 		 * Once we start populating due to hitting a low water mark
- 		 * continue until we pass the high water mark.
- 		 */
- 		mod_delayed_work(ent->dev->cache.wq, &ent->dwork, 0);
--	} else if (ent->stored == 2 * ent->limit) {
-+	} else if (ent->mkeys_queue.ci == 2 * ent->limit) {
- 		ent->fill_to_high_water = false;
--	} else if (ent->stored > 2 * ent->limit) {
-+	} else if (ent->mkeys_queue.ci > 2 * ent->limit) {
- 		/* Queue deletion of excess entries */
- 		ent->fill_to_high_water = false;
--		if (ent->stored != ent->reserved)
-+		if (ent->pending)
- 			queue_delayed_work(ent->dev->cache.wq, &ent->dwork,
- 					   msecs_to_jiffies(1000));
- 		else
-@@ -585,15 +528,16 @@ static void __cache_work_func(struct mlx5_cache_ent *ent)
- 	struct mlx5_mkey_cache *cache = &dev->cache;
- 	int err;
- 
--	xa_lock_irq(&ent->mkeys);
-+	spin_lock_irq(&ent->mkeys_queue.lock);
- 	if (ent->disabled)
- 		goto out;
- 
--	if (ent->fill_to_high_water && ent->reserved < 2 * ent->limit &&
-+	if (ent->fill_to_high_water &&
-+	    ent->mkeys_queue.ci + ent->pending < 2 * ent->limit &&
- 	    !READ_ONCE(dev->fill_delay)) {
--		xa_unlock_irq(&ent->mkeys);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 		err = add_keys(ent, 1);
--		xa_lock_irq(&ent->mkeys);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
- 		if (ent->disabled)
- 			goto out;
- 		if (err) {
-@@ -611,7 +555,7 @@ static void __cache_work_func(struct mlx5_cache_ent *ent)
- 						   msecs_to_jiffies(1000));
- 			}
- 		}
--	} else if (ent->stored > 2 * ent->limit) {
-+	} else if (ent->mkeys_queue.ci > 2 * ent->limit) {
- 		bool need_delay;
- 
- 		/*
-@@ -626,11 +570,11 @@ static void __cache_work_func(struct mlx5_cache_ent *ent)
- 		 * the garbage collection work to try to run in next cycle, in
- 		 * order to free CPU resources to other tasks.
- 		 */
--		xa_unlock_irq(&ent->mkeys);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 		need_delay = need_resched() || someone_adding(cache) ||
- 			     !time_after(jiffies,
- 					 READ_ONCE(cache->last_add) + 300 * HZ);
--		xa_lock_irq(&ent->mkeys);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
- 		if (ent->disabled)
- 			goto out;
- 		if (need_delay) {
-@@ -641,7 +585,7 @@ static void __cache_work_func(struct mlx5_cache_ent *ent)
- 		queue_adjust_cache_locked(ent);
- 	}
- out:
--	xa_unlock_irq(&ent->mkeys);
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
- }
- 
- static void delayed_cache_work_func(struct work_struct *work)
-@@ -749,25 +693,25 @@ static struct mlx5_ib_mr *_mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev,
- 	if (!mr)
- 		return ERR_PTR(-ENOMEM);
- 
--	xa_lock_irq(&ent->mkeys);
-+	spin_lock_irq(&ent->mkeys_queue.lock);
- 	ent->in_use++;
- 
--	if (!ent->stored) {
-+	if (!ent->mkeys_queue.ci) {
- 		queue_adjust_cache_locked(ent);
- 		ent->miss++;
--		xa_unlock_irq(&ent->mkeys);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 		err = create_cache_mkey(ent, &mr->mmkey.key);
- 		if (err) {
--			xa_lock_irq(&ent->mkeys);
-+			spin_lock_irq(&ent->mkeys_queue.lock);
- 			ent->in_use--;
--			xa_unlock_irq(&ent->mkeys);
-+			spin_unlock_irq(&ent->mkeys_queue.lock);
- 			kfree(mr);
- 			return ERR_PTR(err);
- 		}
- 	} else {
--		mr->mmkey.key = pop_stored_mkey(ent);
-+		mr->mmkey.key = pop_mkey_locked(ent);
- 		queue_adjust_cache_locked(ent);
--		xa_unlock_irq(&ent->mkeys);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 	}
- 	mr->mmkey.cache_ent = ent;
- 	mr->mmkey.type = MLX5_MKEY_MR;
-@@ -820,14 +764,14 @@ static void clean_keys(struct mlx5_ib_dev *dev, struct mlx5_cache_ent *ent)
- 	u32 mkey;
- 
- 	cancel_delayed_work(&ent->dwork);
--	xa_lock_irq(&ent->mkeys);
--	while (ent->stored) {
--		mkey = pop_stored_mkey(ent);
--		xa_unlock_irq(&ent->mkeys);
-+	spin_lock_irq(&ent->mkeys_queue.lock);
-+	while (ent->mkeys_queue.ci) {
-+		mkey = pop_mkey_locked(ent);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 		mlx5_core_destroy_mkey(dev->mdev, mkey);
--		xa_lock_irq(&ent->mkeys);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
- 	}
--	xa_unlock_irq(&ent->mkeys);
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
- }
- 
- static void mlx5_mkey_cache_debugfs_cleanup(struct mlx5_ib_dev *dev)
-@@ -852,7 +796,7 @@ static void mlx5_mkey_cache_debugfs_add_ent(struct mlx5_ib_dev *dev,
- 	dir = debugfs_create_dir(ent->name, dev->cache.fs_root);
- 	debugfs_create_file("size", 0600, dir, ent, &size_fops);
- 	debugfs_create_file("limit", 0600, dir, ent, &limit_fops);
--	debugfs_create_ulong("cur", 0400, dir, &ent->stored);
-+	debugfs_create_ulong("cur", 0400, dir, &ent->mkeys_queue.ci);
- 	debugfs_create_u32("miss", 0600, dir, &ent->miss);
- }
- 
-@@ -874,6 +818,31 @@ static void delay_time_func(struct timer_list *t)
- 	WRITE_ONCE(dev->fill_delay, 0);
- }
- 
-+static int mlx5r_mkeys_init(struct mlx5_cache_ent *ent)
-+{
-+	struct mlx5_mkeys_page *page;
-+
-+	page = kzalloc(sizeof(*page), GFP_KERNEL);
-+	if (!page)
-+		return -ENOMEM;
-+	INIT_LIST_HEAD(&ent->mkeys_queue.pages_list);
-+	spin_lock_init(&ent->mkeys_queue.lock);
-+	list_add_tail(&page->list, &ent->mkeys_queue.pages_list);
-+	ent->mkeys_queue.num_pages++;
-+	return 0;
-+}
-+
-+static void mlx5r_mkeys_uninit(struct mlx5_cache_ent *ent)
-+{
-+	struct mlx5_mkeys_page *page;
-+
-+	WARN_ON(ent->mkeys_queue.ci || ent->mkeys_queue.num_pages > 1);
-+	page = list_last_entry(&ent->mkeys_queue.pages_list,
-+			       struct mlx5_mkeys_page, list);
-+	list_del(&page->list);
-+	kfree(page);
-+}
-+
- struct mlx5_cache_ent *
- mlx5r_cache_create_ent_locked(struct mlx5_ib_dev *dev,
- 			      struct mlx5r_cache_rb_key rb_key,
-@@ -887,7 +856,9 @@ mlx5r_cache_create_ent_locked(struct mlx5_ib_dev *dev,
- 	if (!ent)
- 		return ERR_PTR(-ENOMEM);
- 
--	xa_init_flags(&ent->mkeys, XA_FLAGS_LOCK_IRQ);
-+	ret = mlx5r_mkeys_init(ent);
-+	if (ret)
-+		goto mkeys_err;
- 	ent->rb_key = rb_key;
- 	ent->dev = dev;
- 	ent->is_tmp = !persistent_entry;
-@@ -895,10 +866,8 @@ mlx5r_cache_create_ent_locked(struct mlx5_ib_dev *dev,
- 	INIT_DELAYED_WORK(&ent->dwork, delayed_cache_work_func);
- 
- 	ret = mlx5_cache_ent_insert(&dev->cache, ent);
--	if (ret) {
--		kfree(ent);
--		return ERR_PTR(ret);
--	}
-+	if (ret)
-+		goto ent_insert_err;
- 
- 	if (persistent_entry) {
- 		if (rb_key.access_mode == MLX5_MKC_ACCESS_MODE_KSM)
-@@ -921,6 +890,11 @@ mlx5r_cache_create_ent_locked(struct mlx5_ib_dev *dev,
- 	}
- 
- 	return ent;
-+ent_insert_err:
-+	mlx5r_mkeys_uninit(ent);
-+mkeys_err:
-+	kfree(ent);
-+	return ERR_PTR(ret);
- }
- 
- static void remove_ent_work_func(struct work_struct *work)
-@@ -938,13 +912,13 @@ static void remove_ent_work_func(struct work_struct *work)
- 		cur = rb_prev(cur);
- 		mutex_unlock(&cache->rb_lock);
- 
--		xa_lock_irq(&ent->mkeys);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
- 		if (!ent->is_tmp) {
--			xa_unlock_irq(&ent->mkeys);
-+			spin_unlock_irq(&ent->mkeys_queue.lock);
- 			mutex_lock(&cache->rb_lock);
- 			continue;
- 		}
--		xa_unlock_irq(&ent->mkeys);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 
- 		clean_keys(ent->dev, ent);
- 		mutex_lock(&cache->rb_lock);
-@@ -994,9 +968,9 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
- 	mutex_unlock(&cache->rb_lock);
- 	for (node = rb_first(root); node; node = rb_next(node)) {
- 		ent = rb_entry(node, struct mlx5_cache_ent, node);
--		xa_lock_irq(&ent->mkeys);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
- 		queue_adjust_cache_locked(ent);
--		xa_unlock_irq(&ent->mkeys);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 	}
- 
- 	return 0;
-@@ -1020,9 +994,9 @@ int mlx5_mkey_cache_cleanup(struct mlx5_ib_dev *dev)
- 	mutex_lock(&dev->cache.rb_lock);
- 	for (node = rb_first(root); node; node = rb_next(node)) {
- 		ent = rb_entry(node, struct mlx5_cache_ent, node);
--		xa_lock_irq(&ent->mkeys);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
- 		ent->disabled = true;
--		xa_unlock_irq(&ent->mkeys);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 		cancel_delayed_work_sync(&ent->dwork);
- 	}
- 
-@@ -1035,6 +1009,7 @@ int mlx5_mkey_cache_cleanup(struct mlx5_ib_dev *dev)
- 		node = rb_next(node);
- 		clean_keys(dev, ent);
- 		rb_erase(&ent->node, root);
-+		mlx5r_mkeys_uninit(ent);
- 		kfree(ent);
- 	}
- 	mutex_unlock(&dev->cache.rb_lock);
-@@ -1802,7 +1777,7 @@ static int cache_ent_find_and_store(struct mlx5_ib_dev *dev,
- 	int ret;
- 
- 	if (mr->mmkey.cache_ent) {
--		xa_lock_irq(&mr->mmkey.cache_ent->mkeys);
-+		spin_lock_irq(&mr->mmkey.cache_ent->mkeys_queue.lock);
- 		mr->mmkey.cache_ent->in_use--;
- 		goto end;
- 	}
-@@ -1816,7 +1791,7 @@ static int cache_ent_find_and_store(struct mlx5_ib_dev *dev,
- 				return -EOPNOTSUPP;
- 			}
- 			mr->mmkey.cache_ent = ent;
--			xa_lock_irq(&mr->mmkey.cache_ent->mkeys);
-+			spin_lock_irq(&mr->mmkey.cache_ent->mkeys_queue.lock);
- 			mutex_unlock(&cache->rb_lock);
- 			goto end;
- 		}
-@@ -1828,12 +1803,11 @@ static int cache_ent_find_and_store(struct mlx5_ib_dev *dev,
- 		return PTR_ERR(ent);
- 
- 	mr->mmkey.cache_ent = ent;
--	xa_lock_irq(&mr->mmkey.cache_ent->mkeys);
-+	spin_lock_irq(&mr->mmkey.cache_ent->mkeys_queue.lock);
- 
- end:
--	ret = push_mkey_locked(mr->mmkey.cache_ent, false,
--			       xa_mk_value(mr->mmkey.key));
--	xa_unlock_irq(&mr->mmkey.cache_ent->mkeys);
-+	ret = push_mkey_locked(mr->mmkey.cache_ent, mr->mmkey.key);
-+	spin_unlock_irq(&mr->mmkey.cache_ent->mkeys_queue.lock);
- 	return ret;
- }
- 
-diff --git a/drivers/infiniband/hw/mlx5/umr.c b/drivers/infiniband/hw/mlx5/umr.c
-index cb5cee3dee2b6..fa000182d0b41 100644
---- a/drivers/infiniband/hw/mlx5/umr.c
-+++ b/drivers/infiniband/hw/mlx5/umr.c
-@@ -332,8 +332,8 @@ static int mlx5r_umr_post_send_wait(struct mlx5_ib_dev *dev, u32 mkey,
- 
- 		WARN_ON_ONCE(1);
- 		mlx5_ib_warn(dev,
--			"reg umr failed (%u). Trying to recover and resubmit the flushed WQEs\n",
--			umr_context.status);
-+			"reg umr failed (%u). Trying to recover and resubmit the flushed WQEs, mkey = %u\n",
-+			umr_context.status, mkey);
- 		mutex_lock(&umrc->lock);
- 		err = mlx5r_umr_recover(dev);
- 		mutex_unlock(&umrc->lock);
+ 	if (WARN(!is_register && PageCompound(old_page),
+ 		 "uprobe unregister should never work on compound page\n")) {
+ 		ret = -EINVAL;
 -- 
 2.39.5
 
