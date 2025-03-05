@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C359EA5092D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D96A50729
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A0593A36E4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 314E91722BB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC64E25290E;
-	Wed,  5 Mar 2025 18:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8971A250C0E;
+	Wed,  5 Mar 2025 17:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzzzXLlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJ1kd/Jw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1C425290D;
-	Wed,  5 Mar 2025 18:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D246ADD;
+	Wed,  5 Mar 2025 17:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198527; cv=none; b=Q5KFnabNd0ATEnpAcVzNrnN+Q8PBe9bDKy2oWx7Mwd4M4J9X/5lvq7ps9lKqWfrKSBL612vBGIBvWIOyw4qj+gXzZGfwObvP9G9mrJKZeo4JjJ0P4Svz3OHR+nC+jeJEW0BsTQaCPo7km5IyNgs0/UwwGDlmx8hgNIRkqQyZFSc=
+	t=1741197258; cv=none; b=m7/sSaxljQ17dhm6nGbQuFCYHSLviUP3PDc/LFCgYI8UkhXwMCWaeYeN4ndcUltuQh25xB90s8ZL9/qjK6QUSDLCL95tR7SMIyOj1shwTWd1blPYzTjCDgSyF2HYkfWJ4wVWb041V+tGW8Y3fdWsO2KaGpUYiUe0iuGcBeaUc5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198527; c=relaxed/simple;
-	bh=0jc6SXYPa2xl2RyTLhUyakL9N7sbHMXiwCYY8lPLDM8=;
+	s=arc-20240116; t=1741197258; c=relaxed/simple;
+	bh=QDG2pqcRZhXvylYSjf9SnM/Ypn9dAlVPXyQtz3gC5Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1vsa0EbApQFU2/U15Rfm1bXjUtqk0kDtultxT/djkYHoIJ43zIG2VFFOsXUVVg1efTY7oMDqGvSAQKUIEw0iXs56W+LsJOgTw7rCpzvnCjepHoUwQm85qnZf0t4Bpgk8ZJ5RFPvlcF5G/v1vkkVqr3UGHg1DIHscVoCTp6imYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzzzXLlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086CEC4CED1;
-	Wed,  5 Mar 2025 18:15:26 +0000 (UTC)
+	 MIME-Version; b=EjNdvMNI+jOT6+v96fnFJimnbnxd4mYgtnODlx9sBDgFDIysBV5l2fGSnHHlT2uO9kJUT11t8Xtzeu3+P3JJNVHWRu/Mdg3oQWlCvMxJ00sYoN2VoOPNuqkcEmxLkoG5zF7zRSLor3XCRSpfrbz/RHLpWejxXgDw7Js63QvgyT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJ1kd/Jw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C90AC4CED1;
+	Wed,  5 Mar 2025 17:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198527;
-	bh=0jc6SXYPa2xl2RyTLhUyakL9N7sbHMXiwCYY8lPLDM8=;
+	s=korg; t=1741197256;
+	bh=QDG2pqcRZhXvylYSjf9SnM/Ypn9dAlVPXyQtz3gC5Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzzzXLlkPXpl1jB4oJmHZ4h66drHYmXAz572i4JOGpzoYWyYspxSr96OeswTuFZVV
-	 wkUkKjQWLF0LXWGSvSNRKU8rLxdI368yuysoKKRP84qz6EzJiNIl/AuCK03Ii8BtiA
-	 g5KKGQsECW/e10Nh6kgZgyR3xwDtpcEEor4JNGrs=
+	b=tJ1kd/JwE5xV+A+QbpscUJb0ryRA3iPUqxtScipeILSPP6SDbQeBg630vxxSfzeq3
+	 FpdD+r99GUVyGbf7JGGt8xd+8mn4LlZ/CIj+qvcoJg5KFDYXx985d5e4Z+1PHV3Xds
+	 eXeZOa4qHImazLwz0TjPZ2I3Hu96C/LLqVuthZ8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 026/157] Bluetooth: L2CAP: Fix L2CAP_ECRED_CONN_RSP response
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.1 093/176] media: mediatek: vcodec: Fix H264 multi stateless decoder smatch warning
 Date: Wed,  5 Mar 2025 18:47:42 +0100
-Message-ID: <20250305174506.346672912@linuxfoundation.org>
+Message-ID: <20250305174509.197761681@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit b25120e1d5f2ebb3db00af557709041f47f7f3d0 ]
+commit 9be85491619f1953b8a29590ca630be571941ffa upstream.
 
-L2CAP_ECRED_CONN_RSP needs to respond DCID in the same order received as
-SCID but the order is reversed due to use of list_add which actually
-prepend channels to the list so the response is reversed:
+Fix a smatch static checker warning on vdec_h264_req_multi_if.c.
+Which leads to a kernel crash when fb is NULL.
 
-> ACL Data RX: Handle 16 flags 0x02 dlen 26
-      LE L2CAP: Enhanced Credit Connection Request (0x17) ident 2 len 18
-        PSM: 39 (0x0027)
-        MTU: 256
-        MPS: 251
-        Credits: 65535
-        Source CID: 116
-        Source CID: 117
-        Source CID: 118
-        Source CID: 119
-        Source CID: 120
-< ACL Data TX: Handle 16 flags 0x00 dlen 26
-      LE L2CAP: Enhanced Credit Connection Response (0x18) ident 2 len 18
-        MTU: 517
-        MPS: 247
-        Credits: 3
-        Result: Connection successful (0x0000)
-        Destination CID: 68
-        Destination CID: 67
-        Destination CID: 66
-        Destination CID: 65
-        Destination CID: 64
-
-Also make sure the response don't include channels that are not on
-BT_CONNECT2 since the chan->ident can be set to the same value as in the
-following trace:
-
-< ACL Data TX: Handle 16 flags 0x00 dlen 12
-      LE L2CAP: LE Flow Control Credit (0x16) ident 6 len 4
-        Source CID: 64
-        Credits: 1
-...
-> ACL Data RX: Handle 16 flags 0x02 dlen 18
-      LE L2CAP: Enhanced Credit Connection Request (0x17) ident 6 len 10
-        PSM: 39 (0x0027)
-        MTU: 517
-        MPS: 251
-        Credits: 255
-        Source CID: 70
-< ACL Data TX: Handle 16 flags 0x00 dlen 20
-      LE L2CAP: Enhanced Credit Connection Response (0x18) ident 6 len 12
-        MTU: 517
-        MPS: 247
-        Credits: 3
-        Result: Connection successful (0x0000)
-        Destination CID: 64
-        Destination CID: 68
-
-Closes: https://github.com/bluez/bluez/issues/1094
-Fixes: 9aa9d9473f15 ("Bluetooth: L2CAP: Fix responding with wrong PDU type")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 397edc703a10 ("media: mediatek: vcodec: add h264 decoder driver for mt8186")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[ drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
+  is renamed from drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c
+  since 0934d3759615 ("media: mediatek: vcodec: separate decoder and encoder").
+  The path is changed accordingly to apply the patch on 6.1.y. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 9 +++++++--
+ drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c |    9 +++++++--
  1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 27b4c4a2ba1fd..728a5ce9b5058 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -636,7 +636,8 @@ void __l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan)
- 	    test_bit(FLAG_HOLD_HCI_CONN, &chan->flags))
- 		hci_conn_hold(conn->hcon);
+--- a/drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c
+@@ -729,11 +729,16 @@ static int vdec_h264_slice_single_decode
+ 		return vpu_dec_reset(vpu);
  
--	list_add(&chan->list, &conn->chan_l);
-+	/* Append to the list since the order matters for ECRED */
-+	list_add_tail(&chan->list, &conn->chan_l);
- }
+ 	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
++	if (!fb) {
++		mtk_vcodec_err(inst, "fb buffer is NULL");
++		return -ENOMEM;
++	}
++
+ 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
+ 	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
  
- void l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan)
-@@ -3776,7 +3777,11 @@ static void l2cap_ecred_rsp_defer(struct l2cap_chan *chan, void *data)
- 	struct l2cap_ecred_conn_rsp *rsp_flex =
- 		container_of(&rsp->pdu.rsp, struct l2cap_ecred_conn_rsp, hdr);
+-	y_fb_dma = fb ? (u64)fb->base_y.dma_addr : 0;
+-	c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
++	y_fb_dma = fb->base_y.dma_addr;
++	c_fb_dma = fb->base_c.dma_addr;
+ 	mtk_vcodec_debug(inst, "[h264-dec] [%d] y_dma=%llx c_dma=%llx",
+ 			 inst->ctx->decoded_frame_cnt, y_fb_dma, c_fb_dma);
  
--	if (test_bit(FLAG_ECRED_CONN_REQ_SENT, &chan->flags))
-+	/* Check if channel for outgoing connection or if it wasn't deferred
-+	 * since in those cases it must be skipped.
-+	 */
-+	if (test_bit(FLAG_ECRED_CONN_REQ_SENT, &chan->flags) ||
-+	    !test_and_clear_bit(FLAG_DEFER_SETUP, &chan->flags))
- 		return;
- 
- 	/* Reset ident so only one response is sent */
--- 
-2.39.5
-
 
 
 
