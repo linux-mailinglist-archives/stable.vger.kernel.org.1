@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7B3A508A3
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:10:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3B4A5094C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0E9D1733C0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADF297A8EBA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A943C1A23A6;
-	Wed,  5 Mar 2025 18:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3062230BC6;
+	Wed,  5 Mar 2025 18:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZzYSbX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOvT+Zz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B4B1A840E;
-	Wed,  5 Mar 2025 18:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8201113C67E;
+	Wed,  5 Mar 2025 18:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198130; cv=none; b=bJ4np1aPrgVpSiQHf/FEpedRAx+DI06SjAyWuiu8vCjBxNN77aQtWkTsVuYmPN8mia1GbHCK2NflRsah55Wizqi3N0Fu0rksPPOlPEY0+QWC9+WaehMbmHXuXxn9YN5P+bYMobQO+qOferl5gl45z3P4r/AIoEJbLR6J0WvMd48=
+	t=1741198547; cv=none; b=gP2Xrz6ZFHoSR30EJUXtTT838cVRZKL0PhJtHilmYkaOpOoDpM7C/bdgl0QzYtTs0KwXcIuFN2Pi3PYAwinRYcuZeIysM2in2AxcfBvXEAvedzWe/o75yL/WqH3Ak2uccsS7e8yTQSgIc44Aw3b6K8mZ8R8zxA/xTJVxAoLmAys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198130; c=relaxed/simple;
-	bh=BTiBWzMjcdd+Hgz6MLpqxM0+E86lWL/oc7vTw3IW8tI=;
+	s=arc-20240116; t=1741198547; c=relaxed/simple;
+	bh=6Gv3Rels/GjjFGoI2i3Z7/xwU1yf3gYihy9WRyKrt4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7jq3CDvack6lueKjmEOw4vI3UDU/FAKyTPjMAdXh5u8O2e/stAZxR2a0EdcItCyJLPRK9k/Jq6/8OMGtoWIy8Wzb5adrNolHqqPrwz8Mt7fJU2uOT2pHLZgFdOvXQQGzc9jibzSjiyE4oHf/hAaYZ/xoQyfulDWQKR8sS1VGHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZzYSbX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEEBC4CED1;
-	Wed,  5 Mar 2025 18:08:49 +0000 (UTC)
+	 MIME-Version; b=jREHEsDPjAb4CJOzZKykOLquajrFHDa2SDvcVjbw+QhyJy5lTnnWEoxKa6gr2+iGddLauamK0qUwILLtAlDnlIaHGSzY0NBMGihtkAtxJo0kKRW7Eue5efJS/NKDFGaFqD2WY8y9GAYqWTs1t0M7p/yJfg9Kv79qyAssul2uQc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOvT+Zz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDF7C4CED1;
+	Wed,  5 Mar 2025 18:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198129;
-	bh=BTiBWzMjcdd+Hgz6MLpqxM0+E86lWL/oc7vTw3IW8tI=;
+	s=korg; t=1741198547;
+	bh=6Gv3Rels/GjjFGoI2i3Z7/xwU1yf3gYihy9WRyKrt4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZzYSbX376dO6LbVL90jOIAV9F+cDe8NFk5aWGIk23uDP3diSJBkXcSUd/W/qvk50
-	 pugPIMid8D2qPRSFAGWww2jpXEo4k4s80YGPg+mJ9ZSmO2clkx1y/rThNmr75uJ8pU
-	 wtO/CsVZF4zkp4PeD7QdZV6Ef9AWTVpYQDqZvrTk=
+	b=nOvT+Zz4M9oetEOS6gNJqB3uDY+g2VSPPm1kSMQ0/7oYedxWCZxXisLWaiJoFjA8S
+	 ZyGw7anBm8DEn2RpF++irJqyAQyIBEnW795lE2de0GMjNinQXdYj522orkGenAZAd6
+	 2yl6hdFaWM/75+4p7j5nKS6q9+xS80htSG/xNQ84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Yu-Che Cheng <giver@chromium.org>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/150] thermal: gov_power_allocator: Update total_weight on bind and cdev updates
+Subject: [PATCH 6.13 066/157] thermal/of: Fix cdev lookup in thermal_of_should_bind()
 Date: Wed,  5 Mar 2025 18:48:22 +0100
-Message-ID: <20250305174506.749259494@linuxfoundation.org>
+Message-ID: <20250305174507.957040702@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Che Cheng <giver@chromium.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 0cde378a10c1cbfaa8dd2b89672d42f36c2809c3 ]
+[ Upstream commit 423de5b5bc5b267586b449abd1c4fde562aa0cf9 ]
 
-params->total_weight is not initialized during bind and not updated when
-the bound cdev changes. The cooling device weight will not be used due
-to the uninitialized total_weight, until an update via sysfs is
-triggered.
+Since thermal_of_should_bind() terminates the loop after processing
+the first child found in cooling-maps, it will never match more than
+one cdev to a given trip point which is incorrect, as there may be
+cooling-maps associating one trip point with multiple cooling devices.
 
-The bound cdevs are updated during thermal zone registration, where each
-cooling device will be bound to the thermal zone one by one, but
-power_allocator_bind() can be called without an additional cdev update
-when manually changing the policy of a thermal zone via sysfs.
+Address this by letting the loop continue until either all
+children have been processed or a matching one has been found.
 
-Add a new function to handle weight update logic, including updating
-total_weight, and call it when bind, weight changes, and cdev updates to
-ensure total_weight is always correct.
+To avoid adding conditionals or goto statements, put the loop in
+question into a separate function and make that function return
+right away after finding a matching cooling-maps entry.
 
-Fixes: a3cd6db4cc2e ("thermal: gov_power_allocator: Support new update callback of weights")
-Signed-off-by: Yu-Che Cheng <giver@chromium.org>
-Link: https://patch.msgid.link/20250222-fix-power-allocator-weight-v2-1-a94de86b685a@chromium.org
-[ rjw: Changelog edits ]
+Fixes: 94c6110b0b13 ("thermal/of: Use the .should_bind() thermal zone callback")
+Link: https://lore.kernel.org/linux-pm/20250219-fix-thermal-of-v1-1-de36e7a590c4@chromium.org/
+Reported-by: Yu-Che Cheng <giver@chromium.org>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Yu-Che Cheng <giver@chromium.org>
+Tested-by: Yu-Che Cheng <giver@chromium.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/2788228.mvXUDI8C0e@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/gov_power_allocator.c | 30 ++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ drivers/thermal/thermal_of.c | 50 +++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
-index b00da17c66a90..8117959dc6c42 100644
---- a/drivers/thermal/gov_power_allocator.c
-+++ b/drivers/thermal/gov_power_allocator.c
-@@ -630,6 +630,22 @@ static int allocate_actors_buffer(struct power_allocator_params *params,
- 	return ret;
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 5ab4ce4daaebd..5401f03d6b6c1 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -274,6 +274,34 @@ static bool thermal_of_get_cooling_spec(struct device_node *map_np, int index,
+ 	return true;
  }
  
-+static void power_allocator_update_weight(struct power_allocator_params *params)
++static bool thermal_of_cm_lookup(struct device_node *cm_np,
++				 const struct thermal_trip *trip,
++				 struct thermal_cooling_device *cdev,
++				 struct cooling_spec *c)
 +{
-+	const struct thermal_trip_desc *td;
-+	struct thermal_instance *instance;
++	for_each_child_of_node_scoped(cm_np, child) {
++		struct device_node *tr_np;
++		int count, i;
 +
-+	if (!params->trip_max)
-+		return;
++		tr_np = of_parse_phandle(child, "trip", 0);
++		if (tr_np != trip->priv)
++			continue;
 +
-+	td = trip_to_trip_desc(params->trip_max);
++		/* The trip has been found, look up the cdev. */
++		count = of_count_phandle_with_args(child, "cooling-device",
++						   "#cooling-cells");
++		if (count <= 0)
++			pr_err("Add a cooling_device property with at least one device\n");
 +
-+	params->total_weight = 0;
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+		if (power_actor_is_valid(instance))
-+			params->total_weight += instance->weight;
++		for (i = 0; i < count; i++) {
++			if (thermal_of_get_cooling_spec(child, i, cdev, c))
++				return true;
++		}
++	}
++
++	return false;
 +}
 +
- static void power_allocator_update_tz(struct thermal_zone_device *tz,
- 				      enum thermal_notify_event reason)
- {
-@@ -645,16 +661,12 @@ static void power_allocator_update_tz(struct thermal_zone_device *tz,
- 			if (power_actor_is_valid(instance))
- 				num_actors++;
+ static bool thermal_of_should_bind(struct thermal_zone_device *tz,
+ 				   const struct thermal_trip *trip,
+ 				   struct thermal_cooling_device *cdev,
+@@ -293,27 +321,7 @@ static bool thermal_of_should_bind(struct thermal_zone_device *tz,
+ 		goto out;
  
--		if (num_actors == params->num_actors)
--			return;
-+		if (num_actors != params->num_actors)
-+			allocate_actors_buffer(params, num_actors);
- 
--		allocate_actors_buffer(params, num_actors);
+ 	/* Look up the trip and the cdev in the cooling maps. */
+-	for_each_child_of_node_scoped(cm_np, child) {
+-		struct device_node *tr_np;
+-		int count, i;
+-
+-		tr_np = of_parse_phandle(child, "trip", 0);
+-		if (tr_np != trip->priv)
+-			continue;
+-
+-		/* The trip has been found, look up the cdev. */
+-		count = of_count_phandle_with_args(child, "cooling-device", "#cooling-cells");
+-		if (count <= 0)
+-			pr_err("Add a cooling_device property with at least one device\n");
+-
+-		for (i = 0; i < count; i++) {
+-			result = thermal_of_get_cooling_spec(child, i, cdev, c);
+-			if (result)
+-				break;
+-		}
+-
 -		break;
-+		fallthrough;
- 	case THERMAL_INSTANCE_WEIGHT_CHANGED:
--		params->total_weight = 0;
--		list_for_each_entry(instance, &td->thermal_instances, trip_node)
--			if (power_actor_is_valid(instance))
--				params->total_weight += instance->weight;
-+		power_allocator_update_weight(params);
- 		break;
- 	default:
- 		break;
-@@ -720,6 +732,8 @@ static int power_allocator_bind(struct thermal_zone_device *tz)
+-	}
++	result = thermal_of_cm_lookup(cm_np, trip, cdev, c);
  
- 	tz->governor_data = params;
- 
-+	power_allocator_update_weight(params);
-+
- 	return 0;
- 
- free_params:
+ 	of_node_put(cm_np);
+ out:
 -- 
 2.39.5
 
