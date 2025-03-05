@@ -1,141 +1,117 @@
-Return-Path: <stable+bounces-120433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4FBA5006E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:25:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0411A5008C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:29:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD14188DA9B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 13:20:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D65189401D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 13:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8377D248873;
-	Wed,  5 Mar 2025 13:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3710E24889F;
+	Wed,  5 Mar 2025 13:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="TUrSuYzp"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GWwmNM4l"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B40244EAB;
-	Wed,  5 Mar 2025 13:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A261D2459F4;
+	Wed,  5 Mar 2025 13:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741180839; cv=none; b=djVUQetD74adR0eN7YMfsCTMt9LzW2aknqqWJbh4VHgRZWgHrTPqfNJvGM3N5N/KW7HvOSiUZrjxBN+t6HD4hqNVTWc5vdj8rZhCZC0CgBNo5Nvq58jAGCjGTu9x+/icK8N1E0NBQo1EE2d24D5ebcAHsUeZhSuXps0dwAZLBaU=
+	t=1741181354; cv=none; b=iaOipVbx+P+A47/LMKrYpDxmTVICUIYJD4FKN7UK2DK6/iPATCYO5EXZ9WfR5k0eFv1jlZMfjcsvSO8AoiTL4xmQIpkRJhyahviKLMuaeGYKjPl1w/Jw52aw5QgDK0pUlQ4hhx9t2Qs/4461/6BJkC4u4tqE2Iljx4REd+953V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741180839; c=relaxed/simple;
-	bh=zH2/4JizMiAMVXhTiVjJB3Lhravh6eEMRHBsD4S9ULo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W6WyTsMMK9NXNUhgOKWGm0RjYQCvF69UD/Tm3NU6pYvcPEyDpkwVJ46IDmad4bAsDHhruNsqXkA8J8DdBq7i5TuVIv1WTWPUUTnBu1LS4Ae/Auqu5/Ru1MX/8OvoykMMEU84vYIp2c0sXfjo17pfCv3tgZFYdhZRKurROUdiItg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=TUrSuYzp; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 525DKOoI3317275
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Mar 2025 07:20:24 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741180824;
-	bh=P/KXpuyFB30i1d562EaQZDZEqM46LSzSTn8A8q72DM0=;
-	h=From:To:CC:Subject:Date;
-	b=TUrSuYzpfWMoOwbN9hfX5/dawgO/BL8WRpXonYkwgg8GT0pwL81tQtkLl0WFuQzD2
-	 KNbuvw0VhzDo2ie+L1F90YGar5MZ2AuWnmxvzbxWt3ilYf5Zr49Wm4hTJwHTL1kcKK
-	 WELP7VjjvREuBwKpnhTARTW7jI3gtCmF8Imj2OrU=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 525DKOFq019757
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 5 Mar 2025 07:20:24 -0600
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
- Mar 2025 07:20:23 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 5 Mar 2025 07:20:23 -0600
-Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 525DKJ35105399;
-	Wed, 5 Mar 2025 07:20:19 -0600
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: <lpieralisi@kernel.org>, <kw@linux.com>, <vigneshr@ti.com>,
-        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
-        <bhelgaas@google.com>, <rogerq@kernel.org>
-CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
-        <s-vadapalli@ti.com>
-Subject: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for J784S4
-Date: Wed, 5 Mar 2025 18:50:18 +0530
-Message-ID: <20250305132018.2260771-1-s-vadapalli@ti.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1741181354; c=relaxed/simple;
+	bh=4m3lsk3diPdi+pXnlMOPu66YINy014+l1ZqCdwvE+zY=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=BuXgz8DtAt3yW50FO0rLM+F91ANbXF6snPqsQ1lPELc5m/jJDp9wURIJ6H6Y5/cT/A7y9z6vqtp83FDLUU8uwq+PVsw+u22XOV42tdYMYmoMX92v9FJPh2HIDlABM+RunepZmt20JYVxrijXJEnlzB6W5YtI5b4NX7ELd77a268=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GWwmNM4l; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741181348; x=1741440548;
+	bh=VLRuq+zLi3QgzPU0fq1VXCBryN9TCDq6Mg2zpj1ReCg=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=GWwmNM4lNNstyWlFysdFMIZvbZt6jCpaq1UHZAxQNF1Fr6oTvR91TWnV9D4UEbEyO
+	 bplPBXXgPXoKdipJrHfIdEEEKzDi3BR3UtxseEY4EIwzZUJEQnGNe328Zjd/k3OANY
+	 4SnN/EKcQaWlOAyAlvGfEfcUVjoyzEfsfzxgGbKVIaRopX1fIDtfo5Peebf/MYbjmO
+	 fC9l7K3TXO867LBafW3iaDIFj1L3Hv5Jc8TlZMUxKibhFkS5cIDyFjbxkaKCK1lHep
+	 Z2gIIP6JROra80QkVdCbCIrFk/do5XHsxi5I14xpn47+rh5bjl07ZYFLHdZqbmEw6h
+	 ssIpcI73/CD9w==
+Date: Wed, 05 Mar 2025 13:29:01 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: stable@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<KBox<T>>`
+Message-ID: <20250305132836.2145476-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d1e529b8444b826cfa13a136a432f83cb566a8c5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-to the Technical Reference Manual and Register Documentation for the J784S4
-SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-the field for the link-state interrupt. Instead, it is BIT(10) of the
-"PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
+According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
+such as our custom `KBox<T>` have the null pointer optimization only if
+`T: Sized`. Thus remove the `Zeroable` implementation for the unsized
+case.
 
-Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-already reuse this macro since it accurately represents the link-state
-field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
-
-[0]: https://www.ti.com/lit/zip/spruj52
-Fixes: e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://doc.rust-lang.org/stable/std/option/index.html#representation=
+ [1]
+Cc: stable@vger.kernel.org # v6.12+ (a custom patch will be needed for 6.6.=
+y)
+Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` f=
+unction")
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
+ rust/kernel/init.rs | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-Hello,
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 7fd1ea8265a5..8bbd5e3398fc 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1418,17 +1418,14 @@ macro_rules! impl_zeroable {
+     // SAFETY: `T: Zeroable` and `UnsafeCell` is `repr(transparent)`.
+     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
+=20
+-    // SAFETY: All zeros is equivalent to `None` (option layout optimizati=
+on guarantee).
++    // SAFETY: All zeros is equivalent to `None` (option layout optimizati=
+on guarantee:
++    // https://doc.rust-lang.org/stable/std/option/index.html#representati=
+on).
+     Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZ=
+eroU64>,
+     Option<NonZeroU128>, Option<NonZeroUsize>,
+     Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZ=
+eroI64>,
+     Option<NonZeroI128>, Option<NonZeroIsize>,
+-
+-    // SAFETY: All zeros is equivalent to `None` (option layout optimizati=
+on guarantee).
+-    //
+-    // In this case we are allowed to use `T: ?Sized`, since all zeros is =
+the `None` variant.
+-    {<T: ?Sized>} Option<NonNull<T>>,
+-    {<T: ?Sized>} Option<KBox<T>>,
++    {<T>} Option<NonNull<T>>,
++    {<T>} Option<KBox<T>>,
+=20
+     // SAFETY: `null` pointer is valid.
+     //
 
-This patch is based on commit
-48a5eed9ad58 Merge tag 'devicetree-fixes-for-6.14-2' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
-of the master branch of Linux.
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+--=20
+2.48.1
 
-Patch has been tested on J784S4-EVM, validating that disconnecting an
-Endpoint Device connected to J784S4-EVM results in the following message
-on the J784S4-EVM:
-	j721e-pcie 2900000.pcie: LINK DOWN!
-which wasn't seen earlier.
-
-Regards,
-Siddharth.
-
- drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 0341d51d6aed..1da9d9918d0d 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -376,13 +376,13 @@ static const struct j721e_pcie_data j784s4_pcie_rc_data = {
- 	.mode = PCI_MODE_RC,
- 	.quirk_retrain_flag = true,
- 	.byte_access_allowed = false,
--	.linkdown_irq_regfield = LINK_DOWN,
-+	.linkdown_irq_regfield = J7200_LINK_DOWN,
- 	.max_lanes = 4,
- };
- 
- static const struct j721e_pcie_data j784s4_pcie_ep_data = {
- 	.mode = PCI_MODE_EP,
--	.linkdown_irq_regfield = LINK_DOWN,
-+	.linkdown_irq_regfield = J7200_LINK_DOWN,
- 	.max_lanes = 4,
- };
- 
--- 
-2.34.1
 
 
