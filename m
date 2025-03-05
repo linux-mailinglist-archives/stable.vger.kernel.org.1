@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E1CA509B4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5B5A508EC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AC033ABE58
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6483169AEB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9A12512D6;
-	Wed,  5 Mar 2025 18:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0621D6DB4;
+	Wed,  5 Mar 2025 18:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6B8wBrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnMZKHpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72D72505BD;
-	Wed,  5 Mar 2025 18:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AB0146588;
+	Wed,  5 Mar 2025 18:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198752; cv=none; b=EML9ti/CsvpNpPgbQqVALqIYhSfwxp3FlTcwRFIkQ8P52RUVlYl89WHr3X89lt0menOR7mFU94wg7IgPvz8m6fpCUE+zzkjKb+0byKUqHoCQMlzFC5is1oMIUv6kjM/6udKR50Ju85rcmnEh2pKebhnD6FVYAdp4X45eQH3mSRo=
+	t=1741198337; cv=none; b=cM7O1u5tSCgPKhjnnZbH0WIqQpYroAjCID2yNWAFFYV+szhzJHVV4xYE4iOasyYFPU+IqvpCv/z4cCLzURUiJz2mt7/4pFikecdj6dXhnTWPhzojFFj7X92/wicw2T4HyLZDNbj8AGEyBNFtCgLJI6W/42+UzOmAoKQSbWCPRws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198752; c=relaxed/simple;
-	bh=VUNx+0OUbIWmj5XqMxKYByKyn2ZBTYRXILPJ2PewlSI=;
+	s=arc-20240116; t=1741198337; c=relaxed/simple;
+	bh=WZ9nsChepPJjl2IbaVb2bcZR3tew8yPa5JwbAXFexH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T2NUVQ2mi4c+wQMuZN+XIgjHMFnNyaVkQQHneKdleS30voR7S4TGyO5w3NRNmclacmUiCtECWqREPODHViNePthwVQpw5vdUlKVBb3ki3r8em7shRFbWsYg/2OVB7p0NDBuD42w943WwTLHFI+soSRpaDqsEeO9/lORqkk3TDIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6B8wBrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B1BC4CED1;
-	Wed,  5 Mar 2025 18:19:11 +0000 (UTC)
+	 MIME-Version; b=dYt4lC/lvpEDdQpvC5NLug+JzF22Oqun8Nq3Az8WwamNTU6lRNobgJ3MXuwhbcANGzxJOeLVDfe/t7ucLj5ErIl/JluFxO2RVTMMKWT2grL4RgAJN1RyiECM0iHOwVfPXXsD4VBQYUxjFlxC6OCR2L7yIhCF+6+ZPBbwos3L4i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnMZKHpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11481C4CED1;
+	Wed,  5 Mar 2025 18:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198751;
-	bh=VUNx+0OUbIWmj5XqMxKYByKyn2ZBTYRXILPJ2PewlSI=;
+	s=korg; t=1741198337;
+	bh=WZ9nsChepPJjl2IbaVb2bcZR3tew8yPa5JwbAXFexH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6B8wBrwSOa2OqGcE+eAeI+XfMJpBrUXgqchiVJNUIjICcs+MsXSAiYAF59imiHlY
-	 4bby4GqxkMSP6vyr9hi4iqLOvftojrPemj7l538XH8rW8biPNqKYGFYg1ksV+eSiti
-	 phQHTNbU+jBjmbP4hjo93CTcjpxvvh1eDwaX+FDU=
+	b=rnMZKHpPW+91yE0G/JfLkd+wUvT0m8Z0JnW6HI4ZGGfJpCsb62120s3x5NxmYVPb6
+	 T8Ref7h2Y1WQAcTfZ7LjgHXNwnrqCou0HyHEN6riTOugzJX3qrDT3nWhV49fEdSops
+	 xfCLpPWCIxSqiV7KRmrVjulckN8/CKQgO5Gd4EZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.13 136/157] selftests/landlock: Test TCP accesses with protocol=IPPROTO_TCP
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.12 143/150] x86/microcode/AMD: Return bool from find_blobs_in_containers()
 Date: Wed,  5 Mar 2025 18:49:32 +0100
-Message-ID: <20250305174510.767293715@linuxfoundation.org>
+Message-ID: <20250305174509.559883580@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,183 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
 
-commit f5534d511bcd273720f168386de74af76e148a9b upstream.
+commit a85c08aaa665b5436d325f6d7138732a0e1315ce upstream.
 
-Extend protocol_variant structure with protocol field (Cf. socket(2)).
+Instead of open-coding the check for size/data move it inside the
+function and make it return a boolean indicating whether data was found
+or not.
 
-Extend protocol fixture with TCP test suits with protocol=IPPROTO_TCP
-which can be used as an alias for IPPROTO_IP (=0) in socket(2).
+No functional changes.
 
-Signed-off-by: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-Link: https://lore.kernel.org/r/20250205093651.1424339-3-ivanov.mikhail1@huawei-partners.com
-Cc: <stable@vger.kernel.org> # 6.7.x
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+  [ bp: Write @ret in find_blobs_in_containers() only on success. ]
+
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241018155151.702350-2-nik.borisov@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/landlock/common.h   |    1 
- tools/testing/selftests/landlock/net_test.c |   80 +++++++++++++++++++++++-----
- 2 files changed, 67 insertions(+), 14 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/tools/testing/selftests/landlock/common.h
-+++ b/tools/testing/selftests/landlock/common.h
-@@ -234,6 +234,7 @@ enforce_ruleset(struct __test_metadata *
- struct protocol_variant {
- 	int domain;
- 	int type;
-+	int protocol;
- };
- 
- struct service_fixture {
---- a/tools/testing/selftests/landlock/net_test.c
-+++ b/tools/testing/selftests/landlock/net_test.c
-@@ -85,18 +85,18 @@ static void setup_loopback(struct __test
- 	clear_ambient_cap(_metadata, CAP_NET_ADMIN);
- }
- 
-+static bool prot_is_tcp(const struct protocol_variant *const prot)
-+{
-+	return (prot->domain == AF_INET || prot->domain == AF_INET6) &&
-+	       prot->type == SOCK_STREAM &&
-+	       (prot->protocol == IPPROTO_TCP || prot->protocol == IPPROTO_IP);
-+}
-+
- static bool is_restricted(const struct protocol_variant *const prot,
- 			  const enum sandbox_type sandbox)
- {
--	switch (prot->domain) {
--	case AF_INET:
--	case AF_INET6:
--		switch (prot->type) {
--		case SOCK_STREAM:
--			return sandbox == TCP_SANDBOX;
--		}
--		break;
--	}
-+	if (sandbox == TCP_SANDBOX)
-+		return prot_is_tcp(prot);
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -569,14 +569,19 @@ static bool get_builtin_microcode(struct
  	return false;
  }
  
-@@ -105,7 +105,7 @@ static int socket_variant(const struct s
- 	int ret;
+-static void __init find_blobs_in_containers(struct cpio_data *ret)
++static bool __init find_blobs_in_containers(struct cpio_data *ret)
+ {
+ 	struct cpio_data cp;
++	bool found;
  
- 	ret = socket(srv->protocol.domain, srv->protocol.type | SOCK_CLOEXEC,
--		     0);
-+		     srv->protocol.protocol);
- 	if (ret < 0)
- 		return -errno;
- 	return ret;
-@@ -290,22 +290,48 @@ FIXTURE_TEARDOWN(protocol)
+ 	if (!get_builtin_microcode(&cp))
+ 		cp = find_microcode_in_initrd(ucode_path);
+ 
+-	*ret = cp;
++	found = cp.data && cp.size;
++	if (found)
++		*ret = cp;
++
++	return found;
  }
  
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv4_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv4_tcp1) {
-+	/* clang-format on */
-+	.sandbox = NO_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
-+	},
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv4_tcp2) {
- 	/* clang-format on */
- 	.sandbox = NO_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
-+	},
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv6_tcp1) {
-+	/* clang-format on */
-+	.sandbox = NO_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET6,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
- 	},
- };
+ void __init load_ucode_amd_bsp(struct early_load_data *ed, unsigned int cpuid_1_eax)
+@@ -591,8 +596,7 @@ void __init load_ucode_amd_bsp(struct ea
+ 	/* Needed in load_microcode_amd() */
+ 	ucode_cpu_info[0].cpu_sig.sig = cpuid_1_eax;
  
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv6_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv6_tcp2) {
- 	/* clang-format on */
- 	.sandbox = NO_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET6,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
- 	},
- };
+-	find_blobs_in_containers(&cp);
+-	if (!(cp.data && cp.size))
++	if (!find_blobs_in_containers(&cp))
+ 		return;
  
-@@ -372,22 +398,48 @@ FIXTURE_VARIANT_ADD(protocol, no_sandbox
- };
+ 	if (early_apply_microcode(ed->old_rev, cp.data, cp.size))
+@@ -612,8 +616,7 @@ static int __init save_microcode_in_init
+ 	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
+ 		return 0;
  
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv4_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv4_tcp1) {
-+	/* clang-format on */
-+	.sandbox = TCP_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
-+	},
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv4_tcp2) {
- 	/* clang-format on */
- 	.sandbox = TCP_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
-+	},
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv6_tcp1) {
-+	/* clang-format on */
-+	.sandbox = TCP_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET6,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
- 	},
- };
+-	find_blobs_in_containers(&cp);
+-	if (!(cp.data && cp.size))
++	if (!find_blobs_in_containers(&cp))
+ 		return -EINVAL;
  
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv6_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv6_tcp2) {
- 	/* clang-format on */
- 	.sandbox = TCP_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET6,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
- 	},
- };
- 
+ 	scan_containers(cp.data, cp.size, &desc);
 
 
 
