@@ -1,382 +1,118 @@
-Return-Path: <stable+bounces-121092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A764A50A76
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:57:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45482A50B1F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4C217142F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F8C53B10BE
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A261255E52;
-	Wed,  5 Mar 2025 18:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VXyFV9Ws"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6717257433;
+	Wed,  5 Mar 2025 18:59:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303DD255236;
-	Wed,  5 Mar 2025 18:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A02257424;
+	Wed,  5 Mar 2025 18:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741200958; cv=none; b=Pdn0jzbU+K1WOsxN/3+8Dj6xGASy58FFaGUNB1BE+q4NS8n1noIIkoTje/G4oZLR6X6xZTcwq3Iwe7bvD2DnSXwV5T+c9OR1QxofmcPidHBXM/C7o/GKnhIbK1xnELWiMsMYwXOtymdWPnO/Bbr7yLxK2KH69wmlmmE8peKX19Y=
+	t=1741201188; cv=none; b=bbrrL2gHcDeEedLXObzdg9phWIkOlEXdO1ouEegD8oMgl2Z3P54l7LkGtkJ+BucTPEIPWO0MT1ykR8tDH7j5/qHRpwSgcTc8sEDSEQ7J0rw0Zb2Xi10K6LXPhvSZVtYg8QkTg5eef6jzERChIyYzhuGZb92Vqv3/XXAToHOMD4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741200958; c=relaxed/simple;
-	bh=k/O2Fs5hdDD2ASkJHxJ8jZyCTGpPOxK8D6WOShmYodg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nUfrPR4PJv9IwXzZ/91h7xNBEy8RC3O4an7ma5QTjeWhdxB/U4lxPxPBSWqva6pQxpQvoje2qZrsXjqg8qZWW1TbiI8HV3xLP4N4IBvYMar96FstCxRqNQQXaudImEXmFFYBa08Y8s7Fz3ywcHVh5t3SxZIZEoo7l5SyR/dx23o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VXyFV9Ws; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741200956; x=1772736956;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=k/O2Fs5hdDD2ASkJHxJ8jZyCTGpPOxK8D6WOShmYodg=;
-  b=VXyFV9WsQ1kl6QtgyQ/Lp7gxkKf02TvDB9h/uAQvKg1XGLA5l5YLAZ/o
-   4xodEUOVJbZXgYfm45CYsW0ZeSHPUh685ShJexYLJ+HwIVzYJKZs6vAoR
-   st83DLgzWLJKsrfOLxSiGy8TzPh44XPEacxt9WFSAMZGZZuTegWQw1kAA
-   WgQsADcmptujac5AzBAWrLuJr7CtKTeABdQzZbxexH6JswfpcaLmm13+c
-   lO2OEPYgtDmDzmcJnqBJ26jaNv9eNFnASO/7QziiGuKCaFqENd5gU3Fyr
-   iALqrjALfZM5GrI/KgZJqT3HiDMX0NKEbRXEVK3UK4ooAQAiQ7jvtYhNv
-   A==;
-X-CSE-ConnectionGUID: bJwldS7MSu+TMiVqOxuo8g==
-X-CSE-MsgGUID: MvU17HTpQUWBlN1cdjh2yQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="44988713"
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
-   d="scan'208";a="44988713"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 10:55:56 -0800
-X-CSE-ConnectionGUID: P5FoCfm3QN2nho3zYAGL1Q==
-X-CSE-MsgGUID: TzIhC3hGQ2e6rtfsmmJLzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
-   d="scan'208";a="118947364"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.76]) ([10.245.244.76])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 10:55:50 -0800
-Message-ID: <e78ba805-ce83-4df1-87b5-fa5ac6bb9742@intel.com>
-Date: Wed, 5 Mar 2025 18:55:48 +0000
+	s=arc-20240116; t=1741201188; c=relaxed/simple;
+	bh=KOntfY2GF79iwDM2QQoQy22zDcX3Cb1Ne2iCHZjE6+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jnUssadkE74NfTaj+dTB858lFyM45hCkVYpowxWmufb9bZ/z2uyp2iAxhCheQLvXNkbUzpCKu9Z+npOVisV4QeZYA8TUDBt7rZEVu/GsMo4HiijtVtcYaHjD9VuEdfN/eGUia7O4VBa/WTi6x3cFNIg2HKDi6CDsH2TGVEz0SO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADD8C4CED1;
+	Wed,  5 Mar 2025 18:59:45 +0000 (UTC)
+Date: Wed, 5 Mar 2025 18:59:43 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Cc: anshuman.khandual@arm.com, david@redhat.com, will@kernel.org,
+	ardb@kernel.org, ryan.roberts@arm.com, mark.rutland@arm.com,
+	joey.gouly@arm.com, dave.hansen@linux.intel.com,
+	akpm@linux-foundation.org, chenfeiyang@loongson.cn,
+	chenhuacai@kernel.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	quic_tingweiz@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH v9] arm64: mm: Populate vmemmap at the page level if not
+ section aligned
+Message-ID: <Z8ifH6HILN_7sZDk@arm.com>
+References: <20250304072700.3405036-1-quic_zhenhuah@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] drm/xe/bo: fix alignment with non-4K kernel page
- sizes
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, jeffbai@aosc.io,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Alan Previn <alan.previn.teres.alexis@intel.com>,
- Zhanjun Dong <zhanjun.dong@intel.com>, Matt Roper
- <matthew.d.roper@intel.com>, Mateusz Naklicki <mateusz.naklicki@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>,
- Shang Yatsen <429839446@qq.com>, stable@vger.kernel.org,
- Haien Liang <27873200@qq.com>, Shirong Liu <lsr1024@qq.com>,
- Haofeng Wu <s2600cw2@126.com>
-References: <20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io>
- <20250226-xe-non-4k-fix-v1-1-80f23b5ee40e@aosc.io>
- <wcfp3i6jbsmvpokvbvs5n2yxffhrgu6jyoan3e3m6tb7wbjaq6@tbsit7ignlef>
- <Z76WIgGvvhlbYl/j@lstrano-desk.jf.intel.com>
- <af689d4b-204d-495b-a7e8-0f7632b43153@intel.com>
- <Z78vTt8Ph9opzJmf@lstrano-desk.jf.intel.com>
- <cc402132-2e82-41d2-8981-f1b9a795c1a1@intel.com>
- <Z8ibh7DIIexKQGuX@lstrano-desk.jf.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <Z8ibh7DIIexKQGuX@lstrano-desk.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250304072700.3405036-1-quic_zhenhuah@quicinc.com>
 
-On 05/03/2025 18:44, Matthew Brost wrote:
-> On Wed, Feb 26, 2025 at 06:05:55PM +0000, Matthew Auld wrote:
->> On 26/02/2025 15:12, Matthew Brost wrote:
->>> On Wed, Feb 26, 2025 at 10:38:40AM +0000, Matthew Auld wrote:
->>>> On 26/02/2025 04:18, Matthew Brost wrote:
->>>>> On Tue, Feb 25, 2025 at 09:13:09PM -0600, Lucas De Marchi wrote:
->>>>>> On Wed, Feb 26, 2025 at 10:00:18AM +0800, Mingcong Bai via B4 Relay wrote:
->>>>>>> From: Mingcong Bai <jeffbai@aosc.io>
->>>>>>>
->>>>>>> The bo/ttm interfaces with kernel memory mapping from dedicated GPU
->>>>>>> memory. It is not correct to assume that SZ_4K would suffice for page
->>>>>>> alignment as there are a few hardware platforms that commonly uses non-4K
->>>>>>> pages - for instance, currently, Loongson 3A5000/6000 devices (of the
->>>>>>> LoongArch architecture) commonly uses 16K kernel pages.
->>>>>>>
->>>>>>> Per my testing Intel Xe/Arc families of GPUs works on at least
->>>>>>> Loongson 3A6000 platforms so long as "Above 4G Decoding" and "Resizable
->>>>>>> BAR" were enabled in the EFI firmware settings. I tested this patch series
->>>>>>> on my Loongson XA61200 (3A6000) motherboard with an Intel Arc A750 GPU.
->>>>>>>
->>>>>>> Without this fix, the kernel will hang at a kernel BUG():
->>>>>>>
->>>>>>> [    7.425445] ------------[ cut here ]------------
->>>>>>> [    7.430032] kernel BUG at drivers/gpu/drm/drm_gem.c:181!
->>>>>>> [    7.435330] Oops - BUG[#1]:
->>>>>>> [    7.438099] CPU: 0 UID: 0 PID: 102 Comm: kworker/0:4 Tainted: G            E      6.13.3-aosc-main-00336-g60829239b300-dirty #3
->>>>>>> [    7.449511] Tainted: [E]=UNSIGNED_MODULE
->>>>>>> [    7.453402] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
->>>>>>> [    7.467144] Workqueue: events work_for_cpu_fn
->>>>>>> [    7.471472] pc 9000000001045fa4 ra ffff8000025331dc tp 90000001010c8000 sp 90000001010cb960
->>>>>>> [    7.479770] a0 900000012a3e8000 a1 900000010028c000 a2 000000000005d000 a3 0000000000000000
->>>>>>> [    7.488069] a4 0000000000000000 a5 0000000000000000 a6 0000000000000000 a7 0000000000000001
->>>>>>> [    7.496367] t0 0000000000001000 t1 9000000001045000 t2 0000000000000000 t3 0000000000000000
->>>>>>> [    7.504665] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
->>>>>>> [    7.504667] t8 0000000000000000 u0 90000000029ea7d8 s9 900000012a3e9360 s0 900000010028c000
->>>>>>> [    7.504668] s1 ffff800002744000 s2 0000000000000000 s3 0000000000000000 s4 0000000000000001
->>>>>>> [    7.504669] s5 900000012a3e8000 s6 0000000000000001 s7 0000000000022022 s8 0000000000000000
->>>>>>> [    7.537855]    ra: ffff8000025331dc ___xe_bo_create_locked+0x158/0x3b0 [xe]
->>>>>>> [    7.544893]   ERA: 9000000001045fa4 drm_gem_private_object_init+0xcc/0xd0
->>>>>>> [    7.551639]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
->>>>>>> [    7.557785]  PRMD: 00000004 (PPLV0 +PIE -PWE)
->>>>>>> [    7.562111]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
->>>>>>> [    7.566870]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
->>>>>>> [    7.571628] ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
->>>>>>> [    7.577163]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
->>>>>>> [    7.583128] Modules linked in: xe(E+) drm_gpuvm(E) drm_exec(E) drm_buddy(E) gpu_sched(E) drm_suballoc_helper(E) drm_display_helper(E) loongson(E) r8169(E) cec(E) rc_core(E) realtek(E) i2c_algo_bit(E) tpm_tis_spi(E) led_class(E) hid_generic(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E) drm_kms_helper(E) sunrpc(E) la_ow_syscall(E) i2c_dev(E)
->>>>>>> [    7.613049] Process kworker/0:4 (pid: 102, threadinfo=00000000bc26ebd1, task=0000000055480707)
->>>>>>> [    7.621606] Stack : 0000000000000000 3030303a6963702b 000000000005d000 0000000000000000
->>>>>>> [    7.629563]         0000000000000001 0000000000000000 0000000000000000 8e1bfae42b2f7877
->>>>>>> [    7.637519]         000000000005d000 900000012a3e8000 900000012a3e9360 0000000000000000
->>>>>>> [    7.645475]         ffffffffffffffff 0000000000000000 0000000000022022 0000000000000000
->>>>>>> [    7.653431]         0000000000000001 ffff800002533660 0000000000022022 9000000000234470
->>>>>>> [    7.661386]         90000001010cba28 0000000000001000 0000000000000000 000000000005c300
->>>>>>> [    7.669342]         900000012a3e8000 0000000000000000 0000000000000001 900000012a3e8000
->>>>>>> [    7.677298]         ffffffffffffffff 0000000000022022 900000012a3e9498 ffff800002533a14
->>>>>>> [    7.685254]         0000000000022022 0000000000000000 900000000209c000 90000000010589e0
->>>>>>> [    7.693209]         90000001010cbab8 ffff8000027c78c0 fffffffffffff000 900000012a3e8000
->>>>>>> [    7.701165]         ...
->>>>>>> [    7.703588] Call Trace:
->>>>>>> [    7.703590] [<9000000001045fa4>] drm_gem_private_object_init+0xcc/0xd0
->>>>>>> [    7.712496] [<ffff8000025331d8>] ___xe_bo_create_locked+0x154/0x3b0 [xe]
->>>>>>> [    7.719268] [<ffff80000253365c>] __xe_bo_create_locked+0x228/0x304 [xe]
->>>>>>> [    7.725951] [<ffff800002533a10>] xe_bo_create_pin_map_at_aligned+0x70/0x1b0 [xe]
->>>>>>> [    7.733410] [<ffff800002533c7c>] xe_managed_bo_create_pin_map+0x34/0xcc [xe]
->>>>>>> [    7.740522] [<ffff800002533d58>] xe_managed_bo_create_from_data+0x44/0xb0 [xe]
->>>>>>> [    7.747807] [<ffff80000258d19c>] xe_uc_fw_init+0x3ec/0x904 [xe]
->>>>>>> [    7.753814] [<ffff80000254a478>] xe_guc_init+0x30/0x3dc [xe]
->>>>>>> [    7.759553] [<ffff80000258bc04>] xe_uc_init+0x20/0xf0 [xe]
->>>>>>> [    7.765121] [<ffff800002542abc>] xe_gt_init_hwconfig+0x5c/0xd0 [xe]
->>>>>>> [    7.771461] [<ffff800002537204>] xe_device_probe+0x240/0x588 [xe]
->>>>>>> [    7.777627] [<ffff800002575448>] xe_pci_probe+0x6c0/0xa6c [xe]
->>>>>>> [    7.783540] [<9000000000e9828c>] local_pci_probe+0x4c/0xb4
->>>>>>> [    7.788989] [<90000000002aa578>] work_for_cpu_fn+0x20/0x40
->>>>>>> [    7.794436] [<90000000002aeb50>] process_one_work+0x1a4/0x458
->>>>>>> [    7.800143] [<90000000002af5a0>] worker_thread+0x304/0x3fc
->>>>>>> [    7.805591] [<90000000002bacac>] kthread+0x114/0x138
->>>>>>> [    7.810520] [<9000000000241f64>] ret_from_kernel_thread+0x8/0xa4
->>>>>>> [    7.816489]
->>>>>>> [    7.817961] Code: 4c000020  29c3e2f9  53ff93ff <002a0001> 0015002c  03400000  02ff8063  29c04077  001500f7
->>>>>>> [    7.827651]
->>>>>>> [    7.829140] ---[ end trace 0000000000000000 ]---
->>>>>>>
->>>>>>> Revise all instances of `SZ_4K' with `PAGE_SIZE' and revise the call to
->>>>>>> `drm_gem_private_object_init()' in `*___xe_bo_create_locked()' (last call
->>>>>>> before BUG()) to use `size_t aligned_size' calculated from `PAGE_SIZE' to
->>>>>>> fix the above error.
->>>>>>>
->>>>>>> Cc: <stable@vger.kernel.org>
->>>>>>> Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
->>>>>>> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
->>>>>>> Tested-by: Mingcong Bai <jeffbai@aosc.io>
->>>>>>> Tested-by: Haien Liang <27873200@qq.com>
->>>>>>> Tested-by: Shirong Liu <lsr1024@qq.com>
->>>>>>> Tested-by: Haofeng Wu <s2600cw2@126.com>
->>>>>>> Link: https://github.com/FanFansfan/loongson-linux/commit/22c55ab3931c32410a077b3ddb6dca3f28223360
->>>>>>> Co-developed-by: Shang Yatsen <429839446@qq.com>
->>>>>>> Signed-off-by: Shang Yatsen <429839446@qq.com>
->>>>>>> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
->>>>>>> ---
->>>>>>> drivers/gpu/drm/xe/xe_bo.c | 8 ++++----
->>>>>>> 1 file changed, 4 insertions(+), 4 deletions(-)
->>>>>>>
->>>>>>> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
->>>>>>> index 3f5391d416d469c636d951dd6f0a2b3b5ae95dab..dd03c581441f352eff51d0eafe1298fca7d9653d 100644
->>>>>>> --- a/drivers/gpu/drm/xe/xe_bo.c
->>>>>>> +++ b/drivers/gpu/drm/xe/xe_bo.c
->>>>>>> @@ -1441,9 +1441,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->>>>>>> 		flags |= XE_BO_FLAG_INTERNAL_64K;
->>>>>>> 		alignment = align >> PAGE_SHIFT;
->>>>>>> 	} else {
->>>>>
->>>>> } else if (type == ttm_bo_type_device) {
->>>>> 	new code /w PAGE_SIZE
->>>>> } else {
->>>>> 	old code /w SZ_4K (or maybe XE_PAGE_SIZE now)?
->>>>> }
->>>>>
->>>>> See below for further explaination.
->>>>>
->>>>>>> -		aligned_size = ALIGN(size, SZ_4K);
->>>>>>> +		aligned_size = ALIGN(size, PAGE_SIZE);
->>>>>>
->>>>>> in the very beginning of the driver we were set to use XE_PAGE_SIZE
->>>>>> for things like this. It seems thing went side ways though.
->>>>>>
->>>>>> Thanks for fixing these. XE_PAGE_SIZE is always 4k, but I think we should
->>>>>> uxe XE_PAGE_SIZE for clarity.  For others in Cc...  any thoughts?
->>>>>>
->>>>>
->>>>> It looks like you have a typo here, Lucas. Could you please clarify?
->>>>>
->>>>> However, XE_PAGE_SIZE should always be 4k, as it refers to the GPU page
->>>>> size, which is fixed.
->>>>>
->>>>> I think using PAGE_SIZE makes sense in some cases. See my other
->>>>> comments.
->>>>>
->>>>>>> 		flags &= ~XE_BO_FLAG_INTERNAL_64K;
->>>>>>> -		alignment = SZ_4K >> PAGE_SHIFT;
->>>>>>> +		alignment = PAGE_SIZE >> PAGE_SHIFT;
->>>>>>> 	}
->>>>>>>
->>>>>>> 	if (type == ttm_bo_type_device && aligned_size != size)
->>>>>>> @@ -1457,7 +1457,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->>>>>>>
->>>>>>> 	bo->ccs_cleared = false;
->>>>>>> 	bo->tile = tile;
->>>>>>> -	bo->size = size;
->>>>>>> +	bo->size = aligned_size;
->>>>>>
->>>>>> the interface of this function is that the caller needs to pass the
->>>>>> correct size, it's not really expected the function will adjust it and
->>>>>> the check is there to gurantee to return the appropriate error. There
->>>>>
->>>>> Let me expand further on Lucas's comment. We reject user BOs that are
->>>>> unaligned here in ___xe_bo_create_locked.
->>>>>
->>>>> 1490         if (type == ttm_bo_type_device && aligned_size != size)
->>>>> 1491                 return ERR_PTR(-EINVAL);
->>>>>
->>>>> What we allow are kernel BOs (!= ttm_bo_type_device), which are never
->>>>> mapped to the CPU or the PPGTT (user GPU mappings), to be a smaller
->>>>> size. Examples of this include memory for GPU page tables, LRC state,
->>>>> etc. Memory for GPU page tables is always allocated in 4k blocks, so
->>>>> changing the allocation to the CPU page size of 16k or 64k would be
->>>>> wasteful.
->>>>>
->>>>> AFAIK, kernel memory is always a VRAM allocation, so we don't have any
->>>>> CPU page size requirements. If this is not true (I haven't checked), or
->>>>> perhaps just to future-proof, change the snippet in my first comment to:
->>>>>
->>>>> } else if (type == ttm_bo_type_device || flags & XE_BO_FLAG_SYSTEM)) {
->>>>> 	new code /w PAGE_SIZE
->>>>> } else {
->>>>> 	old code /w SZ_4K
->>>>> }
->>>>>
->>>>> Then change BO assignment size too:
->>>>>
->>>>> bo->size = flags & XE_BO_FLAG_SYSTEM ? aligned_size : size;
->>>>>
->>>>> This should enable kernel VRAM allocations to be smaller than the CPU
->>>>> page size (I think). Can you try out this suggestion and see if the Xe
->>>>> boots with non-4k pages?
->>>>
->>>> The vram allocator chunk size is PAGE_SIZE so that would also need some
->>>> attention, I think.
->>>>
->>>
->>> Agree. So I think __xe_ttm_vram_mgr_init should be called with
->>> s/PAGE_SIZE/SZ_4K?
->>
->> Should be fine from allocator pov. But also need to update the upper layers
->> in the VRAM manager itself, I think.
->>
+On Tue, Mar 04, 2025 at 03:27:00PM +0800, Zhenhua Huang wrote:
+> On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+> to 27, making one section 128M. The related page struct which vmemmap
+> points to is 2M then.
+> Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+> vmemmap to populate at the PMD section level which was suitable
+> initially since hot plug granule is always one section(128M). However,
+> commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+> existing arm64 assumptions.
 > 
-> Right. A lot of pfn logic is based on PAGE_SIZE/SHIFT and that would
-> likely need to be updated too.
+> The first problem is that if start or end is not aligned to a section
+> boundary, such as when a subsection is hot added, populating the entire
+> section is wasteful.
 > 
->>>
->>>> But I think we also then need to deal with the assert in: https://elixir.bootlin.com/linux/v6.14-rc4/source/drivers/gpu/drm/drm_gem.c#L181.
->>>>
->>>
->>> Yep. I think that would need to be adjusted as well to be bypassed if we
->>> are never going to CPU map the BO—specifically, CPU map it to user space
->>> or if the BO is not in VRAM. For kernel VRAM mapping, this resolves to
->>> an offset within an existing large PCIe BAR mapping, so allocations
->>> unaligned to PAGE_SIZE should work.
->>
->> Yeah, agree. I thinks it's possible.
->>
+> The next problem is if we hotplug something that spans part of 128 MiB
+> section (subsections, let's call it memblock1), and then hotplug something
+> that spans another part of a 128 MiB section(subsections, let's call it
+> memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
+> the entire PMD entry which also supports memblock2 even though memblock2
+> is still active.
 > 
-> Yes, might be a little more difficult than I originally thought though.
+> Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
+> fix similar to x86-64: populate to pages levels if start/end is not aligned
+> with section boundary.
 > 
->>>
->>> Maybe export __drm_gem_private_object_init, which skips the BUG_ON, and
->>> call this in Xe to avoid interfering with other drivers' expectations?
->>
->> Some other places I spotted are the VRAM manager, and stuff like
->> xe_bo_vmap() and then into TTM itself. So it might be quite widespread.
->>
-> 
-> Ok, so maybe for initial merge we drop this idea and circle back given
-> the complexity as we'd just be wasting memory for things like PTEs?
+> Cc: <stable@vger.kernel.org> # v5.4+
+> Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+> ---
+>  arch/arm64/mm/mmu.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
-Yeah, makes sense. Series is a big improvement already as-is.
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
+Will, another bug that has been around for ages. Do you want to take it
+as a fix?
+
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index b4df5bc5b1b8..1dfe1a8efdbe 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1177,8 +1177,11 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>  		struct vmem_altmap *altmap)
+>  {
+>  	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
+> +	/* [start, end] should be within one section */
+> +	WARN_ON_ONCE(end - start > PAGES_PER_SECTION * sizeof(struct page));
+>  
+> -	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
+> +	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) ||
+> +	    (end - start < PAGES_PER_SECTION * sizeof(struct page)))
+>  		return vmemmap_populate_basepages(start, end, node, altmap);
+>  	else
+>  		return vmemmap_populate_hugepages(start, end, node, altmap);
+> -- 
+> 2.25.1
 > 
-> Matt
->   
->>>
->>> Matt
->>>
->>>>>
->>>>> Also others in Cc... thoughts / double check my input?
->>>>>
->>>>>> are other places that would need some additional fixes leading to this
->>>>>> function. Example:
->>>>>>
->>>>>> xe_gem_create_ioctl()
->>>>>> {
->>>>>> 	...
->>>>>> 	if (XE_IOCTL_DBG(xe, args->size & ~PAGE_MASK))
->>>>>> 		return -EINVAL;
->>>>>
->>>>> This actually looks right, the minimum allocation size for user BOs
->>>>> should be PAGE_SIZE aligned. The last patch in the series fixes the
->>>>> query for this.
->>>>>
->>>>> Matt
->>>>>
->>>>>> 	...
->>>>>> }
->>>>>> 	
->>>>>>
->>>>>> Lucas De Marchi
->>>>>>
->>>>>>> 	bo->flags = flags;
->>>>>>> 	bo->cpu_caching = cpu_caching;
->>>>>>> 	bo->ttm.base.funcs = &xe_gem_object_funcs;
->>>>>>> @@ -1468,7 +1468,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->>>>>>> #endif
->>>>>>> 	INIT_LIST_HEAD(&bo->vram_userfault_link);
->>>>>>>
->>>>>>> -	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
->>>>>>> +	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, aligned_size);
->>>>>>>
->>>>>>> 	if (resv) {
->>>>>>> 		ctx.allow_res_evict = !(flags & XE_BO_FLAG_NO_RESV_EVICT);
->>>>>>>
->>>>>>> -- 
->>>>>>> 2.48.1
->>>>>>>
->>>>>>>
->>>>
->>
 
+-- 
+Catalin
 
