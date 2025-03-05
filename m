@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8D1A507B7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BC4A50931
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF77516B73A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7407B1885FB9
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C76114884C;
-	Wed,  5 Mar 2025 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2752517AA;
+	Wed,  5 Mar 2025 18:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0qBYtah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0HUJHjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2E01A83E4;
-	Wed,  5 Mar 2025 17:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E09D1D6DB4;
+	Wed,  5 Mar 2025 18:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197574; cv=none; b=RDCAQTdfqUZCdUrqk5bofUfHboeGH4OFTScy404zmtCalxwE+u8BZ3PZbXvHcVoLqN8as/nCPZQXPSZRVjOXfv5iQdD1U9HrVypYk6wpZvJpioz52VIe6bt1zepXI5U7/o4Ut5ArdkJz7aMGgIIwviOEksu7psjGOaHDKreZb3s=
+	t=1741198433; cv=none; b=FH3RONbLF5zegCZw68gM7coamt/y5gIzeZ5buuruDxYIVdL4v/6Tpu9b9ipAm4wgtoOQstMuRMQsl8nyZ9Pmi2X/WnBkkm0V0dF5Ry2l4DGnZCd6eyBmzabPysybbrPKpgJxQeiMitvIv7zCVUknx8tmAP/KlfnkAnaVDxrZYeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197574; c=relaxed/simple;
-	bh=BuwpULTjoKHdpmlFvMJLWhm7feaO1Na2O2bGgcX+20s=;
+	s=arc-20240116; t=1741198433; c=relaxed/simple;
+	bh=zezXWg4nbPR/w/UqkVXSwFoJGxUhzwqD1QIDFZ6l5Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPkFe2IqVpByZuPdjpS53u87LADeDTk4MLiPqA1sCwhxtxS53c6wSCIOw+ZUFcgVif/O2M6NXjAAzH8GIpgHbEqy1Yo+lYcTFNh2Q1tvK/RncwlfgydsGe+hEoMRz0ACxxkbrSf/4sFLAGfinJ7t0glhO/MnvTA+OFCc1UcyDUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0qBYtah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B58C4CED1;
-	Wed,  5 Mar 2025 17:59:34 +0000 (UTC)
+	 MIME-Version; b=JKp/1h6lwz+C5oF1aO08N2BdZZbwhiErtz2fL/CHw8I9XS2LXgE2OHl5NwuIpdQVLyyoV5rBT7bd4c/WYkZwHQk8Rwyvg5rzM4X6E3lXrS5uAOmWJfi42TGWRbvx66tkbnxPc5y9NDA8pgY+A32iI0iiZ41r/S82CtK5EYugoqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0HUJHjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E89C4CED1;
+	Wed,  5 Mar 2025 18:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197574;
-	bh=BuwpULTjoKHdpmlFvMJLWhm7feaO1Na2O2bGgcX+20s=;
+	s=korg; t=1741198433;
+	bh=zezXWg4nbPR/w/UqkVXSwFoJGxUhzwqD1QIDFZ6l5Sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0qBYtahUuRhB2Y75CK7js+LKBkjNNK1kjYnhvdw1AotdDTlV8+bJvtgJ9KeVgEWT
-	 0kSXofB4pUiFalCuYks9xk6H+7SCXoxjm8RxkpqawqGex19cr0xPkLZDqWFVcTrYq3
-	 oVaJ7klyRQSeK0/rBgwBagPFpr6ikhQOMEBA9Tpk=
+	b=E0HUJHjMkFrwyaN03uOZJB6ErFs0Pj5FmccQp56a9/h6JJNFZnhgNAUV9HceO3gy1
+	 JvpWrpg0br6T3T53EyPkHlhDZlvdNvqukoDF+qO3Ia3e7jwNUubwHdsBJPxUdfNTem
+	 kVr37YD0bZfjRitzxquRK4WWPWA8yfYpXGJyrNEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/142] ipv4: icmp: Unmask upper DSCP bits in icmp_route_lookup()
+Subject: [PATCH 6.13 009/157] RDMA/bnxt_re: Fix the statistics for Gen P7 VF
 Date: Wed,  5 Mar 2025 18:47:25 +0100
-Message-ID: <20250305174501.393542069@linuxfoundation.org>
+Message-ID: <20250305174505.653107121@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 4805646c42e51d2fbf142864d281473ad453ad5d ]
+[ Upstream commit 8238c7bd84209c8216b1381ab0dbe6db9e203769 ]
 
-The function is called to resolve a route for an ICMP message that is
-sent in response to a situation. Based on the type of the generated ICMP
-message, the function is either passed the DS field of the packet that
-generated the ICMP message or a DS field that is derived from it.
+Gen P7 VF support the extended stats and is prevented
+by a VF check. Fix the check to issue the FW command
+for GenP7 VFs also.
 
-Unmask the upper DSCP bits before resolving and output route via
-ip_route_output_key_hash() so that in the future the lookup could be
-performed according to the full DSCP value.
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1738657285-23968-5-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/hw_counters.c | 4 ++--
+ drivers/infiniband/hw/bnxt_re/qplib_res.h   | 8 ++++++++
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 3807a269e0755..a154339845dd4 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -93,6 +93,7 @@
- #include <net/ip_fib.h>
- #include <net/l3mdev.h>
- #include <net/addrconf.h>
-+#include <net/inet_dscp.h>
- #define CREATE_TRACE_POINTS
- #include <trace/events/icmp.h>
+diff --git a/drivers/infiniband/hw/bnxt_re/hw_counters.c b/drivers/infiniband/hw/bnxt_re/hw_counters.c
+index 656c150e38e6f..f51adb0a97e66 100644
+--- a/drivers/infiniband/hw/bnxt_re/hw_counters.c
++++ b/drivers/infiniband/hw/bnxt_re/hw_counters.c
+@@ -357,8 +357,8 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
+ 			goto done;
+ 		}
+ 		bnxt_re_copy_err_stats(rdev, stats, err_s);
+-		if (_is_ext_stats_supported(rdev->dev_attr->dev_cap_flags) &&
+-		    !rdev->is_virtfn) {
++		if (bnxt_ext_stats_supported(rdev->chip_ctx, rdev->dev_attr->dev_cap_flags,
++					     rdev->is_virtfn)) {
+ 			rc = bnxt_re_get_ext_stat(rdev, stats);
+ 			if (rc) {
+ 				clear_bit(BNXT_RE_FLAG_ISSUE_ROCE_STATS,
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.h b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+index be5d907a036b6..711990232de1c 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+@@ -547,6 +547,14 @@ static inline bool _is_ext_stats_supported(u16 dev_cap_flags)
+ 		CREQ_QUERY_FUNC_RESP_SB_EXT_STATS;
+ }
  
-@@ -502,7 +503,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
- 	fl4->saddr = saddr;
- 	fl4->flowi4_mark = mark;
- 	fl4->flowi4_uid = sock_net_uid(net, NULL);
--	fl4->flowi4_tos = RT_TOS(tos);
-+	fl4->flowi4_tos = tos & INET_DSCP_MASK;
- 	fl4->flowi4_proto = IPPROTO_ICMP;
- 	fl4->fl4_icmp_type = type;
- 	fl4->fl4_icmp_code = code;
++static inline int bnxt_ext_stats_supported(struct bnxt_qplib_chip_ctx *ctx,
++					   u16 flags, bool virtfn)
++{
++	/* ext stats supported if cap flag is set AND is a PF OR a Thor2 VF */
++	return (_is_ext_stats_supported(flags) &&
++		((virtfn && bnxt_qplib_is_chip_gen_p7(ctx)) || (!virtfn)));
++}
++
+ static inline bool _is_hw_retx_supported(u16 dev_cap_flags)
+ {
+ 	return dev_cap_flags &
 -- 
 2.39.5
 
