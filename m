@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F116DA5070F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7373BA50715
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CAC57A187C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 966E73A6F17
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C152517BA;
-	Wed,  5 Mar 2025 17:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5052E2505CF;
+	Wed,  5 Mar 2025 17:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUUjVSMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juSTvbLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E562512D6;
-	Wed,  5 Mar 2025 17:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3B51946C7;
+	Wed,  5 Mar 2025 17:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197163; cv=none; b=pvbZwxXA/7owUSNyFrTzTmPxuDtMNKG2fjHaE6F1/lkwzoYBdKKELxHR8peZ6yG5WOWQSGVyQ+RKMsigwsQ2mRT7ywluEMoRdULyTjskV2Rn4swEn1h8RFhNGbUN9F6Lhn61hxYVxItPg+2iCDGdFS1wDtE+2mtylasFzZr+4+w=
+	t=1741197178; cv=none; b=tmhwdjK9FgrZIfURW9kEXsO6PsrHhMRK8XLCf07jIywrbOYwbet7nBpGb3jimT+gaKMB6BWHyVPHVdoI/K/yBAaCP0dlDruewNjKFbZ8Z/6sTyi1yCn3bo2iGC2Q+vh0XKJwo1E2DZhktUymygJsSuEIK/A8DmB91uFCaww2G0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197163; c=relaxed/simple;
-	bh=tmtnQsqKoTNHTB+elyiXPa08zZFygSH5CP+XHYutlJc=;
+	s=arc-20240116; t=1741197178; c=relaxed/simple;
+	bh=8+oJJqHWvpUt443G/pe8R4vTPjTm5Qd8Gwh+nDYqyrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iE3aSDIVBkzoeFwwEv0jpa1jNbagRZP++MUsnoBIa2VOR8s87y7V73mFNH8j6MzU1V5dUv/ngEbwWRAqUdmmHYQeq8m5qqD7H4yvAa+CzWNMERChmnqog1LXiR4hLfm+n0INCchV9U24/Wmzeo5tLArTqtoQJzZC0dyYo4aVjU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUUjVSMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279F8C4CED1;
-	Wed,  5 Mar 2025 17:52:42 +0000 (UTC)
+	 MIME-Version; b=udVlaOBJYr7R8TJ/pB96htoDQCR9dFQYL0WfWOSi6zqEwqF60HGgHUMq8K+7UMbsjyDzbYUjixbmofM4P4kR5r0DjJJTcshEDZt0MgiDJAMXjx2z6C/kOYDInvWgl8YuilhE6wiv+pWI8HCi2XH0rOQ3zl6XbavdzgITksu8i1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juSTvbLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86652C4CED1;
+	Wed,  5 Mar 2025 17:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197163;
-	bh=tmtnQsqKoTNHTB+elyiXPa08zZFygSH5CP+XHYutlJc=;
+	s=korg; t=1741197177;
+	bh=8+oJJqHWvpUt443G/pe8R4vTPjTm5Qd8Gwh+nDYqyrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aUUjVSMIsqscGrLp7FdzkDXiH/7speXWyWVuFqGE3YcIQ0QgTwyBTlhba2qIFQ4hB
-	 10J+xCoA3ZlRqDb7MUJsCgK4TBapTWaHk1qL8O/Io2uL7iKlQviNR+7d5H/EAOIcyV
-	 QLsLmtO76Wp/JewXF6nMXWROQRS6oBJDjuS/QV7I=
+	b=juSTvbLzo2OA6zPWnJbXfhU4+VRlzbnXpJSk/ZJl87WTHbN2YRFIaz7VWgdibN2Vs
+	 4i8azZb9RRhHxTRpl4Z5bArPAe7pT6FBst/XqS8gGr/7TRqe6QCdXAawJwYvDWO4o3
+	 fXreLriZyYMZyiNphQH5Kq5KGjKgj1WB3X/aIBPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Ricardo Ribalda <ribalda@chromium.org>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/176] media: Switch to use dev_err_probe() helper
-Date: Wed,  5 Mar 2025 18:46:43 +0100
-Message-ID: <20250305174506.833834642@linuxfoundation.org>
+Subject: [PATCH 6.1 035/176] media: uvcvideo: Fix crash during unbind if gpio unit is in use
+Date: Wed,  5 Mar 2025 18:46:44 +0100
+Message-ID: <20250305174506.873462450@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
 References: <20250305174505.437358097@linuxfoundation.org>
@@ -70,317 +68,116 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 6cb7d1b3ff83e98e852db9739892c4643a31804b ]
+[ Upstream commit a9ea1a3d88b7947ce8cadb2afceee7a54872bbc5 ]
 
-In the probe path, dev_err() can be replaced with dev_err_probe()
-which will check if error code is -EPROBE_DEFER.
+We used the wrong device for the device managed functions. We used the
+usb device, when we should be using the interface device.
 
-Reviewed-by: Sean Young <sean@mess.org>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+If we unbind the driver from the usb interface, the cleanup functions
+are never called. In our case, the IRQ is never disabled.
+
+If an IRQ is triggered, it will try to access memory sections that are
+already free, causing an OOPS.
+
+We cannot use the function devm_request_threaded_irq here. The devm_*
+clean functions may be called after the main structure is released by
+uvc_delete.
+
+Luckily this bug has small impact, as it is only affected by devices
+with gpio units and the user has to unbind the device, a disconnect will
+not trigger this error.
+
+Cc: stable@vger.kernel.org
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: a9ea1a3d88b7 ("media: uvcvideo: Fix crash during unbind if gpio unit is in use")
+Link: https://lore.kernel.org/r/20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/platform/stm32/stm32-cec.c  |  9 +++----
- drivers/media/i2c/ad5820.c                    | 18 +++++--------
- drivers/media/i2c/imx274.c                    |  5 ++--
- drivers/media/i2c/tc358743.c                  |  9 +++----
- .../platform/mediatek/mdp/mtk_mdp_comp.c      |  5 ++--
- .../platform/samsung/exynos4-is/media-dev.c   |  4 +--
- drivers/media/platform/st/stm32/stm32-dcmi.c  | 27 +++++++------------
- drivers/media/platform/ti/omap3isp/isp.c      |  3 +--
- .../media/platform/xilinx/xilinx-csi2rxss.c   |  8 +++---
- drivers/media/rc/gpio-ir-recv.c               | 10 +++----
- drivers/media/rc/gpio-ir-tx.c                 |  9 +++----
- drivers/media/rc/ir-rx51.c                    |  9 ++-----
- drivers/media/usb/uvc/uvc_driver.c            |  9 +++----
- 13 files changed, 41 insertions(+), 84 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 28 +++++++++++++++++++++-------
+ drivers/media/usb/uvc/uvcvideo.h   |  1 +
+ 2 files changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/cec/platform/stm32/stm32-cec.c b/drivers/media/cec/platform/stm32/stm32-cec.c
-index 40db7911b437b..7b2db46a57222 100644
---- a/drivers/media/cec/platform/stm32/stm32-cec.c
-+++ b/drivers/media/cec/platform/stm32/stm32-cec.c
-@@ -288,12 +288,9 @@ static int stm32_cec_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	cec->clk_cec = devm_clk_get(&pdev->dev, "cec");
--	if (IS_ERR(cec->clk_cec)) {
--		if (PTR_ERR(cec->clk_cec) != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "Cannot get cec clock\n");
--
--		return PTR_ERR(cec->clk_cec);
--	}
-+	if (IS_ERR(cec->clk_cec))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(cec->clk_cec),
-+				     "Cannot get cec clock\n");
- 
- 	ret = clk_prepare(cec->clk_cec);
- 	if (ret) {
-diff --git a/drivers/media/i2c/ad5820.c b/drivers/media/i2c/ad5820.c
-index 088c29c4e2529..56d22d02a0d91 100644
---- a/drivers/media/i2c/ad5820.c
-+++ b/drivers/media/i2c/ad5820.c
-@@ -301,21 +301,15 @@ static int ad5820_probe(struct i2c_client *client,
- 		return -ENOMEM;
- 
- 	coil->vana = devm_regulator_get(&client->dev, "VANA");
--	if (IS_ERR(coil->vana)) {
--		ret = PTR_ERR(coil->vana);
--		if (ret != -EPROBE_DEFER)
--			dev_err(&client->dev, "could not get regulator for vana\n");
--		return ret;
--	}
-+	if (IS_ERR(coil->vana))
-+		return dev_err_probe(&client->dev, PTR_ERR(coil->vana),
-+				     "could not get regulator for vana\n");
- 
- 	coil->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable",
- 						    GPIOD_OUT_LOW);
--	if (IS_ERR(coil->enable_gpio)) {
--		ret = PTR_ERR(coil->enable_gpio);
--		if (ret != -EPROBE_DEFER)
--			dev_err(&client->dev, "could not get enable gpio\n");
--		return ret;
--	}
-+	if (IS_ERR(coil->enable_gpio))
-+		return dev_err_probe(&client->dev, PTR_ERR(coil->enable_gpio),
-+				     "could not get enable gpio\n");
- 
- 	mutex_init(&coil->power_lock);
- 
-diff --git a/drivers/media/i2c/imx274.c b/drivers/media/i2c/imx274.c
-index a00761b1e18c2..9219f3c9594b0 100644
---- a/drivers/media/i2c/imx274.c
-+++ b/drivers/media/i2c/imx274.c
-@@ -2060,9 +2060,8 @@ static int imx274_probe(struct i2c_client *client)
- 	imx274->reset_gpio = devm_gpiod_get_optional(dev, "reset",
- 						     GPIOD_OUT_HIGH);
- 	if (IS_ERR(imx274->reset_gpio)) {
--		if (PTR_ERR(imx274->reset_gpio) != -EPROBE_DEFER)
--			dev_err(dev, "Reset GPIO not setup in DT");
--		ret = PTR_ERR(imx274->reset_gpio);
-+		ret = dev_err_probe(dev, PTR_ERR(imx274->reset_gpio),
-+				    "Reset GPIO not setup in DT\n");
- 		goto err_me;
- 	}
- 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 45dd91d1cd816..2c8189e04a131 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -1891,12 +1891,9 @@ static int tc358743_probe_of(struct tc358743_state *state)
- 	int ret;
- 
- 	refclk = devm_clk_get(dev, "refclk");
--	if (IS_ERR(refclk)) {
--		if (PTR_ERR(refclk) != -EPROBE_DEFER)
--			dev_err(dev, "failed to get refclk: %ld\n",
--				PTR_ERR(refclk));
--		return PTR_ERR(refclk);
--	}
-+	if (IS_ERR(refclk))
-+		return dev_err_probe(dev, PTR_ERR(refclk),
-+				     "failed to get refclk\n");
- 
- 	ep = of_graph_get_next_endpoint(dev->of_node, NULL);
- 	if (!ep) {
-diff --git a/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c b/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c
-index 1e3833f1c9ae2..ad5fab2d8bfae 100644
---- a/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c
-+++ b/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c
-@@ -52,9 +52,8 @@ int mtk_mdp_comp_init(struct device *dev, struct device_node *node,
- 	for (i = 0; i < ARRAY_SIZE(comp->clk); i++) {
- 		comp->clk[i] = of_clk_get(node, i);
- 		if (IS_ERR(comp->clk[i])) {
--			if (PTR_ERR(comp->clk[i]) != -EPROBE_DEFER)
--				dev_err(dev, "Failed to get clock\n");
--			ret = PTR_ERR(comp->clk[i]);
-+			ret = dev_err_probe(dev, PTR_ERR(comp->clk[i]),
-+					    "Failed to get clock\n");
- 			goto put_dev;
- 		}
- 
-diff --git a/drivers/media/platform/samsung/exynos4-is/media-dev.c b/drivers/media/platform/samsung/exynos4-is/media-dev.c
-index 2f3071acb9c97..98a60f01129d4 100644
---- a/drivers/media/platform/samsung/exynos4-is/media-dev.c
-+++ b/drivers/media/platform/samsung/exynos4-is/media-dev.c
-@@ -1471,9 +1471,7 @@ static int fimc_md_probe(struct platform_device *pdev)
- 
- 	pinctrl = devm_pinctrl_get(dev);
- 	if (IS_ERR(pinctrl)) {
--		ret = PTR_ERR(pinctrl);
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "Failed to get pinctrl: %d\n", ret);
-+		ret = dev_err_probe(dev, PTR_ERR(pinctrl), "Failed to get pinctrl\n");
- 		goto err_clk;
- 	}
- 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmi.c b/drivers/media/platform/st/stm32/stm32-dcmi.c
-index 37458d4d9564b..06be28b361f1a 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmi.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmi.c
-@@ -1946,12 +1946,9 @@ static int dcmi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	dcmi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
--	if (IS_ERR(dcmi->rstc)) {
--		if (PTR_ERR(dcmi->rstc) != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "Could not get reset control\n");
--
--		return PTR_ERR(dcmi->rstc);
--	}
-+	if (IS_ERR(dcmi->rstc))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(dcmi->rstc),
-+				     "Could not get reset control\n");
- 
- 	/* Get bus characteristics from devicetree */
- 	np = of_graph_get_next_endpoint(np, NULL);
-@@ -2003,20 +2000,14 @@ static int dcmi_probe(struct platform_device *pdev)
- 	}
- 
- 	mclk = devm_clk_get(&pdev->dev, "mclk");
--	if (IS_ERR(mclk)) {
--		if (PTR_ERR(mclk) != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "Unable to get mclk\n");
--		return PTR_ERR(mclk);
--	}
-+	if (IS_ERR(mclk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(mclk),
-+				     "Unable to get mclk\n");
- 
- 	chan = dma_request_chan(&pdev->dev, "tx");
--	if (IS_ERR(chan)) {
--		ret = PTR_ERR(chan);
--		if (ret != -EPROBE_DEFER)
--			dev_err(&pdev->dev,
--				"Failed to request DMA channel: %d\n", ret);
--		return ret;
--	}
-+	if (IS_ERR(chan))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(chan),
-+				     "Failed to request DMA channel\n");
- 
- 	dcmi->dma_max_burst = UINT_MAX;
- 	ret = dma_get_slave_caps(chan, &caps);
-diff --git a/drivers/media/platform/ti/omap3isp/isp.c b/drivers/media/platform/ti/omap3isp/isp.c
-index 11ae479ee89c8..e7327e38482de 100644
---- a/drivers/media/platform/ti/omap3isp/isp.c
-+++ b/drivers/media/platform/ti/omap3isp/isp.c
-@@ -1884,8 +1884,7 @@ static int isp_initialize_modules(struct isp_device *isp)
- 
- 	ret = omap3isp_ccp2_init(isp);
- 	if (ret < 0) {
--		if (ret != -EPROBE_DEFER)
--			dev_err(isp->dev, "CCP2 initialization failed\n");
-+		dev_err_probe(isp->dev, ret, "CCP2 initialization failed\n");
- 		goto error_ccp2;
- 	}
- 
-diff --git a/drivers/media/platform/xilinx/xilinx-csi2rxss.c b/drivers/media/platform/xilinx/xilinx-csi2rxss.c
-index 29b53febc2e7a..d8a23f18cfbce 100644
---- a/drivers/media/platform/xilinx/xilinx-csi2rxss.c
-+++ b/drivers/media/platform/xilinx/xilinx-csi2rxss.c
-@@ -976,11 +976,9 @@ static int xcsi2rxss_probe(struct platform_device *pdev)
- 	/* Reset GPIO */
- 	xcsi2rxss->rst_gpio = devm_gpiod_get_optional(dev, "video-reset",
- 						      GPIOD_OUT_HIGH);
--	if (IS_ERR(xcsi2rxss->rst_gpio)) {
--		if (PTR_ERR(xcsi2rxss->rst_gpio) != -EPROBE_DEFER)
--			dev_err(dev, "Video Reset GPIO not setup in DT");
--		return PTR_ERR(xcsi2rxss->rst_gpio);
--	}
-+	if (IS_ERR(xcsi2rxss->rst_gpio))
-+		return dev_err_probe(dev, PTR_ERR(xcsi2rxss->rst_gpio),
-+				     "Video Reset GPIO not setup in DT\n");
- 
- 	ret = xcsi2rxss_parse_of(xcsi2rxss);
- 	if (ret < 0)
-diff --git a/drivers/media/rc/gpio-ir-recv.c b/drivers/media/rc/gpio-ir-recv.c
-index 16795e07dc103..41ef8cdba28c4 100644
---- a/drivers/media/rc/gpio-ir-recv.c
-+++ b/drivers/media/rc/gpio-ir-recv.c
-@@ -74,13 +74,9 @@ static int gpio_ir_recv_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	gpio_dev->gpiod = devm_gpiod_get(dev, NULL, GPIOD_IN);
--	if (IS_ERR(gpio_dev->gpiod)) {
--		rc = PTR_ERR(gpio_dev->gpiod);
--		/* Just try again if this happens */
--		if (rc != -EPROBE_DEFER)
--			dev_err(dev, "error getting gpio (%d)\n", rc);
--		return rc;
--	}
-+	if (IS_ERR(gpio_dev->gpiod))
-+		return dev_err_probe(dev, PTR_ERR(gpio_dev->gpiod),
-+				     "error getting gpio\n");
- 	gpio_dev->irq = gpiod_to_irq(gpio_dev->gpiod);
- 	if (gpio_dev->irq < 0)
- 		return gpio_dev->irq;
-diff --git a/drivers/media/rc/gpio-ir-tx.c b/drivers/media/rc/gpio-ir-tx.c
-index d3063ddb472e3..2b829c146db15 100644
---- a/drivers/media/rc/gpio-ir-tx.c
-+++ b/drivers/media/rc/gpio-ir-tx.c
-@@ -174,12 +174,9 @@ static int gpio_ir_tx_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	gpio_ir->gpio = devm_gpiod_get(&pdev->dev, NULL, GPIOD_OUT_LOW);
--	if (IS_ERR(gpio_ir->gpio)) {
--		if (PTR_ERR(gpio_ir->gpio) != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "Failed to get gpio (%ld)\n",
--				PTR_ERR(gpio_ir->gpio));
--		return PTR_ERR(gpio_ir->gpio);
--	}
-+	if (IS_ERR(gpio_ir->gpio))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(gpio_ir->gpio),
-+				     "Failed to get gpio\n");
- 
- 	rcdev->priv = gpio_ir;
- 	rcdev->driver_name = DRIVER_NAME;
-diff --git a/drivers/media/rc/ir-rx51.c b/drivers/media/rc/ir-rx51.c
-index a3b1451832603..85080c3d20535 100644
---- a/drivers/media/rc/ir-rx51.c
-+++ b/drivers/media/rc/ir-rx51.c
-@@ -231,13 +231,8 @@ static int ir_rx51_probe(struct platform_device *dev)
- 	struct rc_dev *rcdev;
- 
- 	pwm = pwm_get(&dev->dev, NULL);
--	if (IS_ERR(pwm)) {
--		int err = PTR_ERR(pwm);
--
--		if (err != -EPROBE_DEFER)
--			dev_err(&dev->dev, "pwm_get failed: %d\n", err);
--		return err;
--	}
-+	if (IS_ERR(pwm))
-+		return dev_err_probe(&dev->dev, PTR_ERR(pwm), "pwm_get failed\n");
- 
- 	/* Use default, in case userspace does not set the carrier */
- 	ir_rx51.freq = DIV_ROUND_CLOSEST_ULL(pwm_get_period(pwm), NSEC_PER_SEC);
 diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index c8e72079b4278..92af9caf6b5db 100644
+index 92af9caf6b5db..47a6cedd5578c 100644
 --- a/drivers/media/usb/uvc/uvc_driver.c
 +++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -1253,12 +1253,9 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+@@ -1247,14 +1247,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 	struct gpio_desc *gpio_privacy;
+ 	int irq;
+ 
+-	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
++	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+ 					       GPIOD_IN);
+ 	if (IS_ERR_OR_NULL(gpio_privacy))
  		return PTR_ERR_OR_ZERO(gpio_privacy);
  
  	irq = gpiod_to_irq(gpio_privacy);
--	if (irq < 0) {
--		if (irq != EPROBE_DEFER)
--			dev_err(&dev->udev->dev,
--				"No IRQ for privacy GPIO (%d)\n", irq);
--		return irq;
--	}
-+	if (irq < 0)
-+		return dev_err_probe(&dev->udev->dev, irq,
-+				     "No IRQ for privacy GPIO\n");
+ 	if (irq < 0)
+-		return dev_err_probe(&dev->udev->dev, irq,
++		return dev_err_probe(&dev->intf->dev, irq,
+ 				     "No IRQ for privacy GPIO\n");
  
  	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
- 	if (!unit)
+@@ -1280,15 +1280,27 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ static int uvc_gpio_init_irq(struct uvc_device *dev)
+ {
+ 	struct uvc_entity *unit = dev->gpio_unit;
++	int ret;
+ 
+ 	if (!unit || unit->gpio.irq < 0)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+-					 uvc_gpio_irq,
+-					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+-					 IRQF_TRIGGER_RISING,
+-					 "uvc_privacy_gpio", dev);
++	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
++				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
++				   IRQF_TRIGGER_RISING,
++				   "uvc_privacy_gpio", dev);
++
++	unit->gpio.initialized = !ret;
++
++	return ret;
++}
++
++static void uvc_gpio_deinit(struct uvc_device *dev)
++{
++	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
++		return;
++
++	free_irq(dev->gpio_unit->gpio.irq, dev);
+ }
+ 
+ /* ------------------------------------------------------------------------
+@@ -1882,6 +1894,8 @@ static void uvc_unregister_video(struct uvc_device *dev)
+ {
+ 	struct uvc_streaming *stream;
+ 
++	uvc_gpio_deinit(dev);
++
+ 	list_for_each_entry(stream, &dev->streams, list) {
+ 		/* Nothing to do here, continue. */
+ 		if (!video_is_registered(&stream->vdev))
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 33e7475d4e64a..475bf185be8a8 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -227,6 +227,7 @@ struct uvc_entity {
+ 			u8  *bmControls;
+ 			struct gpio_desc *gpio_privacy;
+ 			int irq;
++			bool initialized;
+ 		} gpio;
+ 	};
+ 
 -- 
 2.39.5
 
