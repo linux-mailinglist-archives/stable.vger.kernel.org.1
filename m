@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72296A50956
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C3CA50800
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B435316607B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:16:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB667189412E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8F124CEE3;
-	Wed,  5 Mar 2025 18:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF03C1C860D;
+	Wed,  5 Mar 2025 18:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvIAzdl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B08dciil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FE714884C;
-	Wed,  5 Mar 2025 18:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1511C6FF9;
+	Wed,  5 Mar 2025 18:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198570; cv=none; b=PVTgzqubyFZnbsgAAnEbSrDOMNTOjTvkjcdI0t46o1T0TkiPH4drL4xZ7w/dwhwJGnCfWQB9MWLJ+SkDsiPYiN+b7pY1NgGo16jQw56qo+2DezlzXs5Azoq03WylXSh0ruh1AlEwTzQv8vOZUFOTJsl0k8uowPo4eOYFTBB1FVY=
+	t=1741197762; cv=none; b=Z0GW9zlwQJHVGOrvk/Ba350o5dsXEwQ4stKAEDAY3V2zBmn+TIFHVEIOBu3xx2IOeihgVOjW3JfFYZ9rhEXx0k6C1Yi1IxO5wOKp7qDkeMr8xpH0fx/dA5ud/1nT9wXk4NSRFvLEdBlIBxqYFyPW4abPl8gdifAz8aBcDzHKOoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198570; c=relaxed/simple;
-	bh=1E5E8yKNhyKaquklQe1o5DZWIKYWqch2BhwdolLpv6g=;
+	s=arc-20240116; t=1741197762; c=relaxed/simple;
+	bh=1AtMrMf5VJEi8NbDO34+zi/SeHQXFjoc0WMxb5SmpI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqOf8R59k057cGeXXfkdxwYuPOP9cUEywbt96NI/YB/TYamuwYv1ICraHWVzHSrk63TJ9E+q6c45EJ1Q9LWPpWznLl2o7r1NPE6Llzn6dddEyJsmaF/hnIYxowX/fHvFeKAt6eWWEE6rZ2/oY3fE0TR360FaMRzwBNW1QQE6W3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvIAzdl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B897C4CED1;
-	Wed,  5 Mar 2025 18:16:09 +0000 (UTC)
+	 MIME-Version; b=b4X9VvAg/vglWJgAKnPUSrOp2AJld8XJBnyPm0SokauNym5159wLMSHM3GoHmrzpsLJIdC7KHa5/izINu+ojeej3kh543fWhJFLwVsRYWE3N2hjWQBl+4sy0Z8pa7gXVnAS8N8WIB2eN3/ugIE8P2+9aoXg6l4A5dWd6PpyzASI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B08dciil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13821C4CED1;
+	Wed,  5 Mar 2025 18:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198570;
-	bh=1E5E8yKNhyKaquklQe1o5DZWIKYWqch2BhwdolLpv6g=;
+	s=korg; t=1741197762;
+	bh=1AtMrMf5VJEi8NbDO34+zi/SeHQXFjoc0WMxb5SmpI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvIAzdl881hI0Rni7/KHDimtkvmanTODjbBRZrf0tpTh+5ZNgBT2Bff1kNSIZnFBV
-	 +piW8/7y9v8xocp5wL+UWnHjEgMkb2OAgEse66jvQR2CFUAIBSEFZIH3n4xBSjwW4b
-	 WgQ3vmP86cFF9RvD48eQ6+CSTcva2nPj+DNROsXo=
+	b=B08dciil8vz38PnJzmjouKo6tNl4pamDkw962bDc94OzP2CLDExHv27/c1WeUcUkg
+	 GZE5W8O2q9iFVLAeGGpcwQpbFCzi82f63HIjswED3rfyhbuRlCM4b63/qhcbu7aXiE
+	 J5VDRsUvOpmhz8AFy0HLLIyDcPjjn5kRyMnNe0ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 074/157] phy: rockchip: fix Kconfig dependency more
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 091/142] rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
 Date: Wed,  5 Mar 2025 18:48:30 +0100
-Message-ID: <20250305174508.278528771@linuxfoundation.org>
+Message-ID: <20250305174503.989988462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit fcf5d353b09b3fc212ab24b89ef23a7a8f7b308e ]
+commit d8d866171a414ed88bd0d720864095fd75461134 upstream.
 
-A previous patch ensured that USB Type C connector support is enabled,
-but it is still possible to build the phy driver without enabling
-CONFIG_USB (host support) or CONFIG_USB_GADGET (device support), and
-in that case the common helper functions are unavailable:
+When using rtla timerlat with userspace threads (-u or -U), rtla
+disables the OSNOISE_WORKLOAD option in
+/sys/kernel/tracing/osnoise/options. This option is not re-enabled in a
+subsequent run with kernel-space threads, leading to rtla collecting no
+results if the previous run exited abnormally:
 
-aarch64-linux-ld: drivers/phy/rockchip/phy-rockchip-usbdp.o: in function `rk_udphy_probe':
-phy-rockchip-usbdp.c:(.text+0xe74): undefined reference to `usb_get_maximum_speed'
+$ rtla timerlat hist -u
+^\Quit (core dumped)
+$ rtla timerlat hist -k -d 1s
+Index
+over:
+count:
+min:
+avg:
+max:
+ALL:        IRQ       Thr       Usr
+count:        0         0         0
+min:          -         -         -
+avg:          -         -         -
+max:          -         -         -
 
-Select CONFIG_USB_COMMON directly here, like we do in some other phy
-drivers, to make sure this is available even when actual USB support
-is disabled or in a loadable module that cannot be reached from a
-built-in phy driver.
+The issue persists until OSNOISE_WORKLOAD is set manually by running:
+$ echo OSNOISE_WORKLOAD > /sys/kernel/tracing/osnoise/options
 
-Fixes: 9c79b779643e ("phy: rockchip: fix CONFIG_TYPEC dependency")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250122065249.1390081-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set OSNOISE_WORKLOAD when running rtla with kernel-space threads if
+available to fix the issue.
+
+Cc: stable@vger.kernel.org
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Link: https://lore.kernel.org/20250107144823.239782-3-tglozar@redhat.com
+Fixes: ed774f7481fa ("rtla/timerlat_hist: Add timerlat user-space support")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ params->kernel_workload does not exist in 6.6, use
+!params->user_hist ]
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/tracing/rtla/src/timerlat_hist.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
-index 2f7a05f21dc59..dcb8e1628632e 100644
---- a/drivers/phy/rockchip/Kconfig
-+++ b/drivers/phy/rockchip/Kconfig
-@@ -125,6 +125,7 @@ config PHY_ROCKCHIP_USBDP
- 	depends on ARCH_ROCKCHIP && OF
- 	depends on TYPEC
- 	select GENERIC_PHY
-+	select USB_COMMON
- 	help
- 	  Enable this to support the Rockchip USB3.0/DP combo PHY with
- 	  Samsung IP block. This is required for USB3 support on RK3588.
--- 
-2.39.5
-
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -900,12 +900,15 @@ timerlat_hist_apply_config(struct osnois
+ 		auto_house_keeping(&params->monitored_cpus);
+ 	}
+ 
+-	if (params->user_hist) {
+-		retval = osnoise_set_workload(tool->context, 0);
+-		if (retval) {
+-			err_msg("Failed to set OSNOISE_WORKLOAD option\n");
+-			goto out_err;
+-		}
++	/*
++	* Set workload according to type of thread if the kernel supports it.
++	* On kernels without support, user threads will have already failed
++	* on missing timerlat_fd, and kernel threads do not need it.
++	*/
++	retval = osnoise_set_workload(tool->context, !params->user_hist);
++	if (retval < -1) {
++		err_msg("Failed to set OSNOISE_WORKLOAD option\n");
++		goto out_err;
+ 	}
+ 
+ 	return 0;
 
 
 
