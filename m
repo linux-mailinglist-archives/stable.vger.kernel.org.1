@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-120647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F40A507A8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB76A5087F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD97F188671E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C64FD1888562
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DA02512E1;
-	Wed,  5 Mar 2025 17:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C7D1A840E;
+	Wed,  5 Mar 2025 18:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dg/I5mes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVqf7v49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25F250C07;
-	Wed,  5 Mar 2025 17:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09271C6FF6;
+	Wed,  5 Mar 2025 18:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197566; cv=none; b=A8/uWRkqH2b+1Y0LaQNssFOGTXH0V+zFcDXEC9Mz932F3/943zed2JH3/cOmHrrNV67eSNa2Fh3DzA/TnXbBWZ7jV+acH6CoxK3xY9ktOuOcbvomdZeJ/4+h/6YO4iDxBxPkuuSd3JzGPTRbExH9riwHwPEONs5sDWyD/bDLjLQ=
+	t=1741198044; cv=none; b=S4vc4Uab8M76muXvBZsR/C8D2xzFD2kmmzVr5qAziIjMndmPfgHmKXTF0zrBAE51MHrpT9SVtb6GOF+9E3GDVFabgKs9HxJ+iaMtpKibgWhRUzkZj+lKHYApcaV/KL83BhIizw2P8xhld3r+qaBoDwDK6Axxf+MwePv63fdODSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197566; c=relaxed/simple;
-	bh=1/oJhL4/I03XHQsLdHEqMWlTQzMuQxF7C/rxP70EcpQ=;
+	s=arc-20240116; t=1741198044; c=relaxed/simple;
+	bh=lh8mVYMUKs03vJP0OeBQcJEPNhzh1cqbJMEMc8oje7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/cYpGHnrLgEBHe/Svub6rcIJ3BSJqxBFl1zyRVRk0rV5GLv6e9YJAzeFlfCXpIhAdYcrt3tcWOHRtSRzNNc2Iz9HF0UF57fJYT2i4lt1vCThBaSq0wdDsfA2g+xz3Tr0v+7lNSmBTSVJcxZedk23J2D8yn7orBmUmb0LcddiM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dg/I5mes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A644EC4CED1;
-	Wed,  5 Mar 2025 17:59:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=haDUCpaxkxFyTKy406rNXAA2/8ZtWPaxAyf6mkWh3tsvSinGqlHbw2TYEZVW1rXZqUDpXMalq1sshciFjoZVIJLv6ZG1k+5kQDnb42Zc1vHsd5JhEvwcwGBFZG75ecwOdTrBqYJCd5b9NyP8mzewUa6g3Or0OWttkKi7bYcNA0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVqf7v49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40923C4CED1;
+	Wed,  5 Mar 2025 18:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197566;
-	bh=1/oJhL4/I03XHQsLdHEqMWlTQzMuQxF7C/rxP70EcpQ=;
+	s=korg; t=1741198044;
+	bh=lh8mVYMUKs03vJP0OeBQcJEPNhzh1cqbJMEMc8oje7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dg/I5mes58LZ3pMWl0XaWwbc/mNddAFAXpH5SxhHabn6z9jtjFuHkxDrrE6mwDteH
-	 3UoDA/3azjRAWEjoi5BKetUo8usS5Jomd5LslCMR0NwhWbQsgJfJf+10/9WFt+dsGn
-	 iiR7FIcEBamiJdYMw01xmGS2Z270w4mIGGjk6Tss=
+	b=PVqf7v49e5bNXOuMafIYajTE05e1HXG3q8DGn2Q48Q//uksBwq4IfFHJcBvmxgEor
+	 ndjSO/syLDRWrsPUevxt8kCscmXTdJJYbDi4E4OnxH1VnVCycT7JT1Bd87FIBizyUy
+	 1HEzZwp3vkyt18YLYfP9GUatu7iR0lHZv60xx8Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Dmitry Yakunin <zeil@yandex-team.ru>,
-	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/142] net: set the minimum for net_hotdata.netdev_budget_usecs
+Subject: [PATCH 6.12 013/150] landlock: Fix non-TCP sockets restriction
 Date: Wed,  5 Mar 2025 18:47:22 +0100
-Message-ID: <20250305174501.273764151@linuxfoundation.org>
+Message-ID: <20250305174504.340334667@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
 
-[ Upstream commit c180188ec02281126045414e90d08422a80f75b4 ]
+[ Upstream commit 854277e2cc8c75dc3c216c82e72523258fcf65b9 ]
 
-Commit 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs
-to enable softirq tuning") added a possibility to set
-net_hotdata.netdev_budget_usecs, but added no lower bound checking.
+Use sk_is_tcp() to check if socket is TCP in bind(2) and connect(2)
+hooks.
 
-Commit a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
-made the *initial* value HZ-dependent, so the initial value is at least
-2 jiffies even for lower HZ values (2 ms for 1000 Hz, 8ms for 250 Hz, 20
-ms for 100 Hz).
+SMC, MPTCP, SCTP protocols are currently restricted by TCP access
+rights.  The purpose of TCP access rights is to provide control over
+ports that can be used by userland to establish a TCP connection.
+Therefore, it is incorrect to deny bind(2) and connect(2) requests for a
+socket of another protocol.
 
-But a user still can set improper values by a sysctl. Set .extra1
-(the lower bound) for net_hotdata.netdev_budget_usecs to the same value
-as in the latter commit. That is to 2 jiffies.
+However, SMC, MPTCP and RDS implementations use TCP internal sockets to
+establish communication or even to exchange packets over a TCP
+connection [1]. Landlock rules that configure bind(2) and connect(2)
+usage for TCP sockets should not cover requests for sockets of such
+protocols. These protocols have different set of security issues and
+security properties, therefore, it is necessary to provide the userland
+with the ability to distinguish between them (eg. [2]).
 
-Fixes: a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
-Fixes: 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs to enable softirq tuning")
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Dmitry Yakunin <zeil@yandex-team.ru>
-Cc: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Link: https://patch.msgid.link/20250220110752.137639-1-jirislaby@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Control over TCP connection used by other protocols can be achieved with
+upcoming support of socket creation control [3].
+
+[1] https://lore.kernel.org/all/62336067-18c2-3493-d0ec-6dd6a6d3a1b5@huawei-partners.com/
+[2] https://lore.kernel.org/all/20241204.fahVio7eicim@digikod.net/
+[3] https://lore.kernel.org/all/20240904104824.1844082-1-ivanov.mikhail1@huawei-partners.com/
+
+Closes: https://github.com/landlock-lsm/linux/issues/40
+Fixes: fff69fb03dde ("landlock: Support network rules with TCP bind and connect")
+Signed-off-by: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+Link: https://lore.kernel.org/r/20250205093651.1424339-2-ivanov.mikhail1@huawei-partners.com
+[mic: Format commit message to 72 columns]
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sysctl_net_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/landlock/net.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 0b15272dd2d35..a7fa17b6a1297 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -31,6 +31,7 @@ static int min_sndbuf = SOCK_MIN_SNDBUF;
- static int min_rcvbuf = SOCK_MIN_RCVBUF;
- static int max_skb_frags = MAX_SKB_FRAGS;
- static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
-+static int netdev_budget_usecs_min = 2 * USEC_PER_SEC / HZ;
+diff --git a/security/landlock/net.c b/security/landlock/net.c
+index d5dcc4407a197..104b6c01fe503 100644
+--- a/security/landlock/net.c
++++ b/security/landlock/net.c
+@@ -63,8 +63,7 @@ static int current_check_access_socket(struct socket *const sock,
+ 	if (WARN_ON_ONCE(dom->num_layers < 1))
+ 		return -EACCES;
  
- static int net_msg_warn;	/* Unused, but still a sysctl */
+-	/* Checks if it's a (potential) TCP socket. */
+-	if (sock->type != SOCK_STREAM)
++	if (!sk_is_tcp(sock->sk))
+ 		return 0;
  
-@@ -613,7 +614,7 @@ static struct ctl_table net_core_table[] = {
- 		.maxlen		= sizeof(unsigned int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
--		.extra1		= SYSCTL_ZERO,
-+		.extra1		= &netdev_budget_usecs_min,
- 	},
- 	{
- 		.procname	= "fb_tunnels_only_for_init_net",
+ 	/* Checks for minimal header length to safely read sa_family. */
 -- 
 2.39.5
 
