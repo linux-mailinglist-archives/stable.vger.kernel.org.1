@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD8A5075B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44127A5098C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F5911747F4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C347A9A9A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2568D252907;
-	Wed,  5 Mar 2025 17:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3592253B57;
+	Wed,  5 Mar 2025 18:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irvznE84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQjIK2sd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A182512E1;
-	Wed,  5 Mar 2025 17:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60241250BF3;
+	Wed,  5 Mar 2025 18:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197361; cv=none; b=u/vcNKhxK6rI6JkkU/CETyivUfcPzvc5kuu25+NJJSCAcQABOeRgje/aZdLvnDQWo0rxiE1tkDpZsuwUnkU85x6OR4+2BQLPb0oSjOCSh3FFznD6sXUdl+eS3blKgcD0kib4F74FaLKKnQL7U2O7kbYINkAKYEZm4JB4CFpcgkg=
+	t=1741198628; cv=none; b=ZJvLcYOrZsx+FraZdt3Jp088MN7hmsG+I3Jb5w3hf5cxctqk+TdXqO2pw4LUD7FsKvczhr5kYwqGWRWB8BR5Mm27PCwo5BC5G77vmzvrnLUpjaPYR8N11n2pEBPomAvMVkt7K4nasEttvYIoNsgBsH0yizAhWVu2KdoqW1z1h9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197361; c=relaxed/simple;
-	bh=bXlSesPGrPjVQmzmIICJkiA910WtFHgrmqT+10X/Puw=;
+	s=arc-20240116; t=1741198628; c=relaxed/simple;
+	bh=eHM9dSqBCdIa00HPKPYhuFnyIkn79W67e0XS7d7y7og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUyYtDpJxsamfo6dqihGwHaoaxBFvtbnefs+IS4aJsF9fgAboeXQ1+O150+JX6vfbd8m3LeSrjRk5xlcOzFLqmUiGsRn9DGq1i0DLISyDIIdGgeBv5IISYcAC76syH2e2muZKJafPZ+ZKBzIssEn2SoCQeqYGV/kQkT+Fs88vBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irvznE84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25BDC4CEEC;
-	Wed,  5 Mar 2025 17:56:00 +0000 (UTC)
+	 MIME-Version; b=JU/Ep0ZKnZgZDaRAHKPyFGP2qwYOUUyhU3CujVuHfI2kmde364sFQkm5Ub4znMpPuR71X/FMyMyxeTTXcAnyiE9pfwMMymQ0+L7alYO4cyhYTjf2ODWwQBO1DkLm4mUAZweUhQofc68BGKe5P48o8G1DZc/0xZp8yOZBC3t7cOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQjIK2sd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77353C4CED1;
+	Wed,  5 Mar 2025 18:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197361;
-	bh=bXlSesPGrPjVQmzmIICJkiA910WtFHgrmqT+10X/Puw=;
+	s=korg; t=1741198627;
+	bh=eHM9dSqBCdIa00HPKPYhuFnyIkn79W67e0XS7d7y7og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irvznE84oJW5aN6Oo/wiBqOTqzm87McKJ74Q30Rw90ZVDX8Syq4BkJyeNimY5INas
-	 ujg1b5uNjMLeBz/mf21UTq64827V60KY5+QecL1+3W7OezvMU5gxYH7I2ceP8I7pwe
-	 D6TGPt580Yi0Ze9Qt6Oeyc15LaBF9dL28yPh7reA=
+	b=aQjIK2sddeTheI1bCs5+XXxYinGwGKkmXLlwpjWz+r/AI58Xk4e2p7U/22bw+y3JO
+	 NBhXX4fiz3B1FZJp9INj441RZDVqbihpe6rhp6jbKOEj7f7aTXsoxFtoJ872jbcukG
+	 veZX119lvFEDInFVGSmkgMEQKDzZaHwrv+tTGwYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Meghana Malladi <m-malladi@ti.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/176] ipvlan: Prepare ipvlan_process_v4_outbound() to future .flowi4_tos conversion.
+Subject: [PATCH 6.13 062/157] net: ti: icss-iep: Reject perout generation request
 Date: Wed,  5 Mar 2025 18:48:18 +0100
-Message-ID: <20250305174510.630333681@linuxfoundation.org>
+Message-ID: <20250305174507.797243470@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-[ Upstream commit 0c30d6eedd1ec0c1382bcab9576d26413cd278a3 ]
+[ Upstream commit 54e1b4becf5e220be03db4e1be773c1310e8cbbd ]
 
-Use ip4h_dscp() to get the DSCP from the IPv4 header, then convert the
-dscp_t value to __u8 with inet_dscp_to_dsfield().
+IEP driver supports both perout and pps signal generation
+but perout feature is faulty with half-cooked support
+due to some missing configuration. Remove perout
+support from the driver and reject perout requests with
+"not supported" error code.
 
-Then, when we'll convert .flowi4_tos to dscp_t, we'll just have to drop
-the inet_dscp_to_dsfield() call.
-
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/f48335504a05b3587e0081a9b4511e0761571ca5.1730292157.git.gnault@redhat.com
+Fixes: c1e0230eeaab2 ("net: ti: icss-iep: Add IEP driver")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250227092441.1848419-1-m-malladi@ti.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 21 +--------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index d22a705ac4d6f..38eb40cba5aac 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -3,6 +3,7 @@
-  */
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 768578c0d9587..d59c1744840af 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -474,26 +474,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 				  struct ptp_perout_request *req, int on)
+ {
+-	int ret = 0;
+-
+-	mutex_lock(&iep->ptp_clk_mutex);
+-
+-	if (iep->pps_enabled) {
+-		ret = -EBUSY;
+-		goto exit;
+-	}
+-
+-	if (iep->perout_enabled == !!on)
+-		goto exit;
+-
+-	ret = icss_iep_perout_enable_hw(iep, req, on);
+-	if (!ret)
+-		iep->perout_enabled = !!on;
+-
+-exit:
+-	mutex_unlock(&iep->ptp_clk_mutex);
+-
+-	return ret;
++	return -EOPNOTSUPP;
+ }
  
- #include <net/inet_dscp.h>
-+#include <net/ip.h>
- 
- #include "ipvlan.h"
- 
-@@ -422,7 +423,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
- 	int err, ret = NET_XMIT_DROP;
- 	struct flowi4 fl4 = {
- 		.flowi4_oif = dev->ifindex,
--		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
-+		.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h)),
- 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
- 		.flowi4_mark = skb->mark,
- 		.daddr = ip4h->daddr,
+ static void icss_iep_cap_cmp_work(struct work_struct *work)
 -- 
 2.39.5
 
