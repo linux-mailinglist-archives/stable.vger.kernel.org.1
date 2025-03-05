@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-120729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97D9A50818
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6919AA50884
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2268B17496B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0ACB17A3476
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82BA250BFB;
-	Wed,  5 Mar 2025 18:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612E82517AA;
+	Wed,  5 Mar 2025 18:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQNmd85T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npfUX6OE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971E9250BE9;
-	Wed,  5 Mar 2025 18:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBE6250C14;
+	Wed,  5 Mar 2025 18:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197803; cv=none; b=IoipBbnr4Saf/RWFeKIbwJ4gYzF7xgzFC3wzqX8X30yiWvBATCeZz5Tbo7QPf+b5M6WDVOHSKOpQOuT1DWb0N/bvOBUc1ZJgvLNxCR6jzoE2HhHTgTa7Bugt/IYKnWtmbEynBx5ElwrTxGzezNJCb1ZsOQdl3cKRgtJ3gVtvJH8=
+	t=1741198103; cv=none; b=mGfeQTvTeEktlMCtOgklrUTljPTy4ktPssdKb+akTYmO9lUDGTc+oAbEh6FkuOfXxvlsCwGLD39aAqSf4VvKDYkmSKT4fQriDDpZQwZzx4SLTUqGLZRzEMzqOeln56pLEAMRMwSVpknC9fAeRRBWI+NEzbbf9go8QDnYQ2hIc5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197803; c=relaxed/simple;
-	bh=BjVGJp2aFwLZbq68WPRjzWg3gYUAOroneRQrAQnfaHA=;
+	s=arc-20240116; t=1741198103; c=relaxed/simple;
+	bh=slrw86S9Bj0njc3BD8tXF0dfhkI3eRAtghacwKON8y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A71sYJ1A5W0BOUO5Dtny3DYA2xIG+qSHXb0bHIUKH9D19MRGLy9MgQogyzT6TXEq4VFfQZubcCa8mcJi0phA7afnnHt750gzvgZSRY8zMef4AhysdNKfJmkFf+hTvNHvDarihNteofJnds/t1bfpnK+/DuvDG2udp58IqCDtxeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQNmd85T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC4AC4CED1;
-	Wed,  5 Mar 2025 18:03:22 +0000 (UTC)
+	 MIME-Version; b=QrXsTHx4Allj1QQyrfURsJ4KIdi0CjK5rV5MYdlqSspAbsR2lZywWeqwpBESMm+czrea09z6JHc9Cfb59wLFvQXqgyBJFb8hlouDSQTB778Q7Cv+SydyRrD1PAjIt2JflepHXxExnx9TLn7kQKXIQeQtRWGsnB7HhXsSux59L9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npfUX6OE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD40C4CEE9;
+	Wed,  5 Mar 2025 18:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197803;
-	bh=BjVGJp2aFwLZbq68WPRjzWg3gYUAOroneRQrAQnfaHA=;
+	s=korg; t=1741198103;
+	bh=slrw86S9Bj0njc3BD8tXF0dfhkI3eRAtghacwKON8y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQNmd85TPIcWaMIFBsF6pAmuskChZqRIO+xqYVUDZEeIxdSf9xBKfcMyCJsfrBw0c
-	 HyTtctzd3Ok3WZuh84Vo8KmlFgVNlk0/lorkIPljQMcLhLCyeZa9w+/fQMS9k18ouI
-	 V+qm8yQwfRGVxOcBuGUgx3wCZdec4P8Njlmaww74=
+	b=npfUX6OE8Ijp4rLCZpijcYqI3C4sIWfVmTv1Svx3R5JIDdQV6GE6A7+WnC/1i0Udt
+	 yJp8AdtxlaNN+NNoylhE0n8FsnfKaFTg5Eql2oSoWjVwv+q49RqaJDId6LnCV2If4H
+	 duLd/Thjq/NkGvobhyRPO+ZFoB/5sVdPngmucDDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 074/142] net: enetc: keep track of correct Tx BD count in enetc_map_tx_tso_buffs()
-Date: Wed,  5 Mar 2025 18:48:13 +0100
-Message-ID: <20250305174503.308760810@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Alan Brady <alan.brady@intel.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 065/150] idpf: fix checksums set in idpf_rx_rsc()
+Date: Wed,  5 Mar 2025 18:48:14 +0100
+Message-ID: <20250305174506.431656897@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +66,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit da291996b16ebd10626d4b20288327b743aff110 upstream.
+[ Upstream commit 674fcb4f4a7e3e277417a01788cc6daae47c3804 ]
 
-When creating a TSO header, if the skb is VLAN tagged, the extended BD
-will be used and the 'count' should be increased by 2 instead of 1.
-Otherwise, when an error occurs, less tx_swbd will be freed than the
-actual number.
+idpf_rx_rsc() uses skb_transport_offset(skb) while the transport header
+is not set yet.
 
-Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-Cc: stable@vger.kernel.org
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-3-wei.fang@nxp.com
+This triggers the following warning for CONFIG_DEBUG_NET=y builds.
+
+DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb))
+
+[   69.261620] WARNING: CPU: 7 PID: 0 at ./include/linux/skbuff.h:3020 idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261629] Modules linked in: vfat fat dummy bridge intel_uncore_frequency_tpmi intel_uncore_frequency_common intel_vsec_tpmi idpf intel_vsec cdc_ncm cdc_eem cdc_ether usbnet mii xhci_pci xhci_hcd ehci_pci ehci_hcd libeth
+[   69.261644] CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Tainted: G S      W          6.14.0-smp-DEV #1697
+[   69.261648] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+[   69.261650] RIP: 0010:idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261677] ? __warn (kernel/panic.c:242 kernel/panic.c:748)
+[   69.261682] ? idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261687] ? report_bug (lib/bug.c:?)
+[   69.261690] ? handle_bug (arch/x86/kernel/traps.c:285)
+[   69.261694] ? exc_invalid_op (arch/x86/kernel/traps.c:309)
+[   69.261697] ? asm_exc_invalid_op (arch/x86/include/asm/idtentry.h:621)
+[   69.261700] ? __pfx_idpf_vport_splitq_napi_poll (drivers/net/ethernet/intel/idpf/idpf_txrx.c:4011) idpf
+[   69.261704] ? idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261708] ? idpf_vport_splitq_napi_poll (drivers/net/ethernet/intel/idpf/idpf_txrx.c:3072) idpf
+[   69.261712] __napi_poll (net/core/dev.c:7194)
+[   69.261716] net_rx_action (net/core/dev.c:7265)
+[   69.261718] ? __qdisc_run (net/sched/sch_generic.c:293)
+[   69.261721] ? sched_clock (arch/x86/include/asm/preempt.h:84 arch/x86/kernel/tsc.c:288)
+[   69.261726] handle_softirqs (kernel/softirq.c:561)
+
+Fixes: 3a8845af66edb ("idpf: add RX splitq napi poll support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Alan Brady <alan.brady@intel.com>
+Cc: Joshua Hay <joshua.a.hay@intel.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Acked-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/20250226221253.1927782-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -351,14 +351,15 @@ dma_err:
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 1e0d1f9b07fbc..afc902ae4763e 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3013,7 +3013,6 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 	skb_shinfo(skb)->gso_size = rsc_seg_len;
  
--static void enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
--				 struct enetc_tx_swbd *tx_swbd,
--				 union enetc_tx_bd *txbd, int *i, int hdr_len,
--				 int data_len)
-+static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
-+				struct enetc_tx_swbd *tx_swbd,
-+				union enetc_tx_bd *txbd, int *i, int hdr_len,
-+				int data_len)
- {
- 	union enetc_tx_bd txbd_tmp;
- 	u8 flags = 0, e_flags = 0;
- 	dma_addr_t addr;
-+	int count = 1;
+ 	skb_reset_network_header(skb);
+-	len = skb->len - skb_transport_offset(skb);
  
- 	enetc_clear_tx_bd(&txbd_tmp);
- 	addr = tx_ring->tso_headers_dma + *i * TSO_HEADER_SIZE;
-@@ -401,7 +402,10 @@ static void enetc_map_tx_tso_hdr(struct
- 		/* Write the BD */
- 		txbd_tmp.ext.e_flags = e_flags;
- 		*txbd = txbd_tmp;
-+		count++;
+ 	if (ipv4) {
+ 		struct iphdr *ipv4h = ip_hdr(skb);
+@@ -3022,6 +3021,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 
+ 		/* Reset and set transport header offset in skb */
+ 		skb_set_transport_header(skb, sizeof(struct iphdr));
++		len = skb->len - skb_transport_offset(skb);
+ 
+ 		/* Compute the TCP pseudo header checksum*/
+ 		tcp_hdr(skb)->check =
+@@ -3031,6 +3031,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 
+ 		skb_shinfo(skb)->gso_type = SKB_GSO_TCPV6;
+ 		skb_set_transport_header(skb, sizeof(struct ipv6hdr));
++		len = skb->len - skb_transport_offset(skb);
+ 		tcp_hdr(skb)->check =
+ 			~tcp_v6_check(len, &ipv6h->saddr, &ipv6h->daddr, 0);
  	}
-+
-+	return count;
- }
- 
- static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
-@@ -533,9 +537,9 @@ static int enetc_map_tx_tso_buffs(struct
- 
- 		/* compute the csum over the L4 header */
- 		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
--		enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd, &i, hdr_len, data_len);
-+		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
-+					      &i, hdr_len, data_len);
- 		bd_data_num = 0;
--		count++;
- 
- 		while (data_len > 0) {
- 			int size;
+-- 
+2.39.5
+
 
 
 
