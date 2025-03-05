@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4411A508FF
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA84A507A9
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC0FA16E6E2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 405173A5944
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE372517BA;
-	Wed,  5 Mar 2025 18:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F65B250C07;
+	Wed,  5 Mar 2025 17:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAZVaZLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXlHy5vD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E008C1C5D4E;
-	Wed,  5 Mar 2025 18:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D7B14B075;
+	Wed,  5 Mar 2025 17:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198381; cv=none; b=K3t1/IwM0NC/P9P2Ix3PwtLUftrLgQj4ZTna8Z++oKk84DdgAGmh2y4YPKlkV7i9fREyKztd0PjPCACUE5/y6IofYK2AprPYoL6UXFcC9Q8tvOt9bTgPeYk4IZJlhYgabkpmy+iTztfmYMwIygSKKor0k/iqyIQ5iIGPigHF2j4=
+	t=1741197549; cv=none; b=ZyXSSoWaohizbiXbCBp5BWAdcxtGFoRc+8Tct9Hhic0SVPA4xKIAVzeErbtFrj3FlFBdGyLc21gKgoKSy9YldSMbHDJE08USh6gX0vYNtCBAD7cC4cNGfijXoAe/k984nFvw6yyPS23dIGoiwbyE096YzELHE/KfM2r0FE0Bv54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198381; c=relaxed/simple;
-	bh=IpV6B+fGcRlvt6IMN3+XbZevUTnzRJ8XAOJTETsBPyY=;
+	s=arc-20240116; t=1741197549; c=relaxed/simple;
+	bh=m0cBYwyHZYwiQS2UqzqUPJoBpjD3/mEWzO+ImhLzIdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNd07B7PsPmhtJdQiA9hNyzqneJCrJ/9IxEl47WdhmBWAm8HY1GaRZVD3Jq6B3IU8TQ1liOvvb21ANy+8YfRzJKzbzpuG0m8mpVXFNWR/A3IikphHepDaEgxGaTNtUVmsIo8ddQbDMqmmSRec5Khd3u6uz+adGlfJ8LAWw5JFvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAZVaZLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A618C4CED1;
-	Wed,  5 Mar 2025 18:13:00 +0000 (UTC)
+	 MIME-Version; b=QSI4al2fWDqgYaNiMItxZ3ZqXOhe5LoJhxVzO0LrB2ygBl2Gi33hq/T1ogM0FotUYfqzs4Su9p1HURL7Hu7cMumYxkTWq1qdgJfUHV1ySwmovSj886TpClyhYXx+A6zlggdQmnDrhG4D3yTCe2GkVMA0/RV96FjKXGVU0Gyf8lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXlHy5vD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64358C4CED1;
+	Wed,  5 Mar 2025 17:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198380;
-	bh=IpV6B+fGcRlvt6IMN3+XbZevUTnzRJ8XAOJTETsBPyY=;
+	s=korg; t=1741197548;
+	bh=m0cBYwyHZYwiQS2UqzqUPJoBpjD3/mEWzO+ImhLzIdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAZVaZLBUUGijS8nneHOQm5V7VziWxg4bHoV87MK5hNGvPYyGDJIwMKPaAUjH4Zt5
-	 3yd4S06rzIb3EAf3wRnWTKmjUVsOm/GQpuxa7jYAgEqf7wEH+lLUy05tN+Hp8OyU3x
-	 kl3aqONfDX4yzdfW/x5hIufAZfiPieq5BPj5CpRw=
+	b=RXlHy5vDClSwDM6j12o/pYiKKhpgwHgbPINklSHbWsWMIp2s794bHvkQhYkkHefbM
+	 vK2av1ibOPjvj3swpmQYnCGLwZwwLGnYZRYVYnecA35eDet25VAfXVfLaZrj74ppkY
+	 v0MOs7pbAA1kHFq4aI9doGPmI/6wakOVR+TfnKIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 001/157] RDMA/mlx5: Fix the recovery flow of the UMR QP
+Subject: [PATCH 6.6 018/142] Bluetooth: L2CAP: Fix L2CAP_ECRED_CONN_RSP response
 Date: Wed,  5 Mar 2025 18:47:17 +0100
-Message-ID: <20250305174505.333354418@linuxfoundation.org>
+Message-ID: <20250305174501.074667097@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,211 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d97505baea64d93538b16baf14ce7b8c1fbad746 ]
+[ Upstream commit b25120e1d5f2ebb3db00af557709041f47f7f3d0 ]
 
-This patch addresses an issue in the recovery flow of the UMR QP,
-ensuring tasks do not get stuck, as highlighted by the call trace [1].
+L2CAP_ECRED_CONN_RSP needs to respond DCID in the same order received as
+SCID but the order is reversed due to use of list_add which actually
+prepend channels to the list so the response is reversed:
 
-During recovery, before transitioning the QP to the RESET state, the
-software must wait for all outstanding WRs to complete.
+> ACL Data RX: Handle 16 flags 0x02 dlen 26
+      LE L2CAP: Enhanced Credit Connection Request (0x17) ident 2 len 18
+        PSM: 39 (0x0027)
+        MTU: 256
+        MPS: 251
+        Credits: 65535
+        Source CID: 116
+        Source CID: 117
+        Source CID: 118
+        Source CID: 119
+        Source CID: 120
+< ACL Data TX: Handle 16 flags 0x00 dlen 26
+      LE L2CAP: Enhanced Credit Connection Response (0x18) ident 2 len 18
+        MTU: 517
+        MPS: 247
+        Credits: 3
+        Result: Connection successful (0x0000)
+        Destination CID: 68
+        Destination CID: 67
+        Destination CID: 66
+        Destination CID: 65
+        Destination CID: 64
 
-Failing to do so can cause the firmware to skip sending some flushed
-CQEs with errors and simply discard them upon the RESET, as per the IB
-specification.
+Also make sure the response don't include channels that are not on
+BT_CONNECT2 since the chan->ident can be set to the same value as in the
+following trace:
 
-This race condition can result in lost CQEs and tasks becoming stuck.
+< ACL Data TX: Handle 16 flags 0x00 dlen 12
+      LE L2CAP: LE Flow Control Credit (0x16) ident 6 len 4
+        Source CID: 64
+        Credits: 1
+...
+> ACL Data RX: Handle 16 flags 0x02 dlen 18
+      LE L2CAP: Enhanced Credit Connection Request (0x17) ident 6 len 10
+        PSM: 39 (0x0027)
+        MTU: 517
+        MPS: 251
+        Credits: 255
+        Source CID: 70
+< ACL Data TX: Handle 16 flags 0x00 dlen 20
+      LE L2CAP: Enhanced Credit Connection Response (0x18) ident 6 len 12
+        MTU: 517
+        MPS: 247
+        Credits: 3
+        Result: Connection successful (0x0000)
+        Destination CID: 64
+        Destination CID: 68
 
-To resolve this, the patch sends a final WR which serves only as a
-barrier before moving the QP state to RESET.
-
-Once a CQE is received for that final WR, it guarantees that no
-outstanding WRs remain, making it safe to transition the QP to RESET and
-subsequently back to RTS, restoring proper functionality.
-
-Note:
-For the barrier WR, we simply reuse the failed and ready WR.
-Since the QP is in an error state, it will only receive
-IB_WC_WR_FLUSH_ERR. However, as it serves only as a barrier we don't
-care about its status.
-
-[1]
-INFO: task rdma_resource_l:1922 blocked for more than 120 seconds.
-Tainted: G        W          6.12.0-rc7+ #1626
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:rdma_resource_l state:D stack:0  pid:1922 tgid:1922  ppid:1369
-     flags:0x00004004
-Call Trace:
-<TASK>
-__schedule+0x420/0xd30
-schedule+0x47/0x130
-schedule_timeout+0x280/0x300
-? mark_held_locks+0x48/0x80
-? lockdep_hardirqs_on_prepare+0xe5/0x1a0
-wait_for_completion+0x75/0x130
-mlx5r_umr_post_send_wait+0x3c2/0x5b0 [mlx5_ib]
-? __pfx_mlx5r_umr_done+0x10/0x10 [mlx5_ib]
-mlx5r_umr_revoke_mr+0x93/0xc0 [mlx5_ib]
-__mlx5_ib_dereg_mr+0x299/0x520 [mlx5_ib]
-? _raw_spin_unlock_irq+0x24/0x40
-? wait_for_completion+0xfe/0x130
-? rdma_restrack_put+0x63/0xe0 [ib_core]
-ib_dereg_mr_user+0x5f/0x120 [ib_core]
-? lock_release+0xc6/0x280
-destroy_hw_idr_uobject+0x1d/0x60 [ib_uverbs]
-uverbs_destroy_uobject+0x58/0x1d0 [ib_uverbs]
-uobj_destroy+0x3f/0x70 [ib_uverbs]
-ib_uverbs_cmd_verbs+0x3e4/0xbb0 [ib_uverbs]
-? __pfx_uverbs_destroy_def_handler+0x10/0x10 [ib_uverbs]
-? __lock_acquire+0x64e/0x2080
-? mark_held_locks+0x48/0x80
-? find_held_lock+0x2d/0xa0
-? lock_acquire+0xc1/0x2f0
-? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
-? __fget_files+0xc3/0x1b0
-ib_uverbs_ioctl+0xe7/0x170 [ib_uverbs]
-? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
-__x64_sys_ioctl+0x1b0/0xa70
-do_syscall_64+0x6b/0x140
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f99c918b17b
-RSP: 002b:00007ffc766d0468 EFLAGS: 00000246 ORIG_RAX:
-     0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffc766d0578 RCX:
-     00007f99c918b17b
-RDX: 00007ffc766d0560 RSI: 00000000c0181b01 RDI:
-     0000000000000003
-RBP: 00007ffc766d0540 R08: 00007f99c8f99010 R09:
-     000000000000bd7e
-R10: 00007f99c94c1c70 R11: 0000000000000246 R12:
-     00007ffc766d0530
-R13: 000000000000001c R14: 0000000040246a80 R15:
-     0000000000000000
-</TASK>
-
-Fixes: 158e71bb69e3 ("RDMA/mlx5: Add a umr recovery flow")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/27b51b92ec42dfb09d8096fcbd51878f397ce6ec.1737290141.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Closes: https://github.com/bluez/bluez/issues/1094
+Fixes: 9aa9d9473f15 ("Bluetooth: L2CAP: Fix responding with wrong PDU type")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/umr.c | 83 +++++++++++++++++++++-----------
- 1 file changed, 56 insertions(+), 27 deletions(-)
+ net/bluetooth/l2cap_core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/umr.c b/drivers/infiniband/hw/mlx5/umr.c
-index 887fd6fa3ba93..793f3c5c4d012 100644
---- a/drivers/infiniband/hw/mlx5/umr.c
-+++ b/drivers/infiniband/hw/mlx5/umr.c
-@@ -231,30 +231,6 @@ void mlx5r_umr_cleanup(struct mlx5_ib_dev *dev)
- 	ib_dealloc_pd(dev->umrc.pd);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index acb148759bd04..304ebb31cebba 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -636,7 +636,8 @@ void __l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan)
+ 	    test_bit(FLAG_HOLD_HCI_CONN, &chan->flags))
+ 		hci_conn_hold(conn->hcon);
+ 
+-	list_add(&chan->list, &conn->chan_l);
++	/* Append to the list since the order matters for ECRED */
++	list_add_tail(&chan->list, &conn->chan_l);
  }
  
--static int mlx5r_umr_recover(struct mlx5_ib_dev *dev)
--{
--	struct umr_common *umrc = &dev->umrc;
--	struct ib_qp_attr attr;
--	int err;
--
--	attr.qp_state = IB_QPS_RESET;
--	err = ib_modify_qp(umrc->qp, &attr, IB_QP_STATE);
--	if (err) {
--		mlx5_ib_dbg(dev, "Couldn't modify UMR QP\n");
--		goto err;
--	}
--
--	err = mlx5r_umr_qp_rst2rts(dev, umrc->qp);
--	if (err)
--		goto err;
--
--	umrc->state = MLX5_UMR_STATE_ACTIVE;
--	return 0;
--
--err:
--	umrc->state = MLX5_UMR_STATE_ERR;
--	return err;
--}
- 
- static int mlx5r_umr_post_send(struct ib_qp *ibqp, u32 mkey, struct ib_cqe *cqe,
- 			       struct mlx5r_umr_wqe *wqe, bool with_data)
-@@ -302,6 +278,61 @@ static int mlx5r_umr_post_send(struct ib_qp *ibqp, u32 mkey, struct ib_cqe *cqe,
- 	return err;
- }
- 
-+static int mlx5r_umr_recover(struct mlx5_ib_dev *dev, u32 mkey,
-+			     struct mlx5r_umr_context *umr_context,
-+			     struct mlx5r_umr_wqe *wqe, bool with_data)
-+{
-+	struct umr_common *umrc = &dev->umrc;
-+	struct ib_qp_attr attr;
-+	int err;
-+
-+	mutex_lock(&umrc->lock);
-+	/* Preventing any further WRs to be sent now */
-+	if (umrc->state != MLX5_UMR_STATE_RECOVER) {
-+		mlx5_ib_warn(dev, "UMR recovery encountered an unexpected state=%d\n",
-+			     umrc->state);
-+		umrc->state = MLX5_UMR_STATE_RECOVER;
-+	}
-+	mutex_unlock(&umrc->lock);
-+
-+	/* Sending a final/barrier WR (the failed one) and wait for its completion.
-+	 * This will ensure that all the previous WRs got a completion before
-+	 * we set the QP state to RESET.
-+	 */
-+	err = mlx5r_umr_post_send(umrc->qp, mkey, &umr_context->cqe, wqe,
-+				  with_data);
-+	if (err) {
-+		mlx5_ib_warn(dev, "UMR recovery post send failed, err %d\n", err);
-+		goto err;
-+	}
-+
-+	/* Since the QP is in an error state, it will only receive
-+	 * IB_WC_WR_FLUSH_ERR. However, as it serves only as a barrier
-+	 * we don't care about its status.
-+	 */
-+	wait_for_completion(&umr_context->done);
-+
-+	attr.qp_state = IB_QPS_RESET;
-+	err = ib_modify_qp(umrc->qp, &attr, IB_QP_STATE);
-+	if (err) {
-+		mlx5_ib_warn(dev, "Couldn't modify UMR QP to RESET, err=%d\n", err);
-+		goto err;
-+	}
-+
-+	err = mlx5r_umr_qp_rst2rts(dev, umrc->qp);
-+	if (err) {
-+		mlx5_ib_warn(dev, "Couldn't modify UMR QP to RTS, err=%d\n", err);
-+		goto err;
-+	}
-+
-+	umrc->state = MLX5_UMR_STATE_ACTIVE;
-+	return 0;
-+
-+err:
-+	umrc->state = MLX5_UMR_STATE_ERR;
-+	return err;
-+}
-+
- static void mlx5r_umr_done(struct ib_cq *cq, struct ib_wc *wc)
+ void l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan)
+@@ -3774,7 +3775,11 @@ static void l2cap_ecred_rsp_defer(struct l2cap_chan *chan, void *data)
  {
- 	struct mlx5_ib_umr_context *context =
-@@ -366,9 +397,7 @@ static int mlx5r_umr_post_send_wait(struct mlx5_ib_dev *dev, u32 mkey,
- 		mlx5_ib_warn(dev,
- 			"reg umr failed (%u). Trying to recover and resubmit the flushed WQEs, mkey = %u\n",
- 			umr_context.status, mkey);
--		mutex_lock(&umrc->lock);
--		err = mlx5r_umr_recover(dev);
--		mutex_unlock(&umrc->lock);
-+		err = mlx5r_umr_recover(dev, mkey, &umr_context, wqe, with_data);
- 		if (err)
- 			mlx5_ib_warn(dev, "couldn't recover UMR, err %d\n",
- 				     err);
+ 	struct l2cap_ecred_rsp_data *rsp = data;
+ 
+-	if (test_bit(FLAG_ECRED_CONN_REQ_SENT, &chan->flags))
++	/* Check if channel for outgoing connection or if it wasn't deferred
++	 * since in those cases it must be skipped.
++	 */
++	if (test_bit(FLAG_ECRED_CONN_REQ_SENT, &chan->flags) ||
++	    !test_and_clear_bit(FLAG_DEFER_SETUP, &chan->flags))
+ 		return;
+ 
+ 	/* Reset ident so only one response is sent */
 -- 
 2.39.5
 
