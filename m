@@ -1,74 +1,56 @@
-Return-Path: <stable+bounces-120622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059C0A5078C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BE8A50947
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E4EA3A7D37
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AADD3A4C8A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4382512EB;
-	Wed,  5 Mar 2025 17:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F563245010;
+	Wed,  5 Mar 2025 18:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccXFIVh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkSATIvk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C731C6FFE;
-	Wed,  5 Mar 2025 17:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C13A250BF3;
+	Wed,  5 Mar 2025 18:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197494; cv=none; b=sf494lFG57a84BXWmRGyyWAEjshU120NahyhUjbk9zOe1vT1KbUOeEhVbTMrXS6S7gwAEVp4g+ymkABl3RK+JTASKVPhgxsijF8Sw7+Zkgs8ORLoyBMzdbP11s0C9vE6dvKvt/E/q2o6SGtGNo6e1bq3MaTyuH9w241/wZl4muE=
+	t=1741198579; cv=none; b=Hb4tqhmoRp6AHgRV8XPv+nFyUMPl7Ie5vUisHiuQGajHfc7iww3gXM4HsNp0nyPuXKRZbAG9brru5t1k6mNMt7pfwiURIhnSeZbTXikWw8DObm25HKesiqXurqWFvCZTnbRDyGKFcpMe2CgwGEIhFvgdOkgi4RhPCksDDGMsQ3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197494; c=relaxed/simple;
-	bh=/6xHPLL6GhXalpIRi3UgVjQ+8XkBGM2Q/FIQre3NnhY=;
+	s=arc-20240116; t=1741198579; c=relaxed/simple;
+	bh=WTRHrNmNTRAXvK0TZBZp+n+T8N/+lodT2uaGcfSrF3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COiSOGAfoD6CxUhCXsoOaJAyfkDTIb7+0GEwLHgaXoU/kKJF4p3VcVNYZOzph11RwWgMSS4jU1OUNB5hHamCkOdyv72wKCjOkVqhBaHCgf4bh1WR4qz0bqkfuXJ9khAZlPsKRGEqVsRfGfy2xYEmiZ3qUAeKz59AN/m0uWU2c+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccXFIVh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD9BC4CED1;
-	Wed,  5 Mar 2025 17:58:13 +0000 (UTC)
+	 MIME-Version; b=nft8eJ7najI1ueiwKE/RhSOtHHGGoBbnrFgcLYngxZMYAq/T5th1IpVcM7+GSrZ2LB4JGRO0RlXvl+NvRtcHokw6fp5GMw2GP/LdLDzCmvTBOviZ7DoqT3pG0zfbamo4UFkdbvb+uUli/2SBSixYTP++9zqBYQhVa2+FR1IWDKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkSATIvk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CD7C4CED1;
+	Wed,  5 Mar 2025 18:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197493;
-	bh=/6xHPLL6GhXalpIRi3UgVjQ+8XkBGM2Q/FIQre3NnhY=;
+	s=korg; t=1741198578;
+	bh=WTRHrNmNTRAXvK0TZBZp+n+T8N/+lodT2uaGcfSrF3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccXFIVh48eiBCWqpU+6gEsuWw7UWwZknfNWHJZ924RvmY4kw3/FnV5KYhnr/KarsS
-	 4MeCoEwqC1nUg4PKI8Oodpxrk8HzVSmrK03hL1EuYxmicUhsizfhptgPrzfYMOu16Q
-	 jcX4KRP3PIKfCWDg5feWUkXxSRV8YeJtZz6zpikI=
+	b=VkSATIvkbrQVPGrENFR1HsMbbBQ7bh486Wc+fQVOpi0QNGY8P0vPFkoAGboDh2JWe
+	 3aIbgxzV5Z/VWVO1y1Zh1dYnhjoiVe5qDwMCwOZ+WUsWGnqxrtol3i7yS/byKfHywC
+	 H5ErQY5OwIbV0Ul8PWNpgvgm2VhL90l5v0nha330=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/176] mm: Dont pin ZERO_PAGE in pin_user_pages()
+Subject: [PATCH 6.13 076/157] phy: stm32: Fix constant-value overflow assertion
 Date: Wed,  5 Mar 2025 18:48:32 +0100
-Message-ID: <20250305174511.186748725@linuxfoundation.org>
+Message-ID: <20250305174508.361465281@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,206 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Christian Bruel <christian.bruel@foss.st.com>
 
-[ Upstream commit c8070b78751955e59b42457b974bea4a4fe00187 ]
+[ Upstream commit fd75f371f3a1b04a33d2e750363d6ad76abf734e ]
 
-Make pin_user_pages*() leave a ZERO_PAGE unpinned if it extracts a pointer
-to it from the page tables and make unpin_user_page*() correspondingly
-ignore a ZERO_PAGE when unpinning.  We don't want to risk overrunning a
-zero page's refcount as we're only allowed ~2 million pins on it -
-something that userspace can conceivably trigger.
+Rework the workaround as the lookup tables always fits into the bitfield,
+and the default values are defined by the hardware and cannot be 0:
 
-Add a pair of functions to test whether a page or a folio is a ZERO_PAGE.
+Guard against false positive with a WARN_ON check to make the compiler
+happy: The offset range is pre-checked against the sorted imp_lookup_table
+values and overflow should not happen and would be caught by a warning and
+return in error.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Christoph Hellwig <hch@infradead.org>
-cc: David Hildenbrand <david@redhat.com>
-cc: Lorenzo Stoakes <lstoakes@gmail.com>
-cc: Andrew Morton <akpm@linux-foundation.org>
-cc: Jens Axboe <axboe@kernel.dk>
-cc: Al Viro <viro@zeniv.linux.org.uk>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Jan Kara <jack@suse.cz>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Jason Gunthorpe <jgg@nvidia.com>
-cc: Logan Gunthorpe <logang@deltatee.com>
-cc: Hillf Danton <hdanton@sina.com>
-cc: Christian Brauner <brauner@kernel.org>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-block@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-cc: linux-mm@kvack.org
-Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20230526214142.958751-2-dhowells@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: bddf10d26e6e ("uprobes: Reject the shared zeropage in uprobe_write_opcode()")
+Also guard against a true positive found during the max_vswing lookup, as a
+max vswing value can be 802000 or 803000 microvolt depending on the current
+impedance. Therefore set the default impedence index.
+
+Fixes: 2de679ecd724 ("phy: stm32: work around constant-value overflow assertion")
+Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
+Link: https://lore.kernel.org/r/20250210103515.2598377-1-christian.bruel@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/core-api/pin_user_pages.rst |  6 +++++
- include/linux/mm.h                        | 26 +++++++++++++++++--
- mm/gup.c                                  | 31 ++++++++++++++++++++++-
- 3 files changed, 60 insertions(+), 3 deletions(-)
+ drivers/phy/st/phy-stm32-combophy.c | 38 ++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 20 deletions(-)
 
-diff --git a/Documentation/core-api/pin_user_pages.rst b/Documentation/core-api/pin_user_pages.rst
-index b18416f4500fe..7995ce2b9676a 100644
---- a/Documentation/core-api/pin_user_pages.rst
-+++ b/Documentation/core-api/pin_user_pages.rst
-@@ -113,6 +113,12 @@ pages:
- This also leads to limitations: there are only 31-10==21 bits available for a
- counter that increments 10 bits at a time.
+diff --git a/drivers/phy/st/phy-stm32-combophy.c b/drivers/phy/st/phy-stm32-combophy.c
+index 49e9fa90a6819..607b4d607eb5e 100644
+--- a/drivers/phy/st/phy-stm32-combophy.c
++++ b/drivers/phy/st/phy-stm32-combophy.c
+@@ -111,6 +111,7 @@ static const struct clk_impedance imp_lookup[] = {
+ 	{ 4204000, { 511000, 609000, 706000, 802000 } },
+ 	{ 3999000, { 571000, 648000, 726000, 803000 } }
+ };
++#define DEFAULT_IMP_INDEX 3 /* Default impedance is 50 Ohm */
  
-+* Because of that limitation, special handling is applied to the zero pages
-+  when using FOLL_PIN.  We only pretend to pin a zero page - we don't alter its
-+  refcount or pincount at all (it is permanent, so there's no need).  The
-+  unpinning functions also don't do anything to a zero page.  This is
-+  transparent to the caller.
-+
- * Callers must specifically request "dma-pinned tracking of pages". In other
-   words, just calling get_user_pages() will not suffice; a new set of functions,
-   pin_user_page() and related, must be used.
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 971186f0b7b07..03357c196e0ba 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1610,6 +1610,28 @@ static inline bool page_needs_cow_for_dma(struct vm_area_struct *vma,
- 	return page_maybe_dma_pinned(page);
- }
- 
-+/**
-+ * is_zero_page - Query if a page is a zero page
-+ * @page: The page to query
-+ *
-+ * This returns true if @page is one of the permanent zero pages.
-+ */
-+static inline bool is_zero_page(const struct page *page)
-+{
-+	return is_zero_pfn(page_to_pfn(page));
-+}
-+
-+/**
-+ * is_zero_folio - Query if a folio is a zero page
-+ * @folio: The folio to query
-+ *
-+ * This returns true if @folio is one of the permanent zero pages.
-+ */
-+static inline bool is_zero_folio(const struct folio *folio)
-+{
-+	return is_zero_page(&folio->page);
-+}
-+
- /* MIGRATE_CMA and ZONE_MOVABLE do not allow pin pages */
- #ifdef CONFIG_MIGRATION
- static inline bool is_longterm_pinnable_page(struct page *page)
-@@ -1620,8 +1642,8 @@ static inline bool is_longterm_pinnable_page(struct page *page)
- 	if (mt == MIGRATE_CMA || mt == MIGRATE_ISOLATE)
- 		return false;
- #endif
--	/* The zero page may always be pinned */
--	if (is_zero_pfn(page_to_pfn(page)))
-+	/* The zero page can be "pinned" but gets special handling. */
-+	if (is_zero_page(page))
- 		return true;
- 
- 	/* Coherent device memory must always allow eviction. */
-diff --git a/mm/gup.c b/mm/gup.c
-index e31d00443c4e6..b1daaa9d89aab 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -51,7 +51,8 @@ static inline void sanity_check_pinned_pages(struct page **pages,
- 		struct page *page = *pages;
- 		struct folio *folio = page_folio(page);
- 
--		if (!folio_test_anon(folio))
-+		if (is_zero_page(page) ||
-+		    !folio_test_anon(folio))
- 			continue;
- 		if (!folio_test_large(folio) || folio_test_hugetlb(folio))
- 			VM_BUG_ON_PAGE(!PageAnonExclusive(&folio->page), page);
-@@ -128,6 +129,13 @@ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags)
- 	else if (flags & FOLL_PIN) {
- 		struct folio *folio;
- 
-+		/*
-+		 * Don't take a pin on the zero page - it's not going anywhere
-+		 * and it is used in a *lot* of places.
-+		 */
-+		if (is_zero_page(page))
-+			return page_folio(page);
-+
- 		/*
- 		 * Can't do FOLL_LONGTERM + FOLL_PIN gup fast path if not in a
- 		 * right zone, so fail and let the caller fall back to the slow
-@@ -177,6 +185,8 @@ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags)
- static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
+ static int stm32_impedance_tune(struct stm32_combophy *combophy)
  {
- 	if (flags & FOLL_PIN) {
-+		if (is_zero_folio(folio))
-+			return;
- 		node_stat_mod_folio(folio, NR_FOLL_PIN_RELEASED, refs);
- 		if (folio_test_large(folio))
- 			atomic_sub(refs, folio_pincount_ptr(folio));
-@@ -217,6 +227,13 @@ bool __must_check try_grab_page(struct page *page, unsigned int flags)
- 	if (flags & FOLL_GET)
- 		folio_ref_inc(folio);
- 	else if (flags & FOLL_PIN) {
-+		/*
-+		 * Don't take a pin on the zero page - it's not going anywhere
-+		 * and it is used in a *lot* of places.
-+		 */
-+		if (is_zero_page(page))
-+			return 0;
+@@ -119,10 +120,9 @@ static int stm32_impedance_tune(struct stm32_combophy *combophy)
+ 	u8 imp_of, vswing_of;
+ 	u32 max_imp = imp_lookup[0].microohm;
+ 	u32 min_imp = imp_lookup[imp_size - 1].microohm;
+-	u32 max_vswing = imp_lookup[imp_size - 1].vswing[vswing_size - 1];
++	u32 max_vswing;
+ 	u32 min_vswing = imp_lookup[0].vswing[0];
+ 	u32 val;
+-	u32 regval;
+ 
+ 	if (!of_property_read_u32(combophy->dev->of_node, "st,output-micro-ohms", &val)) {
+ 		if (val < min_imp || val > max_imp) {
+@@ -130,45 +130,43 @@ static int stm32_impedance_tune(struct stm32_combophy *combophy)
+ 			return -EINVAL;
+ 		}
+ 
+-		regval = 0;
+-		for (imp_of = 0; imp_of < ARRAY_SIZE(imp_lookup); imp_of++) {
+-			if (imp_lookup[imp_of].microohm <= val) {
+-				regval = FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_OHM, imp_of);
++		for (imp_of = 0; imp_of < ARRAY_SIZE(imp_lookup); imp_of++)
++			if (imp_lookup[imp_of].microohm <= val)
+ 				break;
+-			}
+-		}
 +
- 		/*
- 		 * Similar to try_grab_folio(): be sure to *also*
- 		 * increment the normal page refcount field at least once,
-@@ -3149,6 +3166,9 @@ EXPORT_SYMBOL_GPL(get_user_pages_fast);
-  *
-  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
-  * see Documentation/core-api/pin_user_pages.rst for further details.
-+ *
-+ * Note that if a zero_page is amongst the returned pages, it will not have
-+ * pins in it and unpin_user_page() will not remove pins from it.
-  */
- int pin_user_pages_fast(unsigned long start, int nr_pages,
- 			unsigned int gup_flags, struct page **pages)
-@@ -3225,6 +3245,9 @@ EXPORT_SYMBOL_GPL(pin_user_pages_fast_only);
-  *
-  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
-  * see Documentation/core-api/pin_user_pages.rst for details.
-+ *
-+ * Note that if a zero_page is amongst the returned pages, it will not have
-+ * pins in it and unpin_user_page*() will not remove pins from it.
-  */
- long pin_user_pages_remote(struct mm_struct *mm,
- 			   unsigned long start, unsigned long nr_pages,
-@@ -3260,6 +3283,9 @@ EXPORT_SYMBOL(pin_user_pages_remote);
-  *
-  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
-  * see Documentation/core-api/pin_user_pages.rst for details.
-+ *
-+ * Note that if a zero_page is amongst the returned pages, it will not have
-+ * pins in it and unpin_user_page*() will not remove pins from it.
-  */
- long pin_user_pages(unsigned long start, unsigned long nr_pages,
- 		    unsigned int gup_flags, struct page **pages,
-@@ -3282,6 +3308,9 @@ EXPORT_SYMBOL(pin_user_pages);
-  * pin_user_pages_unlocked() is the FOLL_PIN variant of
-  * get_user_pages_unlocked(). Behavior is the same, except that this one sets
-  * FOLL_PIN and rejects FOLL_GET.
-+ *
-+ * Note that if a zero_page is amongst the returned pages, it will not have
-+ * pins in it and unpin_user_page*() will not remove pins from it.
-  */
- long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
- 			     struct page **pages, unsigned int gup_flags)
++		if (WARN_ON(imp_of == ARRAY_SIZE(imp_lookup)))
++			return -EINVAL;
+ 
+ 		dev_dbg(combophy->dev, "Set %u micro-ohms output impedance\n",
+ 			imp_lookup[imp_of].microohm);
+ 
+ 		regmap_update_bits(combophy->regmap, SYSCFG_PCIEPRGCR,
+ 				   STM32MP25_PCIEPRG_IMPCTRL_OHM,
+-				   regval);
+-	} else {
+-		regmap_read(combophy->regmap, SYSCFG_PCIEPRGCR, &val);
+-		imp_of = FIELD_GET(STM32MP25_PCIEPRG_IMPCTRL_OHM, val);
+-	}
++				   FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_OHM, imp_of));
++	} else
++		imp_of = DEFAULT_IMP_INDEX;
+ 
+ 	if (!of_property_read_u32(combophy->dev->of_node, "st,output-vswing-microvolt", &val)) {
++		max_vswing = imp_lookup[imp_of].vswing[vswing_size - 1];
++
+ 		if (val < min_vswing || val > max_vswing) {
+ 			dev_err(combophy->dev, "Invalid value %u for output vswing\n", val);
+ 			return -EINVAL;
+ 		}
+ 
+-		regval = 0;
+-		for (vswing_of = 0; vswing_of < ARRAY_SIZE(imp_lookup[imp_of].vswing); vswing_of++) {
+-			if (imp_lookup[imp_of].vswing[vswing_of] >= val) {
+-				regval = FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_VSWING, vswing_of);
++		for (vswing_of = 0; vswing_of < ARRAY_SIZE(imp_lookup[imp_of].vswing); vswing_of++)
++			if (imp_lookup[imp_of].vswing[vswing_of] >= val)
+ 				break;
+-			}
+-		}
++
++		if (WARN_ON(vswing_of == ARRAY_SIZE(imp_lookup[imp_of].vswing)))
++			return -EINVAL;
+ 
+ 		dev_dbg(combophy->dev, "Set %u microvolt swing\n",
+ 			 imp_lookup[imp_of].vswing[vswing_of]);
+ 
+ 		regmap_update_bits(combophy->regmap, SYSCFG_PCIEPRGCR,
+ 				   STM32MP25_PCIEPRG_IMPCTRL_VSWING,
+-				   regval);
++				   FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_VSWING, vswing_of));
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
