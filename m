@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57B5A50834
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE77A508BC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BDA7188C68E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2236B3A38BF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436E425291B;
-	Wed,  5 Mar 2025 18:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F292528E0;
+	Wed,  5 Mar 2025 18:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8Wbd6Vu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwVbJA1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F832517B3;
-	Wed,  5 Mar 2025 18:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C2C2512ED;
+	Wed,  5 Mar 2025 18:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197838; cv=none; b=Cv6fVFD73HXbfZcsbqt4/9KjInTKKkwVTlOft+5QjpsI0RAWDbvBhDyPgmThn0fqqxRnO2dWdOhAk2H/HlosaY3oqsnAmae2AcJ8nYjaplz66+19gxR7HHML2IJ9qPDG/CVwjRLk7MEnHWYCrR/+zw4KiVOmijqQ0t2NoybU9ig=
+	t=1741198234; cv=none; b=CTSCtBTw8Fg0mCC/kUKYlUUEHNusQ8mjA167yQLGX9O3uBOjaTqaWYDAEBEZDIeZjHqpJ4FdklOD/xmIa5RHCBM0ds/dJfhitGqHApdxfApH/oa/UvuFuqN1WIf6WnzcN5iI8ZWbRlOJ93vx2xXPeWnDAc2nqjs3ev5/z8zQ0gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197838; c=relaxed/simple;
-	bh=V8MbGjj1ecHFGg0QeLNsSbULT7I6lJJZ8gVhEDCEuqA=;
+	s=arc-20240116; t=1741198234; c=relaxed/simple;
+	bh=hDbi2n+j3r2i3D4/sJe457V2HtoknqFlmUjZ40Qbel4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOkwEt8SBesPFSDixde8L7E910Hnitl/wv2kUpov/4pzA8KqWCkSaBbjNHd6kY4Bz3b6PdJ4S21tKauOCKs7qzWyugolOEpH5rVB9YoTL0xIdar3Tg90foTLoEPRyw7zZd4NehisOJJO2ZVi3/ZRnNnW0YPmLbDkd8zQ8+LcbBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8Wbd6Vu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788FDC4CED1;
-	Wed,  5 Mar 2025 18:03:57 +0000 (UTC)
+	 MIME-Version; b=AkkS1V8HomsNlkTxBcJjuWiIdx8RMFHVNXkBho5xyJfAHtXoj7YUL+ofLWDySGwvjfQJK+vpAWg/L+rO1HU6bu2ekXo/I+8UOfmkn3QRezV7JI8gcK5a+dZS2CMWFPVuvu2l7jOYpVAnjo/jiDXv08NjTUSpMp3fUX0NoJbCIWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwVbJA1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3FDC4CEEA;
+	Wed,  5 Mar 2025 18:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197837;
-	bh=V8MbGjj1ecHFGg0QeLNsSbULT7I6lJJZ8gVhEDCEuqA=;
+	s=korg; t=1741198234;
+	bh=hDbi2n+j3r2i3D4/sJe457V2HtoknqFlmUjZ40Qbel4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8Wbd6VuS2oKLWLcLyILgNU0DW1XsZTgttVMZshPxWk66/UwkSTyxRIctlcyuNzOs
-	 ZWEl9xGLYVKr3SWkgJ4uUKbtCGSG/mvt/paPtlZUtA1EDH8FUxnlEdnPY+MinckT1N
-	 +SwKK/5Ih4y8kV7+U0D0mPF2TclVutyG8ZRWslQk=
+	b=GwVbJA1R9QNECGw++7YJQ7YOQIIYKIZ7yzjMNOzQEdNuCh2hK9+9gfKAfevQTIs0a
+	 2jdhb/uB3O8ipHz183hOYgrp/Q6nLbDUvR/4iV5q9Sj9NhKi2Im+SF1ZGZ4c8WHofB
+	 MAFrY17ryu/pfX9gAneGTPjRXUCi8v0d6cx+6mi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 6.6 118/142] x86/microcode: Clarify the late load logic
+	syzbot+d693c07c6f647e0388d3@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 108/150] usbnet: gl620a: fix endpoint checking in genelink_bind()
 Date: Wed,  5 Mar 2025 18:48:57 +0100
-Message-ID: <20250305174505.071514472@linuxfoundation.org>
+Message-ID: <20250305174508.152144511@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 6f059e634dcd0d725854514c94c114bbdd83950d upstream
+commit 1cf9631d836b289bd5490776551961c883ae8a4f upstream.
 
-reload_store() is way too complicated. Split the inner workings out and
-make the following enhancements:
+Syzbot reports [1] a warning in usb_submit_urb() triggered by
+inconsistencies between expected and actually present endpoints
+in gl620a driver. Since genelink_bind() does not properly
+verify whether specified eps are in fact provided by the device,
+in this case, an artificially manufactured one, one may get a
+mismatch.
 
- - Taint the kernel only when the microcode was actually updated. If. e.g.
-   the rendezvous fails, then nothing happened and there is no reason for
-   tainting.
+Fix the issue by resorting to a usbnet utility function
+usbnet_get_endpoints(), usually reserved for this very problem.
+Check for endpoints and return early before proceeding further if
+any are missing.
 
- - Return useful error codes
+[1] Syzbot report:
+usb 5-1: Manufacturer: syz
+usb 5-1: SerialNumber: syz
+usb 5-1: config 0 descriptor??
+gl620a 5-1:0.23 usb0: register 'gl620a' at usb-dummy_hcd.0-1, ...
+------------[ cut here ]------------
+usb 5-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 2 PID: 1841 at drivers/usb/core/urb.c:503 usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
+Modules linked in:
+CPU: 2 UID: 0 PID: 1841 Comm: kworker/2:2 Not tainted 6.12.0-syzkaller-07834-g06afb0f36106 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: mld mld_ifc_work
+RIP: 0010:usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
+...
+Call Trace:
+ <TASK>
+ usbnet_start_xmit+0x6be/0x2780 drivers/net/usb/usbnet.c:1467
+ __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5011 [inline]
+ xmit_one net/core/dev.c:3590 [inline]
+ dev_hard_start_xmit+0x9a/0x7b0 net/core/dev.c:3606
+ sch_direct_xmit+0x1ae/0xc30 net/sched/sch_generic.c:343
+ __dev_xmit_skb net/core/dev.c:3827 [inline]
+ __dev_queue_xmit+0x13d4/0x43e0 net/core/dev.c:4400
+ dev_queue_xmit include/linux/netdevice.h:3168 [inline]
+ neigh_resolve_output net/core/neighbour.c:1514 [inline]
+ neigh_resolve_output+0x5bc/0x950 net/core/neighbour.c:1494
+ neigh_output include/net/neighbour.h:539 [inline]
+ ip6_finish_output2+0xb1b/0x2070 net/ipv6/ip6_output.c:141
+ __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
+ ip6_finish_output+0x3f9/0x1360 net/ipv6/ip6_output.c:226
+ NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+ ip6_output+0x1f8/0x540 net/ipv6/ip6_output.c:247
+ dst_output include/net/dst.h:450 [inline]
+ NF_HOOK include/linux/netfilter.h:314 [inline]
+ NF_HOOK include/linux/netfilter.h:308 [inline]
+ mld_sendpack+0x9f0/0x11d0 net/ipv6/mcast.c:1819
+ mld_send_cr net/ipv6/mcast.c:2120 [inline]
+ mld_ifc_work+0x740/0xca0 net/ipv6/mcast.c:2651
+ process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/20231002115903.145048840@linutronix.de
+Reported-by: syzbot+d693c07c6f647e0388d3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d693c07c6f647e0388d3
+Fixes: 47ee3051c856 ("[PATCH] USB: usbnet (5/9) module for genesys gl620a cables")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250224172919.1220522-1-n.zhandarovich@fintech.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c |   41 ++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ drivers/net/usb/gl620a.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -362,11 +362,11 @@ static int microcode_reload_late(void)
- 		pr_info("Reload succeeded, microcode revision: 0x%x -> 0x%x\n",
- 			old, boot_cpu_data.microcode);
- 		microcode_check(&prev_info);
-+		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
- 	} else {
- 		pr_info("Reload failed, current microcode revision: 0x%x\n",
- 			boot_cpu_data.microcode);
- 	}
--
- 	return ret;
- }
- 
-@@ -399,40 +399,37 @@ static bool ensure_cpus_are_online(void)
- 	return true;
- }
- 
-+static int ucode_load_late_locked(void)
-+{
-+	if (!ensure_cpus_are_online())
-+		return -EBUSY;
-+
-+	switch (microcode_ops->request_microcode_fw(0, &microcode_pdev->dev)) {
-+	case UCODE_NEW:
-+		return microcode_reload_late();
-+	case UCODE_NFOUND:
-+		return -ENOENT;
-+	default:
-+		return -EBADFD;
-+	}
-+}
-+
- static ssize_t reload_store(struct device *dev,
- 			    struct device_attribute *attr,
- 			    const char *buf, size_t size)
+--- a/drivers/net/usb/gl620a.c
++++ b/drivers/net/usb/gl620a.c
+@@ -179,9 +179,7 @@ static int genelink_bind(struct usbnet *
  {
--	enum ucode_state tmp_ret = UCODE_OK;
--	int bsp = boot_cpu_data.cpu_index;
- 	unsigned long val;
--	ssize_t ret = 0;
-+	ssize_t ret;
- 
- 	ret = kstrtoul(buf, 0, &val);
- 	if (ret || val != 1)
- 		return -EINVAL;
- 
- 	cpus_read_lock();
--
--	if (!ensure_cpus_are_online()) {
--		ret = -EBUSY;
--		goto put;
--	}
--
--	tmp_ret = microcode_ops->request_microcode_fw(bsp, &microcode_pdev->dev);
--	if (tmp_ret != UCODE_NEW)
--		goto put;
--
--	ret = microcode_reload_late();
--put:
-+	ret = ucode_load_late_locked();
- 	cpus_read_unlock();
- 
--	if (ret == 0)
--		ret = size;
--
--	add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
--
--	return ret;
-+	return ret ? : size;
+ 	dev->hard_mtu = GL_RCV_BUF_SIZE;
+ 	dev->net->hard_header_len += 4;
+-	dev->in = usb_rcvbulkpipe(dev->udev, dev->driver_info->in);
+-	dev->out = usb_sndbulkpipe(dev->udev, dev->driver_info->out);
+-	return 0;
++	return usbnet_get_endpoints(dev, intf);
  }
  
- static DEVICE_ATTR_WO(reload);
+ static const struct driver_info	genelink_info = {
 
 
 
