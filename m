@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-120914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CF3A508F0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0D7A5079E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8DF3A3D15
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D7C2169A43
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A631C5D4E;
-	Wed,  5 Mar 2025 18:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743182517A6;
+	Wed,  5 Mar 2025 17:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dxyqrnp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MXUB3uD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4D1A5BB7;
-	Wed,  5 Mar 2025 18:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320E1250C07;
+	Wed,  5 Mar 2025 17:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198340; cv=none; b=OEVbA8g/8DcpCts7EAUgP1vFCRpHIr6N5DLNSoAxRISlgCXrxhR8wDa1IxKGv+RBP5J4zHs+CwpB4iuaFEyaVHGwJvo9vIPao4+7TEi8b4aiXpBvYrN+2ZfFH+xndMkzyXTUC+RGjCHEXyjgjqlmJzeIT5qae4DN189FsqejPdU=
+	t=1741197511; cv=none; b=bdfcrf+huV6XEJCYTbkH+3/eofzflso5iKHd32+61LzLkYPcxpqfEFukvfbGe+mI+2kBf7+ozyiHiVKw7ymDfeiPP0FfxV2Tf3zqKZA27jOq9p+WHVUyOAzrOxIwR/RxCgED955hEfhl/dz3txm56VEuIDa2NsDzhOqd27yTtaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198340; c=relaxed/simple;
-	bh=x+k2H1M8BQVKRyc4FzKnSOaKxoE318TsY9YoqlMkvWk=;
+	s=arc-20240116; t=1741197511; c=relaxed/simple;
+	bh=eNPLO9HWFuaF+e68h+R+YuhOnUWkCNgl9hQiCSJ4Zuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1GL5gbuyPZdCsMxJ0XWItHbk5nttmynOjks9QgROft/8pMKzDLuUZA7wmxviAH1S2PS/yXzOeTxzRrjwpxbKZqRFJEqevTDCoLrF0VAzk7KlkIJIYnaPIGQ6GmGO5JJiz3ZlDO/ARH/VJWxc3OTMAfBVEk14CIslSTvRp6s4/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dxyqrnp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5C8C4CED1;
-	Wed,  5 Mar 2025 18:12:19 +0000 (UTC)
+	 MIME-Version; b=c6WZOJST9ivSb5w+e/trp2GZUIz8u4NKD4m/IynI84VBFEKapFsSnWJEzIAqMR4icHy55ll8TAG7waQKbB0bFogO2ysGKFBhXuf89C48lnQZRZ6gVACrMe7RM+a7Xuk7Qd0LQPuGh/XSVz69nBBbEhqRcavGVQm/IUmc8K8r9gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MXUB3uD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC38FC4CED1;
+	Wed,  5 Mar 2025 17:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198340;
-	bh=x+k2H1M8BQVKRyc4FzKnSOaKxoE318TsY9YoqlMkvWk=;
+	s=korg; t=1741197511;
+	bh=eNPLO9HWFuaF+e68h+R+YuhOnUWkCNgl9hQiCSJ4Zuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dxyqrnp8RYMOcf+lV6JvUco2/kxWbGtzZOIQmxBQajvXoAKYWQ8M74SVHdolsgUyN
-	 AQ/Zj/zzoZvb9MN0NfPaw+i3yTI6Kp2sJMaml1MTBctFKJy/YNHubbwFTsZrSthM1z
-	 hzXMI+/+n3DkolDHu1t8JCUdXIkz2F7B3kHBgd8U=
+	b=2MXUB3uD//ZlxansqewTvXYAaM4WZ4/D5XVrZ8uZfT0bPYVDNt9P8EtN0KhDfyDm0
+	 bL2JuD687sfSmqDqeYw4ZKdmlSbT+YPdrPNqibc4xDUABmM5ohSHeVwLFIzw7u0Hr9
+	 fHPtifrAE7R0eBe+Xckd13ozcn2v4HTq44owcmCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 114/150] net: enetc: update UDP checksum when updating originTimestamp field
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	"Ubisectech Sirius" <bugreport@ubisectech.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 174/176] Squashfs: check the inode number is not the invalid value of zero
 Date: Wed,  5 Mar 2025 18:49:03 +0100
-Message-ID: <20250305174508.398559556@linuxfoundation.org>
+Message-ID: <20250305174512.422582645@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit bbcbc906ab7b5834c1219cd17a38d78dba904aa0 upstream.
+commit 9253c54e01b6505d348afbc02abaa4d9f8a01395 upstream.
 
-There is an issue with one-step timestamp based on UDP/IP. The peer will
-discard the sync packet because of the wrong UDP checksum. For ENETC v1,
-the software needs to update the UDP checksum when updating the
-originTimestamp field, so that the hardware can correctly update the UDP
-checksum when updating the correction field. Otherwise, the UDP checksum
-in the sync packet will be wrong.
+Syskiller has produced an out of bounds access in fill_meta_index().
 
-Fixes: 7294380c5211 ("enetc: support PTP Sync packet one-step timestamping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-6-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+That out of bounds access is ultimately caused because the inode
+has an inode number with the invalid value of zero, which was not checked.
+
+The reason this causes the out of bounds access is due to following
+sequence of events:
+
+1. Fill_meta_index() is called to allocate (via empty_meta_index())
+   and fill a metadata index.  It however suffers a data read error
+   and aborts, invalidating the newly returned empty metadata index.
+   It does this by setting the inode number of the index to zero,
+   which means unused (zero is not a valid inode number).
+
+2. When fill_meta_index() is subsequently called again on another
+   read operation, locate_meta_index() returns the previous index
+   because it matches the inode number of 0.  Because this index
+   has been returned it is expected to have been filled, and because
+   it hasn't been, an out of bounds access is performed.
+
+This patch adds a sanity check which checks that the inode number
+is not zero when the inode is created and returns -EINVAL if it is.
+
+[phillip@squashfs.org.uk: whitespace fix]
+  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
+Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   41 ++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 7 deletions(-)
+ fs/squashfs/inode.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -253,9 +253,11 @@ static int enetc_map_tx_buffs(struct ene
- 		}
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
+ 	gid_t i_gid;
+ 	int err;
  
- 		if (do_onestep_tstamp) {
--			u32 lo, hi, val;
--			u64 sec, nsec;
-+			__be32 new_sec_l, new_nsec;
-+			u32 lo, hi, nsec, val;
-+			__be16 new_sec_h;
- 			u8 *data;
-+			u64 sec;
++	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
++	if (inode->i_ino == 0)
++		return -EINVAL;
++
+ 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
+ 	if (err)
+ 		return err;
+@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
  
- 			lo = enetc_rd_hot(hw, ENETC_SICTR0);
- 			hi = enetc_rd_hot(hw, ENETC_SICTR1);
-@@ -269,13 +271,38 @@ static int enetc_map_tx_buffs(struct ene
- 			/* Update originTimestamp field of Sync packet
- 			 * - 48 bits seconds field
- 			 * - 32 bits nanseconds field
-+			 *
-+			 * In addition, the UDP checksum needs to be updated
-+			 * by software after updating originTimestamp field,
-+			 * otherwise the hardware will calculate the wrong
-+			 * checksum when updating the correction field and
-+			 * update it to the packet.
- 			 */
- 			data = skb_mac_header(skb);
--			*(__be16 *)(data + offset2) =
--				htons((sec >> 32) & 0xffff);
--			*(__be32 *)(data + offset2 + 2) =
--				htonl(sec & 0xffffffff);
--			*(__be32 *)(data + offset2 + 6) = htonl(nsec);
-+			new_sec_h = htons((sec >> 32) & 0xffff);
-+			new_sec_l = htonl(sec & 0xffffffff);
-+			new_nsec = htonl(nsec);
-+			if (udp) {
-+				struct udphdr *uh = udp_hdr(skb);
-+				__be32 old_sec_l, old_nsec;
-+				__be16 old_sec_h;
-+
-+				old_sec_h = *(__be16 *)(data + offset2);
-+				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
-+							 new_sec_h, false);
-+
-+				old_sec_l = *(__be32 *)(data + offset2 + 2);
-+				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
-+							 new_sec_l, false);
-+
-+				old_nsec = *(__be32 *)(data + offset2 + 6);
-+				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
-+							 new_nsec, false);
-+			}
-+
-+			*(__be16 *)(data + offset2) = new_sec_h;
-+			*(__be32 *)(data + offset2 + 2) = new_sec_l;
-+			*(__be32 *)(data + offset2 + 6) = new_nsec;
- 
- 			/* Configure single-step register */
- 			val = ENETC_PM0_SINGLE_STEP_EN;
+ 	i_uid_write(inode, i_uid);
+ 	i_gid_write(inode, i_gid);
+-	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
+ 	inode->i_mtime.tv_sec = le32_to_cpu(sqsh_ino->mtime);
+ 	inode->i_atime.tv_sec = inode->i_mtime.tv_sec;
+ 	inode->i_ctime.tv_sec = inode->i_mtime.tv_sec;
 
 
 
