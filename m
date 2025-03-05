@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A122A50905
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FBCA509C9
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 441C318858C1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8086C189776C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BEE2512C9;
-	Wed,  5 Mar 2025 18:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8BB253F3D;
+	Wed,  5 Mar 2025 18:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAMjb6bL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x04DUYle"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36F31A5BB7;
-	Wed,  5 Mar 2025 18:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A616253F29;
+	Wed,  5 Mar 2025 18:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198346; cv=none; b=PnT0fgmW0cQnfoRo6U4uhxdmZPZbtLzRo7hACm4AsfXcI7Q9SLIL0xHqlH7BAAc15FUEz++Byp6h4RF2lybsCS3lFp3lUbjx+/UTrmaPtOlPmgrF6hck8M4khDGzip0J5zw7fb/1Y5L5APrjCMOAyUmLFqYl9cuh6Eos/GiNK7I=
+	t=1741198674; cv=none; b=PfXUok77GK4AvYwUc2T3qCGNSREpl6wqpvmifcb+mtRQYfvXu4KCJVPQqtUXyd3xGCu2e8VOl+e0NbVbIJl8WoF0HRuSwa9zv029yRXniuAMuQ9bDqXpuCCZklsqgJpygw0XSQagF0bXP2Z7XfNavURpvI77diAU7yRrRH4ueek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198346; c=relaxed/simple;
-	bh=2IJsbip9uQxDckkuMe7i8KlAeVosVSYa8IC0/BCElGw=;
+	s=arc-20240116; t=1741198674; c=relaxed/simple;
+	bh=aIF810AYyM4TKpfnfxugQ472Qo9W6xw7wuYDa8k7Yjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NyjaO0+fb5/U+QQCl9Mf80j//FcxF3MA5qfh1Yv6Op3QYkG+8OsaaCqjWDJSVHmw0pny2U1pXMLERHqyZHPBn4YBAn8MONmFW1chBfv9RYJkoqfSbqVxULkTO4vioTs94FR9QEaoUVF9yIrBAbzwFyV/qccIzSwcqcwyjjCm6S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAMjb6bL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA8FC4CED1;
-	Wed,  5 Mar 2025 18:12:25 +0000 (UTC)
+	 MIME-Version; b=SZJ4OCYH6BOhQV2m2681ksSR6f/WWW9RhQvZq/PxjbeJdYmO+vlio3wZDB33vOnw1XM8iDIUuWq7wSkA7r3ks4jc/W8WGa6y3uZoowNhRy7uDWse0zIU4FUmosEh4ujVBAwxyMWozfzkSsFVx+iE0JeBzk/IM09vulJbZ96UsU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x04DUYle; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB84C4CEE0;
+	Wed,  5 Mar 2025 18:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198345;
-	bh=2IJsbip9uQxDckkuMe7i8KlAeVosVSYa8IC0/BCElGw=;
+	s=korg; t=1741198674;
+	bh=aIF810AYyM4TKpfnfxugQ472Qo9W6xw7wuYDa8k7Yjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAMjb6bLQjnajF2jNE9AMwagJPjZJQXDImJM/bSBC92To51TGj+7iTEtkSv5oxk0W
-	 bfHs1vOJDV2o53Rq/ob0riB3Aveq0gZfGvdzzyiZ3ai7AscCSElgeuKQSf2Eyg4SeL
-	 JWv7RrsfcBmVnir7HA495O3+sTB10C3ExikTdn/Y=
+	b=x04DUYle1EO49GPh+j4UrLG+6gUwpFK/g+BiKWW+g+kA5JYddAxeEG+HpqK6sLD98
+	 3RIJf7B/znU0OMc3t2T4bvB80F+guFb4G7RP7/OlYg/OZu+/wC5K2zxWWcLCXjJs/W
+	 /lAP90YN8RvXxbO4ZNSkzp5MYOtv5q9SCxhDQIcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 116/150] net: enetc: fix the off-by-one issue in enetc_map_tx_tso_buffs()
+	Sanket Goswami <Sanket.Goswami@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.13 109/157] i2c: amd-asf: Fix EOI register write to enable successive interrupts
 Date: Wed,  5 Mar 2025 18:49:05 +0100
-Message-ID: <20250305174508.479675468@linuxfoundation.org>
+Message-ID: <20250305174509.691948430@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-commit 249df695c3ffe8c8d36d46c2580ce72410976f96 upstream.
+commit 9f3c507cb44498067c980674139bcad56e582ee6 upstream.
 
-There is an off-by-one issue for the err_chained_bd path, it will free
-one more tx_swbd than expected. But there is no such issue for the
-err_map_data path. To fix this off-by-one issue and make the two error
-handling consistent, the increment of 'i' and 'count' remain in sync
-and enetc_unwind_tx_frame() is called for error handling.
+The commit b1f8921dfbaa
+("i2c: amd-asf: Clear remote IRR bit to get successive interrupt")
+introduced a method to enable successive interrupts but inadvertently
+omitted the necessary write to the EOI register, resulting in a failure to
+receive successive interrupts.
 
-Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-Cc: stable@vger.kernel.org
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-9-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by adding the required write to the EOI register.
+
+Fixes: b1f8921dfbaa ("i2c: amd-asf: Clear remote IRR bit to get successive interrupt")
+Cc: stable@vger.kernel.org # v6.13+
+Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
+Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Fixes: 9b25419ad397 ("i2c: amd-asf: Add routine to handle the ASF slave process")
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250219135747.3251182-1-Shyam-sundar.S-k@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/i2c/busses/i2c-amd-asf-plat.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -590,8 +590,13 @@ static int enetc_map_tx_tso_buffs(struct
- 			err = enetc_map_tx_tso_data(tx_ring, skb, tx_swbd, txbd,
- 						    tso.data, size,
- 						    size == data_len);
--			if (err)
-+			if (err) {
-+				if (i == 0)
-+					i = tx_ring->bd_count;
-+				i--;
-+
- 				goto err_map_data;
-+			}
+--- a/drivers/i2c/busses/i2c-amd-asf-plat.c
++++ b/drivers/i2c/busses/i2c-amd-asf-plat.c
+@@ -293,6 +293,7 @@ static irqreturn_t amd_asf_irq_handler(i
+ 		amd_asf_update_ioport_target(piix4_smba, ASF_SLV_INTR, SMBHSTSTS, true);
+ 	}
  
- 			data_len -= size;
- 			count++;
-@@ -620,13 +625,7 @@ err_map_data:
- 	dev_err(tx_ring->dev, "DMA map error");
- 
- err_chained_bd:
--	do {
--		tx_swbd = &tx_ring->tx_swbd[i];
--		enetc_free_tx_frame(tx_ring, tx_swbd);
--		if (i == 0)
--			i = tx_ring->bd_count;
--		i--;
--	} while (count--);
-+	enetc_unwind_tx_frame(tx_ring, count, i);
- 
- 	return 0;
++	iowrite32(irq, dev->eoi_base);
+ 	return IRQ_HANDLED;
  }
+ 
 
 
 
