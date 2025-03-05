@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455EBA50710
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13329A50798
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FEAB7A361E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C49E189206E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81302528E2;
-	Wed,  5 Mar 2025 17:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9452512E1;
+	Wed,  5 Mar 2025 17:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NadOfeL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4tv373g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D15A251785;
-	Wed,  5 Mar 2025 17:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF572512D9;
+	Wed,  5 Mar 2025 17:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197166; cv=none; b=dS9M5KunxFGsCWenlm02NfODlAfQAw5Y43572ehsBctbchTCS6Kz9uxUh8yvPPS8UmqjaztsID5tVzDnBpTJawEd8nvZv1PJvKl0dX8qNl4QTlGwoPA/xOuPaOzWGG/BsPs5LJExuQV4SGO1gfyCbvkQVm5Zhad+pckqnuyikzI=
+	t=1741197529; cv=none; b=sc6teZUlelhKLhZsaUxiH5n9vFyuqmXphfH9a0K06eCowhmGuBKDIaidLxtq36rBQVX+iNIZ9WtVcAbG9QADilV+V64D/j37FOa7JWXkPsr6IKVvJY0rfpBWFqBT133Ag9+R6NYUSFusMN+R+jQUR7GJ0wcC2x+5G+7JgHwkq5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197166; c=relaxed/simple;
-	bh=xff0l+Lgl/NXoT7fvj7At6nRL2ioc9OaDrq0R4VB5Gg=;
+	s=arc-20240116; t=1741197529; c=relaxed/simple;
+	bh=pmWvqM4LOunEwUSjeSnyQsWqoL5BnsOQHU29jCI0Tvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQFfE8MNve+N6ZCvFifT9hV0rsYQOSXgHAvnHvSVAqc3+mHwLsGbcjEtD3oXaFEX3acgV4PbCHDcBaM9BR/DB0tGL9j4k7Kpy+9Vif1MbNWpdDxRB/tQI5jqYWUk7p9kcDTRV29FOAnGRDVihbEzFPzz9Qv5lsmz1UK3zsIyJNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NadOfeL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E6EC4CED1;
-	Wed,  5 Mar 2025 17:52:45 +0000 (UTC)
+	 MIME-Version; b=VlzRXnELha7Ffu8eNITpYk7l4Syu3tSqXsG4Lcx7cHmXTyg5apyAjOwK5odTWytA6MAqRWXl7SCgjMlw0tKcDwiemwRWZInDQFWTeYpMyQGS7gGFi2pKfM/CBdnk8n91dcXKvsoo+rW2CHFYco923h9qO2+hyTMBcP1oRT9PKOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4tv373g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7CCC4CED1;
+	Wed,  5 Mar 2025 17:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197166;
-	bh=xff0l+Lgl/NXoT7fvj7At6nRL2ioc9OaDrq0R4VB5Gg=;
+	s=korg; t=1741197528;
+	bh=pmWvqM4LOunEwUSjeSnyQsWqoL5BnsOQHU29jCI0Tvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NadOfeL4eZbYLolx8ckEUVfdClOtCEdrZL2mFMcNKfTHwaihevQNu5Zra1RSrZ8h+
-	 5XzPh6xFwfi1V97sb3U/F1qOHIVnAUu5TnZmJCo6BQWvto7igIO+3IbJdOB2skHLD5
-	 wX4k1In8yB7JOa1dW/9Xyw9T16UTRAelEBV6kK8w=
+	b=q4tv373gYAQDPFTKroHzvv5C1qJ/L22ZR64K9QgVyFb5+BB4XRyRbtB6YpcsYVj0p
+	 VCRC4Qxw4mk0uvpMsuQwMogur6V2MBLTCFoo/7ccZ4C6NyJ37O9fPMGTO1gXRLdvXn
+	 38eF3ff+VCIkjAlrb8bY8wvqtnycGhgpZj7QACHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/176] drm/tidss: Add simple K2G manual reset
+Subject: [PATCH 6.6 011/142] SUNRPC: Handle -ETIMEDOUT return from tlshd
 Date: Wed,  5 Mar 2025 18:47:10 +0100
-Message-ID: <20250305174507.906318083@linuxfoundation.org>
+Message-ID: <20250305174500.790356539@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 576d96c5c896221b5bc8feae473739469a92e144 ]
+[ Upstream commit 7a2f6f7687c5f7083a35317cddec5ad9fa491443 ]
 
-K2G display controller does not support soft reset, but we can do the
-most important steps manually: mask the IRQs and disable the VPs.
+If the TLS handshake attempt returns -ETIMEDOUT, we currently translate
+that error into -EACCES.  This becomes problematic for cases where the RPC
+layer is attempting to re-connect in paths that don't resonably handle
+-EACCES, for example: writeback.  The RPC layer can handle -ETIMEDOUT quite
+well, however - so if the handshake returns this error let's just pass it
+along.
 
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-7-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Stable-dep-of: a9a73f2661e6 ("drm/tidss: Fix race condition while handling interrupt registers")
+Fixes: 75eb6af7acdf ("SUNRPC: Add a TCP-with-TLS RPC transport class")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ net/sunrpc/xprtsock.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index c986d432af507..d3e57e6de5dbb 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2655,14 +2655,28 @@ static void dispc_init_errata(struct dispc_device *dispc)
- 	}
- }
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 1c4bc8234ea87..29df05879c8e9 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2561,7 +2561,15 @@ static void xs_tls_handshake_done(void *data, int status, key_serial_t peerid)
+ 	struct sock_xprt *lower_transport =
+ 				container_of(lower_xprt, struct sock_xprt, xprt);
  
-+/*
-+ * K2G display controller does not support soft reset, so we do a basic manual
-+ * reset here: make sure the IRQs are masked and VPs are disabled.
-+ */
-+static void dispc_softreset_k2g(struct dispc_device *dispc)
-+{
-+	dispc_set_irqenable(dispc, 0);
-+	dispc_read_and_clear_irqstatus(dispc);
-+
-+	for (unsigned int vp_idx = 0; vp_idx < dispc->feat->num_vps; ++vp_idx)
-+		VP_REG_FLD_MOD(dispc, vp_idx, DISPC_VP_CONTROL, 0, 0, 0);
-+}
-+
- static int dispc_softreset(struct dispc_device *dispc)
- {
- 	u32 val;
- 	int ret = 0;
- 
--	/* K2G display controller does not support soft reset */
--	if (dispc->feat->subrev == DISPC_K2G)
-+	if (dispc->feat->subrev == DISPC_K2G) {
-+		dispc_softreset_k2g(dispc);
- 		return 0;
+-	lower_transport->xprt_err = status ? -EACCES : 0;
++	switch (status) {
++	case 0:
++	case -EACCES:
++	case -ETIMEDOUT:
++		lower_transport->xprt_err = status;
++		break;
++	default:
++		lower_transport->xprt_err = -EACCES;
 +	}
- 
- 	/* Soft reset */
- 	REG_FLD_MOD(dispc, DSS_SYSCONFIG, 1, 1, 1);
+ 	complete(&lower_transport->handshake_done);
+ 	xprt_put(lower_xprt);
+ }
 -- 
 2.39.5
 
