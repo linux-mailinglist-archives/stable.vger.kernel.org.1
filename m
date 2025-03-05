@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED39A5084F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE77CA508C2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C5B11888BBB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFBA61753A8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4589017B505;
-	Wed,  5 Mar 2025 18:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447B91C6FF6;
+	Wed,  5 Mar 2025 18:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFTGeuX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIA3D+W2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A771A3176;
-	Wed,  5 Mar 2025 18:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030521ACEDD;
+	Wed,  5 Mar 2025 18:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197914; cv=none; b=GHgUR0Y4ha6HlMji/v2B0z5bp6RxnQoxQEsSdAf7G4/ysSZRH2IHIoFK5MlyS/R546PC8att5aUW+DGCbDD1iwQOoHGNDGKHdBIDfSavHjUxUO8YBZeCEJSwFGX7qxJYilcRWO5bTU+mnou3zR+Vasadi7IIWs1+OGjkWni/x0I=
+	t=1741198213; cv=none; b=OIY35xaLPjeoSsly/x8xnJfdDciQrcaXvSpYxy0JOekiPlqz3YkxjHA8ORj3w65n7uPfh3OYOSMLsYIkWuFZPel9MQNkwI5OEIks3dgNmEQQJew4Oh3RZ5J6yz0ojmHbXzhAIDWuae8SmaAA8f4LPZAIk6tGZLVW7hSyKeXqI8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197914; c=relaxed/simple;
-	bh=K+kCQjMbeQVBQy8T6Ew76ubfbAjojJIv1ByUrs420aA=;
+	s=arc-20240116; t=1741198213; c=relaxed/simple;
+	bh=+ckOm8lPpyRKtaAnjkp4Wo1EO+2/lBtv15cVmEOokGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3jSpdn4swvSAbdxl25dKVft53y3cLiqCYMaHDq94HgT4ySjjDQCl+C0BHG0xftt+UXPHgBFCaO7xB59KGddTtC+IAqP8Y8/vQxGCOer59qeQQMejrU3tHJfPmhntB07+nAV3Dqc46Ak2ZU3v7CA7yal5cx+leZzwj1N2PR/m+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFTGeuX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CFDC4CED1;
-	Wed,  5 Mar 2025 18:05:13 +0000 (UTC)
+	 MIME-Version; b=R+4RcNgZmWsRgi3KED8zz30MMUYLG84sXf6kih1gUoTqiwzf9FUj4wVEh3e0Uqj/7z/ZIC43FFNqQmvvtKacREDY7HH2OYO4FoXW8ToPOUsYUfNdTx2voFFH9e9VcPe0PkNSWJ2lL2o2N5YEYj4aCRv9C2W87o+4f0WMbR5RHRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIA3D+W2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3891C4CEE0;
+	Wed,  5 Mar 2025 18:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197913;
-	bh=K+kCQjMbeQVBQy8T6Ew76ubfbAjojJIv1ByUrs420aA=;
+	s=korg; t=1741198212;
+	bh=+ckOm8lPpyRKtaAnjkp4Wo1EO+2/lBtv15cVmEOokGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFTGeuX8eTwUUVgkAEviqWLROxe8UN3tvvqErFUpOZn0UsAGQRS+65GZU56LGuqOo
-	 DYvUcbsEHULR+bt9C3p+K9BIjv1W/JxR4TvpkxVeTgUMeODRKi3eUCQU5EuTD8zSqZ
-	 KgQRbYjOnujYX6LFMnhX12Yh0Qc7MmESxm1lNKXQ=
+	b=AIA3D+W2FeD4HDJ98BVU575EAsgb8z0NiX5Q5iUwJFiy/n/7Fxf82Mf7X7MtxgqGT
+	 Ihftsx3urmytNxjUaCOzS+NaD07QA1t/C7utlqwzQchkgBYo1Z4mXIlcJ1PTooZ+lD
+	 TOIA2fzxUQfiTvvHj7kewR+VVAxCkgJB5kURdz98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 111/142] x86/microcode/amd: Cache builtin microcode too
-Date: Wed,  5 Mar 2025 18:48:50 +0100
-Message-ID: <20250305174504.788729475@linuxfoundation.org>
+	Luiz Capitulino <luizcap@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 102/150] arm64/mm: Fix Boot panic on Ampere Altra
+Date: Wed,  5 Mar 2025 18:48:51 +0100
+Message-ID: <20250305174507.910890721@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit d419d28261e72e1c9ec418711b3da41df2265139 upstream
+commit 2b1283e1ea9b5e0b06f075f79391a51d9f70749b upstream.
 
-save_microcode_in_initrd_amd() fails to cache builtin microcode and only
-scans initrd.
+When the range of present physical memory is sufficiently small enough
+and the reserved address space for the linear map is sufficiently large
+enough, The linear map base address is randomized in
+arm64_memblock_init().
 
-Use find_blobs_in_containers() instead which covers both.
+Prior to commit 62cffa496aac ("arm64/mm: Override PARange for !LPA2 and
+use it consistently"), we decided if the sizes were suitable with the
+help of the raw mmfr0.parange. But the commit changed this to use the
+sanitized version instead. But the function runs before the register has
+been sanitized so this returns 0, interpreted as a parange of 32 bits.
+Some fun wrapping occurs and the logic concludes that there is enough
+room to randomize the linear map base address, when really there isn't.
+So the top of the linear map ends up outside the reserved address space.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231010150702.495139089@linutronix.de
+Since the PA range cannot be overridden in the first place, restore the
+mmfr0 reading logic to its state prior to 62cffa496aac, where the raw
+register value is used.
+
+Reported-by: Luiz Capitulino <luizcap@redhat.com>
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Closes: https://lore.kernel.org/all/a3d9acbe-07c2-43b6-9ba9-a7585f770e83@redhat.com/
+Fixes: 62cffa496aac ("arm64/mm: Override PARange for !LPA2 and use it consistently")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250225114638.2038006-1-ryan.roberts@arm.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/init.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -533,7 +533,7 @@ int __init save_microcode_in_initrd_amd(
- 	enum ucode_state ret;
- 	struct cpio_data cp;
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -278,12 +278,7 @@ void __init arm64_memblock_init(void)
  
--	cp = find_microcode_in_initrd(ucode_path);
-+	find_blobs_in_containers(cpuid_1_eax, &cp);
- 	if (!(cp.data && cp.size))
- 		return -EINVAL;
- 
+ 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+ 		extern u16 memstart_offset_seed;
+-
+-		/*
+-		 * Use the sanitised version of id_aa64mmfr0_el1 so that linear
+-		 * map randomization can be enabled by shrinking the IPA space.
+-		 */
+-		u64 mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
++		u64 mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
+ 		int parange = cpuid_feature_extract_unsigned_field(
+ 					mmfr0, ID_AA64MMFR0_EL1_PARANGE_SHIFT);
+ 		s64 range = linear_region_size -
 
 
 
