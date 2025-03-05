@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1BBA507EF
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD8A5075B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF8123A6E4E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F5911747F4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A721C863D;
-	Wed,  5 Mar 2025 18:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2568D252907;
+	Wed,  5 Mar 2025 17:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMLbpaaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irvznE84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD931C5D4E;
-	Wed,  5 Mar 2025 18:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A182512E1;
+	Wed,  5 Mar 2025 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197725; cv=none; b=CA0QzlFJM2BNCrWsjiThlLTukLeQefsE8mDUc8N3W7VQ1dtWux/Rpz3TOIp8JETQJ9S0DxbL+OgQgYspImy1DHtNfe52lNaihiP00IZpzxBbMtpvJwwMuSWZJ4vOoClYBetMW0bW9/PSGAAHE4GLttDosWs9RjKYWmvZ4FW/x5k=
+	t=1741197361; cv=none; b=u/vcNKhxK6rI6JkkU/CETyivUfcPzvc5kuu25+NJJSCAcQABOeRgje/aZdLvnDQWo0rxiE1tkDpZsuwUnkU85x6OR4+2BQLPb0oSjOCSh3FFznD6sXUdl+eS3blKgcD0kib4F74FaLKKnQL7U2O7kbYINkAKYEZm4JB4CFpcgkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197725; c=relaxed/simple;
-	bh=1+Ev5uC8+l/WW1BkVuuSqUpuHfyaOuEjtKdgQtRdl6U=;
+	s=arc-20240116; t=1741197361; c=relaxed/simple;
+	bh=bXlSesPGrPjVQmzmIICJkiA910WtFHgrmqT+10X/Puw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKmN80Hkg7cqPdmNuFnKeHKGKgLPzohG7aNuU3k6QNrt+UrGYg5TiViavnTGQaUHATclHrIGnu/kkcdiFiLuY9EkTeL7maqOpxfvEEKDMK9FNWdI4/UBEAU2Y/e4/x4ydEy/pc/M9mBXmGi34NZQ2zzb0+GcB+OWNBl6Qz3TOGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMLbpaaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6CCC4CED1;
-	Wed,  5 Mar 2025 18:02:04 +0000 (UTC)
+	 MIME-Version; b=PUyYtDpJxsamfo6dqihGwHaoaxBFvtbnefs+IS4aJsF9fgAboeXQ1+O150+JX6vfbd8m3LeSrjRk5xlcOzFLqmUiGsRn9DGq1i0DLISyDIIdGgeBv5IISYcAC76syH2e2muZKJafPZ+ZKBzIssEn2SoCQeqYGV/kQkT+Fs88vBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irvznE84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25BDC4CEEC;
+	Wed,  5 Mar 2025 17:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197725;
-	bh=1+Ev5uC8+l/WW1BkVuuSqUpuHfyaOuEjtKdgQtRdl6U=;
+	s=korg; t=1741197361;
+	bh=bXlSesPGrPjVQmzmIICJkiA910WtFHgrmqT+10X/Puw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMLbpaaXRWw5M2PD2Sau+PIUCFuMsH/lgymDhJo3x3tx/yuKOPUeuXpnn9xQXUv8F
-	 qjNEA6bGzb/M2FKALzEFm0j+9zst6fr5rZ1JO9yO4bTjkJjwKkogQhYSCAq6wamfW8
-	 F3ToJ8x1E0NHIOTNB6tIx5/Bo4GoY5Rc2yysf7Hc=
+	b=irvznE84oJW5aN6Oo/wiBqOTqzm87McKJ74Q30Rw90ZVDX8Syq4BkJyeNimY5INas
+	 ujg1b5uNjMLeBz/mf21UTq64827V60KY5+QecL1+3W7OezvMU5gxYH7I2ceP8I7pwe
+	 D6TGPt580Yi0Ze9Qt6Oeyc15LaBF9dL28yPh7reA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 079/142] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and SSC_REFCLKSEL masks in refclk
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/176] ipvlan: Prepare ipvlan_process_v4_outbound() to future .flowi4_tos conversion.
 Date: Wed,  5 Mar 2025 18:48:18 +0100
-Message-ID: <20250305174503.509362843@linuxfoundation.org>
+Message-ID: <20250305174510.630333681@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Guillaume Nault <gnault@redhat.com>
 
-commit e2158c953c973adb49383ddea2504faf08d375b7 upstream.
+[ Upstream commit 0c30d6eedd1ec0c1382bcab9576d26413cd278a3 ]
 
-In exynos5_usbdrd_{pipe3,utmi}_set_refclk(), the masks
-PHYCLKRST_MPLL_MULTIPLIER_MASK and PHYCLKRST_SSC_REFCLKSEL_MASK are not
-inverted when applied to the register values. Fix it.
+Use ip4h_dscp() to get the DSCP from the IPv4 header, then convert the
+dscp_t value to __u8 with inet_dscp_to_dsfield().
 
-Cc: stable@vger.kernel.org
-Fixes: 59025887fb08 ("phy: Add new Exynos5 USB 3.0 PHY driver")
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Anand Moon <linux.amoon@gmail.com>
-Link: https://lore.kernel.org/r/20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Then, when we'll convert .flowi4_tos to dscp_t, we'll just have to drop
+the inet_dscp_to_dsfield() call.
+
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/f48335504a05b3587e0081a9b4511e0761571ca5.1730292157.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/samsung/phy-exynos5-usbdrd.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ipvlan/ipvlan_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
-+++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-@@ -319,9 +319,9 @@ exynos5_usbdrd_pipe3_set_refclk(struct p
- 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index d22a705ac4d6f..38eb40cba5aac 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -3,6 +3,7 @@
+  */
  
- 	/* FSEL settings corresponding to reference clock */
--	reg &= ~PHYCLKRST_FSEL_PIPE_MASK |
--		PHYCLKRST_MPLL_MULTIPLIER_MASK |
--		PHYCLKRST_SSC_REFCLKSEL_MASK;
-+	reg &= ~(PHYCLKRST_FSEL_PIPE_MASK |
-+		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
-+		 PHYCLKRST_SSC_REFCLKSEL_MASK);
- 	switch (phy_drd->extrefclk) {
- 	case EXYNOS5_FSEL_50MHZ:
- 		reg |= (PHYCLKRST_MPLL_MULTIPLIER_50M_REF |
-@@ -363,9 +363,9 @@ exynos5_usbdrd_utmi_set_refclk(struct ph
- 	reg &= ~PHYCLKRST_REFCLKSEL_MASK;
- 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
+ #include <net/inet_dscp.h>
++#include <net/ip.h>
  
--	reg &= ~PHYCLKRST_FSEL_UTMI_MASK |
--		PHYCLKRST_MPLL_MULTIPLIER_MASK |
--		PHYCLKRST_SSC_REFCLKSEL_MASK;
-+	reg &= ~(PHYCLKRST_FSEL_UTMI_MASK |
-+		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
-+		 PHYCLKRST_SSC_REFCLKSEL_MASK);
- 	reg |= PHYCLKRST_FSEL(phy_drd->extrefclk);
+ #include "ipvlan.h"
  
- 	return reg;
+@@ -422,7 +423,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ 	int err, ret = NET_XMIT_DROP;
+ 	struct flowi4 fl4 = {
+ 		.flowi4_oif = dev->ifindex,
+-		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
++		.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h)),
+ 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
+ 		.flowi4_mark = skb->mark,
+ 		.daddr = ip4h->daddr,
+-- 
+2.39.5
+
 
 
 
