@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84225A5092F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1980AA50740
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B5441885BB4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2EE174B98
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DFF252915;
-	Wed,  5 Mar 2025 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27D02512D9;
+	Wed,  5 Mar 2025 17:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbMz7f+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GG04vOmd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912C624C07D;
-	Wed,  5 Mar 2025 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F26D2512CB;
+	Wed,  5 Mar 2025 17:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198427; cv=none; b=rDDOBTVoSrRP6AHxdprE53UummfQr1eYOsl0Ck4Snq8k+5LLzKioQ5dw3xqcUNvwu3cn866ph3GpKFKEDHNKrPQMqfndj5WwNd91dS8EG+5Cjjh3+y4kzM6ZdOFNPPM7UB305RU74WjBmARJxhT7MDzr4eaYp7zxjagg1RfBub4=
+	t=1741197294; cv=none; b=AUWXzxnHcWmKEDTJZMjhWPXo8ml46QpkkHMnW24O4OZpAckEXHGCdHSIWdqeHrZQwCLwwt3NqjlYGPm8Z5hxBCAJbX2yN25r3uq9TgAtdayRSBnppklR+yeIqOb+6VhJZRw7YQpN0gH4friY3B+fbcc5KNLKQkaJiKcglscV4Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198427; c=relaxed/simple;
-	bh=LXq70PEjj2xXr/YoSdOJLLxfh8PimtHPqzbJy83KEjk=;
+	s=arc-20240116; t=1741197294; c=relaxed/simple;
+	bh=+yh+R+QNm/Rou1ovpKiTOPxBckvJY2b/ZPan4qXZuzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzZ61LgSawIuF1/tL9xcZBZfJjlP4A9uIr0QfQ8SEhb3gVnao1Q/EpjxjcWIV0jOzUEq2YKRLL9O5gCqW9aHFHXk3tWRcZ/EWTX3iqxAHEUgzyqr2szvYjCLLGf5re6urKBDwM4oPZCeGnqFXQ98r9BotmXqV/zH/7k1Po8cQLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbMz7f+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8A2C4CEE0;
-	Wed,  5 Mar 2025 18:13:46 +0000 (UTC)
+	 MIME-Version; b=meY4PsJ1U7ABX1VrrcsW/gREXv+2d7TSGA37qpN/mfZjwFYH1dGq/D5ZtcCehDNq4shDRaejRYxeAwxW2h0quLhBjUhtcLiikcIpXCzm4LOEQTuHThsyB/m57b6AGgrJGHMjmkc/U3oMAkl4mMEUVrj72mopjl33jsWZI3x2MZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GG04vOmd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6776C4CEE0;
+	Wed,  5 Mar 2025 17:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198427;
-	bh=LXq70PEjj2xXr/YoSdOJLLxfh8PimtHPqzbJy83KEjk=;
+	s=korg; t=1741197294;
+	bh=+yh+R+QNm/Rou1ovpKiTOPxBckvJY2b/ZPan4qXZuzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbMz7f+BvzPowlzIthY7i9bjzG8hO5gEmwPAoBhke7OffJrVEHW8/zyCi5ZzGwr/J
-	 NhGdKJ86FO6F7v3Y+hkGtIHn2oLl7SNfOUwqAXLzapgk7MPLFTwsDtRhiT0BypBwfr
-	 IEn0RvyX9j26Lm9sUQ1oX1z/ew9y0czpkC0RRG4s=
+	b=GG04vOmdvuzsf/PaptSvhtNtugDuF9Sww9CrVUDBlxtqAJHxAkBFjfBcS3EuSDwBo
+	 9p7H6Smv7Pr6mF0pVmjFSoWQqocBZY3Lq63xzrHxq8LeCtm1yUDDbsSKj8c5yLSmtA
+	 xiSSgtTYibQTUWzrNZVqqBV/ZlFNDtmsIqYJebyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 007/157] RDMA/bnxt_re: Add sanity checks on rdev validity
+	Arnd Bergmann <arnd@arndb.de>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.1 074/176] tee: optee: Fix supplicant wait loop
 Date: Wed,  5 Mar 2025 18:47:23 +0100
-Message-ID: <20250305174505.571739741@linuxfoundation.org>
+Message-ID: <20250305174508.435805000@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-[ Upstream commit f0df225d12fcb049429fb5bf5122afe143c2dd15 ]
+commit 70b0d6b0a199c5a3ee6c72f5e61681ed6f759612 upstream.
 
-There is a possibility that ulp_irq_stop and ulp_irq_start
-callbacks will be called when the device is in detached state.
-This can cause a crash due to NULL pointer dereference as
-the rdev is already freed.
+OP-TEE supplicant is a user-space daemon and it's possible for it
+be hung or crashed or killed in the middle of processing an OP-TEE
+RPC call. It becomes more complicated when there is incorrect shutdown
+ordering of the supplicant process vs the OP-TEE client application which
+can eventually lead to system hang-up waiting for the closure of the
+client application.
 
-Fixes: cc5b9b48d447 ("RDMA/bnxt_re: Recover the device when FW error is detected")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1738657285-23968-3-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Allow the client process waiting in kernel for supplicant response to
+be killed rather than indefinitely waiting in an unkillable state. Also,
+a normal uninterruptible wait should not have resulted in the hung-task
+watchdog getting triggered, but the endless loop would.
+
+This fixes issues observed during system reboot/shutdown when supplicant
+got hung for some reason or gets crashed/killed which lead to client
+getting hung in an unkillable state. It in turn lead to system being in
+hung up state requiring hard power off/on to recover.
+
+Fixes: 4fb0a5eb364d ("tee: add OP-TEE driver")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/tee/optee/supp.c |   35 ++++++++---------------------------
+ 1 file changed, 8 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index c143f273b7596..7368b0482bb87 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -321,6 +321,8 @@ static void bnxt_re_stop_irq(void *handle)
- 	int indx;
+--- a/drivers/tee/optee/supp.c
++++ b/drivers/tee/optee/supp.c
+@@ -80,7 +80,6 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	struct optee *optee = tee_get_drvdata(ctx->teedev);
+ 	struct optee_supp *supp = &optee->supp;
+ 	struct optee_supp_req *req;
+-	bool interruptable;
+ 	u32 ret;
  
- 	rdev = en_info->rdev;
-+	if (!rdev)
-+		return;
- 	rcfw = &rdev->rcfw;
+ 	/*
+@@ -111,36 +110,18 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	/*
+ 	 * Wait for supplicant to process and return result, once we've
+ 	 * returned from wait_for_completion(&req->c) successfully we have
+-	 * exclusive access again.
++	 * exclusive access again. Allow the wait to be killable such that
++	 * the wait doesn't turn into an indefinite state if the supplicant
++	 * gets hung for some reason.
+ 	 */
+-	while (wait_for_completion_interruptible(&req->c)) {
++	if (wait_for_completion_killable(&req->c)) {
+ 		mutex_lock(&supp->mutex);
+-		interruptable = !supp->ctx;
+-		if (interruptable) {
+-			/*
+-			 * There's no supplicant available and since the
+-			 * supp->mutex currently is held none can
+-			 * become available until the mutex released
+-			 * again.
+-			 *
+-			 * Interrupting an RPC to supplicant is only
+-			 * allowed as a way of slightly improving the user
+-			 * experience in case the supplicant hasn't been
+-			 * started yet. During normal operation the supplicant
+-			 * will serve all requests in a timely manner and
+-			 * interrupting then wouldn't make sense.
+-			 */
+-			if (req->in_queue) {
+-				list_del(&req->link);
+-				req->in_queue = false;
+-			}
++		if (req->in_queue) {
++			list_del(&req->link);
++			req->in_queue = false;
+ 		}
+ 		mutex_unlock(&supp->mutex);
+-
+-		if (interruptable) {
+-			req->ret = TEEC_ERROR_COMMUNICATION;
+-			break;
+-		}
++		req->ret = TEEC_ERROR_COMMUNICATION;
+ 	}
  
- 	for (indx = BNXT_RE_NQ_IDX; indx < rdev->nqr->num_msix; indx++) {
-@@ -341,6 +343,8 @@ static void bnxt_re_start_irq(void *handle, struct bnxt_msix_entry *ent)
- 	int indx, rc;
- 
- 	rdev = en_info->rdev;
-+	if (!rdev)
-+		return;
- 	msix_ent = rdev->nqr->msix_entries;
- 	rcfw = &rdev->rcfw;
- 	if (!ent) {
-@@ -2356,6 +2360,7 @@ static int bnxt_re_suspend(struct auxiliary_device *adev, pm_message_t state)
- 	ibdev_info(&rdev->ibdev, "%s: L2 driver notified to stop en_state 0x%lx",
- 		   __func__, en_dev->en_state);
- 	bnxt_re_remove_device(rdev, BNXT_RE_PRE_RECOVERY_REMOVE, adev);
-+	bnxt_re_update_en_info_rdev(NULL, en_info, adev);
- 	mutex_unlock(&bnxt_re_mutex);
- 
- 	return 0;
--- 
-2.39.5
-
+ 	ret = req->ret;
 
 
 
