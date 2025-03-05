@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-121008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69730A5097A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:20:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE699A5081D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A58D13A5803
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7BA7175311
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2B025334A;
-	Wed,  5 Mar 2025 18:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561F12517A0;
+	Wed,  5 Mar 2025 18:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jl6iLsou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdsUZXtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B72025335E;
-	Wed,  5 Mar 2025 18:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D5C24FBE8;
+	Wed,  5 Mar 2025 18:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198613; cv=none; b=SJ6D8gqTdFOFkO+L5D39xPnhyAPLHHN8X+GYQg7YMW4TVjaUpiLUQkafomyE2RgrenZTNbw8gpvKXQu169lxN4nf/zaBXqcACjiZu4UoVPNkLU55oEJW8iLBCbyg6ey4SN0ggMEOTJ77UfxGitn751b4Mxb6INqInxb63WKFXIs=
+	t=1741197822; cv=none; b=mbumuwAwJXBVVfeSHNFEiV/Dzgv8QPuvOpgTtfBwSLigy2qctRbnRsXF/GN3gtDtv8A7ojIu4n331PFD9cuw/OFWh89kT40eyUw3ognaKu+XFg9mm12gqniKprt2cQ7uIvWWBa/2yPYNpJMHQc4gaHRz0i7ksiTpeTJXSA4718o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198613; c=relaxed/simple;
-	bh=AdG6Q/CJ4+0H6Ql8t3a8MZEz72K7uQUsoxraESiITs4=;
+	s=arc-20240116; t=1741197822; c=relaxed/simple;
+	bh=LWU1swHedvZNkOoR6R5AEBvo2Wj4x9bF0tVkHKAHark=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXEIDEyReVILJrShiv1CAdqW81LnoquJdOCmDyxjEfkznflMD4F934vT7/4bC0t6A8PmM6AXJVyM3/rj1+VdhMZme/D9S0nCHNT3TJohavzsF+iN/J6ssrAJW+ThGxsa+SeOYWiueZb98fG5YXbV556jgZv4b13E5d1L3cLr9UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jl6iLsou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E64C4CED1;
-	Wed,  5 Mar 2025 18:16:52 +0000 (UTC)
+	 MIME-Version; b=MOPD1H0jhgRCdWyojVvvyAyHTZ/LWMCsAdGVTiShhC/O8ks2epHis/x+C8LXHtyiOvE/vuuSmigcDW5dgr5+61jJ0NsDd3CAYLFCIagCkGWVL7e+lamx+QcMnH+bxs0DFTUcaCXvcpVfW+Rwt0HczH4hixS4IvpApXychZL17JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdsUZXtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FB9C4CED1;
+	Wed,  5 Mar 2025 18:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198613;
-	bh=AdG6Q/CJ4+0H6Ql8t3a8MZEz72K7uQUsoxraESiITs4=;
+	s=korg; t=1741197820;
+	bh=LWU1swHedvZNkOoR6R5AEBvo2Wj4x9bF0tVkHKAHark=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jl6iLsouKofSUV31q3oxabnK4gHzQLmpDp3+pzTJUSedCTxETy4e8sISDVSJ0igTv
-	 IJP3iu6jbDfl9taty8RcjdiJOxQ5Zfxtj0CSlWu1dXxlmF03Dkl8xMkDEQwSAZ1ZxI
-	 dn4ZI+VdmGGOImZ6j+bkZGrgdRIUi67idH8Zy36g=
+	b=AdsUZXtHkyWjymHq52LBagTaPBfG4RVL8iA5YtBq0W+B15iP9PJ4S85LW9IdudvKZ
+	 3KvnetD+OMmkJSKJayAvW/XT6obFR9twlztL8Q/LApy+kOU1DTmDzZ5x139vNuA5Il
+	 tIOYxOimEH2668WALR73tQdOPwXP2dAhPBAfGa1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.13 087/157] perf/x86: Fix low freqency setting issue
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 104/142] x86/microcode/intel: Switch to kvmalloc()
 Date: Wed,  5 Mar 2025 18:48:43 +0100
-Message-ID: <20250305174508.805127309@linuxfoundation.org>
+Message-ID: <20250305174504.509249115@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 88ec7eedbbd21cad38707620ad6c48a4e9a87c18 upstream.
+commit f24f204405f9875bc539c6e88553fd5ac913c867 upstream
 
-Perf doesn't work at low frequencies:
+Microcode blobs are getting larger and might soon reach the kmalloc()
+limit. Switch over kvmalloc().
 
-  $ perf record -e cpu_core/instructions/ppp -F 120
-  Error:
-  The sys_perf_event_open() syscall returned with 22 (Invalid argument)
-  for event (cpu_core/instructions/ppp).
-  "dmesg | grep -i perf" may provide additional information.
-
-The limit_period() check avoids a low sampling period on a counter. It
-doesn't intend to limit the frequency.
-
-The check in the x86_pmu_hw_config() should be limited to non-freq mode.
-The attr.sample_period and attr.sample_freq are union. The
-attr.sample_period should not be used to indicate the frequency mode.
-
-Fixes: c46e665f0377 ("perf/x86: Add INST_RETIRED.ALL workarounds")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250117151913.3043942-1-kan.liang@linux.intel.com
-Closes: https://lore.kernel.org/lkml/20250115154949.3147-1-ravi.bangoria@amd.com/
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115902.564323243@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/intel.c |   48 +++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -628,7 +628,7 @@ int x86_pmu_hw_config(struct perf_event
- 	if (event->attr.type == event->pmu->type)
- 		event->hw.config |= x86_pmu_get_event_config(event);
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -14,7 +14,6 @@
+ #include <linux/earlycpio.h>
+ #include <linux/firmware.h>
+ #include <linux/uaccess.h>
+-#include <linux/vmalloc.h>
+ #include <linux/initrd.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+@@ -245,7 +244,7 @@ EXPORT_SYMBOL_GPL(intel_microcode_sanity
  
--	if (event->attr.sample_period && x86_pmu.limit_period) {
-+	if (!event->attr.freq && x86_pmu.limit_period) {
- 		s64 left = event->attr.sample_period;
- 		x86_pmu.limit_period(event, &left);
- 		if (left > event->attr.sample_period)
+ static void update_ucode_pointer(struct microcode_intel *mc)
+ {
+-	kfree(ucode_patch_va);
++	kvfree(ucode_patch_va);
+ 
+ 	/*
+ 	 * Save the virtual address for early loading and for eventual free
+@@ -256,11 +255,14 @@ static void update_ucode_pointer(struct
+ 
+ static void save_microcode_patch(struct microcode_intel *patch)
+ {
++	unsigned int size = get_totalsize(&patch->hdr);
+ 	struct microcode_intel *mc;
+ 
+-	mc = kmemdup(patch, get_totalsize(&patch->hdr), GFP_KERNEL);
++	mc = kvmemdup(patch, size, GFP_KERNEL);
+ 	if (mc)
+ 		update_ucode_pointer(mc);
++	else
++		pr_err("Unable to allocate microcode memory size: %u\n", size);
+ }
+ 
+ /* Scan blob for microcode matching the boot CPUs family, model, stepping */
+@@ -539,36 +541,34 @@ static enum ucode_state parse_microcode_
+ 
+ 		if (!copy_from_iter_full(&mc_header, sizeof(mc_header), iter)) {
+ 			pr_err("error! Truncated or inaccessible header in microcode data file\n");
+-			break;
++			goto fail;
+ 		}
+ 
+ 		mc_size = get_totalsize(&mc_header);
+ 		if (mc_size < sizeof(mc_header)) {
+ 			pr_err("error! Bad data in microcode data file (totalsize too small)\n");
+-			break;
++			goto fail;
+ 		}
+-
+ 		data_size = mc_size - sizeof(mc_header);
+ 		if (data_size > iov_iter_count(iter)) {
+ 			pr_err("error! Bad data in microcode data file (truncated file?)\n");
+-			break;
++			goto fail;
+ 		}
+ 
+ 		/* For performance reasons, reuse mc area when possible */
+ 		if (!mc || mc_size > curr_mc_size) {
+-			vfree(mc);
+-			mc = vmalloc(mc_size);
++			kvfree(mc);
++			mc = kvmalloc(mc_size, GFP_KERNEL);
+ 			if (!mc)
+-				break;
++				goto fail;
+ 			curr_mc_size = mc_size;
+ 		}
+ 
+ 		memcpy(mc, &mc_header, sizeof(mc_header));
+ 		data = mc + sizeof(mc_header);
+ 		if (!copy_from_iter_full(data, data_size, iter) ||
+-		    intel_microcode_sanity_check(mc, true, MC_HEADER_TYPE_MICROCODE) < 0) {
+-			break;
+-		}
++		    intel_microcode_sanity_check(mc, true, MC_HEADER_TYPE_MICROCODE) < 0)
++			goto fail;
+ 
+ 		if (cur_rev >= mc_header.rev)
+ 			continue;
+@@ -576,24 +576,26 @@ static enum ucode_state parse_microcode_
+ 		if (!intel_find_matching_signature(mc, uci->cpu_sig.sig, uci->cpu_sig.pf))
+ 			continue;
+ 
+-		vfree(new_mc);
++		kvfree(new_mc);
+ 		cur_rev = mc_header.rev;
+ 		new_mc  = mc;
+ 		mc = NULL;
+ 	}
+ 
+-	vfree(mc);
+-
+-	if (iov_iter_count(iter)) {
+-		vfree(new_mc);
+-		return UCODE_ERROR;
+-	}
++	if (iov_iter_count(iter))
++		goto fail;
+ 
++	kvfree(mc);
+ 	if (!new_mc)
+ 		return UCODE_NFOUND;
+ 
+ 	ucode_patch_late = (struct microcode_intel *)new_mc;
+ 	return UCODE_NEW;
++
++fail:
++	kvfree(mc);
++	kvfree(new_mc);
++	return UCODE_ERROR;
+ }
+ 
+ static bool is_blacklisted(unsigned int cpu)
+@@ -652,9 +654,9 @@ static enum ucode_state request_microcod
+ static void finalize_late_load(int result)
+ {
+ 	if (!result)
+-		save_microcode_patch(ucode_patch_late);
+-
+-	vfree(ucode_patch_late);
++		update_ucode_pointer(ucode_patch_late);
++	else
++		kvfree(ucode_patch_late);
+ 	ucode_patch_late = NULL;
+ }
+ 
 
 
 
