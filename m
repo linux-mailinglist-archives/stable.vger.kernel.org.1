@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-120966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D232A50936
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69785A50881
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A57F21657E6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC32A3AF506
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCAC25290F;
-	Wed,  5 Mar 2025 18:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32171FC7D0;
+	Wed,  5 Mar 2025 18:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2567Sxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfaBXqzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135DC252905;
-	Wed,  5 Mar 2025 18:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C301A01B0;
+	Wed,  5 Mar 2025 18:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198493; cv=none; b=sszqViJeOyVF1yBuRFzEHdrC0BPE4J8l+9P8cHtVC5aBlWgJnQT/mVkbBj+Ow46xjmx99KmO1Q2hBTTUIVWk3RJggfwAak7P3Gzo4zH6LFwFNbxsLKiqF9RhlgHTD4abkJSIEipatH+v2A2DaB2x0H3ZpsSniMI4fjTzF//GBsE=
+	t=1741198068; cv=none; b=uluW5b97MOrbf82E/FtPgO94HEImiHIje0vp5wSsCD0hEqNJ7C06yXlSFNHboKf+MyzSwA/Y/8BTUeh19HZoVf6UkeQeu9XPwUiiYVfuEU0sHAU67y6HwfKDuDJZ+cMjIJlMNK96+Oqz5XjoZBV7mjEqzd+a5sCgc2ZHP/TOcwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198493; c=relaxed/simple;
-	bh=iy5HdzvCCDkLD/K+kyJNjVnLJIPcjeqr+P0xW1FhTJs=;
+	s=arc-20240116; t=1741198068; c=relaxed/simple;
+	bh=vDpasfGu1WWFt7m2BCA7HkZHIAstpsBiCQoCUodGfeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcN2xZKO3aNxWhZMydrllUfBqXUMITivYSr+giPJzz+7moobsuC7Eljv7eF5blDSn6vKX/uaJ/xdC5YLSPpPcXWXmjgksJU5DLZuhC+9q7tFI/pJLcFCb3RYBZfzIxHRtO5BUbzbn37fmOmA1hxxTADmIwKS+dqXTiISHSBjyjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2567Sxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EA9C4CED1;
-	Wed,  5 Mar 2025 18:14:51 +0000 (UTC)
+	 MIME-Version; b=qD1FevqYzRNX47HxFy3lF9ilRciA1NcNqI2K/HpqJcPV6EgTxSL3KKPR1S/7+D5LZL85hnSIfolUjVVgiijLpplk1L7kWNuuYGOUiA7E6j9EfawMR5tflquJDsq2lQGgb3NquaOEbSAVQpLt1U/WEmVdx0Y+B+XxWfHZWFCN2lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfaBXqzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8C4C4CED1;
+	Wed,  5 Mar 2025 18:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198492;
-	bh=iy5HdzvCCDkLD/K+kyJNjVnLJIPcjeqr+P0xW1FhTJs=;
+	s=korg; t=1741198068;
+	bh=vDpasfGu1WWFt7m2BCA7HkZHIAstpsBiCQoCUodGfeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2567SxptZpwyOHPD/AeDkDdDaOs4x+f4XoqdlcKEfTnPNHuDPzjnrn1UVoSgNKpU
-	 NaMttrznxJ6Cp7Het296A5WbqozfdgZbhUh6SQ0ct47RC9TR7g5SjlVkBgInbqztC6
-	 KTFxBPQFiAHOG3rOkTUE0UDy7lKfeoFQQGKInJek=
+	b=rfaBXqzDwaojqXPQMG3DCor7VjqpNr18rF7lrUoVRJ9IdtWtEejZFwwXWr49XF7rR
+	 wzexTkWgFeVFNb2A9nevF2pn2nTq91f/dKECWhXShB4z4FSBuINRz+BAbfyxQ3faiJ
+	 /nurHX+S94l0suVv3IUkPid8GY2Y9SHsxdYO1Nrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Aurabindo Pillai <Aurabindo.Pillai@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 046/157] drm/amd/display: restore edid reading from a given i2c adapter
-Date: Wed,  5 Mar 2025 18:48:02 +0100
-Message-ID: <20250305174507.157203479@linuxfoundation.org>
+Subject: [PATCH 6.12 054/150] ice: add E830 HW VF mailbox message limit support
+Date: Wed,  5 Mar 2025 18:48:03 +0100
+Message-ID: <20250305174505.996822153@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +64,291 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-[ Upstream commit 12f3b92d1cfa5526715fff93a6d6fe29300d5e2a ]
+[ Upstream commit 59f4d59b25aec39a015c0949f4ec235c7a839c44 ]
 
-When switching to drm_edid, we slightly changed how to get edid by
-removing the possibility of getting them from dc_link when in aux
-transaction mode. As MST doesn't initialize the connector with
-`drm_connector_init_with_ddc()`, restore the original behavior to avoid
-functional changes.
+E830 adds hardware support to prevent the VF from overflowing the PF
+mailbox with VIRTCHNL messages. E830 will use the hardware feature
+(ICE_F_MBX_LIMIT) instead of the software solution ice_is_malicious_vf().
 
-v2:
-- Fix build warning of unchecked dereference (kernel test bot)
+To prevent a VF from overflowing the PF, the PF sets the number of
+messages per VF that can be in the PF's mailbox queue
+(ICE_MBX_OVERFLOW_WATERMARK). When the PF processes a message from a VF,
+the PF decrements the per VF message count using the E830_MBX_VF_DEC_TRIG
+register.
 
-CC: Alex Hung <alex.hung@amd.com>
-CC: Mario Limonciello <mario.limonciello@amd.com>
-CC: Roman Li <Roman.Li@amd.com>
-CC: Aurabindo Pillai <Aurabindo.Pillai@amd.com>
-Fixes: 48edb2a4256e ("drm/amd/display: switch amdgpu_dm_connector to use struct drm_edid")
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 81262b1656feb3813e3d917ab78824df6831e69e)
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 79990cf5e7ad ("ice: Fix deinitializing VF in error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c   | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice.h          |  1 +
+ .../net/ethernet/intel/ice/ice_hw_autogen.h   |  3 ++
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  3 ++
+ drivers/net/ethernet/intel/ice/ice_main.c     | 24 ++++++++++----
+ drivers/net/ethernet/intel/ice/ice_sriov.c    |  3 +-
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c   | 26 +++++++++++++--
+ drivers/net/ethernet/intel/ice/ice_vf_mbx.c   | 32 +++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_vf_mbx.h   |  9 ++++++
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |  8 +++--
+ 9 files changed, 96 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f7c0d7625ff12..35b9e026fe0d5 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7180,8 +7180,14 @@ static void amdgpu_dm_connector_funcs_force(struct drm_connector *connector)
- 	struct dc_link *dc_link = aconnector->dc_link;
- 	struct dc_sink *dc_em_sink = aconnector->dc_em_sink;
- 	const struct drm_edid *drm_edid;
-+	struct i2c_adapter *ddc;
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 558cda577191d..2960709f6b62c 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -207,6 +207,7 @@ enum ice_feature {
+ 	ICE_F_GNSS,
+ 	ICE_F_ROCE_LAG,
+ 	ICE_F_SRIOV_LAG,
++	ICE_F_MBX_LIMIT,
+ 	ICE_F_MAX
+ };
  
--	drm_edid = drm_edid_read(connector);
-+	if (dc_link && dc_link->aux_mode)
-+		ddc = &aconnector->dm_dp_aux.aux.ddc;
-+	else
-+		ddc = &aconnector->i2c->base;
+diff --git a/drivers/net/ethernet/intel/ice/ice_hw_autogen.h b/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
+index 91cbae1eec89a..8d31bfe28cc88 100644
+--- a/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
++++ b/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
+@@ -539,5 +539,8 @@
+ #define E830_PRTMAC_CL01_QNT_THR_CL0_M		GENMASK(15, 0)
+ #define VFINT_DYN_CTLN(_i)			(0x00003800 + ((_i) * 4))
+ #define VFINT_DYN_CTLN_CLEARPBA_M		BIT(1)
++#define E830_MBX_PF_IN_FLIGHT_VF_MSGS_THRESH	0x00234000
++#define E830_MBX_VF_DEC_TRIG(_VF)		(0x00233800 + (_VF) * 4)
++#define E830_MBX_VF_IN_FLIGHT_MSGS_AT_PF_CNT(_VF)	(0x00233000 + (_VF) * 4)
+ 
+ #endif /* _ICE_HW_AUTOGEN_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 06e712cdc3d9e..d4e74f96a8ad5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -3880,6 +3880,9 @@ void ice_init_feature_support(struct ice_pf *pf)
+ 	default:
+ 		break;
+ 	}
 +
-+	drm_edid = drm_edid_read_ddc(connector, ddc);
- 	drm_edid_connector_update(connector, drm_edid);
- 	if (!drm_edid) {
- 		DRM_ERROR("No EDID found on connector: %s.\n", connector->name);
-@@ -7226,14 +7232,21 @@ static int get_modes(struct drm_connector *connector)
- static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
++	if (pf->hw.mac_type == ICE_MAC_E830)
++		ice_set_feature_support(pf, ICE_F_MBX_LIMIT);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 45eefe22fb5b7..ca707dfcb286e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -1546,12 +1546,20 @@ static int __ice_clean_ctrlq(struct ice_pf *pf, enum ice_ctl_q q_type)
+ 			ice_vf_lan_overflow_event(pf, &event);
+ 			break;
+ 		case ice_mbx_opc_send_msg_to_pf:
+-			data.num_msg_proc = i;
+-			data.num_pending_arq = pending;
+-			data.max_num_msgs_mbx = hw->mailboxq.num_rq_entries;
+-			data.async_watermark_val = ICE_MBX_OVERFLOW_WATERMARK;
++			if (ice_is_feature_supported(pf, ICE_F_MBX_LIMIT)) {
++				ice_vc_process_vf_msg(pf, &event, NULL);
++				ice_mbx_vf_dec_trig_e830(hw, &event);
++			} else {
++				u16 val = hw->mailboxq.num_rq_entries;
++
++				data.max_num_msgs_mbx = val;
++				val = ICE_MBX_OVERFLOW_WATERMARK;
++				data.async_watermark_val = val;
++				data.num_msg_proc = i;
++				data.num_pending_arq = pending;
+ 
+-			ice_vc_process_vf_msg(pf, &event, &data);
++				ice_vc_process_vf_msg(pf, &event, &data);
++			}
+ 			break;
+ 		case ice_aqc_opc_fw_logs_event:
+ 			ice_get_fwlog_data(pf, &event);
+@@ -4082,7 +4090,11 @@ static int ice_init_pf(struct ice_pf *pf)
+ 
+ 	mutex_init(&pf->vfs.table_lock);
+ 	hash_init(pf->vfs.table);
+-	ice_mbx_init_snapshot(&pf->hw);
++	if (ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
++		wr32(&pf->hw, E830_MBX_PF_IN_FLIGHT_VF_MSGS_THRESH,
++		     ICE_MBX_OVERFLOW_WATERMARK);
++	else
++		ice_mbx_init_snapshot(&pf->hw);
+ 
+ 	xa_init(&pf->dyn_ports);
+ 	xa_init(&pf->sf_nums);
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index 91cb393f616f2..b83f99c01d91b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -194,7 +194,8 @@ void ice_free_vfs(struct ice_pf *pf)
+ 		}
+ 
+ 		/* clear malicious info since the VF is getting released */
+-		list_del(&vf->mbx_info.list_entry);
++		if (!ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
++			list_del(&vf->mbx_info.list_entry);
+ 
+ 		mutex_unlock(&vf->cfg_lock);
+ 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index 8c434689e3f78..c7c0c2f50c265 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -716,6 +716,23 @@ ice_vf_clear_vsi_promisc(struct ice_vf *vf, struct ice_vsi *vsi, u8 promisc_m)
+ 	return 0;
+ }
+ 
++/**
++ * ice_reset_vf_mbx_cnt - reset VF mailbox message count
++ * @vf: pointer to the VF structure
++ *
++ * This function clears the VF mailbox message count, and should be called on
++ * VF reset.
++ */
++static void ice_reset_vf_mbx_cnt(struct ice_vf *vf)
++{
++	struct ice_pf *pf = vf->pf;
++
++	if (ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
++		ice_mbx_vf_clear_cnt_e830(&pf->hw, vf->vf_id);
++	else
++		ice_mbx_clear_malvf(&vf->mbx_info);
++}
++
+ /**
+  * ice_reset_all_vfs - reset all allocated VFs in one go
+  * @pf: pointer to the PF structure
+@@ -742,7 +759,7 @@ void ice_reset_all_vfs(struct ice_pf *pf)
+ 
+ 	/* clear all malicious info if the VFs are getting reset */
+ 	ice_for_each_vf(pf, bkt, vf)
+-		ice_mbx_clear_malvf(&vf->mbx_info);
++		ice_reset_vf_mbx_cnt(vf);
+ 
+ 	/* If VFs have been disabled, there is no need to reset */
+ 	if (test_and_set_bit(ICE_VF_DIS, pf->state)) {
+@@ -958,7 +975,7 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ 	ice_eswitch_update_repr(&vf->repr_id, vsi);
+ 
+ 	/* if the VF has been reset allow it to come up again */
+-	ice_mbx_clear_malvf(&vf->mbx_info);
++	ice_reset_vf_mbx_cnt(vf);
+ 
+ out_unlock:
+ 	if (lag && lag->bonded && lag->primary &&
+@@ -1011,7 +1028,10 @@ void ice_initialize_vf_entry(struct ice_vf *vf)
+ 	ice_vf_fdir_init(vf);
+ 
+ 	/* Initialize mailbox info for this VF */
+-	ice_mbx_init_vf_info(&pf->hw, &vf->mbx_info);
++	if (ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
++		ice_mbx_vf_clear_cnt_e830(&pf->hw, vf->vf_id);
++	else
++		ice_mbx_init_vf_info(&pf->hw, &vf->mbx_info);
+ 
+ 	mutex_init(&vf->cfg_lock);
+ }
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_mbx.c b/drivers/net/ethernet/intel/ice/ice_vf_mbx.c
+index 40cb4ba0789ce..75c8113e58ee9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_mbx.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_mbx.c
+@@ -210,6 +210,38 @@ ice_mbx_detect_malvf(struct ice_hw *hw, struct ice_mbx_vf_info *vf_info,
+ 	return 0;
+ }
+ 
++/**
++ * ice_mbx_vf_dec_trig_e830 - Decrements the VF mailbox queue counter
++ * @hw: pointer to the HW struct
++ * @event: pointer to the control queue receive event
++ *
++ * This function triggers to decrement the counter
++ * MBX_VF_IN_FLIGHT_MSGS_AT_PF_CNT when the driver replenishes
++ * the buffers at the PF mailbox queue.
++ */
++void ice_mbx_vf_dec_trig_e830(const struct ice_hw *hw,
++			      const struct ice_rq_event_info *event)
++{
++	u16 vfid = le16_to_cpu(event->desc.retval);
++
++	wr32(hw, E830_MBX_VF_DEC_TRIG(vfid), 1);
++}
++
++/**
++ * ice_mbx_vf_clear_cnt_e830 - Clear the VF mailbox queue count
++ * @hw: pointer to the HW struct
++ * @vf_id: VF ID in the PF space
++ *
++ * This function clears the counter MBX_VF_IN_FLIGHT_MSGS_AT_PF_CNT, and should
++ * be called when a VF is created and on VF reset.
++ */
++void ice_mbx_vf_clear_cnt_e830(const struct ice_hw *hw, u16 vf_id)
++{
++	u32 reg = rd32(hw, E830_MBX_VF_IN_FLIGHT_MSGS_AT_PF_CNT(vf_id));
++
++	wr32(hw, E830_MBX_VF_DEC_TRIG(vf_id), reg);
++}
++
+ /**
+  * ice_mbx_vf_state_handler - Handle states of the overflow algorithm
+  * @hw: pointer to the HW struct
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_mbx.h b/drivers/net/ethernet/intel/ice/ice_vf_mbx.h
+index 44bc030d17e07..684de89e5c5ed 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_mbx.h
++++ b/drivers/net/ethernet/intel/ice/ice_vf_mbx.h
+@@ -19,6 +19,9 @@ ice_aq_send_msg_to_vf(struct ice_hw *hw, u16 vfid, u32 v_opcode, u32 v_retval,
+ 		      u8 *msg, u16 msglen, struct ice_sq_cd *cd);
+ 
+ u32 ice_conv_link_speed_to_virtchnl(bool adv_link_support, u16 link_speed);
++void ice_mbx_vf_dec_trig_e830(const struct ice_hw *hw,
++			      const struct ice_rq_event_info *event);
++void ice_mbx_vf_clear_cnt_e830(const struct ice_hw *hw, u16 vf_id);
+ int
+ ice_mbx_vf_state_handler(struct ice_hw *hw, struct ice_mbx_data *mbx_data,
+ 			 struct ice_mbx_vf_info *vf_info, bool *report_malvf);
+@@ -47,5 +50,11 @@ static inline void ice_mbx_init_snapshot(struct ice_hw *hw)
  {
- 	struct drm_connector *connector = &aconnector->base;
-+	struct dc_link *dc_link = aconnector->dc_link;
- 	struct dc_sink_init_data init_params = {
- 			.link = aconnector->dc_link,
- 			.sink_signal = SIGNAL_TYPE_VIRTUAL
- 	};
- 	const struct drm_edid *drm_edid;
- 	const struct edid *edid;
-+	struct i2c_adapter *ddc;
-+
-+	if (dc_link && dc_link->aux_mode)
-+		ddc = &aconnector->dm_dp_aux.aux.ddc;
-+	else
-+		ddc = &aconnector->i2c->base;
+ }
  
--	drm_edid = drm_edid_read(connector);
-+	drm_edid = drm_edid_read_ddc(connector, ddc);
- 	drm_edid_connector_update(connector, drm_edid);
- 	if (!drm_edid) {
- 		DRM_ERROR("No EDID found on connector: %s.\n", connector->name);
++static inline void
++ice_mbx_vf_dec_trig_e830(const struct ice_hw *hw,
++			 const struct ice_rq_event_info *event)
++{
++}
++
+ #endif /* CONFIG_PCI_IOV */
+ #endif /* _ICE_VF_MBX_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index b6ec01f6fa73e..c8c1d48ff793d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -4008,8 +4008,10 @@ ice_is_malicious_vf(struct ice_vf *vf, struct ice_mbx_data *mbxdata)
+  * @event: pointer to the AQ event
+  * @mbxdata: information used to detect VF attempting mailbox overflow
+  *
+- * called from the common asq/arq handler to
+- * process request from VF
++ * Called from the common asq/arq handler to process request from VF. When this
++ * flow is used for devices with hardware VF to PF message queue overflow
++ * support (ICE_F_MBX_LIMIT) mbxdata is set to NULL and ice_is_malicious_vf
++ * check is skipped.
+  */
+ void ice_vc_process_vf_msg(struct ice_pf *pf, struct ice_rq_event_info *event,
+ 			   struct ice_mbx_data *mbxdata)
+@@ -4035,7 +4037,7 @@ void ice_vc_process_vf_msg(struct ice_pf *pf, struct ice_rq_event_info *event,
+ 	mutex_lock(&vf->cfg_lock);
+ 
+ 	/* Check if the VF is trying to overflow the mailbox */
+-	if (ice_is_malicious_vf(vf, mbxdata))
++	if (mbxdata && ice_is_malicious_vf(vf, mbxdata))
+ 		goto finish;
+ 
+ 	/* Check if VF is disabled. */
 -- 
 2.39.5
 
