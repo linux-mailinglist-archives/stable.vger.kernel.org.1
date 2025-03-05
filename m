@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3B4A5094C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06BDA50764
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADF297A8EBA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C731A174CD3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3062230BC6;
-	Wed,  5 Mar 2025 18:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E5A2512F7;
+	Wed,  5 Mar 2025 17:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOvT+Zz4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2TuKc3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8201113C67E;
-	Wed,  5 Mar 2025 18:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37FF2512C7;
+	Wed,  5 Mar 2025 17:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198547; cv=none; b=gP2Xrz6ZFHoSR30EJUXtTT838cVRZKL0PhJtHilmYkaOpOoDpM7C/bdgl0QzYtTs0KwXcIuFN2Pi3PYAwinRYcuZeIysM2in2AxcfBvXEAvedzWe/o75yL/WqH3Ak2uccsS7e8yTQSgIc44Aw3b6K8mZ8R8zxA/xTJVxAoLmAys=
+	t=1741197376; cv=none; b=tvisk2NQkvgY2YGl4oF+fQ2rIbTl2WblY3CqZds1I1Zv2hgjYwL7t09v994ow8UDGJcgldzQWO45XoNksBRdRMe9u+CV7dcb2CwaA8gA6dXCns/nsttQu1wx++a5e/AhgQlXIqwgBv0F5VGPjStJmS0sl7cCKKWKHn1gRqMTq/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198547; c=relaxed/simple;
-	bh=6Gv3Rels/GjjFGoI2i3Z7/xwU1yf3gYihy9WRyKrt4E=;
+	s=arc-20240116; t=1741197376; c=relaxed/simple;
+	bh=nLAsvKCvk0Y9a/W6OHmsLFcG4HtowDTyW0UjR4ElKNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jREHEsDPjAb4CJOzZKykOLquajrFHDa2SDvcVjbw+QhyJy5lTnnWEoxKa6gr2+iGddLauamK0qUwILLtAlDnlIaHGSzY0NBMGihtkAtxJo0kKRW7Eue5efJS/NKDFGaFqD2WY8y9GAYqWTs1t0M7p/yJfg9Kv79qyAssul2uQc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOvT+Zz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDF7C4CED1;
-	Wed,  5 Mar 2025 18:15:46 +0000 (UTC)
+	 MIME-Version; b=mkbKEnI92IDAlmrr5inILvuJMRLtE84e3Z2kQWPMtt25BCCo1/kKSux6UAsCvrJszGT9Pn5Lcx7oKHqGlb79krLNer4IrC6hBIIx4nZ2ULKBkmnYtcpHhP90pXLr2N70LfJn4XeIhavo01T7/HbQrRDgEk2ugZR+rhJ/JoWZ6CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2TuKc3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F15DC4CED1;
+	Wed,  5 Mar 2025 17:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198547;
-	bh=6Gv3Rels/GjjFGoI2i3Z7/xwU1yf3gYihy9WRyKrt4E=;
+	s=korg; t=1741197375;
+	bh=nLAsvKCvk0Y9a/W6OHmsLFcG4HtowDTyW0UjR4ElKNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOvT+Zz4M9oetEOS6gNJqB3uDY+g2VSPPm1kSMQ0/7oYedxWCZxXisLWaiJoFjA8S
-	 ZyGw7anBm8DEn2RpF++irJqyAQyIBEnW795lE2de0GMjNinQXdYj522orkGenAZAd6
-	 2yl6hdFaWM/75+4p7j5nKS6q9+xS80htSG/xNQ84=
+	b=e2TuKc3fTLPZdfuaUr/I+qdi0ZpuHXMrIjhUA2gqwYk9djXGsB4NqpLX/tXDJ11ip
+	 ivpvY7IYcd94itv2FyoNzj4LYLciUEVwwVbkhSzyBC/ej1pJo5c596CpRmXqc2h/J6
+	 5US4PwJcioUxtZ/4eZccJmehftFBQXDd0nMt78+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Che Cheng <giver@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 066/157] thermal/of: Fix cdev lookup in thermal_of_should_bind()
+Subject: [PATCH 6.1 133/176] ipvs: Always clear ipvs_property flag in skb_scrub_packet()
 Date: Wed,  5 Mar 2025 18:48:22 +0100
-Message-ID: <20250305174507.957040702@linuxfoundation.org>
+Message-ID: <20250305174510.786401999@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Philo Lu <lulie@linux.alibaba.com>
 
-[ Upstream commit 423de5b5bc5b267586b449abd1c4fde562aa0cf9 ]
+[ Upstream commit de2c211868b9424f9aa9b3432c4430825bafb41b ]
 
-Since thermal_of_should_bind() terminates the loop after processing
-the first child found in cooling-maps, it will never match more than
-one cdev to a given trip point which is incorrect, as there may be
-cooling-maps associating one trip point with multiple cooling devices.
+We found an issue when using bpf_redirect with ipvs NAT mode after
+commit ff70202b2d1a ("dev_forward_skb: do not scrub skb mark within
+the same name space"). Particularly, we use bpf_redirect to return
+the skb directly back to the netif it comes from, i.e., xnet is
+false in skb_scrub_packet(), and then ipvs_property is preserved
+and SNAT is skipped in the rx path.
 
-Address this by letting the loop continue until either all
-children have been processed or a matching one has been found.
+ipvs_property has been already cleared when netns is changed in
+commit 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when
+SKB net namespace changed"). This patch just clears it in spite of
+netns.
 
-To avoid adding conditionals or goto statements, put the loop in
-question into a separate function and make that function return
-right away after finding a matching cooling-maps entry.
-
-Fixes: 94c6110b0b13 ("thermal/of: Use the .should_bind() thermal zone callback")
-Link: https://lore.kernel.org/linux-pm/20250219-fix-thermal-of-v1-1-de36e7a590c4@chromium.org/
-Reported-by: Yu-Che Cheng <giver@chromium.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Yu-Che Cheng <giver@chromium.org>
-Tested-by: Yu-Che Cheng <giver@chromium.org>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Tested-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/2788228.mvXUDI8C0e@rjwysocki.net
+Fixes: 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when SKB net namespace changed")
+Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Link: https://patch.msgid.link/20250222033518.126087-1-lulie@linux.alibaba.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_of.c | 50 +++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
+ net/core/skbuff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index 5ab4ce4daaebd..5401f03d6b6c1 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -274,6 +274,34 @@ static bool thermal_of_get_cooling_spec(struct device_node *map_np, int index,
- 	return true;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 768b8d65a5baa..d8a3ada886ffb 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5556,11 +5556,11 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet)
+ 	skb->offload_fwd_mark = 0;
+ 	skb->offload_l3_fwd_mark = 0;
+ #endif
++	ipvs_reset(skb);
+ 
+ 	if (!xnet)
+ 		return;
+ 
+-	ipvs_reset(skb);
+ 	skb->mark = 0;
+ 	skb_clear_tstamp(skb);
  }
- 
-+static bool thermal_of_cm_lookup(struct device_node *cm_np,
-+				 const struct thermal_trip *trip,
-+				 struct thermal_cooling_device *cdev,
-+				 struct cooling_spec *c)
-+{
-+	for_each_child_of_node_scoped(cm_np, child) {
-+		struct device_node *tr_np;
-+		int count, i;
-+
-+		tr_np = of_parse_phandle(child, "trip", 0);
-+		if (tr_np != trip->priv)
-+			continue;
-+
-+		/* The trip has been found, look up the cdev. */
-+		count = of_count_phandle_with_args(child, "cooling-device",
-+						   "#cooling-cells");
-+		if (count <= 0)
-+			pr_err("Add a cooling_device property with at least one device\n");
-+
-+		for (i = 0; i < count; i++) {
-+			if (thermal_of_get_cooling_spec(child, i, cdev, c))
-+				return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static bool thermal_of_should_bind(struct thermal_zone_device *tz,
- 				   const struct thermal_trip *trip,
- 				   struct thermal_cooling_device *cdev,
-@@ -293,27 +321,7 @@ static bool thermal_of_should_bind(struct thermal_zone_device *tz,
- 		goto out;
- 
- 	/* Look up the trip and the cdev in the cooling maps. */
--	for_each_child_of_node_scoped(cm_np, child) {
--		struct device_node *tr_np;
--		int count, i;
--
--		tr_np = of_parse_phandle(child, "trip", 0);
--		if (tr_np != trip->priv)
--			continue;
--
--		/* The trip has been found, look up the cdev. */
--		count = of_count_phandle_with_args(child, "cooling-device", "#cooling-cells");
--		if (count <= 0)
--			pr_err("Add a cooling_device property with at least one device\n");
--
--		for (i = 0; i < count; i++) {
--			result = thermal_of_get_cooling_spec(child, i, cdev, c);
--			if (result)
--				break;
--		}
--
--		break;
--	}
-+	result = thermal_of_cm_lookup(cm_np, trip, cdev, c);
- 
- 	of_node_put(cm_np);
- out:
 -- 
 2.39.5
 
