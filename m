@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-120995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD0DA50953
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7689AA508C0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39FFA7A3311
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444D03A5BF6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801871C5D4E;
-	Wed,  5 Mar 2025 18:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB03250C1F;
+	Wed,  5 Mar 2025 18:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia2ToDih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcPE3m49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E45813C67E;
-	Wed,  5 Mar 2025 18:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234961ACEDD;
+	Wed,  5 Mar 2025 18:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198576; cv=none; b=kTFtbPkT+lOH0rwPct0tm5WvMZ46wUi6R07zb4k3n8vvS0yMKaU+SKd68vuVdJA6fZaEi2s0d4RfwnI+7Oe3NtLuRUVS5x+QDr3LNwNQ7PiqiJs/PptgUVYyo/Q9Y8H0WddCfjBnAuiRbSYJlpvgNE3FuF+NQJspL3oeh0KiF28=
+	t=1741198246; cv=none; b=Zu48alvh/LreaSWtYdyG3Qto6cJg19YvqnwVJl+MfPxYw7fY+NDDRp9jZXHFzbR98xVxa/w5DVXRrzIU3UQiO1R1NP6YibVbpZrioEyLNV+NZ627XOBfvmECG5Fs/ZhJvbCmIU+49M+EGQa17fmn8s7kEke+gOvjnHFKqIefIoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198576; c=relaxed/simple;
-	bh=ikL1M3DYkB6AvSNZDClj3LIWppHEm0+V0zSuHkNjT7k=;
+	s=arc-20240116; t=1741198246; c=relaxed/simple;
+	bh=W0kl6dXQQJHXkCX8gK6ugid0hLGc6yLkvcJdLTyAEy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r66s5nyAvRKYfqqeK+6c+yWrg+juwrq/vFi8uNcMYnuO/WXhTb3N7tmCUSilupmfTwPC2qj2BgAvmBYNpxoLwQmLZoPaECuXhG0N9SRnKIRziePqFiIEhCXM6cI8thaEoMDgySmQ9WUbymx45ZpPm6UvTMAEUEOQfosCTn7FyFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia2ToDih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE00AC4CED1;
-	Wed,  5 Mar 2025 18:16:15 +0000 (UTC)
+	 MIME-Version; b=BE4NtamB1ryU6zWehSpKQNo0PMhu91fdNaKQh9NZ1jOMS5ZbM3jbVSYNw/jr+jjsWut4Xb9Z3QLqhwyN1R15ycT+mB4L5OP6Y517LQLvquWUdEOplsRSuV6idfBEjLGNcZFFTPF/Z7n//ewgI6qh0/iySgjLiqO2JtG5XGS6vms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcPE3m49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE09C4CEE0;
+	Wed,  5 Mar 2025 18:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198576;
-	bh=ikL1M3DYkB6AvSNZDClj3LIWppHEm0+V0zSuHkNjT7k=;
+	s=korg; t=1741198246;
+	bh=W0kl6dXQQJHXkCX8gK6ugid0hLGc6yLkvcJdLTyAEy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ia2ToDihal7DkMqMwNi8GoO5SGenJjaljaybu3xH9T/BKNOC6EcE17bMiAbl4H0oL
-	 OL8NZAEZCouVmdcIsXc87kHt3IbPGE/zw6M5z+tYdm65SovwsrAbEbnolSN1z2V0sS
-	 V3bIsqugTstJ35kwL+LxQwJU2aljBJHa7ernIoBg=
+	b=CcPE3m49iQ9V8F92ehn8SoXRzfQi+/VmxvVwWqx/ZAkMvpXG2bmNdux+Md6iEAGUY
+	 pVua08HNJsR8MnkgPvcezV+90RYgA23nCoWeB8sT89oADDAqwQxbt2vaWNYCqx2Zc6
+	 FAjTlCa2gfficepjQX8uVu5Pf9rYd/evGJQgQT/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianfeng Liu <liujianfeng1994@gmail.com>,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Vinod Koul <vkoul@kernel.org>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 075/157] phy: rockchip: naneng-combphy: compatible reset with old DT
+Subject: [PATCH 6.12 082/150] riscv: KVM: Fix hart suspend_type use
 Date: Wed,  5 Mar 2025 18:48:31 +0100
-Message-ID: <20250305174508.320582471@linuxfoundation.org>
+Message-ID: <20250305174507.109804576@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 3126ea9be66b53e607f87f067641ba724be24181 ]
+[ Upstream commit e3219b0c491f2aa0e0b200a39d3352ab05cdda96 ]
 
-The device tree of RK3568 did not specify reset-names before.
-So add fallback to old behaviour to be compatible with old DT.
+The spec says suspend_type is 32 bits wide and "In case the data is
+defined as 32bit wide, higher privilege software must ensure that it
+only uses 32 bit data." Mask off upper bits of suspend_type before
+using it.
 
-Fixes: fbcbffbac994 ("phy: rockchip: naneng-combphy: fix phy reset")
-Cc: Jianfeng Liu <liujianfeng1994@gmail.com>
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Reviewed-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20250106100001.1344418-2-amadeus@jmu.edu.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 763c8bed8c05 ("RISC-V: KVM: Implement SBI HSM suspend call")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20250217084506.18763-9-ajones@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/riscv/kvm/vcpu_sbi_hsm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-index 2eb3329ca23f6..1ef6d9630f7e0 100644
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -309,7 +309,10 @@ static int rockchip_combphy_parse_dt(struct device *dev, struct rockchip_combphy
+diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.c
+index 13a35eb77e8e3..3070bb31745de 100644
+--- a/arch/riscv/kvm/vcpu_sbi_hsm.c
++++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
+@@ -9,6 +9,7 @@
+ #include <linux/errno.h>
+ #include <linux/err.h>
+ #include <linux/kvm_host.h>
++#include <linux/wordpart.h>
+ #include <asm/sbi.h>
+ #include <asm/kvm_vcpu_sbi.h>
  
- 	priv->ext_refclk = device_property_present(dev, "rockchip,ext-refclk");
- 
--	priv->phy_rst = devm_reset_control_get(dev, "phy");
-+	priv->phy_rst = devm_reset_control_get_exclusive(dev, "phy");
-+	/* fallback to old behaviour */
-+	if (PTR_ERR(priv->phy_rst) == -ENOENT)
-+		priv->phy_rst = devm_reset_control_array_get_exclusive(dev);
- 	if (IS_ERR(priv->phy_rst))
- 		return dev_err_probe(dev, PTR_ERR(priv->phy_rst), "failed to get phy reset\n");
- 
+@@ -109,7 +110,7 @@ static int kvm_sbi_ext_hsm_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		}
+ 		return 0;
+ 	case SBI_EXT_HSM_HART_SUSPEND:
+-		switch (cp->a0) {
++		switch (lower_32_bits(cp->a0)) {
+ 		case SBI_HSM_SUSPEND_RET_DEFAULT:
+ 			kvm_riscv_vcpu_wfi(vcpu);
+ 			break;
 -- 
 2.39.5
 
