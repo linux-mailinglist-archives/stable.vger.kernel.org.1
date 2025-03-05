@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-120814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03023A50872
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2391CA50725
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77591668B4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 280957A236D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7DC2512F2;
-	Wed,  5 Mar 2025 18:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6660250C07;
+	Wed,  5 Mar 2025 17:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIxIvzW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjHtJGZt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C66A1C6FF6;
-	Wed,  5 Mar 2025 18:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669E46ADD;
+	Wed,  5 Mar 2025 17:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198050; cv=none; b=C75fQB8QIaHTuHJiTfCYO0aWv/BXnhYx+TN+6DSnpJkDvKHpPWxotKbhVKOUnNgqgMGEee++k91woQqlPo5mtPexSVNYSZhtfNFbF/cP0MR64pdFZLZHLU5cIbaUKphw8w6Ylx9vwPRFNxW/S0VXKhz2VQxFt3VC14CeOoOB2gI=
+	t=1741197201; cv=none; b=HxPs4lIBHgwr0/FehrNlQQCajBC0SoDZ5o2mJgZJsLkB0T5YC4GLeePkeoI29mlahnI4k9UK1CrPo3hyfmIsk0JAHpumulOOKuqwagLOBeRjDOm+nx951BuAhWigWdUW0Wq/3ATNUO980+ra5HJEaRoa1i7Xsd83sN2np3FybvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198050; c=relaxed/simple;
-	bh=nj0u/7UzOpW0a8pQXbdHu8vc1mSoRe+UuGL7dBZ5u1k=;
+	s=arc-20240116; t=1741197201; c=relaxed/simple;
+	bh=HSTXBh3vDKf0ZAqSpRH57sxDzPS44GkxWbNkwqruU8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVuVtkCHjLNq/wIeBqZzVyKZBzAr+Xh0ZjDY7oalQoMZCM08WCQV0KAbPqPhh1eyp2HM5FaoI6lv+gur2uObNWbbHqz35PLsRF3530K7gwz0jjybj+8/JXrremdWwOel1fDSnvFppprOwBoqCzz9r+z6LBQs3ZUTDhgoVcfJ52M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIxIvzW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052F5C4CED1;
-	Wed,  5 Mar 2025 18:07:29 +0000 (UTC)
+	 MIME-Version; b=uZbigqLGLEPdWIpsVY9OHOm9ZxaS88L9oMLcRjx4EJMu1Q0Ei1gFcF8StIF/jG8WT7VmhEs7nM6I+XWWOpm1KcQYkJ8fOQJ5qngNDfgZLf9WPLFtJmAC5/6EdMgMNNIeX/r3DzKHg1yyq20PkuowtSDXqIurdjEc0imXQPshLuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjHtJGZt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779C7C4CED1;
+	Wed,  5 Mar 2025 17:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198050;
-	bh=nj0u/7UzOpW0a8pQXbdHu8vc1mSoRe+UuGL7dBZ5u1k=;
+	s=korg; t=1741197200;
+	bh=HSTXBh3vDKf0ZAqSpRH57sxDzPS44GkxWbNkwqruU8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIxIvzW63XPC21FuHxxhejKTD3sSGVkZoTAP42XOiw8Y1x+WkJjN9Qyt6X+leKECT
-	 VjuCGf4YUHFAQDiTrn7P1djYo67NOGsTggv4oEgEQbH8VbKugPvuvDClTleg07SAdf
-	 HCOVZxsFBKYG3yn3q2ggnjoGpCg9bgrZdpD0GqMg=
+	b=cjHtJGZtLTUFNx/TLzuGA/z/8EiyKGQ/d4gEqpiv9MJ9BckXpOoG1MpcGviwX6qYm
+	 erf5JCkT26BrAI5Rgvo1XbvPtS1bZjOv2bcCX9LEZIGWZF4uWmjLHOYUW5IFOSuQ3m
+	 /JuQR4QNnJZgmNlQZQq1ozkCrIW25CuIZwlcyGAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/150] ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 075/176] drop_monitor: fix incorrect initialization order
 Date: Wed,  5 Mar 2025 18:47:24 +0100
-Message-ID: <20250305174504.419938861@linuxfoundation.org>
+Message-ID: <20250305174508.476434551@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit c84e125fff2615b4d9c259e762596134eddd2f27 ]
+commit 07b598c0e6f06a0f254c88dafb4ad50f8a8c6eea upstream.
 
-The issue was caused by dput(upper) being called before
-ovl_dentry_update_reval(), while upper->d_flags was still
-accessed in ovl_dentry_remote().
+Syzkaller reports the following bug:
 
-Move dput(upper) after its last use to prevent use-after-free.
-
-BUG: KASAN: slab-use-after-free in ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
-BUG: KASAN: slab-use-after-free in ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
-
+BUG: spinlock bad magic on CPU#1, syz-executor.0/7995
+ lock: 0xffff88805303f3e0, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
+CPU: 1 PID: 7995 Comm: syz-executor.0 Tainted: G            E     5.10.209+ #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
 Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
- ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
- ovl_link_up fs/overlayfs/copy_up.c:610 [inline]
- ovl_copy_up_one+0x2105/0x3490 fs/overlayfs/copy_up.c:1170
- ovl_copy_up_flags+0x18d/0x200 fs/overlayfs/copy_up.c:1223
- ovl_rename+0x39e/0x18c0 fs/overlayfs/dir.c:1136
- vfs_rename+0xf84/0x20a0 fs/namei.c:4893
-...
- </TASK>
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x119/0x179 lib/dump_stack.c:118
+ debug_spin_lock_before kernel/locking/spinlock_debug.c:83 [inline]
+ do_raw_spin_lock+0x1f6/0x270 kernel/locking/spinlock_debug.c:112
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:117 [inline]
+ _raw_spin_lock_irqsave+0x50/0x70 kernel/locking/spinlock.c:159
+ reset_per_cpu_data+0xe6/0x240 [drop_monitor]
+ net_dm_cmd_trace+0x43d/0x17a0 [drop_monitor]
+ genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2497
+ genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x914/0xe00 net/netlink/af_netlink.c:1916
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ __sock_sendmsg+0x157/0x190 net/socket.c:663
+ ____sys_sendmsg+0x712/0x870 net/socket.c:2378
+ ___sys_sendmsg+0xf8/0x170 net/socket.c:2432
+ __sys_sendmsg+0xea/0x1b0 net/socket.c:2461
+ do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x62/0xc7
+RIP: 0033:0x7f3f9815aee9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f3f972bf0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f3f9826d050 RCX: 00007f3f9815aee9
+RDX: 0000000020000000 RSI: 0000000020001300 RDI: 0000000000000007
+RBP: 00007f3f981b63bd R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000006e R14: 00007f3f9826d050 R15: 00007ffe01ee6768
 
-Fixes: b07d5cc93e1b ("ovl: update of dentry revalidate flags after copy up")
-Reported-by: syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=316db8a1191938280eb6
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20250214215148.761147-1-kovalev@altlinux.org
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If drop_monitor is built as a kernel module, syzkaller may have time
+to send a netlink NET_DM_CMD_START message during the module loading.
+This will call the net_dm_monitor_start() function that uses
+a spinlock that has not yet been initialized.
+
+To fix this, let's place resource initialization above the registration
+of a generic netlink family.
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller.
+
+Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250213152054.2785669-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/copy_up.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/drop_monitor.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index b2c78621da44a..4388004a319d0 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -619,7 +619,6 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 	err = PTR_ERR(upper);
- 	if (!IS_ERR(upper)) {
- 		err = ovl_do_link(ofs, ovl_dentry_upper(c->dentry), udir, upper);
--		dput(upper);
- 
- 		if (!err) {
- 			/* Restore timestamps on parent (best effort) */
-@@ -627,6 +626,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 			ovl_dentry_set_upper_alias(c->dentry);
- 			ovl_dentry_update_reval(c->dentry, upper);
- 		}
-+		dput(upper);
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -1716,30 +1716,30 @@ static int __init init_net_drop_monitor(
+ 		return -ENOSPC;
  	}
- 	inode_unlock(udir);
- 	if (err)
--- 
-2.39.5
-
+ 
+-	rc = genl_register_family(&net_drop_monitor_family);
+-	if (rc) {
+-		pr_err("Could not create drop monitor netlink family\n");
+-		return rc;
++	for_each_possible_cpu(cpu) {
++		net_dm_cpu_data_init(cpu);
++		net_dm_hw_cpu_data_init(cpu);
+ 	}
+-	WARN_ON(net_drop_monitor_family.mcgrp_offset != NET_DM_GRP_ALERT);
+ 
+ 	rc = register_netdevice_notifier(&dropmon_net_notifier);
+ 	if (rc < 0) {
+ 		pr_crit("Failed to register netdevice notifier\n");
++		return rc;
++	}
++
++	rc = genl_register_family(&net_drop_monitor_family);
++	if (rc) {
++		pr_err("Could not create drop monitor netlink family\n");
+ 		goto out_unreg;
+ 	}
++	WARN_ON(net_drop_monitor_family.mcgrp_offset != NET_DM_GRP_ALERT);
+ 
+ 	rc = 0;
+ 
+-	for_each_possible_cpu(cpu) {
+-		net_dm_cpu_data_init(cpu);
+-		net_dm_hw_cpu_data_init(cpu);
+-	}
+-
+ 	goto out;
+ 
+ out_unreg:
+-	genl_unregister_family(&net_drop_monitor_family);
++	WARN_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
+ out:
+ 	return rc;
+ }
+@@ -1748,19 +1748,18 @@ static void exit_net_drop_monitor(void)
+ {
+ 	int cpu;
+ 
+-	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
+-
+ 	/*
+ 	 * Because of the module_get/put we do in the trace state change path
+ 	 * we are guaranteed not to have any current users when we get here
+ 	 */
++	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
++
++	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		net_dm_hw_cpu_data_fini(cpu);
+ 		net_dm_cpu_data_fini(cpu);
+ 	}
+-
+-	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
+ }
+ 
+ module_init(init_net_drop_monitor);
 
 
 
