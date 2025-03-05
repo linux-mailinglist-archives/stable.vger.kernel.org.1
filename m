@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9CCA5073C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F40A507A8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 037203A8BFA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD97F188671E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94D2251789;
-	Wed,  5 Mar 2025 17:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DA02512E1;
+	Wed,  5 Mar 2025 17:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQ/ovTAH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dg/I5mes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68DD2512EB;
-	Wed,  5 Mar 2025 17:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25F250C07;
+	Wed,  5 Mar 2025 17:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197288; cv=none; b=BPiKoHJPWyX0ZInpR8HG8ofGfVN/aAHdHytKYSmhk/C8BKnztlfweUwIgsD4y3DpwCm8JhT56jk+CbXbX4UkpMRH+IXmUF9KHG4CP4TFrmkVZVubZ57MleH6Ox22C+1u8SW5pkewcw25208fiRJ4j8d4l8qlyRfLM6LsonlFfo0=
+	t=1741197566; cv=none; b=A8/uWRkqH2b+1Y0LaQNssFOGTXH0V+zFcDXEC9Mz932F3/943zed2JH3/cOmHrrNV67eSNa2Fh3DzA/TnXbBWZ7jV+acH6CoxK3xY9ktOuOcbvomdZeJ/4+h/6YO4iDxBxPkuuSd3JzGPTRbExH9riwHwPEONs5sDWyD/bDLjLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197288; c=relaxed/simple;
-	bh=Ek6xFVjgEXa/E2CQp3Zc07kvGUK5ieRyfbKc0HSOxjk=;
+	s=arc-20240116; t=1741197566; c=relaxed/simple;
+	bh=1/oJhL4/I03XHQsLdHEqMWlTQzMuQxF7C/rxP70EcpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvBmSnKto4EEiIENzXrOZ94GDdfDWIf+lCR2mYO/pOWaAHZtxvznp0hgVLY3o1nF6aLtlGomuHNDQfwKBCZvvoVbzqxAAMLwJ3NY6TFp/Z9YDYglmdi7UbEc+Py91vXZMlz4EtCUTfumA7ru1Z8hcH4dG/5VILP2/iimw+b68uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ/ovTAH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A29C4CEE2;
-	Wed,  5 Mar 2025 17:54:47 +0000 (UTC)
+	 MIME-Version; b=h/cYpGHnrLgEBHe/Svub6rcIJ3BSJqxBFl1zyRVRk0rV5GLv6e9YJAzeFlfCXpIhAdYcrt3tcWOHRtSRzNNc2Iz9HF0UF57fJYT2i4lt1vCThBaSq0wdDsfA2g+xz3Tr0v+7lNSmBTSVJcxZedk23J2D8yn7orBmUmb0LcddiM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dg/I5mes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A644EC4CED1;
+	Wed,  5 Mar 2025 17:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197288;
-	bh=Ek6xFVjgEXa/E2CQp3Zc07kvGUK5ieRyfbKc0HSOxjk=;
+	s=korg; t=1741197566;
+	bh=1/oJhL4/I03XHQsLdHEqMWlTQzMuQxF7C/rxP70EcpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQ/ovTAHoVP+bdDwmcXMEfJqoEjQnJTE6BZgeOBHm7vTqG7Hns7ld8VjuABELbq9T
-	 4JwO0uA8pOgUjrMZuQaFPE47LBCCT9w7OcFNDRK29OwsFi1GYjE+du+RrVh2fkI1xG
-	 KCt1pSo1f9sMjiq0OjzK7Tzwb1gLGGAd2OwKPljY=
+	b=Dg/I5mes58LZ3pMWl0XaWwbc/mNddAFAXpH5SxhHabn6z9jtjFuHkxDrrE6mwDteH
+	 3UoDA/3azjRAWEjoi5BKetUo8usS5Jomd5LslCMR0NwhWbQsgJfJf+10/9WFt+dsGn
+	 iiR7FIcEBamiJdYMw01xmGS2Z270w4mIGGjk6Tss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>
-Subject: [PATCH 6.1 072/176] drm/msm/dpu: Disable dither in phys encoder cleanup
-Date: Wed,  5 Mar 2025 18:47:21 +0100
-Message-ID: <20250305174508.352417215@linuxfoundation.org>
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Dmitry Yakunin <zeil@yandex-team.ru>,
+	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/142] net: set the minimum for net_hotdata.netdev_budget_usecs
+Date: Wed,  5 Mar 2025 18:47:22 +0100
+Message-ID: <20250305174501.273764151@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit f063ac6b55df03ed25996bdc84d9e1c50147cfa1 upstream.
+[ Upstream commit c180188ec02281126045414e90d08422a80f75b4 ]
 
-Disable pingpong dither in dpu_encoder_helper_phys_cleanup().
+Commit 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs
+to enable softirq tuning") added a possibility to set
+net_hotdata.netdev_budget_usecs, but added no lower bound checking.
 
-This avoids the issue where an encoder unknowingly uses dither after
-reserving a pingpong block that was previously bound to an encoder that
-had enabled dither.
+Commit a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
+made the *initial* value HZ-dependent, so the initial value is at least
+2 jiffies even for lower HZ values (2 ms for 1000 Hz, 8ms for 250 Hz, 20
+ms for 100 Hz).
 
-Cc: stable@vger.kernel.org
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Closes: https://lore.kernel.org/all/jr7zbj5w7iq4apg3gofuvcwf4r2swzqjk7sshwcdjll4mn6ctt@l2n3qfpujg3q/
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Fixes: 3c128638a07d ("drm/msm/dpu: add support for dither block in display")
-Patchwork: https://patchwork.freedesktop.org/patch/636517/
-Link: https://lore.kernel.org/r/20250211-dither-disable-v1-1-ac2cb455f6b9@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But a user still can set improper values by a sysctl. Set .extra1
+(the lower bound) for net_hotdata.netdev_budget_usecs to the same value
+as in the latter commit. That is to 2 jiffies.
+
+Fixes: a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
+Fixes: 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs to enable softirq tuning")
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Dmitry Yakunin <zeil@yandex-team.ru>
+Cc: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+Link: https://patch.msgid.link/20250220110752.137639-1-jirislaby@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/core/sysctl_net_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -2059,6 +2059,9 @@ void dpu_encoder_helper_phys_cleanup(str
- 		}
- 	}
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 0b15272dd2d35..a7fa17b6a1297 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -31,6 +31,7 @@ static int min_sndbuf = SOCK_MIN_SNDBUF;
+ static int min_rcvbuf = SOCK_MIN_RCVBUF;
+ static int max_skb_frags = MAX_SKB_FRAGS;
+ static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
++static int netdev_budget_usecs_min = 2 * USEC_PER_SEC / HZ;
  
-+	if (phys_enc->hw_pp && phys_enc->hw_pp->ops.setup_dither)
-+		phys_enc->hw_pp->ops.setup_dither(phys_enc->hw_pp, NULL);
-+
- 	/* reset the merge 3D HW block */
- 	if (phys_enc->hw_pp && phys_enc->hw_pp->merge_3d) {
- 		phys_enc->hw_pp->merge_3d->ops.setup_3d_mode(phys_enc->hw_pp->merge_3d,
+ static int net_msg_warn;	/* Unused, but still a sysctl */
+ 
+@@ -613,7 +614,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(unsigned int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+-		.extra1		= SYSCTL_ZERO,
++		.extra1		= &netdev_budget_usecs_min,
+ 	},
+ 	{
+ 		.procname	= "fb_tunnels_only_for_init_net",
+-- 
+2.39.5
+
 
 
 
