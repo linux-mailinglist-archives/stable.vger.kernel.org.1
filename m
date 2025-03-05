@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-120897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3996CA508E2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C8A50852
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3139F17632F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9E7A188918A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCD4252903;
-	Wed,  5 Mar 2025 18:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E740924FBE8;
+	Wed,  5 Mar 2025 18:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIgAsEr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfEyxuMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9246E2517BA;
-	Wed,  5 Mar 2025 18:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68241C6FF6;
+	Wed,  5 Mar 2025 18:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198291; cv=none; b=pMvBdN2EO+26Aal7gJiUTYB64aqvKMxp5zkC9dSL+ngM6d5Tx69XTTOhpEwDhQJr2c/s52pO73kInr6qzcwDWFHeUgaJM4a3iTFJXyypJCSsYIwzSMmRiM5+tFpptb0hTCRpgw+Okt+ygEQFrfHq/R/gmyOVyxuApAGFHFQW01k=
+	t=1741197922; cv=none; b=OmwmyA7OQ8X74UN67/3elNdJACwcSLcErepIgm7RyVSeladTq/bnc5Sq1LeFx4s19mnispwOmAuXgh3xuUF102k3lvgl60uMAn8eK2+sKSMfwO/Og497YGKbly1Q3w0apac59boBwT/dwNcPssKj9xB9jipfpzxRVIIglkCAAzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198291; c=relaxed/simple;
-	bh=TT16lU57wRpHr9XwyhNKJhktQrPMOiIF2qrXaYW3NLo=;
+	s=arc-20240116; t=1741197922; c=relaxed/simple;
+	bh=Ls/lOX1wdc/3nNzLOb4EwkODTHQ99ajoALaYfFu1kb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MaXV1jwNykkzIm+PFOGKmr37/cSfxR4ciKTd8cK/RfiGT8W8cSWY1SZ8Bg5iFfONgzfu/YClch3VhTXGQyAvkvhun/8POwEY8h+1PxJZE6fXC8H/DQnCl52BBw2PCMc/gVyo/rj2ocr4jvJeCQVSwJPBF6ghBu8SXPNjC0sqw4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIgAsEr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1984EC4CED1;
-	Wed,  5 Mar 2025 18:11:30 +0000 (UTC)
+	 MIME-Version; b=nepjFAiHI/uLgmlwIwRoa22YmeSMq7AtQsxn22J1U2l4k5yRJP/ZYLlSnVU3SW8t9RwanK953WOatQCR9vf00byAsMo/GYJ0x3g6y+xNS5cdxBdbiTFGKGIYGIhP5gbfARxgDfD2+iZGGMoz5GJ/q5JQEWiQkWr9iQ25vLfvqFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfEyxuMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC3DC4CED1;
+	Wed,  5 Mar 2025 18:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198291;
-	bh=TT16lU57wRpHr9XwyhNKJhktQrPMOiIF2qrXaYW3NLo=;
+	s=korg; t=1741197922;
+	bh=Ls/lOX1wdc/3nNzLOb4EwkODTHQ99ajoALaYfFu1kb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIgAsEr8wdoD6Lz97Avt+VztbMuC/+f5czEvTTXi34CD8xzqLlZbmWNip4ESa1A7Q
-	 nd5jP1OBMjlJSVYaQHfrUuqYXq/jL6NAGPnUmAQ6U2fN3O6zJYsrWIwgNU2YhBsjZi
-	 yL5NheVAjWWURgsFXkYdsvWJdECAe6LxKOh5Fm7g=
+	b=TfEyxuMW0ZERSSZwfO/89jUqKGoIRYTMORI4USpiCKL9Yiecjms/kzgRV2NCx24bX
+	 0uJMsgihwvKYlV/2UEatyCd7CHtSa2kX7TqDvbUt7TOQze04XDQNsK+jBT8QLYoX18
+	 5pRKxqxV9iTqPtb3XN6LXm6HKPrSAH2iXrJ1gF4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Pat Cody <patcody@meta.com>,
-	Andrea Righi <arighi@nvidia.com>
-Subject: [PATCH 6.12 129/150] sched_ext: Fix pick_task_scx() picking non-queued tasks when its called without balance()
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 139/142] x86/microcode/AMD: Merge early_apply_microcode() into its single callsite
 Date: Wed,  5 Mar 2025 18:49:18 +0100
-Message-ID: <20250305174508.998040345@linuxfoundation.org>
+Message-ID: <20250305174505.921981596@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 8fef0a3b17bb258130a4fcbcb5addf94b25e9ec5 upstream.
+commit dc15675074dcfd79a2f10a6e39f96b0244961a01 upstream
 
-a6250aa251ea ("sched_ext: Handle cases where pick_task_scx() is called
-without preceding balance_scx()") added a workaround to handle the cases
-where pick_task_scx() is called without prececing balance_scx() which is due
-to a fair class bug where pick_taks_fair() may return NULL after a true
-return from balance_fair().
+No functional changes.
 
-The workaround detects when pick_task_scx() is called without preceding
-balance_scx() and emulates SCX_RQ_BAL_KEEP and triggers kicking to avoid
-stalling. Unfortunately, the workaround code was testing whether @prev was
-on SCX to decide whether to keep the task running. This is incorrect as the
-task may be on SCX but no longer runnable.
-
-This could lead to a non-runnable task to be returned from pick_task_scx()
-which cause interesting confusions and failures. e.g. A common failure mode
-is the task ending up with (!on_rq && on_cpu) state which can cause
-potential wakers to busy loop, which can easily lead to deadlocks.
-
-Fix it by testing whether @prev has SCX_TASK_QUEUED set. This makes
-@prev_on_scx only used in one place. Open code the usage and improve the
-comment while at it.
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reported-by: Pat Cody <patcody@meta.com>
-Fixes: a6250aa251ea ("sched_ext: Handle cases where pick_task_scx() is called without preceding balance_scx()")
-Cc: stable@vger.kernel.org # v6.12+
-Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250211163648.30531-4-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |   60 +++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 34 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3047,7 +3047,6 @@ static struct task_struct *pick_task_scx
- {
- 	struct task_struct *prev = rq->curr;
- 	struct task_struct *p;
--	bool prev_on_scx = prev->sched_class == &ext_sched_class;
- 	bool keep_prev = rq->scx.flags & SCX_RQ_BAL_KEEP;
- 	bool kick_idle = false;
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -515,39 +515,6 @@ static bool __apply_microcode_amd(struct
+ 	return true;
+ }
  
-@@ -3067,14 +3066,18 @@ static struct task_struct *pick_task_scx
- 	 * if pick_task_scx() is called without preceding balance_scx().
- 	 */
- 	if (unlikely(rq->scx.flags & SCX_RQ_BAL_PENDING)) {
--		if (prev_on_scx) {
-+		if (prev->scx.flags & SCX_TASK_QUEUED) {
- 			keep_prev = true;
- 		} else {
- 			keep_prev = false;
- 			kick_idle = true;
- 		}
--	} else if (unlikely(keep_prev && !prev_on_scx)) {
--		/* only allowed during transitions */
-+	} else if (unlikely(keep_prev &&
-+			    prev->sched_class != &ext_sched_class)) {
-+		/*
-+		 * Can happen while enabling as SCX_RQ_BAL_PENDING assertion is
-+		 * conditional on scx_enabled() and may have been skipped.
-+		 */
- 		WARN_ON_ONCE(scx_ops_enable_state() == SCX_OPS_ENABLED);
- 		keep_prev = false;
- 	}
+-/*
+- * Early load occurs before we can vmalloc(). So we look for the microcode
+- * patch container file in initrd, traverse equivalent cpu table, look for a
+- * matching microcode patch, and update, all in initrd memory in place.
+- * When vmalloc() is available for use later -- on 64-bit during first AP load,
+- * and on 32-bit during save_microcode_in_initrd_amd() -- we can call
+- * load_microcode_amd() to save equivalent cpu table and microcode patches in
+- * kernel heap memory.
+- *
+- * Returns true if container found (sets @desc), false otherwise.
+- */
+-static bool early_apply_microcode(u32 old_rev, void *ucode, size_t size)
+-{
+-	struct cont_desc desc = { 0 };
+-	struct microcode_amd *mc;
+-	bool ret = false;
+-
+-	scan_containers(ucode, size, &desc);
+-
+-	mc = desc.mc;
+-	if (!mc)
+-		return ret;
+-
+-	/*
+-	 * Allow application of the same revision to pick up SMT-specific
+-	 * changes even if the revision of the other SMT thread is already
+-	 * up-to-date.
+-	 */
+-	if (old_rev > mc->hdr.patch_id)
+-		return ret;
+-
+-	return __apply_microcode_amd(mc, desc.psize);
+-}
+ 
+ static bool get_builtin_microcode(struct cpio_data *cp)
+ {
+@@ -586,8 +553,19 @@ static bool __init find_blobs_in_contain
+ 	return found;
+ }
+ 
++/*
++ * Early load occurs before we can vmalloc(). So we look for the microcode
++ * patch container file in initrd, traverse equivalent cpu table, look for a
++ * matching microcode patch, and update, all in initrd memory in place.
++ * When vmalloc() is available for use later -- on 64-bit during first AP load,
++ * and on 32-bit during save_microcode_in_initrd() -- we can call
++ * load_microcode_amd() to save equivalent cpu table and microcode patches in
++ * kernel heap memory.
++ */
+ void __init load_ucode_amd_bsp(struct early_load_data *ed, unsigned int cpuid_1_eax)
+ {
++	struct cont_desc desc = { };
++	struct microcode_amd *mc;
+ 	struct cpio_data cp = { };
+ 	u32 dummy;
+ 
+@@ -601,7 +579,21 @@ void __init load_ucode_amd_bsp(struct ea
+ 	if (!find_blobs_in_containers(&cp))
+ 		return;
+ 
+-	if (early_apply_microcode(ed->old_rev, cp.data, cp.size))
++	scan_containers(cp.data, cp.size, &desc);
++
++	mc = desc.mc;
++	if (!mc)
++		return;
++
++	/*
++	 * Allow application of the same revision to pick up SMT-specific
++	 * changes even if the revision of the other SMT thread is already
++	 * up-to-date.
++	 */
++	if (ed->old_rev > mc->hdr.patch_id)
++		return;
++
++	if (__apply_microcode_amd(mc, desc.psize))
+ 		native_rdmsr(MSR_AMD64_PATCH_LEVEL, ed->new_rev, dummy);
+ }
+ 
 
 
 
