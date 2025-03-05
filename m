@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-120691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23E4A507E1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264E5A50886
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EAB43A6550
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9858C1892390
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C381C863D;
-	Wed,  5 Mar 2025 18:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F7024C07D;
+	Wed,  5 Mar 2025 18:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3LSCEL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGmZ/IbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3E61C6FF9;
-	Wed,  5 Mar 2025 18:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D47B1C860D;
+	Wed,  5 Mar 2025 18:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197693; cv=none; b=CMff5pMsFM6i6omZTfcvBWM7skmbKgIlTEmCTg9Jrgfkc+IjGaRFfkOW7YzEcqRUNllC4kryXeVMdua39xF+UM+2323YRTUoi8Rf6RwDVh2z3e5QyOi0+i3QBXLzyL5tg3O6HFKhNiUUpHrKllfrnafcgs144s43sFDfgXX6p8k=
+	t=1741198074; cv=none; b=bw/u7mvnQQePQeB+65cwRjFI9DIDUom/MQu9fvZm42Yk045QJTfYHRhhg3HNe8B6Ms6FtBgMeKlKqqKNChyrr5fzPxcjpAtm6MZ02K0lqC83t5YDFyVlDmIqeSnV/jo3LPSXIfx65rSTZMgEJaF2K/QahwtS/Lz6JyZfVD8sVY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197693; c=relaxed/simple;
-	bh=F/Jf79ynabxlSZrqzXtvsRh0KzsZwE9KdQeSJ0ylb58=;
+	s=arc-20240116; t=1741198074; c=relaxed/simple;
+	bh=jkW8eFFGksJI7Wdbt/xtw+VboScgc3ImmURBJtxsOcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyKe1bL2Z8z8K2ST/x6c24+PFsG7G9GHpFo7aC+dXZl8vuevTEE4TXoOW0o51k57dzZzPY/NiLzLrgWmnDVFqgLTBnFEKcROru82JKnY0AM6aGMT++CnCd0CYrmCmbs/l9j3+quVqxxHdGvTtp/0QBbXI8r/qN/bhTQ66SaavpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3LSCEL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B362BC4CED1;
-	Wed,  5 Mar 2025 18:01:32 +0000 (UTC)
+	 MIME-Version; b=Y6CATT/YwA247D/CVRHGNPTGrRlgOdw27/pZOvNDpVHTw/Z/qUm75dmBUzamUUPkhiA3KNyf1xFFvW+e8h/0X2zChN6K1RtD2wCpUkiv3/nKl1y/7nL3pxbA9OA7aaeGbZRJhrUoYG5ZAXZcwaW+dEizQktnrFT++SdoPrIxdVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGmZ/IbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3999C4CED1;
+	Wed,  5 Mar 2025 18:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197693;
-	bh=F/Jf79ynabxlSZrqzXtvsRh0KzsZwE9KdQeSJ0ylb58=;
+	s=korg; t=1741198074;
+	bh=jkW8eFFGksJI7Wdbt/xtw+VboScgc3ImmURBJtxsOcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3LSCEL48Sg7hx7wAJtfzMLnAD2fghvEKBBIMme28gdB6ypBZDdOHvI1PcsT8IvlZ
-	 uiPYrmxI/5kp1/+17bwWAaZTJXYMh1NUZopyPLWLvTavph87S4Ti+hg6GBHwPM21/P
-	 tips4oA8aQgHnha+rjlfg2EzGm6u3hCaa/9A54QU=
+	b=hGmZ/IbIfiK8EcDxlvMzDAUy8g2sIX6v8CcDI5P2ts7cuE0E4G4WKWONzEdfdCmew
+	 C2LTbGv3MUudBpZVfUWlqkz3XLmnR/B02LgU1pezOdt8FfhGrUnS76Kx0E24LXhDdX
+	 RqVAGtVhxEwzIjToewORzKaEt10Exb+2UJDIbYew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.6 066/142] perf/x86: Fix low freqency setting issue
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 056/150] ice: Avoid setting default Rx VSI twice in switchdev setup
 Date: Wed,  5 Mar 2025 18:48:05 +0100
-Message-ID: <20250305174502.991314150@linuxfoundation.org>
+Message-ID: <20250305174506.075019377@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-commit 88ec7eedbbd21cad38707620ad6c48a4e9a87c18 upstream.
+[ Upstream commit 5c07be96d8b3f8447e980f29b967bf2e1d7ac732 ]
 
-Perf doesn't work at low frequencies:
+As part of switchdev environment setup, uplink VSI is configured as
+default for both Tx and Rx. Default Rx VSI is also used by promiscuous
+mode. If promisc mode is enabled and an attempt to enter switchdev mode
+is made, the setup will fail because Rx VSI is already configured as
+default (rule exists).
 
-  $ perf record -e cpu_core/instructions/ppp -F 120
-  Error:
-  The sys_perf_event_open() syscall returned with 22 (Invalid argument)
-  for event (cpu_core/instructions/ppp).
-  "dmesg | grep -i perf" may provide additional information.
+Reproducer:
+  devlink dev eswitch set $PF1_PCI mode switchdev
+  ip l s $PF1 up
+  ip l s $PF1 promisc on
+  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
 
-The limit_period() check avoids a low sampling period on a counter. It
-doesn't intend to limit the frequency.
+In switchdev setup, use ice_set_dflt_vsi() instead of plain
+ice_cfg_dflt_vsi(), which avoids repeating setting default VSI for Rx if
+it's already configured.
 
-The check in the x86_pmu_hw_config() should be limited to non-freq mode.
-The attr.sample_period and attr.sample_freq are union. The
-attr.sample_period should not be used to indicate the frequency mode.
-
-Fixes: c46e665f0377 ("perf/x86: Add INST_RETIRED.ALL workarounds")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250117151913.3043942-1-kan.liang@linux.intel.com
-Closes: https://lore.kernel.org/lkml/20250115154949.3147-1-ravi.bangoria@amd.com/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 50d62022f455 ("ice: default Tx rule instead of to queue")
+Reported-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Closes: https://lore.kernel.org/intel-wired-lan/PH0PR11MB50138B635F2E5CEB7075325D961F2@PH0PR11MB5013.namprd11.prod.outlook.com
+Reviewed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250224190647.3601930-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_eswitch.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -623,7 +623,7 @@ int x86_pmu_hw_config(struct perf_event
- 	if (event->attr.type == event->pmu->type)
- 		event->hw.config |= event->attr.config & X86_RAW_EVENT_MASK;
+diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+index fb527434b58b1..d649c197cf673 100644
+--- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
++++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+@@ -38,8 +38,7 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
+ 	if (ice_vsi_add_vlan_zero(uplink_vsi))
+ 		goto err_vlan_zero;
  
--	if (event->attr.sample_period && x86_pmu.limit_period) {
-+	if (!event->attr.freq && x86_pmu.limit_period) {
- 		s64 left = event->attr.sample_period;
- 		x86_pmu.limit_period(event, &left);
- 		if (left > event->attr.sample_period)
+-	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
+-			     ICE_FLTR_RX))
++	if (ice_set_dflt_vsi(uplink_vsi))
+ 		goto err_def_rx;
+ 
+ 	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
+-- 
+2.39.5
+
 
 
 
