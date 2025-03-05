@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-120497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A7FA50706
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F116DA5070F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 894117A176B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:51:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CAC57A187C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B419253335;
-	Wed,  5 Mar 2025 17:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C152517BA;
+	Wed,  5 Mar 2025 17:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpxXbVEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUUjVSMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EF5253324;
-	Wed,  5 Mar 2025 17:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E562512D6;
+	Wed,  5 Mar 2025 17:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197132; cv=none; b=Dy2fi3oF1F5wWgwFeF/KC7LOCaIb2u65olqqXyyS19hCsUH7qSZ19anf9cANRQIjmtX236WbOOOrnUzTIIuOTomKDw+strbP+pNs2f2thoy9I9xXAPDnrnSNNCJTQS6R2vdxPGp8EnShqp1acdIvJ/HUOSWrRMtt6+GiSmZJR/4=
+	t=1741197163; cv=none; b=pvbZwxXA/7owUSNyFrTzTmPxuDtMNKG2fjHaE6F1/lkwzoYBdKKELxHR8peZ6yG5WOWQSGVyQ+RKMsigwsQ2mRT7ywluEMoRdULyTjskV2Rn4swEn1h8RFhNGbUN9F6Lhn61hxYVxItPg+2iCDGdFS1wDtE+2mtylasFzZr+4+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197132; c=relaxed/simple;
-	bh=8PtGuLEwZOi6ErnmueEXHpS6fPWe74Xn2qILWQlZzvs=;
+	s=arc-20240116; t=1741197163; c=relaxed/simple;
+	bh=tmtnQsqKoTNHTB+elyiXPa08zZFygSH5CP+XHYutlJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lk3MPqXN3q2E46sGCHf29kpPBNiY9RjvLXDyLHFWk8/FjSS4gh8K6TpNzm73aL58BH7kAtdVJUbMhkvArHwwyzPreaS2liTqN5IlRz1q1M6T5xzYpbmcI/XD4pqw/eYrn7hlOnYT+rxkEVypuaT1fcPZNT3DbwvaZdC+gImwxjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpxXbVEU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF38C4CEE9;
-	Wed,  5 Mar 2025 17:52:11 +0000 (UTC)
+	 MIME-Version; b=iE3aSDIVBkzoeFwwEv0jpa1jNbagRZP++MUsnoBIa2VOR8s87y7V73mFNH8j6MzU1V5dUv/ngEbwWRAqUdmmHYQeq8m5qqD7H4yvAa+CzWNMERChmnqog1LXiR4hLfm+n0INCchV9U24/Wmzeo5tLArTqtoQJzZC0dyYo4aVjU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUUjVSMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279F8C4CED1;
+	Wed,  5 Mar 2025 17:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197132;
-	bh=8PtGuLEwZOi6ErnmueEXHpS6fPWe74Xn2qILWQlZzvs=;
+	s=korg; t=1741197163;
+	bh=tmtnQsqKoTNHTB+elyiXPa08zZFygSH5CP+XHYutlJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WpxXbVEUNDEk4QL+RRQx0FLu8/qpK5hcp0wRFEnqmyqaxMbETaFY4kaFxgnoRVlI9
-	 qRoIWbpMRQCwDHoa/MWucAWwo+sxlbc6BAyQi3NKHXGzHuHjnjfN/+Ve7z7xn/fFf5
-	 BrqH9Hy/0MSV312IzI+X+HNTsMoTm2bdeo/odXAo=
+	b=aUUjVSMIsqscGrLp7FdzkDXiH/7speXWyWVuFqGE3YcIQ0QgTwyBTlhba2qIFQ4hB
+	 10J+xCoA3ZlRqDb7MUJsCgK4TBapTWaHk1qL8O/Io2uL7iKlQviNR+7d5H/EAOIcyV
+	 QLsLmtO76Wp/JewXF6nMXWROQRS6oBJDjuS/QV7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sean Young <sean@mess.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/176] soc: mediatek: mtk-devapc: Fix leaking IO map on driver remove
-Date: Wed,  5 Mar 2025 18:46:42 +0100
-Message-ID: <20250305174506.794526882@linuxfoundation.org>
+Subject: [PATCH 6.1 034/176] media: Switch to use dev_err_probe() helper
+Date: Wed,  5 Mar 2025 18:46:43 +0100
+Message-ID: <20250305174506.833834642@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
 References: <20250305174505.437358097@linuxfoundation.org>
@@ -66,34 +70,317 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit c9c0036c1990da8d2dd33563e327e05a775fcf10 ]
+[ Upstream commit 6cb7d1b3ff83e98e852db9739892c4643a31804b ]
 
-Driver removal should fully clean up - unmap the memory.
+In the probe path, dev_err() can be replaced with dev_err_probe()
+which will check if error code is -EPROBE_DEFER.
 
-Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250104142012.115974-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Sean Young <sean@mess.org>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: a9ea1a3d88b7 ("media: uvcvideo: Fix crash during unbind if gpio unit is in use")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/cec/platform/stm32/stm32-cec.c  |  9 +++----
+ drivers/media/i2c/ad5820.c                    | 18 +++++--------
+ drivers/media/i2c/imx274.c                    |  5 ++--
+ drivers/media/i2c/tc358743.c                  |  9 +++----
+ .../platform/mediatek/mdp/mtk_mdp_comp.c      |  5 ++--
+ .../platform/samsung/exynos4-is/media-dev.c   |  4 +--
+ drivers/media/platform/st/stm32/stm32-dcmi.c  | 27 +++++++------------
+ drivers/media/platform/ti/omap3isp/isp.c      |  3 +--
+ .../media/platform/xilinx/xilinx-csi2rxss.c   |  8 +++---
+ drivers/media/rc/gpio-ir-recv.c               | 10 +++----
+ drivers/media/rc/gpio-ir-tx.c                 |  9 +++----
+ drivers/media/rc/ir-rx51.c                    |  9 ++-----
+ drivers/media/usb/uvc/uvc_driver.c            |  9 +++----
+ 13 files changed, 41 insertions(+), 84 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-devapc.c b/drivers/soc/mediatek/mtk-devapc.c
-index 226a79f43492f..7269ab8d29b64 100644
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -305,6 +305,7 @@ static void mtk_devapc_remove(struct platform_device *pdev)
- 	struct mtk_devapc_context *ctx = platform_get_drvdata(pdev);
+diff --git a/drivers/media/cec/platform/stm32/stm32-cec.c b/drivers/media/cec/platform/stm32/stm32-cec.c
+index 40db7911b437b..7b2db46a57222 100644
+--- a/drivers/media/cec/platform/stm32/stm32-cec.c
++++ b/drivers/media/cec/platform/stm32/stm32-cec.c
+@@ -288,12 +288,9 @@ static int stm32_cec_probe(struct platform_device *pdev)
+ 		return ret;
  
- 	stop_devapc(ctx);
-+	iounmap(ctx->infra_base);
- }
+ 	cec->clk_cec = devm_clk_get(&pdev->dev, "cec");
+-	if (IS_ERR(cec->clk_cec)) {
+-		if (PTR_ERR(cec->clk_cec) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Cannot get cec clock\n");
+-
+-		return PTR_ERR(cec->clk_cec);
+-	}
++	if (IS_ERR(cec->clk_cec))
++		return dev_err_probe(&pdev->dev, PTR_ERR(cec->clk_cec),
++				     "Cannot get cec clock\n");
  
- static struct platform_driver mtk_devapc_driver = {
+ 	ret = clk_prepare(cec->clk_cec);
+ 	if (ret) {
+diff --git a/drivers/media/i2c/ad5820.c b/drivers/media/i2c/ad5820.c
+index 088c29c4e2529..56d22d02a0d91 100644
+--- a/drivers/media/i2c/ad5820.c
++++ b/drivers/media/i2c/ad5820.c
+@@ -301,21 +301,15 @@ static int ad5820_probe(struct i2c_client *client,
+ 		return -ENOMEM;
+ 
+ 	coil->vana = devm_regulator_get(&client->dev, "VANA");
+-	if (IS_ERR(coil->vana)) {
+-		ret = PTR_ERR(coil->vana);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(&client->dev, "could not get regulator for vana\n");
+-		return ret;
+-	}
++	if (IS_ERR(coil->vana))
++		return dev_err_probe(&client->dev, PTR_ERR(coil->vana),
++				     "could not get regulator for vana\n");
+ 
+ 	coil->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable",
+ 						    GPIOD_OUT_LOW);
+-	if (IS_ERR(coil->enable_gpio)) {
+-		ret = PTR_ERR(coil->enable_gpio);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(&client->dev, "could not get enable gpio\n");
+-		return ret;
+-	}
++	if (IS_ERR(coil->enable_gpio))
++		return dev_err_probe(&client->dev, PTR_ERR(coil->enable_gpio),
++				     "could not get enable gpio\n");
+ 
+ 	mutex_init(&coil->power_lock);
+ 
+diff --git a/drivers/media/i2c/imx274.c b/drivers/media/i2c/imx274.c
+index a00761b1e18c2..9219f3c9594b0 100644
+--- a/drivers/media/i2c/imx274.c
++++ b/drivers/media/i2c/imx274.c
+@@ -2060,9 +2060,8 @@ static int imx274_probe(struct i2c_client *client)
+ 	imx274->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(imx274->reset_gpio)) {
+-		if (PTR_ERR(imx274->reset_gpio) != -EPROBE_DEFER)
+-			dev_err(dev, "Reset GPIO not setup in DT");
+-		ret = PTR_ERR(imx274->reset_gpio);
++		ret = dev_err_probe(dev, PTR_ERR(imx274->reset_gpio),
++				    "Reset GPIO not setup in DT\n");
+ 		goto err_me;
+ 	}
+ 
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 45dd91d1cd816..2c8189e04a131 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1891,12 +1891,9 @@ static int tc358743_probe_of(struct tc358743_state *state)
+ 	int ret;
+ 
+ 	refclk = devm_clk_get(dev, "refclk");
+-	if (IS_ERR(refclk)) {
+-		if (PTR_ERR(refclk) != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get refclk: %ld\n",
+-				PTR_ERR(refclk));
+-		return PTR_ERR(refclk);
+-	}
++	if (IS_ERR(refclk))
++		return dev_err_probe(dev, PTR_ERR(refclk),
++				     "failed to get refclk\n");
+ 
+ 	ep = of_graph_get_next_endpoint(dev->of_node, NULL);
+ 	if (!ep) {
+diff --git a/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c b/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c
+index 1e3833f1c9ae2..ad5fab2d8bfae 100644
+--- a/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c
++++ b/drivers/media/platform/mediatek/mdp/mtk_mdp_comp.c
+@@ -52,9 +52,8 @@ int mtk_mdp_comp_init(struct device *dev, struct device_node *node,
+ 	for (i = 0; i < ARRAY_SIZE(comp->clk); i++) {
+ 		comp->clk[i] = of_clk_get(node, i);
+ 		if (IS_ERR(comp->clk[i])) {
+-			if (PTR_ERR(comp->clk[i]) != -EPROBE_DEFER)
+-				dev_err(dev, "Failed to get clock\n");
+-			ret = PTR_ERR(comp->clk[i]);
++			ret = dev_err_probe(dev, PTR_ERR(comp->clk[i]),
++					    "Failed to get clock\n");
+ 			goto put_dev;
+ 		}
+ 
+diff --git a/drivers/media/platform/samsung/exynos4-is/media-dev.c b/drivers/media/platform/samsung/exynos4-is/media-dev.c
+index 2f3071acb9c97..98a60f01129d4 100644
+--- a/drivers/media/platform/samsung/exynos4-is/media-dev.c
++++ b/drivers/media/platform/samsung/exynos4-is/media-dev.c
+@@ -1471,9 +1471,7 @@ static int fimc_md_probe(struct platform_device *pdev)
+ 
+ 	pinctrl = devm_pinctrl_get(dev);
+ 	if (IS_ERR(pinctrl)) {
+-		ret = PTR_ERR(pinctrl);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "Failed to get pinctrl: %d\n", ret);
++		ret = dev_err_probe(dev, PTR_ERR(pinctrl), "Failed to get pinctrl\n");
+ 		goto err_clk;
+ 	}
+ 
+diff --git a/drivers/media/platform/st/stm32/stm32-dcmi.c b/drivers/media/platform/st/stm32/stm32-dcmi.c
+index 37458d4d9564b..06be28b361f1a 100644
+--- a/drivers/media/platform/st/stm32/stm32-dcmi.c
++++ b/drivers/media/platform/st/stm32/stm32-dcmi.c
+@@ -1946,12 +1946,9 @@ static int dcmi_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	dcmi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+-	if (IS_ERR(dcmi->rstc)) {
+-		if (PTR_ERR(dcmi->rstc) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Could not get reset control\n");
+-
+-		return PTR_ERR(dcmi->rstc);
+-	}
++	if (IS_ERR(dcmi->rstc))
++		return dev_err_probe(&pdev->dev, PTR_ERR(dcmi->rstc),
++				     "Could not get reset control\n");
+ 
+ 	/* Get bus characteristics from devicetree */
+ 	np = of_graph_get_next_endpoint(np, NULL);
+@@ -2003,20 +2000,14 @@ static int dcmi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	mclk = devm_clk_get(&pdev->dev, "mclk");
+-	if (IS_ERR(mclk)) {
+-		if (PTR_ERR(mclk) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Unable to get mclk\n");
+-		return PTR_ERR(mclk);
+-	}
++	if (IS_ERR(mclk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(mclk),
++				     "Unable to get mclk\n");
+ 
+ 	chan = dma_request_chan(&pdev->dev, "tx");
+-	if (IS_ERR(chan)) {
+-		ret = PTR_ERR(chan);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(&pdev->dev,
+-				"Failed to request DMA channel: %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(chan))
++		return dev_err_probe(&pdev->dev, PTR_ERR(chan),
++				     "Failed to request DMA channel\n");
+ 
+ 	dcmi->dma_max_burst = UINT_MAX;
+ 	ret = dma_get_slave_caps(chan, &caps);
+diff --git a/drivers/media/platform/ti/omap3isp/isp.c b/drivers/media/platform/ti/omap3isp/isp.c
+index 11ae479ee89c8..e7327e38482de 100644
+--- a/drivers/media/platform/ti/omap3isp/isp.c
++++ b/drivers/media/platform/ti/omap3isp/isp.c
+@@ -1884,8 +1884,7 @@ static int isp_initialize_modules(struct isp_device *isp)
+ 
+ 	ret = omap3isp_ccp2_init(isp);
+ 	if (ret < 0) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(isp->dev, "CCP2 initialization failed\n");
++		dev_err_probe(isp->dev, ret, "CCP2 initialization failed\n");
+ 		goto error_ccp2;
+ 	}
+ 
+diff --git a/drivers/media/platform/xilinx/xilinx-csi2rxss.c b/drivers/media/platform/xilinx/xilinx-csi2rxss.c
+index 29b53febc2e7a..d8a23f18cfbce 100644
+--- a/drivers/media/platform/xilinx/xilinx-csi2rxss.c
++++ b/drivers/media/platform/xilinx/xilinx-csi2rxss.c
+@@ -976,11 +976,9 @@ static int xcsi2rxss_probe(struct platform_device *pdev)
+ 	/* Reset GPIO */
+ 	xcsi2rxss->rst_gpio = devm_gpiod_get_optional(dev, "video-reset",
+ 						      GPIOD_OUT_HIGH);
+-	if (IS_ERR(xcsi2rxss->rst_gpio)) {
+-		if (PTR_ERR(xcsi2rxss->rst_gpio) != -EPROBE_DEFER)
+-			dev_err(dev, "Video Reset GPIO not setup in DT");
+-		return PTR_ERR(xcsi2rxss->rst_gpio);
+-	}
++	if (IS_ERR(xcsi2rxss->rst_gpio))
++		return dev_err_probe(dev, PTR_ERR(xcsi2rxss->rst_gpio),
++				     "Video Reset GPIO not setup in DT\n");
+ 
+ 	ret = xcsi2rxss_parse_of(xcsi2rxss);
+ 	if (ret < 0)
+diff --git a/drivers/media/rc/gpio-ir-recv.c b/drivers/media/rc/gpio-ir-recv.c
+index 16795e07dc103..41ef8cdba28c4 100644
+--- a/drivers/media/rc/gpio-ir-recv.c
++++ b/drivers/media/rc/gpio-ir-recv.c
+@@ -74,13 +74,9 @@ static int gpio_ir_recv_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	gpio_dev->gpiod = devm_gpiod_get(dev, NULL, GPIOD_IN);
+-	if (IS_ERR(gpio_dev->gpiod)) {
+-		rc = PTR_ERR(gpio_dev->gpiod);
+-		/* Just try again if this happens */
+-		if (rc != -EPROBE_DEFER)
+-			dev_err(dev, "error getting gpio (%d)\n", rc);
+-		return rc;
+-	}
++	if (IS_ERR(gpio_dev->gpiod))
++		return dev_err_probe(dev, PTR_ERR(gpio_dev->gpiod),
++				     "error getting gpio\n");
+ 	gpio_dev->irq = gpiod_to_irq(gpio_dev->gpiod);
+ 	if (gpio_dev->irq < 0)
+ 		return gpio_dev->irq;
+diff --git a/drivers/media/rc/gpio-ir-tx.c b/drivers/media/rc/gpio-ir-tx.c
+index d3063ddb472e3..2b829c146db15 100644
+--- a/drivers/media/rc/gpio-ir-tx.c
++++ b/drivers/media/rc/gpio-ir-tx.c
+@@ -174,12 +174,9 @@ static int gpio_ir_tx_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	gpio_ir->gpio = devm_gpiod_get(&pdev->dev, NULL, GPIOD_OUT_LOW);
+-	if (IS_ERR(gpio_ir->gpio)) {
+-		if (PTR_ERR(gpio_ir->gpio) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Failed to get gpio (%ld)\n",
+-				PTR_ERR(gpio_ir->gpio));
+-		return PTR_ERR(gpio_ir->gpio);
+-	}
++	if (IS_ERR(gpio_ir->gpio))
++		return dev_err_probe(&pdev->dev, PTR_ERR(gpio_ir->gpio),
++				     "Failed to get gpio\n");
+ 
+ 	rcdev->priv = gpio_ir;
+ 	rcdev->driver_name = DRIVER_NAME;
+diff --git a/drivers/media/rc/ir-rx51.c b/drivers/media/rc/ir-rx51.c
+index a3b1451832603..85080c3d20535 100644
+--- a/drivers/media/rc/ir-rx51.c
++++ b/drivers/media/rc/ir-rx51.c
+@@ -231,13 +231,8 @@ static int ir_rx51_probe(struct platform_device *dev)
+ 	struct rc_dev *rcdev;
+ 
+ 	pwm = pwm_get(&dev->dev, NULL);
+-	if (IS_ERR(pwm)) {
+-		int err = PTR_ERR(pwm);
+-
+-		if (err != -EPROBE_DEFER)
+-			dev_err(&dev->dev, "pwm_get failed: %d\n", err);
+-		return err;
+-	}
++	if (IS_ERR(pwm))
++		return dev_err_probe(&dev->dev, PTR_ERR(pwm), "pwm_get failed\n");
+ 
+ 	/* Use default, in case userspace does not set the carrier */
+ 	ir_rx51.freq = DIV_ROUND_CLOSEST_ULL(pwm_get_period(pwm), NSEC_PER_SEC);
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index c8e72079b4278..92af9caf6b5db 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1253,12 +1253,9 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 		return PTR_ERR_OR_ZERO(gpio_privacy);
+ 
+ 	irq = gpiod_to_irq(gpio_privacy);
+-	if (irq < 0) {
+-		if (irq != EPROBE_DEFER)
+-			dev_err(&dev->udev->dev,
+-				"No IRQ for privacy GPIO (%d)\n", irq);
+-		return irq;
+-	}
++	if (irq < 0)
++		return dev_err_probe(&dev->udev->dev, irq,
++				     "No IRQ for privacy GPIO\n");
+ 
+ 	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
+ 	if (!unit)
 -- 
 2.39.5
 
