@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339D3A508D2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B8BA509CF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 551BF16B0A1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3A9188ED93
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2572512D9;
-	Wed,  5 Mar 2025 18:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E7E254B09;
+	Wed,  5 Mar 2025 18:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph7bD0D0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybcK7/dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FCE250C1F;
-	Wed,  5 Mar 2025 18:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92560253F3C;
+	Wed,  5 Mar 2025 18:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198263; cv=none; b=oibLb0iHqwWHk4sDgC/eTQqPuZFHniGBmsNglI4lvM03ZyBaT/CSMgJbr+lbGGJcLZYHdnaVQdcK4NfcvtKNCYR1yH08q6/lNTmaJbH9lYkdYZfglAHlGJmmlibw686oxEudJEvgesUDBcpxSwDtzp7WLO5c3unT8WL36oYc6dw=
+	t=1741198686; cv=none; b=IgNpvWIDlBr5MM51nnyX85VRroaJjpK+SJX91JP3gJXQioQx+2Vh0QPvJY+4H3HuvT7ErfxlIVZ31YzuzhqeasOfJiXtTXKwlePCJjB+CvvO05frUEo3W9XbWbjNkGts3EsiKx4xzs7ACSB/KhRDsp4ToKOUkwTkGLSg4ESYau0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198263; c=relaxed/simple;
-	bh=T8KurzKBrBlhSf85kxM4Bt++S9N2H8QZMeigzbJB+/A=;
+	s=arc-20240116; t=1741198686; c=relaxed/simple;
+	bh=c17wcLg/LI5zC/nCFJrClfu2+P1tUkAcv9KtgBFjFYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgZ/9zKVrWGsOrv1wLAKS0Wec6sePNmpPI0My0X8dex5oPeOFB/9n3l0Nafyq5WcXw9LJ6LzgFUSL1s4braYekrI2lzmXxbvG+4qW5E2nUg8ICXNZePvRjAkjNLq1mK2aEfRPO022B01o+fI+9HeUjfHRRgNjSb8bY5wcRDNl4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph7bD0D0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFC7C4CEE0;
-	Wed,  5 Mar 2025 18:11:02 +0000 (UTC)
+	 MIME-Version; b=JHsPCJz7qN3li2U3YBS1uuR/hsSmXNKyAyDmuL68CWxtRy4af0UfBas5jxS2eM3pKkqEEhs69AKxDFuDXvj2wDyBo6TI02Klw3FwxR/LEH+OMg5sP/FYtrcME0ZRu7nYxs/ndjbTthVmg0RZdFonT0+U73rViIfps+d2qKyES+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybcK7/dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0E9C4CED1;
+	Wed,  5 Mar 2025 18:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198263;
-	bh=T8KurzKBrBlhSf85kxM4Bt++S9N2H8QZMeigzbJB+/A=;
+	s=korg; t=1741198686;
+	bh=c17wcLg/LI5zC/nCFJrClfu2+P1tUkAcv9KtgBFjFYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ph7bD0D0qoIi/ctvWUiNwEbHBd69hAY6Ccx2EZKB8rdHt5iqZiNemAd1vmUcuL1i2
-	 FvROICr1sCm8s6MQlQF+J86czgkzBJZmb2w8Gy6jHnGN9vMIA5Hrb9dGzLssD3JMZX
-	 iIuGoVa3awV8Qd0LIUhs1VtXVBxeodXMT1NhIpB4=
+	b=ybcK7/dkjQ/Q5eHc58aerYpqeBbF1sRXeZqF1dbPfwdTirl5BCly8vHrethoIKajS
+	 LJ/H67wry5Gw3Wy0LXg/n/TO3JdFYqZhLozORlzdpKmvDhKjl97Ml55SCwMRZc1GvW
+	 Mzzf8bPhy9LgfB8mqT+YSwUan2V0iXavjRD5t7sY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.12 120/150] iommu/vt-d: Remove device comparison in context_setup_pass_through_cb
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 113/157] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
 Date: Wed,  5 Mar 2025 18:49:09 +0100
-Message-ID: <20250305174508.640113535@linuxfoundation.org>
+Message-ID: <20250305174509.854421132@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerry Snitselaar <jsnitsel@redhat.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 64f792981e35e191eb619f6f2fefab76cc7d6112 upstream.
+commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
 
-Remove the device comparison check in context_setup_pass_through_cb.
-pci_for_each_dma_alias already makes a decision on whether the
-callback function should be called for a device. With the check
-in place it will fail to create context entries for aliases as
-it walks up to the root bus.
+When a DMA mapping error occurs while processing skb frags, it will free
+one more tx_swbd than expected, so fix this off-by-one issue.
 
-Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
-Closes: https://lore.kernel.org/linux-iommu/82499eb6-00b7-4f83-879a-e97b4144f576@linux.intel.com/
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Link: https://lore.kernel.org/r/20250224180316.140123-1-jsnitsel@redhat.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4547,9 +4547,6 @@ static int context_setup_pass_through_cb
- {
- 	struct device *dev = data;
- 
--	if (dev != &pdev->dev)
--		return 0;
--
- 	return context_setup_pass_through(dev, PCI_BUS_NUM(alias), alias & 0xff);
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -146,6 +146,24 @@ static int enetc_ptp_parse(struct sk_buf
+ 	return 0;
  }
  
++/**
++ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
++ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
++ * @count: Number of Tx buffer descriptors which need to be unmapped
++ * @i: Index of the last successfully mapped Tx buffer descriptor
++ */
++static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
++{
++	while (count--) {
++		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
++
++		enetc_free_tx_frame(tx_ring, tx_swbd);
++		if (i == 0)
++			i = tx_ring->bd_count;
++		i--;
++	}
++}
++
+ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ {
+ 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
+@@ -329,13 +347,7 @@ static int enetc_map_tx_buffs(struct ene
+ dma_err:
+ 	dev_err(tx_ring->dev, "DMA map error");
+ 
+-	do {
+-		tx_swbd = &tx_ring->tx_swbd[i];
+-		enetc_free_tx_frame(tx_ring, tx_swbd);
+-		if (i == 0)
+-			i = tx_ring->bd_count;
+-		i--;
+-	} while (count--);
++	enetc_unwind_tx_frame(tx_ring, count, i);
+ 
+ 	return 0;
+ }
 
 
 
