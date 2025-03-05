@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-120521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2391CA50725
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23056A507B5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 280957A236D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21EC16B520
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6660250C07;
-	Wed,  5 Mar 2025 17:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9F9250C1C;
+	Wed,  5 Mar 2025 17:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjHtJGZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTv/ne/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669E46ADD;
-	Wed,  5 Mar 2025 17:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0E814B075;
+	Wed,  5 Mar 2025 17:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197201; cv=none; b=HxPs4lIBHgwr0/FehrNlQQCajBC0SoDZ5o2mJgZJsLkB0T5YC4GLeePkeoI29mlahnI4k9UK1CrPo3hyfmIsk0JAHpumulOOKuqwagLOBeRjDOm+nx951BuAhWigWdUW0Wq/3ATNUO980+ra5HJEaRoa1i7Xsd83sN2np3FybvU=
+	t=1741197572; cv=none; b=sFcZdpX2EWmxAe0dD0TM/yI+dq4YJo2HFtQqfgdjKbitL3yw0A64p2WUW4QxZrkG0/+kh1jIuP/GiaeffMi2I0QXg1+kx+0MTIrPMLB/pesqoOFUBt5lLe4O5cKgoqBJ2zrO6uPnTYl2TtvNqlI1yNDqfdOkOUyjhPbLdQdqWHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197201; c=relaxed/simple;
-	bh=HSTXBh3vDKf0ZAqSpRH57sxDzPS44GkxWbNkwqruU8c=;
+	s=arc-20240116; t=1741197572; c=relaxed/simple;
+	bh=UmDRCeG0fMTN79rZMSiMMYeZCUrj86CQ0qzi6fioaSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZbigqLGLEPdWIpsVY9OHOm9ZxaS88L9oMLcRjx4EJMu1Q0Ei1gFcF8StIF/jG8WT7VmhEs7nM6I+XWWOpm1KcQYkJ8fOQJ5qngNDfgZLf9WPLFtJmAC5/6EdMgMNNIeX/r3DzKHg1yyq20PkuowtSDXqIurdjEc0imXQPshLuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjHtJGZt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779C7C4CED1;
-	Wed,  5 Mar 2025 17:53:20 +0000 (UTC)
+	 MIME-Version; b=tgoLvKc49R6Q5/ibkIXptSRl1IV9sEVZA+4mZY0zjVs475gfXib+h4r19sWwtcbLh82V/r5JGp0DeGUkxSKJL8zyebt8ijRxrW31UKi7KXrXMoRkASjf1EEaiOw5Hb24vpYO8pN8rVp/nui0jzxVb0rfY0+TY+/p+Q+cdepfaLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTv/ne/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6467DC4CEE0;
+	Wed,  5 Mar 2025 17:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197200;
-	bh=HSTXBh3vDKf0ZAqSpRH57sxDzPS44GkxWbNkwqruU8c=;
+	s=korg; t=1741197571;
+	bh=UmDRCeG0fMTN79rZMSiMMYeZCUrj86CQ0qzi6fioaSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjHtJGZtLTUFNx/TLzuGA/z/8EiyKGQ/d4gEqpiv9MJ9BckXpOoG1MpcGviwX6qYm
-	 erf5JCkT26BrAI5Rgvo1XbvPtS1bZjOv2bcCX9LEZIGWZF4uWmjLHOYUW5IFOSuQ3m
-	 /JuQR4QNnJZgmNlQZQq1ozkCrIW25CuIZwlcyGAI=
+	b=QTv/ne/+Q0GZzytCj2Y21059odP2ujYgktcpCem4gc8jZaambCTtJWZYwiH0HAJtF
+	 XaG96e5nvUDHChfdAE9CGpRW2d10cftC8sg4SX5zQOpK+zgP1kmtBTOKHlvDK7hIfo
+	 qoO1EGbB6HiBHPNHfCX3go84DWA79gAHvCb9L938=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 075/176] drop_monitor: fix incorrect initialization order
+	Guillaume Nault <gnault@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/142] ipv4: icmp: Pass full DS field to ip_route_input()
 Date: Wed,  5 Mar 2025 18:47:24 +0100
-Message-ID: <20250305174508.476434551@linuxfoundation.org>
+Message-ID: <20250305174501.353915051@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 07b598c0e6f06a0f254c88dafb4ad50f8a8c6eea upstream.
+[ Upstream commit 1c6f50b37f711b831d78973dad0df1da99ad0014 ]
 
-Syzkaller reports the following bug:
+Align the ICMP code to other callers of ip_route_input() and pass the
+full DS field. In the future this will allow us to perform a route
+lookup according to the full DSCP value.
 
-BUG: spinlock bad magic on CPU#1, syz-executor.0/7995
- lock: 0xffff88805303f3e0, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
-CPU: 1 PID: 7995 Comm: syz-executor.0 Tainted: G            E     5.10.209+ #1
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x119/0x179 lib/dump_stack.c:118
- debug_spin_lock_before kernel/locking/spinlock_debug.c:83 [inline]
- do_raw_spin_lock+0x1f6/0x270 kernel/locking/spinlock_debug.c:112
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:117 [inline]
- _raw_spin_lock_irqsave+0x50/0x70 kernel/locking/spinlock.c:159
- reset_per_cpu_data+0xe6/0x240 [drop_monitor]
- net_dm_cmd_trace+0x43d/0x17a0 [drop_monitor]
- genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2497
- genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
- netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1348
- netlink_sendmsg+0x914/0xe00 net/netlink/af_netlink.c:1916
- sock_sendmsg_nosec net/socket.c:651 [inline]
- __sock_sendmsg+0x157/0x190 net/socket.c:663
- ____sys_sendmsg+0x712/0x870 net/socket.c:2378
- ___sys_sendmsg+0xf8/0x170 net/socket.c:2432
- __sys_sendmsg+0xea/0x1b0 net/socket.c:2461
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x62/0xc7
-RIP: 0033:0x7f3f9815aee9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f3f972bf0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f3f9826d050 RCX: 00007f3f9815aee9
-RDX: 0000000020000000 RSI: 0000000020001300 RDI: 0000000000000007
-RBP: 00007f3f981b63bd R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000006e R14: 00007f3f9826d050 R15: 00007ffe01ee6768
+No functional changes intended since the upper DSCP bits are masked when
+comparing against the TOS selectors in FIB rules and routes.
 
-If drop_monitor is built as a kernel module, syzkaller may have time
-to send a netlink NET_DM_CMD_START message during the module loading.
-This will call the net_dm_monitor_start() function that uses
-a spinlock that has not yet been initialized.
-
-To fix this, let's place resource initialization above the registration
-of a generic netlink family.
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller.
-
-Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250213152054.2785669-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Acked-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240821125251.1571445-11-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/drop_monitor.c |   29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ net/ipv4/icmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -1716,30 +1716,30 @@ static int __init init_net_drop_monitor(
- 		return -ENOSPC;
- 	}
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index b05fa424ad5ce..3807a269e0755 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -550,7 +550,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
+ 		orefdst = skb_in->_skb_refdst; /* save old refdst */
+ 		skb_dst_set(skb_in, NULL);
+ 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
+-				     RT_TOS(tos), rt2->dst.dev);
++				     tos, rt2->dst.dev);
  
--	rc = genl_register_family(&net_drop_monitor_family);
--	if (rc) {
--		pr_err("Could not create drop monitor netlink family\n");
--		return rc;
-+	for_each_possible_cpu(cpu) {
-+		net_dm_cpu_data_init(cpu);
-+		net_dm_hw_cpu_data_init(cpu);
- 	}
--	WARN_ON(net_drop_monitor_family.mcgrp_offset != NET_DM_GRP_ALERT);
- 
- 	rc = register_netdevice_notifier(&dropmon_net_notifier);
- 	if (rc < 0) {
- 		pr_crit("Failed to register netdevice notifier\n");
-+		return rc;
-+	}
-+
-+	rc = genl_register_family(&net_drop_monitor_family);
-+	if (rc) {
-+		pr_err("Could not create drop monitor netlink family\n");
- 		goto out_unreg;
- 	}
-+	WARN_ON(net_drop_monitor_family.mcgrp_offset != NET_DM_GRP_ALERT);
- 
- 	rc = 0;
- 
--	for_each_possible_cpu(cpu) {
--		net_dm_cpu_data_init(cpu);
--		net_dm_hw_cpu_data_init(cpu);
--	}
--
- 	goto out;
- 
- out_unreg:
--	genl_unregister_family(&net_drop_monitor_family);
-+	WARN_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
- out:
- 	return rc;
- }
-@@ -1748,19 +1748,18 @@ static void exit_net_drop_monitor(void)
- {
- 	int cpu;
- 
--	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
--
- 	/*
- 	 * Because of the module_get/put we do in the trace state change path
- 	 * we are guaranteed not to have any current users when we get here
- 	 */
-+	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
-+
-+	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
- 
- 	for_each_possible_cpu(cpu) {
- 		net_dm_hw_cpu_data_fini(cpu);
- 		net_dm_cpu_data_fini(cpu);
- 	}
--
--	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
- }
- 
- module_init(init_net_drop_monitor);
+ 		dst_release(&rt2->dst);
+ 		rt2 = skb_rtable(skb_in);
+-- 
+2.39.5
+
 
 
 
