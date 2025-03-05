@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43039A5096E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:19:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CB3A50806
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD3118856CE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:17:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85D9C18920FD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7A7253B67;
-	Wed,  5 Mar 2025 18:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD6A1FC7D0;
+	Wed,  5 Mar 2025 18:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoYIfBOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pP8Rzi/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983CD254840;
-	Wed,  5 Mar 2025 18:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA88424C07D;
+	Wed,  5 Mar 2025 18:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198587; cv=none; b=nOCehBNRWbqonYOyGehKjEUg6CUsGFOVkBmVYGS+vLo2hqDmu5AdQ+T/Auct8wyLY0mCJiIsCK9uo7oUVlvtyhUq7aPIC7QYlS3JuIzyioarCMv0V8u5wURJs/uLJwATJQ4q6Sn7bbbnfF4BnWAXeKhY/s6VQqfl4NbONbfdqek=
+	t=1741197777; cv=none; b=j/USgODjudWSdLaI5i70LmehBBRFpRF8HHpxauV2KqU7IoSO0w8G09DCTfTi+yM3/lCIS8A6naqj86O87YjDVR1uAAhFLag5s2lrAGTm3RZY86AbHLB9bC+ynaJkDf3aBElak6AQT//hr6N70eN7gpR0GIIznzshtMpiMmlGli4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198587; c=relaxed/simple;
-	bh=Ljirv+FxH60ZpfH+0gIfuPRmr1NH+GBWfJlQh81swJI=;
+	s=arc-20240116; t=1741197777; c=relaxed/simple;
+	bh=CANcjSlNqJwqQuD4YMXgtWhVnBdfPz7GQ6JfYlVgPGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txR4VnvL5n1ypiBc3jGkh8PY4Dx7EDcHdfXINjjuGBbsLaLb4IiU3WUHAVKRL6c0/zx9olwSgEIoszwAyubOrIspE0Y3iiEZkc5DoYiuCcBH000rzG8Uh32PzdT5lOPI6NS8PZAQ88o92moBvL44QyM2clBRRiRsr6FL6sWhOfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoYIfBOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E1AC4CEEC;
-	Wed,  5 Mar 2025 18:16:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RYbJkp69wNznFDErELEAR/VK85vyIqXHcjRrZ15nx3Yh8RlX7PadEkQd7AxWey/2hvuVwe+taUS6jB3cRm6V1vjtpTvU1CnRV3n7bMsuJVU1rHI1f67fy2BGV0ADZPxymfInVDmjbaq0GsoicdvKeKT97l+73z77zQwGza8Pd6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pP8Rzi/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DD5C4CED1;
+	Wed,  5 Mar 2025 18:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198587;
-	bh=Ljirv+FxH60ZpfH+0gIfuPRmr1NH+GBWfJlQh81swJI=;
+	s=korg; t=1741197776;
+	bh=CANcjSlNqJwqQuD4YMXgtWhVnBdfPz7GQ6JfYlVgPGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoYIfBObHFtE/b77k/psbLEBC4evbKyKrtrzlcJW0WRiToxglbTWAm8xEhF2oknVa
-	 3BHmqKYYm69vgf07sh1yp84bzZ01yDYxnlazL4KrZiOg/+W8s/bySDfKGajfRsCcdF
-	 dnZCa4x7LPbT826k69Nqxl6l8ev9TTT5pAdjM8Kg=
+	b=pP8Rzi/Aotivq7jTAJPUAmMIEEuwZii5HufTTZnPXKAdxyKGZ4Ou1HKQtcuwLpWLr
+	 Ce5raA8QQGXR7IA6phpU2gTdqBgK+jcx3zOkSUyUz2zm6pL8sHHE7+BvIKZ2fN4YQ/
+	 SjEjP4tahdm+2sVY+LRAhkUU8X8uCmyY6OUew0U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 079/157] riscv: KVM: Fix SBI IPI error generation
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.6 096/142] arm64: dts: rockchip: Disable DMA for uart5 on px30-ringneck
 Date: Wed,  5 Mar 2025 18:48:35 +0100
-Message-ID: <20250305174508.485532646@linuxfoundation.org>
+Message-ID: <20250305174504.190725123@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
 
-[ Upstream commit 0611f78f83c93c000029ab01daa28166d03590ed ]
+commit 5ae4dca718eacd0a56173a687a3736eb7e627c77 upstream.
 
-When an invalid function ID of an SBI extension is used we should
-return not-supported, not invalid-param. Also, when we see that at
-least one hartid constructed from the base and mask parameters is
-invalid, then we should return invalid-param. Finally, rather than
-relying on overflowing a left shift to result in zero and then using
-that zero in a condition which [correctly] skips sending an IPI (but
-loops unnecessarily), explicitly check for overflow and exit the loop
-immediately.
+UART controllers without flow control seem to behave unstable
+in case DMA is enabled. The issues were indicated in the message:
+https://lore.kernel.org/linux-arm-kernel/CAMdYzYpXtMocCtCpZLU_xuWmOp2Ja_v0Aj0e6YFNRA-yV7u14g@mail.gmail.com/
+In case of PX30-uQ7 Ringneck SoM, it was noticed that after couple
+of hours of UART communication, the CPU stall was occurring,
+leading to the system becoming unresponsive.
+After disabling the DMA, extensive UART communication tests for
+up to two weeks were performed, and no issues were further
+observed.
+The flow control pins for uart5 are not available on PX30-uQ7
+Ringneck, as configured by pinctrl-0, so the DMA nodes were
+removed on SoM dtsi.
 
-Fixes: 5f862df5585c ("RISC-V: KVM: Add v0.1 replacement SBI extensions defined in v0.2")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20250217084506.18763-10-ajones@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-µQ7 (Ringneck) SoM with Haikou baseboard")
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Link: https://lore.kernel.org/r/20250121125604.3115235-3-lukasz.czechowski@thaumatec.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+[ conflict resolution due to missing (cosmetic) backport of
+  4eee627ea59304cdd66c5d4194ef13486a6c44fc]
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/vcpu_sbi_replace.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
-index 9c2ab3dfa93aa..74e3a38c6a29e 100644
---- a/arch/riscv/kvm/vcpu_sbi_replace.c
-+++ b/arch/riscv/kvm/vcpu_sbi_replace.c
-@@ -51,9 +51,10 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 	struct kvm_cpu_context *cp = &vcpu->arch.guest_context;
- 	unsigned long hmask = cp->a0;
- 	unsigned long hbase = cp->a1;
-+	unsigned long hart_bit = 0, sentmask = 0;
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
+@@ -367,6 +367,11 @@
+ 	status = "okay";
+ };
  
- 	if (cp->a6 != SBI_EXT_IPI_SEND_IPI) {
--		retdata->err_val = SBI_ERR_INVALID_PARAM;
-+		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
- 		return 0;
- 	}
- 
-@@ -62,15 +63,23 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 		if (hbase != -1UL) {
- 			if (tmp->vcpu_id < hbase)
- 				continue;
--			if (!(hmask & (1UL << (tmp->vcpu_id - hbase))))
-+			hart_bit = tmp->vcpu_id - hbase;
-+			if (hart_bit >= __riscv_xlen)
-+				goto done;
-+			if (!(hmask & (1UL << hart_bit)))
- 				continue;
- 		}
- 		ret = kvm_riscv_vcpu_set_interrupt(tmp, IRQ_VS_SOFT);
- 		if (ret < 0)
- 			break;
-+		sentmask |= 1UL << hart_bit;
- 		kvm_riscv_vcpu_pmu_incr_fw(tmp, SBI_PMU_FW_IPI_RCVD);
- 	}
- 
-+done:
-+	if (hbase != -1UL && (hmask ^ sentmask))
-+		retdata->err_val = SBI_ERR_INVALID_PARAM;
++&uart5 {
++	/delete-property/ dmas;
++	/delete-property/ dma-names;
++};
 +
- 	return ret;
- }
- 
--- 
-2.39.5
-
+ /* Mule UCAN */
+ &usb_host0_ehci {
+ 	status = "okay";
 
 
 
