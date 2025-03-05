@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9630A507C7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C860CA5070C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FDD16BA00
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1FF13AEC95
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEAC2517AF;
-	Wed,  5 Mar 2025 18:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB1A250C1C;
+	Wed,  5 Mar 2025 17:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRZfINXj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHJJrHnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8D2517A9;
-	Wed,  5 Mar 2025 18:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9C26ADD;
+	Wed,  5 Mar 2025 17:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197609; cv=none; b=TzQkUbnEO4AxAVEbkc317sVwN7CV1d5ZLXrt5CFTrV5prbOi9TyHOp0NfPIJLatlaLn7RMdT60GcgcQyQtamLZE6FhAR2lMFKwjq6hReZ8n/Rd3bojNauwzmYeJ4WMvPJB5cPGssdOqbNGQqlYnWLr/aqdiLrG3S6b1LqdSGxp4=
+	t=1741197155; cv=none; b=GLB0GDGUV8HAp1eRzMeLXcQnTmqUg7paa7ILjlL1bhsHmyz5wuS7JKub2SF+lXgQBtMSvyDWwewXTMmhGBCgZ+KLiQTKs8HNbTzpqMoQUcv3kO0Ax/pa5zM/UEbtcbn63tLaMNBLgG6ePQKIpLdgt/udUGm261AQov7NWBEuE+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197609; c=relaxed/simple;
-	bh=QMmFYsaBjICR1/8BAm8i8WYKGyEQeIYeSwNAqwzj1X8=;
+	s=arc-20240116; t=1741197155; c=relaxed/simple;
+	bh=Vx7xFHL7D4OYrVA/RPXfxAcE1Pt7053TQqiDa7aZJKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k82nNgd2n9JYBzTTE3aGulcRFRS6/jIhHea1LKpI4v8UhKhBW5y6NARls2PLu0O1zkvdsUKX3ZtXu1PHTUlej05cwMWmsSjxppccgaxdnPimRW7OFL548IV052r89roF3SutpOIWYi13kQW/HQoWyc+/+9vTKmIbutfGQ5AKT7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRZfINXj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AFDC4CED1;
-	Wed,  5 Mar 2025 18:00:08 +0000 (UTC)
+	 MIME-Version; b=E8GxlcewO3NCElyHC2YkqP4GzHXbMVYfIbROVnxFsSe5HBwztds29HU5nK2RRpjZTMtVwbaY5HwCacsNJ/+CEjjtWGtsGBs6VN70JcsNZWCkX7L9598xffdRmX6TG6VZjOVWmKyroO+VH3A41ARJJNe7acrSSmuss/5MBv2qTzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHJJrHnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF5DC4CED1;
+	Wed,  5 Mar 2025 17:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197609;
-	bh=QMmFYsaBjICR1/8BAm8i8WYKGyEQeIYeSwNAqwzj1X8=;
+	s=korg; t=1741197154;
+	bh=Vx7xFHL7D4OYrVA/RPXfxAcE1Pt7053TQqiDa7aZJKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRZfINXjtcq4rJZyukQLwRdM/7Kf5E1dHwNZpu8awMeGUIPwg2pOzWdJyz+10xqNu
-	 jmKweoohchjsBSwh0jxmpzfCD529C3ppPpoi47wmuCl2x4tXiNDSeSFLcT5UGNSCg4
-	 rcQxXUKOErIMPWV7iiH5rs5I/HPINNPOPlXlxqe0=
+	b=OHJJrHnFN+lnQ3x86DCrpsUy8u/h/dHMMORdfXIxu8PYvwYtoZxm4auW3owO9Rl5U
+	 LARQfGbZmkK6EiAVK6uUQMQwWblUk4SCSmDMM3Nhy/lgY+dJKTAf9MhJEMDUcrxYty
+	 KqLe41pnNgTwyE58qiC5/UZVFSSUGwVCWnWHNJHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/142] ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up
+Subject: [PATCH 6.1 058/176] arp: switch to dev_getbyhwaddr() in arp_req_set_public()
 Date: Wed,  5 Mar 2025 18:47:07 +0100
-Message-ID: <20250305174500.672001781@linuxfoundation.org>
+Message-ID: <20250305174507.787540279@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit c84e125fff2615b4d9c259e762596134eddd2f27 ]
+[ Upstream commit 4eae0ee0f1e6256d0b0b9dd6e72f1d9cf8f72e08 ]
 
-The issue was caused by dput(upper) being called before
-ovl_dentry_update_reval(), while upper->d_flags was still
-accessed in ovl_dentry_remote().
+The arp_req_set_public() function is called with the rtnl lock held,
+which provides enough synchronization protection. This makes the RCU
+variant of dev_getbyhwaddr() unnecessary. Switch to using the simpler
+dev_getbyhwaddr() function since we already have the required rtnl
+locking.
 
-Move dput(upper) after its last use to prevent use-after-free.
+This change helps maintain consistency in the networking code by using
+the appropriate helper function for the existing locking context.
+Since we're not holding the RCU read lock in arp_req_set_public()
+existing code could trigger false positive locking warnings.
 
-BUG: KASAN: slab-use-after-free in ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
-BUG: KASAN: slab-use-after-free in ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
-
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
- ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
- ovl_link_up fs/overlayfs/copy_up.c:610 [inline]
- ovl_copy_up_one+0x2105/0x3490 fs/overlayfs/copy_up.c:1170
- ovl_copy_up_flags+0x18d/0x200 fs/overlayfs/copy_up.c:1223
- ovl_rename+0x39e/0x18c0 fs/overlayfs/dir.c:1136
- vfs_rename+0xf84/0x20a0 fs/namei.c:4893
-...
- </TASK>
-
-Fixes: b07d5cc93e1b ("ovl: update of dentry revalidate flags after copy up")
-Reported-by: syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=316db8a1191938280eb6
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20250214215148.761147-1-kovalev@altlinux.org
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 941666c2e3e0 ("net: RCU conversion of dev_getbyhwaddr() and arp_ioctl()")
+Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20250218-arm_fix_selftest-v5-2-d3d6892db9e1@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/copy_up.c | 2 +-
+ net/ipv4/arp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 18e018cb18117..dbf7b3cd70ca5 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -570,7 +570,6 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 	err = PTR_ERR(upper);
- 	if (!IS_ERR(upper)) {
- 		err = ovl_do_link(ofs, ovl_dentry_upper(c->dentry), udir, upper);
--		dput(upper);
- 
- 		if (!err) {
- 			/* Restore timestamps on parent (best effort) */
-@@ -578,6 +577,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 			ovl_dentry_set_upper_alias(c->dentry);
- 			ovl_dentry_update_reval(c->dentry, upper);
- 		}
-+		dput(upper);
- 	}
- 	inode_unlock(udir);
- 	if (err)
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index 8f9b5568f1dc1..50e2b4939d8e9 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -1030,7 +1030,7 @@ static int arp_req_set_public(struct net *net, struct arpreq *r,
+ 	if (mask && mask != htonl(0xFFFFFFFF))
+ 		return -EINVAL;
+ 	if (!dev && (r->arp_flags & ATF_COM)) {
+-		dev = dev_getbyhwaddr_rcu(net, r->arp_ha.sa_family,
++		dev = dev_getbyhwaddr(net, r->arp_ha.sa_family,
+ 				      r->arp_ha.sa_data);
+ 		if (!dev)
+ 			return -ENODEV;
 -- 
 2.39.5
 
