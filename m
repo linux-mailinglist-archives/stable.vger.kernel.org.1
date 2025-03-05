@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-120952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D625A50940
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C75A5076F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17D7918881F0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67BD73AE674
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAC924CEE3;
-	Wed,  5 Mar 2025 18:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6399B2517B3;
+	Wed,  5 Mar 2025 17:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zB6ymUgY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYgqKVAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB76624C07D;
-	Wed,  5 Mar 2025 18:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E76F1C6FFE;
+	Wed,  5 Mar 2025 17:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198451; cv=none; b=pEi3k76y7BaOk08ZrKF8B+MSq+U+DMybb6OqQu5LNSVISJJu0VnDdJ6Z2P87v+YPObpFfv56scoTO/m7mpU2Ge60dFWNpiTuuXuWSe6vvrw3L/vOIxpRW7/KcZkC0FIiQVXNY8yfE5TBotUb4mCKgTG5gUnBcF+pvbE6ZkD7QH0=
+	t=1741197396; cv=none; b=LdKiXP2tgfDDfPSN30R0E8CXv50ReP/VC3ejD3z3xWJP+KbhkqCnx4Qj+DwcXd+NCvhb4y492aVAqalNquALqTY2L1UzI23txNynMBampRFUJWRFnYqTezJ/iha8jhs8YeXqjkz7e24mn/5G5KVIA9ESiIlK6QCUCkkjTEzQT38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198451; c=relaxed/simple;
-	bh=LBqXchfDDPL7J7xqkmRmO+4TsJJ6cN1f0Hz1j33BYOI=;
+	s=arc-20240116; t=1741197396; c=relaxed/simple;
+	bh=Njbza2IHhN+xmwAQFPYmoWok7bIJbrgCaa2S2Sd0iYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HOqGjoLj81O4syS4s7Mcp4IMSfHQBXxk5IvViVoRE2o2rWDLucw99uEoloNdl5bGGtRTLRdoqy1Zusj4ZkyVc6JTfruVBPUellcIAJTJv/0gYMpG47QqakA9UvL48Dt9DG0m/9ubF9cH7hMz94z0AtzNmhvI61ogNPzt9FHM3eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zB6ymUgY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315E0C4CED1;
-	Wed,  5 Mar 2025 18:14:11 +0000 (UTC)
+	 MIME-Version; b=MYBxem0Huv11rMiRAhBal79DfztdVpAlS62lO96Y+Jy/uZbyzTzVIGJeqENL16C0YVy+0RQ4LeDa+BJMSoblIr2HZg27HRFb7a+5GPX9kWsa/IVcqrRrezasxQqSi8ktRd3PsWm4fzaVWfJ0ZlevkGedNQvp9VlRQ+AULTUdLMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYgqKVAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89351C4CED1;
+	Wed,  5 Mar 2025 17:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198451;
-	bh=LBqXchfDDPL7J7xqkmRmO+4TsJJ6cN1f0Hz1j33BYOI=;
+	s=korg; t=1741197395;
+	bh=Njbza2IHhN+xmwAQFPYmoWok7bIJbrgCaa2S2Sd0iYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zB6ymUgYRDnfO9HL/+CRLQC0zKdBGcHyT73ySZXw1iPf+Qk3qbGOQivqmAG7C8XkN
-	 cKaQC8moie+5QbYy/Ot9fBlXSDisORJqhdxjWCzFyhPcsx2uYHJoLY+54bc1xThCA/
-	 rRYfwd90DTFLwxjJ1rOUmSg4dMdwv1O1P9yCVb6M=
+	b=xYgqKVAEyZKMyl4uYTVjgeTchoxGIVD8SFycJtSobNDOrTpSk1aGTn35ByaYMS98r
+	 XRhnqlCa7pxva5WGliUBMY9V1dSnXEGJxuFi4Zrde6n007xfl4tos+G4eNNDkirkLl
+	 ZslEgTr4RC85laW2oUdLntb6Op792B6JTIVpYV68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Dmitry Yakunin <zeil@yandex-team.ru>,
-	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 033/157] net: set the minimum for net_hotdata.netdev_budget_usecs
+Subject: [PATCH 6.1 100/176] RDMA/mlx5: Introduce mlx5r_cache_rb_key
 Date: Wed,  5 Mar 2025 18:47:49 +0100
-Message-ID: <20250305174506.626630288@linuxfoundation.org>
+Message-ID: <20250305174509.479010688@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,567 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit c180188ec02281126045414e90d08422a80f75b4 ]
+[ Upstream commit 73d09b2fe8336f5f37935e46418666ddbcd3c343 ]
 
-Commit 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs
-to enable softirq tuning") added a possibility to set
-net_hotdata.netdev_budget_usecs, but added no lower bound checking.
+Switch from using the mkey order to using the new struct as the key to the
+RB tree of cache entries.
 
-Commit a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
-made the *initial* value HZ-dependent, so the initial value is at least
-2 jiffies even for lower HZ values (2 ms for 1000 Hz, 8ms for 250 Hz, 20
-ms for 100 Hz).
+The key is all the mkey properties that UMR operations can't modify.
+Using this key to define the cache entries and to search and create cache
+mkeys.
 
-But a user still can set improper values by a sysctl. Set .extra1
-(the lower bound) for net_hotdata.netdev_budget_usecs to the same value
-as in the latter commit. That is to 2 jiffies.
-
-Fixes: a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
-Fixes: 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs to enable softirq tuning")
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Dmitry Yakunin <zeil@yandex-team.ru>
-Cc: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Link: https://patch.msgid.link/20250220110752.137639-1-jirislaby@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20230125222807.6921-5-michaelgur@nvidia.com
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: d97505baea64 ("RDMA/mlx5: Fix the recovery flow of the UMR QP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sysctl_net_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h |  27 ++--
+ drivers/infiniband/hw/mlx5/mr.c      | 228 +++++++++++++++++++--------
+ drivers/infiniband/hw/mlx5/odp.c     |  30 ++--
+ 3 files changed, 201 insertions(+), 84 deletions(-)
 
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index ad2741f1346af..c7769ee0d9c55 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -34,6 +34,7 @@ static int min_sndbuf = SOCK_MIN_SNDBUF;
- static int min_rcvbuf = SOCK_MIN_RCVBUF;
- static int max_skb_frags = MAX_SKB_FRAGS;
- static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
-+static int netdev_budget_usecs_min = 2 * USEC_PER_SEC / HZ;
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index bd998ac8c29c1..7c9d5648947e9 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -637,6 +637,13 @@ enum mlx5_mkey_type {
+ 	MLX5_MKEY_INDIRECT_DEVX,
+ };
  
- static int net_msg_warn;	/* Unused, but still a sysctl */
++struct mlx5r_cache_rb_key {
++	u8 ats:1;
++	unsigned int access_mode;
++	unsigned int access_flags;
++	unsigned int ndescs;
++};
++
+ struct mlx5_ib_mkey {
+ 	u32 key;
+ 	enum mlx5_mkey_type type;
+@@ -757,11 +764,9 @@ struct mlx5_cache_ent {
+ 	unsigned long		reserved;
  
-@@ -587,7 +588,7 @@ static struct ctl_table net_core_table[] = {
- 		.maxlen		= sizeof(unsigned int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
--		.extra1		= SYSCTL_ZERO,
-+		.extra1		= &netdev_budget_usecs_min,
- 	},
- 	{
- 		.procname	= "fb_tunnels_only_for_init_net",
+ 	char                    name[4];
+-	u32                     order;
+-	u32			access_mode;
+-	unsigned int		ndescs;
+ 
+ 	struct rb_node		node;
++	struct mlx5r_cache_rb_key rb_key;
+ 
+ 	u8 disabled:1;
+ 	u8 fill_to_high_water:1;
+@@ -1340,14 +1345,13 @@ int mlx5_ib_get_cqe_size(struct ib_cq *ibcq);
+ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev);
+ int mlx5_mkey_cache_cleanup(struct mlx5_ib_dev *dev);
+ struct mlx5_cache_ent *mlx5r_cache_create_ent(struct mlx5_ib_dev *dev,
+-					      int order);
++					      struct mlx5r_cache_rb_key rb_key,
++					      bool persistent_entry);
+ 
+ struct mlx5_ib_mr *mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev,
+-				       struct mlx5_cache_ent *ent,
+-				       int access_flags);
++				       int access_flags, int access_mode,
++				       int ndescs);
+ 
+-struct mlx5_ib_mr *mlx5_mr_cache_alloc_order(struct mlx5_ib_dev *dev, u32 order,
+-					     int access_flags);
+ int mlx5_ib_check_mr_status(struct ib_mr *ibmr, u32 check_mask,
+ 			    struct ib_mr_status *mr_status);
+ struct ib_wq *mlx5_ib_create_wq(struct ib_pd *pd,
+@@ -1370,7 +1374,7 @@ int mlx5r_odp_create_eq(struct mlx5_ib_dev *dev, struct mlx5_ib_pf_eq *eq);
+ void mlx5_ib_odp_cleanup_one(struct mlx5_ib_dev *ibdev);
+ int __init mlx5_ib_odp_init(void);
+ void mlx5_ib_odp_cleanup(void);
+-void mlx5_odp_init_mkey_cache_entry(struct mlx5_cache_ent *ent);
++int mlx5_odp_init_mkey_cache(struct mlx5_ib_dev *dev);
+ void mlx5_odp_populate_xlt(void *xlt, size_t idx, size_t nentries,
+ 			   struct mlx5_ib_mr *mr, int flags);
+ 
+@@ -1389,7 +1393,10 @@ static inline int mlx5r_odp_create_eq(struct mlx5_ib_dev *dev,
+ static inline void mlx5_ib_odp_cleanup_one(struct mlx5_ib_dev *ibdev) {}
+ static inline int mlx5_ib_odp_init(void) { return 0; }
+ static inline void mlx5_ib_odp_cleanup(void)				    {}
+-static inline void mlx5_odp_init_mkey_cache_entry(struct mlx5_cache_ent *ent) {}
++static inline int mlx5_odp_init_mkey_cache(struct mlx5_ib_dev *dev)
++{
++	return 0;
++}
+ static inline void mlx5_odp_populate_xlt(void *xlt, size_t idx, size_t nentries,
+ 					 struct mlx5_ib_mr *mr, int flags) {}
+ 
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index b3d83920d3cfb..1060b30a837a0 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -292,11 +292,13 @@ static void set_cache_mkc(struct mlx5_cache_ent *ent, void *mkc)
+ 	set_mkc_access_pd_addr_fields(mkc, 0, 0, ent->dev->umrc.pd);
+ 	MLX5_SET(mkc, mkc, free, 1);
+ 	MLX5_SET(mkc, mkc, umr_en, 1);
+-	MLX5_SET(mkc, mkc, access_mode_1_0, ent->access_mode & 0x3);
+-	MLX5_SET(mkc, mkc, access_mode_4_2, (ent->access_mode >> 2) & 0x7);
++	MLX5_SET(mkc, mkc, access_mode_1_0, ent->rb_key.access_mode & 0x3);
++	MLX5_SET(mkc, mkc, access_mode_4_2,
++		(ent->rb_key.access_mode >> 2) & 0x7);
+ 
+ 	MLX5_SET(mkc, mkc, translations_octword_size,
+-		 get_mkc_octo_size(ent->access_mode, ent->ndescs));
++		 get_mkc_octo_size(ent->rb_key.access_mode,
++				   ent->rb_key.ndescs));
+ 	MLX5_SET(mkc, mkc, log_page_size, PAGE_SHIFT);
+ }
+ 
+@@ -594,8 +596,8 @@ static void __cache_work_func(struct mlx5_cache_ent *ent)
+ 			if (err != -EAGAIN) {
+ 				mlx5_ib_warn(
+ 					dev,
+-					"command failed order %d, err %d\n",
+-					ent->order, err);
++					"add keys command failed, err %d\n",
++					err);
+ 				queue_delayed_work(cache->wq, &ent->dwork,
+ 						   msecs_to_jiffies(1000));
+ 			}
+@@ -641,22 +643,49 @@ static void delayed_cache_work_func(struct work_struct *work)
+ 	__cache_work_func(ent);
+ }
+ 
++static int cache_ent_key_cmp(struct mlx5r_cache_rb_key key1,
++			     struct mlx5r_cache_rb_key key2)
++{
++	int res;
++
++	res = key1.ats - key2.ats;
++	if (res)
++		return res;
++
++	res = key1.access_mode - key2.access_mode;
++	if (res)
++		return res;
++
++	res = key1.access_flags - key2.access_flags;
++	if (res)
++		return res;
++
++	/*
++	 * keep ndescs the last in the compare table since the find function
++	 * searches for an exact match on all properties and only closest
++	 * match in size.
++	 */
++	return key1.ndescs - key2.ndescs;
++}
++
+ static int mlx5_cache_ent_insert(struct mlx5_mkey_cache *cache,
+ 				 struct mlx5_cache_ent *ent)
+ {
+ 	struct rb_node **new = &cache->rb_root.rb_node, *parent = NULL;
+ 	struct mlx5_cache_ent *cur;
++	int cmp;
+ 
+ 	mutex_lock(&cache->rb_lock);
+ 	/* Figure out where to put new node */
+ 	while (*new) {
+ 		cur = rb_entry(*new, struct mlx5_cache_ent, node);
+ 		parent = *new;
+-		if (ent->order < cur->order)
++		cmp = cache_ent_key_cmp(cur->rb_key, ent->rb_key);
++		if (cmp > 0)
+ 			new = &((*new)->rb_left);
+-		if (ent->order > cur->order)
++		if (cmp < 0)
+ 			new = &((*new)->rb_right);
+-		if (ent->order == cur->order) {
++		if (cmp == 0) {
+ 			mutex_unlock(&cache->rb_lock);
+ 			return -EEXIST;
+ 		}
+@@ -670,40 +699,45 @@ static int mlx5_cache_ent_insert(struct mlx5_mkey_cache *cache,
+ 	return 0;
+ }
+ 
+-static struct mlx5_cache_ent *mkey_cache_ent_from_order(struct mlx5_ib_dev *dev,
+-							unsigned int order)
++static struct mlx5_cache_ent *
++mkey_cache_ent_from_rb_key(struct mlx5_ib_dev *dev,
++			   struct mlx5r_cache_rb_key rb_key)
+ {
+ 	struct rb_node *node = dev->cache.rb_root.rb_node;
+ 	struct mlx5_cache_ent *cur, *smallest = NULL;
++	int cmp;
+ 
+ 	/*
+ 	 * Find the smallest ent with order >= requested_order.
+ 	 */
+ 	while (node) {
+ 		cur = rb_entry(node, struct mlx5_cache_ent, node);
+-		if (cur->order > order) {
++		cmp = cache_ent_key_cmp(cur->rb_key, rb_key);
++		if (cmp > 0) {
+ 			smallest = cur;
+ 			node = node->rb_left;
+ 		}
+-		if (cur->order < order)
++		if (cmp < 0)
+ 			node = node->rb_right;
+-		if (cur->order == order)
++		if (cmp == 0)
+ 			return cur;
+ 	}
+ 
+-	return smallest;
++	return (smallest &&
++		smallest->rb_key.access_mode == rb_key.access_mode &&
++		smallest->rb_key.access_flags == rb_key.access_flags &&
++		smallest->rb_key.ats == rb_key.ats) ?
++		       smallest :
++		       NULL;
+ }
+ 
+-struct mlx5_ib_mr *mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev,
+-				       struct mlx5_cache_ent *ent,
+-				       int access_flags)
++static struct mlx5_ib_mr *_mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev,
++					struct mlx5_cache_ent *ent,
++					int access_flags)
+ {
+ 	struct mlx5_ib_mr *mr;
+ 	int err;
+ 
+-	if (!mlx5r_umr_can_reconfig(dev, 0, access_flags))
+-		return ERR_PTR(-EOPNOTSUPP);
+-
+ 	mr = kzalloc(sizeof(*mr), GFP_KERNEL);
+ 	if (!mr)
+ 		return ERR_PTR(-ENOMEM);
+@@ -734,12 +768,44 @@ struct mlx5_ib_mr *mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev,
+ 	return mr;
+ }
+ 
+-struct mlx5_ib_mr *mlx5_mr_cache_alloc_order(struct mlx5_ib_dev *dev,
+-					     u32 order, int access_flags)
++static int get_unchangeable_access_flags(struct mlx5_ib_dev *dev,
++					 int access_flags)
++{
++	int ret = 0;
++
++	if ((access_flags & IB_ACCESS_REMOTE_ATOMIC) &&
++	    MLX5_CAP_GEN(dev->mdev, atomic) &&
++	    MLX5_CAP_GEN(dev->mdev, umr_modify_atomic_disabled))
++		ret |= IB_ACCESS_REMOTE_ATOMIC;
++
++	if ((access_flags & IB_ACCESS_RELAXED_ORDERING) &&
++	    MLX5_CAP_GEN(dev->mdev, relaxed_ordering_write) &&
++	    !MLX5_CAP_GEN(dev->mdev, relaxed_ordering_write_umr))
++		ret |= IB_ACCESS_RELAXED_ORDERING;
++
++	if ((access_flags & IB_ACCESS_RELAXED_ORDERING) &&
++	    MLX5_CAP_GEN(dev->mdev, relaxed_ordering_read) &&
++	    !MLX5_CAP_GEN(dev->mdev, relaxed_ordering_read_umr))
++		ret |= IB_ACCESS_RELAXED_ORDERING;
++
++	return ret;
++}
++
++struct mlx5_ib_mr *mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev,
++				       int access_flags, int access_mode,
++				       int ndescs)
+ {
+-	struct mlx5_cache_ent *ent = mkey_cache_ent_from_order(dev, order);
++	struct mlx5r_cache_rb_key rb_key = {
++		.ndescs = ndescs,
++		.access_mode = access_mode,
++		.access_flags = get_unchangeable_access_flags(dev, access_flags)
++	};
++	struct mlx5_cache_ent *ent = mkey_cache_ent_from_rb_key(dev, rb_key);
+ 
+-	return mlx5_mr_cache_alloc(dev, ent, access_flags);
++	if (!ent)
++		return ERR_PTR(-EOPNOTSUPP);
++
++	return _mlx5_mr_cache_alloc(dev, ent, access_flags);
+ }
+ 
+ static void clean_keys(struct mlx5_ib_dev *dev, struct mlx5_cache_ent *ent)
+@@ -766,28 +832,32 @@ static void mlx5_mkey_cache_debugfs_cleanup(struct mlx5_ib_dev *dev)
+ 	dev->cache.fs_root = NULL;
+ }
+ 
++static void mlx5_mkey_cache_debugfs_add_ent(struct mlx5_ib_dev *dev,
++					    struct mlx5_cache_ent *ent)
++{
++	int order = order_base_2(ent->rb_key.ndescs);
++	struct dentry *dir;
++
++	if (ent->rb_key.access_mode == MLX5_MKC_ACCESS_MODE_KSM)
++		order = MLX5_IMR_KSM_CACHE_ENTRY + 2;
++
++	sprintf(ent->name, "%d", order);
++	dir = debugfs_create_dir(ent->name, dev->cache.fs_root);
++	debugfs_create_file("size", 0600, dir, ent, &size_fops);
++	debugfs_create_file("limit", 0600, dir, ent, &limit_fops);
++	debugfs_create_ulong("cur", 0400, dir, &ent->stored);
++	debugfs_create_u32("miss", 0600, dir, &ent->miss);
++}
++
+ static void mlx5_mkey_cache_debugfs_init(struct mlx5_ib_dev *dev)
+ {
++	struct dentry *dbg_root = mlx5_debugfs_get_dev_root(dev->mdev);
+ 	struct mlx5_mkey_cache *cache = &dev->cache;
+-	struct mlx5_cache_ent *ent;
+-	struct dentry *dir;
+-	int i;
+ 
+ 	if (!mlx5_debugfs_root || dev->is_rep)
+ 		return;
+ 
+-	dir = mlx5_debugfs_get_dev_root(dev->mdev);
+-	cache->fs_root = debugfs_create_dir("mr_cache", dir);
+-
+-	for (i = 0; i < MAX_MKEY_CACHE_ENTRIES; i++) {
+-		ent = mkey_cache_ent_from_order(dev, i);
+-		sprintf(ent->name, "%d", ent->order);
+-		dir = debugfs_create_dir(ent->name, cache->fs_root);
+-		debugfs_create_file("size", 0600, dir, ent, &size_fops);
+-		debugfs_create_file("limit", 0600, dir, ent, &limit_fops);
+-		debugfs_create_ulong("cur", 0400, dir, &ent->stored);
+-		debugfs_create_u32("miss", 0600, dir, &ent->miss);
+-	}
++	cache->fs_root = debugfs_create_dir("mr_cache", dbg_root);
+ }
+ 
+ static void delay_time_func(struct timer_list *t)
+@@ -798,9 +868,11 @@ static void delay_time_func(struct timer_list *t)
+ }
+ 
+ struct mlx5_cache_ent *mlx5r_cache_create_ent(struct mlx5_ib_dev *dev,
+-					      int order)
++					      struct mlx5r_cache_rb_key rb_key,
++					      bool persistent_entry)
+ {
+ 	struct mlx5_cache_ent *ent;
++	int order;
+ 	int ret;
+ 
+ 	ent = kzalloc(sizeof(*ent), GFP_KERNEL);
+@@ -808,7 +880,7 @@ struct mlx5_cache_ent *mlx5r_cache_create_ent(struct mlx5_ib_dev *dev,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	xa_init_flags(&ent->mkeys, XA_FLAGS_LOCK_IRQ);
+-	ent->order = order;
++	ent->rb_key = rb_key;
+ 	ent->dev = dev;
+ 
+ 	INIT_DELAYED_WORK(&ent->dwork, delayed_cache_work_func);
+@@ -818,13 +890,36 @@ struct mlx5_cache_ent *mlx5r_cache_create_ent(struct mlx5_ib_dev *dev,
+ 		kfree(ent);
+ 		return ERR_PTR(ret);
+ 	}
++
++	if (persistent_entry) {
++		if (rb_key.access_mode == MLX5_MKC_ACCESS_MODE_KSM)
++			order = MLX5_IMR_KSM_CACHE_ENTRY;
++		else
++			order = order_base_2(rb_key.ndescs) - 2;
++
++		if ((dev->mdev->profile.mask & MLX5_PROF_MASK_MR_CACHE) &&
++		    !dev->is_rep && mlx5_core_is_pf(dev->mdev) &&
++		    mlx5r_umr_can_load_pas(dev, 0))
++			ent->limit = dev->mdev->profile.mr_cache[order].limit;
++		else
++			ent->limit = 0;
++
++		mlx5_mkey_cache_debugfs_add_ent(dev, ent);
++	}
++
+ 	return ent;
+ }
+ 
+ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
+ {
+ 	struct mlx5_mkey_cache *cache = &dev->cache;
++	struct rb_root *root = &dev->cache.rb_root;
++	struct mlx5r_cache_rb_key rb_key = {
++		.access_mode = MLX5_MKC_ACCESS_MODE_MTT,
++	};
+ 	struct mlx5_cache_ent *ent;
++	struct rb_node *node;
++	int ret;
+ 	int i;
+ 
+ 	mutex_init(&dev->slow_path_mutex);
+@@ -838,33 +933,32 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
+ 
+ 	mlx5_cmd_init_async_ctx(dev->mdev, &dev->async_ctx);
+ 	timer_setup(&dev->delay_timer, delay_time_func, 0);
+-	for (i = 0; i < MAX_MKEY_CACHE_ENTRIES; i++) {
+-		ent = mlx5r_cache_create_ent(dev, i);
+-
+-		if (i > MKEY_CACHE_LAST_STD_ENTRY) {
+-			mlx5_odp_init_mkey_cache_entry(ent);
+-			continue;
++	mlx5_mkey_cache_debugfs_init(dev);
++	for (i = 0; i <= mkey_cache_max_order(dev); i++) {
++		rb_key.ndescs = 1 << (i + 2);
++		ent = mlx5r_cache_create_ent(dev, rb_key, true);
++		if (IS_ERR(ent)) {
++			ret = PTR_ERR(ent);
++			goto err;
+ 		}
++	}
+ 
+-		if (ent->order > mkey_cache_max_order(dev))
+-			continue;
++	ret = mlx5_odp_init_mkey_cache(dev);
++	if (ret)
++		goto err;
+ 
+-		ent->ndescs = 1 << ent->order;
+-		ent->access_mode = MLX5_MKC_ACCESS_MODE_MTT;
+-		if ((dev->mdev->profile.mask & MLX5_PROF_MASK_MR_CACHE) &&
+-		    !dev->is_rep && mlx5_core_is_pf(dev->mdev) &&
+-		    mlx5r_umr_can_load_pas(dev, 0))
+-			ent->limit = dev->mdev->profile.mr_cache[i].limit;
+-		else
+-			ent->limit = 0;
++	for (node = rb_first(root); node; node = rb_next(node)) {
++		ent = rb_entry(node, struct mlx5_cache_ent, node);
+ 		xa_lock_irq(&ent->mkeys);
+ 		queue_adjust_cache_locked(ent);
+ 		xa_unlock_irq(&ent->mkeys);
+ 	}
+ 
+-	mlx5_mkey_cache_debugfs_init(dev);
+-
+ 	return 0;
++
++err:
++	mlx5_ib_warn(dev, "failed to create mkey cache entry\n");
++	return ret;
+ }
+ 
+ int mlx5_mkey_cache_cleanup(struct mlx5_ib_dev *dev)
+@@ -965,7 +1059,7 @@ static int get_octo_len(u64 addr, u64 len, int page_shift)
+ static int mkey_cache_max_order(struct mlx5_ib_dev *dev)
+ {
+ 	if (MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset))
+-		return MKEY_CACHE_LAST_STD_ENTRY + 2;
++		return MKEY_CACHE_LAST_STD_ENTRY;
+ 	return MLX5_MAX_UMR_SHIFT;
+ }
+ 
+@@ -995,6 +1089,9 @@ static struct mlx5_ib_mr *alloc_cacheable_mr(struct ib_pd *pd,
+ 					     struct ib_umem *umem, u64 iova,
+ 					     int access_flags)
+ {
++	struct mlx5r_cache_rb_key rb_key = {
++		.access_mode = MLX5_MKC_ACCESS_MODE_MTT,
++	};
+ 	struct mlx5_ib_dev *dev = to_mdev(pd->device);
+ 	struct mlx5_cache_ent *ent;
+ 	struct mlx5_ib_mr *mr;
+@@ -1007,8 +1104,11 @@ static struct mlx5_ib_mr *alloc_cacheable_mr(struct ib_pd *pd,
+ 						     0, iova);
+ 	if (WARN_ON(!page_size))
+ 		return ERR_PTR(-EINVAL);
+-	ent = mkey_cache_ent_from_order(
+-		dev, order_base_2(ib_umem_num_dma_blocks(umem, page_size)));
++
++	rb_key.ndescs = ib_umem_num_dma_blocks(umem, page_size);
++	rb_key.ats = mlx5_umem_needs_ats(dev, umem, access_flags);
++	rb_key.access_flags = get_unchangeable_access_flags(dev, access_flags);
++	ent = mkey_cache_ent_from_rb_key(dev, rb_key);
+ 	/*
+ 	 * Matches access in alloc_cache_mr(). If the MR can't come from the
+ 	 * cache then synchronously create an uncached one.
+@@ -1022,7 +1122,7 @@ static struct mlx5_ib_mr *alloc_cacheable_mr(struct ib_pd *pd,
+ 		return mr;
+ 	}
+ 
+-	mr = mlx5_mr_cache_alloc(dev, ent, access_flags);
++	mr = _mlx5_mr_cache_alloc(dev, ent, access_flags);
+ 	if (IS_ERR(mr))
+ 		return mr;
+ 
+@@ -1452,7 +1552,7 @@ static bool can_use_umr_rereg_pas(struct mlx5_ib_mr *mr,
+ 		mlx5_umem_find_best_pgsz(new_umem, mkc, log_page_size, 0, iova);
+ 	if (WARN_ON(!*page_size))
+ 		return false;
+-	return (1ULL << mr->mmkey.cache_ent->order) >=
++	return (mr->mmkey.cache_ent->rb_key.ndescs) >=
+ 	       ib_umem_num_dma_blocks(new_umem, *page_size);
+ }
+ 
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index 7f68940ca0d1e..96d4faabbff8a 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -406,7 +406,6 @@ static void mlx5_ib_page_fault_resume(struct mlx5_ib_dev *dev,
+ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
+ 						unsigned long idx)
+ {
+-	int order = order_base_2(MLX5_IMR_MTT_ENTRIES);
+ 	struct mlx5_ib_dev *dev = mr_to_mdev(imr);
+ 	struct ib_umem_odp *odp;
+ 	struct mlx5_ib_mr *mr;
+@@ -419,8 +418,9 @@ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
+ 	if (IS_ERR(odp))
+ 		return ERR_CAST(odp);
+ 
+-	BUILD_BUG_ON(order > MKEY_CACHE_LAST_STD_ENTRY);
+-	mr = mlx5_mr_cache_alloc_order(dev, order, imr->access_flags);
++	mr = mlx5_mr_cache_alloc(dev, imr->access_flags,
++				 MLX5_MKC_ACCESS_MODE_MTT,
++				 MLX5_IMR_MTT_ENTRIES);
+ 	if (IS_ERR(mr)) {
+ 		ib_umem_odp_release(odp);
+ 		return mr;
+@@ -494,8 +494,8 @@ struct mlx5_ib_mr *mlx5_ib_alloc_implicit_mr(struct mlx5_ib_pd *pd,
+ 	if (IS_ERR(umem_odp))
+ 		return ERR_CAST(umem_odp);
+ 
+-	imr = mlx5_mr_cache_alloc_order(dev, MLX5_IMR_KSM_CACHE_ENTRY,
+-					access_flags);
++	imr = mlx5_mr_cache_alloc(dev, access_flags, MLX5_MKC_ACCESS_MODE_KSM,
++				  mlx5_imr_ksm_entries);
+ 	if (IS_ERR(imr)) {
+ 		ib_umem_odp_release(umem_odp);
+ 		return imr;
+@@ -1591,12 +1591,22 @@ mlx5_ib_odp_destroy_eq(struct mlx5_ib_dev *dev, struct mlx5_ib_pf_eq *eq)
+ 	return err;
+ }
+ 
+-void mlx5_odp_init_mkey_cache_entry(struct mlx5_cache_ent *ent)
++int mlx5_odp_init_mkey_cache(struct mlx5_ib_dev *dev)
+ {
+-	if (!(ent->dev->odp_caps.general_caps & IB_ODP_SUPPORT_IMPLICIT))
+-		return;
+-	ent->ndescs = mlx5_imr_ksm_entries;
+-	ent->access_mode = MLX5_MKC_ACCESS_MODE_KSM;
++	struct mlx5r_cache_rb_key rb_key = {
++		.access_mode = MLX5_MKC_ACCESS_MODE_KSM,
++		.ndescs = mlx5_imr_ksm_entries,
++	};
++	struct mlx5_cache_ent *ent;
++
++	if (!(dev->odp_caps.general_caps & IB_ODP_SUPPORT_IMPLICIT))
++		return 0;
++
++	ent = mlx5r_cache_create_ent(dev, rb_key, true);
++	if (IS_ERR(ent))
++		return PTR_ERR(ent);
++
++	return 0;
+ }
+ 
+ static const struct ib_device_ops mlx5_ib_dev_odp_ops = {
 -- 
 2.39.5
 
