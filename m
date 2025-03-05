@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-120661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DA3A507BE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E77A5070B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895573A41AC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 711137A05DD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B742F252911;
-	Wed,  5 Mar 2025 18:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16CD25179E;
+	Wed,  5 Mar 2025 17:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SokcqLgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiOSDijP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768BF253320;
-	Wed,  5 Mar 2025 18:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCEB2512FA;
+	Wed,  5 Mar 2025 17:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197606; cv=none; b=paQXtG7a2s1tHofHDizzuabn0SEUriylGnQvD7lJIJc4YOUy4HPtS1x/C/rC9H+t08VbH42kAbaL46sevx8IlLTSUTyDtg62jVmv8wYbGhfIQgq6QVfMEtjmL85sJ2UqGWxqWUCDFjYQo7nV4e//04PsvlwyikGRN9wSQSlBEw4=
+	t=1741197152; cv=none; b=gwxLoi6D6EVEt3FMJVvIAaPdjmwXRhNUa05fdHe/0VmTpoPi/ASPgtN1jAJqqYAY1VZJqBJjZ4DSeZpv7xp6y1ponDpv3RqBOhsnhXk1hKfiysajPHE7/tHiLEOfZA8ljP7y4E8Z9uzHZ1mHpCdpJpZxqpTxUWjC4sWSWqcB9X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197606; c=relaxed/simple;
-	bh=4NXEEjnTWuEYfPARI+kA8itXggOV/7Dpi5VwKM9SdKc=;
+	s=arc-20240116; t=1741197152; c=relaxed/simple;
+	bh=Hb6X0QZ7InjxgEkLtrgbD0FDfcly8dTvudjl86n7jy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwuyNi+VuihucAxyw6gd3b/6ofWahF6W0sE27+YXjcVskvXTpJ8s85QL2MSrN0IZpt+rdEiJmvZgvDvR3o70H3Ws2TmAYMoINTvn9M5vmn3SZP4EF2AUZ+8h0tifhxVtI02fvn/D9ieyPj1KMuor+BvNUSZluBSz9Pd+3UtSQxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SokcqLgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0D4C4CED1;
-	Wed,  5 Mar 2025 18:00:05 +0000 (UTC)
+	 MIME-Version; b=pyjJ2n79pTc0PttGwFnI9lALVAJCLevw9lAkR5SiaUAtBSgsgnvi1VNcAHurx0pcveRNUCmyTZzG1c0S2YlIva6R8E60ldWztFKNdqtJT3l1UNEl3DJPKWIxIip0ki+NMHSlcFmicBCdipbIwucjAZykp9QKjgv2nAsPm3djJ/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiOSDijP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DDCC4CEE2;
+	Wed,  5 Mar 2025 17:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197606;
-	bh=4NXEEjnTWuEYfPARI+kA8itXggOV/7Dpi5VwKM9SdKc=;
+	s=korg; t=1741197152;
+	bh=Hb6X0QZ7InjxgEkLtrgbD0FDfcly8dTvudjl86n7jy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SokcqLgSAuorWvZ4eThp7mSu6neVjioU6e5g4e8KHEjRTH0Qsw7DOIKGf9xAPRzKq
-	 SH4VJJ6D93OzDHFkJgeVRCrHG0XxfXXY4eU093gmoZDnKU1E/tQCr1qsUgDG1sRjOi
-	 aDcl7SBKu9iDiXAlFuwUZ5x83eK3dA8j+8IkgwtA=
+	b=oiOSDijPWUA2fFBW3cOpz/G+m+DSZXvE42tD06DKClK+weKgwzST1FxN5A04b677n
+	 H5Aj7mRtyJy/eoUKbs+BVWd6J4syFtL0EcRpCMf/UrCugu4BfkPSCCS5Af0P1qF7mh
+	 cdfWdg0WEgMpqdxy8Cc2FXL0KzhW2XP0duJ70Kiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kuniyu@amazon.com,
+	ushankar@purestorage.com,
+	Eric Dumazet <edumazet@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/142] scsi: ufs: core: Fix ufshcd_is_ufs_dev_busy() and ufshcd_eh_timed_out()
+Subject: [PATCH 6.1 057/176] net: Add non-RCU dev_getbyhwaddr() helper
 Date: Wed,  5 Mar 2025 18:47:06 +0100
-Message-ID: <20250305174500.632850081@linuxfoundation.org>
+Message-ID: <20250305174507.748533697@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +65,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 4fa382be430421e1445f9c95c4dc9b7e0949ae8a ]
+[ Upstream commit 4b5a28b38c4a0106c64416a1b2042405166b26ce ]
 
-ufshcd_is_ufs_dev_busy(), ufshcd_print_host_state() and
-ufshcd_eh_timed_out() are used in both modes (legacy mode and MCQ mode).
-hba->outstanding_reqs only represents the outstanding requests in legacy
-mode. Hence, change hba->outstanding_reqs into scsi_host_busy(hba->host) in
-these functions.
+Add dedicated helper for finding devices by hardware address when
+holding rtnl_lock, similar to existing dev_getbyhwaddr_rcu(). This prevents
+PROVE_LOCKING warnings when rtnl_lock is held but RCU read lock is not.
 
-Fixes: eacb139b77ff ("scsi: ufs: core: mcq: Enable multi-circular queue")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20250214224352.3025151-1-bvanassche@acm.org
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Extract common address comparison logic into dev_addr_cmp().
+
+The context about this change could be found in the following
+discussion:
+
+Link: https://lore.kernel.org/all/20250206-scarlet-ermine-of-improvement-1fcac5@leitao/
+
+Cc: kuniyu@amazon.com
+Cc: ushankar@purestorage.com
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250218-arm_fix_selftest-v5-1-d3d6892db9e1@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4eae0ee0f1e6 ("arp: switch to dev_getbyhwaddr() in arp_req_set_public()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/netdevice.h |  2 ++
+ net/core/dev.c            | 37 ++++++++++++++++++++++++++++++++++---
+ 2 files changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 24f8b74e166de..3412ac717807d 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -245,7 +245,7 @@ static bool ufshcd_has_pending_tasks(struct ufs_hba *hba)
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index d0b4920dee730..f44701b82ea80 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3011,6 +3011,8 @@ static inline struct net_device *first_net_device_rcu(struct net *net)
+ }
  
- static bool ufshcd_is_ufs_dev_busy(struct ufs_hba *hba)
+ int netdev_boot_setup_check(struct net_device *dev);
++struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
++				   const char *hwaddr);
+ struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
+ 				       const char *hwaddr);
+ struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 90559cb668039..212a909b48405 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -921,6 +921,12 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
+ 	return ret;
+ }
+ 
++static bool dev_addr_cmp(struct net_device *dev, unsigned short type,
++			 const char *ha)
++{
++	return dev->type == type && !memcmp(dev->dev_addr, ha, dev->addr_len);
++}
++
+ /**
+  *	dev_getbyhwaddr_rcu - find a device by its hardware address
+  *	@net: the applicable net namespace
+@@ -929,7 +935,7 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
+  *
+  *	Search for an interface by MAC address. Returns NULL if the device
+  *	is not found or a pointer to the device.
+- *	The caller must hold RCU or RTNL.
++ *	The caller must hold RCU.
+  *	The returned device has not had its ref count increased
+  *	and the caller must therefore be careful about locking
+  *
+@@ -941,14 +947,39 @@ struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
+ 	struct net_device *dev;
+ 
+ 	for_each_netdev_rcu(net, dev)
+-		if (dev->type == type &&
+-		    !memcmp(dev->dev_addr, ha, dev->addr_len))
++		if (dev_addr_cmp(dev, type, ha))
+ 			return dev;
+ 
+ 	return NULL;
+ }
+ EXPORT_SYMBOL(dev_getbyhwaddr_rcu);
+ 
++/**
++ * dev_getbyhwaddr() - find a device by its hardware address
++ * @net: the applicable net namespace
++ * @type: media type of device
++ * @ha: hardware address
++ *
++ * Similar to dev_getbyhwaddr_rcu(), but the owner needs to hold
++ * rtnl_lock.
++ *
++ * Context: rtnl_lock() must be held.
++ * Return: pointer to the net_device, or NULL if not found
++ */
++struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
++				   const char *ha)
++{
++	struct net_device *dev;
++
++	ASSERT_RTNL();
++	for_each_netdev(net, dev)
++		if (dev_addr_cmp(dev, type, ha))
++			return dev;
++
++	return NULL;
++}
++EXPORT_SYMBOL(dev_getbyhwaddr);
++
+ struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type)
  {
--	return hba->outstanding_reqs || ufshcd_has_pending_tasks(hba);
-+	return scsi_host_busy(hba->host) || ufshcd_has_pending_tasks(hba);
- }
- 
- static const struct ufs_dev_quirk ufs_fixups[] = {
-@@ -616,8 +616,8 @@ static void ufshcd_print_host_state(struct ufs_hba *hba)
- 	const struct scsi_device *sdev_ufs = hba->ufs_device_wlun;
- 
- 	dev_err(hba->dev, "UFS Host state=%d\n", hba->ufshcd_state);
--	dev_err(hba->dev, "outstanding reqs=0x%lx tasks=0x%lx\n",
--		hba->outstanding_reqs, hba->outstanding_tasks);
-+	dev_err(hba->dev, "%d outstanding reqs, tasks=0x%lx\n",
-+		scsi_host_busy(hba->host), hba->outstanding_tasks);
- 	dev_err(hba->dev, "saved_err=0x%x, saved_uic_err=0x%x\n",
- 		hba->saved_err, hba->saved_uic_err);
- 	dev_err(hba->dev, "Device power mode=%d, UIC link state=%d\n",
-@@ -8973,7 +8973,7 @@ static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
- 	dev_info(hba->dev, "%s() finished; outstanding_tasks = %#lx.\n",
- 		 __func__, hba->outstanding_tasks);
- 
--	return hba->outstanding_reqs ? SCSI_EH_RESET_TIMER : SCSI_EH_DONE;
-+	return scsi_host_busy(hba->host) ? SCSI_EH_RESET_TIMER : SCSI_EH_DONE;
- }
- 
- static const struct attribute_group *ufshcd_driver_groups[] = {
+ 	struct net_device *dev, *ret = NULL;
 -- 
 2.39.5
 
