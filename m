@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280F6A50787
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57B5A50834
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 101B53AD55D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BDA7188C68E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3315A250C1D;
-	Wed,  5 Mar 2025 17:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436E425291B;
+	Wed,  5 Mar 2025 18:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLv6ruT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8Wbd6Vu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70201C6FFE;
-	Wed,  5 Mar 2025 17:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F832517B3;
+	Wed,  5 Mar 2025 18:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197477; cv=none; b=p/PltDaYeW4c0B2eSS4BQnbGD+AwIRZgSXJHeOHRwjrEddXu3V3PS5DvcjH8NiIjbiDjj32190RRrahtO2JpDdrsovAdAWfWtE2STtGcMDcNqWxZf2P78+zlxiCGmtRXUB0AQvVIwHDayz1Zzl3DQKEnyfmE0cNIrUrtVluc6o4=
+	t=1741197838; cv=none; b=Cv6fVFD73HXbfZcsbqt4/9KjInTKKkwVTlOft+5QjpsI0RAWDbvBhDyPgmThn0fqqxRnO2dWdOhAk2H/HlosaY3oqsnAmae2AcJ8nYjaplz66+19gxR7HHML2IJ9qPDG/CVwjRLk7MEnHWYCrR/+zw4KiVOmijqQ0t2NoybU9ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197477; c=relaxed/simple;
-	bh=TAKHXbw5nCMNwNWFtBwCvnZd9hLg9RvA/l2YuEUTVe4=;
+	s=arc-20240116; t=1741197838; c=relaxed/simple;
+	bh=V8MbGjj1ecHFGg0QeLNsSbULT7I6lJJZ8gVhEDCEuqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HYqWl9uNDQG7PpmAO3e9zCJSI4/Nwh6fOO6YckxyeJftwgJA4aacrmSMouWIPbPL1TSrs1VvcIgNIAtFJzIgv3MxhZA9GJB3gM+OqroIoz4XEbis0stXt4ciPb5h7GkdMtTHPd/MASH6YTJw7J+3/8ocA5MZvsH8ZWMd2iIKhq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLv6ruT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD6FC4CED1;
-	Wed,  5 Mar 2025 17:57:55 +0000 (UTC)
+	 MIME-Version; b=NOkwEt8SBesPFSDixde8L7E910Hnitl/wv2kUpov/4pzA8KqWCkSaBbjNHd6kY4Bz3b6PdJ4S21tKauOCKs7qzWyugolOEpH5rVB9YoTL0xIdar3Tg90foTLoEPRyw7zZd4NehisOJJO2ZVi3/ZRnNnW0YPmLbDkd8zQ8+LcbBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8Wbd6Vu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788FDC4CED1;
+	Wed,  5 Mar 2025 18:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197476;
-	bh=TAKHXbw5nCMNwNWFtBwCvnZd9hLg9RvA/l2YuEUTVe4=;
+	s=korg; t=1741197837;
+	bh=V8MbGjj1ecHFGg0QeLNsSbULT7I6lJJZ8gVhEDCEuqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLv6ruT/vy7IA5wViX0vaQZmx5YnlodfoHnXQ5o+EL6r/SEBQWZi8l+FKPo4u+Ho5
-	 EuG4bQYk3bQmEmHrU5//gU/CmgbEQvJp3zhFmjc4tS1quEsFcqceFDX6aZQ7iMVOzu
-	 zdFvdQhLrDcWjuCLQ/WEC2FU3WNZrH4kzSxzTg2o=
+	b=f8Wbd6VuS2oKLWLcLyILgNU0DW1XsZTgttVMZshPxWk66/UwkSTyxRIctlcyuNzOs
+	 ZWEl9xGLYVKr3SWkgJ4uUKbtCGSG/mvt/paPtlZUtA1EDH8FUxnlEdnPY+MinckT1N
+	 +SwKK/5Ih4y8kV7+U0D0mPF2TclVutyG8ZRWslQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schwab <schwab@suse.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 168/176] riscv/futex: sign extend compare value in atomic cmpxchg
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 6.6 118/142] x86/microcode: Clarify the late load logic
 Date: Wed,  5 Mar 2025 18:48:57 +0100
-Message-ID: <20250305174512.185043929@linuxfoundation.org>
+Message-ID: <20250305174505.071514472@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Schwab <schwab@suse.de>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 599c44cd21f4967774e0acf58f734009be4aea9a upstream.
+commit 6f059e634dcd0d725854514c94c114bbdd83950d upstream
 
-Make sure the compare value in the lr/sc loop is sign extended to match
-what lr.w does.  Fortunately, due to the compiler keeping the register
-contents sign extended anyway the lack of the explicit extension didn't
-result in wrong code so far, but this cannot be relied upon.
+reload_store() is way too complicated. Split the inner workings out and
+make the following enhancements:
 
-Fixes: b90edb33010b ("RISC-V: Add futex support.")
-Signed-off-by: Andreas Schwab <schwab@suse.de>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/mvmfrkv2vhz.fsf@suse.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+ - Taint the kernel only when the microcode was actually updated. If. e.g.
+   the rendezvous fails, then nothing happened and there is no reason for
+   tainting.
+
+ - Return useful error codes
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/r/20231002115903.145048840@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/futex.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/core.c |   41 ++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
 
---- a/arch/riscv/include/asm/futex.h
-+++ b/arch/riscv/include/asm/futex.h
-@@ -93,7 +93,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval,
- 		_ASM_EXTABLE_UACCESS_ERR(1b, 3b, %[r])	\
- 		_ASM_EXTABLE_UACCESS_ERR(2b, 3b, %[r])	\
- 	: [r] "+r" (ret), [v] "=&r" (val), [u] "+m" (*uaddr), [t] "=&r" (tmp)
--	: [ov] "Jr" (oldval), [nv] "Jr" (newval)
-+	: [ov] "Jr" ((long)(int)oldval), [nv] "Jr" (newval)
- 	: "memory");
- 	__disable_user_access();
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -362,11 +362,11 @@ static int microcode_reload_late(void)
+ 		pr_info("Reload succeeded, microcode revision: 0x%x -> 0x%x\n",
+ 			old, boot_cpu_data.microcode);
+ 		microcode_check(&prev_info);
++		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+ 	} else {
+ 		pr_info("Reload failed, current microcode revision: 0x%x\n",
+ 			boot_cpu_data.microcode);
+ 	}
+-
+ 	return ret;
+ }
  
+@@ -399,40 +399,37 @@ static bool ensure_cpus_are_online(void)
+ 	return true;
+ }
+ 
++static int ucode_load_late_locked(void)
++{
++	if (!ensure_cpus_are_online())
++		return -EBUSY;
++
++	switch (microcode_ops->request_microcode_fw(0, &microcode_pdev->dev)) {
++	case UCODE_NEW:
++		return microcode_reload_late();
++	case UCODE_NFOUND:
++		return -ENOENT;
++	default:
++		return -EBADFD;
++	}
++}
++
+ static ssize_t reload_store(struct device *dev,
+ 			    struct device_attribute *attr,
+ 			    const char *buf, size_t size)
+ {
+-	enum ucode_state tmp_ret = UCODE_OK;
+-	int bsp = boot_cpu_data.cpu_index;
+ 	unsigned long val;
+-	ssize_t ret = 0;
++	ssize_t ret;
+ 
+ 	ret = kstrtoul(buf, 0, &val);
+ 	if (ret || val != 1)
+ 		return -EINVAL;
+ 
+ 	cpus_read_lock();
+-
+-	if (!ensure_cpus_are_online()) {
+-		ret = -EBUSY;
+-		goto put;
+-	}
+-
+-	tmp_ret = microcode_ops->request_microcode_fw(bsp, &microcode_pdev->dev);
+-	if (tmp_ret != UCODE_NEW)
+-		goto put;
+-
+-	ret = microcode_reload_late();
+-put:
++	ret = ucode_load_late_locked();
+ 	cpus_read_unlock();
+ 
+-	if (ret == 0)
+-		ret = size;
+-
+-	add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+-
+-	return ret;
++	return ret ? : size;
+ }
+ 
+ static DEVICE_ATTR_WO(reload);
 
 
 
