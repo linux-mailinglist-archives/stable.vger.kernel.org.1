@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-121072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4997AA509D6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA89A509E2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFA5A7A9902
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 682781887F33
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAC525332E;
-	Wed,  5 Mar 2025 18:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D43253330;
+	Wed,  5 Mar 2025 18:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUqWJ4NS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jm7GWQje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB475253330;
-	Wed,  5 Mar 2025 18:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B8719C542;
+	Wed,  5 Mar 2025 18:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198801; cv=none; b=jWxrACH1nsDdYgxnCVJqL7Umr/8Ljzked4rOvI38IR+4qo2BapdGUNs/E3G/ZwtKuoz5efmkhKg+dgg1n2XJ3KnCIZkQxtb7W1POnkIsefnBdcT2ZgnUqfRWBiu1It+x2SAB1Tpjx/HHBHnhlOo6aOH3qYTKzI3Z05mkqMVErIw=
+	t=1741198807; cv=none; b=RqKVXg2/6i9lpwrRHeC1ZFtEWZGiC4L+IyElVgZ5tb5Wbvi6wzUu/xdi3bOEdiRSBtttMXb7reV2kMXoB2VV5G45XjNXyBCHZhxVnIIYjpAnM/7IJ5k1gI7p7yH79qtf8uOujfzoeVwAYyUMOfuzZTakiYOXHNaC1GzwGufdZuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198801; c=relaxed/simple;
-	bh=kuErDEZZohm1L4TBTWyhxmLn08Cank4Q798xvHXjHwQ=;
+	s=arc-20240116; t=1741198807; c=relaxed/simple;
+	bh=bBCvfX3h1fDmUkmXwGcRZUwCifzEDSpKYZr6AA5S1yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mc1X1e29y88SCZapf9BAqLSsMF2z0bRjqKMn2PXahx7CXyNJqKK29qm9fFukbbRVg5bw2Ow3waDh+uKCqDxmSxdtF9sGyzZ7BfmtaLD2+4ClvApg7sIgVYY6VpK+YV8ln07xDvXevrmqXahh1b2Fzpf7HB/nd+OdvJi5opfIsis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUqWJ4NS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300F4C4CED1;
-	Wed,  5 Mar 2025 18:20:01 +0000 (UTC)
+	 MIME-Version; b=lJI8GCjym4knSRiCQzw2dCTrMclL2tBHYvyZQnxe+jTy6QNWvne5OLiqHhYJYzYpluryI/LDLPNYfx6MJ0kwJ0LrfXq7Q/ybReN2NlseMMu+Y8oQNWE90TeXooZLYyN4yH/QDjM0vKJjMxwEY5gXl0rk6i6dX0vUwTM93QA1Mh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jm7GWQje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60DFC4CED1;
+	Wed,  5 Mar 2025 18:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198801;
-	bh=kuErDEZZohm1L4TBTWyhxmLn08Cank4Q798xvHXjHwQ=;
+	s=korg; t=1741198807;
+	bh=bBCvfX3h1fDmUkmXwGcRZUwCifzEDSpKYZr6AA5S1yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUqWJ4NSa/WedeuTOjEvK7bTsk6ZNvB3aHi/7yinEX1yw8z5VJszrlpXq6+Y5k/Hg
-	 CMwQmhDUlWbv2Cxzprp/XiGgaxFK0sUwyu1hEj2CDV/iJFCU90SX6luNWei4BOjdk1
-	 cewkQ9wCtz64VqWZoS0Mo0O1GlXr4Jl9mIfQgj64=
+	b=jm7GWQje3iStPBX7ITV75D06G82PgHF5V9IYu5F83GhymmI434fsrdcNk+ZMbuUf3
+	 sJFYWOZ4CHMFkt/Q1qClwz/W9SNq7Mir6dpOAKa91aaTHp+QWzRnnmIgzw2OVx050J
+	 Lgm/sMaa7lvTJ18JP5Z7Zjv+VIhLFa8YDEQLK+qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.13 152/157] x86/microcode/AMD: Remove ugly linebreak in __verify_patch_section() signature
-Date: Wed,  5 Mar 2025 18:49:48 +0100
-Message-ID: <20250305174511.398682504@linuxfoundation.org>
+Subject: [PATCH 6.13 153/157] x86/microcode/AMD: Remove unused save_microcode_in_initrd_amd() declarations
+Date: Wed,  5 Mar 2025 18:49:49 +0100
+Message-ID: <20250305174511.437498837@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
 References: <20250305174505.268725418@linuxfoundation.org>
@@ -67,30 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 7103f0589ac220eac3d2b1e8411494b31b883d06 upstream.
+commit 3ef0740d10b005a45e8ae5b4b7b5d37bfddf63c0 upstream.
+
+Commit
+
+  a7939f016720 ("x86/microcode/amd: Cache builtin/initrd microcode early")
+
+renamed it to save_microcode_in_initrd() and made it static. Zap the
+forgotten declarations.
 
 No functional changes.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250211163648.30531-2-bp@kernel.org
+Link: https://lore.kernel.org/r/20250211163648.30531-3-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c      |    2 +-
+ arch/x86/kernel/cpu/microcode/internal.h |    2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
 --- a/arch/x86/kernel/cpu/microcode/amd.c
 +++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -246,8 +246,7 @@ static bool verify_equivalence_table(con
-  * On success, @sh_psize returns the patch size according to the section header,
-  * to the caller.
-  */
--static bool
--__verify_patch_section(const u8 *buf, size_t buf_size, u32 *sh_psize)
-+static bool __verify_patch_section(const u8 *buf, size_t buf_size, u32 *sh_psize)
- {
- 	u32 p_type, p_size;
- 	const u32 *hdr;
+@@ -517,7 +517,7 @@ static bool __apply_microcode_amd(struct
+  * patch container file in initrd, traverse equivalent cpu table, look for a
+  * matching microcode patch, and update, all in initrd memory in place.
+  * When vmalloc() is available for use later -- on 64-bit during first AP load,
+- * and on 32-bit during save_microcode_in_initrd_amd() -- we can call
++ * and on 32-bit during save_microcode_in_initrd() -- we can call
+  * load_microcode_amd() to save equivalent cpu table and microcode patches in
+  * kernel heap memory.
+  *
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -100,14 +100,12 @@ extern bool force_minrev;
+ #ifdef CONFIG_CPU_SUP_AMD
+ void load_ucode_amd_bsp(struct early_load_data *ed, unsigned int family);
+ void load_ucode_amd_ap(unsigned int family);
+-int save_microcode_in_initrd_amd(unsigned int family);
+ void reload_ucode_amd(unsigned int cpu);
+ struct microcode_ops *init_amd_microcode(void);
+ void exit_amd_microcode(void);
+ #else /* CONFIG_CPU_SUP_AMD */
+ static inline void load_ucode_amd_bsp(struct early_load_data *ed, unsigned int family) { }
+ static inline void load_ucode_amd_ap(unsigned int family) { }
+-static inline int save_microcode_in_initrd_amd(unsigned int family) { return -EINVAL; }
+ static inline void reload_ucode_amd(unsigned int cpu) { }
+ static inline struct microcode_ops *init_amd_microcode(void) { return NULL; }
+ static inline void exit_amd_microcode(void) { }
 
 
 
