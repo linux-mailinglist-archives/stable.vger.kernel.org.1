@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C8DA50784
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93670A509CD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D17513A83C3
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FE427A1C1E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC8F2512E1;
-	Wed,  5 Mar 2025 17:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E992566C0;
+	Wed,  5 Mar 2025 18:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItGMsOM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFMjWTYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF50250BE9;
-	Wed,  5 Mar 2025 17:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0A52561D9;
+	Wed,  5 Mar 2025 18:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197450; cv=none; b=Y2wCOAAIg2Fvsg2e5qeEAsspapZUcXmaVQKbXFLyB2xBJRG1QyrhXRULyQP0QzkuIw8wbNgXzM/NqXgeUb0+2Oj76448WypJS27YWeSBjvKYUjyyuzMZTAxnvmGtbvbtdYHuyyY2qr5Ridc4c8s7T4jCu5rll2BmNmF79Xxw8nE=
+	t=1741198719; cv=none; b=ad1MXDUgVWh9/nQJIiuxqDrgZKfli0DrXv2CWx6J/wH0NeEqet2hzHENdtndPo8PqavxU5axTFnNcEoxsbHsTH2Pg6ANA9mw5MVb3wkk7kW0JZZicbcJM6KeUSRuJL4zLMlt56zNrsJkhY4serWtCRpSjtLCGQ+4nyyRH46BSa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197450; c=relaxed/simple;
-	bh=2oOOcqEFSVLZiL1E8gRMF/pyOMQ4dL1FVbIg8d1UfXw=;
+	s=arc-20240116; t=1741198719; c=relaxed/simple;
+	bh=B3o48Xqky6fgKHuWJGglnBiKH1IFT3kPlqOxlvI+Xig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eVO5LpXqzFuXF1cbzFnOYR9HMXVqPED2h/6B7/S/d/5+khSwkav4K6IBrojdRT+g74ib8MZCyRPpsKEEopU/dyCO0yIXgPNUvkdXUyxCAoOwLJvEBERES9O8FYmlmhkELSkXjeyumzv5pDOgfvWbGAs0GlIpxUxJSk3RS1DOvRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItGMsOM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BC5C4CED1;
-	Wed,  5 Mar 2025 17:57:29 +0000 (UTC)
+	 MIME-Version; b=pFlRFPyL4IS6yfeMkir06QzA/h2/Fuy5+aYope3jAWFnvW0c5O2AaTtLBd0PI/9ftMZHpb7H53JzJgY3OIL+TGsfb/lzxmKMbGdSeaYdtgVbWJS7b0J+zoHRQjvII3ODrp3hb+0aNXz8I0osjDDrxVU8L1F92vd5KRrW120wGpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFMjWTYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8A4C4CED1;
+	Wed,  5 Mar 2025 18:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197450;
-	bh=2oOOcqEFSVLZiL1E8gRMF/pyOMQ4dL1FVbIg8d1UfXw=;
+	s=korg; t=1741198719;
+	bh=B3o48Xqky6fgKHuWJGglnBiKH1IFT3kPlqOxlvI+Xig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ItGMsOM72vKRc/g3yanIALl4A+xYrJHpKJqUaQGUK4MDzv8NFnbwdR+un9y3+Ks4G
-	 ygpoD2V03DM0t3w9+9+r/EfGmfSSLmuzvv0oGuBK6pyzUAGJrSsHb5QoEftdk7OnTO
-	 8trr5mBXQ4+iiBCU3aUh17kJTQjX558Xdrq45CnQ=
+	b=dFMjWTYZp77MlGj5Sio8AyT1x8iDbevGI0q/zqwth3/7VYvxQlXg495GHg7mQ03G5
+	 qUOYqW5F3ExyfbXnzd5eVdWF2iI3YTzaSnsHlKKI5UXasnawiigr05sk6gv0pkoAsG
+	 HeNzi3yynbfI1FS5Al7Tkt+CgsdE6MF9YeaMGr6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 160/176] net: enetc: correct the xdp_tx statistics
+	David Yat Sin <David.YatSin@amd.com>,
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 093/157] drm/amdkfd: Preserve cp_hqd_pq_control on update_mqd
 Date: Wed,  5 Mar 2025 18:48:49 +0100
-Message-ID: <20250305174511.863586340@linuxfoundation.org>
+Message-ID: <20250305174509.052792095@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: David Yat Sin <David.YatSin@amd.com>
 
-commit 432a2cb3ee97a7c6ea578888fe81baad035b9307 upstream.
+commit 3502ab5022bb5ef1edd063bdb6465a8bf3b46e66 upstream.
 
-The 'xdp_tx' is used to count the number of XDP_TX frames sent, not the
-number of Tx BDs.
+When userspace applications call AMDKFD_IOC_UPDATE_QUEUE. Preserve
+bitfields that do not need to be modified as they contain flags to
+track queue states that are used by CP FW.
 
-Fixes: 7ed2bc80074e ("net: enetc: add support for XDP_TX")
+Signed-off-by: David Yat Sin <David.YatSin@amd.com>
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8150827990b709ab5a40c46c30d21b7f7b9e9440)
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-4-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c |    6 ++++--
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c |    5 +++--
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c |    5 +++--
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c  |    5 ++++-
+ 4 files changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1624,7 +1624,7 @@ static int enetc_clean_rx_ring_xdp(struc
- 				enetc_xdp_drop(rx_ring, orig_i, i);
- 				tx_ring->stats.xdp_tx_drops++;
- 			} else {
--				tx_ring->stats.xdp_tx += xdp_tx_bd_cnt;
-+				tx_ring->stats.xdp_tx++;
- 				rx_ring->xdp.xdp_tx_in_flight += xdp_tx_bd_cnt;
- 				xdp_tx_frm_cnt++;
- 				/* The XDP_TX enqueue was successful, so we
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
+@@ -107,6 +107,8 @@ static void init_mqd(struct mqd_manager
+ 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
+ 			0x53 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+ 
++	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
+ 
+ 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
+@@ -167,10 +169,10 @@ static void update_mqd(struct mqd_manage
+ 
+ 	m = get_mqd(mqd);
+ 
+-	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
+ 	m->cp_hqd_pq_control |=
+ 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
+-	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
++
+ 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+ 
+ 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -154,6 +154,8 @@ static void init_mqd(struct mqd_manager
+ 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
+ 			0x55 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+ 
++	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
+ 
+ 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
+@@ -221,10 +223,9 @@ static void update_mqd(struct mqd_manage
+ 
+ 	m = get_mqd(mqd);
+ 
+-	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
+ 	m->cp_hqd_pq_control |=
+ 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
+-	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+ 
+ 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
+@@ -121,6 +121,8 @@ static void init_mqd(struct mqd_manager
+ 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
+ 			0x55 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+ 
++	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
+ 
+ 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
+@@ -184,10 +186,9 @@ static void update_mqd(struct mqd_manage
+ 
+ 	m = get_mqd(mqd);
+ 
+-	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
+ 	m->cp_hqd_pq_control |=
+ 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
+-	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+ 
+ 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+@@ -182,6 +182,9 @@ static void init_mqd(struct mqd_manager
+ 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
+ 			0x53 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+ 
++	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
++
+ 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
+ 
+ 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
+@@ -244,7 +247,7 @@ static void update_mqd(struct mqd_manage
+ 
+ 	m = get_mqd(mqd);
+ 
+-	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
++	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
+ 	m->cp_hqd_pq_control |= order_base_2(q->queue_size / 4) - 1;
+ 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+ 
 
 
 
