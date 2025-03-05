@@ -1,101 +1,162 @@
-Return-Path: <stable+bounces-120413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56E8A4FBAA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 11:20:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056E7A4FC3A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 11:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AAEE1893F34
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 10:20:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3618D1719A6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 10:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCAD13AC1;
-	Wed,  5 Mar 2025 10:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E94B205AAC;
+	Wed,  5 Mar 2025 10:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hZOpA3k3"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FkRI1oSF"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0C6205E2B;
-	Wed,  5 Mar 2025 10:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A51E2E337F
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 10:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741169973; cv=none; b=LtUyORVMJlfjISV567k5Pe43rLEZ+TPDx9MopLJt48y/9YlPd8/jK9mA91TuDRWxDzjVBkX6e/QJFwY/bcrprWDa3q5A0M1t94CnbreasrB5KJa+Mniv+J3Nb2lT7AuSC3qEmZLKX32xAm4aJiPS7lOj8dbfYtvR3Qv0ieUTdDw=
+	t=1741170650; cv=none; b=lNsH0GxbLHDZpVh73bFlaBEwHkG0I5FY8BA6+Dxn2cavGAPZ7oaqUqvQBTG9z/SflskWe3pO6WdFsYkxWfB9NiLypfGSpV0to4XRKsiybewY4dQ2mGTMYFOWgoSYDlmvTh2sodER/S46BezqbnMTY819cznzatMQ09shvXyDpYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741169973; c=relaxed/simple;
-	bh=61ymXQdkyM8TiJOiqN4HS+dcLaY0P3zrpsvRC7rw1oE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H6U3d68MrAUWVFNh0w60OaxnsZGkC5kFAA58bl4TxQzBN3rviDQaRzQVpKAG7IpzedCRK+I5DRUsZaeuLpa52CLkWh3f9gwSAfIayG8Wff/AGKAkzjDzGnnj5gsrrl3M5Djrd9TKctSFDB0ZJtAWLjBEH2YpML46nkDCl6F2yy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hZOpA3k3; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=NNmP0
-	RcY0fndOAtXq39WcaveUgBAnm+T/Ou7U5DaClg=; b=hZOpA3k39JXxEDK/0xPwy
-	W+HbwClXLbYmNrcqiO2IJw2SRBa6Ccg1i7QaN7PKDzWgs/3DYUZg8wIVqQcePQ6u
-	7zVeGAeK4/MWUJy3wwtIqnM4GK8G3ujevCfoXG60fYP73GTj4L9X6jcv9KE1cTmC
-	uLDH3iKwyCikKzuO7kPc/w=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3nFr5JMhnCYXoPg--.46709S4;
-	Wed, 05 Mar 2025 18:18:34 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: shshaikh@marvell.com,
-	manishc@marvell.com,
-	GR-Linux-NIC-Dev@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jiasheng@iscas.ac.cn
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] qlcnic: fix a memory leak in __qlcnic_pci_sriov_enable()
-Date: Wed,  5 Mar 2025 18:18:31 +0800
-Message-Id: <20250305101831.4003106-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1741170650; c=relaxed/simple;
+	bh=iigU5PiIa2iP3AOiAwmNv/qoweSPdviFCF89Neb1CWk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZRJ3OQDOFZSfEAkJBx4fiGsvrlJs8CRLi/c4smKJNrmEurQp+qZFj6Ar6E4xQO6JqxSqH13ZX5WZvTQPrKSefS0OZi/MNeUjrzIpXHgxssYJWdvzTDT60OkSg4jLPPenCkwcBQ1c9Iagot/KbBwV1ACAvqav2DeRvsoXKQFTaZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FkRI1oSF; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54964606482so3311359e87.0
+        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 02:30:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1741170646; x=1741775446; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+odpLyF4k23EH3ni3sp30W0DMVgtLmwAOhB7SEnTKhk=;
+        b=FkRI1oSFLSPWQZd1gG4JKB9DEqkzBPHz1J3ZSORMkTIpxBIVKzswWClpN123vvMz3O
+         FBAdnY+QffdA+mpzzdKrii7XP/actfgVgrscTPNf/1zo/w2ufBZQ27/8Y6ugzbRoupVM
+         xOF+Pj/069+dH3Hg7t7UetyvMDnvJMX5hDQmk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741170646; x=1741775446;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+odpLyF4k23EH3ni3sp30W0DMVgtLmwAOhB7SEnTKhk=;
+        b=XlOHW3r1LyA3N9xqRXrYSnd2ihTQePupyoafDX1E0PMlq5i7OCPeyW2m3SASE3pS8v
+         PTasoSY6dptwNNgbat0H6hYWtgKFXzrc5WtboxCxB9Ql7KHhC5A8E2x/cxhv8KbrnMji
+         vZNqrqIeK/VQ/T7nHE8sBvThn7P3ChRcm+lPRogzyTPmkHL2woawhoWaxew7lDX1uTVm
+         hchDgMXXIbo1kNSi8fIvcIssR4Ahwub1I0Um0hGE8gYpXu3rPvXO1C7znCUsurVejjO7
+         0qHyu20vVeXDT+uIJS7GGzrLmdYtK2uJUAEoki7GWxs2T39oMCgX1cYT+QVcGifctjpF
+         Ydpw==
+X-Gm-Message-State: AOJu0Yzg7ta+AEAobWz90MfgcTbqHIAyoWFgFdGXF1ExMu1Bl7NGpY0h
+	+2+fPUfJigrbuNfoB7Sc3By69QKWkLeK0k8DNr+nKUIuoVR5r9ppQl56EcoOwxW9bfcC/2wqYYQ
+	=
+X-Gm-Gg: ASbGncvkeUUvSzMgLSxDYKYB5VENJO9GfYRfPwXABlm7rmOfVmYDL1fidOtGVqn708q
+	EBMPJcRQjPnLzvS70f72YuAb5pisZAiPoXAQzV/444/Q3y9EJSF0rR6KWJ/QXYDpvNx8isYXb8k
+	i12GD0rHN0lacwWJKonB2UBmawG7zq4CP9CcPCpNpJVEnGLDdvpAoXyBGr7cY5w/YBYlaQ7gacj
+	UrYtInnHGPF1gVwcqlIF+kCh++3XMuh71Z9uBpycWIbBATUnSoxbFPZdB7AydFwjyphKTzdsubA
+	Ni+BtVF1ISYg5HW8rR7UseESCACpRqgrODB/2MTasV5Zh77fVHch+SnzFDVRKlwO7B9WLpIDOBb
+	xR86rNBbXNVQ=
+X-Google-Smtp-Source: AGHT+IEr12P8+POfwnKa+yF+cN86gpr5UhhQpE+esL55M9AKZwD107BAA2+mYGXOuhTK+jURKf0YZg==
+X-Received: by 2002:a05:6512:3f12:b0:549:54f7:e54 with SMTP id 2adb3069b0e04-5497d38ba55mr1013061e87.50.1741170645986;
+        Wed, 05 Mar 2025 02:30:45 -0800 (PST)
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com. [209.85.208.174])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54952b0d3acsm1516018e87.103.2025.03.05.02.30.45
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Mar 2025 02:30:45 -0800 (PST)
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30613802a59so74475631fa.0
+        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 02:30:45 -0800 (PST)
+X-Received: by 2002:a2e:a99f:0:b0:30b:c6fe:4530 with SMTP id
+ 38308e7fff4ca-30bd7a0e557mr9452891fa.3.1741170642042; Wed, 05 Mar 2025
+ 02:30:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3nFr5JMhnCYXoPg--.46709S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw4kAFyxXry3Jw1DtF17trb_yoWDZFb_CF
-	15Zr1fX3y5CFyDKw43trnrZ342g3ZrW3WfZ3W0gay3tr4DGFW8Jr12qF93JrnrW3y09ryD
-	G3Way345A34xAjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNtxhDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0gAHbmfIHmKogQAAsB
-
-Add qlcnic_sriov_free_vlans() to free the memory allocated by
-qlcnic_sriov_alloc_vlans() if qlcnic_sriov_alloc_vlans() fails.
-
-Fixes: 60ec7fcfe768 ("qlcnic: potential dereference null pointer of rx_queue->page_ring")
+References: <20250228084003.2730264-1-ribalda@chromium.org> <20250228171826-c77ba78a63afe214@stable.kernel.org>
+In-Reply-To: <20250228171826-c77ba78a63afe214@stable.kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Wed, 5 Mar 2025 11:30:28 +0100
+X-Gmail-Original-Message-ID: <CANiDSCumU+a3KNb7=YqDuu=ZpZzG9o9P8Tek_jfsziDwDRtzSQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jq9kCH99tev_K6I0_v4nv-sbD5gCy9HpOkVIaAifanobDMWsZ5v61q74Mg
+Message-ID: <CANiDSCumU+a3KNb7=YqDuu=ZpZzG9o9P8Tek_jfsziDwDRtzSQ@mail.gmail.com>
+Subject: Re: [PATCH 5.10.y] media: uvcvideo: Remove dangling pointers
+To: Sasha Levin <sashal@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
-index 8dd7aa08ecfb..b8a9e0e2907e 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
-@@ -598,8 +598,10 @@ static int __qlcnic_pci_sriov_enable(struct qlcnic_adapter *adapter,
- 		goto del_flr_queue;
- 
- 	err = qlcnic_sriov_alloc_vlans(adapter);
--	if (err)
-+	if (err) {
-+		qlcnic_sriov_free_vlans(adapter);
- 		goto del_flr_queue;
-+	}
- 
- 	return err;
- 
--- 
-2.25.1
+Hi Sasha
 
+This patch depends on the already commited:
+ "media: uvcvideo: Only save async fh if success"
+
+Please apply on top of it.
+
+Thanks!
+
+On Sat, 1 Mar 2025 at 05:21, Sasha Levin <sashal@kernel.org> wrote:
+>
+> [ Sasha's backport helper bot ]
+>
+> Hi,
+>
+> Summary of potential issues:
+> =E2=9D=8C Build failures detected
+> =E2=9A=A0=EF=B8=8F Found matching upstream commit but patch is missing pr=
+oper reference to it
+> =E2=84=B9=EF=B8=8F Patch is missing in 6.13.y (ignore if backport was sen=
+t)
+> =E2=9A=A0=EF=B8=8F Commit missing in all newer stable branches
+>
+> Found matching upstream commit: 221cd51efe4565501a3dbf04cc011b537dcce7fb
+>
+> Status in newer kernel trees:
+> 6.13.y | Present (different SHA1: 9edc7d25f7e4)
+> 6.12.y | Present (different SHA1: 438bda062b2c)
+> 6.6.y | Present (different SHA1: 4dbaa738c583)
+> 6.1.y | Present (different SHA1: ccc601afaf47)
+> 5.15.y | Not found
+> 5.4.y | Not found
+>
+> Note: The patch differs from the upstream commit:
+> ---
+> Failed to apply patch cleanly.
+> ---
+>
+> Results of testing on various branches:
+>
+> | Branch                    | Patch Apply | Build Test |
+> |---------------------------|-------------|------------|
+> | stable/linux-5.10.y       |  Failed     |  N/A       |
+>
+> Build Errors:
+> Patch failed to apply on stable/linux-5.10.y. Reject:
+>
+> diff a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.=
+c      (rejected hunks)
+> @@ -1577,7 +1612,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device=
+ *dev,
+>
+>                 if (!rollback && handle &&
+>                     ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+> -                       ctrl->handle =3D handle;
+> +                       uvc_ctrl_set_handle(handle, ctrl, handle);
+>         }
+>
+>         return 0;
+
+
+
+--=20
+Ricardo Ribalda
 
