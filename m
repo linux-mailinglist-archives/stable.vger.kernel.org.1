@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-120575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F1DA50748
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8225A5098A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76A301893552
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BAEF7A86E1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B854E2512D9;
-	Wed,  5 Mar 2025 17:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9254253B42;
+	Wed,  5 Mar 2025 18:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZtr8jYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mG2zvowc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B3424C07D;
-	Wed,  5 Mar 2025 17:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769B1253322;
+	Wed,  5 Mar 2025 18:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197358; cv=none; b=FHZCKvl7I6B3QSHxiXHtDob4jzGFfx8dCv01mLmcw9hW9lYvsDyh3U+KJGShJCAh/lAR/6kitGWySAx5T1RdaJVG5NyxtvAz52tE5/n7Icx6E2MKplR9NkXkw1GRMaeMN0vsi3pZMbwjTFQTjEt7Zd17OqW4IDNJM/J7C35d6PA=
+	t=1741198625; cv=none; b=BjqU69VfKyofFiWczCvy1QgQUI+HszB/iznGmvRoH8KQ05B2lMOUbEvoLSK8u+QVk6n3rpPhDIUaaLngk8aie2Cj+o13zq627BYOb4+6UnRqmpSrPOJih6UbEsUwCHX1QXr+Hd8+0ULoupNlAHQGOU8LZKr6HyC7Wt+XjbfpRtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197358; c=relaxed/simple;
-	bh=W0C9+t1uGIPscLcXRELlFQKaKupFPHcIEA6XiVa0OUI=;
+	s=arc-20240116; t=1741198625; c=relaxed/simple;
+	bh=JEpeImINGXh2vcHOs/a88MsFdFvjmwVNF0hVRIRKUUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZytQW0Dm4vClOkcSE9OB7Gq1AWZ/MaoBAihaBTNziQdEJ2yPLHhaQsQ9plgE0TVRL9OeXnN/kpsPOpAaUkOc44uX5tDqX0lxkWPT66g8WJc6QDOownA0PKbjFg/lHXppwVujMW1MuqffD6MeabEkaYyaYJ9HLhtg7SzzpYAP1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZtr8jYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE1DC4CED1;
-	Wed,  5 Mar 2025 17:55:57 +0000 (UTC)
+	 MIME-Version; b=Rob9hC7XXmMmA7fcprQn6xLCqxabm3SXradsTiLGTkyCxsyp6bC71U09asOZNkycBcZPg02m9ziMk7r2RkcI2BZLBpFxXQmxOVNsMSB7T9NLk8JM95pY8prQkJPq69pHI5CeEtIZN0u80T/hNSzksDPThaJds5eLXp0annbewSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mG2zvowc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94592C4CED1;
+	Wed,  5 Mar 2025 18:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197358;
-	bh=W0C9+t1uGIPscLcXRELlFQKaKupFPHcIEA6XiVa0OUI=;
+	s=korg; t=1741198625;
+	bh=JEpeImINGXh2vcHOs/a88MsFdFvjmwVNF0hVRIRKUUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZtr8jYBS5a69EwxfL4VwTJYMN+pfx5RlMwyjvjRNQDYs65s1QLAj7omfOuBEVRQV
-	 QuRobvRnfV0a/OrW364uGuavFn8YYXzFw+sHF8vndAp/Ise0omCDyJSviCmrz5TaLZ
-	 aks7jVUb457DwCtgp6Bsm/AZIZX1l3MqLs8498k0=
+	b=mG2zvowczcTp2SKT/MZFeOnKUISivuR4ORryb8r7DVDXpX3nBFSgD3d51leFxR5mV
+	 yspvuNtAQtOmoliTcUNSTv+jQ52wKmZqHr835K4141B1koB0Iy96Zh5VIz2LM9EUgD
+	 a6ykLqF1poC8GglEgEUiBSkGZYqdgKKhKmnwAcR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Alan Brady <alan.brady@intel.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/176] ipv4: Convert ip_route_input() to dscp_t.
+Subject: [PATCH 6.13 061/157] idpf: fix checksums set in idpf_rx_rsc()
 Date: Wed,  5 Mar 2025 18:48:17 +0100
-Message-ID: <20250305174510.590075609@linuxfoundation.org>
+Message-ID: <20250305174507.757181785@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7e863e5db6185b1add0df4cb01b31a4ed1c4b738 ]
+[ Upstream commit 674fcb4f4a7e3e277417a01788cc6daae47c3804 ]
 
-Pass a dscp_t variable to ip_route_input(), instead of a plain u8, to
-prevent accidental setting of ECN bits in ->flowi4_tos.
+idpf_rx_rsc() uses skb_transport_offset(skb) while the transport header
+is not set yet.
 
-Callers of ip_route_input() to consider are:
+This triggers the following warning for CONFIG_DEBUG_NET=y builds.
 
-  * input_action_end_dx4_finish() and input_action_end_dt4() in
-    net/ipv6/seg6_local.c. These functions set the tos parameter to 0,
-    which is already a valid dscp_t value, so they don't need to be
-    adjusted for the new prototype.
+DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb))
 
-  * icmp_route_lookup(), which already has a dscp_t variable to pass as
-    parameter. We just need to remove the inet_dscp_to_dsfield()
-    conversion.
+[   69.261620] WARNING: CPU: 7 PID: 0 at ./include/linux/skbuff.h:3020 idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261629] Modules linked in: vfat fat dummy bridge intel_uncore_frequency_tpmi intel_uncore_frequency_common intel_vsec_tpmi idpf intel_vsec cdc_ncm cdc_eem cdc_ether usbnet mii xhci_pci xhci_hcd ehci_pci ehci_hcd libeth
+[   69.261644] CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Tainted: G S      W          6.14.0-smp-DEV #1697
+[   69.261648] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+[   69.261650] RIP: 0010:idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261677] ? __warn (kernel/panic.c:242 kernel/panic.c:748)
+[   69.261682] ? idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261687] ? report_bug (lib/bug.c:?)
+[   69.261690] ? handle_bug (arch/x86/kernel/traps.c:285)
+[   69.261694] ? exc_invalid_op (arch/x86/kernel/traps.c:309)
+[   69.261697] ? asm_exc_invalid_op (arch/x86/include/asm/idtentry.h:621)
+[   69.261700] ? __pfx_idpf_vport_splitq_napi_poll (drivers/net/ethernet/intel/idpf/idpf_txrx.c:4011) idpf
+[   69.261704] ? idpf_vport_splitq_napi_poll (include/linux/skbuff.h:3020) idpf
+[   69.261708] ? idpf_vport_splitq_napi_poll (drivers/net/ethernet/intel/idpf/idpf_txrx.c:3072) idpf
+[   69.261712] __napi_poll (net/core/dev.c:7194)
+[   69.261716] net_rx_action (net/core/dev.c:7265)
+[   69.261718] ? __qdisc_run (net/sched/sch_generic.c:293)
+[   69.261721] ? sched_clock (arch/x86/include/asm/preempt.h:84 arch/x86/kernel/tsc.c:288)
+[   69.261726] handle_softirqs (kernel/softirq.c:561)
 
-  * br_nf_pre_routing_finish(), ip_options_rcv_srr() and ip4ip6_err(),
-    which get the DSCP directly from IPv4 headers. Define a helper to
-    read the .tos field of struct iphdr as dscp_t, so that these
-    function don't have to do the conversion manually.
-
-While there, declare *iph as const in br_nf_pre_routing_finish(),
-declare its local variables in reverse-christmas-tree order and move
-the "err = ip_route_input()" assignment out of the conditional to avoid
-checkpatch warning.
-
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/e9d40781d64d3d69f4c79ac8a008b8d67a033e8d.1727807926.git.gnault@redhat.com
+Fixes: 3a8845af66edb ("idpf: add RX splitq napi poll support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Alan Brady <alan.brady@intel.com>
+Cc: Joshua Hay <joshua.a.hay@intel.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Acked-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/20250226221253.1927782-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h                | 5 +++++
- include/net/route.h             | 5 +++--
- net/bridge/br_netfilter_hooks.c | 8 +++++---
- net/ipv4/icmp.c                 | 2 +-
- net/ipv4/ip_options.c           | 3 ++-
- net/ipv6/ip6_tunnel.c           | 4 ++--
- 6 files changed, 18 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 9d754c4a53002..4ee23eb0814a3 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -409,6 +409,11 @@ int ip_decrease_ttl(struct iphdr *iph)
- 	return --iph->ttl;
- }
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 9be6a6b59c4e1..977741c414980 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3013,7 +3013,6 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 	skb_shinfo(skb)->gso_size = rsc_seg_len;
  
-+static inline dscp_t ip4h_dscp(const struct iphdr *ip4h)
-+{
-+	return inet_dsfield_to_dscp(ip4h->tos);
-+}
-+
- static inline int ip_mtu_locked(const struct dst_entry *dst)
- {
- 	const struct rtable *rt = (const struct rtable *)dst;
-diff --git a/include/net/route.h b/include/net/route.h
-index f396176022377..4185e6da9ef85 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -203,12 +203,13 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 dst, __be32 src,
- 		      const struct sk_buff *hint);
+ 	skb_reset_network_header(skb);
+-	len = skb->len - skb_transport_offset(skb);
  
- static inline int ip_route_input(struct sk_buff *skb, __be32 dst, __be32 src,
--				 u8 tos, struct net_device *devin)
-+				 dscp_t dscp, struct net_device *devin)
- {
- 	int err;
+ 	if (ipv4) {
+ 		struct iphdr *ipv4h = ip_hdr(skb);
+@@ -3022,6 +3021,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
  
- 	rcu_read_lock();
--	err = ip_route_input_noref(skb, dst, src, tos, devin);
-+	err = ip_route_input_noref(skb, dst, src, inet_dscp_to_dsfield(dscp),
-+				   devin);
- 	if (!err) {
- 		skb_dst_force(skb);
- 		if (!skb_dst(skb))
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 5c6ed1d49b92c..b4d661fe7886d 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -366,9 +366,9 @@ br_nf_ipv4_daddr_was_changed(const struct sk_buff *skb,
-  */
- static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct net_device *dev = skb->dev, *br_indev;
--	struct iphdr *iph = ip_hdr(skb);
- 	struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
-+	struct net_device *dev = skb->dev, *br_indev;
-+	const struct iphdr *iph = ip_hdr(skb);
- 	struct rtable *rt;
- 	int err;
+ 		/* Reset and set transport header offset in skb */
+ 		skb_set_transport_header(skb, sizeof(struct iphdr));
++		len = skb->len - skb_transport_offset(skb);
  
-@@ -386,7 +386,9 @@ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_
- 	}
- 	nf_bridge->in_prerouting = 0;
- 	if (br_nf_ipv4_daddr_was_changed(skb, nf_bridge)) {
--		if ((err = ip_route_input(skb, iph->daddr, iph->saddr, iph->tos, dev))) {
-+		err = ip_route_input(skb, iph->daddr, iph->saddr,
-+				     ip4h_dscp(iph), dev);
-+		if (err) {
- 			struct in_device *in_dev = __in_dev_get_rcu(dev);
+ 		/* Compute the TCP pseudo header checksum*/
+ 		tcp_hdr(skb)->check =
+@@ -3031,6 +3031,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
  
- 			/* If err equals -EHOSTUNREACH the error is due to a
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 855fcef829e2c..94501bb30c431 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -549,7 +549,7 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 		orefdst = skb_in->_skb_refdst; /* save old refdst */
- 		skb_dst_set(skb_in, NULL);
- 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
--				     inet_dscp_to_dsfield(dscp), rt2->dst.dev);
-+				     dscp, rt2->dst.dev);
- 
- 		dst_release(&rt2->dst);
- 		rt2 = skb_rtable(skb_in);
-diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
-index a9e22a098872f..b4c59708fc095 100644
---- a/net/ipv4/ip_options.c
-+++ b/net/ipv4/ip_options.c
-@@ -617,7 +617,8 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev)
- 
- 		orefdst = skb->_skb_refdst;
- 		skb_dst_set(skb, NULL);
--		err = ip_route_input(skb, nexthop, iph->saddr, iph->tos, dev);
-+		err = ip_route_input(skb, nexthop, iph->saddr, ip4h_dscp(iph),
-+				     dev);
- 		rt2 = skb_rtable(skb);
- 		if (err || (rt2->rt_type != RTN_UNICAST && rt2->rt_type != RTN_LOCAL)) {
- 			skb_dst_drop(skb);
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index f3324f2a40466..a82d382193e41 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -628,8 +628,8 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 		}
- 		skb_dst_set(skb2, &rt->dst);
- 	} else {
--		if (ip_route_input(skb2, eiph->daddr, eiph->saddr, eiph->tos,
--				   skb2->dev) ||
-+		if (ip_route_input(skb2, eiph->daddr, eiph->saddr,
-+				   ip4h_dscp(eiph), skb2->dev) ||
- 		    skb_dst(skb2)->dev->type != ARPHRD_TUNNEL6)
- 			goto out;
+ 		skb_shinfo(skb)->gso_type = SKB_GSO_TCPV6;
+ 		skb_set_transport_header(skb, sizeof(struct ipv6hdr));
++		len = skb->len - skb_transport_offset(skb);
+ 		tcp_hdr(skb)->check =
+ 			~tcp_v6_check(len, &ipv6h->saddr, &ipv6h->daddr, 0);
  	}
 -- 
 2.39.5
