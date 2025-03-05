@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-120676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748FCA507CE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1B5A5091D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B52713A4075
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0E3A7A7ECB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA96E78F3A;
-	Wed,  5 Mar 2025 18:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C6E252905;
+	Wed,  5 Mar 2025 18:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhZcVrEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFp8rxCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A2014B075;
-	Wed,  5 Mar 2025 18:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A302512C0;
+	Wed,  5 Mar 2025 18:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197650; cv=none; b=SwLFlqqHZATqng5bLygpggX4KI+diAAa2s4PUmogD2KQbhC9FOgKQGPx2GcrVMxbcb0mX4sKnVacdWg2TRxWP39ZXMsNhWsr/uBvu6emZHLiUOfBJaIllexc302RtyHDrJ0CYTAZUwBeEDPj9+zradWGzHrbxqfkhRCoSBZfPhg=
+	t=1741198460; cv=none; b=sNV0RyDfPYNxHY07KrAPalv9cMf+nRS5iAZdZO5Ib264Dp7viUQRhIqxwT+l9eAj9WIhYAItDB27RfoGJ0nEBUii7vGtd4jnaYvIkAAWAyU4x/eh5S0IbvXf7e5DvAUoyMi8Ir8SWNM0NJ21QYJ1FWq/ofPB4R6YiF4OSFyIEjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197650; c=relaxed/simple;
-	bh=13DtybAkjUmKqDEBq8Q7l/B3on1ZTxlmL/dDJeV4ogE=;
+	s=arc-20240116; t=1741198460; c=relaxed/simple;
+	bh=sHogIAyyQCVs+gKGP8Moac6XTQQFImN86wUsSZdUvyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuDvUEKNa2LSgzJPRNqrS1KsZUOk2hZbYdNswN1c0MDeN7XKwt97vDN/uQtg5XEQTraAD9961TQSIv2up+hmY0B4uRFDUjP+xC3MUlUTFiTtzaWfUSE/JaBIO3R460iPyZHf8GtuN2goV0aJwioOax6WlbuTWvWqcprMVYy7xNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhZcVrEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB11C4CED1;
-	Wed,  5 Mar 2025 18:00:49 +0000 (UTC)
+	 MIME-Version; b=Tj31Ji/wyWFii+/jyEIq3235D840PX+MgWdyZl0FBeB6cB8Nx8c1Ilc1dsBwtyjlt59I3UfzotHSvZZVeE2XbvSCLHbs9fXlOpacAYW3pQI8gzkfKi+WPj0nAi/wP6iw5vX6APJN+PNEcbp2ebrQkRO3/3uCn/7BljloK+zE50Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFp8rxCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D453FC4CED1;
+	Wed,  5 Mar 2025 18:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197650;
-	bh=13DtybAkjUmKqDEBq8Q7l/B3on1ZTxlmL/dDJeV4ogE=;
+	s=korg; t=1741198460;
+	bh=sHogIAyyQCVs+gKGP8Moac6XTQQFImN86wUsSZdUvyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhZcVrEKCbtahQ/0PyFmZPhlYVN52FvS62SJlDFatiqoO0ZHixqNUcc4NNec08cxM
-	 87izibhGxwbgLVluvCyQvbjw3+fCNfBdqyr4uaF37v1lhOJmfCQdrxkFon51sIHL0N
-	 lX/t3c8c3RmX09fSFR1eIPCkwglQo8X8JHaPALGU=
+	b=iFp8rxCCooHsiLWxbtceZiS5o3Ic7MFPQXqjHmRbEgm7gYj0slSVNo0jgrjz7z91M
+	 d19Rk6eHpXGAQe8RSllTullSCzMt/rsFXMbdFmhXscb2c2ckugnZQlJPTRhDSHiif9
+	 U9iY6aZoHzF1aLQRwjFBdfCh21mS95jkgyiH+BrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tong Tiangen <tongtiangen@huawei.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/142] uprobes: Reject the shared zeropage in uprobe_write_opcode()
+Subject: [PATCH 6.13 036/157] net: dsa: rtl8366rb: Fix compilation problem
 Date: Wed,  5 Mar 2025 18:47:52 +0100
-Message-ID: <20250305174502.468970216@linuxfoundation.org>
+Message-ID: <20250305174506.748213072@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +64,686 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tong Tiangen <tongtiangen@huawei.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit bddf10d26e6e5114e7415a0e442ec6f51a559468 ]
+[ Upstream commit f15176b8b6e72ac30e14fd273282d2b72562d26b ]
 
-We triggered the following crash in syzkaller tests:
+When the kernel is compiled without LED framework support the
+rtl8366rb fails to build like this:
 
-  BUG: Bad page state in process syz.7.38  pfn:1eff3
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1eff3
-  flags: 0x3fffff00004004(referenced|reserved|node=0|zone=1|lastcpupid=0x1fffff)
-  raw: 003fffff00004004 ffffe6c6c07bfcc8 ffffe6c6c07bfcc8 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000fffffffe 0000000000000000
-  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x32/0x50
-   bad_page+0x69/0xf0
-   free_unref_page_prepare+0x401/0x500
-   free_unref_page+0x6d/0x1b0
-   uprobe_write_opcode+0x460/0x8e0
-   install_breakpoint.part.0+0x51/0x80
-   register_for_each_vma+0x1d9/0x2b0
-   __uprobe_register+0x245/0x300
-   bpf_uprobe_multi_link_attach+0x29b/0x4f0
-   link_create+0x1e2/0x280
-   __sys_bpf+0x75f/0xac0
-   __x64_sys_bpf+0x1a/0x30
-   do_syscall_64+0x56/0x100
-   entry_SYSCALL_64_after_hwframe+0x78/0xe2
+rtl8366rb.o: in function `rtl8366rb_setup_led':
+rtl8366rb.c:953:(.text.unlikely.rtl8366rb_setup_led+0xe8):
+  undefined reference to `led_init_default_state_get'
+rtl8366rb.c:980:(.text.unlikely.rtl8366rb_setup_led+0x240):
+  undefined reference to `devm_led_classdev_register_ext'
 
-   BUG: Bad rss-counter state mm:00000000452453e0 type:MM_FILEPAGES val:-1
+As this is constantly coming up in different randconfig builds,
+bite the bullet and create a separate file for the offending
+code, split out a header with all stuff needed both in the
+core driver and the leds code.
 
-The following syzkaller test case can be used to reproduce:
+Add a new bool Kconfig option for the LED compile target, such
+that it depends on LEDS_CLASS=y || LEDS_CLASS=RTL8366RB
+which make LED support always available when LEDS_CLASS is
+compiled into the kernel and enforce that if the LEDS_CLASS
+is a module, then the RTL8366RB driver needs to be a module
+as well so that modprobe can resolve the dependencies.
 
-  r2 = creat(&(0x7f0000000000)='./file0\x00', 0x8)
-  write$nbd(r2, &(0x7f0000000580)=ANY=[], 0x10)
-  r4 = openat(0xffffffffffffff9c, &(0x7f0000000040)='./file0\x00', 0x42, 0x0)
-  mmap$IORING_OFF_SQ_RING(&(0x7f0000ffd000/0x3000)=nil, 0x3000, 0x0, 0x12, r4, 0x0)
-  r5 = userfaultfd(0x80801)
-  ioctl$UFFDIO_API(r5, 0xc018aa3f, &(0x7f0000000040)={0xaa, 0x20})
-  r6 = userfaultfd(0x80801)
-  ioctl$UFFDIO_API(r6, 0xc018aa3f, &(0x7f0000000140))
-  ioctl$UFFDIO_REGISTER(r6, 0xc020aa00, &(0x7f0000000100)={{&(0x7f0000ffc000/0x4000)=nil, 0x4000}, 0x2})
-  ioctl$UFFDIO_ZEROPAGE(r5, 0xc020aa04, &(0x7f0000000000)={{&(0x7f0000ffd000/0x1000)=nil, 0x1000}})
-  r7 = bpf$PROG_LOAD(0x5, &(0x7f0000000140)={0x2, 0x3, &(0x7f0000000200)=ANY=[@ANYBLOB="1800000000120000000000000000000095"], &(0x7f0000000000)='GPL\x00', 0x7, 0x0, 0x0, 0x0, 0x0, '\x00', 0x0, @fallback=0x30, 0xffffffffffffffff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, @void, @value}, 0x94)
-  bpf$BPF_LINK_CREATE_XDP(0x1c, &(0x7f0000000040)={r7, 0x0, 0x30, 0x1e, @val=@uprobe_multi={&(0x7f0000000080)='./file0\x00', &(0x7f0000000100)=[0x2], 0x0, 0x0, 0x1}}, 0x40)
-
-The cause is that zero pfn is set to the PTE without increasing the RSS
-count in mfill_atomic_pte_zeropage() and the refcount of zero folio does
-not increase accordingly. Then, the operation on the same pfn is performed
-in uprobe_write_opcode()->__replace_page() to unconditional decrease the
-RSS count and old_folio's refcount.
-
-Therefore, two bugs are introduced:
-
- 1. The RSS count is incorrect, when process exit, the check_mm() report
-    error "Bad rss-count".
-
- 2. The reserved folio (zero folio) is freed when folio->refcount is zero,
-    then free_pages_prepare->free_page_is_bad() report error
-    "Bad page state".
-
-There is more, the following warning could also theoretically be triggered:
-
-  __replace_page()
-    -> ...
-      -> folio_remove_rmap_pte()
-        -> VM_WARN_ON_FOLIO(is_zero_folio(folio), folio)
-
-Considering that uprobe hit on the zero folio is a very rare case, just
-reject zero old folio immediately after get_user_page_vma_remote().
-
-[ mingo: Cleaned up the changelog ]
-
-Fixes: 7396fa818d62 ("uprobes/core: Make background page replacement logic account for rss_stat counters")
-Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
-Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20250224031149.1598949-1-tongtiangen@huawei.com
+Fixes: 32d617005475 ("net: dsa: realtek: add LED drivers for rtl8366rb")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502070525.xMUImayb-lkp@intel.com/
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/dsa/realtek/Kconfig          |   6 +
+ drivers/net/dsa/realtek/Makefile         |   3 +
+ drivers/net/dsa/realtek/rtl8366rb-leds.c | 177 ++++++++++++++++
+ drivers/net/dsa/realtek/rtl8366rb.c      | 258 +----------------------
+ drivers/net/dsa/realtek/rtl8366rb.h      | 107 ++++++++++
+ 5 files changed, 299 insertions(+), 252 deletions(-)
+ create mode 100644 drivers/net/dsa/realtek/rtl8366rb-leds.c
+ create mode 100644 drivers/net/dsa/realtek/rtl8366rb.h
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 6dac0b5798213..7e2edd1b06939 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -481,6 +481,11 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
- 	if (ret <= 0)
- 		goto put_old;
+diff --git a/drivers/net/dsa/realtek/Kconfig b/drivers/net/dsa/realtek/Kconfig
+index 6989972eebc30..10687722d14c0 100644
+--- a/drivers/net/dsa/realtek/Kconfig
++++ b/drivers/net/dsa/realtek/Kconfig
+@@ -43,4 +43,10 @@ config NET_DSA_REALTEK_RTL8366RB
+ 	help
+ 	  Select to enable support for Realtek RTL8366RB.
  
-+	if (is_zero_page(old_page)) {
-+		ret = -EINVAL;
-+		goto put_old;
++config NET_DSA_REALTEK_RTL8366RB_LEDS
++	bool "Support RTL8366RB LED control"
++	depends on (LEDS_CLASS=y || LEDS_CLASS=NET_DSA_REALTEK_RTL8366RB)
++	depends on NET_DSA_REALTEK_RTL8366RB
++	default NET_DSA_REALTEK_RTL8366RB
++
+ endif
+diff --git a/drivers/net/dsa/realtek/Makefile b/drivers/net/dsa/realtek/Makefile
+index 35491dc20d6d6..17367bcba496c 100644
+--- a/drivers/net/dsa/realtek/Makefile
++++ b/drivers/net/dsa/realtek/Makefile
+@@ -12,4 +12,7 @@ endif
+ 
+ obj-$(CONFIG_NET_DSA_REALTEK_RTL8366RB) += rtl8366.o
+ rtl8366-objs 				:= rtl8366-core.o rtl8366rb.o
++ifdef CONFIG_NET_DSA_REALTEK_RTL8366RB_LEDS
++rtl8366-objs 				+= rtl8366rb-leds.o
++endif
+ obj-$(CONFIG_NET_DSA_REALTEK_RTL8365MB) += rtl8365mb.o
+diff --git a/drivers/net/dsa/realtek/rtl8366rb-leds.c b/drivers/net/dsa/realtek/rtl8366rb-leds.c
+new file mode 100644
+index 0000000000000..99c890681ae60
+--- /dev/null
++++ b/drivers/net/dsa/realtek/rtl8366rb-leds.c
+@@ -0,0 +1,177 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/bitops.h>
++#include <linux/regmap.h>
++#include <net/dsa.h>
++#include "rtl83xx.h"
++#include "rtl8366rb.h"
++
++static inline u32 rtl8366rb_led_group_port_mask(u8 led_group, u8 port)
++{
++	switch (led_group) {
++	case 0:
++		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
++	case 1:
++		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
++	case 2:
++		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
++	case 3:
++		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
++	default:
++		return 0;
++	}
++}
++
++static int rb8366rb_get_port_led(struct rtl8366rb_led *led)
++{
++	struct realtek_priv *priv = led->priv;
++	u8 led_group = led->led_group;
++	u8 port_num = led->port_num;
++	int ret;
++	u32 val;
++
++	ret = regmap_read(priv->map, RTL8366RB_LED_X_X_CTRL_REG(led_group),
++			  &val);
++	if (ret) {
++		dev_err(priv->dev, "error reading LED on port %d group %d\n",
++			led_group, port_num);
++		return ret;
 +	}
 +
- 	if (WARN(!is_register && PageCompound(old_page),
- 		 "uprobe unregister should never work on compound page\n")) {
- 		ret = -EINVAL;
++	return !!(val & rtl8366rb_led_group_port_mask(led_group, port_num));
++}
++
++static int rb8366rb_set_port_led(struct rtl8366rb_led *led, bool enable)
++{
++	struct realtek_priv *priv = led->priv;
++	u8 led_group = led->led_group;
++	u8 port_num = led->port_num;
++	int ret;
++
++	ret = regmap_update_bits(priv->map,
++				 RTL8366RB_LED_X_X_CTRL_REG(led_group),
++				 rtl8366rb_led_group_port_mask(led_group,
++							       port_num),
++				 enable ? 0xffff : 0);
++	if (ret) {
++		dev_err(priv->dev, "error updating LED on port %d group %d\n",
++			led_group, port_num);
++		return ret;
++	}
++
++	/* Change the LED group to manual controlled LEDs if required */
++	ret = rb8366rb_set_ledgroup_mode(priv, led_group,
++					 RTL8366RB_LEDGROUP_FORCE);
++
++	if (ret) {
++		dev_err(priv->dev, "error updating LED GROUP group %d\n",
++			led_group);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int
++rtl8366rb_cled_brightness_set_blocking(struct led_classdev *ldev,
++				       enum led_brightness brightness)
++{
++	struct rtl8366rb_led *led = container_of(ldev, struct rtl8366rb_led,
++						 cdev);
++
++	return rb8366rb_set_port_led(led, brightness == LED_ON);
++}
++
++static int rtl8366rb_setup_led(struct realtek_priv *priv, struct dsa_port *dp,
++			       struct fwnode_handle *led_fwnode)
++{
++	struct rtl8366rb *rb = priv->chip_data;
++	struct led_init_data init_data = { };
++	enum led_default_state state;
++	struct rtl8366rb_led *led;
++	u32 led_group;
++	int ret;
++
++	ret = fwnode_property_read_u32(led_fwnode, "reg", &led_group);
++	if (ret)
++		return ret;
++
++	if (led_group >= RTL8366RB_NUM_LEDGROUPS) {
++		dev_warn(priv->dev, "Invalid LED reg %d defined for port %d",
++			 led_group, dp->index);
++		return -EINVAL;
++	}
++
++	led = &rb->leds[dp->index][led_group];
++	led->port_num = dp->index;
++	led->led_group = led_group;
++	led->priv = priv;
++
++	state = led_init_default_state_get(led_fwnode);
++	switch (state) {
++	case LEDS_DEFSTATE_ON:
++		led->cdev.brightness = 1;
++		rb8366rb_set_port_led(led, 1);
++		break;
++	case LEDS_DEFSTATE_KEEP:
++		led->cdev.brightness =
++			rb8366rb_get_port_led(led);
++		break;
++	case LEDS_DEFSTATE_OFF:
++	default:
++		led->cdev.brightness = 0;
++		rb8366rb_set_port_led(led, 0);
++	}
++
++	led->cdev.max_brightness = 1;
++	led->cdev.brightness_set_blocking =
++		rtl8366rb_cled_brightness_set_blocking;
++	init_data.fwnode = led_fwnode;
++	init_data.devname_mandatory = true;
++
++	init_data.devicename = kasprintf(GFP_KERNEL, "Realtek-%d:0%d:%d",
++					 dp->ds->index, dp->index, led_group);
++	if (!init_data.devicename)
++		return -ENOMEM;
++
++	ret = devm_led_classdev_register_ext(priv->dev, &led->cdev, &init_data);
++	if (ret) {
++		dev_warn(priv->dev, "Failed to init LED %d for port %d",
++			 led_group, dp->index);
++		return ret;
++	}
++
++	return 0;
++}
++
++int rtl8366rb_setup_leds(struct realtek_priv *priv)
++{
++	struct dsa_switch *ds = &priv->ds;
++	struct device_node *leds_np;
++	struct dsa_port *dp;
++	int ret = 0;
++
++	dsa_switch_for_each_port(dp, ds) {
++		if (!dp->dn)
++			continue;
++
++		leds_np = of_get_child_by_name(dp->dn, "leds");
++		if (!leds_np) {
++			dev_dbg(priv->dev, "No leds defined for port %d",
++				dp->index);
++			continue;
++		}
++
++		for_each_child_of_node_scoped(leds_np, led_np) {
++			ret = rtl8366rb_setup_led(priv, dp,
++						  of_fwnode_handle(led_np));
++			if (ret)
++				break;
++		}
++
++		of_node_put(leds_np);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
+diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
+index 23374178a1760..6bf8427f14fbd 100644
+--- a/drivers/net/dsa/realtek/rtl8366rb.c
++++ b/drivers/net/dsa/realtek/rtl8366rb.c
+@@ -26,11 +26,7 @@
+ #include "realtek-smi.h"
+ #include "realtek-mdio.h"
+ #include "rtl83xx.h"
+-
+-#define RTL8366RB_PORT_NUM_CPU		5
+-#define RTL8366RB_NUM_PORTS		6
+-#define RTL8366RB_PHY_NO_MAX		4
+-#define RTL8366RB_PHY_ADDR_MAX		31
++#include "rtl8366rb.h"
+ 
+ /* Switch Global Configuration register */
+ #define RTL8366RB_SGCR				0x0000
+@@ -175,39 +171,6 @@
+  */
+ #define RTL8366RB_VLAN_INGRESS_CTRL2_REG	0x037f
+ 
+-/* LED control registers */
+-/* The LED blink rate is global; it is used by all triggers in all groups. */
+-#define RTL8366RB_LED_BLINKRATE_REG		0x0430
+-#define RTL8366RB_LED_BLINKRATE_MASK		0x0007
+-#define RTL8366RB_LED_BLINKRATE_28MS		0x0000
+-#define RTL8366RB_LED_BLINKRATE_56MS		0x0001
+-#define RTL8366RB_LED_BLINKRATE_84MS		0x0002
+-#define RTL8366RB_LED_BLINKRATE_111MS		0x0003
+-#define RTL8366RB_LED_BLINKRATE_222MS		0x0004
+-#define RTL8366RB_LED_BLINKRATE_446MS		0x0005
+-
+-/* LED trigger event for each group */
+-#define RTL8366RB_LED_CTRL_REG			0x0431
+-#define RTL8366RB_LED_CTRL_OFFSET(led_group)	\
+-	(4 * (led_group))
+-#define RTL8366RB_LED_CTRL_MASK(led_group)	\
+-	(0xf << RTL8366RB_LED_CTRL_OFFSET(led_group))
+-
+-/* The RTL8366RB_LED_X_X registers are used to manually set the LED state only
+- * when the corresponding LED group in RTL8366RB_LED_CTRL_REG is
+- * RTL8366RB_LEDGROUP_FORCE. Otherwise, it is ignored.
+- */
+-#define RTL8366RB_LED_0_1_CTRL_REG		0x0432
+-#define RTL8366RB_LED_2_3_CTRL_REG		0x0433
+-#define RTL8366RB_LED_X_X_CTRL_REG(led_group)	\
+-	((led_group) <= 1 ? \
+-		RTL8366RB_LED_0_1_CTRL_REG : \
+-		RTL8366RB_LED_2_3_CTRL_REG)
+-#define RTL8366RB_LED_0_X_CTRL_MASK		GENMASK(5, 0)
+-#define RTL8366RB_LED_X_1_CTRL_MASK		GENMASK(11, 6)
+-#define RTL8366RB_LED_2_X_CTRL_MASK		GENMASK(5, 0)
+-#define RTL8366RB_LED_X_3_CTRL_MASK		GENMASK(11, 6)
+-
+ #define RTL8366RB_MIB_COUNT			33
+ #define RTL8366RB_GLOBAL_MIB_COUNT		1
+ #define RTL8366RB_MIB_COUNTER_PORT_OFFSET	0x0050
+@@ -243,7 +206,6 @@
+ #define RTL8366RB_PORT_STATUS_AN_MASK		0x0080
+ 
+ #define RTL8366RB_NUM_VLANS		16
+-#define RTL8366RB_NUM_LEDGROUPS		4
+ #define RTL8366RB_NUM_VIDS		4096
+ #define RTL8366RB_PRIORITYMAX		7
+ #define RTL8366RB_NUM_FIDS		8
+@@ -350,46 +312,6 @@
+ #define RTL8366RB_GREEN_FEATURE_TX	BIT(0)
+ #define RTL8366RB_GREEN_FEATURE_RX	BIT(2)
+ 
+-enum rtl8366_ledgroup_mode {
+-	RTL8366RB_LEDGROUP_OFF			= 0x0,
+-	RTL8366RB_LEDGROUP_DUP_COL		= 0x1,
+-	RTL8366RB_LEDGROUP_LINK_ACT		= 0x2,
+-	RTL8366RB_LEDGROUP_SPD1000		= 0x3,
+-	RTL8366RB_LEDGROUP_SPD100		= 0x4,
+-	RTL8366RB_LEDGROUP_SPD10		= 0x5,
+-	RTL8366RB_LEDGROUP_SPD1000_ACT		= 0x6,
+-	RTL8366RB_LEDGROUP_SPD100_ACT		= 0x7,
+-	RTL8366RB_LEDGROUP_SPD10_ACT		= 0x8,
+-	RTL8366RB_LEDGROUP_SPD100_10_ACT	= 0x9,
+-	RTL8366RB_LEDGROUP_FIBER		= 0xa,
+-	RTL8366RB_LEDGROUP_AN_FAULT		= 0xb,
+-	RTL8366RB_LEDGROUP_LINK_RX		= 0xc,
+-	RTL8366RB_LEDGROUP_LINK_TX		= 0xd,
+-	RTL8366RB_LEDGROUP_MASTER		= 0xe,
+-	RTL8366RB_LEDGROUP_FORCE		= 0xf,
+-
+-	__RTL8366RB_LEDGROUP_MODE_MAX
+-};
+-
+-struct rtl8366rb_led {
+-	u8 port_num;
+-	u8 led_group;
+-	struct realtek_priv *priv;
+-	struct led_classdev cdev;
+-};
+-
+-/**
+- * struct rtl8366rb - RTL8366RB-specific data
+- * @max_mtu: per-port max MTU setting
+- * @pvid_enabled: if PVID is set for respective port
+- * @leds: per-port and per-ledgroup led info
+- */
+-struct rtl8366rb {
+-	unsigned int max_mtu[RTL8366RB_NUM_PORTS];
+-	bool pvid_enabled[RTL8366RB_NUM_PORTS];
+-	struct rtl8366rb_led leds[RTL8366RB_NUM_PORTS][RTL8366RB_NUM_LEDGROUPS];
+-};
+-
+ static struct rtl8366_mib_counter rtl8366rb_mib_counters[] = {
+ 	{ 0,  0, 4, "IfInOctets"				},
+ 	{ 0,  4, 4, "EtherStatsOctets"				},
+@@ -830,9 +752,10 @@ static int rtl8366rb_jam_table(const struct rtl8366rb_jam_tbl_entry *jam_table,
+ 	return 0;
+ }
+ 
+-static int rb8366rb_set_ledgroup_mode(struct realtek_priv *priv,
+-				      u8 led_group,
+-				      enum rtl8366_ledgroup_mode mode)
++/* This code is used also with LEDs disabled */
++int rb8366rb_set_ledgroup_mode(struct realtek_priv *priv,
++			       u8 led_group,
++			       enum rtl8366_ledgroup_mode mode)
+ {
+ 	int ret;
+ 	u32 val;
+@@ -849,144 +772,7 @@ static int rb8366rb_set_ledgroup_mode(struct realtek_priv *priv,
+ 	return 0;
+ }
+ 
+-static inline u32 rtl8366rb_led_group_port_mask(u8 led_group, u8 port)
+-{
+-	switch (led_group) {
+-	case 0:
+-		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
+-	case 1:
+-		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
+-	case 2:
+-		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
+-	case 3:
+-		return FIELD_PREP(RTL8366RB_LED_0_X_CTRL_MASK, BIT(port));
+-	default:
+-		return 0;
+-	}
+-}
+-
+-static int rb8366rb_get_port_led(struct rtl8366rb_led *led)
+-{
+-	struct realtek_priv *priv = led->priv;
+-	u8 led_group = led->led_group;
+-	u8 port_num = led->port_num;
+-	int ret;
+-	u32 val;
+-
+-	ret = regmap_read(priv->map, RTL8366RB_LED_X_X_CTRL_REG(led_group),
+-			  &val);
+-	if (ret) {
+-		dev_err(priv->dev, "error reading LED on port %d group %d\n",
+-			led_group, port_num);
+-		return ret;
+-	}
+-
+-	return !!(val & rtl8366rb_led_group_port_mask(led_group, port_num));
+-}
+-
+-static int rb8366rb_set_port_led(struct rtl8366rb_led *led, bool enable)
+-{
+-	struct realtek_priv *priv = led->priv;
+-	u8 led_group = led->led_group;
+-	u8 port_num = led->port_num;
+-	int ret;
+-
+-	ret = regmap_update_bits(priv->map,
+-				 RTL8366RB_LED_X_X_CTRL_REG(led_group),
+-				 rtl8366rb_led_group_port_mask(led_group,
+-							       port_num),
+-				 enable ? 0xffff : 0);
+-	if (ret) {
+-		dev_err(priv->dev, "error updating LED on port %d group %d\n",
+-			led_group, port_num);
+-		return ret;
+-	}
+-
+-	/* Change the LED group to manual controlled LEDs if required */
+-	ret = rb8366rb_set_ledgroup_mode(priv, led_group,
+-					 RTL8366RB_LEDGROUP_FORCE);
+-
+-	if (ret) {
+-		dev_err(priv->dev, "error updating LED GROUP group %d\n",
+-			led_group);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-static int
+-rtl8366rb_cled_brightness_set_blocking(struct led_classdev *ldev,
+-				       enum led_brightness brightness)
+-{
+-	struct rtl8366rb_led *led = container_of(ldev, struct rtl8366rb_led,
+-						 cdev);
+-
+-	return rb8366rb_set_port_led(led, brightness == LED_ON);
+-}
+-
+-static int rtl8366rb_setup_led(struct realtek_priv *priv, struct dsa_port *dp,
+-			       struct fwnode_handle *led_fwnode)
+-{
+-	struct rtl8366rb *rb = priv->chip_data;
+-	struct led_init_data init_data = { };
+-	enum led_default_state state;
+-	struct rtl8366rb_led *led;
+-	u32 led_group;
+-	int ret;
+-
+-	ret = fwnode_property_read_u32(led_fwnode, "reg", &led_group);
+-	if (ret)
+-		return ret;
+-
+-	if (led_group >= RTL8366RB_NUM_LEDGROUPS) {
+-		dev_warn(priv->dev, "Invalid LED reg %d defined for port %d",
+-			 led_group, dp->index);
+-		return -EINVAL;
+-	}
+-
+-	led = &rb->leds[dp->index][led_group];
+-	led->port_num = dp->index;
+-	led->led_group = led_group;
+-	led->priv = priv;
+-
+-	state = led_init_default_state_get(led_fwnode);
+-	switch (state) {
+-	case LEDS_DEFSTATE_ON:
+-		led->cdev.brightness = 1;
+-		rb8366rb_set_port_led(led, 1);
+-		break;
+-	case LEDS_DEFSTATE_KEEP:
+-		led->cdev.brightness =
+-			rb8366rb_get_port_led(led);
+-		break;
+-	case LEDS_DEFSTATE_OFF:
+-	default:
+-		led->cdev.brightness = 0;
+-		rb8366rb_set_port_led(led, 0);
+-	}
+-
+-	led->cdev.max_brightness = 1;
+-	led->cdev.brightness_set_blocking =
+-		rtl8366rb_cled_brightness_set_blocking;
+-	init_data.fwnode = led_fwnode;
+-	init_data.devname_mandatory = true;
+-
+-	init_data.devicename = kasprintf(GFP_KERNEL, "Realtek-%d:0%d:%d",
+-					 dp->ds->index, dp->index, led_group);
+-	if (!init_data.devicename)
+-		return -ENOMEM;
+-
+-	ret = devm_led_classdev_register_ext(priv->dev, &led->cdev, &init_data);
+-	if (ret) {
+-		dev_warn(priv->dev, "Failed to init LED %d for port %d",
+-			 led_group, dp->index);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
++/* This code is used also with LEDs disabled */
+ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
+ {
+ 	int ret = 0;
+@@ -1007,38 +793,6 @@ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
+ 	return ret;
+ }
+ 
+-static int rtl8366rb_setup_leds(struct realtek_priv *priv)
+-{
+-	struct dsa_switch *ds = &priv->ds;
+-	struct device_node *leds_np;
+-	struct dsa_port *dp;
+-	int ret = 0;
+-
+-	dsa_switch_for_each_port(dp, ds) {
+-		if (!dp->dn)
+-			continue;
+-
+-		leds_np = of_get_child_by_name(dp->dn, "leds");
+-		if (!leds_np) {
+-			dev_dbg(priv->dev, "No leds defined for port %d",
+-				dp->index);
+-			continue;
+-		}
+-
+-		for_each_child_of_node_scoped(leds_np, led_np) {
+-			ret = rtl8366rb_setup_led(priv, dp,
+-						  of_fwnode_handle(led_np));
+-			if (ret)
+-				break;
+-		}
+-
+-		of_node_put(leds_np);
+-		if (ret)
+-			return ret;
+-	}
+-	return 0;
+-}
+-
+ static int rtl8366rb_setup(struct dsa_switch *ds)
+ {
+ 	struct realtek_priv *priv = ds->priv;
+diff --git a/drivers/net/dsa/realtek/rtl8366rb.h b/drivers/net/dsa/realtek/rtl8366rb.h
+new file mode 100644
+index 0000000000000..685ff3275faa1
+--- /dev/null
++++ b/drivers/net/dsa/realtek/rtl8366rb.h
+@@ -0,0 +1,107 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++
++#ifndef _RTL8366RB_H
++#define _RTL8366RB_H
++
++#include "realtek.h"
++
++#define RTL8366RB_PORT_NUM_CPU		5
++#define RTL8366RB_NUM_PORTS		6
++#define RTL8366RB_PHY_NO_MAX		4
++#define RTL8366RB_NUM_LEDGROUPS		4
++#define RTL8366RB_PHY_ADDR_MAX		31
++
++/* LED control registers */
++/* The LED blink rate is global; it is used by all triggers in all groups. */
++#define RTL8366RB_LED_BLINKRATE_REG		0x0430
++#define RTL8366RB_LED_BLINKRATE_MASK		0x0007
++#define RTL8366RB_LED_BLINKRATE_28MS		0x0000
++#define RTL8366RB_LED_BLINKRATE_56MS		0x0001
++#define RTL8366RB_LED_BLINKRATE_84MS		0x0002
++#define RTL8366RB_LED_BLINKRATE_111MS		0x0003
++#define RTL8366RB_LED_BLINKRATE_222MS		0x0004
++#define RTL8366RB_LED_BLINKRATE_446MS		0x0005
++
++/* LED trigger event for each group */
++#define RTL8366RB_LED_CTRL_REG			0x0431
++#define RTL8366RB_LED_CTRL_OFFSET(led_group)	\
++	(4 * (led_group))
++#define RTL8366RB_LED_CTRL_MASK(led_group)	\
++	(0xf << RTL8366RB_LED_CTRL_OFFSET(led_group))
++
++/* The RTL8366RB_LED_X_X registers are used to manually set the LED state only
++ * when the corresponding LED group in RTL8366RB_LED_CTRL_REG is
++ * RTL8366RB_LEDGROUP_FORCE. Otherwise, it is ignored.
++ */
++#define RTL8366RB_LED_0_1_CTRL_REG		0x0432
++#define RTL8366RB_LED_2_3_CTRL_REG		0x0433
++#define RTL8366RB_LED_X_X_CTRL_REG(led_group)	\
++	((led_group) <= 1 ? \
++		RTL8366RB_LED_0_1_CTRL_REG : \
++		RTL8366RB_LED_2_3_CTRL_REG)
++#define RTL8366RB_LED_0_X_CTRL_MASK		GENMASK(5, 0)
++#define RTL8366RB_LED_X_1_CTRL_MASK		GENMASK(11, 6)
++#define RTL8366RB_LED_2_X_CTRL_MASK		GENMASK(5, 0)
++#define RTL8366RB_LED_X_3_CTRL_MASK		GENMASK(11, 6)
++
++enum rtl8366_ledgroup_mode {
++	RTL8366RB_LEDGROUP_OFF			= 0x0,
++	RTL8366RB_LEDGROUP_DUP_COL		= 0x1,
++	RTL8366RB_LEDGROUP_LINK_ACT		= 0x2,
++	RTL8366RB_LEDGROUP_SPD1000		= 0x3,
++	RTL8366RB_LEDGROUP_SPD100		= 0x4,
++	RTL8366RB_LEDGROUP_SPD10		= 0x5,
++	RTL8366RB_LEDGROUP_SPD1000_ACT		= 0x6,
++	RTL8366RB_LEDGROUP_SPD100_ACT		= 0x7,
++	RTL8366RB_LEDGROUP_SPD10_ACT		= 0x8,
++	RTL8366RB_LEDGROUP_SPD100_10_ACT	= 0x9,
++	RTL8366RB_LEDGROUP_FIBER		= 0xa,
++	RTL8366RB_LEDGROUP_AN_FAULT		= 0xb,
++	RTL8366RB_LEDGROUP_LINK_RX		= 0xc,
++	RTL8366RB_LEDGROUP_LINK_TX		= 0xd,
++	RTL8366RB_LEDGROUP_MASTER		= 0xe,
++	RTL8366RB_LEDGROUP_FORCE		= 0xf,
++
++	__RTL8366RB_LEDGROUP_MODE_MAX
++};
++
++#if IS_ENABLED(CONFIG_NET_DSA_REALTEK_RTL8366RB_LEDS)
++
++struct rtl8366rb_led {
++	u8 port_num;
++	u8 led_group;
++	struct realtek_priv *priv;
++	struct led_classdev cdev;
++};
++
++int rtl8366rb_setup_leds(struct realtek_priv *priv);
++
++#else
++
++static inline int rtl8366rb_setup_leds(struct realtek_priv *priv)
++{
++	return 0;
++}
++
++#endif /* IS_ENABLED(CONFIG_LEDS_CLASS) */
++
++/**
++ * struct rtl8366rb - RTL8366RB-specific data
++ * @max_mtu: per-port max MTU setting
++ * @pvid_enabled: if PVID is set for respective port
++ * @leds: per-port and per-ledgroup led info
++ */
++struct rtl8366rb {
++	unsigned int max_mtu[RTL8366RB_NUM_PORTS];
++	bool pvid_enabled[RTL8366RB_NUM_PORTS];
++#if IS_ENABLED(CONFIG_NET_DSA_REALTEK_RTL8366RB_LEDS)
++	struct rtl8366rb_led leds[RTL8366RB_NUM_PORTS][RTL8366RB_NUM_LEDGROUPS];
++#endif
++};
++
++/* This code is used also with LEDs disabled */
++int rb8366rb_set_ledgroup_mode(struct realtek_priv *priv,
++			       u8 led_group,
++			       enum rtl8366_ledgroup_mode mode);
++
++#endif /* _RTL8366RB_H */
 -- 
 2.39.5
 
