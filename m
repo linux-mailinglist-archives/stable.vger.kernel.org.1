@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E34BA508E7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB3DA509C3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A385F174E0E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31CB93B0E9E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08740250C1F;
-	Wed,  5 Mar 2025 18:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA7325743D;
+	Wed,  5 Mar 2025 18:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMa3nUVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnbDyObe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4561A5BB7;
-	Wed,  5 Mar 2025 18:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC95919C542;
+	Wed,  5 Mar 2025 18:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198308; cv=none; b=oDGP8jt1Mz+Dy+YvB/JBFup6eeLnG3YUCzNAeolcEhufGp8ZX5Tu7NNeeXLD4J2EhMOx0zSsAG4T+5OOHMcG9UaVkP7ze4YpUIOeUcEiiMllgiuOJc2jBSPtCpSRjhsx4Y4Uj6sqkaFWoo5ZhaK07nKjUoWUt7C40VCqfHaReUs=
+	t=1741198821; cv=none; b=RgfkcQfLzqDk6G67Zi/vDsjzQVa4YpoU1E3/J9hFLsd79swRXkT30jeh/T/jHTh7e+MDXeEoCmJJZCID27yj+es8wzUlrHdByoCEadIYAcRZgpNM7m86y+aXyh2U8IdsUeLXsxBaE7NBjfZ7O9ePSDBdRXWexcN7Vn8AlKPy730=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198308; c=relaxed/simple;
-	bh=zTPd9YRELcVnf4H9FhQNdOg1t5aPR5vXdShX6+xd/34=;
+	s=arc-20240116; t=1741198821; c=relaxed/simple;
+	bh=+VdM8krl6nguvfP5SbxKtEIKq+r2RYNl0gGLtEaWY60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiUYPkc4ojtmLbQh+0p9mfZ+pkE36P6sIpOxHLQhmMA6etKm4HjB31xRRJ67qDldUqmW+H7O3b2yfyfavfCggd0XjNKbehwWj8aVIdRNg6URnARt0AZbEfb/nXx38ziZ90p9rkRdQqGQTpfz0vloLf7ZmKJYNu+SXtMPwszayrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMa3nUVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C1CC4CED1;
-	Wed,  5 Mar 2025 18:11:48 +0000 (UTC)
+	 MIME-Version; b=uS1CltpCBz5RPKjZkXaqgYKt4v0q1MYlc13ZOiRlyhIUwfkZeSqjCpNxRFVgSWts/iY/vdlHbIxrA5w4dC1GjWzN/SVFPdZBdK1DNxVUeocHiwSMscmu6QQC4TEUap3o2u5d87fLU5CrmANabkBarGHVY+e4tVhlXce+Wm5XRPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnbDyObe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE9CC4CED1;
+	Wed,  5 Mar 2025 18:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198308;
-	bh=zTPd9YRELcVnf4H9FhQNdOg1t5aPR5vXdShX6+xd/34=;
+	s=korg; t=1741198821;
+	bh=+VdM8krl6nguvfP5SbxKtEIKq+r2RYNl0gGLtEaWY60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMa3nUVF+JD81cxnda72cClT+ghBVqNOdf83kd+IzdHQm5C0exjywWSxnIx2iG8l9
-	 HoJgsIda3UhylIXymC6xHINUGmVdUy3Hjy4n6tpwWXsZQRBpOFWjvQm23o2T9ocsVW
-	 KuA8DhHJzmR89TBYZ9rhV7NCs8hCFevtzO5e2h1Q=
+	b=bnbDyObe4UXn42jRLmswul2kruPySpjmvEwuRTa57a2A6EE5BRv27sM/OOof1DwD3
+	 CbVkFTJ1o7axNVQIVhQ+Qx+rhsmwkZkyCtHEdM5RoKV+l/KX2wWW7dK9eiVaDlhnA1
+	 +jE/TW2deJs4NdiivPJPWS524OGRQ/7Azk84lu5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bean Huo <beanhuo@micron.com>,
-	Arthur Simchaev <arthur.simchaev@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 134/150] scsi: ufs: core: bsg: Fix crash when arpmb command fails
+	Lijo Lazar <lijo.lazar@amd.com>,
+	"chr[]" <chris@rudorff.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: [PATCH 6.13 127/157] amdgpu/pm/legacy: fix suspend/resume issues
 Date: Wed,  5 Mar 2025 18:49:23 +0100
-Message-ID: <20250305174509.201547894@linuxfoundation.org>
+Message-ID: <20250305174510.407116703@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur Simchaev <arthur.simchaev@sandisk.com>
+From: chr[] <chris@rudorff.com>
 
-commit f27a95845b01e86d67c8b014b4f41bd3327daa63 upstream.
+commit 91dcc66b34beb72dde8412421bdc1b4cd40e4fb8 upstream.
 
-If the device doesn't support arpmb we'll crash due to copying user data in
-bsg_transport_sg_io_fn().
+resume and irq handler happily races in set_power_state()
 
-In the case where ufs_bsg_exec_advanced_rpmb_req() returns an error, do not
-set the job's reply_len.
+* amdgpu_legacy_dpm_compute_clocks() needs lock
+* protect irq work handler
+* fix dpm_enabled usage
 
-Memory crash backtrace:
-3,1290,531166405,-;ufshcd 0000:00:12.5: ARPMB OP failed: error code -22
+v2: fix clang build, integrate Lijo's comments (Alex)
 
-4,1308,531166555,-;Call Trace:
-
-4,1309,531166559,-; <TASK>
-
-4,1310,531166565,-; ? show_regs+0x6d/0x80
-
-4,1311,531166575,-; ? die+0x37/0xa0
-
-4,1312,531166583,-; ? do_trap+0xd4/0xf0
-
-4,1313,531166593,-; ? do_error_trap+0x71/0xb0
-
-4,1314,531166601,-; ? usercopy_abort+0x6c/0x80
-
-4,1315,531166610,-; ? exc_invalid_op+0x52/0x80
-
-4,1316,531166622,-; ? usercopy_abort+0x6c/0x80
-
-4,1317,531166630,-; ? asm_exc_invalid_op+0x1b/0x20
-
-4,1318,531166643,-; ? usercopy_abort+0x6c/0x80
-
-4,1319,531166652,-; __check_heap_object+0xe3/0x120
-
-4,1320,531166661,-; check_heap_object+0x185/0x1d0
-
-4,1321,531166670,-; __check_object_size.part.0+0x72/0x150
-
-4,1322,531166679,-; __check_object_size+0x23/0x30
-
-4,1323,531166688,-; bsg_transport_sg_io_fn+0x314/0x3b0
-
-Fixes: 6ff265fc5ef6 ("scsi: ufs: core: bsg: Add advanced RPMB support in ufs_bsg")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2524
+Fixes: 3712e7a49459 ("drm/amd/pm: unified lock protections in amdgpu_dpm.c")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Tested-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name> # on Oland PRO
+Signed-off-by: chr[] <chris@rudorff.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ee3dc9e204d271c9c7a8d4d38a0bce4745d33e71)
 Cc: stable@vger.kernel.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Signed-off-by: Arthur Simchaev <arthur.simchaev@sandisk.com>
-Link: https://lore.kernel.org/r/20250220142039.250992-1-arthur.simchaev@sandisk.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufs_bsg.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c     |   25 ++++++++++++++++++------
+ drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c |    8 +++++--
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c     |   26 +++++++++++++++++++------
+ 3 files changed, 45 insertions(+), 14 deletions(-)
 
---- a/drivers/ufs/core/ufs_bsg.c
-+++ b/drivers/ufs/core/ufs_bsg.c
-@@ -194,10 +194,12 @@ out:
- 	ufshcd_rpm_put_sync(hba);
- 	kfree(buff);
- 	bsg_reply->result = ret;
--	job->reply_len = !rpmb ? sizeof(struct ufs_bsg_reply) : sizeof(struct ufs_rpmb_reply);
- 	/* complete the job here only if no error */
--	if (ret == 0)
-+	if (ret == 0) {
-+		job->reply_len = rpmb ? sizeof(struct ufs_rpmb_reply) :
-+					sizeof(struct ufs_bsg_reply);
- 		bsg_job_done(job, ret, bsg_reply->reply_payload_rcv_len);
-+	}
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -3042,6 +3042,7 @@ static int kv_dpm_hw_init(struct amdgpu_
+ 	if (!amdgpu_dpm)
+ 		return 0;
  
++	mutex_lock(&adev->pm.mutex);
+ 	kv_dpm_setup_asic(adev);
+ 	ret = kv_dpm_enable(adev);
+ 	if (ret)
+@@ -3049,6 +3050,8 @@ static int kv_dpm_hw_init(struct amdgpu_
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
++
  	return ret;
  }
+ 
+@@ -3066,32 +3069,42 @@ static int kv_dpm_suspend(struct amdgpu_
+ {
+ 	struct amdgpu_device *adev = ip_block->adev;
+ 
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
++
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		kv_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+ 	return 0;
+ }
+ 
+ static int kv_dpm_resume(struct amdgpu_ip_block *ip_block)
+ {
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = ip_block->adev;
+ 
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
++
++	if (!adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
+ 		/* asic init will reset to the boot state */
+ 		kv_dpm_setup_asic(adev);
+ 		ret = kv_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
++		}
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+-	return 0;
++	return ret;
+ }
+ 
+ static bool kv_dpm_is_idle(void *handle)
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
+@@ -1009,9 +1009,12 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	enum amd_pm_state_type dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 	int temp, size = sizeof(temp);
+ 
+-	if (!adev->pm.dpm_enabled)
+-		return;
++	mutex_lock(&adev->pm.mutex);
+ 
++	if (!adev->pm.dpm_enabled) {
++		mutex_unlock(&adev->pm.mutex);
++		return;
++	}
+ 	if (!pp_funcs->read_sensor(adev->powerplay.pp_handle,
+ 				   AMDGPU_PP_SENSOR_GPU_TEMP,
+ 				   (void *)&temp,
+@@ -1033,4 +1036,5 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	adev->pm.dpm.state = dpm_state;
+ 
+ 	amdgpu_legacy_dpm_compute_clocks(adev->powerplay.pp_handle);
++	mutex_unlock(&adev->pm.mutex);
+ }
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -7785,6 +7785,7 @@ static int si_dpm_hw_init(struct amdgpu_
+ 	if (!amdgpu_dpm)
+ 		return 0;
+ 
++	mutex_lock(&adev->pm.mutex);
+ 	si_dpm_setup_asic(adev);
+ 	ret = si_dpm_enable(adev);
+ 	if (ret)
+@@ -7792,6 +7793,7 @@ static int si_dpm_hw_init(struct amdgpu_
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
+ 	return ret;
+ }
+ 
+@@ -7809,32 +7811,44 @@ static int si_dpm_suspend(struct amdgpu_
+ {
+ 	struct amdgpu_device *adev = ip_block->adev;
+ 
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
++
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		si_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
+ 	}
++
+ 	return 0;
+ }
+ 
+ static int si_dpm_resume(struct amdgpu_ip_block *ip_block)
+ {
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = ip_block->adev;
+ 
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
++
++	if (!adev->pm.dpm_enabled) {
+ 		/* asic init will reset to the boot state */
++		mutex_lock(&adev->pm.mutex);
+ 		si_dpm_setup_asic(adev);
+ 		ret = si_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
++		}
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+-	return 0;
++
++	return ret;
+ }
+ 
+ static bool si_dpm_is_idle(void *handle)
 
 
 
