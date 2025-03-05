@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-120829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01756A50892
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4C5A5082A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82F318899F1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 615F918889A4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504CB251785;
-	Wed,  5 Mar 2025 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820502528F1;
+	Wed,  5 Mar 2025 18:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MObSA2ii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWGygQ/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C533250C1F;
-	Wed,  5 Mar 2025 18:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FE82517BC;
+	Wed,  5 Mar 2025 18:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198095; cv=none; b=if/PgMGrM4IN9KxU0mas3Ka1rFnkaoAjKZebODgb6WwMhVH+6dCHaaaanvjEBQj5k3Qp9ZOyB6ZzD3HiHwhJFYFXUXVHDUQIqmDYPk7Ksd2UDtbvwQVlYyVQMpEQPbF28bRH1ae/sfTqUfIrXV4zWEu03oyBBd1puYk67/1Dzr0=
+	t=1741197800; cv=none; b=JnuL/DAh+mx8/rCh4+HQM/5rcXBFc1wOf3TPD9uN0Xl59QSc9ImXl/fDCCAmRTurlcWVP0stjB+HFmOs2Uqt1xhKHHy8E1a5IgA8bJgRGCeBElc7/zvJG+ZmyY1kijBOGHKcS800y+KjODjDuJf9zQtSHQyJ6fRFd/+1c78+e80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198095; c=relaxed/simple;
-	bh=Z2T/PuGoV0eQAWcLlxj8Zz5Bky5Q+U1OJsCVJVQACHQ=;
+	s=arc-20240116; t=1741197800; c=relaxed/simple;
+	bh=vslIVhhj7qhgiWdcUxgtc1egVx9IKl9oNsB2US4KFi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3XZyq/uZjIvdYCnEkwrlsXROLqSjBYGsalVVc03qLTdWo24j8vQKrsGVYs0FDZU9TSk4SPsX7Mi9at8carNDQjur6DHnKwUCJUZoo8m+nszURubw9dR0ONZ2H5dP1iHIhAA/qoHh+zpXzjx9quoM2L3EPd56eItVFAAr1aTcVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MObSA2ii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECA0C4CEEA;
-	Wed,  5 Mar 2025 18:08:13 +0000 (UTC)
+	 MIME-Version; b=BHTeY8QttJdjIOvaeUjGvLgmv8g5Oj9zTwvlq2IO9BjPbjabHGVyR0QLlHglhONUpJTqPV0DGiADql14mdA+wVY53blJQXCMZDn63g5gIUrt0p1O7+/XX6YqM/OhSy418bUgXsvitweFynedrmsUeigoEcdbYDRlFdRkkLiCu2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWGygQ/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF107C4CED1;
+	Wed,  5 Mar 2025 18:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198094;
-	bh=Z2T/PuGoV0eQAWcLlxj8Zz5Bky5Q+U1OJsCVJVQACHQ=;
+	s=korg; t=1741197800;
+	bh=vslIVhhj7qhgiWdcUxgtc1egVx9IKl9oNsB2US4KFi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MObSA2iiHEfOj4yQUnX2vdzGgrORn4s4grq2usShSa34a0BIR7MDoU9u47TSibZFI
-	 sU6tRIwquj5OPf9BzeoPDy3Oattex87lXlAUxO7RRiE1BMqdYKiDQY5g1rO3IHi2eu
-	 VrhKpDTz/C69PRdxYelKdxPpjxCHUy9BuqjEQzJQ=
+	b=oWGygQ/FQ6CmX+FYACxAzY8+DAoOULuzHd+58DXdu8Wn8qJJVBg/ZKSBvEvxaRP+J
+	 7H1mKxNVi5yTPRnEcnNNNJJOCvIgx5zQKFKSesmfjHTifTg86Sie3JlPEc16oKpcG+
+	 vBatx5IH9UpyFkIx6jutYU/kn44fRws77b6iPLTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lebrun <dlebrun@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/150] net: ipv6: fix dst ref loop on input in seg6 lwt
-Date: Wed,  5 Mar 2025 18:48:11 +0100
-Message-ID: <20250305174506.313705017@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 073/142] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+Date: Wed,  5 Mar 2025 18:48:12 +0100
+Message-ID: <20250305174503.269799197@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit c64a0727f9b1cbc63a5538c8c0014e9a175ad864 ]
+commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
 
-Prevent a dst ref loop on input in seg6_iptunnel.
+When a DMA mapping error occurs while processing skb frags, it will free
+one more tx_swbd than expected, so fix this off-by-one issue.
 
-Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-Cc: David Lebrun <dlebrun@google.com>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_iptunnel.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 33833b2064c07..51583461ae29b 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -472,10 +472,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -145,6 +145,24 @@ static int enetc_ptp_parse(struct sk_buf
+ 	return 0;
+ }
+ 
++/**
++ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
++ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
++ * @count: Number of Tx buffer descriptors which need to be unmapped
++ * @i: Index of the last successfully mapped Tx buffer descriptor
++ */
++static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
++{
++	while (count--) {
++		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
++
++		enetc_free_tx_frame(tx_ring, tx_swbd);
++		if (i == 0)
++			i = tx_ring->bd_count;
++		i--;
++	}
++}
++
+ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
  {
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
-+	struct lwtunnel_state *lwtst;
- 	struct seg6_lwt *slwt;
- 	int err;
+ 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
+@@ -328,13 +346,7 @@ static int enetc_map_tx_buffs(struct ene
+ dma_err:
+ 	dev_err(tx_ring->dev, "DMA map error");
  
--	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
-+	/* We cannot dereference "orig_dst" once ip6_route_input() or
-+	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
-+	 * need the address of its lwtstate. So, save the address of lwtstate
-+	 * now and use it later as a comparison.
-+	 */
-+	lwtst = orig_dst->lwtstate;
-+
-+	slwt = seg6_lwt_lwtunnel(lwtst);
+-	do {
+-		tx_swbd = &tx_ring->tx_swbd[i];
+-		enetc_free_tx_frame(tx_ring, tx_swbd);
+-		if (i == 0)
+-			i = tx_ring->bd_count;
+-		i--;
+-	} while (count--);
++	enetc_unwind_tx_frame(tx_ring, count, i);
  
- 	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
-@@ -490,7 +498,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
--		if (!dst->error) {
-+
-+		/* cache only if we don't create a dst reference loop */
-+		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&slwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
--- 
-2.39.5
-
+ 	return 0;
+ }
 
 
 
