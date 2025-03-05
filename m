@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A804EA507A2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A69A50907
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 738E0175180
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 511BF1885B8A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D452512CB;
-	Wed,  5 Mar 2025 17:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174B525179E;
+	Wed,  5 Mar 2025 18:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcZAdUpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXH5sD+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C53250C1C;
-	Wed,  5 Mar 2025 17:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAB71A3176;
+	Wed,  5 Mar 2025 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197517; cv=none; b=KVyVHfnO+VVOzd7spRqp0X7riiAOOdl7n49yHH1iWFK5Mr+SYE1qvG7o4roLrqD+jOB4KdixjULqnWU6jdHbUTvANAAFUV2aymJF+Zj22QmURIQVPssV6uZD1iaHzpOb34DCWY8LtM5lWES846OoLD5VX0r7dWKcHDDgHASL+3o=
+	t=1741198348; cv=none; b=ZlqSIcupgQfh7T1O9Mt1zkH2JPc/fW3vGg9ocZ2IpsV3fHlt3DNzkuJaY4a4a5jaCZjh3Ki/zFYUSuAlpOr2mScoulFn51rt0z2M9kWApVgUURbwPzdWISseD0Y83ZFiBDDiaaVugKgKarAUrKMazwBG7x5wbcc0RJYMhNeKnZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197517; c=relaxed/simple;
-	bh=LCZCzvVSA46cgAfb3DP0BWmRshSoRuU29A2Rmhkff70=;
+	s=arc-20240116; t=1741198348; c=relaxed/simple;
+	bh=ejM67nwXYuviOTSNaaNcANFx+hgvl46EarvTOlFL3do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgZAoDMMRnf42ZU+ZsCHuR/7hQfEjplE39w3iG0kSLDOQgt8GPczJKdHbQ9ihktsk9uBj3S1nQfVb/1j6Gq+r3cUZc/27d1udzyzFhecBtp38H8hoUHQDX518h00KVYcyjE71jVE+Kw1gdJYEH0LVQ5O2WaaC6SL/9GR8w94vDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcZAdUpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7936AC4CED1;
-	Wed,  5 Mar 2025 17:58:36 +0000 (UTC)
+	 MIME-Version; b=Z7lpl9yEa7VnLfKa6w3O+XrKjAXl9DQ/9PeASkFOPX4z9Kh9IeH+dbunUZybUNb3R9Xpv51Mz1/My4pvyLfR576VWBaMihkP8cA69UolHgTDHE75rXbsGbL9oS8T9GXv2P60xI+qs9bahBBKgvrTo8hGsyVIRuL14xV3tO3Pkjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXH5sD+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B5AC4CED1;
+	Wed,  5 Mar 2025 18:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197516;
-	bh=LCZCzvVSA46cgAfb3DP0BWmRshSoRuU29A2Rmhkff70=;
+	s=korg; t=1741198348;
+	bh=ejM67nwXYuviOTSNaaNcANFx+hgvl46EarvTOlFL3do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcZAdUpMz1AWlAgj57AlCTm7Bl1+oDprPmq+um3Kt2/XT6xFpv7rXfwDZz5/zMvyN
-	 jyZfHLwaVCFtbqWOhA4yA/rv+pS03aLPLpb/3aUptfWXOgLdu+9YQ+unm5rJ/3OeL3
-	 UU285ttfUcIimmr7X7M6nGzwmC64kVIQkEVcl3Ts=
+	b=eXH5sD+FKgwQSLVmklkFnyw2pW/T8Ie4x7dK/L4O5HWXv4RtPfdQJrBETGy3c2ZFN
+	 p7bbomxyIgFzUKovUj4FLaDaucbu1AzQhB45/eNY5udqnO+mhjWquzNJzdhbpMSaaB
+	 XosHXndPwR2Fv9x9XtgfOMyiIxveAz1M3jsDHlhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fullway Wang <fullwaywang@outlook.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 176/176] media: mtk-vcodec: potential null pointer deference in SCP
-Date: Wed,  5 Mar 2025 18:49:05 +0100
-Message-ID: <20250305174512.504068563@linuxfoundation.org>
+	BH Hsieh <bhsieh@nvidia.com>,
+	Henry Lin <henryl@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 117/150] phy: tegra: xusb: reset VBUS & ID OVERRIDE
+Date: Wed,  5 Mar 2025 18:49:06 +0100
+Message-ID: <20250305174508.518899768@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fullway Wang <fullwaywang@outlook.com>
+From: BH Hsieh <bhsieh@nvidia.com>
 
-commit 53dbe08504442dc7ba4865c09b3bbf5fe849681b upstream.
+commit 55f1a5f7c97c3c92ba469e16991a09274410ceb7 upstream.
 
-The return value of devm_kzalloc() needs to be checked to avoid
-NULL pointer deference. This is similar to CVE-2022-3113.
+Observed VBUS_OVERRIDE & ID_OVERRIDE might be programmed
+with unexpected value prior to XUSB PADCTL driver, this
+could also occur in virtualization scenario.
 
-Link: https://lore.kernel.org/linux-media/PH7PR20MB5925094DAE3FD750C7E39E01BF712@PH7PR20MB5925.namprd20.prod.outlook.com
-Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+For example, UEFI firmware programs ID_OVERRIDE=GROUNDED to set
+a type-c port to host mode and keeps the value to kernel.
+If the type-c port is connected a usb host, below errors can be
+observed right after usb host mode driver gets probed. The errors
+would keep until usb role class driver detects the type-c port
+as device mode and notifies usb device mode driver to set both
+ID_OVERRIDE and VBUS_OVERRIDE to correct value by XUSB PADCTL
+driver.
+
+[  173.765814] usb usb3-port2: Cannot enable. Maybe the USB cable is bad?
+[  173.765837] usb usb3-port2: config error
+
+Taking virtualization into account, asserting XUSB PADCTL
+reset would break XUSB functions used by other guest OS,
+hence only reset VBUS & ID OVERRIDE of the port in
+utmi_phy_init.
+
+Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
+Cc: stable@vger.kernel.org
+Change-Id: Ic63058d4d49b4a1f8f9ab313196e20ad131cc591
+Signed-off-by: BH Hsieh <bhsieh@nvidia.com>
+Signed-off-by: Henry Lin <henryl@nvidia.com>
+Link: https://lore.kernel.org/r/20250122105943.8057-1-henryl@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/tegra/xusb-tegra186.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
-+++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
-@@ -65,6 +65,8 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -928,6 +928,7 @@ static int tegra186_utmi_phy_init(struct
+ 	unsigned int index = lane->index;
+ 	struct device *dev = padctl->dev;
+ 	int err;
++	u32 reg;
+ 
+ 	port = tegra_xusb_find_usb2_port(padctl, index);
+ 	if (!port) {
+@@ -935,6 +936,16 @@ static int tegra186_utmi_phy_init(struct
+ 		return -ENODEV;
  	}
  
- 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
-+	if (!fw)
-+		return ERR_PTR(-ENOMEM);
- 	fw->type = SCP;
- 	fw->ops = &mtk_vcodec_rproc_msg;
- 	fw->scp = scp;
++	if (port->mode == USB_DR_MODE_OTG ||
++	    port->mode == USB_DR_MODE_PERIPHERAL) {
++		/* reset VBUS&ID OVERRIDE */
++		reg = padctl_readl(padctl, USB2_VBUS_ID);
++		reg &= ~VBUS_OVERRIDE;
++		reg &= ~ID_OVERRIDE(~0);
++		reg |= ID_OVERRIDE_FLOATING;
++		padctl_writel(padctl, reg, USB2_VBUS_ID);
++	}
++
+ 	if (port->supply && port->mode == USB_DR_MODE_HOST) {
+ 		err = regulator_enable(port->supply);
+ 		if (err) {
 
 
 
