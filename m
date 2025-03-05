@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-120939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BCCA5092B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500ECA507AF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6DE718852C1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C84174D39
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970D4253352;
-	Wed,  5 Mar 2025 18:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073922512D7;
+	Wed,  5 Mar 2025 17:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfMcT6N0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKQNVU+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F9225334A;
-	Wed,  5 Mar 2025 18:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA72D14B075;
+	Wed,  5 Mar 2025 17:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198413; cv=none; b=CeODvFIvAExqHQ16ALrcpI2WUDQWO6+OfJF8c3mUnEKNv5WncvGPukwtN4fUHAJYq4v4WXFGC9Vbpkt3kbf76sAXWWwCUzaqzf5pcWl21L+M5MnflSMnfXZB0/Eru7Lo7xavSr+bTM3XX2m+peTuElCnzxN5zk384tyUBpZHRXY=
+	t=1741197551; cv=none; b=npkz0lmIa2TtmJMMQ9IQTRh8Y5yLKJV7GpoDKcvVpDRJmMoIsLgGQjdlshz2UkvW/MeAWpAob4t1ixsu39oLbYDDeiVSQUOsCZXyuHtzQrRTQOjJVGLq39kkubhgJU0TQmyZ5xLSxAA5dFp1WfI+saw3SFSJUU0rNeUuVagzl5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198413; c=relaxed/simple;
-	bh=eYy4ih9yuMHV6pTD62qjeR1HgOO/roA1K/r39vFiuOQ=;
+	s=arc-20240116; t=1741197551; c=relaxed/simple;
+	bh=vZtRyxiN7H6cfJSbigsuOJ0TOHCb6sz2hrGz5oBxw/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOQhv8ALtXSy7WFkxABIR+zAXT3rcDbUlph+dv9g7MEaZYQcwU/sBaPO6dMRGvsCYxVfsi2mQuxyO7R14tvuVBamoRgOGhKfi/DpVLeXm25jDzsRFFuJ/aNm5xPVjL4JlpyHllLgP0cDfWzbRzHLpWrgA0fH+yN9OyAIa1oC14s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfMcT6N0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DCFC4CED1;
-	Wed,  5 Mar 2025 18:13:32 +0000 (UTC)
+	 MIME-Version; b=ZrUbWwNqS7fPIxbVKxr5+ABTTt4gsn3BsWhmaQm7EqER46lQReT6u6lG0EhLAjb9humwcz01IV6ZI13GgM/+nM73cCuFfAaGkHYYXWfrfqX9E7zLo2KlCSCt2Jr2jcwBYHrUH9Q8r/dqLnUHtPxWouq7yc/1+1Dzp/zuq2EYyuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKQNVU+a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D55C4CED1;
+	Wed,  5 Mar 2025 17:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198413;
-	bh=eYy4ih9yuMHV6pTD62qjeR1HgOO/roA1K/r39vFiuOQ=;
+	s=korg; t=1741197551;
+	bh=vZtRyxiN7H6cfJSbigsuOJ0TOHCb6sz2hrGz5oBxw/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZfMcT6N07HeYDY5oZUqXGhXTOGZg31UGSgAsZQvEiIvN8lUEaDgZPcCsJdLyFdUPV
-	 ay0vL0twulZEwKFaPd4tolTbCnnusXQrr5OM0bjqNoO8vELaa1g8X117TBBXzFO6mJ
-	 WRfEllgTNK1LkrafsKEUI+K6gzY0/OR7mciVzRaQ=
+	b=wKQNVU+anwKNY3zh8o6i63LNmSvOzUYenvT0zjw2/T3jR3AeSofO15ykj4wZeUWWF
+	 ytxCkB0RATXye95xnFep34ytAKadSevf5Mk/tYAe1fzEeRDXhf5weHrvQVKSFj0SLx
+	 0aOsT+9CssgszFB2OCRlg8hjEab5nF8SQuavL4Sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Zhang <markzhang@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 002/157] IB/mlx5: Set and get correct qp_num for a DCT QP
+Subject: [PATCH 6.6 019/142] rxrpc: rxperf: Fix missing decoding of terminal magic cookie
 Date: Wed,  5 Mar 2025 18:47:18 +0100
-Message-ID: <20250305174505.374449955@linuxfoundation.org>
+Message-ID: <20250305174501.114563044@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 12d044770e12c4205fa69535b4fa8a9981fea98f ]
+[ Upstream commit c34d999ca3145d9fe858258cc3342ec493f47d2e ]
 
-When a DCT QP is created on an active lag, it's dctc.port is assigned
-in a round-robin way, which is from 1 to dev->lag_port. In this case
-when querying this QP, we may get qp_attr.port_num > 2.
-Fix this by setting qp->port when modifying a DCT QP, and read port_num
-from qp->port instead of dctc.port when querying it.
+The rxperf RPCs seem to have a magic cookie at the end of the request that
+was failing to be taken account of by the unmarshalling of the request.
+Fix the rxperf code to expect this.
 
-Fixes: 7c4b1ab9f167 ("IB/mlx5: Add DCT RoCE LAG support")
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/94c76bf0adbea997f87ffa27674e0a7118ad92a9.1737290358.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 75bfdbf2fca3 ("rxrpc: Implement an in-kernel rxperf server for testing purposes")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250218192250.296870-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/rxrpc/rxperf.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index a43eba9d3572c..08d22db8dca91 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -4579,6 +4579,8 @@ static int mlx5_ib_modify_dct(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 
- 		set_id = mlx5_ib_get_counters_id(dev, attr->port_num - 1);
- 		MLX5_SET(dctc, dctc, counter_set_id, set_id);
+diff --git a/net/rxrpc/rxperf.c b/net/rxrpc/rxperf.c
+index 085e7892d3104..b1536da2246b8 100644
+--- a/net/rxrpc/rxperf.c
++++ b/net/rxrpc/rxperf.c
+@@ -478,6 +478,18 @@ static int rxperf_deliver_request(struct rxperf_call *call)
+ 		call->unmarshal++;
+ 		fallthrough;
+ 	case 2:
++		ret = rxperf_extract_data(call, true);
++		if (ret < 0)
++			return ret;
 +
-+		qp->port = attr->port_num;
- 	} else if (cur_state == IB_QPS_INIT && new_state == IB_QPS_RTR) {
- 		struct mlx5_ib_modify_qp_resp resp = {};
- 		u32 out[MLX5_ST_SZ_DW(create_dct_out)] = {};
-@@ -5074,7 +5076,7 @@ static int mlx5_ib_dct_query_qp(struct mlx5_ib_dev *dev, struct mlx5_ib_qp *mqp,
- 	}
- 
- 	if (qp_attr_mask & IB_QP_PORT)
--		qp_attr->port_num = MLX5_GET(dctc, dctc, port);
-+		qp_attr->port_num = mqp->port;
- 	if (qp_attr_mask & IB_QP_MIN_RNR_TIMER)
- 		qp_attr->min_rnr_timer = MLX5_GET(dctc, dctc, min_rnr_nak);
- 	if (qp_attr_mask & IB_QP_AV) {
++		/* Deal with the terminal magic cookie. */
++		call->iov_len = 4;
++		call->kvec[0].iov_len	= call->iov_len;
++		call->kvec[0].iov_base	= call->tmp;
++		iov_iter_kvec(&call->iter, READ, call->kvec, 1, call->iov_len);
++		call->unmarshal++;
++		fallthrough;
++	case 3:
+ 		ret = rxperf_extract_data(call, false);
+ 		if (ret < 0)
+ 			return ret;
 -- 
 2.39.5
 
