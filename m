@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-121096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493ACA50B36
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:12:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022A5A50B3E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B481659D4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 410633A2D4B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F421D250C1D;
-	Wed,  5 Mar 2025 19:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA87253335;
+	Wed,  5 Mar 2025 19:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAE3Dno6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmEyW93K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78DB2E339F;
-	Wed,  5 Mar 2025 19:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6F22517A6;
+	Wed,  5 Mar 2025 19:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741201962; cv=none; b=jcFDPxi6I8/CXu9pj1MnVm5zoJmj/Fgc41NYuj4Vjsr4JGQErb3mXO6vyhBy5alT8jL4LARXygZiagdxAVkewA4cIZW2joJPGZ8RNarwZ1lG+6k4WHEcZKzbMLHg1YLtcnCfaSf9gH+AaPgfl2kd/34OQh6s8Zt8GDb3eYf1u24=
+	t=1741202069; cv=none; b=ONqGiiln2OpobNMNV/ZiQuFDS+0M6ZA74bXU9WqZavsVAoyn1bibUrVad6EXet1cHxfNvEhL5uhucuKl2kbIfGufel7phpQnmhroQWAjoASux+JpICBNrUZWC7uDkXIaeZeUDPATiw5SRxLqvwdHMdOGgqJ4I3UXyX9ckPzLako=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741201962; c=relaxed/simple;
-	bh=ExIt7DBknleEJKacxfxqxKiuFabsw/hcQ0A1uH54Rvk=;
+	s=arc-20240116; t=1741202069; c=relaxed/simple;
+	bh=Ch9EIzOQvfR+SQ9sk3KV2t7IM/Sy0jZebFwoR7k2UXs=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=iMxLSFUTtyv/MpeBAdLfcP7qoVro89TepWULsZu8FEECDfu0LTI1HiLgY9ylkNunWJKau+VzFPqNGDnvqBe8WEn+gdNqXYGdSrA3zStHN/SgIixwhdZGLoDvJ6CN7bBUx9ekHEBWYfFRKvdMXadN13t+boaUSG6QvdULgF3mlVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAE3Dno6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A14C4CEE0;
-	Wed,  5 Mar 2025 19:12:36 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Jaf0rTJcJBzoTc0yQ8npyU/VhRM52Ukkb5Mg9W7fGMesNrqj1tmjfoCrSKwqJApFpU6wxaI+IuBU2m2kwXnYyxzcIeJDNNHo3MpNkHWOHWBMxFfRdO4fP2dHUnOwV0VcY2HUc7/JA2LV/H73f3t8JZySWMz5UgGc7YtDEleoR4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmEyW93K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEFBC4CED1;
+	Wed,  5 Mar 2025 19:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741201961;
-	bh=ExIt7DBknleEJKacxfxqxKiuFabsw/hcQ0A1uH54Rvk=;
+	s=k20201202; t=1741202068;
+	bh=Ch9EIzOQvfR+SQ9sk3KV2t7IM/Sy0jZebFwoR7k2UXs=;
 	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=PAE3Dno6ccaoSw/OC63gkrZi8NDjW0/NBpQ/CohRssgbiI6fZd2MoCN9Sx8iIjnHc
-	 Zn/31swEb0GmEgTM9Ka68gOkC7A1lPWQ/BkqmxUHd0A+/ZXPMGHjx2j6dRpaA5UIqZ
-	 6S/Dii+K24YkOYV+s74JXr6oi7CtJgKaNEbenjJmbzC3Nk6WBGiT42kGeOcdhpFtgW
-	 sBIG2tBPq7umwO3dZit0I0/RM5eLpBhNm6hxhNIA/NW9Rk8GYKv/sWazHL5rpr7mze
-	 yet3BLL7SGI4y/VRkq9nQNqwnkUtpdk/jzB7vKLci/LinwcEa8YddEywYqP8MKA+Qc
-	 LfO9Xgz1LoXuA==
-Message-ID: <cbbb1f9c-8361-43b1-a24b-afc5c91919e8@kernel.org>
-Date: Wed, 5 Mar 2025 20:12:32 +0100
+	b=WmEyW93KnV4e7ja4Hjp16lcqM/QpRjBta2Sanon6S5XVDbh/OgL3T1skq1HRacloM
+	 PpDaRfDCJFLDVtjtcofUcQyhzV2oQF4Ga2Sp1b2kDHUUVwQMa83BfWr564HvIN9tjg
+	 ItK/fZ3ysVEIXdvO51mLYopla39vrdri4DUBsRfHzzMX4iqGI0yOCiEnvIglSJrx9+
+	 uZetBrCJcG/hwKyeTT3tirrayt/l5c55qiSf1JhjIvsSjcKHHGGHXb50SmJiGoXl6f
+	 R+YdiGVDFHzHfLgF85oPWp300DpeQpnKLt37jxF5rcdSHM46tvK65IZP+oOYKVJeqk
+	 1g5sutsajRVSw==
+Message-ID: <f386adc4-0572-4c43-ac67-e1a0837381db@kernel.org>
+Date: Wed, 5 Mar 2025 20:14:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,6 +63,7 @@ References: <20250225131918.50925-1-v.pavani@samsung.com>
  <CGME20250225132507epcas5p455347acbd580b26ee807e467d3a6a05e@epcas5p4.samsung.com>
  <20250225131918.50925-3-v.pavani@samsung.com>
  <c5cef589-8091-41ce-94e7-82b56ba4143f@kernel.org>
+ <cbbb1f9c-8361-43b1-a24b-afc5c91919e8@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -107,21 +108,26 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <c5cef589-8091-41ce-94e7-82b56ba4143f@kernel.org>
+In-Reply-To: <cbbb1f9c-8361-43b1-a24b-afc5c91919e8@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 01/03/2025 15:14, Krzysztof Kozlowski wrote:
-> On 25/02/2025 14:19, Varada Pavani wrote:
->> Currently PLL142XX locktime is 270. As per spec, it should be 150. Hence
->> update PLL142XX controller locktime to 150.
+On 05/03/2025 20:12, Krzysztof Kozlowski wrote:
+> On 01/03/2025 15:14, Krzysztof Kozlowski wrote:
+>> On 25/02/2025 14:19, Varada Pavani wrote:
+>>> Currently PLL142XX locktime is 270. As per spec, it should be 150. Hence
+>>> update PLL142XX controller locktime to 150.
+>>>
+>>> Cc: stable@vger.kernel.org
 >>
->> Cc: stable@vger.kernel.org
+>> Fixes commit?
 > 
-> Fixes commit?
+> If this is a fix, commit msg should describe the bug. You decided to
+> drop the fixes tag, but you kept stable, so this makes no sense.
+> 
+Also in the future: run checkpatch.
 
-If this is a fix, commit msg should describe the bug. You decided to
-drop the fixes tag, but you kept stable, so this makes no sense.
+CHECK: Alignment should match open parenthesis
 
 Best regards,
 Krzysztof
