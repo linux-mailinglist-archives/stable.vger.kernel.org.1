@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECA2A507B2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E45DCA50870
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9EE4174E94
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A1391659ED
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECE6250C07;
-	Wed,  5 Mar 2025 17:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4996920C004;
+	Wed,  5 Mar 2025 18:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3O2m2S+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvsIdWxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF1914884C;
-	Wed,  5 Mar 2025 17:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046B119C542;
+	Wed,  5 Mar 2025 18:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197554; cv=none; b=EUWM7BwxX/rd0kOmfwnJv7AFOxJ439QLvARY+yNUHfpxOohO5YOxx9vW1SoWgeMsBFCE2q+1S3ssWH3zR4ZQXHxan9iUhftqealf6b1JfSfryNYUDDUrcjMl3b4YXa5jLdZsrhMROXnmCpcGrBPHqfDKJcExuzxLR6NTJEtfSQ0=
+	t=1741198039; cv=none; b=RBoVdVUXMDVxVMOkXrfKjMdFaOzbNieemXFAJ3AMttMXaFaSq3D6W+9B3c9aei8lK59eeiE3hss6rTbnu/NOUznJrsK6xCELuQ9I5Fu41Y3ofcpz9OZSEmwYYHdrHj5I9xkxVVjOLEGC142yY4cGm9pUGaNzk0Nqj/VHQx+JVMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197554; c=relaxed/simple;
-	bh=tV4lDuD64SHdR7FgbHja3Hn6YAc/tt4I0P4HAawVVmk=;
+	s=arc-20240116; t=1741198039; c=relaxed/simple;
+	bh=nGjI/LWtw60OWxPA1iWI8oXdPLWyXXCbecn6FLJo1nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDYh6wfypULbAzkBmqLl6K4rurzeNE9iRIAD9pWUIKZ8K4urDukAKAzHV4EkqfWZbsFnq0G7eMwq0hRpIn8jDfEld/Hxl54cyiEX9IKwfcNDkKAZ1qFFkRoTn4CXApYUjB4ornMao3HPE72jabgQwnvlCG8TGxXq3Q7uHZn2h2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3O2m2S+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248BCC4CEE9;
-	Wed,  5 Mar 2025 17:59:13 +0000 (UTC)
+	 MIME-Version; b=iF1ciu91g3DvMcebdqXZ/wwDLq+80Z943DVJZy4gOn2ivI+LbV+jjwq65Tq2tZ6Ps28PzTk9sdxe2DSwAvGd0B10KaqJZ2srhQ59pzRE0hZ8WYcc+n4BcXNNHsFqgVy9WbXUIHnx4a9quw9cBrEFbpVO1dU0yz3wGkhsmq2tz+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvsIdWxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E24CC4CED1;
+	Wed,  5 Mar 2025 18:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197554;
-	bh=tV4lDuD64SHdR7FgbHja3Hn6YAc/tt4I0P4HAawVVmk=;
+	s=korg; t=1741198038;
+	bh=nGjI/LWtw60OWxPA1iWI8oXdPLWyXXCbecn6FLJo1nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3O2m2S+elSMc4uFHijLwUqs7geNGLhPQJWa3fGTIWPq07JaY8hbmr63HSRp1Ev7e
-	 kEtDHegJrAz/oB4ZDomaAaBPOIVOYMiuBGfUTRFDqHt29yKjaxcdg8/p0YpFloJbAd
-	 sItKCJRRg7D9/wUy04UHrPIHQNoueR4xe/mosAq4=
+	b=NvsIdWxTIOBdwRxDSmGbrmwpQuBf1dcIGqku7EJx3XHEZN56XkYlDF8lH8qgZOUG3
+	 5zAmuhPF+006lxBX5ZbgrwdAALHG5FkjUfBQQTdgo08CVB9AKF6vVAKMH/rPMpybdx
+	 47kKaP7ivUwHH/sAVxJ0bh+BWQJcEmNV+sSMzBao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/142] afs: Make it possible to find the volumes that are using a server
-Date: Wed,  5 Mar 2025 18:47:19 +0100
-Message-ID: <20250305174501.154326761@linuxfoundation.org>
+Subject: [PATCH 6.12 011/150] RDMA/bnxt_re: Allocate dev_attr information dynamically
+Date: Wed,  5 Mar 2025 18:47:20 +0100
+Message-ID: <20250305174504.260414756@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,419 +63,400 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit ca0e79a46097d54e4af46c67c852479d97af35bb ]
+[ Upstream commit 9264cd6aa8f194753507cb6e1f444141e7c79f48 ]
 
-Make it possible to find the afs_volume structs that are using an
-afs_server struct to aid in breaking volume callbacks.
+In order to optimize the size of driver private structure,
+the memory for dev_attr is allocated dynamically during the
+chip context initialization. In order to make certain runtime
+decisions, store dev_attr in the qplib_res structure.
 
-The way this is done is that each afs_volume already has an array of
-afs_server_entry records that point to the servers where that volume might
-be found.  An afs_volume backpointer and a list node is added to each entry
-and each entry is then added to an RCU-traversable list on the afs_server
-to which it points.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Stable-dep-of: add117e48df4 ("afs: Fix the server_list to unuse a displaced server rather than putting it")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1736446693-6692-3-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 8238c7bd8420 ("RDMA/bnxt_re: Fix the statistics for Gen P7 VF")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/cell.c        |   1 +
- fs/afs/internal.h    |  23 +++++----
- fs/afs/server.c      |   1 +
- fs/afs/server_list.c | 112 +++++++++++++++++++++++++++++++++++++++----
- fs/afs/vl_alias.c    |   2 +-
- fs/afs/volume.c      |  36 ++++++++------
- 6 files changed, 143 insertions(+), 32 deletions(-)
+ drivers/infiniband/hw/bnxt_re/bnxt_re.h     |  2 +-
+ drivers/infiniband/hw/bnxt_re/hw_counters.c |  2 +-
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c    | 38 ++++++++++-----------
+ drivers/infiniband/hw/bnxt_re/main.c        | 36 ++++++++++++-------
+ drivers/infiniband/hw/bnxt_re/qplib_res.c   |  7 ++--
+ drivers/infiniband/hw/bnxt_re/qplib_res.h   |  4 +--
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c    |  4 +--
+ drivers/infiniband/hw/bnxt_re/qplib_sp.h    |  3 +-
+ 8 files changed, 51 insertions(+), 45 deletions(-)
 
-diff --git a/fs/afs/cell.c b/fs/afs/cell.c
-index 926cb1188eba6..7c0dce8eecadd 100644
---- a/fs/afs/cell.c
-+++ b/fs/afs/cell.c
-@@ -161,6 +161,7 @@ static struct afs_cell *afs_alloc_cell(struct afs_net *net,
- 	refcount_set(&cell->ref, 1);
- 	atomic_set(&cell->active, 0);
- 	INIT_WORK(&cell->manager, afs_manage_cell_work);
-+	spin_lock_init(&cell->vs_lock);
- 	cell->volumes = RB_ROOT;
- 	INIT_HLIST_HEAD(&cell->proc_volumes);
- 	seqlock_init(&cell->volume_lock);
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 2f135d19545b1..0973cd0a39695 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -379,6 +379,7 @@ struct afs_cell {
- 	unsigned int		debug_id;
+diff --git a/drivers/infiniband/hw/bnxt_re/bnxt_re.h b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
+index 784dc0fbd5268..a316afc0139c8 100644
+--- a/drivers/infiniband/hw/bnxt_re/bnxt_re.h
++++ b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
+@@ -195,7 +195,7 @@ struct bnxt_re_dev {
+ 	struct bnxt_re_nq_record	*nqr;
  
- 	/* The volumes belonging to this cell */
-+	spinlock_t		vs_lock;	/* Lock for server->volumes */
- 	struct rb_root		volumes;	/* Tree of volumes on this server */
- 	struct hlist_head	proc_volumes;	/* procfs volume list */
- 	seqlock_t		volume_lock;	/* For volumes */
-@@ -502,6 +503,7 @@ struct afs_server {
- 	struct hlist_node	addr4_link;	/* Link in net->fs_addresses4 */
- 	struct hlist_node	addr6_link;	/* Link in net->fs_addresses6 */
- 	struct hlist_node	proc_link;	/* Link in net->fs_proc */
-+	struct list_head	volumes;	/* RCU list of afs_server_entry objects */
- 	struct work_struct	initcb_work;	/* Work for CB.InitCallBackState* */
- 	struct afs_server	*gc_next;	/* Next server in manager's list */
- 	time64_t		unuse_time;	/* Time at which last unused */
-@@ -550,12 +552,14 @@ struct afs_server {
-  */
- struct afs_server_entry {
- 	struct afs_server	*server;
-+	struct afs_volume	*volume;
-+	struct list_head	slink;		/* Link in server->volumes */
- };
- 
- struct afs_server_list {
- 	struct rcu_head		rcu;
--	afs_volid_t		vids[AFS_MAXTYPES]; /* Volume IDs */
- 	refcount_t		usage;
-+	bool			attached;	/* T if attached to servers */
- 	unsigned char		nr_servers;
- 	unsigned char		preferred;	/* Preferred server */
- 	unsigned short		vnovol_mask;	/* Servers to be skipped due to VNOVOL */
-@@ -568,10 +572,9 @@ struct afs_server_list {
-  * Live AFS volume management.
-  */
- struct afs_volume {
--	union {
--		struct rcu_head	rcu;
--		afs_volid_t	vid;		/* volume ID */
--	};
-+	struct rcu_head	rcu;
-+	afs_volid_t		vid;		/* The volume ID of this volume */
-+	afs_volid_t		vids[AFS_MAXTYPES]; /* All associated volume IDs */
- 	refcount_t		ref;
- 	time64_t		update_at;	/* Time at which to next update */
- 	struct afs_cell		*cell;		/* Cell to which belongs (pins ref) */
-@@ -1453,10 +1456,14 @@ static inline struct afs_server_list *afs_get_serverlist(struct afs_server_list
- }
- 
- extern void afs_put_serverlist(struct afs_net *, struct afs_server_list *);
--extern struct afs_server_list *afs_alloc_server_list(struct afs_cell *, struct key *,
--						     struct afs_vldb_entry *,
--						     u8);
-+struct afs_server_list *afs_alloc_server_list(struct afs_volume *volume,
-+					      struct key *key,
-+					      struct afs_vldb_entry *vldb);
- extern bool afs_annotate_server_list(struct afs_server_list *, struct afs_server_list *);
-+void afs_attach_volume_to_servers(struct afs_volume *volume, struct afs_server_list *slist);
-+void afs_reattach_volume_to_servers(struct afs_volume *volume, struct afs_server_list *slist,
-+				    struct afs_server_list *old);
-+void afs_detach_volume_from_servers(struct afs_volume *volume, struct afs_server_list *slist);
- 
- /*
-  * super.c
-diff --git a/fs/afs/server.c b/fs/afs/server.c
-index 0bd2f5ba6900c..87381c2ffe374 100644
---- a/fs/afs/server.c
-+++ b/fs/afs/server.c
-@@ -236,6 +236,7 @@ static struct afs_server *afs_alloc_server(struct afs_cell *cell,
- 	server->addr_version = alist->version;
- 	server->uuid = *uuid;
- 	rwlock_init(&server->fs_lock);
-+	INIT_LIST_HEAD(&server->volumes);
- 	INIT_WORK(&server->initcb_work, afs_server_init_callback_work);
- 	init_waitqueue_head(&server->probe_wq);
- 	INIT_LIST_HEAD(&server->probe_link);
-diff --git a/fs/afs/server_list.c b/fs/afs/server_list.c
-index b59896b1de0af..4d6369477f54e 100644
---- a/fs/afs/server_list.c
-+++ b/fs/afs/server_list.c
-@@ -24,13 +24,13 @@ void afs_put_serverlist(struct afs_net *net, struct afs_server_list *slist)
- /*
-  * Build a server list from a VLDB record.
-  */
--struct afs_server_list *afs_alloc_server_list(struct afs_cell *cell,
-+struct afs_server_list *afs_alloc_server_list(struct afs_volume *volume,
- 					      struct key *key,
--					      struct afs_vldb_entry *vldb,
--					      u8 type_mask)
-+					      struct afs_vldb_entry *vldb)
- {
- 	struct afs_server_list *slist;
- 	struct afs_server *server;
-+	unsigned int type_mask = 1 << volume->type;
- 	int ret = -ENOMEM, nr_servers = 0, i, j;
- 
- 	for (i = 0; i < vldb->nr_servers; i++)
-@@ -44,15 +44,12 @@ struct afs_server_list *afs_alloc_server_list(struct afs_cell *cell,
- 	refcount_set(&slist->usage, 1);
- 	rwlock_init(&slist->lock);
- 
--	for (i = 0; i < AFS_MAXTYPES; i++)
--		slist->vids[i] = vldb->vid[i];
--
- 	/* Make sure a records exists for each server in the list. */
- 	for (i = 0; i < vldb->nr_servers; i++) {
- 		if (!(vldb->fs_mask[i] & type_mask))
- 			continue;
- 
--		server = afs_lookup_server(cell, key, &vldb->fs_server[i],
-+		server = afs_lookup_server(volume->cell, key, &vldb->fs_server[i],
- 					   vldb->addr_version[i]);
- 		if (IS_ERR(server)) {
- 			ret = PTR_ERR(server);
-@@ -70,7 +67,7 @@ struct afs_server_list *afs_alloc_server_list(struct afs_cell *cell,
- 				break;
- 		if (j < slist->nr_servers) {
- 			if (slist->servers[j].server == server) {
--				afs_put_server(cell->net, server,
-+				afs_put_server(volume->cell->net, server,
- 					       afs_server_trace_put_slist_isort);
- 				continue;
- 			}
-@@ -81,6 +78,7 @@ struct afs_server_list *afs_alloc_server_list(struct afs_cell *cell,
+ 	/* Device Resources */
+-	struct bnxt_qplib_dev_attr	dev_attr;
++	struct bnxt_qplib_dev_attr	*dev_attr;
+ 	struct bnxt_qplib_ctx		qplib_ctx;
+ 	struct bnxt_qplib_res		qplib_res;
+ 	struct bnxt_qplib_dpi		dpi_privileged;
+diff --git a/drivers/infiniband/hw/bnxt_re/hw_counters.c b/drivers/infiniband/hw/bnxt_re/hw_counters.c
+index 1e63f80917483..656c150e38e6f 100644
+--- a/drivers/infiniband/hw/bnxt_re/hw_counters.c
++++ b/drivers/infiniband/hw/bnxt_re/hw_counters.c
+@@ -357,7 +357,7 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
+ 			goto done;
  		}
- 
- 		slist->servers[j].server = server;
-+		slist->servers[j].volume = volume;
- 		slist->nr_servers++;
- 	}
- 
-@@ -92,7 +90,7 @@ struct afs_server_list *afs_alloc_server_list(struct afs_cell *cell,
- 	return slist;
- 
- error_2:
--	afs_put_serverlist(cell->net, slist);
-+	afs_put_serverlist(volume->cell->net, slist);
- error:
- 	return ERR_PTR(ret);
- }
-@@ -127,3 +125,99 @@ bool afs_annotate_server_list(struct afs_server_list *new,
- 
- 	return true;
- }
-+
-+/*
-+ * Attach a volume to the servers it is going to use.
-+ */
-+void afs_attach_volume_to_servers(struct afs_volume *volume, struct afs_server_list *slist)
-+{
-+	struct afs_server_entry *se, *pe;
-+	struct afs_server *server;
-+	struct list_head *p;
-+	unsigned int i;
-+
-+	spin_lock(&volume->cell->vs_lock);
-+
-+	for (i = 0; i < slist->nr_servers; i++) {
-+		se = &slist->servers[i];
-+		server = se->server;
-+
-+		list_for_each(p, &server->volumes) {
-+			pe = list_entry(p, struct afs_server_entry, slink);
-+			if (volume->vid <= pe->volume->vid)
-+				break;
-+		}
-+		list_add_tail_rcu(&se->slink, p);
-+	}
-+
-+	slist->attached = true;
-+	spin_unlock(&volume->cell->vs_lock);
-+}
-+
-+/*
-+ * Reattach a volume to the servers it is going to use when server list is
-+ * replaced.  We try to switch the attachment points to avoid rewalking the
-+ * lists.
-+ */
-+void afs_reattach_volume_to_servers(struct afs_volume *volume, struct afs_server_list *new,
-+				    struct afs_server_list *old)
-+{
-+	unsigned int n = 0, o = 0;
-+
-+	spin_lock(&volume->cell->vs_lock);
-+
-+	while (n < new->nr_servers || o < old->nr_servers) {
-+		struct afs_server_entry *pn = n < new->nr_servers ? &new->servers[n] : NULL;
-+		struct afs_server_entry *po = o < old->nr_servers ? &old->servers[o] : NULL;
-+		struct afs_server_entry *s;
-+		struct list_head *p;
-+		int diff;
-+
-+		if (pn && po && pn->server == po->server) {
-+			list_replace_rcu(&po->slink, &pn->slink);
-+			n++;
-+			o++;
-+			continue;
-+		}
-+
-+		if (pn && po)
-+			diff = memcmp(&pn->server->uuid, &po->server->uuid,
-+				      sizeof(pn->server->uuid));
-+		else
-+			diff = pn ? -1 : 1;
-+
-+		if (diff < 0) {
-+			list_for_each(p, &pn->server->volumes) {
-+				s = list_entry(p, struct afs_server_entry, slink);
-+				if (volume->vid <= s->volume->vid)
-+					break;
-+			}
-+			list_add_tail_rcu(&pn->slink, p);
-+			n++;
-+		} else {
-+			list_del_rcu(&po->slink);
-+			o++;
-+		}
-+	}
-+
-+	spin_unlock(&volume->cell->vs_lock);
-+}
-+
-+/*
-+ * Detach a volume from the servers it has been using.
-+ */
-+void afs_detach_volume_from_servers(struct afs_volume *volume, struct afs_server_list *slist)
-+{
-+	unsigned int i;
-+
-+	if (!slist->attached)
-+		return;
-+
-+	spin_lock(&volume->cell->vs_lock);
-+
-+	for (i = 0; i < slist->nr_servers; i++)
-+		list_del_rcu(&slist->servers[i].slink);
-+
-+	slist->attached = false;
-+	spin_unlock(&volume->cell->vs_lock);
-+}
-diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
-index 83cf1bfbe343a..b2cc10df95308 100644
---- a/fs/afs/vl_alias.c
-+++ b/fs/afs/vl_alias.c
-@@ -126,7 +126,7 @@ static int afs_compare_volume_slists(const struct afs_volume *vol_a,
- 	lb = rcu_dereference(vol_b->servers);
- 
- 	for (i = 0; i < AFS_MAXTYPES; i++)
--		if (la->vids[i] != lb->vids[i])
-+		if (vol_a->vids[i] != vol_b->vids[i])
- 			return 0;
- 
- 	while (a < la->nr_servers && b < lb->nr_servers) {
-diff --git a/fs/afs/volume.c b/fs/afs/volume.c
-index c028598a903c9..0f64b97581272 100644
---- a/fs/afs/volume.c
-+++ b/fs/afs/volume.c
-@@ -72,11 +72,11 @@ static void afs_remove_volume_from_cell(struct afs_volume *volume)
-  */
- static struct afs_volume *afs_alloc_volume(struct afs_fs_context *params,
- 					   struct afs_vldb_entry *vldb,
--					   unsigned long type_mask)
-+					   struct afs_server_list **_slist)
+ 		bnxt_re_copy_err_stats(rdev, stats, err_s);
+-		if (_is_ext_stats_supported(rdev->dev_attr.dev_cap_flags) &&
++		if (_is_ext_stats_supported(rdev->dev_attr->dev_cap_flags) &&
+ 		    !rdev->is_virtfn) {
+ 			rc = bnxt_re_get_ext_stat(rdev, stats);
+ 			if (rc) {
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 11e2b3dee2a53..13c1563c2da62 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -118,7 +118,7 @@ static enum ib_access_flags __to_ib_access_flags(int qflags)
+ static void bnxt_re_check_and_set_relaxed_ordering(struct bnxt_re_dev *rdev,
+ 						   struct bnxt_qplib_mrw *qplib_mr)
  {
- 	struct afs_server_list *slist;
- 	struct afs_volume *volume;
--	int ret = -ENOMEM;
-+	int ret = -ENOMEM, i;
- 
- 	volume = kzalloc(sizeof(struct afs_volume), GFP_KERNEL);
- 	if (!volume)
-@@ -95,13 +95,16 @@ static struct afs_volume *afs_alloc_volume(struct afs_fs_context *params,
- 	rwlock_init(&volume->cb_v_break_lock);
- 	memcpy(volume->name, vldb->name, vldb->name_len + 1);
- 
--	slist = afs_alloc_server_list(params->cell, params->key, vldb, type_mask);
-+	for (i = 0; i < AFS_MAXTYPES; i++)
-+		volume->vids[i] = vldb->vid[i];
-+
-+	slist = afs_alloc_server_list(volume, params->key, vldb);
- 	if (IS_ERR(slist)) {
- 		ret = PTR_ERR(slist);
- 		goto error_1;
- 	}
- 
--	refcount_set(&slist->usage, 1);
-+	*_slist = slist;
- 	rcu_assign_pointer(volume->servers, slist);
- 	trace_afs_volume(volume->vid, 1, afs_volume_trace_alloc);
- 	return volume;
-@@ -117,17 +120,19 @@ static struct afs_volume *afs_alloc_volume(struct afs_fs_context *params,
-  * Look up or allocate a volume record.
-  */
- static struct afs_volume *afs_lookup_volume(struct afs_fs_context *params,
--					    struct afs_vldb_entry *vldb,
--					    unsigned long type_mask)
-+					    struct afs_vldb_entry *vldb)
- {
-+	struct afs_server_list *slist;
- 	struct afs_volume *candidate, *volume;
- 
--	candidate = afs_alloc_volume(params, vldb, type_mask);
-+	candidate = afs_alloc_volume(params, vldb, &slist);
- 	if (IS_ERR(candidate))
- 		return candidate;
- 
- 	volume = afs_insert_volume_into_cell(params->cell, candidate);
--	if (volume != candidate)
-+	if (volume == candidate)
-+		afs_attach_volume_to_servers(volume, slist);
-+	else
- 		afs_put_volume(params->net, candidate, afs_volume_trace_put_cell_dup);
- 	return volume;
+-	if (_is_relaxed_ordering_supported(rdev->dev_attr.dev_cap_flags2) &&
++	if (_is_relaxed_ordering_supported(rdev->dev_attr->dev_cap_flags2) &&
+ 	    pcie_relaxed_ordering_enabled(rdev->en_dev->pdev))
+ 		qplib_mr->flags |= CMDQ_REGISTER_MR_FLAGS_ENABLE_RO;
  }
-@@ -208,8 +213,7 @@ struct afs_volume *afs_create_volume(struct afs_fs_context *params)
- 		goto error;
- 	}
- 
--	type_mask = 1UL << params->type;
--	volume = afs_lookup_volume(params, vldb, type_mask);
-+	volume = afs_lookup_volume(params, vldb);
- 
- error:
- 	kfree(vldb);
-@@ -221,14 +225,17 @@ struct afs_volume *afs_create_volume(struct afs_fs_context *params)
-  */
- static void afs_destroy_volume(struct afs_net *net, struct afs_volume *volume)
+@@ -143,7 +143,7 @@ int bnxt_re_query_device(struct ib_device *ibdev,
+ 			 struct ib_udata *udata)
  {
-+	struct afs_server_list *slist = rcu_access_pointer(volume->servers);
+ 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibdev, ibdev);
+-	struct bnxt_qplib_dev_attr *dev_attr = &rdev->dev_attr;
++	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
+ 
+ 	memset(ib_attr, 0, sizeof(*ib_attr));
+ 	memcpy(&ib_attr->fw_ver, dev_attr->fw_ver,
+@@ -216,7 +216,7 @@ int bnxt_re_query_port(struct ib_device *ibdev, u32 port_num,
+ 		       struct ib_port_attr *port_attr)
+ {
+ 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibdev, ibdev);
+-	struct bnxt_qplib_dev_attr *dev_attr = &rdev->dev_attr;
++	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
+ 	int rc;
+ 
+ 	memset(port_attr, 0, sizeof(*port_attr));
+@@ -274,8 +274,8 @@ void bnxt_re_query_fw_str(struct ib_device *ibdev, char *str)
+ 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibdev, ibdev);
+ 
+ 	snprintf(str, IB_FW_VERSION_NAME_MAX, "%d.%d.%d.%d",
+-		 rdev->dev_attr.fw_ver[0], rdev->dev_attr.fw_ver[1],
+-		 rdev->dev_attr.fw_ver[2], rdev->dev_attr.fw_ver[3]);
++		 rdev->dev_attr->fw_ver[0], rdev->dev_attr->fw_ver[1],
++		 rdev->dev_attr->fw_ver[2], rdev->dev_attr->fw_ver[3]);
+ }
+ 
+ int bnxt_re_query_pkey(struct ib_device *ibdev, u32 port_num,
+@@ -526,7 +526,7 @@ static int bnxt_re_create_fence_mr(struct bnxt_re_pd *pd)
+ 	mr->qplib_mr.pd = &pd->qplib_pd;
+ 	mr->qplib_mr.type = CMDQ_ALLOCATE_MRW_MRW_FLAGS_PMR;
+ 	mr->qplib_mr.access_flags = __from_ib_access_flags(mr_access_flags);
+-	if (!_is_alloc_mr_unified(rdev->dev_attr.dev_cap_flags)) {
++	if (!_is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags)) {
+ 		rc = bnxt_qplib_alloc_mrw(&rdev->qplib_res, &mr->qplib_mr);
+ 		if (rc) {
+ 			ibdev_err(&rdev->ibdev, "Failed to alloc fence-HW-MR\n");
+@@ -1001,7 +1001,7 @@ static int bnxt_re_setup_swqe_size(struct bnxt_re_qp *qp,
+ 	rdev = qp->rdev;
+ 	qplqp = &qp->qplib_qp;
+ 	sq = &qplqp->sq;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 
+ 	align = sizeof(struct sq_send_hdr);
+ 	ilsize = ALIGN(init_attr->cap.max_inline_data, align);
+@@ -1221,7 +1221,7 @@ static int bnxt_re_init_rq_attr(struct bnxt_re_qp *qp,
+ 	rdev = qp->rdev;
+ 	qplqp = &qp->qplib_qp;
+ 	rq = &qplqp->rq;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 
+ 	if (init_attr->srq) {
+ 		struct bnxt_re_srq *srq;
+@@ -1258,7 +1258,7 @@ static void bnxt_re_adjust_gsi_rq_attr(struct bnxt_re_qp *qp)
+ 
+ 	rdev = qp->rdev;
+ 	qplqp = &qp->qplib_qp;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 
+ 	if (!bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx)) {
+ 		qplqp->rq.max_sge = dev_attr->max_qp_sges;
+@@ -1284,7 +1284,7 @@ static int bnxt_re_init_sq_attr(struct bnxt_re_qp *qp,
+ 	rdev = qp->rdev;
+ 	qplqp = &qp->qplib_qp;
+ 	sq = &qplqp->sq;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 
+ 	sq->max_sge = init_attr->cap.max_send_sge;
+ 	entries = init_attr->cap.max_send_wr;
+@@ -1337,7 +1337,7 @@ static void bnxt_re_adjust_gsi_sq_attr(struct bnxt_re_qp *qp,
+ 
+ 	rdev = qp->rdev;
+ 	qplqp = &qp->qplib_qp;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 
+ 	if (!bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx)) {
+ 		entries = bnxt_re_init_depth(init_attr->cap.max_send_wr + 1, uctx);
+@@ -1386,7 +1386,7 @@ static int bnxt_re_init_qp_attr(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
+ 
+ 	rdev = qp->rdev;
+ 	qplqp = &qp->qplib_qp;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 
+ 	/* Setup misc params */
+ 	ether_addr_copy(qplqp->smac, rdev->netdev->dev_addr);
+@@ -1556,7 +1556,7 @@ int bnxt_re_create_qp(struct ib_qp *ib_qp, struct ib_qp_init_attr *qp_init_attr,
+ 	ib_pd = ib_qp->pd;
+ 	pd = container_of(ib_pd, struct bnxt_re_pd, ib_pd);
+ 	rdev = pd->rdev;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 	qp = container_of(ib_qp, struct bnxt_re_qp, ib_qp);
+ 
+ 	uctx = rdma_udata_to_drv_context(udata, struct bnxt_re_ucontext, ib_uctx);
+@@ -1783,7 +1783,7 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
+ 	ib_pd = ib_srq->pd;
+ 	pd = container_of(ib_pd, struct bnxt_re_pd, ib_pd);
+ 	rdev = pd->rdev;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 	srq = container_of(ib_srq, struct bnxt_re_srq, ib_srq);
+ 
+ 	if (srq_init_attr->attr.max_wr >= dev_attr->max_srq_wqes) {
+@@ -1987,7 +1987,7 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
+ {
+ 	struct bnxt_re_qp *qp = container_of(ib_qp, struct bnxt_re_qp, ib_qp);
+ 	struct bnxt_re_dev *rdev = qp->rdev;
+-	struct bnxt_qplib_dev_attr *dev_attr = &rdev->dev_attr;
++	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
+ 	enum ib_qp_state curr_qp_state, new_qp_state;
+ 	int rc, entries;
+ 	unsigned int flags;
+@@ -3011,7 +3011,7 @@ int bnxt_re_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+ 	struct ib_udata *udata = &attrs->driver_udata;
+ 	struct bnxt_re_ucontext *uctx =
+ 		rdma_udata_to_drv_context(udata, struct bnxt_re_ucontext, ib_uctx);
+-	struct bnxt_qplib_dev_attr *dev_attr = &rdev->dev_attr;
++	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
+ 	struct bnxt_qplib_chip_ctx *cctx;
+ 	struct bnxt_qplib_nq *nq = NULL;
+ 	unsigned int nq_alloc_cnt;
+@@ -3154,7 +3154,7 @@ int bnxt_re_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
+ 
+ 	cq =  container_of(ibcq, struct bnxt_re_cq, ib_cq);
+ 	rdev = cq->rdev;
+-	dev_attr = &rdev->dev_attr;
++	dev_attr = rdev->dev_attr;
+ 	if (!ibcq->uobject) {
+ 		ibdev_err(&rdev->ibdev, "Kernel CQ Resize not supported");
+ 		return -EOPNOTSUPP;
+@@ -4127,7 +4127,7 @@ static struct ib_mr *__bnxt_re_user_reg_mr(struct ib_pd *ib_pd, u64 length, u64
+ 	mr->qplib_mr.access_flags = __from_ib_access_flags(mr_access_flags);
+ 	mr->qplib_mr.type = CMDQ_ALLOCATE_MRW_MRW_FLAGS_MR;
+ 
+-	if (!_is_alloc_mr_unified(rdev->dev_attr.dev_cap_flags)) {
++	if (!_is_alloc_mr_unified(rdev->dev_attr->dev_cap_flags)) {
+ 		rc = bnxt_qplib_alloc_mrw(&rdev->qplib_res, &mr->qplib_mr);
+ 		if (rc) {
+ 			ibdev_err(&rdev->ibdev, "Failed to allocate MR rc = %d", rc);
+@@ -4219,7 +4219,7 @@ int bnxt_re_alloc_ucontext(struct ib_ucontext *ctx, struct ib_udata *udata)
+ 	struct bnxt_re_ucontext *uctx =
+ 		container_of(ctx, struct bnxt_re_ucontext, ib_uctx);
+ 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibdev, ibdev);
+-	struct bnxt_qplib_dev_attr *dev_attr = &rdev->dev_attr;
++	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
+ 	struct bnxt_re_user_mmap_entry *entry;
+ 	struct bnxt_re_uctx_resp resp = {};
+ 	struct bnxt_re_uctx_req ureq = {};
+diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+index 9fd83189d00a5..9bd837a5b8a1a 100644
+--- a/drivers/infiniband/hw/bnxt_re/main.c
++++ b/drivers/infiniband/hw/bnxt_re/main.c
+@@ -152,6 +152,10 @@ static void bnxt_re_destroy_chip_ctx(struct bnxt_re_dev *rdev)
+ 
+ 	if (!rdev->chip_ctx)
+ 		return;
 +
- 	_enter("%p", volume);
++	kfree(rdev->dev_attr);
++	rdev->dev_attr = NULL;
++
+ 	chip_ctx = rdev->chip_ctx;
+ 	rdev->chip_ctx = NULL;
+ 	rdev->rcfw.res = NULL;
+@@ -165,7 +169,7 @@ static int bnxt_re_setup_chip_ctx(struct bnxt_re_dev *rdev)
+ {
+ 	struct bnxt_qplib_chip_ctx *chip_ctx;
+ 	struct bnxt_en_dev *en_dev;
+-	int rc;
++	int rc = -ENOMEM;
  
- #ifdef CONFIG_AFS_FSCACHE
- 	ASSERTCMP(volume->cache, ==, NULL);
- #endif
+ 	en_dev = rdev->en_dev;
  
-+	afs_detach_volume_from_servers(volume, slist);
- 	afs_remove_volume_from_cell(volume);
--	afs_put_serverlist(net, rcu_access_pointer(volume->servers));
-+	afs_put_serverlist(net, slist);
- 	afs_put_cell(volume->cell, afs_cell_trace_put_vol);
- 	trace_afs_volume(volume->vid, refcount_read(&volume->ref),
- 			 afs_volume_trace_free);
-@@ -362,8 +369,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+@@ -181,23 +185,30 @@ static int bnxt_re_setup_chip_ctx(struct bnxt_re_dev *rdev)
+ 
+ 	rdev->qplib_res.cctx = rdev->chip_ctx;
+ 	rdev->rcfw.res = &rdev->qplib_res;
+-	rdev->qplib_res.dattr = &rdev->dev_attr;
++	rdev->dev_attr = kzalloc(sizeof(*rdev->dev_attr), GFP_KERNEL);
++	if (!rdev->dev_attr)
++		goto free_chip_ctx;
++	rdev->qplib_res.dattr = rdev->dev_attr;
+ 	rdev->qplib_res.is_vf = BNXT_EN_VF(en_dev);
+ 
+ 	bnxt_re_set_drv_mode(rdev);
+ 
+ 	bnxt_re_set_db_offset(rdev);
+ 	rc = bnxt_qplib_map_db_bar(&rdev->qplib_res);
+-	if (rc) {
+-		kfree(rdev->chip_ctx);
+-		rdev->chip_ctx = NULL;
+-		return rc;
+-	}
++	if (rc)
++		goto free_dev_attr;
+ 
+ 	if (bnxt_qplib_determine_atomics(en_dev->pdev))
+ 		ibdev_info(&rdev->ibdev,
+ 			   "platform doesn't support global atomics.");
+ 	return 0;
++free_dev_attr:
++	kfree(rdev->dev_attr);
++	rdev->dev_attr = NULL;
++free_chip_ctx:
++	kfree(rdev->chip_ctx);
++	rdev->chip_ctx = NULL;
++	return rc;
+ }
+ 
+ /* SR-IOV helper functions */
+@@ -219,7 +230,7 @@ static void bnxt_re_limit_pf_res(struct bnxt_re_dev *rdev)
+ 	struct bnxt_qplib_ctx *ctx;
+ 	int i;
+ 
+-	attr = &rdev->dev_attr;
++	attr = rdev->dev_attr;
+ 	ctx = &rdev->qplib_ctx;
+ 
+ 	ctx->qpc_count = min_t(u32, BNXT_RE_MAX_QPC_COUNT,
+@@ -233,7 +244,7 @@ static void bnxt_re_limit_pf_res(struct bnxt_re_dev *rdev)
+ 	if (!bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
+ 		for (i = 0; i < MAX_TQM_ALLOC_REQ; i++)
+ 			rdev->qplib_ctx.tqm_ctx.qcount[i] =
+-			rdev->dev_attr.tqm_alloc_reqs[i];
++			rdev->dev_attr->tqm_alloc_reqs[i];
+ }
+ 
+ static void bnxt_re_limit_vf_res(struct bnxt_qplib_ctx *qplib_ctx, u32 num_vf)
+@@ -1353,12 +1364,11 @@ static int bnxt_re_alloc_res(struct bnxt_re_dev *rdev)
+ 
+ 	/* Configure and allocate resources for qplib */
+ 	rdev->qplib_res.rcfw = &rdev->rcfw;
+-	rc = bnxt_qplib_get_dev_attr(&rdev->rcfw, &rdev->dev_attr);
++	rc = bnxt_qplib_get_dev_attr(&rdev->rcfw);
+ 	if (rc)
+ 		goto fail;
+ 
+-	rc = bnxt_qplib_alloc_res(&rdev->qplib_res, rdev->en_dev->pdev,
+-				  rdev->netdev, &rdev->dev_attr);
++	rc = bnxt_qplib_alloc_res(&rdev->qplib_res, rdev->netdev);
+ 	if (rc)
+ 		goto fail;
+ 
+@@ -1756,7 +1766,7 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 op_type)
+ 			rdev->pacing.dbr_pacing = false;
+ 		}
  	}
+-	rc = bnxt_qplib_get_dev_attr(&rdev->rcfw, &rdev->dev_attr);
++	rc = bnxt_qplib_get_dev_attr(&rdev->rcfw);
+ 	if (rc)
+ 		goto disable_rcfw;
  
- 	/* See if the volume's server list got updated. */
--	new = afs_alloc_server_list(volume->cell, key,
--				    vldb, (1 << volume->type));
-+	new = afs_alloc_server_list(volume, key, vldb);
- 	if (IS_ERR(new)) {
- 		ret = PTR_ERR(new);
- 		goto error_vldb;
-@@ -384,9 +390,11 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index 96ceec1e8199a..02922a0987ad7 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -876,14 +876,13 @@ void bnxt_qplib_free_res(struct bnxt_qplib_res *res)
+ 	bnxt_qplib_free_dpi_tbl(res, &res->dpi_tbl);
+ }
  
- 	volume->update_at = ktime_get_real_seconds() + afs_volume_record_life;
- 	write_unlock(&volume->servers_lock);
--	ret = 0;
+-int bnxt_qplib_alloc_res(struct bnxt_qplib_res *res, struct pci_dev *pdev,
+-			 struct net_device *netdev,
+-			 struct bnxt_qplib_dev_attr *dev_attr)
++int bnxt_qplib_alloc_res(struct bnxt_qplib_res *res, struct net_device *netdev)
+ {
++	struct bnxt_qplib_dev_attr *dev_attr;
+ 	int rc;
  
-+	if (discard == old)
-+		afs_reattach_volume_to_servers(volume, new, old);
- 	afs_put_serverlist(volume->cell->net, discard);
-+	ret = 0;
- error_vldb:
- 	kfree(vldb);
- error:
+-	res->pdev = pdev;
+ 	res->netdev = netdev;
++	dev_attr = res->dattr;
+ 
+ 	rc = bnxt_qplib_alloc_sgid_tbl(res, &res->sgid_tbl, dev_attr->max_sgid);
+ 	if (rc)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.h b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+index c2f710364e0ff..0bef58bd44e77 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+@@ -421,9 +421,7 @@ int bnxt_qplib_dealloc_dpi(struct bnxt_qplib_res *res,
+ void bnxt_qplib_cleanup_res(struct bnxt_qplib_res *res);
+ int bnxt_qplib_init_res(struct bnxt_qplib_res *res);
+ void bnxt_qplib_free_res(struct bnxt_qplib_res *res);
+-int bnxt_qplib_alloc_res(struct bnxt_qplib_res *res, struct pci_dev *pdev,
+-			 struct net_device *netdev,
+-			 struct bnxt_qplib_dev_attr *dev_attr);
++int bnxt_qplib_alloc_res(struct bnxt_qplib_res *res, struct net_device *netdev);
+ void bnxt_qplib_free_ctx(struct bnxt_qplib_res *res,
+ 			 struct bnxt_qplib_ctx *ctx);
+ int bnxt_qplib_alloc_ctx(struct bnxt_qplib_res *res,
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 3cca7b1395f6a..807439b1acb51 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -88,9 +88,9 @@ static void bnxt_qplib_query_version(struct bnxt_qplib_rcfw *rcfw,
+ 	fw_ver[3] = resp.fw_rsvd;
+ }
+ 
+-int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+-			    struct bnxt_qplib_dev_attr *attr)
++int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw)
+ {
++	struct bnxt_qplib_dev_attr *attr = rcfw->res->dattr;
+ 	struct creq_query_func_resp resp = {};
+ 	struct bnxt_qplib_cmdqmsg msg = {};
+ 	struct creq_query_func_resp_sb *sb;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+index ecf3f45fea74f..de959b3c28e01 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+@@ -325,8 +325,7 @@ int bnxt_qplib_add_sgid(struct bnxt_qplib_sgid_tbl *sgid_tbl,
+ int bnxt_qplib_update_sgid(struct bnxt_qplib_sgid_tbl *sgid_tbl,
+ 			   struct bnxt_qplib_gid *gid, u16 gid_idx,
+ 			   const u8 *smac);
+-int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+-			    struct bnxt_qplib_dev_attr *attr);
++int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw);
+ int bnxt_qplib_set_func_resources(struct bnxt_qplib_res *res,
+ 				  struct bnxt_qplib_rcfw *rcfw,
+ 				  struct bnxt_qplib_ctx *ctx);
 -- 
 2.39.5
 
