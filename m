@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B388CA50983
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346BAA50840
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEEDE3A7537
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C6091894A91
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AB3253F21;
-	Wed,  5 Mar 2025 18:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D061A3174;
+	Wed,  5 Mar 2025 18:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZ6yXEUy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhV1SjMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC6C1FC7D0;
-	Wed,  5 Mar 2025 18:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CA624FBE8;
+	Wed,  5 Mar 2025 18:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198666; cv=none; b=f20oIIuuTEQQfyS8GfckrTqtONiElCZQACNNPpJvBkag5oborLzWNB/U4Hu1roE7kQT6uhlqDGlHno/47Ea+lRb125KWHIPi/ua3gbH8WuMriRa/5YRee8w3zoB9wqIxHrLH9sQiK42QTimYGLSuxCW39K+XdNKcvEAZCjhZPFw=
+	t=1741197859; cv=none; b=cG8PkiJCyPtkzFDyBED+8cw0uNnhTfuWuRUlHU+eYcR+zVRdq4Dd4Pvxr605ldeihob/CQGZjkPla6cZNlmunqCg9/81Ja/8a4jXC1JcjnCEBLEboMPidKoRQoTOEXYgbwEKRSnPrIetdbpVQVraI6ceMUmUkEwV+GzGpT5Q5Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198666; c=relaxed/simple;
-	bh=YST03xCBakcAsUEG9GxBg6OGFPADGgCzG02dNWt0OPY=;
+	s=arc-20240116; t=1741197859; c=relaxed/simple;
+	bh=+CTTyx7Dx6sYkHhkrYM254G/xnKGEQbxoMYsUszg9jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oG47/tHm+/0OkyOjwxHhEA/Zgyml+NCBEc9z+842GgWXvXWEDDGH6jyGoenhaqu0Y75pkusHFMu2F+5/sDsuhWqTE2nXxmHltNdPDCK+Yn3kNMHiZxrEBek+eZmF83lkYW9vbecOeQhNQNxaTYC/YHeURcih2/iNOqIXlNIzPOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZ6yXEUy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362A9C4CED1;
-	Wed,  5 Mar 2025 18:17:44 +0000 (UTC)
+	 MIME-Version; b=BhzmncZEEkBDPXsrOI4408bG9CrE+er6S1FZjroraErIdJqtB5kC39h9BWvOXvfxLjmsIZweq53OxlRJrh6ZJQIppvSxb0pIxEmu+s44c64P7JVFe0MdrfCLnDL0dBs+Un9luoTOgc4IqMr2mkCh+6D0tOxq3l8pAk/9I9+tio4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhV1SjMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7153FC4CED1;
+	Wed,  5 Mar 2025 18:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198665;
-	bh=YST03xCBakcAsUEG9GxBg6OGFPADGgCzG02dNWt0OPY=;
+	s=korg; t=1741197858;
+	bh=+CTTyx7Dx6sYkHhkrYM254G/xnKGEQbxoMYsUszg9jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZ6yXEUypUCDfqVqGrwpUewAJSG9o7WoZWYyvsx5kt9wWtG1DNCgcKcjrK7tuNQrt
-	 ynvvaVkLFlzIix+H689JpoSbmFIuCcc2TgFojFex1RVnjKfGxk0ERx0Q8rGDcrDcUW
-	 cFp75gR9tENQ0+8Uv/cLQ2t5Id2ZETRA8uLTuWqQ=
+	b=DhV1SjMz/J8d0stK2HX/gxu0KojD6C3csiaUHNUBaTRBaRVLATlmMrIAkfgOQp0T+
+	 7KJjaIPIfHKohoKccpcH5reonNex69ztYV6KA0uQxw+cs1+63e3gA8DM0FAejGq0v/
+	 OjwG7q4/HU9O2Ur+7D+/FjEZpvV1Pr7Wnoxs10wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tyrone Ting <kfting@nuvoton.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.13 107/157] i2c: npcm: disable interrupt enable bit before devm_request_irq
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 124/142] x86/microcode: Rendezvous and load in NMI
 Date: Wed,  5 Mar 2025 18:49:03 +0100
-Message-ID: <20250305174509.610464980@linuxfoundation.org>
+Message-ID: <20250305174505.308490024@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,215 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyrone Ting <kfting@nuvoton.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit dd1998e243f5fa25d348a384ba0b6c84d980f2b2 upstream.
+commit 7eb314a22800457396f541c655697dabd71e44a7 upstream
 
-The customer reports that there is a soft lockup issue related to
-the i2c driver. After checking, the i2c module was doing a tx transfer
-and the bmc machine reboots in the middle of the i2c transaction, the i2c
-module keeps the status without being reset.
+stop_machine() does not prevent the spin-waiting sibling from handling
+an NMI, which is obviously violating the whole concept of rendezvous.
 
-Due to such an i2c module status, the i2c irq handler keeps getting
-triggered since the i2c irq handler is registered in the kernel booting
-process after the bmc machine is doing a warm rebooting.
-The continuous triggering is stopped by the soft lockup watchdog timer.
+Implement a static branch right in the beginning of the NMI handler
+which is nopped out except when enabled by the late loading mechanism.
 
-Disable the interrupt enable bit in the i2c module before calling
-devm_request_irq to fix this issue since the i2c relative status bit
-is read-only.
+The late loader enables the static branch before stop_machine() is
+invoked. Each CPU has an nmi_enable in its control structure which
+indicates whether the CPU should go into the update routine.
 
-Here is the soft lockup log.
-[   28.176395] watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [swapper/0:1]
-[   28.183351] Modules linked in:
-[   28.186407] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.120-yocto-s-dirty-bbebc78 #1
-[   28.201174] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   28.208128] pc : __do_softirq+0xb0/0x368
-[   28.212055] lr : __do_softirq+0x70/0x368
-[   28.215972] sp : ffffff8035ebca00
-[   28.219278] x29: ffffff8035ebca00 x28: 0000000000000002 x27: ffffff80071a3780
-[   28.226412] x26: ffffffc008bdc000 x25: ffffffc008bcc640 x24: ffffffc008be50c0
-[   28.233546] x23: ffffffc00800200c x22: 0000000000000000 x21: 000000000000001b
-[   28.240679] x20: 0000000000000000 x19: ffffff80001c3200 x18: ffffffffffffffff
-[   28.247812] x17: ffffffc02d2e0000 x16: ffffff8035eb8b40 x15: 00001e8480000000
-[   28.254945] x14: 02c3647e37dbfcb6 x13: 02c364f2ab14200c x12: 0000000002c364f2
-[   28.262078] x11: 00000000fa83b2da x10: 000000000000b67e x9 : ffffffc008010250
-[   28.269211] x8 : 000000009d983d00 x7 : 7fffffffffffffff x6 : 0000036d74732434
-[   28.276344] x5 : 00ffffffffffffff x4 : 0000000000000015 x3 : 0000000000000198
-[   28.283476] x2 : ffffffc02d2e0000 x1 : 00000000000000e0 x0 : ffffffc008bdcb40
-[   28.290611] Call trace:
-[   28.293052]  __do_softirq+0xb0/0x368
-[   28.296625]  __irq_exit_rcu+0xe0/0x100
-[   28.300374]  irq_exit+0x14/0x20
-[   28.303513]  handle_domain_irq+0x68/0x90
-[   28.307440]  gic_handle_irq+0x78/0xb0
-[   28.311098]  call_on_irq_stack+0x20/0x38
-[   28.315019]  do_interrupt_handler+0x54/0x5c
-[   28.319199]  el1_interrupt+0x2c/0x4c
-[   28.322777]  el1h_64_irq_handler+0x14/0x20
-[   28.326872]  el1h_64_irq+0x74/0x78
-[   28.330269]  __setup_irq+0x454/0x780
-[   28.333841]  request_threaded_irq+0xd0/0x1b4
-[   28.338107]  devm_request_threaded_irq+0x84/0x100
-[   28.342809]  npcm_i2c_probe_bus+0x188/0x3d0
-[   28.346990]  platform_probe+0x6c/0xc4
-[   28.350653]  really_probe+0xcc/0x45c
-[   28.354227]  __driver_probe_device+0x8c/0x160
-[   28.358578]  driver_probe_device+0x44/0xe0
-[   28.362670]  __driver_attach+0x124/0x1d0
-[   28.366589]  bus_for_each_dev+0x7c/0xe0
-[   28.370426]  driver_attach+0x28/0x30
-[   28.373997]  bus_add_driver+0x124/0x240
-[   28.377830]  driver_register+0x7c/0x124
-[   28.381662]  __platform_driver_register+0x2c/0x34
-[   28.386362]  npcm_i2c_init+0x3c/0x5c
-[   28.389937]  do_one_initcall+0x74/0x230
-[   28.393768]  kernel_init_freeable+0x24c/0x2b4
-[   28.398126]  kernel_init+0x28/0x130
-[   28.401614]  ret_from_fork+0x10/0x20
-[   28.405189] Kernel panic - not syncing: softlockup: hung tasks
-[   28.411011] SMP: stopping secondary CPUs
-[   28.414933] Kernel Offset: disabled
-[   28.418412] CPU features: 0x00000000,00000802
-[   28.427644] Rebooting in 20 seconds..
+This is required to bridge the gap between enabling the branch and
+actually being at the point where it is required to enter the loader
+wait loop.
 
-Fixes: 56a1485b102e ("i2c: npcm7xx: Add Nuvoton NPCM I2C controller driver")
-Signed-off-by: Tyrone Ting <kfting@nuvoton.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Tali Perry <tali.perry1@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250220040029.27596-2-kfting@nuvoton.com
+Each CPU which arrives in the stopper thread function sets that flag and
+issues a self NMI right after that. If the NMI function sees the flag
+clear, it returns. If it's set it clears the flag and enters the
+rendezvous.
+
+This is safe against a real NMI which hits in between setting the flag
+and sending the NMI to itself. The real NMI will be swallowed by the
+microcode update and the self NMI will then let stuff continue.
+Otherwise this would end up with a spurious NMI.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115903.489900814@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-npcm7xx.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/include/asm/microcode.h         |   12 ++++++++
+ arch/x86/kernel/cpu/microcode/core.c     |   42 ++++++++++++++++++++++++++++---
+ arch/x86/kernel/cpu/microcode/intel.c    |    1 
+ arch/x86/kernel/cpu/microcode/internal.h |    3 +-
+ arch/x86/kernel/nmi.c                    |    4 ++
+ 5 files changed, 57 insertions(+), 5 deletions(-)
 
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -2329,6 +2329,13 @@ static int npcm_i2c_probe_bus(struct pla
- 	if (irq < 0)
- 		return irq;
+--- a/arch/x86/include/asm/microcode.h
++++ b/arch/x86/include/asm/microcode.h
+@@ -70,4 +70,16 @@ static inline u32 intel_get_microcode_re
+ }
+ #endif /* !CONFIG_CPU_SUP_INTEL */
  
-+	/*
-+	 * Disable the interrupt to avoid the interrupt handler being triggered
-+	 * incorrectly by the asynchronous interrupt status since the machine
-+	 * might do a warm reset during the last smbus/i2c transfer session.
-+	 */
-+	npcm_i2c_int_enable(bus, false);
++bool microcode_nmi_handler(void);
 +
- 	ret = devm_request_irq(bus->dev, irq, npcm_i2c_bus_irq, 0,
- 			       dev_name(bus->dev), bus);
- 	if (ret)
++#ifdef CONFIG_MICROCODE_LATE_LOADING
++DECLARE_STATIC_KEY_FALSE(microcode_nmi_handler_enable);
++static __always_inline bool microcode_nmi_handler_enabled(void)
++{
++	return static_branch_unlikely(&microcode_nmi_handler_enable);
++}
++#else
++static __always_inline bool microcode_nmi_handler_enabled(void) { return false; }
++#endif
++
+ #endif /* _ASM_X86_MICROCODE_H */
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -23,6 +23,7 @@
+ #include <linux/miscdevice.h>
+ #include <linux/capability.h>
+ #include <linux/firmware.h>
++#include <linux/cpumask.h>
+ #include <linux/kernel.h>
+ #include <linux/delay.h>
+ #include <linux/mutex.h>
+@@ -31,6 +32,7 @@
+ #include <linux/fs.h>
+ #include <linux/mm.h>
+ 
++#include <asm/apic.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/perf_event.h>
+ #include <asm/processor.h>
+@@ -265,8 +267,10 @@ struct microcode_ctrl {
+ 	enum sibling_ctrl	ctrl;
+ 	enum ucode_state	result;
+ 	unsigned int		ctrl_cpu;
++	bool			nmi_enabled;
+ };
+ 
++DEFINE_STATIC_KEY_FALSE(microcode_nmi_handler_enable);
+ static DEFINE_PER_CPU(struct microcode_ctrl, ucode_ctrl);
+ static atomic_t late_cpus_in;
+ 
+@@ -282,7 +286,8 @@ static bool wait_for_cpus(atomic_t *cnt)
+ 
+ 		udelay(1);
+ 
+-		if (!(timeout % USEC_PER_MSEC))
++		/* If invoked directly, tickle the NMI watchdog */
++		if (!microcode_ops->use_nmi && !(timeout % USEC_PER_MSEC))
+ 			touch_nmi_watchdog();
+ 	}
+ 	/* Prevent the late comers from making progress and let them time out */
+@@ -298,7 +303,8 @@ static bool wait_for_ctrl(void)
+ 		if (this_cpu_read(ucode_ctrl.ctrl) != SCTRL_WAIT)
+ 			return true;
+ 		udelay(1);
+-		if (!(timeout % 1000))
++		/* If invoked directly, tickle the NMI watchdog */
++		if (!microcode_ops->use_nmi && !(timeout % 1000))
+ 			touch_nmi_watchdog();
+ 	}
+ 	return false;
+@@ -374,7 +380,7 @@ static void load_primary(unsigned int cp
+ 	}
+ }
+ 
+-static int load_cpus_stopped(void *unused)
++static bool microcode_update_handler(void)
+ {
+ 	unsigned int cpu = smp_processor_id();
+ 
+@@ -383,7 +389,29 @@ static int load_cpus_stopped(void *unuse
+ 	else
+ 		load_secondary(cpu);
+ 
+-	/* No point to wait here. The CPUs will all wait in stop_machine(). */
++	touch_nmi_watchdog();
++	return true;
++}
++
++bool microcode_nmi_handler(void)
++{
++	if (!this_cpu_read(ucode_ctrl.nmi_enabled))
++		return false;
++
++	this_cpu_write(ucode_ctrl.nmi_enabled, false);
++	return microcode_update_handler();
++}
++
++static int load_cpus_stopped(void *unused)
++{
++	if (microcode_ops->use_nmi) {
++		/* Enable the NMI handler and raise NMI */
++		this_cpu_write(ucode_ctrl.nmi_enabled, true);
++		apic->send_IPI(smp_processor_id(), NMI_VECTOR);
++	} else {
++		/* Just invoke the handler directly */
++		microcode_update_handler();
++	}
+ 	return 0;
+ }
+ 
+@@ -404,8 +432,14 @@ static int load_late_stop_cpus(void)
+ 	 */
+ 	store_cpu_caps(&prev_info);
+ 
++	if (microcode_ops->use_nmi)
++		static_branch_enable_cpuslocked(&microcode_nmi_handler_enable);
++
+ 	stop_machine_cpuslocked(load_cpus_stopped, NULL, cpu_online_mask);
+ 
++	if (microcode_ops->use_nmi)
++		static_branch_disable_cpuslocked(&microcode_nmi_handler_enable);
++
+ 	/* Analyze the results */
+ 	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
+ 		switch (per_cpu(ucode_ctrl.result, cpu)) {
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -611,6 +611,7 @@ static struct microcode_ops microcode_in
+ 	.collect_cpu_info	= collect_cpu_info,
+ 	.apply_microcode	= apply_microcode_late,
+ 	.finalize_late_load	= finalize_late_load,
++	.use_nmi		= IS_ENABLED(CONFIG_X86_64),
+ };
+ 
+ static __init void calc_llc_size_per_core(struct cpuinfo_x86 *c)
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -31,7 +31,8 @@ struct microcode_ops {
+ 	enum ucode_state	(*apply_microcode)(int cpu);
+ 	int			(*collect_cpu_info)(int cpu, struct cpu_signature *csig);
+ 	void			(*finalize_late_load)(int result);
+-	unsigned int		nmi_safe	: 1;
++	unsigned int		nmi_safe	: 1,
++				use_nmi		: 1;
+ };
+ 
+ extern struct ucode_cpu_info ucode_cpu_info[];
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -33,6 +33,7 @@
+ #include <asm/reboot.h>
+ #include <asm/cache.h>
+ #include <asm/nospec-branch.h>
++#include <asm/microcode.h>
+ #include <asm/sev.h>
+ 
+ #define CREATE_TRACE_POINTS
+@@ -343,6 +344,9 @@ static noinstr void default_do_nmi(struc
+ 
+ 	instrumentation_begin();
+ 
++	if (microcode_nmi_handler_enabled() && microcode_nmi_handler())
++		goto out;
++
+ 	handled = nmi_handle(NMI_LOCAL, regs);
+ 	__this_cpu_add(nmi_stats.normal, handled);
+ 	if (handled) {
 
 
 
