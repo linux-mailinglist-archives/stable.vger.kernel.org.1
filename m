@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C3CA50800
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15761A5078D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB667189412E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 213AB1677B5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF03C1C860D;
-	Wed,  5 Mar 2025 18:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9222512CB;
+	Wed,  5 Mar 2025 17:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B08dciil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nq6AoJMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1511C6FF9;
-	Wed,  5 Mar 2025 18:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C92250C07;
+	Wed,  5 Mar 2025 17:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197762; cv=none; b=Z0GW9zlwQJHVGOrvk/Ba350o5dsXEwQ4stKAEDAY3V2zBmn+TIFHVEIOBu3xx2IOeihgVOjW3JfFYZ9rhEXx0k6C1Yi1IxO5wOKp7qDkeMr8xpH0fx/dA5ud/1nT9wXk4NSRFvLEdBlIBxqYFyPW4abPl8gdifAz8aBcDzHKOoQ=
+	t=1741197488; cv=none; b=AJgRYECs1sA0q5obHkgQUnh9EK0+Kr+1k+PoVyLSdPWjR7Z+Pc2bsewWm/R6DqmSKx28YJOa9S23jpK5OZKWxdYZcZCvmO9Ki7RrJcRe56REbiXRWESdrjM9ToYQCGj9lR9DYXxZ2ZkOoDdFh0CM1cXCSz+pxbRm8Pxyu1xNxZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197762; c=relaxed/simple;
-	bh=1AtMrMf5VJEi8NbDO34+zi/SeHQXFjoc0WMxb5SmpI4=;
+	s=arc-20240116; t=1741197488; c=relaxed/simple;
+	bh=5QCjonIA3CZtGzGJd4BxmNP9sV1gSCZ2EXTxkzeZCfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4X9VvAg/vglWJgAKnPUSrOp2AJld8XJBnyPm0SokauNym5159wLMSHM3GoHmrzpsLJIdC7KHa5/izINu+ojeej3kh543fWhJFLwVsRYWE3N2hjWQBl+4sy0Z8pa7gXVnAS8N8WIB2eN3/ugIE8P2+9aoXg6l4A5dWd6PpyzASI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B08dciil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13821C4CED1;
-	Wed,  5 Mar 2025 18:02:41 +0000 (UTC)
+	 MIME-Version; b=XA2xa02Z+B3Lyrp4++8pVUyCwaGaOYZrIOCxF37VT483I/BR+zgNfW0s7+kaOQsxFKtObR8Fu5tzHda5MPfTGE6/jhmP6GN1jqm09/ad4dItQGQo+DTOkx9AY1ucPAnaUzveyBUGrmeU6r4Zk4Jx64yAkLV13MHOepN+Z5SH51M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nq6AoJMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6588C4CED1;
+	Wed,  5 Mar 2025 17:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197762;
-	bh=1AtMrMf5VJEi8NbDO34+zi/SeHQXFjoc0WMxb5SmpI4=;
+	s=korg; t=1741197488;
+	bh=5QCjonIA3CZtGzGJd4BxmNP9sV1gSCZ2EXTxkzeZCfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B08dciil8vz38PnJzmjouKo6tNl4pamDkw962bDc94OzP2CLDExHv27/c1WeUcUkg
-	 GZE5W8O2q9iFVLAeGGpcwQpbFCzi82f63HIjswED3rfyhbuRlCM4b63/qhcbu7aXiE
-	 J5VDRsUvOpmhz8AFy0HLLIyDcPjjn5kRyMnNe0ko=
+	b=Nq6AoJMQIfUsOgsFN7xY34ta2Nbs8PWqDC017reD/T0Tetfsm7na7jPthVxeb8zjP
+	 oP6oAGj5K83yefGox3l6NwzsKEaSJO0F60DU4/V1c449L5Ab2rGbhRa46G62SaXGhK
+	 dC5VYwy+WCMzLNBHfkjw+HVJb7VjKI+/T+SVaJUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 091/142] rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
+	Justin Iurman <justin.iurman@uliege.be>,
+	Alexander Aring <aahringo@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 141/176] net: ipv6: rpl_iptunnel: mitigate 2-realloc issue
 Date: Wed,  5 Mar 2025 18:48:30 +0100
-Message-ID: <20250305174503.989988462@linuxfoundation.org>
+Message-ID: <20250305174511.107849198@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-commit d8d866171a414ed88bd0d720864095fd75461134 upstream.
+[ Upstream commit 985ec6f5e6235242191370628acb73d7a9f0c0ea ]
 
-When using rtla timerlat with userspace threads (-u or -U), rtla
-disables the OSNOISE_WORKLOAD option in
-/sys/kernel/tracing/osnoise/options. This option is not re-enabled in a
-subsequent run with kernel-space threads, leading to rtla collecting no
-results if the previous run exited abnormally:
+This patch mitigates the two-reallocations issue with rpl_iptunnel by
+providing the dst_entry (in the cache) to the first call to
+skb_cow_head(). As a result, the very first iteration would still
+trigger two reallocations (i.e., empty cache), while next iterations
+would only trigger a single reallocation.
 
-$ rtla timerlat hist -u
-^\Quit (core dumped)
-$ rtla timerlat hist -k -d 1s
-Index
-over:
-count:
-min:
-avg:
-max:
-ALL:        IRQ       Thr       Usr
-count:        0         0         0
-min:          -         -         -
-avg:          -         -         -
-max:          -         -         -
+Performance tests before/after applying this patch, which clearly shows
+there is no impact (it even shows improvement):
+- before: https://ibb.co/nQJhqwc
+- after: https://ibb.co/4ZvW6wV
 
-The issue persists until OSNOISE_WORKLOAD is set manually by running:
-$ echo OSNOISE_WORKLOAD > /sys/kernel/tracing/osnoise/options
-
-Set OSNOISE_WORKLOAD when running rtla with kernel-space threads if
-available to fix the issue.
-
-Cc: stable@vger.kernel.org
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/20250107144823.239782-3-tglozar@redhat.com
-Fixes: ed774f7481fa ("rtla/timerlat_hist: Add timerlat user-space support")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[ params->kernel_workload does not exist in 6.6, use
-!params->user_hist ]
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Cc: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 13e55fbaec17 ("net: ipv6: fix dst ref loop on input in rpl lwt")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_hist.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ net/ipv6/rpl_iptunnel.c | 46 ++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -900,12 +900,15 @@ timerlat_hist_apply_config(struct osnois
- 		auto_house_keeping(&params->monitored_cpus);
- 	}
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index c1d0f947a7c87..69b9bd90140dd 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -125,7 +125,8 @@ static void rpl_destroy_state(struct lwtunnel_state *lwt)
+ }
  
--	if (params->user_hist) {
--		retval = osnoise_set_workload(tool->context, 0);
--		if (retval) {
--			err_msg("Failed to set OSNOISE_WORKLOAD option\n");
--			goto out_err;
--		}
-+	/*
-+	* Set workload according to type of thread if the kernel supports it.
-+	* On kernels without support, user threads will have already failed
-+	* on missing timerlat_fd, and kernel threads do not need it.
-+	*/
-+	retval = osnoise_set_workload(tool->context, !params->user_hist);
-+	if (retval < -1) {
-+		err_msg("Failed to set OSNOISE_WORKLOAD option\n");
-+		goto out_err;
- 	}
+ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
+-			     const struct ipv6_rpl_sr_hdr *srh)
++			     const struct ipv6_rpl_sr_hdr *srh,
++			     struct dst_entry *cache_dst)
+ {
+ 	struct ipv6_rpl_sr_hdr *isrh, *csrh;
+ 	const struct ipv6hdr *oldhdr;
+@@ -153,7 +154,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
  
+ 	hdrlen = ((csrh->hdrlen + 1) << 3);
+ 
+-	err = skb_cow_head(skb, hdrlen + skb->mac_len);
++	err = skb_cow_head(skb, hdrlen + dst_dev_overhead(cache_dst, skb));
+ 	if (unlikely(err)) {
+ 		kfree(buf);
+ 		return err;
+@@ -186,7 +187,8 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
  	return 0;
+ }
+ 
+-static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt)
++static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt,
++		      struct dst_entry *cache_dst)
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+ 	struct rpl_iptunnel_encap *tinfo;
+@@ -196,7 +198,7 @@ static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt)
+ 
+ 	tinfo = rpl_encap_lwtunnel(dst->lwtstate);
+ 
+-	return rpl_do_srh_inline(skb, rlwt, tinfo->srh);
++	return rpl_do_srh_inline(skb, rlwt, tinfo->srh, cache_dst);
+ }
+ 
+ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+@@ -208,14 +210,14 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	err = rpl_do_srh(skb, rlwt);
+-	if (unlikely(err))
+-		goto drop;
+-
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+ 	local_bh_enable();
+ 
++	err = rpl_do_srh(skb, rlwt, dst);
++	if (unlikely(err))
++		goto drop;
++
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
+@@ -237,15 +239,15 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		local_bh_disable();
+ 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+ 		local_bh_enable();
++
++		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
++		if (unlikely(err))
++			goto drop;
+ 	}
+ 
+ 	skb_dst_drop(skb);
+ 	skb_dst_set(skb, dst);
+ 
+-	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+-	if (unlikely(err))
+-		goto drop;
+-
+ 	return dst_output(net, sk, skb);
+ 
+ drop:
+@@ -262,12 +264,13 @@ static int rpl_input(struct sk_buff *skb)
+ 
+ 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	err = rpl_do_srh(skb, rlwt);
+-	if (unlikely(err))
+-		goto drop;
+-
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
++	local_bh_enable();
++
++	err = rpl_do_srh(skb, rlwt, dst);
++	if (unlikely(err))
++		goto drop;
+ 
+ 	skb_dst_drop(skb);
+ 
+@@ -275,17 +278,18 @@ static int rpl_input(struct sk_buff *skb)
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
++			local_bh_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
++			local_bh_enable();
+ 		}
++
++		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
++		if (unlikely(err))
++			goto drop;
+ 	} else {
+ 		skb_dst_set(skb, dst);
+ 	}
+-	local_bh_enable();
+-
+-	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+-	if (unlikely(err))
+-		goto drop;
+ 
+ 	return dst_input(skb);
+ 
+-- 
+2.39.5
+
 
 
 
