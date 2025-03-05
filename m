@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-120766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF9BA50837
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40A5A508BE
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B25B165F53
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CD8417349D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A32F24C07D;
-	Wed,  5 Mar 2025 18:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008DD1A5BB7;
+	Wed,  5 Mar 2025 18:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7Ez4IHf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwCAGjT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C5819067C;
-	Wed,  5 Mar 2025 18:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B315E1A23A6;
+	Wed,  5 Mar 2025 18:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197911; cv=none; b=t7ULsu5tSTi0CSB10ObXTooTkirn+ktqxGbhgvadr/c9G8ZETqpy+2K+HnhMMAsJXa6cU+UjOJa7rI/2MYhBVXev/mMhbsOiJLaPy2vLc89jqFZIONin030uqBRiIIHPLwhKuIbAR5g9dXDL+z3dqA8quoUbTJMCiiwUu7wK7aw=
+	t=1741198206; cv=none; b=JSM0WTNLIy+HbBtYPxo1so5JjKSjsnyDn3wYFYfChcYMfNfNFRXIGn5arQMucfZPvXbA2ysidPFmp8j9ZKtOQEU3KRho1L3pot5BN11VbJMvZL2e0StoGwPKwQsc0xDnPa2zco86MZsauWCVgXoA1kqAk+9xHGPEuwkDZiWYAbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197911; c=relaxed/simple;
-	bh=lNoycixYT77py6N6Tqw7mC99kphzkdY87/OItPJADu0=;
+	s=arc-20240116; t=1741198206; c=relaxed/simple;
+	bh=g1mIkX9NYJUQ85CnOu5pYyBceD1LIXMoyJWAcQEoqhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hT7/wLGqqwXVYllHwynQRwUKgAzPKyEt3+pzwenGS+RwfUXWInZFq1PEyz478LvHkmZC51UjW7tREyZXDfxLfNg4zkdOhAc6ZSjvGGtXA7p5s/PKmIaDYVXANTlvyDAvKPnvHQQqxDaSb3ZQEXoMeJ3iKZinkqjOGGYtZ2NmZxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7Ez4IHf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43F3C4CED1;
-	Wed,  5 Mar 2025 18:05:10 +0000 (UTC)
+	 MIME-Version; b=n2ZANex/kK9t7LbEaILkbgsR/tC0AYCkBu0djwxWH32lYILCrSnsiprryoTBX5fLnUHsi7z3zrg9YHNoY/WO9tlnLalGrNF0+I0SmXtulsT9tvhOIKGFbYazmeqHyIN/eTDqbUcnEUFyO+ZE1hUnIU4sb1/8VOKtfnfD1ETUSyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwCAGjT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3928AC4CEE0;
+	Wed,  5 Mar 2025 18:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197911;
-	bh=lNoycixYT77py6N6Tqw7mC99kphzkdY87/OItPJADu0=;
+	s=korg; t=1741198206;
+	bh=g1mIkX9NYJUQ85CnOu5pYyBceD1LIXMoyJWAcQEoqhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7Ez4IHfjR7/588gkJ1brxert8VgGCbTpa9h6tCjT8MULP9d37X8UYWLSQ4NWcgFq
-	 cDi2Tlm2FkUCx0ruJgOHKmin0K9kDmJZYoOMNaOr3/E9cHxbYoB+v0ajJ3VShOl6FB
-	 cRVguGO0wGpjKQUN9alJbxA3AZSFWSPZ2jhqLg4g=
+	b=rwCAGjT3+XxW3MrotvlZfEfjeLhJQopj0cDhcSenOubSKu6aolcQ2QJs1XtLEtZeK
+	 nCU7GlAF8M50qq47lhQ2ewFO5QZTECxwyYMMH752IEA/HbuAFP2+ocWku4Ch74lIHw
+	 EC8aRndhfBNXfuR/9fug74FDeNxGqkMV+IQB47Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 110/142] x86/microcode/amd: Use correct per CPU ucode_cpu_info
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Yilin Chen <Yilin.Chen@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 100/150] drm/amd/display: add a quirk to enable eDP0 on DP1
 Date: Wed,  5 Mar 2025 18:48:49 +0100
-Message-ID: <20250305174504.748108065@linuxfoundation.org>
+Message-ID: <20250305174507.829094163@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +65,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yilin Chen <Yilin.Chen@amd.com>
 
-commit ecfd41089348fa4cc767dc588367e9fdf8cb6b9d upstream
+commit b5f7242e49b927cfe488b369fa552f2eff579ef1 upstream.
 
-find_blobs_in_containers() is invoked on every CPU but overwrites
-unconditionally ucode_cpu_info of CPU0.
+[why]
+some board designs have eDP0 connected to DP1, need a way to enable
+support_edp0_on_dp1 flag, otherwise edp related features cannot work
 
-Fix this by using the proper CPU data and move the assignment into the
-call site apply_ucode_from_containers() so that the function can be
-reused.
+[how]
+do a dmi check during dm initialization to identify systems that
+require support_edp0_on_dp1. Optimize quirk table with callback
+functions to set quirk entries, retrieve_dmi_info can set quirks
+according to quirk entries
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231010150702.433454320@linutronix.de
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Yilin Chen <Yilin.Chen@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f6d17270d18a6a6753fff046330483d43f8405e4)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   69 +++++++++++++++++++---
+ 1 file changed, 62 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -503,9 +503,6 @@ static void find_blobs_in_containers(uns
- 	if (!get_builtin_microcode(&cp, x86_family(cpuid_1_eax)))
- 		cp = find_microcode_in_initrd(ucode_path);
- 
--	/* Needed in load_microcode_amd() */
--	ucode_cpu_info->cpu_sig.sig = cpuid_1_eax;
--
- 	*ret = cp;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1593,75 +1593,130 @@ static bool dm_should_disable_stutter(st
+ 	return false;
  }
  
-@@ -513,6 +510,9 @@ static void apply_ucode_from_containers(
- {
- 	struct cpio_data cp = { };
- 
-+	/* Needed in load_microcode_amd() */
-+	ucode_cpu_info[smp_processor_id()].cpu_sig.sig = cpuid_1_eax;
+-static const struct dmi_system_id hpd_disconnect_quirk_table[] = {
++struct amdgpu_dm_quirks {
++	bool aux_hpd_discon;
++	bool support_edp0_on_dp1;
++};
 +
- 	find_blobs_in_containers(cpuid_1_eax, &cp);
- 	if (!(cp.data && cp.size))
- 		return;
++static struct amdgpu_dm_quirks quirk_entries = {
++	.aux_hpd_discon = false,
++	.support_edp0_on_dp1 = false
++};
++
++static int edp0_on_dp1_callback(const struct dmi_system_id *id)
++{
++	quirk_entries.support_edp0_on_dp1 = true;
++	return 0;
++}
++
++static int aux_hpd_discon_callback(const struct dmi_system_id *id)
++{
++	quirk_entries.aux_hpd_discon = true;
++	return 0;
++}
++
++static const struct dmi_system_id dmi_quirk_table[] = {
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3660"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3260"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3460"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower Plus 7010"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower 7010"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF Plus 7010"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF 7010"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro Plus 7010"),
+ 		},
+ 	},
+ 	{
++		.callback = aux_hpd_discon_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro 7010"),
+ 		},
+ 	},
++	{
++		.callback = edp0_on_dp1_callback,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite mt645 G8 Mobile Thin Client"),
++		},
++	},
++	{
++		.callback = edp0_on_dp1_callback,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
++		},
++	},
+ 	{}
+ 	/* TODO: refactor this from a fixed table to a dynamic option */
+ };
+ 
+-static void retrieve_dmi_info(struct amdgpu_display_manager *dm)
++static void retrieve_dmi_info(struct amdgpu_display_manager *dm, struct dc_init_data *init_data)
+ {
+-	const struct dmi_system_id *dmi_id;
++	int dmi_id;
++	struct drm_device *dev = dm->ddev;
+ 
+ 	dm->aux_hpd_discon_quirk = false;
++	init_data->flags.support_edp0_on_dp1 = false;
++
++	dmi_id = dmi_check_system(dmi_quirk_table);
+ 
+-	dmi_id = dmi_first_match(hpd_disconnect_quirk_table);
+-	if (dmi_id) {
++	if (!dmi_id)
++		return;
++
++	if (quirk_entries.aux_hpd_discon) {
+ 		dm->aux_hpd_discon_quirk = true;
+-		DRM_INFO("aux_hpd_discon_quirk attached\n");
++		drm_info(dev, "aux_hpd_discon_quirk attached\n");
++	}
++	if (quirk_entries.support_edp0_on_dp1) {
++		init_data->flags.support_edp0_on_dp1 = true;
++		drm_info(dev, "aux_hpd_discon_quirk attached\n");
+ 	}
+ }
+ 
+@@ -1969,7 +2024,7 @@ static int amdgpu_dm_init(struct amdgpu_
+ 	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(3, 0, 0))
+ 		init_data.num_virtual_links = 1;
+ 
+-	retrieve_dmi_info(&adev->dm);
++	retrieve_dmi_info(&adev->dm, &init_data);
+ 
+ 	if (adev->dm.bb_from_dmub)
+ 		init_data.bb_from_dmub = adev->dm.bb_from_dmub;
 
 
 
