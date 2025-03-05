@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-120971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A38BA50928
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A45A507E7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB0983A321F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73921169852
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD13250C0E;
-	Wed,  5 Mar 2025 18:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45121C6FF6;
+	Wed,  5 Mar 2025 18:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyGCbl9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omet6OvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6963023027C;
-	Wed,  5 Mar 2025 18:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7153678F3A;
+	Wed,  5 Mar 2025 18:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198507; cv=none; b=jNXADcFwcdn0c5hjq3zR3rnzHeBx86YtwVsOp/qNtOKWTib3+3HKsUgwfTlYitoKNWUxLbybVCjAmH1xNRtpYyjuCZzhqoqVAVg2xv0hlzOsOGrkuT1eRRh+/Rm1C8dAy+9SJmUZ9rznQEx8t0//snpBJk4h5fPvo8N0BHnlSGM=
+	t=1741197696; cv=none; b=PQH/QgGJQekVxJcACKw0MscduyOKwDsTibdIwQIkasxBAKMozxLAfZRTYGNt02t5c0wkHdQ0rM6zmIDdfAhwkgE7yzt0PJwr65Sgw7VA0NQwByy4MS0oVx8NizNG/jmAXBy7Zzl9K1ZyqPaGJwgss0xkC6DkVLvzN5z09XxS6lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198507; c=relaxed/simple;
-	bh=/rLTHxvUwjzRnke9yL2ezyoJbMNjal7vG8DHHBcD99E=;
+	s=arc-20240116; t=1741197696; c=relaxed/simple;
+	bh=CaXA/81hzLuaQy2z4z2H5XtyarzrppVEfBTXMnkRdMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beW6gZOQq09ujsW148kHSE0JlTak6j322XZFLi5oC0jv3jhE7FFLxWjm7oVOGN9KkGkUxQcSYhW11CvpyWWwubxpAQa1e2wDSrl73FF6JCE8eDl8uTPK+WVh5At6yCuLcePzTX6T6WY+t376jz8jMHhDR+fLL6d/KLnf9H7yVUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyGCbl9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4467C4CED1;
-	Wed,  5 Mar 2025 18:15:06 +0000 (UTC)
+	 MIME-Version; b=BGbnCZk8xVCTUEA+tsp69fUXTRFLkRkjMibhpjSwbIheMS8ImsX5M6NmMtdajRaPszXzJJptfnVG34xx7neAG6jU2AFdiDGReFoZoWWGDuzaZFAQKucG91ia4dStdCGfq90A7h8s9LZakEbsIIeLrswoJvGer4eEbQLCH99KTLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omet6OvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9560EC4CED1;
+	Wed,  5 Mar 2025 18:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198507;
-	bh=/rLTHxvUwjzRnke9yL2ezyoJbMNjal7vG8DHHBcD99E=;
+	s=korg; t=1741197696;
+	bh=CaXA/81hzLuaQy2z4z2H5XtyarzrppVEfBTXMnkRdMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyGCbl9eYsgwHoEmmojR4wPkN4LHQRdP7uxJFLUoss3XXw9sSuicyzgnz6Uv6rgtD
-	 U6fbR5Rso2GfqHidvrUEu7qhOF1S9zNlLnwJT/+jywv3ql3Ag5Y6LUOGVBxMvUVnWH
-	 e3Nb1/TnnhBlaFevdyG0W0HHmnBkrsDdAsDaY57k=
+	b=omet6OvNEIHv+NBrGdb9Z2v/NCFI/+gBpby3f1DuW/WJZMzqIu++feyPSt/Wk3VQW
+	 13Fwkzvd6KcIxrsSyz61fyrkC6max6zUh1NzKk40wKbbZ1bROmLfDfjbXa+6XefIgO
+	 NiGkXv9p0tcb3T32CMUjo5BQ0DiyiHMPHmyVeCoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 050/157] ice: Avoid setting default Rx VSI twice in switchdev setup
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.6 067/142] perf/core: Fix low freq setting via IOC_PERIOD
 Date: Wed,  5 Mar 2025 18:48:06 +0100
-Message-ID: <20250305174507.319456693@linuxfoundation.org>
+Message-ID: <20250305174503.029243410@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit 5c07be96d8b3f8447e980f29b967bf2e1d7ac732 ]
+commit 0d39844150546fa1415127c5fbae26db64070dd3 upstream.
 
-As part of switchdev environment setup, uplink VSI is configured as
-default for both Tx and Rx. Default Rx VSI is also used by promiscuous
-mode. If promisc mode is enabled and an attempt to enter switchdev mode
-is made, the setup will fail because Rx VSI is already configured as
-default (rule exists).
+A low attr::freq value cannot be set via IOC_PERIOD on some platforms.
 
-Reproducer:
-  devlink dev eswitch set $PF1_PCI mode switchdev
-  ip l s $PF1 up
-  ip l s $PF1 promisc on
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
+The perf_event_check_period() introduced in:
 
-In switchdev setup, use ice_set_dflt_vsi() instead of plain
-ice_cfg_dflt_vsi(), which avoids repeating setting default VSI for Rx if
-it's already configured.
+  81ec3f3c4c4d ("perf/x86: Add check_period PMU callback")
 
-Fixes: 50d62022f455 ("ice: default Tx rule instead of to queue")
-Reported-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/PH0PR11MB50138B635F2E5CEB7075325D961F2@PH0PR11MB5013.namprd11.prod.outlook.com
-Reviewed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250224190647.3601930-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+was intended to check the period, rather than the frequency.
+A low frequency may be mistakenly rejected by limit_period().
+
+Fix it.
+
+Fixes: 81ec3f3c4c4d ("perf/x86: Add check_period PMU callback")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250117151913.3043942-2-kan.liang@linux.intel.com
+Closes: https://lore.kernel.org/lkml/20250115154949.3147-1-ravi.bangoria@amd.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/events/core.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index fb527434b58b1..d649c197cf673 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -38,8 +38,7 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 	if (ice_vsi_add_vlan_zero(uplink_vsi))
- 		goto err_vlan_zero;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5861,14 +5861,15 @@ static int _perf_event_period(struct per
+ 	if (!value)
+ 		return -EINVAL;
  
--	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
--			     ICE_FLTR_RX))
-+	if (ice_set_dflt_vsi(uplink_vsi))
- 		goto err_def_rx;
+-	if (event->attr.freq && value > sysctl_perf_event_sample_rate)
+-		return -EINVAL;
+-
+-	if (perf_event_check_period(event, value))
+-		return -EINVAL;
+-
+-	if (!event->attr.freq && (value & (1ULL << 63)))
+-		return -EINVAL;
++	if (event->attr.freq) {
++		if (value > sysctl_perf_event_sample_rate)
++			return -EINVAL;
++	} else {
++		if (perf_event_check_period(event, value))
++			return -EINVAL;
++		if (value & (1ULL << 63))
++			return -EINVAL;
++	}
  
- 	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
--- 
-2.39.5
-
+ 	event_function_call(event, __perf_event_period, &value);
+ 
 
 
 
