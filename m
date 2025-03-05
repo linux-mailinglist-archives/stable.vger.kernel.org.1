@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078FDA508CC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C174A5097E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 604E218964A6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 542D316594C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC9B25178A;
-	Wed,  5 Mar 2025 18:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA575253B6B;
+	Wed,  5 Mar 2025 18:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNIJry2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uI3etMAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC96718D65C;
-	Wed,  5 Mar 2025 18:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BE9250BF3;
+	Wed,  5 Mar 2025 18:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198198; cv=none; b=dUxxNTWNwTr3vXfTsGXsi1LNLAdJtdrgfdw/OaB+i5cYZAmb3cbW0q645F8lhHohJq+DtWks0J7JxaXFfkC1FrDgxxcccs6k8C5uvjZwrA0lEvRTLvqTcXFb4xwr6GhAiFUulmBs4dko+7YI1PkIcsN/isw3uUz9KlKnWnzw0lM=
+	t=1741198639; cv=none; b=MOuqBEEzqeYvpd41wcDqYxU1nx8aJHml15MJ9Cja5oLhcBxo6ZJOQtUcKeZ5xbCUomL32QxAtBPP5U3UUWs0M+gXCvrxgGbQvkfxY/Aci6O5aF7PHqs5tSTsiv0REhk7jEPVnjmtU08VcaVQ63c6YMDXnfTWqgi4n5BQaI+ACUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198198; c=relaxed/simple;
-	bh=sa6f7iUKfqu25Vek91reCARpYfAqWSjkf9vTTcxaB38=;
+	s=arc-20240116; t=1741198639; c=relaxed/simple;
+	bh=K11Zdvjv/TzhbfPnZouqpnYgLDHzZZMZ7qROIwJZbDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FghgAndzl1JXVopOfscWPK/ES2w8YpuiO8jo55JV3cKXwZHEp+VR/o3rgjy7ZMN0J+loHGyudSleASXfGlV1hcG8j6SR07kBy6N9leT0pxWwX+5+6YK4gS9yn9wEDSoEj5WPbCqjgnGTplI8UrhoU0upxf1kd0uoHjKyLKEJCx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNIJry2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762B5C4CED1;
-	Wed,  5 Mar 2025 18:09:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hFh9X4dP5L/Eky+XkUlExYdldPOpUmjXy0qOSTZvbXvTlsztWT5hmG66KLXo6tRl7Dxh1CM+zGVw/Nv8FRASYRyYIblKZqTKhiJwO1fBHMHcfmz4q51oZKzwiDTd8xhnramVH84UM28oMoBzqxMoh4jK0LGEYsr6Y9R2SSc2QQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uI3etMAG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9646C4CED1;
+	Wed,  5 Mar 2025 18:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198197;
-	bh=sa6f7iUKfqu25Vek91reCARpYfAqWSjkf9vTTcxaB38=;
+	s=korg; t=1741198639;
+	bh=K11Zdvjv/TzhbfPnZouqpnYgLDHzZZMZ7qROIwJZbDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNIJry2+O9TQk0+FB8QtzNsZ3txxRSJBxMMFJFMsAfbTfTI23j05NXcvIA+u8t0F/
-	 /98r9xKADZxBNhROk1KajBw40qE7iPoJkHTKutGkUh1/NuynVEZUEhrcBxoeQ82p0p
-	 jgTzHUSCu0AOfiVPvUr7di1OGqKaP027qhGi1rUU=
+	b=uI3etMAG+uzzCmfTNceJAQfStpWhTkNPpMi/w2OL4Y0+JfzeOe0MXavx6d9K0uEwH
+	 mdlDVZ0xnpp/oKPaJZdxPmuv+kBJcIH6eNuPRA7UNcvwR1Lh8lBKkXT8UR0CYqQawe
+	 DocFnKjkY+nSlr4P7xXWfoHXeXC4ayIVZTcZVzcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 097/150] drm/amdgpu: disable BAR resize on Dell G5 SE
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.13 090/157] drm/xe/userptr: restore invalidation list on error
 Date: Wed,  5 Mar 2025 18:48:46 +0100
-Message-ID: <20250305174507.708365322@linuxfoundation.org>
+Message-ID: <20250305174508.925561601@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +62,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 099bffc7cadff40bfab1517c3461c53a7a38a0d7 upstream.
+commit e043dc16c28c8446e66c55adfe7c6e862a6a7bb7 upstream.
 
-There was a quirk added to add a workaround for a Sapphire
-RX 5600 XT Pulse that didn't allow BAR resizing.  However,
-the quirk caused a regression with runtime pm on Dell laptops
-using those chips, rather than narrowing the scope of the
-resizing quirk, add a quirk to prevent amdgpu from resizing
-the BAR on those Dell platforms unless runtime pm is disabled.
+On error restore anything still on the pin_list back to the invalidation
+list on error. For the actual pin, so long as the vma is tracked on
+either list it should get picked up on the next pin, however it looks
+possible for the vma to get nuked but still be present on this per vm
+pin_list leading to corruption. An alternative might be then to instead
+just remove the link when destroying the vma.
 
-v2: update commit message, add runpm check
+v2:
+ - Also add some asserts.
+ - Keep the overzealous locking so that we are consistent with the docs;
+   updating the docs and related bits will be done as a follow up.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1707
-Fixes: 907830b0fc9e ("PCI: Add a REBAR size quirk for Sapphire RX 5600 XT Pulse")
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5235053f443cef4210606e5fb71f99b915a9723d)
-Cc: stable@vger.kernel.org
+Fixes: ed2bdf3b264d ("drm/xe/vm: Subclass userptr vmas")
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250221143840.167150-4-matthew.auld@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 4e37e928928b730de9aa9a2f5dc853feeebc1742)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/xe/xe_vm.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1542,6 +1542,13 @@ int amdgpu_device_resize_fb_bar(struct a
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -667,15 +667,16 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
  
-+	/* resizing on Dell G5 SE platforms causes problems with runtime pm */
-+	if ((amdgpu_runtime_pm != 0) &&
-+	    adev->pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    adev->pdev->device == 0x731f &&
-+	    adev->pdev->subsystem_vendor == PCI_VENDOR_ID_DELL)
-+		return 0;
-+
- 	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
- 	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
- 		DRM_WARN("System can't access extended configuration space, please check!!\n");
+ 	/* Collect invalidated userptrs */
+ 	spin_lock(&vm->userptr.invalidated_lock);
++	xe_assert(vm->xe, list_empty(&vm->userptr.repin_list));
+ 	list_for_each_entry_safe(uvma, next, &vm->userptr.invalidated,
+ 				 userptr.invalidate_link) {
+ 		list_del_init(&uvma->userptr.invalidate_link);
+-		list_move_tail(&uvma->userptr.repin_link,
+-			       &vm->userptr.repin_list);
++		list_add_tail(&uvma->userptr.repin_link,
++			      &vm->userptr.repin_list);
+ 	}
+ 	spin_unlock(&vm->userptr.invalidated_lock);
+ 
+-	/* Pin and move to temporary list */
++	/* Pin and move to bind list */
+ 	list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
+ 				 userptr.repin_link) {
+ 		err = xe_vma_userptr_pin_pages(uvma);
+@@ -691,10 +692,10 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+ 			err = xe_vm_invalidate_vma(&uvma->vma);
+ 			xe_vm_unlock(vm);
+ 			if (err)
+-				return err;
++				break;
+ 		} else {
+-			if (err < 0)
+-				return err;
++			if (err)
++				break;
+ 
+ 			list_del_init(&uvma->userptr.repin_link);
+ 			list_move_tail(&uvma->vma.combined_links.rebind,
+@@ -702,7 +703,19 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+ 		}
+ 	}
+ 
+-	return 0;
++	if (err) {
++		down_write(&vm->userptr.notifier_lock);
++		spin_lock(&vm->userptr.invalidated_lock);
++		list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
++					 userptr.repin_link) {
++			list_del_init(&uvma->userptr.repin_link);
++			list_move_tail(&uvma->userptr.invalidate_link,
++				       &vm->userptr.invalidated);
++		}
++		spin_unlock(&vm->userptr.invalidated_lock);
++		up_write(&vm->userptr.notifier_lock);
++	}
++	return err;
+ }
+ 
+ /**
+@@ -1066,6 +1079,7 @@ static void xe_vma_destroy(struct xe_vma
+ 		xe_assert(vm->xe, vma->gpuva.flags & XE_VMA_DESTROYED);
+ 
+ 		spin_lock(&vm->userptr.invalidated_lock);
++		xe_assert(vm->xe, list_empty(&to_userptr_vma(vma)->userptr.repin_link));
+ 		list_del(&to_userptr_vma(vma)->userptr.invalidate_link);
+ 		spin_unlock(&vm->userptr.invalidated_lock);
+ 	} else if (!xe_vma_is_null(vma)) {
 
 
 
