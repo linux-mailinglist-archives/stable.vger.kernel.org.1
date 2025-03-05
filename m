@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A15BA50801
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F979A508C1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 251D318941E4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1128D3A67A3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBA71FC7D0;
-	Wed,  5 Mar 2025 18:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA341C6FF6;
+	Wed,  5 Mar 2025 18:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahSS1F0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiBr09Vp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1E31C6FF6;
-	Wed,  5 Mar 2025 18:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB94517B401;
+	Wed,  5 Mar 2025 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197768; cv=none; b=fCLmda6Cfdb92mP1gXreYqnn/prrhrVoMmqhWGAEu9Nt2OMJ6q9IUvKH+CR1cyLNrzob5gIlci/1+eb1sxd/EYqlJ0/uBM1TtAZ4q3vfrC6uRcQZKMExmk0zIXWQ+mJgpzphCrFbTQt03SemHprR8KVnZA6F5u9r3utc2c7nV30=
+	t=1741198249; cv=none; b=VvVOiDA/oc8XxTFfdjhHkt2v9zvkCzxKxDRy1BJr4xcxNshN8gzC98H7wIA454wNVpLpVuZoPiG1+gqkA+QfvM978BQ8VanLpb99Qx+5XjyDZ+ipTAg9w/0Q5P1uF9Z+dnGMUeP3D2ryB6way0TgYvlzQfNhPwA3PWN8xK89WP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197768; c=relaxed/simple;
-	bh=DSemyBmFBj7KwxVWMA7BUtSJ9ET99GoXQ9PClA3N9Xs=;
+	s=arc-20240116; t=1741198249; c=relaxed/simple;
+	bh=TygwlbMlnrBLEzGLKJBAwBl86DH1ykIJ4UsdqRN7Ob0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TcjghFk0n3MINM91xr6lr9Q9ph6NyitZmiizuJvWQfrVebMOYkuos8+hjGnwL3tj75rbXBZvaPy6BKMEa/VjAi+axGyJbxE7fFzLulXjeBaqQNupJkCaguQ13Co7n/aJRjC3jOTXINHxFzAvBcYRo1quy9VavxQ0EMUAobH/X38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahSS1F0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E8DC4CED1;
-	Wed,  5 Mar 2025 18:02:47 +0000 (UTC)
+	 MIME-Version; b=sdkUcpORWa0gVBasl7wbhCoCiVZvXF87I6/7S4YKEcdVqiQdOsXjfCNKp+LtziYjQEGybaMHnDcEYPUCF6WQLCL+VhOIuehXQqWMw8IEu119BLWN82fPXC66mBPgSPcAfTemEjC/Rv2+PlciOF2qJ6GV6HKCBM+XMpkqPnGH+Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiBr09Vp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76063C4CEE0;
+	Wed,  5 Mar 2025 18:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197768;
-	bh=DSemyBmFBj7KwxVWMA7BUtSJ9ET99GoXQ9PClA3N9Xs=;
+	s=korg; t=1741198248;
+	bh=TygwlbMlnrBLEzGLKJBAwBl86DH1ykIJ4UsdqRN7Ob0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahSS1F0Wx1xHkzbOO0mzP0wa/GfVwnIzYWqxp0/jmgVI9wbObyCpQ/Twwo7lYIvVB
-	 RPMa4U+pSb+fLYqXjix1hVQOhk62ncEygYLklv/nGUof5hRcd81FZ4mMEZ1xxox4RV
-	 Yf/EO7lpVYFNT7oQbVzjA4AqzB6Y2dHVXwnNjh1I=
+	b=GiBr09Vpseo3aZdU/TKfHTopFtiAcb2h3bvEflJESg+xYHD4hCJ7OZiQDUFZNYyS6
+	 yl8t7QfcC4yV8J2azSC+9tYQlHb0Sl9wjZ/stO3UE2IJMFkDbOc0gzjguVtL6F9bNt
+	 dd3sa89Ksy1GPHmXaR2oGp4Qech3Y9A06baKCMOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	"chr[]" <chris@rudorff.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: [PATCH 6.6 093/142] amdgpu/pm/legacy: fix suspend/resume issues
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 083/150] riscv: KVM: Fix SBI IPI error generation
 Date: Wed,  5 Mar 2025 18:48:32 +0100
-Message-ID: <20250305174504.068448083@linuxfoundation.org>
+Message-ID: <20250305174507.150631606@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,197 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chr[] <chris@rudorff.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-commit 91dcc66b34beb72dde8412421bdc1b4cd40e4fb8 upstream.
+[ Upstream commit 0611f78f83c93c000029ab01daa28166d03590ed ]
 
-resume and irq handler happily races in set_power_state()
+When an invalid function ID of an SBI extension is used we should
+return not-supported, not invalid-param. Also, when we see that at
+least one hartid constructed from the base and mask parameters is
+invalid, then we should return invalid-param. Finally, rather than
+relying on overflowing a left shift to result in zero and then using
+that zero in a condition which [correctly] skips sending an IPI (but
+loops unnecessarily), explicitly check for overflow and exit the loop
+immediately.
 
-* amdgpu_legacy_dpm_compute_clocks() needs lock
-* protect irq work handler
-* fix dpm_enabled usage
-
-v2: fix clang build, integrate Lijo's comments (Alex)
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2524
-Fixes: 3712e7a49459 ("drm/amd/pm: unified lock protections in amdgpu_dpm.c")
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Tested-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name> # on Oland PRO
-Signed-off-by: chr[] <chris@rudorff.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ee3dc9e204d271c9c7a8d4d38a0bce4745d33e71)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5f862df5585c ("RISC-V: KVM: Add v0.1 replacement SBI extensions defined in v0.2")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20250217084506.18763-10-ajones@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c     |   25 ++++++++++++++++++------
- drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c |    8 +++++--
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c     |   26 +++++++++++++++++++------
- 3 files changed, 45 insertions(+), 14 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-@@ -3043,6 +3043,7 @@ static int kv_dpm_hw_init(void *handle)
- 	if (!amdgpu_dpm)
- 		return 0;
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 9c2ab3dfa93aa..74e3a38c6a29e 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -51,9 +51,10 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	struct kvm_cpu_context *cp = &vcpu->arch.guest_context;
+ 	unsigned long hmask = cp->a0;
+ 	unsigned long hbase = cp->a1;
++	unsigned long hart_bit = 0, sentmask = 0;
  
-+	mutex_lock(&adev->pm.mutex);
- 	kv_dpm_setup_asic(adev);
- 	ret = kv_dpm_enable(adev);
- 	if (ret)
-@@ -3050,6 +3051,8 @@ static int kv_dpm_hw_init(void *handle)
- 	else
- 		adev->pm.dpm_enabled = true;
- 	amdgpu_legacy_dpm_compute_clocks(adev);
-+	mutex_unlock(&adev->pm.mutex);
+ 	if (cp->a6 != SBI_EXT_IPI_SEND_IPI) {
+-		retdata->err_val = SBI_ERR_INVALID_PARAM;
++		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
+ 		return 0;
+ 	}
+ 
+@@ -62,15 +63,23 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		if (hbase != -1UL) {
+ 			if (tmp->vcpu_id < hbase)
+ 				continue;
+-			if (!(hmask & (1UL << (tmp->vcpu_id - hbase))))
++			hart_bit = tmp->vcpu_id - hbase;
++			if (hart_bit >= __riscv_xlen)
++				goto done;
++			if (!(hmask & (1UL << hart_bit)))
+ 				continue;
+ 		}
+ 		ret = kvm_riscv_vcpu_set_interrupt(tmp, IRQ_VS_SOFT);
+ 		if (ret < 0)
+ 			break;
++		sentmask |= 1UL << hart_bit;
+ 		kvm_riscv_vcpu_pmu_incr_fw(tmp, SBI_PMU_FW_IPI_RCVD);
+ 	}
+ 
++done:
++	if (hbase != -1UL && (hmask ^ sentmask))
++		retdata->err_val = SBI_ERR_INVALID_PARAM;
 +
  	return ret;
  }
  
-@@ -3067,32 +3070,42 @@ static int kv_dpm_suspend(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
-+	cancel_work_sync(&adev->pm.dpm.thermal.work);
-+
- 	if (adev->pm.dpm_enabled) {
-+		mutex_lock(&adev->pm.mutex);
-+		adev->pm.dpm_enabled = false;
- 		/* disable dpm */
- 		kv_dpm_disable(adev);
- 		/* reset the power state */
- 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
-+		mutex_unlock(&adev->pm.mutex);
- 	}
- 	return 0;
- }
- 
- static int kv_dpm_resume(void *handle)
- {
--	int ret;
-+	int ret = 0;
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
--	if (adev->pm.dpm_enabled) {
-+	if (!amdgpu_dpm)
-+		return 0;
-+
-+	if (!adev->pm.dpm_enabled) {
-+		mutex_lock(&adev->pm.mutex);
- 		/* asic init will reset to the boot state */
- 		kv_dpm_setup_asic(adev);
- 		ret = kv_dpm_enable(adev);
--		if (ret)
-+		if (ret) {
- 			adev->pm.dpm_enabled = false;
--		else
-+		} else {
- 			adev->pm.dpm_enabled = true;
--		if (adev->pm.dpm_enabled)
- 			amdgpu_legacy_dpm_compute_clocks(adev);
-+		}
-+		mutex_unlock(&adev->pm.mutex);
- 	}
--	return 0;
-+	return ret;
- }
- 
- static bool kv_dpm_is_idle(void *handle)
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
-@@ -1018,9 +1018,12 @@ void amdgpu_dpm_thermal_work_handler(str
- 	enum amd_pm_state_type dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
- 	int temp, size = sizeof(temp);
- 
--	if (!adev->pm.dpm_enabled)
--		return;
-+	mutex_lock(&adev->pm.mutex);
- 
-+	if (!adev->pm.dpm_enabled) {
-+		mutex_unlock(&adev->pm.mutex);
-+		return;
-+	}
- 	if (!pp_funcs->read_sensor(adev->powerplay.pp_handle,
- 				   AMDGPU_PP_SENSOR_GPU_TEMP,
- 				   (void *)&temp,
-@@ -1042,4 +1045,5 @@ void amdgpu_dpm_thermal_work_handler(str
- 	adev->pm.dpm.state = dpm_state;
- 
- 	amdgpu_legacy_dpm_compute_clocks(adev->powerplay.pp_handle);
-+	mutex_unlock(&adev->pm.mutex);
- }
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -7789,6 +7789,7 @@ static int si_dpm_hw_init(void *handle)
- 	if (!amdgpu_dpm)
- 		return 0;
- 
-+	mutex_lock(&adev->pm.mutex);
- 	si_dpm_setup_asic(adev);
- 	ret = si_dpm_enable(adev);
- 	if (ret)
-@@ -7796,6 +7797,7 @@ static int si_dpm_hw_init(void *handle)
- 	else
- 		adev->pm.dpm_enabled = true;
- 	amdgpu_legacy_dpm_compute_clocks(adev);
-+	mutex_unlock(&adev->pm.mutex);
- 	return ret;
- }
- 
-@@ -7813,32 +7815,44 @@ static int si_dpm_suspend(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
-+	cancel_work_sync(&adev->pm.dpm.thermal.work);
-+
- 	if (adev->pm.dpm_enabled) {
-+		mutex_lock(&adev->pm.mutex);
-+		adev->pm.dpm_enabled = false;
- 		/* disable dpm */
- 		si_dpm_disable(adev);
- 		/* reset the power state */
- 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
-+		mutex_unlock(&adev->pm.mutex);
- 	}
-+
- 	return 0;
- }
- 
- static int si_dpm_resume(void *handle)
- {
--	int ret;
-+	int ret = 0;
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
--	if (adev->pm.dpm_enabled) {
-+	if (!amdgpu_dpm)
-+		return 0;
-+
-+	if (!adev->pm.dpm_enabled) {
- 		/* asic init will reset to the boot state */
-+		mutex_lock(&adev->pm.mutex);
- 		si_dpm_setup_asic(adev);
- 		ret = si_dpm_enable(adev);
--		if (ret)
-+		if (ret) {
- 			adev->pm.dpm_enabled = false;
--		else
-+		} else {
- 			adev->pm.dpm_enabled = true;
--		if (adev->pm.dpm_enabled)
- 			amdgpu_legacy_dpm_compute_clocks(adev);
-+		}
-+		mutex_unlock(&adev->pm.mutex);
- 	}
--	return 0;
-+
-+	return ret;
- }
- 
- static bool si_dpm_is_idle(void *handle)
+-- 
+2.39.5
+
 
 
 
