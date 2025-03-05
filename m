@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F9CA5087A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42BFA507D2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F0471887A8F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F0516B89C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A39E1C6FF6;
-	Wed,  5 Mar 2025 18:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869DA250C14;
+	Wed,  5 Mar 2025 18:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDSn5mbw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTfgsZUw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3910419C542;
-	Wed,  5 Mar 2025 18:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8A91C860D;
+	Wed,  5 Mar 2025 18:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198027; cv=none; b=NthDCCrJ2KDoMOsrxtPeviom4bUf6w91KObl3BA20t/03tNOGXiAXbwRQrA/Q8QvNGWa2WXEDaIFVz5ELEupWTZ8cLRYPi+xZPc8Povd3j8w6hAXRth8MdgTWzDlfO83db0nrLRhEeg6Cxn6VhGtKS4geR0mUee0XqpGfz9t4jk=
+	t=1741197636; cv=none; b=rRzjnb9NKZKY9f66KhGEVeApVCBSNQp+LYep0Xvox6GyO8Khcg3b6j/71FJH+kcrApld4VbmtoIKEzbvRuXWZRUaX1m/0gISIGpZBvzWJJX/hXEjrGt9uuTdnu/96zXZTng7DeQXm9babuEW+VPs2OGHiaHlmKuHagR5R6djXXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198027; c=relaxed/simple;
-	bh=KmGvMosCDudfz6myOXOT/7tF4k1Blr2H6CQXHNk3YYs=;
+	s=arc-20240116; t=1741197636; c=relaxed/simple;
+	bh=H8a3VyebIW29XdaRiD/5eP57g/6piX3LK6KWa24yBPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCRZxibKFK3amVzvRxa/99y2yAPsPhfGgaWJX1vIMZSadVun1XBPq7kvzTxxgjtOR5aErdFDWVuYmTRi4U6w2cTLl412egk+S+5OjSQW49sTC0kTOKlL8wSdC4Ixd2ldvqD16Jbd1yTYx1FbNiAuBRTHBGv4G1TSReSt4eHwKyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDSn5mbw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BB5C4CED1;
-	Wed,  5 Mar 2025 18:07:06 +0000 (UTC)
+	 MIME-Version; b=aetKIYTIzIWNJUay9EvW2YpMrxjCfMrDBWw1c1cKiPDQ7stOdP+z3C3obiwV/Pm3lmYbNN30t7TNaxKm59oLm5U8ffcAaYiVHlPGozEYFbdY1Gh6iNCx9K2FRjrr/sxzkeOUxLTxFTgSkRKVOuRhj++40MMsEw9W0ABXniah144=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTfgsZUw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74CCC4CED1;
+	Wed,  5 Mar 2025 18:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198027;
-	bh=KmGvMosCDudfz6myOXOT/7tF4k1Blr2H6CQXHNk3YYs=;
+	s=korg; t=1741197636;
+	bh=H8a3VyebIW29XdaRiD/5eP57g/6piX3LK6KWa24yBPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDSn5mbwV2IJ68TRbHWFn3PrVcZq4d2idLs5f1fTBztQ90WZABEO+b5yJ6tUzuvsJ
-	 Khk0eHMmv1O4ujQnn6a56sdI1SeDp5D01TjSbLRCkSVUFTMh+Bf77Rv9B9ZI1xEd9C
-	 N4rWtIhJJJN8BROU9eiBd1fzlQ5ZaDz2ckFvWdlk=
+	b=sTfgsZUwbcL2ifasYXYajMsJwGw/5q/Iq5zedSwzAE+qadLLMAS+QEMtOaY9BKCJq
+	 hwbm2fkpXHpeCAh82uG0ejktq72FU7ttL8LYFvJ9Q4wv2RkZWbGR4ffHYIXyfsikL7
+	 Ntpn3wvFP728dS0vQj1XbllP9w6PqcOr8VIbFWa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+93ab4a777bafb9d9f960@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Mahesh Bandewar <maheshb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Alexander Aring <aahringo@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/150] ipvlan: ensure network headers are in skb linear part
+Subject: [PATCH 6.6 048/142] net: ipv6: rpl_iptunnel: mitigate 2-realloc issue
 Date: Wed,  5 Mar 2025 18:47:47 +0100
-Message-ID: <20250305174505.346232456@linuxfoundation.org>
+Message-ID: <20250305174502.268802541@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +63,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 27843ce6ba3d3122b65066550fe33fb8839f8aef ]
+[ Upstream commit 985ec6f5e6235242191370628acb73d7a9f0c0ea ]
 
-syzbot found that ipvlan_process_v6_outbound() was assuming
-the IPv6 network header isis present in skb->head [1]
+This patch mitigates the two-reallocations issue with rpl_iptunnel by
+providing the dst_entry (in the cache) to the first call to
+skb_cow_head(). As a result, the very first iteration would still
+trigger two reallocations (i.e., empty cache), while next iterations
+would only trigger a single reallocation.
 
-Add the needed pskb_network_may_pull() calls for both
-IPv4 and IPv6 handlers.
+Performance tests before/after applying this patch, which clearly shows
+there is no impact (it even shows improvement):
+- before: https://ibb.co/nQJhqwc
+- after: https://ibb.co/4ZvW6wV
 
-[1]
-BUG: KMSAN: uninit-value in __ipv6_addr_type+0xa2/0x490 net/ipv6/addrconf_core.c:47
-  __ipv6_addr_type+0xa2/0x490 net/ipv6/addrconf_core.c:47
-  ipv6_addr_type include/net/ipv6.h:555 [inline]
-  ip6_route_output_flags_noref net/ipv6/route.c:2616 [inline]
-  ip6_route_output_flags+0x51/0x720 net/ipv6/route.c:2651
-  ip6_route_output include/net/ip6_route.h:93 [inline]
-  ipvlan_route_v6_outbound+0x24e/0x520 drivers/net/ipvlan/ipvlan_core.c:476
-  ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:491 [inline]
-  ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:541 [inline]
-  ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:605 [inline]
-  ipvlan_queue_xmit+0xd72/0x1780 drivers/net/ipvlan/ipvlan_core.c:671
-  ipvlan_start_xmit+0x5b/0x210 drivers/net/ipvlan/ipvlan_main.c:223
-  __netdev_start_xmit include/linux/netdevice.h:5150 [inline]
-  netdev_start_xmit include/linux/netdevice.h:5159 [inline]
-  xmit_one net/core/dev.c:3735 [inline]
-  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3751
-  sch_direct_xmit+0x399/0xd40 net/sched/sch_generic.c:343
-  qdisc_restart net/sched/sch_generic.c:408 [inline]
-  __qdisc_run+0x14da/0x35d0 net/sched/sch_generic.c:416
-  qdisc_run+0x141/0x4d0 include/net/pkt_sched.h:127
-  net_tx_action+0x78b/0x940 net/core/dev.c:5484
-  handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
-  __do_softirq+0x14/0x1a kernel/softirq.c:595
-  do_softirq+0x9a/0x100 kernel/softirq.c:462
-  __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:389
-  local_bh_enable include/linux/bottom_half.h:33 [inline]
-  rcu_read_unlock_bh include/linux/rcupdate.h:919 [inline]
-  __dev_queue_xmit+0x2758/0x57d0 net/core/dev.c:4611
-  dev_queue_xmit include/linux/netdevice.h:3311 [inline]
-  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
-  packet_snd net/packet/af_packet.c:3132 [inline]
-  packet_sendmsg+0x93e0/0xa7e0 net/packet/af_packet.c:3164
-  sock_sendmsg_nosec net/socket.c:718 [inline]
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Reported-by: syzbot+93ab4a777bafb9d9f960@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67b74f01.050a0220.14d86d.02d8.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mahesh Bandewar <maheshb@google.com>
-Link: https://patch.msgid.link/20250220155336.61884-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Cc: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 13e55fbaec17 ("net: ipv6: fix dst ref loop on input in rpl lwt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ net/ipv6/rpl_iptunnel.c | 46 ++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index fd591ddb3884d..ca62188a317ad 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -416,20 +416,25 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index db3c19a42e1ca..7ba22d2f2bfef 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -125,7 +125,8 @@ static void rpl_destroy_state(struct lwtunnel_state *lwt)
+ }
  
- static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
+-			     const struct ipv6_rpl_sr_hdr *srh)
++			     const struct ipv6_rpl_sr_hdr *srh,
++			     struct dst_entry *cache_dst)
  {
--	const struct iphdr *ip4h = ip_hdr(skb);
- 	struct net_device *dev = skb->dev;
- 	struct net *net = dev_net(dev);
--	struct rtable *rt;
- 	int err, ret = NET_XMIT_DROP;
-+	const struct iphdr *ip4h;
-+	struct rtable *rt;
- 	struct flowi4 fl4 = {
- 		.flowi4_oif = dev->ifindex,
--		.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h)),
- 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
- 		.flowi4_mark = skb->mark,
--		.daddr = ip4h->daddr,
--		.saddr = ip4h->saddr,
- 	};
+ 	struct ipv6_rpl_sr_hdr *isrh, *csrh;
+ 	const struct ipv6hdr *oldhdr;
+@@ -153,7 +154,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
  
-+	if (!pskb_network_may_pull(skb, sizeof(struct iphdr)))
-+		goto err;
-+
-+	ip4h = ip_hdr(skb);
-+	fl4.daddr = ip4h->daddr;
-+	fl4.saddr = ip4h->saddr;
-+	fl4.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h));
-+
- 	rt = ip_route_output_flow(net, &fl4, NULL);
- 	if (IS_ERR(rt))
- 		goto err;
-@@ -488,6 +493,12 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
- 	struct net_device *dev = skb->dev;
- 	int err, ret = NET_XMIT_DROP;
+ 	hdrlen = ((csrh->hdrlen + 1) << 3);
  
-+	if (!pskb_network_may_pull(skb, sizeof(struct ipv6hdr))) {
-+		DEV_STATS_INC(dev, tx_errors);
-+		kfree_skb(skb);
-+		return ret;
-+	}
-+
- 	err = ipvlan_route_v6_outbound(dev, skb);
+-	err = skb_cow_head(skb, hdrlen + skb->mac_len);
++	err = skb_cow_head(skb, hdrlen + dst_dev_overhead(cache_dst, skb));
  	if (unlikely(err)) {
- 		DEV_STATS_INC(dev, tx_errors);
+ 		kfree(buf);
+ 		return err;
+@@ -186,7 +187,8 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
+ 	return 0;
+ }
+ 
+-static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt)
++static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt,
++		      struct dst_entry *cache_dst)
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+ 	struct rpl_iptunnel_encap *tinfo;
+@@ -196,7 +198,7 @@ static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt)
+ 
+ 	tinfo = rpl_encap_lwtunnel(dst->lwtstate);
+ 
+-	return rpl_do_srh_inline(skb, rlwt, tinfo->srh);
++	return rpl_do_srh_inline(skb, rlwt, tinfo->srh, cache_dst);
+ }
+ 
+ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+@@ -208,14 +210,14 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	err = rpl_do_srh(skb, rlwt);
+-	if (unlikely(err))
+-		goto drop;
+-
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+ 	local_bh_enable();
+ 
++	err = rpl_do_srh(skb, rlwt, dst);
++	if (unlikely(err))
++		goto drop;
++
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
+@@ -237,15 +239,15 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		local_bh_disable();
+ 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+ 		local_bh_enable();
++
++		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
++		if (unlikely(err))
++			goto drop;
+ 	}
+ 
+ 	skb_dst_drop(skb);
+ 	skb_dst_set(skb, dst);
+ 
+-	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+-	if (unlikely(err))
+-		goto drop;
+-
+ 	return dst_output(net, sk, skb);
+ 
+ drop:
+@@ -262,29 +264,31 @@ static int rpl_input(struct sk_buff *skb)
+ 
+ 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	err = rpl_do_srh(skb, rlwt);
+-	if (unlikely(err))
+-		goto drop;
+-
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
++	local_bh_enable();
++
++	err = rpl_do_srh(skb, rlwt, dst);
++	if (unlikely(err))
++		goto drop;
+ 
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
++			local_bh_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
++			local_bh_enable();
+ 		}
++
++		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
++		if (unlikely(err))
++			goto drop;
+ 	} else {
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	}
+-	local_bh_enable();
+-
+-	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+-	if (unlikely(err))
+-		goto drop;
+ 
+ 	return dst_input(skb);
+ 
 -- 
 2.39.5
 
