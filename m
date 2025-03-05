@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-120942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17015A5092E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D9CCA5073C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93581885725
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 037203A8BFA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20AE7252908;
-	Wed,  5 Mar 2025 18:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94D2251789;
+	Wed,  5 Mar 2025 17:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mbrlwrgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQ/ovTAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D313D24C07D;
-	Wed,  5 Mar 2025 18:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68DD2512EB;
+	Wed,  5 Mar 2025 17:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198421; cv=none; b=GwhznDvvBJxLm0+6qEeFRyBPwfPs4CHraSxQXEoQveMXiSqvlf9lX94SUBZW8dlanaU6QEdRNWjsTz1zWjvQvcbOYPeXGW18VZjUBhlaqwVVVCCBscvXi6ATU03rIfkNhEHkcR6xGLE5bMlC0SsnQawdOPnar8Xdj9AmvoEAFio=
+	t=1741197288; cv=none; b=BPiKoHJPWyX0ZInpR8HG8ofGfVN/aAHdHytKYSmhk/C8BKnztlfweUwIgsD4y3DpwCm8JhT56jk+CbXbX4UkpMRH+IXmUF9KHG4CP4TFrmkVZVubZ57MleH6Ox22C+1u8SW5pkewcw25208fiRJ4j8d4l8qlyRfLM6LsonlFfo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198421; c=relaxed/simple;
-	bh=TU1vbfwQGDBcnF5GOajjKHaT1NVRz1lqydJAFbNgTnA=;
+	s=arc-20240116; t=1741197288; c=relaxed/simple;
+	bh=Ek6xFVjgEXa/E2CQp3Zc07kvGUK5ieRyfbKc0HSOxjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGJU/Nywp3ejiDrnuhXWcUfqhir43PPZZR09wB5kl/D1USBouBsupd9G18BIQOuKoUnlTqwQUKTXWIASCfg8W1in3E2Yf2dB36YHSW4ksEXieFClIvrTO8/m/2318zaZ4ywlq9+rnmQ2DPWQ9W4Aix74/qVmTJXV69nBw6A4amU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mbrlwrgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F769C4CED1;
-	Wed,  5 Mar 2025 18:13:41 +0000 (UTC)
+	 MIME-Version; b=MvBmSnKto4EEiIENzXrOZ94GDdfDWIf+lCR2mYO/pOWaAHZtxvznp0hgVLY3o1nF6aLtlGomuHNDQfwKBCZvvoVbzqxAAMLwJ3NY6TFp/Z9YDYglmdi7UbEc+Py91vXZMlz4EtCUTfumA7ru1Z8hcH4dG/5VILP2/iimw+b68uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ/ovTAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A29C4CEE2;
+	Wed,  5 Mar 2025 17:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198421;
-	bh=TU1vbfwQGDBcnF5GOajjKHaT1NVRz1lqydJAFbNgTnA=;
+	s=korg; t=1741197288;
+	bh=Ek6xFVjgEXa/E2CQp3Zc07kvGUK5ieRyfbKc0HSOxjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mbrlwrgls3veGIqrTJvsSlEdY3giDpC4l3QXdXMMF3yaQ5hxoasfBhSuUcux01mp/
-	 PPfDJ6RzU7rXuF8RpWFKiIr/nyG4jDBUOWFwQBGauPalSkumhSkyd5GHhsYayIG4ya
-	 Wb9VUq4J1m0j+6XVjCWJb+RVKvaRABzvAh6JRlQY=
+	b=tQ/ovTAHoVP+bdDwmcXMEfJqoEjQnJTE6BZgeOBHm7vTqG7Hns7ld8VjuABELbq9T
+	 4JwO0uA8pOgUjrMZuQaFPE47LBCCT9w7OcFNDRK29OwsFi1GYjE+du+RrVh2fkI1xG
+	 KCt1pSo1f9sMjiq0OjzK7Tzwb1gLGGAd2OwKPljY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 005/157] RDMA/mana_ib: Allocate PAGE aligned doorbell index
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>
+Subject: [PATCH 6.1 072/176] drm/msm/dpu: Disable dither in phys encoder cleanup
 Date: Wed,  5 Mar 2025 18:47:21 +0100
-Message-ID: <20250305174505.494358062@linuxfoundation.org>
+Message-ID: <20250305174508.352417215@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit 29b7bb98234cc287cebef9bccf638c2e3f39be71 ]
+commit f063ac6b55df03ed25996bdc84d9e1c50147cfa1 upstream.
 
-Allocate a PAGE aligned doorbell index to ensure each process gets a
-separate PAGE sized doorbell area space remapped to it in mana_ib_mmap
+Disable pingpong dither in dpu_encoder_helper_phys_cleanup().
 
-Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-Signed-off-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/1738751405-15041-1-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This avoids the issue where an encoder unknowingly uses dither after
+reserving a pingpong block that was previously bound to an encoder that
+had enabled dither.
+
+Cc: stable@vger.kernel.org
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Closes: https://lore.kernel.org/all/jr7zbj5w7iq4apg3gofuvcwf4r2swzqjk7sshwcdjll4mn6ctt@l2n3qfpujg3q/
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 3c128638a07d ("drm/msm/dpu: add support for dither block in display")
+Patchwork: https://patchwork.freedesktop.org/patch/636517/
+Link: https://lore.kernel.org/r/20250211-dither-disable-v1-1-ac2cb455f6b9@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index 67c2d43135a8a..457cea6d99095 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -174,7 +174,7 @@ static int mana_gd_allocate_doorbell_page(struct gdma_context *gc,
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -2059,6 +2059,9 @@ void dpu_encoder_helper_phys_cleanup(str
+ 		}
+ 	}
  
- 	req.resource_type = GDMA_RESOURCE_DOORBELL_PAGE;
- 	req.num_resources = 1;
--	req.alignment = 1;
-+	req.alignment = PAGE_SIZE / MANA_PAGE_SIZE;
- 
- 	/* Have GDMA start searching from 0 */
- 	req.allocated_resources = 0;
--- 
-2.39.5
-
++	if (phys_enc->hw_pp && phys_enc->hw_pp->ops.setup_dither)
++		phys_enc->hw_pp->ops.setup_dither(phys_enc->hw_pp, NULL);
++
+ 	/* reset the merge 3D HW block */
+ 	if (phys_enc->hw_pp && phys_enc->hw_pp->merge_3d) {
+ 		phys_enc->hw_pp->merge_3d->ops.setup_3d_mode(phys_enc->hw_pp->merge_3d,
 
 
 
