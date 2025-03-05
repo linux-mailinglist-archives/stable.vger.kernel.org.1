@@ -1,112 +1,107 @@
-Return-Path: <stable+bounces-121111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633FBA50C4B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 21:13:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A653A50C92
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 21:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A791188A918
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 720351883A96
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94755255252;
-	Wed,  5 Mar 2025 20:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC321D88B4;
+	Wed,  5 Mar 2025 20:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiqhWiXS"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kOrGQWMP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D17D255229;
-	Wed,  5 Mar 2025 20:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9E21917E4;
+	Wed,  5 Mar 2025 20:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741205586; cv=none; b=uDM7S2v0eZckVTGK4UK75YDzSDC38J8kgVb0ybOoURam1NyhhaOvLtWEPS3VfqvmuD/40eJMbPw21f90yvTJHKjnhD751Gdoz1myBA2A9j011fci5h+jfe209zeWokEOY7waIwGlzGCc1u0DQxHG/Ean6nn0N7tIJk7ivbezLdQ=
+	t=1741206694; cv=none; b=bg3YEsmMjFNRyqCXgLMdilYylgmsZ0056z3MR72IHaNNaojiEugSWZUmbRTtFVgSmgco/rT03Btp9TfehBbuhWcSD1d27DYkOm2x2XaUqqH1tz0H7f3DN4GtYNxjyK5lkmk6xdM1NTSvmTE4d32+vbOKAYZtXR3SvnjRA2Ix1Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741205586; c=relaxed/simple;
-	bh=hFo6rL+75WRubYu2f6ja0U/pMo0LSXFLvVGX6KuwvtM=;
+	s=arc-20240116; t=1741206694; c=relaxed/simple;
+	bh=WBNDtdCWGQh9oPEY49ejtX299nQF0XieKRNkEJJ79/o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MLEQnDadcekVK/KPL2IU6s1LnU8/WqNAkz38C7OKQGk4zWWGgHreoczUfNLOV7SJGBmR1E2sduA4f8hZ2xeiuNmfYUbjOMVdma4syxM26c8S6wwlyK7knnkT4sh03V0AY3q0m1+M7Z3vbvosiTmxKHhsPjEr1uAare7lbPwMe2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiqhWiXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24B2C4CED1;
-	Wed,  5 Mar 2025 20:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741205586;
-	bh=hFo6rL+75WRubYu2f6ja0U/pMo0LSXFLvVGX6KuwvtM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oiqhWiXST//UvY/UvsYdMfpv5viv2p+Pj0amK1NnxWSR8UV6SsFSHp225SHGSxB9U
-	 6R/uz5LEPT8Zwn3q0j+gWy6UgO3MdOcj0wz7mdXSNfkCtYERFGGyeus5Qte6CZCeIY
-	 3OWvolhKVlszGy8G/UH15LSe+hGeHSstP57oWoBi/5FtCf4jZdCiE3ETvtecjLcJMk
-	 6f67bFzL1hL5V3/r+o8xLedPMs+vxgv9hfrRlBveTB+AXWKiluiJOPiwrG/ceNntHd
-	 P1sqnoKD7TmzQgTuT+IvfasOwwJzpdhWz8fakZTuasxuTc+QpeKY0DVbgO76FjfM1N
-	 4uHlJpJGzzCgQ==
-Date: Wed, 5 Mar 2025 20:12:59 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.13 000/157] 6.13.6-rc1 review
-Message-ID: <8433c362-1909-4a2e-b41f-c0f5677286d2@sirena.org.uk>
-References: <20250305174505.268725418@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NgP3hfF9wRw0lzsD2sMVxH4Dwg9D6/EWuNJYKpPgj3NE4cSJ3U9CAhendonb0bYsh/3i68rpCX0psRky/Ii6sJfU2TxHIOijOaYar1swq25pJDqRSk19s4MLCpx8vW4k4HuNqj8vOnxaEk7tSbwONcIJ1uYJWvsiWds8vApp6zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kOrGQWMP; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5N69iuSZpEP3m1sQZOVuMhRR/phcnv3Nm9ASp7xyfVE=; b=kOrGQWMPRD/iroQXeR6iOyX+Md
+	dbgAFsc4t/jIFa9ZM8NoLIbQsKZ+dtf3Ij7mnzbq36sVOtO4vHIV+tpJYXN+HqzGCWB85f4OQ4CtU
+	8InbhiB+XTG2vIqws1nkEbSwXzsIXXpDLu8X1/AZvSAD/iutOU1iEmRb7QQ6EYeoZtkX8drblW3s1
+	1QDV4bd9tCdaff5Nbq6CQWFy5paBSEpPEt3hLVsXCU4sONMHDcVoQcM4HCB2BZBgz6Tmkkj9NSfx0
+	+Tq+zt0qNZf5ys2CHT81hyPUVOij7RJ6AFbrO0VG4DRbok4roLlyAPY8luYiGUI8C0xbO4skAZX53
+	G/XUnQyw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tpvOh-00000006AwN-1uRx;
+	Wed, 05 Mar 2025 20:31:19 +0000
+Date: Wed, 5 Mar 2025 20:31:19 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Liu Shixin <liushixin2@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <baohua@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/migrate: fix shmem xarray update during migration
+Message-ID: <Z8i0l8apxDsThD9s@casper.infradead.org>
+References: <20250305200403.2822855-1-ziy@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="YLIFX1f4k5OCHHnW"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-X-Cookie: Everybody gets free BORSCHT!
+In-Reply-To: <20250305200403.2822855-1-ziy@nvidia.com>
 
+On Wed, Mar 05, 2025 at 03:04:03PM -0500, Zi Yan wrote:
+> A shmem folio can be either in page cache or in swap cache, but not at the
+> same time. Namely, once it is in swap cache, folio->mapping should be NULL,
+> and the folio is no longer in a shmem mapping.
+> 
+> In __folio_migrate_mapping(), to determine the number of xarray entries
+> to update, folio_test_swapbacked() is used, but that conflates shmem in
+> page cache case and shmem in swap cache case. It leads to xarray
+> multi-index entry corruption, since it turns a sibling entry to a
+> normal entry during xas_store() (see [1] for a userspace reproduction).
+> Fix it by only using folio_test_swapcache() to determine whether xarray
+> is storing swap cache entries or not to choose the right number of xarray
+> entries to update.
+> 
+> [1] https://lore.kernel.org/linux-mm/Z8idPCkaJW1IChjT@casper.infradead.org/
+> 
+> Note:
+> In __split_huge_page(), folio_test_anon() && folio_test_swapcache() is used
+> to get swap_cache address space, but that ignores the shmem folio in swap
+> cache case. It could lead to NULL pointer dereferencing when a
+> in-swap-cache shmem folio is split at __xa_store(), since
+> !folio_test_anon() is true and folio->mapping is NULL. But fortunately,
+> its caller split_huge_page_to_list_to_order() bails out early with EBUSY
+> when folio->mapping is NULL. So no need to take care of it here.
+> 
+> Fixes: fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
+> Reported-by: Liu Shixin <liushixin2@huawei.com>
+> Closes: https://lore.kernel.org/all/28546fb4-5210-bf75-16d6-43e1f8646080@huawei.com/
+> Suggested-by: Hugh Dickins <hughd@google.com>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Cc: stable@vger.kernel.org
 
---YLIFX1f4k5OCHHnW
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Mar 05, 2025 at 06:47:16PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.6 release.
-> There are 157 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-The arm64 defconfig build is broken (KernelCI reported this initially):
-
-/build/stage/linux/arch/arm64/mm/hugetlbpage.c: In function =E2=80=98huge_p=
-tep_get_and_clear=E2=80=99:
-/build/stage/linux/arch/arm64/mm/hugetlbpage.c:397:35: error: =E2=80=98sz=
-=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98s8=
-=E2=80=99?
-  397 |         ncontig =3D num_contig_ptes(sz, &pgsize);
-      |                                   ^~
-      |                                   s8
-/build/stage/linux/arch/arm64/mm/hugetlbpage.c:397:35: note: each undeclare=
-d identifier is reported only once for each function it appears in
-
-The same issue affects 6.12.
-
---YLIFX1f4k5OCHHnW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfIsEsACgkQJNaLcl1U
-h9AsLgf8C2dlr7m4HALKYeWi6j0Uq0E81SRFYyXjYFUiZgZDPdWD8Wfda4lmSdoP
-S2gflUW8yxBtTSyeZ2bnt6tkAstcoE2VSXk6ty7yzr/JrOjUwist/CQ28df6dPqk
-EJ9asij1GKgIoMYGY/pqbIlPWk8dX3fplQvkMeQgJnCx+TK76FMvxHp2Aj8iMD0m
-9YU0xlHJbonML5IBfluxY5dXzaD3GZ5TmMGsCgybDvBqxROiAsnF8x7kESkZXViU
-2sxmnyyZELY7cyZg++ZdvhoD9/Xh6rad6MhqOu2g7mO3GP8Aa6UOrxzWYsVk9wP4
-9dojnF88jighlPsNbS/blhNJwGeb6w==
-=PIVl
------END PGP SIGNATURE-----
-
---YLIFX1f4k5OCHHnW--
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
