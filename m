@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-121013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44127A5098C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB9CA5089C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C347A9A9A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0313A16DDC5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3592253B57;
-	Wed,  5 Mar 2025 18:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E368F2528E8;
+	Wed,  5 Mar 2025 18:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQjIK2sd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0sdi3mt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60241250BF3;
-	Wed,  5 Mar 2025 18:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AA12517BC;
+	Wed,  5 Mar 2025 18:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198628; cv=none; b=ZJvLcYOrZsx+FraZdt3Jp088MN7hmsG+I3Jb5w3hf5cxctqk+TdXqO2pw4LUD7FsKvczhr5kYwqGWRWB8BR5Mm27PCwo5BC5G77vmzvrnLUpjaPYR8N11n2pEBPomAvMVkt7K4nasEttvYIoNsgBsH0yizAhWVu2KdoqW1z1h9E=
+	t=1741198114; cv=none; b=okhB0XEkoBAQ1bJKirH90J81z9yG/zwG/q2HkpOj2++Nh6OGLP+MG87RHsVQ/FVDhC5CQI3SU+Yie9/uVtyhzv6obkk4gYo6AM0xrEMuL+O9kLBUtb5JVg1GQxz9k20QsgAfPLxwd7vOnheb+QdSJujGPVaQxDnbuF/C6YK6NRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198628; c=relaxed/simple;
-	bh=eHM9dSqBCdIa00HPKPYhuFnyIkn79W67e0XS7d7y7og=;
+	s=arc-20240116; t=1741198114; c=relaxed/simple;
+	bh=SUr4n2ixrn2vwA/EdRI1eKrNlVBFPrsAXpDfe6v5ias=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JU/Ep0ZKnZgZDaRAHKPyFGP2qwYOUUyhU3CujVuHfI2kmde364sFQkm5Ub4znMpPuR71X/FMyMyxeTTXcAnyiE9pfwMMymQ0+L7alYO4cyhYTjf2ODWwQBO1DkLm4mUAZweUhQofc68BGKe5P48o8G1DZc/0xZp8yOZBC3t7cOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQjIK2sd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77353C4CED1;
-	Wed,  5 Mar 2025 18:17:07 +0000 (UTC)
+	 MIME-Version; b=c0nwULnBmYY+a08sdANpHaQ8L8B8t7tubqyVSd1cjjnX8o/B6e834h4qWJZMNkPmg0dY+dxAENyxPGLhuVOCPnSI402YeVw3vEhr0WiCZ/oPmbLoc1k+BVltq8wMo18SnZuKN6i+xraJcCRDue7ezdg26wsqpwULZwgDqvmprlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0sdi3mt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29827C4CEE0;
+	Wed,  5 Mar 2025 18:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198627;
-	bh=eHM9dSqBCdIa00HPKPYhuFnyIkn79W67e0XS7d7y7og=;
+	s=korg; t=1741198114;
+	bh=SUr4n2ixrn2vwA/EdRI1eKrNlVBFPrsAXpDfe6v5ias=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQjIK2sddeTheI1bCs5+XXxYinGwGKkmXLlwpjWz+r/AI58Xk4e2p7U/22bw+y3JO
-	 NBhXX4fiz3B1FZJp9INj441RZDVqbihpe6rhp6jbKOEj7f7aTXsoxFtoJ872jbcukG
-	 veZX119lvFEDInFVGSmkgMEQKDzZaHwrv+tTGwYM=
+	b=c0sdi3mteCI7tPSMig1sUbUOnMoqB0FoWMwPUyK8oPU8nJOyWQHCc3kJNTu5oT9Kc
+	 OVbQMDM4rrhbK4zOhNVoPGKw6XxReozEhO+eCywinsyYqfSz1YYDLKEskHHpliDGxl
+	 bb00s9GKmNGt9QkYe8jM9tbA4pll2SFAYDd7b06k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tong Tiangen <tongtiangen@huawei.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 062/157] net: ti: icss-iep: Reject perout generation request
+Subject: [PATCH 6.12 069/150] uprobes: Reject the shared zeropage in uprobe_write_opcode()
 Date: Wed,  5 Mar 2025 18:48:18 +0100
-Message-ID: <20250305174507.797243470@linuxfoundation.org>
+Message-ID: <20250305174506.589007035@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +66,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
 
-[ Upstream commit 54e1b4becf5e220be03db4e1be773c1310e8cbbd ]
+[ Upstream commit bddf10d26e6e5114e7415a0e442ec6f51a559468 ]
 
-IEP driver supports both perout and pps signal generation
-but perout feature is faulty with half-cooked support
-due to some missing configuration. Remove perout
-support from the driver and reject perout requests with
-"not supported" error code.
+We triggered the following crash in syzkaller tests:
 
-Fixes: c1e0230eeaab2 ("net: ti: icss-iep: Add IEP driver")
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250227092441.1848419-1-m-malladi@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  BUG: Bad page state in process syz.7.38  pfn:1eff3
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1eff3
+  flags: 0x3fffff00004004(referenced|reserved|node=0|zone=1|lastcpupid=0x1fffff)
+  raw: 003fffff00004004 ffffe6c6c07bfcc8 ffffe6c6c07bfcc8 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000fffffffe 0000000000000000
+  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x32/0x50
+   bad_page+0x69/0xf0
+   free_unref_page_prepare+0x401/0x500
+   free_unref_page+0x6d/0x1b0
+   uprobe_write_opcode+0x460/0x8e0
+   install_breakpoint.part.0+0x51/0x80
+   register_for_each_vma+0x1d9/0x2b0
+   __uprobe_register+0x245/0x300
+   bpf_uprobe_multi_link_attach+0x29b/0x4f0
+   link_create+0x1e2/0x280
+   __sys_bpf+0x75f/0xac0
+   __x64_sys_bpf+0x1a/0x30
+   do_syscall_64+0x56/0x100
+   entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+   BUG: Bad rss-counter state mm:00000000452453e0 type:MM_FILEPAGES val:-1
+
+The following syzkaller test case can be used to reproduce:
+
+  r2 = creat(&(0x7f0000000000)='./file0\x00', 0x8)
+  write$nbd(r2, &(0x7f0000000580)=ANY=[], 0x10)
+  r4 = openat(0xffffffffffffff9c, &(0x7f0000000040)='./file0\x00', 0x42, 0x0)
+  mmap$IORING_OFF_SQ_RING(&(0x7f0000ffd000/0x3000)=nil, 0x3000, 0x0, 0x12, r4, 0x0)
+  r5 = userfaultfd(0x80801)
+  ioctl$UFFDIO_API(r5, 0xc018aa3f, &(0x7f0000000040)={0xaa, 0x20})
+  r6 = userfaultfd(0x80801)
+  ioctl$UFFDIO_API(r6, 0xc018aa3f, &(0x7f0000000140))
+  ioctl$UFFDIO_REGISTER(r6, 0xc020aa00, &(0x7f0000000100)={{&(0x7f0000ffc000/0x4000)=nil, 0x4000}, 0x2})
+  ioctl$UFFDIO_ZEROPAGE(r5, 0xc020aa04, &(0x7f0000000000)={{&(0x7f0000ffd000/0x1000)=nil, 0x1000}})
+  r7 = bpf$PROG_LOAD(0x5, &(0x7f0000000140)={0x2, 0x3, &(0x7f0000000200)=ANY=[@ANYBLOB="1800000000120000000000000000000095"], &(0x7f0000000000)='GPL\x00', 0x7, 0x0, 0x0, 0x0, 0x0, '\x00', 0x0, @fallback=0x30, 0xffffffffffffffff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, @void, @value}, 0x94)
+  bpf$BPF_LINK_CREATE_XDP(0x1c, &(0x7f0000000040)={r7, 0x0, 0x30, 0x1e, @val=@uprobe_multi={&(0x7f0000000080)='./file0\x00', &(0x7f0000000100)=[0x2], 0x0, 0x0, 0x1}}, 0x40)
+
+The cause is that zero pfn is set to the PTE without increasing the RSS
+count in mfill_atomic_pte_zeropage() and the refcount of zero folio does
+not increase accordingly. Then, the operation on the same pfn is performed
+in uprobe_write_opcode()->__replace_page() to unconditional decrease the
+RSS count and old_folio's refcount.
+
+Therefore, two bugs are introduced:
+
+ 1. The RSS count is incorrect, when process exit, the check_mm() report
+    error "Bad rss-count".
+
+ 2. The reserved folio (zero folio) is freed when folio->refcount is zero,
+    then free_pages_prepare->free_page_is_bad() report error
+    "Bad page state".
+
+There is more, the following warning could also theoretically be triggered:
+
+  __replace_page()
+    -> ...
+      -> folio_remove_rmap_pte()
+        -> VM_WARN_ON_FOLIO(is_zero_folio(folio), folio)
+
+Considering that uprobe hit on the zero folio is a very rare case, just
+reject zero old folio immediately after get_user_page_vma_remote().
+
+[ mingo: Cleaned up the changelog ]
+
+Fixes: 7396fa818d62 ("uprobes/core: Make background page replacement logic account for rss_stat counters")
+Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
+Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250224031149.1598949-1-tongtiangen@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+ kernel/events/uprobes.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 768578c0d9587..d59c1744840af 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -474,26 +474,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- static int icss_iep_perout_enable(struct icss_iep *iep,
- 				  struct ptp_perout_request *req, int on)
- {
--	int ret = 0;
--
--	mutex_lock(&iep->ptp_clk_mutex);
--
--	if (iep->pps_enabled) {
--		ret = -EBUSY;
--		goto exit;
--	}
--
--	if (iep->perout_enabled == !!on)
--		goto exit;
--
--	ret = icss_iep_perout_enable_hw(iep, req, on);
--	if (!ret)
--		iep->perout_enabled = !!on;
--
--exit:
--	mutex_unlock(&iep->ptp_clk_mutex);
--
--	return ret;
-+	return -EOPNOTSUPP;
- }
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 4b52cb2ae6d62..a0e0676f5d8bb 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -489,6 +489,11 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
+ 	if (ret <= 0)
+ 		goto put_old;
  
- static void icss_iep_cap_cmp_work(struct work_struct *work)
++	if (is_zero_page(old_page)) {
++		ret = -EINVAL;
++		goto put_old;
++	}
++
+ 	if (WARN(!is_register && PageCompound(old_page),
+ 		 "uprobe unregister should never work on compound page\n")) {
+ 		ret = -EINVAL;
 -- 
 2.39.5
 
