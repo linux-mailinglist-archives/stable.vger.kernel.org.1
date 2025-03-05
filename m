@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D09A507F6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7B3A508A3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31A81893CC8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0E9D1733C0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5B62505D3;
-	Wed,  5 Mar 2025 18:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A943C1A23A6;
+	Wed,  5 Mar 2025 18:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElTrhsxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZzYSbX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24841D6DB4;
-	Wed,  5 Mar 2025 18:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B4B1A840E;
+	Wed,  5 Mar 2025 18:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197736; cv=none; b=XoU+1qOV3pe1u9Rewri57P5qVymMwlaWHAUBrISChbS0Ui3rW7Ea5/ulN4JJyCfvLb5luUjAG+f3ly4OlAV8aq6r/1A4DE0DNeu+QhCiO9IqJj5KoSNKgi+e0/ckEQFZHCV6HvIQTc+XPKveSQAX5LEe0pl+64y6IAXLMXqkHxc=
+	t=1741198130; cv=none; b=bJ4np1aPrgVpSiQHf/FEpedRAx+DI06SjAyWuiu8vCjBxNN77aQtWkTsVuYmPN8mia1GbHCK2NflRsah55Wizqi3N0Fu0rksPPOlPEY0+QWC9+WaehMbmHXuXxn9YN5P+bYMobQO+qOferl5gl45z3P4r/AIoEJbLR6J0WvMd48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197736; c=relaxed/simple;
-	bh=XD9WBTsN2zZdH4FqPVhgEQvYlHuDtaaOmr6hHmhViCA=;
+	s=arc-20240116; t=1741198130; c=relaxed/simple;
+	bh=BTiBWzMjcdd+Hgz6MLpqxM0+E86lWL/oc7vTw3IW8tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcAyrvSsyFPdatrXt0JwVKuMEbdm7FXe8YrtAg1EqxUrJhSi9OJNZWNznVjVbV0gvXmPLUvplSRpO2H3gtRwaD9oaeG5aMeaQl2twSZoz+uh3GxoDk7lG+jZQCKwSqrIs0uZJzQKLNU+r7q/6k19amlG6WeuocCZZEG+PWQ+FL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElTrhsxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6DEC4CED1;
-	Wed,  5 Mar 2025 18:02:16 +0000 (UTC)
+	 MIME-Version; b=V7jq3CDvack6lueKjmEOw4vI3UDU/FAKyTPjMAdXh5u8O2e/stAZxR2a0EdcItCyJLPRK9k/Jq6/8OMGtoWIy8Wzb5adrNolHqqPrwz8Mt7fJU2uOT2pHLZgFdOvXQQGzc9jibzSjiyE4oHf/hAaYZ/xoQyfulDWQKR8sS1VGHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZzYSbX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEEBC4CED1;
+	Wed,  5 Mar 2025 18:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197736;
-	bh=XD9WBTsN2zZdH4FqPVhgEQvYlHuDtaaOmr6hHmhViCA=;
+	s=korg; t=1741198129;
+	bh=BTiBWzMjcdd+Hgz6MLpqxM0+E86lWL/oc7vTw3IW8tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElTrhsxgCoAXq6vRrisN48Aooo21k1F4GOwj7xteDsN434kl/oIFbkZvDn7yleZha
-	 lQEOvsLG1tBgqDhxiX7SIrzwbh6CRVegj8YBCtjc76BXsC9zzG6mBALudexlmrcJrY
-	 3Eb7Xbpu9/7i+3FAbGxJwfXSzNcsCAE8S7dyc41E=
+	b=iZzYSbX376dO6LbVL90jOIAV9F+cDe8NFk5aWGIk23uDP3diSJBkXcSUd/W/qvk50
+	 pugPIMid8D2qPRSFAGWww2jpXEo4k4s80YGPg+mJ9ZSmO2clkx1y/rThNmr75uJ8pU
+	 wtO/CsVZF4zkp4PeD7QdZV6Ef9AWTVpYQDqZvrTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.6 083/142] rcuref: Plug slowpath race in rcuref_put()
+	Yu-Che Cheng <giver@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 073/150] thermal: gov_power_allocator: Update total_weight on bind and cdev updates
 Date: Wed,  5 Mar 2025 18:48:22 +0100
-Message-ID: <20250305174503.673771012@linuxfoundation.org>
+Message-ID: <20250305174506.749259494@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yu-Che Cheng <giver@chromium.org>
 
-commit b9a49520679e98700d3d89689cc91c08a1c88c1d upstream.
+[ Upstream commit 0cde378a10c1cbfaa8dd2b89672d42f36c2809c3 ]
 
-Kernel test robot reported an "imbalanced put" in the rcuref_put() slow
-path, which turned out to be a false positive. Consider the following race:
+params->total_weight is not initialized during bind and not updated when
+the bound cdev changes. The cooling device weight will not be used due
+to the uninitialized total_weight, until an update via sysfs is
+triggered.
 
-            ref  = 0 (via rcuref_init(ref, 1))
- T1                                      T2
- rcuref_put(ref)
- -> atomic_add_negative_release(-1, ref)                                         # ref -> 0xffffffff
- -> rcuref_put_slowpath(ref)
-                                         rcuref_get(ref)
-                                         -> atomic_add_negative_relaxed(1, &ref->refcnt)
-                                           -> return true;                       # ref -> 0
+The bound cdevs are updated during thermal zone registration, where each
+cooling device will be bound to the thermal zone one by one, but
+power_allocator_bind() can be called without an additional cdev update
+when manually changing the policy of a thermal zone via sysfs.
 
-                                         rcuref_put(ref)
-                                         -> atomic_add_negative_release(-1, ref) # ref -> 0xffffffff
-                                         -> rcuref_put_slowpath()
+Add a new function to handle weight update logic, including updating
+total_weight, and call it when bind, weight changes, and cdev updates to
+ensure total_weight is always correct.
 
-    -> cnt = atomic_read(&ref->refcnt);                                          # cnt -> 0xffffffff / RCUREF_NOREF
-    -> atomic_try_cmpxchg_release(&ref->refcnt, &cnt, RCUREF_DEAD))              # ref -> 0xe0000000 / RCUREF_DEAD
-       -> return true
-                                           -> cnt = atomic_read(&ref->refcnt);   # cnt -> 0xe0000000 / RCUREF_DEAD
-                                           -> if (cnt > RCUREF_RELEASED)         # 0xe0000000 > 0xc0000000
-                                             -> WARN_ONCE(cnt >= RCUREF_RELEASED, "rcuref - imbalanced put()")
-
-The problem is the additional read in the slow path (after it
-decremented to RCUREF_NOREF) which can happen after the counter has been
-marked RCUREF_DEAD.
-
-Prevent this by reusing the return value of the decrement. Now every "final"
-put uses RCUREF_NOREF in the slow path and attempts the final cmpxchg() to
-RCUREF_DEAD.
-
-[ bigeasy: Add changelog ]
-
-Fixes: ee1ee6db07795 ("atomics: Provide rcuref - scalable reference counting")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Debugged-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/oe-lkp/202412311453.9d7636a2-lkp@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3cd6db4cc2e ("thermal: gov_power_allocator: Support new update callback of weights")
+Signed-off-by: Yu-Che Cheng <giver@chromium.org>
+Link: https://patch.msgid.link/20250222-fix-power-allocator-weight-v2-1-a94de86b685a@chromium.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcuref.h | 9 ++++++---
- lib/rcuref.c           | 5 ++---
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/thermal/gov_power_allocator.c | 30 ++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/rcuref.h b/include/linux/rcuref.h
-index 2c8bfd0f1b6b..6322d8c1c6b4 100644
---- a/include/linux/rcuref.h
-+++ b/include/linux/rcuref.h
-@@ -71,27 +71,30 @@ static inline __must_check bool rcuref_get(rcuref_t *ref)
- 	return rcuref_get_slowpath(ref);
+diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
+index b00da17c66a90..8117959dc6c42 100644
+--- a/drivers/thermal/gov_power_allocator.c
++++ b/drivers/thermal/gov_power_allocator.c
+@@ -630,6 +630,22 @@ static int allocate_actors_buffer(struct power_allocator_params *params,
+ 	return ret;
  }
  
--extern __must_check bool rcuref_put_slowpath(rcuref_t *ref);
-+extern __must_check bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt);
- 
- /*
-  * Internal helper. Do not invoke directly.
-  */
- static __always_inline __must_check bool __rcuref_put(rcuref_t *ref)
- {
-+	int cnt;
++static void power_allocator_update_weight(struct power_allocator_params *params)
++{
++	const struct thermal_trip_desc *td;
++	struct thermal_instance *instance;
 +
- 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() && preemptible(),
- 			 "suspicious rcuref_put_rcusafe() usage");
- 	/*
- 	 * Unconditionally decrease the reference count. The saturation and
- 	 * dead zones provide enough tolerance for this.
- 	 */
--	if (likely(!atomic_add_negative_release(-1, &ref->refcnt)))
-+	cnt = atomic_sub_return_release(1, &ref->refcnt);
-+	if (likely(cnt >= 0))
- 		return false;
- 
- 	/*
- 	 * Handle the last reference drop and cases inside the saturation
- 	 * and dead zones.
- 	 */
--	return rcuref_put_slowpath(ref);
-+	return rcuref_put_slowpath(ref, cnt);
- }
- 
- /**
-diff --git a/lib/rcuref.c b/lib/rcuref.c
-index 97f300eca927..5bd726b71e39 100644
---- a/lib/rcuref.c
-+++ b/lib/rcuref.c
-@@ -220,6 +220,7 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
- /**
-  * rcuref_put_slowpath - Slowpath of __rcuref_put()
-  * @ref:	Pointer to the reference count
-+ * @cnt:	The resulting value of the fastpath decrement
-  *
-  * Invoked when the reference count is outside of the valid zone.
-  *
-@@ -233,10 +234,8 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
-  *	with a concurrent get()/put() pair. Caller is not allowed to
-  *	deconstruct the protected object.
-  */
--bool rcuref_put_slowpath(rcuref_t *ref)
-+bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt)
++	if (!params->trip_max)
++		return;
++
++	td = trip_to_trip_desc(params->trip_max);
++
++	params->total_weight = 0;
++	list_for_each_entry(instance, &td->thermal_instances, trip_node)
++		if (power_actor_is_valid(instance))
++			params->total_weight += instance->weight;
++}
++
+ static void power_allocator_update_tz(struct thermal_zone_device *tz,
+ 				      enum thermal_notify_event reason)
  {
--	unsigned int cnt = atomic_read(&ref->refcnt);
--
- 	/* Did this drop the last reference? */
- 	if (likely(cnt == RCUREF_NOREF)) {
- 		/*
+@@ -645,16 +661,12 @@ static void power_allocator_update_tz(struct thermal_zone_device *tz,
+ 			if (power_actor_is_valid(instance))
+ 				num_actors++;
+ 
+-		if (num_actors == params->num_actors)
+-			return;
++		if (num_actors != params->num_actors)
++			allocate_actors_buffer(params, num_actors);
+ 
+-		allocate_actors_buffer(params, num_actors);
+-		break;
++		fallthrough;
+ 	case THERMAL_INSTANCE_WEIGHT_CHANGED:
+-		params->total_weight = 0;
+-		list_for_each_entry(instance, &td->thermal_instances, trip_node)
+-			if (power_actor_is_valid(instance))
+-				params->total_weight += instance->weight;
++		power_allocator_update_weight(params);
+ 		break;
+ 	default:
+ 		break;
+@@ -720,6 +732,8 @@ static int power_allocator_bind(struct thermal_zone_device *tz)
+ 
+ 	tz->governor_data = params;
+ 
++	power_allocator_update_weight(params);
++
+ 	return 0;
+ 
+ free_params:
 -- 
-2.48.1
+2.39.5
 
 
 
