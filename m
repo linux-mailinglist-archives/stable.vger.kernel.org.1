@@ -1,186 +1,330 @@
-Return-Path: <stable+bounces-120401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F9AA4F677
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 06:17:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8DFA4F6D3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 07:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E43A516CDE1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 05:17:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12B8F7A3E79
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 06:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B6A19CC2E;
-	Wed,  5 Mar 2025 05:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="33b+R63J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BF31C701C;
+	Wed,  5 Mar 2025 06:06:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2080.outbound.protection.outlook.com [40.107.93.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5161C84D2
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 05:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741151872; cv=fail; b=Wd2DhmYuUla44+WnQAHQoUF6QjQyrVc4tLgcXl6JGGzxMay9Klcc5c4Mj6b5n6GMaeFfkKRG5xqrybZ1pGx9YIeDVKajYkm9JclS8x4Qo89R4ARp+Nm4bpqv1+shwMzcyHpv1S0P2032YyvSSiHqeku+39P6LyS65zo4TlQyw/M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741151872; c=relaxed/simple;
-	bh=/YclHZGjHzdvl+OBaLH1cI+uOTnIaLmKmkPpjIT+PXM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WwwdKxhcYQDMZJ4C0RK+gz/TwKMkHwezU8K8sZAZCLj6+hvdCDtHEwPbCbiAlXwMPu8DAjmdVZ3pw2v05UFbnkb6hLYUbcF11Poo8k2I5I5r3kIFv0X+PV1gKdqogILhaiVTrlegwdahuJFCpBHuLTUyeWMtqAaa2D4VSUbbH+8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=33b+R63J; arc=fail smtp.client-ip=40.107.93.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iVUgUcFYTTxMqHKufNdg0ZfV5DchJpNAOzLQLfuhdZHxtyInlVRzoOT0boZvwh5Uwpx1Z8UAVV7PIW1eb3Tv5pGqBW/OIDPoROaOmEoR5dy5JxM8IoTpQaB0/VMrssnG/bMtzRqEanrIJuA41xak0dN49PnVIDmWPFlESOo3qT+jpgbqm4jM92QrWOvEz9BIc+/TNoAjd+i7ItXQv7NV8X/snXUIiJTJRWezBDF0yWDE9w7dT/y0TTRMx777rCOy4G6DWP7B7Oruau2Wl77K/XCj+t7zlq1V/s6ncWIGbi4uN81PgSgzBe1gziso64XSNxNpvaFFl0hWutP9tN8mRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qTF+qS69wgI4Yy1BDuVRNGlwGVrgUtAS2IWiO/J595c=;
- b=MsholNAB6FWzjYN9dqMgv7M+rV8kLnvKRLYBQydFYz+wpr2JLw305m2GjZ4dZFSgvBpNHcpyO8ilkZ/tJqMkhMaaHJf/Ls+XUygaHkwILKh5LNrqCGKpAl4bX2sCgo1G3WzLi2it5qerbeuWVF05Ey90/DJT+hyw6PCBYFfcDcdxGy7Nkiyk0+332NgURvanmVLJ84mV4a/C5tmMBNkxYsNLRyibs3SuE/zkF7c6Z6biPJaPVhr2K97aWr8YvHwh2p3d77h/qPzwFRX/d1C0RZQLWQQ650/D1ePvNhRc1IJCSCV3SCDk1QJwHo/CdfqaFOwuncYtpjW1OiHd7EMx/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qTF+qS69wgI4Yy1BDuVRNGlwGVrgUtAS2IWiO/J595c=;
- b=33b+R63JiRUziqT575n5TiCVPPf4lPtxLV3cNaM7TUB/GKeVaJzArHoOujRO+K4M7aTnpvoZ8JY41gSTqhlvmjBMlEM3xe+U6+y8gzpcn8V2ZjCS2kCZSsfxyx7dN6kpon7YjtMlBB//yokDXsjTU13lqGoLgcAGjF0yr5k7Rco=
-Received: from MN2PR22CA0009.namprd22.prod.outlook.com (2603:10b6:208:238::14)
- by SJ5PPFC41ACEE7B.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a0) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Wed, 5 Mar
- 2025 05:17:44 +0000
-Received: from BL02EPF0001A0F9.namprd03.prod.outlook.com
- (2603:10b6:208:238:cafe::d7) by MN2PR22CA0009.outlook.office365.com
- (2603:10b6:208:238::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.16 via Frontend Transport; Wed,
- 5 Mar 2025 05:17:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL02EPF0001A0F9.mail.protection.outlook.com (10.167.242.100) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8511.15 via Frontend Transport; Wed, 5 Mar 2025 05:17:44 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 4 Mar
- 2025 23:17:43 -0600
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 4 Mar
- 2025 23:17:10 -0600
-Received: from tom-r5.amd.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 4 Mar 2025 23:17:06 -0600
-From: Tom Chung <chiahsuan.chung@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
- Zuo" <jerry.zuo@amd.com>, Zaeem Mohamed <zaeem.mohamed@amd.com>, Solomon Chiu
-	<solomon.chiu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Alex Hung
-	<alex.hung@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
- Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH 18/22] drm/amd/display: Fix slab-use-after-free on hdcp_work
-Date: Wed, 5 Mar 2025 13:13:58 +0800
-Message-ID: <20250305051402.1550046-19-chiahsuan.chung@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250305051402.1550046-1-chiahsuan.chung@amd.com>
-References: <20250305051402.1550046-1-chiahsuan.chung@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00862E338F;
+	Wed,  5 Mar 2025 06:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741154799; cv=none; b=NI7vxksbG6A3iW4hB6bANrb6Ud6eAvK5elD/rdS11TPWNkCaAvFevUOFFCG2y1JvBVr6pDxYR1xcNPZjCkrEqeJnR08UEuGIApCy4mOLL9vY5d3Gs6NvaOdUbNJb2ce2uUFzn+jP/W5H2+zgaWZQcq4e0kEetq1exbxbOjxLp/k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741154799; c=relaxed/simple;
+	bh=mzD79kVQJ6SYllaNgoJTgwzJhnElyjKU14NftKqBcSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LJ5FInrSv+FxcdeulVlsMr+Mx1/0QsUEAR0BviANS/1n9qx3n0CEndRvf3yxRmIEK8brI+Dk0v67MB/F70+BPczcNWhYqnurDoO8Adue5U36KByAbbEwKLQSjJ94rQpp00JxZGbBo1sf8m3Ay2XE6HRaMoCxak2/91Ct8rvEEzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15277C4CEE2;
+	Wed,  5 Mar 2025 06:06:30 +0000 (UTC)
+Date: Wed, 5 Mar 2025 11:36:07 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Bo Sun <Bo.Sun.CN@windriver.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Kexin.Hao@windriver.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Will Deacon <will@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Vidya Sagar <vidyas@nvidia.com>
+Subject: Re: [PATCH] PCI: controller: Restore PCI_REASSIGN_ALL_BUS when
+ PCI_PROBE_ONLY is enabled
+Message-ID: <20250305060607.ygsafql53h2ujwjp@thinkpad>
+References: <20250117082428.129353-1-Bo.Sun.CN@windriver.com>
+ <20250210103707.c5ubeaowk7xwt6p5@thinkpad>
+ <df5d3c54-d436-43bb-8b40-665c020d6bb5@windriver.com>
+ <20250214170057.o3ffoiuxn4hxqqqe@thinkpad>
+ <55a33534-bff0-488c-a2a2-2898d54bd62f@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0F9:EE_|SJ5PPFC41ACEE7B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0723a67e-69f5-4ab5-a8dc-08dd5ba50fa7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yL2d/RtWS1o5hj4lJeUWBoFLKhYnqwVUWp1zy76K4+armrkXmEb4Lvx3X2hE?=
- =?us-ascii?Q?nx2nlou3ZGbyypQfxUtMptt/Cj+FAoUNqU5pD/+M2EcyNPIlOyOYuQw69VrL?=
- =?us-ascii?Q?6Lo6Ne5yzYIi+kDHoQ8AYXFvdobtZV60X3S9dBGq7BssnleXbh7dFeNUZ89u?=
- =?us-ascii?Q?5sM5AoTut4y6WwprRyo6D+guJKZDP7fL3THq3FY/yvNFD1V3jylukAJRYiFw?=
- =?us-ascii?Q?KbSXVKYosfjE4UifhSlxPKoZxO6ZK/VuvTOGWch8yIVAWeCSG+WFGD2rYzfY?=
- =?us-ascii?Q?qyO4WFp6x8IHTgIwtM6NSXkFgNSx/8fImX4Bo5wCA7McidQn+Y0FtlcSNGln?=
- =?us-ascii?Q?Uj1z8ftgq5rizNSnMgIKM5z843kbikhgEU5yRpeTqfacnauSYnye+fKQ49YW?=
- =?us-ascii?Q?4ursMvbKQaHaqz3ZayLqJb7zl3AxCWGJwDpwzSgQfUhaDRDXTuM3ApDTO3Wd?=
- =?us-ascii?Q?UoksROfhV51KpG0QG7NJHFAmuQhts8wjviSc1lhPEJvw+qFDgLRVofdGo2nh?=
- =?us-ascii?Q?KjDw0ci776hJYOceaeGcNyyg9wygDhNkSLtqTDuBx0cMkp/SZ57i/akfAg8F?=
- =?us-ascii?Q?TPEdiKOjickAam+mTSS1vyXf2ezUYlKoyVfEzJ2tJRBaMXODwu31qVJo+EPo?=
- =?us-ascii?Q?J1IjwJBAz8Bu6Z02hhczNkNVAQtYjgcOjVJZZLHYvYBIJlS1sVkGrFPQtBBT?=
- =?us-ascii?Q?B7NVcss8+i3RS7OG4q0U26EP2/WhtqEhJVrsxx8XZSyBOGqH2RUoJzQrbqDn?=
- =?us-ascii?Q?XRAbjQKtN7NwNEz198F+oRmk5Wu0a5JZigFJ/xgUrDFwSRZ3LpMczjfUCyqr?=
- =?us-ascii?Q?y+0fLi5M0AK1ogWyQh/l0DNuS2uvB5+3rVwieQCAGn6fcXo8DtMEpuvG8VGI?=
- =?us-ascii?Q?JFcpAunEV9zdlmc6uUDNh3hcyTTCINMXtV1odZTAlbupNbQPOOosNmuS4Gdd?=
- =?us-ascii?Q?WkC6cdNdoHU2te5hHINBpJ87c5GyCkNla8+5W6Mmm/7helAtqcVRo0oNEN9Y?=
- =?us-ascii?Q?Y4VbssQXvK4DIA2q+YbiDLKQ/v83umt66Hdwac4dcNTggXKBYBL11fQswmug?=
- =?us-ascii?Q?B0CQgacUDMTv1jhNLKm/jGBEFYlHM+eycSALGDnUScgKapaCtEykJfAi20yy?=
- =?us-ascii?Q?tB+pnVJsqWsIqKGoG01jNaDwicLZSwtGEcaXLzyvaqce7qcr9Xjj3s2ixCfR?=
- =?us-ascii?Q?YI9qgPOYeBV7mV2L8XHaHZKdXznrXo3kaXjAsPCK4jMSRC7cMnyYYDM5jlX+?=
- =?us-ascii?Q?gmxNo3q/hZDcxNrRv3Lvl0+oB5Akhmmw2Y669fL0SfT2vqnPdxJxNn0MPMgf?=
- =?us-ascii?Q?qvQj76/qrAmqnCHUk3LaoSStCRa5OReaTd1UeC8Wa8GschB1nUfrJsQ7Eo+g?=
- =?us-ascii?Q?vdeIB3dxouaEQmv4rHUoAcFYlean39oIHGp9czlHUi+TRULxHXvQ6/jJaAbe?=
- =?us-ascii?Q?/Lkg7tPfJeA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 05:17:44.6387
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0723a67e-69f5-4ab5-a8dc-08dd5ba50fa7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0F9.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFC41ACEE7B
+In-Reply-To: <55a33534-bff0-488c-a2a2-2898d54bd62f@windriver.com>
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+On Fri, Feb 28, 2025 at 07:58:10PM +0800, Bo Sun wrote:
+> On 2/15/25 1:00 AM, Manivannan Sadhasivam wrote:
+> > CAUTION: This email comes from a non Wind River email account!
+> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> > 
+> > On Wed, Feb 12, 2025 at 03:07:56PM +0800, Bo Sun wrote:
+> > > On 2/10/25 18:37, Manivannan Sadhasivam wrote:
+> > > > CAUTION: This email comes from a non Wind River email account!
+> > > > Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> > > > 
+> > > > On Fri, Jan 17, 2025 at 04:24:14PM +0800, Bo Sun wrote:
+> > > > > On our Marvell OCTEON CN96XX board, we observed the following panic on
+> > > > > the latest kernel:
+> > > > > Unable to handle kernel NULL pointer dereference at virtual address 0000000000000080
+> > > > > Mem abort info:
+> > > > >     ESR = 0x0000000096000005
+> > > > >     EC = 0x25: DABT (current EL), IL = 32 bits
+> > > > >     SET = 0, FnV = 0
+> > > > >     EA = 0, S1PTW = 0
+> > > > >     FSC = 0x05: level 1 translation fault
+> > > > > Data abort info:
+> > > > >     ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+> > > > >     CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> > > > >     GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> > > > > [0000000000000080] user address but active_mm is swapper
+> > > > > Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+> > > > > Modules linked in:
+> > > > > CPU: 9 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-rc7-00149-g9bffa1ad25b8 #1
+> > > > > Hardware name: Marvell OcteonTX CN96XX board (DT)
+> > > > > pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> > > > > pc : of_pci_add_properties+0x278/0x4c8
+> > > > > lr : of_pci_add_properties+0x258/0x4c8
+> > > > > sp : ffff8000822ef9b0
+> > > > > x29: ffff8000822ef9b0 x28: ffff000106dd8000 x27: ffff800081bc3b30
+> > > > > x26: ffff800081540118 x25: ffff8000813d2be0 x24: 0000000000000000
+> > > > > x23: ffff00010528a800 x22: ffff000107c50000 x21: ffff0001039c2630
+> > > > > x20: ffff0001039c2630 x19: 0000000000000000 x18: ffffffffffffffff
+> > > > > x17: 00000000a49c1b85 x16: 0000000084c07b58 x15: ffff000103a10f98
+> > > > > x14: ffffffffffffffff x13: ffff000103a10f96 x12: 0000000000000003
+> > > > > x11: 0101010101010101 x10: 000000000000002c x9 : ffff800080ca7acc
+> > > > > x8 : ffff0001038fd900 x7 : 0000000000000000 x6 : 0000000000696370
+> > > > > x5 : 0000000000000000 x4 : 0000000000000002 x3 : ffff8000822efa40
+> > > > > x2 : ffff800081341000 x1 : ffff000107c50000 x0 : 0000000000000000
+> > > > > Call trace:
+> > > > >    of_pci_add_properties+0x278/0x4c8 (P)
+> > > > >    of_pci_make_dev_node+0xe0/0x158
+> > > > >    pci_bus_add_device+0x158/0x210
+> > > > >    pci_bus_add_devices+0x40/0x98
+> > > > >    pci_host_probe+0x94/0x118
+> > > > >    pci_host_common_probe+0x120/0x1a0
+> > > > >    platform_probe+0x70/0xf0
+> > > > >    really_probe+0xb4/0x2a8
+> > > > >    __driver_probe_device+0x80/0x140
+> > > > >    driver_probe_device+0x48/0x170
+> > > > >    __driver_attach+0x9c/0x1b0
+> > > > >    bus_for_each_dev+0x7c/0xe8
+> > > > >    driver_attach+0x2c/0x40
+> > > > >    bus_add_driver+0xec/0x218
+> > > > >    driver_register+0x68/0x138
+> > > > >    __platform_driver_register+0x2c/0x40
+> > > > >    gen_pci_driver_init+0x24/0x38
+> > > > >    do_one_initcall+0x4c/0x278
+> > > > >    kernel_init_freeable+0x1f4/0x3d0
+> > > > >    kernel_init+0x28/0x1f0
+> > > > >    ret_from_fork+0x10/0x20
+> > > > > Code: aa1603e1 f0005522 d2800044 91000042 (f94040a0)
+> > > > > 
+> > > > > This regression was introduced by commit 7246a4520b4b ("PCI: Use
+> > > > > preserve_config in place of pci_flags"). On our board, the 002:00:07.0
+> > > > > bridge is misconfigured by the bootloader. Both its secondary and
+> > > > > subordinate bus numbers are initialized to 0, while its fixed secondary
+> > > > > bus number is set to 8.
+> > > > 
+> > > > What do you mean by 'fixed secondary bus number'?
+> > > > 
+> > > 
+> > > The 'fixed secondary bus number' refers to the value returned by the
+> > > function pci_ea_fixed_busnrs(), which reads the fixed Secondary and
+> > > Subordinate bus numbers from the EA (Extended Attributes) capability, if
+> > > present.
+> > 
+> > Thanks! It'd be good to mention the EA capability.
+> > 
+> > > In the code at drivers/pci/probe.c, line 1439, we have the
+> > > following:
+> > > 
+> > >                /* Read bus numbers from EA Capability (if present) */
+> > >                fixed_buses = pci_ea_fixed_busnrs(dev, &fixed_sec, &fixed_sub);
+> > >                if (fixed_buses)
+> > >                        next_busnr = fixed_sec;
+> > >                else
+> > >                        next_busnr = max + 1;
+> > > 
+> > > > > However, bus number 8 is also assigned to another
+> > > > > bridge (0002:00:0f.0). Although this is a bootloader issue, before the
+> > > > > change in commit 7246a4520b4b, the PCI_REASSIGN_ALL_BUS flag was
+> > > > > set by default when PCI_PROBE_ONLY was enabled, ensuing that all the
+> > > > > bus number for these bridges were reassigned, avoiding any conflicts.
+> > > > > 
+> > > > 
+> > > > Isn't the opposite? PCI_REASSIGN_ALL_BUS was only added if the PCI_PROBE_ONLY
+> > > > flag was not set:
+> > > > 
+> > > >           /* Do not reassign resources if probe only */
+> > > >           if (!pci_has_flag(PCI_PROBE_ONLY))
+> > > >                   pci_add_flags(PCI_REASSIGN_ALL_BUS);
+> > > > 
+> > > 
+> > > Yes, you are correct. It’s a typo; it should be "when PCI_PROBE_ONLY was not
+> > > enabled." I will fix this in v2.
+> > > 
+> > > > 
+> > > > > After the change introduced in commit 7246a4520b4b, the bus numbers
+> > > > > assigned by the bootloader are reused by all other bridges, except
+> > > > > the misconfigured 002:00:07.0 bridge. The kernel attempt to reconfigure
+> > > > > 002:00:07.0 by reusing the fixed secondary bus number 8 assigned by
+> > > > > bootloader. However, since a pci_bus has already been allocated for
+> > > > > bus 8 due to the probe of 0002:00:0f.0, no new pci_bus allocated for
+> > > > > 002:00:07.0.
+> > > > 
+> > > > How come 0002:00:0f.0 is enumerated before 0002:00:07.0 in a depth first manner?
+> > > > 
+> > > 
+> > > The device 0002:00:07.0 is actually enumerated before 0002:00:0f.0, but it
+> > > appears misconfigured. The kernel attempts to reconfigure it during
+> > > initialization, which is where the issue arises.
+> > > 
+> > 
+> > Ok, thanks for the clarification. I think the bug is in this part of the code:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/probe.c#n1451
+> > 
+> > It just reuses the fixed bus number even if the bus already exists, which is
+> > wrong. I think this should be fixed by evaluating the bus number read from EA
+> > capability as below:
+> > 
+> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> > index b6536ed599c3..097e2a01faae 100644
+> > --- a/drivers/pci/probe.c
+> > +++ b/drivers/pci/probe.c
+> > @@ -1438,10 +1438,21 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+> > 
+> >                  /* Read bus numbers from EA Capability (if present) */
+> >                  fixed_buses = pci_ea_fixed_busnrs(dev, &fixed_sec, &fixed_sub);
+> > -               if (fixed_buses)
+> > -                       next_busnr = fixed_sec;
+> > -               else
+> > +               if (fixed_buses) {
+> > +                       /*
+> > +                        * If the fixed bus number is already taken, use the
+> > +                        * next available bus number. This can happen if the
+> > +                        * bootloader has assigned a wrong bus number in EA
+> > +                        * capability of the bridge.
+> > +                        */
+> > +                       child = pci_find_bus(pci_domain_nr(bus), fixed_sec);
+> > +                       if (child)
+> > +                               next_busnr = max + 1;
+> > +                       else
+> > +                               next_busnr = fixed_sec;
+> > +               } else {
+> >                          next_busnr = max + 1;
+> > +               }
+> > 
+> >                  /*
+> >                   * Prevent assigning a bus number that already exists.
+> 
+> You proposed solution doesn't work on our Marvell OCTEON CN96XX board.
+> 
+> When probing the bus 0002:00, the bus number preset by the bootloader for
+> the bridges under this bus start with 0xf9. Before configure of
+> 0002:00:07.0, the 'max' bus number has already reached 0xff. With your
+> proposed fix, the next_busnr is set to (0xff + 1), which evaluate to 0x100.
+> This results in a 0 being assigned to the secondary bus number of
+> 0002:00:07.0 bridge, causing a recursive bus probe.
+> 
 
-[Why]
-A slab-use-after-free is reported when HDCP is destroyed but the
-property_validate_dwork queue is still running.
+Oops. This is turning out to be too much of a problem.
 
-[How]
-Cancel the delayed work when destroying workqueue.
+> For reference, you can take a look at the code in probe.c and the
+> corresponding log.
+> 
+>     pci_read_config_dword(dev, PCI_PRIMARY_BUS, &buses);
+> 
+>     primary = buses & 0xFF;
+> 
+>     secondary = (buses >> 8) & 0xFF;
+> 
+>     subordinate = (buses >> 16) & 0xFF;
+> 
+> 
+>     pci_dbg(dev, "scanning [bus %02x-%02x] behind bridge, pass %d\n",
+> 
+>         secondary, subordinate, pass);
+> 
+> pci_bus 0002:00: fixups for bus
+> pci 0002:00:00.0: scanning [bus f9-f9] behind bridge, pass 0
+> pci_bus 0002:f9: scanning bus
+> pci_bus 0002:f9: fixups for bus
+> pci_bus 0002:f9: bus scan returning with max=f9
+> ...
+> pci 0002:00:06.0: scanning [bus ff-ff] behind bridge, pass 0
+> pci_bus 0002:ff: scanning bus
+> pci_bus 0002:ff: fixups for bus
+> pci_bus 0002:ff: bus scan returning with max=ff
+> pci 0002:00:07.0: scanning [bus 00-00] behind bridge, pass 0
+> pci 0002:00:07.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+> ...
+> Kernel panic - not syncing: kernel stack overflow
+> CPU: 12 UID: 0 PID: 1 Comm: swapper/0 Not tainted
+> 6.14.0-rc4-00091-ga58485af8826 #16
+> Hardware name: Marvell OcteonTX CN96XX board (DT)
+> Call trace:
+>  show_stack+0x20/0x38 (C)
+>  dump_stack_lvl+0x38/0x90
+>  dump_stack+0x18/0x28
+>  panic+0x3ac/0x3c8
+>  nmi_panic+0x48/0xa0
+>  panic_bad_stack+0x118/0x140
+>  handle_bad_stack+0x34/0x38
+>  __bad_stack+0x80/0x88
+>  format_decode+0x4/0x2e8 (P)
+>  va_format.constprop.0+0x74/0x130
+>  pointer+0x204/0x4f8
+>  vsnprintf+0x2c4/0x5a0
+>  vscnprintf+0x34/0x58
+>  printk_sprint+0x48/0x170
+>  vprintk_store+0x2d0/0x478
+>  vprintk_emit+0xb0/0x2b0
+>  dev_vprintk_emit+0xe0/0x1b0
+>  dev_printk_emit+0x60/0x90
+>  __dev_printk+0x44/0x98
+>  _dev_printk+0x5c/0x90
+>  pci_scan_child_bus_extend+0x5c/0x2c0
+>  pci_scan_bridge_extend+0x16c/0x630
+>  pci_scan_child_bus_extend+0xfc/0x2c0
+>  pci_scan_bridge_extend+0x320/0x630
+>  pci_scan_child_bus_extend+0x1b0/0x2c0
+>  pci_scan_bridge_extend+0x320/0x630
+> 
+> So, I propose the following solution as a workaround to handle these edge
+> cases.
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 82b21e34c545..af8efebc7e7d 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -6181,6 +6181,13 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1536,
+> rom_bar_overlap_defect);
+>  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1537,
+> rom_bar_overlap_defect);
+>  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1538,
+> rom_bar_overlap_defect);
+> 
+> +static void quirk_marvell_cn96xx_cn10xxx_reassign_all_busnr(struct pci_dev
+> *dev)
+> +{
+> +       if (!pci_has_flag(PCI_PROBE_ONLY))
+> +               pci_add_flags(PCI_REASSIGN_ALL_BUS);
+> +}
+> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_CAVIUM, 0xa002,
+> quirk_marvell_cn96xx_cn10xxx_reassign_all_busnr);
+> +
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
-Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c | 1 +
- 1 file changed, 1 insertion(+)
+LGTM. Please add a comment about this quirk too.
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-index 8238cfd276be..6a4b5f4d8a9d 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-@@ -455,6 +455,7 @@ void hdcp_destroy(struct kobject *kobj, struct hdcp_workqueue *hdcp_work)
- 	for (i = 0; i < hdcp_work->max_link; i++) {
- 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
- 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
-+		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
- 	}
- 
- 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
+- Mani
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
 
