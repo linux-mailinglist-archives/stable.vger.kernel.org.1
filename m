@@ -1,53 +1,98 @@
-Return-Path: <stable+bounces-120402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8DFA4F6D3
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 07:06:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0478AA4F84E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 08:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12B8F7A3E79
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 06:05:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272FC1888670
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 07:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BF31C701C;
-	Wed,  5 Mar 2025 06:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EE01F3D30;
+	Wed,  5 Mar 2025 07:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CdQXpNRi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00862E338F;
-	Wed,  5 Mar 2025 06:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182451DED5F;
+	Wed,  5 Mar 2025 07:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741154799; cv=none; b=NI7vxksbG6A3iW4hB6bANrb6Ud6eAvK5elD/rdS11TPWNkCaAvFevUOFFCG2y1JvBVr6pDxYR1xcNPZjCkrEqeJnR08UEuGIApCy4mOLL9vY5d3Gs6NvaOdUbNJb2ce2uUFzn+jP/W5H2+zgaWZQcq4e0kEetq1exbxbOjxLp/k=
+	t=1741161225; cv=none; b=p/JFsVY8VyQxV1g5O+T4zvYaRLbaqfqnkcyBdFTYBM3rLP/FPEaktwyI2mmt2715rLx+eawyjcAdOO37Q6/wFLnqeU+EVUrmKjVY4i0Kx1CLqWcU+4AKCTr2SsyiyagKpmJ/DlVbIStVxI9V8GJRksdImR8tJu3ZpxtuqibODJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741154799; c=relaxed/simple;
-	bh=mzD79kVQJ6SYllaNgoJTgwzJhnElyjKU14NftKqBcSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LJ5FInrSv+FxcdeulVlsMr+Mx1/0QsUEAR0BviANS/1n9qx3n0CEndRvf3yxRmIEK8brI+Dk0v67MB/F70+BPczcNWhYqnurDoO8Adue5U36KByAbbEwKLQSjJ94rQpp00JxZGbBo1sf8m3Ay2XE6HRaMoCxak2/91Ct8rvEEzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15277C4CEE2;
-	Wed,  5 Mar 2025 06:06:30 +0000 (UTC)
-Date: Wed, 5 Mar 2025 11:36:07 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bo Sun <Bo.Sun.CN@windriver.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Kexin.Hao@windriver.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Will Deacon <will@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Vidya Sagar <vidyas@nvidia.com>
-Subject: Re: [PATCH] PCI: controller: Restore PCI_REASSIGN_ALL_BUS when
- PCI_PROBE_ONLY is enabled
-Message-ID: <20250305060607.ygsafql53h2ujwjp@thinkpad>
-References: <20250117082428.129353-1-Bo.Sun.CN@windriver.com>
- <20250210103707.c5ubeaowk7xwt6p5@thinkpad>
- <df5d3c54-d436-43bb-8b40-665c020d6bb5@windriver.com>
- <20250214170057.o3ffoiuxn4hxqqqe@thinkpad>
- <55a33534-bff0-488c-a2a2-2898d54bd62f@windriver.com>
+	s=arc-20240116; t=1741161225; c=relaxed/simple;
+	bh=RkEPUdpXCIQ3dj7yOMrlnTANphhK5Xv+8N4c/wD3VrY=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=Fh25bPdBiG1hkFji40xpbexMhTI+9BCaVUVbKLBBzznk+1IZ9CJEJYD5I5zcu6m/5vsrTbjKFXIenUmehhkzvdnDxMJpXWe2efAAiTGm8tPwj4SVpGe1j9dXR1hA2vrmEdGJS8LTTr33rKU4gB4hf9+RYOllSNSwgD+AnSYc2TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CdQXpNRi; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5494cb8c2e7so5617894e87.0;
+        Tue, 04 Mar 2025 23:53:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741161221; x=1741766021; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HiTpS6soFncX3ap+JUlkCx1cOPiDwgUNOLW0huS1jJo=;
+        b=CdQXpNRiqZvfTs57gRAIg578FCEikb1pnfMcsDec6oQUNEWlGlL/ElWWxXpFII4bG0
+         GbM8jWFOVDkPvkfY7d7CZy8V6+P9DRA6jQxnQeR72WMGIdQsS7Hd1Tke/S52Swk6NQ8A
+         B4y1p/yP4N4jRkMBGAsA/qsJWCKkG6hu0NPS9VbA57squ7SioAPk9RPclDp6gglrroZZ
+         4LgS7Y0kIdxsdKyI1QGRKU2k2dKi4PRqqzeTUO2OTfl3+UTxjjcK000wLkMT06F0HgD7
+         1ZkHbUEhqTs8tC0Oi/6t6AYFvrt1U2xAXvp227m7lQBOP/c2CW2AUJ7i6+Wyuu/djr9l
+         ouWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741161221; x=1741766021;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HiTpS6soFncX3ap+JUlkCx1cOPiDwgUNOLW0huS1jJo=;
+        b=FUmvpJExzhaSCkZV0TfNFRY6LLd7gq9B1EAXUyu2w3avEPcjcegdMBH4GluJGcgpXW
+         T/w/+Snir69MqGUcjmNKDZpQn7yF8oOP9jmX7s0asc1uUxYAc8BDKZmlR97+sqXSC34E
+         YnBrckY9JtRLDRyv4mERgueIpXUd0MGed9CUKJjF+PZNC1HcPmYaw3zCxxE4JtC86DRW
+         eVQpmAL11mvrVKOWa0+Baf1ASwnmRr4lVfc3YZ8g9HsI5ZAUB+mQN8dZqghhhYwhy6pn
+         bUuB9yGsf1nGuAuG9NO5akwtMT0kBUgwo4wS50NiZa6rVDE065wSC8hMsTxxSA0m7Tx5
+         o0PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4NOrbHASM75eWij0xwgL1zm7M/Af6YKtl7U2uS0M8nZigNPAvYPeSChKYd/q76GeDojGRs3SNN65y8xs=@vger.kernel.org, AJvYcCUNdzYpLqbH0UuCzoO0qizDZWoN6ByITZAMPzLvIU0lEAIllK0xoQRqjW0qywzgl2ILhkHy81Al@vger.kernel.org, AJvYcCVxpInp7vf//7qiH5hswbuis+x4QopRWsGyIlwC2xBLtpAchhN/R6FplNHvtVBSmboZ0ikPi5rDJgTSFzQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxujdT7dymKPHFFdWsUbcaq7UmWTdhImn4Y9KGbdChTe0poEYR9
+	ao0otgKkcQn4Yz+V49wxqpuFtYlwYsIMQ1DTI5a2GCtDO9TOORCKT6wGgUHd
+X-Gm-Gg: ASbGnct6CRmVLF7O3qM2Sok6rV5eVGEX1fBzBtdpaC4SFPXqhS5eR61NQSfe0Bu3u7K
+	AByz+hEOp+l+LaPuxRZRkZNfh/ox9zjnCcMoN2UnLjEUfP/NcKhA4T77ImnHrGRRJrs+SBDBlmL
+	DkBeouvAJ+G8bKTZoE0OJkcjovu69KRvG9KBVsw4vLh8ZC5hODRhhZSOTb0rV9P4SHjw7fyjwR0
+	9BpDy9B/+PQ98htm2YwUq0stLfjY4CmikdeJkAFmKehcYCXh2deY/Tnr0q2BrOK1eoCHsRl0on0
+	dzoF7h16HJLv32PF4JR4I1178QQk1uzSnYDrJSqWkFOyu9X5wPlXm5So2fKdJ7E1YrJD2jxwi6R
+	EsTZotnEqoPTfMwTXUGaKt5EbN9LxcoFb
+X-Google-Smtp-Source: AGHT+IGoSfXFo2jQfX6zwJukiQLZftqM9VYE26ir2v2Z98LPwA2YNZbRZg8LePVsUKETExIau4wjew==
+X-Received: by 2002:a05:6512:3190:b0:549:7c64:3bc0 with SMTP id 2adb3069b0e04-5497d35028emr565104e87.29.1741161221096;
+        Tue, 04 Mar 2025 23:53:41 -0800 (PST)
+Received: from razdolb (static.248.157.217.95.clients.your-server.de. [95.217.157.248])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5495b3f4ebdsm1155605e87.102.2025.03.04.23.53.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 23:53:40 -0800 (PST)
+References: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
+ <20250303-b4-rkisp-noncoherent-v4-1-e32e843fb6ef@gmail.com>
+ <8b3dac7baed1de9542452547454c53188c384391.camel@ndufresne.ca>
+User-agent: mu4e 1.10.9; emacs 30.1
+From: Mikhail Rudenko <mike.rudenko@gmail.com>
+To: Nicolas Dufresne <nicolas@ndufresne.ca>
+Cc: Dafna Hirschfeld <dafna@fastmail.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Tomasz Figa
+ <tfiga@chromium.org>, Marek Szyprowski <m.szyprowski@samsung.com>, Hans
+ Verkuil <hverkuil@xs4all.nl>, Sergey  Senozhatsky
+ <senozhatsky@chromium.org>, linux-media@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Mauro  Carvalho Chehab
+ <mchehab+huawei@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] media: videobuf2: Fix dmabuf cache sync/flush in
+ dma-contig
+Date: Wed, 05 Mar 2025 10:40:31 +0300
+In-reply-to: <8b3dac7baed1de9542452547454c53188c384391.camel@ndufresne.ca>
+Message-ID: <87y0xj29rz.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,276 +100,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <55a33534-bff0-488c-a2a2-2898d54bd62f@windriver.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 28, 2025 at 07:58:10PM +0800, Bo Sun wrote:
-> On 2/15/25 1:00 AM, Manivannan Sadhasivam wrote:
-> > CAUTION: This email comes from a non Wind River email account!
-> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> > 
-> > On Wed, Feb 12, 2025 at 03:07:56PM +0800, Bo Sun wrote:
-> > > On 2/10/25 18:37, Manivannan Sadhasivam wrote:
-> > > > CAUTION: This email comes from a non Wind River email account!
-> > > > Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> > > > 
-> > > > On Fri, Jan 17, 2025 at 04:24:14PM +0800, Bo Sun wrote:
-> > > > > On our Marvell OCTEON CN96XX board, we observed the following panic on
-> > > > > the latest kernel:
-> > > > > Unable to handle kernel NULL pointer dereference at virtual address 0000000000000080
-> > > > > Mem abort info:
-> > > > >     ESR = 0x0000000096000005
-> > > > >     EC = 0x25: DABT (current EL), IL = 32 bits
-> > > > >     SET = 0, FnV = 0
-> > > > >     EA = 0, S1PTW = 0
-> > > > >     FSC = 0x05: level 1 translation fault
-> > > > > Data abort info:
-> > > > >     ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-> > > > >     CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> > > > >     GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> > > > > [0000000000000080] user address but active_mm is swapper
-> > > > > Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-> > > > > Modules linked in:
-> > > > > CPU: 9 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-rc7-00149-g9bffa1ad25b8 #1
-> > > > > Hardware name: Marvell OcteonTX CN96XX board (DT)
-> > > > > pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > > > > pc : of_pci_add_properties+0x278/0x4c8
-> > > > > lr : of_pci_add_properties+0x258/0x4c8
-> > > > > sp : ffff8000822ef9b0
-> > > > > x29: ffff8000822ef9b0 x28: ffff000106dd8000 x27: ffff800081bc3b30
-> > > > > x26: ffff800081540118 x25: ffff8000813d2be0 x24: 0000000000000000
-> > > > > x23: ffff00010528a800 x22: ffff000107c50000 x21: ffff0001039c2630
-> > > > > x20: ffff0001039c2630 x19: 0000000000000000 x18: ffffffffffffffff
-> > > > > x17: 00000000a49c1b85 x16: 0000000084c07b58 x15: ffff000103a10f98
-> > > > > x14: ffffffffffffffff x13: ffff000103a10f96 x12: 0000000000000003
-> > > > > x11: 0101010101010101 x10: 000000000000002c x9 : ffff800080ca7acc
-> > > > > x8 : ffff0001038fd900 x7 : 0000000000000000 x6 : 0000000000696370
-> > > > > x5 : 0000000000000000 x4 : 0000000000000002 x3 : ffff8000822efa40
-> > > > > x2 : ffff800081341000 x1 : ffff000107c50000 x0 : 0000000000000000
-> > > > > Call trace:
-> > > > >    of_pci_add_properties+0x278/0x4c8 (P)
-> > > > >    of_pci_make_dev_node+0xe0/0x158
-> > > > >    pci_bus_add_device+0x158/0x210
-> > > > >    pci_bus_add_devices+0x40/0x98
-> > > > >    pci_host_probe+0x94/0x118
-> > > > >    pci_host_common_probe+0x120/0x1a0
-> > > > >    platform_probe+0x70/0xf0
-> > > > >    really_probe+0xb4/0x2a8
-> > > > >    __driver_probe_device+0x80/0x140
-> > > > >    driver_probe_device+0x48/0x170
-> > > > >    __driver_attach+0x9c/0x1b0
-> > > > >    bus_for_each_dev+0x7c/0xe8
-> > > > >    driver_attach+0x2c/0x40
-> > > > >    bus_add_driver+0xec/0x218
-> > > > >    driver_register+0x68/0x138
-> > > > >    __platform_driver_register+0x2c/0x40
-> > > > >    gen_pci_driver_init+0x24/0x38
-> > > > >    do_one_initcall+0x4c/0x278
-> > > > >    kernel_init_freeable+0x1f4/0x3d0
-> > > > >    kernel_init+0x28/0x1f0
-> > > > >    ret_from_fork+0x10/0x20
-> > > > > Code: aa1603e1 f0005522 d2800044 91000042 (f94040a0)
-> > > > > 
-> > > > > This regression was introduced by commit 7246a4520b4b ("PCI: Use
-> > > > > preserve_config in place of pci_flags"). On our board, the 002:00:07.0
-> > > > > bridge is misconfigured by the bootloader. Both its secondary and
-> > > > > subordinate bus numbers are initialized to 0, while its fixed secondary
-> > > > > bus number is set to 8.
-> > > > 
-> > > > What do you mean by 'fixed secondary bus number'?
-> > > > 
-> > > 
-> > > The 'fixed secondary bus number' refers to the value returned by the
-> > > function pci_ea_fixed_busnrs(), which reads the fixed Secondary and
-> > > Subordinate bus numbers from the EA (Extended Attributes) capability, if
-> > > present.
-> > 
-> > Thanks! It'd be good to mention the EA capability.
-> > 
-> > > In the code at drivers/pci/probe.c, line 1439, we have the
-> > > following:
-> > > 
-> > >                /* Read bus numbers from EA Capability (if present) */
-> > >                fixed_buses = pci_ea_fixed_busnrs(dev, &fixed_sec, &fixed_sub);
-> > >                if (fixed_buses)
-> > >                        next_busnr = fixed_sec;
-> > >                else
-> > >                        next_busnr = max + 1;
-> > > 
-> > > > > However, bus number 8 is also assigned to another
-> > > > > bridge (0002:00:0f.0). Although this is a bootloader issue, before the
-> > > > > change in commit 7246a4520b4b, the PCI_REASSIGN_ALL_BUS flag was
-> > > > > set by default when PCI_PROBE_ONLY was enabled, ensuing that all the
-> > > > > bus number for these bridges were reassigned, avoiding any conflicts.
-> > > > > 
-> > > > 
-> > > > Isn't the opposite? PCI_REASSIGN_ALL_BUS was only added if the PCI_PROBE_ONLY
-> > > > flag was not set:
-> > > > 
-> > > >           /* Do not reassign resources if probe only */
-> > > >           if (!pci_has_flag(PCI_PROBE_ONLY))
-> > > >                   pci_add_flags(PCI_REASSIGN_ALL_BUS);
-> > > > 
-> > > 
-> > > Yes, you are correct. It’s a typo; it should be "when PCI_PROBE_ONLY was not
-> > > enabled." I will fix this in v2.
-> > > 
-> > > > 
-> > > > > After the change introduced in commit 7246a4520b4b, the bus numbers
-> > > > > assigned by the bootloader are reused by all other bridges, except
-> > > > > the misconfigured 002:00:07.0 bridge. The kernel attempt to reconfigure
-> > > > > 002:00:07.0 by reusing the fixed secondary bus number 8 assigned by
-> > > > > bootloader. However, since a pci_bus has already been allocated for
-> > > > > bus 8 due to the probe of 0002:00:0f.0, no new pci_bus allocated for
-> > > > > 002:00:07.0.
-> > > > 
-> > > > How come 0002:00:0f.0 is enumerated before 0002:00:07.0 in a depth first manner?
-> > > > 
-> > > 
-> > > The device 0002:00:07.0 is actually enumerated before 0002:00:0f.0, but it
-> > > appears misconfigured. The kernel attempts to reconfigure it during
-> > > initialization, which is where the issue arises.
-> > > 
-> > 
-> > Ok, thanks for the clarification. I think the bug is in this part of the code:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/probe.c#n1451
-> > 
-> > It just reuses the fixed bus number even if the bus already exists, which is
-> > wrong. I think this should be fixed by evaluating the bus number read from EA
-> > capability as below:
-> > 
-> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> > index b6536ed599c3..097e2a01faae 100644
-> > --- a/drivers/pci/probe.c
-> > +++ b/drivers/pci/probe.c
-> > @@ -1438,10 +1438,21 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
-> > 
-> >                  /* Read bus numbers from EA Capability (if present) */
-> >                  fixed_buses = pci_ea_fixed_busnrs(dev, &fixed_sec, &fixed_sub);
-> > -               if (fixed_buses)
-> > -                       next_busnr = fixed_sec;
-> > -               else
-> > +               if (fixed_buses) {
-> > +                       /*
-> > +                        * If the fixed bus number is already taken, use the
-> > +                        * next available bus number. This can happen if the
-> > +                        * bootloader has assigned a wrong bus number in EA
-> > +                        * capability of the bridge.
-> > +                        */
-> > +                       child = pci_find_bus(pci_domain_nr(bus), fixed_sec);
-> > +                       if (child)
-> > +                               next_busnr = max + 1;
-> > +                       else
-> > +                               next_busnr = fixed_sec;
-> > +               } else {
-> >                          next_busnr = max + 1;
-> > +               }
-> > 
-> >                  /*
-> >                   * Prevent assigning a bus number that already exists.
-> 
-> You proposed solution doesn't work on our Marvell OCTEON CN96XX board.
-> 
-> When probing the bus 0002:00, the bus number preset by the bootloader for
-> the bridges under this bus start with 0xf9. Before configure of
-> 0002:00:07.0, the 'max' bus number has already reached 0xff. With your
-> proposed fix, the next_busnr is set to (0xff + 1), which evaluate to 0x100.
-> This results in a 0 being assigned to the secondary bus number of
-> 0002:00:07.0 bridge, causing a recursive bus probe.
-> 
+Hi Nicolas,
 
-Oops. This is turning out to be too much of a problem.
+On 2025-03-03 at 10:24 -05, Nicolas Dufresne <nicolas@ndufresne.ca> wrote:
 
-> For reference, you can take a look at the code in probe.c and the
-> corresponding log.
-> 
->     pci_read_config_dword(dev, PCI_PRIMARY_BUS, &buses);
-> 
->     primary = buses & 0xFF;
-> 
->     secondary = (buses >> 8) & 0xFF;
-> 
->     subordinate = (buses >> 16) & 0xFF;
-> 
-> 
->     pci_dbg(dev, "scanning [bus %02x-%02x] behind bridge, pass %d\n",
-> 
->         secondary, subordinate, pass);
-> 
-> pci_bus 0002:00: fixups for bus
-> pci 0002:00:00.0: scanning [bus f9-f9] behind bridge, pass 0
-> pci_bus 0002:f9: scanning bus
-> pci_bus 0002:f9: fixups for bus
-> pci_bus 0002:f9: bus scan returning with max=f9
-> ...
-> pci 0002:00:06.0: scanning [bus ff-ff] behind bridge, pass 0
-> pci_bus 0002:ff: scanning bus
-> pci_bus 0002:ff: fixups for bus
-> pci_bus 0002:ff: bus scan returning with max=ff
-> pci 0002:00:07.0: scanning [bus 00-00] behind bridge, pass 0
-> pci 0002:00:07.0: bridge configuration invalid ([bus 00-00]), reconfiguring
-> ...
-> Kernel panic - not syncing: kernel stack overflow
-> CPU: 12 UID: 0 PID: 1 Comm: swapper/0 Not tainted
-> 6.14.0-rc4-00091-ga58485af8826 #16
-> Hardware name: Marvell OcteonTX CN96XX board (DT)
-> Call trace:
->  show_stack+0x20/0x38 (C)
->  dump_stack_lvl+0x38/0x90
->  dump_stack+0x18/0x28
->  panic+0x3ac/0x3c8
->  nmi_panic+0x48/0xa0
->  panic_bad_stack+0x118/0x140
->  handle_bad_stack+0x34/0x38
->  __bad_stack+0x80/0x88
->  format_decode+0x4/0x2e8 (P)
->  va_format.constprop.0+0x74/0x130
->  pointer+0x204/0x4f8
->  vsnprintf+0x2c4/0x5a0
->  vscnprintf+0x34/0x58
->  printk_sprint+0x48/0x170
->  vprintk_store+0x2d0/0x478
->  vprintk_emit+0xb0/0x2b0
->  dev_vprintk_emit+0xe0/0x1b0
->  dev_printk_emit+0x60/0x90
->  __dev_printk+0x44/0x98
->  _dev_printk+0x5c/0x90
->  pci_scan_child_bus_extend+0x5c/0x2c0
->  pci_scan_bridge_extend+0x16c/0x630
->  pci_scan_child_bus_extend+0xfc/0x2c0
->  pci_scan_bridge_extend+0x320/0x630
->  pci_scan_child_bus_extend+0x1b0/0x2c0
->  pci_scan_bridge_extend+0x320/0x630
-> 
-> So, I propose the following solution as a workaround to handle these edge
-> cases.
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 82b21e34c545..af8efebc7e7d 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -6181,6 +6181,13 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1536,
-> rom_bar_overlap_defect);
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1537,
-> rom_bar_overlap_defect);
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1538,
-> rom_bar_overlap_defect);
-> 
-> +static void quirk_marvell_cn96xx_cn10xxx_reassign_all_busnr(struct pci_dev
-> *dev)
-> +{
-> +       if (!pci_has_flag(PCI_PROBE_ONLY))
-> +               pci_add_flags(PCI_REASSIGN_ALL_BUS);
-> +}
-> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_CAVIUM, 0xa002,
-> quirk_marvell_cn96xx_cn10xxx_reassign_all_busnr);
-> +
+> Hi Mikhail,
+>
+> Le lundi 03 mars 2025 =C3=A0 14:40 +0300, Mikhail Rudenko a =C3=A9crit=C2=
+=A0:
+>> When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
+>> commit 129134e5415d ("media: media/v4l2: remove
+>> V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
+>> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
+>> no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
+>> introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
+>> V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
+>> no-ops, making cache maintenance for non-coherent dmabufs allocated
+>> by
+>> dma-contig impossible.
+>>
+>> Fix this by reintroducing dma_sync_sgtable_for_{cpu,device} and
+>> {flush,invalidate}_kernel_vmap_range calls to
+>> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
+>> buffers.
+>>
+>> Fixes: c0acf9cfeee0 ("media: videobuf2: handle
+>> V4L2_MEMORY_FLAG_NON_COHERENT flag")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+>> ---
+>> =C2=A0.../media/common/videobuf2/videobuf2-dma-contig.c=C2=A0 | 22
+>> ++++++++++++++++++++++
+>> =C2=A01 file changed, 22 insertions(+)
+>>
+>> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+>> b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+>> index
+>> a13ec569c82f6da2d977222b94af32e74c6c6c82..d41095fe5bd21faf815d6b035d7
+>> bc888a84a95d5 100644
+>> --- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+>> +++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+>> @@ -427,6 +427,17 @@ static int
+>> =C2=A0vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
+>> =C2=A0				=C2=A0=C2=A0 enum dma_data_direction
+>> direction)
+>> =C2=A0{
+>> +	struct vb2_dc_buf *buf =3D dbuf->priv;
+>> +	struct sg_table *sgt =3D buf->dma_sgt;
+>> +
+>> +	if (!buf->non_coherent_mem)
+>> +		return 0;
+>> +
+>> +	if (buf->vaddr)
+>> +		invalidate_kernel_vmap_range(buf->vaddr, buf->size);
+>
+> What would make me a lot more confortable with this change is if you
+> enable kernel mappings for one test. This will ensure you cover the
+> call to "invalidate" in your testing. I'd like to know about the
+> performance impact. With this implementation it should be identical to
+> the VB2 one.
 
-LGTM. Please add a comment about this quirk too.
+I'll enable kernel mappings and rerun my tests later this week.
 
-- Mani
+> What I was trying to say in previous comments, is that my impression is
+> that we can skip this for CPU read access, since we don't guaranty
+> concurrent access anyway. Both address space can keep their cache in
+> that case. Though, I see RKISP does not use kernel mapping plus I'm not
+> reporting a bug, but checking if we should leave a comment for possible
+> users of kernel mapping in the future ?
 
--- 
-மணிவண்ணன் சதாசிவம்
+I trust Tomasz here, I'd wait for his comment on v4.
+
+>> +
+>> +	dma_sync_sgtable_for_cpu(buf->dev, sgt, direction);
+>> +
+>> =C2=A0	return 0;
+>> =C2=A0}
+>>
+>> @@ -434,6 +445,17 @@ static int
+>> =C2=A0vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
+>> =C2=A0				 enum dma_data_direction direction)
+>> =C2=A0{
+>> +	struct vb2_dc_buf *buf =3D dbuf->priv;
+>> +	struct sg_table *sgt =3D buf->dma_sgt;
+>> +
+>> +	if (!buf->non_coherent_mem)
+>> +		return 0;
+>> +
+>> +	if (buf->vaddr)
+>> +		flush_kernel_vmap_range(buf->vaddr, buf->size);
+>> +
+>> +	dma_sync_sgtable_for_device(buf->dev, sgt, direction);
+>> +
+>> =C2=A0	return 0;
+>> =C2=A0}
+>>
+>>
+
+
+--
+Best regards,
+Mikhail Rudenko
 
