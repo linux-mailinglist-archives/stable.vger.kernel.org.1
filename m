@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-120975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1698BA5093D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57593A5088D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB03D7A479E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E8741694AD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E4F2512ED;
-	Wed,  5 Mar 2025 18:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C4C1ACEDD;
+	Wed,  5 Mar 2025 18:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBujZA5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJK5yF3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1172F2528E4;
-	Wed,  5 Mar 2025 18:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4029919E7D1;
+	Wed,  5 Mar 2025 18:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198519; cv=none; b=k1TKF6Pm88Mp/Li6k++Xvs6l5Z2gBeGN+fApKiLEN6qIjY7yzHpn8Niqjzq12euc2fEWTRrnzRbQ3QCYgd1t+2CUOfRGZ7wlKZJJdi9bzVw2RkvZmmcrVZWjrJU4UQpMiGDpfQqLnmoctSa83lWhRmwIvlUOBxpOmxLg63cKxko=
+	t=1741198091; cv=none; b=hozYxuRpaMtuwYfotGe3Eic/5UGFsICqwvJix+gAkexPK66aj7v/ymIIhD7/zdrmfZRYU63EAVYQ/kkmApasP+SMpDfFIOdk61qB39RedwZdA4fFy4m2dYYOvrPhwxMnG1ADJDDe6ri/sYX7GE33xlkfRpOzJCQY2iPKtxCOSRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198519; c=relaxed/simple;
-	bh=El3Qs6pMR1AUFqcKTarbY3YVr+t96p4WzwP0MDABzPI=;
+	s=arc-20240116; t=1741198091; c=relaxed/simple;
+	bh=ltyZvZHciEeH6+ZlAzYxuuT428G5gI/95NB66qs4aGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHMVPE1FSzxEhrhUrA09Swe+jfqrI/ohqKqFQSX8EStq767o/H37sYansaQ+OAcI/8A0BcJb5PwHWRLk9fSMpVAyGATwaqP417d7v3/dhcYD7jupBwUbe1UTl7+a0D6nmyEXiXjBp1jyMrGFC1M0x2D5ivWuvtVOXvHsivzY3QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBujZA5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C9CC4CED1;
-	Wed,  5 Mar 2025 18:15:18 +0000 (UTC)
+	 MIME-Version; b=Jtm4wH65CL7CespQlQ+D/YUyJC/jUt2cxN72IhzHJzeT4nmdKs93lwGkhEGzUAOAGsRBlTgiNmLnNyjl8A2oZINSY1GNzgDjaUT9oM7PBDoybwtLtq5pI0TqiTEzoAD5CjoknUf7NZog6cAvG6F07sT0PT6Qp/eJ2rM5kvc7RZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJK5yF3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550DFC4CEE0;
+	Wed,  5 Mar 2025 18:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198518;
-	bh=El3Qs6pMR1AUFqcKTarbY3YVr+t96p4WzwP0MDABzPI=;
+	s=korg; t=1741198088;
+	bh=ltyZvZHciEeH6+ZlAzYxuuT428G5gI/95NB66qs4aGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBujZA5EguuoN3Xx0j2UFgiWF0uFqpp7ibpLgt3Xcp4kcSztDDzDYLv9Ic2Tx44zb
-	 WeNSFK9vewuvsA9EFeCR0vhplAbjfrt3NXeaBsCV3nx4a9e46bT/ChBNUjPPq1e8g2
-	 fpxXQdUA3hab67JBubMcWetWyupviENhQe0Snihk=
+	b=OJK5yF3LG9wQDJfmDr6mjOImmbybu2O10Qk8t93J4ccvnAPrp9eVNYoRH/AYAjmKK
+	 OuAjbtCJ8B0QKBxj1dLQLV5tU8xb2bDLmjY5+YK0uoOjt+oZ6LJL6Si6zqAf0BxOIS
+	 j9/zomYs/5a873oaT9yN0KeyFLoHUlJerDk9CcNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshal Chaudhari <hchaudhari@marvell.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Shay Drory <shayd@nvidia.com>,
+	kernel test robot <lkp@intel.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 054/157] net: mvpp2: cls: Fixed Non IP flow, with vlan tag flow defination.
+Subject: [PATCH 6.12 061/150] net/mlx5: IRQ, Fix null string in debug print
 Date: Wed,  5 Mar 2025 18:48:10 +0100
-Message-ID: <20250305174507.478881858@linuxfoundation.org>
+Message-ID: <20250305174506.275310840@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +66,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshal Chaudhari <hchaudhari@marvell.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 2d253726ff7106b39a44483b6864398bba8a2f74 ]
+[ Upstream commit 2f5a6014eb168a97b24153adccfa663d3b282767 ]
 
-Non IP flow, with vlan tag not working as expected while
-running below command for vlan-priority. fixed that.
+irq_pool_alloc() debug print can print a null string.
+Fix it by providing a default string to print.
 
-ethtool -N eth1 flow-type ether vlan 0x8000 vlan-mask 0x1fff action 0 loc 0
-
-Fixes: 1274daede3ef ("net: mvpp2: cls: Add steering based on vlan Id and priority.")
-Signed-off-by: Harshal Chaudhari <hchaudhari@marvell.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250225042058.2643838-1-hchaudhari@marvell.com
+Fixes: 71e084e26414 ("net/mlx5: Allocating a pool of MSI-X vectors for SFs")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501141055.SwfIphN0-lkp@intel.com/
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://patch.msgid.link/20250225072608.526866-4-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-index 1641791a2d5b4..8ed83fb988624 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-@@ -324,7 +324,7 @@ static const struct mvpp2_cls_flow cls_flows[MVPP2_N_PRS_FLOWS] = {
- 		       MVPP2_PRS_RI_VLAN_MASK),
- 	/* Non IP flow, with vlan tag */
- 	MVPP2_DEF_FLOW(MVPP22_FLOW_ETHERNET, MVPP2_FL_NON_IP_TAG,
--		       MVPP22_CLS_HEK_OPT_VLAN,
-+		       MVPP22_CLS_HEK_TAGGED,
- 		       0, 0),
- };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index 7db9cab9bedf6..d9362eabc6a1c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -572,7 +572,7 @@ irq_pool_alloc(struct mlx5_core_dev *dev, int start, int size, char *name,
+ 	pool->min_threshold = min_threshold * MLX5_EQ_REFS_PER_IRQ;
+ 	pool->max_threshold = max_threshold * MLX5_EQ_REFS_PER_IRQ;
+ 	mlx5_core_dbg(dev, "pool->name = %s, pool->size = %d, pool->start = %d",
+-		      name, size, start);
++		      name ? name : "mlx5_pcif_pool", size, start);
+ 	return pool;
+ }
  
 -- 
 2.39.5
