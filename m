@@ -1,141 +1,101 @@
-Return-Path: <stable+bounces-121099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531D0A50B71
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:27:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437C3A50B92
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C74497A614C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:26:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8742A7A8E75
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8534924CEE3;
-	Wed,  5 Mar 2025 19:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EEB254844;
+	Wed,  5 Mar 2025 19:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="g3omvRn6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DlI0YgwR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8660319F438
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 19:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0F6252900;
+	Wed,  5 Mar 2025 19:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741202866; cv=none; b=iWDYY9JMVQdrMBcJiec+ejdzBc2XNno4zYvUB9fls13vSdg9Qo/Azl9i9O77sknwdoX7b35oVF5v5j5dDY6w8gGmg/lNse+MmtnisuQF1m52j0IW/z/GwEKund2+7G+D9MxjNykRu8GgHUnb8rhqIw8A4I2aKEgc2eB5IBl85Bc=
+	t=1741203358; cv=none; b=YQfOeax1n7xJySC3PTQjROY4VY1GW5IoxWfmGG+ouC+VLHIBc6mJIXC74OyNEDEGlZCVMLF7J6wpvOPHey+dTRvZRrQRXuapUxdBleuVA9bB94FiTyCQJ0Cs56G9Y2bnh6qEiceXYettzFLsMkTvFYQFCCc5LXdjy/X7c7FXB8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741202866; c=relaxed/simple;
-	bh=qgFufaYHE7ZhKPMw+c54H6YIs8L7NTTUgMvALYLQB4M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=Aq/M9HJBmmdi3QyuSP2CguB8iJvSvsfJ22lGtrMndCVV+aWoGj/YuebrXYcepaRlTi7I+z9WbT3ekVbdaqC8zyEUqiayeuSDBh79MuB+QojIhsv7Gw3DQmtJRMfb5T5jHHSgzYRjjjWZMWGTMZLNLiC/tcSZVpKz6WsVJxdjFxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=g3omvRn6; arc=none smtp.client-ip=170.10.133.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-	t=1741202863;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nKyJxOhXzkW5rTLblcneQpSA0/ozUONR0BpbeodOjQ8=;
-	b=g3omvRn6nTrvKh/uvhf/6VuSKIk7gfh3iLkBvpDIcwXMsCaxPdFVnSSJiFm7pEML6ycZ7h
-	pvWCmhks9sgP30HWiofDnH3lT6F9S7Jww8UNUHMD1EVRfkJoIhXXQGUFVJB8wdLM7S58Zo
-	4yeptKOBN+SFQsH0GiUVOlL6DKcZYp0=
-Received: from g7t16451g.inc.hp.com (hpi-bastion.austin1.mail.core.hp.com
- [15.73.128.137]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-ZaGcdk-JMCmGo1aiqBHA9A-1; Wed, 05 Mar 2025 14:27:41 -0500
-X-MC-Unique: ZaGcdk-JMCmGo1aiqBHA9A-1
-X-Mimecast-MFC-AGG-ID: ZaGcdk-JMCmGo1aiqBHA9A_1741202860
-Received: from g7t16459g.inc.hpicorp.net (g7t16459g.inc.hpicorp.net [15.63.18.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by g7t16451g.inc.hp.com (Postfix) with ESMTPS id 233306000B60;
-	Wed,  5 Mar 2025 19:27:39 +0000 (UTC)
-Received: from localhost.localdomain (unknown [15.53.255.151])
-	by g7t16459g.inc.hpicorp.net (Postfix) with ESMTP id 1517E6000097;
-	Wed,  5 Mar 2025 19:27:36 +0000 (UTC)
-From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-To: masahiroy@kernel.org,
-	nathan@kernel.org,
-	linux-kbuild@vger.kernel.org
-Cc: nicolas@fjasle.eu,
-	linux-kernel@vger.kernel.org,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+	s=arc-20240116; t=1741203358; c=relaxed/simple;
+	bh=opvlMC7/dJjo3sftbWz3StojmcMoaNBHavqjKNA8v6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IerqBWkWITySafUvk9ecO4NBwh1VsBrlRCrFlaqvIX5/3WCbn0CrdM7CQHC7BOoat554vSkHdPDx18MmHok7abtXaBv9uvVpTvxADRy83klPIA2DzqBf6Vdf9zz+lg5N0Ke/Cu5wdwR4MvzWo4JlLZ5pZGqlhF8OjD9qlsUCyYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DlI0YgwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF4BC4CEE0;
+	Wed,  5 Mar 2025 19:35:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741203357;
+	bh=opvlMC7/dJjo3sftbWz3StojmcMoaNBHavqjKNA8v6k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DlI0YgwRiawZxVfrzvh4EJlkNqVQ1InEA61nj5QxoxVAjruJi1q2XRqZC7mlmXb1Q
+	 a+xEx2hFlaU+nsxDoVMo26p5IUrVsnpaAqNXcoT3WKFjo2PVyFA4RneQVwmOjqclqU
+	 RFmHzOxsMcNiNG3HSoCU/AslAXoM/l8y0dDxq5virnG8fZInzdVcZO8ivDc8npM1b1
+	 j9FkaqKHxs7W+AJ5v8+pMpWDkqnBuZJhceyCj2IMjl5d1dAbig0QCpplvQ5y+Zy25T
+	 LOlrl5dZWUq7BWZgaCSpPiayGmXJrhqnTpQcfeEw3WjdAQVX/YmljeMmjwjv+YjgLk
+	 cL8L7w0omJlPw==
+Date: Wed, 5 Mar 2025 19:35:52 +0000
+From: Will Deacon <will@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	SeongJae Park <sj@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] kbuild: deb-pkg: don't set KBUILD_BUILD_VERSION indiscriminately
-Date: Wed,  5 Mar 2025 19:25:36 +0000
-Message-ID: <20250305192536.1673099-1-alexandru.gagniuc@hp.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH] [arm64/tlb] Fix mmu notifiers for range-based invalidates
+Message-ID: <20250305193551.GB32246@willie-the-truck>
+References: <20250304085127.2238030-1-pjaroszynski@nvidia.com>
+ <Z8iccxCo7tkqvE_p@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PgnSA4g6FXN0-mzUZjbtkRPqPBNpztAidsmM6Tvcuyo_1741202860
-X-Mimecast-Originator: hp.com
-Content-Transfer-Encoding: quoted-printable
-content-type: text/plain; charset=WINDOWS-1252; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8iccxCo7tkqvE_p@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-In ThinPro, we use the convention <upstream_ver>+hp<patchlevel> for
-the kernel package. This does not have a dash in the name or version.
-This is built by editing ".version" before a build, and setting
-EXTRAVERSION=3D"+hp" and KDEB_PKGVERSION make variables:
+On Wed, Mar 05, 2025 at 06:48:19PM +0000, Catalin Marinas wrote:
+> On Tue, Mar 04, 2025 at 12:51:27AM -0800, Piotr Jaroszynski wrote:
+> > Update the __flush_tlb_range_op macro not to modify its parameters as
+> > these are unexepcted semantics. In practice, this fixes the call to
+> > mmu_notifier_arch_invalidate_secondary_tlbs() in
+> > __flush_tlb_range_nosync() to use the correct range instead of an empty
+> > range with start=end. The empty range was (un)lucky as it results in
+> > taking the invalidate-all path that doesn't cause correctness issues,
+> > but can certainly result in suboptimal perf.
+> > 
+> > This has been broken since commit 6bbd42e2df8f ("mmu_notifiers: call
+> > invalidate_range() when invalidating TLBs") when the call to the
+> > notifiers was added to __flush_tlb_range(). It predates the addition of
+> > the __flush_tlb_range_op() macro from commit 360839027a6e ("arm64: tlb:
+> > Refactor the core flush algorithm of __flush_tlb_range") that made the
+> > bug hard to spot.
+> 
+> That's the problem with macros.
+> 
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> Will, do you want to take this as a fix? It's only a performance
+> regression, though you never know how it breaks the callers of the macro
+> at some point.
 
-    echo 68 > .version
-    make -j<n> EXTRAVERSION=3D"+hp" bindeb-pkg KDEB_PKGVERSION=3D6.6.6+hp69
+Yeah, I'll pick it up but I'm travelling atm so it may have to wait until
+next week.
 
-    .deb name: linux-image-6.6.6+hp_6.6.6+hp69_amd64.deb
-
-Since commit 7d4f07d5cb71 ("kbuild: deb-pkg: squash
-scripts/package/deb-build-option to debian/rules"), this no longer
-works. The deb build logic changed, even though, the commit message
-implies that the logic should be unmodified.
-
-Before, KBUILD_BUILD_VERSION was not set if the KDEB_PKGVERSION did
-not contain a dash. After the change KBUILD_BUILD_VERSION is always
-set to KDEB_PKGVERSION. Since this determines UTS_VERSION,the uname
-output to look off:
-
-    (now)      uname -a: version 6.6.6+hp ... #6.6.6+hp69
-    (expected) uname -a: version 6.6.6+hp ... #69
-
-Update the debian/rules logic to restore the original behavior.
-
-Cc: <stable@vger.kernel.org> # v6.12+
-Fixes: 7d4f07d5cb71 ("kbuild: deb-pkg: squash scripts/package/deb-build-opt=
-ion to debian/rules")
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
----
- scripts/package/debian/rules | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/package/debian/rules b/scripts/package/debian/rules
-index ca07243bd5cd..bbc214f2e6bd 100755
---- a/scripts/package/debian/rules
-+++ b/scripts/package/debian/rules
-@@ -21,9 +21,13 @@ ifeq ($(origin KBUILD_VERBOSE),undefined)
-     endif
- endif
-=20
--revision =3D $(lastword $(subst -, ,$(shell dpkg-parsechangelog -S Version=
-)))
-+debian_revision =3D $(shell dpkg-parsechangelog -S Version)
-+revision =3D $(lastword $(subst -, ,$(debian_revision)))
- CROSS_COMPILE ?=3D $(filter-out $(DEB_BUILD_GNU_TYPE)-, $(DEB_HOST_GNU_TYP=
-E)-)
--make-opts =3D ARCH=3D$(ARCH) KERNELRELEASE=3D$(KERNELRELEASE) KBUILD_BUILD=
-_VERSION=3D$(revision) $(addprefix CROSS_COMPILE=3D,$(CROSS_COMPILE))
-+make-opts =3D ARCH=3D$(ARCH) KERNELRELEASE=3D$(KERNELRELEASE) $(addprefix =
-CROSS_COMPILE=3D,$(CROSS_COMPILE))
-+ifneq ($(revision), $(debian_revision))
-+    make-opts+=3DKBUILD_BUILD_VERSION=3D$(revision)
-+endif
-=20
- binary-targets :=3D $(addprefix binary-, image image-dbg headers libc-dev)
-=20
---=20
-2.48.1
-
+Will
 
