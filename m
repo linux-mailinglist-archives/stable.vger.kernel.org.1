@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-121048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326A8A509AD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052F0A50830
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 603F53A872D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2CC8188B885
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378111C6FF9;
-	Wed,  5 Mar 2025 18:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E6E24FBE8;
+	Wed,  5 Mar 2025 18:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUdNQPhM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptHMZvZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB8A2566CC;
-	Wed,  5 Mar 2025 18:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE761D63C3;
+	Wed,  5 Mar 2025 18:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198731; cv=none; b=X4beisbrFwUbuiN1CvJV5ibKCKn4aU2ida4xD/oXQAKOF2NaeZXDs+PtfxTlT6uacUfy+UzzbFA3xdY+RmaT+kKeo3umcR7C2ZiIv5uolCOdMveoOmMjhBVrHpnbhpiop4VzJSloSrAuGdkECpkXdFsw6o8TSBfUKkLKzttnipw=
+	t=1741197826; cv=none; b=fa/nTWWVIdR4Z2IT9855wC4DqESled04+KNhOufnTPrfyTf7K/W9iXL+I18MmH0uTKgOry4b2AGn0mGkiZnYO4xcpgCSYMrarQ6EmPD0v/X3/5kDfLjpimEsfc5Z6ZoYaEwUzl1b3XU+iJg/ewz8ZQptuhtoWCdCOTlLtpGFv2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198731; c=relaxed/simple;
-	bh=LTs82Q3bpWvYCy+mEDLZ8mvyCJZzcPjXoIP+rWhbprQ=;
+	s=arc-20240116; t=1741197826; c=relaxed/simple;
+	bh=mvnqP51UHIcWWw6oBmVihXzp0JQIyC+wwAkJ+SZXKoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLgIXCHr3Sqfpt6s3r/AvID5d+KQvIJkR6TVEPbl9ZUwVwlUao3kcw2HZKhOeeW6xTpMpsH04ghdIUG5vCQudDRR1ZXyNLaYQ/ro2GpZNZxSvPG7riFyR13Mi4T8Nf+vL/cWRfXkBeFI8wV/fSh84s9vogKoORsTWF3YzJBnxqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUdNQPhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E7FC4CEEC;
-	Wed,  5 Mar 2025 18:18:50 +0000 (UTC)
+	 MIME-Version; b=HMLVloBTg7RYzrkNLWtDltDYhHVwJ6UJNd1luWCrpkDF3jRb7orTl3UdEdkGFab+pONMNPs6mz7vkEB+CxJjIOaKeM7mY3hCy9UTxuR9YOvdFL4EVSqAAKkQSLJ4W1/JxLBKZUxUsOq3mIHLY7F30QMbtV3q/CaGhQ6Pr8qAAE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptHMZvZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD88C4CEE2;
+	Wed,  5 Mar 2025 18:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198731;
-	bh=LTs82Q3bpWvYCy+mEDLZ8mvyCJZzcPjXoIP+rWhbprQ=;
+	s=korg; t=1741197826;
+	bh=mvnqP51UHIcWWw6oBmVihXzp0JQIyC+wwAkJ+SZXKoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUdNQPhMse26M3SWWd/NThIlmWg6zamk5ty/JonVRsbo3XwHhmdVzqV/2vMsTjacu
-	 oBChRJ+XHt3n8n1Hk/qL+uACiQQfSkmVyOohzzYOePCl/3hrdixSz+LQ+1Bim9SdB5
-	 0a8K+EP9CGWpfE5KNDft08Ubdlv8nABi+GhqnqQk=
+	b=ptHMZvZGjqHeMqFh+VhyXRVyEcZ/MW0cqN2Rg+83B9pZkS9GevZTvOCZikejTfarG
+	 HsPgtXfVfTOXzdkZXWf8Q86F1etqa1ZlANcydpbjx8RuV+w1MbbYQwseA82FoQC7r8
+	 SQJwz8+eyP+y3N86TH1TtoI36E1RQ4Ijj1vrxOQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Yilin Chen <Yilin.Chen@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 097/157] drm/amd/display: add a quirk to enable eDP0 on DP1
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 114/142] x86/microcode: Mop up early loading leftovers
 Date: Wed,  5 Mar 2025 18:48:53 +0100
-Message-ID: <20250305174509.210963227@linuxfoundation.org>
+Message-ID: <20250305174504.909708124@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,186 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yilin Chen <Yilin.Chen@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit b5f7242e49b927cfe488b369fa552f2eff579ef1 upstream.
+commit 8529e8ab6c6fab8ebf06ead98e77d7646b42fc48 upstream
 
-[why]
-some board designs have eDP0 connected to DP1, need a way to enable
-support_edp0_on_dp1 flag, otherwise edp related features cannot work
+Get rid of the initrd_gone hack which was required to keep
+find_microcode_in_initrd() functional after init.
 
-[how]
-do a dmi check during dm initialization to identify systems that
-require support_edp0_on_dp1. Optimize quirk table with callback
-functions to set quirk entries, retrieve_dmi_info can set quirks
-according to quirk entries
+As find_microcode_in_initrd() is now only used during init, mark it
+accordingly.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Yilin Chen <Yilin.Chen@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f6d17270d18a6a6753fff046330483d43f8405e4)
-Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231017211723.298854846@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   69 +++++++++++++++++++---
- 1 file changed, 62 insertions(+), 7 deletions(-)
+ arch/x86/kernel/cpu/microcode/core.c     |   17 +----------------
+ arch/x86/kernel/cpu/microcode/internal.h |    1 -
+ 2 files changed, 1 insertion(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1617,75 +1617,130 @@ static bool dm_should_disable_stutter(st
- 	return false;
- }
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -44,8 +44,6 @@
+ static struct microcode_ops	*microcode_ops;
+ bool dis_ucode_ldr = true;
  
--static const struct dmi_system_id hpd_disconnect_quirk_table[] = {
-+struct amdgpu_dm_quirks {
-+	bool aux_hpd_discon;
-+	bool support_edp0_on_dp1;
-+};
-+
-+static struct amdgpu_dm_quirks quirk_entries = {
-+	.aux_hpd_discon = false,
-+	.support_edp0_on_dp1 = false
-+};
-+
-+static int edp0_on_dp1_callback(const struct dmi_system_id *id)
-+{
-+	quirk_entries.support_edp0_on_dp1 = true;
-+	return 0;
-+}
-+
-+static int aux_hpd_discon_callback(const struct dmi_system_id *id)
-+{
-+	quirk_entries.aux_hpd_discon = true;
-+	return 0;
-+}
-+
-+static const struct dmi_system_id dmi_quirk_table[] = {
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3660"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3260"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3460"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower Plus 7010"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower 7010"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF Plus 7010"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF 7010"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro Plus 7010"),
- 		},
- 	},
- 	{
-+		.callback = aux_hpd_discon_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro 7010"),
- 		},
- 	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite mt645 G8 Mobile Thin Client"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
-+		},
-+	},
- 	{}
- 	/* TODO: refactor this from a fixed table to a dynamic option */
- };
- 
--static void retrieve_dmi_info(struct amdgpu_display_manager *dm)
-+static void retrieve_dmi_info(struct amdgpu_display_manager *dm, struct dc_init_data *init_data)
- {
--	const struct dmi_system_id *dmi_id;
-+	int dmi_id;
-+	struct drm_device *dev = dm->ddev;
- 
- 	dm->aux_hpd_discon_quirk = false;
-+	init_data->flags.support_edp0_on_dp1 = false;
-+
-+	dmi_id = dmi_check_system(dmi_quirk_table);
- 
--	dmi_id = dmi_first_match(hpd_disconnect_quirk_table);
--	if (dmi_id) {
-+	if (!dmi_id)
-+		return;
-+
-+	if (quirk_entries.aux_hpd_discon) {
- 		dm->aux_hpd_discon_quirk = true;
--		DRM_INFO("aux_hpd_discon_quirk attached\n");
-+		drm_info(dev, "aux_hpd_discon_quirk attached\n");
-+	}
-+	if (quirk_entries.support_edp0_on_dp1) {
-+		init_data->flags.support_edp0_on_dp1 = true;
-+		drm_info(dev, "aux_hpd_discon_quirk attached\n");
+-bool initrd_gone;
+-
+ /*
+  * Synchronization.
+  *
+@@ -180,15 +178,7 @@ void load_ucode_ap(void)
  	}
  }
  
-@@ -1993,7 +2048,7 @@ static int amdgpu_dm_init(struct amdgpu_
- 	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(3, 0, 0))
- 		init_data.num_virtual_links = 1;
+-/* Temporary workaround until find_microcode_in_initrd() is __init */
+-static int __init mark_initrd_gone(void)
+-{
+-	initrd_gone = true;
+-	return 0;
+-}
+-fs_initcall(mark_initrd_gone);
+-
+-struct cpio_data find_microcode_in_initrd(const char *path)
++struct cpio_data __init find_microcode_in_initrd(const char *path)
+ {
+ #ifdef CONFIG_BLK_DEV_INITRD
+ 	unsigned long start = 0;
+@@ -216,12 +206,7 @@ struct cpio_data find_microcode_in_initr
+ 	 * has the virtual address of the beginning of the initrd. It also
+ 	 * possibly relocates the ramdisk. In either case, initrd_start contains
+ 	 * the updated address so use that instead.
+-	 *
+-	 * initrd_gone is for the hotplug case where we've thrown out initrd
+-	 * already.
+ 	 */
+-	if (initrd_gone)
+-		return (struct cpio_data){ NULL, 0, "" };
+ 	if (initrd_start)
+ 		start = initrd_start;
  
--	retrieve_dmi_info(&adev->dm);
-+	retrieve_dmi_info(&adev->dm, &init_data);
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -86,7 +86,6 @@ static inline unsigned int x86_cpuid_fam
+ }
  
- 	if (adev->dm.bb_from_dmub)
- 		init_data.bb_from_dmub = adev->dm.bb_from_dmub;
+ extern bool dis_ucode_ldr;
+-extern bool initrd_gone;
+ 
+ #ifdef CONFIG_CPU_SUP_AMD
+ void load_ucode_amd_bsp(unsigned int family);
 
 
 
