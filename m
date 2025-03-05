@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5147EA50841
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEDAA5076A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3209D3B0145
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3E871893633
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2467C1C860D;
-	Wed,  5 Mar 2025 18:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE2C250BE9;
+	Wed,  5 Mar 2025 17:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjojdXlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpSuQs/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FEB1A3174;
-	Wed,  5 Mar 2025 18:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293C324C07D;
+	Wed,  5 Mar 2025 17:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197905; cv=none; b=M9t1nM5HoKD0vbjAfGxQpma3FSSZsdOJn1AJtDtLpd34poOjwt6gV7ws4ho2ZHgUXWSNldKofw3moQ1VZ5Dg98CV0zE3xdR3pymhWOLuCYJUURNlPNKiJgsw5KOeY6qdp5e1pYVVS8EJ/sKY8fxh7ph+4853Ruc2jUV7a/+NX/s=
+	t=1741197445; cv=none; b=nIiv+ZjL8JoDwLsJu+dDSenNxOdb2Zk52pJfvYpo6bHNVPYcfdGSneyIcrMY8BBkQcu2NWwWQAhuiBa8VgaSYX7TccQpVRyTYCSsVU+zBV+mnGixBfZ4yDC20lVtbskLwRD5LFAhvkLltaPRfUAwkWGFgAsK/6jQolpvXIXcb+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197905; c=relaxed/simple;
-	bh=rKGCkPJfe4+vvPT/RpNaPQwbspce3VtZBzCWwXz1XuM=;
+	s=arc-20240116; t=1741197445; c=relaxed/simple;
+	bh=KQ8JiqOaQfVwrIDNfcOeTPBhPgn57rDXHwjvFXcLuMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VW9lLLolnxVAbWe3vWCCE+m/MPSXzUV/Z2JyGmNLrf3g3lOHnPiJBhihbSykF/K74lofgU4Dp1jpuwMro3SI3wr8OvZ4l9qSaA2VvdOr+/TRKlc82CjXDvxDS9ug0iLQ1SKK7A6ps4cFDPng0wrTlr4NlpKD4G1UrGbwuRrlafk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjojdXlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33F5C4CED1;
-	Wed,  5 Mar 2025 18:05:04 +0000 (UTC)
+	 MIME-Version; b=QmxqzT703uhCPRLTVOMlULzgOF4ILY5ApyTVGibD3oKSAiwO0O8aQNCGZcTLgLXLKv6B8JtfH3XJLWIFiY4MCb6Wke/dwVVOOIFjUJGgj+xJSkRgQhoBbiuCGR4CVQ+02EDZAUhzWmHuBIymW5z5nCInR/7Zf1yNJtWVn/t2tVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpSuQs/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F12C4CED1;
+	Wed,  5 Mar 2025 17:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197905;
-	bh=rKGCkPJfe4+vvPT/RpNaPQwbspce3VtZBzCWwXz1XuM=;
+	s=korg; t=1741197444;
+	bh=KQ8JiqOaQfVwrIDNfcOeTPBhPgn57rDXHwjvFXcLuMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjojdXlXRewJjFfYoqrb6/UsDSIMrFgmtdIAC/yCPlFjHL2BvVhmG02IZIPI2ZwPX
-	 xnYyECAdh02jZkztLzUaEn/084ZQCr4lelDFLstB0lVqRySCTdvLn/SneOLBcZyO3L
-	 BCA0YhaR3+u8LPS7QqrrJqrUqR5RPBJrEObCJf9o=
+	b=PpSuQs/ouNPbrWrqNLVonuX1XzwTIRKZcCFg9OTxcv6TbEEjYUyDaTTBGpHC4mq3e
+	 cIyVhq6g4tX5y6/Q/13F/yscO4HPmUjEFWcc+taxES6E+sYki9OYV6DEcA/yHb0bgU
+	 Tt32mBpCkYLl/Sc6LZw2e749ogL7NIO9Mab7z/XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 108/142] x86/microcode/intel: Rework intel_find_matching_signature()
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 158/176] net: enetc: keep track of correct Tx BD count in enetc_map_tx_tso_buffs()
 Date: Wed,  5 Mar 2025 18:48:47 +0100
-Message-ID: <20250305174504.670092530@linuxfoundation.org>
+Message-ID: <20250305174511.783796829@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,132 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit b7fcd995b261c9976e05f47554529c98a0f1cbb0 upstream
+commit da291996b16ebd10626d4b20288327b743aff110 upstream.
 
-Take a cpu_signature argument and work from there. Move the match()
-helper next to the callsite as there is no point for having it in
-a header.
+When creating a TSO header, if the skb is VLAN tagged, the extended BD
+will be used and the 'count' should be increased by 2 instead of 1.
+Otherwise, when an error occurs, less tx_swbd will be freed than the
+actual number.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115902.797820205@linutronix.de
+Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
+Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-3-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpu.h            |   16 +---------------
- arch/x86/kernel/cpu/microcode/intel.c |   31 +++++++++++++++++++------------
- drivers/platform/x86/intel/ifs/load.c |    2 +-
- 3 files changed, 21 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/arch/x86/include/asm/cpu.h
-+++ b/arch/x86/include/asm/cpu.h
-@@ -75,22 +75,8 @@ struct cpu_signature;
- 
- void intel_collect_cpu_info(struct cpu_signature *sig);
- 
--static inline bool intel_cpu_signatures_match(unsigned int s1, unsigned int p1,
--					      unsigned int s2, unsigned int p2)
--{
--	if (s1 != s2)
--		return false;
--
--	/* Processor flags are either both 0 ... */
--	if (!p1 && !p2)
--		return true;
--
--	/* ... or they intersect. */
--	return p1 & p2;
--}
--
- extern u64 x86_read_arch_cap_msr(void);
--int intel_find_matching_signature(void *mc, unsigned int csig, int cpf);
-+bool intel_find_matching_signature(void *mc, struct cpu_signature *sig);
- int intel_microcode_sanity_check(void *mc, bool print_err, int hdr_type);
- 
- extern struct cpumask cpus_stop_mask;
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -84,29 +84,36 @@ void intel_collect_cpu_info(struct cpu_s
- }
- EXPORT_SYMBOL_GPL(intel_collect_cpu_info);
- 
--/*
-- * Returns 1 if update has been found, 0 otherwise.
-- */
--int intel_find_matching_signature(void *mc, unsigned int csig, int cpf)
-+static inline bool cpu_signatures_match(struct cpu_signature *s1, unsigned int sig2,
-+					unsigned int pf2)
-+{
-+	if (s1->sig != sig2)
-+		return false;
-+
-+	/* Processor flags are either both 0 or they intersect. */
-+	return ((!s1->pf && !pf2) || (s1->pf & pf2));
-+}
-+
-+bool intel_find_matching_signature(void *mc, struct cpu_signature *sig)
- {
- 	struct microcode_header_intel *mc_hdr = mc;
--	struct extended_sigtable *ext_hdr;
- 	struct extended_signature *ext_sig;
-+	struct extended_sigtable *ext_hdr;
- 	int i;
- 
--	if (intel_cpu_signatures_match(csig, cpf, mc_hdr->sig, mc_hdr->pf))
--		return 1;
-+	if (cpu_signatures_match(sig, mc_hdr->sig, mc_hdr->pf))
-+		return true;
- 
- 	/* Look for ext. headers: */
- 	if (get_totalsize(mc_hdr) <= intel_microcode_get_datasize(mc_hdr) + MC_HEADER_SIZE)
--		return 0;
-+		return false;
- 
- 	ext_hdr = mc + intel_microcode_get_datasize(mc_hdr) + MC_HEADER_SIZE;
- 	ext_sig = (void *)ext_hdr + EXT_HEADER_SIZE;
- 
- 	for (i = 0; i < ext_hdr->count; i++) {
--		if (intel_cpu_signatures_match(csig, cpf, ext_sig->sig, ext_sig->pf))
--			return 1;
-+		if (cpu_signatures_match(sig, ext_sig->sig, ext_sig->pf))
-+			return true;
- 		ext_sig++;
- 	}
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -329,14 +329,15 @@ dma_err:
  	return 0;
-@@ -268,7 +275,7 @@ static __init struct microcode_intel *sc
- 		    intel_microcode_sanity_check(data, false, MC_HEADER_TYPE_MICROCODE) < 0)
- 			break;
+ }
  
--		if (!intel_find_matching_signature(data, uci->cpu_sig.sig, uci->cpu_sig.pf))
-+		if (!intel_find_matching_signature(data, &uci->cpu_sig))
- 			continue;
+-static void enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+-				 struct enetc_tx_swbd *tx_swbd,
+-				 union enetc_tx_bd *txbd, int *i, int hdr_len,
+-				 int data_len)
++static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
++				struct enetc_tx_swbd *tx_swbd,
++				union enetc_tx_bd *txbd, int *i, int hdr_len,
++				int data_len)
+ {
+ 	union enetc_tx_bd txbd_tmp;
+ 	u8 flags = 0, e_flags = 0;
+ 	dma_addr_t addr;
++	int count = 1;
  
- 		/*
-@@ -512,7 +519,7 @@ static enum ucode_state parse_microcode_
- 		if (cur_rev >= mc_header.rev)
- 			continue;
- 
--		if (!intel_find_matching_signature(mc, uci->cpu_sig.sig, uci->cpu_sig.pf))
-+		if (!intel_find_matching_signature(mc, &uci->cpu_sig))
- 			continue;
- 
- 		kvfree(new_mc);
---- a/drivers/platform/x86/intel/ifs/load.c
-+++ b/drivers/platform/x86/intel/ifs/load.c
-@@ -242,7 +242,7 @@ static int image_sanity_check(struct dev
- 
- 	intel_collect_cpu_info(&sig);
- 
--	if (!intel_find_matching_signature((void *)data, sig.sig, sig.pf)) {
-+	if (!intel_find_matching_signature((void *)data, &sig)) {
- 		dev_err(dev, "cpu signature, processor flags not matching\n");
- 		return -EINVAL;
+ 	enetc_clear_tx_bd(&txbd_tmp);
+ 	addr = tx_ring->tso_headers_dma + *i * TSO_HEADER_SIZE;
+@@ -379,7 +380,10 @@ static void enetc_map_tx_tso_hdr(struct
+ 		/* Write the BD */
+ 		txbd_tmp.ext.e_flags = e_flags;
+ 		*txbd = txbd_tmp;
++		count++;
  	}
++
++	return count;
+ }
+ 
+ static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+@@ -511,9 +515,9 @@ static int enetc_map_tx_tso_buffs(struct
+ 
+ 		/* compute the csum over the L4 header */
+ 		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
+-		enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd, &i, hdr_len, data_len);
++		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
++					      &i, hdr_len, data_len);
+ 		bd_data_num = 0;
+-		count++;
+ 
+ 		while (data_len > 0) {
+ 			int size;
 
 
 
