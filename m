@@ -1,133 +1,129 @@
-Return-Path: <stable+bounces-120451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC0FA5050C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:36:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFCFA505D3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3C791888F6D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 16:33:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125AF167DED
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 16:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5B445C18;
-	Wed,  5 Mar 2025 16:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8791219DFA5;
+	Wed,  5 Mar 2025 16:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z26IdHd6"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="v+DtFreJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A2818D65C;
-	Wed,  5 Mar 2025 16:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BA2151992
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 16:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741192400; cv=none; b=tUoyEmqadmrEQmTJJRQGrtTD51t8Sbg3VYwf9O+X0y0hpMMikp2jJKro9mTKHE9B513Y7nk3/Mez8igwpv0Rp4RP3MD6/JAekB2Q1fIzgXkLkvxfu7nCdOO3ZmGvKB+LJ2UmwYcbje6Qb9ZZRkZXlJeoNo0evkbLH5FWax3PJak=
+	t=1741193994; cv=none; b=J8KT9CNtItDG7p/Hez5seN1fwYob+bjSFoDxkus3q1WP9PhrqFVcE5ny87WsiinEOq7AhmXVVZo2/L2etYfCF5rngOhkyasfth8xavapBWp2SRgdPCJx0eXRfhpyn/gbg4fQmdsz1dmZ8d8GmzCr1Y+5ZMFx89cbDKylunVJCgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741192400; c=relaxed/simple;
-	bh=0kwY9FUG53nPfgHq+lB9nZ9aS4CCvz8fHFIvv5R3HGM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=LKXIa8spqUnYXsW8MFm6CGubRUzCMxIQ3y+2hxKTgV2xmLHkhPPYXeGkmDjtbdqmk+GT8sWi2BHIoWr/zsYkox7g+hXE7bayuXRLJ8wvsIoRQAsyBowciW4EFSSuX9psrcUyyLVJPYyzU/HCXZbN1BikE7/sLEYSKrkwOD3h+Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z26IdHd6; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-abf6f3b836aso614797666b.3;
-        Wed, 05 Mar 2025 08:33:18 -0800 (PST)
+	s=arc-20240116; t=1741193994; c=relaxed/simple;
+	bh=K3WmfqhkP8/RahQMofjKxqK+HJ2XzJzReP+/dZIM/xs=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=nF40/cKkzibaahycVrt3o9DpofX4Gea9Dss1YkZBtGFMlv1wLkJI72PwzkN8Pg2hEsbc5klo1qY7JVlbEuhfDIPQcGwfos/K1jnlqwUlqw9tm+6AyfN77tF44dRnvNTMPqeTCdWSiw/8OXe34nqg6gKD5FuA8tAMMyxCJLZr2O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=v+DtFreJ; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e573136107bso6198553276.3
+        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 08:59:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741192397; x=1741797197; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JK4O2zf61Cn8wpdWW5Btx9mD0jmIMmD6EG+2ZAdy0IY=;
-        b=Z26IdHd6DMr5IfaEV0CAPpCGi7mB7dZU4TxPmOdeherk21cs4z/+xem1bfuTtT6pGM
-         4mUEqlkR+fpdmEoeHYefwTgBZRz67cRmpEJcJkaO5+ffMefWJQ2JUGBjJ9cHcdmSRMnn
-         dLgAieW3lYadVKWGeF6KgyIKdG5w4heCXB6sUuVbQn6zHBtq+uoXmKr5l/EpxF4qS6wH
-         qypstyjKOVpQA4OI/vKWrurCDVfHtmQzGHvRYORuDsKcb5tmsafL8nKo7LzNgtKAn8bN
-         5llq/9pMNOubUsKdfG4uSrJhEUtEo/esoPFInqYUXqAap6g2X9pmVuK+TZoEhrDbUb6U
-         7wiQ==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1741193991; x=1741798791; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wWnIRSAHRtM5hBgAo1DhTEBhbdTXvjeCYcMrnxYerTE=;
+        b=v+DtFreJs2OlarXqh+r5UGpcjeOkinkWL7hSbyW8BwUCsOlJ0iM+NpDVWg1QteK42S
+         of5pXhKH/DbgJauotL/LAwx5t9NLTFKq425nvvvm9Q5q/jFia3Iu+2rvug5ivSVglBFp
+         fjZqYyQPYLSauYOztqV++fM9yZT6q9AvLJtxapRGHMwSyPqnfuQJDoUkRaDJ2YYQgawE
+         ycjVGPJ7NvIJ56+c4GWxvmrXvCjMmxwKmhL6M7Q2pw+hKSKCtX8Ua8tsvK1MbdeVb/4J
+         cjGnb7mdXQZ04UN0QdGw6tVqlYq6w4Inu3/vJwAmLmHQ0UrNsmeTGYgxPP1o0lcP3VNd
+         LzKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741192397; x=1741797197;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JK4O2zf61Cn8wpdWW5Btx9mD0jmIMmD6EG+2ZAdy0IY=;
-        b=qNqt03ChQS9RVbFapI6Y6MHrAx5SW7+eD8RHGY40TB28xWMCFC2g8/vsMN3YXtL7g3
-         KSp7zeCapupR+a5n2N6SEtPV/sEUWDD2YDGT0MvIeVwl6ngwpJYEzoXyke7y0TRs0Cme
-         buMk3DeMS4iq76/nP49Mnqg7ToHGN7rBpHEeqht5IX8Dar2kSYtrM88KH4xBacx7+YuY
-         jPzjJPqiKFiSJld7sjGQSAqw8PCQIEb4lPTDs8gbOVWDGyp+4WvxE5IEhaQO/NNayvPi
-         vcST7VWPDGe0wENOnw1V+zJE5V/3jGHW374VeYmCWzCRxVkH/tecK2z79jLCoLhCGf+W
-         VoIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7ECQFFCbWtUN97PpRMePElFSrENQJduM+AruvILe/HoyND2PvCrm3C2zYmwZZxlnVb98oEWxA8Sfn9X4=@vger.kernel.org, AJvYcCXJ3Ij5os9OKxUffhZrDAI1kKuIdiVMsgSPki1vkkPW3mjhbAJM+kDnEv4v5pfBp5WMMJDHsPNP@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJqyh9GIGVb+dQRL6XALU9TPX6lafEkqH8TWjCkGW10lp0tW8f
-	FV3MNQvJ0XJHWx1YnYqNpcJh12vvcvM8Nlzm8xSdudGzupOLyShhwTfC6rXQ3PcXNPK4AVRubW9
-	FHyiMG4SmHO4ONqJk8Vcjb9N6Mto=
-X-Gm-Gg: ASbGncvIVPW4d8F4s4Q8cJLz0ecAUeZLCcsxZBEZ7C0Gg2WObqwtu+TOQXslGQ/XA2r
-	Mukia96LhJcnwoonokF5FrbgfkDoCMILM10FD/rNd9C89oaAQTKKETN6AxnUaWpC3viF/SkzVU+
-	aq5Mpah/z5UadTlcmORt+Hw9FU
-X-Google-Smtp-Source: AGHT+IHSHs2TnczkyuMBUdfcfAqotKfdhX9hyFyaHZ1GF4bnrCI3S8DVGv8T1MW99UUFRzlGXjXZR9k54XKDo435ao0=
-X-Received: by 2002:a17:906:dc8f:b0:abf:4bde:51b9 with SMTP id
- a640c23a62f3a-ac20dd078b9mr357854266b.35.1741192396600; Wed, 05 Mar 2025
- 08:33:16 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741193991; x=1741798791;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wWnIRSAHRtM5hBgAo1DhTEBhbdTXvjeCYcMrnxYerTE=;
+        b=c/05aK4nCsolNV18Ealgyw9u3T80l9tZ40ucqwX9KIf1b5TjBy+7rQssimJk/UT4Gc
+         GIswmffO070DHoLags0/nFaDn9wfRQ7Kl1mKFb5QnDP9ZEtqNXlao8o8rPTKMUYK8g/a
+         +LCVKkGeZLm+O8RBAtBQGTIBLm/E52E5Zbip+blOh91tb/XA21Vaw1JkhD8qDAa/QEIP
+         R1IOyvdFcCe7FfEZ0U1WZVmX5j895Shu8YAL4ztojAOO+3KXMvZt85NJajTalgOd82O+
+         IeQKQ4eoEb2O4VPFr19SPG7Fk6G23qg+0WmVqz5gb/gU96WFxB9tjohztaQy2u97Wpl6
+         qgGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVoeXc5PpOULkXQVZ/9HyaDj+qxjRDodjbhtO7mdjGgmgvFM+VV2eTuMY+SwD0Df3iivE7LhRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzO/yRYJRHlCqMURlpCcCycli3kx7z3pGde4/9CHdAYSOu25iMZ
+	N5FeBF0qXSE0hfnCreMLMcI7HBHkHY2881SFX/SjEEGnEhjYjYeh44Zt56Zn30gzkV9Q2Q5msCi
+	Rm/VzFqn+C9YGmbvVUxLcjMBsljx6wPR6RV0OfQ==
+X-Gm-Gg: ASbGncv3ocEsuitG8XKYEcXn9+6FNk1VfWuSMOiZX4Hwp+y9k+qe01q3m+X+cJk27If
+	e/QDxwtGM0EpimSgz8PGaLi4dM87RA1iFIXc6+/JXQQCo0xFBUadjmfegOGti8OqU4CvC2NcOQA
+	3JlkmJ06PzOLktTU33pnnybSuLVZzu7AGk9ShgOknkPTzyXeLJOb2ODazlcHE=
+X-Google-Smtp-Source: AGHT+IEQx57wO8bHmD4s/3HLXIO/eBpO+qIKaK/WdN1AqJ7kXe801Ne0NKb9UY0sCnWaC8BYUJ+uEMuIUI8ZYuMJn4U=
+X-Received: by 2002:a05:6902:725:b0:e5d:d2b8:243e with SMTP id
+ 3f1490d57ef6-e611e31821amr4440396276.42.1741193991087; Wed, 05 Mar 2025
+ 08:59:51 -0800 (PST)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 5 Mar 2025 08:59:49 -0800
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 5 Mar 2025 08:59:49 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Se=C3=AFfane_Idouchach?= <seifane53@gmail.com>
-Date: Thu, 6 Mar 2025 00:32:59 +0800
-X-Gm-Features: AQ5f1JozTIGBqPbsdq4tnmrTjBsGE02f-EjWfm9qmjROqDAlMIVVEXpdJMzEuzM
-Message-ID: <CAMpRfLORiuJOgUmpmjgCC1LZC1Kp0KFzPGXd9KQZELtr35P+eQ@mail.gmail.com>
-Subject: [REGRESSION] Long boot times due to USB enumeration
-To: dirk.behme@de.bosch.com
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Wed, 5 Mar 2025 08:59:49 -0800
+X-Gm-Features: AQ5f1JpajwvlbUgfq-jBRTMa7MxbzSd5yQx0XCGq4txxU8EEtV_jxf3uEeX8T0o
+Message-ID: <CACo-S-1CAMsQW_G2ge4JHTS04JR6bcvfzwoNCaenpp06dKWEXg@mail.gmail.com>
+Subject: [REGRESSION] stable-rc/linux-6.13.y: (build) use of undeclared
+ identifier 'sz' in arch/arm64/mm/hugetlbpage.o (...
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Dear all,
+Hello,
 
-I am reporting what I believe to be regression due to
-c0a40097f0bc81deafc15f9195d1fb54595cd6d0.
+New build issue found on stable-rc/linux-6.13.y:
 
-After this change I am experiencing long boot times on a setup that
-has what seems like a bad usb.
-The progress of the boot gets halted while retrying (and ultimately
-failing) to enumerate the USB device and is only allowed to continue
-after giving up enumerating the USB device.
-On Arch Linux this manifests itself by a message from SystemD having a
-wait job on journald. Journald starts just after the enumeration fails
-with "unable to enumerate USB device".
-This results in longer boot times on average 1 minute longer than
-usual (usually around 10s).
-No stable kernel before this change exhibits the issue all stable
-kernels after this change exhibit the issue.
+---
+ use of undeclared identifier 'sz' in arch/arm64/mm/hugetlbpage.o
+(arch/arm64/mm/hugetlbpage.c) [logspec:kbuild,kbuild.compiler.error]
+---
 
-See the related USB messages attached below (these messages are
-continuous and have not been snipped) :
+- dashboard: https://d.kernelci.org/issue/maestro:729533e78f26d9eebe477a0e479e082cba03bafe
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  1ff63493daf5412bf3df24d33c1687bd29c2a983
 
-[...]
-[    9.640854] usb 1-9: device descriptor read/64, error -110
-[   25.147505] usb 1-9: device descriptor read/64, error -110
-[   25.650779] usb 1-9: new high-speed USB device number 5 using xhci_hcd
-[   30.907482] usb 1-9: device descriptor read/64, error -110
-[   46.480900] usb 1-9: device descriptor read/64, error -110
-[   46.589883] usb usb1-port9: attempt power cycle
-[   46.990815] usb 1-9: new high-speed USB device number 6 using xhci_hcd
-[   51.791571] usb 1-9: Device not responding to setup address.
-[   56.801594] usb 1-9: Device not responding to setup address.
-[   57.010803] usb 1-9: device not accepting address 6, error -71
-[   57.137485] usb 1-9: new high-speed USB device number 7 using xhci_hcd
-[   61.937624] usb 1-9: Device not responding to setup address.
-[   66.947485] usb 1-9: Device not responding to setup address.
-[   67.154086] usb 1-9: device not accepting address 7, error -71
-[   67.156426] usb usb1-port9: unable to enumerate USB device
-[...]
 
-This issue does not manifest in 44a45be57f85.
-I am available to test any patches to address this on my system since
-I understand this could be quite hard to replicate on any system.
-I am available to provide more information if I am able or with
-guidance to help troubleshoot the issue further.
+Log excerpt:
+=====================================================
+arch/arm64/mm/hugetlbpage.c:397:28: error: use of undeclared identifier 'sz'
+  397 |         ncontig = num_contig_ptes(sz, &pgsize);
+      |                                   ^
+1 error generated.
 
-Wishing you all a good day.
+=====================================================
 
-#regzbot introduced: c0a40097f0bc81deafc15f9195d1fb54595cd6d0
+
+# Builds where the incident occurred:
+
+## defconfig+arm64-chromebook+kselftest on (arm64):
+- compiler: clang-17
+- dashboard: https://d.kernelci.org/build/maestro:67c8713c18018371956b7bef
+
+
+#kernelci issue maestro:729533e78f26d9eebe477a0e479e082cba03bafe
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
