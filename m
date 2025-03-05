@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-120724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0D6A50815
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98661A5089E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD2A3A6E03
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 224767A506B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0A1253B47;
-	Wed,  5 Mar 2025 18:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514DE251781;
+	Wed,  5 Mar 2025 18:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhnQb7Qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoNjG+Jk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3CD25335F;
-	Wed,  5 Mar 2025 18:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109842517B4;
+	Wed,  5 Mar 2025 18:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197788; cv=none; b=QmvFN/FAegm9UuV++hWeuhooKgfYwhKkD2w/sMJsv44x6wmPvGXlz0ULrO1llCnFgSEXd7lY0W3wwjZhwRubBjbwwHA2tuxiwLyfABl5Nuhprcnx8GfAOlQWuOPK7Eok1NamC5ARygbGt0jslK4PM+8ggTiuazNL4fNnQxNC1Co=
+	t=1741198174; cv=none; b=LH6rsBtDj1cYUCK36sCBhGGffmzDK4VLDX6sJBYlz/i5DbUTe37jjt3GDz2rhlv7LJofpd1M2WUNeC5JLAlmlm+HTJxyPoWXg4b+fdXpH8pADW5u5uZJ+rY0V+b28B/K8peF2KNcmuYu+PjKi/Ghx5yaBbaOaCdr8L1oCak4O4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197788; c=relaxed/simple;
-	bh=CPCyfmDtUjYUb7oJ+NAaXkCt0420waRCSB0T0BV35NU=;
+	s=arc-20240116; t=1741198174; c=relaxed/simple;
+	bh=3lOCr6fIrQcOwxxGB9Cch5ebJTt9S51P5I+wFXGIFMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYONovxW6zM63RJCLv/RRtnZSLG+V62U9EtROu2Gq0D1faA5aGD8bb3KhL7ld3n0uVZ2/yUH5nkJPSWZnUiPXevIbhpCuSgGDgPhVjjfkVnq3Q18dhzrQa44W8PEjH+R3FtM7h3ElOlJ56BAXBnoWVlVqCE2NuTSkOcS9zb638Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhnQb7Qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5152FC4CED1;
-	Wed,  5 Mar 2025 18:03:08 +0000 (UTC)
+	 MIME-Version; b=FXVrv1gbmPx+6GQS0gcgzG1OdF2EJiP3pMdwsQUn5ALwDw7XEmpBXZZ65p+Ezdyqo+B5Sy96epIXkjSGtykaHxYQvsUHQ6Dl7edr35Zu4cubkUo359JT24MYKrlLDhR3LuocsJ3o5PjZnUVzmtKWpnEZj+sTOMQv6EvfOBltMJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoNjG+Jk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D36CC4CED1;
+	Wed,  5 Mar 2025 18:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197788;
-	bh=CPCyfmDtUjYUb7oJ+NAaXkCt0420waRCSB0T0BV35NU=;
+	s=korg; t=1741198173;
+	bh=3lOCr6fIrQcOwxxGB9Cch5ebJTt9S51P5I+wFXGIFMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZhnQb7QfrmJZKMuTextn9DULGU87+OXaCtVB0oxcg8AAsD/JsTvLRG69wmkQdC+O5
-	 Pf3wXspwWXqEbuO40e4wc6SPLtJ9QuXayfTa5Ya8jwbGFOQltstTLdRdHQD6P53LLE
-	 xfE3QsDlr3gb5GVL6WKU62NMSNeDjbzluXFOQX+M=
+	b=CoNjG+JkgrwjJ4PiW1UNao1hT1y3vIWQ+sgqxGxqjAZZivA/I1Eofksxucxs8zs5H
+	 iXzhxwRJf3pFmSxlWBhJTly1ugSgCoywoSqvZ0sIUpZIK+F1xl50xIiLo5kXtGwCvR
+	 0IKFGMwwezJ1Dt8wRgsW3pXFmFdvYTu1g7D/dSEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 099/142] x86/microcode/intel: Simplify scan_microcode()
-Date: Wed,  5 Mar 2025 18:48:38 +0100
-Message-ID: <20250305174504.312449416@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.12 090/150] perf/core: Add RCU read lock protection to perf_iterate_ctx()
+Date: Wed,  5 Mar 2025 18:48:39 +0100
+Message-ID: <20250305174507.428430808@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Breno Leitao <leitao@debian.org>
 
-commit b0f0bf5eef5fac6ba30b7cac15ca4cb01f8a6ca9 upstream
+commit 0fe8813baf4b2e865d3b2c735ce1a15b86002c74 upstream.
 
-Make it readable and comprehensible.
+The perf_iterate_ctx() function performs RCU list traversal but
+currently lacks RCU read lock protection. This causes lockdep warnings
+when running perf probe with unshare(1) under CONFIG_PROVE_RCU_LIST=y:
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115902.271940980@linutronix.de
+	WARNING: suspicious RCU usage
+	kernel/events/core.c:8168 RCU-list traversed in non-reader section!!
+
+	 Call Trace:
+	  lockdep_rcu_suspicious
+	  ? perf_event_addr_filters_apply
+	  perf_iterate_ctx
+	  perf_event_exec
+	  begin_new_exec
+	  ? load_elf_phdrs
+	  load_elf_binary
+	  ? lock_acquire
+	  ? find_held_lock
+	  ? bprm_execve
+	  bprm_execve
+	  do_execveat_common.isra.0
+	  __x64_sys_execve
+	  do_syscall_64
+	  entry_SYSCALL_64_after_hwframe
+
+This protection was previously present but was removed in commit
+bd2756811766 ("perf: Rewrite core context handling"). Add back the
+necessary rcu_read_lock()/rcu_read_unlock() pair around
+perf_iterate_ctx() call in perf_event_exec().
+
+[ mingo: Use scoped_guard() as suggested by Peter ]
+
+Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250117-fix_perf_rcu-v1-1-13cb9210fc6a@debian.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/intel.c |   28 +++++++---------------------
- 1 file changed, 7 insertions(+), 21 deletions(-)
+ kernel/events/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -266,22 +266,16 @@ static void save_microcode_patch(void *d
- 	intel_ucode_patch = (struct microcode_intel *)p;
- }
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -8240,7 +8240,8 @@ void perf_event_exec(void)
  
--/*
-- * Get microcode matching with BSP's model. Only CPUs with the same model as
-- * BSP can stay in the platform.
-- */
--static struct microcode_intel *
--scan_microcode(void *data, size_t size, struct ucode_cpu_info *uci, bool save)
-+/* Scan CPIO for microcode matching the boot CPU's family, model, stepping */
-+static struct microcode_intel *scan_microcode(void *data, size_t size,
-+					      struct ucode_cpu_info *uci, bool save)
- {
- 	struct microcode_header_intel *mc_header;
- 	struct microcode_intel *patch = NULL;
- 	u32 cur_rev = uci->cpu_sig.rev;
- 	unsigned int mc_size;
+ 	perf_event_enable_on_exec(ctx);
+ 	perf_event_remove_on_exec(ctx);
+-	perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
++	scoped_guard(rcu)
++		perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
  
--	while (size) {
--		if (size < sizeof(struct microcode_header_intel))
--			break;
--
-+	for (; size >= sizeof(struct microcode_header_intel); size -= mc_size, data += mc_size) {
- 		mc_header = (struct microcode_header_intel *)data;
- 
- 		mc_size = get_totalsize(mc_header);
-@@ -289,27 +283,19 @@ scan_microcode(void *data, size_t size,
- 		    intel_microcode_sanity_check(data, false, MC_HEADER_TYPE_MICROCODE) < 0)
- 			break;
- 
--		size -= mc_size;
--
--		if (!intel_find_matching_signature(data, uci->cpu_sig.sig,
--						   uci->cpu_sig.pf)) {
--			data += mc_size;
-+		if (!intel_find_matching_signature(data, uci->cpu_sig.sig, uci->cpu_sig.pf))
- 			continue;
--		}
- 
- 		/* BSP scan: Check whether there is newer microcode */
- 		if (!save && cur_rev >= mc_header->rev)
--			goto next;
-+			continue;
- 
- 		/* Save scan: Check whether there is newer or matching microcode */
- 		if (save && cur_rev != mc_header->rev)
--			goto next;
-+			continue;
- 
- 		patch = data;
- 		cur_rev = mc_header->rev;
--
--next:
--		data += mc_size;
- 	}
- 
- 	if (size)
+ 	perf_unpin_context(ctx);
+ 	put_ctx(ctx);
 
 
 
