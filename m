@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89798A50987
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347EDA50819
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE873A6E53
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2E3B7A5277
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB1C254AEF;
-	Wed,  5 Mar 2025 18:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F02B20C004;
+	Wed,  5 Mar 2025 18:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVYd3zlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="na5hU62+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7910025485B;
-	Wed,  5 Mar 2025 18:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C038414B075;
+	Wed,  5 Mar 2025 18:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198677; cv=none; b=qSjowF4IIGJGR0ECt4Qr5QtbZIMWVNBQ2RMQVADkq0HihBj1Ly4b/f4+wSw/U31gt1ByicSrJ4gh6NQ3TAVrTJeWQUPezhY9Q7tqtY2R6c4ihq3lEJWeRPnYDYnaOX+MD4Q1fQIyDQ1/icvdV67EdX1pvw4qH6J0uqP8n2fIn0s=
+	t=1741197867; cv=none; b=J06I5qlP8Vm3hsRbbZqmVztxfrQN2U4Nleeyi2LqHRQU6ZLyGdoHHNEGK5rAfWYECnL+0IouTh5P20hJJhJHcKOKe7pYg+Hx6zd9P4eM7zbOkqETlj5VgFLceMgwY0uXlFbm4SFa3mGkbKI4ZWn+VqCR/b1S2yHrtacNbVNG2WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198677; c=relaxed/simple;
-	bh=z1vDJckBKF78Ko4IUqEsqw+0q8jiyKjFW5uoY3oFTfk=;
+	s=arc-20240116; t=1741197867; c=relaxed/simple;
+	bh=fS/nIYHEw5h1f6T3j6V+c8xuc7Jca7eEisKWj2LcH94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJ4291rO+x65kM/l4mg+M64LR7IqI3CQtzT3EVnEyUQAnJ4U0ixzTExY1NzbkahNjvccbZ9BuwZkJSlqun7bBTwIvM2UU2lm13/emnIGzzFgPFiGOexRnhncQzHZJqVBX+Va/B+2skXyieFy0Pt3JB4fP7EvGUgMce4bLpj/ojE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVYd3zlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02835C4CEE0;
-	Wed,  5 Mar 2025 18:17:56 +0000 (UTC)
+	 MIME-Version; b=Z1zpIreFtuO3+2uhKoBvjB0hC1a9aIp+aGxbVlJfaV9pGa/eSaJ3Rx9At8Ga2E7DV6c7dXClq5yDB1THhHB3M7Vlotq5IOitGTqtI4WSwkvPBE6/5pMotbnzdSJD0H9hkEky/2y9IlpXLM3PI6PbBTCjYpBxlcFeiXYe9l4Y6zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=na5hU62+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105B1C4CED1;
+	Wed,  5 Mar 2025 18:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198677;
-	bh=z1vDJckBKF78Ko4IUqEsqw+0q8jiyKjFW5uoY3oFTfk=;
+	s=korg; t=1741197867;
+	bh=fS/nIYHEw5h1f6T3j6V+c8xuc7Jca7eEisKWj2LcH94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVYd3zlFWJmzEklLsNrrUPbuAsg0lk/DkAc7cdk2x4hyFPcZmR5DuQxIqqTCqRR9j
-	 N8XWq5XjhIV1yygz1nUkpBeRS1Bqv81tqUrl/tdVxXgdYssb+ozJgjwNkvVwatEaR4
-	 AbEzAA+v0lsovKJnTHEsBLtOR5ZMCU9MqGgvCFsU=
+	b=na5hU62+/QiYb4gWqg5EBKHF37dpUcrOZOOuxuO+iQXcTe3zMka6h+1C1Hluqj5w+
+	 AhwkG8GB85cW7TMFEjZzmP6iXNxtw82itDgpqW2n7X/eoO19ynafwCaZMYaR/XlQ2l
+	 BkO6OoMOHQdojBOQ0wxW9Tke2ShhzUHd6El+u1Hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d693c07c6f647e0388d3@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.13 110/157] usbnet: gl620a: fix endpoint checking in genelink_bind()
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 127/142] x86/microcode: Handle "offline" CPUs correctly
 Date: Wed,  5 Mar 2025 18:49:06 +0100
-Message-ID: <20250305174509.733810252@linuxfoundation.org>
+Message-ID: <20250305174505.435775848@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +61,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 1cf9631d836b289bd5490776551961c883ae8a4f upstream.
+commit 8f849ff63bcbc77670da03cb8f2b78b06257f455 upstream
 
-Syzbot reports [1] a warning in usb_submit_urb() triggered by
-inconsistencies between expected and actually present endpoints
-in gl620a driver. Since genelink_bind() does not properly
-verify whether specified eps are in fact provided by the device,
-in this case, an artificially manufactured one, one may get a
-mismatch.
+Offline CPUs need to be parked in a safe loop when microcode update is
+in progress on the primary CPU. Currently, offline CPUs are parked in
+mwait_play_dead(), and for Intel CPUs, its not a safe instruction,
+because the MWAIT instruction can be patched in the new microcode update
+that can cause instability.
 
-Fix the issue by resorting to a usbnet utility function
-usbnet_get_endpoints(), usually reserved for this very problem.
-Check for endpoints and return early before proceeding further if
-any are missing.
+  - Add a new microcode state 'UCODE_OFFLINE' to report status on per-CPU
+  basis.
+  - Force NMI on the offline CPUs.
 
-[1] Syzbot report:
-usb 5-1: Manufacturer: syz
-usb 5-1: SerialNumber: syz
-usb 5-1: config 0 descriptor??
-gl620a 5-1:0.23 usb0: register 'gl620a' at usb-dummy_hcd.0-1, ...
-------------[ cut here ]------------
-usb 5-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 2 PID: 1841 at drivers/usb/core/urb.c:503 usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
-Modules linked in:
-CPU: 2 UID: 0 PID: 1841 Comm: kworker/2:2 Not tainted 6.12.0-syzkaller-07834-g06afb0f36106 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: mld mld_ifc_work
-RIP: 0010:usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
-...
-Call Trace:
- <TASK>
- usbnet_start_xmit+0x6be/0x2780 drivers/net/usb/usbnet.c:1467
- __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
- netdev_start_xmit include/linux/netdevice.h:5011 [inline]
- xmit_one net/core/dev.c:3590 [inline]
- dev_hard_start_xmit+0x9a/0x7b0 net/core/dev.c:3606
- sch_direct_xmit+0x1ae/0xc30 net/sched/sch_generic.c:343
- __dev_xmit_skb net/core/dev.c:3827 [inline]
- __dev_queue_xmit+0x13d4/0x43e0 net/core/dev.c:4400
- dev_queue_xmit include/linux/netdevice.h:3168 [inline]
- neigh_resolve_output net/core/neighbour.c:1514 [inline]
- neigh_resolve_output+0x5bc/0x950 net/core/neighbour.c:1494
- neigh_output include/net/neighbour.h:539 [inline]
- ip6_finish_output2+0xb1b/0x2070 net/ipv6/ip6_output.c:141
- __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
- ip6_finish_output+0x3f9/0x1360 net/ipv6/ip6_output.c:226
- NF_HOOK_COND include/linux/netfilter.h:303 [inline]
- ip6_output+0x1f8/0x540 net/ipv6/ip6_output.c:247
- dst_output include/net/dst.h:450 [inline]
- NF_HOOK include/linux/netfilter.h:314 [inline]
- NF_HOOK include/linux/netfilter.h:308 [inline]
- mld_sendpack+0x9f0/0x11d0 net/ipv6/mcast.c:1819
- mld_send_cr net/ipv6/mcast.c:2120 [inline]
- mld_ifc_work+0x740/0xca0 net/ipv6/mcast.c:2651
- process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
- process_scheduled_works kernel/workqueue.c:3310 [inline]
- worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+Wake up offline CPUs while the update is in progress and then return
+them back to mwait_play_dead() after microcode update is complete.
 
-Reported-by: syzbot+d693c07c6f647e0388d3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d693c07c6f647e0388d3
-Fixes: 47ee3051c856 ("[PATCH] USB: usbnet (5/9) module for genesys gl620a cables")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250224172919.1220522-1-n.zhandarovich@fintech.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115903.660850472@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/gl620a.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/include/asm/microcode.h         |    1 
+ arch/x86/kernel/cpu/microcode/core.c     |  112 +++++++++++++++++++++++++++++--
+ arch/x86/kernel/cpu/microcode/internal.h |    1 
+ arch/x86/kernel/nmi.c                    |    5 +
+ 4 files changed, 113 insertions(+), 6 deletions(-)
 
---- a/drivers/net/usb/gl620a.c
-+++ b/drivers/net/usb/gl620a.c
-@@ -179,9 +179,7 @@ static int genelink_bind(struct usbnet *
+--- a/arch/x86/include/asm/microcode.h
++++ b/arch/x86/include/asm/microcode.h
+@@ -71,6 +71,7 @@ static inline u32 intel_get_microcode_re
+ #endif /* !CONFIG_CPU_SUP_INTEL */
+ 
+ bool microcode_nmi_handler(void);
++void microcode_offline_nmi_handler(void);
+ 
+ #ifdef CONFIG_MICROCODE_LATE_LOADING
+ DECLARE_STATIC_KEY_FALSE(microcode_nmi_handler_enable);
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -272,8 +272,9 @@ struct microcode_ctrl {
+ 
+ DEFINE_STATIC_KEY_FALSE(microcode_nmi_handler_enable);
+ static DEFINE_PER_CPU(struct microcode_ctrl, ucode_ctrl);
++static atomic_t late_cpus_in, offline_in_nmi;
+ static unsigned int loops_per_usec;
+-static atomic_t late_cpus_in;
++static cpumask_t cpu_offline_mask;
+ 
+ static noinstr bool wait_for_cpus(atomic_t *cnt)
  {
- 	dev->hard_mtu = GL_RCV_BUF_SIZE;
- 	dev->net->hard_header_len += 4;
--	dev->in = usb_rcvbulkpipe(dev->udev, dev->driver_info->in);
--	dev->out = usb_sndbulkpipe(dev->udev, dev->driver_info->out);
--	return 0;
-+	return usbnet_get_endpoints(dev, intf);
+@@ -381,7 +382,7 @@ static noinstr void load_secondary(unsig
+ 	instrumentation_end();
  }
  
- static const struct driver_info	genelink_info = {
+-static void load_primary(unsigned int cpu)
++static void __load_primary(unsigned int cpu)
+ {
+ 	struct cpumask *secondaries = topology_sibling_cpumask(cpu);
+ 	enum sibling_ctrl ctrl;
+@@ -416,6 +417,67 @@ static void load_primary(unsigned int cp
+ 	}
+ }
+ 
++static bool kick_offline_cpus(unsigned int nr_offl)
++{
++	unsigned int cpu, timeout;
++
++	for_each_cpu(cpu, &cpu_offline_mask) {
++		/* Enable the rendezvous handler and send NMI */
++		per_cpu(ucode_ctrl.nmi_enabled, cpu) = true;
++		apic_send_nmi_to_offline_cpu(cpu);
++	}
++
++	/* Wait for them to arrive */
++	for (timeout = 0; timeout < (USEC_PER_SEC / 2); timeout++) {
++		if (atomic_read(&offline_in_nmi) == nr_offl)
++			return true;
++		udelay(1);
++	}
++	/* Let the others time out */
++	return false;
++}
++
++static void release_offline_cpus(void)
++{
++	unsigned int cpu;
++
++	for_each_cpu(cpu, &cpu_offline_mask)
++		per_cpu(ucode_ctrl.ctrl, cpu) = SCTRL_DONE;
++}
++
++static void load_primary(unsigned int cpu)
++{
++	unsigned int nr_offl = cpumask_weight(&cpu_offline_mask);
++	bool proceed = true;
++
++	/* Kick soft-offlined SMT siblings if required */
++	if (!cpu && nr_offl)
++		proceed = kick_offline_cpus(nr_offl);
++
++	/* If the soft-offlined CPUs did not respond, abort */
++	if (proceed)
++		__load_primary(cpu);
++
++	/* Unconditionally release soft-offlined SMT siblings if required */
++	if (!cpu && nr_offl)
++		release_offline_cpus();
++}
++
++/*
++ * Minimal stub rendezvous handler for soft-offlined CPUs which participate
++ * in the NMI rendezvous to protect against a concurrent NMI on affected
++ * CPUs.
++ */
++void noinstr microcode_offline_nmi_handler(void)
++{
++	if (!raw_cpu_read(ucode_ctrl.nmi_enabled))
++		return;
++	raw_cpu_write(ucode_ctrl.nmi_enabled, false);
++	raw_cpu_write(ucode_ctrl.result, UCODE_OFFLINE);
++	raw_atomic_inc(&offline_in_nmi);
++	wait_for_ctrl();
++}
++
+ static noinstr bool microcode_update_handler(void)
+ {
+ 	unsigned int cpu = raw_smp_processor_id();
+@@ -472,6 +534,7 @@ static int load_cpus_stopped(void *unuse
+ static int load_late_stop_cpus(void)
+ {
+ 	unsigned int cpu, updated = 0, failed = 0, timedout = 0, siblings = 0;
++	unsigned int nr_offl, offline = 0;
+ 	int old_rev = boot_cpu_data.microcode;
+ 	struct cpuinfo_x86 prev_info;
+ 
+@@ -479,6 +542,7 @@ static int load_late_stop_cpus(void)
+ 	pr_err("You should switch to early loading, if possible.\n");
+ 
+ 	atomic_set(&late_cpus_in, num_online_cpus());
++	atomic_set(&offline_in_nmi, 0);
+ 	loops_per_usec = loops_per_jiffy / (TICK_NSEC / 1000);
+ 
+ 	/*
+@@ -501,6 +565,7 @@ static int load_late_stop_cpus(void)
+ 		case UCODE_UPDATED:	updated++; break;
+ 		case UCODE_TIMEOUT:	timedout++; break;
+ 		case UCODE_OK:		siblings++; break;
++		case UCODE_OFFLINE:	offline++; break;
+ 		default:		failed++; break;
+ 		}
+ 	}
+@@ -512,6 +577,13 @@ static int load_late_stop_cpus(void)
+ 		/* Nothing changed. */
+ 		if (!failed && !timedout)
+ 			return 0;
++
++		nr_offl = cpumask_weight(&cpu_offline_mask);
++		if (offline < nr_offl) {
++			pr_warn("%u offline siblings did not respond.\n",
++				nr_offl - atomic_read(&offline_in_nmi));
++			return -EIO;
++		}
+ 		pr_err("update failed: %u CPUs failed %u CPUs timed out\n",
+ 		       failed, timedout);
+ 		return -EIO;
+@@ -545,19 +617,49 @@ static int load_late_stop_cpus(void)
+  *    modern CPUs uses MWAIT, which is also not guaranteed to be safe
+  *    against a microcode update which affects MWAIT.
+  *
+- * 2) Initialize the per CPU control structure
++ *    As soft-offlined CPUs still react on NMIs, the SMT sibling
++ *    restriction can be lifted when the vendor driver signals to use NMI
++ *    for rendezvous and the APIC provides a mechanism to send an NMI to a
++ *    soft-offlined CPU. The soft-offlined CPUs are then able to
++ *    participate in the rendezvous in a trivial stub handler.
++ *
++ * 2) Initialize the per CPU control structure and create a cpumask
++ *    which contains "offline"; secondary threads, so they can be handled
++ *    correctly by a control CPU.
+  */
+ static bool setup_cpus(void)
+ {
+ 	struct microcode_ctrl ctrl = { .ctrl = SCTRL_WAIT, .result = -1, };
++	bool allow_smt_offline;
+ 	unsigned int cpu;
+ 
++	allow_smt_offline = microcode_ops->nmi_safe ||
++		(microcode_ops->use_nmi && apic->nmi_to_offline_cpu);
++
++	cpumask_clear(&cpu_offline_mask);
++
+ 	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
++		/*
++		 * Offline CPUs sit in one of the play_dead() functions
++		 * with interrupts disabled, but they still react on NMIs
++		 * and execute arbitrary code. Also MWAIT being updated
++		 * while the offline CPU sits there is not necessarily safe
++		 * on all CPU variants.
++		 *
++		 * Mark them in the offline_cpus mask which will be handled
++		 * by CPU0 later in the update process.
++		 *
++		 * Ensure that the primary thread is online so that it is
++		 * guaranteed that all cores are updated.
++		 */
+ 		if (!cpu_online(cpu)) {
+-			if (topology_is_primary_thread(cpu) || !microcode_ops->nmi_safe) {
+-				pr_err("CPU %u not online\n", cpu);
++			if (topology_is_primary_thread(cpu) || !allow_smt_offline) {
++				pr_err("CPU %u not online, loading aborted\n", cpu);
+ 				return false;
+ 			}
++			cpumask_set_cpu(cpu, &cpu_offline_mask);
++			per_cpu(ucode_ctrl, cpu) = ctrl;
++			continue;
+ 		}
+ 
+ 		/*
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -17,6 +17,7 @@ enum ucode_state {
+ 	UCODE_NFOUND,
+ 	UCODE_ERROR,
+ 	UCODE_TIMEOUT,
++	UCODE_OFFLINE,
+ };
+ 
+ struct microcode_ops {
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -502,8 +502,11 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
+ 	if (IS_ENABLED(CONFIG_NMI_CHECK_CPU))
+ 		raw_atomic_long_inc(&nsp->idt_calls);
+ 
+-	if (IS_ENABLED(CONFIG_SMP) && arch_cpu_is_offline(smp_processor_id()))
++	if (IS_ENABLED(CONFIG_SMP) && arch_cpu_is_offline(smp_processor_id())) {
++		if (microcode_nmi_handler_enabled())
++			microcode_offline_nmi_handler();
+ 		return;
++	}
+ 
+ 	if (this_cpu_read(nmi_state) != NMI_NOT_RUNNING) {
+ 		this_cpu_write(nmi_state, NMI_LATCHED);
 
 
 
