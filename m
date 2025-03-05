@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-121056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA4CA509D1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2097AA50915
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FE297A8982
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2BCB1892CF4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110E72566FD;
-	Wed,  5 Mar 2025 18:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A0524C07D;
+	Wed,  5 Mar 2025 18:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGaKlUSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHwiqrPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C373E2528E4;
-	Wed,  5 Mar 2025 18:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0781E1C5D4E;
+	Wed,  5 Mar 2025 18:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198754; cv=none; b=iDC0I/xN6p0q8LNLha+ilDUuwUdHmNvRswR17U3uoJoW8TjUkhAlT1mLsTFbUBYePXSCS1WsapzZ6DifHEURIAgMRVfzE16JFJffP4aCBQ37RaLMbAAKHwTqCUF82Fh827WN3P7W1Lmi0UkQOkmYqtzP/Fa80GPcGzPmRwhF1Rk=
+	t=1741198378; cv=none; b=a2eQfuvqiRIu+yTzeFnvMCOwex3rdxEuzHQRz+Xxn1/X29dHReIsV6Va+T8VgVvqBVo5+qXdp+DCVQSxg3npJbQuE7E4nHvoHFtkBOGZ3I2BnGLoRg7vuGs6cIcg4dtXiX2UD5zYSkMn58+af3xwZUFIoWVKSEev6rNnZnLqnJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198754; c=relaxed/simple;
-	bh=VcsfFrB+RcISIf5OITFpGw0JZvLIlALImw7NrPvKUpA=;
+	s=arc-20240116; t=1741198378; c=relaxed/simple;
+	bh=C01tfapc2Y75b0WeR+s+8+z9L3UQeM2oxSm07EW8lwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uSRjp1H/ZIplzer9mLrLF/TZfeg6OgsRw83f7rfJMYJpqaHtfMdZEEFg3oBOZiVl5EzmKKKHq87Qfw5zs8jLvXEl3qlI+Kumx2zXB+K1DHeT88562hd/Rle7D2bhIPl/w70zMb4bQ7f8jPW6v0Znj2CiqF+0WyuJTlsxDKzG+UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGaKlUSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499B5C4CED1;
-	Wed,  5 Mar 2025 18:19:14 +0000 (UTC)
+	 MIME-Version; b=U9/SSs4JoWxZm6lHfc3gSGSecBhzj60XtJ+g8DyZ18cwiatXeHyKw3icUgxj54/kqKwAgJ+zenVkZnulVG6yTdcqJdiKnqSMlhAtP7D1BN2326D8A4oy0ii1NZVpxtwYBjfB75ibkXRamYvBo2SNvXdiSrOJl/gP4unsWUUmL1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHwiqrPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B9EC4CEE2;
+	Wed,  5 Mar 2025 18:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198754;
-	bh=VcsfFrB+RcISIf5OITFpGw0JZvLIlALImw7NrPvKUpA=;
+	s=korg; t=1741198377;
+	bh=C01tfapc2Y75b0WeR+s+8+z9L3UQeM2oxSm07EW8lwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGaKlUSAILpE5961c0ciEdWqAhs8X+7vs+wHDb7EE0/9w5CSLD2Nl3NnOcf3/0ro0
-	 n2AjZwRTFbjQ691kenvnIly2+O1xTBbJo4y0HLZZLl9yU4tEfxTE+NfaJiIk1EWsGB
-	 DVtXJrkSt72AZOluvqpfukVAreNZzxVZv5bXDAR8=
+	b=GHwiqrPknjMHx6R75yUzhYRQ7TgBV6cQn9N4J6wX/C/y/ueB3yRTGvuLlUP6qZsZ7
+	 JYF+9a0o0F14CVl7SntmpyXqeeDx1SEDcTKuE2hBE7pUL+2puR5Rfd1amCWEUSIU2U
+	 nRX3NHB62hkVV1kZ9Y7FgKKlReI3kh7kzlBH7tZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
-	=?UTF-8?q?Mantas=20Mikul=C4=97nas?= <grawity@gmail.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.13 137/157] fuse: revert back to __readahead_folio() for readahead
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.12 144/150] x86/microcode/AMD: Have __apply_microcode_amd() return bool
 Date: Wed,  5 Mar 2025 18:49:33 +0100
-Message-ID: <20250305174510.808272354@linuxfoundation.org>
+Message-ID: <20250305174509.600535852@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 0c67c37e1710b2a8f61c8a02db95a51fe577e2c1 upstream.
+commit 78e0aadbd4c6807a06a9d25bc190fe515d3f3c42 upstream
 
-In commit 3eab9d7bc2f4 ("fuse: convert readahead to use folios"), the
-logic was converted to using the new folio readahead code, which drops
-the reference on the folio once it is locked, using an inferred
-reference on the folio. Previously we held a reference on the folio for
-the entire duration of the readpages call.
+This is the natural thing to do anyway.
 
-This is fine, however for the case for splice pipe responses where we
-will remove the old folio and splice in the new folio (see
-fuse_try_move_page()), we assume that there is a reference held on the
-folio for ap->folios, which is no longer the case.
+No functional changes.
 
-To fix this, revert back to __readahead_folio() which allows us to hold
-the reference on the folio for the duration of readpages until either we
-drop the reference ourselves in fuse_readpages_end() or the reference is
-dropped after it's replaced in the page cache in the splice case.
-This will fix the UAF bug that was reported.
-
-Link: https://lore.kernel.org/linux-fsdevel/2f681f48-00f5-4e09-8431-2b3dbfaa881e@heusel.eu/
-Fixes: 3eab9d7bc2f4 ("fuse: convert readahead to use folios")
-Reported-by: Christian Heusel <christian@heusel.eu>
-Closes: https://lore.kernel.org/all/2f681f48-00f5-4e09-8431-2b3dbfaa881e@heusel.eu/
-Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/110
-Reported-by: Mantas Mikulėnas <grawity@gmail.com>
-Closes: https://lore.kernel.org/all/34feb867-09e2-46e4-aa31-d9660a806d1a@gmail.com/
-Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1236660
-Cc: <stable@vger.kernel.org> # v6.13
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c  |    6 ++++++
- fs/fuse/file.c |   13 +++++++++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -836,6 +836,12 @@ static int fuse_check_folio(struct folio
- 	return 0;
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -484,7 +484,7 @@ static void scan_containers(u8 *ucode, s
+ 	}
  }
  
-+/*
-+ * Attempt to steal a page from the splice() pipe and move it into the
-+ * pagecache. If successful, the pointer in @pagep will be updated. The
-+ * folio that was originally in @pagep will lose a reference and the new
-+ * folio returned in @pagep will carry a reference.
-+ */
- static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
+-static int __apply_microcode_amd(struct microcode_amd *mc, unsigned int psize)
++static bool __apply_microcode_amd(struct microcode_amd *mc, unsigned int psize)
  {
- 	int err;
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -955,8 +955,10 @@ static void fuse_readpages_end(struct fu
- 		fuse_invalidate_atime(inode);
+ 	unsigned long p_addr = (unsigned long)&mc->hdr.data_code;
+ 	u32 rev, dummy;
+@@ -508,9 +508,9 @@ static int __apply_microcode_amd(struct
+ 	native_rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
+ 
+ 	if (rev != mc->hdr.patch_id)
+-		return -1;
++		return false;
+ 
+-	return 0;
++	return true;
+ }
+ 
+ /*
+@@ -544,7 +544,7 @@ static bool early_apply_microcode(u32 ol
+ 	if (old_rev > mc->hdr.patch_id)
+ 		return ret;
+ 
+-	return !__apply_microcode_amd(mc, desc.psize);
++	return __apply_microcode_amd(mc, desc.psize);
+ }
+ 
+ static bool get_builtin_microcode(struct cpio_data *cp)
+@@ -763,7 +763,7 @@ void reload_ucode_amd(unsigned int cpu)
+ 	rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
+ 
+ 	if (rev < mc->hdr.patch_id) {
+-		if (!__apply_microcode_amd(mc, p->size))
++		if (__apply_microcode_amd(mc, p->size))
+ 			pr_info_once("reload revision: 0x%08x\n", mc->hdr.patch_id);
+ 	}
+ }
+@@ -816,7 +816,7 @@ static enum ucode_state apply_microcode_
+ 		goto out;
  	}
  
--	for (i = 0; i < ap->num_folios; i++)
-+	for (i = 0; i < ap->num_folios; i++) {
- 		folio_end_read(ap->folios[i], !err);
-+		folio_put(ap->folios[i]);
-+	}
- 	if (ia->ff)
- 		fuse_file_put(ia->ff, false);
- 
-@@ -1048,7 +1050,14 @@ static void fuse_readahead(struct readah
- 		ap = &ia->ap;
- 
- 		while (ap->num_folios < cur_pages) {
--			folio = readahead_folio(rac);
-+			/*
-+			 * This returns a folio with a ref held on it.
-+			 * The ref needs to be held until the request is
-+			 * completed, since the splice case (see
-+			 * fuse_try_move_page()) drops the ref after it's
-+			 * replaced in the page cache.
-+			 */
-+			folio = __readahead_folio(rac);
- 			ap->folios[ap->num_folios] = folio;
- 			ap->descs[ap->num_folios].length = folio_size(folio);
- 			ap->num_folios++;
+-	if (__apply_microcode_amd(mc_amd, p->size)) {
++	if (!__apply_microcode_amd(mc_amd, p->size)) {
+ 		pr_err("CPU%d: update failed for patch_level=0x%08x\n",
+ 			cpu, mc_amd->hdr.patch_id);
+ 		return UCODE_ERROR;
 
 
 
