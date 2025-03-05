@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4666EA507AE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFAFBA50853
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 613933A20AE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12A983B04D6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E9F250C14;
-	Wed,  5 Mar 2025 17:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A4A250C14;
+	Wed,  5 Mar 2025 18:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Im+sp4rO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SddQwdq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A4814884C;
-	Wed,  5 Mar 2025 17:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7578517B505;
+	Wed,  5 Mar 2025 18:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197583; cv=none; b=ULst5Ah2+NHZzIgHef95lJr85XtlBwX5TuTD7h1sazc6RQKWx0xlqmBoKbGC/t7GcgJ6jmFDEHAEC2PGJsHu2ATQ1uDZJQTKOvwCWTbcJN7VIDsI6cBQW3GcJ0bEK+SgeU/705wc8MLA5pmWx24f4W8unEgEKSHygvujxcq6Dls=
+	t=1741197966; cv=none; b=gu1b3vGHYBIfhh+SLG07Dfrw0sgIi5qIHtiOoah0wUW3vs71HTDtNJ/NOa6J5UNtFHtsUVQRWJQ46B3cWSPFgSnIbnHE7N8LUEc+94E6MKQNiOpCVmX4gi3F9/hB0jnBj/Xmf+EQffBQypZs+sn+uEZt4VbyKgpRP5uqgJVKNOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197583; c=relaxed/simple;
-	bh=woRHpsloFLQSNmQpl28N4xu35U2xaXYKvnghmkQGNeE=;
+	s=arc-20240116; t=1741197966; c=relaxed/simple;
+	bh=Rjwgc6urj7P2AunRGSxBVwRTaU4gIMf+ekI6eea2mY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caGdwYY3JAJIllTuCDpAVInmOZtB/7eL5sL4/yAboev7NFy/Jxh6RNYTjChvFAgfICwAG2hvA8ybgCn3ATD1PIIbqxfm1bMM3uba7z1K2Zt9suuGhmjcsl4WbWUP4lsFPXdGh8jkj3A5rpTY7qh+0avW6Z1EyyCLsJ8hhdBZIy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Im+sp4rO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45BDC4CED1;
-	Wed,  5 Mar 2025 17:59:42 +0000 (UTC)
+	 MIME-Version; b=m7nAXYPYvdBkXlXUejqA9LPKyHqiskofEeCFzU+QkMRW4JGIcxM1LoHTt6YdAH2mOcQ0beZbis6XX5P9EnvslxcyBwXZcLZpQvb9shUgZkI9J3nCUJKt9CZVBDy4OUC1ggCDxt1I5hM7DbpqlP5hk5OQ6H64AwlIEKSdy4RBe9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SddQwdq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E956DC4CED1;
+	Wed,  5 Mar 2025 18:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197583;
-	bh=woRHpsloFLQSNmQpl28N4xu35U2xaXYKvnghmkQGNeE=;
+	s=korg; t=1741197966;
+	bh=Rjwgc6urj7P2AunRGSxBVwRTaU4gIMf+ekI6eea2mY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Im+sp4rO4sXgTwrGVwkRJK4iFzWpx42mZC/7sCaA3JJuO4OIvB9+riole9U7e/44Y
-	 PWDH7NE7GKPM7SY25U4DTHcFS8/jQ7kkDctDK9desNz80EpmFBfdCLQlUE7NqQ0wi3
-	 k9EKiD1qD6pyGXMr8R2bFGOJi98NvG1dBL2qwyug=
+	b=SddQwdq1acnjSvZe+0gytF290vbufGk/fnKrE4YGKEnjaDvcAGUVeRxd9/VOK2vlm
+	 Vd1zBLor8Wukrfj4aumzIVMp/WXVr8unYmcTt+NOOT7ot8apJTCS0aUyuJnfDje5nX
+	 QcAQuPncTqz3dG7UlxEVJ2fiRydiRwmISJoR88mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/142] ipv4: Convert ip_route_input() to dscp_t.
+Subject: [PATCH 6.12 019/150] NFSv4: Fix a deadlock when recovering state on a sillyrenamed file
 Date: Wed,  5 Mar 2025 18:47:28 +0100
-Message-ID: <20250305174501.511255321@linuxfoundation.org>
+Message-ID: <20250305174504.581869717@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7e863e5db6185b1add0df4cb01b31a4ed1c4b738 ]
+[ Upstream commit 8f8df955f078e1a023ee55161935000a67651f38 ]
 
-Pass a dscp_t variable to ip_route_input(), instead of a plain u8, to
-prevent accidental setting of ECN bits in ->flowi4_tos.
+If the file is sillyrenamed, and slated for delete on close, it is
+possible for a server reboot to triggeer an open reclaim, with can again
+race with the application call to close(). When that happens, the call
+to put_nfs_open_context() can trigger a synchronous delegreturn call
+which deadlocks because it is not marked as privileged.
 
-Callers of ip_route_input() to consider are:
+Instead, ensure that the call to nfs4_inode_return_delegation_on_close()
+catches the delegreturn, and schedules it asynchronously.
 
-  * input_action_end_dx4_finish() and input_action_end_dt4() in
-    net/ipv6/seg6_local.c. These functions set the tos parameter to 0,
-    which is already a valid dscp_t value, so they don't need to be
-    adjusted for the new prototype.
-
-  * icmp_route_lookup(), which already has a dscp_t variable to pass as
-    parameter. We just need to remove the inet_dscp_to_dsfield()
-    conversion.
-
-  * br_nf_pre_routing_finish(), ip_options_rcv_srr() and ip4ip6_err(),
-    which get the DSCP directly from IPv4 headers. Define a helper to
-    read the .tos field of struct iphdr as dscp_t, so that these
-    function don't have to do the conversion manually.
-
-While there, declare *iph as const in br_nf_pre_routing_finish(),
-declare its local variables in reverse-christmas-tree order and move
-the "err = ip_route_input()" assignment out of the conditional to avoid
-checkpatch warning.
-
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/e9d40781d64d3d69f4c79ac8a008b8d67a033e8d.1727807926.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: adb4b42d19ae ("Return the delegation when deleting sillyrenamed files")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h                | 5 +++++
- include/net/route.h             | 5 +++--
- net/bridge/br_netfilter_hooks.c | 8 +++++---
- net/ipv4/icmp.c                 | 2 +-
- net/ipv4/ip_options.c           | 3 ++-
- net/ipv6/ip6_tunnel.c           | 4 ++--
- 6 files changed, 18 insertions(+), 9 deletions(-)
+ fs/nfs/delegation.c | 37 +++++++++++++++++++++++++++++++++++++
+ fs/nfs/delegation.h |  1 +
+ fs/nfs/nfs4proc.c   |  3 +++
+ 3 files changed, 41 insertions(+)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 7db5912e0c5f6..d8bf1f0a6919c 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -415,6 +415,11 @@ int ip_decrease_ttl(struct iphdr *iph)
- 	return --iph->ttl;
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 035ba52742a50..4db912f562305 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -780,6 +780,43 @@ int nfs4_inode_return_delegation(struct inode *inode)
+ 	return 0;
  }
  
-+static inline dscp_t ip4h_dscp(const struct iphdr *ip4h)
++/**
++ * nfs4_inode_set_return_delegation_on_close - asynchronously return a delegation
++ * @inode: inode to process
++ *
++ * This routine is called to request that the delegation be returned as soon
++ * as the file is closed. If the file is already closed, the delegation is
++ * immediately returned.
++ */
++void nfs4_inode_set_return_delegation_on_close(struct inode *inode)
 +{
-+	return inet_dsfield_to_dscp(ip4h->tos);
++	struct nfs_delegation *delegation;
++	struct nfs_delegation *ret = NULL;
++
++	if (!inode)
++		return;
++	rcu_read_lock();
++	delegation = nfs4_get_valid_delegation(inode);
++	if (!delegation)
++		goto out;
++	spin_lock(&delegation->lock);
++	if (!delegation->inode)
++		goto out_unlock;
++	if (list_empty(&NFS_I(inode)->open_files) &&
++	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
++		/* Refcount matched in nfs_end_delegation_return() */
++		ret = nfs_get_delegation(delegation);
++	} else
++		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
++out_unlock:
++	spin_unlock(&delegation->lock);
++	if (ret)
++		nfs_clear_verifier_delegated(inode);
++out:
++	rcu_read_unlock();
++	nfs_end_delegation_return(inode, ret, 0);
 +}
 +
- static inline int ip_mtu_locked(const struct dst_entry *dst)
+ /**
+  * nfs4_inode_return_delegation_on_close - asynchronously return a delegation
+  * @inode: inode to process
+diff --git a/fs/nfs/delegation.h b/fs/nfs/delegation.h
+index 71524d34ed207..8ff5ab9c5c256 100644
+--- a/fs/nfs/delegation.h
++++ b/fs/nfs/delegation.h
+@@ -49,6 +49,7 @@ void nfs_inode_reclaim_delegation(struct inode *inode, const struct cred *cred,
+ 				  unsigned long pagemod_limit, u32 deleg_type);
+ int nfs4_inode_return_delegation(struct inode *inode);
+ void nfs4_inode_return_delegation_on_close(struct inode *inode);
++void nfs4_inode_set_return_delegation_on_close(struct inode *inode);
+ int nfs_async_inode_return_delegation(struct inode *inode, const nfs4_stateid *stateid);
+ void nfs_inode_evict_delegation(struct inode *inode);
+ 
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 405f17e6e0b45..e7bc99c69743c 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3898,8 +3898,11 @@ nfs4_atomic_open(struct inode *dir, struct nfs_open_context *ctx,
+ 
+ static void nfs4_close_context(struct nfs_open_context *ctx, int is_sync)
  {
- 	const struct rtable *rt = (const struct rtable *)dst;
-diff --git a/include/net/route.h b/include/net/route.h
-index 0171e9e1bbea3..27c17aff0bbe1 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -200,12 +200,13 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 dst, __be32 src,
- 		      const struct sk_buff *hint);
- 
- static inline int ip_route_input(struct sk_buff *skb, __be32 dst, __be32 src,
--				 u8 tos, struct net_device *devin)
-+				 dscp_t dscp, struct net_device *devin)
- {
- 	int err;
- 
- 	rcu_read_lock();
--	err = ip_route_input_noref(skb, dst, src, tos, devin);
-+	err = ip_route_input_noref(skb, dst, src, inet_dscp_to_dsfield(dscp),
-+				   devin);
- 	if (!err) {
- 		skb_dst_force(skb);
- 		if (!skb_dst(skb))
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index a1cfa75bbadb9..2a4958e995f2d 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -366,9 +366,9 @@ br_nf_ipv4_daddr_was_changed(const struct sk_buff *skb,
-  */
- static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct net_device *dev = skb->dev, *br_indev;
--	struct iphdr *iph = ip_hdr(skb);
- 	struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
-+	struct net_device *dev = skb->dev, *br_indev;
-+	const struct iphdr *iph = ip_hdr(skb);
- 	struct rtable *rt;
- 	int err;
- 
-@@ -386,7 +386,9 @@ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_
- 	}
- 	nf_bridge->in_prerouting = 0;
- 	if (br_nf_ipv4_daddr_was_changed(skb, nf_bridge)) {
--		if ((err = ip_route_input(skb, iph->daddr, iph->saddr, iph->tos, dev))) {
-+		err = ip_route_input(skb, iph->daddr, iph->saddr,
-+				     ip4h_dscp(iph), dev);
-+		if (err) {
- 			struct in_device *in_dev = __in_dev_get_rcu(dev);
- 
- 			/* If err equals -EHOSTUNREACH the error is due to a
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 855fcef829e2c..94501bb30c431 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -549,7 +549,7 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 		orefdst = skb_in->_skb_refdst; /* save old refdst */
- 		skb_dst_set(skb_in, NULL);
- 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
--				     inet_dscp_to_dsfield(dscp), rt2->dst.dev);
-+				     dscp, rt2->dst.dev);
- 
- 		dst_release(&rt2->dst);
- 		rt2 = skb_rtable(skb_in);
-diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
-index a9e22a098872f..b4c59708fc095 100644
---- a/net/ipv4/ip_options.c
-+++ b/net/ipv4/ip_options.c
-@@ -617,7 +617,8 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev)
- 
- 		orefdst = skb->_skb_refdst;
- 		skb_dst_set(skb, NULL);
--		err = ip_route_input(skb, nexthop, iph->saddr, iph->tos, dev);
-+		err = ip_route_input(skb, nexthop, iph->saddr, ip4h_dscp(iph),
-+				     dev);
- 		rt2 = skb_rtable(skb);
- 		if (err || (rt2->rt_type != RTN_UNICAST && rt2->rt_type != RTN_LOCAL)) {
- 			skb_dst_drop(skb);
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 97905d4174eca..d645d022ce774 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -628,8 +628,8 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 		}
- 		skb_dst_set(skb2, &rt->dst);
- 	} else {
--		if (ip_route_input(skb2, eiph->daddr, eiph->saddr, eiph->tos,
--				   skb2->dev) ||
-+		if (ip_route_input(skb2, eiph->daddr, eiph->saddr,
-+				   ip4h_dscp(eiph), skb2->dev) ||
- 		    skb_dst(skb2)->dev->type != ARPHRD_TUNNEL6)
- 			goto out;
- 	}
++	struct dentry *dentry = ctx->dentry;
+ 	if (ctx->state == NULL)
+ 		return;
++	if (dentry->d_flags & DCACHE_NFSFS_RENAMED)
++		nfs4_inode_set_return_delegation_on_close(d_inode(dentry));
+ 	if (is_sync)
+ 		nfs4_close_sync(ctx->state, _nfs4_ctx_to_openmode(ctx));
+ 	else
 -- 
 2.39.5
 
