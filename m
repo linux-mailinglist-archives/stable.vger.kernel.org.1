@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-120606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08695A50783
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF9BA50837
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C52A3A8262
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B25B165F53
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61523250C1D;
-	Wed,  5 Mar 2025 17:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A32F24C07D;
+	Wed,  5 Mar 2025 18:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCaZoVjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7Ez4IHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB6E24C07D;
-	Wed,  5 Mar 2025 17:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C5819067C;
+	Wed,  5 Mar 2025 18:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197448; cv=none; b=suniuelV7opW+jRoqgI30TVZgUHLdHKb4099sNNyrYjSsLQ+4djLmTBAOMAY2iZTSorTh4XZWyG3I3uF8v+jD6LEG3QpWwNB+6j2egws3ad3ysF1Lhm7iJMZANJY62fyO2t/jjmapsDZE4R1hf4xRn1RmBDflRyvKfItMFbMJJ8=
+	t=1741197911; cv=none; b=t7ULsu5tSTi0CSB10ObXTooTkirn+ktqxGbhgvadr/c9G8ZETqpy+2K+HnhMMAsJXa6cU+UjOJa7rI/2MYhBVXev/mMhbsOiJLaPy2vLc89jqFZIONin030uqBRiIIHPLwhKuIbAR5g9dXDL+z3dqA8quoUbTJMCiiwUu7wK7aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197448; c=relaxed/simple;
-	bh=WLb+agunoQhFbyQ9XzRTJ44y7APLQHOflaqKEOkWiyI=;
+	s=arc-20240116; t=1741197911; c=relaxed/simple;
+	bh=lNoycixYT77py6N6Tqw7mC99kphzkdY87/OItPJADu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnoBHEqHiudLSFfSwGayZj/1+fUVwl9o+M2GPVVvIHygPW/FLPldKbUepwQVAcQVujRuyw2u1y/GqTXzGOCGFadjNEzddh/WKd5S0W4pZtZEu4i9DQqcmvStJWijntbzDFfOQOlifLPbEwud9C67eVoPDYJh/FWyysyiiK79j5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCaZoVjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A545C4CED1;
-	Wed,  5 Mar 2025 17:57:26 +0000 (UTC)
+	 MIME-Version; b=hT7/wLGqqwXVYllHwynQRwUKgAzPKyEt3+pzwenGS+RwfUXWInZFq1PEyz478LvHkmZC51UjW7tREyZXDfxLfNg4zkdOhAc6ZSjvGGtXA7p5s/PKmIaDYVXANTlvyDAvKPnvHQQqxDaSb3ZQEXoMeJ3iKZinkqjOGGYtZ2NmZxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7Ez4IHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43F3C4CED1;
+	Wed,  5 Mar 2025 18:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197447;
-	bh=WLb+agunoQhFbyQ9XzRTJ44y7APLQHOflaqKEOkWiyI=;
+	s=korg; t=1741197911;
+	bh=lNoycixYT77py6N6Tqw7mC99kphzkdY87/OItPJADu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCaZoVjy7bsqA2Vsz+bmxI03KjrBG+74NtFeBvb7PgtuXxiFfFjffe3nxynob99gH
-	 6GTLMBLZTe6yBf57NiVhMQkU7yydKA7KhypXSEHel+dbt+3u/QOMCQXhzTDYWAR32I
-	 8ej6KNjjOfBeCKfAnxFWuA3UEQ9tjbURjFBrhv+A=
+	b=q7Ez4IHfjR7/588gkJ1brxert8VgGCbTpa9h6tCjT8MULP9d37X8UYWLSQ4NWcgFq
+	 cDi2Tlm2FkUCx0ruJgOHKmin0K9kDmJZYoOMNaOr3/E9cHxbYoB+v0ajJ3VShOl6FB
+	 cRVguGO0wGpjKQUN9alJbxA3AZSFWSPZ2jhqLg4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 159/176] net: enetc: update UDP checksum when updating originTimestamp field
-Date: Wed,  5 Mar 2025 18:48:48 +0100
-Message-ID: <20250305174511.822835691@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 110/142] x86/microcode/amd: Use correct per CPU ucode_cpu_info
+Date: Wed,  5 Mar 2025 18:48:49 +0100
+Message-ID: <20250305174504.748108065@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit bbcbc906ab7b5834c1219cd17a38d78dba904aa0 upstream.
+commit ecfd41089348fa4cc767dc588367e9fdf8cb6b9d upstream
 
-There is an issue with one-step timestamp based on UDP/IP. The peer will
-discard the sync packet because of the wrong UDP checksum. For ENETC v1,
-the software needs to update the UDP checksum when updating the
-originTimestamp field, so that the hardware can correctly update the UDP
-checksum when updating the correction field. Otherwise, the UDP checksum
-in the sync packet will be wrong.
+find_blobs_in_containers() is invoked on every CPU but overwrites
+unconditionally ucode_cpu_info of CPU0.
 
-Fixes: 7294380c5211 ("enetc: support PTP Sync packet one-step timestamping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-6-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by using the proper CPU data and move the assignment into the
+call site apply_ucode_from_containers() so that the function can be
+reused.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231010150702.433454320@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   41 ++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 7 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -231,9 +231,11 @@ static int enetc_map_tx_buffs(struct ene
- 		}
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -503,9 +503,6 @@ static void find_blobs_in_containers(uns
+ 	if (!get_builtin_microcode(&cp, x86_family(cpuid_1_eax)))
+ 		cp = find_microcode_in_initrd(ucode_path);
  
- 		if (do_onestep_tstamp) {
--			u32 lo, hi, val;
--			u64 sec, nsec;
-+			__be32 new_sec_l, new_nsec;
-+			u32 lo, hi, nsec, val;
-+			__be16 new_sec_h;
- 			u8 *data;
-+			u64 sec;
+-	/* Needed in load_microcode_amd() */
+-	ucode_cpu_info->cpu_sig.sig = cpuid_1_eax;
+-
+ 	*ret = cp;
+ }
  
- 			lo = enetc_rd_hot(hw, ENETC_SICTR0);
- 			hi = enetc_rd_hot(hw, ENETC_SICTR1);
-@@ -247,13 +249,38 @@ static int enetc_map_tx_buffs(struct ene
- 			/* Update originTimestamp field of Sync packet
- 			 * - 48 bits seconds field
- 			 * - 32 bits nanseconds field
-+			 *
-+			 * In addition, the UDP checksum needs to be updated
-+			 * by software after updating originTimestamp field,
-+			 * otherwise the hardware will calculate the wrong
-+			 * checksum when updating the correction field and
-+			 * update it to the packet.
- 			 */
- 			data = skb_mac_header(skb);
--			*(__be16 *)(data + offset2) =
--				htons((sec >> 32) & 0xffff);
--			*(__be32 *)(data + offset2 + 2) =
--				htonl(sec & 0xffffffff);
--			*(__be32 *)(data + offset2 + 6) = htonl(nsec);
-+			new_sec_h = htons((sec >> 32) & 0xffff);
-+			new_sec_l = htonl(sec & 0xffffffff);
-+			new_nsec = htonl(nsec);
-+			if (udp) {
-+				struct udphdr *uh = udp_hdr(skb);
-+				__be32 old_sec_l, old_nsec;
-+				__be16 old_sec_h;
-+
-+				old_sec_h = *(__be16 *)(data + offset2);
-+				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
-+							 new_sec_h, false);
-+
-+				old_sec_l = *(__be32 *)(data + offset2 + 2);
-+				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
-+							 new_sec_l, false);
-+
-+				old_nsec = *(__be32 *)(data + offset2 + 6);
-+				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
-+							 new_nsec, false);
-+			}
-+
-+			*(__be16 *)(data + offset2) = new_sec_h;
-+			*(__be32 *)(data + offset2 + 2) = new_sec_l;
-+			*(__be32 *)(data + offset2 + 6) = new_nsec;
+@@ -513,6 +510,9 @@ static void apply_ucode_from_containers(
+ {
+ 	struct cpio_data cp = { };
  
- 			/* Configure single-step register */
- 			val = ENETC_PM0_SINGLE_STEP_EN;
++	/* Needed in load_microcode_amd() */
++	ucode_cpu_info[smp_processor_id()].cpu_sig.sig = cpuid_1_eax;
++
+ 	find_blobs_in_containers(cpuid_1_eax, &cp);
+ 	if (!(cp.data && cp.size))
+ 		return;
 
 
 
