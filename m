@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13040A507FA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB73AA5077A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8E21893D87
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B24B63A7701
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E581FC7D0;
-	Wed,  5 Mar 2025 18:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9F2250C1C;
+	Wed,  5 Mar 2025 17:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODFPwvjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07sXOU2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B561C860D;
-	Wed,  5 Mar 2025 18:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2E51C6FFE;
+	Wed,  5 Mar 2025 17:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197747; cv=none; b=bIjwTxReOLJZ4FiRpEP4Fd5U7buZgBMW8lTwdELe7qdx/v/at+6BhH3e3qIpbP5xbIFL4+8NMCSUNYV12EQSOsCaIpZj0h2E7qd/L3g11cAf57ah4Tb31QR4JXB1mPm+8+MwRNvBosAG2H4o6+63yuL56W5lrVLxf3prCvC2UkU=
+	t=1741197430; cv=none; b=ZgJHJe0TbfFB2mSpSDJKM+XFM28xvq8++2DP4rI/74klezsJTjjLUP9dX7Mg0OoYzyvDJf+3Ze8AyQJJZDoNibwTIKYwKchfSZQNTJc7x+CE3g4OxkFlQSgxKkFqDLhFpGWg7hf4j+uMeEHASGBw+En0l6zTPdXerbhgVZ5K48s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197747; c=relaxed/simple;
-	bh=DEq9nrs+My/tdKQTCAVq7jlr0IkVAu0l9fNzn61iCtE=;
+	s=arc-20240116; t=1741197430; c=relaxed/simple;
+	bh=861LZS6JdnEbB1CeUTfiY+2srzoDTfAEXQM+o5+/E/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTjEEIpEEvHUoGXi+cTBDfiCNTKyOBKV3ywt2IKMQNwRTciw3iEa0RilCg/AJ+62hX7hozKyr0lpfkgGG4WR+WlaRPDrmbCjeKULb0XEFw77sIOE/6HGB3lfNMi9in6B3Eoe3zdTee/dPXOAc96fvC4M/DkagLbf9y0dMIIZJf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODFPwvjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E58C4CED1;
-	Wed,  5 Mar 2025 18:02:24 +0000 (UTC)
+	 MIME-Version; b=Ivic7ZjHpR4Ch94DHQ9ObCmgv7ZrMZ5SXPoBSWX+8DYY4AlHElK630nVcvFVuSP6yBsbpjtuvuBptbbeQD/d2yXxXL+gJNXzRndep8iHYOzbYi6OQxky6Rj+JRU9lMpG9VAkaw+624PL9r2ZWy7Lssy/51DIaIloluJW3Pm74qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07sXOU2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FD6C4CED1;
+	Wed,  5 Mar 2025 17:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197745;
-	bh=DEq9nrs+My/tdKQTCAVq7jlr0IkVAu0l9fNzn61iCtE=;
+	s=korg; t=1741197430;
+	bh=861LZS6JdnEbB1CeUTfiY+2srzoDTfAEXQM+o5+/E/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODFPwvjVO9Y5vDiNdfHORrunxJWZUmLkjxlObHw7tZ8Kl+1xZ94YgHky1GEP/KgTB
-	 Ecwqa5+kJoBLfFTEpKA4LNFHpPCaapGKLDGoNtyKUBPkO3U6mMfA5BfLwBwFgpYbhx
-	 15BP9/cg+7qo5hVa+SUmxiHqxft/YzZlbGzQc4qo=
+	b=07sXOU2fCNZ4Pl2gu5jULl6iflsSAW9bMe1bmdzV6lqQKiXmOUklNS2Fer+Izi8Aw
+	 g67yFDmBlZ3tvB/2kks2iatA77/Ks3sy5mfNwgYOdVuNf+SGfy58iBkFDUHojgpWei
+	 tmMIlw+lLE1VlN7Md/VYpQtc2EP0mUmdgx69TQ/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stafford Horne <shorne@gmail.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 086/142] rseq/selftests: Fix riscv rseq_offset_deref_addv inline asm
+	Harshal Chaudhari <hchaudhari@marvell.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/176] net: mvpp2: cls: Fixed Non IP flow, with vlan tag flow defination.
 Date: Wed,  5 Mar 2025 18:48:25 +0100
-Message-ID: <20250305174503.791961291@linuxfoundation.org>
+Message-ID: <20250305174510.904982274@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stafford Horne <shorne@gmail.com>
+From: Harshal Chaudhari <hchaudhari@marvell.com>
 
-commit 713e788c0e07e185fd44dd581f74855ef149722f upstream.
+[ Upstream commit 2d253726ff7106b39a44483b6864398bba8a2f74 ]
 
-When working on OpenRISC support for restartable sequences I noticed
-and fixed these two issues with the riscv support bits.
+Non IP flow, with vlan tag not working as expected while
+running below command for vlan-priority. fixed that.
 
- 1 The 'inc' argument to RSEQ_ASM_OP_R_DEREF_ADDV was being implicitly
-   passed to the macro.  Fix this by adding 'inc' to the list of macro
-   arguments.
- 2 The inline asm input constraints for 'inc' and 'off' use "er",  The
-   riscv gcc port does not have an "e" constraint, this looks to be
-   copied from the x86 port.  Fix this by just using an "r" constraint.
+ethtool -N eth1 flow-type ether vlan 0x8000 vlan-mask 0x1fff action 0 loc 0
 
-I have compile tested this only for riscv.  However, the same fixes I
-use in the OpenRISC rseq selftests and everything passes with no issues.
-
-Fixes: 171586a6ab66 ("selftests/rseq: riscv: Template memory ordering and percpu access mode")
-Signed-off-by: Stafford Horne <shorne@gmail.com>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250114170721.3613280-1-shorne@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1274daede3ef ("net: mvpp2: cls: Add steering based on vlan Id and priority.")
+Signed-off-by: Harshal Chaudhari <hchaudhari@marvell.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250225042058.2643838-1-hchaudhari@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/rseq/rseq-riscv-bits.h |    6 +++---
- tools/testing/selftests/rseq/rseq-riscv.h      |    2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/rseq/rseq-riscv-bits.h
-+++ b/tools/testing/selftests/rseq/rseq-riscv-bits.h
-@@ -243,7 +243,7 @@ int RSEQ_TEMPLATE_IDENTIFIER(rseq_offset
- #ifdef RSEQ_COMPARE_TWICE
- 				  RSEQ_ASM_CMP_CPU_ID(cpu_id, current_cpu_id, "%l[error1]")
- #endif
--				  RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, 3)
-+				  RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, inc, 3)
- 				  RSEQ_INJECT_ASM(4)
- 				  RSEQ_ASM_DEFINE_ABORT(4, abort)
- 				  : /* gcc asm goto does not allow outputs */
-@@ -251,8 +251,8 @@ int RSEQ_TEMPLATE_IDENTIFIER(rseq_offset
- 				    [current_cpu_id]		"m" (rseq_get_abi()->RSEQ_TEMPLATE_CPU_ID_FIELD),
- 				    [rseq_cs]			"m" (rseq_get_abi()->rseq_cs.arch.ptr),
- 				    [ptr]			"r" (ptr),
--				    [off]			"er" (off),
--				    [inc]			"er" (inc)
-+				    [off]			"r" (off),
-+				    [inc]			"r" (inc)
- 				    RSEQ_INJECT_INPUT
- 				  : "memory", RSEQ_ASM_TMP_REG_1
- 				    RSEQ_INJECT_CLOBBER
---- a/tools/testing/selftests/rseq/rseq-riscv.h
-+++ b/tools/testing/selftests/rseq/rseq-riscv.h
-@@ -158,7 +158,7 @@ do {									\
- 	"bnez	" RSEQ_ASM_TMP_REG_1 ", 222b\n"				\
- 	"333:\n"
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+index 40aeaa7bd739f..d2757cc116139 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+@@ -324,7 +324,7 @@ static const struct mvpp2_cls_flow cls_flows[MVPP2_N_PRS_FLOWS] = {
+ 		       MVPP2_PRS_RI_VLAN_MASK),
+ 	/* Non IP flow, with vlan tag */
+ 	MVPP2_DEF_FLOW(MVPP22_FLOW_ETHERNET, MVPP2_FL_NON_IP_TAG,
+-		       MVPP22_CLS_HEK_OPT_VLAN,
++		       MVPP22_CLS_HEK_TAGGED,
+ 		       0, 0),
+ };
  
--#define RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, post_commit_label)		\
-+#define RSEQ_ASM_OP_R_DEREF_ADDV(ptr, off, inc, post_commit_label)	\
- 	"mv	" RSEQ_ASM_TMP_REG_1 ", %[" __rseq_str(ptr) "]\n"	\
- 	RSEQ_ASM_OP_R_ADD(off)						\
- 	REG_L	  RSEQ_ASM_TMP_REG_1 ", 0(" RSEQ_ASM_TMP_REG_1 ")\n"	\
+-- 
+2.39.5
+
 
 
 
