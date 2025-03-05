@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BB3A5072B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279F4A50866
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 774DC173A86
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B2E47A28DD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17D81C5F2C;
-	Wed,  5 Mar 2025 17:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09862512FA;
+	Wed,  5 Mar 2025 18:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMhKI+1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3HBwfcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DC6481DD;
-	Wed,  5 Mar 2025 17:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE0D20C004;
+	Wed,  5 Mar 2025 18:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197268; cv=none; b=A3B+vF151xNQP8FEKHgh1GerrFrAsjCyYwFkqsoLNoTZOQ0oIVMdn7X2zA9rqU8FVm6jpSGJJEJRkEDnAHlnTY3O8sXxmoMrCUZvEOsuT9AYo9jkF0Nb8N2MVil70KFQKx05nFdewK8LY3+oS9FgmIdzZXR1rQaUwyETB+kPmLQ=
+	t=1741198018; cv=none; b=prdIyrqE/KbLqlnMZqZhT3MklE9sD4f1Xvcstjfg2oErYvl8kWwwjxP2vgFBLie9JMVWCelJZsvr06JI/i1Oypee6RMdUA6LQsZD7TVrBgmRthPlHc+BZby9UHBtf4SLJLHczCI1jgYvoISWiFh9R9JsEXB8E8+9dANFQWyz7vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197268; c=relaxed/simple;
-	bh=Br8bwubP9IGwdhDFfun0AFMeybdO3UeEQqakFGqFPTc=;
+	s=arc-20240116; t=1741198018; c=relaxed/simple;
+	bh=KLPQADHbUd/Co8XOeD4wmE/3T2OKnUdK/P/s7xRywo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A77SIdIZx5ZHBSwXQ4ema6i+sv1PTT7GFy1Unhfu5qyFAH7astmaldWYQiFvtY4V4HfCx7LD1EPqYiHTBLTE/Ze+y7U7g8shw86i/EJIZf4ADBvf5x4W7nHNKJ8ud/L41oj7DcRHDG/O7nirxneItVN5vaHWgSznSaBJMryCb+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMhKI+1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAFBC4CED1;
-	Wed,  5 Mar 2025 17:54:27 +0000 (UTC)
+	 MIME-Version; b=ko1qoO4axPN7tcRcAoKhGC5QuhRbLHrvobDsIMCPqEXdylEFqmWl13LoQE4pYAHUr0/HAyCuRwkvLCXib21ISng/+V+qIs3LWO+zg3WIW/v7Uf1+LCBbipGsTNPmfNvyD5ymerKdQOHm19pmBIxTbH0pRFdgtI356EwNt+CMWQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3HBwfcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C01C4CED1;
+	Wed,  5 Mar 2025 18:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197268;
-	bh=Br8bwubP9IGwdhDFfun0AFMeybdO3UeEQqakFGqFPTc=;
+	s=korg; t=1741198018;
+	bh=KLPQADHbUd/Co8XOeD4wmE/3T2OKnUdK/P/s7xRywo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMhKI+1mzr+UNN8i8dkb7aue90/50xaO2k5ZicL2CZuzCUdULEAlkG2SkmiKqeQss
-	 iMAsZyPuHJMkwtvFtfTUnS1OCK6dYwsOzztiYD7Ibc+tfJuAwHYX7l+wj5vyTbxNhg
-	 RnNYioOCp97o0Fyc7oq2sbtj+hGr/Nb3JnOD0Wc4=
+	b=a3HBwfcAYJO2hWVpKDdu9//eov6jAfPdUv6v5O8pQtRH+KM7xVb6tl0Oh1j2zOQGv
+	 nQwliiAicbaj6xABvjaD51PBtJ3ggQe8bdpoijCc6K5dwkDMR21yw57sWCNu5gwPPY
+	 oDfl0ZbtN8DU9CZmk13zNN5cfUjOY0ylMQR9m8B8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 096/176] netfilter: allow exp not to be removed in nf_ct_find_expectation
+	Guillaume Nault <gnault@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 036/150] ipv4: Convert ip_route_input() to dscp_t.
 Date: Wed,  5 Mar 2025 18:47:45 +0100
-Message-ID: <20250305174509.316626694@linuxfoundation.org>
+Message-ID: <20250305174505.264738736@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-commit 4914109a8e1e494c6aa9852f9e84ec77a5fc643f upstream.
+[ Upstream commit 7e863e5db6185b1add0df4cb01b31a4ed1c4b738 ]
 
-Currently nf_conntrack_in() calling nf_ct_find_expectation() will
-remove the exp from the hash table. However, in some scenario, we
-expect the exp not to be removed when the created ct will not be
-confirmed, like in OVS and TC conntrack in the following patches.
+Pass a dscp_t variable to ip_route_input(), instead of a plain u8, to
+prevent accidental setting of ECN bits in ->flowi4_tos.
 
-This patch allows exp not to be removed by setting IPS_CONFIRMED
-in the status of the tmpl.
+Callers of ip_route_input() to consider are:
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  * input_action_end_dx4_finish() and input_action_end_dt4() in
+    net/ipv6/seg6_local.c. These functions set the tos parameter to 0,
+    which is already a valid dscp_t value, so they don't need to be
+    adjusted for the new prototype.
+
+  * icmp_route_lookup(), which already has a dscp_t variable to pass as
+    parameter. We just need to remove the inet_dscp_to_dsfield()
+    conversion.
+
+  * br_nf_pre_routing_finish(), ip_options_rcv_srr() and ip4ip6_err(),
+    which get the DSCP directly from IPv4 headers. Define a helper to
+    read the .tos field of struct iphdr as dscp_t, so that these
+    function don't have to do the conversion manually.
+
+While there, declare *iph as const in br_nf_pre_routing_finish(),
+declare its local variables in reverse-christmas-tree order and move
+the "err = ip_route_input()" assignment out of the conditional to avoid
+checkpatch warning.
+
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/e9d40781d64d3d69f4c79ac8a008b8d67a033e8d.1727807926.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_expect.h |    2 +-
- net/netfilter/nf_conntrack_core.c           |    2 +-
- net/netfilter/nf_conntrack_expect.c         |    4 ++--
- net/netfilter/nft_ct.c                      |    2 ++
- 4 files changed, 6 insertions(+), 4 deletions(-)
+ include/net/ip.h                | 5 +++++
+ include/net/route.h             | 5 +++--
+ net/bridge/br_netfilter_hooks.c | 8 +++++---
+ net/ipv4/icmp.c                 | 2 +-
+ net/ipv4/ip_options.c           | 3 ++-
+ net/ipv6/ip6_tunnel.c           | 4 ++--
+ 6 files changed, 18 insertions(+), 9 deletions(-)
 
---- a/include/net/netfilter/nf_conntrack_expect.h
-+++ b/include/net/netfilter/nf_conntrack_expect.h
-@@ -100,7 +100,7 @@ nf_ct_expect_find_get(struct net *net,
- struct nf_conntrack_expect *
- nf_ct_find_expectation(struct net *net,
- 		       const struct nf_conntrack_zone *zone,
--		       const struct nf_conntrack_tuple *tuple);
-+		       const struct nf_conntrack_tuple *tuple, bool unlink);
+diff --git a/include/net/ip.h b/include/net/ip.h
+index fe4f854381143..bd201278c55a5 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -424,6 +424,11 @@ int ip_decrease_ttl(struct iphdr *iph)
+ 	return --iph->ttl;
+ }
  
- void nf_ct_unlink_expect_report(struct nf_conntrack_expect *exp,
- 				u32 portid, int report);
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -1770,7 +1770,7 @@ init_conntrack(struct net *net, struct n
- 	cnet = nf_ct_pernet(net);
- 	if (cnet->expect_count) {
- 		spin_lock_bh(&nf_conntrack_expect_lock);
--		exp = nf_ct_find_expectation(net, zone, tuple);
-+		exp = nf_ct_find_expectation(net, zone, tuple, !tmpl || nf_ct_is_confirmed(tmpl));
- 		if (exp) {
- 			pr_debug("expectation arrives ct=%p exp=%p\n",
- 				 ct, exp);
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -171,7 +171,7 @@ EXPORT_SYMBOL_GPL(nf_ct_expect_find_get)
- struct nf_conntrack_expect *
- nf_ct_find_expectation(struct net *net,
- 		       const struct nf_conntrack_zone *zone,
--		       const struct nf_conntrack_tuple *tuple)
-+		       const struct nf_conntrack_tuple *tuple, bool unlink)
++static inline dscp_t ip4h_dscp(const struct iphdr *ip4h)
++{
++	return inet_dsfield_to_dscp(ip4h->tos);
++}
++
+ static inline int ip_mtu_locked(const struct dst_entry *dst)
  {
- 	struct nf_conntrack_net *cnet = nf_ct_pernet(net);
- 	struct nf_conntrack_expect *i, *exp = NULL;
-@@ -211,7 +211,7 @@ nf_ct_find_expectation(struct net *net,
- 		     !refcount_inc_not_zero(&exp->master->ct_general.use)))
- 		return NULL;
+ 	const struct rtable *rt = dst_rtable(dst);
+diff --git a/include/net/route.h b/include/net/route.h
+index da34b6fa9862d..8a11d19f897bb 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -208,12 +208,13 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 dst, __be32 src,
+ 		      const struct sk_buff *hint);
  
--	if (exp->flags & NF_CT_EXPECT_PERMANENT) {
-+	if (exp->flags & NF_CT_EXPECT_PERMANENT || !unlink) {
- 		refcount_inc(&exp->use);
- 		return exp;
- 	} else if (del_timer(&exp->timeout)) {
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -272,6 +272,7 @@ static void nft_ct_set_zone_eval(const s
- 			regs->verdict.code = NF_DROP;
- 			return;
- 		}
-+		__set_bit(IPS_CONFIRMED_BIT, &ct->status);
+ static inline int ip_route_input(struct sk_buff *skb, __be32 dst, __be32 src,
+-				 u8 tos, struct net_device *devin)
++				 dscp_t dscp, struct net_device *devin)
+ {
+ 	int err;
+ 
+ 	rcu_read_lock();
+-	err = ip_route_input_noref(skb, dst, src, tos, devin);
++	err = ip_route_input_noref(skb, dst, src, inet_dscp_to_dsfield(dscp),
++				   devin);
+ 	if (!err) {
+ 		skb_dst_force(skb);
+ 		if (!skb_dst(skb))
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 1d458e9da660c..17a5f5923d615 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -370,9 +370,9 @@ br_nf_ipv4_daddr_was_changed(const struct sk_buff *skb,
+  */
+ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	struct net_device *dev = skb->dev, *br_indev;
+-	struct iphdr *iph = ip_hdr(skb);
+ 	struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
++	struct net_device *dev = skb->dev, *br_indev;
++	const struct iphdr *iph = ip_hdr(skb);
+ 	struct rtable *rt;
+ 	int err;
+ 
+@@ -390,7 +390,9 @@ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_
  	}
+ 	nf_bridge->in_prerouting = 0;
+ 	if (br_nf_ipv4_daddr_was_changed(skb, nf_bridge)) {
+-		if ((err = ip_route_input(skb, iph->daddr, iph->saddr, iph->tos, dev))) {
++		err = ip_route_input(skb, iph->daddr, iph->saddr,
++				     ip4h_dscp(iph), dev);
++		if (err) {
+ 			struct in_device *in_dev = __in_dev_get_rcu(dev);
  
- 	nf_ct_set(skb, ct, IP_CT_NEW);
-@@ -378,6 +379,7 @@ static bool nft_ct_tmpl_alloc_pcpu(void)
- 			return false;
+ 			/* If err equals -EHOSTUNREACH the error is due to a
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 0a2f988c4c24e..b8111ec651b54 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -547,7 +547,7 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 		orefdst = skb_in->_skb_refdst; /* save old refdst */
+ 		skb_dst_set(skb_in, NULL);
+ 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
+-				     inet_dscp_to_dsfield(dscp), rt2->dst.dev);
++				     dscp, rt2->dst.dev);
+ 
+ 		dst_release(&rt2->dst);
+ 		rt2 = skb_rtable(skb_in);
+diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
+index 68aedb8877b9f..81e86e5defee6 100644
+--- a/net/ipv4/ip_options.c
++++ b/net/ipv4/ip_options.c
+@@ -617,7 +617,8 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev)
+ 
+ 		orefdst = skb->_skb_refdst;
+ 		skb_dst_set(skb, NULL);
+-		err = ip_route_input(skb, nexthop, iph->saddr, iph->tos, dev);
++		err = ip_route_input(skb, nexthop, iph->saddr, ip4h_dscp(iph),
++				     dev);
+ 		rt2 = skb_rtable(skb);
+ 		if (err || (rt2->rt_type != RTN_UNICAST && rt2->rt_type != RTN_LOCAL)) {
+ 			skb_dst_drop(skb);
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index b60e13c42bcac..48fd53b989726 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -630,8 +630,8 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
  		}
- 
-+		__set_bit(IPS_CONFIRMED_BIT, &tmp->status);
- 		per_cpu(nft_ct_pcpu_template, cpu) = tmp;
+ 		skb_dst_set(skb2, &rt->dst);
+ 	} else {
+-		if (ip_route_input(skb2, eiph->daddr, eiph->saddr, eiph->tos,
+-				   skb2->dev) ||
++		if (ip_route_input(skb2, eiph->daddr, eiph->saddr,
++				   ip4h_dscp(eiph), skb2->dev) ||
+ 		    skb_dst(skb2)->dev->type != ARPHRD_TUNNEL6)
+ 			goto out;
  	}
- 
+-- 
+2.39.5
+
 
 
 
