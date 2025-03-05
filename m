@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E108A5081C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F1DA50748
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DADF53AFDD2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76A301893552
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F1B2512D9;
-	Wed,  5 Mar 2025 18:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B854E2512D9;
+	Wed,  5 Mar 2025 17:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7lQ5B4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZtr8jYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383751FC7D0;
-	Wed,  5 Mar 2025 18:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B3424C07D;
+	Wed,  5 Mar 2025 17:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197815; cv=none; b=VXto9GT3pmDlQOL1bTf9IKyxMoqyw345PJmUg1jPl3Cn25vEVFM1tGtKnLJWd86eUs1P+zD14zpGerysi6Ck8dLOTkUTLTlL4UQL3Eke+ilGOjRWcDb2DOUqv+0ALK7PDCo4vxKjiTpnv6fmvXrjwf9mNxsl92kHMgN9HJGvG74=
+	t=1741197358; cv=none; b=FHZCKvl7I6B3QSHxiXHtDob4jzGFfx8dCv01mLmcw9hW9lYvsDyh3U+KJGShJCAh/lAR/6kitGWySAx5T1RdaJVG5NyxtvAz52tE5/n7Icx6E2MKplR9NkXkw1GRMaeMN0vsi3pZMbwjTFQTjEt7Zd17OqW4IDNJM/J7C35d6PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197815; c=relaxed/simple;
-	bh=7tCTKNOzt7Hirz182VlCIk1pMAGu0AgV7z5jVezZKuc=;
+	s=arc-20240116; t=1741197358; c=relaxed/simple;
+	bh=W0C9+t1uGIPscLcXRELlFQKaKupFPHcIEA6XiVa0OUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGac2hNn81jb6YmB8wZrbcUoNuEZUh2jtBJpqlMQkJtbnPSyAATqbozBXTP2C/gwrqlBLJomO1D7BnE17wMVBBolvuy5Ex1T4g+IdkdTkbdwcK4NLzvvp3rUw40ojAEd/DZkiIIP8JBkztEZHqj9ZmMe+i/omxcDpRtkHijkZSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7lQ5B4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EABBC4CED1;
-	Wed,  5 Mar 2025 18:03:34 +0000 (UTC)
+	 MIME-Version; b=GZytQW0Dm4vClOkcSE9OB7Gq1AWZ/MaoBAihaBTNziQdEJ2yPLHhaQsQ9plgE0TVRL9OeXnN/kpsPOpAaUkOc44uX5tDqX0lxkWPT66g8WJc6QDOownA0PKbjFg/lHXppwVujMW1MuqffD6MeabEkaYyaYJ9HLhtg7SzzpYAP1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZtr8jYB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE1DC4CED1;
+	Wed,  5 Mar 2025 17:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197814;
-	bh=7tCTKNOzt7Hirz182VlCIk1pMAGu0AgV7z5jVezZKuc=;
+	s=korg; t=1741197358;
+	bh=W0C9+t1uGIPscLcXRELlFQKaKupFPHcIEA6XiVa0OUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7lQ5B4QHrqAKYgvYTGWTVGcizTcZN3AP+auioJsJiWg3RCazr8iI2olA7nTJE69v
-	 2xW4cXoHXrfbTJQE2OPsoZv5pL4JD0EImxhgy864yz40jJH0BIRo0ZF5eHkAmWBtRY
-	 SMRJs8J3OX5/uOJgnPeJxG9YkC6qIMqODSGWeQcI=
+	b=iZtr8jYBS5a69EwxfL4VwTJYMN+pfx5RlMwyjvjRNQDYs65s1QLAj7omfOuBEVRQV
+	 QuRobvRnfV0a/OrW364uGuavFn8YYXzFw+sHF8vndAp/Ise0omCDyJSviCmrz5TaLZ
+	 aks7jVUb457DwCtgp6Bsm/AZIZX1l3MqLs8498k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	BH Hsieh <bhsieh@nvidia.com>,
-	Henry Lin <henryl@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 078/142] phy: tegra: xusb: reset VBUS & ID OVERRIDE
+	Guillaume Nault <gnault@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/176] ipv4: Convert ip_route_input() to dscp_t.
 Date: Wed,  5 Mar 2025 18:48:17 +0100
-Message-ID: <20250305174503.470245260@linuxfoundation.org>
+Message-ID: <20250305174510.590075609@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: BH Hsieh <bhsieh@nvidia.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-commit 55f1a5f7c97c3c92ba469e16991a09274410ceb7 upstream.
+[ Upstream commit 7e863e5db6185b1add0df4cb01b31a4ed1c4b738 ]
 
-Observed VBUS_OVERRIDE & ID_OVERRIDE might be programmed
-with unexpected value prior to XUSB PADCTL driver, this
-could also occur in virtualization scenario.
+Pass a dscp_t variable to ip_route_input(), instead of a plain u8, to
+prevent accidental setting of ECN bits in ->flowi4_tos.
 
-For example, UEFI firmware programs ID_OVERRIDE=GROUNDED to set
-a type-c port to host mode and keeps the value to kernel.
-If the type-c port is connected a usb host, below errors can be
-observed right after usb host mode driver gets probed. The errors
-would keep until usb role class driver detects the type-c port
-as device mode and notifies usb device mode driver to set both
-ID_OVERRIDE and VBUS_OVERRIDE to correct value by XUSB PADCTL
-driver.
+Callers of ip_route_input() to consider are:
 
-[  173.765814] usb usb3-port2: Cannot enable. Maybe the USB cable is bad?
-[  173.765837] usb usb3-port2: config error
+  * input_action_end_dx4_finish() and input_action_end_dt4() in
+    net/ipv6/seg6_local.c. These functions set the tos parameter to 0,
+    which is already a valid dscp_t value, so they don't need to be
+    adjusted for the new prototype.
 
-Taking virtualization into account, asserting XUSB PADCTL
-reset would break XUSB functions used by other guest OS,
-hence only reset VBUS & ID OVERRIDE of the port in
-utmi_phy_init.
+  * icmp_route_lookup(), which already has a dscp_t variable to pass as
+    parameter. We just need to remove the inet_dscp_to_dsfield()
+    conversion.
 
-Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
-Cc: stable@vger.kernel.org
-Change-Id: Ic63058d4d49b4a1f8f9ab313196e20ad131cc591
-Signed-off-by: BH Hsieh <bhsieh@nvidia.com>
-Signed-off-by: Henry Lin <henryl@nvidia.com>
-Link: https://lore.kernel.org/r/20250122105943.8057-1-henryl@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  * br_nf_pre_routing_finish(), ip_options_rcv_srr() and ip4ip6_err(),
+    which get the DSCP directly from IPv4 headers. Define a helper to
+    read the .tos field of struct iphdr as dscp_t, so that these
+    function don't have to do the conversion manually.
+
+While there, declare *iph as const in br_nf_pre_routing_finish(),
+declare its local variables in reverse-christmas-tree order and move
+the "err = ip_route_input()" assignment out of the conditional to avoid
+checkpatch warning.
+
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/e9d40781d64d3d69f4c79ac8a008b8d67a033e8d.1727807926.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/net/ip.h                | 5 +++++
+ include/net/route.h             | 5 +++--
+ net/bridge/br_netfilter_hooks.c | 8 +++++---
+ net/ipv4/icmp.c                 | 2 +-
+ net/ipv4/ip_options.c           | 3 ++-
+ net/ipv6/ip6_tunnel.c           | 4 ++--
+ 6 files changed, 18 insertions(+), 9 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -928,6 +928,7 @@ static int tegra186_utmi_phy_init(struct
- 	unsigned int index = lane->index;
- 	struct device *dev = padctl->dev;
- 	int err;
-+	u32 reg;
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 9d754c4a53002..4ee23eb0814a3 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -409,6 +409,11 @@ int ip_decrease_ttl(struct iphdr *iph)
+ 	return --iph->ttl;
+ }
  
- 	port = tegra_xusb_find_usb2_port(padctl, index);
- 	if (!port) {
-@@ -935,6 +936,16 @@ static int tegra186_utmi_phy_init(struct
- 		return -ENODEV;
- 	}
- 
-+	if (port->mode == USB_DR_MODE_OTG ||
-+	    port->mode == USB_DR_MODE_PERIPHERAL) {
-+		/* reset VBUS&ID OVERRIDE */
-+		reg = padctl_readl(padctl, USB2_VBUS_ID);
-+		reg &= ~VBUS_OVERRIDE;
-+		reg &= ~ID_OVERRIDE(~0);
-+		reg |= ID_OVERRIDE_FLOATING;
-+		padctl_writel(padctl, reg, USB2_VBUS_ID);
-+	}
++static inline dscp_t ip4h_dscp(const struct iphdr *ip4h)
++{
++	return inet_dsfield_to_dscp(ip4h->tos);
++}
 +
- 	if (port->supply && port->mode == USB_DR_MODE_HOST) {
- 		err = regulator_enable(port->supply);
- 		if (err) {
+ static inline int ip_mtu_locked(const struct dst_entry *dst)
+ {
+ 	const struct rtable *rt = (const struct rtable *)dst;
+diff --git a/include/net/route.h b/include/net/route.h
+index f396176022377..4185e6da9ef85 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -203,12 +203,13 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 dst, __be32 src,
+ 		      const struct sk_buff *hint);
+ 
+ static inline int ip_route_input(struct sk_buff *skb, __be32 dst, __be32 src,
+-				 u8 tos, struct net_device *devin)
++				 dscp_t dscp, struct net_device *devin)
+ {
+ 	int err;
+ 
+ 	rcu_read_lock();
+-	err = ip_route_input_noref(skb, dst, src, tos, devin);
++	err = ip_route_input_noref(skb, dst, src, inet_dscp_to_dsfield(dscp),
++				   devin);
+ 	if (!err) {
+ 		skb_dst_force(skb);
+ 		if (!skb_dst(skb))
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 5c6ed1d49b92c..b4d661fe7886d 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -366,9 +366,9 @@ br_nf_ipv4_daddr_was_changed(const struct sk_buff *skb,
+  */
+ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	struct net_device *dev = skb->dev, *br_indev;
+-	struct iphdr *iph = ip_hdr(skb);
+ 	struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
++	struct net_device *dev = skb->dev, *br_indev;
++	const struct iphdr *iph = ip_hdr(skb);
+ 	struct rtable *rt;
+ 	int err;
+ 
+@@ -386,7 +386,9 @@ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_
+ 	}
+ 	nf_bridge->in_prerouting = 0;
+ 	if (br_nf_ipv4_daddr_was_changed(skb, nf_bridge)) {
+-		if ((err = ip_route_input(skb, iph->daddr, iph->saddr, iph->tos, dev))) {
++		err = ip_route_input(skb, iph->daddr, iph->saddr,
++				     ip4h_dscp(iph), dev);
++		if (err) {
+ 			struct in_device *in_dev = __in_dev_get_rcu(dev);
+ 
+ 			/* If err equals -EHOSTUNREACH the error is due to a
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 855fcef829e2c..94501bb30c431 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -549,7 +549,7 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 		orefdst = skb_in->_skb_refdst; /* save old refdst */
+ 		skb_dst_set(skb_in, NULL);
+ 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
+-				     inet_dscp_to_dsfield(dscp), rt2->dst.dev);
++				     dscp, rt2->dst.dev);
+ 
+ 		dst_release(&rt2->dst);
+ 		rt2 = skb_rtable(skb_in);
+diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
+index a9e22a098872f..b4c59708fc095 100644
+--- a/net/ipv4/ip_options.c
++++ b/net/ipv4/ip_options.c
+@@ -617,7 +617,8 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev)
+ 
+ 		orefdst = skb->_skb_refdst;
+ 		skb_dst_set(skb, NULL);
+-		err = ip_route_input(skb, nexthop, iph->saddr, iph->tos, dev);
++		err = ip_route_input(skb, nexthop, iph->saddr, ip4h_dscp(iph),
++				     dev);
+ 		rt2 = skb_rtable(skb);
+ 		if (err || (rt2->rt_type != RTN_UNICAST && rt2->rt_type != RTN_LOCAL)) {
+ 			skb_dst_drop(skb);
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index f3324f2a40466..a82d382193e41 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -628,8 +628,8 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 		}
+ 		skb_dst_set(skb2, &rt->dst);
+ 	} else {
+-		if (ip_route_input(skb2, eiph->daddr, eiph->saddr, eiph->tos,
+-				   skb2->dev) ||
++		if (ip_route_input(skb2, eiph->daddr, eiph->saddr,
++				   ip4h_dscp(eiph), skb2->dev) ||
+ 		    skb_dst(skb2)->dev->type != ARPHRD_TUNNEL6)
+ 			goto out;
+ 	}
+-- 
+2.39.5
+
 
 
 
