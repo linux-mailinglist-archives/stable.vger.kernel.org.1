@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-121029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FBCA509C9
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A804EA507A2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8086C189776C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 738E0175180
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8BB253F3D;
-	Wed,  5 Mar 2025 18:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D452512CB;
+	Wed,  5 Mar 2025 17:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x04DUYle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcZAdUpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A616253F29;
-	Wed,  5 Mar 2025 18:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C53250C1C;
+	Wed,  5 Mar 2025 17:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198674; cv=none; b=PfXUok77GK4AvYwUc2T3qCGNSREpl6wqpvmifcb+mtRQYfvXu4KCJVPQqtUXyd3xGCu2e8VOl+e0NbVbIJl8WoF0HRuSwa9zv029yRXniuAMuQ9bDqXpuCCZklsqgJpygw0XSQagF0bXP2Z7XfNavURpvI77diAU7yRrRH4ueek=
+	t=1741197517; cv=none; b=KVyVHfnO+VVOzd7spRqp0X7riiAOOdl7n49yHH1iWFK5Mr+SYE1qvG7o4roLrqD+jOB4KdixjULqnWU6jdHbUTvANAAFUV2aymJF+Zj22QmURIQVPssV6uZD1iaHzpOb34DCWY8LtM5lWES846OoLD5VX0r7dWKcHDDgHASL+3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198674; c=relaxed/simple;
-	bh=aIF810AYyM4TKpfnfxugQ472Qo9W6xw7wuYDa8k7Yjc=;
+	s=arc-20240116; t=1741197517; c=relaxed/simple;
+	bh=LCZCzvVSA46cgAfb3DP0BWmRshSoRuU29A2Rmhkff70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZJ4OCYH6BOhQV2m2681ksSR6f/WWW9RhQvZq/PxjbeJdYmO+vlio3wZDB33vOnw1XM8iDIUuWq7wSkA7r3ks4jc/W8WGa6y3uZoowNhRy7uDWse0zIU4FUmosEh4ujVBAwxyMWozfzkSsFVx+iE0JeBzk/IM09vulJbZ96UsU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x04DUYle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB84C4CEE0;
-	Wed,  5 Mar 2025 18:17:53 +0000 (UTC)
+	 MIME-Version; b=dgZAoDMMRnf42ZU+ZsCHuR/7hQfEjplE39w3iG0kSLDOQgt8GPczJKdHbQ9ihktsk9uBj3S1nQfVb/1j6Gq+r3cUZc/27d1udzyzFhecBtp38H8hoUHQDX518h00KVYcyjE71jVE+Kw1gdJYEH0LVQ5O2WaaC6SL/9GR8w94vDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcZAdUpM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7936AC4CED1;
+	Wed,  5 Mar 2025 17:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198674;
-	bh=aIF810AYyM4TKpfnfxugQ472Qo9W6xw7wuYDa8k7Yjc=;
+	s=korg; t=1741197516;
+	bh=LCZCzvVSA46cgAfb3DP0BWmRshSoRuU29A2Rmhkff70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x04DUYle1EO49GPh+j4UrLG+6gUwpFK/g+BiKWW+g+kA5JYddAxeEG+HpqK6sLD98
-	 3RIJf7B/znU0OMc3t2T4bvB80F+guFb4G7RP7/OlYg/OZu+/wC5K2zxWWcLCXjJs/W
-	 /lAP90YN8RvXxbO4ZNSkzp5MYOtv5q9SCxhDQIcU=
+	b=ZcZAdUpMz1AWlAgj57AlCTm7Bl1+oDprPmq+um3Kt2/XT6xFpv7rXfwDZz5/zMvyN
+	 jyZfHLwaVCFtbqWOhA4yA/rv+pS03aLPLpb/3aUptfWXOgLdu+9YQ+unm5rJ/3OeL3
+	 UU285ttfUcIimmr7X7M6nGzwmC64kVIQkEVcl3Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanket Goswami <Sanket.Goswami@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.13 109/157] i2c: amd-asf: Fix EOI register write to enable successive interrupts
+	Fullway Wang <fullwaywang@outlook.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 176/176] media: mtk-vcodec: potential null pointer deference in SCP
 Date: Wed,  5 Mar 2025 18:49:05 +0100
-Message-ID: <20250305174509.691948430@linuxfoundation.org>
+Message-ID: <20250305174512.504068563@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Fullway Wang <fullwaywang@outlook.com>
 
-commit 9f3c507cb44498067c980674139bcad56e582ee6 upstream.
+commit 53dbe08504442dc7ba4865c09b3bbf5fe849681b upstream.
 
-The commit b1f8921dfbaa
-("i2c: amd-asf: Clear remote IRR bit to get successive interrupt")
-introduced a method to enable successive interrupts but inadvertently
-omitted the necessary write to the EOI register, resulting in a failure to
-receive successive interrupts.
+The return value of devm_kzalloc() needs to be checked to avoid
+NULL pointer deference. This is similar to CVE-2022-3113.
 
-Fix this by adding the required write to the EOI register.
-
-Fixes: b1f8921dfbaa ("i2c: amd-asf: Clear remote IRR bit to get successive interrupt")
-Cc: stable@vger.kernel.org # v6.13+
-Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Fixes: 9b25419ad397 ("i2c: amd-asf: Add routine to handle the ASF slave process")
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250219135747.3251182-1-Shyam-sundar.S-k@amd.com
+Link: https://lore.kernel.org/linux-media/PH7PR20MB5925094DAE3FD750C7E39E01BF712@PH7PR20MB5925.namprd20.prod.outlook.com
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-amd-asf-plat.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i2c/busses/i2c-amd-asf-plat.c
-+++ b/drivers/i2c/busses/i2c-amd-asf-plat.c
-@@ -293,6 +293,7 @@ static irqreturn_t amd_asf_irq_handler(i
- 		amd_asf_update_ioport_target(piix4_smba, ASF_SLV_INTR, SMBHSTSTS, true);
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
+@@ -65,6 +65,8 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_
  	}
  
-+	iowrite32(irq, dev->eoi_base);
- 	return IRQ_HANDLED;
- }
- 
+ 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
++	if (!fw)
++		return ERR_PTR(-ENOMEM);
+ 	fw->type = SCP;
+ 	fw->ops = &mtk_vcodec_rproc_msg;
+ 	fw->scp = scp;
 
 
 
