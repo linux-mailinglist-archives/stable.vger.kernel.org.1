@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD985A50950
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD1A508BF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFE0F7A7E71
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7DC3A5A1D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC76230BC6;
-	Wed,  5 Mar 2025 18:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BA31A5BB7;
+	Wed,  5 Mar 2025 18:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1ojvgLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9S/whgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E28F14884C;
-	Wed,  5 Mar 2025 18:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EEB1ACEDD;
+	Wed,  5 Mar 2025 18:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198568; cv=none; b=ZseWEGeq1FF6C1gKi2KczKzxJ9MmkEQdPOPfrJVgArDa2wG515srtYWguAlLpbskZRpBgzonWwb1QXtU0QkgcjkI4ca1jFdyRz6UbUyufR8dUKVvoNJVOs2XTh2xQ+SatNNCHAA5mAmN39gDUZAlhOu1/DJJXPQzfs3/rE5lVho=
+	t=1741198243; cv=none; b=eXUyNsbnuCmWY4cteuGbalM9pCta3pKtm5akdL/vbH49SjRkTV4zl/UMpgdGPGqdY8TtEcwNtt7l3i6fFxdJ+VPZT8IbJoNVkuNHozS3MMwadBEiHLubgIwKu45qHq1JbCK8KBfefudEX3YQFi0ATLywCIqxgP/bnIdEVr1VCGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198568; c=relaxed/simple;
-	bh=U6x84X3n2erLTyAk7BuqdbTYKeGQPDGlcBLychMmojw=;
+	s=arc-20240116; t=1741198243; c=relaxed/simple;
+	bh=BTYjEr8IIITGdQXSAlhms/fCkFkL++jRdWykOywahZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSoU3Lrx6s0RLRloRHnoCqGbOft3d5v/ai7fFIRWtsdFjDORje/YcBJ/o22Xd8gTExZZT4pgdJx7oNqLSjiOWscP2M1RpCMoWTe/U9gI1MBnEfthQf+Ks7UrycgtGR6OYXAOVNadpq9VYpD4xNzyxvfEN4H7AE0Z87uM9xG2rGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1ojvgLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC71C4CED1;
-	Wed,  5 Mar 2025 18:16:07 +0000 (UTC)
+	 MIME-Version; b=pmQnC5kHymLLsYuhzkm6mEdaRZ1U1b1Pop2aPeaSEsfknwJ3KD6W6k6nNDFxq9tqTqo5KMRJBDNUxNYWcnzWMwnb0H3/XLTHliLgsQPx/m1p+fGcISbvV/4EndUA/ERAfQmeE1BDbbnGmEdB9m4XWLSMVTdt+B5Bqhy/H3BguUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9S/whgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EA9C4CEE0;
+	Wed,  5 Mar 2025 18:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198567;
-	bh=U6x84X3n2erLTyAk7BuqdbTYKeGQPDGlcBLychMmojw=;
+	s=korg; t=1741198243;
+	bh=BTYjEr8IIITGdQXSAlhms/fCkFkL++jRdWykOywahZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1ojvgLUmTGHsogVqF5CUmOggSdMVOKmVGxy46Ozr51Xv5XicdJGul1EKjTxnjsZU
-	 A14E634LAXwDgb0lwegqKGIH1jNgfbfp9+gqoybcRGGYx20T4bDr5v6rDW7WsL7Lv2
-	 hrV92oaEVfzhcfGz8YZmXVbUo0vshHHzVK+22nco=
+	b=B9S/whgtqgeZXjexUB7pck1FiPjgwZXnKebNvBCy4ahiQKyrn2oRO14AMbV3bDGX1
+	 JsZUobyLi1j53bkwl2OsuyJM6yphGaqWopHr4U7tP0VJVfCANyV5vP64DMNTNIZ/HR
+	 cNLTRen5xWjPMwhBWaQwyOGqYW4L8+Cf/E0jt2zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 073/157] uprobes: Remove too strict lockdep_assert() condition in hprobe_expire()
-Date: Wed,  5 Mar 2025 18:48:29 +0100
-Message-ID: <20250305174508.236236402@linuxfoundation.org>
+Subject: [PATCH 6.12 081/150] riscv: KVM: Fix hart suspend status check
+Date: Wed,  5 Mar 2025 18:48:30 +0100
+Message-ID: <20250305174507.069717732@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit f8c857238a392f21d5726d07966f6061007c8d4f ]
+[ Upstream commit c7db342e3b4744688be1e27e31254c1d31a35274 ]
 
-hprobe_expire() is used to atomically switch pending uretprobe instance
-(struct return_instance) from being SRCU protected to be refcounted.
-This can be done from background timer thread, or synchronously within
-current thread when task is forked.
+"Not stopped" means started or suspended so we need to check for
+a single state in order to have a chance to check for each state.
+Also, we need to use target_vcpu when checking for the suspend
+state.
 
-In the former case, return_instance has to be protected through RCU read
-lock, and that's what hprobe_expire() used to check with
-lockdep_assert(rcu_read_lock_held()).
-
-But in the latter case (hprobe_expire() called from dup_utask()) there
-is no RCU lock being held, and it's both unnecessary and incovenient.
-Inconvenient due to the intervening memory allocations inside
-dup_return_instance()'s loop. Unnecessary because dup_utask() is called
-synchronously in current thread, and no uretprobe can run at that point,
-so return_instance can't be freed either.
-
-So drop rcu_read_lock_held() condition, and expand corresponding comment
-to explain necessary lifetime guarantees. lockdep_assert()-detected
-issue is a false positive.
-
-Fixes: dd1a7567784e ("uprobes: SRCU-protect uretprobe lifetime (with timeout)")
-Reported-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250225223214.2970740-1-andrii@kernel.org
+Fixes: 763c8bed8c05 ("RISC-V: KVM: Implement SBI HSM suspend call")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20250217084506.18763-8-ajones@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_hsm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index e11e2df50a3ee..3c34761c9ae73 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -767,10 +767,14 @@ static struct uprobe *hprobe_expire(struct hprobe *hprobe, bool get)
- 	enum hprobe_state hstate;
+diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.c
+index dce667f4b6ab0..13a35eb77e8e3 100644
+--- a/arch/riscv/kvm/vcpu_sbi_hsm.c
++++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
+@@ -79,12 +79,12 @@ static int kvm_sbi_hsm_vcpu_get_status(struct kvm_vcpu *vcpu)
+ 	target_vcpu = kvm_get_vcpu_by_id(vcpu->kvm, target_vcpuid);
+ 	if (!target_vcpu)
+ 		return SBI_ERR_INVALID_PARAM;
+-	if (!kvm_riscv_vcpu_stopped(target_vcpu))
+-		return SBI_HSM_STATE_STARTED;
+-	else if (vcpu->stat.generic.blocking)
++	if (kvm_riscv_vcpu_stopped(target_vcpu))
++		return SBI_HSM_STATE_STOPPED;
++	else if (target_vcpu->stat.generic.blocking)
+ 		return SBI_HSM_STATE_SUSPENDED;
+ 	else
+-		return SBI_HSM_STATE_STOPPED;
++		return SBI_HSM_STATE_STARTED;
+ }
  
- 	/*
--	 * return_instance's hprobe is protected by RCU.
--	 * Underlying uprobe is itself protected from reuse by SRCU.
-+	 * Caller should guarantee that return_instance is not going to be
-+	 * freed from under us. This can be achieved either through holding
-+	 * rcu_read_lock() or by owning return_instance in the first place.
-+	 *
-+	 * Underlying uprobe is itself protected from reuse by SRCU, so ensure
-+	 * SRCU lock is held properly.
- 	 */
--	lockdep_assert(rcu_read_lock_held() && srcu_read_lock_held(&uretprobes_srcu));
-+	lockdep_assert(srcu_read_lock_held(&uretprobes_srcu));
- 
- 	hstate = READ_ONCE(hprobe->state);
- 	switch (hstate) {
+ static int kvm_sbi_ext_hsm_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
 -- 
 2.39.5
 
