@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-121010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5238A5097C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:20:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1225BA50747
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C2A1649E8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F8B61893548
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4048253B49;
-	Wed,  5 Mar 2025 18:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100502512C7;
+	Wed,  5 Mar 2025 17:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3Oi1icw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySw2WqRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CBA14884C;
-	Wed,  5 Mar 2025 18:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F0424C07D;
+	Wed,  5 Mar 2025 17:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198619; cv=none; b=aWq+O9cYJtRNOePe6c45voo3bF9xyQ82VODesGoMnFMenwEuk2nI9To3x5NFySuHQHQlWyht4wow+k17r+qAdV572wlnixdGQTVYXPPzqmQIgHigjf+42e4QVbn8uD01FVHLBAi6wa/+9aOf49z/3Qq0P/6k5P/bKqX9Tzi4cjY=
+	t=1741197352; cv=none; b=TaUjHVkZqxMoLaYSCcS98Ykk8uy6neAkCF3ly+ZCcMgq1OR2wH7C7+PqdcMrFLsxAizGMunCMfh5GUigj1HuhFMKfwa2fd/kgJPteM0VUV2iX8LoOF99HQ2MK7wyfERvrHWu86UJJj5qxh2/y5v45V3RvqgToHuiQExvkuIgEnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198619; c=relaxed/simple;
-	bh=w+YBK7YCtXCHPCUtA/IyQ/402J3a30BZXg+VQt7e8Fk=;
+	s=arc-20240116; t=1741197352; c=relaxed/simple;
+	bh=qBntL0jYTZn7DO6Wusg2BMQRN/tvvHk8tNid8FFwGj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcGpzbsnuPMudHasdmpCZZVYv0KGHKoN/uv8Hsi0cSFYNqM0uCqNg/kMftcFIog8b0NCPq1+TnaK3QyyreucA+z2SwuX2qq2i8wiAArlkLI5bSRIOA8ok6MLHmluk02YNt1knJQFo4194pM1VLG7Fm2mRG/puOMjNP/wW0FZoIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3Oi1icw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9199C4CED1;
-	Wed,  5 Mar 2025 18:16:58 +0000 (UTC)
+	 MIME-Version; b=lSsaJxjdnkT7qEeajmGklnP63S9a12IEdKY0tzKPeqH+t0AEcDg6Altjrk23790ah1hVAZ6uXfd3ilL0EYRJmG4tlnZGYovzUmeReLSUy7lnI0Fbp+rB44g7zZV1G8ngWr1+molxhLwqxVjNMpH5hv9vpedWEbix39h7sj00oEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySw2WqRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA7AC4CED1;
+	Wed,  5 Mar 2025 17:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198619;
-	bh=w+YBK7YCtXCHPCUtA/IyQ/402J3a30BZXg+VQt7e8Fk=;
+	s=korg; t=1741197352;
+	bh=qBntL0jYTZn7DO6Wusg2BMQRN/tvvHk8tNid8FFwGj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3Oi1icwdjSZyoIswUxxUNR/CKWAYMJzPJdSjYKxBc/N+Jg78m0r1ZY0wXWDAqG0f
-	 rkHV5lWZd0YEirSQsZTGFJoEY3Bux02V4c4nzgyEycGbsImfxl2tZ8QA9dBuUrSkKE
-	 HQWfzJrWxZzYMot86fgRiIATv1tqOIyZeUN0I15s=
+	b=ySw2WqRuM0sgmJHoYY80WCGteq29+oqRyTG3OdYh1DpijWkrvpmAGWUYevECF5iiX
+	 AoS18vrQfJlr3UyCJ+39Vi4JXq7iyXGcqlNZEOUWO8Kz/y3n8/jFqRNPtBh6jSna6j
+	 c4TcC9mtbLGbzygN3VfqyJyy1u1M3mhBWlWl3sDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <alex.aring@gmail.com>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 059/157] net: ipv6: fix dst ref loop on input in rpl lwt
+Subject: [PATCH 6.1 126/176] ipvlan: Unmask upper DSCP bits in ipvlan_process_v4_outbound()
 Date: Wed,  5 Mar 2025 18:48:15 +0100
-Message-ID: <20250305174507.675431437@linuxfoundation.org>
+Message-ID: <20250305174510.511555979@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 13e55fbaec176119cff68a7e1693b251c8883c5f ]
+[ Upstream commit 939cd1abf080c629552a9c5e6db4c0509d13e4c7 ]
 
-Prevent a dst ref loop on input in rpl_iptunnel.
+Unmask the upper DSCP bits when calling ip_route_output_flow() so that
+in the future it could perform the FIB lookup according to the full DSCP
+value.
 
-Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-Cc: Alexander Aring <alex.aring@gmail.com>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/rpl_iptunnel.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ipvlan/ipvlan_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index 0ac4283acdf20..7c05ac846646f 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -262,10 +262,18 @@ static int rpl_input(struct sk_buff *skb)
- {
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
-+	struct lwtunnel_state *lwtst;
- 	struct rpl_lwt *rlwt;
- 	int err;
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index 1d49771d07f4c..d22a705ac4d6f 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -2,6 +2,8 @@
+ /* Copyright (c) 2014 Mahesh Bandewar <maheshb@google.com>
+  */
  
--	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
-+	/* We cannot dereference "orig_dst" once ip6_route_input() or
-+	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
-+	 * need the address of its lwtstate. So, save the address of lwtstate
-+	 * now and use it later as a comparison.
-+	 */
-+	lwtst = orig_dst->lwtstate;
++#include <net/inet_dscp.h>
 +
-+	rlwt = rpl_lwt_lwtunnel(lwtst);
+ #include "ipvlan.h"
  
- 	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
-@@ -280,7 +288,9 @@ static int rpl_input(struct sk_buff *skb)
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
--		if (!dst->error) {
-+
-+		/* cache only if we don't create a dst reference loop */
-+		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&rlwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
+ static u32 ipvlan_jhash_secret __read_mostly;
+@@ -420,7 +422,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ 	int err, ret = NET_XMIT_DROP;
+ 	struct flowi4 fl4 = {
+ 		.flowi4_oif = dev->ifindex,
+-		.flowi4_tos = RT_TOS(ip4h->tos),
++		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
+ 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
+ 		.flowi4_mark = skb->mark,
+ 		.daddr = ip4h->daddr,
 -- 
 2.39.5
 
