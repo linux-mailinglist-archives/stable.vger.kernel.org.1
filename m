@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-120748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346BAA50840
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CF3A508F0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C6091894A91
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8DF3A3D15
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D061A3174;
-	Wed,  5 Mar 2025 18:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A631C5D4E;
+	Wed,  5 Mar 2025 18:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhV1SjMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dxyqrnp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CA624FBE8;
-	Wed,  5 Mar 2025 18:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4D1A5BB7;
+	Wed,  5 Mar 2025 18:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197859; cv=none; b=cG8PkiJCyPtkzFDyBED+8cw0uNnhTfuWuRUlHU+eYcR+zVRdq4Dd4Pvxr605ldeihob/CQGZjkPla6cZNlmunqCg9/81Ja/8a4jXC1JcjnCEBLEboMPidKoRQoTOEXYgbwEKRSnPrIetdbpVQVraI6ceMUmUkEwV+GzGpT5Q5Oc=
+	t=1741198340; cv=none; b=OEVbA8g/8DcpCts7EAUgP1vFCRpHIr6N5DLNSoAxRISlgCXrxhR8wDa1IxKGv+RBP5J4zHs+CwpB4iuaFEyaVHGwJvo9vIPao4+7TEi8b4aiXpBvYrN+2ZfFH+xndMkzyXTUC+RGjCHEXyjgjqlmJzeIT5qae4DN189FsqejPdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197859; c=relaxed/simple;
-	bh=+CTTyx7Dx6sYkHhkrYM254G/xnKGEQbxoMYsUszg9jo=;
+	s=arc-20240116; t=1741198340; c=relaxed/simple;
+	bh=x+k2H1M8BQVKRyc4FzKnSOaKxoE318TsY9YoqlMkvWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhzmncZEEkBDPXsrOI4408bG9CrE+er6S1FZjroraErIdJqtB5kC39h9BWvOXvfxLjmsIZweq53OxlRJrh6ZJQIppvSxb0pIxEmu+s44c64P7JVFe0MdrfCLnDL0dBs+Un9luoTOgc4IqMr2mkCh+6D0tOxq3l8pAk/9I9+tio4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhV1SjMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7153FC4CED1;
-	Wed,  5 Mar 2025 18:04:18 +0000 (UTC)
+	 MIME-Version; b=e1GL5gbuyPZdCsMxJ0XWItHbk5nttmynOjks9QgROft/8pMKzDLuUZA7wmxviAH1S2PS/yXzOeTxzRrjwpxbKZqRFJEqevTDCoLrF0VAzk7KlkIJIYnaPIGQ6GmGO5JJiz3ZlDO/ARH/VJWxc3OTMAfBVEk14CIslSTvRp6s4/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dxyqrnp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5C8C4CED1;
+	Wed,  5 Mar 2025 18:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197858;
-	bh=+CTTyx7Dx6sYkHhkrYM254G/xnKGEQbxoMYsUszg9jo=;
+	s=korg; t=1741198340;
+	bh=x+k2H1M8BQVKRyc4FzKnSOaKxoE318TsY9YoqlMkvWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DhV1SjMz/J8d0stK2HX/gxu0KojD6C3csiaUHNUBaTRBaRVLATlmMrIAkfgOQp0T+
-	 7KJjaIPIfHKohoKccpcH5reonNex69ztYV6KA0uQxw+cs1+63e3gA8DM0FAejGq0v/
-	 OjwG7q4/HU9O2Ur+7D+/FjEZpvV1Pr7Wnoxs10wU=
+	b=Dxyqrnp8RYMOcf+lV6JvUco2/kxWbGtzZOIQmxBQajvXoAKYWQ8M74SVHdolsgUyN
+	 AQ/Zj/zzoZvb9MN0NfPaw+i3yTI6Kp2sJMaml1MTBctFKJy/YNHubbwFTsZrSthM1z
+	 hzXMI+/+n3DkolDHu1t8JCUdXIkz2F7B3kHBgd8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 124/142] x86/microcode: Rendezvous and load in NMI
+	Wei Fang <wei.fang@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 114/150] net: enetc: update UDP checksum when updating originTimestamp field
 Date: Wed,  5 Mar 2025 18:49:03 +0100
-Message-ID: <20250305174505.308490024@linuxfoundation.org>
+Message-ID: <20250305174508.398559556@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,215 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 7eb314a22800457396f541c655697dabd71e44a7 upstream
+commit bbcbc906ab7b5834c1219cd17a38d78dba904aa0 upstream.
 
-stop_machine() does not prevent the spin-waiting sibling from handling
-an NMI, which is obviously violating the whole concept of rendezvous.
+There is an issue with one-step timestamp based on UDP/IP. The peer will
+discard the sync packet because of the wrong UDP checksum. For ENETC v1,
+the software needs to update the UDP checksum when updating the
+originTimestamp field, so that the hardware can correctly update the UDP
+checksum when updating the correction field. Otherwise, the UDP checksum
+in the sync packet will be wrong.
 
-Implement a static branch right in the beginning of the NMI handler
-which is nopped out except when enabled by the late loading mechanism.
-
-The late loader enables the static branch before stop_machine() is
-invoked. Each CPU has an nmi_enable in its control structure which
-indicates whether the CPU should go into the update routine.
-
-This is required to bridge the gap between enabling the branch and
-actually being at the point where it is required to enter the loader
-wait loop.
-
-Each CPU which arrives in the stopper thread function sets that flag and
-issues a self NMI right after that. If the NMI function sees the flag
-clear, it returns. If it's set it clears the flag and enters the
-rendezvous.
-
-This is safe against a real NMI which hits in between setting the flag
-and sending the NMI to itself. The real NMI will be swallowed by the
-microcode update and the self NMI will then let stuff continue.
-Otherwise this would end up with a spurious NMI.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115903.489900814@linutronix.de
+Fixes: 7294380c5211 ("enetc: support PTP Sync packet one-step timestamping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-6-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/microcode.h         |   12 ++++++++
- arch/x86/kernel/cpu/microcode/core.c     |   42 ++++++++++++++++++++++++++++---
- arch/x86/kernel/cpu/microcode/intel.c    |    1 
- arch/x86/kernel/cpu/microcode/internal.h |    3 +-
- arch/x86/kernel/nmi.c                    |    4 ++
- 5 files changed, 57 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   41 ++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 7 deletions(-)
 
---- a/arch/x86/include/asm/microcode.h
-+++ b/arch/x86/include/asm/microcode.h
-@@ -70,4 +70,16 @@ static inline u32 intel_get_microcode_re
- }
- #endif /* !CONFIG_CPU_SUP_INTEL */
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -253,9 +253,11 @@ static int enetc_map_tx_buffs(struct ene
+ 		}
  
-+bool microcode_nmi_handler(void);
+ 		if (do_onestep_tstamp) {
+-			u32 lo, hi, val;
+-			u64 sec, nsec;
++			__be32 new_sec_l, new_nsec;
++			u32 lo, hi, nsec, val;
++			__be16 new_sec_h;
+ 			u8 *data;
++			u64 sec;
+ 
+ 			lo = enetc_rd_hot(hw, ENETC_SICTR0);
+ 			hi = enetc_rd_hot(hw, ENETC_SICTR1);
+@@ -269,13 +271,38 @@ static int enetc_map_tx_buffs(struct ene
+ 			/* Update originTimestamp field of Sync packet
+ 			 * - 48 bits seconds field
+ 			 * - 32 bits nanseconds field
++			 *
++			 * In addition, the UDP checksum needs to be updated
++			 * by software after updating originTimestamp field,
++			 * otherwise the hardware will calculate the wrong
++			 * checksum when updating the correction field and
++			 * update it to the packet.
+ 			 */
+ 			data = skb_mac_header(skb);
+-			*(__be16 *)(data + offset2) =
+-				htons((sec >> 32) & 0xffff);
+-			*(__be32 *)(data + offset2 + 2) =
+-				htonl(sec & 0xffffffff);
+-			*(__be32 *)(data + offset2 + 6) = htonl(nsec);
++			new_sec_h = htons((sec >> 32) & 0xffff);
++			new_sec_l = htonl(sec & 0xffffffff);
++			new_nsec = htonl(nsec);
++			if (udp) {
++				struct udphdr *uh = udp_hdr(skb);
++				__be32 old_sec_l, old_nsec;
++				__be16 old_sec_h;
 +
-+#ifdef CONFIG_MICROCODE_LATE_LOADING
-+DECLARE_STATIC_KEY_FALSE(microcode_nmi_handler_enable);
-+static __always_inline bool microcode_nmi_handler_enabled(void)
-+{
-+	return static_branch_unlikely(&microcode_nmi_handler_enable);
-+}
-+#else
-+static __always_inline bool microcode_nmi_handler_enabled(void) { return false; }
-+#endif
++				old_sec_h = *(__be16 *)(data + offset2);
++				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
++							 new_sec_h, false);
 +
- #endif /* _ASM_X86_MICROCODE_H */
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -23,6 +23,7 @@
- #include <linux/miscdevice.h>
- #include <linux/capability.h>
- #include <linux/firmware.h>
-+#include <linux/cpumask.h>
- #include <linux/kernel.h>
- #include <linux/delay.h>
- #include <linux/mutex.h>
-@@ -31,6 +32,7 @@
- #include <linux/fs.h>
- #include <linux/mm.h>
- 
-+#include <asm/apic.h>
- #include <asm/cpu_device_id.h>
- #include <asm/perf_event.h>
- #include <asm/processor.h>
-@@ -265,8 +267,10 @@ struct microcode_ctrl {
- 	enum sibling_ctrl	ctrl;
- 	enum ucode_state	result;
- 	unsigned int		ctrl_cpu;
-+	bool			nmi_enabled;
- };
- 
-+DEFINE_STATIC_KEY_FALSE(microcode_nmi_handler_enable);
- static DEFINE_PER_CPU(struct microcode_ctrl, ucode_ctrl);
- static atomic_t late_cpus_in;
- 
-@@ -282,7 +286,8 @@ static bool wait_for_cpus(atomic_t *cnt)
- 
- 		udelay(1);
- 
--		if (!(timeout % USEC_PER_MSEC))
-+		/* If invoked directly, tickle the NMI watchdog */
-+		if (!microcode_ops->use_nmi && !(timeout % USEC_PER_MSEC))
- 			touch_nmi_watchdog();
- 	}
- 	/* Prevent the late comers from making progress and let them time out */
-@@ -298,7 +303,8 @@ static bool wait_for_ctrl(void)
- 		if (this_cpu_read(ucode_ctrl.ctrl) != SCTRL_WAIT)
- 			return true;
- 		udelay(1);
--		if (!(timeout % 1000))
-+		/* If invoked directly, tickle the NMI watchdog */
-+		if (!microcode_ops->use_nmi && !(timeout % 1000))
- 			touch_nmi_watchdog();
- 	}
- 	return false;
-@@ -374,7 +380,7 @@ static void load_primary(unsigned int cp
- 	}
- }
- 
--static int load_cpus_stopped(void *unused)
-+static bool microcode_update_handler(void)
- {
- 	unsigned int cpu = smp_processor_id();
- 
-@@ -383,7 +389,29 @@ static int load_cpus_stopped(void *unuse
- 	else
- 		load_secondary(cpu);
- 
--	/* No point to wait here. The CPUs will all wait in stop_machine(). */
-+	touch_nmi_watchdog();
-+	return true;
-+}
++				old_sec_l = *(__be32 *)(data + offset2 + 2);
++				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
++							 new_sec_l, false);
 +
-+bool microcode_nmi_handler(void)
-+{
-+	if (!this_cpu_read(ucode_ctrl.nmi_enabled))
-+		return false;
++				old_nsec = *(__be32 *)(data + offset2 + 6);
++				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
++							 new_nsec, false);
++			}
 +
-+	this_cpu_write(ucode_ctrl.nmi_enabled, false);
-+	return microcode_update_handler();
-+}
-+
-+static int load_cpus_stopped(void *unused)
-+{
-+	if (microcode_ops->use_nmi) {
-+		/* Enable the NMI handler and raise NMI */
-+		this_cpu_write(ucode_ctrl.nmi_enabled, true);
-+		apic->send_IPI(smp_processor_id(), NMI_VECTOR);
-+	} else {
-+		/* Just invoke the handler directly */
-+		microcode_update_handler();
-+	}
- 	return 0;
- }
++			*(__be16 *)(data + offset2) = new_sec_h;
++			*(__be32 *)(data + offset2 + 2) = new_sec_l;
++			*(__be32 *)(data + offset2 + 6) = new_nsec;
  
-@@ -404,8 +432,14 @@ static int load_late_stop_cpus(void)
- 	 */
- 	store_cpu_caps(&prev_info);
- 
-+	if (microcode_ops->use_nmi)
-+		static_branch_enable_cpuslocked(&microcode_nmi_handler_enable);
-+
- 	stop_machine_cpuslocked(load_cpus_stopped, NULL, cpu_online_mask);
- 
-+	if (microcode_ops->use_nmi)
-+		static_branch_disable_cpuslocked(&microcode_nmi_handler_enable);
-+
- 	/* Analyze the results */
- 	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
- 		switch (per_cpu(ucode_ctrl.result, cpu)) {
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -611,6 +611,7 @@ static struct microcode_ops microcode_in
- 	.collect_cpu_info	= collect_cpu_info,
- 	.apply_microcode	= apply_microcode_late,
- 	.finalize_late_load	= finalize_late_load,
-+	.use_nmi		= IS_ENABLED(CONFIG_X86_64),
- };
- 
- static __init void calc_llc_size_per_core(struct cpuinfo_x86 *c)
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -31,7 +31,8 @@ struct microcode_ops {
- 	enum ucode_state	(*apply_microcode)(int cpu);
- 	int			(*collect_cpu_info)(int cpu, struct cpu_signature *csig);
- 	void			(*finalize_late_load)(int result);
--	unsigned int		nmi_safe	: 1;
-+	unsigned int		nmi_safe	: 1,
-+				use_nmi		: 1;
- };
- 
- extern struct ucode_cpu_info ucode_cpu_info[];
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -33,6 +33,7 @@
- #include <asm/reboot.h>
- #include <asm/cache.h>
- #include <asm/nospec-branch.h>
-+#include <asm/microcode.h>
- #include <asm/sev.h>
- 
- #define CREATE_TRACE_POINTS
-@@ -343,6 +344,9 @@ static noinstr void default_do_nmi(struc
- 
- 	instrumentation_begin();
- 
-+	if (microcode_nmi_handler_enabled() && microcode_nmi_handler())
-+		goto out;
-+
- 	handled = nmi_handle(NMI_LOCAL, regs);
- 	__this_cpu_add(nmi_stats.normal, handled);
- 	if (handled) {
+ 			/* Configure single-step register */
+ 			val = ENETC_PM0_SINGLE_STEP_EN;
 
 
 
