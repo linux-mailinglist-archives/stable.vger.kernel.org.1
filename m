@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1225BA50747
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA4AA5082E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F8B61893548
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3741888D85
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100502512C7;
-	Wed,  5 Mar 2025 17:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46885252907;
+	Wed,  5 Mar 2025 18:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySw2WqRu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMtYFLUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F0424C07D;
-	Wed,  5 Mar 2025 17:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032311C863D;
+	Wed,  5 Mar 2025 18:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197352; cv=none; b=TaUjHVkZqxMoLaYSCcS98Ykk8uy6neAkCF3ly+ZCcMgq1OR2wH7C7+PqdcMrFLsxAizGMunCMfh5GUigj1HuhFMKfwa2fd/kgJPteM0VUV2iX8LoOF99HQ2MK7wyfERvrHWu86UJJj5qxh2/y5v45V3RvqgToHuiQExvkuIgEnA=
+	t=1741197809; cv=none; b=cFUCpWqlYeAIvPEKydHAbdzF+qSqc9sIi168uBH7mGdH30JOYDnMquzkleo1Wk3yBMFluYemOoxci2N+OTGk8ToHW5/97SEwOPLij/BjjBN7n21VY29964xMsH2WVSaipicWPkCzXKuKXYUy/eHTks1kG5kNzQyBUbytSrIZMgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197352; c=relaxed/simple;
-	bh=qBntL0jYTZn7DO6Wusg2BMQRN/tvvHk8tNid8FFwGj8=;
+	s=arc-20240116; t=1741197809; c=relaxed/simple;
+	bh=bxrb/H/a4nmJNzzpK6qH3oPn0MJKqrAcxydc50Ci7Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSsaJxjdnkT7qEeajmGklnP63S9a12IEdKY0tzKPeqH+t0AEcDg6Altjrk23790ah1hVAZ6uXfd3ilL0EYRJmG4tlnZGYovzUmeReLSUy7lnI0Fbp+rB44g7zZV1G8ngWr1+molxhLwqxVjNMpH5hv9vpedWEbix39h7sj00oEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySw2WqRu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA7AC4CED1;
-	Wed,  5 Mar 2025 17:55:52 +0000 (UTC)
+	 MIME-Version; b=h8t+ZPKtNb9zB/QwzA1qy66CUgQyp7hjAEE96iQUWI/c/9dWSzqN08Hxgwq2r8HJpzWb/iRVCjZiyduZDmGI+wnkN3h2HQoQwfS66XOETVzGKwmvhPVeZDaT7+GO+YPjp+23IaTJ+wTCuIOMNz96tUA16pvu287DJpCoXg06Pis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMtYFLUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB1CC4CED1;
+	Wed,  5 Mar 2025 18:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197352;
-	bh=qBntL0jYTZn7DO6Wusg2BMQRN/tvvHk8tNid8FFwGj8=;
+	s=korg; t=1741197808;
+	bh=bxrb/H/a4nmJNzzpK6qH3oPn0MJKqrAcxydc50Ci7Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySw2WqRuM0sgmJHoYY80WCGteq29+oqRyTG3OdYh1DpijWkrvpmAGWUYevECF5iiX
-	 AoS18vrQfJlr3UyCJ+39Vi4JXq7iyXGcqlNZEOUWO8Kz/y3n8/jFqRNPtBh6jSna6j
-	 c4TcC9mtbLGbzygN3VfqyJyy1u1M3mhBWlWl3sDI=
+	b=rMtYFLUj1eAVEXLRejwq9Hp8hsHLLP7kSxlF3pF2JhHkr8wb9YoHQ0SbMaBQjJSG7
+	 1lv+WHe47fQmc40HGWWbOYOE8LzBSQ+bEXtA0s2qLB7rQxvwpqUM//nt+7PQ0AtHgt
+	 Hik3z5M3Te+HcRyBwcsSYz3a3O741CZVyAHjhh7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/176] ipvlan: Unmask upper DSCP bits in ipvlan_process_v4_outbound()
+	Wei Fang <wei.fang@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 076/142] net: enetc: correct the xdp_tx statistics
 Date: Wed,  5 Mar 2025 18:48:15 +0100
-Message-ID: <20250305174510.511555979@linuxfoundation.org>
+Message-ID: <20250305174503.391698269@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 939cd1abf080c629552a9c5e6db4c0509d13e4c7 ]
+commit 432a2cb3ee97a7c6ea578888fe81baad035b9307 upstream.
 
-Unmask the upper DSCP bits when calling ip_route_output_flow() so that
-in the future it could perform the FIB lookup according to the full DSCP
-value.
+The 'xdp_tx' is used to count the number of XDP_TX frames sent, not the
+number of Tx BDs.
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7ed2bc80074e ("net: enetc: add support for XDP_TX")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-4-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 1d49771d07f4c..d22a705ac4d6f 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -2,6 +2,8 @@
- /* Copyright (c) 2014 Mahesh Bandewar <maheshb@google.com>
-  */
- 
-+#include <net/inet_dscp.h>
-+
- #include "ipvlan.h"
- 
- static u32 ipvlan_jhash_secret __read_mostly;
-@@ -420,7 +422,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
- 	int err, ret = NET_XMIT_DROP;
- 	struct flowi4 fl4 = {
- 		.flowi4_oif = dev->ifindex,
--		.flowi4_tos = RT_TOS(ip4h->tos),
-+		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
- 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
- 		.flowi4_mark = skb->mark,
- 		.daddr = ip4h->daddr,
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1669,7 +1669,7 @@ static int enetc_clean_rx_ring_xdp(struc
+ 				enetc_xdp_drop(rx_ring, orig_i, i);
+ 				tx_ring->stats.xdp_tx_drops++;
+ 			} else {
+-				tx_ring->stats.xdp_tx += xdp_tx_bd_cnt;
++				tx_ring->stats.xdp_tx++;
+ 				rx_ring->xdp.xdp_tx_in_flight += xdp_tx_bd_cnt;
+ 				xdp_tx_frm_cnt++;
+ 				/* The XDP_TX enqueue was successful, so we
 
 
 
