@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B0EA507DA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995C1A50923
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9086172A04
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23B407A5070
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A89F1D6DB4;
-	Wed,  5 Mar 2025 18:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BF52517AA;
+	Wed,  5 Mar 2025 18:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L48F4LiW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qviEvVAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD6F1A83E4;
-	Wed,  5 Mar 2025 18:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC42252908;
+	Wed,  5 Mar 2025 18:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197668; cv=none; b=n7I3FD5ROg53Pmz4tJGi/t47kF7jtked6xWz9m1cB3ZkqvBusM4yGthplmxjRw2n71dYCUP4u3wGG8PY67yxfdywWd/MTaTPzJNXPdYNmvwIC5+7TDOF4b/rmOdmUDdAhvU0j1Eo8e8NuNYN4V0VgHnfvEwOQyCkvPIsRwquW+Y=
+	t=1741198478; cv=none; b=QbXjs3hP/D83Q2K3pyCfqsC0TlojDR2BTRuEhA5u/f7EwpwYAiKqlwUj8BPb6jYKsvBxs9pf1x6m7Ounw6HJTqERuGqmMwBV4DnTDSR6ZZvc7A3AVAxFjQetsok/huc3vNbFMUbxik7oLng04TTPbhNLHEp8gVqtjdq1JDTB5eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197668; c=relaxed/simple;
-	bh=A1cda03CUGpZelKw0BNKSddqbJl1nhqnSay0EMIHR5I=;
+	s=arc-20240116; t=1741198478; c=relaxed/simple;
+	bh=oNjBKakOngoM1Ndmwe5R0mLteR0SyrBBr3fd5SFVfXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1zBXkkemliuNDFtgdUFav8Dug4JCO9HyGSb8q0VjlOQzSD4qrU7cMP+I8iKHCmIJhZ9dYbF5GwIYJt/y0Cy51NRVfEIjoiypJXev8YOSeYUZoZgL1G7ceIE+kKLRTnGy88mRWZmX9N2514CCZBFcXlDlBlLDEk3iAJ+Wmn3Llc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L48F4LiW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEB0C4CED1;
-	Wed,  5 Mar 2025 18:01:07 +0000 (UTC)
+	 MIME-Version; b=HiL5fk9ykPcYIXkPR/+4r1rSE8/yKpzVJrPh6UJKdPnt30NGKqQhxin3dg1iBownuw0oJ+QkMaQI1qiwWkfQf0JyVVqvEUTBq7jU18w6qoQpLHuGqVOxnBoa52KbJ2BkQWAZdX2W0m8Z0eT/ngLq59I0mZUJ99RCjbKgrIVafIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qviEvVAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A93CC4CED1;
+	Wed,  5 Mar 2025 18:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197667;
-	bh=A1cda03CUGpZelKw0BNKSddqbJl1nhqnSay0EMIHR5I=;
+	s=korg; t=1741198477;
+	bh=oNjBKakOngoM1Ndmwe5R0mLteR0SyrBBr3fd5SFVfXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L48F4LiWA63/JfsSPEgbJqcXBAbFYZHEoxf1jq8jduMcBtcQFn0ND9r9nBcp0HL+E
-	 RhNhEXReMUNcl9NuvIWapZgjDF+Dr70WCTy/1dqDjMzze8C1wzu6V2IXIHqeqMVp7i
-	 jGrlADd/7LXhjTeMTnsfyI/VDdqJTJIri1LoUglo=
+	b=qviEvVApIWks6eZc6iydD9lcrKKxoi0H/46waxMfKmwBzn1SGiBW18OSISH0Y8PGP
+	 Z37bGAZPpDJ8dapxJ2WxaS2QmdDorQVhekIVrqNbPWJLHmMSg7TEtYh5MTYd+rj4Gf
+	 JNf1GXzllUR+pjCM8wc2xLWN5UUIz1qyBTxF+Szg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/142] riscv: KVM: Fix hart suspend status check
+Subject: [PATCH 6.13 041/157] firmware: cs_dsp: Remove async regmap writes
 Date: Wed,  5 Mar 2025 18:47:57 +0100
-Message-ID: <20250305174502.669067582@linuxfoundation.org>
+Message-ID: <20250305174506.950063674@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit c7db342e3b4744688be1e27e31254c1d31a35274 ]
+[ Upstream commit fe08b7d5085a9774abc30c26d5aebc5b9cdd6091 ]
 
-"Not stopped" means started or suspended so we need to check for
-a single state in order to have a chance to check for each state.
-Also, we need to use target_vcpu when checking for the suspend
-state.
+Change calls to async regmap write functions to use the normal
+blocking writes so that the cs35l56 driver can use spi_bus_lock() to
+gain exclusive access to the SPI bus.
 
-Fixes: 763c8bed8c05 ("RISC-V: KVM: Implement SBI HSM suspend call")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20250217084506.18763-8-ajones@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+As this is part of a fix, it makes only the minimal change to swap the
+functions to the blocking equivalents. There's no need to risk
+reworking the buffer allocation logic that is now partially redundant.
+
+The async writes are a 12-year-old workaround for inefficiency of
+synchronous writes in the SPI subsystem. The SPI subsystem has since
+been changed to avoid the overheads, so this workaround should not be
+necessary.
+
+The cs35l56 driver needs to use spi_bus_lock() prevent bus activity
+while it is soft-resetting the cs35l56. But spi_bus_lock() is
+incompatible with spi_async() calls, which will fail with -EBUSY.
+
+Fixes: 8a731fd37f8b ("ASoC: cs35l56: Move utility functions to shared file")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250225131843.113752-2-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_sbi_hsm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/firmware/cirrus/cs_dsp.c | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.c
-index 827d946ab8714..7e349b4ee926c 100644
---- a/arch/riscv/kvm/vcpu_sbi_hsm.c
-+++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
-@@ -76,12 +76,12 @@ static int kvm_sbi_hsm_vcpu_get_status(struct kvm_vcpu *vcpu)
- 	target_vcpu = kvm_get_vcpu_by_id(vcpu->kvm, target_vcpuid);
- 	if (!target_vcpu)
- 		return SBI_ERR_INVALID_PARAM;
--	if (!kvm_riscv_vcpu_stopped(target_vcpu))
--		return SBI_HSM_STATE_STARTED;
--	else if (vcpu->stat.generic.blocking)
-+	if (kvm_riscv_vcpu_stopped(target_vcpu))
-+		return SBI_HSM_STATE_STOPPED;
-+	else if (target_vcpu->stat.generic.blocking)
- 		return SBI_HSM_STATE_SUSPENDED;
- 	else
--		return SBI_HSM_STATE_STOPPED;
-+		return SBI_HSM_STATE_STARTED;
- }
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index 5365e9a430007..42433c19eb308 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -1609,8 +1609,8 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 				goto out_fw;
+ 			}
  
- static int kvm_sbi_ext_hsm_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+-			ret = regmap_raw_write_async(regmap, reg, buf->buf,
+-						     le32_to_cpu(region->len));
++			ret = regmap_raw_write(regmap, reg, buf->buf,
++					       le32_to_cpu(region->len));
+ 			if (ret != 0) {
+ 				cs_dsp_err(dsp,
+ 					   "%s.%d: Failed to write %d bytes at %d in %s: %d\n",
+@@ -1625,12 +1625,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 		regions++;
+ 	}
+ 
+-	ret = regmap_async_complete(regmap);
+-	if (ret != 0) {
+-		cs_dsp_err(dsp, "Failed to complete async write: %d\n", ret);
+-		goto out_fw;
+-	}
+-
+ 	if (pos > firmware->size)
+ 		cs_dsp_warn(dsp, "%s.%d: %zu bytes at end of file\n",
+ 			    file, regions, pos - firmware->size);
+@@ -1638,7 +1632,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 	cs_dsp_debugfs_save_wmfwname(dsp, file);
+ 
+ out_fw:
+-	regmap_async_complete(regmap);
+ 	cs_dsp_buf_free(&buf_list);
+ 
+ 	if (ret == -EOVERFLOW)
+@@ -2326,8 +2319,8 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 			cs_dsp_dbg(dsp, "%s.%d: Writing %d bytes at %x\n",
+ 				   file, blocks, le32_to_cpu(blk->len),
+ 				   reg);
+-			ret = regmap_raw_write_async(regmap, reg, buf->buf,
+-						     le32_to_cpu(blk->len));
++			ret = regmap_raw_write(regmap, reg, buf->buf,
++					       le32_to_cpu(blk->len));
+ 			if (ret != 0) {
+ 				cs_dsp_err(dsp,
+ 					   "%s.%d: Failed to write to %x in %s: %d\n",
+@@ -2339,10 +2332,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 		blocks++;
+ 	}
+ 
+-	ret = regmap_async_complete(regmap);
+-	if (ret != 0)
+-		cs_dsp_err(dsp, "Failed to complete async write: %d\n", ret);
+-
+ 	if (pos > firmware->size)
+ 		cs_dsp_warn(dsp, "%s.%d: %zu bytes at end of file\n",
+ 			    file, blocks, pos - firmware->size);
+@@ -2350,7 +2339,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 	cs_dsp_debugfs_save_binname(dsp, file);
+ 
+ out_fw:
+-	regmap_async_complete(regmap);
+ 	cs_dsp_buf_free(&buf_list);
+ 
+ 	if (ret == -EOVERFLOW)
+@@ -2561,8 +2549,8 @@ static int cs_dsp_adsp2_enable_core(struct cs_dsp *dsp)
+ {
+ 	int ret;
+ 
+-	ret = regmap_update_bits_async(dsp->regmap, dsp->base + ADSP2_CONTROL,
+-				       ADSP2_SYS_ENA, ADSP2_SYS_ENA);
++	ret = regmap_update_bits(dsp->regmap, dsp->base + ADSP2_CONTROL,
++				 ADSP2_SYS_ENA, ADSP2_SYS_ENA);
+ 	if (ret != 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 
