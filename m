@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-121005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134B0A50986
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB16A5089B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D29D17A9D58
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 965611883E87
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8617E259CB4;
-	Wed,  5 Mar 2025 18:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D05250C1A;
+	Wed,  5 Mar 2025 18:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/+RMLoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PR6pyxcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4446E259CA9;
-	Wed,  5 Mar 2025 18:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2764250BFB;
+	Wed,  5 Mar 2025 18:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198606; cv=none; b=OhnqFEoZwKa/VPxNmsluOOJx3n48eG1VV3bhOAO5p8RGjI6aQl09ZyLe8X2dPTVdDH/d/a0R/WDPfG9ljFu5OoBpCgNdcBg2ufTpZX+yok2P6pM983IqLFzWhjT8yjZbv3vTzGIWx+5Z/7w6ADuAEbkvvtC9N/GVFx+t+3HtJkw=
+	t=1741198106; cv=none; b=ttPJgT0XicsyMSzkbLbCJkNug5P3LT+wq7x04OkR8vlvcNmnEprml4kVpP/cjW3ZrbB/kx8WqEezzUZSm550lnKSMOOdYXG0GQYsNGv5TNzTHcQPmSZ8H/UaXYyCUfBB+RpYlS+sQGCXnBlGMSFZyHKGOfT/2E9o/QWZpsSSQdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198606; c=relaxed/simple;
-	bh=RQ5Puj7myqXCo5r+oFwVXJnE7tGqHSbBaksDFEht6+4=;
+	s=arc-20240116; t=1741198106; c=relaxed/simple;
+	bh=osUHHao6t5RW77CGrTBfXlE/01adrUc3J59eXagFNKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3MTc5Z5n6VX+YnID+EHnK4YtXtaA+XigdbsLkvdiIx8HggttAwO0QQKVrCKsB8ZQnVYrFBaDwj2mROF73oP4Dkn7TV+mTAdHuq6HOQnQ+1SqMpGV4JiCF8pwmUSKWXl9uLH4HCEOkqCwaV+E+ya38v74WqfkPBpIUmcCSsij7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/+RMLoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EDCC4CED1;
-	Wed,  5 Mar 2025 18:16:44 +0000 (UTC)
+	 MIME-Version; b=lgbpF9HUIBGrkPF0UuiMB/MMlGHLqDEhCV2NMdL41hzDtD0b+sLodhOQHv1zQ8sVXCHREysHK7Bzg1ADdSkcHT0FxsIMxJPyuklaO4UvKEE8Y0jiXS28Zgf0tvcqj3eIuicu/KBItr68fFymwNiXfN5ANbr0rUuourlfDpRVJyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PR6pyxcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABEEC4CED1;
+	Wed,  5 Mar 2025 18:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198604;
-	bh=RQ5Puj7myqXCo5r+oFwVXJnE7tGqHSbBaksDFEht6+4=;
+	s=korg; t=1741198105;
+	bh=osUHHao6t5RW77CGrTBfXlE/01adrUc3J59eXagFNKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/+RMLoV13T+cQ3Jb46Fmy0QR6Z/4rAy6UaiEacVW8+7yiP5E5TTiEnm7JBry5V9w
-	 juHCpkfMkKnsfEkWUCLs2ttlURPStZyXm5KnnjXGsyqu05AVgI3Z+AEnjizKDMtCu6
-	 1vJGYR7nx4PZko/Ko4anzhcqfDnxhlWhI9AZ4Jng=
+	b=PR6pyxcLrAoZyqEd2zOXfwH3zK1zozD3Rv1CbbjGDLuYc0TSClksIUCJWpvrCSWug
+	 QisGfyCMSaHEShB6MVo63us6fxw83mu3UN7pRX0jZ+v6FJ3qFZsslR/iVvnQTgB/I6
+	 ZN2fJjigGP/TKNEeQ+w0vN4xwt3DJ2hOi7u6zrj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lebrun <dlebrun@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Meghana Malladi <m-malladi@ti.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 058/157] net: ipv6: fix dst ref loop on input in seg6 lwt
-Date: Wed,  5 Mar 2025 18:48:14 +0100
-Message-ID: <20250305174507.635933469@linuxfoundation.org>
+Subject: [PATCH 6.12 066/150] net: ti: icss-iep: Reject perout generation request
+Date: Wed,  5 Mar 2025 18:48:15 +0100
+Message-ID: <20250305174506.471521842@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Meghana Malladi <m-malladi@ti.com>
 
-[ Upstream commit c64a0727f9b1cbc63a5538c8c0014e9a175ad864 ]
+[ Upstream commit 54e1b4becf5e220be03db4e1be773c1310e8cbbd ]
 
-Prevent a dst ref loop on input in seg6_iptunnel.
+IEP driver supports both perout and pps signal generation
+but perout feature is faulty with half-cooked support
+due to some missing configuration. Remove perout
+support from the driver and reject perout requests with
+"not supported" error code.
 
-Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-Cc: David Lebrun <dlebrun@google.com>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c1e0230eeaab2 ("net: ti: icss-iep: Add IEP driver")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250227092441.1848419-1-m-malladi@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_iptunnel.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 21 +--------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 33833b2064c07..51583461ae29b 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -472,10 +472,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 768578c0d9587..d59c1744840af 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -474,26 +474,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 				  struct ptp_perout_request *req, int on)
  {
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
-+	struct lwtunnel_state *lwtst;
- 	struct seg6_lwt *slwt;
- 	int err;
+-	int ret = 0;
+-
+-	mutex_lock(&iep->ptp_clk_mutex);
+-
+-	if (iep->pps_enabled) {
+-		ret = -EBUSY;
+-		goto exit;
+-	}
+-
+-	if (iep->perout_enabled == !!on)
+-		goto exit;
+-
+-	ret = icss_iep_perout_enable_hw(iep, req, on);
+-	if (!ret)
+-		iep->perout_enabled = !!on;
+-
+-exit:
+-	mutex_unlock(&iep->ptp_clk_mutex);
+-
+-	return ret;
++	return -EOPNOTSUPP;
+ }
  
--	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
-+	/* We cannot dereference "orig_dst" once ip6_route_input() or
-+	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
-+	 * need the address of its lwtstate. So, save the address of lwtstate
-+	 * now and use it later as a comparison.
-+	 */
-+	lwtst = orig_dst->lwtstate;
-+
-+	slwt = seg6_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
-@@ -490,7 +498,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
--		if (!dst->error) {
-+
-+		/* cache only if we don't create a dst reference loop */
-+		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&slwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
+ static void icss_iep_cap_cmp_work(struct work_struct *work)
 -- 
 2.39.5
 
