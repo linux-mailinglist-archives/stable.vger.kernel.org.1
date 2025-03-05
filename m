@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566D2A5086E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4822A50926
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12CDE1888BBB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E5D2175B6B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FD32512FA;
-	Wed,  5 Mar 2025 17:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BBC2528FD;
+	Wed,  5 Mar 2025 18:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxcdCGl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMjYHReH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95079250BE9;
-	Wed,  5 Mar 2025 17:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564212512C0;
+	Wed,  5 Mar 2025 18:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197384; cv=none; b=FNUPDpdFaiBNlnYjY9ykSICeb3FG49xaIfF+D+m5xUNmnFAOeXR0WnOoobY/+rKdwrtLfsxx1euCMHgBx4ui1qFnpFbTuhy1C7NPTEhhtO0RN0XwlVV3bMCaImHRYT5htTGIjZhbiPd4vYAXKaxSknUT/q+g9IW4wLUaB6PqFVo=
+	t=1741198469; cv=none; b=e7pCTX36+czgq6T6XG4zJ+m2R72zU/x514F0NVg726Aqdtr3QI3kX6Q40Ly2FV1u0PnW1euVDKHN3KmBP3enftJi2gOwVwWhbesXIy+aTbmqWlADdqJJG3mPCKC35t+z6teyNo243px8+E/g+w1DnJiIZc+uPisLj2TLnpLdt50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197384; c=relaxed/simple;
-	bh=cBcgtfEB/4giwI4PiZvnysKoBxtGEEvADolXR+s1Ye8=;
+	s=arc-20240116; t=1741198469; c=relaxed/simple;
+	bh=g60T00jl/tFF1Sh4ycb7LqlYAFChdHU/Ihrxhw+TziI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOQWcYccHTizTJVK8tfNmKX0a8VEb9c+1ajI3W9n0jl+oHikukxa5N/YjNUUeSE31nQcLpi4va8R5pkZWhKVaUFJ8fKmY4C/P+sWfRF47q8A7CeR9s/aYqytmifY0NyISFUbCyT/zjON7BczhbBKGazvCDqHXi1N/zG9ifzkj4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxcdCGl9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2D9C4CED1;
-	Wed,  5 Mar 2025 17:56:23 +0000 (UTC)
+	 MIME-Version; b=URfWMoRcJPrANfonCrpQCwIbViJGQkBYI3muasVUFUUYEhZ5XI7oggpX4bIcnsiXXag+F1o0D6REVsZt2rVdFc62c1KPomQu8h1jlTkIZ1rWUs6XfxzjDdkq1+/NaBmloiO6kZcJpp7Se/6J+n7ka7pYMCnK+tdKBMX0Ng0Q4zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMjYHReH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05D6C4CED1;
+	Wed,  5 Mar 2025 18:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197384;
-	bh=cBcgtfEB/4giwI4PiZvnysKoBxtGEEvADolXR+s1Ye8=;
+	s=korg; t=1741198469;
+	bh=g60T00jl/tFF1Sh4ycb7LqlYAFChdHU/Ihrxhw+TziI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CxcdCGl9VaRkWpvCQSu4ySZ2NACozj5qhsHvP8Pr4+hagUWIsJGrCSidwE8lyYNUc
-	 X3YAI31ncpvO6xV6vVq4vlePgAoIVtTJvpjUkHq+HMAKq7HKr7+fa9OEATRFFt0o+f
-	 Sxw2QkMaRvn4ooTUjDESXt+Oqmb1vDUy9i9QiBXc=
+	b=XMjYHReHmeGHFGJoTgFYRWrQi5MNaGSKiWHvgB20EP7gxoUjUksdnrSSKmGKO3WNT
+	 Sa50CuWOQJ+QMt3YZ2KV1Oo1awwwr+u0C0lzxGQGALHbM+9AsiK5VlQ+u7wvaevZ2R
+	 UiWS/EppHWVfgKewaT4W0KV3ibW4NXWirQgffwvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/176] ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up
+Subject: [PATCH 6.13 039/157] ipvs: Always clear ipvs_property flag in skb_scrub_packet()
 Date: Wed,  5 Mar 2025 18:47:55 +0100
-Message-ID: <20250305174509.721412710@linuxfoundation.org>
+Message-ID: <20250305174506.868712084@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Philo Lu <lulie@linux.alibaba.com>
 
-[ Upstream commit c84e125fff2615b4d9c259e762596134eddd2f27 ]
+[ Upstream commit de2c211868b9424f9aa9b3432c4430825bafb41b ]
 
-The issue was caused by dput(upper) being called before
-ovl_dentry_update_reval(), while upper->d_flags was still
-accessed in ovl_dentry_remote().
+We found an issue when using bpf_redirect with ipvs NAT mode after
+commit ff70202b2d1a ("dev_forward_skb: do not scrub skb mark within
+the same name space"). Particularly, we use bpf_redirect to return
+the skb directly back to the netif it comes from, i.e., xnet is
+false in skb_scrub_packet(), and then ipvs_property is preserved
+and SNAT is skipped in the rx path.
 
-Move dput(upper) after its last use to prevent use-after-free.
+ipvs_property has been already cleared when netns is changed in
+commit 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when
+SKB net namespace changed"). This patch just clears it in spite of
+netns.
 
-BUG: KASAN: slab-use-after-free in ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
-BUG: KASAN: slab-use-after-free in ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
-
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
- ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
- ovl_link_up fs/overlayfs/copy_up.c:610 [inline]
- ovl_copy_up_one+0x2105/0x3490 fs/overlayfs/copy_up.c:1170
- ovl_copy_up_flags+0x18d/0x200 fs/overlayfs/copy_up.c:1223
- ovl_rename+0x39e/0x18c0 fs/overlayfs/dir.c:1136
- vfs_rename+0xf84/0x20a0 fs/namei.c:4893
-...
- </TASK>
-
-Fixes: b07d5cc93e1b ("ovl: update of dentry revalidate flags after copy up")
-Reported-by: syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=316db8a1191938280eb6
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20250214215148.761147-1-kovalev@altlinux.org
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when SKB net namespace changed")
+Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Link: https://patch.msgid.link/20250222033518.126087-1-lulie@linux.alibaba.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/copy_up.c | 2 +-
+ net/core/skbuff.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 86d4b6975dbcb..203b88293f6bb 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -532,7 +532,6 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 	err = PTR_ERR(upper);
- 	if (!IS_ERR(upper)) {
- 		err = ovl_do_link(ofs, ovl_dentry_upper(c->dentry), udir, upper);
--		dput(upper);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index f251a99f8d421..bed75273f8c47 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6127,11 +6127,11 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet)
+ 	skb->offload_fwd_mark = 0;
+ 	skb->offload_l3_fwd_mark = 0;
+ #endif
++	ipvs_reset(skb);
  
- 		if (!err) {
- 			/* Restore timestamps on parent (best effort) */
-@@ -540,6 +539,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 			ovl_dentry_set_upper_alias(c->dentry);
- 			ovl_dentry_update_reval(c->dentry, upper);
- 		}
-+		dput(upper);
- 	}
- 	inode_unlock(udir);
- 	if (err)
+ 	if (!xnet)
+ 		return;
+ 
+-	ipvs_reset(skb);
+ 	skb->mark = 0;
+ 	skb_clear_tstamp(skb);
+ }
 -- 
 2.39.5
 
