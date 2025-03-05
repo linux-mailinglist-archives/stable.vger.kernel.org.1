@@ -1,51 +1,73 @@
-Return-Path: <stable+bounces-120450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1CDA503D6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 16:51:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A317AA503AB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 16:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44E3D16D8AC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 15:51:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA25B16C325
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 15:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E192250BFD;
-	Wed,  5 Mar 2025 15:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B638230BC6;
+	Wed,  5 Mar 2025 15:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LTbeOh3H"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC5C24EA94;
-	Wed,  5 Mar 2025 15:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AED524E4B4
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 15:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741189873; cv=none; b=eL0TFLYJgQxMLX9QchE92G5ZbbAwpF/gzxOpItdS1kVlUcB+rgm5v6HhUCrWOoFpDzFpA4WYrLdnH19kzxxMquJyI0S5j4qC9TEC8lxzg3JaoCDwVhdCd4WqVdBNyN7xmuMbDZn1y1CPqsnh49DQijtGbgeG8W4YfkxzsmIzbdQ=
+	t=1741189325; cv=none; b=Gn/86Ls59mXmSkLJJGv9T9EIBryxkt/D18hqEMX1iw4P3JStFvxXlPHJcLInIeFZ8t/FHNG0tg4HjAaFuHGA+pKYwl0gSZa96vC6vtDfNRVXCs5X1NDQmsaqXT5zNrbTCP8JWnc/DloaKsB9G2+8ugwtbwzya9m0zCFcrsxw9mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741189873; c=relaxed/simple;
-	bh=bcZ3Y1maZR/FkCTZAmhpnI9rOg3F5c8NqHwJtJ8fpwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R1HUgGwIWFzvUouB3DiuOjXqQR9/PB+JwzgPIASYmAqP5QIIaeoB9AgZKoKRenGRpkLRE7w+xCLlvX+4sLV86krp2VjiJQDuojgURqhFNelQQj+cuNdc2ZHHTZW38yANH8DbN1FwOaw1igmaiyvjCl0vIOW73bpcrUEezulvnhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowACXfTAAcchnVHqTEg--.44952S2;
-	Wed, 05 Mar 2025 23:43:02 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: thierry.reding@gmail.com,
-	mperttunen@nvidia.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	jonathanh@nvidia.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/tegra: Handle EDID allocation failures in tegra_output_connector_get_modes()
-Date: Wed,  5 Mar 2025 23:40:38 +0800
-Message-ID: <20250305154038.2062-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1741189325; c=relaxed/simple;
+	bh=+xHc+7gf61sWgKOBmN4FEL14/XlJrXFFfXG1QCVXkRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VS3uMwE5xHn2Krcak1gwbefY7U1BD+HfRdroKkFXrmk30PSKkX1wAPpwD1agvT3TYzqeThnddKSjGefsE/yXhwQLKHLWMfmXDZG+bXN9uFz0jiD/IE9ngA7SV/amswZy1kXIzh6JdHKm/TYTJdqkeCRBMPJfcouaMubt4sZ0//E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LTbeOh3H; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741189323; x=1772725323;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+xHc+7gf61sWgKOBmN4FEL14/XlJrXFFfXG1QCVXkRc=;
+  b=LTbeOh3H7xzQ5k4OQ2Q5DMh8qxSvD9XFK4kcGRs7xo4bgFC0t3M/MVPk
+   hbjRO3N9bAltNb9e3nmv4xHzIjAgvCQlFIPykjVnAhOxF99A7srkk3hS1
+   KizRfEDMqAvHzjl8Rb+AywOzzN6mc8Jzmm4AhK6J8Qa43trixHhy3D051
+   1QG4oKCNi5qCtuyPNm61xc+dP8LQ9Fh+xSAvFj5SgWxEtaC8YdBChAKqM
+   8PzKKMYYyYrpEcWRjqwZzEqmboM2vTN8ToLrD6gyV0x7r9/mDBi34L6nN
+   wLVwJ64loMSZdgywUSUrfFQUo3YQIZLrhIxTrG8CiJI5MKcfG/h2V7FKA
+   Q==;
+X-CSE-ConnectionGUID: 13zkjEqYT/yA0zAzjIphkw==
+X-CSE-MsgGUID: G0YgcdY4Tf63VNuRYtpPfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="29741612"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
+   d="scan'208";a="29741612"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 07:42:02 -0800
+X-CSE-ConnectionGUID: 2E1uDXQkQF+KPYsI86MPVQ==
+X-CSE-MsgGUID: TUg9s0pcQ2OgVB6MxdCvVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
+   d="scan'208";a="123821186"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 07:42:01 -0800
+From: Imre Deak <imre.deak@intel.com>
+To: stable@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 1/2] drm/i915/dsi: Use TRANS_DDI_FUNC_CTL's own port width macro
+Date: Wed,  5 Mar 2025 17:41:59 +0200
+Message-ID: <20250305154159.3564978-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <2025022418-frostlike-congrats-bf0d@gregkh>
+References: <2025022418-frostlike-congrats-bf0d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,56 +75,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACXfTAAcchnVHqTEg--.44952S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ww1UWryxArWrXFyxuF1Utrb_yoW8JFWUpF
-	srtFyY9ryktrWFkF1jyF18uFy3uas2kFWUK3s5Ca1q9rs0yr9Fqr45tw1UWFWUGr98JF13
-	tanFqrW7JFyxCF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
-	6r4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUb8hL5UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4MA2fILwlxYQABsQ
 
-The return values of `drm_edid_dup()` and `drm_edid_read_ddc()` must
-be checked in `tegra_output_connector_get_modes()` to prevent NULL
-pointer dereferences. If either function fails, the function should
-immediately return 0, indicating that no display modes can be retrieved.
+commit 879f70382ff3e92fc854589ada3453e3f5f5b601 upstream.
 
-A proper implementation can be found in `vidi_get_modes()`, where the
-return values are carefully validated, and the function returns 0 upon
-failure.
+The format of the port width field in the DDI_BUF_CTL and the
+TRANS_DDI_FUNC_CTL registers are different starting with MTL, where the
+x3 lane mode for HDMI FRL has a different encoding in the two registers.
+To account for this use the TRANS_DDI_FUNC_CTL's own port width macro.
 
-Fixes: 98365ca74cbf ("drm/tegra: convert to struct drm_edid")
-Cc: stable@vger.kernel.org # 6.12+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Cc: <stable@vger.kernel.org> # v6.5+
+Fixes: b66a8abaa48a ("drm/i915/display/mtl: Fill port width in DDI_BUF_/TRANS_DDI_FUNC_/PORT_BUF_CTL for HDMI")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214142001.552916-2-imre.deak@intel.com
+(cherry picked from commit 76120b3a304aec28fef4910204b81a12db8974da)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 879f70382ff3e92fc854589ada3453e3f5f5b601)
+[Imre: Rebased on v6.6.y, due to upstream API changes for intel_de_read(),
+ TRANS_DDI_FUNC_CTL()]
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- drivers/gpu/drm/tegra/output.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/display/icl_dsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/output.c b/drivers/gpu/drm/tegra/output.c
-index 49e4f63a5550..360c4f83a4f8 100644
---- a/drivers/gpu/drm/tegra/output.c
-+++ b/drivers/gpu/drm/tegra/output.c
-@@ -39,6 +39,9 @@ int tegra_output_connector_get_modes(struct drm_connector *connector)
- 	else if (output->ddc)
- 		drm_edid = drm_edid_read_ddc(connector, output->ddc);
+diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
+index 5b8efe8e735a9..0a0efeeb790e2 100644
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -797,8 +797,8 @@ gen11_dsi_configure_transcoder(struct intel_encoder *encoder,
  
-+	if (!drm_edid)
-+		return 0;
-+
- 	drm_edid_connector_update(connector, drm_edid);
- 	cec_notifier_set_phys_addr(output->cec,
- 				   connector->display_info.source_physical_address);
+ 		/* select data lane width */
+ 		tmp = intel_de_read(dev_priv, TRANS_DDI_FUNC_CTL(dsi_trans));
+-		tmp &= ~DDI_PORT_WIDTH_MASK;
+-		tmp |= DDI_PORT_WIDTH(intel_dsi->lane_count);
++		tmp &= ~TRANS_DDI_PORT_WIDTH_MASK;
++		tmp |= TRANS_DDI_PORT_WIDTH(intel_dsi->lane_count);
+ 
+ 		/* select input pipe */
+ 		tmp &= ~TRANS_DDI_EDP_INPUT_MASK;
 -- 
-2.42.0.windows.2
+2.44.2
 
 
