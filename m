@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-120522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9CBA5071E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BFAA50850
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CCB43AD5A7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1653AFEFB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9992512EB;
-	Wed,  5 Mar 2025 17:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F7B251785;
+	Wed,  5 Mar 2025 18:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="an4oolNF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp4Lc0Bl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6E52512D9;
-	Wed,  5 Mar 2025 17:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A187824FBE8;
+	Wed,  5 Mar 2025 18:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197204; cv=none; b=FznxYHEYrIPmkcfT2AaX45zQ1LSS/36SxjgQi0D+ufKzrebtLqXHAeW6ePxXZ2qQuQoquKVtK7kWLZ0god74pK64DncreXp0BPhDybEudcMTo+GFTxh+2SlKUIZZtGz98ufxgKhKM+drocFTG49X892ikmQeQZWoPAZw1aW/3iA=
+	t=1741197960; cv=none; b=Ne+3jVemgcs2Or4R/ZUiQekOhZ/pX0hLAZuzHMwCS8Lgq0sobXbkPx1z/VHhMY2YHPHFhMX3OgdvyXNHAx4bURyNMziJgsH4HHMr/EO4Fx/PS639glbsoNb/uvsTlopViFHIM8d+Rn74gVwPovRw/z3Og5xkt40ypJhsUi7H1eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197204; c=relaxed/simple;
-	bh=ekg0bUtxHmeus5ip3i5xr3AcwSq8lx28uIernxmjeT0=;
+	s=arc-20240116; t=1741197960; c=relaxed/simple;
+	bh=3kiYAiM+99D3x4BXHj37okYH3p4uNjuRwWgXJ+cT8K8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dbH0tVdWv49AEsrhbGVWSRu5Xwy2FYRr0MM2PMzv1MLDFMxXnYs2uQUaJZfhYD6d+7cVNgf94b1E8AfQ0qWIJHWYgWWkfMh275jYvyVDkOiMw3t56mJI+BhE0nwVI5yPmt30URRCPQMXtF2IwBgxu2b6hQI7qkCZqetmj/jEK7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=an4oolNF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDCDC4CED1;
-	Wed,  5 Mar 2025 17:53:23 +0000 (UTC)
+	 MIME-Version; b=chmh6QXsUOnTwWYi4fFGSWMen5iCJIbbiZWkrdT4pX4v/jV76f+FgIi4gSD7/grq7IsPOeF83bC3qCuCfkXBZ/FkpkJ5wwdhLCqmvgxdGmooRKBQY1sgqwC5VNf3Muz43Ws5TDGuh8kplkoM8I3N29KH510AhrqeYwBUzpSAqBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp4Lc0Bl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28553C4CED1;
+	Wed,  5 Mar 2025 18:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197203;
-	bh=ekg0bUtxHmeus5ip3i5xr3AcwSq8lx28uIernxmjeT0=;
+	s=korg; t=1741197960;
+	bh=3kiYAiM+99D3x4BXHj37okYH3p4uNjuRwWgXJ+cT8K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=an4oolNF+ZUaUscWPoZfJSiVrgsZlhVm7zuxLolkampI0LsPumshPidTAyXH17lQc
-	 X8770IxrO5Z+gBQn86dhPiMT0/iwjZk1SP8HXO+LlX/GJI5v17JfDzZvpiuWt4Ukt0
-	 3ct6yjjazF6dz4vc+3vM6fW0lxByxlsj5TQJFqKs=
+	b=Tp4Lc0BlpO1ythsbwb/B3KY/IiSezKBFXRCHEgGjmrhYt+cvd/89YUx0t+2VqfDDH
+	 3T/51juDmDkFVEkT3KMGsvXgROf/V8PJ6+ebCAVGKrAa+0fMY2HBNFfH348yINsjtz
+	 eFMqlMjJRnuuaWLgawhFYWd1lZbJb3bn65xVTANA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 076/176] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
-Date: Wed,  5 Mar 2025 18:47:25 +0100
-Message-ID: <20250305174508.517505899@linuxfoundation.org>
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 017/150] NFS: Adjust delegated timestamps for O_DIRECT reads and writes
+Date: Wed,  5 Mar 2025 18:47:26 +0100
+Message-ID: <20250305174504.499295236@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 878e7b11736e062514e58f3b445ff343e6705537 upstream.
+[ Upstream commit 88025c67fe3c025a0123bc7af50535b97f7af89a ]
 
-Add check for the return value of nfp_app_ctrl_msg_alloc() in
-nfp_bpf_cmsg_alloc() to prevent null pointer dereference.
+Adjust the timestamps if O_DIRECT is being combined with attribute
+delegations.
 
-Fixes: ff3d43f7568c ("nfp: bpf: implement helpers for FW map ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20250218030409.2425798-1-haoxiang_li2024@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e12912d94137 ("NFSv4: Add support for delegated atime and mtime attributes")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/netronome/nfp/bpf/cmsg.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/direct.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
-+++ b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
-@@ -20,6 +20,8 @@ nfp_bpf_cmsg_alloc(struct nfp_app_bpf *b
- 	struct sk_buff *skb;
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 2784586f93fc0..c1f1b826888c9 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -56,6 +56,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/atomic.h>
  
- 	skb = nfp_app_ctrl_msg_alloc(bpf->app, size, GFP_KERNEL);
-+	if (!skb)
-+		return NULL;
- 	skb_put(skb, size);
++#include "delegation.h"
+ #include "internal.h"
+ #include "iostat.h"
+ #include "pnfs.h"
+@@ -286,6 +287,8 @@ static void nfs_direct_read_completion(struct nfs_pgio_header *hdr)
+ 	nfs_direct_count_bytes(dreq, hdr);
+ 	spin_unlock(&dreq->lock);
  
- 	return skb;
++	nfs_update_delegated_atime(dreq->inode);
++
+ 	while (!list_empty(&hdr->pages)) {
+ 		struct nfs_page *req = nfs_list_entry(hdr->pages.next);
+ 		struct page *page = req->wb_page;
+@@ -770,6 +773,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ 
+ 	spin_lock(&inode->i_lock);
+ 	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
++	nfs_update_delegated_mtime_locked(dreq->inode);
+ 	spin_unlock(&inode->i_lock);
+ 
+ 	while (!list_empty(&hdr->pages)) {
+-- 
+2.39.5
+
 
 
 
