@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D274A509AB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20049A50839
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 284BD3A726A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E019E1667F1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22352566D0;
-	Wed,  5 Mar 2025 18:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC861C6FF6;
+	Wed,  5 Mar 2025 18:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3JIpnrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8f1Kdbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6B8255E53;
-	Wed,  5 Mar 2025 18:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB9719067C;
+	Wed,  5 Mar 2025 18:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198725; cv=none; b=tjqCJFoSzls6geF1FVqgMDL76mMnO+LG/1b3AvoXPXAdcHIX16mfZvKMOKv1NCq3okU+i/eoH0qGruHECHLFRIZxwjePJdGSdu2CspZlDqAoyOz9OEe+ouEOv9+U4N5Csv+I7BYVc//5pEnR3nzRstz+3yUPz9qbkvA1aMkp1II=
+	t=1741197917; cv=none; b=mWx3voNa6qvIKTd6QtcY28ynh/kMiXFojGkToFQGzbdYFW9WqVf012CDRxDzKzCwQzvNebs5FBcBLhHkQlslt+ZpDRnpF2tdEfMXI88XVn//kCGU7wEGmzdFmITXJlW+pRckRvW8/nbNIY9iQ5LCI98hJ8298pwzKlzrcUZpcL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198725; c=relaxed/simple;
-	bh=VH7UdYV3FBiD7Fp3Cwev5wThqgeOM5+zX3NUEIEbNe8=;
+	s=arc-20240116; t=1741197917; c=relaxed/simple;
+	bh=jgIPvkJvYYJnl/gWtHV+tSQbd18qpQ0uCgN6jbPkFv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tFAdTziHpOwkylXRHLKL2fBTAgCiLTm/hF6vcLJoCByadE5Odgi9meNlM/2ojE55P44/v4rD5JMhFPOXImPU7cxcs7nbGzNMJ0OFuBtkBXeQYUuV5EL+geDunFsYmvJG05BE8bMVslyWJoaF3tPWbOrNLBGrI/q1+6Vu05cj1hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3JIpnrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E24C4CEE0;
-	Wed,  5 Mar 2025 18:18:44 +0000 (UTC)
+	 MIME-Version; b=RPM0P0n5mveMxpmhVjqyAL/txiAJfx6mZOQYWA57zUUz3GK8ZL9HE0xItCDrG7Uw1NEhtuaTkUunp6gp6vPStg2IcU06RpIuhRWMlmtKmwXxlw6VrN+thAbuOlnF1kVFLnws4rxDvklCHcmwv4z0wLk846fQ/8kmG9umaVjX3/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8f1Kdbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4D2C4CED1;
+	Wed,  5 Mar 2025 18:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198725;
-	bh=VH7UdYV3FBiD7Fp3Cwev5wThqgeOM5+zX3NUEIEbNe8=;
+	s=korg; t=1741197916;
+	bh=jgIPvkJvYYJnl/gWtHV+tSQbd18qpQ0uCgN6jbPkFv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3JIpnrMTaeCe/4eCJ9BZhoOHbOEokO8Ro20F8g73F0NFKhL9pdWGMkinCPzM66l7
-	 N/KaaBs7kmwfFdQPfzugiCCdMqIJAc/ZiBbhRJHGJidtkELk0MQucXB2TiIEMplNZg
-	 YApZm5RGhIlIUt1YyNF5+O3JSQJWeii05OME5jeU=
+	b=Q8f1KdbeEh/Cu/rt9OiotkJ71EGew9AEj38ROje3WiPPn+ZiQbawZpZ5lv0ZNbK9t
+	 L37GF8H2xYxEqVeBa5CQbfHBtjN55wGE57BRrmXOcwrEGKHb0GIh0Fx3SOrsM/dt+p
+	 6QR3/dxpAkvmVp6w0oJdDR6dBeXuJkAm0ehim9u8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.13 095/157] drm/amdgpu: init return value in amdgpu_ttm_clear_buffer
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 112/142] x86/microcode/amd: Cache builtin/initrd microcode early
 Date: Wed,  5 Mar 2025 18:48:51 +0100
-Message-ID: <20250305174509.132376597@linuxfoundation.org>
+Message-ID: <20250305174504.827948136@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +59,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit d3c7059b6a8600fc62cd863f1ea203b8675e63e1 upstream.
+commit a7939f01672034a58ad3fdbce69bb6c665ce0024 upstream
 
-Otherwise an uninitialized value can be returned if
-amdgpu_res_cleared returns true for all regions.
+There is no reason to scan builtin/initrd microcode on each AP.
 
-Possibly closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
+Cache the builtin/initrd microcode in an early initcall so that the
+early AP loader can utilize the cache.
 
-Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7c62aacc3b452f73a1284198c81551035fac6d71)
-Cc: stable@vger.kernel.org
+The existing fs initcall which invoked save_microcode_in_initrd_amd() is
+still required to maintain the initrd_gone flag. Rename it accordingly.
+This will be removed once the AP loader code is converted to use the
+cache.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231017211723.187566507@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/amd.c  |    8 +++++++-
+ arch/x86/kernel/cpu/microcode/core.c |   26 ++++----------------------
+ 2 files changed, 11 insertions(+), 23 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -2280,7 +2280,7 @@ int amdgpu_ttm_clear_buffer(struct amdgp
- 	struct amdgpu_ring *ring = adev->mman.buffer_funcs_ring;
- 	struct amdgpu_res_cursor cursor;
- 	u64 addr;
--	int r;
-+	int r = 0;
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -527,12 +527,17 @@ void load_ucode_amd_early(unsigned int c
  
- 	if (!adev->mman.buffer_funcs_enabled)
+ static enum ucode_state load_microcode_amd(u8 family, const u8 *data, size_t size);
+ 
+-int __init save_microcode_in_initrd_amd(unsigned int cpuid_1_eax)
++static int __init save_microcode_in_initrd(void)
+ {
++	unsigned int cpuid_1_eax = native_cpuid_eax(1);
++	struct cpuinfo_x86 *c = &boot_cpu_data;
+ 	struct cont_desc desc = { 0 };
+ 	enum ucode_state ret;
+ 	struct cpio_data cp;
+ 
++	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
++		return 0;
++
+ 	find_blobs_in_containers(cpuid_1_eax, &cp);
+ 	if (!(cp.data && cp.size))
  		return -EINVAL;
+@@ -549,6 +554,7 @@ int __init save_microcode_in_initrd_amd(
+ 
+ 	return 0;
+ }
++early_initcall(save_microcode_in_initrd);
+ 
+ /*
+  * a small, trivial cache of per-family ucode patches
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -180,30 +180,13 @@ void load_ucode_ap(void)
+ 	}
+ }
+ 
+-static int __init save_microcode_in_initrd(void)
++/* Temporary workaround until find_microcode_in_initrd() is __init */
++static int __init mark_initrd_gone(void)
+ {
+-	struct cpuinfo_x86 *c = &boot_cpu_data;
+-	int ret = -EINVAL;
+-
+-	if (dis_ucode_ldr) {
+-		ret = 0;
+-		goto out;
+-	}
+-
+-	switch (c->x86_vendor) {
+-	case X86_VENDOR_AMD:
+-		if (c->x86 >= 0x10)
+-			ret = save_microcode_in_initrd_amd(cpuid_eax(1));
+-		break;
+-	default:
+-		break;
+-	}
+-
+-out:
+ 	initrd_gone = true;
+-
+-	return ret;
++	return 0;
+ }
++fs_initcall(mark_initrd_gone);
+ 
+ struct cpio_data find_microcode_in_initrd(const char *path)
+ {
+@@ -621,5 +604,4 @@ static int __init microcode_init(void)
+ 	return error;
+ 
+ }
+-fs_initcall(save_microcode_in_initrd);
+ late_initcall(microcode_init);
 
 
 
