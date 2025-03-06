@@ -1,236 +1,113 @@
-Return-Path: <stable+bounces-121253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148A0A54E47
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:52:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F779A54E4C
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9873AA6FC
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:52:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 343AB164FF6
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A36F19AD48;
-	Thu,  6 Mar 2025 14:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DE41DE4EC;
+	Thu,  6 Mar 2025 14:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yxm1Pk3q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiQkuxhB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB541898EA
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 14:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C29502BE;
+	Thu,  6 Mar 2025 14:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741272741; cv=none; b=NKIZ80iOhInWRlekq0JQXAMPdRvQBzx9wOanM1kVD2wUdUeEHNaEoM6zpdzUqZyTueHDjd52Ocgz/RKOmBMMzaIqZAn6C5xOfjOmTZAWP9Qfy20wli80Ursoeg5WE4hPPCv+XVPWQ6zK6NEHHjHLlnK9xHHqvWiW+4gbYJ6JuD0=
+	t=1741272771; cv=none; b=ajBwqRMZcronOtiMmT9UnBBOxVzepOsor2q+U90pYjzAJLZNda4qnMg4bdk4tXUiozSk9oWGfzP8dMH/98BxHxDh5irpiutX8v0MbxTW3YLQLzcMQ9YLsHcIk0PccRcH/QqSyy20nVcHkflth1jOvVGpM3JfrD63Preb7/6Zdi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741272741; c=relaxed/simple;
-	bh=yUu+b2vzGVtm02aX2/54++X00P3YWAnG4YmO83c4ObQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uybVcR08umCbiGrrEk5q6MkNvChWJaA4Y56n97fCCwsOroevkz1SIlKmbYVodwe0c1qlFGX0MpVtwENop4/c4j3exnhleDtNU8LTjbvoiRl8ukmHJZ+hg5Z3w5BVxzuoGEWiX1FynRL3j8z/7po/pIdtHkovVSRAwOaD6O6N1iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yxm1Pk3q; arc=none smtp.client-ip=209.85.222.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-86b0899ad8bso281661241.0
-        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 06:52:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741272739; x=1741877539; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=++XXHmZkM/4heXDc+pXKcqrY45A7F6g9wZ+G1XbfvUg=;
-        b=Yxm1Pk3qwOpMRKDMBc+EwiZeoHB4+golpu1oQyBLEThc3F+xDLZfqni+ckCQXADIvH
-         RDcqJCr8WpUdAX93OYjEIt0mM9S1tYCA4wtq3QOB3OW36sKfv/tvvsCBNzxP+0v3pkGr
-         +W4Kar77sIxhfMHbYCTqLhSwAOgzvWsTgRSQmRIWXAo1xliQD10Izgz1l6Swt5JOoHzM
-         OJqmE/qQWO5xOYg8GK+oZbk/fSeFXahO0w2y7+QOnkapaogkYCo7AzfMtKNri6N+5My0
-         rq0Povpmvh2hrJUFPBVPZfGeFPlaZkKVfWf5Y59/15TeWI7YXY7v8rE8Qpzai0oYRR1j
-         xPUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741272739; x=1741877539;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=++XXHmZkM/4heXDc+pXKcqrY45A7F6g9wZ+G1XbfvUg=;
-        b=XqEG0fsGdzuQW96iHjwL+YIbUqYF9K2se4t+CkM0BHzAhTL7/e2285nZnqUwwUu1ix
-         NZEPOKoNSBqTveNs7IouXgxqjybhacP+eie0VfhxRt2xejoBsQTniCNRvXc7UadytHWC
-         PtWbWkRAbMR0FAnwgy+mppAZKEeFDD5zGrJfzbnrtIYhLVHCK+k2wAtU75Ov2k21eHKg
-         VGRfirx9iFQjRSBz017TEjE8AYI+Zy6rLyM7DvUMEutoV55gPpnXJuq80riLleuJaCJG
-         UqDyw4Mcv2DLDQWBg2nwGW3iM/RRUuLwaKgjMudG9S82j9mm7prUY2NXI9cqccgMwQ9o
-         Tbtg==
-X-Gm-Message-State: AOJu0Yww4p36Dnpxr9jqB0LAMay1qEaenxXMoYoQrKaeKP7sOH+DHGZv
-	X7zH4yDOLJlbJvgkBx3Pp2HDZ6oqx3z+Tg97ps7T+3/OUnCK9y9LmOslzXk8Ft1s7v98QRwCHU6
-	mkPZCWiK99VAhJT75uchNuIOUKyjmo68a8O/pAQ==
-X-Gm-Gg: ASbGnct/TlyFWT1KtPs0T0iLGTfCJY32d2kALTuQAgzhdrueCLnUPN0FMLx4UWF/fpY
-	BfKz6sa8SlMpUWz4ak4262e2PQIkE5BMNEzGC6LXNzWxVKYt/Gc/KfwTU+Q1WDOp7WPgaPdiljk
-	OMqr47HIqdgpBDRt6UEH9ZQlyEg4kfvi2p+81OxXvaeVStzafKlnKcTAQfPTU=
-X-Google-Smtp-Source: AGHT+IHqKw0y7gEoV2UPp2JTXAc45pxenBD9EVRnJ3CNyJRZgT0EsDiICwm8oX0iHkmbYK+jllnu/+N/IxUM9GPv2y4=
-X-Received: by 2002:a05:6102:4193:b0:4c1:86bc:f959 with SMTP id
- ada2fe7eead31-4c2e27a6eb3mr5045988137.8.1741272738910; Thu, 06 Mar 2025
- 06:52:18 -0800 (PST)
+	s=arc-20240116; t=1741272771; c=relaxed/simple;
+	bh=SUL+ucWKrpjs4swUg+H65xiM1N2WpJde2yr8apUzAp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PN4+FpyNK7r9emxwOy51cbMsx7GggT3fnMVD/T1Cc9yAKVXMmpsQFx3nHkqbR24hQHCdAr3+oIAn9utueIxTCjtPG40UrnIK115dSTfbPpRiwziRkpuqVrbEol2QSY7uTrpeNwXUob9O/JEsQu9fv9UFDG2T9AfytscPMIlgIjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiQkuxhB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E03C4CEE0;
+	Thu,  6 Mar 2025 14:52:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741272771;
+	bh=SUL+ucWKrpjs4swUg+H65xiM1N2WpJde2yr8apUzAp0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oiQkuxhB75KDwwkFO3GswIkPzYDS8WbA/cv9wsZm4WbaqQv/O73UGTWYcU29Pl/oS
+	 Qnx1txDwoq498DkPIBwE95BsTOUGYaoIhHXN0uEcXwDf/LnFAvb2giVmwqAoh9QmC1
+	 Ulu/qd5CPxlfCfPYCjU4xoUjlxUSnDszEmTs1JNY=
+Date: Thu, 6 Mar 2025 15:52:48 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, Michal Pecio <michal.pecio@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 03/15] usb: xhci: Don't skip on Stopped - Length Invalid
+Message-ID: <2025030611-twister-synapse-8a99@gregkh>
+References: <20250306144954.3507700-1-mathias.nyman@linux.intel.com>
+ <20250306144954.3507700-4-mathias.nyman@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250305174505.437358097@linuxfoundation.org>
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 6 Mar 2025 20:22:06 +0530
-X-Gm-Features: AQ5f1JqyKMYONNiG8qjjNgx2bFmT-sq5eEAlVlJjqLc1GhF9Jjc0gVpKZ-epy90
-Message-ID: <CA+G9fYucgzxXxrTBUJcgRyJwXk=14S6tL9G-jd4Wm6fM4VaMkw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/176] 6.1.130-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250306144954.3507700-4-mathias.nyman@linux.intel.com>
 
-On Wed, 5 Mar 2025 at 23:21, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.130 release.
-> There are 176 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 07 Mar 2025 17:44:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.130-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Thu, Mar 06, 2025 at 04:49:42PM +0200, Mathias Nyman wrote:
+> From: Michal Pecio <michal.pecio@gmail.com>
+> 
+> Up until commit d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are
+> returned when isoc ring is stopped") in v6.11, the driver didn't skip
+> missed isochronous TDs when handling Stoppend and Stopped - Length
+> Invalid events. Instead, it erroneously cleared the skip flag, which
+> would cause the ring to get stuck, as future events won't match the
+> missed TD which is never removed from the queue until it's cancelled.
+> 
+> This buggy logic seems to have been in place substantially unchanged
+> since the 3.x series over 10 years ago, which probably speaks first
+> and foremost about relative rarity of this case in normal usage, but
+> by the spec I see no reason why it shouldn't be possible.
+> 
+> After d56b0b2ab142, TDs are immediately skipped when handling those
+> Stopped events. This poses a potential problem in case of Stopped -
+> Length Invalid, which occurs either on completed TDs (likely already
+> given back) or Link and No-Op TRBs. Such event won't be recognized
+> as matching any TD (unless it's the rare Link TRB inside a TD) and
+> will result in skipping all pending TDs, giving them back possibly
+> before they are done, risking isoc data loss and maybe UAF by HW.
+> 
+> As a compromise, don't skip and don't clear the skip flag on this
+> kind of event. Then the next event will skip missed TDs. A downside
+> of not handling Stopped - Length Invalid on a Link inside a TD is
+> that if the TD is cancelled, its actual length will not be updated
+> to account for TRBs (silently) completed before the TD was stopped.
+> 
+> I had no luck producing this sequence of completion events so there
+> is no compelling demonstration of any resulting disaster. It may be
+> a very rare, obscure condition. The sole motivation for this patch
+> is that if such unlikely event does occur, I'd rather risk reporting
+> a cancelled partially done isoc frame as empty than gamble with UAF.
+> 
+> This will be fixed more properly by looking at Stopped event's TRB
+> pointer when making skipping decisions, but such rework is unlikely
+> to be backported to v6.12, which will stay around for a few years.
+> 
+> Fixes: d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are returned when isoc ring is stopped")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+> Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Why is a patch cc: stable burried here in a series for linux-next?  It
+will be many many weeks before it gets out to anyone else, is that
+intentional?
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Same for the other commit in this series tagged that way.
 
-## Build
-* kernel: 6.1.130-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 34da6dd4fda1d2daf1b0df768fe6224d0993e050
-* git describe: v6.1.128-747-g34da6dd4fda1
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
-28-747-g34da6dd4fda1
+thanks,
 
-## Test Regressions (compared to v6.1.128-570-gfdd3f50c8e3e)
-
-## Metric Regressions (compared to v6.1.128-570-gfdd3f50c8e3e)
-
-## Test Fixes (compared to v6.1.128-570-gfdd3f50c8e3e)
-
-## Metric Fixes (compared to v6.1.128-570-gfdd3f50c8e3e)
-
-## Test result summary
-total: 75778, pass: 58508, fail: 3115, skip: 13933, xfail: 222
-
-## Build Summary
-* arc: 6 total, 5 passed, 1 failed
-* arm: 139 total, 139 passed, 0 failed
-* arm64: 46 total, 42 passed, 4 failed
-* i386: 31 total, 25 passed, 6 failed
-* mips: 30 total, 25 passed, 5 failed
-* parisc: 5 total, 5 passed, 0 failed
-* powerpc: 36 total, 33 passed, 3 failed
-* riscv: 14 total, 13 passed, 1 failed
-* s390: 18 total, 15 passed, 3 failed
-* sh: 12 total, 10 passed, 2 failed
-* sparc: 9 total, 8 passed, 1 failed
-* x86_64: 38 total, 38 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+greg k-h
 
