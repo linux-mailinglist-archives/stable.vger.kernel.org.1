@@ -1,124 +1,167 @@
-Return-Path: <stable+bounces-121132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594D3A54039
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 03:04:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9B5A540AA
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 03:29:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE5316DDDE
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 02:03:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1EE53AEFAA
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 02:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C97117C208;
-	Thu,  6 Mar 2025 02:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F87F9F8;
+	Thu,  6 Mar 2025 02:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="jemHX14d"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GdJljHc/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74ACC2837B;
-	Thu,  6 Mar 2025 02:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1343D2907
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 02:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741226635; cv=none; b=oYPFx9FTFTkxdrvcDOxKbsUqNWHdAuCjhoHkPWw0iZyoGw2ISh/5sXE9YlM9AdR4FF8p/Ur9kJJEIMImWHA7vF2UKyHclmwoIINhhFrDwaDGiXk7WjMqfEI04+dgRNmEkwUC0o0Z0t5d71Qur57zLohqNUHXvGpSUZvsNoyeSrE=
+	t=1741228138; cv=none; b=uiEuJ4q40m7mnz+JZFsRRsfF88P0QG0KlwRooPO//p9aFQQ+j12xoiPGDu7M4B8nsyR3V5GcNvHJSUF2dTYBtRzuH285A3z0mT7BNZIQTVFP4s5ZcRXoe4z5u/3jS3AV9NfGcOcLyzfnks8sF8oGOiDeRBLVHy1JZF+dNZl77k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741226635; c=relaxed/simple;
-	bh=MkJLPuKgr5v6ZlaUCOUYuEQCioPiSj2i/qCAETlW8O4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jMlENG0RrNiivqr6Obj2hGzwc+2O8T7wqi5GDPt44vxoBzTDl78mmxAdTHf6bCI33362z5AXGhs62el04lOTKbJUZUtkfYOL3TvB6kGROy8bzrwEFI6dcYqmIg0psr8dZCDth53KLOYknRg1YH9TOB8N0NxjLsqAhzXIsJ0ai/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=jemHX14d; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-390f69f8083so138314f8f.0;
-        Wed, 05 Mar 2025 18:03:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1741226632; x=1741831432; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Nr9fREGmxvfw4nIR4+MArOFiCvtJoUCsQdfY9QI8DmA=;
-        b=jemHX14dCdWMunb86g47ntcByVd9mL+2nVKiqBsxmbRlYlYJ9tdi6bGoxdx1OljkJ/
-         gaJW8PRFI6PuJcIRbblEWB0fuzJIwpWeHZuULcL3tsLEbHCa8l+79hkR7Or5wZlpLRRa
-         0wCM1/95vFgB1aWkgr1kkGdHBzHZBW2lYp1MwbQUh1zjC00XPXdyruN4FS4z6y+5LOWf
-         n7a75n9ApcVc6Mun4852+0MVXrZB24ij2/lXvoq8+4upUxjMcwiBaysNs9R8Zpspx/Kx
-         boFFz9rjwVBzwRER66Zz9izZ+1VlqX1FXlbJp03TPY8PCS3WmYWeBKfRW97H+WFrA8CU
-         4xYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741226632; x=1741831432;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nr9fREGmxvfw4nIR4+MArOFiCvtJoUCsQdfY9QI8DmA=;
-        b=AEFkRKhmwIX6X20cA8iQ1+w2Ko35AYOTI6YzhBkUgq16ZclcDh6Qcc2v/3sOH663Fe
-         D4pORMhtxBNfx1E6goKN+uchoOZ8IiVm9bwlIV8Gs5lh+d4j6xCCKWRyHRtS3i5S3JKq
-         Ur3rxGU3C5D9bUrhr4/BHj1czrXJce305faoNRrPxsnDDENg1aqE/HzxYMTCkfNyoAPr
-         Y9fkejzBdRjI1ud4rqEp+JmhZTidDhAMu4kawBGhiZq6EIU+gwS3hQsGX6KO0q3nS9rW
-         n4oHc1P/4Pt7iGuty2GcFPRwBGlJdBidZHi1A0UfvZEWa4FoWhwKQLZJQntA+gy0IKHR
-         vhjw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPBCkgYvY1gIgMdFoL40/sKNg/Kf6gAuqF7kSGbwm6YGEkNH7u6VUWIANXFPwTzj381JMuRxyyAvgBUPc=@vger.kernel.org, AJvYcCX7jw7P0ZWcxdsyhMZTYw1HVfxsNPOQSZVLiDygYtHi3+qhCPAeIOIOMVNacxgzVSZTLHVKTcjJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXdHodFLzAIInoXf8+jLuK+yjizzMA2DAp8d93W9ERdw43D7bS
-	VAHN1g7qpsZLSnXZySeWOaMtRh0ctFYFzuWojPNNMQeomyZSrpU=
-X-Gm-Gg: ASbGncu4kGb1AdRWlgb402mP/EcePl2phD3kIZNfT6hbfxNl9GLIw76JsBGKbLG8col
-	zjXNa6rJzwg70sNDjuhXdrHjlDVQnLFW5gVxg/hXOvkgJ55sLcenCKaFRJkewXJE+G7Nt5xGreD
-	8yBU5URqsIDE4wH2Yp1UnTXo7W9JJ/wo89JZ9TziV46l1vM9vxYqmXFLi8Rkb3uCJL1L2KnUOfB
-	i9mIzmufTznOd9YioQHp9qubGqS0Z5tzdKeF4bi+3SMg4ytlZp7NnQPAeWCNwbk5Y0CmSiGPCTK
-	eXzLkVh+YRGBlVKep007H6mjxntNLYekKwyL/ymzyoZgvcE6ygPuc6lrMwMdhO8HSmYCrMoAsf1
-	MDnMTte1ZBan36yUvYpwn
-X-Google-Smtp-Source: AGHT+IGbL0ip0ayYFjdvtIKKzyBlCaBFpdHKVaMkM82Xlk2fjOfxl6v7fFLBx7EcQsk2xxYlEfEsng==
-X-Received: by 2002:a5d:6d06:0:b0:38d:badf:9df5 with SMTP id ffacd0b85a97d-3911f736c29mr3759522f8f.17.1741226631494;
-        Wed, 05 Mar 2025 18:03:51 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b4217.dip0.t-ipconnect.de. [91.43.66.23])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c01ebddsm341988f8f.60.2025.03.05.18.03.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Mar 2025 18:03:49 -0800 (PST)
-Message-ID: <aa98cd93-840c-4a32-a2e8-f9d4248e3a69@googlemail.com>
-Date: Thu, 6 Mar 2025 03:03:48 +0100
+	s=arc-20240116; t=1741228138; c=relaxed/simple;
+	bh=uazQrSGZViu1kwJXHSMrEhHzdNPQmdS2Aojz7kFl/g4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=H/zyxRlkdGeEt/7gN3BLglc9ei2AzfLNkSrTnx9YVh4oipxnZUUFVw4mFXmXP7KbmpPzWUrQ+/+QTaTwqx8FOiGjiH1MfhiWqFJOWGdPF4y1RzLLmBRn3gJK9Z9ACLX4DhhY92wsNFMGmhQrp6UySpg1cG8V8A8WJ/dmx2faukk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GdJljHc/; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525NLlr3016483;
+	Thu, 6 Mar 2025 02:28:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=9twF7oetfa04rQIqK
+	2kTr51RR+KBjjrwXt2frS9Sbwk=; b=GdJljHc/ewT7Hrqwuu1s5s4WUZm7mvkxR
+	3lKJ+btisY9F9I3jewO/tr+xcz8rM+HCQck7X2dalMJbXHNecHFMa31h5fAZnbgQ
+	AYZUlDerdNEdg4CGI+AeXClQ4bSM6uBC4W7T8qYbCS1+8JOu/bMObQTOZUVApKFc
+	XAgixpeBQkbezZdzVk6yWeyUb4B+xqCwXWTHstTALOGavEsI+J9hj9HW1BBlQiUB
+	tTth35Qlmr4EzrtCzdwAiVFuiC4M0O+ADkLo4js2WEhzGrDDoMEYMD8+AaOEmCrB
+	PblVdj3Ftf0e4ALWxu77tWEaRRI8/NNKbRavBlc7FJjYllvFZRa+g==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 456f08wxj5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Mar 2025 02:28:44 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5260Vi2w032236;
+	Thu, 6 Mar 2025 02:28:43 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 454cjt6e9g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Mar 2025 02:28:43 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5262Se3a41091564
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Mar 2025 02:28:40 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ED4CE2004D;
+	Thu,  6 Mar 2025 02:28:39 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CCB7020040;
+	Thu,  6 Mar 2025 02:28:38 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.fios-router.home (unknown [9.61.10.103])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Mar 2025 02:28:38 +0000 (GMT)
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: stable@vger.kernel.org
+Cc: Roberto Sassu <roberto.sassu@huawei.com>, Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.6.y] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
+Date: Wed,  5 Mar 2025 21:28:33 -0500
+Message-ID: <20250306022833.6151-1-zohar@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025030435-perm-thesis-21fc@gregkh>
+References: <2025030435-perm-thesis-21fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/142] 6.6.81-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250305174500.327985489@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _rolYS20U_5RynkuPjDpcwnz8wTBTFBo
+X-Proofpoint-GUID: _rolYS20U_5RynkuPjDpcwnz8wTBTFBo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_01,2025-03-05_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 suspectscore=0 priorityscore=1501 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503060015
 
-Am 05.03.2025 um 18:46 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.81 release.
-> There are 142 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Commit 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
+mistakenly reverted the performance improvement introduced in commit
+42a4c603198f0 ("ima: fix ima_inode_post_setattr"). The unused bit mask was
+subsequently removed by commit 11c60f23ed13 ("integrity: Remove unused
+macro IMA_ACTION_RULE_FLAGS").
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Restore the performance improvement by introducing the new mask
+IMA_NONACTION_RULE_FLAGS, equal to IMA_NONACTION_FLAGS without
+IMA_NEW_FILE, which is not a rule-specific flag.
 
+Finally, reset IMA_NONACTION_RULE_FLAGS instead of IMA_NONACTION_FLAGS in
+process_measurement(), if the IMA_CHANGE_ATTR atomic flag is set (after
+file metadata modification).
 
-Beste Grüße,
-Peter Schneider
+With this patch, new files for which metadata were modified while they are
+still open, can be reopened before the last file close (when security.ima
+is written), since the IMA_NEW_FILE flag is not cleared anymore. Otherwise,
+appraisal fails because security.ima is missing (files with IMA_NEW_FILE
+set are an exception).
 
+Cc: stable@vger.kernel.org # v4.16.x
+Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+(cherry picked from commit 57a0ef02fefafc4b9603e33a18b669ba5ce59ba3)
+---
+ security/integrity/ima/ima_main.c | 7 +++++--
+ security/integrity/integrity.h    | 3 +++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index cc1217ac2c6f..98308a2bdef6 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -267,10 +267,13 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 	mutex_lock(&iint->mutex);
+ 
+ 	if (test_and_clear_bit(IMA_CHANGE_ATTR, &iint->atomic_flags))
+-		/* reset appraisal flags if ima_inode_post_setattr was called */
++		/*
++		 * Reset appraisal flags (action and non-action rule-specific)
++		 * if ima_inode_post_setattr was called.
++		 */
+ 		iint->flags &= ~(IMA_APPRAISE | IMA_APPRAISED |
+ 				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
+-				 IMA_NONACTION_FLAGS);
++				 IMA_NONACTION_RULE_FLAGS);
+ 
+ 	/*
+ 	 * Re-evaulate the file if either the xattr has changed or the
+diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
+index 9561db7cf6b4..ad20ff7f5dfa 100644
+--- a/security/integrity/integrity.h
++++ b/security/integrity/integrity.h
+@@ -42,6 +42,9 @@
+ #define IMA_CHECK_BLACKLIST	0x40000000
+ #define IMA_VERITY_REQUIRED	0x80000000
+ 
++/* Exclude non-action flags which are not rule-specific. */
++#define IMA_NONACTION_RULE_FLAGS	(IMA_NONACTION_FLAGS & ~IMA_NEW_FILE)
++
+ #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
+ 				 IMA_HASH | IMA_APPRAISE_SUBMASK)
+ #define IMA_DONE_MASK		(IMA_MEASURED | IMA_APPRAISED | IMA_AUDITED | \
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.48.1
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
