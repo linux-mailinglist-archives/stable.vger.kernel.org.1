@@ -1,185 +1,199 @@
-Return-Path: <stable+bounces-121319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A919A5576C
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 21:28:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47530A5579C
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 21:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF4867A3B0A
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 20:27:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F9C27A353B
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 20:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B6B271295;
-	Thu,  6 Mar 2025 20:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83D8276038;
+	Thu,  6 Mar 2025 20:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sl6MefK3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Hq/FEjdg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14F126BD9F
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 20:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E3D25485B
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 20:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741292891; cv=none; b=jaJ1kBpF4hN0UpM0y3JbMpbsDPFH5UDmckC2WvjSgPV1NlcwoR7qIzdAbnlfEL2spsSIZb0Vhw5qFfoHXR7jjtOVjjMCwigEtyHBSL8amBL1c4CB3szFJdkUhZFO+FmLp4vSVK8TjH12X85Pzyerwmh0jSMP3Lu0REuo4/be88U=
+	t=1741293786; cv=none; b=ewpUyRqdYUsYhffik7jI2hNCpJ+NE09qH1edQEKFTVf1xNRoHakl4RL7edFziRcE6W5o8+vqfFmiy3DUPUcJBwV3N8QhOTy5p7i3+m2UuwYUW88DcSUNc7i60N4DDNKNj3DseaN+iYi9HEQbE25lq59rzkYkvpLL6fHT7NxuciQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741292891; c=relaxed/simple;
-	bh=9r+fgi7YcM+OL8YzPJvXm3Tu+DUfhRSJTGCEsOmaks8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aLJ7EfK8KlGOkCN0OvPZ8Scf8D6Zra/PVoPmz+qJgJAVYc9bGB8FR1fFKKOejgZ4QTTM0YPC6ec9hEvcES5mQ9ZykBjQyyrQJ78KjlJ2z6Icx4pylF6iw7a3U8LMJYKMXwTwGdJ0YZMc1+JMM6HX3oniHBZ00BxKewwwdLAHbXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sl6MefK3; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-223fb0f619dso22626835ad.1
-        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 12:28:09 -0800 (PST)
+	s=arc-20240116; t=1741293786; c=relaxed/simple;
+	bh=3I8CBekQ5y/NxfRFNZcDsBWqJ6pOTtgFdlfo4wG1dyw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=A5t7leMkG+eKZaExpOxiu38gLNf46bi5RxRhIHxXM2AwVKZcebVidZMJ63ySwybgTaLXzp+qSYoOIUwff4R0BVK4xMYZ65N2YmJtgxTy3qsZNPV36XhjKHLzYiwSxzKwO4MZYalevYQQPT97Gk1rq1GbwS5oH7JVGWmL/gI49WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Hq/FEjdg; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43bc4b16135so7070925e9.1
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 12:43:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741292889; x=1741897689; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GctVpXPllCHYWuu9hUwNfCuRYyncGsuqbdCvzTlEz48=;
-        b=sl6MefK3MtTdAeJS2XOh1/FXZgS6w+Z9Y5mE+VQbBE8xZITjJG46CegOrVxm4DOFcO
-         9vjnWBzclMwieDcH3CPJFDppVoWIf+LOsYp6ox3H1Z0gElhGVRB+tXWoXOSolyLPbQlU
-         bXG8zCLWHjyPINYwhKK4PeUSqV8gBicvO147bfQkFEC5qWoxDRkqNiKOuyzeD5ZlXWGT
-         yCL9ixVGmKlDLGXXuE7gdgl0BScra55pLOsf3JZFFdE8D6pE8nlYIKtWvXxqJk2BJi5k
-         KbMuOLnhn71mc+goufmrhGLN3WbT7mIOlGs7WdBABqkZ7AoKScsK+wmh4Q3p3STng5Lu
-         RUPQ==
+        d=linaro.org; s=google; t=1741293782; x=1741898582; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4GimjoaXXladrZg38HxX+WEY/YSmPMUaXL9bgDFdsYs=;
+        b=Hq/FEjdgnCAWesbkOC4IhhELsB0SHZoHhzLo7uX056AxRKqgNeC0VGmJjIl7RpeAKo
+         xgX24Sy5zh0CFhZaGuNjFPDGZu4M08IIg8eQqyYNQeA8Bib3dhgoJ0ZluEfrsGEA6XBW
+         Chm8GzrXpN8XpaNHSmtJCLhXUMlNDdGKoYZxmRmBE5ocsyTxuO8zqwi/XMaJTL7J/2Xh
+         /yHbemj8Z/7WWUh/ZVb/jrFhj4o6uQ1e/4uKABaBvuosVOoayuAhFmNmE2H1sLk94/tq
+         kLGBtpHOp1MR4VNLNWajM905FM+ol2P5vD+i/IyhhAETfqPGlE/QUDemXAq3cwAhWLHq
+         Fv5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741292889; x=1741897689;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GctVpXPllCHYWuu9hUwNfCuRYyncGsuqbdCvzTlEz48=;
-        b=es8czTa6g7ilzUr/9AUVfOhy/TUOrgdCcye/B7npsggKqxLgNtwrP50qi1bUqXGgGo
-         STKMuVw1GDYBTRrcgTMSjhCQh373hU/LMpu3xQavYxctcbfu1ZbtjU1+k3PaKqPhQ5js
-         EW+hbS93omoqLrJGetHiIcptmxSrmS7X3Cglpsaxe84QhQS2gNd/MIhK3zRgoBEkXQGD
-         d3ewRtjkS9rrcYTJiXvaSqp87G8WdsM5MjOndNd2tcRcuorBzMPsZDXxrsDXviOnLbHl
-         nzqTZ48NDKPz1vGdaBe+YX8v/5VuvToL5Q6JDfDMsFzqNjBASbZHdKhWhVF+NoTSlESj
-         sUYg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsnpsoy/3x+pfX3X9lqgX/APE35dTBos2dViQKZUX4H1y7uC2nsqaGZ4nY/2sdcrPZGOKlmr4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJgTXBNx9xANQZ18RQsxP+TqSiloO6gpPFlMEhkRMv/2Q7vSyQ
-	MYrRssVxifCNbd0dxUc6/vc1xrsP35IkLDHUBrkaJKxm+5u+RndavQC8/t4LcA==
-X-Gm-Gg: ASbGncu+KKhApRKDzPlhwcd3kg344IKrQqZBg6NAxlWZLGTpmsOOEz6kbxhFIJFfWmF
-	OUI4eqC6jEiN9zFhnPCQMb44W02FR7xEg1Q/7eTIJbqBEFs3AimA33lpZDjtzsZyEY7sXksExeH
-	Ld48NBuuPx1m4FGBCFVnUgfg/8zVLHVWGnmq+K5eJEhru4UdOH7ryXOGUWdwVAcwjEtPzgPw66H
-	hTX4HtvYSwpN/fAbWN24YD7UnG0XoGpDoIpLTEJlnD1CsFPnRv/v8jOaehCHlK3t4bXX+RQZP7k
-	moRf2Mk40t99CdFCLUtB3S065bTkX6eNiyB5oPFUtkURu3jvdrSkqtDKx/WbCurd/Dis93oFvxe
-	pq5yY
-X-Google-Smtp-Source: AGHT+IFiSHnSkJOs/EER/kwvfX8Ds31VHyJZRbQKYI8qPXYDZiuyjKY9f0E3k62CA9zP4luRElVERw==
-X-Received: by 2002:a05:6a21:2d08:b0:1ee:dcd3:80d7 with SMTP id adf61e73a8af0-1f54493353emr1884457637.0.1741292888662;
-        Thu, 06 Mar 2025 12:28:08 -0800 (PST)
-Received: from google.com (65.185.125.34.bc.googleusercontent.com. [34.125.185.65])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736985387d3sm1837619b3a.172.2025.03.06.12.28.06
+        d=1e100.net; s=20230601; t=1741293782; x=1741898582;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4GimjoaXXladrZg38HxX+WEY/YSmPMUaXL9bgDFdsYs=;
+        b=GdU1YZgJ+UoGtTRcSBoPCT3dh77oAbmf9k00eWjbT+o8IiIRhPVki50/Uf8gmggCWG
+         2Ne3FRrPdAH8QwecCChDKlSgRzV/Wc9pJd60b6e4pQSuLLKLZCTGdubBUj0WMy0XVGoj
+         t5mRREGGXruJ8s1/iFKHVQBYVAykUCKUk3sI/Qc6MbO21XmDKvxFznTUFgK6BdbQi7w5
+         Cypt+/z3QkBKKlBzW2aAcj3XE79Y38ucnQjNoBg743XMoShRb2OhXHpWYzhXWgnICfsR
+         NkUrz69OiHQtW7ivLJNy0oFtPq8ySPWYIBKPPamb2YfIxHm6U/pHAGKuwYnI5VCY5tbQ
+         0WxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcRqq+xnfQswfsuxcaeX/OzM8gV9n0pQOAyLrdZQjX+gTN7FZep5qbZO0l5adlXrTi0PPltjY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykP4vq9JamnlKxIWYd1mEuaW19vI4GEQX9rJC6nIQ+rWHtnzSn
+	XE0xnyiyMzp1g4fR+iwAz4TZanXfMu4HdKCd7KXhSAjdzyILHrxjT7qTWoyWFbIUHoCo2P35W4/
+	G
+X-Gm-Gg: ASbGncsmOZLUxJTZxXsfGPCB3KKUyMfm0iZ85cmAB39xFKeMsiq9TZR3vD5QZyGJLXb
+	UQaffSxzGsy7nkdiCjV7qQVcH9EaUfV+JY+mAw7V/isVtIJZ00p1G/Ux82H/fwDz/Y1dGr0HWOW
+	eojWmON5fq2VeVyHaIohXLNXz+ThWOCLBdiF7qeabGMZGLAlCVhivw1FQ1isdNrorSXDfki3OTm
+	YXQzWGZLfiKrtY5kekfctMqdLH0Uhjbb0dFW1a9KhFXvCbBlqZORVLwh2EXs0pu4zVJf42vLZD2
+	EB3a67K7p8Hy2jrl2gODZ0ZXwNEPkyyI0YWRBYux4ot3L1GNnJp/6MMm1TWlKKd7zEO7/p+DsVU
+	=
+X-Google-Smtp-Source: AGHT+IFFBM1ec0+y9QOjsWkRze+N/TMmKsFw2dds6E7/MII8+8XfXYdGTXLu56qK+wFv8awCozTznQ==
+X-Received: by 2002:a05:600c:4450:b0:43b:d531:ca9a with SMTP id 5b1f17b1804b1-43c68702906mr6559645e9.31.1741293782422;
+        Thu, 06 Mar 2025 12:43:02 -0800 (PST)
+Received: from gpeter-l.roam.corp.google.com ([145.224.67.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd9470e2sm30081715e9.33.2025.03.06.12.43.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 12:28:07 -0800 (PST)
-Date: Thu, 6 Mar 2025 20:28:02 +0000
-From: Benson Leung <bleung@google.com>
-To: Andrei Kuchynski <akuchynski@chromium.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Benson Leung <bleung@chromium.org>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Jameson Thies <jthies@google.com>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] usb: typec: ucsi: Fix NULL pointer access
-Message-ID: <Z8oFUiazzBTKnGRB@google.com>
-References: <20250305111739.1489003-1-akuchynski@chromium.org>
- <20250305111739.1489003-2-akuchynski@chromium.org>
+        Thu, 06 Mar 2025 12:43:01 -0800 (PST)
+From: Peter Griffin <peter.griffin@linaro.org>
+Subject: [PATCH v3 0/4] samsung: pinctrl: Add support for
+ eint_fltcon_offset and filter selection on gs101
+Date: Thu, 06 Mar 2025 20:42:34 +0000
+Message-Id: <20250306-pinctrl-fltcon-suspend-v3-0-f9ab4ff6a24e@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VDE8sWMpSlokQIQ6"
-Content-Disposition: inline
-In-Reply-To: <20250305111739.1489003-2-akuchynski@chromium.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALoIymcC/4XNTQqDMBCG4atI1k3Jn6R25T1KF0kcdUASSWxoE
+ e/e6KZ0Ubp8P5hnVpIgIiRyrVYSIWPC4EvIU0XcaPwAFLvSRDBRMy4YndG7JU60nxYXPE2PNIP
+ vqJBSGi61U50i5XiO0OPzgG/30iOmJcTX8Sfzff1LZk4ZBa0bxqwwl1q1E3oTwznEgexmFh9HM
+ v7TEcUxGqBvrFVK2i9n27Y3yVaqygUBAAA=
+X-Change-ID: 20250120-pinctrl-fltcon-suspend-2333a137c4d4
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com, 
+ semen.protsenko@linaro.org, kernel-team@android.com, 
+ jaewon02.kim@samsung.com, Peter Griffin <peter.griffin@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3165;
+ i=peter.griffin@linaro.org; h=from:subject:message-id;
+ bh=3I8CBekQ5y/NxfRFNZcDsBWqJ6pOTtgFdlfo4wG1dyw=;
+ b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBnygjO1FoQGjv5WeO6HKLDs5Z3pU7BeLco3mKZb
+ JrQPhD83pGJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ8oIzgAKCRDO6LjWAjRy
+ uh6CD/0e3PFcWK5hQCDVm8D0hG5a9L0DcyFK5AY5V3V0os/VHVy2PDL9bwNHCbiYme2oPf3lFCg
+ O3SG6AThUsy/5ubHJaGkVCguuXbGbTO6Hi1M1jeCRAOOzKvIdlDoUYTOKoIX9BLHeKC5rS/FUof
+ WY2MG8jqRDAG6S0GP6RdP0Ga//cBzApEUskyLgdXr2K8woZSlleQ+B662bOYVm3II9KKQgVG82O
+ VVg9rifHPa/l+cnI4lL98o12pWcTPWK9UD8krJrkDS3UTl+Eu4xWRywSmYFjYVdgEQF7lbDZvNd
+ s6flonruKPVDDZAG4HLihYFFsNNFEhtyc52qhVeRmkFJxHkJo3HkSxU4roq7+OcPbFsPsLvXh/T
+ lO6qnJwxhH20G9U0KxvgeFILR63k9kpMu9e+zZ9gBra2KkcSzu/3IOb6rrmV0qS+G/Wwh+eWPFC
+ NBTMdz0XExh1O/4p2sAZWGz2VyaivgdjLD930JNziBmYMih4K1Ne1usDgT8tL/F2U0gXifuv1dy
+ AWrH6RtSZShQ6Of3ulZoa1m1bvz4offCkKbz4PFEyv/91U2p+OoOhO5v2xTLPYmXhbZ3yrc0yr1
+ 6wZY26wW2kq6kgCCejZsiRw41CaXv2e53F77BEf887Vxga8RVIdHQRtyWgAACNgZNYz+W0vyAPb
+ MefopIujLpsI7nA==
+X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
+ fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
 
+Hi folks,
 
---VDE8sWMpSlokQIQ6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series fixes support for correctly saving and restoring fltcon0
+and fltcon1 registers on gs101 for non-alive banks where the fltcon
+register offset is not at a fixed offset (unlike previous SoCs).
+This is done by adding a eint_fltcon_offset and providing GS101
+specific pin macros that take an additional parameter (similar to
+how exynosautov920 handles it's eint_con_offset).
 
-Hi Andrei,
+Additionally the SoC specific suspend and resume callbacks are
+re-factored so that each SoC variant has it's own callback containing
+the peculiarities for that SoC.
 
-On Wed, Mar 05, 2025 at 11:17:39AM +0000, Andrei Kuchynski wrote:
-> Resources should be released only after all threads that utilize them
-> have been destroyed.
-> This commit ensures that resources are not released prematurely by waiting
-> for the associated workqueue to complete before deallocating them.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner=
- tasks like alt mode checking")
-> Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Finally support for filter selection on alive banks is added, this is
+currently only enabled for gs101. The code path can be excercised using
+`echo mem > /sys/power/state`
 
-Reviewed-by: Benson Leung <bleung@chromium.org>
+regards,
 
+Peter
 
-> ---
->  drivers/usb/typec/ucsi/ucsi.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> index fcf499cc9458..43b4f8207bb3 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.c
-> +++ b/drivers/usb/typec/ucsi/ucsi.c
-> @@ -1825,11 +1825,11 @@ static int ucsi_init(struct ucsi *ucsi)
-> =20
->  err_unregister:
->  	for (con =3D connector; con->port; con++) {
-> +		if (con->wq)
-> +			destroy_workqueue(con->wq);
->  		ucsi_unregister_partner(con);
->  		ucsi_unregister_altmodes(con, UCSI_RECIPIENT_CON);
->  		ucsi_unregister_port_psy(con);
-> -		if (con->wq)
-> -			destroy_workqueue(con->wq);
-> =20
->  		usb_power_delivery_unregister_capabilities(con->port_sink_caps);
->  		con->port_sink_caps =3D NULL;
-> @@ -2013,10 +2013,6 @@ void ucsi_unregister(struct ucsi *ucsi)
-> =20
->  	for (i =3D 0; i < ucsi->cap.num_connectors; i++) {
->  		cancel_work_sync(&ucsi->connector[i].work);
-> -		ucsi_unregister_partner(&ucsi->connector[i]);
-> -		ucsi_unregister_altmodes(&ucsi->connector[i],
-> -					 UCSI_RECIPIENT_CON);
-> -		ucsi_unregister_port_psy(&ucsi->connector[i]);
-> =20
->  		if (ucsi->connector[i].wq) {
->  			struct ucsi_work *uwork;
-> @@ -2032,6 +2028,11 @@ void ucsi_unregister(struct ucsi *ucsi)
->  			destroy_workqueue(ucsi->connector[i].wq);
->  		}
-> =20
-> +		ucsi_unregister_partner(&ucsi->connector[i]);
-> +		ucsi_unregister_altmodes(&ucsi->connector[i],
-> +					 UCSI_RECIPIENT_CON);
-> +		ucsi_unregister_port_psy(&ucsi->connector[i]);
-> +
->  		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_sin=
-k_caps);
->  		ucsi->connector[i].port_sink_caps =3D NULL;
->  		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_sou=
-rce_caps);
-> --=20
-> 2.49.0.rc0.332.g42c0ae87b1-goog
->=20
+To: Krzysztof Kozlowski <krzk@kernel.org>
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
+To: Alim Akhtar <alim.akhtar@samsung.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-gpio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: andre.draszik@linaro.org
+Cc: tudor.ambarus@linaro.org
+Cc: willmcvicker@google.com
+Cc: semen.protsenko@linaro.org
+Cc: kernel-team@android.com
+Cc: jaewon02.kim@samsung.com
 
---VDE8sWMpSlokQIQ6
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+---
+Changes in v3:
 
------BEGIN PGP SIGNATURE-----
+- Ensure EXYNOS_FLTCON_DIGITAL bit is cleared (Andre)
+- Make it obvious that exynos_eint_set_filter() is conditional on bank type (Andre)
+- Make it obvious exynos_set_wakeup() is conditional on bank type (Andre)
+- Align style where the '+' is placed first (Andre)
+- Remove unnecessary braces (Andre)
+- Link to v2: https://lore.kernel.org/r/20250301-pinctrl-fltcon-suspend-v2-0-a7eef9bb443b@linaro.org
 
-iHUEABYIAB0WIQQCtZK6p/AktxXfkOlzbaomhzOwwgUCZ8oFUgAKCRBzbaomhzOw
-wshkAP9k51Btf5PLARneuF9jO3cYwi1O6adrJbgGw5ruHc53pAD9E7feIK9I8n4/
-Py+0rXhG6xMiyiRaA6KCf6/Q9iXhpQ8=
-=l0KK
------END PGP SIGNATURE-----
+Changes in v2:
+- Remove eint_flt_selectable bool as it can be deduced from EINT_TYPE_WKUP (Peter)
+- Move filter config register comment to header file (Andre)
+- Rename EXYNOS_FLTCON_DELAY to EXYNOS_FLTCON_ANALOG (Andre)
+- Remove misleading old comment (Andre)
+- Refactor exynos_eint_update_flt_reg() into a loop (Andre)
+- Split refactor of suspend/resume callbacks & gs101 parts into separate patches (Andre)
+- Link to v1: https://lore.kernel.org/r/20250120-pinctrl-fltcon-suspend-v1-0-e77900b2a854@linaro.org
 
---VDE8sWMpSlokQIQ6--
+---
+Peter Griffin (4):
+      pinctrl: samsung: add support for eint_fltcon_offset
+      pinctrl: samsung: add dedicated SoC eint suspend/resume callbacks
+      pinctrl: samsung: add gs101 specific eint suspend/resume callbacks
+      pinctrl: samsung: Add filter selection support for alive bank on gs101
+
+ drivers/pinctrl/samsung/pinctrl-exynos-arm64.c | 150 ++++++-------
+ drivers/pinctrl/samsung/pinctrl-exynos.c       | 294 +++++++++++++++----------
+ drivers/pinctrl/samsung/pinctrl-exynos.h       |  50 ++++-
+ drivers/pinctrl/samsung/pinctrl-samsung.c      |  12 +-
+ drivers/pinctrl/samsung/pinctrl-samsung.h      |  12 +-
+ 5 files changed, 318 insertions(+), 200 deletions(-)
+---
+base-commit: 0761652a3b3b607787aebc386d412b1d0ae8008c
+change-id: 20250120-pinctrl-fltcon-suspend-2333a137c4d4
+
+Best regards,
+-- 
+Peter Griffin <peter.griffin@linaro.org>
+
 
