@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5FEA5563C
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 20:11:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C85A5563D
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 20:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1A9A3A9CD3
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 19:11:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB6DD174C27
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 19:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FA526E15E;
-	Thu,  6 Mar 2025 19:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E7526E153;
+	Thu,  6 Mar 2025 19:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLq897f7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHxCuaIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433BA26D5C3
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 19:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F1025A652
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 19:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741288282; cv=none; b=DQ0c9uGJdrCMvRfEISrkaKHvE4atDUtvkGLWmgiY++DLEABQ5Bi+CFv3iiOvBwEMatcTYH6eUh+K1+MQOFMOsiCYuVkkg6dCLsDLMADrRvPjccSQlZ/YMhxpxI5NeePJe/fH6Cc5O/RMPISNf3gmd01t/KvuKknSJpIdLVjEG9s=
+	t=1741288284; cv=none; b=KFonEIg+Y8iJh3kIjGqQwadAyztQ7Y0aNzGoOlyM4bVaA2iXCqvZzduPDcFx85D4COLS2muy7xfT50/A4JBnsKInKR1CCve0q2k9j/wHMBXHsQiwcNv5EjkCag7k8HSNq6C2lxviRgSYVtOPrFaTJrXwKqFjtjZG+aZYJ1uLaoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741288282; c=relaxed/simple;
-	bh=peKk5Blc5vU/zU2pSEP0C9PsETqGdlWRC7AfRakFdbs=;
+	s=arc-20240116; t=1741288284; c=relaxed/simple;
+	bh=LLWCJNKw3dUSasUwx0lvxw1hNIFmzDCdkCXC5ReyV6Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TjzpHkaDozfMyJzyQ6WHtkcZQcCoKdznUeVwykA6oWvgZROPJFT4Oui1MyP71gIwIAs3suQhNqerE+F2pg/e5q6nY/9en593kXKpFlAKHH/OgFBYlx36Y+TJHVaByQ+ziS56cKY9ajW837NWGoWEsQyfHkzPktpqni7zxxdiBs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLq897f7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC26C4CEE0;
-	Thu,  6 Mar 2025 19:11:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fqjTSRlL0Bq3TM4oPYWtmQ/syhq3nY7spPZqzYB6UWqCApY0Ug5zIfHX+rIBQgizGIoHkY+Q8RXHhGe8ErzTVyPGAh1Bx6A45k1MMSevVM5JUQZvgIHajeaxycQ1sgpBrcLBK31GfjqFQXyYJm0QIrRqx2Cmw3Pm0Wo0rgWpn5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHxCuaIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B86C4CEE0;
+	Thu,  6 Mar 2025 19:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741288282;
-	bh=peKk5Blc5vU/zU2pSEP0C9PsETqGdlWRC7AfRakFdbs=;
+	s=k20201202; t=1741288284;
+	bh=LLWCJNKw3dUSasUwx0lvxw1hNIFmzDCdkCXC5ReyV6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLq897f77OEbMo/Ti6BisEyerdb2XVm50suDH88PJf7BuKXaxRRfwCLp9vQWxbEDE
-	 u19vjuxJSZpCYiN+uYxh539qhk/CbYKT7HEklbJsSfkmsbIIRmFHuPZZo8PGiXZqUU
-	 1HsZhKHBqYUAD8mOjoX1nSyngY5o0abuyPbFHxZaQmNKgwu3lFfuXOV2FCPACmgRum
-	 tErWuHzgoMS0iPfnwAIjd9Wn5bn0TF43eToCp/R1ZQvlDYw08v6Jiawo8ddFfWy5DZ
-	 jzA+NSiyaLmyOVaUFY2143Hqn8co2dbh+qaaGHVS29as0MIxk4Q0DjhOZTZ0G0ARt5
-	 MLq5Gw0zNBJgQ==
+	b=jHxCuaIn8bdjnKaqwf6wT3V9bxVZCQ7SKapVKBCQV9sTBSOwWeYTDAWaNUrTyu1ab
+	 huoDwsyY5vkdZDR8k9YiPO28qIdfj+e/WsJDFcaF3fyzX3RHLfke7r+CVUKFOeIPAe
+	 2BwJBjgo6iSgDUUujeWiU23beOqKKzEREqdEPon7k0OMjUGFdbgcmnMUpzOGl2AQro
+	 Hj+QRbcZKIzPh6wfWPrODk9B7plGXgGZ2gHPnFledCXlTORMis4eHVRJ7Ph9OIWyLp
+	 hciKxQRPmJFyAqx+ACy+1+QLrYzyEszF/Hhe0VFMv9ovOT/52FLflMdXy1ZHJ8f3Zf
+	 gkcoR8LN7lE1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	zohar@linux.ibm.com
+	chenlinxuan@deepin.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
-Date: Thu,  6 Mar 2025 14:11:20 -0500
-Message-Id: <20250306112709-ece888969576e60b@stable.kernel.org>
+Subject: Re: [PATCH] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Thu,  6 Mar 2025 14:11:22 -0500
+Message-Id: <20250306132554-d2172677109d9d8c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250306022833.6151-1-zohar@linux.ibm.com>
+In-Reply-To:  <0E394E84CB1C5456+20250306050701.314895-1-chenlinxuan@deepin.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,58 +65,84 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
+❌ Build failures detected
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Found matching upstream commit: 57a0ef02fefafc4b9603e33a18b669ba5ce59ba3
+Found matching upstream commit: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
 
 WARNING: Author mismatch between patch and found commit:
-Backport author: Mimi Zohar<zohar@linux.ibm.com>
-Commit author: Roberto Sassu<roberto.sassu@huawei.com>
+Backport author: Chen Linxuan<chenlinxuan@deepin.org>
+Commit author: Andrii Nakryiko<andrii@kernel.org>
+
+Status in newer kernel trees:
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  57a0ef02fefaf ! 1:  6f8f39f341145 ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
-    @@ Commit message
-         Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-         Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-         Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-    -
-    - ## security/integrity/ima/ima.h ##
-    -@@ security/integrity/ima/ima.h: struct ima_kexec_hdr {
-    - #define IMA_CHECK_BLACKLIST	0x40000000
-    - #define IMA_VERITY_REQUIRED	0x80000000
-    - 
-    -+/* Exclude non-action flags which are not rule-specific. */
-    -+#define IMA_NONACTION_RULE_FLAGS	(IMA_NONACTION_FLAGS & ~IMA_NEW_FILE)
-    -+
-    - #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
-    - 				 IMA_HASH | IMA_APPRAISE_SUBMASK)
-    - #define IMA_DONE_MASK		(IMA_MEASURED | IMA_APPRAISED | IMA_AUDITED | \
-    +    (cherry picked from commit 57a0ef02fefafc4b9603e33a18b669ba5ce59ba3)
-     
-      ## security/integrity/ima/ima_main.c ##
-     @@ security/integrity/ima/ima_main.c: static int process_measurement(struct file *file, const struct cred *cred,
-    @@ security/integrity/ima/ima_main.c: static int process_measurement(struct file *f
-      
-      	/*
-      	 * Re-evaulate the file if either the xattr has changed or the
-    +
-    + ## security/integrity/integrity.h ##
-    +@@
-    + #define IMA_CHECK_BLACKLIST	0x40000000
-    + #define IMA_VERITY_REQUIRED	0x80000000
-    + 
-    ++/* Exclude non-action flags which are not rule-specific. */
-    ++#define IMA_NONACTION_RULE_FLAGS	(IMA_NONACTION_FLAGS & ~IMA_NEW_FILE)
-    ++
-    + #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
-    + 				 IMA_HASH | IMA_APPRAISE_SUBMASK)
-    + #define IMA_DONE_MASK		(IMA_MEASURED | IMA_APPRAISED | IMA_AUDITED | \
+Failed to apply patch cleanly.
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.13.y       |  Failed     |  N/A       |
+| stable/linux-6.12.y       |  Failed     |  N/A       |
+| stable/linux-6.6.y        |  Success    |  Failed    |
+| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Failed     |  N/A       |
+| stable/linux-5.4.y        |  Failed     |  N/A       |
+
+Build Errors:
+Patch failed to apply on stable/linux-6.13.y. Reject:
+
+diff a/lib/buildid.c b/lib/buildid.c	(rejected hunks)
+@@ -157,6 +157,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+ 	if (!vma->vm_file)
+ 		return -EINVAL;
+ 
++#ifdef CONFIG_SECRETMEM
++	/* reject secretmem folios created with memfd_secret() */
++	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
++		return -EFAULT;
++#endif
++
+ 	page = find_get_page(vma->vm_file->f_mapping, 0);
+ 	if (!page)
+ 		return -EFAULT;	/* page not mapped */
+Patch failed to apply on stable/linux-6.12.y. Reject:
+
+diff a/lib/buildid.c b/lib/buildid.c	(rejected hunks)
+@@ -157,6 +157,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+ 	if (!vma->vm_file)
+ 		return -EINVAL;
+ 
++#ifdef CONFIG_SECRETMEM
++	/* reject secretmem folios created with memfd_secret() */
++	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
++		return -EFAULT;
++#endif
++
+ 	page = find_get_page(vma->vm_file->f_mapping, 0);
+ 	if (!page)
+ 		return -EFAULT;	/* page not mapped */
+Build error for stable/linux-6.6.y:
+    lib/buildid.c: In function 'build_id_parse':
+    lib/buildid.c:162:48: error: 'secretmem_aops' undeclared (first use in this function)
+      162 |         if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
+          |                                                ^~~~~~~~~~~~~~
+    lib/buildid.c:162:48: note: each undeclared identifier is reported only once for each function it appears in
+    make[3]: *** [scripts/Makefile.build:243: lib/buildid.o] Error 1
+    lib/test_dhry.o: warning: objtool: dhry() falls through to next function dhry_run_set.cold()
+    make[3]: Target 'lib/' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:480: lib] Error 2
+    make[2]: Target './' not remade because of errors.
+    make[1]: *** [/home/sasha/build/linus-next/Makefile:1916: .] Error 2
+    make[1]: Target '__all' not remade because of errors.
+    make: *** [Makefile:234: __sub-make] Error 2
+    make: Target '__all' not remade because of errors.
+
+Patch failed to apply on stable/linux-5.10.y but no reject information available.
+Patch failed to apply on stable/linux-5.4.y but no reject information available.
 
