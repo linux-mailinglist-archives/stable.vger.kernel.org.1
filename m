@@ -1,138 +1,120 @@
-Return-Path: <stable+bounces-121218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB299A54929
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:23:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5A6A5492D
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 959B33A69F4
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:22:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C94BD3A4BAA
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4E220A5E4;
-	Thu,  6 Mar 2025 11:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F334C20896C;
+	Thu,  6 Mar 2025 11:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fiRmzsrT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i10MCi+E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221551FC7CC;
-	Thu,  6 Mar 2025 11:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96CD204583
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 11:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741260158; cv=none; b=C3d2LoVtSJEPGF0FUrp1nfIU7BzoUsW2rH7na9x9o6bZTD4/w3hKIXHfkEKgYJ5xak92dIx3bhg7fhq/ca9LUB5Txm5vPhwFPW+lVv0JBkfSMKZJYZcyu/y6JpVR5f7+46Vega0yEj+Biemujhr7GeO5U6vKzd47qKPStHZC+K0=
+	t=1741260252; cv=none; b=mhrt9g+O8g1Vn0OVWmD3qlvUU2qSwAttvXdwrKsG/k7ViBolCWYQMCGcnim5oSEUssaA3AYI3hnfhA11si8oMdL74fwnxujZARsDgwGndQovc+qg221C+u49g6mw97m3mEGI446KXojAj6b0J/RHQt0YZjcvkr/7ZLNa/fG0wj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741260158; c=relaxed/simple;
-	bh=A5vWqVVEhD1qhbiazA8Hzh5/5bAJFQ8kYAx13LBjVQA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ty5/1ecHkB+1r1KRNN8pVVkmnklj8BmVlBO72X9v+SDkr0FliJ8vt+jSZV0Eu/6HN79Jfi5ObiGysKf7+LPogAmI4Nc1xHjy7mZ7eeH8epAXnAjubJJ+MUZ0f4MO+o0oNj6ndonMiqS0utRh9axr7EimzVfDIyVi8nK38W4X268=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fiRmzsrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A48C4CEE0;
-	Thu,  6 Mar 2025 11:22:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741260157;
-	bh=A5vWqVVEhD1qhbiazA8Hzh5/5bAJFQ8kYAx13LBjVQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fiRmzsrTc1BdjZep8qFZW3HTCkQ+1p+2ogJtnzDMnx4FuuqWH7hf5U5LYZw1YXlTD
-	 Dch0S8f0ozH8E3LObpHBJwpyNzYGfhMQsU29ZwsFz9zn936g5ByiCMfYU6zr0nbQNd
-	 yfcHMxjBkv4oQ2nNcakOsff08vTg6GhqrcnfoznnNEoc11XiWgkI4QrVZjsr6fmsLW
-	 M6mPEAI92mf46iveTCYSXRkglQjYMeSvI5fqw87ko3lvgaiXICSPKzv+uK0a22hlO4
-	 axJ+qkLGRT9IjmaEmDshFEBnkkA1B2LUoMDzdipw4gCjEchAF/PPBU3hWbldnEbusw
-	 JowSONo9xkTMQ==
-Date: Thu, 6 Mar 2025 12:22:30 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Jiri Olsa <olsajiri@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>, Kees Cook <kees@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
-	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, bpf@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Deepak Gupta <debug@rivosinc.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline
- check
-Message-ID: <Z8mFditQWBjxO2vn@gmail.com>
-References: <20250212220433.3624297-1-jolsa@kernel.org>
- <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
- <Z623ZcZj6Wsbnrhs@krava>
- <CALCETrVt=N-QG3zGyPspNCF=8tA4icC75RVVe70-DvJfsh7Sww@mail.gmail.com>
- <Z7MnB3yf2u9eR1yp@krava>
- <Z8l_ipCn8tBE1d9Q@krava>
+	s=arc-20240116; t=1741260252; c=relaxed/simple;
+	bh=TlrvRCPySdQOxtujofeQxJmxEKL7GhiXvuM9GTzF67E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JpLGunCQsORFX479LyD0ZGEKzbAh41ZGqAK/CRUvlcTLAQ8cij+2l2uJKfX0J843m9cbq8esHM2sV1c/pymrpgEaHfTE9n1jlvBwHz8uDuwUU99GVj/4PbPPY0J9CrlJq/+FA8KArfVtBcGRDuYy7B9WjmzoDuCkXapnXNqdlBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i10MCi+E; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5e4d50ed90aso612488a12.0
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 03:24:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741260249; x=1741865049; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TlrvRCPySdQOxtujofeQxJmxEKL7GhiXvuM9GTzF67E=;
+        b=i10MCi+EgS5KTWmcXCV/WkJC60/Md7pToZmf19bqbFfI7m4VBt1MjVrshSXrxRd0dz
+         zCEigUnse5E+iP2SmisaqsjVV2iQ3x+Dj5vJ5McCTKFvHY/2gVJWYEMZk0BgCJlCbVBZ
+         6u1jztiqZRnyU+EIBiOq3XlgONZ18PvwoGRMY6+UZCUKg5BYuloS8agVYSRtm24v4EAg
+         58O/GPXRShMKF0uByALJpNRmoeEkmCdrqrEQeZI9VOjxsGtr1yM++GWGyWV3dglyIrMd
+         wnAJWWtvETybHHUKN4896f2rEAaR4yDX8cPdLjZWNIiWH7usGpZPjgTYtzXqHf21E3s3
+         iChw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741260249; x=1741865049;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TlrvRCPySdQOxtujofeQxJmxEKL7GhiXvuM9GTzF67E=;
+        b=hysFmVkPMHXGZdw/c0s4Mh1IifpLep5w8LgiVbH9Zm6goyN+tNmUaHAanK3L51ZdpM
+         Cm8k0PUyudtxxLUYLQA5teNkKyPWxulZ+jyR4msnBsV/Dw7OmwHJAsU1ccC5TncqJ0/w
+         cvcZSIQyPmteb/kPV0DPjddLen7v75qd+fsl8VffVQkl2eRlnxRpx4KMwcDu5wgKAsL4
+         N/nRM/ZJcS0C2lzVgDPR3RYGPg+807jtLL6jsQH+GbbAyYVrP1c3i11kl+a1qgy/D+xL
+         rj9Q54Lq3q7qq43WRuYstu6Mp+I+BmUJ9cO165bMMQ50geYboAmPVpKMFuRkr0Iz6ZtA
+         7E9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUso0XFsdwmIYoVD+zTOwC7qhMXxKGF/1mDLFXRPhGwi2xtjzE60tmGkVNPhdlE/9yiVsn8NQY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQok+jGZkHYx9I4pzlSc5ijUANY47utRNKuw6rcTuHXa/U/MQT
+	btcmqjnTPNxxOq/GzALVNhPpVJmrHYHMNKimxBj7yqcU7v5wZQUr0hQ/mquXiDo=
+X-Gm-Gg: ASbGncvQ5epH5Fvj243l8fSkRw4+wPUaI/rsNBDIRG/Uowm1OoEoKtIspMNR6P+Q9Vm
+	08HzhMSiiVYVJE+64X8BbW0PZVgXmGIp4Gv2hBvqNkZy/cXEA8obINauXPfNPMOV+b1TxbqHGuZ
+	3duqpRUoku5VCSFEj4mzOZm9II8SoNvYqMep9/RjfQynkIF6xhfgAE/gCkq5qAWAOwdVA4QsffD
+	ZkmhxPUqYORhMsl0QiGl44j9YnwFUtn3Xa0NvNuHLYVbdUyeNJyMZB6GTKeCSgMn+VJn4dSbCXW
+	ba9riTnaVcC/nSsKI4HsPxnrgqFqsrmr7ko1LKYnlvAWahei
+X-Google-Smtp-Source: AGHT+IFJXG+ZAc6aSsP/TLrdtpd9ymEZvmqs4+Y8AAQtnIEGb2pYE1iRRI6PfSoONQjn41daLbimcw==
+X-Received: by 2002:a05:6402:3547:b0:5e4:cfb0:f66b with SMTP id 4fb4d7f45d1cf-5e59f35248amr6527924a12.7.1741260249102;
+        Thu, 06 Mar 2025 03:24:09 -0800 (PST)
+Received: from draszik.lan ([80.111.64.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e5c766a194sm787181a12.59.2025.03.06.03.24.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 03:24:08 -0800 (PST)
+Message-ID: <4a200a7bf5f39034ce206a6c9240a307eadd45af.camel@linaro.org>
+Subject: Re: [PATCH v2 1/4] pinctrl: samsung: add support for
+ eint_fltcon_offset
+From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+To: Peter Griffin <peter.griffin@linaro.org>, Krzysztof Kozlowski	
+ <krzk@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Alim Akhtar
+	 <alim.akhtar@samsung.com>, Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ 	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	tudor.ambarus@linaro.org, willmcvicker@google.com,
+ semen.protsenko@linaro.org, 	kernel-team@android.com,
+ jaewon02.kim@samsung.com, stable@vger.kernel.org
+Date: Thu, 06 Mar 2025 11:24:07 +0000
+In-Reply-To: <20250301-pinctrl-fltcon-suspend-v2-1-a7eef9bb443b@linaro.org>
+References: <20250301-pinctrl-fltcon-suspend-v2-0-a7eef9bb443b@linaro.org>
+	 <20250301-pinctrl-fltcon-suspend-v2-1-a7eef9bb443b@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.53.2-1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z8l_ipCn8tBE1d9Q@krava>
 
+On Sat, 2025-03-01 at 11:43 +0000, Peter Griffin wrote:
+> On gs101 SoC the fltcon0 (filter configuration 0) offset
+> isn't at a fixed offset like previous SoCs as the fltcon1
+> register only exists when there are more than 4 pins in the
+> bank.
+>=20
+> Add a eint_fltcon_offset and new GS101_PIN_BANK_EINT*
+> macros that take an additional fltcon_offs variable.
+>=20
+> This can then be used in suspend/resume callbacks to
+> save and restore the fltcon0 and fltcon1 registers.
+>=20
+> Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+> Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configurati=
+on")
+> Cc: stable@vger.kernel.org
 
-* Jiri Olsa <olsajiri@gmail.com> wrote:
+Reviewed-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
 
-> On Mon, Feb 17, 2025 at 01:09:43PM +0100, Jiri Olsa wrote:
-> > On Thu, Feb 13, 2025 at 09:58:29AM -0800, Andy Lutomirski wrote:
-> > > On Thu, Feb 13, 2025 at 1:16 AM Jiri Olsa <olsajiri@gmail.com> wrote:
-> > > >
-> > > > On Wed, Feb 12, 2025 at 05:37:11PM -0800, Andy Lutomirski wrote:
-> > > > > On Wed, Feb 12, 2025 at 2:04 PM Jiri Olsa <jolsa@kernel.org> wrote:
-> > > > > >
-> > > > > > Jann reported [1] possible issue when trampoline_check_ip returns
-> > > > > > address near the bottom of the address space that is allowed to
-> > > > > > call into the syscall if uretprobes are not set up.
-> > > > > >
-> > > > > > Though the mmap minimum address restrictions will typically prevent
-> > > > > > creating mappings there, let's make sure uretprobe syscall checks
-> > > > > > for that.
-> > > > >
-> > > > > It would be a layering violation, but we could perhaps do better here:
-> > > > >
-> > > > > > -       if (regs->ip != trampoline_check_ip())
-> > > > > > +       /* Make sure the ip matches the only allowed sys_uretprobe caller. */
-> > > > > > +       if (unlikely(regs->ip != trampoline_check_ip(tramp)))
-> > > > > >                 goto sigill;
-> > > > >
-> > > > > Instead of SIGILL, perhaps this should do the seccomp action?  So the
-> > > > > logic in seccomp would be (sketchily, with some real mode1 mess):
-> > > > >
-> > > > > if (is_a_real_uretprobe())
-> > > > >     skip seccomp;
-> > > >
-> > > > IIUC you want to move the address check earlier to the seccomp path..
-> > > > with the benefit that we would kill not allowed caller sooner?
-> > > 
-> > > The benefit would be that seccomp users that want to do something
-> > > other than killing a process (returning an error code, getting
-> > > notified, etc) could retain that functionality without the new
-> > > automatic hole being poked for uretprobe() in cases where uprobes
-> > > aren't in use or where the calling address doesn't match the uprobe
-> > > trampoline.  IOW it would reduce the scope to which we're making
-> > > seccomp behave unexpectedly.
-> > 
-> > Kees, any thoughts about this approach?
-> 
-> ping, any idea?
-
-So in any case I think the seccomp QoL tie-in suggested by Andy should 
-be done in a separate patch, and I've applied the -v3 patch to 
-tip:perf/core as-is.
-
-( I've added Alexei's Acked-by too, which as I've read the v2 thread's 
-  discussion was a given as long as his ~0 suggestion was implemented,
-  which you did. )
-
-Thanks,
-
-	Ingo
 
