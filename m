@@ -1,75 +1,48 @@
-Return-Path: <stable+bounces-121142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBC3A54160
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 04:48:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057F1A54169
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 04:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54181892913
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 03:48:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F7E93ABEBC
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 03:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F47B14A630;
-	Thu,  6 Mar 2025 03:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UDEPXgqH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52501991B2;
+	Thu,  6 Mar 2025 03:53:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185F886330
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 03:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395BF194147;
+	Thu,  6 Mar 2025 03:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741232927; cv=none; b=aitZIqYg5RLOb5JF887xJKVyXRJbU5hMiZqCe4vNrco4HnMP69G8mOj7LUBE1FInFVJmYhGYhF84EGYgHShQ5aU0F5gyhX9rYjFZ/mfAwhrtnGQYOuxCETYKdccvx8vxUz0DSolb2uMA4F8gkwNX7R8rXc5kyprqZdyWq4YsLT4=
+	t=1741233207; cv=none; b=PNK17TnHXgvrmn2ge+zfujysAB0Hkvd+i+BrEXk67lk5wBSRsd6nGH8v3hokthib+9knU/lPkhFdlD+lm1jdYoxfE5cwRj/6qD0qK6P/+u2OTV4C3meRHkUMIVNq1nxC/f/rEbn1q6g5mx7J+e6bysT2KJ485VowiQ1s42qh5e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741232927; c=relaxed/simple;
-	bh=hQzWIADl8MOs97ki4tsx8B1iMLSt2qABXVdFurBaStw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A8ANbQ1KhLC81oCEzgBIvgTUNPOMdBJwZ/Adkk56QSI59Qk1iFith1uAQyBncRTq+fnkZ4iGQL6kZUuvYbKeDWaEJoHpF+cdUgvOvJ4XE8RoTdJaU/fjiuROjfuZsk1mmPJUkBp1tTee3uOeopCyqqDfgEtCxukWM7eXowPPv9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UDEPXgqH; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741232924; x=1772768924;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=hQzWIADl8MOs97ki4tsx8B1iMLSt2qABXVdFurBaStw=;
-  b=UDEPXgqHDL05Zs0KTudeci5Onw6Mog+IXXd8a6D6xeJbFffdrzmthpaT
-   PJrf5H/RnU+TZmN5RiBz7lAfFEDH7ARZvXSPBGe0CDD2QxlsS4+7bw9Lw
-   8PlY6SxKwO+EljzLSf5HyhVdPwg6vRaJJrkPmGqaP1wYROkkPVQ7JpusN
-   4fGBqyc3s7tR6VSdot92GJ7RAFyuyyejex23HaK01/qPSiOzvfnHehIpz
-   55T4yhvBV6hI55QZWTyimdCzfS8w30NeebEQ/3coqcxscMLCqFHdYk9i/
-   cJb6S9J4Ymffu00GgQBmXf/R9D6YsfptXvdSJIl0ANmz756TV1mmetwHV
-   A==;
-X-CSE-ConnectionGUID: ScOqfZiCRW+GUSY6CqBYMQ==
-X-CSE-MsgGUID: ohnVOCrgR1mUIJ3gUjxcmw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41936751"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="41936751"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 19:48:43 -0800
-X-CSE-ConnectionGUID: 6dUZMFb3QcO5yAkHrckgog==
-X-CSE-MsgGUID: Ssh2i7yXQSymU0Zy6WZCqA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="123811921"
-Received: from 984fee00a4c6.jf.intel.com ([10.165.58.231])
-  by orviesa003.jf.intel.com with ESMTP; 05 Mar 2025 19:48:43 -0800
-From: Yi Liu <yi.l.liu@intel.com>
-To: kevin.tian@intel.com,
-	jgg@nvidia.com
-Cc: yi.l.liu@intel.com,
-	iommu@lists.linux.dev,
-	nicolinc@nvidia.com,
-	joro@8bytes.org,
-	baolu.lu@linux.intel.com,
+	s=arc-20240116; t=1741233207; c=relaxed/simple;
+	bh=7cn86iQZzeSzLx4TZ+B2VFpB0fRGSWzetk4yGmo+dMM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sD+XXemd7mPgsY7iLRnnZ3k97PeDpWy1FKVtpVj/dXpAOXwb9u7Qbpse5ov/bDAxRiVqYV8f+qSM5J8S/TSIRfsZOB1WTwvcOaozlI2c3dKWkKBAKVwks1rwKd3VI5gO2S+YcH0mJABYi6X5uHyG0FqeEWFZs7rKMRujntks7Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8DxOGoxHMlntd2LAA--.43319S3;
+	Thu, 06 Mar 2025 11:53:21 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowMDxH+UwHMln48U4AA--.15034S2;
+	Thu, 06 Mar 2025 11:53:20 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] iommufd: Fail replace if device has not been attached
-Date: Wed,  5 Mar 2025 19:48:42 -0800
-Message-Id: <20250306034842.5950-1-yi.l.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH v2] LoongArch: mm: Set max_pfn with the PFN of the last page
+Date: Thu,  6 Mar 2025 11:53:14 +0800
+Message-Id: <20250306035314.2131976-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,75 +50,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMDxH+UwHMln48U4AA--.15034S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-The current implementation of iommufd_device_do_replace() implicitly
-assumes that the input device has already been attached. However, there
-is no explicit check to verify this assumption. If another device within
-the same group has been attached, the replace operation might succeed,
-but the input device itself may not have been attached yet.
+The current max_pfn equals to zero. In this case, it caused users cannot
+get some page information through /proc such as kpagecount. The following
+message is displayed by stress-ng test suite with the command
+"stress-ng --verbose --physpage 1 -t 1".
 
-As a result, the input device might not be tracked in the
-igroup->device_list, and its reserved IOVA might not be added. Despite
-this, the caller might incorrectly assume that the device has been
-successfully replaced, which could lead to unexpected behavior or errors.
+ # stress-ng --verbose --physpage 1 -t 1
+ stress-ng: error: [1691] physpage: cannot read page count for address 0x134ac000 in /proc/kpagecount, errno=22 (Invalid argument)
+ stress-ng: error: [1691] physpage: cannot read page count for address 0x7ffff207c3a8 in /proc/kpagecount, errno=22 (Invalid argument)
+ stress-ng: error: [1691] physpage: cannot read page count for address 0x134b0000 in /proc/kpagecount, errno=22 (Invalid argument)
+ ...
 
-To address this issue, add a check to ensure that the input device has
-been attached before proceeding with the replace operation. This check
-will help maintain the integrity of the device tracking system and prevent
-potential issues arising from incorrect assumptions about the device's
-attachment status.
+After applying this patch, the kernel can pass the test.
+ # stress-ng --verbose --physpage 1 -t 1
+ stress-ng: debug: [1701] physpage: [1701] started (instance 0 on CPU 3)
+ stress-ng: debug: [1701] physpage: [1701] exited (instance 0 on CPU 3)
+ stress-ng: debug: [1700] physpage: [1701] terminated (success)
 
-Fixes: e88d4ec154a8 ("iommufd: Add iommufd_device_replace()")
 Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
----
-Change log:
-v2:
-  - Add r-b tag (Kevin)
-  - Minor tweaks. I swarpped the order of is_attach check with the
-    if (igroup->hwpt == NULL) check, hence no need to add WARN_ON.
+Fixes: ff6c3d81f2e8 ("NUMA: optimize detection of memory with no node id assigned by firmware")
 
-v1: https://lore.kernel.org/linux-iommu/20250304120754.12450-1-yi.l.liu@intel.com/
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- drivers/iommu/iommufd/device.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/loongarch/kernel/setup.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-index b2f0cb909e6d..bd50146e2ad0 100644
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -471,6 +471,17 @@ iommufd_device_attach_reserved_iova(struct iommufd_device *idev,
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index edcfdfcad7d2..a9c1184ab893 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -390,6 +390,7 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	if (usermem)
+ 		pr_info("User-defined physical RAM map overwrite\n");
  
- /* The device attach/detach/replace helpers for attach_handle */
++	max_low_pfn = max_pfn = PHYS_PFN(memblock_end_of_DRAM());
+ 	check_kernel_sections_mem();
  
-+/* Check if idev is attached to igroup->hwpt */
-+static bool iommufd_device_is_attached(struct iommufd_device *idev)
-+{
-+	struct iommufd_device *cur;
-+
-+	list_for_each_entry(cur, &idev->igroup->device_list, group_item)
-+		if (cur == idev)
-+			return true;
-+	return false;
-+}
-+
- static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
- 				      struct iommufd_device *idev)
- {
-@@ -710,6 +721,11 @@ iommufd_device_do_replace(struct iommufd_device *idev,
- 		goto err_unlock;
- 	}
- 
-+	if (!iommufd_device_is_attached(idev)) {
-+		rc = -EINVAL;
-+		goto err_unlock;
-+	}
-+
- 	if (hwpt == igroup->hwpt) {
- 		mutex_unlock(&idev->igroup->lock);
- 		return NULL;
+ 	/*
+
+base-commit: 848e076317446f9c663771ddec142d7c2eb4cb43
 -- 
-2.34.1
+2.39.3
 
 
