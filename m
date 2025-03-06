@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E06FA55637
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 20:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B59F8A55638
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 20:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5277F3A9958
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 19:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB55E3AA75F
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 19:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ACA26BDB5;
-	Thu,  6 Mar 2025 19:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B181F26D5C3;
+	Thu,  6 Mar 2025 19:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAhfw8kw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5iiuh1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3DC25A652
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 19:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7291025A652
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 19:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741288272; cv=none; b=KWjE5SPMix2mEXiCI1pB5S84HPmioYrN2stKyhf1i11SL+zxj6gkvvHzkFF3S39f1wSHpzGp1ybG1XQUcq4lAVb0mg8cqEFw6tL5B7Ct3Y1aaselLPNnhFZ/MsNcVYGoSQfIuJV38r2zpTJsCOi1WXoKRvelEXKusOdsdfD9prk=
+	t=1741288275; cv=none; b=qd/wTNa/QnditHhbFvl0cgkDl3E4OL6lPkCAzhxHUPpqX7N13gzeOlEfdD/U/Z2JBi9byL8rkDOIzOx1c0A36GARxZmJAb8jWGloGnLWEy/qil3uRvpYmbeWWdJKsXw2pQrdFhRC9iF357M45sAoNcwNJYvaZcFBgBQ0RTFb90M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741288272; c=relaxed/simple;
-	bh=lON2P5QNygeuZ/3myn4mnRuQkEXtqdL7vuTszaUvVP8=;
+	s=arc-20240116; t=1741288275; c=relaxed/simple;
+	bh=wGjntAuMnq0DeZMD5g/fuW6wGsEnoK2JjoyFg7pwcmw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ag/xR9srb+XA7EDBru1V2EgjNguk7RaNpQXsK8gonmMvHessPW+rKPt/HF51Hn30ySJrL2zNWTIEUH2Ywq081hby4hu4M5m47yoptY42rqEsgn0sLPOBi59z58Fx5WJD+MhkXpeuhTLUoN+LH2PmLps1vV5kd9vz96DX7t+Fi7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAhfw8kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541F2C4CEE0;
-	Thu,  6 Mar 2025 19:11:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lGLSVJ06J8WfNudcBckT5oRYew/IHbW/hxW2NzyIyU2veG95p49pK47rp8OdcVNGZbarNlKgb1uMoYmAqOACZf8k2vDLn+yI12XRQ0EaskA8PUwkG0zxzlVDyUGWKKNiQcm+T2fYnjKt4BCaYKhdHLGBG/jyi7z0OjIVJ5rG7rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5iiuh1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DECFC4CEE0;
+	Thu,  6 Mar 2025 19:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741288271;
-	bh=lON2P5QNygeuZ/3myn4mnRuQkEXtqdL7vuTszaUvVP8=;
+	s=k20201202; t=1741288273;
+	bh=wGjntAuMnq0DeZMD5g/fuW6wGsEnoK2JjoyFg7pwcmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAhfw8kwVS2VaDeEq0qoNfhL0dgcw3R5XeL0DNuyefmCjgxlgdnTqMdB1NPYk0loV
-	 5TXdUVjzTkSYuk7ySSwtywj4gqMyDafDshT/uIxCd9fw/ZkUPpnwoC1teQfves1sul
-	 3lmRj9QwBEpVpD6/zhg68myavPgOXkjn5LDNHz8qvlcYLhJJ2Sw2yFsLu/MmHLHiNi
-	 JcRyMHGT3Bman2UMo0hG2hq6Xof7qsIS2x0eZ7slahiBRi86fk3dCjwq1rgLKhXU3M
-	 /AdUcIPa9qJzTwsDBqwHIHgQgJnWkIzgRP9NIT6HUgRn525Ci2/xv9jVVcyysb/3gL
-	 v+R17yuT6hihw==
+	b=I5iiuh1Ya3GCHXwYQ2ZEwgNvFUiLq0QRhutMWj6EuBuY2cWHsUEiUeEEBbm91moP1
+	 BrcHcnCvuNW83iN67vjEMEtghLIp5s19PspECbRmUB9/7Xanlm+2UqW1VEeR21r/tC
+	 t9gFMmyP8St63o6pXQzCCSuyLGgeAM9mgl4e9jhOcvEylL1pKrmjoEV2cmuOJ7VDoK
+	 qQBr1eLNQflsaZ58vdJq5VrNwChERzbsGPdNObZJW8ZKDl3c/cdBvGwcG6yF42Dmap
+	 +/gK8QfUBOF5qDKE04KP2S2mPxn6B8KvuWQqc/lppzOl+paoWKh7MRkhkAdqmPLVAa
+	 iRnnzwExEi4RQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	simon@swine.de
+	pbonzini@redhat.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] uprobes: Fix race in uprobe_free_utask
-Date: Thu,  6 Mar 2025 14:11:09 -0500
-Message-Id: <20250306120115-aa46b505626900bf@stable.kernel.org>
+Subject: Re: [PATCH 6.12] KVM: e500: always restore irqs
+Date: Thu,  6 Mar 2025 14:11:12 -0500
+Message-Id: <20250306113002-205fba433e36aa27@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <n2mkjosxf7bdnrjs4bb3zphj2tzfbssuqlgbq5m6zs3kxjrhki@5z3zuabq2tgg>
+In-Reply-To:  <20250305144938.212918-1-pbonzini@redhat.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,81 +65,46 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-ℹ️ Patch is missing in 6.13.y (ignore if backport was sent)
-⚠️ Commit missing in all newer stable branches
+❌ Build failures detected
 
-The upstream commit SHA1 provided is correct: b583ef82b671c9a752fbe3e95bd4c1c51eab764d
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Christian Simon<simon@swine.de>
-Commit author: Jiri Olsa<jolsa@kernel.org>
+The upstream commit SHA1 provided is correct: 87ecfdbc699cc95fac73291b52650283ddcf929d
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
-6.12.y | Not found
-6.6.y | Not found
+6.6.y | Present (different SHA1: b9d93eda1214)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  b583ef82b671c ! 1:  9f50b10df7c63 uprobes: Fix race in uprobe_free_utask
-    @@
-      ## Metadata ##
-    -Author: Jiri Olsa <jolsa@kernel.org>
-    +Author: Christian Simon <simon@swine.de>
-     
-      ## Commit message ##
-         uprobes: Fix race in uprobe_free_utask
-     
-    +    commit b583ef82b671c9a752fbe3e95bd4c1c51eab764d upstream.
-    +
-    +    Christian Simon verified the regression exists in v6.1.129 as per method
-    +    below and backported the mainline fix to the older version of
-    +    uprobe_free_utask. After that change I can no longer reproduce
-    +    the race with this method within 12 hours, while before it would
-    +    show the panic in under a minute.
-    +
-         Max Makarov reported kernel panic [1] in perf user callchain code.
-     
-         The reason for that is the race between uprobe_free_utask and bpf
-    @@ Commit message
-     
-         Fixes: cfa7f3d2c526 ("perf,x86: avoid missing caller address in stack traces captured in uprobe")
-         Reported-by: Max Makarov <maxpain@linux.com>
-    +    (cherry picked from commit b583ef82b671c9a752fbe3e95bd4c1c51eab764d)
-         Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-         Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-         Acked-by: Oleg Nesterov <oleg@redhat.com>
-         Acked-by: Andrii Nakryiko <andrii@kernel.org>
-         Link: https://lore.kernel.org/r/20250109141440.2692173-1-jolsa@kernel.org
-    +    [Christian Simon: Rebased for 6.1.y, due to mainline change https://lore.kernel.org/all/20240929144239.GA9475@redhat.com/]
-    +    Signed-off-by: Christian Simon <simon@swine.de>
-     
-      ## kernel/events/uprobes.c ##
-     @@ kernel/events/uprobes.c: void uprobe_free_utask(struct task_struct *t)
-    @@ kernel/events/uprobes.c: void uprobe_free_utask(struct task_struct *t)
-      		return;
-      
-     +	t->utask = NULL;
-    - 	WARN_ON_ONCE(utask->active_uprobe || utask->xol_vaddr);
-    + 	if (utask->active_uprobe)
-    + 		put_uprobe(utask->active_uprobe);
-      
-    - 	timer_delete_sync(&utask->ri_timer);
-     @@ kernel/events/uprobes.c: void uprobe_free_utask(struct task_struct *t)
-    - 		ri = free_ret_instance(ri, true /* cleanup_hprobe */);
-      
-    + 	xol_free_insn_slot(t);
-      	kfree(utask);
-     -	t->utask = NULL;
-      }
-      
-    - #define RI_TIMER_PERIOD (HZ / 10) /* 100 ms */
-    + /*
+Failed to apply patch cleanly.
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Failed     |  N/A       |
+
+Build Errors:
+Patch failed to apply on stable/linux-6.12.y. Reject:
+
+diff a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c	(rejected hunks)
+@@ -481,7 +481,6 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 		if (pte_present(pte)) {
+ 			wimg = (pte_val(pte) >> PTE_WIMGE_SHIFT) &
+ 				MAS2_WIMGE_MASK;
+-			local_irq_restore(flags);
+ 		} else {
+ 			local_irq_restore(flags);
+ 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
+@@ -490,8 +489,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 			goto out;
+ 		}
+ 	}
++	local_irq_restore(flags);
++
+ 	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
+-
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
+ 
 
