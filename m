@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-121159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3F2A54246
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:37:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBECA54247
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 801933AB2F6
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:37:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58B1E3AB638
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594AA1A00ED;
-	Thu,  6 Mar 2025 05:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47D519F489;
+	Thu,  6 Mar 2025 05:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HGyY/ucn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PUnnMwPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1466029CF0;
-	Thu,  6 Mar 2025 05:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C0219F135;
+	Thu,  6 Mar 2025 05:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741239455; cv=none; b=DCwptZTA5EzguxtcZlWZYnJuh7BIFMYmKL1wAwVw1sh1VrW0ImywkRkvAVa0rflAlNyDS+gjHVTvfm3mXoRqqQP9rjyB8lf8MZdwgtVDgAOUsQwU+83qiASYXXRr9lcTi177p15Lt42lkPSaXeVYdyj4hQ05iCZGqEq0IWTUN9s=
+	t=1741239458; cv=none; b=HbgUjNxGJAhpXtp2KEYQjG6DUpUl8e8OUKUnLrvqKKeUCacn0oEn8HCjG2WRgk/U0rNOhLLp6YSzgOrW62MHq1UwzfWmNoqGfpLhRpx5ThDmI8N5tWmA2gtvNodUCzIWRhFBfHuEjRRrfQ1rNge0sTc8OaxJvyZCHMkEKdrget0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741239455; c=relaxed/simple;
-	bh=1jg6giIZcpOQ54WNpMzlcKpBDWP/7S85MFGyS0t6Etc=;
-	h=Date:To:From:Subject:Message-Id; b=QyF97QCDUNzMr1wm8ymY+aiMAp237zhwe+56EUe5nqhduEvUrr06iyvBAaqdzd22lob9pxFHzxiVqIBX0lvDy1pkYk7LAwTT763AHJrRaut15jSwwrxv2+WItxh7ZzO7oozj7oNBfXM1tisUeVu0dntles3p6ZZoM77EFYmlvq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HGyY/ucn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED46C4CEE4;
-	Thu,  6 Mar 2025 05:37:34 +0000 (UTC)
+	s=arc-20240116; t=1741239458; c=relaxed/simple;
+	bh=gouEdN/9yV1RiXvyLsqnXdYd5+kdYjUlTM8Q8MAE688=;
+	h=Date:To:From:Subject:Message-Id; b=ZxwS4AG8bWCd7LuzHmdKhS1MCocmGD5vidWFjJthulzD+vh4ejkGr+Ldr4IrzG3Mx4b6a/3d5AfBXcjDM+aH8LSWzerU44VX81p0cn/YLfrfgIbR03Q29DqMSrDN8Ar/HbtUD+YKp5WhEmdfC04FQ4W46dYedEu+KS0JSl5OIzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PUnnMwPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6872EC4CEE4;
+	Thu,  6 Mar 2025 05:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741239455;
-	bh=1jg6giIZcpOQ54WNpMzlcKpBDWP/7S85MFGyS0t6Etc=;
+	s=korg; t=1741239458;
+	bh=gouEdN/9yV1RiXvyLsqnXdYd5+kdYjUlTM8Q8MAE688=;
 	h=Date:To:From:Subject:From;
-	b=HGyY/ucnWMZ2DMD6/gqLRnekKNTOnC95QDzu3CyxsDvKoFwJ2VtHtNyygUbCwYarA
-	 v8YIieD5MwCZVM/4NS0cUc8RZUZDfSATki1PkL68KNqitEaXuO8Dp/8BTqjHuTJEqM
-	 lPfXtbyH+6TupHvZIasRMBc7hecveicAXjmR+L5s=
-Date: Wed, 05 Mar 2025 21:37:34 -0800
-To: mm-commits@vger.kernel.org,trond.myklebust@hammerspace.com,stable@vger.kernel.org,anna.schumaker@oracle.com,snitzer@kernel.org,akpm@linux-foundation.org
+	b=PUnnMwPdsMFa0SjsMwWkuRDOQAaFQbmY/n0HYeUlDNSv8MHAYZNvNF1T1qnf5U2tV
+	 uSgS8TT2aSa+hTJGv3dM/wUQWyrQeyPa9tBG2ktcs238O7YXXptKEi6Au6qKRnXjSS
+	 N+Alk/a0YPFLlLwdNAFPrGclY3S/IiSs9XYP671E=
+Date: Wed, 05 Mar 2025 21:37:37 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback.patch removed from -mm tree
-Message-Id: <20250306053734.DED46C4CEE4@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds.patch removed from -mm tree
+Message-Id: <20250306053738.6872EC4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,128 +50,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: NFS: fix nfs_release_folio() to not deadlock via kcompactd writeback
+     Subject: selftests/damon/damos_quota: make real expectation of quota exceeds
 has been removed from the -mm tree.  Its filename was
-     nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback.patch
+     selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Mike Snitzer <snitzer@kernel.org>
-Subject: NFS: fix nfs_release_folio() to not deadlock via kcompactd writeback
-Date: Mon, 24 Feb 2025 21:20:02 -0500
+From: SeongJae Park <sj@kernel.org>
+Subject: selftests/damon/damos_quota: make real expectation of quota exceeds
+Date: Tue, 25 Feb 2025 14:23:31 -0800
 
-Add PF_KCOMPACTD flag and current_is_kcompactd() helper to check for it so
-nfs_release_folio() can skip calling nfs_wb_folio() from kcompactd.
+Patch series "selftests/damon: three fixes for false results".
 
-Otherwise NFS can deadlock waiting for kcompactd enduced writeback which
-recurses back to NFS (which triggers writeback to NFSD via NFS loopback
-mount on the same host, NFSD blocks waiting for XFS's call to
-__filemap_get_folio):
+Fix three DAMON selftest bugs that cause two and one false positive
+failures and successes.
 
-6070.550357] INFO: task kcompactd0:58 blocked for more than 4435 seconds.
 
-{---
-[58] "kcompactd0"
-[<0>] folio_wait_bit+0xe8/0x200
-[<0>] folio_wait_writeback+0x2b/0x80
-[<0>] nfs_wb_folio+0x80/0x1b0 [nfs]
-[<0>] nfs_release_folio+0x68/0x130 [nfs]
-[<0>] split_huge_page_to_list_to_order+0x362/0x840
-[<0>] migrate_pages_batch+0x43d/0xb90
-[<0>] migrate_pages_sync+0x9a/0x240
-[<0>] migrate_pages+0x93c/0x9f0
-[<0>] compact_zone+0x8e2/0x1030
-[<0>] compact_node+0xdb/0x120
-[<0>] kcompactd+0x121/0x2e0
-[<0>] kthread+0xcf/0x100
-[<0>] ret_from_fork+0x31/0x40
-[<0>] ret_from_fork_asm+0x1a/0x30
----}
+This patch (of 3):
 
-[akpm@linux-foundation.org: fix build]
-Link: https://lkml.kernel.org/r/20250225022002.26141-1-snitzer@kernel.org
-Fixes: 96780ca55e3c ("NFS: fix up nfs_release_folio() to try to release the page")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
+damos_quota.py assumes the quota will always exceeded.  But whether quota
+will be exceeded or not depend on the monitoring results.  Actually the
+monitored workload has chaning access pattern and hence sometimes the
+quota may not really be exceeded.  As a result, false positive test
+failures happen.  Expect how much time the quota will be exceeded by
+checking the monitoring results, and use it instead of the naive
+assumption.
+
+Link: https://lkml.kernel.org/r/20250225222333.505646-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250225222333.505646-2-sj@kernel.org
+Fixes: 51f58c9da14b ("selftests/damon: add a test for DAMOS quota")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/nfs/file.c              |    3 ++-
- include/linux/compaction.h |    5 +++++
- include/linux/sched.h      |    2 +-
- mm/compaction.c            |    3 +++
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ tools/testing/selftests/damon/damos_quota.py |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/nfs/file.c~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/fs/nfs/file.c
-@@ -29,6 +29,7 @@
- #include <linux/pagemap.h>
- #include <linux/gfp.h>
- #include <linux/swap.h>
-+#include <linux/compaction.h>
+--- a/tools/testing/selftests/damon/damos_quota.py~selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds
++++ a/tools/testing/selftests/damon/damos_quota.py
+@@ -51,16 +51,19 @@ def main():
+         nr_quota_exceeds = scheme.stats.qt_exceeds
  
- #include <linux/uaccess.h>
- #include <linux/filelock.h>
-@@ -457,7 +458,7 @@ static bool nfs_release_folio(struct fol
- 	/* If the private flag is set, then the folio is not freeable */
- 	if (folio_test_private(folio)) {
- 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
--		    current_is_kswapd())
-+		    current_is_kswapd() || current_is_kcompactd())
- 			return false;
- 		if (nfs_wb_folio(folio->mapping->host, folio) < 0)
- 			return false;
---- a/include/linux/compaction.h~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/include/linux/compaction.h
-@@ -80,6 +80,11 @@ static inline unsigned long compact_gap(
- 	return 2UL << order;
- }
+     wss_collected.sort()
++    nr_expected_quota_exceeds = 0
+     for wss in wss_collected:
+         if wss > sz_quota:
+             print('quota is not kept: %s > %s' % (wss, sz_quota))
+             print('collected samples are as below')
+             print('\n'.join(['%d' % wss for wss in wss_collected]))
+             exit(1)
++        if wss == sz_quota:
++            nr_expected_quota_exceeds += 1
  
-+static inline int current_is_kcompactd(void)
-+{
-+	return current->flags & PF_KCOMPACTD;
-+}
-+
- #ifdef CONFIG_COMPACTION
+-    if nr_quota_exceeds < len(wss_collected):
+-        print('quota is not always exceeded: %d > %d' %
+-              (len(wss_collected), nr_quota_exceeds))
++    if nr_quota_exceeds < nr_expected_quota_exceeds:
++        print('quota is exceeded less than expected: %d < %d' %
++              (nr_quota_exceeds, nr_expected_quota_exceeds))
+         exit(1)
  
- extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);
---- a/include/linux/sched.h~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/include/linux/sched.h
-@@ -1701,7 +1701,7 @@ extern struct pid *cad_pid;
- #define PF_USED_MATH		0x00002000	/* If unset the fpu must be initialized before use */
- #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
- #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
--#define PF__HOLE__00010000	0x00010000
-+#define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
- #define PF_KSWAPD		0x00020000	/* I am kswapd */
- #define PF_MEMALLOC_NOFS	0x00040000	/* All allocations inherit GFP_NOFS. See memalloc_nfs_save() */
- #define PF_MEMALLOC_NOIO	0x00080000	/* All allocations inherit GFP_NOIO. See memalloc_noio_save() */
---- a/mm/compaction.c~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/mm/compaction.c
-@@ -3181,6 +3181,7 @@ static int kcompactd(void *p)
- 	long default_timeout = msecs_to_jiffies(HPAGE_FRAG_CHECK_INTERVAL_MSEC);
- 	long timeout = default_timeout;
- 
-+	current->flags |= PF_KCOMPACTD;
- 	set_freezable();
- 
- 	pgdat->kcompactd_max_order = 0;
-@@ -3237,6 +3238,8 @@ static int kcompactd(void *p)
- 			pgdat->proactive_compact_trigger = false;
- 	}
- 
-+	current->flags &= ~PF_KCOMPACTD;
-+
- 	return 0;
- }
- 
+ if __name__ == '__main__':
 _
 
-Patches currently in -mm which might be from snitzer@kernel.org are
+Patches currently in -mm which might be from sj@kernel.org are
 
+mm-damon-respect-core-layer-filters-allowance-decision-on-ops-layer.patch
+mm-damon-core-initialize-damos-walk_completed-in-damon_new_scheme.patch
+mm-madvise-split-out-mmap-locking-operations-for-madvise.patch
+mm-madvise-split-out-madvise-input-validity-check.patch
+mm-madvise-split-out-madvise-behavior-execution.patch
+mm-madvise-remove-redundant-mmap_lock-operations-from-process_madvise.patch
+mm-damon-avoid-applying-damos-action-to-same-entity-multiple-times.patch
+mm-damon-core-unset-damos-walk_completed-after-confimed-set.patch
+mm-damon-core-do-not-call-damos_walk_control-walk-if-walk-is-completed.patch
+mm-damon-core-do-damos-walking-in-entire-regions-granularity.patch
+mm-damon-introduce-damos-filter-type-hugepage_size-fix.patch
+docs-mm-damon-design-fix-typo-on-damos-filters-usage-doc-link.patch
+docs-mm-damon-design-document-hugepage_size-filter.patch
+docs-damon-move-damos-filter-type-names-and-meaning-to-design-doc.patch
+docs-mm-damon-design-clarify-handling-layer-based-filters-evaluation-sequence.patch
+docs-mm-damon-design-categorize-damos-filter-types-based-on-handling-layer.patch
+mm-damon-implement-a-new-damos-filter-type-for-unmapped-pages.patch
+docs-mm-damon-design-document-unmapped-damos-filter-type.patch
+mm-damon-add-data-structure-for-monitoring-intervals-auto-tuning.patch
+mm-damon-core-implement-intervals-auto-tuning.patch
+mm-damon-sysfs-implement-intervals-tuning-goal-directory.patch
+mm-damon-sysfs-commit-intervals-tuning-goal.patch
+mm-damon-sysfs-implement-a-command-to-update-auto-tuned-monitoring-intervals.patch
+docs-mm-damon-design-document-for-intervals-auto-tuning.patch
+docs-mm-damon-design-document-for-intervals-auto-tuning-fix.patch
+docs-abi-damon-document-intervals-auto-tuning-abi.patch
+docs-admin-guide-mm-damon-usage-add-intervals_goal-directory-on-the-hierarchy.patch
+mm-damon-core-introduce-damos-ops_filters.patch
+mm-damon-paddr-support-ops_filters.patch
+mm-damon-core-support-committing-ops_filters.patch
+mm-damon-core-put-ops-handled-filters-to-damos-ops_filters.patch
+mm-damon-paddr-support-only-damos-ops_filters.patch
+mm-damon-add-default-allow-reject-behavior-fields-to-struct-damos.patch
+mm-damon-core-set-damos_filter-default-allowance-behavior-based-on-installed-filters.patch
+mm-damon-paddr-respect-ops_filters_default_reject.patch
+docs-mm-damon-design-update-for-changed-filter-default-behavior.patch
+mm-damon-sysfs-schemes-let-damon_sysfs_scheme_set_filters-be-used-for-different-named-directories.patch
+mm-damon-sysfs-schemes-implement-core_filters-and-ops_filters-directories.patch
+mm-damon-sysfs-schemes-commit-filters-in-coreops_filters-directories.patch
+mm-damon-core-expose-damos_filter_for_ops-to-damon-kernel-api-callers.patch
+mm-damon-sysfs-schemes-record-filters-of-which-layer-should-be-added-to-the-given-filters-directory.patch
+mm-damon-sysfs-schemes-return-error-when-for-attempts-to-install-filters-on-wrong-sysfs-directory.patch
+docs-abi-damon-document-coreops_filters-directories.patch
+docs-admin-guide-mm-damon-usage-update-for-coreops_filters-directories.patch
 
 
