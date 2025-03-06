@@ -1,125 +1,138 @@
-Return-Path: <stable+bounces-121217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68999A548B9
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:07:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB299A54929
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8E9D18847E4
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 959B33A69F4
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25082045AE;
-	Thu,  6 Mar 2025 11:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4E220A5E4;
+	Thu,  6 Mar 2025 11:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0AsMR23"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fiRmzsrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790392E339F;
-	Thu,  6 Mar 2025 11:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221551FC7CC;
+	Thu,  6 Mar 2025 11:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741259260; cv=none; b=KjXS7F+HxbxO07bkz5oCRddy2UiBZXBt9UR9VoS90ULbqw/guMli/+HaI1e2OFqeN00kh8O9G2U+8Y25K+ofMaVAgkEWqOE/KOBQ6/2cF51PjIkzIr8T+33TUwtgi0s/pBHO3kEIdjJ9Sy7kMZijW6w6rUUM6n3bM11IMB6hXEY=
+	t=1741260158; cv=none; b=C3d2LoVtSJEPGF0FUrp1nfIU7BzoUsW2rH7na9x9o6bZTD4/w3hKIXHfkEKgYJ5xak92dIx3bhg7fhq/ca9LUB5Txm5vPhwFPW+lVv0JBkfSMKZJYZcyu/y6JpVR5f7+46Vega0yEj+Biemujhr7GeO5U6vKzd47qKPStHZC+K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741259260; c=relaxed/simple;
-	bh=Qcxo/DoicDHC+bB71KTQ3zd68ADRh2MeqhcxhbWBSH0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ww1Mcq2u51M0DSUZ//x4+3vguOQbxJRN8q50dhOkyUDA+JcmTMHoIbC6crq0BTAM8y2wpHcw2TXeFFxbTbU+WPSsaXrtKTA5ojoLEnk/3074QaFZEISooK9xzyfuKFyalAxtukFBYAoxCof1QWQyg0YgeR8CVzpA9SGAxl07tHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0AsMR23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76E0C4CEE0;
-	Thu,  6 Mar 2025 11:07:39 +0000 (UTC)
+	s=arc-20240116; t=1741260158; c=relaxed/simple;
+	bh=A5vWqVVEhD1qhbiazA8Hzh5/5bAJFQ8kYAx13LBjVQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ty5/1ecHkB+1r1KRNN8pVVkmnklj8BmVlBO72X9v+SDkr0FliJ8vt+jSZV0Eu/6HN79Jfi5ObiGysKf7+LPogAmI4Nc1xHjy7mZ7eeH8epAXnAjubJJ+MUZ0f4MO+o0oNj6ndonMiqS0utRh9axr7EimzVfDIyVi8nK38W4X268=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fiRmzsrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A48C4CEE0;
+	Thu,  6 Mar 2025 11:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741259260;
-	bh=Qcxo/DoicDHC+bB71KTQ3zd68ADRh2MeqhcxhbWBSH0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a0AsMR23a9Wr6BlWHMBfDzVfbm0k9gRb/en9fY26q/IWu3XKpUijUuQVYGMIhb96R
-	 eDHqsUJDanC5ZvQkci6JpySxeETr1x94pi4e7b0hTA7/6k6yNe/hLhcY84xBblj+JD
-	 oZu9OSgMGUjROl+hiN9Rr59Q58RzjG80mppWc7Z4ndIw/SmPbqg61Qib00wCiAAXTr
-	 3QwY3wdfmDmWN5j6YTrp2I9KYj2b/h3g/XoIQMRHNXZKS3ENZKnAQAH7c0vI2UHhTD
-	 y+bCiD64JAWj0Y1DRecM/SbddPen+FwIHnfpFtTBK+8Hd7MsXrHici3YiR/sCXetbM
-	 qRYrNCZ62/UxQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tq94i-000000004mu-3yoU;
-	Thu, 06 Mar 2025 12:07:37 +0100
-From: Johan Hovold <johan@kernel.org>
-To: linux-usb@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Daniele Palmas <dnlplm@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] USB: serial: option: match on interface class for Telit FN990B
-Date: Thu,  6 Mar 2025 12:07:14 +0100
-Message-ID: <20250306110714.18369-1-johan@kernel.org>
-X-Mailer: git-send-email 2.45.3
+	s=k20201202; t=1741260157;
+	bh=A5vWqVVEhD1qhbiazA8Hzh5/5bAJFQ8kYAx13LBjVQA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fiRmzsrTc1BdjZep8qFZW3HTCkQ+1p+2ogJtnzDMnx4FuuqWH7hf5U5LYZw1YXlTD
+	 Dch0S8f0ozH8E3LObpHBJwpyNzYGfhMQsU29ZwsFz9zn936g5ByiCMfYU6zr0nbQNd
+	 yfcHMxjBkv4oQ2nNcakOsff08vTg6GhqrcnfoznnNEoc11XiWgkI4QrVZjsr6fmsLW
+	 M6mPEAI92mf46iveTCYSXRkglQjYMeSvI5fqw87ko3lvgaiXICSPKzv+uK0a22hlO4
+	 axJ+qkLGRT9IjmaEmDshFEBnkkA1B2LUoMDzdipw4gCjEchAF/PPBU3hWbldnEbusw
+	 JowSONo9xkTMQ==
+Date: Thu, 6 Mar 2025 12:22:30 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Jiri Olsa <olsajiri@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Kees Cook <kees@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, bpf@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Deepak Gupta <debug@rivosinc.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline
+ check
+Message-ID: <Z8mFditQWBjxO2vn@gmail.com>
+References: <20250212220433.3624297-1-jolsa@kernel.org>
+ <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
+ <Z623ZcZj6Wsbnrhs@krava>
+ <CALCETrVt=N-QG3zGyPspNCF=8tA4icC75RVVe70-DvJfsh7Sww@mail.gmail.com>
+ <Z7MnB3yf2u9eR1yp@krava>
+ <Z8l_ipCn8tBE1d9Q@krava>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z8l_ipCn8tBE1d9Q@krava>
 
-The device id entries for Telit FN990B ended up matching only on the
-interface protocol. While this works, the protocol is qualified by the
-interface class (and subclass) which should have been included.
 
-Switch to matching using USB_DEVICE_AND_INTERFACE_INFO() while keeping
-the entries sorted also by protocol for consistency.
+* Jiri Olsa <olsajiri@gmail.com> wrote:
 
-Link: https://lore.kernel.org/20250227110655.3647028-2-fabio.porcedda@gmail.com/
-Cc: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/usb/serial/option.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+> On Mon, Feb 17, 2025 at 01:09:43PM +0100, Jiri Olsa wrote:
+> > On Thu, Feb 13, 2025 at 09:58:29AM -0800, Andy Lutomirski wrote:
+> > > On Thu, Feb 13, 2025 at 1:16 AM Jiri Olsa <olsajiri@gmail.com> wrote:
+> > > >
+> > > > On Wed, Feb 12, 2025 at 05:37:11PM -0800, Andy Lutomirski wrote:
+> > > > > On Wed, Feb 12, 2025 at 2:04 PM Jiri Olsa <jolsa@kernel.org> wrote:
+> > > > > >
+> > > > > > Jann reported [1] possible issue when trampoline_check_ip returns
+> > > > > > address near the bottom of the address space that is allowed to
+> > > > > > call into the syscall if uretprobes are not set up.
+> > > > > >
+> > > > > > Though the mmap minimum address restrictions will typically prevent
+> > > > > > creating mappings there, let's make sure uretprobe syscall checks
+> > > > > > for that.
+> > > > >
+> > > > > It would be a layering violation, but we could perhaps do better here:
+> > > > >
+> > > > > > -       if (regs->ip != trampoline_check_ip())
+> > > > > > +       /* Make sure the ip matches the only allowed sys_uretprobe caller. */
+> > > > > > +       if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+> > > > > >                 goto sigill;
+> > > > >
+> > > > > Instead of SIGILL, perhaps this should do the seccomp action?  So the
+> > > > > logic in seccomp would be (sketchily, with some real mode1 mess):
+> > > > >
+> > > > > if (is_a_real_uretprobe())
+> > > > >     skip seccomp;
+> > > >
+> > > > IIUC you want to move the address check earlier to the seccomp path..
+> > > > with the benefit that we would kill not allowed caller sooner?
+> > > 
+> > > The benefit would be that seccomp users that want to do something
+> > > other than killing a process (returning an error code, getting
+> > > notified, etc) could retain that functionality without the new
+> > > automatic hole being poked for uretprobe() in cases where uprobes
+> > > aren't in use or where the calling address doesn't match the uprobe
+> > > trampoline.  IOW it would reduce the scope to which we're making
+> > > seccomp behave unexpectedly.
+> > 
+> > Kees, any thoughts about this approach?
+> 
+> ping, any idea?
 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 58bd54e8c483..1ea2870725ac 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1394,22 +1394,22 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x30),	/* Telit FN990B (RNDIS) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x30),	/* Telit FN990B (ECM) */
- 	  .driver_info = NCTRL(6) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x60) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
--- 
-2.45.3
+So in any case I think the seccomp QoL tie-in suggested by Andy should 
+be done in a separate patch, and I've applied the -v3 patch to 
+tip:perf/core as-is.
 
+( I've added Alexei's Acked-by too, which as I've read the v2 thread's 
+  discussion was a given as long as his ~0 suggestion was implemented,
+  which you did. )
+
+Thanks,
+
+	Ingo
 
