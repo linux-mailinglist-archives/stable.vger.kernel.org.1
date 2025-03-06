@@ -1,170 +1,296 @@
-Return-Path: <stable+bounces-121227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B2FA54A8D
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 13:22:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDA0A54AB0
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 13:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD85165920
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:22:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 142D77A7F46
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076C420B207;
-	Thu,  6 Mar 2025 12:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8B020B1E4;
+	Thu,  6 Mar 2025 12:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lhZooeJG"
+	dkim=pass (2048-bit key) header.d=grabatoulnz.fr header.i=@grabatoulnz.fr header.b="XXtd3COn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B9A19C574
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 12:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5E420AF96;
+	Thu,  6 Mar 2025 12:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741263732; cv=none; b=sOmG9jKnZTS+uTb5zCIxEO4ClSQdavhfpFhQJ4HXcTioLOUTk4bEhQFlRKUmarkpbZDYnPmRBE3yz5d2BnQyfe+HcvqDZwNEjpjQS4EERG2fquGXxxlHjHH7T7fOjXn9ONpb4bcsuZsSVkFT2V/vEIopssU0Nz6RkXBNQTyVfu0=
+	t=1741264048; cv=none; b=noOQ4W3x/ZJdEZmWRREnFOCipcfd65Qi/wxRHST/Ie2cyaxA2qMfv9ODfrjkH9aoaT9xo61+nJiEkVPRh0NV7mKIQ8JLLyRMlPfiyqOefSMff29i7TRmxmalq2zD8FxbirJHlXfJLdO77X0QIbF9duU51+o01uWgCrIvV69QjzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741263732; c=relaxed/simple;
-	bh=8WpiNtP4SUsV2btOYYsU6TNjuaweKXpboF/a4bcaaGY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B82AW5o8XgHMufjl17SJsXizfDIcmwDSD4lphI0HX30GSA/nflVKX0ftBKE8WdcAPFYej8NZnLXXtGEHUf/NwMZGjzF8VlIoWnl/VqEK08TUM4c6r1LeW2eh63Lkw+LCcjPdmxX8Ad5HSsqJXN9Xrr0DM09/BkYkzFM1nDwf7Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lhZooeJG; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-523c67dba31so247731e0c.1
-        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 04:22:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741263729; x=1741868529; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NMaFzP48YFinEhiZrVchmGEvLHB/ao+cnP7Dht42RRM=;
-        b=lhZooeJGKHcWX2pgKIrhdsCMV/xzmLFp4cdRGNcr7F5lsq6bGufTMT+029mcA6zmA/
-         sS0Dhw+3hXO7lJu4Nk8YOujzswLtrFVJEq8z5DzE9EpDZMSRpS21VJx/WLhrD1aHcLu6
-         HUnNTBTyqhzcW0hitGyqb0BJqAEWExi8WiE1ZVKxZAbjyNlscXlv8FeQg2ABysM2wqOI
-         SAMtWD+cwBzaeQuN9I9bJ84tyqOBGWRv0fyBzXJ4LOd6n9QbzYipcITRoxxrF3EdKWfx
-         aNodIWdmKxEx5JMIUyQ7q5KIOo2QOK6nICF2dFcW1ECS3zjdr99C423yi8eUElK+FRfE
-         vktg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741263729; x=1741868529;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NMaFzP48YFinEhiZrVchmGEvLHB/ao+cnP7Dht42RRM=;
-        b=rIDQkQcKIkcali1cerNJLMb2fNa3Kgf78gHFBAJyydtQz1gecOH8hIPBvLJRqzWuEa
-         Uz8mN12W67/1I5vyOuB2KvTVIT8gvjc/Le7bbz/vlH7G8nNVAqzJO87jxrJvVCgjlio+
-         +OCJHWzufoAMF7SrZPgDdwrobcU+6SgvmTBgS1CzMgRT/TbQrBJb+PlOZvGuvu7BjY6F
-         KQFFjgqFsYObW7BloVW8sf+xAh3BvDvl2w7ZTqtARkQ82rs09DHPZoaj13dpqEsELdYN
-         87Ll2CUFsUuxis75R6u8UdQ+EQ9gDGgNOFyllSlAulhijqeaR79vziArfwkQ3gdOS6f+
-         MNDw==
-X-Gm-Message-State: AOJu0YzHwBeEKX0nzP5lgzS7CUdheGDIlHykGHa/ZF+2we1YO6DsKXvC
-	XwgVFuksoaawFL+ky11Dg06Cj+lXoweuxLjekiO+7jf74/0Xf+MnC945a5Jwv4Kk4PfIa+m+ld1
-	h1mhyylQhenMgGkCycBWsoQQ+CTqWz/VZGmC2EA==
-X-Gm-Gg: ASbGncuukUpm/GSkQLW++f8zw0mP3zSWEwgvZQLnhK4Am+THfAVgzaYNQQSVB/zeHae
-	dMoEnXYypS3WoOHcQPuOutaJiQuiTvYUFGz3mmGLx71mYswiiFw7gWgrl54DtkrJfHhJSopcpj2
-	yGzaC4l4UNX6gak7ZHE1QahyohdhVb+sL6HTN7RPAGa/hTB6F0TrSmkjISUw==
-X-Google-Smtp-Source: AGHT+IFYww1kZHMpxt5rfe7etSrcj4Kd67QgSomHrhxf7n7GkfeEsvd0m/xOfmDxwX0pwVAOrU/zMPkV6Cfa8MEglrY=
-X-Received: by 2002:a05:6122:d21:b0:520:5185:1c31 with SMTP id
- 71dfb90a1353d-523c6281025mr4217547e0c.9.1741263728875; Thu, 06 Mar 2025
- 04:22:08 -0800 (PST)
+	s=arc-20240116; t=1741264048; c=relaxed/simple;
+	bh=V5sCas/re5KB1WJDZeREcuolKMHYLbnme+XnEyGYqtM=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=EeoMOUwO/OeZ3B48JIvGeVVyM9ATKu8mCxaFq5motaLDZIkM1pxgnWOcaxy1wFDHLzUeHQlpR3J6XaGU6yt+EGBkTx60vuz3m5sRHQrKggQPG/rGIj6qBchk5PbpjQfoSZXWVLUky0cnjVibWqWu5qVyICNeuR7f/jLzAcOh0Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grabatoulnz.fr; spf=pass smtp.mailfrom=grabatoulnz.fr; dkim=pass (2048-bit key) header.d=grabatoulnz.fr header.i=@grabatoulnz.fr header.b=XXtd3COn; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grabatoulnz.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grabatoulnz.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 79173433C9;
+	Thu,  6 Mar 2025 12:27:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grabatoulnz.fr;
+	s=gm1; t=1741264043;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+AsgIvVpL2Pm/oq/32bmIaTO0rCvavU6LbqB7AuIneM=;
+	b=XXtd3COneTenwwBY8WzDo+UO+4I3EZz3qgt1rpZrfCsIOoduqCWGLuNMMwVlAp9RSTcT11
+	zLhoILXxe2ivBJn741F3tLtdg6W5RA6YaEgKHPaYTCZgiX+DbL3nnbWk14dg0yqGYTFwMI
+	QuqtwULEvZTEnHyC/uj+6154DEil2arSYa4X7+ecrCPItDovJiFilRcAGC/JJZPImY2OTB
+	EOPmTfieYbSYX4Y2D7mmcCGaHS29QKTcQ7k+BLd3vcdinbYpOLRpIlusWntYUiGgURoYmi
+	qhsGI+HcwWvxYsQnNxet/lwSuLpbL52HBhIvaeBtxCHZtWSPJLZ0/zbYosA+rA==
+Content-Type: multipart/mixed; boundary="------------DhKS6kFF4k5xkk27sIyHql4b"
+Message-ID: <689f8224-f118-47f0-8ae0-a7377c6ff386@grabatoulnz.fr>
+Date: Thu, 6 Mar 2025 13:27:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250305174505.268725418@linuxfoundation.org>
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 6 Mar 2025 17:51:55 +0530
-X-Gm-Features: AQ5f1JoHOMnMdoj85LLhhqMa2z8QuDprDq4v5xGuh6PRQjSvUsaQu0qsUl8-2Ow
-Message-ID: <CA+G9fYv9CcsWEywck9qivOVtThrmr9UUiu-RdPnrjVs9k5JxTA@mail.gmail.com>
-Subject: Re: [PATCH 6.13 000/157] 6.13.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, Ryan Roberts <ryan.roberts@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Jian-Hong Pan <jhp@endlessos.org>,
+ regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-ide@vger.kernel.org,
+ Dieter Mummenschanz <dmummenschanz@web.de>
+References: <Z8SBZMBjvVXA7OAK@eldamar.lan> <Z8SyVnXZ4IPZtgGN@ryzen>
+ <8763ed79-991a-4a19-abb6-599c47a35514@grabatoulnz.fr>
+ <Z8VLZERz0FpvpchM@x1-carbon>
+ <8b1cbfd4-6877-48ef-b17d-fc10402efbf7@grabatoulnz.fr>
+ <Z8l61Kxss0bdvAQt@ryzen> <Z8l7paeRL9szo0C0@ryzen>
+Content-Language: en-US
+From: Eric <eric.4.debian@grabatoulnz.fr>
+In-Reply-To: <Z8l7paeRL9szo0C0@ryzen>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdejjeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegtkfffgggfuffvvehfhfgjsehmtderredtvdejnecuhfhrohhmpefgrhhitgcuoegvrhhitgdrgedruggvsghirghnsehgrhgrsggrthhouhhlnhiirdhfrheqnecuggftrfgrthhtvghrnhepuefflefgudfgudfhheejfedvgfdtffetffeiveegjeekgeehffffgffhfeffudeunecukfhppedvrgdtudemtggstdegmeelgedumegsuddttdemgedvudeimeejvghffhemfhgvvdehmeelhegrudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggstdegmeelgedumegsuddttdemgedvudeimeejvghffhemfhgvvdehmeelhegruddphhgvlhhopeglkffrggeimedvrgdtudemtggstdegmeelgedumegsuddttdemgedvudeimeejvghffhemfhgvvdehmeelhegrudgnpdhmrghilhhfrhhomhepvghrihgtrdegrdguvggsihgrnhesghhrrggsrghtohhulhhniidrfhhrpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopegtrghsshgvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptggrrhhnihhlseguvggsihgrnhdrohhrghdprhgtphhtthhopehmrghrihhordhlihhmo
+ hhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtohephhgthhesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepughlvghmohgrlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhhphesvghnughlvghsshhoshdrohhrghdprhgtphhtthhopehrvghgrhgvshhsihhonhhssehlihhsthhsrdhlihhnuhigrdguvghv
+X-GND-Sasl: eric.degenetais@grabatoulnz.fr
 
-On Wed, 5 Mar 2025 at 23:44, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+This is a multi-part message in MIME format.
+--------------DhKS6kFF4k5xkk27sIyHql4b
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Le 06/03/2025 à 11:40, Niklas Cassel a écrit :
+> On Thu, Mar 06, 2025 at 11:37:08AM +0100, Niklas Cassel wrote:
+>> On Mon, Mar 03, 2025 at 03:58:30PM +0100, Eric wrote:
+>>> Hi Niklas
+>>>
+>>> Le 03/03/2025 à 07:25, Niklas Cassel a écrit :
+>>>> Do you see your SSD in the kexec'd kernel?
+>>> Sorry, I've tried that using several methods (systemctl kexec / kexec --load
+>>> + kexec -e / kexec --load + shutdown --reboot now) and it failed each time.
+>>> I *don't* think it is related to this bug, however, because each time the
+>>> process got stuck just after displaying "kexec_core: Starting new kernel".
+>> I just tired (as root):
+>> # kexec -l /boot/vmlinuz-6.13.5-200.fc41.x86_64 --initrd=/boot/initramfs-6.13.5-200.fc41.x86_64.img --reuse-cmd
+>> # kexec -e
+>>
+>> and FWIW, kexec worked fine.
+>>
+>> Did you specify an initrd ? did you specify --reuse-cmd ?
+
+At one time, I did yes. I can't figure out what's wrong, but working 
+from the assumption that another way of working around the UEFI's 
+failure to wake the disk might yield the same information that you're 
+looking for,
+
+I installed the same system on a USB stick, on which I also installed 
+grub, so that the reboot is made independent of weather the UEFI sees 
+the SSD disk or not. I'll attach dmesg extracts (grep on ata or ahci) to 
+this mail.
+
+One is the dmesg after coldbooting from the USB stick, the other is 
+rebooting on the USB stick. First of all, the visible result : the SSD 
+is not detected by linux at reboot (but is when coldbooting).
+
+Here is what changes :
+
+eric@gwaihir:~$ diff 
+/media/eric/trixieUSB/home/eric/dmesg-ahci-ata-coldboot.untimed.txt 
+/media/eric/trixieUSB/home/eric/dmesg-ahci-ata-reboot.untimed.txt
+
+4c4
+<  ahci 0000:00:11.0: 4/4 ports implemented (port mask 0x3c)
+---
+ >  ahci 0000:00:11.0: 3/3 ports implemented (port mask 0x38)
+14c14
+<  ata3: SATA max UDMA/133 abar m1024@0xfeb0b000 port 0xfeb0b200 irq 19 
+lpm-pol 3
+---
+ >  ata3: DUMMY
+27,28d26
+<  ata3: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
+<  ata6: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+29a28
+ >  ata6: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+31,34d29
+<  ata3.00: Model 'Samsung SSD 870 QVO 2TB', rev 'SVQ02B6Q', applying 
+quirks: noncqtrim zeroaftertrim noncqonati
+<  ata3.00: supports DRM functions and may not be fully accessible
+<  ata3.00: ATA-11: Samsung SSD 870 QVO 2TB, SVQ02B6Q, max UDMA/133
+<  ata3.00: 3907029168 sectors, multi 1: LBA48 NCQ (not used)
+37a33
+ >  ata5.00: configured for UDMA/100
+40d35
+<  ata5.00: configured for UDMA/100
+43,46d37
+<  ata3.00: Features: Trust Dev-Sleep
+<  ata3.00: supports DRM functions and may not be fully accessible
+<  ata3.00: configured for UDMA/133
+<  scsi 2:0:0:0: Direct-Access     ATA      Samsung SSD 870 2B6Q PQ: 0 
+ANSI: 5
+50,51d40
+<  ata3.00: Enabling discard_zeroes_data
+<  ata3.00: Enabling discard_zeroes_data
+
+I hope this is useful for diagnosing the problem.
+
+> Sorry, typo:
 >
-> This is the start of the stable review cycle for the 6.13.6 release.
-> There are 157 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> s/--reuse-cmd/--reuse-cmdline/
 >
-> Responses should be made by Fri, 07 Mar 2025 17:44:26 +0000.
-> Anything received after that time might be too late.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.6-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> Kind regards,
+> Niklas
 
-Regressions on arm64 the defconfig builds failed with clang-20 and gcc-13
-the stable-rc d 6.13.6-rc1 and 6.12.18-rc1.
+Kind regards,
 
-First seen on the 6.13.6-rc1
- Good: v6.13.3
- Bad: 6.13.6-rc1
+Eric
 
-* arm64, build
-  - clang-20-defconfig
-  - clang-nightly-defconfig
-  - gcc-13-defconfig
-  - gcc-8-defconfig
+--------------DhKS6kFF4k5xkk27sIyHql4b
+Content-Type: text/plain; charset=UTF-8; name="dmesg-ahci-ata-reboot.txt"
+Content-Disposition: attachment; filename="dmesg-ahci-ata-reboot.txt"
+Content-Transfer-Encoding: base64
 
-Regression Analysis:
- - New regression? Yes
- - Reproducibility? Yes
+c3VkbyBkbWVzZyB8IGdyZXAgLWlFICIoIGF0YXxhaGNpKSIKWyAgICAxLjg4NDI2M10gYWhj
+aSAwMDAwOjAwOjExLjA6IHZlcnNpb24gMy4wClsgICAgMS44ODQ0MDFdIGFoY2kgMDAwMDow
+MDoxMS4wOiBBSENJIHZlcnMgMDAwMS4wMjAwLCAzMiBjb21tYW5kIHNsb3RzLCA2IEdicHMs
+IFNBVEEgbW9kZQpbICAgIDEuODg0NDA0XSBhaGNpIDAwMDA6MDA6MTEuMDogMy8zIHBvcnRz
+IGltcGxlbWVudGVkIChwb3J0IG1hc2sgMHgzOCkKWyAgICAxLjg4NDQwN10gYWhjaSAwMDAw
+OjAwOjExLjA6IGZsYWdzOiA2NGJpdCBuY3Egc250ZiBpbGNrIHBtIGxlZCBjbG8gcG1wIHBp
+byBzbHVtIHBhcnQgClsgICAgMS44OTAzNzJdIHNjc2kgaG9zdDA6IGFoY2kKWyAgICAxLjg5
+MTU4N10gc2NzaSBob3N0MTogYWhjaQpbICAgIDEuODkxNzUxXSBzY3NpIGhvc3QyOiBhaGNp
+ClsgICAgMS44OTE5MjRdIHNjc2kgaG9zdDM6IGFoY2kKWyAgICAxLjg5MjA3OV0gc2NzaSBo
+b3N0NDogYWhjaQpbICAgIDEuODkyMjM0XSBzY3NpIGhvc3Q1OiBhaGNpClsgICAgMS44OTIy
+OThdIGF0YTE6IERVTU1ZClsgICAgMS44OTIzMDBdIGF0YTI6IERVTU1ZClsgICAgMS44OTIz
+MDBdIGF0YTM6IERVTU1ZClsgICAgMS44OTIzMDJdIGF0YTQ6IFNBVEEgbWF4IFVETUEvMTMz
+IGFiYXIgbTEwMjRAMHhmZWIwYjAwMCBwb3J0IDB4ZmViMGIyODAgaXJxIDE5IGxwbS1wb2wg
+MwpbICAgIDEuODkyMzA1XSBhdGE1OiBTQVRBIG1heCBVRE1BLzEzMyBhYmFyIG0xMDI0QDB4
+ZmViMGIwMDAgcG9ydCAweGZlYjBiMzAwIGlycSAxOSBscG0tcG9sIDMKWyAgICAxLjg5MjMw
+N10gYXRhNjogU0FUQSBtYXggVURNQS8xMzMgYWJhciBtMTAyNEAweGZlYjBiMDAwIHBvcnQg
+MHhmZWIwYjM4MCBpcnEgMTkgbHBtLXBvbCAzClsgICAgMS44OTI0ODddIGFoY2kgMDAwMDow
+NDowMC4wOiBTU1MgZmxhZyBzZXQsIHBhcmFsbGVsIGJ1cyBzY2FuIGRpc2FibGVkClsgICAg
+MS44OTI1MDhdIGFoY2kgMDAwMDowNDowMC4wOiBBSENJIHZlcnMgMDAwMS4wMjAwLCAzMiBj
+b21tYW5kIHNsb3RzLCA2IEdicHMsIFNBVEEgbW9kZQpbICAgIDEuODkyNTExXSBhaGNpIDAw
+MDA6MDQ6MDAuMDogMi8yIHBvcnRzIGltcGxlbWVudGVkIChwb3J0IG1hc2sgMHgzKQpbICAg
+IDEuODkyNTEzXSBhaGNpIDAwMDA6MDQ6MDAuMDogZmxhZ3M6IDY0Yml0IG5jcSBzbnRmIHN0
+YWcgbGVkIGNsbyBwbXAgcGlvIHNsdW0gcGFydCBjY2Mgc3hzIApbICAgIDEuODkyOTI3XSBz
+Y3NpIGhvc3Q2OiBhaGNpClsgICAgMS44OTMwNzNdIHNjc2kgaG9zdDc6IGFoY2kKWyAgICAx
+Ljg5MzE0NF0gYXRhNzogU0FUQSBtYXggVURNQS8xMzMgYWJhciBtNTEyQDB4ZmU4MDAwMDAg
+cG9ydCAweGZlODAwMTAwIGlycSA0MyBscG0tcG9sIDAKWyAgICAxLjg5MzE0OF0gYXRhODog
+U0FUQSBtYXggVURNQS8xMzMgYWJhciBtNTEyQDB4ZmU4MDAwMDAgcG9ydCAweGZlODAwMTgw
+IGlycSA0MyBscG0tcG9sIDAKWyAgICAyLjIwMzU4Nl0gYXRhNzogU0FUQSBsaW5rIGRvd24g
+KFNTdGF0dXMgMCBTQ29udHJvbCAzMDApClsgICAgMi4zNTk5ODBdIGF0YTQ6IFNBVEEgbGlu
+ayB1cCAxLjUgR2JwcyAoU1N0YXR1cyAxMTMgU0NvbnRyb2wgMzAwKQpbICAgIDIuMzYwMDE0
+XSBhdGE2OiBTQVRBIGxpbmsgdXAgMy4wIEdicHMgKFNTdGF0dXMgMTIzIFNDb250cm9sIDMw
+MCkKWyAgICAyLjM2MDA0N10gYXRhNTogU0FUQSBsaW5rIHVwIDEuNSBHYnBzIChTU3RhdHVz
+IDExMyBTQ29udHJvbCAzMDApClsgICAgMi4zNjA1OTJdIGF0YTQuMDA6IEFUQS03OiBNQVhU
+T1IgU1RNMzI1MDMxMEFTLCAzLkFBQywgbWF4IFVETUEvMTMzClsgICAgMi4zNjA1OTddIGF0
+YTQuMDA6IDQ4ODM5NzE2OCBzZWN0b3JzLCBtdWx0aSAxNjogTEJBNDggTkNRIChkZXB0aCAz
+MikKWyAgICAyLjM2MDYxMl0gYXRhNS4wMDogQVRBUEk6IEFTVVMgICAgQkMtMTJEMkhULCAx
+LjAwLCBtYXggVURNQS8xMDAKWyAgICAyLjM2MTE1OV0gYXRhNS4wMDogY29uZmlndXJlZCBm
+b3IgVURNQS8xMDAKWyAgICAyLjM2MTE3OV0gYXRhNi4wMDogQVRBLTg6IFNUMzEwMDA1MjhB
+UywgQ0MzOCwgbWF4IFVETUEvMTMzClsgICAgMi4zNjExODRdIGF0YTYuMDA6IDE5NTM1MjUx
+Njggc2VjdG9ycywgbXVsdGkgMTY6IExCQTQ4IE5DUSAoZGVwdGggMzIpClsgICAgMi4zNjEz
+MTddIGF0YTQuMDA6IGNvbmZpZ3VyZWQgZm9yIFVETUEvMTMzClsgICAgMi4zNjI1OTldIGF0
+YTYuMDA6IGNvbmZpZ3VyZWQgZm9yIFVETUEvMTMzClsgICAgMi4zNzQ4MDddIHNjc2kgMzow
+OjA6MDogRGlyZWN0LUFjY2VzcyAgICAgQVRBICAgICAgTUFYVE9SIFNUTTMyNTAzMSBDICAg
+IFBROiAwIEFOU0k6IDUKWyAgICAyLjQyNDUwMV0gc2NzaSA1OjA6MDowOiBEaXJlY3QtQWNj
+ZXNzICAgICBBVEEgICAgICBTVDMxMDAwNTI4QVMgICAgIENDMzggUFE6IDAgQU5TSTogNQpb
+ICAgIDIuNzM1ODYwXSBhdGE4OiBTQVRBIGxpbmsgZG93biAoU1N0YXR1cyAwIFNDb250cm9s
+IDMwMCkK
+--------------DhKS6kFF4k5xkk27sIyHql4b
+Content-Type: text/plain; charset=UTF-8; name="dmesg-ahci-ata-coldboot.txt"
+Content-Disposition: attachment; filename="dmesg-ahci-ata-coldboot.txt"
+Content-Transfer-Encoding: base64
 
-This commit is causing build regressions,
-  arm64: hugetlb: Fix huge_ptep_get_and_clear() for non-present ptes
-  commit 49c87f7677746f3c5bd16c81b23700bb6b88bfd4 upstream.
+c3VkbyBkbWVzZyB8IGdyZXAgLWlFICIoIGF0YXxhaGNpKSIKWyAgICAxLjczOTE4NV0gYWhj
+aSAwMDAwOjAwOjExLjA6IHZlcnNpb24gMy4wClsgICAgMS43MzkzMTNdIGFoY2kgMDAwMDow
+MDoxMS4wOiBBSENJIHZlcnMgMDAwMS4wMjAwLCAzMiBjb21tYW5kIHNsb3RzLCA2IEdicHMs
+IFNBVEEgbW9kZQpbICAgIDEuNzM5MzE2XSBhaGNpIDAwMDA6MDA6MTEuMDogNC80IHBvcnRz
+IGltcGxlbWVudGVkIChwb3J0IG1hc2sgMHgzYykKWyAgICAxLjczOTMxOF0gYWhjaSAwMDAw
+OjAwOjExLjA6IGZsYWdzOiA2NGJpdCBuY3Egc250ZiBpbGNrIHBtIGxlZCBjbG8gcG1wIHBp
+byBzbHVtIHBhcnQgClsgICAgMS43NDA3NDZdIHNjc2kgaG9zdDA6IGFoY2kKWyAgICAxLjc0
+MDk4N10gc2NzaSBob3N0MTogYWhjaQpbICAgIDEuNzQxMTM3XSBzY3NpIGhvc3QyOiBhaGNp
+ClsgICAgMS43NDEyODhdIHNjc2kgaG9zdDM6IGFoY2kKWyAgICAxLjc0MTQzNV0gc2NzaSBo
+b3N0NDogYWhjaQpbICAgIDEuNzQxNTgyXSBzY3NpIGhvc3Q1OiBhaGNpClsgICAgMS43NDE2
+MzVdIGF0YTE6IERVTU1ZClsgICAgMS43NDE2MzddIGF0YTI6IERVTU1ZClsgICAgMS43NDE2
+MzldIGF0YTM6IFNBVEEgbWF4IFVETUEvMTMzIGFiYXIgbTEwMjRAMHhmZWIwYjAwMCBwb3J0
+IDB4ZmViMGIyMDAgaXJxIDE5IGxwbS1wb2wgMwpbICAgIDEuNzQxNjQxXSBhdGE0OiBTQVRB
+IG1heCBVRE1BLzEzMyBhYmFyIG0xMDI0QDB4ZmViMGIwMDAgcG9ydCAweGZlYjBiMjgwIGly
+cSAxOSBscG0tcG9sIDMKWyAgICAxLjc0MTY0NF0gYXRhNTogU0FUQSBtYXggVURNQS8xMzMg
+YWJhciBtMTAyNEAweGZlYjBiMDAwIHBvcnQgMHhmZWIwYjMwMCBpcnEgMTkgbHBtLXBvbCAz
+ClsgICAgMS43NDE2NDZdIGF0YTY6IFNBVEEgbWF4IFVETUEvMTMzIGFiYXIgbTEwMjRAMHhm
+ZWIwYjAwMCBwb3J0IDB4ZmViMGIzODAgaXJxIDE5IGxwbS1wb2wgMwpbICAgIDEuNzQxODQ1
+XSBhaGNpIDAwMDA6MDQ6MDAuMDogU1NTIGZsYWcgc2V0LCBwYXJhbGxlbCBidXMgc2NhbiBk
+aXNhYmxlZApbICAgIDEuNzQxODY3XSBhaGNpIDAwMDA6MDQ6MDAuMDogQUhDSSB2ZXJzIDAw
+MDEuMDIwMCwgMzIgY29tbWFuZCBzbG90cywgNiBHYnBzLCBTQVRBIG1vZGUKWyAgICAxLjc0
+MTg2OV0gYWhjaSAwMDAwOjA0OjAwLjA6IDIvMiBwb3J0cyBpbXBsZW1lbnRlZCAocG9ydCBt
+YXNrIDB4MykKWyAgICAxLjc0MTg3MV0gYWhjaSAwMDAwOjA0OjAwLjA6IGZsYWdzOiA2NGJp
+dCBuY3Egc250ZiBzdGFnIGxlZCBjbG8gcG1wIHBpbyBzbHVtIHBhcnQgY2NjIHN4cyAKWyAg
+ICAxLjc0MjE5MV0gc2NzaSBob3N0NjogYWhjaQpbICAgIDEuNzQyNDIwXSBzY3NpIGhvc3Q3
+OiBhaGNpClsgICAgMS43NDI0ODhdIGF0YTc6IFNBVEEgbWF4IFVETUEvMTMzIGFiYXIgbTUx
+MkAweGZlODAwMDAwIHBvcnQgMHhmZTgwMDEwMCBpcnEgNDMgbHBtLXBvbCAwClsgICAgMS43
+NDI0OTJdIGF0YTg6IFNBVEEgbWF4IFVETUEvMTMzIGFiYXIgbTUxMkAweGZlODAwMDAwIHBv
+cnQgMHhmZTgwMDE4MCBpcnEgNDMgbHBtLXBvbCAwClsgICAgMi4wNTE4MjJdIGF0YTc6IFNB
+VEEgbGluayBkb3duIChTU3RhdHVzIDAgU0NvbnRyb2wgMzAwKQpbICAgIDIuMjA4MTM4XSBh
+dGEzOiBTQVRBIGxpbmsgdXAgNi4wIEdicHMgKFNTdGF0dXMgMTMzIFNDb250cm9sIDMwMCkK
+WyAgICAyLjIwODE3Ml0gYXRhNjogU0FUQSBsaW5rIHVwIDMuMCBHYnBzIChTU3RhdHVzIDEy
+MyBTQ29udHJvbCAzMDApClsgICAgMi4yMDgxOTddIGF0YTQ6IFNBVEEgbGluayB1cCAxLjUg
+R2JwcyAoU1N0YXR1cyAxMTMgU0NvbnRyb2wgMzAwKQpbICAgIDIuMjA4MjI5XSBhdGE1OiBT
+QVRBIGxpbmsgdXAgMS41IEdicHMgKFNTdGF0dXMgMTEzIFNDb250cm9sIDMwMCkKWyAgICAy
+LjIwODM1MV0gYXRhMy4wMDogTW9kZWwgJ1NhbXN1bmcgU1NEIDg3MCBRVk8gMlRCJywgcmV2
+ICdTVlEwMkI2UScsIGFwcGx5aW5nIHF1aXJrczogbm9uY3F0cmltIHplcm9hZnRlcnRyaW0g
+bm9uY3FvbmF0aQpbICAgIDIuMjA4MzkyXSBhdGEzLjAwOiBzdXBwb3J0cyBEUk0gZnVuY3Rp
+b25zIGFuZCBtYXkgbm90IGJlIGZ1bGx5IGFjY2Vzc2libGUKWyAgICAyLjIwODM5NF0gYXRh
+My4wMDogQVRBLTExOiBTYW1zdW5nIFNTRCA4NzAgUVZPIDJUQiwgU1ZRMDJCNlEsIG1heCBV
+RE1BLzEzMwpbICAgIDIuMjA4Mzk2XSBhdGEzLjAwOiAzOTA3MDI5MTY4IHNlY3RvcnMsIG11
+bHRpIDE6IExCQTQ4IE5DUSAobm90IHVzZWQpClsgICAgMi4yMDg3NTFdIGF0YTQuMDA6IEFU
+QS03OiBNQVhUT1IgU1RNMzI1MDMxMEFTLCAzLkFBQywgbWF4IFVETUEvMTMzClsgICAgMi4y
+MDg3NTVdIGF0YTQuMDA6IDQ4ODM5NzE2OCBzZWN0b3JzLCBtdWx0aSAxNjogTEJBNDggTkNR
+IChkZXB0aCAzMikKWyAgICAyLjIwODgyMF0gYXRhNS4wMDogQVRBUEk6IEFTVVMgICAgQkMt
+MTJEMkhULCAxLjAwLCBtYXggVURNQS8xMDAKWyAgICAyLjIwOTI5MF0gYXRhNi4wMDogQVRB
+LTg6IFNUMzEwMDA1MjhBUywgQ0MzOCwgbWF4IFVETUEvMTMzClsgICAgMi4yMDkyOTRdIGF0
+YTYuMDA6IDE5NTM1MjUxNjggc2VjdG9ycywgbXVsdGkgMTY6IExCQTQ4IE5DUSAoZGVwdGgg
+MzIpClsgICAgMi4yMDkzODhdIGF0YTUuMDA6IGNvbmZpZ3VyZWQgZm9yIFVETUEvMTAwClsg
+ICAgMi4yMDk0NjddIGF0YTQuMDA6IGNvbmZpZ3VyZWQgZm9yIFVETUEvMTMzClsgICAgMi4y
+MTA1NzJdIGF0YTYuMDA6IGNvbmZpZ3VyZWQgZm9yIFVETUEvMTMzClsgICAgMi4yMTI4NzFd
+IGF0YTMuMDA6IEZlYXR1cmVzOiBUcnVzdCBEZXYtU2xlZXAKWyAgICAyLjIxMzE4M10gYXRh
+My4wMDogc3VwcG9ydHMgRFJNIGZ1bmN0aW9ucyBhbmQgbWF5IG5vdCBiZSBmdWxseSBhY2Nl
+c3NpYmxlClsgICAgMi4yMTgyMzFdIGF0YTMuMDA6IGNvbmZpZ3VyZWQgZm9yIFVETUEvMTMz
+ClsgICAgMi4yMjg1OTJdIHNjc2kgMjowOjA6MDogRGlyZWN0LUFjY2VzcyAgICAgQVRBICAg
+ICAgU2Ftc3VuZyBTU0QgODcwICAyQjZRIFBROiAwIEFOU0k6IDUKWyAgICAyLjIyODk2MV0g
+c2NzaSAzOjA6MDowOiBEaXJlY3QtQWNjZXNzICAgICBBVEEgICAgICBNQVhUT1IgU1RNMzI1
+MDMxIEMgICAgUFE6IDAgQU5TSTogNQpbICAgIDIuMjg4NjgxXSBzY3NpIDU6MDowOjA6IERp
+cmVjdC1BY2Nlc3MgICAgIEFUQSAgICAgIFNUMzEwMDA1MjhBUyAgICAgQ0MzOCBQUTogMCBB
+TlNJOiA1ClsgICAgMi41OTk3MTddIGF0YTg6IFNBVEEgbGluayBkb3duIChTU3RhdHVzIDAg
+U0NvbnRyb2wgMzAwKQpbICAgIDIuNjA4MzgzXSBhdGEzLjAwOiBFbmFibGluZyBkaXNjYXJk
+X3plcm9lc19kYXRhClsgICAgMi42MDkyMTFdIGF0YTMuMDA6IEVuYWJsaW5nIGRpc2NhcmRf
+emVyb2VzX2RhdGEK
 
-Build regression: arm64 hugetlbpage.c undeclared identifier 'sz'
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build log
-arch/arm64/mm/hugetlbpage.c:397:28: error: use of undeclared identifier 'sz'
-  397 |         ncontig = num_contig_ptes(sz, &pgsize);
-      |                                   ^
-1 error generated.
-
-## Source
-* Kernel version: 6.13.6-rc1
-* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* Git sha: 30be4aa8b95762886fc27cf2a9931e14bce269d4
-* Git describe: v6.13.3-555-g30be4aa8b957
-* Project details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.13.3-555-g30be4aa8b957
-
-## Build
-* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.13.3-555-g30be4aa8b957/testrun/27516541/suite/build/test/clang-20-defconfig/log
-* Build history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.13.3-555-g30be4aa8b957/testrun/27516541/suite/build/test/clang-20-defconfig/history/
-* Build details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.13.3-555-g30be4aa8b957/testrun/27516541/suite/build/test/clang-20-defconfig/details/
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2tuRCFN4wc8W1MqNki1qddcwCF3/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2tuRCFN4wc8W1MqNki1qddcwCF3/config
-
-## Steps to reproduce
- - tuxmake --runtime podman --target-arch arm64 --toolchain clang-20
---kconfig defconfig LLVM=1 LLVM_IAS=1
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--------------DhKS6kFF4k5xkk27sIyHql4b--
 
