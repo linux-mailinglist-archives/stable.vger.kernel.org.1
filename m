@@ -1,109 +1,136 @@
-Return-Path: <stable+bounces-121263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55D5A54F3C
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:34:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71E6A54F51
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A1CB176146
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:34:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 911AF3B3930
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E202E634;
-	Thu,  6 Mar 2025 15:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768B8185B5F;
+	Thu,  6 Mar 2025 15:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="WtDdFsmn"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="oIjh9Id0"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3272D156F39;
-	Thu,  6 Mar 2025 15:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1342E634;
+	Thu,  6 Mar 2025 15:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741275254; cv=none; b=SgFfzlyz9GWTTBYrPBfmHPCABJxGIeIhMQbK0hN+BdVhMGJqP/vmkdi5ZqpI1yhtdyS88HUKI44RjzRnwkHpQHDNNH0HCJziraX42nSF9E7IVwhfdauz7slZHQTv96nfJOf3uwIa3LG8UN8FX4j6Vebcpy09Bzhid5jeyPOTnj8=
+	t=1741275324; cv=none; b=lMh7WGI9bnsmZr9lRbaw1uC01VUuyI8mfC9VnyUjhovWYWHtmMzPxSf9Sydzt80gLVnbp2OQlfbijh2V/5HFDVVBoOxynU/75xBYkmLxnJyzy/MwFZbaQcZAWJkXGGRIScCeOYQSw27hV70gUAPZOBUuMoUJunFJqEy/D9atmEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741275254; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GIwn6qhw9xSrfg7YXnpKgCFgLtFsA1e8CjMJIRRZJDwQDKMwET8zfjcXDvoFz39svGJhusj2kw5sOUEW4CQyh1xgCCoaDsqBm8VqrGy+bq7Xsu6mAHXcWZSmzHOP5tsMPObnV/EDOpfuRP3Mcgf2tVl+OiVF8A/GGVK6L/nRZcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=WtDdFsmn; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1741275248; x=1741880048; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=WtDdFsmnhh7GnkOrzKIbErAbZZR2GLADL+VcGHPExpncvANzKoJHACxiwyX6dpYl
-	 IRAN203UJA0B0dEuLqN2k28nxpfZWt0dGpa7qbOqiRkLqW/5EemY0BZGadOLBbLNK
-	 pNr6b9I2iZUslFqLdErhlsAewMVTVA+Qh67cUpxJwEFNjEojEFgUnk+SL+4LUvFMC
-	 uIpbqVMswtiHTLKSE+kyN3cLw02HKrWvOTgMDTuq/5frmJapkdl+RNnjLPFhXSMVg
-	 i2ejhLmLrjzhZMIp1ANPf8GnGtbWS7DsNi87s+kRUVdxrRmkp0n3iY3QW2KugHJkg
-	 eZZGwZf15lmby1NNQw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.33.164]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N17Ye-1t6P8c2ENm-014GHC; Thu, 06
- Mar 2025 16:34:08 +0100
-Message-ID: <192dd152-e3b7-44dc-b8ab-e0056d363363@gmx.de>
-Date: Thu, 6 Mar 2025 16:34:06 +0100
+	s=arc-20240116; t=1741275324; c=relaxed/simple;
+	bh=aiimo7eOKlG1yltwAAIGQi1oBb/uVswZcGZDfBpYiV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u3Jf2q6VU2OCqJ5gzLDim0z0bxL6LdHn50/00IFfYKrfj7P0gP+8ic3Bc0ThSQo6qVkDg9B0g1AS0o3PnZxFMwMwI1I4IhYFq9gGAE6wTWZd+PMA/1gDKK8JsPRZim5DoDy4zXW2akppm3BTAzRsyES0yAYHm/MSuj9OGlYDjp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=oIjh9Id0; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=8C6T0qOrO+SavdUv26hm/aE79BWJPJvi5q6z9TE1FxY=; b=oI
+	jh9Id0KiIJoJgLzVkuaxkVZG74FXZpLRpXI9bGuuq9dlwfeH/TeoxeMyQd4btTskAjj/fg/ZVDBam
+	cNiPmf+d6iQauUK/cvBWiuAWBXEMjKUiy4ELBe5hWWgGeNHK0uWPQesLvnP1js7Do+e9vHUBwiWpd
+	gRyaK/Y08lGOhcc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tqDFg-002q5e-Mh; Thu, 06 Mar 2025 16:35:12 +0100
+Date: Thu, 6 Mar 2025 16:35:12 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Andrei Botila <andrei.botila@oss.nxp.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, s32@nxp.com,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] net: phy: nxp-c45-tja11xx: add TJA112X PHY
+ configuration errata
+Message-ID: <d09c8547-550d-4ea1-8739-2bcf9e7c3fb0@lunn.ch>
+References: <20250304160619.181046-1-andrei.botila@oss.nxp.com>
+ <20250304160619.181046-2-andrei.botila@oss.nxp.com>
+ <7c14179c-0262-47e5-a13e-a53c2061da9b@redhat.com>
+ <f37c7159-528d-4c58-b531-8d66757d2c16@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13 000/154] 6.13.6-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250306151416.469067667@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250306151416.469067667@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:4iJkSd0nuQmCooOW4YY2NAW4YDlCYDy8IlnC+01CKwpGZdr9Nk6
- ULfEt/82n450JESf8jo2061DK08qMuSD8c4eLe3uHSDizIztXohhmojOnLmP5IsZ4TGRerM
- 71bhQMjJOrJf48InqJPH8fPedPnADetXLhuOkl7QiR5G6PLGk3A/hZfXDvBRUJdqEOcNAAx
- Sp0vVj6NIjc1vM3LoI7IA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:oXqHSHZAZQU=;euxmgvriMn5gA1uZ2fVNGEeupDd
- OlWTw+BkNo593O8dyCohqXztfurkZpUje1jndeOf15fQIwI1THbQ2abdB76yf78jRRmDBsJEA
- qFZj22kivVilvhZeBlJFeR3QOCK0seIcRY+OuImExNn561VSTQQiieyqKTCXsoBRuZdD9l5Fj
- iTVqYFtB1dPpyBlUsMfEDgi5xYdzsZgGCew6pWD1L96lKXih97pGvQCuYTBldqobnFEzLixnj
- EZ9f3wpFrSopIl5e+sOHjv7XmlWyTLAzpsc0ZrzkGIswIZ7gIcVLH9WsCFJhwL9KMqQOwrWLw
- LytbV62v5ZEBOBiyOeX1DSCuWr4lrAV79cd9C0Ki4gL7skwsA1ThVqelZ1mUoLt6KWjvmzcs5
- EnaZflEAbJe5AjMm1PpoP7kylK4p+l7bv44bY6vtQm3rYA/bPKZaKnErgQyW/w4kH4oe5Lkn7
- +4iGv33tamjONStXSNw0xVQMmCGhQA7fI5t4vCXsLa1C8H4IJDPXSn/g+H0CvCFUXm+MggIEz
- 3vpHrhYVJhOYsMdJiPdi+FPGGzL1z7Fm2rzvNEEx8stQjPWl0ONk3nmeZaqdHvP0Wu3vV3IgT
- jtDqV5cHlWmgFykwxQeT/IydkBlr/YdyPihh5FydmrEoJ4kemtFyaw2RB0p8JM5JDX6qnzCfl
- OkQE5PeBuAB7EDAE9SMtMiDAO8/8Nkg6u8ILIoO5X7jfBiyQrElMx3ZZHvSICRrX6UmgcZfdN
- VGqKduu6bHdmY+qfm4Sw4p8/MZu58hP8z+ZuiBV0hfkC/KkOawqcT+HtgNaRsrb2gI+A4mKJD
- KQFFJYUGfHh+9yC5I1NjpMQFmg+avMohYkHOiptqIrvFM3X9vCwpBfb89948AHRJ8uHLelNTP
- f3OSdPn9eYW2C0OleMUL96+eVSkcG72GfDKUULZk5RQJBEp+WQAgQuruirXhMaHp6AHfHlBgA
- uH9j+bUkVL++9uzYB41y8T6M13iOFmS0Fr8US2GUx/tIhUg7qw+cOO30nEYHxQsS/X//L8dUT
- mM4juvenzt3TXAx+cwoAAePCC9VJ1edBMacsaD72b5V3E+6/oOvy8BVUHbtv1vKVrfecxtjtW
- g/u21v9FpFFx3OC7rO9NV+USUuUizLN9/iukRGnhs7g2b72giFqFRLRQ6eUtmT69tR2b6zuaJ
- C2e/wBn9Ye03+HNi+C2V0i1NapJajgVbK3qeQ4Jk83Q6BK+aU4QloWoRvkbIq8lOsyuY+Xrzs
- XuUVEAlYX6RUASaHcSAeWc6dGdRGRsaZj4XL0MaTLLEgvHwaMx7zBtF7nKZFrkcKqq8O0s2xY
- OYmKPqKYkJJRDdVYMTJyWhCyRXODkQOHla+xGzCmB9aPNWUlpuRAY2fZEeRY+8iCmp/l0hT1/
- ZdBRdzSWf6APJmaN6RIQxcKxOfWcfoAIuNH3anF5T0r/73iODQGins8MZf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f37c7159-528d-4c58-b531-8d66757d2c16@oss.nxp.com>
 
-Hi Greg
+> >> +/* Errata: ES_TJA1120 and ES_TJA1121 Rev. 1.0 — 28 November 2024 Section 3.1 */
+> >> +static void nxp_c45_tja1120_errata(struct phy_device *phydev)
+> >> +{
+> >> +	int silicon_version, sample_type;
+> >> +	bool macsec_ability;
+> >> +	int phy_abilities;
+> >> +	int ret = 0;
+> >> +
+> >> +	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_DEVICE_ID3);
+> >> +	if (ret < 0)
+> >> +		return;
+> >> +
+> >> +	sample_type = FIELD_GET(TJA1120_DEV_ID3_SAMPLE_TYPE, ret);
+> >> +	if (sample_type != DEVICE_ID3_SAMPLE_TYPE_R)
+> >> +		return;
+> >> +
+> >> +	silicon_version = FIELD_GET(TJA1120_DEV_ID3_SILICON_VERSION, ret);
+> >> +
+> >> +	phy_abilities = phy_read_mmd(phydev, MDIO_MMD_VEND1,
+> >> +				     VEND1_PORT_ABILITIES);
+> >> +	macsec_ability = !!(phy_abilities & MACSEC_ABILITY);
+> >> +	if ((!macsec_ability && silicon_version == 2) ||
+> >> +	    (macsec_ability && silicon_version == 1)) {
+> >> +		/* TJA1120/TJA1121 PHY configuration errata workaround.
+> >> +		 * Apply PHY writes sequence before link up.
+> >> +		 */
+> >> +		if (!macsec_ability) {
+> >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x4b95);
+> >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0xf3cd);
+> >> +		} else {
+> >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x89c7);
+> >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0893);
+> >> +		}
+> >> +
+> >> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0476, 0x58a0);
+> >> +
+> >> +		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x8921, 0xa3a);
+> >> +		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x89F1, 0x16c1);
+> >> +
+> >> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x0);
+> >> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0);
+> > 
+> > Please add macro with meaningful names for all the magic numbers used
+> > above, thanks!
+> > 
+> > Paolo
+> > 
+> 
+> Hello, these registers are not documented in the datasheet or errata sheet.
+> The access sequence comes 1-to-1 from the errata so I couldn't use macros.
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+Yes, we sometimes just have to accept the drivers are doing magic we
+have no idea about because the vendor does not want to tell is. All
+the registers in MDIO_MMD_VEND1 are clearly vendor specific. The
+MDIO_MMD_PMAPMD registers are also in the range reserved for
+vendors. So i think we just have to accept it.
 
-Thanks
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+    Andrew
 
