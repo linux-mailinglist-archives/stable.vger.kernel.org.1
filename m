@@ -1,149 +1,160 @@
-Return-Path: <stable+bounces-121246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1826A54DF1
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:37:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E2AA54DF6
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A76E3A933A
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4C05188B0BD
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1571632F3;
-	Thu,  6 Mar 2025 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6701624FD;
+	Thu,  6 Mar 2025 14:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="o08iJocy"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PQuN3o4Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B947370838
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 14:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711A1DF71;
+	Thu,  6 Mar 2025 14:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741271864; cv=none; b=Zox31SUULOyLun0T6FCy62TsoZpoywL+JEPfYIaKwvACVm3kHQuU7z0NIH84X1jSuNdeaVJYzw5VtKhuqlEksWZt4bMlUxezod0CjR/0x3AQ/eDDQavGQtk1M/37fdzL9OW9VaLv9AZfm/CwKRT/y62oBBsYVPaKElEG1LkBOVs=
+	t=1741271960; cv=none; b=JB0lwF3qNswwSsIV8pXWORRqryFwlTAWWSuWGMlJW6eJExnOJuz6KXNGlI7NnK0BtkSKXqsOpHDNCWfEyv6tNbOjIy3MNAKcMRxOhinYwW28TcMJ3JFIykh9Uh0mRqI3wTkp73f08oZ0GEEbf93SQ4xilSSqyXxMKGnrkT9b9TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741271864; c=relaxed/simple;
-	bh=gF3YkWOhDXWK+rQ4xDnI05H9mTCsTY1efQ9MZ8j7GiE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MdVTIC3cFHOowZyksfzHxAilcQvasP2l6e1lWN+4Pm5S9pSX9U2Ea+dACO5i9cfRCpiE1qCRbBycVcnZ7HIHYzuxirYeuNTm424RV3XTcUWa7RTcSPVH9SKuzkKGIBW+N5vpDxK+coteOLOadOhfl3wcIrF/RkgqOXsmNX2J38Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=o08iJocy; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6e89ccbbaa9so5623356d6.2
-        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 06:37:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1741271860; x=1741876660; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=GkwQ0oLvEDj707o8NQ6UwhxGkpQaxXqiDQ8oga7M5qc=;
-        b=o08iJocyF4q6cQLocHMoKYohAiOO/tgkRZH2jr/h51nK+Y0zJ5NqByHA8ow+NkCcsl
-         ZATDyTW9YUSMmf426xyHRbZ9iiyNvgNdYiHkMPqTpBYdwCjgpgQUZLdtX+DL2E8DMbBE
-         f8Z7K3KsvAOlGhWiKcUS2Ow6C0xLyrzydBUr7Apdk1vvwtanO5uotYkA5oPd+5pTjWVT
-         kgDYTUhh/7P8A2FQqSVaiRb9LERiayjW93frFWlJdtvMGKyKFlePWBmm5Ct/G0ucwdQt
-         cKLBeeI87/+PPX1T7R0Oa/r1QCs/+CCLd46zsbGiojhdjuJukHtx5Qrn557npW8+zw+V
-         BmzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741271860; x=1741876660;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GkwQ0oLvEDj707o8NQ6UwhxGkpQaxXqiDQ8oga7M5qc=;
-        b=I3JSXpLAKHYOhfEnM+3/DfIG5A8DO8jxsPxvzuWTReiNdanlyuJ8PJV2HXVqoawkR0
-         l/vTy2W1nOPuFhuNgEHKRDQMb4DOFAEE8lFvJp2+7jM5P1ETl++mGbNhhETakwvwdAlN
-         pkA0e7FnoCQv29hbcqq0KX74gGtc82PudqxCR11qRwQc49c2nmlYd1SbU908Wp4cnN+r
-         dEWkH+K8kyVIKRyQ0Cb3l2AJfMb2D9hVYwVNNsytPfKbatCx345GoA5G/3dJhNf3ZG3S
-         K+RtVnKMIbTqgr+KPjuP09r+PpqhQZmRsNxO9Nai5XO00FNOiShuBTzFj+VKpxTgXjgt
-         XRsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWyVBHIOKsMk3lBxaco9Nwp6kOqtV9jmDGStK/j3s9jk9odpSK5ukUY8hKk4lSRq9r2FjL6Y5A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywjpyoyLP7v9EgTHB56cPahx+3gPhDwJDASWymjb+N3N7JauB9
-	yPRKQQytzZVKxcYgXFaEpEQlHjNcryW8NeV1eF0gK35vxnxYvD1dyOZwFDlPrA8=
-X-Gm-Gg: ASbGncs4mHq9wWWsc+Rm9XEhlHt1efLq0727Bfg0PM4mJv18RPM0bMPrQJ7olzH+rqk
-	8QD5+ZeF72gzisOdJuPUsrRtRhbT+odKqyz3LrormBHUBb0pSn0TOaCoWzSsC5Hje3aUsrNkBXZ
-	4qUxmx+iJQ+rWdY7eDmNG2rEmLuHRcTtkyDUMah1qvfb6Miw2yrrLxRb/2IrB6N6d0vsoipU9Dx
-	SOstdFxaFzaFPWaeN/StF6+0RsqHPuK4z0rObYLSkokDRYlEEqm4JHCsnOq0+QCcOnNxHLZ8Dmz
-	TIHTuXP6e7CMtBXe9K9FaH/IU0B9oz/go0gDCBnniaE=
-X-Google-Smtp-Source: AGHT+IE69KzW444Tq3MFt1OkLKjayfvH3XmFTp4VbrSWCKV4Vo0xqPzJpBTl6QpVk0gBd6/iM0+Njg==
-X-Received: by 2002:a05:6214:f61:b0:6e8:fb8c:e6dd with SMTP id 6a1803df08f44-6e8fb8ce9b4mr14514736d6.5.1741271860418;
-        Thu, 06 Mar 2025 06:37:40 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:da5e:d3ff:fee7:26e7])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-6e8f70a4495sm7760056d6.52.2025.03.06.06.37.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 06:37:39 -0800 (PST)
-Date: Thu, 6 Mar 2025 09:37:35 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Muchun Song <songmuchun@bytedance.com>, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org, chrisl@kernel.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: memcontrol: fix swap counter leak from offline cgroup
-Message-ID: <20250306143735.GB290530@cmpxchg.org>
-References: <20250306023133.44838-1-songmuchun@bytedance.com>
- <CAMgjq7B5SyqYFbLhbgNCvQejqxVs5C6SaV_iot4P64EZLHZ8Gg@mail.gmail.com>
+	s=arc-20240116; t=1741271960; c=relaxed/simple;
+	bh=I3Rdo9Tv28/kEBJt/wJqtqa8Cn7oNKIw8YLpsVR+l5Y=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=YRVHMDB6zmdGQPvqpskRtd3i/dWwz6fLFA7pYjgG3uoXk5ALdQvI9rOl+fFN/MRrk0tyGrKV/lCFvBPJthwKaxNJEaUrT5zk8c0cyqhlBApLdw2T4LfyKaHfFQWevIE1Y3vvYbo3aHFu1ic3UCJ15djKFVs/XJxCTYk9dXL5NqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PQuN3o4Z; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 526Ed1lc3967114
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 6 Mar 2025 06:39:01 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 526Ed1lc3967114
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1741271942;
+	bh=dkXVBGPY63hZMCagXcTMmvllJsm+GP6pR+jupmxbpNM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=PQuN3o4Zp2D/sAjCbf7GoU5PafOnVPHLsRfh1IOHeiEwZgHLgGHUehm5w0Apn2QCi
+	 CcY72l6Bv4tIVQ2AuEZ7GP1TnixhVk2+WobaNwOCS9zZG8PFwRpPTAVspzOo5BNHLI
+	 t1WQl5ovT7u2duCWitMr4WZ4KRZ5+TjKGfbLsoyoEeQE56r4Bxq/DtALq0r536r3sT
+	 mNYkw+Vlkr36nUWOeeQQZzuP4/hSSdsM0RydrGz5jg3riQGYpvhd24qD9tMDfmmILy
+	 GRaaxL1ejRa8YDg4CA9i6ADRsXUQ/+3iKUWMTCXfUk7nMZGnVa5o+05upKCB1DsADS
+	 An7G7KmUutP5Q==
+Date: Thu, 06 Mar 2025 06:38:58 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Ard Biesheuvel <ardb@kernel.org>,
+        Ulrich Gemkow <ulrich.gemkow@ikr.uni-stuttgart.de>
+CC: stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: =?US-ASCII?Q?Re=3A_Regression_for_PXE_boot_from_patch_=22Remo?=
+ =?US-ASCII?Q?ve_the_=27bugger_off=27_message=22_in_stable_6=2E6=2E18?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAMj1kXH-CDaQ0UFuwHWC2ERRmvo7tS+jcZcue00yReyAi5sVXg@mail.gmail.com>
+References: <202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de> <CAMj1kXH-CDaQ0UFuwHWC2ERRmvo7tS+jcZcue00yReyAi5sVXg@mail.gmail.com>
+Message-ID: <F13ADA98-60CE-4B1A-B12F-2D1340AF44E3@zytor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7B5SyqYFbLhbgNCvQejqxVs5C6SaV_iot4P64EZLHZ8Gg@mail.gmail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 10:54:12AM +0800, Kairui Song wrote:
-> On Thu, Mar 6, 2025 at 10:32 AM Muchun Song <songmuchun@bytedance.com> wrote:
-> >
-> > The commit 6769183166b3 has removed the parameter of id from
-> > swap_cgroup_record() and get the memcg id from
-> > mem_cgroup_id(folio_memcg(folio)). However, the caller of it
-> > may update a different memcg's counter instead of
-> > folio_memcg(folio). E.g. in the caller of mem_cgroup_swapout(),
-> > @swap_memcg could be different with @memcg and update the counter
-> > of @swap_memcg, but swap_cgroup_record() records the wrong memcg's
-> > ID. When it is uncharged from __mem_cgroup_uncharge_swap(), the
-> > swap counter will leak since the wrong recorded ID. Fix it by
-> > bring the parameter of id back.
-> >
-> > Fixes: 6769183166b3 ("mm/swap_cgroup: decouple swap cgroup recording and clearing")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+On March 6, 2025 6:36:04 AM PST, Ard Biesheuvel <ardb@kernel=2Eorg> wrote:
+>(cc Peter)
+>
+>On Tue, 4 Mar 2025 at 15:49, Ulrich Gemkow
+><ulrich=2Egemkow@ikr=2Euni-stuttgart=2Ede> wrote:
+>>
+>> Hello,
+>>
+>> starting with stable kernel 6=2E6=2E18 we have problems with PXE bootin=
+g=2E
+>> A bisect shows that the following patch is guilty:
+>>
+>>   From 768171d7ebbce005210e1cf8456f043304805c15 Mon Sep 17 00:00:00 200=
+1
+>>   From: Ard Biesheuvel <ardb@kernel=2Eorg>
+>>   Date: Tue, 12 Sep 2023 09:00:55 +0000
+>>   Subject: x86/boot: Remove the 'bugger off' message
+>>
+>>   Signed-off-by: Ard Biesheuvel <ardb@kernel=2Eorg>
+>>   Signed-off-by: Ingo Molnar <mingo@kernel=2Eorg>
+>>   Acked-by: H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
+>>   Link: https://lore=2Ekernel=2Eorg/r/20230912090051=2E4014114-21-ardb@=
+google=2Ecom
+>>
+>> With this patch applied PXE starts, requests the kernel and the initrd=
+=2E
+>> Without showing anything on the console, the boot process stops=2E
+>> It seems, that the kernel crashes very early=2E
+>>
+>> With stable kernel 6=2E6=2E17 PXE boot works without problems=2E
+>>
+>> Reverting this single patch (which is part of a larger set of
+>> patches) solved the problem for us, PXE boot is working again=2E
+>>
+>> We use the packages syslinux-efi and syslinux-common from Debian 12=2E
+>> The used boot files are /efi64/syslinux=2Eefi and /ldlinux=2Ee64=2E
+>>
+>
+>I managed to track this down to a bug in syslinux, fixed by the hunk
+>below=2E The problem is that syslinux violates the x86 boot protocol,
+>which stipulates that the setup header (starting at 0x1f1 bytes into
+>the bzImage) must be copied into a zeroed boot_params structure, but
+>it also copies the preceding bytes, which could be any value, as they
+>overlap with the PE/COFF header or other header data=2E This produces a
+>command line pointer with garbage in the top 32 bits, resulting in an
+>early crash=2E
+>
+>In your case, you might be able to work around this by removing the
+>padding value (=3D0xffffffff) from arch/x86/boot/setup=2Eld, given that
+>you are building with CONFIG_EFI_STUB disabled=2E However, this still
+>requires fixing on the syslinux side=2E
+>
+>
+>
+>[syslinux base commit 05ac953c23f90b2328d393f7eecde96e41aed067]
+>
+>--- a/efi/main=2Ec
+>+++ b/efi/main=2Ec
+>@@ -1139,10 +1139,14 @@
+>        bp =3D (struct boot_params *)(UINTN)addr;
+>
+>        memset((void *)bp, 0x0, BOOT_PARAM_BLKSIZE);
+>-       /* Copy the first two sectors to boot_params */
+>-       memcpy((char *)bp, kernel_buf, 2 * 512);
+>        hdr =3D (struct linux_header *)bp;
+>
+>+        /* Copy the setup header to boot_params */
+>+        memcpy(&hdr->setup_sects,
+>+              &((struct linux_header *)kernel_buf)->setup_sects,
+>+              sizeof(struct linux_header) -
+>+              offsetof(struct linux_header, setup_sects));
+>+
+>        setup_sz =3D (hdr->setup_sects + 1) * 512;
+>        if (hdr->version >=3D 0x20a) {
+>                pref_address =3D hdr->pref_address;
+>--- a/com32/include/syslinux/linux=2Eh
+>+++ b/com32/include/syslinux/linux=2Eh
+>@@ -116,6 +116,7 @@ struct linux_header {
+>     uint64_t pref_address;
+>     uint32_t init_size;
+>     uint32_t handover_offset;
+>+    uint32_t kernel_info_offset;
+> } __packed;
+>
+> struct screen_info {
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-
-Looking at the original commit again, we also should do this:
-
----
-
-From 2685ca87d73d0c2b91cfd6959e381a40db235119 Mon Sep 17 00:00:00 2001
-From: Johannes Weiner <hannes@cmpxchg.org>
-Date: Thu, 6 Mar 2025 09:31:42 -0500
-Subject: [PATCH] mm: swap_cgroup: remove double initialization of locals
-
-Fixes: 6769183166b3 ("mm/swap_cgroup: decouple swap cgroup recording and clearing")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/swap_cgroup.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/mm/swap_cgroup.c b/mm/swap_cgroup.c
-index 1007c30f12e2..de779fed8c21 100644
---- a/mm/swap_cgroup.c
-+++ b/mm/swap_cgroup.c
-@@ -92,8 +92,7 @@ void swap_cgroup_record(struct folio *folio, unsigned short id,
-  */
- unsigned short swap_cgroup_clear(swp_entry_t ent, unsigned int nr_ents)
- {
--	pgoff_t offset = swp_offset(ent);
--	pgoff_t end = offset + nr_ents;
-+	pgoff_t offset, end;
- 	struct swap_cgroup *map;
- 	unsigned short old, iter = 0;
- 
--- 
-2.48.1
+Interesting=2E Embarrassing, first of all :) but also interesting, because=
+ this is exactly why we have the "sentinel" field at 0x1f0 to catch *this s=
+pecific error* and work around it=2E
 
