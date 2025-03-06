@@ -1,159 +1,176 @@
-Return-Path: <stable+bounces-121200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745B3A546AF
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 10:42:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4143A546B9
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 10:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 843DF7A3A4D
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 09:41:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F8D3B25B7
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 09:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9141C20A5EC;
-	Thu,  6 Mar 2025 09:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5675F20A5DC;
+	Thu,  6 Mar 2025 09:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dpLafwmc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gMcrM5eS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BA120A5CF;
-	Thu,  6 Mar 2025 09:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FB0209F57
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 09:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741254144; cv=none; b=ikMTSnp2hLWrOFAzBz2D+PCYjqOUKfPd8xwcXonI1EBvqhhO7c/yN2IXToZqPY+r/xfynDXZR8cV/4aM9hP7Vl9/2FXH/kK0hzM43xYz8RwfsyPG9yHWZghzQMzcHEUP4YDV+k/iO2hy0Sw6QAlk6hm6qjYItP5eTZTPlwU3xZU=
+	t=1741254208; cv=none; b=KdoQqaKK6ahjjSwH0G287EOpXnWRELUJ2sEBbGfoFpI2ssNKomj7hKhCrcIgHAqBdR9ID02pKiGU4ijQGJp/HJuSIGgThy9ugTy51kdNQUULZdA+P1mDcnqodLUAqxFiPxNVZwzsLXlWqvmRe61NNT1JdHHd8bnkD8/CBxH2SKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741254144; c=relaxed/simple;
-	bh=qgAL/rqV2yuyE+RUXMmy4rkUVwXU7w6M3wrqaHA5JGE=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WAm+LUlVh0QunrpOC9jmoZzNpFlOpks29n3H0m1fTXKW7QBw5y0dQcp1jHhtWaw9Ohe2Enxtvkbx7c2OhPkGzMGZKJWrW7xPB0BoDaGqey8+GHGQJHCBe+8W71JCQCTwo4annKFUEyyQWq1M1qbVswO5zC0Nx7B9xEm9Rsvt1wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dpLafwmc; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso89617666b.3;
-        Thu, 06 Mar 2025 01:42:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741254141; x=1741858941; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=T4lnHb9qdu1TBKioUS3a347jyWbtNj/owKNfUkwY+ok=;
-        b=dpLafwmcZDoeOH4aeVFZP7XpTvV4vAty+lAGU3V6ymfkNGxXIt5nlrZ3AZ5lvQGZHH
-         dGTBg5E/9zidptIgdU0vHIVwQaQ7oiOck1Mpypv4YFljZk7rsCzrXYacewGJtL2Bz+Qz
-         MzQoQPHMHeW8UKAc0oEKJbom1gIHfZVCYDLU9O+zxpt4bpYnK3pNLiAClE4ArVeY7S8m
-         JTzRA8n57S7i1m2Llj+PhWUtQ3l3o/mmreaRFcGSn1t2hUDfuEKd0Z8MtJw4ICM+Qhrx
-         aPkzo65KCLA76DGS8GX1m8ksShNfkvdTktJVXUY3TA3gWEFofh3SOYSBsKdh8hdpAtra
-         /DYw==
+	s=arc-20240116; t=1741254208; c=relaxed/simple;
+	bh=ij6pw+xGtu8hU4opSEKUyYQbYkETiMrkgi1ZrVOSFIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n36zSW9mv3HXOJ9GUoR8AjeuULnXGXtVFv/XscB+psED59MaGSyadUCN9knh294fplLe22BrkipF9YBOoSSFZ3pE4Nx/PHelIrvDqIgve63UOpY2cBPGTrdjUc6ACMuTZ8BdIBxfvSwNCTetqMk2p7VAZrbc5KZnA802i/4SroY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gMcrM5eS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741254205;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XX3dakY8scOT7Ne2j8d44b9U4MvBllULAE0kKWIQm8s=;
+	b=gMcrM5eSJlyr7/ocMVePdC0Zk2xP04hLyXI8Hok1W+x+1ZryHIZnZIsilpdYVmAuaBglKu
+	YlgJXDfmi+1ai/+MQByuNl9sy1aV/7+TuGW0rpjvwhAXPuYXiMtdG8BAvIjT5mkuO92R94
+	uGyUgn8kowpEvqbTIr5OO6ZIrvNmV0g=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-WDFvM2yANGiKl1nN5xhq7g-1; Thu, 06 Mar 2025 04:43:13 -0500
+X-MC-Unique: WDFvM2yANGiKl1nN5xhq7g-1
+X-Mimecast-MFC-AGG-ID: WDFvM2yANGiKl1nN5xhq7g_1741254191
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-390f365274dso222992f8f.0
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 01:43:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741254141; x=1741858941;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T4lnHb9qdu1TBKioUS3a347jyWbtNj/owKNfUkwY+ok=;
-        b=ilXj377jdrweOErFUJ1y7YFuCg1KAzQsAgQnXShKi6xK1zeOfMwttAQBKRQsGktJPg
-         UykfRVswJ75z43h7rDub/sQUc65LEvAedE30583lcpJy58BZyi0gk1+QCs6jaDYKNKEJ
-         Vs5uV6bs4PzbDW4G+zrhhrXW+HPpGTxGu9OZax/dpW9rqJXy7+/HpEM5coVmBlsDNeon
-         RJQwdACbMxbsR2xuQMAnIkfsjOc/vTVkfIY77413mJrhgec94Pz+JwMlwHjB20Lla+4U
-         +ae2ZB/FQ/zDWrCiz40Uz43AMyI7H76IWiIQtMygW+KFdRO8SyKRb+Rc1o5QZ1Om3ZJx
-         97ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgyJDXS34Jt4o5isAj4jfjzttyjwsFPiZ/daGfkD+Nqy49S1klf/W75O4qZsAu9Iwh7Augkxza@vger.kernel.org, AJvYcCWUxfXGDqyx3qyPqD1IchnsuqvnDNeN7hGmNk2W6h3r4MSUz9eX+MU3p98xkGPrMIdl2ugNzL6ZiQiQ3te0@vger.kernel.org, AJvYcCXEzvTQOgPFc+a4mANJW3l7ASZFTDN2CBZmUy6KBBh1oCOjcBo9QO+Y/8p9pnqi5dMP/gE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHlyGo0lavqqnEVP9fklOp2NWcK/u+HTwSseZGjBnZTgwiyjuQ
-	N/amF4BDJyYl/dPtVjA63rucKIs/nlt30UhtitT+f/l8+CzU5Fht
-X-Gm-Gg: ASbGncuiRWqIB1LPcGG8CDRbUIBKLDlxpTgmWGHS9J+wo5lBIH0K1mU+4jaIHocd4Sc
-	y2IJObDAnFXAnpu8nTb/HiZsP4luVKUfe8jxm2tRfApIH6Fnl7deAnKlgjqhD/Y8kgAh9Bl3vba
-	pMNSJvg+KvM135j/ktMYh0mVEcN7mL3YSinDV+IbgNs64wJ0A0AVv9DlSnowcyV0qyay5f8IQyp
-	RUlScZhzPWcAhhw44Vcp/XsvFOh/zF01pdGgUmyKSzp6YzeBcFBuMubryyzAA6dRuGB/pXD/de1
-	9QFDmmaoJeMFR0qTqTb6MmaN4Y1j1Qw=
-X-Google-Smtp-Source: AGHT+IFrPcY0lrj9hG+4Y/pg0PftN6YiW/IgVjN3D/G0eNKrvex5TMsd21ZA9mYagzX3a+00QQ5ttg==
-X-Received: by 2002:a17:907:7241:b0:ac1:791c:1526 with SMTP id a640c23a62f3a-ac20db00b0emr623854666b.56.1741254140487;
-        Thu, 06 Mar 2025 01:42:20 -0800 (PST)
-Received: from krava ([173.38.220.57])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac239481685sm67119666b.58.2025.03.06.01.42.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 01:42:19 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Thu, 6 Mar 2025 10:42:17 +0100
-To: Chen Linxuan <chenlinxuan@deepin.org>
-Cc: Sasha Levin <sashal@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
-	Jann Horn <jannh@google.com>, Alexei Starovoitov <ast@kernel.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH] lib/buildid: Handle memfd_secret() files in
- build_id_parse()
-Message-ID: <Z8lt-X7yyhjKMTR7@krava>
-References: <0E394E84CB1C5456+20250306050701.314895-1-chenlinxuan@deepin.org>
+        d=1e100.net; s=20230601; t=1741254191; x=1741858991;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XX3dakY8scOT7Ne2j8d44b9U4MvBllULAE0kKWIQm8s=;
+        b=Yzg4Nq/Rx7W3xXvDkUD+Pe2qtz1NI1xRJwsr+BiieNy6EVBW5K5VKk7q+3cMXapmDJ
+         M/YvYu3i2qRDBfzliz47AWnGSMh9OjgPDQlKn9kKlh2mHb9ef9yD1xSDPNEn8u+hVL4u
+         m66QnhIHoiURKzrSiJntk3ZWwWmK8Fw7wZbhwTM2jwCyNxEKgxcfaVvIay5TgUvK5az4
+         SgOhPhIkDFAqgPcoc1dsGrOGKxHYVX2e7IT/hGGyGAuEuXTWTGm0HrnvFx72Em/FZvSL
+         sFXIjEVVnda1j6VZgvRGFfui4Uy/czF1KuGdg1wNNrQtsnb5z03N+1hdPS0d235p2D89
+         3GYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW32/yabju6LmLOO+8w1Dia2ZMqHIyDNoKSFqfkK6Vfk8gPhH0ylY1X6fTfvAhrfyIdfnCgZZQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzuf3cTASPDQDyK8l//wA75Y5ToWP3V8io0MNirFkUMu8r3XGcM
+	QxQYzwyh3cP5Teovz1vHZN6YRUc0hNP6ysBEApVb00BGR2JqqiJ3exSUQWO5Asf3I70xBmipiaj
+	dgto+EZcKJDx3gdIir+JPbZxeie4Zxtmo28HyIAR/MI34/e70KPv7xQ==
+X-Gm-Gg: ASbGncvfYa1Llv5IL72cSjo3HbQjy/NIXrY7bU4Y2h41HR1nVt5w9r+JGDRSLJhLIij
+	3ifwteR9cRIbmRkntURbnOdS3nFNQFcLq3s2G5TMzPHvu6d1317GztO5bZPoxDJ2Na2yyftuK6N
+	XjssiQVolTeGXLTcU1F9VOA9Olj5mA+tdgxCPUExp81Nk1EhE632yf/lTF6lZfaRMHR9qXq4PZy
+	s+POnYQtx9r6XC0r+HL31bNK/TZe2CLKbuFa02b/tzA/Ahn7SoIRG6xu08tiHBTs2jgYvkF/BqG
+	hqMaeLta+amBPPITJ62mZszmVIaFIGGZAwt8YdBFqd//yw==
+X-Received: by 2002:a05:6000:1888:b0:391:b93:c971 with SMTP id ffacd0b85a97d-3912982e94amr1698923f8f.20.1741254191197;
+        Thu, 06 Mar 2025 01:43:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGuWB1xxLyGYJud3m2Orc+jQD9bwgMtC8fEkj+pgDtO5dg4XKxw8lCcj7dXngVsWSVLL5GgjQ==
+X-Received: by 2002:a05:6000:1888:b0:391:b93:c971 with SMTP id ffacd0b85a97d-3912982e94amr1698907f8f.20.1741254190790;
+        Thu, 06 Mar 2025 01:43:10 -0800 (PST)
+Received: from [192.168.88.253] (146-241-81-153.dyn.eolo.it. [146.241.81.153])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdfde7sm1507615f8f.32.2025.03.06.01.43.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Mar 2025 01:43:10 -0800 (PST)
+Message-ID: <7c14179c-0262-47e5-a13e-a53c2061da9b@redhat.com>
+Date: Thu, 6 Mar 2025 10:43:09 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0E394E84CB1C5456+20250306050701.314895-1-chenlinxuan@deepin.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/2] net: phy: nxp-c45-tja11xx: add TJA112X PHY
+ configuration errata
+To: Andrei Botila <andrei.botila@oss.nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, s32@nxp.com,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, stable@vger.kernel.org
+References: <20250304160619.181046-1-andrei.botila@oss.nxp.com>
+ <20250304160619.181046-2-andrei.botila@oss.nxp.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250304160619.181046-2-andrei.botila@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 06, 2025 at 01:06:58PM +0800, Chen Linxuan wrote:
-> Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
-> Handle memfd_secret() files in build_id_parse()") to address an issue
-> where accessing secret memfd contents through build_id_parse() would
-> trigger faults.
-> 
-> Original report and repro can be found in [0].
-> 
->   [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-> 
-> This repro will cause BUG: unable to handle kernel paging request in
-> build_id_parse in 5.15/6.1/6.6.
-
-hi,
-so this patch is meant for one of 5.15/6.1/6.6?
-
-if so you need to send it separately and add that to the subject,
-please check Documentation/process/stable-kernel-rules.rst
-
-and you can check other stable kernel patches on the mailing list
-like [1][2]
-
-thanks,
-jirka
-
-
-[1] https://lore.kernel.org/bpf/20241206153403.273068-2-daniel@iogearbox.net/
-[2] https://lore.kernel.org/bpf/20241104175256.2327164-3-jolsa@kernel.org/
-
-> 
-> Some other discussions can be found in [1].
-> 
->   [1] https://lore.kernel.org/bpf/20241104175256.2327164-1-jolsa@kernel.org/T/#u
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-> Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-> ---
->  lib/buildid.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/lib/buildid.c b/lib/buildid.c
-> index 9fc46366597e..b78d119ed1f7 100644
-> --- a/lib/buildid.c
-> +++ b/lib/buildid.c
-> @@ -157,6 +157,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
->  	if (!vma->vm_file)
->  		return -EINVAL;
+On 3/4/25 5:06 PM, Andrei Botila wrote:
+> diff --git a/drivers/net/phy/nxp-c45-tja11xx.c b/drivers/net/phy/nxp-c45-tja11xx.c
+> index 34231b5b9175..709d6c9f7cba 100644
+> --- a/drivers/net/phy/nxp-c45-tja11xx.c
+> +++ b/drivers/net/phy/nxp-c45-tja11xx.c
+> @@ -22,6 +22,11 @@
+>  #define PHY_ID_TJA_1103			0x001BB010
+>  #define PHY_ID_TJA_1120			0x001BB031
 >  
-> +#ifdef CONFIG_SECRETMEM
-> +	/* reject secretmem folios created with memfd_secret() */
-> +	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
-> +		return -EFAULT;
-> +#endif
+> +#define VEND1_DEVICE_ID3		0x0004
+> +#define TJA1120_DEV_ID3_SILICON_VERSION	GENMASK(15, 12)
+> +#define TJA1120_DEV_ID3_SAMPLE_TYPE	GENMASK(11, 8)
+> +#define DEVICE_ID3_SAMPLE_TYPE_R	0x9
 > +
->  	page = find_get_page(vma->vm_file->f_mapping, 0);
->  	if (!page)
->  		return -EFAULT;	/* page not mapped */
-> -- 
-> 2.48.1
-> 
+>  #define VEND1_DEVICE_CONTROL		0x0040
+>  #define DEVICE_CONTROL_RESET		BIT(15)
+>  #define DEVICE_CONTROL_CONFIG_GLOBAL_EN	BIT(14)
+> @@ -1593,6 +1598,50 @@ static int nxp_c45_set_phy_mode(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> +/* Errata: ES_TJA1120 and ES_TJA1121 Rev. 1.0 — 28 November 2024 Section 3.1 */
+> +static void nxp_c45_tja1120_errata(struct phy_device *phydev)
+> +{
+> +	int silicon_version, sample_type;
+> +	bool macsec_ability;
+> +	int phy_abilities;
+> +	int ret = 0;
+> +
+> +	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_DEVICE_ID3);
+> +	if (ret < 0)
+> +		return;
+> +
+> +	sample_type = FIELD_GET(TJA1120_DEV_ID3_SAMPLE_TYPE, ret);
+> +	if (sample_type != DEVICE_ID3_SAMPLE_TYPE_R)
+> +		return;
+> +
+> +	silicon_version = FIELD_GET(TJA1120_DEV_ID3_SILICON_VERSION, ret);
+> +
+> +	phy_abilities = phy_read_mmd(phydev, MDIO_MMD_VEND1,
+> +				     VEND1_PORT_ABILITIES);
+> +	macsec_ability = !!(phy_abilities & MACSEC_ABILITY);
+> +	if ((!macsec_ability && silicon_version == 2) ||
+> +	    (macsec_ability && silicon_version == 1)) {
+> +		/* TJA1120/TJA1121 PHY configuration errata workaround.
+> +		 * Apply PHY writes sequence before link up.
+> +		 */
+> +		if (!macsec_ability) {
+> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x4b95);
+> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0xf3cd);
+> +		} else {
+> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x89c7);
+> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0893);
+> +		}
+> +
+> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0476, 0x58a0);
+> +
+> +		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x8921, 0xa3a);
+> +		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x89F1, 0x16c1);
+> +
+> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x0);
+> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0);
+
+Please add macro with meaningful names for all the magic numbers used
+above, thanks!
+
+Paolo
+
 
