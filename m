@@ -1,150 +1,223 @@
-Return-Path: <stable+bounces-121277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB514A55176
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 17:41:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DD2A551BE
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 17:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1907B7A500C
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:39:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 434337AA9DC
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E206221D00B;
-	Thu,  6 Mar 2025 16:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C7D253B5D;
+	Thu,  6 Mar 2025 16:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=bezdeka.de header.i=@bezdeka.de header.b="q82kf6lm"
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="PZR3j/Eu"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.bezdeka.de (mx1.bezdeka.de [5.181.50.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F185B2139B1;
-	Thu,  6 Mar 2025 16:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.181.50.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08E9212B01
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 16:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741278911; cv=none; b=YY2Zv3Us3dCW2XCTJy3BMKZcpQpvnoULTOo3Hi37jFYz8C++iu3N21D9D9gQjQwAD6ss18fSjQ+F2kt355bjRW3u8pfppVgDqDFn6a/q4BCrM1rk5I1J8ozjb5H5sso6SKe4YqzEb9py9h+cMLP/dMN4bCjHDhtmghRAfK8ZXGE=
+	t=1741279546; cv=none; b=hvzwpy1MN88WI8meILsgKcwwzpyE3Sw2D4L3GlXMSKmDs8C1NeuBSUSVIDvoS+nRMGdqcrXHizP+PbmWkPwqZHhwTJOULirVI2YeyHPg5f5uot1KV74KtBz7QzuRWqsVxDtdhMg6KwNPg+RyJVf0jDL3MnVczMnsWGa+mnAGYWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741278911; c=relaxed/simple;
-	bh=ePQ8fgR2Ol+QBJmaiwdkBzfqyre62w0pV7VP0pAL7u4=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=kwqp1Tp7Odf8jZQuHRGtl38dHPR/576Pf0NM1lQT2WM0Nkwe0sbBQbi6GT54MVr9x0LmRQRo5FNOjgpS76/asaj2WO9jb8WY1lCboWyYbG4q3MYJ2FX44I1xxQ9sc9nRIYytplld60+e2tVPyfEPlzPzLjCl84EpdCCG2bWkPRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bezdeka.de; spf=pass smtp.mailfrom=bezdeka.de; dkim=pass (2048-bit key) header.d=bezdeka.de header.i=@bezdeka.de header.b=q82kf6lm; arc=none smtp.client-ip=5.181.50.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bezdeka.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bezdeka.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=bezdeka.de;
-	s=mail201812; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
-	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ymJP0/xT4dIjoC4+iVCO8nK9r0zha61bXHc9VHBaPaE=; b=q82kf6lmkojePCD/vKq+7R2b9x
-	hPERb6d1DvIUomd/fFr413UpPHoUzGr4VNiV2eQWWv2bHVDC1z2nnWsvQYJ8Vd0Kquk4POca+xfHc
-	h3r2ZKALCgGQwcWeoYRazNvmkHc9MGQGxZAnxbfql5zspztkug5CO8jvr7X6KS+sIwM/8EBpyur4x
-	3C9Fsxmx6HCEZT41l9B3kxDHavchRFlHLG/who1WMViP+rtT28a3ae7Eq8Y2s/4Ce1rCTG5gCtqc2
-	DdCyG6o1QWP0M+nT7jeYQ+eNapCxk+9Bu6Sp2454wN/ulEzhsYMoS7y8FRDUMbglRIkIjclZH+uCm
-	Wc2SMazw==;
-Received: from web5.bezdeka.de ([2a03:4000:6b:b6::1] helo=email.bezdeka.de)
-	by smtp.bezdeka.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <florian@bezdeka.de>)
-	id 1tqE4R-00Dch6-38;
-	Thu, 06 Mar 2025 17:27:41 +0100
+	s=arc-20240116; t=1741279546; c=relaxed/simple;
+	bh=QBbBN5q5jWmas5qLcxj17oZ+jdnLgvFe5h91P+f5FGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XJ9wFvnySfVixLcABKxh0wV+BQmfe95roxKt7uUXLAmgGtKcZSWIwooR0oVKx4pg84YnOkX+VBbT2OHFvoBM3PPhT/C/wpM3zGv/WunKFl45Nx2Y9+kZi5TAqBMkaZHBSEho26/gxw9YSSpRNBDCtc7ACw4Tm1FhKrYAu+m2qdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=PZR3j/Eu; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2239c066347so16913475ad.2
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 08:45:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1741279544; x=1741884344; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y1tVqjEsF9yz8as4gUEJSF7TOmyvcDOBt4MIJRvQkVI=;
+        b=PZR3j/EuVQYZWE21li6QoRQedCT7JnMnGf/od4wE6dyyVgekUliUg6eNTO1Im67f7T
+         /w5W4lng4T7Fuwpt9mhYaDaKe16zGXSM/Yya1x9A4GHojyvRMZHy/+ho6KQsSfdwNN3Q
+         icvWlv3Vbu6bLJ+CClchlUORc5/VBAeolG1EM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741279544; x=1741884344;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y1tVqjEsF9yz8as4gUEJSF7TOmyvcDOBt4MIJRvQkVI=;
+        b=EzO6xSuKzh0kuuZgZEzL6nQ7oE3iS6zO46nzJ1mVj9WCbuSsxJc1dEP+IKsQmQTmSN
+         mW0K/rlerQMfoBGOaTImc6eby7ViawRtOdapAkCOGmH8mD0RjYpcgP/2kiunDv0iicSH
+         50Dlb3f/7lgLdQP2QVthF4G4II3+7XZ5MUAYuf6y3QKn0db/UQVGoH4nAAYfBg2PXldP
+         YNeJ/OFxjswKZkWwk4n9IvMhWEcl3YdArLl3a9pfWAKYPI4vz2TMQAb3M7k9gvpC2WeS
+         DsgzVRUfaFv+rcamCK5u6O5tQz56jKP58S5Sba+s0B1kjKnnuYg2M0C65oOx3RmQe6QR
+         Rx4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVwNbBB8StqTdGgs+UcNET4exY+2NqzC/woTH7dWh4P0maOveevHng307bdFlZP1biwtjYX29s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5Hov0VxXUj1hRipCndzye9/wFh2eJcd1dOMaMiHJ8I487H0/E
+	q65PtNBdhhOL88ZaTrGwF6++heDOH9LP15qLrx+mIbbjV4xj8jNwRNcAGZa8T+4=
+X-Gm-Gg: ASbGnctsqXLxa7PwlP1VeTMdjY6WJN5G/TU2UQdfgP457ZuYmVoZumB1oR0wMbCoiIK
+	YOsEtscGSfE+YopP4n//0TKcyMxvBAdHfV3HsHLt+hRD4eLJl4ccJoRPnLE5S99vQxylsr+LZO1
+	eJGNBjhXIOmMz4cmVC5hGdWAqSXUPqIw/vQav3BJTJByFGSrYYeixmlvXQsz8kmz9UoWCLD7xLh
+	lKWq2GIG82Thp5i16xBMjsy8M1EdQaRIL2cHWwoRWn6uKKC3KKlpSzibOZAXllAUOEZd/F3yK6h
+	T4jd2fKik0dI74N6UH561fSYjSSSNu/aShGBTypz7ZGQ9FjMOwpDfminp26Dgs4jmQy1kyDxBdK
+	XrUsI+rDDcc0=
+X-Google-Smtp-Source: AGHT+IGQhJlPlmoVKTFjSwcpy61urGaNYqp80VZY41flaZiT4qOPtjFv0gmL/biTffVDgOSzy876LQ==
+X-Received: by 2002:a05:6a00:244f:b0:736:5c8e:bab8 with SMTP id d2e1a72fcca58-73682b5510amr13251516b3a.3.1741279543956;
+        Thu, 06 Mar 2025 08:45:43 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73698452a28sm1570365b3a.78.2025.03.06.08.45.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 08:45:43 -0800 (PST)
+Date: Thu, 6 Mar 2025 08:45:40 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: florian@bezdeka.de
+Cc: netdev@vger.kernel.org, vitaly.lifshits@intel.com,
+	avigailx.dahan@intel.com, anthony.l.nguyen@intel.com,
+	stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH iwl-net] igc: Fix XSK queue NAPI ID mapping
+Message-ID: <Z8nRNJ7QmevZrKYZ@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>, florian@bezdeka.de,
+	netdev@vger.kernel.org, vitaly.lifshits@intel.com,
+	avigailx.dahan@intel.com, anthony.l.nguyen@intel.com,
+	stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+References: <20250305180901.128286-1-jdamato@fastly.com>
+ <796726995fe2c0e895188862321a0de8@bezdeka.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 06 Mar 2025 17:27:38 +0100
-From: florian@bezdeka.de
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org, vitaly.lifshits@intel.com,
- avigailx.dahan@intel.com, anthony.l.nguyen@intel.com,
- stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, Jakub
- Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH iwl-net] igc: Fix XSK queue NAPI ID mapping
-In-Reply-To: <20250305180901.128286-1-jdamato@fastly.com>
-References: <20250305180901.128286-1-jdamato@fastly.com>
-Message-ID: <796726995fe2c0e895188862321a0de8@bezdeka.de>
-X-Sender: florian@bezdeka.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-User: florian@bezdeka.de
-X-Authenticator: login
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <796726995fe2c0e895188862321a0de8@bezdeka.de>
 
-Hi Joe,
+On Thu, Mar 06, 2025 at 05:27:38PM +0100, florian@bezdeka.de wrote:
+> Hi Joe,
+> 
+> On 2025-03-05 19:09, Joe Damato wrote:
+> > In commit b65969856d4f ("igc: Link queues to NAPI instances"), the XSK
+> > queues were incorrectly unmapped from their NAPI instances. After
+> > discussion on the mailing list and the introduction of a test to codify
+> > the expected behavior, we can see that the unmapping causes the
+> > check_xsk test to fail:
+> > 
+> > NETIF=enp86s0 ./tools/testing/selftests/drivers/net/queues.py
+> > 
+> > [...]
+> >   # Check|     ksft_eq(q.get('xsk', None), {},
+> >   # Check failed None != {} xsk attr on queue we configured
+> >   not ok 4 queues.check_xsk
+> > 
+> > After this commit, the test passes:
+> > 
+> >   ok 4 queues.check_xsk
+> > 
+> > Note that the test itself is only in net-next, so I tested this change
+> > by applying it to my local net-next tree, booting, and running the test.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: b65969856d4f ("igc: Link queues to NAPI instances")
+> > Signed-off-by: Joe Damato <jdamato@fastly.com>
+> > ---
+> >  drivers/net/ethernet/intel/igc/igc_xdp.c | 2 --
+> >  1 file changed, 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/intel/igc/igc_xdp.c
+> > b/drivers/net/ethernet/intel/igc/igc_xdp.c
+> > index 13bbd3346e01..869815f48ac1 100644
+> > --- a/drivers/net/ethernet/intel/igc/igc_xdp.c
+> > +++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
+> > @@ -86,7 +86,6 @@ static int igc_xdp_enable_pool(struct igc_adapter
+> > *adapter,
+> >  		napi_disable(napi);
+> >  	}
+> > 
+> > -	igc_set_queue_napi(adapter, queue_id, NULL);
+> >  	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
+> >  	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
+> > 
+> > @@ -136,7 +135,6 @@ static int igc_xdp_disable_pool(struct igc_adapter
+> > *adapter, u16 queue_id)
+> >  	xsk_pool_dma_unmap(pool, IGC_RX_DMA_ATTR);
+> >  	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
+> >  	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
+> > -	igc_set_queue_napi(adapter, queue_id, napi);
+> > 
+> >  	if (needs_reset) {
+> >  		napi_enable(napi);
+> 
+> That doesn't look correct to me. You removed both invocations of
+> igc_set_queue_napi() from igc_xdp.c. Where is the napi mapping now
+> done (in case XDP is enabled)?
 
-On 2025-03-05 19:09, Joe Damato wrote:
-> In commit b65969856d4f ("igc: Link queues to NAPI instances"), the XSK
-> queues were incorrectly unmapped from their NAPI instances. After
-> discussion on the mailing list and the introduction of a test to codify
-> the expected behavior, we can see that the unmapping causes the
-> check_xsk test to fail:
-> 
-> NETIF=enp86s0 ./tools/testing/selftests/drivers/net/queues.py
-> 
-> [...]
->   # Check|     ksft_eq(q.get('xsk', None), {},
->   # Check failed None != {} xsk attr on queue we configured
->   not ok 4 queues.check_xsk
-> 
-> After this commit, the test passes:
-> 
->   ok 4 queues.check_xsk
-> 
-> Note that the test itself is only in net-next, so I tested this change
-> by applying it to my local net-next tree, booting, and running the 
-> test.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: b65969856d4f ("igc: Link queues to NAPI instances")
-> Signed-off-by: Joe Damato <jdamato@fastly.com>
-> ---
->  drivers/net/ethernet/intel/igc/igc_xdp.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/igc/igc_xdp.c
-> b/drivers/net/ethernet/intel/igc/igc_xdp.c
-> index 13bbd3346e01..869815f48ac1 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_xdp.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
-> @@ -86,7 +86,6 @@ static int igc_xdp_enable_pool(struct igc_adapter 
-> *adapter,
->  		napi_disable(napi);
->  	}
-> 
-> -	igc_set_queue_napi(adapter, queue_id, NULL);
->  	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
->  	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
-> 
-> @@ -136,7 +135,6 @@ static int igc_xdp_disable_pool(struct igc_adapter
-> *adapter, u16 queue_id)
->  	xsk_pool_dma_unmap(pool, IGC_RX_DMA_ATTR);
->  	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
->  	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
-> -	igc_set_queue_napi(adapter, queue_id, napi);
-> 
->  	if (needs_reset) {
->  		napi_enable(napi);
+igc_set_queue_napi is called when the queues are created (igc_up,
+__igc_open). When the queues are created they'll be linked. Whether
+or not XDP is enabled does not affect the queues being linked.
 
-That doesn't look correct to me. You removed both invocations of
-igc_set_queue_napi() from igc_xdp.c. Where is the napi mapping now
-done (in case XDP is enabled)?
+The test added for this (which I mentioned in the commit message)
+confirms that this is the correct behavior, as does the
+documentation in Documentation/netlink/specs/netdev.yaml.
 
-To me it seems flipped. igc_xdp_enable_pool() should do the mapping
-(previously did the unmapping) and igc_xdp_disable_pool() should do
-the unmapping (previously did the mapping). No?
+See commit df524c8f5771 ("netdev-genl: Add an XSK attribute to
+queues").
 
-Btw: I got this patch via stable. It doesn't make sense to send it
-to stable where this patch does not apply.
+> To me it seems flipped. igc_xdp_enable_pool() should do the mapping
+> (previously did the unmapping) and igc_xdp_disable_pool() should do
+> the unmapping (previously did the mapping). No?
 
-> 
-> base-commit: 3c9231ea6497dfc50ac0ef69fff484da27d0df66
+In igc, all queues get their NAPIs mapped in igc_up or __igc_open. I
+had mistakenly added code to remove the mapping for XDP because I
+was under the impression that NAPIs should not be mapped for XDP
+queues. See the commit under fixes.
+
+This was incorrect, so this commit removes the unmapping and
+corrects the behavior.
+
+With this change, all queues have their NAPIs mapped (whether or not
+they are used for AF_XDP) and is the agreed upon behavior based on
+prior conversations on the list and the documentation I mentioned
+above.
+
+> Btw: I got this patch via stable. It doesn't make sense to send it
+> to stable where this patch does not apply.
+
+Maybe I made a mistake, but as far as I can tell the commit under
+fixes is in 6.14-rc*:
+
+$ git tag --contains b65969856d4f
+v6.14-rc1
+v6.14-rc2
+v6.14-rc3
+v6.14-rc4
+
+So, I think this change is:
+  - Correct
+  - Definitely a "fixes" and should go to iwl-net
+  - But maybe does not need to CC stable ?
+
+If the Intel folks would like me to resend with some change please
+let me know.
 
