@@ -1,143 +1,144 @@
-Return-Path: <stable+bounces-121325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22A3A558D8
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 22:33:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F410A55900
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 22:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5E33ADCB0
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 21:33:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82EA83B2DE8
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 21:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A30207676;
-	Thu,  6 Mar 2025 21:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B63276052;
+	Thu,  6 Mar 2025 21:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bZsjzzv9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AbHbZCHf"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="Njr0imto"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25932207669;
-	Thu,  6 Mar 2025 21:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97957275601
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 21:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741296823; cv=none; b=rca1qIVbyKtVjMQNv+R+6afPvIx1aoesW/oizVPiI7xIO7quj4VFoDNUD9y0kPnPo39cUw7tl5KuTQ6CsluPvqoMX91xnqcJ2MSJJ2V91lkfbBykK0jiArMdjKN8v+mTvhNe+sADMXZb66BeiYuWYlTLv74ox28F1XTj6AcUhCo=
+	t=1741297398; cv=none; b=XHocpnGh/tKDAJJXSzR4AYXoJm59Dt/ueWe12Uug2stiaMs8CwGw1P1/bJK4/7zrd6BT2rCOJT8Haqiq1kb96L43ajZoqKHnp+6V8HeLLAfqGhWbPPwUkUHHrr0AUYAcpdXy5ZHALsdELHPAKnGdlIxdfNgUJwXMyx8Pq47vkuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741296823; c=relaxed/simple;
-	bh=y5SFPMw1ZxPPYZSH5ahTZc4SyXIQztlkZlEL+XAXbA8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=jkh+paJ39/FDAM/CwCOPzRXMOzXIEdGEcE/RwyV7qvOUtzXxj2fpWU8PvKCYlYAot75IcBeEUMjkVVfkgzr7gdY0FpZ4oySLAxJLC5t6SkfZa3h9Y+09rpkjy2vFi+Gi9waU7OrA5TCYOA9LAMsOXsV2I5RLEsiRU053BAV2eUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bZsjzzv9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AbHbZCHf; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 06 Mar 2025 21:33:35 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741296820;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l8keB3TccVIEx9x7nioQcAlV/fWzwl5jFltbXmTUFXs=;
-	b=bZsjzzv9Xyv0DgQHTPd+MkrZxW1vXwjlnqdVrbP9rvcba26PNFo8mUTmrwcXkTRn6uTXr0
-	cMbQ54glXQZsKboZRffGx2jabIFstS16cr9xiItjGOVsZBCJuPvJzBit7RaX4oIOfV2fT5
-	V/1DinzaLVDBSuEry92f2GkMZ6kOz8yllOXbTbRDM4fquVqmUrJgvckfeLwipPW+xQSPNG
-	uCSnFL3IVfD2YqjCOSCGskqepvmSZnfEJFMlIzeDrNORB0AgTXOp52dw23VnF5AL9DlmCL
-	Ja296aeEfIQyxhgwpt+wv5HXql0u7C2y0Q3zJ1mrPg2/o2NWxUS5BTa2a4B2OQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741296820;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l8keB3TccVIEx9x7nioQcAlV/fWzwl5jFltbXmTUFXs=;
-	b=AbHbZCHfQfoqcLBa/EnTGIlzDo2/O6D4gW+CP4DwMrD4wV8Ezhq2IsOTt5UgOqbtcy0M0E
-	M/HIo00hG4N6fLCQ==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/boot: Sanitize boot params before parsing command line
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,  <stable@vger.kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250306155915.342465-2-ardb+git@google.com>
-References: <20250306155915.342465-2-ardb+git@google.com>
+	s=arc-20240116; t=1741297398; c=relaxed/simple;
+	bh=SNFuNCfIgcF5/PptKRJ7JhAvv9sk7R7PiUdz8a1KQGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DVNI1zZUUgTgwg3i9e4+lkTrB7d6LhOVMFnsTyDfDqvadGDrSIJPqWFTz0UTZHBsYPBC4kvhQvdEoahkBd/JFP/Dy2aL8+2e+662/P6vcYFk+Q84XL/RADzxjyMS98e61UEvUPCBl4Nw9iivg0dq6Q9w3Gdpbk79Rzz4DFQ0wEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Njr0imto; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4750ca77d47so9449091cf.0
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 13:43:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1741297395; x=1741902195; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Oyv98J/VYPy+XUbKLqkeEBWOqmDRWz3461BxBi5DFCU=;
+        b=Njr0imtoJOUjnvbUL0e1CSQDd6qGyevwMpHbE4eVRW6i6Z/NM/O0654wyHiGdtv2O/
+         8sjQFDVG2TfSY5THuNaM5NnO0DoTjzWWC+wHuTRGkeYYQw3F/Tc0YXoCVgqJzVALtmrF
+         PyG2c75sLcULwaBZyeM46TAY6Ffdm5yoY1Q3rk4D0TBw8Xv5fBpRWGeMai0bH7qzdFQ/
+         4JzX5ZcmqtqTgNIlzugtnQ+b4khj1T82lrbZM9DlD1eVFWV7wNRrsKQC3W8943438m8B
+         IJ4dZjUoe5/6rI2dUjyDupDdf3o6ObvgRWaFSHy6z/k9HiRDSgcb73dFG0Q5DcTa9bjw
+         kGTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741297395; x=1741902195;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oyv98J/VYPy+XUbKLqkeEBWOqmDRWz3461BxBi5DFCU=;
+        b=Pa0YlCe5i1JfHfZp+zQft6TOSqbPEWR0X4UOUBi83hPAUrwJHMeiO7tBdbAkt5ByAD
+         6//Q9L5hndXRniNjpYWkLXG42KpOWjMNXpj6liZWJFwLF182xy2irGV0wL6M+XyWAszv
+         JIRQbviCAzjdQW63VHlhXVzGqz51B7yvMxDOsZhvl7/wr9zjcZSlMyICc9G4dtxBgTCX
+         MIj0p7aAWKIhDELSJrlNahHaaAOXR8u73ULUp4l0NF8jP2uSlcuPjrYjaj+eOfj5IsrF
+         Ilk0hER8IPvtomTaJJ+uHmi1RmlCsa3kMPKBn7HouHA0wAFqJ6ICzEs6aSC4A96g+f/y
+         L9hw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDeJYGEX+9ZfGPi2Vc9SfEATrQXlUps/YWlqRZYCsAahZqcv9gcwdpPyMtdAyhJNooRI5S05A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxV84E9Sxi53RabNfuzM+1g65ksZMNetlwTatHV6SdZluk8gDzm
+	nYF0QR/fd5sgwaIZ9U4ePr8pcycDN2UZOh+hEHgob6c9m3v/p45QChXberCWtA==
+X-Gm-Gg: ASbGnctMQu2MRxTS5HAlLxNXhAIOfM+oJmQqfUWQM3lyLTbhkOWAGfMvwvihv9gjA2v
+	FmuQCjaHydaS20/P3bGog7p+DifzpHRIVYW2YMVyvllQw/UmBLYU44/B48uvpk1D66ZWCjSsoWh
+	czui90oqG33XC/niIrhifW9UAwovorCDQZ2Ccv+na77xaYGabTjcHLOGXby+qbiefA7RXGMGSCZ
+	8KiZzrU7a/IKzrQPy0XxNoxA7DMGB0rkNSgJbwVoENNzHOJXvk2jAg6yUQhL0ZtJF1BvfGYJfk0
+	YI7KqkqMBKi2ql2m1pPtquVVWL257E+5VTMGHCMA21+Z3Q==
+X-Google-Smtp-Source: AGHT+IFnAgDNioiavSEVVuQAtbRWHZD2jSHEVT25d3GoKqWLqtEkZCF1Iwjtf2+iqzJNvvEeQHrmnw==
+X-Received: by 2002:ac8:5852:0:b0:475:819:27ec with SMTP id d75a77b69052e-47618b38b3dmr11877871cf.50.1741297395363;
+        Thu, 06 Mar 2025 13:43:15 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::3ca7])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4751d9ad29asm12223241cf.46.2025.03.06.13.43.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 13:43:14 -0800 (PST)
+Date: Thu, 6 Mar 2025 16:43:12 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Colin Evans <colin.evans.parkstone@gmail.com>
+Cc: eichest@gmail.com, francesco.dolcini@toradex.com,
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org,
+	stefan.eichenberger@toradex.com
+Subject: Re: [PATCH v1] usb: core: fix pipe creation for get_bMaxPacketSize0
+Message-ID: <04cb3076-6e34-432f-9400-0df84c054e5c@rowland.harvard.edu>
+References: <Z6HxHXrmeEuTzE-c@eichest-laptop>
+ <857c8982-f09f-4788-b547-1face254946d@gmail.com>
+ <1005263f-0a07-4dae-b74f-28e6ae3952bf@rowland.harvard.edu>
+ <cf6c9693-49ae-4511-8f16-30168567f877@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174129681612.14745.2037949092408216187.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cf6c9693-49ae-4511-8f16-30168567f877@gmail.com>
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Thu, Mar 06, 2025 at 09:06:23PM +0000, Colin Evans wrote:
+> > Please try collecting a usbmon trace for bus 2 showing the problem.
+> > Ideally the trace should show what happens from system boot-up, but
+> > there's no way to do that.  Instead, you can do this (the first command
+> > below disables the bus, the second starts the usbmon trace, and the
+> > third re-enables the bus):
+> > 
+> > 	echo 0 >/sys/bus/usb/devices/usb2/bConfigurationValue
+> > 	cat /sys/kernel/debug/usb/usbmon/2u >usbmon.txt &
+> > 	echo 1 >/sys/bus/usb/devices/usb2/bConfigurationValue
+> > 
+> > Then after enough time has passed for the errors to show up, kill the
+> > "cat" process and post the resulting trace file.  (Note: If your
+> > keyboard is attached to bus 2, you won't be able to use it to issue the
+> > second and third commands.  You could use a network login, or put the
+> > commands into a shell file and run them that way.)
+> > 
+> > In fact, you should do this twice: The second time, run it on machine 2
+> > with the powered hub plugged in to suppress the errors.
+> > 
+> > Alan Stern
+> 
+> Happy to try this, but as it stands there is no such file, or file-like
+> thing, on my machine-
+> 
+> # ls /sys/kernel/debug/usb/usbmon/2u
+> ls: cannot access '/sys/kernel/debug/usb/usbmon/2u': No such file or
+> directory
+> 
+> # find /sys/kernel/debug/usb -name "2u"
+> #
+> 
+> # ls /sys/kernel/debug/usb
+> devices  ehci  ohci  uhci  uvcvideo  xhci
+> 
+> 
+> It seems something is missing?
 
-Commit-ID:     c00b413a96261faef4ce22329153c6abd4acef25
-Gitweb:        https://git.kernel.org/tip/c00b413a96261faef4ce22329153c6abd4acef25
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Thu, 06 Mar 2025 16:59:16 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 06 Mar 2025 22:02:39 +01:00
+Ah -- you have to load the usbmon module first:
 
-x86/boot: Sanitize boot params before parsing command line
+	modprobe usbmon
 
-The 5-level paging code parses the command line to look for the 'no5lvl'
-string, and does so very early, before sanitize_boot_params() has been
-called and has been given the opportunity to wipe bogus data from the
-fields in boot_params that are not covered by struct setup_header, and
-are therefore supposed to be initialized to zero by the bootloader.
+Some distributions do this for you automatically.
 
-This triggers an early boot crash when using syslinux-efi to boot a
-recent kernel built with CONFIG_X86_5LEVEL=y and CONFIG_EFI_STUB=n, as
-the 0xff padding that now fills the unused PE/COFF header is copied into
-boot_params by the bootloader, and interpreted as the top half of the
-command line pointer.
-
-Fix this by sanitizing the boot_params before use. Note that there is no
-harm in calling this more than once; subsequent invocations are able to
-spot that the boot_params have already been cleaned up.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <stable@vger.kernel.org> # v6.1+
-Link: https://lore.kernel.org/r/20250306155915.342465-2-ardb+git@google.com
-Closes: https://lore.kernel.org/all/202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de
----
- arch/x86/boot/compressed/pgtable_64.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index c882e1f..d8c5de4 100644
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "misc.h"
- #include <asm/bootparam.h>
-+#include <asm/bootparam_utils.h>
- #include <asm/e820/types.h>
- #include <asm/processor.h>
- #include "pgtable.h"
-@@ -107,6 +108,7 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
- 	bool l5_required = false;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
-+	sanitize_boot_params(bp);
- 	boot_params_ptr = bp;
- 
- 	/*
+Alan Stern
 
