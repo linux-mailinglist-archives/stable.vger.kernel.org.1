@@ -1,204 +1,169 @@
-Return-Path: <stable+bounces-121239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F7FA54CBA
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:57:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B1BA54CFC
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D8C175618
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 13:57:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF3C1896A10
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD9513AD11;
-	Thu,  6 Mar 2025 13:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA98155757;
+	Thu,  6 Mar 2025 14:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jZimUz2u"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F55674059
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 13:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30953154430
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 14:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741269452; cv=none; b=fYVOIeWNDJL5o+tknYap7RmNXZdd1LkJ4CMwKu02S+jMzI6JBlmEce5JBTun5+5Arlqx1rSJmvqzwrj3B+htY0XZTXkM3PQcnsy43bwOW74jEqxIOYSddd/Iq96/9j5Iyp//ZZosnp0alnAE12Ohg84xaUQRnohpsqEsM4AWjp8=
+	t=1741269989; cv=none; b=OaGp4+HoZfWWWrzaxW/c6lGHxLgKhepTYyM5DJPlkENXNVUbywxBrrzgb5uBOjJBswlciA8tqC7nl8NSpqe2pN3gxAVZbfykekQNyRS42nZuOIoc5jCbKOrur+xfebXu8OlbOFjAleP4fYaLbfVKbr//4zYfjrHHy0gD4r57dJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741269452; c=relaxed/simple;
-	bh=HwtcekTeVc3itghDO29pwNopIzgRiKQ83PGgXK0hkBo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxlqlW9YuXOVpJAPIBuOg+ZuqPhqoWAf4YNfYGrmJESUor1CdlYdnWPmdJPwW8HVl37ufFMNVgoXZ11gnobUIppecL8Z2kA4o5j7B3IPofaiy68sYCX8rWrk5XVylGLnZd71zPUiaeo6EZFpcJ+qCZATHG1HRedTAi1d317I2JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D11A01BC0;
-	Thu,  6 Mar 2025 05:57:42 -0800 (PST)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 79E643F66E;
-	Thu,  6 Mar 2025 05:57:28 -0800 (PST)
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: stable@vger.kernel.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.13.y 2/2] arm64: hugetlb: Fix huge_ptep_get_and_clear() for non-present ptes
-Date: Thu,  6 Mar 2025 13:57:17 +0000
-Message-ID: <20250306135717.4815-2-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250306135717.4815-1-ryan.roberts@arm.com>
-References: <2025030435-amuck-tapestry-d86d@gregkh>
- <20250306135717.4815-1-ryan.roberts@arm.com>
+	s=arc-20240116; t=1741269989; c=relaxed/simple;
+	bh=8vWkfwZ9uoFTAqFoovaPX7Bjye6a8c5yTgefFSZ3pCo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rII0DXGvkssKDstL9cNKzWWIKu7KgmFeTEMqeiWRj9hNsdlc0lybLbkqi1osH5Yuffsx/69Fdc7Q2kbyD7FS+bpi8OjYnAIkj26AEPdX6kDGPsB9pt7WGXYVzZ2A3vEH+AMJPWRCaTjPbt9920WlEYpfO7ujJkou5lgzCG/UZUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jZimUz2u; arc=none smtp.client-ip=209.85.222.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-86d36e41070so201174241.3
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 06:06:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741269987; x=1741874787; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hnDdSUGNxHZHOtmoWx7c7YzOTo1FiWV3Vqxq9lxjEQc=;
+        b=jZimUz2u+EsC5z1+bCdpdbXbq3rLfEKxwAb6lp36SSyn4GQihR7udWM5lKFhJmyybi
+         5jj8IgYXpKxCAVARFYXi3AqwdQe+vDlEobZstK1rfMUdAauZidsN7zOb5TejnFshJbCt
+         880cXjqjCf9kdmDAx0UD+rJHqdezwmzXy8jwaY9W3cYIb4VkgotqINql5w1gU/PuJzgH
+         z+P8bXQcYuuP+I9ovhbJMnpSxEmCcuwXu99/zptLJsdkkeefBtmjooShvdgG+BQCFpb9
+         aBmMMS0Ba/lOvreVCt2L1+TYuUSwDIb7rDm80DIIlA1VHAPN3i/TCQoqK38b/wfZZOkH
+         0/VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741269987; x=1741874787;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hnDdSUGNxHZHOtmoWx7c7YzOTo1FiWV3Vqxq9lxjEQc=;
+        b=Ol4K3yYfVeRoWh5issypduOLF7HfQ0cxgsagv/syWIbZzvn2EFNZCcyIux+hmI7LD1
+         1EUkFPVIpXZA4kEEpy5ndRfd2sW52YHVyHtWNr3tgdt/H9jN91+mWKMGg57kywDHt206
+         EtLBxjBAqKgx6EU/C+fN1mrN+lP5UJf1+/+jJIfIOwNxDcczHHlbwBKXEuS3hyI6wM60
+         y96P7deeZ+QRWbrGYzeod7tXYbmso8Y+/T7rKc8Z82Aldab+8IV/oB/ViZhsgXDQMmC5
+         tXNuNfaakXENIFpp6rWwqJ9ALC8es0FJPvozvFm2jBxlJndgaTLTQz1SKvr+fNAGveJP
+         E62w==
+X-Gm-Message-State: AOJu0Ywz9NXWdsyso2CZuX63C4Ix9iPAFskZ0SSsNbwQzoRv0qFZtZE0
+	ioH2UqoKhnMrvMptI9jFW/4zfdQ9PYjHR6RZ0cpnakU5dYjWPysl35qjkKdfRGccnRAsscuQwSd
+	rjNmxadsU4q/WGq8He+WmGD/xVAAHGYB1eVoYMQ==
+X-Gm-Gg: ASbGncscg1R6wKV3kNdqdotzY5FVoW4v/tivbkD/tNALaFo+VPXAKWq+VNbqXlkbTH9
+	eha92sjbGalwCtmLT4fM7r98O3YoGSB7OfoPJBqzO5mVA3O5VDGaaP7CJxVP6gwmbECclPvtLhY
+	DKd0vj0MerEmSChJkfrY4rLvmXPiwyq3UZPMdV4phlQNsB1GVdSKpXBDYHyjk=
+X-Google-Smtp-Source: AGHT+IFYYVIMAXWvuGMo7KhLWndEUFvJgOqbF7iDEk1iAt4N1mORmaJKT3kVe35xC4vstbek2/qR99nsdifAiR58JMA=
+X-Received: by 2002:a05:6122:658d:b0:520:4539:4b4c with SMTP id
+ 71dfb90a1353d-523c6289f5bmr4380467e0c.9.1741269986969; Thu, 06 Mar 2025
+ 06:06:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 6 Mar 2025 19:36:15 +0530
+X-Gm-Features: AQ5f1Jrk2nyka3XPmEIXPsBdkX75IZVBh9HDyYyhUqxg9qoZ6sVv7JRLz0R3L_c
+Message-ID: <CA+G9fYufChZpBjB_WG6Qy-L8Gmj-zBbs+PyydaADcsrB42ec0Q@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/142] 6.6.81-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, clang-built-linux <llvm@lists.linux.dev>, 
+	Nathan Chancellor <nathan@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, 
+	nik.borisov@suse.com, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-arm64 supports multiple huge_pte sizes. Some of the sizes are covered by
-a single pte entry at a particular level (PMD_SIZE, PUD_SIZE), and some
-are covered by multiple ptes at a particular level (CONT_PTE_SIZE,
-CONT_PMD_SIZE). So the function has to figure out the size from the
-huge_pte pointer. This was previously done by walking the pgtable to
-determine the level and by using the PTE_CONT bit to determine the
-number of ptes at the level.
+On Wed, 5 Mar 2025 at 23:28, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.81 release.
+> There are 142 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 07 Mar 2025 17:44:26 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.81-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-But the PTE_CONT bit is only valid when the pte is present. For
-non-present pte values (e.g. markers, migration entries), the previous
-implementation was therefore erroneously determining the size. There is
-at least one known caller in core-mm, move_huge_pte(), which may call
-huge_ptep_get_and_clear() for a non-present pte. So we must be robust to
-this case. Additionally the "regular" ptep_get_and_clear() is robust to
-being called for non-present ptes so it makes sense to follow the
-behavior.
+Regressions on x86_64 and i386 the defconfig builds failed with clang-20
+and gcc-13 the stable-rc v6.6.78-437-g9f243f9dd268
 
-Fix this by using the new sz parameter which is now provided to the
-function. Additionally when clearing each pte in a contig range, don't
-gather the access and dirty bits if the pte is not present.
+First seen on the v6.6.78-437-g9f243f9dd268
+ Good: v6.6.78
+ Bad: v6.6.78-437-g9f243f9dd268
 
-An alternative approach that would not require API changes would be to
-store the PTE_CONT bit in a spare bit in the swap entry pte for the
-non-present case. But it felt cleaner to follow other APIs' lead and
-just pass in the size.
+* x86_64 and i386, build
+  - clang-20-defconfig
+  - clang-nightly-defconfig
+  - gcc-13-defconfig
+  - gcc-8-defconfig
 
-As an aside, PTE_CONT is bit 52, which corresponds to bit 40 in the swap
-entry offset field (layout of non-present pte). Since hugetlb is never
-swapped to disk, this field will only be populated for markers, which
-always set this bit to 0 and hwpoison swap entries, which set the offset
-field to a PFN; So it would only ever be 1 for a 52-bit PVA system where
-memory in that high half was poisoned (I think!). So in practice, this
-bit would almost always be zero for non-present ptes and we would only
-clear the first entry if it was actually a contiguous block. That's
-probably a less severe symptom than if it was always interpreted as 1
-and cleared out potentially-present neighboring PTEs.
+Regression Analysis:
+ - New regression? Yes
+ - Reproducibility? Yes
 
-Cc: stable@vger.kernel.org
-Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250226120656.2400136-3-ryan.roberts@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-(cherry picked from commit 49c87f7677746f3c5bd16c81b23700bb6b88bfd4)
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
- arch/arm64/mm/hugetlbpage.c | 53 ++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 33 deletions(-)
+Build regression: x86_64 i386  microcode amd.c 'equiv_id' is used uninitialized
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index 06db4649af91..b3a7fafe8892 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -100,20 +100,11 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
- 
- static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
- {
--	int contig_ptes = 0;
-+	int contig_ptes = 1;
- 
- 	*pgsize = size;
- 
- 	switch (size) {
--#ifndef __PAGETABLE_PMD_FOLDED
--	case PUD_SIZE:
--		if (pud_sect_supported())
--			contig_ptes = 1;
--		break;
--#endif
--	case PMD_SIZE:
--		contig_ptes = 1;
--		break;
- 	case CONT_PMD_SIZE:
- 		*pgsize = PMD_SIZE;
- 		contig_ptes = CONT_PMDS;
-@@ -122,6 +113,8 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
- 		*pgsize = PAGE_SIZE;
- 		contig_ptes = CONT_PTES;
- 		break;
-+	default:
-+		WARN_ON(!__hugetlb_valid_size(size));
- 	}
- 
- 	return contig_ptes;
-@@ -163,24 +156,23 @@ static pte_t get_clear_contig(struct mm_struct *mm,
- 			     unsigned long pgsize,
- 			     unsigned long ncontig)
- {
--	pte_t orig_pte = __ptep_get(ptep);
--	unsigned long i;
--
--	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
--		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
--
--		/*
--		 * If HW_AFDBM is enabled, then the HW could turn on
--		 * the dirty or accessed bit for any page in the set,
--		 * so check them all.
--		 */
--		if (pte_dirty(pte))
--			orig_pte = pte_mkdirty(orig_pte);
--
--		if (pte_young(pte))
--			orig_pte = pte_mkyoung(orig_pte);
-+	pte_t pte, tmp_pte;
-+	bool present;
-+
-+	pte = __ptep_get_and_clear(mm, addr, ptep);
-+	present = pte_present(pte);
-+	while (--ncontig) {
-+		ptep++;
-+		addr += pgsize;
-+		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
-+		if (present) {
-+			if (pte_dirty(tmp_pte))
-+				pte = pte_mkdirty(pte);
-+			if (pte_young(tmp_pte))
-+				pte = pte_mkyoung(pte);
-+		}
- 	}
--	return orig_pte;
-+	return pte;
- }
- 
- static pte_t get_clear_contig_flush(struct mm_struct *mm,
-@@ -401,13 +393,8 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- {
- 	int ncontig;
- 	size_t pgsize;
--	pte_t orig_pte = __ptep_get(ptep);
--
--	if (!pte_cont(orig_pte))
--		return __ptep_get_and_clear(mm, addr, ptep);
--
--	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
- 
-+	ncontig = num_contig_ptes(sz, &pgsize);
- 	return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
- }
- 
--- 
-2.43.0
+## Build log
+arch/x86/kernel/cpu/microcode/amd.c:820:6: error: variable 'equiv_id'
+is used uninitialized whenever 'if' condition is false
+[-Werror,-Wsometimes-uninitialized]
+  820 |         if (x86_family(bsp_cpuid_1_eax) < 0x17) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+## Source
+* Kernel version: 6.6.81-rc1
+* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* Git sha: 9f243f9dd2684b4b27f8be0cbed639052bc9b22e
+* Git describe: v6.6.78-437-g9f243f9dd268
+* Project details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.78-437-g9f243f9dd268
+
+## Build
+* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.78-437-g9f243f9dd268/testrun/27508291/suite/build/test/clang-20-lkftconfig/log
+* Build history:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.78-437-g9f243f9dd268/testrun/27508300/suite/build/test/clang-20-lkftconfig/history/
+* Build details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.78-437-g9f243f9dd268/testrun/27508291/suite/build/test/clang-20-lkftconfig/
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2tuO7pCGJaGnX0ygcbTOaEDzr9M/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2tuO7pCGJaGnX0ygcbTOaEDzr9M/config
+
+## Steps to reproduce
+- tuxmake --runtime podman --target-arch x86_64 --toolchain clang-20
+--kconfig defconfig LLVM=1 LLVM_IAS=1
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
