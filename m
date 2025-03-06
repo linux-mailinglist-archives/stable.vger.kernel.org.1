@@ -1,67 +1,91 @@
-Return-Path: <stable+bounces-121147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9144CA541EB
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:08:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F69A54201
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20623A4E08
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88B6F1889C56
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D0019ADB0;
-	Thu,  6 Mar 2025 05:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4721D19CC08;
+	Thu,  6 Mar 2025 05:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="ndX1E7Su"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kWcaqQFn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D217E9
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 05:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08AB199E84;
+	Thu,  6 Mar 2025 05:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741237677; cv=none; b=Lj45Q+R+lykkRhshs/zyU6KJkDN2MbkoAHgM5FvKV0qr7HzCVQQ+p1023af86OvXUFMIwIXhjw4YPjGrG0uZXirSwjXljjFVmfsqAy8pqceutvMyDZDSvnA0D9BRovDwKZvC8b5G8ZkjnfFbURbylVW/qh8HRougqk9SDnHt2I0=
+	t=1741238323; cv=none; b=Ayx4yjckJwnDy0Sm+wlUnjUgItA3TOSbP+xE8EJe98sKIkgPlC/VriqynpkMsp9yj5KT6H/cQsjxhOBBavzt1OlkQJQ1jIzcNcm2iRfLitbCV6FkU+myA3vhMS8Z/U0gqXLy9ngfrEgin1I//2MMXlKCUdHTBKKAgL/LcXNYqas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741237677; c=relaxed/simple;
-	bh=r4cqq92u4QrOP26bPzQzQ44NQlShBXBS0KDKN4ZO3aE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZDXzkECJY+dfG9uafPhyoA4bGVAOhKr0xu2zeBi+Ys68DrNt9zhPzg/hNTT7iX/bGQq5hUYM6IAMhp6vg0XtW7ovNCAVqEtTyr3wDFwS266Wt7v1x2/8EG2Aj873NLAPWvuELQYJyaL+UCaXsy3i8AFSnF8OqOSMeAbNXldydNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=none smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=ndX1E7Su; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=deepin.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
-	s=ukjg2408; t=1741237658;
-	bh=gXGZGJxxTGiGEquhpVC2RxsSuokp9eU5juqlOjiyPCg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=ndX1E7SuZW4RUlk++cHEMPl42bx139MSeeUl/QPGuCpe5oYTVmvmeL5dRXvFsaRWM
-	 exfjdh1+SPwdF+AgOZN1PlAovTKvQaWnBejuYFx/TRIWD6Qt3iBTtYQ0DvheKOqnLU
-	 NyGw3w6QFp+dCPvHfZASC1gLx5oyq3MoS1f5e91Y=
-X-QQ-mid: bizesmtp88t1741237654ti749i3s
-X-QQ-Originating-IP: eUplNXEW/+zR+b+IrjvomDkK5HrJhM4U3n06ZpEZ/So=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 06 Mar 2025 13:07:32 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6009695757988680814
-From: Chen Linxuan <chenlinxuan@deepin.org>
-To: Sasha Levin <sashal@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Chen Linxuan <chenlinxuan@deepin.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
+	s=arc-20240116; t=1741238323; c=relaxed/simple;
+	bh=bqnnQoj67Yy7FVaCgMfaUiRBSx45piKOGM6OjRIjMd4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ldKc6Gf/SwVBiccy2RhX6aXBqyYxZAq7ZY5M7+3DcpolnQ+ZSDglBP7CoGI0iKamfDl4B16eHpVdxOYUqWVJkBPsIP7TIKCJiucZDk9qVM6AARJwkXEgT5egJoYCRxjk2M2QvrYl4TfCUACP5lL1mWMHsDL+Fn05hO8ArjNllVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kWcaqQFn; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-223785beedfso3124425ad.1;
+        Wed, 05 Mar 2025 21:18:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741238321; x=1741843121; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lNP741CtQxhlrtQYl+bTHrt0/2VLrt4PvoQqY1xd1+k=;
+        b=kWcaqQFnB9GhODjYEESGGmfUdKJ0nLV/6pFAfwYtVYcfZTMlRnvhUPPpOWZMsJWvSK
+         XH6ib2KSaClTs2enHghXqbSmFUP0jCq9uO1QB+kY7qzfcQy9nkLxdvZ0OYLh8mfeLZUz
+         OPe15GCY25YqNidgFJVQY7XF1KFjMsckMZRl/i3aAnuxMYFFHw6wUMW/LgW7JAECCCV0
+         NrQ08YRmmWh8pjGn6v1juCUBIM9avNd3h7IZ6xa9cCfT5CvoZOR7PsWWuEu//hEgQkw1
+         jUJezdTTC/yMEACff5T4LjlMC3xadkTfoHYxn4S1PeKXbVAu3i4VAodjO4kwsegIVCft
+         PbTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741238321; x=1741843121;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lNP741CtQxhlrtQYl+bTHrt0/2VLrt4PvoQqY1xd1+k=;
+        b=C9jDaFDqzRUUzURTmCshWnL/iL5OfAGMP9+nn2JW2KiJDtnrUN714VUJkXX7LIjMJP
+         asPtgFKRjm1nJ56JQM1UifhKBEiZxc+2YVldv39OEkE32u+cNiw/gCObay8I6dN3QTm8
+         3DJykBaieMByJAl0nl+/INquiUS2WPWxnhR+eppctvpHNf/ea1FMn8KOEtq2y4tNhxjI
+         V/KYWJcTdbyF1/Aqxagyk9WQfVqeoUPD54wKMSxnKyWHS5oedKtdzjmK7BQv7yZy2HfV
+         sn4Qt3TWY+pD8Qwog4Q+j7vc5ddNSrGApBEfsp12FCzD494DDuVHvxtboEkLfsYIhHFF
+         F2QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXiZpoomMxNfNklAsYk97hPfamnirrtXXuWaLF6uW66Zr6FSOnXpq+4WBajBdK6eUwIc0FX81uKtANZYzc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJlwhCpN0m9Z0rGqBcY1psxFX8gvy1IB6kNFRLHx9NYZf9AzaU
+	aIkAdroBF+4Vi2vRth9oHHqzR7y6ihm/4VmTuqYdWHTh5cdy4ip6so2AbzCW
+X-Gm-Gg: ASbGncscd+q3WaqjY0yTdrVTeuD3kg5Rnu9xnKqsT05NlEYI5febu4P2NHh8O6ioM8C
+	CykOdaVlgkjyUuEH61PvfESs/p6C5JmjnL0npMFq1eJ8PaY7W+T55gsx4fRq63w0RXBsZR6mmuG
+	N7VBo3u9ISDtzWsv7u3lk6RACTkWx/i4QPtV8v8Gvr8t8vCRnNHaszmpHlnbCkDs0cxuLAZYzwq
+	ix4UrYF/S4AH8D/0YgW8zMP9yGACTaQNsj+74hsvUKNeilVzasjJ1XDO0Hr9lccAbPqytDRuNZ7
+	QzoiBsdBYAQD1jNlfcb86O+QKGqiMYBydkEMsgt9hzfYvuJrDDfIRqDvBk3PaxkTVlYqKoDCzcy
+	JJPwqSELi4m2XRfen/V+N/Dyu6qNi9tIHzMoAuI6Fsly2NQ==
+X-Google-Smtp-Source: AGHT+IGmB5z3KokiR0t+qvpxsDCS1ZtXYiH0T0OZsd2nmtwUeBX2F4OmXpBlbHbee6eDUemX0A/peA==
+X-Received: by 2002:a17:903:191:b0:220:c4e8:3b9d with SMTP id d9443c01a7336-223f1d0ff79mr79888065ad.37.1741238320728;
+        Wed, 05 Mar 2025 21:18:40 -0800 (PST)
+Received: from sid-dev-env.cgrhrlrrq2nuffriizdlnb1x4b.xx.internal.cloudapp.net ([20.120.208.174])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109ddcfesm3332345ad.29.2025.03.05.21.18.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 21:18:40 -0800 (PST)
+From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+To: stable@vger.kernel.org
+Cc: joro@8bytes.org,
+	suravee.suthikulpanit@amd.com,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	iommu@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH] lib/buildid: Handle memfd_secret() files in build_id_parse()
-Date: Thu,  6 Mar 2025 13:06:58 +0800
-Message-ID: <0E394E84CB1C5456+20250306050701.314895-1-chenlinxuan@deepin.org>
-X-Mailer: git-send-email 2.48.1
+	wei.huang2@amd.com,
+	apais@microsoft.com,
+	Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Subject: [PATCH 6.6.y] iommu/amd: Fixes refcount bug in iommu_v2 driver
+Date: Thu,  6 Mar 2025 05:18:22 +0000
+Message-ID: <20250306051822.4267-1-sidchintamaneni@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,67 +93,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-X-QQ-XMAILINFO: N/EN6P+BmEaflzFIEy8wHCQvXXx6xem6MI9Lbp9cPvUYiIY05jhh4Npx
-	O42m7SvSX9mDlI3U0upvlamRkNvhs2firZLYdRgkWOUWT9W2q0VQk8meW6pRzqMbg7jREKk
-	xLQK7EuiUCd6+HQ/XpWUAle+J/4cAO3nzx25rKk/d7tlDjcbyeO1FpWZIyzvKhEBLi73jWD
-	Dvtxd8XTent/sQVgame+FDoqxlqnxdo+6NL4fjp4VwhlFV4uZdp3Rc1+XKDJ2E1Bs8f428j
-	eQi1EwF7sh5GtPyn7BnQx/cB5NEUx8BfF9XJxth9D7QTRmMKSMHpf3lDPPBHfuVVu4JzoPI
-	eE1aqz0hmT4GB68V7rkiFrYfPtlmIOBqh4HhVxznifg280cSrytxJxNFmofBfQ+jqxw3OYQ
-	GaFKf6g3BSV4MCUUQ21/hVtBRtkn9CGOWpOk5E0BG7YuFsVxYx95K5UMERgpRtnSZTRkzgO
-	uuUrD0XjSYkBKTKHG1mXn8v22LhBi89QF/+NUKEr6dMPz9EByHO5XYJ6Ymsm7xj0NQzbYiE
-	k37eDrbtlQZlDWuwYqHjhydNhS5QHiutLGODR8aX5rY8Zf5hdB98G50Vz7qzELo2ZeFZKkq
-	6i9+sOHDth57x/5IzgdG6DZ1x6dlEZCWBMOeg/99WEepD+Ntt8jq1U9q5YbCXuN5kxhEevu
-	FZPRkFekZgDBsud6rCzV3GIexF6BO/QDlhoBPxbLrl0Q0S5mbILGWKgxBxEzVJQ6zTySdON
-	QxfnlGCaCQQpbsz1JSKPlql9FEilaocOe9LFfDxFHrUM8HaY/31aGsjq+LSigwFlcq7M53F
-	iFO4IF3tynTGqwz0RDl3mBxzYm5TrRK8RhLBOaEuLNkmvP2u1jaiJMXAXl1yw89ZDA4ew4l
-	o2ZpbhZrjyixHfoS6QLP8Md/uV4flBBW10P1Jdt7mWRTCooKIg+/vn4JpFSZsdDx/U2ovtH
-	I022o1IbvjViX+hQO3rhUquokJWiFyMfMF1BXNh6e0WWkmA==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
 
-Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
-Handle memfd_secret() files in build_id_parse()") to address an issue
-where accessing secret memfd contents through build_id_parse() would
-trigger faults.
+This fix addresses a refcount bug where the reference count was not
+properly decremented due to the mmput function not being called when
+mmu_notifier_register fails.
 
-Original report and repro can be found in [0].
-
-  [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-
-This repro will cause BUG: unable to handle kernel paging request in
-build_id_parse in 5.15/6.1/6.6.
-
-Some other discussions can be found in [1].
-
-  [1] https://lore.kernel.org/bpf/20241104175256.2327164-1-jolsa@kernel.org/T/#u
-
-Cc: stable@vger.kernel.org
-Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+Signed-off-by: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
 ---
- lib/buildid.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/amd/iommu_v2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index 9fc46366597e..b78d119ed1f7 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -157,6 +157,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
- 	if (!vma->vm_file)
- 		return -EINVAL;
+diff --git a/drivers/iommu/amd/iommu_v2.c b/drivers/iommu/amd/iommu_v2.c
+index 57c2fb1146e2..bce21e266d64 100644
+--- a/drivers/iommu/amd/iommu_v2.c
++++ b/drivers/iommu/amd/iommu_v2.c
+@@ -645,7 +645,7 @@ int amd_iommu_bind_pasid(struct pci_dev *pdev, u32 pasid,
  
-+#ifdef CONFIG_SECRETMEM
-+	/* reject secretmem folios created with memfd_secret() */
-+	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
-+		return -EFAULT;
-+#endif
+ 	ret = mmu_notifier_register(&pasid_state->mn, mm);
+ 	if (ret)
+-		goto out_free;
++		goto out_mmput;
+ 
+ 	ret = set_pasid_state(dev_state, pasid_state, pasid);
+ 	if (ret)
+@@ -673,6 +673,8 @@ int amd_iommu_bind_pasid(struct pci_dev *pdev, u32 pasid,
+ 
+ out_unregister:
+ 	mmu_notifier_unregister(&pasid_state->mn, mm);
 +
- 	page = find_get_page(vma->vm_file->f_mapping, 0);
- 	if (!page)
- 		return -EFAULT;	/* page not mapped */
++out_mmput:
+ 	mmput(mm);
+ 
+ out_free:
 -- 
-2.48.1
+2.43.0
 
 
