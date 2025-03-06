@@ -1,147 +1,178 @@
-Return-Path: <stable+bounces-121203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE0BA54755
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:07:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB51A547B3
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C86E618889B0
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 10:07:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A69803AE4EA
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 10:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2CD1F03D2;
-	Thu,  6 Mar 2025 10:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE1B1F63E1;
+	Thu,  6 Mar 2025 10:24:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailsrv.ikr.uni-stuttgart.de (mailsrv.ikr.uni-stuttgart.de [129.69.170.2])
+Received: from er-systems.de (er-systems.de [162.55.144.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A011A08A6
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 10:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.69.170.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9F81FF7DA
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 10:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.144.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741255646; cv=none; b=MEHnYgMH8YGzAXMyFibd5m/4BzUciL+3IhKdMhf+B7ATtEC6OJDz3oPc8KChiMfqP3dp0XYTo7lgkFDau+10DXxSEylDNfAisyMR8trr+ldyOjij1RK0oUDkJbLlkGYwzE2KZ1wpIocqlbS5bdNcH0C86P0blDa5PrmVqXYsE3I=
+	t=1741256686; cv=none; b=urW69AzIAB+f1EqUlq/TRTdmPssGzXbVV7CbwURiLtpFqiYdLjyfoLdOUnp3y46NYHHM87Yq4QdMpI8oHLX3Fmz0eQ3gZlDzijue/UtzUxa4LsaSz3zfeqWMr01APB7VluyhpiNnrcgWIjqYW4ptMVH4Kgq8cnQaSQ4SPuh7mFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741255646; c=relaxed/simple;
-	bh=0PJImwDxowScFpAr5sxFHkDazd+GIR7gQTpREkQKAHw=;
-	h=From:To:Subject:Date:Cc:References:In-Reply-To:MIME-Version:
-	 Content-Type:Message-Id; b=qQJq3ZvN5zG0ZyLmIqr5sqDtFwuFT8vtv+kGYREOJ55VSbGF3QQ6O3qnoFCdYCo3jaEuw6WURL3whn4t5ZMaEWcXFQ/3RKMwCBfaEKzFoobkSNE11Nabh1pHJcGOcJfRwBnxpCnTRLBfudvt+dxLhBbsFfye9ZfjBymG6+AC2QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ikr.uni-stuttgart.de; spf=pass smtp.mailfrom=ikr.uni-stuttgart.de; arc=none smtp.client-ip=129.69.170.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ikr.uni-stuttgart.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ikr.uni-stuttgart.de
-Received: from netsrv1.ikr.uni-stuttgart.de (netsrv1 [10.21.12.12])
-	by mailsrv.ikr.uni-stuttgart.de (Postfix) with ESMTP id 1BAE51B39D3E;
-	Thu,  6 Mar 2025 11:07:15 +0100 (CET)
-Received: from ikr.uni-stuttgart.de (pc021 [10.21.21.21])
-	by netsrv1.ikr.uni-stuttgart.de (Postfix) with SMTP id 093B81B39D3C;
-	Thu,  6 Mar 2025 11:07:13 +0100 (CET)
-Received: by ikr.uni-stuttgart.de (sSMTP sendmail emulation); Thu, 06 Mar 2025 11:07:12 +0100
-From: Ulrich Gemkow <ulrich.gemkow@ikr.uni-stuttgart.de>
-Organization: University of Stuttgart (Germany), IKR
-To: Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: Regression for PXE boot from patch "Remove the 'bugger off' message" in stable 6.6.18
-Date: Thu, 6 Mar 2025 11:07:12 +0100
-User-Agent: KMail/1.9.10
-Cc: stable@vger.kernel.org,
- regressions@lists.linux.dev
-References: <202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de> <CAMj1kXE7bzBV+Gzt4iuAfDpFzW=b0j0ncH9xxCGZkiexvfH3zQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXE7bzBV+Gzt4iuAfDpFzW=b0j0ncH9xxCGZkiexvfH3zQ@mail.gmail.com>
-X-KMail-QuotePrefix: > 
+	s=arc-20240116; t=1741256686; c=relaxed/simple;
+	bh=gRUPigYKtAeXbDkdakCo1FckqcN9hRRrureJb8As0N4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ks6QCo9bIgarknt9xQQF+doAqpvlbViyu+1GWMbBNLhEbmu5ozRH5FiqnWhpo7C816IEK1Ru/G9oQf84EvtxGryeM3H4B6C7B+2eg+MCpcVPrY9ITMnVJ3H1KTF3xVQQXbI5lGdpoIrb1SMvQw61ta+SCe3u9TLOYVLFrn2m7rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lio96.de; spf=pass smtp.mailfrom=lio96.de; arc=none smtp.client-ip=162.55.144.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lio96.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lio96.de
+Received: from localhost.localdomain (localhost [127.0.0.1])
+	by er-systems.de (Postfix) with ESMTP id 36ED9EC0068;
+	Thu,  6 Mar 2025 11:24:39 +0100 (CET)
+X-Spam-Level: 
+Received: from localhost (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by er-systems.de (Postfix) with ESMTPS id 1E6BDEC0065;
+	Thu,  6 Mar 2025 11:24:39 +0100 (CET)
+Date: Thu, 6 Mar 2025 11:24:37 +0100 (CET)
+From: Thomas Voegtle <tv@lio96.de>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+cc: stable <stable@vger.kernel.org>, Xi Ruoyao <xry111@xry111.site>, 
+    Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: Please apply f24f669d03f8 ("x86/mm: Don't disable PCID when
+ INVLPG has been fixed by microcode")
+In-Reply-To: <20250306082316.ca7ozay3yhrltfpp@desk>
+Message-ID: <011fdcdd-bdba-a627-defc-aed44d5d2543@lio96.de>
+References: <8ce15881-3a46-fc08-72e1-95047b844ec0@lio96.de> <20250306082316.ca7ozay3yhrltfpp@desk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: Multipart/Mixed;
-  boundary="Boundary-00=_QPXyn022XafPQL2"
-Message-Id: <202503061107.12978.ulrich.gemkow@ikr.uni-stuttgart.de>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Virus-Status: No
+X-Virus-Checker-Version: clamassassin 1.2.4 with clamdscan / ClamAV 1.4.2/27568/Wed Mar  5 10:48:48 2025
 
---Boundary-00=_QPXyn022XafPQL2
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Thu, 6 Mar 2025, Pawan Gupta wrote:
 
-On Thursday 06 March 2025, Ard Biesheuvel wrote:
-> On Tue, 4 Mar 2025 at 15:49, Ulrich Gemkow
-> <ulrich.gemkow@ikr.uni-stuttgart.de> wrote:
-> >
-> > Hello,
-> >
-> > starting with stable kernel 6.6.18 we have problems with PXE booting.
-> > A bisect shows that the following patch is guilty:
-> >
-> >   From 768171d7ebbce005210e1cf8456f043304805c15 Mon Sep 17 00:00:00 2001
-> >   From: Ard Biesheuvel <ardb@kernel.org>
-> >   Date: Tue, 12 Sep 2023 09:00:55 +0000
-> >   Subject: x86/boot: Remove the 'bugger off' message
-> >
-> >   Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >   Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> >   Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> >   Link: https://lore.kernel.org/r/20230912090051.4014114-21-ardb@google.com
-> >
-> > With this patch applied PXE starts, requests the kernel and the initrd.
-> > Without showing anything on the console, the boot process stops.
-> > It seems, that the kernel crashes very early.
-> >
-> > With stable kernel 6.6.17 PXE boot works without problems.
-> >
-> > Reverting this single patch (which is part of a larger set of
-> > patches) solved the problem for us, PXE boot is working again.
-> >
-> > We use the packages syslinux-efi and syslinux-common from Debian 12.
-> > The used boot files are /efi64/syslinux.efi and /ldlinux.e64.
-> >
-> > Our config-File (for 6.6.80) is attached.
-> >
-> > Regarding the patch description, we really do not boot with a floppy :-)
-> >
-> > Any help would be greatly appreciated, I have a bit of a bad feeling
-> > about simply reverting a patch at such a deep level in the kernel.
-> >
-> 
-> Hello Ulrich,
-> 
-> Thanks for the report, and apologies for the breakage.
-> 
-> I will look into this today - hopefully it is something that can be
-> resolved swiftly.
-> 
-> Can you share your syslinux config too, please?
-> 
+> On Wed, Mar 05, 2025 at 06:39:39PM +0100, Thomas Voegtle wrote:
+>>
+>> Hi,
+>>
+>> please apply f24f669d03f8 for 6.12.y.
+>> It is already in 6.13.y.
+>>
+>> Backports of that patch would be needed for 6.6.y down to 5.4.y as it
+>> doesn't apply.
+>>
+>> But I don't know how to backport that fix but I can test anything.
+>
+> Could you please test the following patch on 6.6.y?
 
-Hello Ard,
 
-Thank you! The config file is attached. Please feel free to
-ask for more info.
+Works on 6.6.81-rc1.
+Found pcid in /proc/cpuinfo
+No more "Incomplete global flushes, disabling PCID" in dmesg
 
-Best regards
+model name      : 12th Gen Intel(R) Core(TM) i3-12100
+with
+microcode       : 0x38
 
-Ulrich
+
+
+>
+> ---
+> From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Subject: [PATCH 6.6] x86/mm: Don't disable PCID when INVLPG has been fixed by
+> microcode
+>
+> From: Xi Ruoyao <xry111@xry111.site>
+>
+> commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
+>
+> Per the "Processor Specification Update" documentations referred by
+> the intel-microcode-20240312 release note, this microcode release has
+> fixed the issue for all affected models.
+>
+> So don't disable PCID if the microcode is new enough.  The precise
+> minimum microcode revision fixing the issue was provided by Pawan
+> Intel.
+>
+> [ dhansen: comment and changelog tweaks ]
+> [ pawan: backported to 6.6 ]
+>
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
+> Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
+> Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
+> Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
+> Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
+> Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
+> ---
+> arch/x86/mm/init.c | 23 ++++++++++++++---------
+> 1 file changed, 14 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+> index 6215dfa23578..71d29dd7ad76 100644
+> --- a/arch/x86/mm/init.c
+> +++ b/arch/x86/mm/init.c
+> @@ -262,28 +262,33 @@ static void __init probe_page_size_mask(void)
+> }
+>
+> /*
+> - * INVLPG may not properly flush Global entries
+> - * on these CPUs when PCIDs are enabled.
+> + * INVLPG may not properly flush Global entries on
+> + * these CPUs.  New microcode fixes the issue.
+>  */
+> static const struct x86_cpu_id invlpg_miss_ids[] = {
+> -	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
+> -	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
+> -	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0),
+> -	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
+> -	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
+> -	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
+> +	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0x2e),
+> +	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0x42c),
+> +	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0x11),
+> +	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0x118),
+> +	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0x4117),
+> +	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0x2e),
+> 	{}
+> };
+>
+> static void setup_pcid(void)
+> {
+> +	const struct x86_cpu_id *invlpg_miss_match;
+> +
+> 	if (!IS_ENABLED(CONFIG_X86_64))
+> 		return;
+>
+> 	if (!boot_cpu_has(X86_FEATURE_PCID))
+> 		return;
+>
+> -	if (x86_match_cpu(invlpg_miss_ids)) {
+> +	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
+> +
+> +	if (invlpg_miss_match &&
+> +	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
+> 		pr_info("Incomplete global flushes, disabling PCID");
+> 		setup_clear_cpu_cap(X86_FEATURE_PCID);
+> 		return;
+>
+
+       Thomas
 
 -- 
-|-----------------------------------------------------------------------
-| Ulrich Gemkow
-| University of Stuttgart
-| Institute of Communication Networks and Computer Engineering (IKR)
-|-----------------------------------------------------------------------
+  Thomas V
 
---Boundary-00=_QPXyn022XafPQL2
-Content-Type: text/plain;
-  charset="iso-8859-15";
-  name="Local.cfg"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename="Local.cfg"
-
-DEFAULT lnc
-
-LABEL lnc
-  KERNEL image/bzImage-Local
-  INITRD lnc-ramdisc-simple.gz
-  APPEND rw root=/dev/ram0 ip=::::::on quiet ignore_rlimit_data
-
---Boundary-00=_QPXyn022XafPQL2--
 
