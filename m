@@ -1,126 +1,143 @@
-Return-Path: <stable+bounces-121324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3F2A558B9
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 22:25:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22A3A558D8
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 22:33:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A59F917499C
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 21:25:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5E33ADCB0
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 21:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CC7276052;
-	Thu,  6 Mar 2025 21:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A30207676;
+	Thu,  6 Mar 2025 21:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y8yXhYxb"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bZsjzzv9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AbHbZCHf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72AC23FC59
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 21:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25932207669;
+	Thu,  6 Mar 2025 21:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741296314; cv=none; b=Ngxgtqatge3VxYHjDejLo4Q8BsGWsIFevWeyk+FGER/a8cADcgYiz5HiFUdDKsQ5LdEL9V/hFSg5i3Zqsp1BZAnRkTYeOl1kDQHa+nMu/ikTNV2C6WJQqMHMDmyizacYS1TKtrMfW0aT6Y1labf8yjLy2ub2znvNxfovhFCnGsk=
+	t=1741296823; cv=none; b=rca1qIVbyKtVjMQNv+R+6afPvIx1aoesW/oizVPiI7xIO7quj4VFoDNUD9y0kPnPo39cUw7tl5KuTQ6CsluPvqoMX91xnqcJ2MSJJ2V91lkfbBykK0jiArMdjKN8v+mTvhNe+sADMXZb66BeiYuWYlTLv74ox28F1XTj6AcUhCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741296314; c=relaxed/simple;
-	bh=6nLUeGZBsOZaxX7lD0yAqrwnU/9EkCCEKqX2KbebjDY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cCLVlS2inZHVGWkN+06x3WViatJpWTbx+cDVmfexPWYengwSyw1CATT3cO8hOdwOO5C1Z3ZFHIjXC1FoNONd06S5VWehAR4qCbAymLJlyeJLNtMHXpvYwGKbBSZXqMptsYBKof3OnI3rB+QdjWWiTrqyU7yhfTmkv7+OPCpEfJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=y8yXhYxb; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-abf4802b242so223808266b.1
-        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 13:25:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741296310; x=1741901110; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6nLUeGZBsOZaxX7lD0yAqrwnU/9EkCCEKqX2KbebjDY=;
-        b=y8yXhYxbNasZPZMGQjweQq91JrwF0qwIqKnhDD00CsLW1+uxQB96aHu+/RgxhmQSyY
-         ocaQgUQameDnuXFZnKF53BOYjaCdlipwjqg0e4znaayu/EBBoiS4qIYFN0Kz+bfvuPAz
-         rlyEmStL4Fr0rQnC7O+dx3Jzqfcvs3t23rGiqtMrtKpJs5Srhr7RkcgkXI6GsbHZjyTN
-         5TV6gNy3GffpoEtc7HPbxSCUxOkgp5Y/PXiqB4pvr81Jwlcl/4ThuqsTv8Cz6c5JmbHA
-         xPGVmi+wUAV8Om/qWkYPC4VQJBgMRtrYgSPSddxu1KfJ5IgQbEOlnGGIZPr69EdZPBLi
-         ST9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741296310; x=1741901110;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6nLUeGZBsOZaxX7lD0yAqrwnU/9EkCCEKqX2KbebjDY=;
-        b=XxLtdgLBFUtoEblTEd7PeC4NqAdRDMrM5IjLLQtzdjB5JksNu37aZt7qHHrhQIl4jL
-         B9XOSVU6mBvEJpEjVA44gfHno1zchuuXpgKfKl6o1PLiQ/iSxtrxdGvO83vRV3CgK+eq
-         7UzjkcbvHcW/fyC5ilv2EtxW5MNotMG2I83IDEQvb8nJx5Ya5Qb7DlK2RzJ/M2SroOn7
-         IuFzxVotMYiw3cpeyblEJXPtptWWQ6aN4C/Zzy35TOObbiNjdKXBo78PIaz9/v24D7Pp
-         2RcVHyMd1GYxldj21EHSnAkOTahSoYEtiDu3tQS+OjSKGkvEfpsKvr2AiRgNzOHluz1I
-         Ykcg==
-X-Forwarded-Encrypted: i=1; AJvYcCV2I3R+aIDv8nFad7rL4aw9ZQBbt5OPYUDRO1K+t5a/Dk8jxu7m1AGhZC61Jfk8gSqjNYUyPDE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNG+PDRYnMVc9TX8abhG7cADex5u/1/kyU1et4s0RCqfAtPv51
-	s1kvn2I53JPtrhbv1SRw0+3kmPuX1wShgV6lmJKuLwxZuHMXKdrD7QlEv9oECS4=
-X-Gm-Gg: ASbGncsY7D4H0T4PKnLcw2totYXqYOpx+4mntlRd++hYb2QYneXfT3QH67+VhMqEEdu
-	xUnEWzATcRbtigwqlQgeu8CPhaZafxSgCqiv3z3GBCHcp99AksrqvWnqeU0rJbPV2LDISTQVDkJ
-	c26FrTMG8MwdFt3HO3UXiYUa+6bEMvoIUSbWD84ENeCP6t3QEkYb9aY18JtVdX31qDd8Ji6DHQj
-	8ieUZPcTNiKjrv/MMmEM3mVXQoPWuiwDRJ4pHXJt0/WclshAZT/It9JGfzi9xDFQBcGIXJC/mrv
-	1JwDL8bBFhXAmqYfiUbp4REyx5Jo0tSXvX7BoOcTJ/PJWkM=
-X-Google-Smtp-Source: AGHT+IEfkrY7UVJaq0/ND9NEi5g0hc9ml44W1eaBzgh92FLmrsjRrsJKvCEmtLb9GKZY9TgjXouEaw==
-X-Received: by 2002:a17:907:3f9b:b0:ac1:ddaa:2c11 with SMTP id a640c23a62f3a-ac25210ff7emr88036066b.0.1741296310064;
-        Thu, 06 Mar 2025 13:25:10 -0800 (PST)
-Received: from salami.lan ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac2399d7da1sm156779066b.174.2025.03.06.13.25.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 13:25:09 -0800 (PST)
-Message-ID: <2c1cab545cd3b57a2155df2e87ad9830b2b94ab1.camel@linaro.org>
-Subject: Re: [PATCH v3 3/4] pinctrl: samsung: add gs101 specific eint
- suspend/resume callbacks
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Peter Griffin <peter.griffin@linaro.org>, Krzysztof Kozlowski	
- <krzk@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Alim Akhtar
-	 <alim.akhtar@samsung.com>, Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- 	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	tudor.ambarus@linaro.org, willmcvicker@google.com,
- semen.protsenko@linaro.org, 	kernel-team@android.com,
- jaewon02.kim@samsung.com, stable@vger.kernel.org
-Date: Thu, 06 Mar 2025 21:25:08 +0000
-In-Reply-To: <20250306-pinctrl-fltcon-suspend-v3-3-f9ab4ff6a24e@linaro.org>
-References: <20250306-pinctrl-fltcon-suspend-v3-0-f9ab4ff6a24e@linaro.org>
-	 <20250306-pinctrl-fltcon-suspend-v3-3-f9ab4ff6a24e@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3-2 
+	s=arc-20240116; t=1741296823; c=relaxed/simple;
+	bh=y5SFPMw1ZxPPYZSH5ahTZc4SyXIQztlkZlEL+XAXbA8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=jkh+paJ39/FDAM/CwCOPzRXMOzXIEdGEcE/RwyV7qvOUtzXxj2fpWU8PvKCYlYAot75IcBeEUMjkVVfkgzr7gdY0FpZ4oySLAxJLC5t6SkfZa3h9Y+09rpkjy2vFi+Gi9waU7OrA5TCYOA9LAMsOXsV2I5RLEsiRU053BAV2eUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bZsjzzv9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AbHbZCHf; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 06 Mar 2025 21:33:35 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741296820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l8keB3TccVIEx9x7nioQcAlV/fWzwl5jFltbXmTUFXs=;
+	b=bZsjzzv9Xyv0DgQHTPd+MkrZxW1vXwjlnqdVrbP9rvcba26PNFo8mUTmrwcXkTRn6uTXr0
+	cMbQ54glXQZsKboZRffGx2jabIFstS16cr9xiItjGOVsZBCJuPvJzBit7RaX4oIOfV2fT5
+	V/1DinzaLVDBSuEry92f2GkMZ6kOz8yllOXbTbRDM4fquVqmUrJgvckfeLwipPW+xQSPNG
+	uCSnFL3IVfD2YqjCOSCGskqepvmSZnfEJFMlIzeDrNORB0AgTXOp52dw23VnF5AL9DlmCL
+	Ja296aeEfIQyxhgwpt+wv5HXql0u7C2y0Q3zJ1mrPg2/o2NWxUS5BTa2a4B2OQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741296820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l8keB3TccVIEx9x7nioQcAlV/fWzwl5jFltbXmTUFXs=;
+	b=AbHbZCHfQfoqcLBa/EnTGIlzDo2/O6D4gW+CP4DwMrD4wV8Ezhq2IsOTt5UgOqbtcy0M0E
+	M/HIo00hG4N6fLCQ==
+From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/boot: Sanitize boot params before parsing command line
+Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,  <stable@vger.kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250306155915.342465-2-ardb+git@google.com>
+References: <20250306155915.342465-2-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <174129681612.14745.2037949092408216187.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2025-03-06 at 20:42 +0000, Peter Griffin wrote:
-> gs101 differs to other SoCs in that fltcon1 register doesn't
-> always exist. Additionally the offset of fltcon0 is not fixed
-> and needs to use the newly added eint_fltcon_offset variable.
->=20
-> Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-> Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configurati=
-on")
-> Cc: stable@vger.kernel.org
-> ---
-> Changes since v2:
-> * make it clear exynos_set_wakeup(bank) is conditional on bank type (Andr=
-e)
-> * align style where the '+' is placed (Andre)
-> * remove unnecessary braces (Andre)
-> ---
-> =C2=A0drivers/pinctrl/samsung/pinctrl-exynos-arm64.c | 24 ++++-----
-> =C2=A0drivers/pinctrl/samsung/pinctrl-exynos.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 | 70 ++++++++++++++++++++++++++
-> =C2=A0drivers/pinctrl/samsung/pinctrl-exynos.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 |=C2=A0 2 +
-> =C2=A03 files changed, 84 insertions(+), 12 deletions(-)
+The following commit has been merged into the x86/urgent branch of tip:
 
-Reviewed-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+Commit-ID:     c00b413a96261faef4ce22329153c6abd4acef25
+Gitweb:        https://git.kernel.org/tip/c00b413a96261faef4ce22329153c6abd4acef25
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Thu, 06 Mar 2025 16:59:16 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 06 Mar 2025 22:02:39 +01:00
 
+x86/boot: Sanitize boot params before parsing command line
+
+The 5-level paging code parses the command line to look for the 'no5lvl'
+string, and does so very early, before sanitize_boot_params() has been
+called and has been given the opportunity to wipe bogus data from the
+fields in boot_params that are not covered by struct setup_header, and
+are therefore supposed to be initialized to zero by the bootloader.
+
+This triggers an early boot crash when using syslinux-efi to boot a
+recent kernel built with CONFIG_X86_5LEVEL=y and CONFIG_EFI_STUB=n, as
+the 0xff padding that now fills the unused PE/COFF header is copied into
+boot_params by the bootloader, and interpreted as the top half of the
+command line pointer.
+
+Fix this by sanitizing the boot_params before use. Note that there is no
+harm in calling this more than once; subsequent invocations are able to
+spot that the boot_params have already been cleaned up.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Link: https://lore.kernel.org/r/20250306155915.342465-2-ardb+git@google.com
+Closes: https://lore.kernel.org/all/202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de
+---
+ arch/x86/boot/compressed/pgtable_64.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index c882e1f..d8c5de4 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "misc.h"
+ #include <asm/bootparam.h>
++#include <asm/bootparam_utils.h>
+ #include <asm/e820/types.h>
+ #include <asm/processor.h>
+ #include "pgtable.h"
+@@ -107,6 +108,7 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+ 	bool l5_required = false;
+ 
+ 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
++	sanitize_boot_params(bp);
+ 	boot_params_ptr = bp;
+ 
+ 	/*
 
