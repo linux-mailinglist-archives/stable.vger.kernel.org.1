@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-121166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D1B3A5424B
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:38:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0649EA5424A
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A564C171C87
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:37:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5431D1893D2D
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE95A1A08A3;
-	Thu,  6 Mar 2025 05:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26031A2389;
+	Thu,  6 Mar 2025 05:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="x3ZvMyIW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="e8vywQwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C10819E971;
-	Thu,  6 Mar 2025 05:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC8119E971;
+	Thu,  6 Mar 2025 05:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741239470; cv=none; b=uUaxSOFERCmC0nC3F37OVN5S8Rq0RzUJvg2XRnxmfVdi6kHjktYjur8MknCu+N3MlhmLBmtG3BVUlPxseA6WIYXdh+++0nCveWPOVvvB62QIpRhYfc6KLGBDnzoqVi7OhR2CNyO7296QW7Zrs3q1gMQB9dHJUnh1dv0HZHC1/QM=
+	t=1741239472; cv=none; b=L6kOdTiu0zVhTOjeWiEe2kKZvs1A4i+Fxm/owp7qWBvwoa6JeSRkVMXAfwDzADLEiuqwrYu75VBVe3gwAaH0SrxEZwxhkwrxpQ4n1+9on9OIfCJguFofJeztxwV0y7AJBcvKP5h/eht1iNJsgy92cjLyE33C5eFhIUowYGe2j3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741239470; c=relaxed/simple;
-	bh=tVgoAx+s0PLvKngQZlXzR63OC+IEugLeCxTJep0+hco=;
-	h=Date:To:From:Subject:Message-Id; b=aepzmulY/djBQQzO0+J4CWJ+3ReL0ExPFh6beQf9obpTPmDgcr36vGDqr1DfJ7lFoEoZXfSybZCNhllrIVuW7GUGpb43Xa1HJR/WcNdfIoRFIl4+kE8BHTMeo8d7RwRNeLHl3+CieeIY5SXEH6q9Rg+i3xSIb7e7v574Rr+9C98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=x3ZvMyIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6F8C4CEE4;
-	Thu,  6 Mar 2025 05:37:50 +0000 (UTC)
+	s=arc-20240116; t=1741239472; c=relaxed/simple;
+	bh=S2l8rV+bdh4PUE44lsR8vKLHeLZo+PZ4iBQ7YAAQ5d0=;
+	h=Date:To:From:Subject:Message-Id; b=aN5hUJKIU1cIKEx7eXw45L7G5LzyZXjn+HhBZf+7fONZ7Uxaw6DSBZMSpKRbzkqIVJiBgQSgZcW78hw2/VAvNFtFkJeQxbvLSjtOkBPjIHiSv0JRUqHbjRbMIuC/mzc/DNz1YYzypq/JicyPbozIzJMozfEUC00dEcQXy0WJKdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=e8vywQwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75271C4CEE4;
+	Thu,  6 Mar 2025 05:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741239470;
-	bh=tVgoAx+s0PLvKngQZlXzR63OC+IEugLeCxTJep0+hco=;
+	s=korg; t=1741239472;
+	bh=S2l8rV+bdh4PUE44lsR8vKLHeLZo+PZ4iBQ7YAAQ5d0=;
 	h=Date:To:From:Subject:From;
-	b=x3ZvMyIWEdIi+VyNTda2uwX64gIBxDdAwy5qjflGqAlhhRH9Zx8xgqv15W48Zfv3+
-	 1S1qpgFcHmid1VwI9EV/H0k3Hl+/iPKBdUgOIDyDahuF/0CCYfqUJ4AF6TwyxEaGUV
-	 tqkNqVRXboI8yiBHhu2W/R9gfQG9//3xyJPb71dE=
-Date: Wed, 05 Mar 2025 21:37:49 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,v-songbaohua@oppo.com,stable@vger.kernel.org,peterx@redhat.com,lorenzo.stoakes@oracle.com,lokeshgidra@google.com,Liam.Howlett@Oracle.com,kaleshsingh@google.com,jannh@google.com,hughd@google.com,david@redhat.com,aarcange@redhat.com,21cnbao@gmail.com,surenb@google.com,akpm@linux-foundation.org
+	b=e8vywQwGhlVeRvU56zTPCiVQWHEBvOcjIhK89RQ8FrBnx74ebxf3A1p6xD1cpHYVl
+	 1pegTlod/CcPqdjCduXW/4+SeTJqid575PKkTt50aXNRNRr+LlisBRPYVRXRdyKGV0
+	 uG52VyHt+yyuz1MJkZrObxv7kiMMrGYJolgHNdKQ=
+Date: Wed, 05 Mar 2025 21:37:51 -0800
+To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,hch@infradead.org,catalin.marinas@arm.com,anshuman.khandual@arm.com,ryan.roberts@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies.patch removed from -mm tree
-Message-Id: <20250306053750.0E6F8C4CEE4@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-dont-skip-arch_sync_kernel_mappings-in-error-paths.patch removed from -mm tree
+Message-Id: <20250306053752.75271C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,131 +50,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: userfaultfd: fix PTE unmapping stack-allocated PTE copies
+     Subject: mm: don't skip arch_sync_kernel_mappings() in error paths
 has been removed from the -mm tree.  Its filename was
-     userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies.patch
+     mm-dont-skip-arch_sync_kernel_mappings-in-error-paths.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: userfaultfd: fix PTE unmapping stack-allocated PTE copies
-Date: Wed, 26 Feb 2025 10:55:09 -0800
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: don't skip arch_sync_kernel_mappings() in error paths
+Date: Wed, 26 Feb 2025 12:16:09 +0000
 
-Current implementation of move_pages_pte() copies source and destination
-PTEs in order to detect concurrent changes to PTEs involved in the move. 
-However these copies are also used to unmap the PTEs, which will fail if
-CONFIG_HIGHPTE is enabled because the copies are allocated on the stack. 
-Fix this by using the actual PTEs which were kmap()ed.
+Fix callers that previously skipped calling arch_sync_kernel_mappings() if
+an error occurred during a pgtable update.  The call is still required to
+sync any pgtable updates that may have occurred prior to hitting the error
+condition.
 
-Link: https://lkml.kernel.org/r/20250226185510.2732648-3-surenb@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: Barry Song <v-songbaohua@oppo.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+These are theoretical bugs discovered during code review.
+
+Link: https://lkml.kernel.org/r/20250226121610.2401743-1-ryan.roberts@arm.com
+Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
+Fixes: 0c95cba49255 ("mm: apply_to_pte_range warn and fail if a large pte is encountered")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christop Hellwig <hch@infradead.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/userfaultfd.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ mm/memory.c  |    6 ++++--
+ mm/vmalloc.c |    4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/mm/userfaultfd.c~userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies
-+++ a/mm/userfaultfd.c
-@@ -1290,8 +1290,8 @@ retry:
- 			spin_unlock(src_ptl);
+--- a/mm/memory.c~mm-dont-skip-arch_sync_kernel_mappings-in-error-paths
++++ a/mm/memory.c
+@@ -3051,8 +3051,10 @@ static int __apply_to_page_range(struct
+ 		next = pgd_addr_end(addr, end);
+ 		if (pgd_none(*pgd) && !create)
+ 			continue;
+-		if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+-			return -EINVAL;
++		if (WARN_ON_ONCE(pgd_leaf(*pgd))) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (!pgd_none(*pgd) && WARN_ON_ONCE(pgd_bad(*pgd))) {
+ 			if (!create)
+ 				continue;
+--- a/mm/vmalloc.c~mm-dont-skip-arch_sync_kernel_mappings-in-error-paths
++++ a/mm/vmalloc.c
+@@ -586,13 +586,13 @@ static int vmap_small_pages_range_noflus
+ 			mask |= PGTBL_PGD_MODIFIED;
+ 		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+ 		if (err)
+-			return err;
++			break;
+ 	} while (pgd++, addr = next, addr != end);
  
- 			if (!locked) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				/* now we can block and wait */
- 				folio_lock(src_folio);
-@@ -1307,8 +1307,8 @@ retry:
- 		/* at this point we have src_folio locked */
- 		if (folio_test_large(src_folio)) {
- 			/* split_folio() can block */
--			pte_unmap(&orig_src_pte);
--			pte_unmap(&orig_dst_pte);
-+			pte_unmap(src_pte);
-+			pte_unmap(dst_pte);
- 			src_pte = dst_pte = NULL;
- 			err = split_folio(src_folio);
- 			if (err)
-@@ -1333,8 +1333,8 @@ retry:
- 				goto out;
- 			}
- 			if (!anon_vma_trylock_write(src_anon_vma)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				/* now we can block and wait */
- 				anon_vma_lock_write(src_anon_vma);
-@@ -1352,8 +1352,8 @@ retry:
- 		entry = pte_to_swp_entry(orig_src_pte);
- 		if (non_swap_entry(entry)) {
- 			if (is_migration_entry(entry)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				migration_entry_wait(mm, src_pmd, src_addr);
- 				err = -EAGAIN;
-@@ -1396,8 +1396,8 @@ retry:
- 			src_folio = folio;
- 			src_folio_pte = orig_src_pte;
- 			if (!folio_trylock(src_folio)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				put_swap_device(si);
- 				si = NULL;
+ 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+ 		arch_sync_kernel_mappings(start, end);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ /*
 _
 
-Patches currently in -mm which might be from surenb@google.com are
+Patches currently in -mm which might be from ryan.roberts@arm.com are
 
-mm-avoid-extra-mem_alloc_profiling_enabled-checks.patch
-alloc_tag-uninline-code-gated-by-mem_alloc_profiling_key-in-slab-allocator.patch
-alloc_tag-uninline-code-gated-by-mem_alloc_profiling_key-in-page-allocator.patch
-mm-introduce-vma_start_read_locked_nested-helpers.patch
-mm-move-per-vma-lock-into-vm_area_struct.patch
-mm-mark-vma-as-detached-until-its-added-into-vma-tree.patch
-mm-introduce-vma_iter_store_attached-to-use-with-attached-vmas.patch
-mm-mark-vmas-detached-upon-exit.patch
-types-move-struct-rcuwait-into-typesh.patch
-mm-allow-vma_start_read_locked-vma_start_read_locked_nested-to-fail.patch
-mm-move-mmap_init_lock-out-of-the-header-file.patch
-mm-uninline-the-main-body-of-vma_start_write.patch
-refcount-provide-ops-for-cases-when-objects-memory-can-be-reused.patch
-refcount-provide-ops-for-cases-when-objects-memory-can-be-reused-fix.patch
-refcount-introduce-__refcount_addinc_not_zero_limited_acquire.patch
-mm-replace-vm_lock-and-detached-flag-with-a-reference-count.patch
-mm-replace-vm_lock-and-detached-flag-with-a-reference-count-fix.patch
-mm-move-lesser-used-vma_area_struct-members-into-the-last-cacheline.patch
-mm-debug-print-vm_refcnt-state-when-dumping-the-vma.patch
-mm-remove-extra-vma_numab_state_init-call.patch
-mm-prepare-lock_vma_under_rcu-for-vma-reuse-possibility.patch
-mm-make-vma-cache-slab_typesafe_by_rcu.patch
-mm-make-vma-cache-slab_typesafe_by_rcu-fix.patch
-docs-mm-document-latest-changes-to-vm_lock.patch
+mm-ioremap-pass-pgprot_t-to-ioremap_prot-instead-of-unsigned-long.patch
+mm-fix-lazy-mmu-docs-and-usage.patch
+fs-proc-task_mmu-reduce-scope-of-lazy-mmu-region.patch
+sparc-mm-disable-preemption-in-lazy-mmu-mode.patch
+sparc-mm-avoid-calling-arch_enter-leave_lazy_mmu-in-set_ptes.patch
+revert-x86-xen-allow-nesting-of-same-lazy-mode.patch
 
 
