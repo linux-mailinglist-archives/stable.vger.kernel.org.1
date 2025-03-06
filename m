@@ -1,240 +1,116 @@
-Return-Path: <stable+bounces-121328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38570A55989
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 23:18:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F09A55AD2
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 00:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 359803B022F
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 22:17:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2FE01775C6
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 23:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE3B2702DB;
-	Thu,  6 Mar 2025 22:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679541FBC9F;
+	Thu,  6 Mar 2025 23:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OAqWPL8i"
+	dkim=pass (2048-bit key) header.d=delugo.co.za header.i=@delugo.co.za header.b="BRSBMEyY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outgoing16.cpt4.host-h.net (outgoing16.cpt4.host-h.net [197.189.249.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F915205AC0;
-	Thu,  6 Mar 2025 22:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FB62E336F
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 23:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=197.189.249.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741299484; cv=none; b=iz5sfLh76Uo5QW4MW5ZeD4aDo6G9bglxSQZKxZc6FeIclBwWK7In2vQ8rDCsxFKdrrq2AUxi5ezJrf/vtbwJnNETeZCwGLGnTic6+3aWlrNeAL1eym4FoyPb1oeO3pT6UJSLkWg9lRb2xA7PTpaZr2JolVxWS9h6w/y56jWvNMY=
+	t=1741303080; cv=none; b=m6z7LFhfikFPqk+RSk7J6gwP9I9WDSd84uXTOGS4VhuFwRvQI0IR+iTl2UdLjL6reHM0+dv3mE79t/n2c7jLgZ2iFp2gSQ1UxwXFJrJbWfi2LirfeaHRmRdodhEj9anhFTkyyUoU6boodV8ynzyDZueVKj8ifKa5TAKAdWcsrj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741299484; c=relaxed/simple;
-	bh=/XemML4mcWHVZ9HCmXU9SOO4LTBBwmRNCIcxd2MamzY=;
-	h=Date:To:From:Subject:Message-Id; b=Z8W8Lc+ouqq9HCaeZl7d9eWZ47wmNVLgOK89npG1FXgymdO7dWxjhU3aGzuKZ3iHNJ41J+zqCvCTjwJGIl4IGCBiTV7F4X2oTZV8tdP//PR6DswGNFVJTGuiDHB1HtXleRK68t9DHhkHTi7lE1HwqpetlcEH8TTbluutsKjBZyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OAqWPL8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074EAC4CEE0;
-	Thu,  6 Mar 2025 22:18:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741299484;
-	bh=/XemML4mcWHVZ9HCmXU9SOO4LTBBwmRNCIcxd2MamzY=;
-	h=Date:To:From:Subject:From;
-	b=OAqWPL8i9UT2JEnXot52L3Kyf4mbOZgmN4+BIprH1PXHYNcCMYAnRn10me0U/Ui0i
-	 xd63BttlB19cYw2PHkGwz281pLTJM3c6h5UMdlT7R0ie3uNA4pZB2cTgf1LtlTeIID
-	 JW3NGuEtBpE3o5BDfGSLg23BFMAbrx2XzS/g08G0=
-Date: Thu, 06 Mar 2025 14:18:03 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,Liam.Howlett@oracle.com,jannh@google.com,harry.yoo@oracle.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mremap-correctly-handle-partial-mremap-of-vma-starting-at-0.patch added to mm-unstable branch
-Message-Id: <20250306221804.074EAC4CEE0@smtp.kernel.org>
+	s=arc-20240116; t=1741303080; c=relaxed/simple;
+	bh=UOdy1uc1Ja6Ouzx9Gp3orqw2OLpxN4Hd+lHG4CKFzvE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ofw0908BMRrtgTbJKrVDmT10b9bg9CbhXwJujFfmY+jLVeG7sOIxw8s7l/VIEA+qmCvxhZKepWzPfUwLEaDhIz4wrVcYYPrcb6uE+ZsmogUovZ5i7vwYmfXruD+DEB9eP2nw4CpVuYqT5zam4cu6+HF4Uj5psu3o9y1MlTLZAks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=delugo.co.za; spf=pass smtp.mailfrom=delugo.co.za; dkim=pass (2048-bit key) header.d=delugo.co.za header.i=@delugo.co.za header.b=BRSBMEyY; arc=none smtp.client-ip=197.189.249.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=delugo.co.za
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=delugo.co.za
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=delugo.co.za; s=xneelo; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:sender:cc:bcc:
+	in-reply-to:references; bh=UOdy1uc1Ja6Ouzx9Gp3orqw2OLpxN4Hd+lHG4CKFzvE=; b=BR
+	SBMEyYYX2c0BFcNJoJyJ77Bd01cjMeL4UCyQQZ2luGk7+rDPofEm83Fp0RJiGFVrGdEngYpu1+Uhh
+	G/Kd9gdj+EnOfQt4UuB9K1LsOyPYLGtxso7BCKDSaC4pDmoboEXyJ6IB4SHzXGYMBBzoO74PFcHJF
+	/vy0GRbG6WaIHSBdWuRhcU1Na1gHE6TqIm95GJANorivDk4k13m7TCUuZ0u5IV83O+CECAJMf5JZt
+	1WApCD4VG+K9fBrNEJoOpOp49SlvYFPfKp0mun4fqHkpZKkiYz1bHjMEEUyLuaOKNecAIexlErc74
+	RalQo9NOrllhjVIQVECKgbtY+NmezP7A==;
+Received: from www46.cpt3.host-h.net ([197.221.14.46])
+	by antispam4-cpt4.host-h.net with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <orders@delugo.co.za>)
+	id 1tqK5D-000g5V-0K
+	for stable@vger.kernel.org; Fri, 07 Mar 2025 00:52:52 +0200
+Received: from [104.192.5.240] (helo=delugo.co.za)
+	by www46.cpt3.host-h.net with esmtpsa (TLS1.2:ECDHE_SECP521R1__RSA_SHA512__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <orders@delugo.co.za>)
+	id 1tqK5C-0000000DmLM-1CUk
+	for stable@vger.kernel.org;
+	Fri, 07 Mar 2025 00:52:50 +0200
+Reply-To: barry@investorstrustco.net
+From: Barry <orders@delugo.co.za>
+To: stable@vger.kernel.org
+Subject: Re: The Business Loan/financing.1
+Date: 06 Mar 2025 22:52:49 +0000
+Message-ID: <20250306223012.5ACF2C556DE91C19@delugo.co.za>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authenticated-Sender: orders@delugo.co.za
+X-Virus-Scanned: Clear
+X-SpamExperts-Domain: delugo.co.za
+X-SpamExperts-Username: 
+Authentication-Results: host-h.net; auth=pass (login) smtp.auth=@delugo.co.za
+X-SpamExperts-Outgoing-Class: unsure
+X-SpamExperts-Outgoing-Evidence: Combined (0.75)
+X-Recommended-Action: accept
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT+5DhM0jw86KsbkaGfFMuQCPUtbdvnXkggZ
+ 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5xKnF+7I1sHya/mnI/qk7pcwm+8cezTviXvmgmQNTVFn4JL
+ M0i5ZAms0EHrvcCaVIOIuDyoNAAk3S7wypr/MFEBzIXV52OyeiH3YVVX92r9xy+UMRGeTdEyZ1fy
+ 3Zt6lWCFcwLbxYAZ6mr+/0DiAFW6fePgajz63E7mJBgne4ugm4PAgTtUp75uqlx0KezvZHUGfc3j
+ hBjxckGlDLNaHNFeWSnpHhzCpX6StWBDPW1xyi0n+6u17EFNvY1xrVxHOMjdaWolaEIooNu/YQK5
+ hGs0PEg+PVRTiaxPY52n0Pp/86b+Sk5ZBXUgt9/X6plqv8Jl041btgY00t8ZwQGEpPru6KJwrbSo
+ zGHLFB0eHc6erodzE47O357nyaNqjpIvt4xQef6Ceaw0tyEeHKZjklTreHL+whhAdKuW1jHRpIte
+ tiiLAsB3YrKmt12KVBXn+lwYQsgkfE0ewNgNUY5lZOQ5++eDP+l2bcVgSchaWCsOR9QmV5Z+1S6W
+ RsLXYNyKI5QBDLdZGhaGMngAFGniylMEqwf9bMTvxYH7osomSTjBYAs0fMdo6PLYRSf6dhUPyJaq
+ j4ktAerpfvZQR+/GYrxkjlFvCdU5hCmT46F+0fdPU3buY2/zN9evqmMYUbFOXs5no3FEzj0O6u30
+ 2MX5S6wVT74ZEqLd8l9FM+v8+4kcTSFKbX6XRZLWB3ND0xLzUprzY+E/DeY4MRr++Q0vYxJYYVnn
+ azKhbljZ0GZfwfcUVD2N5mbrh5seo3Henv1A21I8CVsONrMJuGzuoGnKTKcyxfHUzpDjDrEo6nxw
+ LnwsWvr9keYPpbu7CWRAsL4If9OG1SA6Y19gzXA2SwLn5r9hdodBBMHyIG7/ydPVy6H/bn2rg3rh
+ oTcTJt8uTKsMjek/gXktECu2zHJ/e9ivDnYnGw1uo0NPgp/w18bVcfCkCGRCocjQL9Td+ZGFmhHY
+ C7oNAefjm6XnppQOmbjhLo5G
+X-Report-Abuse-To: spam@antispamquarantine.host-h.net
+X-Complaints-To: abuse@antispammaster.host-h.net
 
+Hello,
 
-The patch titled
-     Subject: mm/mremap: correctly handle partial mremap() of VMA starting at 0
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-mremap-correctly-handle-partial-mremap-of-vma-starting-at-0.patch
+My name is Barry at Investment Consult, we are a consultancy and
+brokerage Firm specializing in Growth Financial Loan and joint
+partnership venture. We specialize in investments in all Private
+and public sectors in a broad range of areas within our Financial
+Investment Services.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mremap-correctly-handle-partial-mremap-of-vma-starting-at-0.patch
+ We are experts in financial and operational management, due
+diligence and capital planning in all markets and industries. Our
+Investors wish to invest in any viable Project presented by your
+Management after reviews on your Business Project Presentation
+Plan.
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ We look forward to your Swift response. We also offer commission
+to consultants and brokers for any partnership referrals.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: mm/mremap: correctly handle partial mremap() of VMA starting at 0
-Date: Thu, 6 Mar 2025 10:33:57 +0000
-
-Patch series "refactor mremap and fix bug", v2.
-
-The existing mremap() logic has grown organically over a very long period
-of time, resulting in code that is in many parts, very difficult to follow
-and full of subtleties and sources of confusion.
-
-In addition, it is difficult to thread state through the operation
-correctly, as function arguments have expanded, some parameters are
-expected to be temporarily altered during the operation, others are
-intended to remain static and some can be overridden.
-
-This series completely refactors the mremap implementation, sensibly
-separating functions, adding comments to explain the more subtle aspects
-of the implementation and making use of small structs to thread state
-through everything.
-
-The reason for doing so is to lay the groundwork for planned future
-changes to the mremap logic, changes which require the ability to easily
-pass around state.
-
-Additionally, it would be unhelpful to add yet more logic to code that is
-already difficult to follow without first refactoring it like this.
-
-The first patch in this series additionally fixes a bug when a VMA with
-start address zero is partially remapped.
-
-Tested on real hardware under heavy workload and all self tests are
-passing.
-
-
-This patch (of 7):
-
-Consider the case of a partial mremap() (that results in a VMA split) of
-an accountable VMA (i.e.  which has the VM_ACCOUNT flag set) whose start
-address is zero, with the MREMAP_MAYMOVE flag specified and a scenario
-where a move does in fact occur:
-
-       addr  end
-        |     |
-        v     v
-    |-------------|
-    |     vma     |
-    |-------------|
-    0
-
-This move is affected by unmapping the range [addr, end).  In order to
-prevent an incorrect decrement of accounted memory which has already been
-determined, the mremap() code in move_vma() clears VM_ACCOUNT from the VMA
-prior to doing so, before reestablishing it in each of the VMAs
-post-split:
-
-    addr  end
-     |     |
-     v     v
- |---|     |---|
- | A |     | B |
- |---|     |---|
-
-Commit 6b73cff239e5 ("mm: change munmap splitting order and move_vma()")
-changed this logic such as to determine whether there is a need to do so
-by establishing account_start and account_end and, in the instance where
-such an operation is required, assigning them to vma->vm_start and
-vma->vm_end.
-
-Later the code checks if the operation is required for 'A' referenced
-above thusly:
-
-	if (account_start) {
-		...
-	}
-
-However, if the VMA described above has vma->vm_start == 0, which is now
-assigned to account_start, this branch will not be executed.
-
-As a result, the VMA 'A' above will remain stripped of its VM_ACCOUNT
-flag, incorrectly.
-
-The fix is to simply convert these variables to booleans and set them as
-required.
-
-Link: https://lkml.kernel.org/r/cover.1741256580.git.lorenzo.stoakes@oracle.com
-Link: https://lkml.kernel.org/r/94681428faba4c34a76e2de1c875629372aae3d5.1741256580.git.lorenzo.stoakes@oracle.com
-Fixes: 6b73cff239e5 ("mm: change munmap splitting order and move_vma()")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mremap.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
---- a/mm/mremap.c~mm-mremap-correctly-handle-partial-mremap-of-vma-starting-at-0
-+++ a/mm/mremap.c
-@@ -705,8 +705,8 @@ static unsigned long move_vma(struct vm_
- 	unsigned long vm_flags = vma->vm_flags;
- 	unsigned long new_pgoff;
- 	unsigned long moved_len;
--	unsigned long account_start = 0;
--	unsigned long account_end = 0;
-+	bool account_start = false;
-+	bool account_end = false;
- 	unsigned long hiwater_vm;
- 	int err = 0;
- 	bool need_rmap_locks;
-@@ -790,9 +790,9 @@ static unsigned long move_vma(struct vm_
- 	if (vm_flags & VM_ACCOUNT && !(flags & MREMAP_DONTUNMAP)) {
- 		vm_flags_clear(vma, VM_ACCOUNT);
- 		if (vma->vm_start < old_addr)
--			account_start = vma->vm_start;
-+			account_start = true;
- 		if (vma->vm_end > old_addr + old_len)
--			account_end = vma->vm_end;
-+			account_end = true;
- 	}
- 
- 	/*
-@@ -832,7 +832,7 @@ static unsigned long move_vma(struct vm_
- 		/* OOM: unable to split vma, just get accounts right */
- 		if (vm_flags & VM_ACCOUNT && !(flags & MREMAP_DONTUNMAP))
- 			vm_acct_memory(old_len >> PAGE_SHIFT);
--		account_start = account_end = 0;
-+		account_start = account_end = false;
- 	}
- 
- 	if (vm_flags & VM_LOCKED) {
-_
-
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
-
-mm-simplify-vma-merge-structure-and-expand-comments.patch
-mm-further-refactor-commit_merge.patch
-mm-eliminate-adj_start-parameter-from-commit_merge.patch
-mm-make-vmg-target-consistent-and-further-simplify-commit_merge.patch
-mm-completely-abstract-unnecessary-adj_start-calculation.patch
-mm-madvise-split-out-mmap-locking-operations-for-madvise-fix.patch
-mm-use-read-write_once-for-vma-vm_flags-on-migrate-mprotect.patch
-mm-refactor-rmap_walk_file-to-separate-out-traversal-logic.patch
-mm-provide-mapping_wrprotect_range-function.patch
-fb_defio-do-not-use-deprecated-page-mapping-index-fields.patch
-fb_defio-do-not-use-deprecated-page-mapping-index-fields-fix.patch
-mm-allow-guard-regions-in-file-backed-and-read-only-mappings.patch
-selftests-mm-rename-guard-pages-to-guard-regions.patch
-selftests-mm-rename-guard-pages-to-guard-regions-fix.patch
-tools-selftests-expand-all-guard-region-tests-to-file-backed.patch
-tools-selftests-add-file-shmem-backed-mapping-guard-region-tests.patch
-fs-proc-task_mmu-add-guard-region-bit-to-pagemap.patch
-tools-selftests-add-guard-region-test-for-proc-pid-pagemap.patch
-tools-selftests-add-guard-region-test-for-proc-pid-pagemap-fix.patch
-mm-mremap-correctly-handle-partial-mremap-of-vma-starting-at-0.patch
-mm-mremap-refactor-mremap-system-call-implementation.patch
-mm-mremap-introduce-and-use-vma_remap_struct-threaded-state.patch
-mm-mremap-initial-refactor-of-move_vma.patch
-mm-mremap-complete-refactor-of-move_vma.patch
-mm-mremap-refactor-move_page_tables-abstracting-state.patch
-mm-mremap-thread-state-through-move-page-table-operation.patch
-
+ Regards,
+Barry
+Senior Broker
 
