@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-121262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31A3A54F2A
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:33:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C55D5A54F3C
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4203B473B
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:31:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A1CB176146
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9276211713;
-	Thu,  6 Mar 2025 15:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E202E634;
+	Thu,  6 Mar 2025 15:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JVdFBJAv"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="WtDdFsmn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799B420F08C;
-	Thu,  6 Mar 2025 15:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3272D156F39;
+	Thu,  6 Mar 2025 15:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741274934; cv=none; b=FCPqSVFWN7UFpTtSKJBEqgU3NF9tqZDGLk3JMKTQDeRAuFRuObkV96YkuRzH2Ed6aK9rBX9mwFTE+mJCQET5KyWromjMnOBxa/rOQBS8pCCU3ycsDxxcH+wp3VfB2sIrdK7KG2k7fu7otUTD5MYwEgcNvlBrkasQZXxtiwLhgJE=
+	t=1741275254; cv=none; b=SgFfzlyz9GWTTBYrPBfmHPCABJxGIeIhMQbK0hN+BdVhMGJqP/vmkdi5ZqpI1yhtdyS88HUKI44RjzRnwkHpQHDNNH0HCJziraX42nSF9E7IVwhfdauz7slZHQTv96nfJOf3uwIa3LG8UN8FX4j6Vebcpy09Bzhid5jeyPOTnj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741274934; c=relaxed/simple;
-	bh=aQePbAYdZXrXbAi42yBry4e/Wzyfvuk6yi8cLF4DVrA=;
+	s=arc-20240116; t=1741275254; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RBc/QcXudW9BNAulT4aGTO07ORU8TyL7xxanRzwRlTt4jH9A4ANslJRPfrjhRTSUOBsU7y1IVQKhCyWFSlCMAOuGnf8s6k1pEb8dalwRKRcGUifMlRdc4rS+ETt3MAnpvJAdniFuX3ilEKptK/fNv0Pspdj6hxRCx99xw97Smi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JVdFBJAv; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741274932; x=1772810932;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=aQePbAYdZXrXbAi42yBry4e/Wzyfvuk6yi8cLF4DVrA=;
-  b=JVdFBJAv/2+8QabO0JHgPEWeZKXiD1cI9bWryE+p/Z/F+mPrIAndgecw
-   cFkATHQFOPcGdzU37e/BjjuC/wG19jb2DBEQAmSO0Mo6hOd9xUJd1uu8y
-   nw+TdhybFEr0SV1inODwhZaIUyfeIDsTygnQA0DlkT0H+Nqpt2FbBe6UJ
-   YphCkzizLiNMfvjNQsdR4KQJe+8Q6neFDOk36fg0VVTuLUeVxVy731WKn
-   pMuuYx0XTRm/a6zBlo+MEZcSdMyOqCvT1wBuv76NSuymNRY6MMJnP7xiw
-   JXHSFcXHp1VZGAPTOgLNcbyqGTRGbJtVV8uyLoWIqofCHnWhn31pany1y
-   A==;
-X-CSE-ConnectionGUID: gprz+VCuSwGtTAS0K3qxZg==
-X-CSE-MsgGUID: yddHbs4ATeOMNEr3JVHDVQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="52934889"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="52934889"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 07:28:29 -0800
-X-CSE-ConnectionGUID: kUJrh9qhSHSEAUO6xIXRkQ==
-X-CSE-MsgGUID: Q1S6lfyHTLi8Yj4rLsKI5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="119058098"
-Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
-  by orviesa006.jf.intel.com with ESMTP; 06 Mar 2025 07:28:28 -0800
-Message-ID: <22876af7-4f9a-40ce-aa9d-2bcab89ce8ae@linux.intel.com>
-Date: Thu, 6 Mar 2025 17:29:30 +0200
+	 In-Reply-To:Content-Type; b=GIwn6qhw9xSrfg7YXnpKgCFgLtFsA1e8CjMJIRRZJDwQDKMwET8zfjcXDvoFz39svGJhusj2kw5sOUEW4CQyh1xgCCoaDsqBm8VqrGy+bq7Xsu6mAHXcWZSmzHOP5tsMPObnV/EDOpfuRP3Mcgf2tVl+OiVF8A/GGVK6L/nRZcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=WtDdFsmn; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1741275248; x=1741880048; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=WtDdFsmnhh7GnkOrzKIbErAbZZR2GLADL+VcGHPExpncvANzKoJHACxiwyX6dpYl
+	 IRAN203UJA0B0dEuLqN2k28nxpfZWt0dGpa7qbOqiRkLqW/5EemY0BZGadOLBbLNK
+	 pNr6b9I2iZUslFqLdErhlsAewMVTVA+Qh67cUpxJwEFNjEojEFgUnk+SL+4LUvFMC
+	 uIpbqVMswtiHTLKSE+kyN3cLw02HKrWvOTgMDTuq/5frmJapkdl+RNnjLPFhXSMVg
+	 i2ejhLmLrjzhZMIp1ANPf8GnGtbWS7DsNi87s+kRUVdxrRmkp0n3iY3QW2KugHJkg
+	 eZZGwZf15lmby1NNQw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.164]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N17Ye-1t6P8c2ENm-014GHC; Thu, 06
+ Mar 2025 16:34:08 +0100
+Message-ID: <192dd152-e3b7-44dc-b8ab-e0056d363363@gmx.de>
+Date: Thu, 6 Mar 2025 16:34:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,40 +58,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/15] usb: xhci: Don't skip on Stopped - Length Invalid
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, Michal Pecio <michal.pecio@gmail.com>,
- stable@vger.kernel.org
-References: <20250306144954.3507700-1-mathias.nyman@linux.intel.com>
- <20250306144954.3507700-4-mathias.nyman@linux.intel.com>
- <2025030611-twister-synapse-8a99@gregkh>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <2025030611-twister-synapse-8a99@gregkh>
+Subject: Re: [PATCH 6.13 000/154] 6.13.6-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250306151416.469067667@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250306151416.469067667@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:4iJkSd0nuQmCooOW4YY2NAW4YDlCYDy8IlnC+01CKwpGZdr9Nk6
+ ULfEt/82n450JESf8jo2061DK08qMuSD8c4eLe3uHSDizIztXohhmojOnLmP5IsZ4TGRerM
+ 71bhQMjJOrJf48InqJPH8fPedPnADetXLhuOkl7QiR5G6PLGk3A/hZfXDvBRUJdqEOcNAAx
+ Sp0vVj6NIjc1vM3LoI7IA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:oXqHSHZAZQU=;euxmgvriMn5gA1uZ2fVNGEeupDd
+ OlWTw+BkNo593O8dyCohqXztfurkZpUje1jndeOf15fQIwI1THbQ2abdB76yf78jRRmDBsJEA
+ qFZj22kivVilvhZeBlJFeR3QOCK0seIcRY+OuImExNn561VSTQQiieyqKTCXsoBRuZdD9l5Fj
+ iTVqYFtB1dPpyBlUsMfEDgi5xYdzsZgGCew6pWD1L96lKXih97pGvQCuYTBldqobnFEzLixnj
+ EZ9f3wpFrSopIl5e+sOHjv7XmlWyTLAzpsc0ZrzkGIswIZ7gIcVLH9WsCFJhwL9KMqQOwrWLw
+ LytbV62v5ZEBOBiyOeX1DSCuWr4lrAV79cd9C0Ki4gL7skwsA1ThVqelZ1mUoLt6KWjvmzcs5
+ EnaZflEAbJe5AjMm1PpoP7kylK4p+l7bv44bY6vtQm3rYA/bPKZaKnErgQyW/w4kH4oe5Lkn7
+ +4iGv33tamjONStXSNw0xVQMmCGhQA7fI5t4vCXsLa1C8H4IJDPXSn/g+H0CvCFUXm+MggIEz
+ 3vpHrhYVJhOYsMdJiPdi+FPGGzL1z7Fm2rzvNEEx8stQjPWl0ONk3nmeZaqdHvP0Wu3vV3IgT
+ jtDqV5cHlWmgFykwxQeT/IydkBlr/YdyPihh5FydmrEoJ4kemtFyaw2RB0p8JM5JDX6qnzCfl
+ OkQE5PeBuAB7EDAE9SMtMiDAO8/8Nkg6u8ILIoO5X7jfBiyQrElMx3ZZHvSICRrX6UmgcZfdN
+ VGqKduu6bHdmY+qfm4Sw4p8/MZu58hP8z+ZuiBV0hfkC/KkOawqcT+HtgNaRsrb2gI+A4mKJD
+ KQFFJYUGfHh+9yC5I1NjpMQFmg+avMohYkHOiptqIrvFM3X9vCwpBfb89948AHRJ8uHLelNTP
+ f3OSdPn9eYW2C0OleMUL96+eVSkcG72GfDKUULZk5RQJBEp+WQAgQuruirXhMaHp6AHfHlBgA
+ uH9j+bUkVL++9uzYB41y8T6M13iOFmS0Fr8US2GUx/tIhUg7qw+cOO30nEYHxQsS/X//L8dUT
+ mM4juvenzt3TXAx+cwoAAePCC9VJ1edBMacsaD72b5V3E+6/oOvy8BVUHbtv1vKVrfecxtjtW
+ g/u21v9FpFFx3OC7rO9NV+USUuUizLN9/iukRGnhs7g2b72giFqFRLRQ6eUtmT69tR2b6zuaJ
+ C2e/wBn9Ye03+HNi+C2V0i1NapJajgVbK3qeQ4Jk83Q6BK+aU4QloWoRvkbIq8lOsyuY+Xrzs
+ XuUVEAlYX6RUASaHcSAeWc6dGdRGRsaZj4XL0MaTLLEgvHwaMx7zBtF7nKZFrkcKqq8O0s2xY
+ OYmKPqKYkJJRDdVYMTJyWhCyRXODkQOHla+xGzCmB9aPNWUlpuRAY2fZEeRY+8iCmp/l0hT1/
+ ZdBRdzSWf6APJmaN6RIQxcKxOfWcfoAIuNH3anF5T0r/73iODQGins8MZf
 
-On 6.3.2025 16.52, Greg KH wrote:
-> On Thu, Mar 06, 2025 at 04:49:42PM +0200, Mathias Nyman wrote:
-> Why is a patch cc: stable burried here in a series for linux-next?  It
-> will be many many weeks before it gets out to anyone else, is that
-> intentional?
-> 
-> Same for the other commit in this series tagged that way.
+Hi Greg
 
-These are both kind of half theoretical issues that have been
-around for years without more complaints. No need to rush them to
-stable. Balance between regression risk vs adding them to stable.
-
-This patch for example states:
-
-"I had no luck producing this sequence of completion events so there
-  is no compelling demonstration of any resulting disaster. It may be
-  a very rare, obscure condition. The sole motivation for this patch
-  is that if such unlikely event does occur, I'd rather risk reporting
-  a cancelled partially done isoc frame as empty than gamble with UA"
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
 Thanks
-Mathias
 
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
