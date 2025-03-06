@@ -1,140 +1,138 @@
-Return-Path: <stable+bounces-121172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBDFA54251
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE112A54274
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAB173AA62B
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F1A3ADD28
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F901A0BE0;
-	Thu,  6 Mar 2025 05:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D381990AB;
+	Thu,  6 Mar 2025 05:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sBRY8g7V"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="p5RYhwuJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3001B1A08A3;
-	Thu,  6 Mar 2025 05:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FC538DFC;
+	Thu,  6 Mar 2025 05:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741239482; cv=none; b=g0B0zISeV4T7QldRRirXnUftRz5+xGDQ50fAflw0bHfobUabh0r8W9IDcDrYmBGIjHCef9g1ia9twMSfbQxAU4RgeAUO9mO5kShSooypn7XVQlgTAkkQTgQXqYhjN2EuCmx3Az9DB20tVwqiofWgCeZRqg3XWVrc2fqP+ZCgHbs=
+	t=1741240448; cv=none; b=FJ9eBSd8aQRiX1wx5PPmzEUM92SPiBuDeqVhv3ej5uW+DUbnXbit+54h59Y37JyGDxP7Eef4lO7k72DPuyZARuAye+VTM5EvZT9otxWjYXd5Ci3thCYVVogjwHaNnixvw9lTRiRZmngYtLj4lSsYM6ymVx4gSKiTXqK8VJt6wPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741239482; c=relaxed/simple;
-	bh=GCEsY06AuTHeeM+25sCAsKjabVMhYgI2AeaUar7ArrE=;
-	h=Date:To:From:Subject:Message-Id; b=iWJoYwJzykOXdErTt5oZJie/g6KPg1FTgX3aJZuoA7G0/W/ahHQNu1A6XZ/OS4jIY6g0N+IB2oRdcgnVhOOufNR6qtIhs/l4jF8BrxQAW+0FRh/mQWNnYZ5gtoObgVGND4/jzmkiar2TOSFLDWWf0faB1UYQPsvBiHxGTmKpoKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sBRY8g7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E41C4CEE4;
-	Thu,  6 Mar 2025 05:38:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741239482;
-	bh=GCEsY06AuTHeeM+25sCAsKjabVMhYgI2AeaUar7ArrE=;
-	h=Date:To:From:Subject:From;
-	b=sBRY8g7VB/J5StIzzkvst8X2qFykKrkirhKzgI+pfkXBCaFl+fwO2AkQvmRYDTXEa
-	 fGDiGoVD7eQsEqoOGV1XdbhW+nJPe04CMR207/eDbkH5fVAVKmeJl9HTB8jCBjE4Gp
-	 ySohluEIJsLEYk/jTpDqVzd0gEJqLFMrycn2UMqw=
-Date: Wed, 05 Mar 2025 21:38:01 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,mhocko@kernel.org,mgorman@techsingularity.net,zhanghao1@kylinos.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-page_alloc-fix-uninitialized-variable.patch removed from -mm tree
-Message-Id: <20250306053801.F3E41C4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1741240448; c=relaxed/simple;
+	bh=RtNMk6CkpnYVHyGLgMRy2qu0U5YISKGT4Rp6VgakTZU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TO77oSJMeXcQPHv9ivVrWK5r3PzE205Gy71eWWhxc412TEas4Ry5Z7Nclwdlypi2lyBTlm+Hz9N/0ogjhXwaOhMeKAQmbYxCwn7/oVExxBpXL9uZ6GMFLALLrJ7EuzbC/C5PT6p9l585E4axLhQdNE+APR/S3HFVDwqJU9+8ce0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=p5RYhwuJ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from namjain-Virtual-Machine.mshome.net (unknown [167.220.238.203])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 5638721104B2;
+	Wed,  5 Mar 2025 21:54:02 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5638721104B2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741240446;
+	bh=c9/w+F2JSYsBy5jmq+6LSxe4kArENwUiG/f1/vGprkM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p5RYhwuJChFPYPCnQZF/yhcB3lk2e9E9+wmdObF7RQjpYQkxdlYJ2Coe9YAN1bqc9
+	 hV31S+cwIiG1W9Z7LWljOosQeR6FpH0zxxtpiVtPYhyeSXXhz76Qf6vnFyLsjdqhw+
+	 ohwCiWM/4dNyNO4mxoFfTupnSdPuCg3Sbvhrdu94=
+From: Naman Jain <namjain@linux.microsoft.com>
+To: Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>
+Cc: stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
+	srivatsa@csail.mit.edu,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: [PATCH v4] sched/topology: Enable topology_span_sane check only for debug builds
+Date: Thu,  6 Mar 2025 11:23:54 +0530
+Message-Id: <20250306055354.52915-1-namjain@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-The quilt patch titled
-     Subject: mm/page_alloc: fix uninitialized variable
-has been removed from the -mm tree.  Its filename was
-     mm-page_alloc-fix-uninitialized-variable.patch
+On a x86 system under test with 1780 CPUs, topology_span_sane() takes
+around 8 seconds cumulatively for all the iterations. It is an expensive
+operation which does the sanity of non-NUMA topology masks.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+CPU topology is not something which changes very frequently hence make
+this check optional for the systems where the topology is trusted and
+need faster bootup.
 
-------------------------------------------------------
-From: Hao Zhang <zhanghao1@kylinos.cn>
-Subject: mm/page_alloc: fix uninitialized variable
-Date: Thu, 27 Feb 2025 11:41:29 +0800
+Restrict this to sched_verbose kernel cmdline option so that this penalty
+can be avoided for the systems who want to avoid it.
 
-The variable "compact_result" is not initialized in function
-__alloc_pages_slowpath().  It causes should_compact_retry() to use an
-uninitialized value.
-
-Initialize variable "compact_result" with the value COMPACT_SKIPPED.
-
-BUG: KMSAN: uninit-value in __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
- alloc_pages_mpol+0x4cd/0x890 mm/mempolicy.c:2270
- alloc_frozen_pages_noprof mm/mempolicy.c:2341 [inline]
- alloc_pages_noprof mm/mempolicy.c:2361 [inline]
- folio_alloc_noprof+0x1dc/0x350 mm/mempolicy.c:2371
- filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1019
- __filemap_get_folio+0xb9a/0x1840 mm/filemap.c:1970
- grow_dev_folio fs/buffer.c:1039 [inline]
- grow_buffers fs/buffer.c:1105 [inline]
- __getblk_slow fs/buffer.c:1131 [inline]
- bdev_getblk+0x2c9/0xab0 fs/buffer.c:1431
- getblk_unmovable include/linux/buffer_head.h:369 [inline]
- ext4_getblk+0x3b7/0xe50 fs/ext4/inode.c:864
- ext4_bread_batch+0x9f/0x7d0 fs/ext4/inode.c:933
- __ext4_find_entry+0x1ebb/0x36c0 fs/ext4/namei.c:1627
- ext4_lookup_entry fs/ext4/namei.c:1729 [inline]
- ext4_lookup+0x189/0xb40 fs/ext4/namei.c:1797
- __lookup_slow+0x538/0x710 fs/namei.c:1793
- lookup_slow+0x6a/0xd0 fs/namei.c:1810
- walk_component fs/namei.c:2114 [inline]
- link_path_walk+0xf29/0x1420 fs/namei.c:2479
- path_openat+0x30f/0x6250 fs/namei.c:3985
- do_filp_open+0x268/0x600 fs/namei.c:4016
- do_sys_openat2+0x1bf/0x2f0 fs/open.c:1428
- do_sys_open fs/open.c:1443 [inline]
- __do_sys_openat fs/open.c:1459 [inline]
- __se_sys_openat fs/open.c:1454 [inline]
- __x64_sys_openat+0x2a1/0x310 fs/open.c:1454
- x64_sys_call+0x36f5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable compact_result created at:
- __alloc_pages_slowpath+0x66/0x16c0 mm/page_alloc.c:4218
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
-
-Link: https://lkml.kernel.org/r/tencent_ED1032321D6510B145CDBA8CBA0093178E09@qq.com
-Reported-by: syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0cfd5e38e96a5596f2b6
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap")
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Co-developed-by: Naman Jain <namjain@linux.microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
 ---
+Changes since v3:
+https://lore.kernel.org/all/20250203114738.3109-1-namjain@linux.microsoft.com/
+	- Minor typo correction in comment
+	- Added Tested-by tag from Prateek for x86	
+Changes since v2:
+https://lore.kernel.org/all/1731922777-7121-1-git-send-email-ssengar@linux.microsoft.com/
+	- Use sched_debug() instead of using sched_debug_verbose
+	  variable directly (addressing Prateek's comment)
 
- mm/page_alloc.c |    1 +
- 1 file changed, 1 insertion(+)
+Changes since v1:
+https://lore.kernel.org/all/1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com/
+	- Use kernel cmdline param instead of compile time flag.
 
---- a/mm/page_alloc.c~mm-page_alloc-fix-uninitialized-variable
-+++ a/mm/page_alloc.c
-@@ -4243,6 +4243,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
- restart:
- 	compaction_retries = 0;
- 	no_progress_loops = 0;
-+	compact_result = COMPACT_SKIPPED;
- 	compact_priority = DEF_COMPACT_PRIORITY;
- 	cpuset_mems_cookie = read_mems_allowed_begin();
- 	zonelist_iter_cookie = zonelist_iter_begin();
-_
+Adding a link to the other patch which is under review.
+https://lore.kernel.org/lkml/20241031200431.182443-1-steve.wahl@hpe.com/
+Above patch tries to optimize the topology sanity check, whereas this
+patch makes it optional. We believe both patches can coexist, as even
+with optimization, there will still be some performance overhead for
+this check.
 
-Patches currently in -mm which might be from zhanghao1@kylinos.cn are
+---
+ kernel/sched/topology.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-mm-vmscan-extract-calculated-pressure-balance-as-a-function.patch
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index c49aea8c1025..666f0a18cc6c 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -2359,6 +2359,13 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
+ {
+ 	int i = cpu + 1;
+ 
++	/* Skip the topology sanity check for non-debug, as it is a time-consuming operation */
++	if (!sched_debug()) {
++		pr_info_once("%s: Skipping topology span sanity check. Use `sched_verbose` boot parameter to enable it.\n",
++			     __func__);
++		return true;
++	}
++
+ 	/* NUMA levels are allowed to overlap */
+ 	if (tl->flags & SDTL_OVERLAP)
+ 		return true;
+-- 
+2.34.1
 
 
