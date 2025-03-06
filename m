@@ -1,186 +1,236 @@
-Return-Path: <stable+bounces-121252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC34A54E36
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:50:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 148A0A54E47
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3688C16A3AD
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:50:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9873AA6FC
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06A41A238D;
-	Thu,  6 Mar 2025 14:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A36F19AD48;
+	Thu,  6 Mar 2025 14:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VSULzDA5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yxm1Pk3q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E5F188736;
-	Thu,  6 Mar 2025 14:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB541898EA
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 14:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741272589; cv=none; b=rgH0YdKYLEcPun692XDHWoawYTuN4MaYG9pY4ZrCx/7+XQxzueJqePbpMM+5w6dT/3dbXPfywpNtLqaTUqeqM4r2NWHdyrHkKiG1Pj2fewM9vfZ/VC+IFgAGlTYg45Rx5uI7jb487JdA+IzSBVwN+ezApfmn1O0Kbt42gsCidyI=
+	t=1741272741; cv=none; b=NKIZ80iOhInWRlekq0JQXAMPdRvQBzx9wOanM1kVD2wUdUeEHNaEoM6zpdzUqZyTueHDjd52Ocgz/RKOmBMMzaIqZAn6C5xOfjOmTZAWP9Qfy20wli80Ursoeg5WE4hPPCv+XVPWQ6zK6NEHHjHLlnK9xHHqvWiW+4gbYJ6JuD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741272589; c=relaxed/simple;
-	bh=npN7YT+FCGZDJdKq2GDB5Y0sUZvaHfkB+s20EmA/Lko=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSqvQZK7j3OoqmWSCLNDFTB1HnBAXgc7by39gF1TJrNCzbaTew6gBC0nj85ENnb+D6BzZrNeqKhyq6MuzIiCOt0CM7VT8IJiLExhs/QlNIiCURXBGVXz9gfYxXfXDQWkyfQeOU9Ad+fiNF8p2SvSfypwHbT3vRM3lBcJ58fjVLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VSULzDA5; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741272588; x=1772808588;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=npN7YT+FCGZDJdKq2GDB5Y0sUZvaHfkB+s20EmA/Lko=;
-  b=VSULzDA5PQsTmLoxPnbH/6R5kskL3nhDgnjzo2dRlFlxAh5ZFyJZ4LyD
-   KhaFh65KOG4ZSR6uqtJNFvTgmqRGSqjQZBTt+JI0Z4Vu76KW/Sm4OoRZM
-   ZR5L5ciLIXMMFvECItMXUELHVyvidbl7lnaFLE8bpcnpJoKRpqHfaYuas
-   KgjlR9Li4RsLzbg31q8BxSFklOlJGi3iICoTXbvn3uNhh6h4cIKJbGXGQ
-   xl6KYbVh1JxpRxDL6ICJqYOomJSqHi1Av4R53fP2d3vISqLez1hrbnfNW
-   vETeshcxK9nOlGNw8H8EuOFoaBC1zxtsRwptFV8RfSt5VfbdTovy5c1A7
-   g==;
-X-CSE-ConnectionGUID: 5HG65KBmTYmXVzQd/ya/Xg==
-X-CSE-MsgGUID: 25cMcOz8T/GipWR4Pxyj2A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="67657135"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="67657135"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 06:49:47 -0800
-X-CSE-ConnectionGUID: ON07u6UFRgiOG38Jq9Zv6Q==
-X-CSE-MsgGUID: tZ1x9r6NQdqCwf6YynPCZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119954865"
-Received: from unknown (HELO mattu-haswell.fi.intel.com) ([10.237.72.199])
-  by orviesa008.jf.intel.com with ESMTP; 06 Mar 2025 06:49:45 -0800
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	stable@vger.kernel.org,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 13/15] usb: xhci: Apply the link chain quirk on NEC isoc endpoints
-Date: Thu,  6 Mar 2025 16:49:52 +0200
-Message-ID: <20250306144954.3507700-14-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250306144954.3507700-1-mathias.nyman@linux.intel.com>
-References: <20250306144954.3507700-1-mathias.nyman@linux.intel.com>
+	s=arc-20240116; t=1741272741; c=relaxed/simple;
+	bh=yUu+b2vzGVtm02aX2/54++X00P3YWAnG4YmO83c4ObQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uybVcR08umCbiGrrEk5q6MkNvChWJaA4Y56n97fCCwsOroevkz1SIlKmbYVodwe0c1qlFGX0MpVtwENop4/c4j3exnhleDtNU8LTjbvoiRl8ukmHJZ+hg5Z3w5BVxzuoGEWiX1FynRL3j8z/7po/pIdtHkovVSRAwOaD6O6N1iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yxm1Pk3q; arc=none smtp.client-ip=209.85.222.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-86b0899ad8bso281661241.0
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 06:52:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741272739; x=1741877539; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=++XXHmZkM/4heXDc+pXKcqrY45A7F6g9wZ+G1XbfvUg=;
+        b=Yxm1Pk3qwOpMRKDMBc+EwiZeoHB4+golpu1oQyBLEThc3F+xDLZfqni+ckCQXADIvH
+         RDcqJCr8WpUdAX93OYjEIt0mM9S1tYCA4wtq3QOB3OW36sKfv/tvvsCBNzxP+0v3pkGr
+         +W4Kar77sIxhfMHbYCTqLhSwAOgzvWsTgRSQmRIWXAo1xliQD10Izgz1l6Swt5JOoHzM
+         OJqmE/qQWO5xOYg8GK+oZbk/fSeFXahO0w2y7+QOnkapaogkYCo7AzfMtKNri6N+5My0
+         rq0Povpmvh2hrJUFPBVPZfGeFPlaZkKVfWf5Y59/15TeWI7YXY7v8rE8Qpzai0oYRR1j
+         xPUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741272739; x=1741877539;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=++XXHmZkM/4heXDc+pXKcqrY45A7F6g9wZ+G1XbfvUg=;
+        b=XqEG0fsGdzuQW96iHjwL+YIbUqYF9K2se4t+CkM0BHzAhTL7/e2285nZnqUwwUu1ix
+         NZEPOKoNSBqTveNs7IouXgxqjybhacP+eie0VfhxRt2xejoBsQTniCNRvXc7UadytHWC
+         PtWbWkRAbMR0FAnwgy+mppAZKEeFDD5zGrJfzbnrtIYhLVHCK+k2wAtU75Ov2k21eHKg
+         VGRfirx9iFQjRSBz017TEjE8AYI+Zy6rLyM7DvUMEutoV55gPpnXJuq80riLleuJaCJG
+         UqDyw4Mcv2DLDQWBg2nwGW3iM/RRUuLwaKgjMudG9S82j9mm7prUY2NXI9cqccgMwQ9o
+         Tbtg==
+X-Gm-Message-State: AOJu0Yww4p36Dnpxr9jqB0LAMay1qEaenxXMoYoQrKaeKP7sOH+DHGZv
+	X7zH4yDOLJlbJvgkBx3Pp2HDZ6oqx3z+Tg97ps7T+3/OUnCK9y9LmOslzXk8Ft1s7v98QRwCHU6
+	mkPZCWiK99VAhJT75uchNuIOUKyjmo68a8O/pAQ==
+X-Gm-Gg: ASbGnct/TlyFWT1KtPs0T0iLGTfCJY32d2kALTuQAgzhdrueCLnUPN0FMLx4UWF/fpY
+	BfKz6sa8SlMpUWz4ak4262e2PQIkE5BMNEzGC6LXNzWxVKYt/Gc/KfwTU+Q1WDOp7WPgaPdiljk
+	OMqr47HIqdgpBDRt6UEH9ZQlyEg4kfvi2p+81OxXvaeVStzafKlnKcTAQfPTU=
+X-Google-Smtp-Source: AGHT+IHqKw0y7gEoV2UPp2JTXAc45pxenBD9EVRnJ3CNyJRZgT0EsDiICwm8oX0iHkmbYK+jllnu/+N/IxUM9GPv2y4=
+X-Received: by 2002:a05:6102:4193:b0:4c1:86bc:f959 with SMTP id
+ ada2fe7eead31-4c2e27a6eb3mr5045988137.8.1741272738910; Thu, 06 Mar 2025
+ 06:52:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 6 Mar 2025 20:22:06 +0530
+X-Gm-Features: AQ5f1JqyKMYONNiG8qjjNgx2bFmT-sq5eEAlVlJjqLc1GhF9Jjc0gVpKZ-epy90
+Message-ID: <CA+G9fYucgzxXxrTBUJcgRyJwXk=14S6tL9G-jd4Wm6fM4VaMkw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/176] 6.1.130-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Michal Pecio <michal.pecio@gmail.com>
+On Wed, 5 Mar 2025 at 23:21, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.130 release.
+> There are 176 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 07 Mar 2025 17:44:26 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.130-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Two clearly different specimens of NEC uPD720200 (one with start/stop
-bug, one without) were seen to cause IOMMU faults after some Missed
-Service Errors. Faulting address is immediately after a transfer ring
-segment and patched dynamic debug messages revealed that the MSE was
-received when waiting for a TD near the end of that segment:
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-[ 1.041954] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ffa08fe0
-[ 1.042120] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09000 flags=0x0000]
-[ 1.042146] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09040 flags=0x0000]
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-It gets even funnier if the next page is a ring segment accessible to
-the HC. Below, it reports MSE in segment at ff1e8000, plows through a
-zero-filled page at ff1e9000 and starts reporting events for TRBs in
-page at ff1ea000 every microframe, instead of jumping to seg ff1e6000.
+## Build
+* kernel: 6.1.130-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 34da6dd4fda1d2daf1b0df768fe6224d0993e050
+* git describe: v6.1.128-747-g34da6dd4fda1
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
+28-747-g34da6dd4fda1
 
-[ 7.041671] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.041999] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.042011] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042028] xhci_hcd: All TDs skipped for slot 1 ep 2. Clear skip flag.
-[ 7.042134] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042138] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042144] xhci_hcd: Looking for event-dma 00000000ff1ea040 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.042259] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042262] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042266] xhci_hcd: Looking for event-dma 00000000ff1ea050 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+## Test Regressions (compared to v6.1.128-570-gfdd3f50c8e3e)
 
-At some point completion events change from Isoch Buffer Overrun to
-Short Packet and the HC finally finds cycle bit mismatch in ff1ec000.
+## Metric Regressions (compared to v6.1.128-570-gfdd3f50c8e3e)
 
-[ 7.098130] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098132] xhci_hcd: Looking for event-dma 00000000ff1ecc50 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098254] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098256] xhci_hcd: Looking for event-dma 00000000ff1ecc60 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098379] xhci_hcd: Overrun event on slot 1 ep 2
+## Test Fixes (compared to v6.1.128-570-gfdd3f50c8e3e)
 
-It's possible that data from the isochronous device were written to
-random buffers of pending TDs on other endpoints (either IN or OUT),
-other devices or even other HCs in the same IOMMU domain.
+## Metric Fixes (compared to v6.1.128-570-gfdd3f50c8e3e)
 
-Lastly, an error from a different USB device on another HC. Was it
-caused by the above? I don't know, but it may have been. The disk
-was working without any other issues and generated PCIe traffic to
-starve the NEC of upstream BW and trigger those MSEs. The two HCs
-shared one x1 slot by means of a commercial "PCIe splitter" board.
+## Test result summary
+total: 75778, pass: 58508, fail: 3115, skip: 13933, xfail: 222
 
-[ 7.162604] usb 10-2: reset SuperSpeed USB device number 3 using xhci_hcd
-[ 7.178990] sd 9:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
-[ 7.179001] sd 9:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 04 02 ae 00 00 02 00 00
-[ 7.179004] I/O error, dev sdb, sector 67284480 op 0x0:(READ) flags 0x80700 phys_seg 5 prio class 0
+## Build Summary
+* arc: 6 total, 5 passed, 1 failed
+* arm: 139 total, 139 passed, 0 failed
+* arm64: 46 total, 42 passed, 4 failed
+* i386: 31 total, 25 passed, 6 failed
+* mips: 30 total, 25 passed, 5 failed
+* parisc: 5 total, 5 passed, 0 failed
+* powerpc: 36 total, 33 passed, 3 failed
+* riscv: 14 total, 13 passed, 1 failed
+* s390: 18 total, 15 passed, 3 failed
+* sh: 12 total, 10 passed, 2 failed
+* sparc: 9 total, 8 passed, 1 failed
+* x86_64: 38 total, 38 passed, 0 failed
 
-Fortunately, it appears that this ridiculous bug is avoided by setting
-the chain bit of Link TRBs on isochronous rings. Other ancient HCs are
-known which also expect the bit to be set and they ignore Link TRBs if
-it's not. Reportedly, 0.95 spec guaranteed that the bit is set.
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
 
-The bandwidth-starved NEC HC running a 32KB/uframe UVC endpoint reports
-tens of MSEs per second and runs into the bug within seconds. Chaining
-Link TRBs allows the same workload to run for many minutes, many times.
-
-No negative side effects seen in UVC recording and UAC playback with a
-few devices at full speed, high speed and SuperSpeed.
-
-The problem doesn't reproduce on the newer Renesas uPD720201/uPD720202
-and on old Etron EJ168 and VIA VL805 (but the VL805 has other bug).
-
-[shorten line length of log snippets in commit messge -Mathias]
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci.h | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 4ee14f651d36..d9d7cd1906f3 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1760,11 +1760,20 @@ static inline void xhci_write_64(struct xhci_hcd *xhci,
- }
- 
- 
--/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+/*
-+ * Reportedly, some chapters of v0.95 spec said that Link TRB always has its chain bit set.
-+ * Other chapters and later specs say that it should only be set if the link is inside a TD
-+ * which continues from the end of one segment to the next segment.
-+ *
-+ * Some 0.95 hardware was found to misbehave if any link TRB doesn't have the chain bit set.
-+ *
-+ * 0.96 hardware from AMD and NEC was found to ignore unchained isochronous link TRBs when
-+ * "resynchronizing the pipe" after a Missed Service Error.
-+ */
- static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
- {
- 	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
--	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
-+	       (type == TYPE_ISOC && (xhci->quirks & (XHCI_AMD_0x96_HOST | XHCI_NEC_HOST)));
- }
- 
- /* xHCI debugging */
--- 
-2.43.0
-
+--
+Linaro LKFT
+https://lkft.linaro.org
 
