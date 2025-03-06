@@ -1,172 +1,115 @@
-Return-Path: <stable+bounces-121215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675D3A54888
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:57:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6E5A548B7
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DD0A1895A19
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 10:57:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 852AD172D9B
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB640204F7A;
-	Thu,  6 Mar 2025 10:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0826720371F;
+	Thu,  6 Mar 2025 11:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PmjxlUG6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1gz1SnB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00ED8202984;
-	Thu,  6 Mar 2025 10:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA21D2E339F;
+	Thu,  6 Mar 2025 11:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741258640; cv=none; b=DJqGgOXvvbfyPydLnHE8JuyYD0PR9cq2EDIUBF0nhE4r0H5vPNSKRLtPccQLpLgEupIqiD4AdbG2uIKi4c8seqXB/8jwtIAK6Yv7Vs70V+L5S4n1Dp9ojvv1h5Vr2VadsnElM6KT17nIwEONqpb3Vhr6DN1PpqOpcH/99RoBvLo=
+	t=1741259190; cv=none; b=Hby57rs9luMlESuSzntcaH8YE1Z2XPSLMmfblRratoH74RMaKz86j7luX5gTn3ZI50wDu3Iit5+lAS8Q8l/j0JMX+0HCnCZcQ4B98Xpfc0wn8cVQjeCnWxw3E+g12TQ09wmnoSpRX+El9PAFApMowrnrMkuYYIfkNKMlxHWamZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741258640; c=relaxed/simple;
-	bh=I9pdTKoLaw+6AaESsv4LPJeCEfXkPMTSZEKG9PY9KuY=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2tpscL3q/9zV5OtjIJOKPigWmLbCNTlAh84qb2rwTIQSYwyFbF6Pw4+CKa++3dGsZFVbMXv/fWxFzDzXJ6yFTTwaoAmPUVcwEAKTziK0+ht43cfuCM69VVCbRQqSzOg2652Bsfh7eXNb3YVchJ7Es10on0dzUTqZPGpUKYik3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PmjxlUG6; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4394a823036so4252855e9.0;
-        Thu, 06 Mar 2025 02:57:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741258637; x=1741863437; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lgkMBhBzFh4GMW6txcVgpWsBqFCCmiQ9SftChtsfc9M=;
-        b=PmjxlUG6VrJKmJPC6cd+uEun1KdKE+THkC4GWs67ZKj2jbJp/1g4JtGtXbsqEQmeZo
-         xa3NRg9xSZua+CuuTFilX3ZZj70RrSuwKLd6xEf+GeWD1VfSnMb7FdW7kLrOSg/LoykZ
-         2w8Rh8dbIebmg7XsXQ1nR8kMKK76/uQTMkQYjtlMC5TPrNqTzL/1418qAFJFTeUy3+Hy
-         UiF/XXAKb1hMM2SDXGs+7e7QleH0G2atTD4k/aZ7h+JyDKraohBWjZk73mfAedKx5toq
-         fSiOlHRm1Wx8Db4gFsxnyczi81ms358608cQYGQ1BtyZXODHeLlgGVEpK96hp7EZeida
-         +0dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741258637; x=1741863437;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lgkMBhBzFh4GMW6txcVgpWsBqFCCmiQ9SftChtsfc9M=;
-        b=DnmU+AmyGQUJvIQc43ZrWedLu8YVNK9IR4A0Vsbmi0hA5QZJbYt3LcsS7ke46ajTlc
-         8IHCFRWZEimj8N5O6rr0HJ57uVd9D3mi4XZgdfiOHw9aPG5e6343PeZBJhD77hfcN3Qt
-         zvU5rSSrXTthQDFHkVDHao0CJborEMP6o+MlQS3whJ3+tL47D8KXT0zKGfLzMoIzeSxF
-         7GEimLqRQ8thTr/BPy6sZiEx1uXsqeZJwkRorTZ0n/oJajEpTdvTptQof0qeLDZY3bFq
-         t73cgZBVUtiVRXXRQ2jCNFak8iy3eHfBd5Ha1b+gvaOvjwGAR08PYkOT3AB+UfV4Oy+M
-         lUPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGGlg/GpDKulMPxPPZOmAhAi2kZFmO7RBSwXjYHCZlIJEWrG3AAQ9U5wy6S7F9f2bUtcEXWgXYqg4WF2V/@vger.kernel.org, AJvYcCUUY7hdyTI3q6ZNSmFmsyEhMdTOoys+7fXiuKTERsR8crdAz7hQLjUuSl6BcUPRsDvYkSZG1SOVIxWr@vger.kernel.org, AJvYcCVbJD9ckb7u53lcssV+yJrRPsBlwkWf9fm1/Lm9sKbxrvZPT3Y6O/kUyr8WAUJMS35IUrE=@vger.kernel.org, AJvYcCW0f4jWFDk/A+hgw9YIcmobkKkhdA4w41HRa+P7Kd/R7wVtox2hIvcrMB+AeMNd+J9+hW5nThci@vger.kernel.org, AJvYcCWdblM5mYu3Od982WBbTNg/c/KNToMio0epDMGyVi8t0WAWW81TuB/rnUOba6EE9J5+2MwRVLC71FtsmCrBfBPAGqFJ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyol0cm7lv0K1Av3qib7fXvRlSgpgyRJEIcOXcTYDYYbfYyXQkU
-	NSAzOBEQyk15M9907URiY8qmKTSWwu+SMlkmXSRjIKOUHbpfAcIadlX+wTaGHis=
-X-Gm-Gg: ASbGnctErop6Lcri2Leua4OkAor+I/vMrdmOn+Afky7YaADGvIiDekz+36KQeiDPm95
-	0dEWuVxvXPiKNr8tCZJs9LYYpa6YD1kMCcsECOAmqiIqq7THFj7ETWXhpDQgvYjMNsOI7Jk0UPd
-	nly83edHLcjBLhpr7BHQr5RCpgnX7Sn95rdPuVEpkw5/k4IfMzO3WfYDbjz8pFMsO2H8m3677ni
-	GDq8bEw8FiS2WqoluuLT0nYJVwJKATFesF7/FQQEg76rSo1cZ1DwSXu6fLAU9jcbwnhgPymvSyo
-	A0UHij5u+GvXXH440irrcZTvl+CxWORITxtuxQ==
-X-Google-Smtp-Source: AGHT+IGLhJA7BskK5ld+jvgOXMpsvckCM2ZvvuLBgJH2nBAC7Z74GOkDTinBbaMSWaLdw5nhhGwZtQ==
-X-Received: by 2002:a05:600c:3205:b0:439:969e:d80f with SMTP id 5b1f17b1804b1-43be1d8de13mr4102405e9.31.1741258636883;
-        Thu, 06 Mar 2025 02:57:16 -0800 (PST)
-Received: from krava ([2a00:102a:401e:9b3a:b228:9e66:580a:3bc8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfb79adsm1674487f8f.7.2025.03.06.02.57.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 02:57:16 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Thu, 6 Mar 2025 11:57:14 +0100
-To: Jiri Olsa <olsajiri@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>, Kees Cook <kees@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
-	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, bpf@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Deepak Gupta <debug@rivosinc.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline
- check
-Message-ID: <Z8l_ipCn8tBE1d9Q@krava>
-References: <20250212220433.3624297-1-jolsa@kernel.org>
- <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
- <Z623ZcZj6Wsbnrhs@krava>
- <CALCETrVt=N-QG3zGyPspNCF=8tA4icC75RVVe70-DvJfsh7Sww@mail.gmail.com>
- <Z7MnB3yf2u9eR1yp@krava>
+	s=arc-20240116; t=1741259190; c=relaxed/simple;
+	bh=Toiav5rJXJ6ER7IWROvJ6xmb8MuBfokeAG7Tqf3wg4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJ0mAxH5ra3rU4IAWFUY88q/SewUv4mASbz18EfRFLtaY8aJQc8tRL4rKR8i1OEhPWwfEzVF6ifyPh+PogwYiL1wLG0BQ+6U377a7rX+EyAzo0NsGE+4kGjoXRstYqTY3D6mrTIx6py8bdtFKLI3MUDSTMSbL5pcyTP0zvb6F+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1gz1SnB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395E9C4CEE0;
+	Thu,  6 Mar 2025 11:06:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741259190;
+	bh=Toiav5rJXJ6ER7IWROvJ6xmb8MuBfokeAG7Tqf3wg4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D1gz1SnBTuJs7H7QIYe6Fl+/cl4wZsBHTjBQCVtMgW/2FvnwveSHeHATq6MB0LCwN
+	 iC+2Ojt7C3G1KaILC0kbQ19kJPh/MK1g3qTidffoQDQGhwDW/mmZm7rl4z19GGqzNn
+	 ngKAkPROSbb+IsCz5oM4xdgZgRL1lfiZoB4W4cgR5XhdRvMRyiEhkDh4oY+v19b+Ud
+	 CCHM67eRHQSf9ZBZWKzb1nglxa+w5/P2Huz4i6GCpR0mY5sObxop2Nn4SBu46NlHxg
+	 ga/1mR2hqehr90BoC4nHoYYWBTSAn7VmYjlN7mEBJKEbHD/zMW2ph4FJpgTMSC4zZW
+	 RZA20RLkMeHTg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tq93a-000000004kf-2e7f;
+	Thu, 06 Mar 2025 12:06:27 +0100
+Date: Thu, 6 Mar 2025 12:06:26 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH V2 1/2] USB: serial: option: add Telit Cinterion FE990B
+ compositions
+Message-ID: <Z8mBsi-Tsu9ubbWQ@hovoldconsulting.com>
+References: <20250304091939.52318-1-fabio.porcedda@gmail.com>
+ <20250304091939.52318-2-fabio.porcedda@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z7MnB3yf2u9eR1yp@krava>
+In-Reply-To: <20250304091939.52318-2-fabio.porcedda@gmail.com>
 
-On Mon, Feb 17, 2025 at 01:09:43PM +0100, Jiri Olsa wrote:
-> On Thu, Feb 13, 2025 at 09:58:29AM -0800, Andy Lutomirski wrote:
-> > On Thu, Feb 13, 2025 at 1:16 AM Jiri Olsa <olsajiri@gmail.com> wrote:
-> > >
-> > > On Wed, Feb 12, 2025 at 05:37:11PM -0800, Andy Lutomirski wrote:
-> > > > On Wed, Feb 12, 2025 at 2:04 PM Jiri Olsa <jolsa@kernel.org> wrote:
-> > > > >
-> > > > > Jann reported [1] possible issue when trampoline_check_ip returns
-> > > > > address near the bottom of the address space that is allowed to
-> > > > > call into the syscall if uretprobes are not set up.
-> > > > >
-> > > > > Though the mmap minimum address restrictions will typically prevent
-> > > > > creating mappings there, let's make sure uretprobe syscall checks
-> > > > > for that.
-> > > >
-> > > > It would be a layering violation, but we could perhaps do better here:
-> > > >
-> > > > > -       if (regs->ip != trampoline_check_ip())
-> > > > > +       /* Make sure the ip matches the only allowed sys_uretprobe caller. */
-> > > > > +       if (unlikely(regs->ip != trampoline_check_ip(tramp)))
-> > > > >                 goto sigill;
-> > > >
-> > > > Instead of SIGILL, perhaps this should do the seccomp action?  So the
-> > > > logic in seccomp would be (sketchily, with some real mode1 mess):
-> > > >
-> > > > if (is_a_real_uretprobe())
-> > > >     skip seccomp;
-> > >
-> > > IIUC you want to move the address check earlier to the seccomp path..
-> > > with the benefit that we would kill not allowed caller sooner?
-> > 
-> > The benefit would be that seccomp users that want to do something
-> > other than killing a process (returning an error code, getting
-> > notified, etc) could retain that functionality without the new
-> > automatic hole being poked for uretprobe() in cases where uprobes
-> > aren't in use or where the calling address doesn't match the uprobe
-> > trampoline.  IOW it would reduce the scope to which we're making
-> > seccomp behave unexpectedly.
-> 
-> Kees, any thoughts about this approach?
+On Tue, Mar 04, 2025 at 10:19:38AM +0100, Fabio Porcedda wrote:
+> Add the following Telit Cinterion FE990B40 compositions:
 
-ping, any idea?
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+> ---
+>  drivers/usb/serial/option.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+> index 58bd54e8c483..8660f7a89b01 100644
+> --- a/drivers/usb/serial/option.c
+> +++ b/drivers/usb/serial/option.c
+> @@ -1388,6 +1388,22 @@ static const struct usb_device_id option_ids[] = {
+>  	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+>  	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
+>  	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b0, 0x60) },	/* Telit FE990B (rmnet) */
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b0, 0x40) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b0, 0x30),
+> +	  .driver_info = NCTRL(5) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b1, 0x60) },	/* Telit FE990B (MBIM) */
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b1, 0x40) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b1, 0x30),
+> +	  .driver_info = NCTRL(6) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b2, 0x60) },	/* Telit FE990B (RNDIS) */
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b2, 0x40) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b2, 0x30),
+> +	  .driver_info = NCTRL(6) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b3, 0x60) },	/* Telit FE990B (ECM) */
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b3, 0x40) },
+> +	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b3, 0x30),
+> +	  .driver_info = NCTRL(6) },
 
-thanks,
-jirka
+Thanks for the patches. I noticed now that you use
+USB_DEVICE_INTERFACE_PROTOCOL() just like you recently did for FN990B.
 
-> 
-> thanks,
-> jirka
-> 
-> 
-> > 
-> > >
-> > > jirka
-> > >
-> > > >
-> > > > where is_a_real_uretprobe() is only true if the nr and arch match
-> > > > uretprobe *and* the address is right.
-> > > >
-> > > > --Andy
-> > >
+While this works, the protocol is qualified by the interface class and
+subclass which should have been included.
+
+I changed these to use USB_DEVICE_AND_INTERFACE_INFO() and sorted the
+entries also by protocol.
+
+I'll send out a corresponding change for FN990B.
+
+Johan
 
