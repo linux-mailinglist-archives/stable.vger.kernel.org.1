@@ -1,160 +1,133 @@
-Return-Path: <stable+bounces-121247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E2AA54DF6
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:39:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58AEA54E0E
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 15:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4C05188B0BD
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:39:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 250261886F22
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 14:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6701624FD;
-	Thu,  6 Mar 2025 14:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DA5148FED;
+	Thu,  6 Mar 2025 14:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PQuN3o4Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dphn1F12"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711A1DF71;
-	Thu,  6 Mar 2025 14:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3134416D9AA;
+	Thu,  6 Mar 2025 14:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741271960; cv=none; b=JB0lwF3qNswwSsIV8pXWORRqryFwlTAWWSuWGMlJW6eJExnOJuz6KXNGlI7NnK0BtkSKXqsOpHDNCWfEyv6tNbOjIy3MNAKcMRxOhinYwW28TcMJ3JFIykh9Uh0mRqI3wTkp73f08oZ0GEEbf93SQ4xilSSqyXxMKGnrkT9b9TA=
+	t=1741272241; cv=none; b=Y+4gdUoESlKA/bWXPdiyI9DHnjIA93p6iro2OWtFLR1+LLJ5mUUGo5j3qwJxbciLUN8u0PtRhpkNn0gkqM1ASFKKhqiNEjCCOnzCjhh09L4AkIvVAREA+z5BIYfgtAKphdZCU4iUKJCAIVU9M/DjLbZP/oqZkY3fanaUC8CUbKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741271960; c=relaxed/simple;
-	bh=I3Rdo9Tv28/kEBJt/wJqtqa8Cn7oNKIw8YLpsVR+l5Y=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=YRVHMDB6zmdGQPvqpskRtd3i/dWwz6fLFA7pYjgG3uoXk5ALdQvI9rOl+fFN/MRrk0tyGrKV/lCFvBPJthwKaxNJEaUrT5zk8c0cyqhlBApLdw2T4LfyKaHfFQWevIE1Y3vvYbo3aHFu1ic3UCJ15djKFVs/XJxCTYk9dXL5NqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PQuN3o4Z; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 526Ed1lc3967114
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 6 Mar 2025 06:39:01 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 526Ed1lc3967114
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1741271942;
-	bh=dkXVBGPY63hZMCagXcTMmvllJsm+GP6pR+jupmxbpNM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=PQuN3o4Zp2D/sAjCbf7GoU5PafOnVPHLsRfh1IOHeiEwZgHLgGHUehm5w0Apn2QCi
-	 CcY72l6Bv4tIVQ2AuEZ7GP1TnixhVk2+WobaNwOCS9zZG8PFwRpPTAVspzOo5BNHLI
-	 t1WQl5ovT7u2duCWitMr4WZ4KRZ5+TjKGfbLsoyoEeQE56r4Bxq/DtALq0r536r3sT
-	 mNYkw+Vlkr36nUWOeeQQZzuP4/hSSdsM0RydrGz5jg3riQGYpvhd24qD9tMDfmmILy
-	 GRaaxL1ejRa8YDg4CA9i6ADRsXUQ/+3iKUWMTCXfUk7nMZGnVa5o+05upKCB1DsADS
-	 An7G7KmUutP5Q==
-Date: Thu, 06 Mar 2025 06:38:58 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Ard Biesheuvel <ardb@kernel.org>,
-        Ulrich Gemkow <ulrich.gemkow@ikr.uni-stuttgart.de>
-CC: stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: =?US-ASCII?Q?Re=3A_Regression_for_PXE_boot_from_patch_=22Remo?=
- =?US-ASCII?Q?ve_the_=27bugger_off=27_message=22_in_stable_6=2E6=2E18?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAMj1kXH-CDaQ0UFuwHWC2ERRmvo7tS+jcZcue00yReyAi5sVXg@mail.gmail.com>
-References: <202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de> <CAMj1kXH-CDaQ0UFuwHWC2ERRmvo7tS+jcZcue00yReyAi5sVXg@mail.gmail.com>
-Message-ID: <F13ADA98-60CE-4B1A-B12F-2D1340AF44E3@zytor.com>
+	s=arc-20240116; t=1741272241; c=relaxed/simple;
+	bh=IR3HH+r42dNdY13mNau/VyBksWUEJ8Ly+NgzGLbTLfk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VMaDzJqa0tTSeEi3R5r2axAO1qUk3yVe5rWiRFTzCnJCqP/1MGBLG9JN3XwRGBvr9Cgjgbiqny4O4hDcxwtb3TzMSnNenT0wtJYumB/m75YUhUZ/E8eTAxUcY4ISenDAeZpISNN28UlzBNySnjjjI8PG/6ekafYBnUcnrsd9Nmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dphn1F12; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2f74e6c6cbcso182716a91.2;
+        Thu, 06 Mar 2025 06:43:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741272239; x=1741877039; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oOuXqHLwhoywZeeVkpq77OS6iNRsJcoQHW5JDpHphP4=;
+        b=dphn1F12Ja2v3ambfPgjyBs/4NGjXbJLNPCiZnCHY4HRAo4iviDV9sMIyNehzp2LLE
+         Db2hC3q3J3lfSaJCTF494dt47L4/ZKcK+6an9qjMNC566iA2C5hfUDX5mlw4HWrB6v0+
+         +NmSXhY25VkBz153ajwKRkcVK0ffzzArb6878xBmFoO4TIaiwu8gVbHRv51oNUiTUJ/t
+         2oFYRNAPvE130JRq6LIweJOsJYd6YYcoqB/rhLKeA1VARmYO6f8DP06nPwPtWJVNp0iM
+         62mVxiLaH7NEZmdYXqc0hbjmVD7JJDs3B1pzd/P/DLpKUhCvLae+14FjlrBjw7CY6j/x
+         yZLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741272239; x=1741877039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oOuXqHLwhoywZeeVkpq77OS6iNRsJcoQHW5JDpHphP4=;
+        b=IsZ/NY+ToLWesCuNbWDjAj4uUMQqwXCB6xWhZ1y55lPAqVYu5axd3ZL/AOal8f9fIt
+         S3lbc4qtOKpW0XDFF6OhH+JSzTtwUMapTORdwYQjCHBwEZPcjK6LR0oeOjw4iq00Mtjn
+         MyxrEcHWLhDmZY6kT0vNmmMcXccpSGTTQrrBSRk4NPyO4RTIXzCxSjCWWJ7N25IzawXW
+         hH+tj/He06eUmGCVj5T0gUUicBWkDXbl4V905EppcT0ObGFVX9bIrn3z8LfmgvCDWpP3
+         lK0L1F6alWeBGMgoDxa0jUAVP852XBzn3atGGSjupPiIHIwTrYuoJDdbblG/PBF5tPah
+         Pkaw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwVCjw47FUAVPbwuxka6gwlhuLiOmh8oIvn5xNsRd7/cBvPn2lIuMfeA1Qy70Fk1BuIzOIsPgRkJ6q7Rg=@vger.kernel.org, AJvYcCVO/v4G1KY87b8YXiWx6BD79IVuC/oM6j5CvqblpmVn+VPMJIob2W6H+Bf77dyGBf0CWW7LrCTx@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYTL2465zX0xF2XMT8WB1rVjw+AitUlOsiaFWWKx3sDV74lRw6
+	9dkeAS9JBktm6zxQAAfUBp7VzAVfm4It8Xgdu/xlveUtoHadDvCbU6euke8o26Xn1Mwmo/lmP7J
+	jR7rH6QZq7Y1ZCOKJYWEWdBzYZcU=
+X-Gm-Gg: ASbGncsUQ27n6+Cx8LH1+ho+Obu7qEsbLbSkJaF64N+YWoIMZ2oqKNpTRKyr80kr3Mm
+	FcY47mjz9FLW2ED2XaFTqXBXSNsN9v1OqPAbNU5whGd3ipSDlLOY2ARiZC1uHAy0yHugQjaZo1t
+	V1aJNY0avN4wtYw8YrFfVqk4u/Cg==
+X-Google-Smtp-Source: AGHT+IFIMuqvtdQeTvKmw8diwqa5n4LJl9yYalj1aquXZaD0QcmpHfmxn43WeV147qVRmmThhKGTyHR49xtqlcPEJkw=
+X-Received: by 2002:a17:90b:1e03:b0:2fe:91d0:f781 with SMTP id
+ 98e67ed59e1d1-2ff497711c1mr4724924a91.2.1741272239200; Thu, 06 Mar 2025
+ 06:43:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250306103603.23350-1-aliaksei.urbanski@gmail.com>
+In-Reply-To: <20250306103603.23350-1-aliaksei.urbanski@gmail.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Thu, 6 Mar 2025 09:43:47 -0500
+X-Gm-Features: AQ5f1JoJiql6AXqg8vp_CW1j7N3EvB_WcR1RWX0ZljQ1MNDzXH3Rf9oQxe6OSHc
+Message-ID: <CADnq5_PaxnYBeTVaidOVJzqnj_HfQH-xwYwUmf3BVeZOaQeT6g@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: fix missing .is_two_pixels_per_container
+To: Aliaksei Urbanski <aliaksei.urbanski@gmail.com>
+Cc: Wenjing Liu <wenjing.liu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+	amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	Rosen Penev <rosenp@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On March 6, 2025 6:36:04 AM PST, Ard Biesheuvel <ardb@kernel=2Eorg> wrote:
->(cc Peter)
->
->On Tue, 4 Mar 2025 at 15:49, Ulrich Gemkow
-><ulrich=2Egemkow@ikr=2Euni-stuttgart=2Ede> wrote:
->>
->> Hello,
->>
->> starting with stable kernel 6=2E6=2E18 we have problems with PXE bootin=
-g=2E
->> A bisect shows that the following patch is guilty:
->>
->>   From 768171d7ebbce005210e1cf8456f043304805c15 Mon Sep 17 00:00:00 200=
-1
->>   From: Ard Biesheuvel <ardb@kernel=2Eorg>
->>   Date: Tue, 12 Sep 2023 09:00:55 +0000
->>   Subject: x86/boot: Remove the 'bugger off' message
->>
->>   Signed-off-by: Ard Biesheuvel <ardb@kernel=2Eorg>
->>   Signed-off-by: Ingo Molnar <mingo@kernel=2Eorg>
->>   Acked-by: H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
->>   Link: https://lore=2Ekernel=2Eorg/r/20230912090051=2E4014114-21-ardb@=
-google=2Ecom
->>
->> With this patch applied PXE starts, requests the kernel and the initrd=
-=2E
->> Without showing anything on the console, the boot process stops=2E
->> It seems, that the kernel crashes very early=2E
->>
->> With stable kernel 6=2E6=2E17 PXE boot works without problems=2E
->>
->> Reverting this single patch (which is part of a larger set of
->> patches) solved the problem for us, PXE boot is working again=2E
->>
->> We use the packages syslinux-efi and syslinux-common from Debian 12=2E
->> The used boot files are /efi64/syslinux=2Eefi and /ldlinux=2Ee64=2E
->>
->
->I managed to track this down to a bug in syslinux, fixed by the hunk
->below=2E The problem is that syslinux violates the x86 boot protocol,
->which stipulates that the setup header (starting at 0x1f1 bytes into
->the bzImage) must be copied into a zeroed boot_params structure, but
->it also copies the preceding bytes, which could be any value, as they
->overlap with the PE/COFF header or other header data=2E This produces a
->command line pointer with garbage in the top 32 bits, resulting in an
->early crash=2E
->
->In your case, you might be able to work around this by removing the
->padding value (=3D0xffffffff) from arch/x86/boot/setup=2Eld, given that
->you are building with CONFIG_EFI_STUB disabled=2E However, this still
->requires fixing on the syslinux side=2E
->
->
->
->[syslinux base commit 05ac953c23f90b2328d393f7eecde96e41aed067]
->
->--- a/efi/main=2Ec
->+++ b/efi/main=2Ec
->@@ -1139,10 +1139,14 @@
->        bp =3D (struct boot_params *)(UINTN)addr;
->
->        memset((void *)bp, 0x0, BOOT_PARAM_BLKSIZE);
->-       /* Copy the first two sectors to boot_params */
->-       memcpy((char *)bp, kernel_buf, 2 * 512);
->        hdr =3D (struct linux_header *)bp;
->
->+        /* Copy the setup header to boot_params */
->+        memcpy(&hdr->setup_sects,
->+              &((struct linux_header *)kernel_buf)->setup_sects,
->+              sizeof(struct linux_header) -
->+              offsetof(struct linux_header, setup_sects));
->+
->        setup_sz =3D (hdr->setup_sects + 1) * 512;
->        if (hdr->version >=3D 0x20a) {
->                pref_address =3D hdr->pref_address;
->--- a/com32/include/syslinux/linux=2Eh
->+++ b/com32/include/syslinux/linux=2Eh
->@@ -116,6 +116,7 @@ struct linux_header {
->     uint64_t pref_address;
->     uint32_t init_size;
->     uint32_t handover_offset;
->+    uint32_t kernel_info_offset;
-> } __packed;
->
-> struct screen_info {
+Applied.  Thanks!
 
-Interesting=2E Embarrassing, first of all :) but also interesting, because=
- this is exactly why we have the "sentinel" field at 0x1f0 to catch *this s=
-pecific error* and work around it=2E
+On Thu, Mar 6, 2025 at 9:13=E2=80=AFAM Aliaksei Urbanski
+<aliaksei.urbanski@gmail.com> wrote:
+>
+> Starting from 6.11, AMDGPU driver, while being loaded with amdgpu.dc=3D1,
+> due to lack of .is_two_pixels_per_container function in dce60_tg_funcs,
+> causes a NULL pointer dereference on PCs with old GPUs, such as R9 280X.
+>
+> So this fix adds missing .is_two_pixels_per_container to dce60_tg_funcs.
+>
+> Reported-by: Rosen Penev <rosenp@gmail.com>
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3942
+> Fixes: e6a901a00822 ("drm/amd/display: use even ODM slice width for two p=
+ixels per container")
+> Cc: <stable@vger.kernel.org> # 6.11+
+> Signed-off-by: Aliaksei Urbanski <aliaksei.urbanski@gmail.com>
+> ---
+>  drivers/gpu/drm/amd/display/dc/dce60/dce60_timing_generator.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/gpu/drm/amd/display/dc/dce60/dce60_timing_generator.=
+c b/drivers/gpu/drm/amd/display/dc/dce60/dce60_timing_generator.c
+> index e5fb0e8333..e691a1cf33 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dce60/dce60_timing_generator.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dce60/dce60_timing_generator.c
+> @@ -239,6 +239,7 @@ static const struct timing_generator_funcs dce60_tg_f=
+uncs =3D {
+>                                 dce60_timing_generator_enable_advanced_re=
+quest,
+>                 .configure_crc =3D dce60_configure_crc,
+>                 .get_crc =3D dce110_get_crc,
+> +               .is_two_pixels_per_container =3D dce110_is_two_pixels_per=
+_container,
+>  };
+>
+>  void dce60_timing_generator_construct(
+> --
+> 2.48.1
+>
 
