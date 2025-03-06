@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-121164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB321A5424C
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:38:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9B8A54249
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 06:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2712E3ABD00
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:37:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89BBE171866
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 05:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305DD1A0B0E;
-	Thu,  6 Mar 2025 05:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6378A1A00F0;
+	Thu,  6 Mar 2025 05:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uHuiaQxu"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="q/YE3MHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DF219E99E;
-	Thu,  6 Mar 2025 05:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4A519EEC2;
+	Thu,  6 Mar 2025 05:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741239465; cv=none; b=UguaAvQslRZEMWFMVLjU0DrYrXPGwdOTzRI8USuZ69AB43GIqZZl16P0ZzpixO5mrOKpjP3/0aw9qKLJijFv1JZo+RTkfX+SK2HctzMY6Q5kSVFhJgEITde8/zt8IFYSbT7JMLxpdeU/LeCLZSu7KQemZVvwkpVsUQpYu8BsFxs=
+	t=1741239468; cv=none; b=MScJTzJfhnXFHHnxT+m06zZh9uXJ6MqqVz3BAZTH1P5XWigtIL9sU0xiMcMIiVm+28tB2EqSudOKZxg45Vk6HUmQd+FCrAeeXR3P2twmA/dX0wArFl6r1I/EpvnMh6ma55fTyHhKkEQF/9dZm4FM5PRMNTRPdkSJDhIdZZDua58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741239465; c=relaxed/simple;
-	bh=vCme8TqDNX3HR4cFm/t/cv1fYqIgR/+f/5ODzFVnesY=;
-	h=Date:To:From:Subject:Message-Id; b=bgeL2bQDxwV+333aDq9EErCc/c04EkVCQvHUNDxkn1EmaE0SSq/bAQj8HVSdGS7BktOjZ4vEh9dBgwJW0HUGtejEC7Ej1rXZjdUgXtNd3yYEiF0xn+LZg3O/JAn0BKDWL/eT0dfwcVuOGQB/SRx3meJHFLpcBv6q9rQBNBNyq2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uHuiaQxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0797C4CEE4;
-	Thu,  6 Mar 2025 05:37:44 +0000 (UTC)
+	s=arc-20240116; t=1741239468; c=relaxed/simple;
+	bh=lETi9zOslFfRGV6btWf9j3f5jz0vLmnSWUIS19JAxFs=;
+	h=Date:To:From:Subject:Message-Id; b=BaWos74cvhY8p3+YnR9WnsfmGkDi8UaCPc4iEHF2ImB6b6E/2JSSJ/xLEvSftXfoUqYDdzJzcBT40cI96QbAGs9afEJRRROrJlRs9JMS/KI4mTOq+IrTYU/TthEUvFL42bIwceMmnLltg6EXzvi2sfB8cfCf48lShHLdG40HivU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=q/YE3MHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776D2C4CEE4;
+	Thu,  6 Mar 2025 05:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741239464;
-	bh=vCme8TqDNX3HR4cFm/t/cv1fYqIgR/+f/5ODzFVnesY=;
+	s=korg; t=1741239467;
+	bh=lETi9zOslFfRGV6btWf9j3f5jz0vLmnSWUIS19JAxFs=;
 	h=Date:To:From:Subject:From;
-	b=uHuiaQxudIiYDsedB0dmNvP3kW61yKElJuxReD32loc7HhjprePLG482hxjPRxEZb
-	 QlUc6AF1HrIvR6ATKwn+XvPn0YRDwxi2EJdH0v9JjWIP4RmoHFS3dtPfx/lYUUkxwz
-	 2ApvB0lAys4+YQEcczwD4dx6xllfV6PLi38bOaI4=
-Date: Wed, 05 Mar 2025 21:37:44 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,ryncsn@gmail.com,kasong@tencent.com,ioworker0@gmail.com,hughd@google.com,david@redhat.com,alex_y_xu@yahoo.ca,baolin.wang@linux.alibaba.com,akpm@linux-foundation.org
+	b=q/YE3MHb52PysxGWV94WUhIpy2NjfuM0znY8W62eepjhTXR7vrv2TYHw+i3RRDwAr
+	 Or5+FvXanjfRtb2UWyHJtIYkCLX1wU+IYhEE/LSK6KHrk9VcfwBQT6Z0sTjD8A+oSz
+	 MXRGgdQTkKe2ETkSk75yXt4eq/uFPQX8XO4DQBdg=
+Date: Wed, 05 Mar 2025 21:37:46 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,v-songbaohua@oppo.com,stable@vger.kernel.org,peterx@redhat.com,lorenzo.stoakes@oracle.com,lokeshgidra@google.com,Liam.Howlett@Oracle.com,kaleshsingh@google.com,jannh@google.com,hughd@google.com,david@redhat.com,aarcange@redhat.com,21cnbao@gmail.com,surenb@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-shmem-fix-potential-data-corruption-during-shmem-swapin.patch removed from -mm tree
-Message-Id: <20250306053744.B0797C4CEE4@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] userfaultfd-do-not-block-on-locking-a-large-folio-with-raised-refcount.patch removed from -mm tree
+Message-Id: <20250306053747.776D2C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,124 +50,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: shmem: fix potential data corruption during shmem swapin
+     Subject: userfaultfd: do not block on locking a large folio with raised refcount
 has been removed from the -mm tree.  Its filename was
-     mm-shmem-fix-potential-data-corruption-during-shmem-swapin.patch
+     userfaultfd-do-not-block-on-locking-a-large-folio-with-raised-refcount.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: mm: shmem: fix potential data corruption during shmem swapin
-Date: Tue, 25 Feb 2025 17:52:55 +0800
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: userfaultfd: do not block on locking a large folio with raised refcount
+Date: Wed, 26 Feb 2025 10:55:08 -0800
 
-Alex and Kairui reported some issues (system hang or data corruption) when
-swapping out or swapping in large shmem folios.  This is especially easy
-to reproduce when the tmpfs is mount with the 'huge=within_size'
-parameter.  Thanks to Kairui's reproducer, the issue can be easily
-replicated.
+Lokesh recently raised an issue about UFFDIO_MOVE getting into a deadlock
+state when it goes into split_folio() with raised folio refcount. 
+split_folio() expects the reference count to be exactly mapcount +
+num_pages_in_folio + 1 (see can_split_folio()) and fails with EAGAIN
+otherwise.
 
-The root cause of the problem is that swap readahead may asynchronously
-swap in order 0 folios into the swap cache, while the shmem mapping can
-still store large swap entries.  Then an order 0 folio is inserted into
-the shmem mapping without splitting the large swap entry, which overwrites
-the original large swap entry, leading to data corruption.
+If multiple processes are trying to move the same large folio, they raise
+the refcount (all tasks succeed in that) then one of them succeeds in
+locking the folio, while others will block in folio_lock() while keeping
+the refcount raised.  The winner of this race will proceed with calling
+split_folio() and will fail returning EAGAIN to the caller and unlocking
+the folio.  The next competing process will get the folio locked and will
+go through the same flow.  In the meantime the original winner will be
+retried and will block in folio_lock(), getting into the queue of waiting
+processes only to repeat the same path.  All this results in a livelock.
 
-When getting a folio from the swap cache, we should split the large swap
-entry stored in the shmem mapping if the orders do not match, to fix this
-issue.
+An easy fix would be to avoid waiting for the folio lock while holding
+folio refcount, similar to madvise_free_huge_pmd() where folio lock is
+acquired before raising the folio refcount.  Since we lock and take a
+refcount of the folio while holding the PTE lock, changing the order of
+these operations should not break anything.
 
-Link: https://lkml.kernel.org/r/2fe47c557e74e9df5fe2437ccdc6c9115fa1bf70.1740476943.git.baolin.wang@linux.alibaba.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Alex Xu (Hello71) <alex_y_xu@yahoo.ca>
-Reported-by: Kairui Song <ryncsn@gmail.com>
-Closes: https://lore.kernel.org/all/1738717785.im3r5g2vxc.none@localhost/
-Tested-by: Kairui Song <kasong@tencent.com>
+Modify move_pages_pte() to try locking the folio first and if that fails
+and the folio is large then return EAGAIN without touching the folio
+refcount.  If the folio is single-page then split_folio() is not called,
+so we don't have this issue.  Lokesh has a reproducer [1] and I verified
+that this change fixes the issue.
+
+[1] https://github.com/lokeshgidra/uffd_move_ioctl_deadlock
+
+[akpm@linux-foundation.org: reflow comment to 80 cols, s/end/end up/]
+Link: https://lkml.kernel.org/r/20250226185510.2732648-2-surenb@google.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: Lokesh Gidra <lokeshgidra@google.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Barry Song <v-songbaohua@oppo.com>
 Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <ioworker0@gmail.com>
-Cc: Matthew Wilcow <willy@infradead.org>
 Cc: Hugh Dickins <hughd@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/shmem.c |   31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ mm/userfaultfd.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/mm/shmem.c~mm-shmem-fix-potential-data-corruption-during-shmem-swapin
-+++ a/mm/shmem.c
-@@ -2253,7 +2253,7 @@ static int shmem_swapin_folio(struct ino
- 	struct folio *folio = NULL;
- 	bool skip_swapcache = false;
- 	swp_entry_t swap;
--	int error, nr_pages;
-+	int error, nr_pages, order, split_order;
+--- a/mm/userfaultfd.c~userfaultfd-do-not-block-on-locking-a-large-folio-with-raised-refcount
++++ a/mm/userfaultfd.c
+@@ -1250,6 +1250,7 @@ retry:
+ 		 */
+ 		if (!src_folio) {
+ 			struct folio *folio;
++			bool locked;
  
- 	VM_BUG_ON(!*foliop || !xa_is_value(*foliop));
- 	swap = radix_to_swp_entry(*foliop);
-@@ -2272,10 +2272,9 @@ static int shmem_swapin_folio(struct ino
+ 			/*
+ 			 * Pin the page while holding the lock to be sure the
+@@ -1269,12 +1270,26 @@ retry:
+ 				goto out;
+ 			}
  
- 	/* Look it up and read it in.. */
- 	folio = swap_cache_get_folio(swap, NULL, 0);
-+	order = xa_get_order(&mapping->i_pages, index);
- 	if (!folio) {
--		int order = xa_get_order(&mapping->i_pages, index);
- 		bool fallback_order0 = false;
--		int split_order;
- 
- 		/* Or update major stats only when swapin succeeds?? */
- 		if (fault_type) {
-@@ -2339,6 +2338,29 @@ static int shmem_swapin_folio(struct ino
- 			error = -ENOMEM;
- 			goto failed;
- 		}
-+	} else if (order != folio_order(folio)) {
-+		/*
-+		 * Swap readahead may swap in order 0 folios into swapcache
-+		 * asynchronously, while the shmem mapping can still stores
-+		 * large swap entries. In such cases, we should split the
-+		 * large swap entry to prevent possible data corruption.
-+		 */
-+		split_order = shmem_split_large_entry(inode, index, swap, gfp);
-+		if (split_order < 0) {
-+			error = split_order;
-+			goto failed;
-+		}
++			locked = folio_trylock(folio);
++			/*
++			 * We avoid waiting for folio lock with a raised
++			 * refcount for large folios because extra refcounts
++			 * will result in split_folio() failing later and
++			 * retrying.  If multiple tasks are trying to move a
++			 * large folio we can end up livelocking.
++			 */
++			if (!locked && folio_test_large(folio)) {
++				spin_unlock(src_ptl);
++				err = -EAGAIN;
++				goto out;
++			}
 +
-+		/*
-+		 * If the large swap entry has already been split, it is
-+		 * necessary to recalculate the new swap entry based on
-+		 * the old order alignment.
-+		 */
-+		if (split_order > 0) {
-+			pgoff_t offset = index - round_down(index, 1 << split_order);
-+
-+			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
-+		}
- 	}
+ 			folio_get(folio);
+ 			src_folio = folio;
+ 			src_folio_pte = orig_src_pte;
+ 			spin_unlock(src_ptl);
  
- alloced:
-@@ -2346,7 +2368,8 @@ alloced:
- 	folio_lock(folio);
- 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
- 	    folio->swap.val != swap.val ||
--	    !shmem_confirm_swap(mapping, index, swap)) {
-+	    !shmem_confirm_swap(mapping, index, swap) ||
-+	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
+-			if (!folio_trylock(src_folio)) {
++			if (!locked) {
+ 				pte_unmap(&orig_src_pte);
+ 				pte_unmap(&orig_dst_pte);
+ 				src_pte = dst_pte = NULL;
 _
 
-Patches currently in -mm which might be from baolin.wang@linux.alibaba.com are
+Patches currently in -mm which might be from surenb@google.com are
 
-mm-shmem-drop-the-unused-macro.patch
-mm-shmem-remove-fadvise-comments.patch
-mm-shmem-remove-duplicate-error-validation.patch
-mm-shmem-change-the-return-value-of-shmem_find_swap_entries.patch
-mm-shmem-factor-out-the-within_size-logic-into-a-new-helper.patch
-maintainers-add-myself-as-shmem-reviewer.patch
+mm-avoid-extra-mem_alloc_profiling_enabled-checks.patch
+alloc_tag-uninline-code-gated-by-mem_alloc_profiling_key-in-slab-allocator.patch
+alloc_tag-uninline-code-gated-by-mem_alloc_profiling_key-in-page-allocator.patch
+mm-introduce-vma_start_read_locked_nested-helpers.patch
+mm-move-per-vma-lock-into-vm_area_struct.patch
+mm-mark-vma-as-detached-until-its-added-into-vma-tree.patch
+mm-introduce-vma_iter_store_attached-to-use-with-attached-vmas.patch
+mm-mark-vmas-detached-upon-exit.patch
+types-move-struct-rcuwait-into-typesh.patch
+mm-allow-vma_start_read_locked-vma_start_read_locked_nested-to-fail.patch
+mm-move-mmap_init_lock-out-of-the-header-file.patch
+mm-uninline-the-main-body-of-vma_start_write.patch
+refcount-provide-ops-for-cases-when-objects-memory-can-be-reused.patch
+refcount-provide-ops-for-cases-when-objects-memory-can-be-reused-fix.patch
+refcount-introduce-__refcount_addinc_not_zero_limited_acquire.patch
+mm-replace-vm_lock-and-detached-flag-with-a-reference-count.patch
+mm-replace-vm_lock-and-detached-flag-with-a-reference-count-fix.patch
+mm-move-lesser-used-vma_area_struct-members-into-the-last-cacheline.patch
+mm-debug-print-vm_refcnt-state-when-dumping-the-vma.patch
+mm-remove-extra-vma_numab_state_init-call.patch
+mm-prepare-lock_vma_under_rcu-for-vma-reuse-possibility.patch
+mm-make-vma-cache-slab_typesafe_by_rcu.patch
+mm-make-vma-cache-slab_typesafe_by_rcu-fix.patch
+docs-mm-document-latest-changes-to-vm_lock.patch
 
 
