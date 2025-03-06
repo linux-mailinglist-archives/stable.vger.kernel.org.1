@@ -1,126 +1,124 @@
-Return-Path: <stable+bounces-121221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85348A549F9
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:50:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005D3A54A31
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 12:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B1C51888525
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:49:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47967188B655
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 11:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6732620B1F2;
-	Thu,  6 Mar 2025 11:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA6220AF67;
+	Thu,  6 Mar 2025 11:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u50K4tTA"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0C720B210
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 11:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D720297E;
+	Thu,  6 Mar 2025 11:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741261760; cv=none; b=si3+pzAGtGhfI0DRasNpL/i564DnMQitXlOyX3ZpBCHI6HhFPENSTLItwG1dBDAkDN7WFfus2+an5BBh7WoEXw/9OVSykmtBeVBGWRmbTa/a/8rwEctU75DSn7LJgDRMQ1ectZ8LwLBoa/bf2mPLxSCY8n97c0qIBZMAYTK8eOk=
+	t=1741262269; cv=none; b=lgA8YCDHHuTiO8wnptxLb7FaseJoAbz5A6d6+WO9zKFSm72WF1nefCIrZ6BTDQEcY/zW0fV10v1e/O+VRWqXYOhVp4rrD5bYRp1/QD/X4f+MgFk2M42Nte2U/7hTisdW9qPdQDfNkMdyF104Fqifzg6XJ751NYwIr9JvPUsu73c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741261760; c=relaxed/simple;
-	bh=m1P/y4a/XvnqZBu4wILmyVofP29nw9DtnMeA2zIrCdw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UnL9ALC4SOr+Y9MNSlk7H+1JPwfkdyAOFG3Lb96y01cfeNR2HXUhHxEUhehbcoqn3Uh4BOM7immtiXrpXHgenuj4uFzKwbF3opZE7KoLX4KDcuBP6fIaU7dIhvw4ofYp4sTSgDneuEE3lwHW92SXxzU4jC0RXzh0sFIYZaYipYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1008D1007;
-	Thu,  6 Mar 2025 03:49:31 -0800 (PST)
-Received: from [10.1.37.172] (XHFQ2J9959.cambridge.arm.com [10.1.37.172])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B7743F66E;
-	Thu,  6 Mar 2025 03:49:17 -0800 (PST)
-Message-ID: <4d1cfbc1-0bae-4d3a-a3c5-fb3668b14ae6@arm.com>
-Date: Thu, 6 Mar 2025 11:49:15 +0000
+	s=arc-20240116; t=1741262269; c=relaxed/simple;
+	bh=8EgS825X9yD37ft8hDnIHWNltuCEt3bM7u9HuOxEfT0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d18C0CZgskJDVVbcPgArZdghcePUyLOXSat7M6lHJbVxJuEVVwuYXEhUCWBjthT5fB93EvXLKyxxNQeA7cVYwam6rYxb/XTjw/sVuxmBRP2P7E3XRonglYaa9o8+IG7uLwx2afyzNuFAYAB0Je4TYzK08T+XZqfQYOyzltCGCis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u50K4tTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE54C4CEE0;
+	Thu,  6 Mar 2025 11:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741262268;
+	bh=8EgS825X9yD37ft8hDnIHWNltuCEt3bM7u9HuOxEfT0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u50K4tTANqc24s+/iKR0pWIY1tFRCHvMvd8Xya0fPl6X7GCEtNJehV9dW7SivyeoR
+	 ZcqvtbEL61pYOL8cBI4Px5oJHMpbV67i+2p/6/oDfRWLtAZp1D76ouNQhWM7vUX7FH
+	 znbTssCYNQhhOesekCfNqTrR8Vqgcu6lOw9K4z4Q=
+Date: Thu, 6 Mar 2025 12:57:40 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 6.13 100/157] arm64: hugetlb: Fix
+ huge_ptep_get_and_clear() for non-present ptes
+Message-ID: <2025030612-polio-handclasp-49f8@gregkh>
+References: <20250305174505.268725418@linuxfoundation.org>
+ <20250305174509.330888653@linuxfoundation.org>
+ <ebf8b6fc-33b8-408b-aeac-96b8495753e6@kernel.org>
+ <44400ac2-4c46-498c-a5d1-5a0441dd5571@kernel.org>
+ <4d1cfbc1-0bae-4d3a-a3c5-fb3668b14ae6@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13 100/157] arm64: hugetlb: Fix
- huge_ptep_get_and_clear() for non-present ptes
-Content-Language: en-GB
-To: Jiri Slaby <jirislaby@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>
-References: <20250305174505.268725418@linuxfoundation.org>
- <20250305174509.330888653@linuxfoundation.org>
- <ebf8b6fc-33b8-408b-aeac-96b8495753e6@kernel.org>
- <44400ac2-4c46-498c-a5d1-5a0441dd5571@kernel.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <44400ac2-4c46-498c-a5d1-5a0441dd5571@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <4d1cfbc1-0bae-4d3a-a3c5-fb3668b14ae6@arm.com>
 
-On 06/03/2025 08:08, Jiri Slaby wrote:
-> On 06. 03. 25, 9:07, Jiri Slaby wrote:
->> On 05. 03. 25, 18:48, Greg Kroah-Hartman wrote:
->>> 6.13-stable review patch.Â  If anyone has any objections, please let me know.
->>>
->>> ------------------
->>>
->>> From: Ryan Roberts <ryan.roberts@arm.com>
->>>
->>> commit 49c87f7677746f3c5bd16c81b23700bb6b88bfd4 upstream.
-> ...
->>> @@ -401,13 +393,8 @@ pte_t huge_ptep_get_and_clear(struct mm_
->>> Â  {
->>> Â Â Â Â Â  int ncontig;
->>> Â Â Â Â Â  size_t pgsize;
->>> -Â Â Â  pte_t orig_pte = __ptep_get(ptep);
->>> -
->>> -Â Â Â  if (!pte_cont(orig_pte))
->>> -Â Â Â Â Â Â Â  return __ptep_get_and_clear(mm, addr, ptep);
->>> -
->>> -Â Â Â  ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->>> +Â Â Â  ncontig = num_contig_ptes(sz, &pgsize);
->>
->>
->> This fails to build:
->>
->> /usr/bin/gcc-current/gcc (SUSE Linux) 14.2.1 20250220 [revision
->> 9ffecde121af883b60bbe60d00425036bc873048]
->> /usr/bin/aarch64-suse-linux-gcc (SUSE Linux) 14.2.1 20250220 [revision
->> 9ffecde121af883b60bbe60d00425036bc873048]
->> run_oldconfig.sh --check... PASS
->> Build...Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  FAIL
->> + make -j48 -s -C /dev/shm/kbuild/linux.34170/current ARCH=arm64 HOSTCC=gcc
->> CROSS_COMPILE=aarch64-suse-linux- clean
->> arch/arm64/mm/hugetlbpage.c:397:35: error: 'sz' undeclared (first use in this
->> function); did you mean 's8'?
->> Â Â Â Â Â Â  |Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  s8
->> arch/arm64/mm/hugetlbpage.c:397:35: note: each undeclared identifier is
->> reported only once for each function it appears in
->> make[4]: *** [scripts/Makefile.build:197: arch/arm64/mm/hugetlbpage.o] Error 1
+On Thu, Mar 06, 2025 at 11:49:15AM +0000, Ryan Roberts wrote:
+> On 06/03/2025 08:08, Jiri Slaby wrote:
+> > On 06. 03. 25, 9:07, Jiri Slaby wrote:
+> >> On 05. 03. 25, 18:48, Greg Kroah-Hartman wrote:
+> >>> 6.13-stable review patch.  If anyone has any objections, please let me know.
+> >>>
+> >>> ------------------
+> >>>
+> >>> From: Ryan Roberts <ryan.roberts@arm.com>
+> >>>
+> >>> commit 49c87f7677746f3c5bd16c81b23700bb6b88bfd4 upstream.
+> > ...
+> >>> @@ -401,13 +393,8 @@ pte_t huge_ptep_get_and_clear(struct mm_
+> >>>   {
+> >>>       int ncontig;
+> >>>       size_t pgsize;
+> >>> -    pte_t orig_pte = __ptep_get(ptep);
+> >>> -
+> >>> -    if (!pte_cont(orig_pte))
+> >>> -        return __ptep_get_and_clear(mm, addr, ptep);
+> >>> -
+> >>> -    ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+> >>> +    ncontig = num_contig_ptes(sz, &pgsize);
+> >>
+> >>
+> >> This fails to build:
+> >>
+> >> /usr/bin/gcc-current/gcc (SUSE Linux) 14.2.1 20250220 [revision
+> >> 9ffecde121af883b60bbe60d00425036bc873048]
+> >> /usr/bin/aarch64-suse-linux-gcc (SUSE Linux) 14.2.1 20250220 [revision
+> >> 9ffecde121af883b60bbe60d00425036bc873048]
+> >> run_oldconfig.sh --check... PASS
+> >> Build...                    FAIL
+> >> + make -j48 -s -C /dev/shm/kbuild/linux.34170/current ARCH=arm64 HOSTCC=gcc
+> >> CROSS_COMPILE=aarch64-suse-linux- clean
+> >> arch/arm64/mm/hugetlbpage.c:397:35: error: 'sz' undeclared (first use in this
+> >> function); did you mean 's8'?
+> >>        |                                   s8
+> >> arch/arm64/mm/hugetlbpage.c:397:35: note: each undeclared identifier is
+> >> reported only once for each function it appears in
+> >> make[4]: *** [scripts/Makefile.build:197: arch/arm64/mm/hugetlbpage.o] Error 1
+> > 
+> > It looks like the stable tree is missing this pre-req:
+> > commit 02410ac72ac3707936c07ede66e94360d0d65319
+> > Author: Ryan Roberts <ryan.roberts@arm.com>
+> > Date:   Wed Feb 26 12:06:51 2025 +0000
+> > 
+> >     mm: hugetlb: Add huge page size param to huge_ptep_get_and_clear()
 > 
-> It looks like the stable tree is missing this pre-req:
-> commit 02410ac72ac3707936c07ede66e94360d0d65319
-> Author: Ryan Roberts <ryan.roberts@arm.com>
-> Date:Â Â  Wed Feb 26 12:06:51 2025 +0000
-> 
-> Â Â Â  mm: hugetlb: Add huge page size param to huge_ptep_get_and_clear()
+> Although this patch is marked for stable there was a conflict so it wasn't
+> applied. I'll try to get the backport done in the next few days.
 
-Although this patch is marked for stable there was a conflict so it wasn't
-applied. I'll try to get the backport done in the next few days.
+I'll just drop this one now, can you send me the backports for both of
+these when they are ready?
 
-Thanks,
-Ryan
+thanks,
 
-> 
-> 
->>
->>> Â Â Â Â Â  return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
->>> Â  }
->>>
->>>
->>>
->>
-> 
-
+greg k-h
 
