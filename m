@@ -1,81 +1,95 @@
-Return-Path: <stable+bounces-121133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9B5A540AA
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 03:29:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86835A540B2
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 03:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1EE53AEFAA
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 02:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1DF116E25D
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 02:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F87F9F8;
-	Thu,  6 Mar 2025 02:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B461917D0;
+	Thu,  6 Mar 2025 02:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GdJljHc/"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="dCm/d1N7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1343D2907
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 02:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6583916088F
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 02:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741228138; cv=none; b=uiEuJ4q40m7mnz+JZFsRRsfF88P0QG0KlwRooPO//p9aFQQ+j12xoiPGDu7M4B8nsyR3V5GcNvHJSUF2dTYBtRzuH285A3z0mT7BNZIQTVFP4s5ZcRXoe4z5u/3jS3AV9NfGcOcLyzfnks8sF8oGOiDeRBLVHy1JZF+dNZl77k4=
+	t=1741228317; cv=none; b=FOZkJposEXZSR/mqaYtihn5eWZrKVY0/UT0boJaqSQWYVtSiAOT5qBfj5BwIQqsy8O2K9n65d+X8H6LiiA1e9SWKj9PWiIflng9nHyByvNI8GBL23hwRlu06LxnkkNGaOm7NoTSKGCkLR/WdMr7DofIZpuMm2MRSZ3VdoFuXm0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741228138; c=relaxed/simple;
-	bh=uazQrSGZViu1kwJXHSMrEhHzdNPQmdS2Aojz7kFl/g4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/zyxRlkdGeEt/7gN3BLglc9ei2AzfLNkSrTnx9YVh4oipxnZUUFVw4mFXmXP7KbmpPzWUrQ+/+QTaTwqx8FOiGjiH1MfhiWqFJOWGdPF4y1RzLLmBRn3gJK9Z9ACLX4DhhY92wsNFMGmhQrp6UySpg1cG8V8A8WJ/dmx2faukk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GdJljHc/; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525NLlr3016483;
-	Thu, 6 Mar 2025 02:28:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=9twF7oetfa04rQIqK
-	2kTr51RR+KBjjrwXt2frS9Sbwk=; b=GdJljHc/ewT7Hrqwuu1s5s4WUZm7mvkxR
-	3lKJ+btisY9F9I3jewO/tr+xcz8rM+HCQck7X2dalMJbXHNecHFMa31h5fAZnbgQ
-	AYZUlDerdNEdg4CGI+AeXClQ4bSM6uBC4W7T8qYbCS1+8JOu/bMObQTOZUVApKFc
-	XAgixpeBQkbezZdzVk6yWeyUb4B+xqCwXWTHstTALOGavEsI+J9hj9HW1BBlQiUB
-	tTth35Qlmr4EzrtCzdwAiVFuiC4M0O+ADkLo4js2WEhzGrDDoMEYMD8+AaOEmCrB
-	PblVdj3Ftf0e4ALWxu77tWEaRRI8/NNKbRavBlc7FJjYllvFZRa+g==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 456f08wxj5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Mar 2025 02:28:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5260Vi2w032236;
-	Thu, 6 Mar 2025 02:28:43 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 454cjt6e9g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Mar 2025 02:28:43 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5262Se3a41091564
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Mar 2025 02:28:40 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED4CE2004D;
-	Thu,  6 Mar 2025 02:28:39 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CCB7020040;
-	Thu,  6 Mar 2025 02:28:38 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.fios-router.home (unknown [9.61.10.103])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Mar 2025 02:28:38 +0000 (GMT)
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: stable@vger.kernel.org
-Cc: Roberto Sassu <roberto.sassu@huawei.com>, Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.6.y] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
-Date: Wed,  5 Mar 2025 21:28:33 -0500
-Message-ID: <20250306022833.6151-1-zohar@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025030435-perm-thesis-21fc@gregkh>
-References: <2025030435-perm-thesis-21fc@gregkh>
+	s=arc-20240116; t=1741228317; c=relaxed/simple;
+	bh=W1tcb7tlttKSGSGcmJVIThQ+ztQfMVdTvzNQlwimA1k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XtiBpLrelS3mk0d2HnV+Ofsj+EW//g2s6A9XZOyqYPTXmET7+g63ppL/offI7pDeYBC5imgsBF4PXVPJ+mU0LocqQx9Zvr+ql8hZCd84iE/2hBeoCL9jApV4drXGGCf2tt5H7iB8/a1yWyOeRGXNTHT5AQppWT7WE1jgz3G+Tw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=dCm/d1N7; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22356471820so1775585ad.0
+        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 18:31:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1741228313; x=1741833113; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iO6wA6XWmxnHhVJNEGwMRLVJm1A8Q49xyow/a4mczm0=;
+        b=dCm/d1N7dDe2NPkJ6Jya2T99qQvSQqcVohRzYDzooC1TwgQXwUjR2mp3beEQEPjufO
+         bMX29nCjbNnYi53u5O5+LOHAvi/JMLXbvGn0mAARYfmnripixu/pZ08xH9qb0Z7h2iNN
+         fLR3l7w0oDd+jdNmbOhuBQB4n+cIbYZEt+kptHRB5QN9/r/uADD5NhCho2GcV+iLDSy4
+         gQf2IVuFR2GQinBMykau1tO2cPB+6x16i6SDPh6ucMMreeq5H8wNB1CW8sWf5F6tjDNC
+         rUnuD5sjGE9S0YxfEmIoPG4NJq/PSvxYB1Apruun/3/Nqr067yjSmDHVREtE8l1XWZEc
+         AdAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741228313; x=1741833113;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iO6wA6XWmxnHhVJNEGwMRLVJm1A8Q49xyow/a4mczm0=;
+        b=EimzkPHBe/gSyeL9m+E46s9iS4tlCNIXCrWg9Gfzv7CPMj0y+n4dV5G5LXyYK4GpIE
+         lCYZT59hMI8qjGzc9EQ77ZfccapDjb9MphJ4uRPHlkCHvIohRAz9S3tmbuptw/72+Se4
+         8gM7nPakM47cAnEnSLbVa7O+gVpP+UPuXZZWPVWhNlwKtQnBtGCXCTiSDA5AvS3b87V/
+         UrVx2zP1F4SByxy83F2dLdoFOCFUW1IHx7flDtOAbVPnJ0q25Fb02NpSVuxN/B1hlBe2
+         9nSk23MwCOSswvoz4XeSiEiFjrRwsrDUQcscJeDFJo0ab2V9tJyixAQzWlbwPgLT4aVR
+         oJlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwKUVBHkWDawYRkzT2KJCPH0TJs/wU0/ka2434VKJ6sIwJLahF1OD4LcimPbxJjmC09Z+Ovr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWG5Gg0lj5JtF8NXdRthDoN9bhqDe2n2dNBvcmsxnLJQFKN9cP
+	qtKtOgG0aqf7ORF33/yrIBqJ6r2PcSxzjATCORVgijpjRjP7ZaFK9W809inWhzsyakbwrMzASdJ
+	RwLM=
+X-Gm-Gg: ASbGncuMoRyWuoETQABRBCZWQB4LxP+75PjYk0K2XR8RzlWulULj4y+eWveAH9NxQYX
+	RZ3TEdaN/fvgHSnI9luX3UgZk5ChENaNKceQ2cbffViZ9yjgJ4hONPM+0OA4fE6W1lxbNbrJr/v
+	EbxYtaIdx/Osn4oItpgjA3C83AeFzuDrmsS1fGATKpBwiUnywr7a0zA2gXbCNjztvsnlLb4r9EC
+	Z5bpA+BamiSpFA2BzDTl7ydfDXb7Pcmhf5gDXkCFojnXKJlWe66lq55SrDCiY+l13zUPgcxe4SF
+	kA2cm7pn+PZ0Y8u3Xdc5i79XGl6EkyxMbura8teRnZwkFT2ue334b/Nh14lNCankLm2ulJWZT3q
+	bjQFS
+X-Google-Smtp-Source: AGHT+IFwn29sDeYBmdp4CEswbdIWIO0mgSzC0Fu02o+1MLOPwdvWyiKyshtyKjhFx5G7dBzbMS/5rQ==
+X-Received: by 2002:a17:902:f683:b0:223:5c77:7ef1 with SMTP id d9443c01a7336-223f1c982c4mr86775385ad.21.1741228313590;
+        Wed, 05 Mar 2025 18:31:53 -0800 (PST)
+Received: from PXLDJ45XCM.bytedance.net ([139.177.225.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109ddcaesm1318185ad.28.2025.03.05.18.31.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 05 Mar 2025 18:31:52 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	kasong@tencent.com,
+	chrisl@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: memcontrol: fix swap counter leak from offline cgroup
+Date: Thu,  6 Mar 2025 10:31:33 +0800
+Message-Id: <20250306023133.44838-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,85 +97,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _rolYS20U_5RynkuPjDpcwnz8wTBTFBo
-X-Proofpoint-GUID: _rolYS20U_5RynkuPjDpcwnz8wTBTFBo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-06_01,2025-03-05_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- phishscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 adultscore=0
- clxscore=1015 suspectscore=0 priorityscore=1501 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503060015
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+The commit 6769183166b3 has removed the parameter of id from
+swap_cgroup_record() and get the memcg id from
+mem_cgroup_id(folio_memcg(folio)). However, the caller of it
+may update a different memcg's counter instead of
+folio_memcg(folio). E.g. in the caller of mem_cgroup_swapout(),
+@swap_memcg could be different with @memcg and update the counter
+of @swap_memcg, but swap_cgroup_record() records the wrong memcg's
+ID. When it is uncharged from __mem_cgroup_uncharge_swap(), the
+swap counter will leak since the wrong recorded ID. Fix it by
+bring the parameter of id back.
 
-Commit 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-mistakenly reverted the performance improvement introduced in commit
-42a4c603198f0 ("ima: fix ima_inode_post_setattr"). The unused bit mask was
-subsequently removed by commit 11c60f23ed13 ("integrity: Remove unused
-macro IMA_ACTION_RULE_FLAGS").
-
-Restore the performance improvement by introducing the new mask
-IMA_NONACTION_RULE_FLAGS, equal to IMA_NONACTION_FLAGS without
-IMA_NEW_FILE, which is not a rule-specific flag.
-
-Finally, reset IMA_NONACTION_RULE_FLAGS instead of IMA_NONACTION_FLAGS in
-process_measurement(), if the IMA_CHANGE_ATTR atomic flag is set (after
-file metadata modification).
-
-With this patch, new files for which metadata were modified while they are
-still open, can be reopened before the last file close (when security.ima
-is written), since the IMA_NEW_FILE flag is not cleared anymore. Otherwise,
-appraisal fails because security.ima is missing (files with IMA_NEW_FILE
-set are an exception).
-
-Cc: stable@vger.kernel.org # v4.16.x
-Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-(cherry picked from commit 57a0ef02fefafc4b9603e33a18b669ba5ce59ba3)
+Fixes: 6769183166b3 ("mm/swap_cgroup: decouple swap cgroup recording and clearing")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- security/integrity/ima/ima_main.c | 7 +++++--
- security/integrity/integrity.h    | 3 +++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ include/linux/swap_cgroup.h | 4 ++--
+ mm/memcontrol.c             | 4 ++--
+ mm/swap_cgroup.c            | 7 ++++---
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index cc1217ac2c6f..98308a2bdef6 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -267,10 +267,13 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 	mutex_lock(&iint->mutex);
+diff --git a/include/linux/swap_cgroup.h b/include/linux/swap_cgroup.h
+index b5ec038069dab..91cdf12190a03 100644
+--- a/include/linux/swap_cgroup.h
++++ b/include/linux/swap_cgroup.h
+@@ -6,7 +6,7 @@
  
- 	if (test_and_clear_bit(IMA_CHANGE_ATTR, &iint->atomic_flags))
--		/* reset appraisal flags if ima_inode_post_setattr was called */
-+		/*
-+		 * Reset appraisal flags (action and non-action rule-specific)
-+		 * if ima_inode_post_setattr was called.
-+		 */
- 		iint->flags &= ~(IMA_APPRAISE | IMA_APPRAISED |
- 				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
--				 IMA_NONACTION_FLAGS);
-+				 IMA_NONACTION_RULE_FLAGS);
+ #if defined(CONFIG_MEMCG) && defined(CONFIG_SWAP)
  
- 	/*
- 	 * Re-evaulate the file if either the xattr has changed or the
-diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-index 9561db7cf6b4..ad20ff7f5dfa 100644
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -42,6 +42,9 @@
- #define IMA_CHECK_BLACKLIST	0x40000000
- #define IMA_VERITY_REQUIRED	0x80000000
+-extern void swap_cgroup_record(struct folio *folio, swp_entry_t ent);
++extern void swap_cgroup_record(struct folio *folio, unsigned short id, swp_entry_t ent);
+ extern unsigned short swap_cgroup_clear(swp_entry_t ent, unsigned int nr_ents);
+ extern unsigned short lookup_swap_cgroup_id(swp_entry_t ent);
+ extern int swap_cgroup_swapon(int type, unsigned long max_pages);
+@@ -15,7 +15,7 @@ extern void swap_cgroup_swapoff(int type);
+ #else
  
-+/* Exclude non-action flags which are not rule-specific. */
-+#define IMA_NONACTION_RULE_FLAGS	(IMA_NONACTION_FLAGS & ~IMA_NEW_FILE)
-+
- #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
- 				 IMA_HASH | IMA_APPRAISE_SUBMASK)
- #define IMA_DONE_MASK		(IMA_MEASURED | IMA_APPRAISED | IMA_AUDITED | \
+ static inline
+-void swap_cgroup_record(struct folio *folio, swp_entry_t ent)
++void swap_cgroup_record(struct folio *folio, unsigned short id, swp_entry_t ent)
+ {
+ }
+ 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a5d870fbb4321..a5ab603806fbb 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4988,7 +4988,7 @@ void mem_cgroup_swapout(struct folio *folio, swp_entry_t entry)
+ 		mem_cgroup_id_get_many(swap_memcg, nr_entries - 1);
+ 	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+ 
+-	swap_cgroup_record(folio, entry);
++	swap_cgroup_record(folio, mem_cgroup_id(swap_memcg), entry);
+ 
+ 	folio_unqueue_deferred_split(folio);
+ 	folio->memcg_data = 0;
+@@ -5050,7 +5050,7 @@ int __mem_cgroup_try_charge_swap(struct folio *folio, swp_entry_t entry)
+ 		mem_cgroup_id_get_many(memcg, nr_pages - 1);
+ 	mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
+ 
+-	swap_cgroup_record(folio, entry);
++	swap_cgroup_record(folio, mem_cgroup_id(memcg), entry);
+ 
+ 	return 0;
+ }
+diff --git a/mm/swap_cgroup.c b/mm/swap_cgroup.c
+index be39078f255be..1007c30f12e2c 100644
+--- a/mm/swap_cgroup.c
++++ b/mm/swap_cgroup.c
+@@ -58,9 +58,11 @@ static unsigned short __swap_cgroup_id_xchg(struct swap_cgroup *map,
+  * entries must not have been charged
+  *
+  * @folio: the folio that the swap entry belongs to
++ * @id: mem_cgroup ID to be recorded
+  * @ent: the first swap entry to be recorded
+  */
+-void swap_cgroup_record(struct folio *folio, swp_entry_t ent)
++void swap_cgroup_record(struct folio *folio, unsigned short id,
++			swp_entry_t ent)
+ {
+ 	unsigned int nr_ents = folio_nr_pages(folio);
+ 	struct swap_cgroup *map;
+@@ -72,8 +74,7 @@ void swap_cgroup_record(struct folio *folio, swp_entry_t ent)
+ 	map = swap_cgroup_ctrl[swp_type(ent)].map;
+ 
+ 	do {
+-		old = __swap_cgroup_id_xchg(map, offset,
+-					    mem_cgroup_id(folio_memcg(folio)));
++		old = __swap_cgroup_id_xchg(map, offset, id);
+ 		VM_BUG_ON(old);
+ 	} while (++offset != end);
+ }
 -- 
-2.48.1
+2.20.1
 
 
