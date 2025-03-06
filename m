@@ -1,223 +1,135 @@
-Return-Path: <stable+bounces-121278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DD2A551BE
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 17:47:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2213BA551CD
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 17:50:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 434337AA9DC
-	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:46:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBD63176580
+	for <lists+stable@lfdr.de>; Thu,  6 Mar 2025 16:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C7D253B5D;
-	Thu,  6 Mar 2025 16:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0E625B66B;
+	Thu,  6 Mar 2025 16:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="PZR3j/Eu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WjwWDMYf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08E9212B01
-	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 16:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE2625A65F
+	for <stable@vger.kernel.org>; Thu,  6 Mar 2025 16:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741279546; cv=none; b=hvzwpy1MN88WI8meILsgKcwwzpyE3Sw2D4L3GlXMSKmDs8C1NeuBSUSVIDvoS+nRMGdqcrXHizP+PbmWkPwqZHhwTJOULirVI2YeyHPg5f5uot1KV74KtBz7QzuRWqsVxDtdhMg6KwNPg+RyJVf0jDL3MnVczMnsWGa+mnAGYWY=
+	t=1741279741; cv=none; b=cALnXEG+YvpI6L1LU7ffgaApvWrULG/ahui5HY6Tbybu5kwEhKx3DXNALsM+0TRh4YHiZCAYg3NX7d2ZMHOHj+NKswDoczk4H8zjmxEvoI1jAGjB7vVbUq5jePzdCPs+0EelMlAyA/xO4kg6UF0pjmHUJn0Zcpf0DMxJ+RIGm4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741279546; c=relaxed/simple;
-	bh=QBbBN5q5jWmas5qLcxj17oZ+jdnLgvFe5h91P+f5FGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XJ9wFvnySfVixLcABKxh0wV+BQmfe95roxKt7uUXLAmgGtKcZSWIwooR0oVKx4pg84YnOkX+VBbT2OHFvoBM3PPhT/C/wpM3zGv/WunKFl45Nx2Y9+kZi5TAqBMkaZHBSEho26/gxw9YSSpRNBDCtc7ACw4Tm1FhKrYAu+m2qdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=PZR3j/Eu; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2239c066347so16913475ad.2
-        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 08:45:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1741279544; x=1741884344; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y1tVqjEsF9yz8as4gUEJSF7TOmyvcDOBt4MIJRvQkVI=;
-        b=PZR3j/EuVQYZWE21li6QoRQedCT7JnMnGf/od4wE6dyyVgekUliUg6eNTO1Im67f7T
-         /w5W4lng4T7Fuwpt9mhYaDaKe16zGXSM/Yya1x9A4GHojyvRMZHy/+ho6KQsSfdwNN3Q
-         icvWlv3Vbu6bLJ+CClchlUORc5/VBAeolG1EM=
+	s=arc-20240116; t=1741279741; c=relaxed/simple;
+	bh=Y++u8rWHcpmVczkgOVDovidF76ottDHpCHaf9LbRsj8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XpszijfI7IgQSKBTW7Q0IrTp3yGf1ECdDIgQf4fc0GZuotE1HRN2YjYOHT59lXth7hG9MoayISZsLhzAwXxSnHnadHbkDOSBa7mq5+tER1b5qt3vOux0EP+xl8SJf1jNHjVe1Odfo668y3OZTOpQt2GhNP2vxlQ9lGiSscz4St4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WjwWDMYf; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741279738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DnZMB0kgHOAUXEFLOXzghVoRuV4+jMQKukckas1LShg=;
+	b=WjwWDMYfz2Fw+Bhu9A4yn0ct/IY8zDncHEqK1MwSNAPZbeNvZ6ad8eGBLEu5aa7lxV5VmR
+	Bk1RWxgM3HbZ5yM9nmi8KmZD3L7frUeoVURRpWi0vu+j/mUERSZJGb7FllAKKIf2XRsibG
+	Ncoax98j5hBd01aHrhZ4J8g3xAytiLA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-02ESmH7QMcaxmGCMO7Z7Ew-1; Thu, 06 Mar 2025 11:48:42 -0500
+X-MC-Unique: 02ESmH7QMcaxmGCMO7Z7Ew-1
+X-Mimecast-MFC-AGG-ID: 02ESmH7QMcaxmGCMO7Z7Ew_1741279721
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-390eefb2913so643896f8f.0
+        for <stable@vger.kernel.org>; Thu, 06 Mar 2025 08:48:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741279544; x=1741884344;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y1tVqjEsF9yz8as4gUEJSF7TOmyvcDOBt4MIJRvQkVI=;
-        b=EzO6xSuKzh0kuuZgZEzL6nQ7oE3iS6zO46nzJ1mVj9WCbuSsxJc1dEP+IKsQmQTmSN
-         mW0K/rlerQMfoBGOaTImc6eby7ViawRtOdapAkCOGmH8mD0RjYpcgP/2kiunDv0iicSH
-         50Dlb3f/7lgLdQP2QVthF4G4II3+7XZ5MUAYuf6y3QKn0db/UQVGoH4nAAYfBg2PXldP
-         YNeJ/OFxjswKZkWwk4n9IvMhWEcl3YdArLl3a9pfWAKYPI4vz2TMQAb3M7k9gvpC2WeS
-         DsgzVRUfaFv+rcamCK5u6O5tQz56jKP58S5Sba+s0B1kjKnnuYg2M0C65oOx3RmQe6QR
-         Rx4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVwNbBB8StqTdGgs+UcNET4exY+2NqzC/woTH7dWh4P0maOveevHng307bdFlZP1biwtjYX29s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5Hov0VxXUj1hRipCndzye9/wFh2eJcd1dOMaMiHJ8I487H0/E
-	q65PtNBdhhOL88ZaTrGwF6++heDOH9LP15qLrx+mIbbjV4xj8jNwRNcAGZa8T+4=
-X-Gm-Gg: ASbGnctsqXLxa7PwlP1VeTMdjY6WJN5G/TU2UQdfgP457ZuYmVoZumB1oR0wMbCoiIK
-	YOsEtscGSfE+YopP4n//0TKcyMxvBAdHfV3HsHLt+hRD4eLJl4ccJoRPnLE5S99vQxylsr+LZO1
-	eJGNBjhXIOmMz4cmVC5hGdWAqSXUPqIw/vQav3BJTJByFGSrYYeixmlvXQsz8kmz9UoWCLD7xLh
-	lKWq2GIG82Thp5i16xBMjsy8M1EdQaRIL2cHWwoRWn6uKKC3KKlpSzibOZAXllAUOEZd/F3yK6h
-	T4jd2fKik0dI74N6UH561fSYjSSSNu/aShGBTypz7ZGQ9FjMOwpDfminp26Dgs4jmQy1kyDxBdK
-	XrUsI+rDDcc0=
-X-Google-Smtp-Source: AGHT+IGQhJlPlmoVKTFjSwcpy61urGaNYqp80VZY41flaZiT4qOPtjFv0gmL/biTffVDgOSzy876LQ==
-X-Received: by 2002:a05:6a00:244f:b0:736:5c8e:bab8 with SMTP id d2e1a72fcca58-73682b5510amr13251516b3a.3.1741279543956;
-        Thu, 06 Mar 2025 08:45:43 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73698452a28sm1570365b3a.78.2025.03.06.08.45.42
+        d=1e100.net; s=20230601; t=1741279721; x=1741884521;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DnZMB0kgHOAUXEFLOXzghVoRuV4+jMQKukckas1LShg=;
+        b=MQh+cagc/e4dSfTc+fGdueGzSmVDPmyQhIlYZHnoJ9YO7SKbyE13o7cSIxqH4xMkts
+         H2SseIluEMWt0TfgBNkwJuzKhLTNRpuDzkvPiWIq9/Y+B1ZvrL1EwHMaYWLu1S0VUR4+
+         iF6G8AsA8OgDRY9fyale4kF1Jb4i/P7FOh6XVnnnd5Xp8GTQP0q/jdb6Fjd/UveKYXoP
+         LunHRdj7Rz89T8Ciq/bYWOzxwXeDs6vsD4mfo2zW/lIzHoQuEJCqwN8RFRMhKuGSOGVT
+         cYFPOKnpz3M6quRTm8RTQqlszlgWK+HHNyJKTvfzbCE0C+ndbT4t8A3qOpLYbMMj5iDj
+         h7cA==
+X-Gm-Message-State: AOJu0YztVwUW6AjWrkWnZl4r/THRJH3OPNKoOkYl47bthoFwdRTG0MF4
+	SDYWU9d+raH/yfQa8q30RBFvADiFC6RND00OL3guqvD2ChPbUFhGAQg1PI+BYf9aozZZepI5DNF
+	PJLiszPWddS55myUb1r53Gb9U9PXkHhtzmxvLwn53GiXbwaHmPJ22Rg==
+X-Gm-Gg: ASbGncs2Gene5/aR+YwfZfl7DYjDPz+lWk6Qlh45tsaSRPjxQr4t9JttI2JxFJs6RyP
+	HZzhnqLVKSVOvrfO0RdSOCQTcuLIFMH8+0CIE69lCf1taiQ7kR0MairS1uWb6eyOqjsVmamFnIO
+	WEU2EN8ysaqGH04HsmDtYvbsGjbp0DpVLIa781GleDQ99UXqBQCFlC3ArJqvIFrrZ3yE40MZVx2
+	gZUVhSy821o9QC22ERs54PNnaKHPozZLCwhK66qPNDKxpxL0ENyKqvWxn+w5Up5NCEZLrPWLbyu
+	nuO4+l2Q50iuxZVDWZ7EkG1AoeQ7WNyniJFCTg9OII9wmyXplCHZofNAlWNNMBpiwvD7/Ljkke8
+	i
+X-Received: by 2002:a5d:6d04:0:b0:391:2e31:c7e1 with SMTP id ffacd0b85a97d-3912e31cbdamr1733790f8f.4.1741279721435;
+        Thu, 06 Mar 2025 08:48:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFOpgKBtQoNqG0A8vm9wg1dVElBwbL0nvoKqU52pzsHajpANvmpL/kEWNNxDa1hdG90eyLpOA==
+X-Received: by 2002:a5d:6d04:0:b0:391:2e31:c7e1 with SMTP id ffacd0b85a97d-3912e31cbdamr1733766f8f.4.1741279721060;
+        Thu, 06 Mar 2025 08:48:41 -0800 (PST)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0e4065sm2611195f8f.62.2025.03.06.08.48.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 08:45:43 -0800 (PST)
-Date: Thu, 6 Mar 2025 08:45:40 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: florian@bezdeka.de
-Cc: netdev@vger.kernel.org, vitaly.lifshits@intel.com,
-	avigailx.dahan@intel.com, anthony.l.nguyen@intel.com,
-	stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH iwl-net] igc: Fix XSK queue NAPI ID mapping
-Message-ID: <Z8nRNJ7QmevZrKYZ@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>, florian@bezdeka.de,
-	netdev@vger.kernel.org, vitaly.lifshits@intel.com,
-	avigailx.dahan@intel.com, anthony.l.nguyen@intel.com,
-	stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org
-References: <20250305180901.128286-1-jdamato@fastly.com>
- <796726995fe2c0e895188862321a0de8@bezdeka.de>
+        Thu, 06 Mar 2025 08:48:40 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Naman Jain <namjain@linux.microsoft.com>, Ingo Molnar
+ <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org, Steve Wahl
+ <steve.wahl@hpe.com>, Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
+ srivatsa@csail.mit.edu, K Prateek Nayak <kprateek.nayak@amd.com>, Michael
+ Kelley <mhklinux@outlook.com>, Naman Jain <namjain@linux.microsoft.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: Re: [PATCH v4] sched/topology: Enable topology_span_sane check only
+ for debug builds
+In-Reply-To: <20250306055354.52915-1-namjain@linux.microsoft.com>
+References: <20250306055354.52915-1-namjain@linux.microsoft.com>
+Date: Thu, 06 Mar 2025 17:48:39 +0100
+Message-ID: <xhsmhwmd2ds0o.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <796726995fe2c0e895188862321a0de8@bezdeka.de>
+Content-Type: text/plain
 
-On Thu, Mar 06, 2025 at 05:27:38PM +0100, florian@bezdeka.de wrote:
-> Hi Joe,
-> 
-> On 2025-03-05 19:09, Joe Damato wrote:
-> > In commit b65969856d4f ("igc: Link queues to NAPI instances"), the XSK
-> > queues were incorrectly unmapped from their NAPI instances. After
-> > discussion on the mailing list and the introduction of a test to codify
-> > the expected behavior, we can see that the unmapping causes the
-> > check_xsk test to fail:
-> > 
-> > NETIF=enp86s0 ./tools/testing/selftests/drivers/net/queues.py
-> > 
-> > [...]
-> >   # Check|     ksft_eq(q.get('xsk', None), {},
-> >   # Check failed None != {} xsk attr on queue we configured
-> >   not ok 4 queues.check_xsk
-> > 
-> > After this commit, the test passes:
-> > 
-> >   ok 4 queues.check_xsk
-> > 
-> > Note that the test itself is only in net-next, so I tested this change
-> > by applying it to my local net-next tree, booting, and running the test.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: b65969856d4f ("igc: Link queues to NAPI instances")
-> > Signed-off-by: Joe Damato <jdamato@fastly.com>
-> > ---
-> >  drivers/net/ethernet/intel/igc/igc_xdp.c | 2 --
-> >  1 file changed, 2 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/intel/igc/igc_xdp.c
-> > b/drivers/net/ethernet/intel/igc/igc_xdp.c
-> > index 13bbd3346e01..869815f48ac1 100644
-> > --- a/drivers/net/ethernet/intel/igc/igc_xdp.c
-> > +++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
-> > @@ -86,7 +86,6 @@ static int igc_xdp_enable_pool(struct igc_adapter
-> > *adapter,
-> >  		napi_disable(napi);
-> >  	}
-> > 
-> > -	igc_set_queue_napi(adapter, queue_id, NULL);
-> >  	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
-> >  	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
-> > 
-> > @@ -136,7 +135,6 @@ static int igc_xdp_disable_pool(struct igc_adapter
-> > *adapter, u16 queue_id)
-> >  	xsk_pool_dma_unmap(pool, IGC_RX_DMA_ATTR);
-> >  	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
-> >  	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
-> > -	igc_set_queue_napi(adapter, queue_id, napi);
-> > 
-> >  	if (needs_reset) {
-> >  		napi_enable(napi);
-> 
-> That doesn't look correct to me. You removed both invocations of
-> igc_set_queue_napi() from igc_xdp.c. Where is the napi mapping now
-> done (in case XDP is enabled)?
+On 06/03/25 11:23, Naman Jain wrote:
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index c49aea8c1025..666f0a18cc6c 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -2359,6 +2359,13 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
+>  {
+>       int i = cpu + 1;
+>
+> +	/* Skip the topology sanity check for non-debug, as it is a time-consuming operation */
+> +	if (!sched_debug()) {
+> +		pr_info_once("%s: Skipping topology span sanity check. Use `sched_verbose` boot parameter to enable it.\n",
+> +			     __func__);
 
-igc_set_queue_napi is called when the queues are created (igc_up,
-__igc_open). When the queues are created they'll be linked. Whether
-or not XDP is enabled does not affect the queues being linked.
+FWIW I'm not against this change, however if you want to add messaging
+about sched_verbose I'd put that in e.g. sched_domain_debug() (as a print
+once like you've done here) with something along the lines of:
 
-The test added for this (which I mentioned in the commit message)
-confirms that this is the correct behavior, as does the
-documentation in Documentation/netlink/specs/netdev.yaml.
+  "Scheduler topology debugging disabled, add 'sched_verbose' to the cmdline to enable it"
 
-See commit df524c8f5771 ("netdev-genl: Add an XSK attribute to
-queues").
+> +		return true;
+> +	}
+> +
+>       /* NUMA levels are allowed to overlap */
+>       if (tl->flags & SDTL_OVERLAP)
+>               return true;
+> --
+> 2.34.1
 
-> To me it seems flipped. igc_xdp_enable_pool() should do the mapping
-> (previously did the unmapping) and igc_xdp_disable_pool() should do
-> the unmapping (previously did the mapping). No?
-
-In igc, all queues get their NAPIs mapped in igc_up or __igc_open. I
-had mistakenly added code to remove the mapping for XDP because I
-was under the impression that NAPIs should not be mapped for XDP
-queues. See the commit under fixes.
-
-This was incorrect, so this commit removes the unmapping and
-corrects the behavior.
-
-With this change, all queues have their NAPIs mapped (whether or not
-they are used for AF_XDP) and is the agreed upon behavior based on
-prior conversations on the list and the documentation I mentioned
-above.
-
-> Btw: I got this patch via stable. It doesn't make sense to send it
-> to stable where this patch does not apply.
-
-Maybe I made a mistake, but as far as I can tell the commit under
-fixes is in 6.14-rc*:
-
-$ git tag --contains b65969856d4f
-v6.14-rc1
-v6.14-rc2
-v6.14-rc3
-v6.14-rc4
-
-So, I think this change is:
-  - Correct
-  - Definitely a "fixes" and should go to iwl-net
-  - But maybe does not need to CC stable ?
-
-If the Intel folks would like me to resend with some change please
-let me know.
 
