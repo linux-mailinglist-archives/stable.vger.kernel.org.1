@@ -1,168 +1,257 @@
-Return-Path: <stable+bounces-121454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516D2A57449
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 23:02:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EC7A57528
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 23:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD6E1896536
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 22:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A1418992A8
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 22:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ABE1A9B24;
-	Fri,  7 Mar 2025 22:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD3D23FC68;
+	Fri,  7 Mar 2025 22:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UyWJ+nIh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iR0+v/7g"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7479A7E9
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 22:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF9E18BC36;
+	Fri,  7 Mar 2025 22:50:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741384925; cv=none; b=ISqWos0zV2hdMoUnApFWOu4TgWPJCG5rXv1zWg+OYHQbyooTbPGUV4EBkJ31QmZAvXyWLQdGXqdMeTTiwkJc7AyYjJcx5ahbHquRY1eCcVhO4BsUurBWAnYRNOHdcohuqoRed4TuWh4XsuBVjWE1HVHsm4o1Va4lzEFzUX7kzeU=
+	t=1741387836; cv=none; b=CmntaRfzbeRU3ClaQCG2eYIezISLzLboNkW6EMVwKPfZnPDBsenqHNvteQHcYolZJgMf4A3pBV9wPEU3wk2MmI0+9IjGtjgWK3zIKPkKuor3ke7surLQFaTwrjoSDG1uMAu9QvzVR2bKtRmGdqCamXCp8EB/G2R2YiCGrk96tJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741384925; c=relaxed/simple;
-	bh=Iqg2bKs3r41ACX9As4jl+rl20MuvESPwxCo28QpUXoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=VY88CoFnag/XJqBwEQcUTJjPGw+x5amjVYDGZeDR/S8kQiU6xvN7I27GApyHhRFxO/vaWUuqREZ1+4vnTFAS0KX9ASnRwhUCGYq4lENnqNkr2FXnUBRC+YpV/XOjEQxbugV7g/+1Zvhrv/CraM4JTmbrYjO0aLGGu5RHrCJqQdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UyWJ+nIh; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741384923; x=1772920923;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Iqg2bKs3r41ACX9As4jl+rl20MuvESPwxCo28QpUXoI=;
-  b=UyWJ+nIhZNxd8brhM/gr136nK3KFe0ErnD/XhQ+qobhEviQZiajYTedq
-   qNDYLE4cRPqHzVqXPL7MN7z9cI2meNhxF+htM3/u/JJ0+2mHiW1heo+xZ
-   uKQVwcX0LEQhMGfPiRy+7TemcCLn8XopEMbJkAzLLir3nXyoOnA0C6Iyu
-   CurRFy40NHtZ6xLdPhQSh2SAIuyZa+MkUislps5B/BKMHTfXSzIxV5Z9S
-   zCf9AsK6SKxkABHIGl3c3rM2M4jT1tlm3ExKFZ897Kc+HSvHuk/0APloZ
-   to7U+Qn/3SwyVugwpMWVTKJDDWoA5ndqBXttr9zBblMb/2YPlckuiGhAo
-   g==;
-X-CSE-ConnectionGUID: U9lou/luRgypisveYDR0Gg==
-X-CSE-MsgGUID: I3n4/BwXR92KKTrcDEgySQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="46369914"
-X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
-   d="scan'208";a="46369914"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 14:02:02 -0800
-X-CSE-ConnectionGUID: /Zg9r1maQtGKLnbmvQGk0Q==
-X-CSE-MsgGUID: Pzyd+NizRtm2P5utaMgX6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
-   d="scan'208";a="119620732"
-Received: from vward-mobl.amr.corp.intel.com (HELO desk) ([10.125.145.180])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 14:02:02 -0800
-Date: Fri, 7 Mar 2025 14:02:01 -0800
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Xi Ruoyao <xry111@xry111.site>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Voegtle <tv@lio96.de>
-Subject: [PATCH 6.12] x86/mm: Don't disable PCID when INVLPG has been fixed
- by microcode
-Message-ID: <20250307-clear-pcid-6-12-v1-1-7c7f826c0fd1@linux.intel.com>
-X-B4-Tracking: v=1; b=H4sIAA9sy2cC/x3MMQqAMAxA0atIZiNtrFW8ijhIGjUgKi2IIN7d4
- viG/x9IElUS9MUDUS5NeuwZtiyA12lfBDVkAxlqTG1a5E2miCdrQI+WcK7Fcee4JeMhV2eUWe/
- /OICvLMH4vh+0TDsYZwAAAA==
-X-Mailer: b4 0.14.1
+	s=arc-20240116; t=1741387836; c=relaxed/simple;
+	bh=NAGVmOZ2bV3/p+zP9WyIeVEOO8pb7Xo8s0U8iaDHrtg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Jb4xyL4hfVmZBwT+SpAIliF44pNO/LAqy7JI6u8TpODo1CJQM8hukVAFb5VKsA3m4XLtJEjgcQ8AH3m32B5KqQCkKSY6pE8Z287avmjRd7g4/Hynq4t/ZMrQYUsVTNwZiemyfOZup5k4vstPY8eip8n3dt3kuPpFzoBP2QNzzyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iR0+v/7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1416C4CED1;
+	Fri,  7 Mar 2025 22:50:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741387836;
+	bh=NAGVmOZ2bV3/p+zP9WyIeVEOO8pb7Xo8s0U8iaDHrtg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iR0+v/7gZyU+uOMpIyvZEyHsiSW8gSJ2JJs01T1chsYThIRbw9g/oJe2o6+pj3tg8
+	 AQdN4OKhN2Gzawfg4LinsCm4de37n+DcX3JuI3Fwz01FACHe6BIW1StX5gs83XPXod
+	 OJtx2Qgtsf5GUyfFN7pyPD8vffNpfZuOXFrFhS45WfVy0czm1aT6Vg6XjiF91ntwC5
+	 kt/gwGc3uT6QFOya135LZChOEtQdjOft9YZWc5MkWcQIExQ+2vDpqEz8PSMskNdr0y
+	 +U5Mz5buv1FSke+8BJFEpX/U3vA7w2gCGNzBcsvsY/b5+Bko/awGF/ykhGMLkgccXo
+	 Udg+d8n7wOAug==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alyssa Ross <hi@alyssa.is>,
+	NoisyCoil <noisycoil@disroot.org>,
+	patches@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12.y 00/60] `alloc`, `#[expect]` and "Custom FFI"
+Date: Fri,  7 Mar 2025 23:49:07 +0100
+Message-ID: <20250307225008.779961-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Xi Ruoyao <xry111@xry111.site>
+Hi Greg, Sasha,
 
-commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
+Please consider this series for 6.12.y. It should apply cleanly on top
+of v6.12.18.
 
-Per the "Processor Specification Update" documentations referred by
-the intel-microcode-20240312 release note, this microcode release has
-fixed the issue for all affected models.
+These are the patches to backport the `alloc` series for Rust, which
+will be useful for Rust Android Binder and others. It also means that,
+with this applied, we will not rely on the standard library `alloc` (and
+the unstable `cfg` option we used) anymore in any stable kernel that
+supports several Rust versions, so e.g. upstream Rust could consider
+removing that `cfg` if they needed.
 
-So don't disable PCID if the microcode is new enough.  The precise
-minimum microcode revision fixing the issue was provided by Pawan
-Intel.
+The entire series of cherry-picks apply almost cleanly (only 2 trivial
+conflicts) -- to achieve that, I included the `#[expect]` support, which
+will make future backports that use that feature easier anyway. That
+series also enabled some Clippy warnings. We could reduce the series,
+but the end result is warning-free and Clippy is opt-in anyway.
+Out-of-tree code could, of course, see some warnings if they use it.
 
-[ dhansen: comment and changelog tweaks ]
-[ pawan: backported to 6.12 ]
+I also included a bunch of Clippy warnings cleanups for the DRM QR Code
+to have this series clean up to Rust 1.85.0 (the latest stable), but
+I could send them separately if needed.
 
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
-Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
-Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
-Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
-Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
-Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
----
- arch/x86/mm/init.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+Finally, I included the "Custom FFI" series backport, which in turn
+solves the arm64 + Rust 1.85.0 + `CONFIG_RUST_FW_LOADER_ABSTRACTIONS=y`
+issue. It will also make future patches easier to backport, since we
+will have the same `ffi::` types.
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index eb503f53c319..101725c149c4 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -263,28 +263,33 @@ static void __init probe_page_size_mask(void)
- }
- 
- /*
-- * INVLPG may not properly flush Global entries
-- * on these CPUs when PCIDs are enabled.
-+ * INVLPG may not properly flush Global entries on
-+ * these CPUs.  New microcode fixes the issue.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	X86_MATCH_VFM(INTEL_ALDERLAKE,	    0),
--	X86_MATCH_VFM(INTEL_ALDERLAKE_L,    0),
--	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT, 0),
--	X86_MATCH_VFM(INTEL_RAPTORLAKE,	    0),
--	X86_MATCH_VFM(INTEL_RAPTORLAKE_P,   0),
--	X86_MATCH_VFM(INTEL_RAPTORLAKE_S,   0),
-+	X86_MATCH_VFM(INTEL_ALDERLAKE,	    0x2e),
-+	X86_MATCH_VFM(INTEL_ALDERLAKE_L,    0x42c),
-+	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT, 0x11),
-+	X86_MATCH_VFM(INTEL_RAPTORLAKE,	    0x118),
-+	X86_MATCH_VFM(INTEL_RAPTORLAKE_P,   0x4117),
-+	X86_MATCH_VFM(INTEL_RAPTORLAKE_S,   0x2e),
- 	{}
- };
- 
- static void setup_pcid(void)
- {
-+	const struct x86_cpu_id *invlpg_miss_match;
-+
- 	if (!IS_ENABLED(CONFIG_X86_64))
- 		return;
- 
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
--	if (x86_match_cpu(invlpg_miss_ids)) {
-+	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
-+
-+	if (invlpg_miss_match &&
-+	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
- 		pr_info("Incomplete global flushes, disabling PCID");
- 		setup_clear_cpu_cap(X86_FEATURE_PCID);
- 		return;
+I tested that the entire series builds between every commit for x86_64
+`LLVM=1` with the latest stable and minimum supported Rust compiler
+versions. I also ran my usual stable kernel tests on the end result;
+that is, boot-tested in QEMU for several architectures etc. In v6.12.18
+for loongarch there is an unrelated error that was not there in v6.12.17
+when I did a previous test run -- reported separately.
 
----
-base-commit: 105a31925e2d17b766cebcff5d173f469e7b9e52
-change-id: 20250307-clear-pcid-6-12-f3e4c84c7206
+Things could still break, so extra tests on the next -rc from users in
+Cc here would be welcome -- thanks!
 
-Best regards,
--- 
-Pawan
+Cheers,
+Miguel
 
+Asahi Lina (1):
+  rust: alloc: Fix `ArrayLayout` allocations
 
+Benno Lossin (1):
+  rust: alloc: introduce `ArrayLayout`
+
+Danilo Krummrich (28):
+  rust: alloc: add `Allocator` trait
+  rust: alloc: separate `aligned_size` from `krealloc_aligned`
+  rust: alloc: rename `KernelAllocator` to `Kmalloc`
+  rust: alloc: implement `ReallocFunc`
+  rust: alloc: make `allocator` module public
+  rust: alloc: implement `Allocator` for `Kmalloc`
+  rust: alloc: add module `allocator_test`
+  rust: alloc: implement `Vmalloc` allocator
+  rust: alloc: implement `KVmalloc` allocator
+  rust: alloc: add __GFP_NOWARN to `Flags`
+  rust: alloc: implement kernel `Box`
+  rust: treewide: switch to our kernel `Box` type
+  rust: alloc: remove extension of std's `Box`
+  rust: alloc: add `Box` to prelude
+  rust: alloc: implement kernel `Vec` type
+  rust: alloc: implement `IntoIterator` for `Vec`
+  rust: alloc: implement `collect` for `IntoIter`
+  rust: treewide: switch to the kernel `Vec` type
+  rust: alloc: remove `VecExt` extension
+  rust: alloc: add `Vec` to prelude
+  rust: error: use `core::alloc::LayoutError`
+  rust: error: check for config `test` in `Error::name`
+  rust: alloc: implement `contains` for `Flags`
+  rust: alloc: implement `Cmalloc` in module allocator_test
+  rust: str: test: replace `alloc::format`
+  rust: alloc: update module comment of alloc.rs
+  kbuild: rust: remove the `alloc` crate and `GlobalAlloc`
+  MAINTAINERS: add entry for the Rust `alloc` module
+
+Ethan D. Twardy (1):
+  rust: kbuild: expand rusttest target for macros
+
+Filipe Xavier (2):
+  rust: error: make conversion functions public
+  rust: error: optimize error type to use nonzero
+
+Gary Guo (3):
+  rust: fix size_t in bindgen prototypes of C builtins
+  rust: map `__kernel_size_t` and friends also to usize/isize
+  rust: use custom FFI integer types
+
+Miguel Ojeda (17):
+  rust: workqueue: remove unneeded ``#[allow(clippy::new_ret_no_self)]`
+  rust: sort global Rust flags
+  rust: types: avoid repetition in `{As,From}Bytes` impls
+  rust: enable `clippy::undocumented_unsafe_blocks` lint
+  rust: enable `clippy::unnecessary_safety_comment` lint
+  rust: enable `clippy::unnecessary_safety_doc` lint
+  rust: enable `clippy::ignored_unit_patterns` lint
+  rust: enable `rustdoc::unescaped_backticks` lint
+  rust: init: remove unneeded `#[allow(clippy::disallowed_names)]`
+  rust: sync: remove unneeded
+    `#[allow(clippy::non_send_fields_in_send_ty)]`
+  rust: introduce `.clippy.toml`
+  rust: replace `clippy::dbg_macro` with `disallowed_macros`
+  rust: provide proper code documentation titles
+  rust: enable Clippy's `check-private-items`
+  Documentation: rust: add coding guidelines on lints
+  rust: start using the `#[expect(...)]` attribute
+  Documentation: rust: discuss `#[expect(...)]` in the guidelines
+
+Thomas Böhler (7):
+  drm/panic: avoid reimplementing Iterator::find
+  drm/panic: remove unnecessary borrow in alignment_pattern
+  drm/panic: prefer eliding lifetimes
+  drm/panic: remove redundant field when assigning value
+  drm/panic: correctly indent continuation of line in list item
+  drm/panic: allow verbose boolean for clarity
+  drm/panic: allow verbose version check
+
+ .clippy.toml                             |   9 +
+ .gitignore                               |   1 +
+ Documentation/rust/coding-guidelines.rst | 148 ++++
+ MAINTAINERS                              |   8 +
+ Makefile                                 |  15 +-
+ drivers/block/rnull.rs                   |   4 +-
+ drivers/gpu/drm/drm_panic_qr.rs          |  23 +-
+ mm/kasan/kasan_test_rust.rs              |   3 +-
+ rust/Makefile                            |  92 +--
+ rust/bindgen_parameters                  |   5 +
+ rust/bindings/bindings_helper.h          |   1 +
+ rust/bindings/lib.rs                     |   6 +
+ rust/exports.c                           |   1 -
+ rust/ffi.rs                              |  13 +
+ rust/helpers/helpers.c                   |   1 +
+ rust/helpers/slab.c                      |   6 +
+ rust/helpers/vmalloc.c                   |   9 +
+ rust/kernel/alloc.rs                     | 150 +++-
+ rust/kernel/alloc/allocator.rs           | 208 ++++--
+ rust/kernel/alloc/allocator_test.rs      |  95 +++
+ rust/kernel/alloc/box_ext.rs             |  89 ---
+ rust/kernel/alloc/kbox.rs                | 456 +++++++++++
+ rust/kernel/alloc/kvec.rs                | 913 +++++++++++++++++++++++
+ rust/kernel/alloc/layout.rs              |  91 +++
+ rust/kernel/alloc/vec_ext.rs             | 185 -----
+ rust/kernel/block/mq/operations.rs       |  18 +-
+ rust/kernel/block/mq/raw_writer.rs       |   2 +-
+ rust/kernel/block/mq/tag_set.rs          |   2 +-
+ rust/kernel/error.rs                     |  79 +-
+ rust/kernel/init.rs                      | 127 ++--
+ rust/kernel/init/__internal.rs           |  13 +-
+ rust/kernel/init/macros.rs               |  18 +-
+ rust/kernel/ioctl.rs                     |   2 +-
+ rust/kernel/lib.rs                       |   5 +-
+ rust/kernel/list.rs                      |   1 +
+ rust/kernel/list/arc_field.rs            |   2 +-
+ rust/kernel/net/phy.rs                   |  16 +-
+ rust/kernel/prelude.rs                   |   5 +-
+ rust/kernel/print.rs                     |   5 +-
+ rust/kernel/rbtree.rs                    |  49 +-
+ rust/kernel/std_vendor.rs                |  12 +-
+ rust/kernel/str.rs                       |  46 +-
+ rust/kernel/sync/arc.rs                  |  25 +-
+ rust/kernel/sync/arc/std_vendor.rs       |   2 +
+ rust/kernel/sync/condvar.rs              |   7 +-
+ rust/kernel/sync/lock.rs                 |   8 +-
+ rust/kernel/sync/lock/mutex.rs           |   4 +-
+ rust/kernel/sync/lock/spinlock.rs        |   4 +-
+ rust/kernel/sync/locked_by.rs            |   2 +-
+ rust/kernel/task.rs                      |   8 +-
+ rust/kernel/time.rs                      |   4 +-
+ rust/kernel/types.rs                     | 140 ++--
+ rust/kernel/uaccess.rs                   |  23 +-
+ rust/kernel/workqueue.rs                 |  29 +-
+ rust/macros/lib.rs                       |  14 +-
+ rust/macros/module.rs                    |   8 +-
+ rust/uapi/lib.rs                         |   6 +
+ samples/rust/rust_minimal.rs             |   4 +-
+ samples/rust/rust_print.rs               |   1 +
+ scripts/Makefile.build                   |   4 +-
+ scripts/generate_rust_analyzer.py        |  11 +-
+ 61 files changed, 2482 insertions(+), 756 deletions(-)
+ create mode 100644 .clippy.toml
+ create mode 100644 rust/ffi.rs
+ create mode 100644 rust/helpers/vmalloc.c
+ create mode 100644 rust/kernel/alloc/allocator_test.rs
+ delete mode 100644 rust/kernel/alloc/box_ext.rs
+ create mode 100644 rust/kernel/alloc/kbox.rs
+ create mode 100644 rust/kernel/alloc/kvec.rs
+ create mode 100644 rust/kernel/alloc/layout.rs
+ delete mode 100644 rust/kernel/alloc/vec_ext.rs
+
+--
+2.48.1
 
