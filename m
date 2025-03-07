@@ -1,182 +1,201 @@
-Return-Path: <stable+bounces-121359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D09A564E6
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:16:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C903A56541
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268633AA10D
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:16:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C19F189983B
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB301FFC70;
-	Fri,  7 Mar 2025 10:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961D420E700;
+	Fri,  7 Mar 2025 10:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9MWVwyE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WWbceMNN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EA92063FD
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 10:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE8720CCC2
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 10:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741342591; cv=none; b=c68UVaV/4pUFx3KYpQdYW1gnovk6D58Mh2faeaCzQxYuhZJ8UUYba9a5VzXFsaabXeJ3WrzFcMbNPVbA6QdCdmyI2h8kddKFOtBen/CKGAZ6zsUOqFzYtwAw9xto0VYdfVe+3YaoTy0m1S3AAwD9txfBF1bb9fwhpwACl/C2hkQ=
+	t=1741343369; cv=none; b=KQsSK0hg/3Qdm8M/gedqTPLOsnCmGGecvwyDL8+NsWr8gqoc9eSzKeL6oiGG6lyqesUjcYm7rFxbvEm0l+lfTIZ+z6Y6PjdfPd8VoKJLaMRfrqBY+oHl7HxNnePdN3wkoIkUTwuAUxw8zP17XnRLrLqkWoXvBmVWS/XJRRPmlao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741342591; c=relaxed/simple;
-	bh=gq98LUzZEsk2yxTmc8tqwmrgX8fpMLkdULxpsH/S7Hw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J9g6bo8UPQljZul8nLzTjbMjhdKm5U6YfKq5/dNaJVXbe5V85gCnpg3MZdn62L8D6G8L7R6Vea9k0eB/dZyK36Uy+h8SEMQ6QmJJhd1Ru2mVw/zJ8+eUZxXv9i78j2BkrZE0pq2I+NJH4b26fXR/2qqoH9gOf1nBcZ0s7XmBQN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9MWVwyE; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43bcc85ba13so12957185e9.0
-        for <stable@vger.kernel.org>; Fri, 07 Mar 2025 02:16:29 -0800 (PST)
+	s=arc-20240116; t=1741343369; c=relaxed/simple;
+	bh=iCQvNvrSUCbnUFJbDtQ5Q+slsxi7yRmUesQiJSr9k0k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bpFmvJe4Y8LZQUdcKRNb6jS5iLBtaVYaclkpsE61fcYvANnbOJYNWMsn602EDGYMjyAPSKM3DLaFMulb/VmKRMKwRbFYBU3RZSMpxFB/JLFidpEmOx3S4Ef/2A0yQ6Ij9C1+dysypkxLjsfPBiSRT6EVc2lSKqpcHiLWTDPiVXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WWbceMNN; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43bcc85ba13so13054965e9.0
+        for <stable@vger.kernel.org>; Fri, 07 Mar 2025 02:29:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741342588; x=1741947388; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QSuS9bPe5UhUC+Md9FsoGNTVMWoRjNLRcpEqLWSHYd4=;
-        b=Z9MWVwyEIHknouDTa7MMgoS8J8xgXW7nmwKjXzkmeFNKoK9XxZSKlFBzhzt76Di4Cq
-         zN+q6b9cUZsRCixEbt/YTh+KdrWgiUXL+yC6ao3QuavrxaPRLealF5vTJ+31+8ikTPOq
-         a4qPKjokYy8ol0bbSgdTFbq7+7bb7bUef5iBCfHb2Oe1z5TzvK6TxxOnE6bHPtlvrDM6
-         CKGQici6vBF2rGwNJU4zMImsz1Je+EQbK0aR1NLIlzSxSj3ya1K5tXcnwKPh7l5XQs4L
-         MM9VtBntHHnaq1oMCejsAxGpnLmDnjZA4vIjfOuVIb8BXj+61xhQBjfftZmZs4pYFl9a
-         uIHw==
+        d=linaro.org; s=google; t=1741343364; x=1741948164; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sVCYZLL0PxN2CDTkTr7gzBPm/K6Lr1h5htb1NMheOZQ=;
+        b=WWbceMNNeXOq3bHjDLRsZhWF1tijfQT6XPgxwv9x8U5XqaHrMN/VlqWjwfj7JeDiQ+
+         t7Orj+QpazqS4wEopayopts/IqS8gTDf4wMu3gkDVidLNi70nhMiJIGrJYPMuMaY8PK5
+         ICD+PVpCCh7vvIz2DwmKLUhdO68rF3dddmIjd0DtuTvro+ui5tTE2A/9KhdTJPKjGxUy
+         0GNIra2bmCJYb83d/vkwwIJu6qgB6V/DoOm6XLmZkR+2Tma5uHTpyEKa3ZeLvMrm4E6Z
+         azkCUpk44sgrg57hCPP/NR4/MRjSAKqM6/WNWG6xTmuDRjfICBe8Yd1Usw5bQ2kd3mZi
+         3yhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741342588; x=1741947388;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QSuS9bPe5UhUC+Md9FsoGNTVMWoRjNLRcpEqLWSHYd4=;
-        b=p/Zd2VNzkYs52fwD3vEoAbhJvx+WrJ9m5cyvvpLWkJx0ySQjn0B3MzBypGuZj1ahHO
-         YFgj2nDK4j5J5OCV9M6laHNyaDaoaQeJYVs/q4xjusBi9t9m8vYXVljCfWZgixU1EGC4
-         66aR9fpiOKmjWJ/cPOTxyteLG/sDC6R9l4GS7aExsKY3z8ackjavM/vEVsJScZxVJM//
-         fFcbxPfpL4jDdT0wjRVFNfjDnbe0NkrR+EcUQwyFkQ/dcc932ig0KNZcEeE1wuEp5/86
-         n4kux4oofrFpXLn9ucJpu6MT7iZS1m8zTOPYyi3PRobSMzzUU14OCLildurJ5qSOsklT
-         CuJw==
-X-Gm-Message-State: AOJu0Yz/PIVKXBEewXv/2vPPjUlcYaixMA8QqLH1C27uvQNwg71A2yJE
-	wt+sXHXzr1fV0IPc++v8USzGg+l1/2CgX/tAa0EPr8GMziVuEvN0
-X-Gm-Gg: ASbGncu42hFs8MxhNHmT80ey1q/bJCgngVFB8/Ra9ljW0DcE4N+9W7h8xyMsE4zBJWh
-	9ctCIyCCcZu8C5irPYAYb+HTaTOUHSANbLxKyQ0InzB8hCZuL+Wqk3MMBmoU3QG/OL1gaH/D63/
-	lfodT+bkA+RwQTNGcmpi/nvbjfhI9PDh2/m+jqoJZEbQzEVhtqsirmMzMtH5trJ4AvNcXMAs9np
-	hx44gewyKfTOJSNgGbSKVAZmX45LXD2IcgmHaj8mAWt1HMjg0btyjy/Gw7+uMU7FHi8+T2UbjrC
-	NgFv66KtrWEuHFpp3dSjPQNx3y0IUBj5g/9yQWm+2Ie40g==
-X-Google-Smtp-Source: AGHT+IHOiQkD5BTHhwg3nQBnlUOZI7pfk5rpJzpHBQIKMR4tMA/4ocwfz4TCDyKnK7MjTer4k7Ar+w==
-X-Received: by 2002:a5d:47cc:0:b0:38d:bccf:f342 with SMTP id ffacd0b85a97d-39132db8b3cmr2001025f8f.43.1741342587883;
-        Fri, 07 Mar 2025 02:16:27 -0800 (PST)
-Received: from localhost ([2a00:79e1:abd:a201:48ff:95d2:7dab:ae81])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3912c0e2f39sm4797294f8f.80.2025.03.07.02.16.26
+        d=1e100.net; s=20230601; t=1741343364; x=1741948164;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sVCYZLL0PxN2CDTkTr7gzBPm/K6Lr1h5htb1NMheOZQ=;
+        b=ETk6C0zj7oWOjngr9lugh7q3QP/Bc56uMYcsDESXoT5pm1duhTyykRDqNmVkZ+O/3k
+         7mJE8WPn7wJ5tSuqqaqaxGOqcYJBXwf9visEflMWP5FzFFRS4fU59DikOb9qH2awIUlh
+         dzSkmoV4xeiGWMmIGcGFRaC5IhonJg9mpJbGlfXYXNCUVndpmSyKTD8Amju7aeSd6H4W
+         z4T/K6BGPXUkT3TIXyQurPs8aZT/PgcO8quIfc3YwWZtKvt8bz7QbyyTNldPHyuYetOu
+         lVZYd7jFXQOIxdz2jTIAr2YCA86W70cULE5+hkWyIfx6TveWX0FbrbdXUczYSIQ/kb5Z
+         v0SA==
+X-Forwarded-Encrypted: i=1; AJvYcCVBcJFK8lj2hzoFUIDObUP4dj7E+qlym5tv2iItO/rAQ7zBXagmWVlN+fEVgDaxmA8TVei1x+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/ZmnMB0BplkWxn9XRnh0n9MiLtA+BAaaLPjSVfcXp5NlOM5dC
+	t5jzXR4sGWPMytPrWNOXkhIa+ANmP1KFbBsfSkxlWsU3uioPnP1MPL8MYUfFyvs=
+X-Gm-Gg: ASbGnct8rbDprDQOYmMfgqLi2gMqqvIgAeQmQ4WF/Q6yn44F+9MxXsdK7FSHPhfIs1J
+	9enYt6GT7LAs0/JeNJ/7LGAwZFU4eTrdLIOp95LZkdeVh5tIIrmcM9jbwSJ2fu31uYPOsu97VXW
+	c1TjXRNqqVOr5OoJ9hZ6L3uwjOyMpkOuufr16RqtUiXWwMSzQuCgRgErZ8H/LvPUStWOrhmH8xk
+	HA+FywpUCgJO5E9Av6okmNlpZb12e1Vp/VUj1XOm4LlDzC3L5i7j2IG4wdfUfq7o3YKb7Km4Z2a
+	ooJGjg4JapZXhkjMUVZ676fqMHr52wrmVSVGmwaqviqMoDxjWajwilhZxR/8TqsIqa/EMBgfcaE
+	=
+X-Google-Smtp-Source: AGHT+IEHa6kUt/xq+dn25f2syNI+XsfPksB/5LtSy2qdICevzWmT3fzjID8iFJtsA0jNgMPQs9MKwQ==
+X-Received: by 2002:a05:600c:1907:b0:439:8e3d:fb58 with SMTP id 5b1f17b1804b1-43c5a5fe368mr24279375e9.11.1741343364442;
+        Fri, 07 Mar 2025 02:29:24 -0800 (PST)
+Received: from gpeter-l.roam.corp.google.com ([145.224.90.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8b0461sm49192955e9.4.2025.03.07.02.29.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 02:16:27 -0800 (PST)
-Date: Fri, 7 Mar 2025 11:16:21 +0100
-From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jared Finder <jared@finder.org>
-Cc: stable@vger.kernel.org, Jann Horn <jannh@google.com>,
-	Hanno =?iso-8859-1?Q?B=F6ck?= <hanno@hboeck.de>,
-	Jiri Slaby <jirislaby@kernel.org>, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH] tty: Require CAP_SYS_ADMIN for all usages of
- TIOCL_SELMOUSEREPORT
-Message-ID: <20250307.9339126c0c96@gnoack.org>
-References: <491f3df9de6593df8e70dbe77614b026@finder.org>
- <20250223205449.7432-2-gnoack3000@gmail.com>
+        Fri, 07 Mar 2025 02:29:23 -0800 (PST)
+From: Peter Griffin <peter.griffin@linaro.org>
+Subject: [PATCH v4 0/4] samsung: pinctrl: Add support for
+ eint_fltcon_offset and filter selection on gs101
+Date: Fri, 07 Mar 2025 10:29:04 +0000
+Message-Id: <20250307-pinctrl-fltcon-suspend-v4-0-2d775e486036@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250223205449.7432-2-gnoack3000@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHDKymcC/4XNTQ6CMBCG4auQrq3pHyCuvIdx0ZYpNCEtabHRE
+ O5uYaPGEJfvl8wzM4oQLER0LmYUINlovcshDgXSvXQdYNvmRoywklBG8GidnsKAzTBp73C8xxF
+ cixnnXFJea9EKlI/HAMY+Nvh6y93bOPnw3P4kuq5/yUQxwVDXDSGKyVMpLoN1MvijDx1azcTeD
+ id012HZkTWAaZQSgqsfh3861a7Ds2MaqYQxlWQCvpxlWV4mkrrwTQEAAA==
+X-Change-ID: 20250120-pinctrl-fltcon-suspend-2333a137c4d4
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com, 
+ semen.protsenko@linaro.org, kernel-team@android.com, 
+ jaewon02.kim@samsung.com, Peter Griffin <peter.griffin@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3384;
+ i=peter.griffin@linaro.org; h=from:subject:message-id;
+ bh=iCQvNvrSUCbnUFJbDtQ5Q+slsxi7yRmUesQiJSr9k0k=;
+ b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBnysp59dcFeF8bi+BDvg8zdNdr2JC4aWKtQbXWR
+ 5PLmdsLeZuJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ8rKeQAKCRDO6LjWAjRy
+ ukQYD/4jJs2HzQEt5K9aXtxfYKahy7nUC8bA/y7SvNveZg0ZB2LiQAzUggdvLpc0sYwaLeDyw+W
+ 7VgDlv9Y43Sq2LQU7DBkrqGiIz9I1zdw2Sa768dJU+t4hicZveHo+0gQi9bYnSGJeqg1cgRZPKb
+ qQ60iLx6KB10oRIxiu9Kf4liE8kQYRxza3T4y5t8t9cwFKhqysbzPBbVKnBlmOXvXtx9eZ5JMPb
+ zPIVMkuD7jpCArp+e20WVkQ8O6qQRfPK/IuRLhLHgNnkdpVYYgnxvqJe5lhKOOgLGCTOjj6HQZm
+ DzZRhFYDgT/WnWDn95tCk3axXfeuh/w8z5CcrUb2VHJWviA+wPQD/tpztLHG2xV8Dkr+3bgqom0
+ Gdi0VtryZafXFJXBpDALq0zfs1HrFG1bFFdeBq0ZdfTId1UAKWuUxaERtmATLfUbrUsjPDr51sq
+ EIyLbqlf3xovS9mbk/S1GOSU2np3dBHBSJJNXRAnRuZ6qy5GyrR3/NIOSzPHZEKidpRFcW635qY
+ gA+bkLlUdDTDCr/zs+taHCtSEJrgZo4GqaSJi2GirQJWd05jVKaW76D4W8VuosrVXfVcmL6Efq+
+ oVX7WvFXD9PVEiXEZRRzp+E9ZYJWgmQV93Hj6xVCZEd7daRmFKMui7rt12WEK+XxXuaTXoRpaib
+ LpLgVdhn6s1UL+Q==
+X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
+ fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
 
-On Sun, Feb 23, 2025 at 09:54:50PM +0100, Günther Noack wrote:
-> This requirement was overeagerly loosened in commit 2f83e38a095f
-> ("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN"), but as
-> it turns out,
-> 
->   (1) the logic I implemented there was inconsistent (apologies!),
-> 
->   (2) TIOCL_SELMOUSEREPORT might actually be a small security risk
->       after all, and
-> 
->   (3) TIOCL_SELMOUSEREPORT is only meant to be used by the mouse
->       daemon (GPM or Consolation), which runs as CAP_SYS_ADMIN
->       already.
+Hi folks,
 
+This series fixes support for correctly saving and restoring fltcon0
+and fltcon1 registers on gs101 for non-alive banks where the fltcon
+register offset is not at a fixed offset (unlike previous SoCs).
+This is done by adding a eint_fltcon_offset and providing GS101
+specific pin macros that take an additional parameter (similar to
+how exynosautov920 handles it's eint_con_offset).
 
-Greg and Jared: Friendly ping on this patch.
+Additionally the SoC specific suspend and resume callbacks are
+re-factored so that each SoC variant has it's own callback containing
+the peculiarities for that SoC.
 
-Could you please have a look if you can find the time?
+Finally support for filter selection on alive banks is added, this is
+currently only enabled for gs101. The code path can be excercised using
+`echo mem > /sys/power/state`
 
+regards,
 
+Peter
 
-To maybe explain in an overview again why this is safe:
+To: Krzysztof Kozlowski <krzk@kernel.org>
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
+To: Alim Akhtar <alim.akhtar@samsung.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-gpio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: andre.draszik@linaro.org
+Cc: tudor.ambarus@linaro.org
+Cc: willmcvicker@google.com
+Cc: semen.protsenko@linaro.org
+Cc: kernel-team@android.com
+Cc: jaewon02.kim@samsung.com
 
-The TIOCLINUX ioctl has various subcommands (uapi/linux/tiocl.h),
-and one of these has in turn more subcommands.  The structure is:
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+---
+Changes in v4:
+- save->eint_fltcon1 is an argument to pr_debug(), not readl() change alignment accordingly (Andre)
+- Link to v3: https://lore.kernel.org/r/20250306-pinctrl-fltcon-suspend-v3-0-f9ab4ff6a24e@linaro.org
 
-* TIOCLINUX, with "subcodes":
-  * TIOCL_SETSEL, with "selection modes":
-    * TIOCL_SELCHAR
-    * TIOCL_SELWORD
-    * TIOCL_SELLINE
-    * TIOCL_SELPOINTER
-    * TIOCL_SELCLEAR
-    * TIOCL_SELMOUSEREPORT
-  * TIOCL_PASTESEL
-  * TIOCL_SELLOADLUT
-  * ...
+Changes in v3:
+- Ensure EXYNOS_FLTCON_DIGITAL bit is cleared (Andre)
+- Make it obvious that exynos_eint_set_filter() is conditional on bank type (Andre)
+- Make it obvious exynos_set_wakeup() is conditional on bank type (Andre)
+- Align style where the '+' is placed first (Andre)
+- Remove unnecessary braces (Andre)
+- Link to v2: https://lore.kernel.org/r/20250301-pinctrl-fltcon-suspend-v2-0-a7eef9bb443b@linaro.org
 
-While securing TIOCLINUX, we restricted access to various subcommands
-with CAP_SYS_ADMIN, but permitted different subcommands.
+Changes in v2:
+- Remove eint_flt_selectable bool as it can be deduced from EINT_TYPE_WKUP (Peter)
+- Move filter config register comment to header file (Andre)
+- Rename EXYNOS_FLTCON_DELAY to EXYNOS_FLTCON_ANALOG (Andre)
+- Remove misleading old comment (Andre)
+- Refactor exynos_eint_update_flt_reg() into a loop (Andre)
+- Split refactor of suspend/resume callbacks & gs101 parts into separate patches (Andre)
+- Link to v1: https://lore.kernel.org/r/20250120-pinctrl-fltcon-suspend-v1-0-e77900b2a854@linaro.org
 
-This table gives an overview of which TIOCL_SETSEL subcommands
-required CAP_SYS_ADMIN at which point in time:
+---
+Peter Griffin (4):
+      pinctrl: samsung: add support for eint_fltcon_offset
+      pinctrl: samsung: add dedicated SoC eint suspend/resume callbacks
+      pinctrl: samsung: add gs101 specific eint suspend/resume callbacks
+      pinctrl: samsung: Add filter selection support for alive bank on gs101
 
-                          point in time
-  TIOCL_SETSEL sel_mode | 0 | 1 | 2 | 3
-  ----------------------|---|---|---|---
-  TIOCL_SELCHAR         |   | x | x | x
-  TIOCL_SELWORD         |   | x | x | x 
-  TIOCL_SELLINE         |   | x | x | x 
-  TIOCL_SELPOINTER      |   | x |   |
-  TIOCL_SELCLEAR        |   | x |   | 
-  TIOCL_SELMOUSEREPORT  |   | x | ? | x  <-- This is the change
+ drivers/pinctrl/samsung/pinctrl-exynos-arm64.c | 150 ++++++-------
+ drivers/pinctrl/samsung/pinctrl-exynos.c       | 294 +++++++++++++++----------
+ drivers/pinctrl/samsung/pinctrl-exynos.h       |  50 ++++-
+ drivers/pinctrl/samsung/pinctrl-samsung.c      |  12 +-
+ drivers/pinctrl/samsung/pinctrl-samsung.h      |  12 +-
+ 5 files changed, 318 insertions(+), 200 deletions(-)
+---
+base-commit: 0761652a3b3b607787aebc386d412b1d0ae8008c
+change-id: 20250120-pinctrl-fltcon-suspend-2333a137c4d4
 
-  "x" means "requires CAP_SYS_ADMIN"
-  "?" means "inconsistently requires CAP_SYS_ADMIN"
-
-The points in time are:
-
- (0) before we required CAP_SYS_ADMIN on TIOCLINUX subcommands
- (1) after commit 8d1b43f6a6df ("tty: Restrict access to TIOCLINUX' copy-and-paste subcommands")
- (2) after commit 2f83e38a095f ("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN
-")
- (3) after this patch ("tty: Require CAP_SYS_ADMIN for all usages of TIOCL_SELMOUSEREPORT")
-
-This patch **reverts the behaviour for TIOCL_SELMOUSEREPORT back to
-what it was in phase (1)** after commit 8d1b43f6a6df ("tty: Restrict
-access to TIOCLINUX' copy-and-paste subcommands").  We have double
-checked this in Emacs and GPM's source code earlier in this mail
-thread [1] and have confidence that this is better, because:
-
- (a) TIOCL_SELMOUSEREPORT can maybe be abused after all,
- (b) it is not required for Emacs as we thought in patch (2)
- (c) the behavior I implemented in patch (2) was accidentally
-     inconsistent
-
-Again, apologies for the pointless back-and-forth on this fix, but it
-will be better after this iteration.  I hope that this summary helps
-in the review.  Please let me know if you have further questions.
-
-Thanks,
-–Günther
-
-[1] https://lore.kernel.org/all/491f3df9de6593df8e70dbe77614b026@finder.org/
+Best regards,
+-- 
+Peter Griffin <peter.griffin@linaro.org>
 
 
