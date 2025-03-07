@@ -1,307 +1,173 @@
-Return-Path: <stable+bounces-121362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E590A56549
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:29:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF4CA5654F
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2283177714
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:29:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7581899810
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77E020E32B;
-	Fri,  7 Mar 2025 10:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3E5212F9D;
+	Fri,  7 Mar 2025 10:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="afCquojl"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="B9wZSuE2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F0920F090
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 10:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A590C20E70B;
+	Fri,  7 Mar 2025 10:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741343372; cv=none; b=e2jHT3Iafp5QAKwj/WEorDcvaNUCKNDqWqB3l334Rq9O/37sFae6IeVPS+V/3kUeTso7b5KWCZJxlgHhhtjQ2MNGeIWIFDtPQMauI1DcR/yul0A8eTjK5Ha78S7MxaaBPxi6nkCDC3KVdgP1T6CmSgDSDUWdo3S/5IKZdqojYJU=
+	t=1741343373; cv=none; b=sxWyV3lULyCTUr851kTTENWXNC4kQ92D1HXozK6yAa49yyTn6GWNPbQCg/pHFMwGdQfwDQK3n0EBQlJbmPIYd/NKkIfETOP89IyBhgskmncbzKiX+jEXeqJaGMlDhjv84pXxeqfDwsrilhFrXHEIYxYH3CXhIzC4mP1WvTG+k3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741343372; c=relaxed/simple;
-	bh=5hPOCM1S1pmc1S8RzEq8t8D72yqSF8b6KhQM50bjrdw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GhC2xodNcFEIUX+qLdm9q14EW5iYtNzGKqUOkT7aSGmmEXe2qlK19Yb2MlAf8nRjerfjnJIvfbhIaCrLh0Zps/rru5/kdSr8SjpSR6e2tmhMx1n0RiXoOcwKFwd2NAsV+eejOBV2kC7Qsds2JwDRWrqS4pk6vHeAN5uDH/oECVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=afCquojl; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43bcf9612f4so13889905e9.3
-        for <stable@vger.kernel.org>; Fri, 07 Mar 2025 02:29:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741343368; x=1741948168; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HOc5JswKnDA4H+vLGsg75xhpVAwF1vf0JvXpUApvXDs=;
-        b=afCquojl8Gqjpq7ModT6DGq6jmrtWmZH8mu/4V8MbCc7N6xRdLmgHjUUBZOWdt5skl
-         9oWgttfAGHatrcIPjRW0jryVwWL/r/qP0Lg4X4CNFdrwA2R5qlKDlf1q17GXO1taY0Xs
-         8GUMT4FaCuD7NWQlHy8PXLfvogeDlWBt1B0h4H0k2rox7VtgWM+G4R5o37XqKEGCPjvZ
-         vLDBnTR+Rwk4c894YU50ON0eeAYtX05+XV3k84w5WomAQ8DprgJ8AtH75pra/c8Oup+L
-         XIj4lrO7DWPv9qYgsGNrfKIpvEgYUM0O3zlnJBVbJgLfaZP6MVumgg2KZXBm8477yJO+
-         9SLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741343368; x=1741948168;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HOc5JswKnDA4H+vLGsg75xhpVAwF1vf0JvXpUApvXDs=;
-        b=DQGgxOL1FlSWI6W28YU3X6my1CyuRBmO4wfC0MsZtIdzl5RWAZQVrx9CR8ZY7Ng9ao
-         2XEKAI9jjItxo/eEVoyQNV2r9wGv//a665PTb5rDYyEosRT53n5VaFLZSj3fysGx6WnE
-         0eIUma/wPe29jBELnxV2GgqkBhwyCzxIdb2OsN0t/TkcKHGpwwESkESDuPnjwzDo3fBl
-         qpH2uFaHdbeBkpZSg8Rala5VpCixdyHgRI2+D/yFNrmNaGjEk/ZoQfTBX6zdcuTfkZ+1
-         JEcx7fhfogDM2ytIubOulWcvJKSFZ6QwmNZY/uW8xFYS3JBWFLR2ZGy6Ezvvh0yYWyfO
-         b07A==
-X-Forwarded-Encrypted: i=1; AJvYcCXOH7kRA+Kah8/3g1mdhLUDm3/GYjycHd7Z3n0JfpNAFbyHLlUV+PrF5mrOHFTx8LZKYIDvSAo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywD1fpRwosHMG9sl6eT0xkL423AVpIQcXWemywE+w468uwgAed
-	lVLyDmm7Pm7UEKfG6z2smO9HjKTEMAKPh9fv7Etx8JSkyQDl55nRGLHsF+am35Mp/zDzEXXm/Gg
-	X
-X-Gm-Gg: ASbGnctNfSwry6qNMHuogdKn6vb9yVwr8klZPIqYS8kKjYN2UqEWL6FRtd/iJsrneiv
-	51nTIaotO4rD1T7+0AsyK/AvUOQJsB/AhdsjJxSLbCuOknBus2oWDdmdiU29YKRHesgqWvazA6R
-	L+64XVd9pKS5vTeOTvttvbnU5pfOBxGA7Dl2aNOPB5IDcuDF+XfiRVUmemmYpxiyE9uwf9AyIMj
-	OUzwNuPldyJAEHB0gvtnyAJRfUshkBWF5iyiRfr3xZJ9uGDDlDEr691mwpExbWme1y+7E5X/GdM
-	r5JRPQCkwVEMdzPc0Mu0sjja7DnltcTWr3wNjCEHd2e5bxhi3Ka/wl0GKvfZ4D70VruVMc7rbmY
-	=
-X-Google-Smtp-Source: AGHT+IEDjIydZyO8tevIfkIq4dv+j9dQjTmzyABCpR96qJ7XQw5e0qvvubHLPigP0m6YKTDQV3Lu3A==
-X-Received: by 2002:a05:600c:5857:b0:439:9e13:2dd7 with SMTP id 5b1f17b1804b1-43c6de39734mr18301675e9.2.1741343368303;
-        Fri, 07 Mar 2025 02:29:28 -0800 (PST)
-Received: from gpeter-l.roam.corp.google.com ([145.224.90.122])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8b0461sm49192955e9.4.2025.03.07.02.29.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 02:29:27 -0800 (PST)
-From: Peter Griffin <peter.griffin@linaro.org>
-Date: Fri, 07 Mar 2025 10:29:07 +0000
-Subject: [PATCH v4 3/4] pinctrl: samsung: add gs101 specific eint
- suspend/resume callbacks
+	s=arc-20240116; t=1741343373; c=relaxed/simple;
+	bh=tYxJZJX1pI5K8wuGH/dKzuf43ukR/Ftn3/DZih3kce0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FWUGVECo5P3aBFMN0R5PaqMKby22nEOZ085g37IjvvV8lCjh0mQIdFzF4yGZvsyp5eLf6eKsWKMRJYN+Ue2OGqGjsVjIjAJifKomYicxLgQiYheDm2Z/kkIhUdfdRePakVHNhxcA4mp2dUw9ntJGW7RjMl7I61o+QwlGLKlxX/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=B9wZSuE2; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id F38862038F2B; Fri,  7 Mar 2025 02:29:29 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F38862038F2B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741343370;
+	bh=ZLRe45/BtNn0ARC6EnETrMfwdNw8kA9gyMB/wm3koXM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B9wZSuE2kzmUxireaWKyvy5UKChwThSlRZubsF9gBfpmi53lZEe37WpfRI+SoXT65
+	 WPQ9BJpyQg4GNw46xfuqWdUVYdiElM4jiSt0b8UmTRcH8Z3Owpsi83CKdnFtWn9c8H
+	 cHefJlMZgampk2OjFnv61yfu4AI9gh8CJitpl4KM=
+Date: Fri, 7 Mar 2025 02:29:29 -0800
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	decui@microsoft.com, stephen@networkplumber.org, kys@microsoft.com,
+	paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
+	davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
+	longli@microsoft.com, ssengar@linux.microsoft.com,
+	linux-rdma@vger.kernel.org, daniel@iogearbox.net,
+	john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
+	hawk@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Support holes in device list reply msg
+Message-ID: <20250307102929.GA21981@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250307-pinctrl-fltcon-suspend-v4-3-2d775e486036@linaro.org>
-References: <20250307-pinctrl-fltcon-suspend-v4-0-2d775e486036@linaro.org>
-In-Reply-To: <20250307-pinctrl-fltcon-suspend-v4-0-2d775e486036@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com, 
- semen.protsenko@linaro.org, kernel-team@android.com, 
- jaewon02.kim@samsung.com, Peter Griffin <peter.griffin@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7443;
- i=peter.griffin@linaro.org; h=from:subject:message-id;
- bh=5hPOCM1S1pmc1S8RzEq8t8D72yqSF8b6KhQM50bjrdw=;
- b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBnysqALrYS4PAAAK03uKqVFDBA1lA/Q4rTqdKug
- ndPT2Rx3AOJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ8rKgAAKCRDO6LjWAjRy
- usflD/9oI20ugy/mZ2pMSJJTiyGUQP7ZbgMDGHZCKXWK5L+JJAwnG8LDkGVfe5R3IeoifLxtf8J
- Fi+svFPN+9afcfIMcOM8FIRjtjihtqw6Q/P9jaO0+MNqioD+KajVnNniijLUVEW0WYoSPPod7L2
- wnhI/I44YRydoLoUSCiT9KGQRT+SuYXAve5a3YMbux7JUQjRiER1b1BiQ8MzILAFrznAT9uo3p8
- kLcPNDnJSG635E8Ko5W9Jz7haXhMponBYVbRxAZ+TkDhyC6VSJDN6tyZcDuRpgR+16vuxt9tDDK
- 6q00TDduCjyTOlrSbcExqq6Hfv3Dgkn5YgoKiWe0hQs8dsM8yhGZ5OX6t2PgnFbtf+vK78M6KdQ
- MkzYrrYyxXfLf1Omwst6kQRvJazjKJF+cRCdWFU0iK62216TXPD2tYSKyD1P6C8E/MvOH3yU2UY
- KUNz5p8QoHTQFVnad5SBSWg43mWU1SS84Ro+oyGqXq4WrtVNINKucNufg/U0Z5QAbhU9B9poYYw
- Ov+bDmf5MMAYqogI/izBx6tIG7Nk3VDF6KtylbRtRCZi+W068z5vnrNcdWA4QYmZzrpQ2fuE/fH
- 0iZ+nckrxNZpuO+NZOQJB8JG1nhQXL1ghoEZa2G13QQ/2g85Mtvdz8AJp4i6tUIZFH4mOIT0Wfx
- jtsbirq6sNP5bTg==
-X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
- fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-gs101 differs to other SoCs in that fltcon1 register doesn't
-always exist. Additionally the offset of fltcon0 is not fixed
-and needs to use the newly added eint_fltcon_offset variable.
+On Wed, Mar 05, 2025 at 01:46:21PM -0800, Haiyang Zhang wrote:
+> According to GDMA protocol, holes (zeros) are allowed at the beginning
+> or middle of the gdma_list_devices_resp message. The existing code
+> cannot properly handle this, and may miss some devices in the list.
+> 
+> To fix, scan the entire list until the num_of_devs are found, or until
+> the end of the list.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> 
+> ---
+>  drivers/net/ethernet/microsoft/mana/gdma_main.c | 16 ++++++++++++----
+>  include/net/mana/gdma.h                         | 11 +++++++----
+>  2 files changed, 19 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> index c15a5ef4674e..df3ab31974b1 100644
+> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> @@ -134,9 +134,10 @@ static int mana_gd_detect_devices(struct pci_dev *pdev)
+>  	struct gdma_list_devices_resp resp = {};
+>  	struct gdma_general_req req = {};
+>  	struct gdma_dev_id dev;
+> -	u32 i, max_num_devs;
+> +	int found_dev = 0;
+>  	u16 dev_type;
+>  	int err;
+> +	u32 i;
+>  
+>  	mana_gd_init_req_hdr(&req.hdr, GDMA_LIST_DEVICES, sizeof(req),
+>  			     sizeof(resp));
+> @@ -148,12 +149,19 @@ static int mana_gd_detect_devices(struct pci_dev *pdev)
+>  		return err ? err : -EPROTO;
+>  	}
+>  
+> -	max_num_devs = min_t(u32, MAX_NUM_GDMA_DEVICES, resp.num_of_devs);
+> -
+> -	for (i = 0; i < max_num_devs; i++) {
+> +	for (i = 0; i < GDMA_DEV_LIST_SIZE &&
+> +		found_dev < resp.num_of_devs; i++) {
+>  		dev = resp.devs[i];
+>  		dev_type = dev.type;
+>  
+> +		/* Skip empty devices */
+> +		if (dev.as_uint32 == 0)
+> +			continue;
+> +
+> +		found_dev++;
+> +		dev_info(gc->dev, "Got devidx:%u, type:%u, instance:%u\n", i,
+> +			 dev.type, dev.instance);
+> +
+>  		/* HWC is already detected in mana_hwc_create_channel(). */
+>  		if (dev_type == GDMA_DEVICE_HWC)
+>  			continue;
+> diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+> index 90f56656b572..62e9d7673862 100644
+> --- a/include/net/mana/gdma.h
+> +++ b/include/net/mana/gdma.h
+> @@ -408,8 +408,6 @@ struct gdma_context {
+>  	struct gdma_dev		mana_ib;
+>  };
+>  
+> -#define MAX_NUM_GDMA_DEVICES	4
+> -
+>  static inline bool mana_gd_is_mana(struct gdma_dev *gd)
+>  {
+>  	return gd->dev_id.type == GDMA_DEVICE_MANA;
+> @@ -556,11 +554,15 @@ enum {
+>  #define GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG BIT(3)
+>  #define GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT BIT(5)
+>  
+> +/* Driver can handle holes (zeros) in the device list */
+> +#define GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP BIT(11)
+> +
+>  #define GDMA_DRV_CAP_FLAGS1 \
+>  	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
+>  	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
+>  	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG | \
+> -	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT)
+> +	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT | \
+> +	 GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP)
+>  
+>  #define GDMA_DRV_CAP_FLAGS2 0
+>  
+> @@ -621,11 +623,12 @@ struct gdma_query_max_resources_resp {
+>  }; /* HW DATA */
+>  
+>  /* GDMA_LIST_DEVICES */
+> +#define GDMA_DEV_LIST_SIZE 64
+>  struct gdma_list_devices_resp {
+>  	struct gdma_resp_hdr hdr;
+>  	u32 num_of_devs;
+>  	u32 reserved;
+> -	struct gdma_dev_id devs[64];
+> +	struct gdma_dev_id devs[GDMA_DEV_LIST_SIZE];
+>  }; /* HW DATA */
+>  
+>  /* GDMA_REGISTER_DEVICE */
 
-Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
-Cc: stable@vger.kernel.org
-Reviewed-by: André Draszik <andre.draszik@linaro.org>
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
----
-Changes since v2:
-* make it clear exynos_set_wakeup(bank) is conditional on bank type (Andre)
-* align style where the '+' is placed (Andre)
-* remove unnecessary braces (Andre)
----
- drivers/pinctrl/samsung/pinctrl-exynos-arm64.c | 24 ++++-----
- drivers/pinctrl/samsung/pinctrl-exynos.c       | 70 ++++++++++++++++++++++++++
- drivers/pinctrl/samsung/pinctrl-exynos.h       |  2 +
- 3 files changed, 84 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
-index 57c98d2451b54b00d50e0e948e272ed53d386c34..fca447ebc5f5956b7e8d2f2d08f23622095b1ee6 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
-@@ -1455,15 +1455,15 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
- 		.pin_banks	= gs101_pin_alive,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_alive),
- 		.eint_wkup_init = exynos_eint_wkup_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (FAR_ALIVE) */
- 		.pin_banks	= gs101_pin_far_alive,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_far_alive),
- 		.eint_wkup_init = exynos_eint_wkup_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (GSACORE) */
- 		.pin_banks	= gs101_pin_gsacore,
-@@ -1477,29 +1477,29 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
- 		.pin_banks	= gs101_pin_peric0,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric0),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (PERIC1) */
- 		.pin_banks	= gs101_pin_peric1,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric1),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume	= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (HSI1) */
- 		.pin_banks	= gs101_pin_hsi1,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi1),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (HSI2) */
- 		.pin_banks	= gs101_pin_hsi2,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi2),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	},
- };
- 
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
-index 75b9ab19e4e8f81bf85cd75573485b7f2e717e7b..5f0045d03346600557fa6735bad709897c71935c 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos.c
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
-@@ -798,6 +798,40 @@ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
- 		exynos_set_wakeup(bank);
- }
- 
-+void gs101_pinctrl_suspend(struct samsung_pin_bank *bank)
-+{
-+	struct exynos_eint_gpio_save *save = bank->soc_priv;
-+	const void __iomem *regs = bank->eint_base;
-+
-+	if (bank->eint_type == EINT_TYPE_GPIO) {
-+		save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
-+				       + bank->eint_offset);
-+
-+		save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
-+					   + bank->eint_fltcon_offset);
-+
-+		/* fltcon1 register only exists for pins 4-7 */
-+		if (bank->nr_pins > 4)
-+			save->eint_fltcon1 = readl(regs +
-+						EXYNOS_GPIO_EFLTCON_OFFSET
-+						+ bank->eint_fltcon_offset + 4);
-+
-+		save->eint_mask = readl(regs + bank->irq_chip->eint_mask
-+					+ bank->eint_offset);
-+
-+		pr_debug("%s: save     con %#010x\n",
-+			 bank->name, save->eint_con);
-+		pr_debug("%s: save fltcon0 %#010x\n",
-+			 bank->name, save->eint_fltcon0);
-+		if (bank->nr_pins > 4)
-+			pr_debug("%s: save fltcon1 %#010x\n",
-+				 bank->name, save->eint_fltcon1);
-+		pr_debug("%s: save    mask %#010x\n",
-+			 bank->name, save->eint_mask);
-+	} else if (bank->eint_type == EINT_TYPE_WKUP)
-+		exynos_set_wakeup(bank);
-+}
-+
- void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
-@@ -816,6 +850,42 @@ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
- 		exynos_set_wakeup(bank);
- }
- 
-+void gs101_pinctrl_resume(struct samsung_pin_bank *bank)
-+{
-+	struct exynos_eint_gpio_save *save = bank->soc_priv;
-+
-+	void __iomem *regs = bank->eint_base;
-+	void __iomem *eint_fltcfg0 = regs + EXYNOS_GPIO_EFLTCON_OFFSET
-+		     + bank->eint_fltcon_offset;
-+
-+	if (bank->eint_type == EINT_TYPE_GPIO) {
-+		pr_debug("%s:     con %#010x => %#010x\n", bank->name,
-+			 readl(regs + EXYNOS_GPIO_ECON_OFFSET
-+			       + bank->eint_offset), save->eint_con);
-+
-+		pr_debug("%s: fltcon0 %#010x => %#010x\n", bank->name,
-+			 readl(eint_fltcfg0), save->eint_fltcon0);
-+
-+		/* fltcon1 register only exists for pins 4-7 */
-+		if (bank->nr_pins > 4)
-+			pr_debug("%s: fltcon1 %#010x => %#010x\n", bank->name,
-+				 readl(eint_fltcfg0 + 4), save->eint_fltcon1);
-+
-+		pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
-+			 readl(regs + bank->irq_chip->eint_mask
-+			       + bank->eint_offset), save->eint_mask);
-+
-+		writel(save->eint_con, regs + EXYNOS_GPIO_ECON_OFFSET
-+		       + bank->eint_offset);
-+		writel(save->eint_fltcon0, eint_fltcfg0);
-+
-+		if (bank->nr_pins > 4)
-+			writel(save->eint_fltcon1, eint_fltcfg0 + 4);
-+		writel(save->eint_mask, regs + bank->irq_chip->eint_mask
-+		       + bank->eint_offset);
-+	}
-+}
-+
- void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.h b/drivers/pinctrl/samsung/pinctrl-exynos.h
-index 35c2bc4ea488bda600ebfbda1492f5f49dbd9849..773f161a82a38cbaad05fcbc09a936300f5c7595 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos.h
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos.h
-@@ -225,6 +225,8 @@ void exynosautov920_pinctrl_resume(struct samsung_pin_bank *bank);
- void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank);
- void exynos_pinctrl_suspend(struct samsung_pin_bank *bank);
- void exynos_pinctrl_resume(struct samsung_pin_bank *bank);
-+void gs101_pinctrl_suspend(struct samsung_pin_bank *bank);
-+void gs101_pinctrl_resume(struct samsung_pin_bank *bank);
- struct samsung_retention_ctrl *
- exynos_retention_init(struct samsung_pinctrl_drv_data *drvdata,
- 		      const struct samsung_retention_data *data);
-
--- 
-2.49.0.rc0.332.g42c0ae87b1-goog
-
+Reviewed-by: Shradha Gupta <shradhagupta@microsoft.com>
+> -- 
+> 2.34.1
 
