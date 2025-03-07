@@ -1,137 +1,157 @@
-Return-Path: <stable+bounces-121373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1D2A567BF
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 13:25:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C42A567CA
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 13:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC701890F19
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 12:25:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C19A7174545
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 12:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE64218EA1;
-	Fri,  7 Mar 2025 12:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="oPhHG8xY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A14F218EA1;
+	Fri,  7 Mar 2025 12:28:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E99218E81
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 12:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F0F21767D;
+	Fri,  7 Mar 2025 12:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741350319; cv=none; b=hI1l47orNkeVO3oHwr7pSsvIrnCiUMdDk7fPSTdiWtIY4gYgpWZKmZvt4uBCHlKOOQmsns3BYfb2LtFXs4xI73ZxIfDmTdx48ew+wNimIYJYpIZEhu4lwJ1M1foZmYQRxZqobJ3Ryn2FCpMHHCJlELh4qt4Bieh83kLpA52a/qw=
+	t=1741350498; cv=none; b=qFOBmQisKH2VrSxsto6tBoKF87fqhhhBaTFKn85nYaXnmuOf7NrvBKjICroAjcbU93VpMvk2HvXYKb76aekFnWACbwioheTrurexasNUxypiB2kfDNenPrzUeBSM4OkgEDiNiLMmjvyoNSiz+BHpuEEp16das6BfqXE9xJ/Ysi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741350319; c=relaxed/simple;
-	bh=cWtcLtZgpaH/BcPDoH4lq4uUZE4PyN6b3+uskMHMYW0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pBHcxsDujWAtrLEZjDcXRDc6QlQrZniISwcoQp0ZkPZHeWbDEPULFoor0VFGwUGpeEKszt8lmCx2rpAN7RhfNDrlaVilBkWw/GRUGOx6oHn9DsYAvlJCnlMcxdqlhwL1hEW/iomKkMN1m566YGYAs35V/zwQDt/pS+5+3GphyDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=oPhHG8xY; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2feb867849fso2815810a91.3
-        for <stable@vger.kernel.org>; Fri, 07 Mar 2025 04:25:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1741350317; x=1741955117; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fDU3rB3lwTDhzbpDMnrAAgHgs/LQWtd52vWgHpI2VSI=;
-        b=oPhHG8xYH2ADeWUJKhE++2F063+/AUZGT/1zCgbheDMdTkeJpdKpIqwRrLNUhIP1pz
-         i6m3enEzt4OOaTmZDkBNZj5IbtoyPfIZlTxIZ1zaODv93Ou8yYUNdARVq3xpysbiUTnY
-         ZiSvBp7AT4otsCHGw1aKsLA5fpeSAmKJZFBmo3rI1SAOqZdo0bh3eLOhvMTYtkGNxE0n
-         ++4Kft6wJQc5ifXcpagqOBislwk3hOuPYHcGaW5aNbi2H+wIg6yXqN/p/CTqGEarlSO4
-         t56InySi0W5gNAx5OxvPu+YrcPlFwEznE06wqoz/OmyiZceZviomeM5dERqr06LN/xPO
-         TGsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741350317; x=1741955117;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fDU3rB3lwTDhzbpDMnrAAgHgs/LQWtd52vWgHpI2VSI=;
-        b=VyPhABjV1meyeDAIqPK39YjTarrvWW3UFXvMXtv4u3N6atNfNUYzyz9RUbVsIYpc02
-         ZNa87B9Y1/S6t2THp9RLCWex3nfMhqRh2NHgjD862QtiFFYB6yaZ6vmsw0B7gsp5hAFV
-         y7rTtq7TOStRXW5Fm4E5kR3lXWM1OH0r5U4DLgLL6nGVy4Z7eGruclAi1gQdEvtfOvjj
-         qk7M6lkt7b2PMDlS0Q1l6qSKg8FvPJC3oJf3Gx733QPb/YbPJqWqzFvWln+7HVRz9k8Y
-         ajuosMAaiU5Co3J/YhSL85QhUKNNibBmsy/BvvPDzX+j6LkT1emibAWMPNSLJLllpJTs
-         7dag==
-X-Gm-Message-State: AOJu0YwvX6kEHw6GAwjO5uO6/aLUiNFhfjFtaMMF+m98BR2SDwUmwV6J
-	coKUq6ZeJWDzqkECXi9B02Prx1nor0rmErZTmyDZCyKFjZ8ok68qstzmQ4sFIeQNnNmgEjBRWzV
-	Vr0Ta9j0/S6OhGQz/XD1moIfl5Dr7Tt+MVm4Ihg==
-X-Gm-Gg: ASbGncvtIWg6U/GQyYM678R+xe5EXXWbf78JoWnYY8rDplzAsMsNN+Io0DxLti2rP1G
-	vbMWp5HygJsDkxgFXZmi8TeBgcHfj3ERhSDHSvt1KwBSynd9pJCV6KWykbGPfWFW+p5KDbfa6Id
-	ujuaeeahyGqZZl+IdN8JavI3hFfg==
-X-Google-Smtp-Source: AGHT+IGIGXETSpV0breS5/h5u0O7Kue3nNAf0M2JvAyRjW//VoTRE04GF88gdeHWev8c3/TxvH+ghyGuEq0/lEZFOuk=
-X-Received: by 2002:a17:90b:3ecb:b0:2fe:6942:370e with SMTP id
- 98e67ed59e1d1-2ff7ce70a09mr5339946a91.7.1741350316997; Fri, 07 Mar 2025
- 04:25:16 -0800 (PST)
+	s=arc-20240116; t=1741350498; c=relaxed/simple;
+	bh=PLQGB3UirQe2knkq4IFIwqzOOTb1XEGyQFJ2J5v5fZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qDSi31fMd0ReQgG22CwZNDEFTLXcIEPHaUKym0Ekgwjf2l8izVuSDdylRNei6g79j07RbH3uUugznKfHoC64pLpQ69SgEh0lwW8LZREFXFuGwUSmoxWDUloc+p/OlajDasAnwOq/wfFd7QIj97eSkehqxgXHxogtXS4CSEyrAlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 3533924CBE;
+	Fri,  7 Mar 2025 15:28:03 +0300 (MSK)
+Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail03.astralinux.ru [10.177.185.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Fri,  7 Mar 2025 15:27:58 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.177.20.114])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4Z8QY70nWqz1gywd;
+	Fri,  7 Mar 2025 15:27:54 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	Christoph Lameter <cl@linux.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v2 6.6] mm/mempolicy: fix unbalanced unlock in backported VMA check
+Date: Fri,  7 Mar 2025 15:27:37 +0300
+Message-Id: <20250307122737.10400-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250306151416.469067667@linuxfoundation.org>
-In-Reply-To: <20250306151416.469067667@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Fri, 7 Mar 2025 21:25:00 +0900
-X-Gm-Features: AQ5f1JrjYvBGN-wb9TdEeE7hFb2s31KStFO0Mmp9jf2eKZUcyW3LZfYCdYbFDbc
-Message-ID: <CAKL4bV623WMkm3dXFKhd-84yVDCCxxCJK9g_zAE6_ign9=2m4g@mail.gmail.com>
-Subject: Re: [PATCH 6.13 000/154] 6.13.6-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;new-mail.astralinux.ru:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 191572 [Mar 07 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/03/07 09:54:00 #27658601
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-Hi Greg
+No upstream commit exists for this commit.
 
-On Fri, Mar 7, 2025 at 12:21=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.13.6 release.
-> There are 154 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 08 Mar 2025 15:13:38 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.13.6-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.13.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+The issue was introduced with backporting upstream commit 091c1dd2d4df
+("mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA
+in a MM").
 
-6.13.6-rc2 tested.
+The backport incorrectly added unlock logic to a path where
+mmap_lock was provided by external context in do_migrate_pages(),
+creating lock imbalance when no VMAs are found.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+This fixes the report:
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+WARNING: bad unlock balance detected!
+6.6.79 #1 Not tainted
+-------------------------------------
+repro/9655 is trying to release lock (&mm->mmap_lock) at:
+[<ffffffff81daa36f>] mmap_read_unlock include/linux/mmap_lock.h:173 [inline]
+[<ffffffff81daa36f>] do_migrate_pages+0x59f/0x700 mm/mempolicy.c:1196
+but there are no more locks to release!
 
-[    0.000000] Linux version 6.13.6-rc2rv-g3244959bfa6b
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250207, GNU ld (GNU
-Binutils) 2.44) #1 SMP PREEMPT_DYNAMIC Fri Mar  7 20:34:19 JST 2025
+other info that might help us debug this:
+no locks held by repro/9655.
 
-Thanks
+stack backtrace:
+CPU: 1 PID: 9655 Comm: a Not tainted 6.6.79 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd5/0x1b0 lib/dump_stack.c:106
+ __lock_release kernel/locking/lockdep.c:5431 [inline]
+ lock_release+0x4b1/0x680 kernel/locking/lockdep.c:5774
+ up_read+0x12/0x20 kernel/locking/rwsem.c:1615
+ mmap_read_unlock include/linux/mmap_lock.h:173 [inline]
+ do_migrate_pages+0x59f/0x700 mm/mempolicy.c:1196
+ kernel_migrate_pages+0x59b/0x780 mm/mempolicy.c:1665
+ __do_sys_migrate_pages mm/mempolicy.c:1684 [inline]
+ __se_sys_migrate_pages mm/mempolicy.c:1680 [inline]
+ __x64_sys_migrate_pages+0x92/0xf0 mm/mempolicy.c:1680
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x34/0xb0 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x68/0xd2
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: a13b2b9b0b0b ("mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM")
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+---
+v2: Clarify mmap_lock context in commit description. Fix braces for a
+single statement block. Add empty line after VM_BUG_ON to look more
+consistent with upstream.
+
+ mm/mempolicy.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 94c74c594d10..d2855507d2e9 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1070,11 +1070,10 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
+ 	node_set(source, nmask);
+ 
+ 	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
++
+ 	vma = find_vma(mm, 0);
+-	if (unlikely(!vma)) {
+-		mmap_read_unlock(mm);
++	if (unlikely(!vma))
+ 		return 0;
+-	}
+ 
+ 	/*
+ 	 * This does not migrate the range, but isolates all pages that
+-- 
+2.30.2
 
