@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-121461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E560A5752E
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 23:50:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86474A5752F
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 23:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC23172924
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 22:50:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F15311899360
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 22:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65ED123FC68;
-	Fri,  7 Mar 2025 22:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265AA256C93;
+	Fri,  7 Mar 2025 22:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Utj2wFWD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R060iW+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FF320D503;
-	Fri,  7 Mar 2025 22:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D675E20D503;
+	Fri,  7 Mar 2025 22:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741387853; cv=none; b=YvX+uTwVm31JLvuMf3mjiAxZzF7/OkyCLoH4WzpVu1SseYu3rxciMtlk+AOOD8vXKNdQI9+REe50ay8DPWtH8EbfcMwg9DwsA+8xBZnqiFFEYd4s3UPLCDikE4L5CBI5ee7a0RZjzx6EdCZr+yxiUf9SSL6cBZvL6M+c6Z+nZjg=
+	t=1741387855; cv=none; b=UsRZYcF1BdKUrDzlc3UA5bm3ND05C1CNksPzSClwr0/BoVzf60qoPn9VmkIdjoykc4wO1EI2Xn4W+r9MF02KvBWKpy2LIEskgkAG+W9LuvRxeM9XWEqR8Yw0BjPv2O4sQrVEBFAmmITUcf+/R1w7pL0Ce9vjHATSuq8M6bj+oEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741387853; c=relaxed/simple;
-	bh=elAMw0skEjEp+PWEkndtiJ/F0vgmlxmwaXcdBwn/aT0=;
+	s=arc-20240116; t=1741387855; c=relaxed/simple;
+	bh=ltJfqT2R+WXDwEX4QosYJyqC8o8Gw8bYiXIWDKG2ito=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMJxd9AmB+9MZRzCVWAOjS6+2mNL/MhImA3gU9SlJrzEij43kEN4MOSjCAkGjI0EJo8NpKvQVLdZl9Qzek84Pyota6e/U7mAQ/1nxUe1sgYlhvFgb99vAC9iJZTDyo6I31aF8LGi42MyI8rr+ClRqzwH4lqhApKLR1fgylbM0zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Utj2wFWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B3AC4CEE5;
-	Fri,  7 Mar 2025 22:50:50 +0000 (UTC)
+	 MIME-Version; b=ZHU6ynvecb2lPGv5o8jSeA4AmlR2ARwtK8hRKIkKodBIKfoxXPGtq3hdHlGYbzRy8d8a+Lv23hrRlHdqXJbbxTpLRUTqk8YKFEGVQtdZCzq7bMi+sRnY6Z0W4RSzCLG46wethr5WBjX5gyqUj5E2jgDNO9kfH85Tjcu5gpZer/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R060iW+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202A4C4CEE3;
+	Fri,  7 Mar 2025 22:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741387852;
-	bh=elAMw0skEjEp+PWEkndtiJ/F0vgmlxmwaXcdBwn/aT0=;
+	s=k20201202; t=1741387855;
+	bh=ltJfqT2R+WXDwEX4QosYJyqC8o8Gw8bYiXIWDKG2ito=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Utj2wFWDogU9Oxd/BNiScXWkLwBSju6dFEe0W4son8pUf3ndNhLALH9Nk1AnxWSAe
-	 M8240DIuBk5+p5p8cF6QdXoBclgWbvWWrY61lWSt2XZOh1FPpBRDTjUoKU+2MrQVFl
-	 k4DHcCRcRsURErPBNX8uPUTRPFGNkaVByuTt95S0qJPwniOMdi6nETNbS0RK1v2lez
-	 cdnFWUjO6KJE6FIhnJimecX4eFD9qINv/PHXhLq3ZuqMYfv6lfu2v4YnXU6azw95s4
-	 libqUMs9pHJPOf44LG4NraNlpdPvlm3ZQQl9j9x9uQcICrPpTvD3E8jBMu0OnxW1r2
-	 FS39JlY9vTyWw==
+	b=R060iW+LXFLRat5tydVZP82M+06WLcXtiLLtzkjB0Oy/7Nklb1VyHAKv2/Yus7JUE
+	 w4iiIKnqKy2Iffb1Hy/szPM19o+SH6pzu1p5dE9jhkIM0eSgXowkdFXh24KeYrsRnc
+	 GLrr5rjmYuKQ2l4sA6esu2uqfMgLDRZGPpSHGJqhro/X6W5Yij2rsnrSsDnvP26Vf+
+	 +ygYfRPuB3wfWFq5Q2u9X3hNrLkR9tTUZwTmqHRWUSFzGXy5fHNgecivp+uI1yjbXj
+	 pg6Jto2Z8CfhjbxNouaVDRp2DHL8V8l3NQLi/vsX90NmJaacUDlAjbZuIOtdBW3vXV
+	 BK3T0awnjjU0A==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Danilo Krummrich <dakr@kernel.org>,
 	NoisyCoil <noisycoil@disroot.org>,
 	patches@lists.linux.dev,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12.y 06/60] rust: enable `clippy::unnecessary_safety_doc` lint
-Date: Fri,  7 Mar 2025 23:49:13 +0100
-Message-ID: <20250307225008.779961-7-ojeda@kernel.org>
+Subject: [PATCH 6.12.y 07/60] rust: enable `clippy::ignored_unit_patterns` lint
+Date: Fri,  7 Mar 2025 23:49:14 +0100
+Message-ID: <20250307225008.779961-8-ojeda@kernel.org>
 In-Reply-To: <20250307225008.779961-1-ojeda@kernel.org>
 References: <20250307225008.779961-1-ojeda@kernel.org>
 Precedence: bulk
@@ -64,38 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit 23f42dc054b3c550373eae0c9ae97f1ce1501e0a upstream.
+commit 3fcc23397628c2357dbe66df59644e09f72ac725 upstream.
 
-In Rust 1.67.0, Clippy added the `unnecessary_safety_doc` lint [1],
-which is similar to `unnecessary_safety_comment`, but for `# Safety`
-sections, i.e. safety preconditions in the documentation.
+In Rust 1.73.0, Clippy introduced the `ignored_unit_patterns` lint [1]:
 
-This is something that should not happen with our coding guidelines in
-mind. Thus enable the lint to have it machine-checked.
+> Matching with `()` explicitly instead of `_` outlines the fact that
+> the pattern contains no data. Also it would detect a type change
+> that `_` would ignore.
 
-Link: https://rust-lang.github.io/rust-clippy/master/index.html#/unnecessary_safety_doc [1]
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+There is only a single case that requires a change:
+
+    error: matching over `()` is more explicit
+       --> rust/kernel/types.rs:176:45
+        |
+    176 |         ScopeGuard::new_with_data((), move |_| cleanup())
+        |                                             ^ help: use `()` instead of `_`: `()`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ignored_unit_patterns
+        = note: requested on the command line with `-D clippy::ignored-unit-patterns`
+
+Thus clean it up and enable the lint -- no functional change intended.
+
+Link: https://rust-lang.github.io/rust-clippy/master/index.html#/ignored_unit_patterns [1]
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
 Tested-by: Gary Guo <gary@garyguo.net>
 Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240904204347.168520-7-ojeda@kernel.org
+Link: https://lore.kernel.org/r/20240904204347.168520-8-ojeda@kernel.org
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ Makefile             | 1 +
+ rust/kernel/types.rs | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 295d52b677f8..13d8aa4a41d3 100644
+index 13d8aa4a41d3..7433df4d22f9 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -460,6 +460,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wclippy::no_mangle_with_rust_abi \
- 			    -Wclippy::undocumented_unsafe_blocks \
- 			    -Wclippy::unnecessary_safety_comment \
-+			    -Wclippy::unnecessary_safety_doc \
- 			    -Wrustdoc::missing_crate_level_docs
+@@ -453,6 +453,7 @@ export rust_common_flags := --edition=2021 \
+ 			    -Wunreachable_pub \
+ 			    -Wclippy::all \
+ 			    -Wclippy::dbg_macro \
++			    -Wclippy::ignored_unit_patterns \
+ 			    -Wclippy::mut_mut \
+ 			    -Wclippy::needless_bitwise_bool \
+ 			    -Wclippy::needless_continue \
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 6c2d5fa9bce3..4e03df725f3f 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -225,7 +225,7 @@ pub fn dismiss(mut self) -> T {
+ impl ScopeGuard<(), fn(())> {
+     /// Creates a new guarded object with the given cleanup function.
+     pub fn new(cleanup: impl FnOnce()) -> ScopeGuard<(), impl FnOnce(())> {
+-        ScopeGuard::new_with_data((), move |_| cleanup())
++        ScopeGuard::new_with_data((), move |()| cleanup())
+     }
+ }
  
- KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) \
 -- 
 2.48.1
 
