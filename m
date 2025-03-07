@@ -1,171 +1,118 @@
-Return-Path: <stable+bounces-121403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDE5A56B6C
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 16:13:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853B8A56B9D
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 16:17:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8D66179302
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:13:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F41B93A6DCD
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B53921CC4A;
-	Fri,  7 Mar 2025 15:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF66C21ADD3;
+	Fri,  7 Mar 2025 15:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="dCSrvI9+"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6173921D3DD
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 15:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0B021C185
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 15:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741360184; cv=none; b=Xo452Of4904cgJuifwRU4UB8PwplNYYE66B2pkkX5qi0+mOEl/8o6k0axA/NfEZK2Uk8uqHNPql+PCXlMeoZ7LjZBqyfEfxsgPgJLHB0Fr5Hr5UCoDQSMzMeMOs7MGKW2mXBiZ9LaMKAwIL/WDUp2tTWKKmi8TmxXrYYlkVgV28=
+	t=1741360522; cv=none; b=aIZq/AK777yp51oyn/lu8x5S45UKbhCX8b5qVjcfQdQ9HlDEG8LRhzezsPk+Knc1I/1UCIG49MKuC93QG8zxt9II81BOYgftRz07h5hFuaH06AXttMTgkmimMAbdXQVKuK2n8rT+hGLO24J5iAgG8sQQu/SGJXPPXO7nBWhItNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741360184; c=relaxed/simple;
-	bh=nvInyBZ9SIDhwcj6V7u6ISgZ68zr/vHYYkDicntnXXQ=;
+	s=arc-20240116; t=1741360522; c=relaxed/simple;
+	bh=Jyg0BlNEVONMN3/qpK5whDdVuZ36nVAtfOMd2YynnAc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uCfZy59tznYCSCGgB07ffujXUQ+nXO3ExvNENxeFoP+QCnYTXbIoiDxlLu94B0qC/P+9kTKphX32IiGDAzd1ANeG3KUMOZDgWNT4ABCKNcvQJwoYEJmYl7KzoLTSxYwIK/0jO0i4BOMlrBBhceMzWxHXraGDj8h4dmxGcdtthg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tqZKK-0002tg-Oh; Fri, 07 Mar 2025 16:09:28 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tqZKJ-004VKm-2N;
-	Fri, 07 Mar 2025 16:09:27 +0100
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 5B79E3D4BA4;
-	Fri, 07 Mar 2025 15:09:27 +0000 (UTC)
-Date: Fri, 7 Mar 2025 16:09:27 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, Rob Herring <robh@kernel.org>, 
-	Ulrich Hecht <ulrich.hecht+renesas@gmail.com>, linux-can@vger.kernel.org, 
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, Biju Das <biju.das.au@gmail.com>, 
-	linux-renesas-soc@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
-Message-ID: <20250307-weightless-malkoha-of-experiment-f9926c-mkl@pengutronix.de>
-References: <20250220094516.126598-1-biju.das.jz@bp.renesas.com>
- <20250220094516.126598-3-biju.das.jz@bp.renesas.com>
- <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cMn5ySEtfWb0BZ9d7rwJSj03GGFcDvPsqvFTBNrFDqxvbu5pOERQMXgq1QLHtR3gmBIIl1CNTZxzgOBCtCjswNaza6xJcMR69vdQ5nVOSqq4KznADhsy2pKsZvQxACnOLWZ8fyI0DXOA6GcD4PGaodu8HHDqqRRD0oBMIak4TvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=dCSrvI9+; arc=none smtp.client-ip=209.85.166.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-io1-f43.google.com with SMTP id ca18e2360f4ac-855183fdcafso92432139f.1
+        for <stable@vger.kernel.org>; Fri, 07 Mar 2025 07:15:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1741360520; x=1741965320; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FNhnQrGFa2eZSGaA05d8tH8yb8bigPtWKz7iWwlz8ks=;
+        b=dCSrvI9+JxYTPle6B1IbN6y1LQdb5a5c7gdl+F0xu0+1sY4oQNPl64+q3aMY+uiAAm
+         JrKEzfevb68ZM+G7Ai1McBP3r7JzgEqGzoNa8PlkUk1hDuW8ebLwjwquRCjr4881V04+
+         aRmzR6k7/91M2cKz+rOMxuBn9yCdI5AmzwmoU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741360520; x=1741965320;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FNhnQrGFa2eZSGaA05d8tH8yb8bigPtWKz7iWwlz8ks=;
+        b=no5/vRyxdkxQpwyul1BTAriAFhU06V2hHl5zSCeDhQeblt207si5tLAp3Eba/4gT1L
+         /EcOTTB772ypQzofhDBG+lsu0X0RBvSGCo1tUSS1VAKNWFJH7Wc/6fZ70Agkw1nPl1vS
+         6MbsU6WDibjlQYatxXCVhK9Sm0DXznjBUjSBT5NIDV5Gm1ghCNqGoj6fDlQib09TeVhp
+         Zcmsaj47mo5/rGAg2hZvBgtKEtWKis+4ZqSp+g6AKBPNmm9xrDCW/RtPoZMDISz4InU1
+         pd0rCitUFD6gJo0INKHUXMJJLm2g7L5lqL5zIdiaVCBZ40NkpI1PHaSaJKjFaS/yLSLN
+         lZXA==
+X-Gm-Message-State: AOJu0YxCPZHjTvIIo8LfCs+ZLWf6reGMJV32XKWERY0zQcpcimV+curz
+	RCzLI+kCqz9G1VoeqDIvg2dKit54tEAo5+SPq4JkFZoh+3gkpxmjzFz5tIxmgQ==
+X-Gm-Gg: ASbGncsAX/UV+e6j53swa6SCvrJAs5TnEacrCJ3onvJs1I5l4ZtszeywKxVf04A0t+i
+	gnNOVZSso+51Gu4lJ6SMWEWmHFZjhJr8ejO6FEHyDaOaWuPDJirK/zuSn0l+Q8RXQmENve9eMNI
+	PdN/kvc0oA1+udEcPt7KTLjw0efA72PvegaX5JUmh2ntacdFWbCkganA7Ep6ht3oSWv3HPR1NhA
+	oZw8ouwcvUUMLgB41KlOtHHvyACpAhi7oR9l+kSy6k67JNdQbZIw+gBUfCSgFGmHfK3CIwjif0t
+	3dyvNyhVDrsCchvrgg0l6E9+wVG/Xo5vJnn+4SJnBII4CbetXqnSr73uP61JvQ==
+X-Google-Smtp-Source: AGHT+IGJMJxSyE4UNVIY3LX2S7nhf3Y5lt2eLGH38VXXHHpoq/52h36JCsBDp/RY5WFAtMDkWXBzow==
+X-Received: by 2002:a05:6e02:1a84:b0:3d3:f72c:8fd8 with SMTP id e9e14a558f8ab-3d4419b2bb9mr42285385ab.6.1741360519989;
+        Fri, 07 Mar 2025 07:15:19 -0800 (PST)
+Received: from fedora64.linuxtx.org ([72.42.103.70])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3d43b599080sm8399705ab.60.2025.03.07.07.15.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 07:15:19 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Fri, 7 Mar 2025 08:15:17 -0700
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.13 000/154] 6.13.6-rc2 review
+Message-ID: <Z8sNhU27IirlaPn3@fedora64.linuxtx.org>
+References: <20250306151416.469067667@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ne2omge6bmgxvr5z"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+In-Reply-To: <20250306151416.469067667@linuxfoundation.org>
 
+On Thu, Mar 06, 2025 at 04:21:02PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.6 release.
+> There are 154 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 08 Mar 2025 15:13:38 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.6-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
---ne2omge6bmgxvr5z
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
-MIME-Version: 1.0
+Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-On 07.03.2025 15:41:52, Geert Uytterhoeven wrote:
-> Hi Biju,
->=20
-> On Thu, 20 Feb 2025 at 10:45, Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > There are a total of 96 AFL pages and each page has 16 entries with
-> > registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
-> > the rule entries (r =3D 0..15).
-> >
-> > Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
-> > which is incorrect as the testing on RZ/G3E shows ch1 and ch4
-> > gets a start value of 0 and the register contents are overwritten.
-> >
-> > Fix this issue by using rule_entry corresponding to the channel
-> > to find the page entries in the AFL list.
-> >
-> > Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
->=20
-> Thanks for your patch!
->=20
-> This finally fixes CAN2 and CAN3 on the White Hawk and White Hawk
-> Single development boards based on R-Car V4H with 8 CAN channels
-> (the transceivers for CAN4-7 are not mounted), so
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
->=20
-> Unfortunately, it does not fix CAN2 and CAN3 on the Gray Hawk Single
-> development board, which is based on R-Car V4M with 4 CAN channels.
->=20
-> > --- a/drivers/net/can/rcar/rcar_canfd.c
-> > +++ b/drivers/net/can/rcar/rcar_canfd.c
-> > @@ -787,10 +787,11 @@ static void rcar_canfd_configure_controller(struc=
-t rcar_canfd_global *gpriv)
-> >  }
-> >
-> >  static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *g=
-priv,
-> > -                                          u32 ch)
-> > +                                          u32 ch, u32 rule_entry)
-> >  {
-> >         u32 cfg;
-> >         int offset, start, page, num_rules =3D RCANFD_CHANNEL_NUMRULES;
-> > +       u32 rule_entry_index =3D rule_entry % 16;
-> >         u32 ridx =3D ch + RCANFD_RFFIFO_IDX;
-> >
-> >         if (ch =3D=3D 0) {
->=20
-> The out-of-context code does:
->=20
->                 start =3D 0; /* Channel 0 always starts from 0th rule */
->         } else {
->                 /* Get number of Channel 0 rules and adjust */
->                 cfg =3D rcar_canfd_read(gpriv->base, RCANFD_GAFLCFG(ch));
->                 start =3D RCANFD_GAFLCFG_GETRNC(gpriv, 0, cfg);
->         }
->=20
-> After your changes below, "start" is set but never used.
-
-If you don't need this variable anymore, please remove it.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---ne2omge6bmgxvr5z
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfLDCQACgkQDHRl3/mQ
-kZy1BggAlWzSaoBsYVWmLWHhyU3Dd4rKAq1LByO9qoGwCqrJVsOECF8aWmp9MXEb
-9QeBSXlxUQ+w7Sk/N9NDmfZ1JxKHKM+GRW7nyXe8VdSk2mPcHTlkxZ1Zv4JTYOFW
-qvPuBPpWRq6QxEr1suN55jWD6OaRDsF6k6he8BJslgsRCkwveh7e1oj3k6eIUOyV
-/maNyCCO0LRqW9Ul8j3N/DCklIABNAGcaJZlLINZWOveHDvnN83YXPe5mv6dKOXM
-6kZMje9BsKhN1gnHrciaqT4U/A+wW8A+vv1w9k2b/MDN+u/+Q5vSGlO3cySKBnQT
-xMG1UorWo25zTKB9xVgtJ4wfd1S5eA==
-=pBDm
------END PGP SIGNATURE-----
-
---ne2omge6bmgxvr5z--
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
