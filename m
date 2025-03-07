@@ -1,81 +1,161 @@
-Return-Path: <stable+bounces-121392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095BDA56A56
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:27:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D50BA56A5C
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D827189B10A
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 14:27:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6DE2177503
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 14:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DDD21B8F5;
-	Fri,  7 Mar 2025 14:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54C121B9F4;
+	Fri,  7 Mar 2025 14:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="muKROObd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs/jPRQZ"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB53B664C6;
-	Fri,  7 Mar 2025 14:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933BF21B91D;
+	Fri,  7 Mar 2025 14:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741357666; cv=none; b=PuwpUESluO9hPXdUZ7El3vewJzepgFbnVO9YpHiPEt2T3o+026z2tPJUULpCgfRXKxN+PWVTLXPjErpFPyPAsh9loRK1mLSqOSit+mUzogKehOWZLjcIMyS9Te2knaPZ1i4LLvgiaUL2qB6QpM7cMCSzXlSYcCzET0aCPVXZuvQ=
+	t=1741357780; cv=none; b=CuQExnWEwrKEuQqdl4Cp6PQlsapG4NN6mrKKB7tDbB0+rqxTq7wxyUmMIWpLNy5X+be7Gou4gM0yvAgj4OoNgxVrOikyLI3CJhCKUzEcrWcxxe8sLUoZq7AzH3HOYh0HwYT4pd5BGh7C6g0/6LcacHZT7o0gnMH7/5EMZ+2BpVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741357666; c=relaxed/simple;
-	bh=/V8o8eBfEg6gD2LpNGYlIIbgvZgf5fRW9f89ZvP5Smo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F7+uFfj8/Cj118R0nRrvRsoGsqTP03XDeXK5vhjHjMP9PZ/cdIiNkLGwsrXKD9oz6EjVaV+/IKK8vjd6R2reSfWVlOezppr81SAP8k+tGGTZH6FenRaqPNzov91rPEv6wg9mIk0X86BGNBHuGY4emyVJQ8CXRarjh5JwjrgvKtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=muKROObd; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=/V8o8eBfEg6gD2LpNGYlIIbgvZgf5fRW9f89ZvP5Smo=;
-	t=1741357664; x=1742567264; b=muKROObdnVFlxssOtUO2I/BxzPXmKgEY4d4xWB6eWUK6W9T
-	WaNgBdRdJw6AO5/WULLhNna/ysFAfJqhTaM+F5rbqpUFNESUvla4mCpHdhanYYA4V2qlHcaayy+WX
-	/tc2SZUyx7A7hUM18iDQDPFKV5LAzpL0cuxO+gXi9rN9TLDhDwu6lGqaP6eRDXh61bRiddtgb7PDL
-	CvI3321vKwsrQHOfzKq6+9tNlFCoyTc4fJhQ7LGEY3djU6QbU+zAt9O+AzAbiQGiXV81th5LXcNXK
-	skGz0abIf8UFqMHh1dwD7/wv/rHEGtNi+0eGSjsLcGAG8AL+t2BMht0XU8rgSGFQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tqYfu-00000003wBD-0iuU;
-	Fri, 07 Mar 2025 15:27:42 +0100
-Message-ID: <a3ad0b7e8b5e16ee25cbc692798c0858e55a1b0c.camel@sipsolutions.net>
-Subject: Re: [PATCH v6.13 v2] fs/netfs/read_collect: fix crash due to
- uninitialized `prev` variable
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Max Kellermann <max.kellermann@ionos.com>, dhowells@redhat.com, 
-	netfs@lists.linux.dev, linux-kernel@vger.kernel.org, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Date: Fri, 07 Mar 2025 15:27:41 +0100
-In-Reply-To: <20250214131225.492756-1-max.kellermann@ionos.com>
-References: <20250214131225.492756-1-max.kellermann@ionos.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1741357780; c=relaxed/simple;
+	bh=fi5Ui0gZAhCgsAfysu+f+YG2CzMc7OmDUZSbDO8/sZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rq3+vDnJI/rot7FJqQZ1Ux1ns1QldeknjiOeqovB2hubbbW3MgVth6BEtjAPvZauhMcyiuX2Lqd6pcL72/uCvqmoWZzTm1ydtEl8/PbDX8MjFRrk37efBAra7LdSri4HVVBYxCraPk10Z1htDRBV4usQpE43cg5uvASPkIF528o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs/jPRQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BDDC4CED1;
+	Fri,  7 Mar 2025 14:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741357780;
+	bh=fi5Ui0gZAhCgsAfysu+f+YG2CzMc7OmDUZSbDO8/sZQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cs/jPRQZF4/GytuLZK3TcLEsslPoXZIV/WSj8azjSdpW4EoddUYYjo8FB5JowfEFJ
+	 h3vFJi/lSIdGMRwcy9849p3/zMb/khm46ZRDDWYrZHbEWjRvZRd+US+xUQzafSx1lJ
+	 jcDEc0Brn6sQdLVk4wviKXaBaUJTNNt7/jlqCrLs=
+Date: Fri, 7 Mar 2025 15:29:37 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: rafael@kernel.org, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: queue-5.10: Panic on shutdown at platform_shutdown+0x9
+Message-ID: <2025030703-translate-sterling-19d7@gregkh>
+References: <231c0362-f03e-4cef-8045-0787bca05d25@oracle.com>
+ <2025020722-joyfully-viewless-4b03@gregkh>
+ <0c84262b-c3e2-4855-9021-d170894f766c@oracle.com>
+ <b3ce27d9-4b94-4e75-92fe-a42d6c97834e@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b3ce27d9-4b94-4e75-92fe-a42d6c97834e@oracle.com>
 
-On Fri, 2025-02-14 at 14:12 +0100, Max Kellermann wrote:
-> When checking whether the edges of adjacent subrequests touch, the
-> `prev` variable is deferenced, but it might not have been initialized.
-> This causes crashes like this one:
+On Fri, Mar 07, 2025 at 08:55:55AM -0500, Chuck Lever wrote:
+> On 2/9/25 10:57 AM, Chuck Lever wrote:
+> > On 2/7/25 10:10 AM, Greg KH wrote:
+> >> On Thu, Feb 06, 2025 at 01:31:42PM -0500, Chuck Lever wrote:
+> >>> Hi -
+> >>>
+> >>> For the past 3-4 days, NFSD CI runs on queue-5.10.y have been failing. I
+> >>> looked into it today, and the test guest fails to reboot because it
+> >>> panics during a reboot shutdown:
+> >>>
+> >>> [  146.793087] BUG: unable to handle page fault for address:
+> >>> ffffffffffffffe8
+> >>> [  146.793918] #PF: supervisor read access in kernel mode
+> >>> [  146.794544] #PF: error_code(0x0000) - not-present page
+> >>> [  146.795172] PGD 3d5c14067 P4D 3d5c15067 PUD 3d5c17067 PMD 0
+> >>> [  146.795865] Oops: 0000 [#1] SMP NOPTI
+> >>> [  146.796326] CPU: 3 PID: 1 Comm: systemd-shutdow Not tainted
+> >>> 5.10.234-g99349f441fe1 #1
+> >>> [  146.797256] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+> >>> 1.16.3-2.fc40 04/01/2014
+> >>> [  146.798267] RIP: 0010:platform_shutdown+0x9/0x20
+> >>> [  146.798838] Code: b7 46 08 c3 cc cc cc cc 31 c0 83 bf a8 02 00 00 ff
+> >>> 75 ec c3 cc cc cc cc 66 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8b 47
+> >>> 68 <48> 8b 40 e8 48 85 c0 74 09 48 83 ef 10 ff e0 0f 1f 00 c3 cc cc cc
+> >>> [  146.801012] RSP: 0018:ff7f86f440013de0 EFLAGS: 00010246
+> >>> [  146.801651] RAX: 0000000000000000 RBX: ff4f0637469df418 RCX:
+> >>> 0000000000000000
+> >>> [  146.802500] RDX: 0000000000000001 RSI: ff4f0637469df418 RDI:
+> >>> ff4f0637469df410
+> >>> [  146.803350] RBP: ffffffffb2e79220 R08: ff4f0637469dd808 R09:
+> >>> ffffffffb2c5c698
+> >>> [  146.804203] R10: 0000000000000000 R11: 0000000000000000 R12:
+> >>> ff4f0637469df410
+> >>> [  146.805059] R13: ff4f0637469df490 R14: 00000000fee1dead R15:
+> >>> 0000000000000000
+> >>> [  146.805909] FS:  00007f4e7ecc6b80(0000) GS:ff4f063aafd80000(0000)
+> >>> knlGS:0000000000000000
+> >>> [  146.806866] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >>> [  146.807558] CR2: ffffffffffffffe8 CR3: 000000010ecb2001 CR4:
+> >>> 0000000000771ee0
+> >>> [  146.808412] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
+> >>> 0000000000000000
+> >>> [  146.809262] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
+> >>> 0000000000000400
+> >>> [  146.810109] PKRU: 55555554
+> >>> [  146.810460] Call Trace:
+> >>> [  146.810791]  ? __die_body.cold+0x1a/0x1f
+> >>> [  146.811282]  ? no_context.constprop.0+0xf8/0x2f0
+> >>> [  146.811854]  ? exc_page_fault+0xc5/0x150
+> >>> [  146.812342]  ? asm_exc_page_fault+0x1e/0x30
+> >>> [  146.812862]  ? platform_shutdown+0x9/0x20
+> >>> [  146.813362]  device_shutdown+0x158/0x1c0
+> >>> [  146.813853]  __do_sys_reboot.cold+0x2f/0x5b
+> >>> [  146.814370]  ? vfs_writev+0x9b/0x110
+> >>> [  146.814824]  ? do_writev+0x57/0xf0
+> >>> [  146.815254]  do_syscall_64+0x30/0x40
+> >>> [  146.815708]  entry_SYSCALL_64_after_hwframe+0x67/0xd1
+> >>>
+> >>> Let me know how to further assist.
+> >>
+> >> Bisect?
+> > 
+> > First bad commit:
+> > 
+> > commit a06b4817f3d20721ae729d8b353457ff9fe6ff9c
+> > Author:     Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > AuthorDate: Thu Nov 19 13:46:11 2020 +0100
+> > Commit:     Sasha Levin <sashal@kernel.org>
+> > CommitDate: Tue Feb 4 13:04:31 2025 -0500
+> > 
+> >     driver core: platform: use bus_type functions
+> > 
+> >     [ Upstream commit 9c30921fe7994907e0b3e0637b2c8c0fc4b5171f ]
+> > 
+> >     This works towards the goal mentioned in 2006 in commit 594c8281f905
+> >     ("[PATCH] Add bus_type probe, remove, shutdown methods.").
+> > 
+> >     The functions are moved to where the other bus_type functions are
+> >     defined and renamed to match the already established naming scheme.
+> > 
+> >     Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> >     Link:
+> > https://lore.kernel.org/r/20201119124611.2573057-3-u.kleine-koenig@pengutronix.de
+> >     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> >     Stable-dep-of: bf5821909eb9 ("mtd: hyperbus: hbmc-am654: fix an OF
+> > node reference leak")
+> >     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > 
+> 
+> Hi Greg, I still see crashes on shutdown 100% of the time on queue/5.10
+> kernels. Is there a plan to revert this commit?
 
-[...]
+Yes, I haven't had the cycles to get to looking at the 5.10 queue in a
+while, which is why I haven't pushed out new 5.10-rc kernels.
 
-I believe we also need this in 6.12?
+I'll get to it "soon".  Hopefully.  Ugh.
 
-johannes
+greg k-h
 
