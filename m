@@ -1,130 +1,233 @@
-Return-Path: <stable+bounces-121349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED2DA56350
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:12:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958B5A5634F
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:11:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE74C1895FDA
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 09:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6C817501D
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 09:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072D71E1E0B;
-	Fri,  7 Mar 2025 09:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PrZzu2Tm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7936B1EA7E5;
+	Fri,  7 Mar 2025 09:11:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22671A8F60;
-	Fri,  7 Mar 2025 09:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B83C1A8F60
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 09:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741338773; cv=none; b=j7pNuTV3fevLbFvXaD5Z+T7ZkvIDPusKNcUzCxF0TS68mRr4aJASLWnHJjstgN3GeTa004vDywjHjqrYaoBRTRhr/+RTKEj3Y5/ywrF+ZVdMevavEcngEU9w75DjWLFzidSRyAoz6ObQKFFlUbiLqt051uHIigiD+RwK+bSisbg=
+	t=1741338680; cv=none; b=bdnZNu02I/8lUwJkaCzlnGipIPtxbKgLkYR53y14gqtH6Nrk4SyNzpRK/R3zpYG+ZMVLYV6c7JbsVsHXHhppM5J/QnKqn9GesKDnB9ZDNBWpAlwfD776eyoBn+4d9v8s2KNjI0eFaI74McQy1A28MWXtWbFFuuZostgU50cD6Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741338773; c=relaxed/simple;
-	bh=SI7/zfo5ZeW1S7cwDCksy4BuoO+WtxO6HWfPQp20Qec=;
-	h=To:Cc:Message-ID:From:Subject:Date; b=A9CiBngo56uWQASA+/BcPgjBZIU/PCsP2SliZdV8KXwIRkuJjajSDHo3fTs2JkEjm04ppl57VkVFIdHoJMtWqJxXRpXHJd2CSJCrh1bvH0EYVSW7CwkKQqWDJ+l8zBnDJNegAwcQBlwQ8kG2H31lm3IxfM1HlHs9qy8hHne0/fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PrZzu2Tm; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E6162114010A;
-	Fri,  7 Mar 2025 04:12:49 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 07 Mar 2025 04:12:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1741338769; x=1741425169; bh=hg3PLU/0C0HunaKuqzKlrTLma1Fo
-	k3lK/tApVH6mYfQ=; b=PrZzu2TmVZzHwRZMKfKbOy3jtmB7DIBbdVm7Jsv/BwOp
-	FjXDLjWijBZG65WRlzfKdX7mjWuHZaMNHVVo51d5LLV3gclEK0EfcL6IhYhz7mcb
-	bY1KZ/wC0R4wqZg2HGh+lIgSDHwQ9ygfMznmKB9hAIDjn1ZLssGrvn59IzOZNMOh
-	jfymPWlunWBvmD7i6fhlXeBUoIZ1t3Owfn4YPwEr+2Ek5xnPz2ujN5MD3bmXEd7I
-	79Gf8Cuk/1r4qsr+URN9aZRNsj0JtC5uhg1oc+vx4Zmlcp6Ce+y21ANsoOgM4VSF
-	yKq3FbSHovCbMpX5c0DeCnSI6kF4HluVn9JJqXdSWA==
-X-ME-Sender: <xms:kbjKZ0laZAw_DfXw_Ax4hIsjzEO52Bnwseiuxp_lTgBtPO5Nv2jcTA>
-    <xme:kbjKZz0jGkHdTKwA83nx7E9kubZae_B87dyfPZa3qtcALPU--pfot3YjXxieAw5Ec
-    BUawVDnxsxjBW7KT5k>
-X-ME-Received: <xmr:kbjKZyonZo1gpzJyhz4G7p3KXiJtlvWpqwVvljS-kKdZ3goc_WBdiUtDbOUQDjbXFaiBzJqwrIYUFvnkHaX1RP2D20TlijMULLU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduuddtvdekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepvfevkffhufffsedttdertddttddtnecuhfhr
-    ohhmpefhihhnnhcuvfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorh
-    hgqeenucggtffrrghtthgvrhhnpefgheduvdegffektdehjeejhfekieelleffgffgjeff
-    hfffueefgefhvdevudegtdenucffohhmrghinhephhgvrggurdhssgenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhu
-    gidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuth
-    dprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthho
-    pehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
-    igqdhmieekkheslhhishhtshdrlhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtohep
-    lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:kbjKZwnVSccfYx3he3o3jtcVXBtcm2thVSsuO5s4g_kZsjLSFSgTuw>
-    <xmx:kbjKZy2PZZ7PJyGMCTuOvfFLc4M8EMtqQPMK1__XSOV79-T5HlqlWw>
-    <xmx:kbjKZ3sAQzQtC8j8bufK7unYyfLDpgUtquNswau4ngPrNqsTtEGsHQ>
-    <xmx:kbjKZ-VH9wCx1M5z1vfAByKu-xJPVNqqwv4pkXy4mk4L4AyjAbQTBQ>
-    <xmx:kbjKZ3zaXrYUoLoP5FKU-TJZwYd3_CdtSvCrplvW5y9l83P8-5YdHu0Q>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Mar 2025 04:12:47 -0500 (EST)
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: stable@vger.kernel.org,
-    linux-m68k@lists.linux-m68k.org,
-    linux-kernel@vger.kernel.org
-Message-ID: <c03e60ce451e4ccdf12830192080be4262b31b89.1741338535.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH] m68k: Fix lost column on framebuffer debug console
-Date: Fri, 07 Mar 2025 20:08:55 +1100
+	s=arc-20240116; t=1741338680; c=relaxed/simple;
+	bh=sHQ6fPpIZ/xgxPDWFTNuvjItDQG3Q/aAEHACQpwLCq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=oE6WOBdLyUXMkUySV9kDYq7GANaI+d0T2BCRfhXIoT8TsKPt8pK6kpht/F0lcdovGLxWO9UUITYCTLVWVLitS4Tg34xWU+U5wUzomGMejvuxkX1HybHa95ey3YJ0Irs9JaqDa9OLWp0aPKEmiwbq8bWh5n8n+5qxum9ua0x0VKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8CF831477;
+	Fri,  7 Mar 2025 01:11:27 -0800 (PST)
+Received: from [10.57.84.99] (unknown [10.57.84.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6BE283F66E;
+	Fri,  7 Mar 2025 01:11:14 -0800 (PST)
+Message-ID: <518c5b76-5c49-40ad-a781-6dd82417d3f5@arm.com>
+Date: Fri, 7 Mar 2025 09:11:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y] mm: hugetlb: Add huge page size param to
+ huge_ptep_get_and_clear()
+Content-Language: en-GB
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+References: <20250306115456-fb0607449ea03461@stable.kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20250306115456-fb0607449ea03461@stable.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When long lines are sent to the debug console on the framebuffer, the
-right-most column is lost. Fix this by subtracting 1 from the column
-count before comparing it with console_struct_cur_column, as the latter
-counts from zero.
+On 06/03/2025 19:11, Sasha Levin wrote:
+> [ Sasha's backport helper bot ]
+> 
+> Hi,
+> 
+> Summary of potential issues:
+> ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Linewrap is handled with a recursive call to console_putc, but this
-alters the console_struct_cur_row global. Store the old value before
-calling console_putc, so the right-most character gets rendered on the
-correct line.
+Hi,
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
----
- arch/m68k/kernel/head.S | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+I'm not sure what the issue is here? I've added the line:
 
-diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
-index 852255cf60de..9c60047764d0 100644
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3583,11 +3583,16 @@ L(console_not_home):
- 	movel	%a0@(Lconsole_struct_cur_column),%d0
- 	addql	#1,%a0@(Lconsole_struct_cur_column)
- 	movel	%a0@(Lconsole_struct_num_columns),%d1
-+	subil	#1,%d1
- 	cmpl	%d1,%d0
- 	jcs	1f
--	console_putc	#'\n'	/* recursion is OK! */
-+	/*	recursion will alter console_struct so load d1 register first */
-+	movel	%a0@(Lconsole_struct_cur_row),%d1
-+	console_putc	#'\n'
-+	jmp	2f
- 1:
- 	movel	%a0@(Lconsole_struct_cur_row),%d1
-+2:
- 
- 	/*
- 	 *	At this point we make a shift in register usage
--- 
-2.45.3
+(cherry picked from commit 02410ac72ac3707936c07ede66e94360d0d65319)
+
+to the commit log. Is that not the correct/sufficient thing to do?
+
+Thanks,
+Ryan
+
+> 
+> Found matching upstream commit: 02410ac72ac3707936c07ede66e94360d0d65319
+> 
+> Note: The patch differs from the upstream commit:
+> ---
+> 1:  02410ac72ac37 ! 1:  db66591c2390e mm: hugetlb: Add huge page size param to huge_ptep_get_and_clear()
+>     @@ Commit message
+>          Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
+>          Link: https://lore.kernel.org/r/20250226120656.2400136-2-ryan.roberts@arm.com
+>          Signed-off-by: Will Deacon <will@kernel.org>
+>     +    (cherry picked from commit 02410ac72ac3707936c07ede66e94360d0d65319)
+>     +    Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>      
+>       ## arch/arm64/include/asm/hugetlb.h ##
+>      @@ arch/arm64/include/asm/hugetlb.h: extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+>     @@ arch/arm64/include/asm/hugetlb.h: extern int huge_ptep_set_access_flags(struct v
+>      
+>       ## arch/arm64/mm/hugetlbpage.c ##
+>      @@ arch/arm64/mm/hugetlbpage.c: void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+>     - 		__pte_clear(mm, addr, ptep);
+>     + 		pte_clear(mm, addr, ptep);
+>       }
+>       
+>      -pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>     @@ arch/arm64/mm/hugetlbpage.c: bool __init arch_hugetlb_valid_size(unsigned long s
+>       {
+>      +	unsigned long psize = huge_page_size(hstate_vma(vma));
+>      +
+>     - 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_2645198)) {
+>     + 	if (IS_ENABLED(CONFIG_ARM64_ERRATUM_2645198) &&
+>     + 	    cpus_have_const_cap(ARM64_WORKAROUND_2645198)) {
+>       		/*
+>     - 		 * Break-before-make (BBM) is required for all user space mappings
+>      @@ arch/arm64/mm/hugetlbpage.c: pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr
+>     - 		if (pte_user_exec(__ptep_get(ptep)))
+>     + 		if (pte_user_exec(READ_ONCE(*ptep)))
+>       			return huge_ptep_clear_flush(vma, addr, ptep);
+>       	}
+>      -	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
+>     @@ arch/loongarch/include/asm/hugetlb.h: static inline void huge_pte_clear(struct m
+>      +					    unsigned long sz)
+>       {
+>       	pte_t clear;
+>     - 	pte_t pte = ptep_get(ptep);
+>     + 	pte_t pte = *ptep;
+>      @@ arch/loongarch/include/asm/hugetlb.h: static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>       					  unsigned long addr, pte_t *ptep)
+>       {
+>     @@ arch/parisc/include/asm/hugetlb.h: void set_huge_pte_at(struct mm_struct *mm, un
+>      -			      pte_t *ptep);
+>      +			      pte_t *ptep, unsigned long sz);
+>       
+>     - #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+>     - static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>     + /*
+>     +  * If the arch doesn't supply something else, assume that hugepage
+>      
+>       ## arch/parisc/mm/hugetlbpage.c ##
+>      @@ arch/parisc/mm/hugetlbpage.c: void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>     @@ arch/parisc/mm/hugetlbpage.c: void set_huge_pte_at(struct mm_struct *mm, unsigne
+>       
+>      
+>       ## arch/powerpc/include/asm/hugetlb.h ##
+>     -@@ arch/powerpc/include/asm/hugetlb.h: void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+>     +@@ arch/powerpc/include/asm/hugetlb.h: void hugetlb_free_pgd_range(struct mmu_gather *tlb, unsigned long addr,
+>       
+>       #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+>       static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>     @@ arch/riscv/mm/hugetlbpage.c: int huge_ptep_set_access_flags(struct vm_area_struc
+>       	int pte_num;
+>      
+>       ## arch/s390/include/asm/hugetlb.h ##
+>     -@@ arch/s390/include/asm/hugetlb.h: void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>     - #define __HAVE_ARCH_HUGE_PTEP_GET
+>     - pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
+>     - 
+>     +@@ arch/s390/include/asm/hugetlb.h: void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>     + void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>     + 		     pte_t *ptep, pte_t pte);
+>     + pte_t huge_ptep_get(pte_t *ptep);
+>     +-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>     +-			      unsigned long addr, pte_t *ptep);
+>      +pte_t __huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+>      +				pte_t *ptep);
+>      +
+>     - #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+>     --pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
+>      +static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>      +					    unsigned long addr, pte_t *ptep,
+>      +					    unsigned long sz)
+>     @@ arch/s390/include/asm/hugetlb.h: void __set_huge_pte_at(struct mm_struct *mm, un
+>      +	return __huge_ptep_get_and_clear(mm, addr, ptep);
+>      +}
+>       
+>     - static inline void arch_clear_hugetlb_flags(struct folio *folio)
+>     - {
+>     + /*
+>     +  * If the arch doesn't supply something else, assume that hugepage
+>      @@ arch/s390/include/asm/hugetlb.h: static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+>       static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>       					  unsigned long address, pte_t *ptep)
+>     @@ arch/s390/include/asm/hugetlb.h: static inline void huge_pte_clear(struct mm_str
+>      +	return __huge_ptep_get_and_clear(vma->vm_mm, address, ptep);
+>       }
+>       
+>     - #define  __HAVE_ARCH_HUGE_PTEP_SET_ACCESS_FLAGS
+>     + static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+>      @@ arch/s390/include/asm/hugetlb.h: static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+>     - 	int changed = !pte_same(huge_ptep_get(vma->vm_mm, addr, ptep), pte);
+>     - 
+>     + {
+>     + 	int changed = !pte_same(huge_ptep_get(ptep), pte);
+>       	if (changed) {
+>      -		huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
+>      +		__huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
+>     @@ arch/s390/include/asm/hugetlb.h: static inline int huge_ptep_set_access_flags(st
+>       {
+>      -	pte_t pte = huge_ptep_get_and_clear(mm, addr, ptep);
+>      +	pte_t pte = __huge_ptep_get_and_clear(mm, addr, ptep);
+>     - 
+>       	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(pte));
+>       }
+>     + 
+>      
+>       ## arch/s390/mm/hugetlbpage.c ##
+>     -@@ arch/s390/mm/hugetlbpage.c: pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>     +@@ arch/s390/mm/hugetlbpage.c: pte_t huge_ptep_get(pte_t *ptep)
+>       	return __rste_to_pte(pte_val(*ptep));
+>       }
+>       
+>     @@ arch/s390/mm/hugetlbpage.c: pte_t huge_ptep_get(struct mm_struct *mm, unsigned l
+>      +pte_t __huge_ptep_get_and_clear(struct mm_struct *mm,
+>      +				unsigned long addr, pte_t *ptep)
+>       {
+>     - 	pte_t pte = huge_ptep_get(mm, addr, ptep);
+>     + 	pte_t pte = huge_ptep_get(ptep);
+>       	pmd_t *pmdp = (pmd_t *) ptep;
+>      
+>       ## arch/sparc/include/asm/hugetlb.h ##
+>     @@ mm/hugetlb.c: static void move_huge_pte(struct vm_area_struct *vma, unsigned lon
+>       
+>      -	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
+>      +	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte, sz);
+>     + 	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+>       
+>     - 	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
+>     - 		huge_pte_clear(mm, new_addr, dst_pte, sz);
+>     + 	if (src_ptl != dst_ptl)
+>      @@ mm/hugetlb.c: void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>       			set_vma_resv_flags(vma, HPAGE_RESV_UNMAPPED);
+>       		}
+> ---
+> 
+> Results of testing on various branches:
+> 
+> | Branch                    | Patch Apply | Build Test |
+> |---------------------------|-------------|------------|
+> | stable/linux-6.6.y        |  Success    |  Success   |
 
 
