@@ -1,241 +1,201 @@
-Return-Path: <stable+bounces-121406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1DAA56C5B
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 16:43:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0545BA56C76
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 16:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 260261898FD4
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:43:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4339F3B17B4
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C62C1DE3C3;
-	Fri,  7 Mar 2025 15:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD55204C0E;
+	Fri,  7 Mar 2025 15:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="Cu29RTew"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StclEmU6"
 X-Original-To: stable@vger.kernel.org
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011044.outbound.protection.outlook.com [52.101.125.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F5421D5A9;
-	Fri,  7 Mar 2025 15:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741362209; cv=fail; b=EHfTi93uaqfUSCfUqNUDO8wvvIhNmSm7w3iaqZm59kktSKQyRJFBBp/J1Hpz1ps+YW3Fq4JHSRp3co7yOICkJXIOFit26gN2yiNJa/ZmBcRlGsfzvr5D6E+myiclhnOuazgfJcsM1RxzYV1BuwTN6p0Wppz8q9sdNpHpLgZwjE8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741362209; c=relaxed/simple;
-	bh=RY+oqecwdlgJopsLbDL5Rz8CEjUPFm/ZJw/H5CGORXk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Hx4BzjiI+52T7JpzJkMQa0CUjSestJR01CJqn0j5KjDhOXSIdIzSsced9ivryKomoc/IuMKvK855TkglzAn4bMR7QOXeX7C6pAgsRwDWxrOfnfwo9kriVdKtpn9UVRDTy9bFvqn/fyMiFyxs1PjUxa/VTACCampBwLGYrkwxeXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=Cu29RTew; arc=fail smtp.client-ip=52.101.125.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G3W3aeOyBhv/eZw9eBEY8G3RMHPvox2DSprUhpBn0x6nW03i9I5l/0JwtF/TpTR5iHWECAJ57EDUy8g0iNR/EI2dv0JerehDPxMPvXS6POJfoFYHG24f/SxAu+xCzebEAQfTFMOKm3rjurwKEi7Kn3gRPxsHskx/B9tNbD1W1vnBh463hWD4Zqt5OgTJEV8/jIcp8OPaD2qGey0rZs9cvOEssZuFbwhk32yMNjT79pBBbFW99J7GAoGCv2HzjCCA34sCaGEA/pBcZCUyCWCUMnsnuOpSLf/LRickf85f3B6pf6C20rp5ZDsehyBLYq2hVl9GEyOaZN7BCxuFfdNKNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RY+oqecwdlgJopsLbDL5Rz8CEjUPFm/ZJw/H5CGORXk=;
- b=NkENUDKnOe0YUFb8nN9BC5N/YcpynaOc/QFMK1C6h6q1ny9AVDwxqR8abqYzUQmmICCi3ZuKTcLsEu9pJ56BsdukyvRXGveqLJ/iOJQHm1jSK396lT8MXpN7ZZs/i41XkKrKyjc8FN4LH2jy3JbDk7EjCZec3unKZSh+JlEiTX/pWhZAPqmXJPtQmF7G/dn/VVA/WfJvnoFXGWy9NGxQ8bg8Gfzz+L+0B06PCJE5/RYgSf8rSUIp1/b5OcHtVL5ZcZCg8qpiJdXhkH/rLQ1LWVLXWLY17igxvukZz8M55yUj0Q6oka3+vrrtLYxeYLbGaPaEOEpa3JSYyYIWPUOe3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RY+oqecwdlgJopsLbDL5Rz8CEjUPFm/ZJw/H5CGORXk=;
- b=Cu29RTewVjtM3AwJjWgxiUDcQ4IoChwDkEAv5lZqwnu3kV7uXmq+P6BwCYPzAkKCGiMBkIXf4ac3XLMaCgFIJO2qbp7tkhA8/AS52+Z6Uga+9gTdq40ntEI70kOMqqeIvk5B+K9uedGvyb6yuziT96jLQLhFJJQHLxJ1hykhHRY=
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
- by TY4PR01MB15452.jpnprd01.prod.outlook.com (2603:1096:405:274::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.29; Fri, 7 Mar
- 2025 15:43:22 +0000
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::86ef:ca98:234d:60e1]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::86ef:ca98:234d:60e1%4]) with mapi id 15.20.8511.019; Fri, 7 Mar 2025
- 15:43:17 +0000
-From: Biju Das <biju.das.jz@bp.renesas.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>, Geert Uytterhoeven
-	<geert@linux-m68k.org>
-CC: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Wolfram Sang
-	<wsa+renesas@sang-engineering.com>, =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
-	<u.kleine-koenig@baylibre.com>, Rob Herring <robh@kernel.org>, Ulrich Hecht
-	<ulrich.hecht+renesas@gmail.com>, "linux-can@vger.kernel.org"
-	<linux-can@vger.kernel.org>, Prabhakar Mahadev Lad
-	<prabhakar.mahadev-lad.rj@bp.renesas.com>, biju.das.au
-	<biju.das.au@gmail.com>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
-Thread-Topic: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
-Thread-Index: AQHbg3wwxySbXtRqN0i0VotwnX4XtLNn1ygAgAAHtYCAAAk2sA==
-Date: Fri, 7 Mar 2025 15:43:17 +0000
-Message-ID:
- <TY3PR01MB11346C78AB7CE321456E4C89786D52@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-References: <20250220094516.126598-1-biju.das.jz@bp.renesas.com>
- <20250220094516.126598-3-biju.das.jz@bp.renesas.com>
- <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
- <20250307-weightless-malkoha-of-experiment-f9926c-mkl@pengutronix.de>
-In-Reply-To:
- <20250307-weightless-malkoha-of-experiment-f9926c-mkl@pengutronix.de>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TY4PR01MB15452:EE_
-x-ms-office365-filtering-correlation-id: aac7319a-f073-4933-f200-08dd5d8ec79a
-x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?UWZreHZFaHlMWm9SWlpxUlVhQnIzUGdyVG92Z0ZqOEN1blplTEloeXNua3A4?=
- =?utf-8?B?cStRQmpMd2VXUGpWMG5BcDlhUkFmMzlPRnltWnJCNVhyTms0L0hod25HZUR6?=
- =?utf-8?B?aEtDRDBVVzlvejBnUTgrYVZMMnltMXJlZnBXajNvK0k1UXY5cWZNMEQ5d3h2?=
- =?utf-8?B?a3BGU0MrQzVhQzgzdTJPajQyOW83b3NzT2h6UzRRY0s1djJaTURyZVc4STRB?=
- =?utf-8?B?dWtKNnJvcjc1YVQ1bzZzYkFmdmNwTGlSQnh3WCtHSlZLSmpDL3RmbHBST0Ny?=
- =?utf-8?B?OVVITHhmNW5LM01mQk5DMnJndUswc29Nd3I5eFh0TVBZRFVqWVQrZExCSG5l?=
- =?utf-8?B?cHZxTjY3a0xDa3BRTEtZUVJGVkVqeXJPR212b0RzNCtPOEV5a0l2VFFjUldI?=
- =?utf-8?B?aWltOXV5dENRdXlDOXVmU29YVXk4dGtLbFFCNW9DT0djYUdxVDVjK2xieUlK?=
- =?utf-8?B?ajV5d0c4b2Yvc3VmMW9IZmtnZktLV1o2OGw4YkhVdFE3Ky8wb0hUdVFLRjRj?=
- =?utf-8?B?QW1VbFc1SVY4ajhpakY2RzlmQWdZNUpjMlAzYW1LZnEwNjZBUENHcTJQYk16?=
- =?utf-8?B?eDZQY2gxTzZ3WDk4cEZxYXl3ZWcwdFVvN0V6L3JqNU1nM283WjdHU1NDa1VH?=
- =?utf-8?B?dFMybllieU9YRE9yRUJIK2M3WThwUm5SejFyM1dMK1ZhNXdaWVNZM1pLWUpw?=
- =?utf-8?B?RnJCbzl5YnY2U2hyYks4bmhQN01jM2V3QzlieHpVaWkwT3REbk1VZUo5Wjlr?=
- =?utf-8?B?ZktybnR1QmdDUnhNdU8vQzY1TXdHWDJDYjhUd1dHRC9vaDYvT2p2RlQ4clFt?=
- =?utf-8?B?V295WmE4dC83UzU0WTJwMVFhWjB1b2tEaXNvS0g5UGtiU0dJZXJwSHdKMHZE?=
- =?utf-8?B?WWRZQ1ovZ2V1YS83ZmtBMmpCVWNQWjBWRmRZL29DZDEzRVNyVEMyUitVYXVh?=
- =?utf-8?B?VFNlTWJKTzk3NXhNUUM3Q3hKdXpDWTdFNWlPampLNUpTNEVUTllvTlpIY0Nt?=
- =?utf-8?B?Zjk5Snp3ditHaVREV2lBR29ieFBBR1lTUFo4eWVSZ1phek1GakM2d21LUE5R?=
- =?utf-8?B?a0hsWnZabENDeUVQN1Jsc1l4YTEzajFiNGZNd05ZNnEwc21URmFKaDVrVno4?=
- =?utf-8?B?K3o0bFJVeW4wekZ4MXVjNDE1NmludS8yNVlBY2pJWVlBdHM5bHVWWWdLWDU2?=
- =?utf-8?B?Uzd3TytPRTNXZmZVVDRLUlBpT25CS25EVzVFN3V0bEZsRFNwUzZJSklKL08x?=
- =?utf-8?B?MEYrelVyZ2pFSVZIeVRvNTg3Ymw2WERjM0lYOUhITzlEVXFaVkY2NHN3UDFr?=
- =?utf-8?B?c1liejdnUGtOaFpFY1BJSVc4OUZobGc0NVZzMFltZEV5TllQcHZtWUNxTEVj?=
- =?utf-8?B?Ynp1RG53eFZpODhtN2xRcUk4aEw3NW5PeURhTm9ScnJJWlBpVjY1OWZYUW5P?=
- =?utf-8?B?cFFPL3dRKzJRWDM3OHNSS0JuS1ZIUEVUMk9qbk9DR09uUVNXRTcyaUh2RWtX?=
- =?utf-8?B?QVJ4U09lc281UHZ6YXRKQ25VV3FlUjByWU9JakUyWVpIWWliakVvNkd5Z1Bq?=
- =?utf-8?B?UldhcHBhTmppRm53N01XU3AzVHZuMGh3NE93bG5pMDNwRmhGeHNiUWd3czhR?=
- =?utf-8?B?cEphenIvcnV6ZTNLOUVwS09UNmZQNUlodHhFOHFEN2Y0SUFuWCtyNnpHNDFo?=
- =?utf-8?B?R2c2WU1RcU1BWVJSaXE5UEVEVVM1YlMwdVBKaFltdXRFWXc1MXhhVHB6Njhs?=
- =?utf-8?B?anVyTkpSVTRXdG9CK0xyQ3Yra3BhWmgyWk5wUkRiUjc3aWluUW5JaUxLWndO?=
- =?utf-8?B?UEh4TjdPSW1PY2FZMzhzK0w4Vzh5Q05INkkvYnZBNGE1Ymt2NnBpNk9oejQw?=
- =?utf-8?B?TmNTRzZSc1lkWEpDUWlDdk45QktiZ0E1UWwzWDA3Y0pxWi9VTFRlY1Z5OUw1?=
- =?utf-8?Q?diE3W1K+pbbTAk/6301sLI8EplQoN9W8?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?UERac1p4SzhWQ1gyN2MzZXFGKzJGdjllUU5kdU80Qy81SkhYMkhBR0tKUDNx?=
- =?utf-8?B?QUJLR2lldEZFSnZsT1dyb2NHTFMvL2VFVWY1VDNYVVlTRWw4R2Q2RWhIKzlY?=
- =?utf-8?B?WW9LSjFvZ1NLdURSd2FsZk9IRUJDcDZEcldzdlV2QUJsbHNKWDZHcFNoQ0JF?=
- =?utf-8?B?NzkyVzN4QVJDZ3V1QUs5b0FrYStkTUZOMUhHcUU2ZUNSS1BUcVRyU1kyckxD?=
- =?utf-8?B?bHpiTEh0SE1PWnV1NmltMEFqL1NyTjdzV3kwY00wMWwxQjZMcDV6WUFsdVpG?=
- =?utf-8?B?M3Y3YXVLRURCWTBjcjZHdFZkS3NCREZycy9EcHBrL3Q2aWZXejNRSVBtbmVt?=
- =?utf-8?B?UE1zVjdGVk00WHNrS1V4eWxhVHd0Y1diUlVQUk9NNExXL2luYnM5bDh1RHVh?=
- =?utf-8?B?emR4MGVJdmZzY2RQcmNLWHQxY0RwY1hnc2xuRWthOUJTZFZCazZKZlpFeXIr?=
- =?utf-8?B?T1c4dlZJdW5iMFdDUmphNnpzc1VoRklYSFBPNnZuODgrN3haMHY4akpUMmJZ?=
- =?utf-8?B?QmRmR09VQ29XdFZUTzB6S1BYNWpxb3BVTG1WL3IreVNSQ1ZLU0wrMlJaYUFk?=
- =?utf-8?B?QmdnYkFGSTNRTmVQZTRLUUdMZzJFbDYrVXMzeS9UaWdPeHJuQXZ0TlJWcG5T?=
- =?utf-8?B?NThXOGZSSVJ5M3N2UmF5WjMya2lqOGszRDBaTHZqNW5ucXg0eVpzN3JHZFVl?=
- =?utf-8?B?eXZuWWpvNEsrNEVxbVlMTmlVUG1SaGo3eXI3MHhBVzljNG9lVWNMUjVWenFs?=
- =?utf-8?B?N2swNGh0ZG10UDJhZzNQVnFaTE04SnVyemRjaExtdkUzRnBQaUNKYk0wL2Yv?=
- =?utf-8?B?VWxvYktWRmtFbkg1czVQRncvRDVRckhzU1AyZy9DQ0tjQVFyNGZaN1BxYjlU?=
- =?utf-8?B?OEhMVENVL0RVcTZUQ0lQSzlldlRjSm03dWhJKzlOWDYyQlhXVUYyNS9uVG15?=
- =?utf-8?B?eDJiQmtuQVBCanh4bmNyMmlVb2sxdENuOVJTaVhGd2pXTEpOZUJnekczc1Ux?=
- =?utf-8?B?a2ZIUUtoWE5ISklRWjErN1pJRUVzSUtrK21Rd3NiaEU4Nm90TFFrMzNkMHRu?=
- =?utf-8?B?TFE4OXJ0ckQ1YW5JUmhJMEp3U0ZYZmhYQ1N0THVRU0JINGlLc2hWL0dYMlZM?=
- =?utf-8?B?N2JoUWE2cmdVQkY3OUkxM0xJK0JZejMzcEpTWURJQUxJMmo4akpxSXZLVUlw?=
- =?utf-8?B?TE42Y09aL3NDMEEwWEFSZDVxU2dVV3l3KyszaTFWeXc4SUR6R0xwR1dkNHor?=
- =?utf-8?B?WFNON0VwbkxzbTlKQnpMSjVycFlrQmlVNUZOdCt3bmdZWjBjaUZVMmdvMGRL?=
- =?utf-8?B?OVlZVVZvdW1TV3RUd2hyd0ZBaGtTMzRxSVFnakNvaitrWDNqL0FHbThQQkhx?=
- =?utf-8?B?VDYxaWNiUU8xcGNmR2dEcTNsaDJVTk0yVU5lcTl1SGdsaU1XVFJRaklId2dP?=
- =?utf-8?B?MzhzeWhaRlFNYi9uUFJPNHhmZHV6N0c3OHFtdk5jZlkzVUFrZWdOclJhUmll?=
- =?utf-8?B?azQ5bmdiTUhzcHpjdHE1UmQyQ1NSVXlPOHM4eEdRSDdDTGppS3BpMFNabXRR?=
- =?utf-8?B?V3YxK0c2Sy9iQUVTZFMzN0d6ZXQ4eUo2WHIyTHJKajIyZ09qaHJORVV3Um1K?=
- =?utf-8?B?K0ROVWZ3RlBlT3dpT2NCaUdpVTlUbDgybnRBQmc0Z1NnZTlsY2t1S2pEclNw?=
- =?utf-8?B?T1Nvcmc2K1NLN2RBTXF0R3BsTVIzaXRSRmh3UXRySHN6ZWJtRm9JSmpCYVl2?=
- =?utf-8?B?Y2hTSGltbTZLNG1uRTRSZTZjU3pFd2ZWWTMyTXhFOGUrWnkyZDU4MlM3YzRu?=
- =?utf-8?B?eHorRTk3ZnNVVEc2d1VtN2d1aE1naENBREtmckI2MUJvTDZHZjFVbzJTcno2?=
- =?utf-8?B?akVTVnc2K21rQlV1Z3lwR21uN1hVWFhsdzFTcE1NNWJNVlZ3K0VJdUhqbWtU?=
- =?utf-8?B?SHhVU0gxWG4xUkF4bklsd2RaaFN6V1BqTmx4SmpxWlRPUUFSMWZRWWxnalpa?=
- =?utf-8?B?WTFUU0psNy91WkVOWk9Rclo4bERxZ0h1cEEvVjlHT1V2V2NxLy9hUGhVUnFW?=
- =?utf-8?B?YjI1alZEZVFTMVMzUkRNWWd3SzVsM1hJSTk2TkQxcUt6Uy9SVGo2dW9MWkdk?=
- =?utf-8?B?MHYwYytzdzliRjR3VFl6ZDQwRlVoSFA2UzJzOU1Ub1FiU0xnNm5DckRaUEZO?=
- =?utf-8?B?T0E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F0821CA1A;
+	Fri,  7 Mar 2025 15:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741362348; cv=none; b=YjFZnmsjXd9wp/7zB1j3ClBzGrmrH9DYilQ+ta2HjXttMaGO7HFQ31K5FozzSBerCECBVZHKZR0d7g4XSeK1RuRfOG6UvZ7Dc9qRNpGHuUJ4ukbx3Jb/W/V7vENn/908B1U2pxHCLx02+K8u09+VZtcBftLVsBT49zUArkmOsy0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741362348; c=relaxed/simple;
+	bh=ZpBOqPvPpg4k+GwFKkbvTJnOE4LZ2+Rh5edulRy7JRQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cf1HwSF4NjLnzWEULcliKrH6UaA9cO77WZn2jM05DhkuyC4FsYVI46KVF2Cm5gdto9mjUJFQl1Yb9o5a/O977ABr5Nt9flikhhS6E+DGi3AwriRNpN7VVQe2r5JkEY/ykV6ly/WNMl0MbSI3tj0o7odYKiYIHF/aOxG7AJmCids=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StclEmU6; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso404154866b.3;
+        Fri, 07 Mar 2025 07:45:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741362344; x=1741967144; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=cTClkgx+OHCu7CHEL4QgdX7j7z63TsB2DtVNGQ6gRoQ=;
+        b=StclEmU62JCYl6gd7ULS5RX83XPi68TKRBqRVgyXQjY1GW4vcuux+Y+sv4UZa+k8lp
+         7fH1ysDHk4vUr5SlhaW02L3WrKS5tXpcFayE57EIfVua16Ye/g2n1S0NEPP0bKX9dO7T
+         GWTxsUXLH0ZNi3X5glE19+PnvqRk24aCUERXVDNq8VZ/O23sa1JgkmKkqpKSiS/JhMHU
+         CEbMAaPQkd4prQOL4vLPway149aktYcd3QLmh/0PRKna3QQTlbWK2U39pf0fNOcaNPw8
+         FyUcn1Pp99UFeMvsqx7Vvzsd2kCST7qjkC+5ztWxa8SlMEkIbI6VAiGjabFJG84HG1wz
+         V+GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741362344; x=1741967144;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cTClkgx+OHCu7CHEL4QgdX7j7z63TsB2DtVNGQ6gRoQ=;
+        b=VNVsApru0TYThRY9VS8av9bso4xFADAlHozw9MINhXPnmZz7ahshYjcLHVJiXo1Nn9
+         aJXCpVk6zLWkhg2WMZByxE0allYfW72L/YtrOhytDu72pXPPXSccn224WHvPrRmiB/kG
+         MV9hRBi2gq5FvdVccNOj12IHv0UTx+nHDivXVXF471ZD2nSOWKbuIAkmWhSkfAisAHd+
+         5yqWzcCH4Ek8gFJ72LrvBNWZtU1C6uUqiswDGABPn23p/wiU4opwecXlUFA2YKUhTr3A
+         kvGdU5mq+aodeHrCIllzAz3ZqbT1NfNTnUssxTT63Z1oWofPUWHMUn8/Gy2ttvXwugV6
+         J6Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCVU2hEvKy7RqMmrKhMFj0xV7XEVOoWOVCFUTkOo4az8eAZeUNy/YGjw87RmOJVjuItL5Euek+V+vHnn2Ws=@vger.kernel.org, AJvYcCVrIxro871RqiK+p7dO1czDnUOSjQ6xCAiR1S0hPF2oSaQz8V+7KxYubgJaTzMYMKQq4eA3ObSt@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbHWVsl5vVFFeHuh7q7ygOngYXB1QqqAMAdcMWO8/4gJfX8n5M
+	89/L/xbQ4WtII9YZCXOt5lry/SmAQ7VhBUcngY6lTJJa6CWF/vg2DllmFOi1H8ieDCTA5tz7NSY
+	oSNZMr9VBMGjXJuGePhrrmNYS+oBqrwU9/rG1Xtm/
+X-Gm-Gg: ASbGnct1oZ3//HcqOx2qLwqjtRglGMivBzGEHMceRi3/RLmJDcJoLc1x6qIGZiu/rGy
+	rR+cPMVDp/wLPKRDmvXH4pA21jrd4H3MMiX8M277VeD4G+qw1Yz8ba9i3cG4VsoLTV7yr+auMrS
+	6R0Lk7Fii2Q83giMrcfHKLAWr1
+X-Google-Smtp-Source: AGHT+IFlypVhoPatyG1S41ARRN9VafZA5suTA50Nl4KHnRzPgisegFr5nMPXUcbEavl64mUeZqkyzMjq0vmoau6IOKc=
+X-Received: by 2002:a17:907:82a3:b0:abf:5dd3:bb29 with SMTP id
+ a640c23a62f3a-ac25264fab8mr354322566b.15.1741362344149; Fri, 07 Mar 2025
+ 07:45:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aac7319a-f073-4933-f200-08dd5d8ec79a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2025 15:43:17.1455
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dO61Vy/D1TWgFs7jR/8AVZbTS1dVt/hI3D59Y7oVj9iOXFt4lSanKq1nwCT9PKcxrN8Md700o9JKuElbjNe02zvEFY1sGVW+V7tTwJgoOgs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB15452
+References: <CAMpRfLORiuJOgUmpmjgCC1LZC1Kp0KFzPGXd9KQZELtr35P+eQ@mail.gmail.com>
+ <2025030559-radiated-reviver-eebb@gregkh> <CAMpRfLMQ=rWBpYCaco5X4Sh1ecHuiqa91TwsBo6m2MA_UMKM+g@mail.gmail.com>
+ <CAMpRfLMakzeazr91DBVyZQnin7y6L9RB+sPFb59U1QZvY3+KBQ@mail.gmail.com> <2025030718-dwindle-degrading-94d3@gregkh>
+In-Reply-To: <2025030718-dwindle-degrading-94d3@gregkh>
+From: =?UTF-8?Q?Se=C3=AFfane_Idouchach?= <seifane53@gmail.com>
+Date: Fri, 7 Mar 2025 23:45:27 +0800
+X-Gm-Features: AQ5f1JrD13VtvoNkOtbz2uR8YGz8hRWTTp6AyKcLBEqS-dprw-ibk2WnFv0PJks
+Message-ID: <CAMpRfLPLJA4TaJQCeYfn5XRFnVdqJ36yv-1LL7o=kjYOAj9u1Q@mail.gmail.com>
+Subject: Re: [REGRESSION] Long boot times due to USB enumeration
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: dirk.behme@de.bosch.com, rafael@kernel.org, dakr@kernel.org, 
+	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-SGkgTWFyYyBhbmQgR2VlcnQsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJv
-bTogTWFyYyBLbGVpbmUtQnVkZGUgPG1rbEBwZW5ndXRyb25peC5kZT4NCj4gU2VudDogMDcgTWFy
-Y2ggMjAyNSAxNTowOQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDIvMl0gY2FuOiByY2FyX2Nh
-bmZkOiBGaXggcGFnZSBlbnRyaWVzIGluIHRoZSBBRkwgbGlzdA0KPiANCj4gT24gMDcuMDMuMjAy
-NSAxNTo0MTo1MiwgR2VlcnQgVXl0dGVyaG9ldmVuIHdyb3RlOg0KPiA+IEhpIEJpanUsDQo+ID4N
-Cj4gPiBPbiBUaHUsIDIwIEZlYiAyMDI1IGF0IDEwOjQ1LCBCaWp1IERhcyA8YmlqdS5kYXMuanpA
-YnAucmVuZXNhcy5jb20+IHdyb3RlOg0KPiA+ID4gVGhlcmUgYXJlIGEgdG90YWwgb2YgOTYgQUZM
-IHBhZ2VzIGFuZCBlYWNoIHBhZ2UgaGFzIDE2IGVudHJpZXMgd2l0aA0KPiA+ID4gcmVnaXN0ZXJz
-IENGREdBRkxJRHIsIENGREdBRkxNciwgQ0ZER0FGTFAwciwgQ0ZER0FGTFAxciBob2xkaW5nIHRo
-ZQ0KPiA+ID4gcnVsZSBlbnRyaWVzIChyID0gMC4uMTUpLg0KPiA+ID4NCj4gPiA+IEN1cnJlbnRs
-eSwgUkNBTkZEX0dBRkwqIG1hY3JvcyB1c2UgYSBzdGFydCB2YXJpYWJsZSB0byBmaW5kIEFGTA0K
-PiA+ID4gZW50cmllcywgd2hpY2ggaXMgaW5jb3JyZWN0IGFzIHRoZSB0ZXN0aW5nIG9uIFJaL0cz
-RSBzaG93cyBjaDEgYW5kDQo+ID4gPiBjaDQgZ2V0cyBhIHN0YXJ0IHZhbHVlIG9mIDAgYW5kIHRo
-ZSByZWdpc3RlciBjb250ZW50cyBhcmUgb3ZlcndyaXR0ZW4uDQo+ID4gPg0KPiA+ID4gRml4IHRo
-aXMgaXNzdWUgYnkgdXNpbmcgcnVsZV9lbnRyeSBjb3JyZXNwb25kaW5nIHRvIHRoZSBjaGFubmVs
-IHRvDQo+ID4gPiBmaW5kIHRoZSBwYWdlIGVudHJpZXMgaW4gdGhlIEFGTCBsaXN0Lg0KPiA+ID4N
-Cj4gPiA+IEZpeGVzOiBkZDNiZDIzZWI0MzggKCJjYW46IHJjYXJfY2FuZmQ6IEFkZCBSZW5lc2Fz
-IFItQ2FyIENBTiBGRA0KPiA+ID4gZHJpdmVyIikNCj4gPiA+IENjOiBzdGFibGVAdmdlci5rZXJu
-ZWwub3JnDQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBCaWp1IERhcyA8YmlqdS5kYXMuanpAYnAucmVu
-ZXNhcy5jb20+DQo+ID4NCj4gPiBUaGFua3MgZm9yIHlvdXIgcGF0Y2ghDQo+ID4NCj4gPiBUaGlz
-IGZpbmFsbHkgZml4ZXMgQ0FOMiBhbmQgQ0FOMyBvbiB0aGUgV2hpdGUgSGF3ayBhbmQgV2hpdGUg
-SGF3aw0KPiA+IFNpbmdsZSBkZXZlbG9wbWVudCBib2FyZHMgYmFzZWQgb24gUi1DYXIgVjRIIHdp
-dGggOCBDQU4gY2hhbm5lbHMgKHRoZQ0KPiA+IHRyYW5zY2VpdmVycyBmb3IgQ0FONC03IGFyZSBu
-b3QgbW91bnRlZCksIHNvDQo+ID4gVGVzdGVkLWJ5OiBHZWVydCBVeXR0ZXJob2V2ZW4gPGdlZXJ0
-K3JlbmVzYXNAZ2xpZGVyLmJlPg0KPiA+DQo+ID4gVW5mb3J0dW5hdGVseSwgaXQgZG9lcyBub3Qg
-Zml4IENBTjIgYW5kIENBTjMgb24gdGhlIEdyYXkgSGF3ayBTaW5nbGUNCj4gPiBkZXZlbG9wbWVu
-dCBib2FyZCwgd2hpY2ggaXMgYmFzZWQgb24gUi1DYXIgVjRNIHdpdGggNCBDQU4gY2hhbm5lbHMu
-DQo+ID4NCj4gPiA+IC0tLSBhL2RyaXZlcnMvbmV0L2Nhbi9yY2FyL3JjYXJfY2FuZmQuYw0KPiA+
-ID4gKysrIGIvZHJpdmVycy9uZXQvY2FuL3JjYXIvcmNhcl9jYW5mZC5jDQo+ID4gPiBAQCAtNzg3
-LDEwICs3ODcsMTEgQEAgc3RhdGljIHZvaWQNCj4gPiA+IHJjYXJfY2FuZmRfY29uZmlndXJlX2Nv
-bnRyb2xsZXIoc3RydWN0IHJjYXJfY2FuZmRfZ2xvYmFsICpncHJpdikgIH0NCj4gPiA+DQo+ID4g
-PiAgc3RhdGljIHZvaWQgcmNhcl9jYW5mZF9jb25maWd1cmVfYWZsX3J1bGVzKHN0cnVjdCByY2Fy
-X2NhbmZkX2dsb2JhbCAqZ3ByaXYsDQo+ID4gPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgdTMyIGNoKQ0KPiA+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHUzMiBjaCwgdTMyIHJ1bGVfZW50cnkpDQo+ID4gPiAgew0KPiA+ID4g
-ICAgICAgICB1MzIgY2ZnOw0KPiA+ID4gICAgICAgICBpbnQgb2Zmc2V0LCBzdGFydCwgcGFnZSwg
-bnVtX3J1bGVzID0NCj4gPiA+IFJDQU5GRF9DSEFOTkVMX05VTVJVTEVTOw0KPiA+ID4gKyAgICAg
-ICB1MzIgcnVsZV9lbnRyeV9pbmRleCA9IHJ1bGVfZW50cnkgJSAxNjsNCj4gPiA+ICAgICAgICAg
-dTMyIHJpZHggPSBjaCArIFJDQU5GRF9SRkZJRk9fSURYOw0KPiA+ID4NCj4gPiA+ICAgICAgICAg
-aWYgKGNoID09IDApIHsNCj4gPg0KPiA+IFRoZSBvdXQtb2YtY29udGV4dCBjb2RlIGRvZXM6DQo+
-ID4NCj4gPiAgICAgICAgICAgICAgICAgc3RhcnQgPSAwOyAvKiBDaGFubmVsIDAgYWx3YXlzIHN0
-YXJ0cyBmcm9tIDB0aCBydWxlICovDQo+ID4gICAgICAgICB9IGVsc2Ugew0KPiA+ICAgICAgICAg
-ICAgICAgICAvKiBHZXQgbnVtYmVyIG9mIENoYW5uZWwgMCBydWxlcyBhbmQgYWRqdXN0ICovDQo+
-ID4gICAgICAgICAgICAgICAgIGNmZyA9IHJjYXJfY2FuZmRfcmVhZChncHJpdi0+YmFzZSwgUkNB
-TkZEX0dBRkxDRkcoY2gpKTsNCj4gPiAgICAgICAgICAgICAgICAgc3RhcnQgPSBSQ0FORkRfR0FG
-TENGR19HRVRSTkMoZ3ByaXYsIDAsIGNmZyk7DQo+ID4gICAgICAgICB9DQo+ID4NCj4gPiBBZnRl
-ciB5b3VyIGNoYW5nZXMgYmVsb3csICJzdGFydCIgaXMgc2V0IGJ1dCBuZXZlciB1c2VkLg0KPiAN
-Cj4gSWYgeW91IGRvbid0IG5lZWQgdGhpcyB2YXJpYWJsZSBhbnltb3JlLCBwbGVhc2UgcmVtb3Zl
-IGl0Lg0KDQpPSywgSSB3aWxsIHJlbW92ZSB1bnVzZWQgc3RhcnQgdmFyaWFibGUuDQoNCkNoZWVy
-cywNCkJpanUNCg==
+> That is a totally different change, I think you have something odd here
+> as these bisection points are very confusing.
+
+I can only agree. I was skeptical that reverting this commit would fix
+the issue but it does.
+
+> I think you have a mix of problems here.  Let's fix up all of those
+> error messages in the log first.  Dan's fix has nothing to do with that
+> at all, once the USB bus connection stuff is resolved, then it should be
+> ok.
+
+Are you suggesting you want to fix those messages ? I am sorry if I
+was not clear before, those messages are always present even on a
+"good" build.
+The issue is that on a "bad" build they hold back the boot process
+from continuing. USB functionality is never affected.
+
+> As that xhci commit you point at is showing an issue, are you sure that
+> you are properly building the right xhci driver into the system?  Do you
+> have a Renesas xhci controller?  What is the output of 'lspci'?
+
+I am building with a config based on my current distribution, Arch
+Linux, with olddefconfig. A quick grep for the values found in the
+commit returns the following :
+CONFIG_USB_XHCI_PCI=y
+CONFIG_USB_XHCI_PCI_RENESAS=m
+
+lspci as requested:
+00:00.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse Root Complex [1022:1480]
+00:00.2 IOMMU [0806]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse IOMMU [1022:1481]
+00:01.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+00:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse GPP Bridge [1022:1483]
+00:01.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse GPP Bridge [1022:1483]
+00:02.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+00:03.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+00:03.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse GPP Bridge [1022:1483]
+00:04.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+00:05.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+00:07.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+00:07.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse Internal PCIe GPP Bridge 0 to bus[E:B] [1022:1484]
+00:08.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+00:08.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse Internal PCIe GPP Bridge 0 to bus[E:B] [1022:1484]
+00:14.0 SMBus [0c05]: Advanced Micro Devices, Inc. [AMD] FCH SMBus
+Controller [1022:790b] (rev 61)
+00:14.3 ISA bridge [0601]: Advanced Micro Devices, Inc. [AMD] FCH LPC
+Bridge [1022:790e] (rev 51)
+00:18.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 0 [1022:1440]
+00:18.1 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 1 [1022:1441]
+00:18.2 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 2 [1022:1442]
+00:18.3 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 3 [1022:1443]
+00:18.4 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 4 [1022:1444]
+00:18.5 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 5 [1022:1445]
+00:18.6 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 6 [1022:1446]
+00:18.7 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD]
+Matisse/Vermeer Data Fabric: Device 18h; Function 7 [1022:1447]
+01:00.0 Non-Volatile memory controller [0108]: Kingston Technology
+Company, Inc. A2000 NVMe SSD [SM2263EN] [2646:2263] (rev 03)
+02:00.0 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] 500
+Series Chipset USB 3.1 XHCI Controller [1022:43ee]
+02:00.1 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] 500
+Series Chipset SATA Controller [1022:43eb]
+02:00.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 500
+Series Chipset Switch Upstream Port [1022:43e9]
+03:00.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:43ea]
+03:09.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:43ea]
+04:00.0 Ethernet controller [0200]: Intel Corporation 82599ES
+10-Gigabit SFI/SFP+ Network Connection [8086:10fb] (rev 01)
+2a:00.0 Ethernet controller [0200]: Realtek Semiconductor Co., Ltd.
+RTL8125 2.5GbE Controller [10ec:8125] (rev 05)
+2b:00.0 VGA compatible controller [0300]: NVIDIA Corporation TU106
+[GeForce RTX 2070 Rev. A] [10de:1f07] (rev a1)
+2b:00.1 Audio device [0403]: NVIDIA Corporation TU106 High Definition
+Audio Controller [10de:10f9] (rev a1)
+2b:00.2 USB controller [0c03]: NVIDIA Corporation TU106 USB 3.1 Host
+Controller [10de:1ada] (rev a1)
+2b:00.3 Serial bus controller [0c80]: NVIDIA Corporation TU106 USB
+Type-C UCSI Controller [10de:1adb] (rev a1)
+2c:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices,
+Inc. [AMD] Starship/Matisse PCIe Dummy Function [1022:148a]
+2d:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices,
+Inc. [AMD] Starship/Matisse Reserved SPP [1022:1485]
+2d:00.1 Encryption controller [1080]: Advanced Micro Devices, Inc.
+[AMD] Starship/Matisse Cryptographic Coprocessor PSPCPP [1022:1486]
+2d:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD]
+Matisse USB 3.0 Host Controller [1022:149c]
+2d:00.4 Audio device [0403]: Advanced Micro Devices, Inc. [AMD]
+Starship/Matisse HD Audio Controller [1022:1487]
+
+Thanks for your time
 
