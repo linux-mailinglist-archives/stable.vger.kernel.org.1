@@ -1,136 +1,178 @@
-Return-Path: <stable+bounces-121399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520EFA56AF3
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:55:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17DBA56B0B
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 16:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5DA171DA8
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 14:55:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B480D3B274F
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0B9219E93;
-	Fri,  7 Mar 2025 14:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kzHvHABN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA72189B94;
+	Fri,  7 Mar 2025 15:02:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9208B218EB5;
-	Fri,  7 Mar 2025 14:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C652E3361;
+	Fri,  7 Mar 2025 15:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741359354; cv=none; b=F10udnrBjWHiE3C6ldW94CUgRcrB0KeKH2zc2bXWIuLwc8XIYyXHdbx1LjUgxR0cmX8acEsBVMa2791NwzosYxZm+oKhtJ+bJhh+EgtjllDn8AGAePYJSwoBtadw2xtLZ8bAgpmG2DgnMDQodRnx5XUX7V6EIQFck4rdcGlDU40=
+	t=1741359749; cv=none; b=nK+ZtDegd7HBVbKL7Tec4H6NxCzJNex3OvL+ES7ZiYF0VvAmogHQr8XsZ6+U3R0wEF7sd+nLF2gqcN4hzRZ1moXV4j9XaWN+ZopudF4iIaW8iG3VfoH2Ksc5nxpAGPEwH44UZhgQPWleW1/vMwYAKH97zijKJPap9K6n61GCXdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741359354; c=relaxed/simple;
-	bh=AEII/3Bp+DkFC+pqH8Z8yWTg7GV3BlvLVlnjNJo4RXo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U0YEaMUodFlSscR+iE1rMCvEcepV+baRRq3DOyvCTHz5W4T5xc27jqzhnqh+90ZsdUlm2A7lB6mS6n8i/IFFpfJO3v9co4+AdgsoPM4dXDC9Sqa3fZN3JIOedtoXjzMUYFADagAwbdwzLdBMmUZ8s4JuUmg0w/o+A47y61k6byQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kzHvHABN; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741359353; x=1772895353;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=AEII/3Bp+DkFC+pqH8Z8yWTg7GV3BlvLVlnjNJo4RXo=;
-  b=kzHvHABN/70Oe0jwKEdnGwoMyt9OngwwvOUG2vEX5OKN6HU62S4DCVOo
-   o9wqbyvnErfabttled9kZTjmrSaUVixcfuO68OnItULNo5IMFCOsPsQT/
-   DW8qG5zeyMXDRowmJP5IDqvp6GR+NOXk/N1iMPConm9zP4Fy9bPV7LX0t
-   7SqaNVcPk8FFrRX1iU9QzpV7+CTK25Y16f7QynoA7PCoaTtpqNO4APl3Y
-   RIq35rcX+u9Rbhxe26WvhW0Gx5PrEDpTvJWy7swmV/brQepc3EFuYi2Lp
-   VJ+1g1qrnelJwLhoDIZFcO4LtHEg1KWBcQXC7d5y9qpzk5iYX/DU6d+tx
-   Q==;
-X-CSE-ConnectionGUID: MvDXmG+ISJqqBaKLLTcolg==
-X-CSE-MsgGUID: IQCxl5elSn6p11dWzddgTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="29988003"
-X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
-   d="scan'208";a="29988003"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 06:55:42 -0800
-X-CSE-ConnectionGUID: vMMgbUSXTeuJEuzSjYs+mQ==
-X-CSE-MsgGUID: IT2fDP4DQoaZ6LFNJzrgDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
-   d="scan'208";a="119842543"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.110.132]) ([10.125.110.132])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 06:55:41 -0800
-Message-ID: <2cf9798f-1a89-46e1-b1a4-7deec9cb7e40@intel.com>
-Date: Fri, 7 Mar 2025 06:56:03 -0800
+	s=arc-20240116; t=1741359749; c=relaxed/simple;
+	bh=4Uie/zXS3L7tF99LuxDGRGBCt+N59RO6Phv2qyt3Urk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xm2Zqh8gC9KoKGoJW8dnI8C47TAMyUDWkRSh82h0G6K7uyiSEA+hF+TkeQssBp8FbLIz5/sSm4C3f/1V/hiHFCFzbczADpTF21f4thRx7Zq3XP+fPrQ/lishniTgeZ6pipJps7/e+vkj+qvqPkK3fIpQp0544P9R6YOvWiMLZSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c3b44dabe0so214648385a.1;
+        Fri, 07 Mar 2025 07:02:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741359746; x=1741964546;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uiFH9uYdzsVblryLFuciVRwZg7hPiKuC2x8oklo674c=;
+        b=E0TNpMWHVSI5tBzcLHBEnCy+H88WwKlS7kKm1t76NZjfJia9aoZGwK19z8t1iEJmzp
+         ENcviEMh+ZAM+snl0dTLppXq3wSKEHxG7NAHdL818yf7e7LkjAkroL4MPOfQtHz/n5jF
+         2DqQKz77+6353QW8ucFNtJnQZHSkpUegOTK0nG2VEyRvYMqlLke728rNGeM5HmEzk0jm
+         4SLTNdDwdiCPDZQTSyLNNHkD49gqvt5j1RdXSrFrSyvqDVZjbzlvNr8/LjKwi/KdZJK7
+         BBf6aUEV+A5Uv/hCBD2u7gaM6lIequaTsdY6B2h6WRzo0F6ApYi7Bt85GBIg1UOc3cn3
+         /WwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMyfLZ+4hsttmzanpCA4U3Qdf+h/a78F3uHC7A3Mv2AFzfWq6AApWrIv2iLxO1XfzaPATRf+ts@vger.kernel.org, AJvYcCWr1mILwgqkpU+X4Xu+BRgA07BxXWUOQLcfChSYi7ETrzPWiflkC5jYq9NTZbtwPVbW/MkZiE8MJMF96X1CRqZhvKc=@vger.kernel.org, AJvYcCXpKimYv7D5ngbP1e7wz1upBnJeSK5aOFtdSHOKi1IqaRoWz+biBqQmAzwrQ7UB0bB9M+97Kz2H2AQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUOAJNRepUPUDP0YxV5IAcK5LEjW7wMIPeULz8Qg1C5oUeXORx
+	lFeJhqVKTpIpJlFiNy+uaBcQIMHKbRIFeBZpBSmPkDiVa0kQ8RO2jzRX8w2Wv9k=
+X-Gm-Gg: ASbGncsxicRGjsLn5Iizh/R4dmEYkSrsI9nuvJWD+YepTIf6Aa2Xd/+lxXsdXXfSJZy
+	530RIUUYxzoGekJRFHhguh1WQA/hG7z844GFxLponzCDM22xoWAH3zjm83IdbFQ6hvYoUzh+RUv
+	ok1hhsXsjLOc1Eyx2m7JhqJE6HcKoQ4Wq/DFh/yRT67j8tLJSowKdptQMQE4JGJeHqeSoiWHDye
+	i1o9vYDflVyzbNJwzEHgjD3/HA2nPqrm6aWC2YWI+zjIRCRRWdY/2uR1bubV0vhSDL23VDh8YRb
+	WkPP0rjT7P/vgouZ5K87SSC005NtcWhBfhDOF/CXN0ansbteodN03W+GDAxmW7vepV81Kgep3Vw
+	C6hOP3xnq21o=
+X-Google-Smtp-Source: AGHT+IE+i8UKepoquQNw0QUK0tROUXyKbHh3y+odawTunVEBX4Hy3MXwQ+ab7yEWopl7yk9T8RDApg==
+X-Received: by 2002:a05:620a:1b85:b0:7c3:d922:8779 with SMTP id af79cd13be357-7c4d6f92ce5mr522519485a.0.1741359745868;
+        Fri, 07 Mar 2025 07:02:25 -0800 (PST)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com. [209.85.222.179])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3e5381d45sm250564085a.52.2025.03.07.07.02.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Mar 2025 07:02:25 -0800 (PST)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c0a159ded2so210221185a.0;
+        Fri, 07 Mar 2025 07:02:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUFSBZ7+cEckx2ANJrsJkEpHYzxpcUu0vhapz6/NRe2ltS9uHo0lZezrX/Wzorj4PZtnX8jLo1L@vger.kernel.org, AJvYcCVerThe2GqaP6xzGj3nWpX89dtqAlCfPAqcPPDaWdVnK0SVuVKsuC0xdGVzWQXfCnJnNqMZvufZoN5PedewGr/mxx4=@vger.kernel.org, AJvYcCWYh9gBGBD4eUmuUlQTBuD5hlncxaYdp5klRi4zXUQgGvOLfeiwPNsqtCgIespigUsltuysAo4lGxM=@vger.kernel.org
+X-Received: by 2002:a05:620a:6607:b0:7c0:ae2e:630d with SMTP id
+ af79cd13be357-7c4e168299dmr517902485a.16.1741359745233; Fri, 07 Mar 2025
+ 07:02:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/microcode/AMD: Fix out-of-bounds on systems with
- CPU-less NUMA nodes
-To: Florent Revest <revest@chromium.org>, bp@alien8.de,
- linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, stable@vger.kernel.org
-References: <20250307131243.2703699-1-revest@chromium.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250307131243.2703699-1-revest@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250220094516.126598-1-biju.das.jz@bp.renesas.com>
+ <20250220094516.126598-3-biju.das.jz@bp.renesas.com> <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
+In-Reply-To: <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 7 Mar 2025 16:02:13 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdU2JW-LGK+uj4Y8tQc2wh2VTBJ0V+wuwt9Vwn5CzLeNuw@mail.gmail.com>
+X-Gm-Features: AQ5f1Jp-_DYcdz4xzsduSARw8uJiqkAm5JOCV1qOKpSjSZe8OagMlfbKL_zHV18
+Message-ID: <CAMuHMdU2JW-LGK+uj4Y8tQc2wh2VTBJ0V+wuwt9Vwn5CzLeNuw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
+To: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Rob Herring <robh@kernel.org>, Ulrich Hecht <ulrich.hecht+renesas@gmail.com>, 
+	linux-can@vger.kernel.org, 
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, Biju Das <biju.das.au@gmail.com>, 
+	linux-renesas-soc@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 3/7/25 05:12, Florent Revest wrote:
->  	for_each_node(nid) {
-> -		cpu = cpumask_first(cpumask_of_node(nid));
-> +		mask = cpumask_of_node(nid);
-> +		if (cpumask_empty(mask))
-> +			continue;
-> +
-> +		cpu = cpumask_first(mask);
+Hi Biju,
 
-Would for_each_node_with_cpus() trim this down a bit?
+On Fri, 7 Mar 2025 at 15:41, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Thu, 20 Feb 2025 at 10:45, Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> > There are a total of 96 AFL pages and each page has 16 entries with
+> > registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
+> > the rule entries (r = 0..15).
+> >
+> > Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
+> > which is incorrect as the testing on RZ/G3E shows ch1 and ch4
+> > gets a start value of 0 and the register contents are overwritten.
+> >
+> > Fix this issue by using rule_entry corresponding to the channel
+> > to find the page entries in the AFL list.
+> >
+> > Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+>
+> Thanks for your patch!
+>
+> This finally fixes CAN2 and CAN3 on the White Hawk and White Hawk
+> Single development boards based on R-Car V4H with 8 CAN channels
+> (the transceivers for CAN4-7 are not mounted), so
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>
+> Unfortunately, it does not fix CAN2 and CAN3 on the Gray Hawk Single
+> development board, which is based on R-Car V4M with 4 CAN channels.
+>
+> > --- a/drivers/net/can/rcar/rcar_canfd.c
+> > +++ b/drivers/net/can/rcar/rcar_canfd.c
+> > @@ -787,10 +787,11 @@ static void rcar_canfd_configure_controller(struct rcar_canfd_global *gpriv)
+> >  }
+> >
+> >  static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
+> > -                                          u32 ch)
+> > +                                          u32 ch, u32 rule_entry)
+> >  {
+> >         u32 cfg;
+> >         int offset, start, page, num_rules = RCANFD_CHANNEL_NUMRULES;
+> > +       u32 rule_entry_index = rule_entry % 16;
+> >         u32 ridx = ch + RCANFD_RFFIFO_IDX;
+> >
+> >         if (ch == 0) {
+>
+> The out-of-context code does:
+>
+>                 start = 0; /* Channel 0 always starts from 0th rule */
+>         } else {
+>                 /* Get number of Channel 0 rules and adjust */
+>                 cfg = rcar_canfd_read(gpriv->base, RCANFD_GAFLCFG(ch));
+>                 start = RCANFD_GAFLCFG_GETRNC(gpriv, 0, cfg);
+>         }
+>
+> After your changes below, "start" is set but never used.
+>
+> Looking at the actual behavior of your patch, the same can be achieved
+> by updating start, by adding a single line here:
+>
+>     start += (ch & -2) * num_rules;
+>
+> > @@ -802,7 +803,7 @@ static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
+> >         }
+> >
+> >         /* Enable write access to entry */
+> > -       page = RCANFD_GAFL_PAGENUM(start);
+> > +       page = RCANFD_GAFL_PAGENUM(rule_entry);
+
+The similar fix in the BSP[1] keeps the old value of start here.
+However, it does not make a difference for me (both R-Car V4H and V4M).
+
+> >         rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLECTR,
+> >                            (RCANFD_GAFLECTR_AFLPN(gpriv, page) |
+> >                             RCANFD_GAFLECTR_AFLDAE));
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
