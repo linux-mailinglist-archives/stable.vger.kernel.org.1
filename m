@@ -1,99 +1,169 @@
-Return-Path: <stable+bounces-121516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D5CA57576
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 23:55:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C05A575BB
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 00:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE07179442
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 22:55:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDF65189A12F
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 23:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60142580CE;
-	Fri,  7 Mar 2025 22:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15A41EBFE6;
+	Fri,  7 Mar 2025 23:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q8AeTHag"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OnQqBfeT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3529418BC36
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 22:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6559208989
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 23:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741388100; cv=none; b=cThTvgpylduugCmiUr/3YG4PKecWQwdrv0OVHznj04ZrCTs53tS1naBmt2lVvmIDdLodbQmTEZ/xRPsG6pAZ6ir5XyQ3jCmZ7lr2Pg4OzwMMp8SfdHlECSPABxpYQyzbvYOKxLteBjHJanKGUQym/7pdavNIejivlcA18ocV2gw=
+	t=1741388706; cv=none; b=XGa2PuBxDTfaG/ktHSEnGygUIH4yBQFu6cCp4yl5NT4VV/u+kZezdHu0T/5FjTVIUELx7VHnhv0+vV3gEvp7uTRwv8AsIkzcsQ7nGnMTaQlyh2vGkX+3KGFjVKhaTCFjkL2qc+aPzrUFD8eAU/SUFhIG0S6UPItHeN561iDiEa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741388100; c=relaxed/simple;
-	bh=DYOWBzBcYaby8Cy79cwU1ArmGlQ4QzEMeUg/pK9ZWzI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=NHtREG1S1f3uJDWJsU0T3G7Ormrgiv2HMrVyn2NrfdaDa5rjV4JVZvBT3G2wQkP0ZcRqGvYDhIXiv6P16s76qraa0Bz12ab+jgS1d2SwKscKGjGQuJZ8/lQ9yZFF4IMmgPnF7MiC6bWVxZUI+AJgtHcxAadFkfpxtwFSRmvXTok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q8AeTHag; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2241c95619eso5903525ad.0
-        for <stable@vger.kernel.org>; Fri, 07 Mar 2025 14:54:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741388098; x=1741992898; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pP0NAAChfp/EtONmENI4A4lCB7m3F0YoSMUnpDayk1g=;
-        b=Q8AeTHag89rm2zz+wrq4AupoqeZ5sVkV4huPvL+Fg3jBcGy4wtMxYfZKjNsfPm0G26
-         4W46uOksS56Q8cQHPi+ojvopFcFNzwukGreIVZfQewxjxciTGpag86Sgx+PprUU1wLvP
-         fnhiX1ou3mo9dSved6biORgD90NuoZUyh6TlpD7z6m+7jMsUjS+oeepfyACxTflOZBBi
-         w1YIfYLFtXcEmVly8czlhcYnYhuCZNJg/tVd3oprjFcaSur2RDNYTRJnqYuXGKOmpiOK
-         VXTs92rYy80XS4g5ppHM9sARCyzGjqfZuW/6vuj+xQ0irbFuyM7oiav7BQPtyKLhUe1w
-         xOYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741388098; x=1741992898;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pP0NAAChfp/EtONmENI4A4lCB7m3F0YoSMUnpDayk1g=;
-        b=C3sLOld5QtypeEQfxcQvM/8YHyGqhRPy5XJrPc4v2zd8siDzThmyWdB7+HXYUb+out
-         +3Vzj1RWGYBQ62uaXGysfsvTfkjlV7lMFjkPo83Yq23MzlpCRtfeMmMtSMp4jyLRL8lB
-         U2BsBEpT0Vl8+C8Uu97c8XerICmAEVQEsGw510N7G++ihmh90/LZ44QbpaeF3wpSEjMH
-         eSuKPzUeUWZOr13LNLC3YV6rhJI+f94c0dg6VcL+szGdtDOFbctqwIBuxcctWy2T4wSq
-         aBAqDzGclSQyAZjasoW3gvia9sdW+GEQJulflW9n1EUrLSuC6WAaUZ/mqBjmqHSnqCie
-         QuRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdn5HQzju7Ehc5RWnTxAZV3F/inYF0TvnA67B5zIQqgv3n6Gs3gWpNUi/XSVKm84RfSvPTG5A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMlFGedXQ/7XQ/LAN6zmGpKFeGojl/XlmZPechlbjhEkIojYYP
-	2cBLZ3bn+uwb1O4Aamc6iRdrROwD3O/Ea2qUwbAXq3seiYVODe/C6pzZhhDkl46aaQjRaXbXbc5
-	BuBMTT9VEIFg/lLhWxbxU2YFZwoI=
-X-Gm-Gg: ASbGncsIZXCCW5axcUDYoFNjM5bL1Cu79/7slZMtduvNYCiQqsCZc46o6aCl14GpWv+
-	q8Bnz2/K4P0tKVcbcKLfl+MR21JvNDA7HDMvJJsk3Ar5W5fLl/4m98c4T/W/T6VXh9tmDy6Pcyg
-	vKrmUd+34VorBGWhlyGfWWUnPRhg==
-X-Google-Smtp-Source: AGHT+IHZQfHUFoc4CuJ9MdPvdZ2wi2/gA/z2OkjmZFm/etoyq7qGjTx2n9h4JAknfy+q60nSYFH5Ifg7TG/g6iZXQwU=
-X-Received: by 2002:a17:902:cf04:b0:224:18fd:6e09 with SMTP id
- d9443c01a7336-22541626418mr4353085ad.0.1741388098484; Fri, 07 Mar 2025
- 14:54:58 -0800 (PST)
+	s=arc-20240116; t=1741388706; c=relaxed/simple;
+	bh=HP5R1u2aMPJBxl6xyiwZdHlPEtFMA1qsDfAy+TB/Qi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hqkRS7tZlpwc7U19Gh3yo4r/AX/NIj22gAwAly4nVRyU5aWv+BfOyxS+QHVd1USotg83Sv7+7PQbMOlrjVSf9ME4hVhXtMsWdW2aVdZ5wSkj3C+uJYrcTmN+Iy2UFDY1sb6Qq4FWU8QkdZmWVs6mzmzCVXYbWAzA4yvv21nHH9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OnQqBfeT; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741388705; x=1772924705;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=HP5R1u2aMPJBxl6xyiwZdHlPEtFMA1qsDfAy+TB/Qi4=;
+  b=OnQqBfeTae+PeBYXG30/UT0I/jodaPh82u3VrNk+bNhV3Mq6JJDKMneu
+   3pzsdGs4gg8QCdKC80OEIXOGxIw7kZxgRXi5H8dfy9lKqPSDOWNYQOc+7
+   gUKzhCxCkPfyX7vhuRvoddmjoG/UNVk86IqI4Jr47WuF01FNTWROgKiU9
+   xIYyldoas3nIWFrddrS1/ZncDD6u3cEJqDmQlpl1P/yb9a2B0aHpP3OEz
+   JimGIjqrgj5EC353j9rwy/2EJ/WuEBGPptZlRDMLEKzEnrIq7yKP+cju0
+   mWTIcDL3arF2bxHt9MbqjpU2P9rAtQ9o4yYW0jJ9n4c7ehF91h3OrkzIZ
+   A==;
+X-CSE-ConnectionGUID: UA5qKxIkRlSTvlVJ3BKK1g==
+X-CSE-MsgGUID: A1tyFF4yTU2UJ9fMrrOCdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="42157639"
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="42157639"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 15:05:04 -0800
+X-CSE-ConnectionGUID: PXIcuaQAQNqgcYZ2qYWIlw==
+X-CSE-MsgGUID: l/4sSFRBTIuGutegx2tNlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="119447539"
+Received: from vward-mobl.amr.corp.intel.com (HELO desk) ([10.125.145.180])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 15:05:03 -0800
+Date: Fri, 7 Mar 2025 15:05:03 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Xi Ruoyao <xry111@xry111.site>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Voegtle <tv@lio96.de>
+Subject: [PATCH 6.6] x86/mm: Don't disable PCID when INVLPG has been fixed by
+ microcode
+Message-ID: <20250307-clear-pcid-6-6-v1-1-cbf7ff0e817c@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAB17y2cC/x2MSwqAIBQAryJvneEHDbpKtPDzqgdhohCBdPckZ
+ jWLmQYVC2GFmTUoeFOlK3WRA4NwuLQjp9gdlFBGaDHxcKIrPAeK3HYCGumd89obDz3KBTd6/uE
+ CdrSwvu8HVEfS5WUAAAA=
+X-Mailer: b4 0.14.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Mar 2025 23:54:45 +0100
-X-Gm-Features: AQ5f1Jr3FULDQGa3IBGlFJXukLTOK1t5_A31cWtMbaT5BrHLGD0vAmT3wpO3Pf0
-Message-ID: <CANiq72=SXs+N3Fn1OD-Sj=h_HfEtaEBFgcNETNzVRuPbtwFtxA@mail.gmail.com>
-Subject: Apply 0c5928deada1 for 6.12.y and 6.13.y
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	stable@vger.kernel.org
-Cc: Andreas Hindborg <nmi@metaspace.dk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi Greg, Sasha,
+From: Xi Ruoyao <xry111@xry111.site>
 
-Please consider applying the following commits for 6.12.y and 6.13.y:
+commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
 
-    0c5928deada1 ("rust: block: fix formatting in GenDisk doc")
+Per the "Processor Specification Update" documentations referred by
+the intel-microcode-20240312 release note, this microcode release has
+fixed the issue for all affected models.
 
-It is trivial, and should apply cleanly.
+So don't disable PCID if the microcode is new enough.  The precise
+minimum microcode revision fixing the issue was provided by Pawan
+Intel.
 
-This avoids a Clippy warning in the upcoming Rust 1.86.0 release (to
-be released in a few weeks).
+[ dhansen: comment and changelog tweaks ]
+[ pawan: backported to 6.6 ]
 
-Thanks!
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
+Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
+Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
+Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
+Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
+Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
+---
+ arch/x86/mm/init.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 6215dfa23578..71d29dd7ad76 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -262,28 +262,33 @@ static void __init probe_page_size_mask(void)
+ }
+ 
+ /*
+- * INVLPG may not properly flush Global entries
+- * on these CPUs when PCIDs are enabled.
++ * INVLPG may not properly flush Global entries on
++ * these CPUs.  New microcode fixes the issue.
+  */
+ static const struct x86_cpu_id invlpg_miss_ids[] = {
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0x2e),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0x42c),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0x11),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0x118),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0x4117),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0x2e),
+ 	{}
+ };
+ 
+ static void setup_pcid(void)
+ {
++	const struct x86_cpu_id *invlpg_miss_match;
++
+ 	if (!IS_ENABLED(CONFIG_X86_64))
+ 		return;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_PCID))
+ 		return;
+ 
+-	if (x86_match_cpu(invlpg_miss_ids)) {
++	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
++
++	if (invlpg_miss_match &&
++	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
+ 		pr_info("Incomplete global flushes, disabling PCID");
+ 		setup_clear_cpu_cap(X86_FEATURE_PCID);
+ 		return;
+
+---
+base-commit: 568e253c3e3bdfecf5a4d65ccc8fc971c6c4b31f
+change-id: 20250307-clear-pcid-6-6-ce51baab3b5b
+
+Best regards,
+-- 
+Thanks,
+Pawan
+
+
 
