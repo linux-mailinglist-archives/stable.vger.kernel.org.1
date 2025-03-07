@@ -1,146 +1,123 @@
-Return-Path: <stable+bounces-121385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3CDA568CE
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 14:24:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE6EA56926
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 14:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D7E16A292
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 13:24:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6F817A867D
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 13:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85547219A75;
-	Fri,  7 Mar 2025 13:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCaSk0Bg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1824321A44E;
+	Fri,  7 Mar 2025 13:42:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9D118CC10;
-	Fri,  7 Mar 2025 13:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE63EBE;
+	Fri,  7 Mar 2025 13:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741353868; cv=none; b=NOBT2VNeZ18XsMSWDcSxxeCd6vqyvK5gRJAW+83Omj9VYd3Dcc18Xq7tM7MRYgVu7GUtSYm8PZNecBTt+wQks9mi6YxYDB8G69eXNeuu2Rac6z6yxtdnGTLnGur60lr6UiO5xUaC/L/jeagJyPO54KkK6YpyuFgmMsxK0HYVWdA=
+	t=1741354939; cv=none; b=soz9DbUTswpVxzAz+1CjRrmbk3VUWrgIj1ovyBOF1rAraFlQT3ule556XCd0osHS0K7kJYzl7vPGTr69r1zsGbJkbewC4to1T+SajUdK8IxYJDab8+yky6bcd9bN6keu5VY2SeJyPYrj14R+PC+fV8brruJrcGrv4rvoIw/ESUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741353868; c=relaxed/simple;
-	bh=6rgP9vhHzDhXIeeMY7SruHis1mPBRaG0gWZB3Xp80Gs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ncqx/GSrCQzMjUb44/5Ew+tiPDoxc7lHaZHbbkfd1V+/76EkLkCOoKKoUUqdhVruXbd67DBHmzMtwNJkL3WFsvmeXgY6Glt7CYudBx5j5ptq4BZvi8ENCAHdkCRiDUy6DPT+2QoEbtpivOyOSCMG6A/TBmN6yNpG+/8N4zT+V4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCaSk0Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC32C4CED1;
-	Fri,  7 Mar 2025 13:24:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741353867;
-	bh=6rgP9vhHzDhXIeeMY7SruHis1mPBRaG0gWZB3Xp80Gs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lCaSk0BgFKbXTN/gpc8XAwgt9pZFho5e117sCcq3XEsNmU9PqYOCEWQtgsU/DN8ZQ
-	 StcA1jDR4Bg1rjV+2HriRPrI8NGt0WgdoEJNfJDssbiyga41QR6yYbQI8Zn8osHCCF
-	 1DQ92tufIXzpUvr3tHo7l16htVC0OS++echbf66+/HGTqaKlohKw+btkQ4JKTs+3OJ
-	 NKYJHLStdd5v4hoykz+R9IOFDF2Sl5mE5VKs6vYCJTsjXAKrKlm67vGAQgCHAhzkEO
-	 Vm4n+F+VoVsaDGvU+WoyxixxlaHCsdNWDUHXXMncnwY7ub5SRuDLSsFOJPBXoS4+En
-	 G0V9JziINO58w==
-Date: Fri, 7 Mar 2025 13:24:22 +0000
-From: Simon Horman <horms@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrei Botila <andrei.botila@oss.nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, s32@nxp.com,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 1/2] net: phy: nxp-c45-tja11xx: add TJA112X PHY
- configuration errata
-Message-ID: <20250307132422.GH3666230@kernel.org>
-References: <20250304160619.181046-1-andrei.botila@oss.nxp.com>
- <20250304160619.181046-2-andrei.botila@oss.nxp.com>
- <7c14179c-0262-47e5-a13e-a53c2061da9b@redhat.com>
- <f37c7159-528d-4c58-b531-8d66757d2c16@oss.nxp.com>
- <d09c8547-550d-4ea1-8739-2bcf9e7c3fb0@lunn.ch>
+	s=arc-20240116; t=1741354939; c=relaxed/simple;
+	bh=Q81dlDq1ruIEwRIRX5DraIRa9T4BWccpcCxweDZRP9c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=huA1tSi8JYEfCqRzlMI8RXHAoPRTGmHUYLDavfW7ThSyOFnjBJSJwsWbnQ4J6G4R1Sz22azsu5xNR1GBWMXYmgUVw7IMRh8Uu239LId4ODNDlq/sRdFuyvmtmmTusCRVf5n5GdtUXXelL5lfM+EOXQ6u0aS+km4oZ9UupknB1Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 831931477;
+	Fri,  7 Mar 2025 05:42:28 -0800 (PST)
+Received: from [10.57.84.99] (unknown [10.57.84.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F17883F66E;
+	Fri,  7 Mar 2025 05:42:14 -0800 (PST)
+Message-ID: <03997253-0717-4ecb-8ac8-4a7ba49481a3@arm.com>
+Date: Fri, 7 Mar 2025 13:42:13 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d09c8547-550d-4ea1-8739-2bcf9e7c3fb0@lunn.ch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/madvise: Always set ptes via arch helpers
+Content-Language: en-GB
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250307123307.262298-1-ryan.roberts@arm.com>
+ <dbdeb4d7-f7b9-4b10-ada3-c2d37e915f6d@lucifer.local>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <dbdeb4d7-f7b9-4b10-ada3-c2d37e915f6d@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 06, 2025 at 04:35:12PM +0100, Andrew Lunn wrote:
-> > >> +/* Errata: ES_TJA1120 and ES_TJA1121 Rev. 1.0 — 28 November 2024 Section 3.1 */
-> > >> +static void nxp_c45_tja1120_errata(struct phy_device *phydev)
-> > >> +{
-> > >> +	int silicon_version, sample_type;
-> > >> +	bool macsec_ability;
-> > >> +	int phy_abilities;
-> > >> +	int ret = 0;
-> > >> +
-> > >> +	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_DEVICE_ID3);
-> > >> +	if (ret < 0)
-> > >> +		return;
-> > >> +
-> > >> +	sample_type = FIELD_GET(TJA1120_DEV_ID3_SAMPLE_TYPE, ret);
-> > >> +	if (sample_type != DEVICE_ID3_SAMPLE_TYPE_R)
-> > >> +		return;
-> > >> +
-> > >> +	silicon_version = FIELD_GET(TJA1120_DEV_ID3_SILICON_VERSION, ret);
-> > >> +
-> > >> +	phy_abilities = phy_read_mmd(phydev, MDIO_MMD_VEND1,
-> > >> +				     VEND1_PORT_ABILITIES);
-> > >> +	macsec_ability = !!(phy_abilities & MACSEC_ABILITY);
-> > >> +	if ((!macsec_ability && silicon_version == 2) ||
-> > >> +	    (macsec_ability && silicon_version == 1)) {
-> > >> +		/* TJA1120/TJA1121 PHY configuration errata workaround.
-> > >> +		 * Apply PHY writes sequence before link up.
-> > >> +		 */
-> > >> +		if (!macsec_ability) {
-> > >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x4b95);
-> > >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0xf3cd);
-> > >> +		} else {
-> > >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x89c7);
-> > >> +			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0893);
-> > >> +		}
-> > >> +
-> > >> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0476, 0x58a0);
-> > >> +
-> > >> +		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x8921, 0xa3a);
-> > >> +		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x89F1, 0x16c1);
-> > >> +
-> > >> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x0);
-> > >> +		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0);
-> > > 
-> > > Please add macro with meaningful names for all the magic numbers used
-> > > above, thanks!
-> > > 
-> > > Paolo
-> > > 
-> > 
-> > Hello, these registers are not documented in the datasheet or errata sheet.
-> > The access sequence comes 1-to-1 from the errata so I couldn't use macros.
+On 07/03/2025 13:04, Lorenzo Stoakes wrote:
+> On Fri, Mar 07, 2025 at 12:33:06PM +0000, Ryan Roberts wrote:
+>> Instead of writing a pte directly into the table, use the set_pte_at()
+>> helper, which gives the arch visibility of the change.
+>>
+>> In this instance we are guaranteed that the pte was originally none and
+>> is being modified to a not-present pte, so there was unlikely to be a
+>> bug in practice (at least not on arm64). But it's bad practice to write
+>> the page table memory directly without arch involvement.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: 662df3e5c376 ("mm: madvise: implement lightweight guard page mechanism")
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> ---
+>>  mm/madvise.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/madvise.c b/mm/madvise.c
+>> index 388dc289b5d1..6170f4acc14f 100644
+>> --- a/mm/madvise.c
+>> +++ b/mm/madvise.c
+>> @@ -1101,7 +1101,7 @@ static int guard_install_set_pte(unsigned long addr, unsigned long next,
+>>  	unsigned long *nr_pages = (unsigned long *)walk->private;
+>>
+>>  	/* Simply install a PTE marker, this causes segfault on access. */
+>> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
+>> +	set_pte_at(walk->mm, addr, ptep, make_pte_marker(PTE_MARKER_GUARD));
 > 
-> Yes, we sometimes just have to accept the drivers are doing magic we
-> have no idea about because the vendor does not want to tell is. All
-> the registers in MDIO_MMD_VEND1 are clearly vendor specific. The
-> MDIO_MMD_PMAPMD registers are also in the range reserved for
-> vendors. So i think we just have to accept it.
-
-+1
-
-It can happen that vendors regard such information as IP that they do
-not wish to disclose. Not saying that is the case here. Just saying
-it is one reason that we sometimes have to accept such things.
-So I think what you say above is completely reasonable.
-
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> I agree with you, but I think perhaps the arg name here is misleading :) If
+> you look at mm/pagewalk.c and specifically, in walk_pte_range_inner():
 > 
->     Andrew
+> 		if (ops->install_pte && pte_none(ptep_get(pte))) {
+> 			pte_t new_pte;
 > 
+> 			err = ops->install_pte(addr, addr + PAGE_SIZE, &new_pte,
+> 					       walk);
+> 			if (err)
+> 				break;
+> 
+> 			set_pte_at(walk->mm, addr, pte, new_pte);
+> 
+> 			...
+> 		}
+> 
+> So the ptep being assigned here is a stack value, new_pte, which we simply
+> assign to, and _then_ the page walker code handles the set_pte_at() for us.
+> 
+> So we are indeed doing the right thing here, just in a different place :P
+
+Ahh my bad. In that case, please ignore the patch.
+
+But out of interest, why are you doing it like this? I find it a bit confusing
+as all the other ops (e.g. pte_entry()) work directly on the pgtable's pte
+without the intermediate.
+
+Thanks,
+Ryan
+
+> 
+>>  	(*nr_pages)++;
+>>
+>>  	return 0;
+>> --
+>> 2.43.0
+>>
+
 
