@@ -1,392 +1,270 @@
-Return-Path: <stable+bounces-121425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91938A56EF1
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 18:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7981AA56F77
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 18:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C5007A305C
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 17:24:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C576A7AB43A
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 17:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0594C23F420;
-	Fri,  7 Mar 2025 17:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A9E23FC68;
+	Fri,  7 Mar 2025 17:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="KXemk93B"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EzKNOtGh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE31914293
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 17:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3524623E355
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 17:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741368294; cv=none; b=kSB8V03VuVdqHQ2wUGsynPi3ROuZyK/0Z57B7hXc3JijNiYcRUia0Jwe63TVXqAHyyMsEEcrSI+YZpafcbhV/V1zE9D5nX4gvg+jcz2Zogp3Mgg6+VL51MHh5jW06HAx2+AAC8gVoXrFqBVUQAb89A7E2ZreM5sT9Gn1DBWHu9M=
+	t=1741369423; cv=none; b=tY8PN61y6KMc7BTiXJQgoSR5K5ibtctcymWuRC6ZeZdnWu+u7u+oyA9XF1m+xFpuR5oX2mxevQLY1+weypJH3QYVBpbDQ3yNVPfN/CIRi+ra3EM+YZtFodyFJsKN8GtPo22CkM5Uc0iKWJHh+heOUzI0bE8HW9Q/KJXv0URZR9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741368294; c=relaxed/simple;
-	bh=Gn9EZX1iq9I9/ueO0wi4TvTU+oBQyT6epI+/H8TQfkk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MG+cDkaBQvmamip0ep5OQQwuu9Y1zzl5dOk6mGB8yedkNHY98D4D+DzG4AelTruR8jI5dfRLZt5isPABTcZ5w1oGCbDTmILmXTaBck2oq5YiIijQnHrzeolsRcXqypvHmfnnHRJRDFoE7crjI6rBEU10qB2E62oF+OhOCDs+LuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=KXemk93B; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 527GfjDd002596;
-	Fri, 7 Mar 2025 17:24:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2023-11-20; bh=XQ4igYjJ+Sr6AX1E
-	tW7EVavxq/Pc5P9krRANMlBYoS8=; b=KXemk93BiZ12fbFIq3jCl4h4RPTSbfM2
-	0GIc5+q80cw2fg/oc/9Sjt2hH4SYdQYqKhr8B6prjq9NPfG0Wjag6lYCL/6URH1d
-	n5tAmgoTNyV2N1aXvFn3QqrNVzV2T24ssv4WdhRmgYL0z+W6auEis5cWygO2h+UP
-	hVQ3GFXvRWQ1NEVpRFIGEXTOp/I4mI8PdWLzlBN0OMycgyF/bEuMI9Hwtn2/dAsD
-	Bi7DIHwVUq6+i/TRHCUlqxIDfJeKtymu/WzAAb0fkqUJlrT2rDL44EqgHTZqLK5t
-	1/KSw6bV2vsPfbvVAkdYyrVZSYr9yIpJW70UFJncfFbyW5cY2nxcGQ==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453u8hmqeh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 07 Mar 2025 17:24:42 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 527G0LM9013611;
-	Fri, 7 Mar 2025 17:24:42 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 453rpfdgtf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 07 Mar 2025 17:24:41 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 527HKevb000959;
-	Fri, 7 Mar 2025 17:24:41 GMT
-Received: from bpf.uk.oracle.com (dhcp-10-154-59-5.vpn.oracle.com [10.154.59.5])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 453rpfdgry-1;
-	Fri, 07 Mar 2025 17:24:40 +0000
-From: Alan Maguire <alan.maguire@oracle.com>
-To: stable@vger.kernel.org
-Cc: memxor@gmail.com, Jiri Olsa <jolsa@kernel.org>,
-        Colm Harrington <colm.harrington@oracle.com>,
-        Alan Maguire <alan.maguire@oracle.com>
-Subject: [PATCH linux-6.12.y] selftests/bpf: Clean up open-coded gettid syscall invocations
-Date: Fri,  7 Mar 2025 17:24:38 +0000
-Message-ID: <20250307172439.3656157-1-alan.maguire@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1741369423; c=relaxed/simple;
+	bh=60vohEiMEApZR4nLnfno/LrXHhbOoJAKQwBR7WhFeDE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sZwi10LOj4HodC2HKROo8vQ0UDTuHXZCPdn5lhL5P0x8WZA7K7fkx6QbX9+dZX7WRBu+iJ8NKAahDPeB0xLSc3Pms9R079hJJIYu459+vu/rxp4KUF7lfef666lL9AdVr+/gaC4zKA+Uc55HPEhHWAGKGbP8DtMvehB850J+NlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EzKNOtGh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741369420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ssD53hVxTYei45HA/qWDyDYoSrpwLT2aETtzN0PpbiY=;
+	b=EzKNOtGhG3hQl+hwoAeLktUASD291KVKMF0kFMe5IyDwmphV9if6dqPaValQhEWHSJIAV1
+	HDMgLqSoAJH0ZNlIi4m75Bc7/qmy98Tj6bVotokl/LQxxAXmyFhHznvZbLzUCQlLYgpLCN
+	XpBJiqJ+0C6HQSC+iAImmED5Tbks0c8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-c2nxgk1yOiamOrnxl5GGBg-1; Fri, 07 Mar 2025 12:43:38 -0500
+X-MC-Unique: c2nxgk1yOiamOrnxl5GGBg-1
+X-Mimecast-MFC-AGG-ID: c2nxgk1yOiamOrnxl5GGBg_1741369418
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3912fc9861cso767977f8f.1
+        for <stable@vger.kernel.org>; Fri, 07 Mar 2025 09:43:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741369418; x=1741974218;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ssD53hVxTYei45HA/qWDyDYoSrpwLT2aETtzN0PpbiY=;
+        b=A6CZCVbY6omRlNHZlKsuNK8BXg0Rf/fYWKorzmgbaR0MNTunbyWQ47cHRx+gktHDA4
+         1uecXuadhea+hGJblmCAquROZBnBuSDHyFt1ovWQi5TgqY8iNOIG001ORFQkW+0dHsQz
+         58X0jSqyE27u6QrHhiQf//FaXNvKhHaOCN/hb+80gkkARfDjDJ7sZ3cIb2u0p1rYy1aF
+         iOZ33gHbfr0UqlDtRiA9PGQBa1ZL/7i/GsW27962nQLVmHi9ERuCLPQuNGDS40Bpzk0k
+         2QuuRjTNGxTffqeS8fSGp/I0Ceo2I1b1jbkrakbfjbcDusM/pfzE8a8LnHr6FNhQof5y
+         oWcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUwPvA/zw2GpExzr/XYgk9HwiWxOHIV5ZM1e4WBCNcRs5I2xVSE0JV+fz/WdXsyyofFE10MhY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9H3zgZEJIjfvE812vSMvCetpJSBfGGP6yHQucDa+mBwhjvQK2
+	MUgadeWY8ipkSjJm+qhAj34C6oYuOmtVrpr3Lkomx4V/lBSj0Dguj2tNo7kK9FHZDKSyvBYsICP
+	iEbtIeR+0PbWXuthAqqNZ33nPIfJmjyUCW06O/59Xh1CCY9h4P8KzaQ==
+X-Gm-Gg: ASbGncv1T8bHIe2/DWcU7zXCjm4NUSMkygw0TXQ6LAr9n4CLxqPgQqkz3aGRAtYWfMm
+	dTsK9En6Tpa/Weji+qMIdxjCIs706FAajWBxNlA/74Wva6mDKj+YIBMTDg7sOrClL4q5KnHduUc
+	XWDOiwc3k+L5zdvE+qOf9jyU4bbmaU4cNwB16ofwslTXqZmk5uhxCFe1P7r22S9CANS2LuTE2HA
+	/a5u0mp+x6U5NxRFDBt1s22mCsM8+jkWTHJKxDGCd4r4M5wVYKbs6CfnF1tMyWdBm5ERGs9pTzX
+	qIczPmCf7lQVM0ZUTt9+ojG8Iae2IH0oXFuL/Jcx/4JJNhKtM6Rwr+/HTc3LFV9UZn9b9THxZac
+	9Ce50kLKRQR4et74eUZ/exzBz+5akKdAOQWhrgw==
+X-Received: by 2002:a05:6000:18a3:b0:391:2e19:9ab with SMTP id ffacd0b85a97d-39132da8e5dmr2428197f8f.47.1741369417615;
+        Fri, 07 Mar 2025 09:43:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGltnvAubGl1bA54vpc9cRsNvD8yx49qAt0cTcAw9YyB1BLXfs2F8swCZL5LZ0PFPmKZTZsHg==
+X-Received: by 2002:a05:6000:18a3:b0:391:2e19:9ab with SMTP id ffacd0b85a97d-39132da8e5dmr2428184f8f.47.1741369417165;
+        Fri, 07 Mar 2025 09:43:37 -0800 (PST)
+Received: from ?IPV6:2003:cb:c721:7400:ab0b:9ceb:d2:6a17? (p200300cbc7217400ab0b9ceb00d26a17.dip0.t-ipconnect.de. [2003:cb:c721:7400:ab0b:9ceb:d2:6a17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdfddcsm6079481f8f.35.2025.03.07.09.43.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Mar 2025 09:43:35 -0800 (PST)
+Message-ID: <ba694acd-07b7-4f28-828a-19bf4c803ca0@redhat.com>
+Date: Fri, 7 Mar 2025 18:43:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-07_06,2025-03-06_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0 mlxscore=0
- spamscore=0 bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
- definitions=main-2503070130
-X-Proofpoint-GUID: e-dPEuWfPVKieLzef7W3R71E_mx55WkR
-X-Proofpoint-ORIG-GUID: e-dPEuWfPVKieLzef7W3R71E_mx55WkR
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/madvise: Always set ptes via arch helpers
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>
+References: <20250307123307.262298-1-ryan.roberts@arm.com>
+ <dbdeb4d7-f7b9-4b10-ada3-c2d37e915f6d@lucifer.local>
+ <03997253-0717-4ecb-8ac8-4a7ba49481a3@arm.com>
+ <3653c47f-f21a-493e-bcc4-956b99b6c501@lucifer.local>
+ <2308a4d0-273e-4cf8-9c9f-3008c42b6d18@arm.com>
+ <d9cd67d7-f322-4131-a080-f7db9bf0f1fc@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <d9cd67d7-f322-4131-a080-f7db9bf0f1fc@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+>> It's certainly not read-only in general. Just having a quick look to verify, the
+>> very first callback I landed on was clear_refs_pte_range(), which implements
+>> .pmd_entry to clear the softdirty and access flags from a leaf pmd or from all
+>> the child ptes.
+> 
+> Yup sorry I misspoke, working some long hours atm so forgive me :) what I meant
+> to say is that we either read or modify existing.
+> 
+> And yes users do do potentially crazy things and yada yada.
+> 
+> David and I have spoken quite a few times about implementing generic page
+> table code that could help abstract a lot of things, and it feels like this
+> logic could all be rejigged in some fashion as to prevent the kind of
+> 'everybody does their own handler' logic.q
 
-Availability of the gettid definition across glibc versions supported by
-BPF selftests is not certain. Currently, all users in the tree open-code
-syscall to gettid. Convert them to a common macro definition.
+Oscar is currently prototyping a new pt walker that will batch entries 
+(e.g., folio ranges, pte none ares), and not use indirect calls. The 
+primary focus will will read-traversal, but nothing speaks against 
+modifications (likely helpers for installing pte_none()->marker could be 
+handy, and just creating page tables if we hit pmd_none() etc.).
 
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241104171959.2938862-3-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-(cherry picked from commit 0e2fb011a0ba8e2258ce776fdf89fbd589c2a3a6)
+Not sure yet how many use cases we can cover with the initial approach. 
+But the idea is to start with something that works for many cases, to 
+then gradually improve it.
 
-This backport is needed to build BPF selftests successfully for
-linux-6.12.y, as when currently building BPF selftests, the following
-error is seen:
 
-  TEST-OBJ [test_progs] raw_tp_null.test.o
-prog_tests/raw_tp_null.c: In function ‘test_raw_tp_null’:
-prog_tests/raw_tp_null.c:15:26: error: implicit declaration of function ‘sys_gettid’; did you mean ‘gettid’? [-Werror=implicit-function-declaration]
-   15 |         skel->bss->tid = sys_gettid();
-      |                          ^~~~~~~~~~
-      |                          gettid
-cc1: all warnings being treated as errors
+> 
+> I guess I felt it was more _dangerous_ as you are establishing _new_
+> mappings here, with the page tables being constructed for you up to the PTE
+> level.
+> 
+> And wanted to 'lock things down' somewhat.
+> 
+> But indeed, all this cries out for a need for a more generalised, robust
+> interface that handles some of what the downstream users of this are doing.
+> 
+>>
+>>>
+>>> When setting things are a little different, I'd rather not open up things to a
+>>> user being able to do *whatever*, but rather limit to the smallest scope
+>>> possible for installing the PTE.
+>>
+>> Understandable, but personally I think it will lead to potential misunderstandings:
+>>
+>>   - it will get copy/pasted as an example of how to set a pte (which is wrong;
+>> you have to use set_pte_at()/set_ptes()). There is currently only a single other
+>> case of direct dereferencing a pte to set it (in write_protect_page()).
+> 
+> Yeah, at least renaming the param could help, as 'ptep' implies you really
+> do have a pointer to the page table entry.
+> 
+> If we didn't return an error we could just return the PTE value or
+> something... hm.
+> 
+>>
+>>   - new users of .install_pte may assume (like I did) that the passed in ptep is
+>> pointing to the pgtable and they will manipulate it with arch helpers. arm64
+>> arch helpers all assume they are only ever passed pointers into pgtable memory.
+>> It will end horribly if that is not the case.
+> 
+> It will end very horribly indeed :P or perhaps with more of a fizzle than
+> anticipated...
 
-Fixes: abd30e947f70 ("selftests/bpf: Add tests for raw_tp null handling")
+Yes, I'm hoping we can avoid new users with the old api ... :)
 
-Reported-by: Colm Harrington <colm.harrington@oracle.com>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+> 
+>>
+>>>
+>>> And also of course, it allows us to _mandate_ that set_pte_at() is used so we do
+>>> the right thing re: arches :)
+>>>
+>>> I could have named the parameter better though, in guard_install_pte_entry()
+>>> would be better to have called it 'new_pte' or something.
+>>
+>> I'd suggest at least describing this in the documentation in pagewalk.h. Or
+>> better yet, you could make the pte the return value for the function. Then it is
+>> clear because you have no pointer. You'd lose the error code but the only user
+>> of this currently can't fail anyway.
+> 
+> Haha and here you make the same point I did above... great minds :)
+> 
+> I mean yeah returning a pte would make it clearer what you're doing, but
+> then it makes it different from every other callback... but this already is
+> different :)
+> 
+> I do very much want the ability to return an error value to stop the walk
+> (if you return >0 you can indicate to caller that a non-error stop occurred
+> for instance, something I use on the reading side).
+> 
+> But we do need to improve this one way or another, at the very least the
+> documentation/comments.
+> 
+> David - any thoughts?
 
-Conflicts:
-	tools/testing/selftests/bpf/prog_tests/task_local_storage.c
+Maybe document "don't use this until we have something better" :D
 
-Conflicts were due to new unrelated context in the upstream version.
 
----
- tools/testing/selftests/bpf/benchs/bench_trigger.c     |  3 ++-
- tools/testing/selftests/bpf/bpf_util.h                 |  9 +++++++++
- .../testing/selftests/bpf/map_tests/task_storage_map.c |  3 ++-
- tools/testing/selftests/bpf/prog_tests/bpf_cookie.c    |  2 +-
- tools/testing/selftests/bpf/prog_tests/bpf_iter.c      |  6 +++---
- .../selftests/bpf/prog_tests/cgrp_local_storage.c      | 10 +++++-----
- tools/testing/selftests/bpf/prog_tests/core_reloc.c    |  2 +-
- tools/testing/selftests/bpf/prog_tests/linked_funcs.c  |  2 +-
- .../selftests/bpf/prog_tests/ns_current_pid_tgid.c     |  2 +-
- tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c |  4 ++--
- .../selftests/bpf/prog_tests/task_local_storage.c      |  8 ++++----
- .../selftests/bpf/prog_tests/uprobe_multi_test.c       |  2 +-
- 12 files changed, 32 insertions(+), 21 deletions(-)
+> 
+> I'm not necessarily against just making this consitent, but I like this
+> property of us controlling what happens instead of just giving a pointer
+> into the page table - the principle of exposing the least possible.
+> 
+> ANWYAY, I will add to my ever expanding whiteboard TODO list [literally the
+> only todo that work for me] to look at this, will definitely improve docs
+> at very least.
 
-diff --git a/tools/testing/selftests/bpf/benchs/bench_trigger.c b/tools/testing/selftests/bpf/benchs/bench_trigger.c
-index 2ed0ef6f21ee..32e9f194d449 100644
---- a/tools/testing/selftests/bpf/benchs/bench_trigger.c
-+++ b/tools/testing/selftests/bpf/benchs/bench_trigger.c
-@@ -4,6 +4,7 @@
- #include <argp.h>
- #include <unistd.h>
- #include <stdint.h>
-+#include "bpf_util.h"
- #include "bench.h"
- #include "trigger_bench.skel.h"
- #include "trace_helpers.h"
-@@ -72,7 +73,7 @@ static __always_inline void inc_counter(struct counter *counters)
- 	unsigned slot;
- 
- 	if (unlikely(tid == 0))
--		tid = syscall(SYS_gettid);
-+		tid = sys_gettid();
- 
- 	/* multiplicative hashing, it's fast */
- 	slot = 2654435769U * tid;
-diff --git a/tools/testing/selftests/bpf/bpf_util.h b/tools/testing/selftests/bpf/bpf_util.h
-index 10587a29b967..feff92219e21 100644
---- a/tools/testing/selftests/bpf/bpf_util.h
-+++ b/tools/testing/selftests/bpf/bpf_util.h
-@@ -6,6 +6,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <errno.h>
-+#include <syscall.h>
- #include <bpf/libbpf.h> /* libbpf_num_possible_cpus */
- 
- static inline unsigned int bpf_num_possible_cpus(void)
-@@ -59,4 +60,12 @@ static inline void bpf_strlcpy(char *dst, const char *src, size_t sz)
- 	(offsetof(TYPE, MEMBER)	+ sizeof_field(TYPE, MEMBER))
- #endif
- 
-+/* Availability of gettid across glibc versions is hit-and-miss, therefore
-+ * fallback to syscall in this macro and use it everywhere.
-+ */
-+#ifndef sys_gettid
-+#define sys_gettid() syscall(SYS_gettid)
-+#endif
-+
-+
- #endif /* __BPF_UTIL__ */
-diff --git a/tools/testing/selftests/bpf/map_tests/task_storage_map.c b/tools/testing/selftests/bpf/map_tests/task_storage_map.c
-index 7d050364efca..62971dbf2996 100644
---- a/tools/testing/selftests/bpf/map_tests/task_storage_map.c
-+++ b/tools/testing/selftests/bpf/map_tests/task_storage_map.c
-@@ -12,6 +12,7 @@
- #include <bpf/bpf.h>
- #include <bpf/libbpf.h>
- 
-+#include "bpf_util.h"
- #include "test_maps.h"
- #include "task_local_storage_helpers.h"
- #include "read_bpf_task_storage_busy.skel.h"
-@@ -115,7 +116,7 @@ void test_task_storage_map_stress_lookup(void)
- 	CHECK(err, "attach", "error %d\n", err);
- 
- 	/* Trigger program */
--	syscall(SYS_gettid);
-+	sys_gettid();
- 	skel->bss->pid = 0;
- 
- 	CHECK(skel->bss->busy != 0, "bad bpf_task_storage_busy", "got %d\n", skel->bss->busy);
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-index 070c52c312e5..6befa870434b 100644
---- a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-@@ -690,7 +690,7 @@ void test_bpf_cookie(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open"))
- 		return;
- 
--	skel->bss->my_tid = syscall(SYS_gettid);
-+	skel->bss->my_tid = sys_gettid();
- 
- 	if (test__start_subtest("kprobe"))
- 		kprobe_subtest(skel);
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-index 9006549a1294..b8e1224cfd19 100644
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-@@ -226,7 +226,7 @@ static void test_task_common_nocheck(struct bpf_iter_attach_opts *opts,
- 	ASSERT_OK(pthread_create(&thread_id, NULL, &do_nothing_wait, NULL),
- 		  "pthread_create");
- 
--	skel->bss->tid = syscall(SYS_gettid);
-+	skel->bss->tid = sys_gettid();
- 
- 	do_dummy_read_opts(skel->progs.dump_task, opts);
- 
-@@ -255,10 +255,10 @@ static void *run_test_task_tid(void *arg)
- 	union bpf_iter_link_info linfo;
- 	int num_unknown_tid, num_known_tid;
- 
--	ASSERT_NEQ(getpid(), syscall(SYS_gettid), "check_new_thread_id");
-+	ASSERT_NEQ(getpid(), sys_gettid(), "check_new_thread_id");
- 
- 	memset(&linfo, 0, sizeof(linfo));
--	linfo.task.tid = syscall(SYS_gettid);
-+	linfo.task.tid = sys_gettid();
- 	opts.link_info = &linfo;
- 	opts.link_info_len = sizeof(linfo);
- 	test_task_common(&opts, 0, 1);
-diff --git a/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c b/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c
-index 747761572098..9015e2c2ab12 100644
---- a/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c
-@@ -63,14 +63,14 @@ static void test_tp_btf(int cgroup_fd)
- 	if (!ASSERT_OK(err, "map_delete_elem"))
- 		goto out;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	err = cgrp_ls_tp_btf__attach(skel);
- 	if (!ASSERT_OK(err, "skel_attach"))
- 		goto out;
- 
--	syscall(SYS_gettid);
--	syscall(SYS_gettid);
-+	sys_gettid();
-+	sys_gettid();
- 
- 	skel->bss->target_pid = 0;
- 
-@@ -154,7 +154,7 @@ static void test_recursion(int cgroup_fd)
- 		goto out;
- 
- 	/* trigger sys_enter, make sure it does not cause deadlock */
--	syscall(SYS_gettid);
-+	sys_gettid();
- 
- out:
- 	cgrp_ls_recursion__destroy(skel);
-@@ -224,7 +224,7 @@ static void test_yes_rcu_lock(__u64 cgroup_id)
- 		return;
- 
- 	CGROUP_MODE_SET(skel);
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	bpf_program__set_autoload(skel->progs.yes_rcu_lock, true);
- 	err = cgrp_ls_sleepable__load(skel);
-diff --git a/tools/testing/selftests/bpf/prog_tests/core_reloc.c b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
-index 26019313e1fc..1c682550e0e7 100644
---- a/tools/testing/selftests/bpf/prog_tests/core_reloc.c
-+++ b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
-@@ -1010,7 +1010,7 @@ static void run_core_reloc_tests(bool use_btfgen)
- 	struct data *data;
- 	void *mmap_data = NULL;
- 
--	my_pid_tgid = getpid() | ((uint64_t)syscall(SYS_gettid) << 32);
-+	my_pid_tgid = getpid() | ((uint64_t)sys_gettid() << 32);
- 
- 	for (i = 0; i < ARRAY_SIZE(test_cases); i++) {
- 		char btf_file[] = "/tmp/core_reloc.btf.XXXXXX";
-diff --git a/tools/testing/selftests/bpf/prog_tests/linked_funcs.c b/tools/testing/selftests/bpf/prog_tests/linked_funcs.c
-index cad664546912..fa639b021f7e 100644
---- a/tools/testing/selftests/bpf/prog_tests/linked_funcs.c
-+++ b/tools/testing/selftests/bpf/prog_tests/linked_funcs.c
-@@ -20,7 +20,7 @@ void test_linked_funcs(void)
- 	bpf_program__set_autoload(skel->progs.handler1, true);
- 	bpf_program__set_autoload(skel->progs.handler2, true);
- 
--	skel->rodata->my_tid = syscall(SYS_gettid);
-+	skel->rodata->my_tid = sys_gettid();
- 	skel->bss->syscall_id = SYS_getpgid;
- 
- 	err = linked_funcs__load(skel);
-diff --git a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-index c29787e092d6..761ce24bce38 100644
---- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-@@ -23,7 +23,7 @@ static int get_pid_tgid(pid_t *pid, pid_t *tgid,
- 	struct stat st;
- 	int err;
- 
--	*pid = syscall(SYS_gettid);
-+	*pid = sys_gettid();
- 	*tgid = getpid();
- 
- 	err = stat("/proc/self/ns/pid", &st);
-diff --git a/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c b/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c
-index a1f7e7378a64..ebe0c12b5536 100644
---- a/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c
-+++ b/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c
-@@ -21,7 +21,7 @@ static void test_success(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open"))
- 		return;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	bpf_program__set_autoload(skel->progs.get_cgroup_id, true);
- 	bpf_program__set_autoload(skel->progs.task_succ, true);
-@@ -58,7 +58,7 @@ static void test_rcuptr_acquire(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open"))
- 		return;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	bpf_program__set_autoload(skel->progs.task_acquire, true);
- 	err = rcu_read_lock__load(skel);
-diff --git a/tools/testing/selftests/bpf/prog_tests/task_local_storage.c b/tools/testing/selftests/bpf/prog_tests/task_local_storage.c
-index c33c05161a9e..0d42ce00166f 100644
---- a/tools/testing/selftests/bpf/prog_tests/task_local_storage.c
-+++ b/tools/testing/selftests/bpf/prog_tests/task_local_storage.c
-@@ -23,14 +23,14 @@ static void test_sys_enter_exit(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
- 		return;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	err = task_local_storage__attach(skel);
- 	if (!ASSERT_OK(err, "skel_attach"))
- 		goto out;
- 
--	syscall(SYS_gettid);
--	syscall(SYS_gettid);
-+	sys_gettid();
-+	sys_gettid();
- 
- 	/* 3x syscalls: 1x attach and 2x gettid */
- 	ASSERT_EQ(skel->bss->enter_cnt, 3, "enter_cnt");
-@@ -99,7 +99,7 @@ static void test_recursion(void)
- 
- 	/* trigger sys_enter, make sure it does not cause deadlock */
- 	skel->bss->test_pid = getpid();
--	syscall(SYS_gettid);
-+	sys_gettid();
- 	skel->bss->test_pid = 0;
- 	task_ls_recursion__detach(skel);
- 
-diff --git a/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c b/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
-index c1ac813ff9ba..02a484b22aa6 100644
---- a/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
-+++ b/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
-@@ -125,7 +125,7 @@ static void *child_thread(void *ctx)
- 	struct child *child = ctx;
- 	int c = 0, err;
- 
--	child->tid = syscall(SYS_gettid);
-+	child->tid = sys_gettid();
- 
- 	/* let parent know we are ready */
- 	err = write(child->c2p[1], &c, 1);
+Maybe we can talk at LSF/MM about this. I assume Oscar might be 
+partially covering that in his hugetlb talk.
+
 -- 
-2.43.5
+Cheers,
+
+David / dhildenb
 
 
