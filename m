@@ -1,173 +1,122 @@
-Return-Path: <stable+bounces-121363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF4CA5654F
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:29:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB92CA56591
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7581899810
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:30:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEA7B7A602F
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 10:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3E5212F9D;
-	Fri,  7 Mar 2025 10:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BEB20E02A;
+	Fri,  7 Mar 2025 10:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="B9wZSuE2"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ZeUFC5Fr"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A590C20E70B;
-	Fri,  7 Mar 2025 10:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989E71A239E;
+	Fri,  7 Mar 2025 10:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741343373; cv=none; b=sxWyV3lULyCTUr851kTTENWXNC4kQ92D1HXozK6yAa49yyTn6GWNPbQCg/pHFMwGdQfwDQK3n0EBQlJbmPIYd/NKkIfETOP89IyBhgskmncbzKiX+jEXeqJaGMlDhjv84pXxeqfDwsrilhFrXHEIYxYH3CXhIzC4mP1WvTG+k3k=
+	t=1741343888; cv=none; b=GYNmOfVhynqR8DcltXq0aUcnGK5anOCH2Cd1U/4sl3RMA/GeSYZY5Dn2GiGYlEiwXzvGx4mElctsczQVsOTP5ZwuAJX+aqV9BAv7OK1T/CDb3mfwZeDRqDc0Yzw6e94B/EAOeL2ZFLq2xqr2LDe6EFG2xXMVIb7x6laEAwXN/tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741343373; c=relaxed/simple;
-	bh=tYxJZJX1pI5K8wuGH/dKzuf43ukR/Ftn3/DZih3kce0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FWUGVECo5P3aBFMN0R5PaqMKby22nEOZ085g37IjvvV8lCjh0mQIdFzF4yGZvsyp5eLf6eKsWKMRJYN+Ue2OGqGjsVjIjAJifKomYicxLgQiYheDm2Z/kkIhUdfdRePakVHNhxcA4mp2dUw9ntJGW7RjMl7I61o+QwlGLKlxX/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=B9wZSuE2; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id F38862038F2B; Fri,  7 Mar 2025 02:29:29 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F38862038F2B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741343370;
-	bh=ZLRe45/BtNn0ARC6EnETrMfwdNw8kA9gyMB/wm3koXM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B9wZSuE2kzmUxireaWKyvy5UKChwThSlRZubsF9gBfpmi53lZEe37WpfRI+SoXT65
-	 WPQ9BJpyQg4GNw46xfuqWdUVYdiElM4jiSt0b8UmTRcH8Z3Owpsi83CKdnFtWn9c8H
-	 cHefJlMZgampk2OjFnv61yfu4AI9gh8CJitpl4KM=
-Date: Fri, 7 Mar 2025 02:29:29 -0800
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	decui@microsoft.com, stephen@networkplumber.org, kys@microsoft.com,
-	paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
-	davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
-	longli@microsoft.com, ssengar@linux.microsoft.com,
-	linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-	john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-	hawk@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: Support holes in device list reply msg
-Message-ID: <20250307102929.GA21981@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
+	s=arc-20240116; t=1741343888; c=relaxed/simple;
+	bh=NejdsTtVw1HHTKocf1fmib35yAwLtf1yxH2xdipeR7U=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iBeY+g/j42hwqmZWPxfXrfkXlx1c3xZ5TPTEaRqiiy8bFw6Ko3V+sA6VIhYLQFoHE0mTAyeP+RY5cQmvjW1/ORnf2pZW6wpcCNd7zgh035Rr2RD99gpVo9AEMMCHFIksjGbZTB9GhsTjQiiAX+m7DCtwzk5ECDaBINCHZlmp+WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ZeUFC5Fr; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 527Ac0tQ244116
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Mar 2025 04:38:00 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1741343881;
+	bh=C1++GN37YacsvtvGJVQ2tP4MeEDYm2OhNRDU8/ZHW64=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=ZeUFC5Fr9NyqOc65rZANb7X3bc///Ar7dClPMnYVrozGbFxKmFFTGE41EsMmF/YjD
+	 VvAjuQOBY5Eii6qYpuOiPO2E9OQO7PQy0L0WVpC5SmQq0PgluzAqgRlH70VSRwU+0o
+	 Dqzbt+1gBW4psqz49DZG8xNGWGOMhNVy/l220pBA=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 527Ac0a5088612
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 7 Mar 2025 04:38:00 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 7
+ Mar 2025 04:38:00 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 7 Mar 2025 04:38:00 -0600
+Received: from uda0132425.dhcp.ti.com (dhcp-10-24-69-250.dhcp.ti.com [10.24.69.250])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 527Abt74022744;
+	Fri, 7 Mar 2025 04:37:56 -0600
+From: Vignesh Raghavendra <vigneshr@ti.com>
+To: <nm@ti.com>, <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <j-choudhary@ti.com>, <rogerq@kernel.org>,
+        Siddharth
+ Vadapalli <s-vadapalli@ti.com>
+CC: Vignesh Raghavendra <vigneshr@ti.com>, <stable@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
+Subject: Re: [PATCH v2] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks
+Date: Fri, 7 Mar 2025 16:07:53 +0530
+Message-ID: <174133309359.1072814.1136748837607533827.b4-ty@ti.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250228053850.506028-1-s-vadapalli@ti.com>
+References: <20250228053850.506028-1-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Wed, Mar 05, 2025 at 01:46:21PM -0800, Haiyang Zhang wrote:
-> According to GDMA protocol, holes (zeros) are allowed at the beginning
-> or middle of the gdma_list_devices_resp message. The existing code
-> cannot properly handle this, and may miss some devices in the list.
-> 
-> To fix, scan the entire list until the num_of_devs are found, or until
-> the end of the list.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> 
-> ---
->  drivers/net/ethernet/microsoft/mana/gdma_main.c | 16 ++++++++++++----
->  include/net/mana/gdma.h                         | 11 +++++++----
->  2 files changed, 19 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index c15a5ef4674e..df3ab31974b1 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -134,9 +134,10 @@ static int mana_gd_detect_devices(struct pci_dev *pdev)
->  	struct gdma_list_devices_resp resp = {};
->  	struct gdma_general_req req = {};
->  	struct gdma_dev_id dev;
-> -	u32 i, max_num_devs;
-> +	int found_dev = 0;
->  	u16 dev_type;
->  	int err;
-> +	u32 i;
->  
->  	mana_gd_init_req_hdr(&req.hdr, GDMA_LIST_DEVICES, sizeof(req),
->  			     sizeof(resp));
-> @@ -148,12 +149,19 @@ static int mana_gd_detect_devices(struct pci_dev *pdev)
->  		return err ? err : -EPROTO;
->  	}
->  
-> -	max_num_devs = min_t(u32, MAX_NUM_GDMA_DEVICES, resp.num_of_devs);
-> -
-> -	for (i = 0; i < max_num_devs; i++) {
-> +	for (i = 0; i < GDMA_DEV_LIST_SIZE &&
-> +		found_dev < resp.num_of_devs; i++) {
->  		dev = resp.devs[i];
->  		dev_type = dev.type;
->  
-> +		/* Skip empty devices */
-> +		if (dev.as_uint32 == 0)
-> +			continue;
-> +
-> +		found_dev++;
-> +		dev_info(gc->dev, "Got devidx:%u, type:%u, instance:%u\n", i,
-> +			 dev.type, dev.instance);
-> +
->  		/* HWC is already detected in mana_hwc_create_channel(). */
->  		if (dev_type == GDMA_DEVICE_HWC)
->  			continue;
-> diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-> index 90f56656b572..62e9d7673862 100644
-> --- a/include/net/mana/gdma.h
-> +++ b/include/net/mana/gdma.h
-> @@ -408,8 +408,6 @@ struct gdma_context {
->  	struct gdma_dev		mana_ib;
->  };
->  
-> -#define MAX_NUM_GDMA_DEVICES	4
-> -
->  static inline bool mana_gd_is_mana(struct gdma_dev *gd)
->  {
->  	return gd->dev_id.type == GDMA_DEVICE_MANA;
-> @@ -556,11 +554,15 @@ enum {
->  #define GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG BIT(3)
->  #define GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT BIT(5)
->  
-> +/* Driver can handle holes (zeros) in the device list */
-> +#define GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP BIT(11)
-> +
->  #define GDMA_DRV_CAP_FLAGS1 \
->  	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
->  	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
->  	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG | \
-> -	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT)
-> +	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT | \
-> +	 GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP)
->  
->  #define GDMA_DRV_CAP_FLAGS2 0
->  
-> @@ -621,11 +623,12 @@ struct gdma_query_max_resources_resp {
->  }; /* HW DATA */
->  
->  /* GDMA_LIST_DEVICES */
-> +#define GDMA_DEV_LIST_SIZE 64
->  struct gdma_list_devices_resp {
->  	struct gdma_resp_hdr hdr;
->  	u32 num_of_devs;
->  	u32 reserved;
-> -	struct gdma_dev_id devs[64];
-> +	struct gdma_dev_id devs[GDMA_DEV_LIST_SIZE];
->  }; /* HW DATA */
->  
->  /* GDMA_REGISTER_DEVICE */
+Hi Siddharth Vadapalli,
 
-Reviewed-by: Shradha Gupta <shradhagupta@microsoft.com>
-> -- 
-> 2.34.1
+On Fri, 28 Feb 2025 11:08:50 +0530, Siddharth Vadapalli wrote:
+> Commit under Fixes added the 'idle-states' property for SERDES4 lane muxes
+> without defining the corresponding register offsets and masks for it in the
+> 'mux-reg-masks' property within the 'serdes_ln_ctrl' node.
+> 
+> Fix this.
+> 
+> 
+> [...]
+
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
+
+[1/1] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks
+      commit: 38e7f9092efbbf2a4a67e4410b55b797f8d1e184
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
+
 
