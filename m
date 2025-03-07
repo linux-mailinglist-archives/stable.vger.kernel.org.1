@@ -1,192 +1,195 @@
-Return-Path: <stable+bounces-121437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F10A5707B
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 19:27:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C431A57099
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 19:32:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405B7189BFB1
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 18:27:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621333A493B
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 18:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5DA241696;
-	Fri,  7 Mar 2025 18:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F2223F292;
+	Fri,  7 Mar 2025 18:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mm//iCO7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fmX1k1+O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LBbrXkE1"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE5024113E;
-	Fri,  7 Mar 2025 18:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3634194C9E
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 18:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741371952; cv=none; b=SNVerXXqYmpzbaDlWp1g4uocN4p09YvADiagRUgiz2ajH57N0LH0ecxlFScNaKa7cNPPbuq+R7Tuhp56E1Hd70/vzmoz3nP/to/zTCdqPadQifri4nCFx+OkmV8UzVN9NnNWT+mkGWodeLT8INc/GPFJBP+YijWQecrSyp0PtLg=
+	t=1741372318; cv=none; b=NRygMLZ/P5kvuuOAbpZiE4HUv2sHiQTbdkTbES8IMUwebS4ZJO1Fu/3zdCSlwWJO0mkgOfSB/rwM3D5SZmMX7xFYzh8AsnNJtlafamXm9FnvogeoqFoVC4fmhiNHlfPIKeo5ruToAM/wzpYErzQClWOujeP0cP+9go8Wjyc4ktI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741371952; c=relaxed/simple;
-	bh=3Ovd0J5I7/I82BSajaIsMtk4zYygg6eqFGLuo+FNr+c=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=n5z3Rh34K01N/vpVToGlj2V5qoVxTrZ/tbqz3aRYck9WjPYRkRgTvsVRscKzmUe0zlXd5wGkHD7+tckt0No+HcB4Ju8/udlgQYyhxPK5zm0ADxf7h9kYscLXJuz13+lNc1/9uC71Ttcrwr/zbyh1tMsEhgnixoXKWaOFyRShnCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mm//iCO7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fmX1k1+O; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Mar 2025 18:25:48 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741371949;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5BAgIn8+hjI+E0W6vDfg3HoDMlP1tfnkvdf5IbyHekU=;
-	b=Mm//iCO7c+5qdVznzFCR2OHq615G9xyG96ZJYFFa2pSwTtvRQ9Rp46L72AMDLWnfBVOLYi
-	UWCW6p58tKIyZZYy/6FI3lK7aofLdM/1E78rro5AgGEn8V1RdEqSsFIeB7phjKX28hWD5y
-	dSLbwewfO40Ik/4nzqJromU9Y3YpeetwaR99sM0k/maS85z8u+wbbsSMuf/w5LNA9TtMZr
-	nkK1LUpf3f/h1/jmjHuyBoi1mnNtj5uVRtFWREAq6Hw7vjlArtCxT34K7DSxD4ivcf1BPy
-	e2Z2mSiCrfZm3II6LLcMyR3js93/Ko291/AnsqGyhMfK+QMpKJrZ/RtWavcCmA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741371949;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5BAgIn8+hjI+E0W6vDfg3HoDMlP1tfnkvdf5IbyHekU=;
-	b=fmX1k1+OCjgOUtmCNEhhMZnAwgrtRaotgSiddGMlv9zpXyJuehL76LajuBc0lgXKDdMsQF
-	JIg4EYkP7YxbTcDg==
-From: "tip-bot2 for Nikunj A Dadhania" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] virt: sev-guest: Allocate request data dynamically
-Cc: andreas.stuehrk@yaxi.tech, Nikunj A Dadhania <nikunj@amd.com>,
- Alexey Kardashevskiy <aik@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250307013700.437505-2-aik@amd.com>
-References: <20250307013700.437505-2-aik@amd.com>
+	s=arc-20240116; t=1741372318; c=relaxed/simple;
+	bh=xAPoOl5E6d6FFqkDAmVH1nYHQECWj7e0x4LjKlRP2os=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RgAsDnh5mDe7kdc9sLPOnipe0LjJPNNH5Lce1Xmz7x+d9twt2XMpHzJepGMhQYNcK4W0fMkFlgRl3Rh8A0rM0HaRCHW6oPISwrEmSVAFXMgqvAGfbZiyS5GEOBjI4drYb2/bu8SIOjLEOyzud8D6bwM2aeHaoOPrrqnKwxnZMMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LBbrXkE1; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741372317; x=1772908317;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xAPoOl5E6d6FFqkDAmVH1nYHQECWj7e0x4LjKlRP2os=;
+  b=LBbrXkE1oVp33HCkFR/KC2L+ByMxFNJ/9OCyh8MrI0DzpYVroBib4wKI
+   yRYcQmF0WCPW4mlerbKrZALxy8Tp1c5kssiANvuo9idC1oJqKWZfIgjVx
+   vD0PTYXuLQB5czfqrZ/u6ylXqhED9ewjt5slXAiNm2EWuSAT4+eTR16z3
+   eNyss4t/JZxeT8+GvmUrtRv9KB0nqtoWUuOKTTgiXCp/I7VVnq+jCMRMp
+   H3un0Y/Gcvgxu4mfWN3x/VavHoyAxY15auRFb5ZFswxQXagzmqOXblbEt
+   0piyX2Zn0cg0WI8nDmJXM5gSQOK0wi0ODuwvpZNv4eU4LcVWHduJcnZpc
+   Q==;
+X-CSE-ConnectionGUID: BpPzdUtsS3GsEqL5QNCdqg==
+X-CSE-MsgGUID: UxmoPUXuQnaQurVOjdVwnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53068601"
+X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
+   d="scan'208";a="53068601"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 10:31:55 -0800
+X-CSE-ConnectionGUID: CSVWqhpaSY+g8/AVtpBBYw==
+X-CSE-MsgGUID: IerteWPUQVm6CrmeYL8Tow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="119336588"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 10:31:54 -0800
+From: Imre Deak <imre.deak@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: Wayne Lin <Wayne.Lin@amd.com>,
+	Lyude Paul <lyude@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/dp_mst: Fix locking when skipping CSN before topology probing
+Date: Fri,  7 Mar 2025 20:31:52 +0200
+Message-ID: <20250307183152.3822170-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.44.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174137194865.14745.6525578423507333253.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The handling of the MST Connection Status Notify message is skipped if
+the probing of the topology is still pending. Acquiring the
+drm_dp_mst_topology_mgr::probe_lock for this in
+drm_dp_mst_handle_up_req() is problematic: the task/work this function
+is called from is also responsible for handling MST down-request replies
+(in drm_dp_mst_handle_down_rep()). Thus drm_dp_mst_link_probe_work() -
+holding already probe_lock - could be blocked waiting for an MST
+down-request reply while drm_dp_mst_handle_up_req() is waiting for
+probe_lock while processing a CSN message. This leads to the probe
+work's down-request message timing out.
 
-Commit-ID:     ac7c06acaa3738b38e83815ac0f07140ad320f13
-Gitweb:        https://git.kernel.org/tip/ac7c06acaa3738b38e83815ac0f07140ad320f13
-Author:        Nikunj A Dadhania <nikunj@amd.com>
-AuthorDate:    Thu, 06 Mar 2025 19:17:21 +11:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 07 Mar 2025 13:34:25 +01:00
+A scenario similar to the above leading to a down-request timeout is
+handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
+probe_lock and sending down-request messages while a second CSN message
+sent by the sink subsequently is handled by drm_dp_mst_handle_up_req().
 
-virt: sev-guest: Allocate request data dynamically
+Fix the above by moving the logic to skip the CSN handling to
+drm_dp_mst_process_up_req(). This function is called from a work
+(separate from the task/work handling new up/down messages), already
+holding probe_lock. This solves the above timeout issue, since handling
+of down-request replies won't be blocked by probe_lock.
 
-Commit
-
-  ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
-
-narrowed the command mutex scope to snp_send_guest_request().  However,
-GET_REPORT, GET_DERIVED_KEY, and GET_EXT_REPORT share the req structure in
-snp_guest_dev. Without the mutex protection, concurrent requests can overwrite
-each other's data. Fix it by dynamically allocating the request structure.
-
-Fixes: ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
-Closes: https://github.com/AMDESE/AMDSEV/issues/265
-Reported-by: andreas.stuehrk@yaxi.tech
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250307013700.437505-2-aik@amd.com
+Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is not done yet")
+Cc: Wayne Lin <Wayne.Lin@amd.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 40 +++++++++++--------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 264b652..23ac177 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -38,12 +38,6 @@ struct snp_guest_dev {
- 	struct miscdevice misc;
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 8b68bb3fbffb0..3a1f1ffc7b552 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4036,6 +4036,22 @@ static int drm_dp_mst_handle_down_rep(struct drm_dp_mst_topology_mgr *mgr)
+ 	return 0;
+ }
  
- 	struct snp_msg_desc *msg_desc;
++static bool primary_mstb_probing_is_done(struct drm_dp_mst_topology_mgr *mgr)
++{
++	bool probing_done = false;
++
++	mutex_lock(&mgr->lock);
++
++	if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->mst_primary)) {
++		probing_done = mgr->mst_primary->link_address_sent;
++		drm_dp_mst_topology_put_mstb(mgr->mst_primary);
++	}
++
++	mutex_unlock(&mgr->lock);
++
++	return probing_done;
++}
++
+ static inline bool
+ drm_dp_mst_process_up_req(struct drm_dp_mst_topology_mgr *mgr,
+ 			  struct drm_dp_pending_up_req *up_req)
+@@ -4066,8 +4082,12 @@ drm_dp_mst_process_up_req(struct drm_dp_mst_topology_mgr *mgr,
+ 
+ 	/* TODO: Add missing handler for DP_RESOURCE_STATUS_NOTIFY events */
+ 	if (msg->req_type == DP_CONNECTION_STATUS_NOTIFY) {
+-		dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
+-		hotplug = true;
++		if (!primary_mstb_probing_is_done(mgr)) {
++			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.\n");
++		} else {
++			dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
++			hotplug = true;
++		}
+ 	}
+ 
+ 	drm_dp_mst_topology_put_mstb(mstb);
+@@ -4149,10 +4169,11 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 	drm_dp_send_up_ack_reply(mgr, mst_primary, up_req->msg.req_type,
+ 				 false);
+ 
++	drm_dp_mst_topology_put_mstb(mst_primary);
++
+ 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
+ 		const struct drm_dp_connection_status_notify *conn_stat =
+ 			&up_req->msg.u.conn_stat;
+-		bool handle_csn;
+ 
+ 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
+ 			    conn_stat->port_number,
+@@ -4161,16 +4182,6 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 			    conn_stat->message_capability_status,
+ 			    conn_stat->input_port,
+ 			    conn_stat->peer_device_type);
 -
--	union {
--		struct snp_report_req report;
--		struct snp_derived_key_req derived_key;
--		struct snp_ext_report_req ext_report;
--	} req;
- };
- 
- /*
-@@ -71,7 +65,7 @@ struct snp_req_resp {
- 
- static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
--	struct snp_report_req *report_req = &snp_dev->req.report;
-+	struct snp_report_req *report_req __free(kfree) = NULL;
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_report_resp *report_resp;
- 	struct snp_guest_req req = {};
-@@ -80,6 +74,10 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 	if (!arg->req_data || !arg->resp_data)
- 		return -EINVAL;
- 
-+	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
-+	if (!report_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_user(report_req, (void __user *)arg->req_data, sizeof(*report_req)))
- 		return -EFAULT;
- 
-@@ -116,7 +114,7 @@ e_free:
- 
- static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
--	struct snp_derived_key_req *derived_key_req = &snp_dev->req.derived_key;
-+	struct snp_derived_key_req *derived_key_req __free(kfree) = NULL;
- 	struct snp_derived_key_resp derived_key_resp = {0};
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_guest_req req = {};
-@@ -136,6 +134,10 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 	if (sizeof(buf) < resp_len)
- 		return -ENOMEM;
- 
-+	derived_key_req = kzalloc(sizeof(*derived_key_req), GFP_KERNEL_ACCOUNT);
-+	if (!derived_key_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_user(derived_key_req, (void __user *)arg->req_data,
- 			   sizeof(*derived_key_req)))
- 		return -EFAULT;
-@@ -168,7 +170,7 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 			  struct snp_req_resp *io)
- 
- {
--	struct snp_ext_report_req *report_req = &snp_dev->req.ext_report;
-+	struct snp_ext_report_req *report_req __free(kfree) = NULL;
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_report_resp *report_resp;
- 	struct snp_guest_req req = {};
-@@ -178,6 +180,10 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
- 		return -EINVAL;
- 
-+	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
-+	if (!report_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_sockptr(report_req, io->req_data, sizeof(*report_req)))
- 		return -EFAULT;
- 
+-		mutex_lock(&mgr->probe_lock);
+-		handle_csn = mst_primary->link_address_sent;
+-		mutex_unlock(&mgr->probe_lock);
+-
+-		if (!handle_csn) {
+-			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
+-			kfree(up_req);
+-			goto out_put_primary;
+-		}
+ 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
+ 		const struct drm_dp_resource_status_notify *res_stat =
+ 			&up_req->msg.u.resource_stat;
+@@ -4185,9 +4196,6 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 	list_add_tail(&up_req->next, &mgr->up_req_list);
+ 	mutex_unlock(&mgr->up_req_lock);
+ 	queue_work(system_long_wq, &mgr->up_req_work);
+-
+-out_put_primary:
+-	drm_dp_mst_topology_put_mstb(mst_primary);
+ out_clear_reply:
+ 	reset_msg_rx_state(&mgr->up_req_recv);
+ 	return ret;
+-- 
+2.44.2
+
 
