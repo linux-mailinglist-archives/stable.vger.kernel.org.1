@@ -1,91 +1,97 @@
-Return-Path: <stable+bounces-121367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AA8A5663A
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 12:05:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F844A56663
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 12:15:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A61DE163EE9
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:05:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8F26172E7B
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 11:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD1D2153C8;
-	Fri,  7 Mar 2025 11:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E01B20C00B;
+	Fri,  7 Mar 2025 11:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMnmuuPB"
+	dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b="dV/oYJOZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nixnet.email (mx.nixnet.email [5.161.67.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA05E215168
-	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 11:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EECF2153F5;
+	Fri,  7 Mar 2025 11:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.161.67.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741345548; cv=none; b=ukgWq/V6MYHnrucDoru7Ujcu/krdMP6Jhmo1g5y3o2M9gMoIhWXzVkPvtSA6F5tkFAy5R+1zl5CkGQAsr31JI5JRK3tPb//4AnIu7HvbsUF1i3ddO+OKV0h9tlAsdYDkyyKYpsRMRKyMi/hCIqWfRiqI3lq9zRDOuPD/iRRxcd8=
+	t=1741346119; cv=none; b=HfjpGllyMmqEXTqYrZB2INqBPDb1BFAJyvUlrWsVjj0CFO+6rQjNhWvAdoXd0Do4b+hGJAZB4W87OgZ8Gy16YkAUvqXfQMTJeRHXwQYF2mhUKHavbgKYO2uo+BQx0OqHEORcZAL4LRJEIdB3vGDjGybzlvU8l7kXl1pqWRxgoK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741345548; c=relaxed/simple;
-	bh=zR61lmyxH3tMIa24GMAu8Fl+eNFCIaTKFwl4+DL+Rxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eRhuPtol4hhk9q7eg2SxpzMSYi9JUSf2X90Ul6PbLZF7qDKgeFdMWV3wZagHzWClz0pdMRzb/wrMUk2Rm06ZZZw3+CB5BFM0tFZ1traDqwo7tLSqgzhQiiH9Ctt4lNPhVcQtkKZeg4zSMm1g0hd8MGXuDY95JJYY9zEHpUM86MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMnmuuPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3D1C4CED1;
-	Fri,  7 Mar 2025 11:05:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741345547;
-	bh=zR61lmyxH3tMIa24GMAu8Fl+eNFCIaTKFwl4+DL+Rxk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nMnmuuPBczHpIB4RYpw467jKT9rxNxe+C/tIwNQkWpSWmzwkF5WHH7Z/mEZ05xBwk
-	 nh2UlWVhl8cRcSCupJJB4KlnESgVzt1d1PkxClssLoFwLZ0judA5fI+In2CTjeq0kW
-	 3MyDZdDkl9+5Xl7lmEURfKa285ja4iQci2r1kats=
-Date: Fri, 7 Mar 2025 12:05:43 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
-Cc: Jared Finder <jared@finder.org>, stable@vger.kernel.org,
-	Jann Horn <jannh@google.com>,
-	Hanno =?iso-8859-1?Q?B=F6ck?= <hanno@hboeck.de>,
-	Jiri Slaby <jirislaby@kernel.org>, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH] tty: Require CAP_SYS_ADMIN for all usages of
- TIOCL_SELMOUSEREPORT
-Message-ID: <2025030708-tidal-mothproof-0deb@gregkh>
-References: <491f3df9de6593df8e70dbe77614b026@finder.org>
- <20250223205449.7432-2-gnoack3000@gmail.com>
- <20250307.9339126c0c96@gnoack.org>
+	s=arc-20240116; t=1741346119; c=relaxed/simple;
+	bh=9Mm8dyEK+xTcn5mdQT1afcEoDnaBT339NszPBErn5pw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=mSfHWSsRGP6Pv1jjchdwO07xZIuV8CPntx90XVUU4nvhgScEYTCTmwJwAVU3qZ4Wm0/Bw3yNUTxflPaVoNZgbRgRXiZ5EcmjL0b2QWOd+qF87Qfgn6HGaN0GmmPC7g998jCJsPfqZljd+hY89AVlaznu7uxT3ZS3zqiN5ViPG8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life; spf=pass smtp.mailfrom=pwned.life; dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b=dV/oYJOZ; arc=none smtp.client-ip=5.161.67.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pwned.life
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by mx.nixnet.email (Postfix) with ESMTPSA id 03EB57D3B1;
+	Fri,  7 Mar 2025 12:07:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pwned.life; s=202002021149;
+	t=1741345629;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7JCkD1Y76HXMoUWwsQ707VJYhpdhLmw2/c4GQ/XiDQg=;
+	b=dV/oYJOZ0tQ8tmQRXHoBDhj5vP+EuymYEGvKMe5KkF4fjam6nNAQxK7OGNel3fR+luAUHt
+	K8VUZWnwG+L9h8CYK6htwZcABUzmemAGSsR3x/28f863kyV1LkWaIJZwGvjJhFwGn31NqD
+	N+BM0YBbRabt+rmwAccuvThWfIbPtf8=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250307.9339126c0c96@gnoack.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 07 Mar 2025 12:07:03 +0100
+Message-Id: <D89ZI7RAY6RL.309JYSU0OMWFQ@pwned.life>
+Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+ <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+ <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+ <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
+ <srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
+ <hargar@microsoft.com>, <broonie@kernel.org>
+Subject: Re: [PATCH 6.13 000/154] 6.13.6-rc2 review
+From: "Achill Gilgenast" <fossdd@pwned.life>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <stable@vger.kernel.org>
+X-Greeting: Hi mom! Look, I'm in somebodys mail client!
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250306151416.469067667@linuxfoundation.org>
+In-Reply-To: <20250306151416.469067667@linuxfoundation.org>
 
-On Fri, Mar 07, 2025 at 11:16:21AM +0100, Günther Noack wrote:
-> On Sun, Feb 23, 2025 at 09:54:50PM +0100, Günther Noack wrote:
-> > This requirement was overeagerly loosened in commit 2f83e38a095f
-> > ("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN"), but as
-> > it turns out,
-> > 
-> >   (1) the logic I implemented there was inconsistent (apologies!),
-> > 
-> >   (2) TIOCL_SELMOUSEREPORT might actually be a small security risk
-> >       after all, and
-> > 
-> >   (3) TIOCL_SELMOUSEREPORT is only meant to be used by the mouse
-> >       daemon (GPM or Consolation), which runs as CAP_SYS_ADMIN
-> >       already.
-> 
-> 
-> Greg and Jared: Friendly ping on this patch.
+On Thu Mar 6, 2025 at 4:21 PM CET, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.6 release.
+> There are 154 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 08 Mar 2025 15:13:38 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.6-=
+rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
+ linux-6.13.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I think my bot found a problem with the v2 version so I was waiting for
-a new one to meet the issues there, right?
+Builded and booted with Alpine Linux. Thanks!
 
-Other than that I don't have a problem with this change.
-
-thanks,
-
-greg k-h
+Tested-By: Achill Gilgenast <fossdd@pwned.life>
 
