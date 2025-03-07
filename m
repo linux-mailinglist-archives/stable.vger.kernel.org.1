@@ -1,175 +1,220 @@
-Return-Path: <stable+bounces-121396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B630EA56A75
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:35:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E9AA56AAF
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:42:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2D021897BEE
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 14:35:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F1E316CAD7
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 14:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D353021B8F5;
-	Fri,  7 Mar 2025 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC3E21C176;
+	Fri,  7 Mar 2025 14:42:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EE518DF65;
-	Fri,  7 Mar 2025 14:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A051521ABC3;
+	Fri,  7 Mar 2025 14:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741358120; cv=none; b=raYMGwcf9yMxtD+zEx4Djxqjp0ki3/2e/w8bjbptvoRYqgp3R7YINuNE2xX8SZAzzGXmVJAyDxYuygJgBiNBL1cO/cKgrxYgMq8AKteSjFcIqQ6IZSyzCdFqCTE+wveaGOapqluippbE/JeDsxtlq/4pY4QqfKvUXkl9/ZB16+Y=
+	t=1741358529; cv=none; b=TTG+kYhrC9dX8ZX6N1RvNRZmUFYFRYfbgIFrrgIixDGY6H60On+1/i/rB8081FnjUOxE2Sq6vEh4EI93HKg8r5kFbNMwJ/teIjiD+ftW/q2e6y8XhdSVOXl/gYFAIyu0mT8xYAohEzTVMWb/fFyYeC2Dx+VXNSJZIJ68yNHqcsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741358120; c=relaxed/simple;
-	bh=7Vf0Y705dKsymaGrvDkZTnEO2pehEA545N3LsrhjSUw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JXJHO8RTw3FoB50CZ8SQaz4C5VC9wqku3u0tOjZE2g4dihjxQSCSXIJr3OBElrso2mx65uJexKAcmlDSkma5+1HnKSJ+2+wohz8jHZ4NV+UCvpR19HRCixpqD1zS3iixUU3tJqx9sYkAbcELpOa3pqfCbX+hogGoZkL5igp+j5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 845D01424;
-	Fri,  7 Mar 2025 06:35:27 -0800 (PST)
-Received: from [10.57.84.99] (unknown [10.57.84.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0082E3F66E;
-	Fri,  7 Mar 2025 06:35:13 -0800 (PST)
-Message-ID: <2308a4d0-273e-4cf8-9c9f-3008c42b6d18@arm.com>
-Date: Fri, 7 Mar 2025 14:35:12 +0000
+	s=arc-20240116; t=1741358529; c=relaxed/simple;
+	bh=ynPWJxU7R/OSvEcl4gV0+dngZYdAwZxjc1eotzFUxxM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QrX/2uAbErpHDZKfGfsGNwqtr+1VN+QKJV94eSnc4Hrh6MbtjBtd29UP2SM+cUVPBgUFUTFkbLn2yv9rQRbuATKTUhbz8b2eJlEtlR+KNoX7e6SYUDRpu1daz/baHv2cV9NsZoPoMCcuQtxnKXhqq1bTm+eWEiMtQEW4LVQW9RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-51eb1818d4fso1989224e0c.1;
+        Fri, 07 Mar 2025 06:42:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741358525; x=1741963325;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=veoRz5ujP2KKy+HEelssfFLeBagBiRfF1OPAqqgsrnY=;
+        b=Edl7V6cxDLfF8eJ0Swfx2hBXtj14W7VlzziyTpzTFWxaF8C0NHpRWzugqA2S5sICFX
+         SeW+e9IsVkS/p2QaENTVoOZ3/c7r6bRkAhYtKOcr5nPqrIyQiaT+EV1XINPSgTSUjde3
+         wLl9tyXmGeyfIsxYfVLNGQQvTOCyIGy0CVPgTpA0ZEAmy78fYn0U27wmiMTZXVNJh2kQ
+         OOrLLWxcUvRTHnbzN8cbKKstVs2JRvesOoU6ASaouzPBIBFIwwsoT7ovN8kyGGoLY6eY
+         4CKqapYvozFU4ObbmaWRJ9zeXGBULmS2C5pGzMeWcfIopJUu8nurOYMCeNJUeSpUdCK3
+         Qg8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVBr8l5nMn+VVbtu6jznUG4UfzGWnw0t5tX9qvR4BsSO6C0aaSxqg9ldeaxkxDkntbg0l39qlTX@vger.kernel.org, AJvYcCWAUgmmNDaX1O031PBtQaHShN22CkTHFDKesEV25Q8Jc79yukPKvSpv9tNnfc/dDfCf6MO8QbAsgyS43p+snYpViWY=@vger.kernel.org, AJvYcCXUC5BFMyrcw0I1kIbGElG5qKEKTqVLmG8HuuqfIE/Nv+ZtNYLIn3AnMkeUiMiPK/+wIT84aGijMaM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+r7QgVnjAJAOtCUH7Zb+YBjLtSZfmImpBG3o4ourQlM8hagUv
+	yc4jeSPcS8BZePAedtuCkp/VKqV1rJx4vO2SYfGl1Q0u/bwWG3gciSQ2oWXb+r4=
+X-Gm-Gg: ASbGnctsahn4rjYV/pSJcxDGsvPZJYWtcbbpRALnQKzOxJ/znBbH0j2Hkusw4XVBxkK
+	gCmawJGjwb0c+6ynsN1bzlmea1mA1B6yBWD7Y58IGAXwEqztBNjYURvzJx70z1GgudU/5MCDEjm
+	jgST1Uc8YnJf8aULoYq4X++HYWA/0XRHOaSz8Hg192GdJnXzbhTn3XlRNzND12qKr5m/Vo0jzs4
+	l4CYTy2KgLRhqTb2QlKCbvYzNAwee+pJt8JY3nOj9sqLPmBX9ysrAf4yiiHxQ6gAezUCKAqz7Bd
+	QCvludE5JOmoOvja3GXggt1IxgqXzHIo6OFwBE4120YHZs0cHS3yTDvibzLvzLtI15ZA/n6ph0O
+	yr2ON4xg=
+X-Google-Smtp-Source: AGHT+IE2Dtzfc0LYmYMaGuc1ThMb4At7ZxgOXwFpLla9y3li2c7yOhU884EsAnsW8rLYWloX1tW5UA==
+X-Received: by 2002:a05:6122:1d9f:b0:523:91e8:324c with SMTP id 71dfb90a1353d-523e4130a63mr2829124e0c.8.1741358525037;
+        Fri, 07 Mar 2025 06:42:05 -0800 (PST)
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com. [209.85.222.44])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-523d8ac1ec7sm532405e0c.11.2025.03.07.06.42.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Mar 2025 06:42:04 -0800 (PST)
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-86ba07fe7a4so1495964241.2;
+        Fri, 07 Mar 2025 06:42:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUC2rYzmnyVl0V/sGvaC2C25Hn3xj4skVYFaIeGHlJknJ+Cx/J8aZnPy7d0wAgy4mzk5Ixfithp@vger.kernel.org, AJvYcCWkdZKZdk+MHj+DwYYvTnyLHMNkHZw0lvb4E2cNcfer697C2nW7Wu+8HofAySXxM1/bGihzrv4JBuI=@vger.kernel.org, AJvYcCXm5HmqLpHWMb5xlG7EkuMk/sHj5dWzAhwu2d6KdoPabd1bIGBSMuDwyYWxKZWVwMWV0Rs37E4F9pVlBcpl+mZLbgE=@vger.kernel.org
+X-Received: by 2002:a05:6102:a54:b0:4c1:b3a5:9fa with SMTP id
+ ada2fe7eead31-4c30a6d2076mr2049732137.16.1741358524146; Fri, 07 Mar 2025
+ 06:42:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/madvise: Always set ptes via arch helpers
-Content-Language: en-GB
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250307123307.262298-1-ryan.roberts@arm.com>
- <dbdeb4d7-f7b9-4b10-ada3-c2d37e915f6d@lucifer.local>
- <03997253-0717-4ecb-8ac8-4a7ba49481a3@arm.com>
- <3653c47f-f21a-493e-bcc4-956b99b6c501@lucifer.local>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <3653c47f-f21a-493e-bcc4-956b99b6c501@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250220094516.126598-1-biju.das.jz@bp.renesas.com> <20250220094516.126598-3-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20250220094516.126598-3-biju.das.jz@bp.renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 7 Mar 2025 15:41:52 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
+X-Gm-Features: AQ5f1JrWRl9MPvTG_dOnScu40764bguYrV2frwLJ-gti0W78dvGdmo03XDNfOMc
+Message-ID: <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
+To: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Rob Herring <robh@kernel.org>, Ulrich Hecht <ulrich.hecht+renesas@gmail.com>, 
+	linux-can@vger.kernel.org, 
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, Biju Das <biju.das.au@gmail.com>, 
+	linux-renesas-soc@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 07/03/2025 13:59, Lorenzo Stoakes wrote:
-> On Fri, Mar 07, 2025 at 01:42:13PM +0000, Ryan Roberts wrote:
->> On 07/03/2025 13:04, Lorenzo Stoakes wrote:
->>> On Fri, Mar 07, 2025 at 12:33:06PM +0000, Ryan Roberts wrote:
->>>> Instead of writing a pte directly into the table, use the set_pte_at()
->>>> helper, which gives the arch visibility of the change.
->>>>
->>>> In this instance we are guaranteed that the pte was originally none and
->>>> is being modified to a not-present pte, so there was unlikely to be a
->>>> bug in practice (at least not on arm64). But it's bad practice to write
->>>> the page table memory directly without arch involvement.
->>>>
->>>> Cc: <stable@vger.kernel.org>
->>>> Fixes: 662df3e5c376 ("mm: madvise: implement lightweight guard page mechanism")
->>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->>>> ---
->>>>  mm/madvise.c | 2 +-
->>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/madvise.c b/mm/madvise.c
->>>> index 388dc289b5d1..6170f4acc14f 100644
->>>> --- a/mm/madvise.c
->>>> +++ b/mm/madvise.c
->>>> @@ -1101,7 +1101,7 @@ static int guard_install_set_pte(unsigned long addr, unsigned long next,
->>>>  	unsigned long *nr_pages = (unsigned long *)walk->private;
->>>>
->>>>  	/* Simply install a PTE marker, this causes segfault on access. */
->>>> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
->>>> +	set_pte_at(walk->mm, addr, ptep, make_pte_marker(PTE_MARKER_GUARD));
->>>
->>> I agree with you, but I think perhaps the arg name here is misleading :) If
->>> you look at mm/pagewalk.c and specifically, in walk_pte_range_inner():
->>>
->>> 		if (ops->install_pte && pte_none(ptep_get(pte))) {
->>> 			pte_t new_pte;
->>>
->>> 			err = ops->install_pte(addr, addr + PAGE_SIZE, &new_pte,
->>> 					       walk);
->>> 			if (err)
->>> 				break;
->>>
->>> 			set_pte_at(walk->mm, addr, pte, new_pte);
->>>
->>> 			...
->>> 		}
->>>
->>> So the ptep being assigned here is a stack value, new_pte, which we simply
->>> assign to, and _then_ the page walker code handles the set_pte_at() for us.
->>>
->>> So we are indeed doing the right thing here, just in a different place :P
->>
->> Ahh my bad. In that case, please ignore the patch.
->>
->> But out of interest, why are you doing it like this? I find it a bit confusing
->> as all the other ops (e.g. pte_entry()) work directly on the pgtable's pte
->> without the intermediate.
-> 
-> In those cases it's read-only, the data's already there, you can just go ahead
-> and manipulate it (and would expect to be able to do so).
+Hi Biju,
 
-It's certainly not read-only in general. Just having a quick look to verify, the
-very first callback I landed on was clear_refs_pte_range(), which implements
-.pmd_entry to clear the softdirty and access flags from a leaf pmd or from all
-the child ptes.
+On Thu, 20 Feb 2025 at 10:45, Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> There are a total of 96 AFL pages and each page has 16 entries with
+> registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
+> the rule entries (r = 0..15).
+>
+> Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
+> which is incorrect as the testing on RZ/G3E shows ch1 and ch4
+> gets a start value of 0 and the register contents are overwritten.
+>
+> Fix this issue by using rule_entry corresponding to the channel
+> to find the page entries in the AFL list.
+>
+> Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-> 
-> When setting things are a little different, I'd rather not open up things to a
-> user being able to do *whatever*, but rather limit to the smallest scope
-> possible for installing the PTE.
+Thanks for your patch!
 
-Understandable, but personally I think it will lead to potential misunderstandings:
+This finally fixes CAN2 and CAN3 on the White Hawk and White Hawk
+Single development boards based on R-Car V4H with 8 CAN channels
+(the transceivers for CAN4-7 are not mounted), so
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
- - it will get copy/pasted as an example of how to set a pte (which is wrong;
-you have to use set_pte_at()/set_ptes()). There is currently only a single other
-case of direct dereferencing a pte to set it (in write_protect_page()).
+Unfortunately, it does not fix CAN2 and CAN3 on the Gray Hawk Single
+development board, which is based on R-Car V4M with 4 CAN channels.
 
- - new users of .install_pte may assume (like I did) that the passed in ptep is
-pointing to the pgtable and they will manipulate it with arch helpers. arm64
-arch helpers all assume they are only ever passed pointers into pgtable memory.
-It will end horribly if that is not the case.
+> --- a/drivers/net/can/rcar/rcar_canfd.c
+> +++ b/drivers/net/can/rcar/rcar_canfd.c
+> @@ -787,10 +787,11 @@ static void rcar_canfd_configure_controller(struct rcar_canfd_global *gpriv)
+>  }
+>
+>  static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
+> -                                          u32 ch)
+> +                                          u32 ch, u32 rule_entry)
+>  {
+>         u32 cfg;
+>         int offset, start, page, num_rules = RCANFD_CHANNEL_NUMRULES;
+> +       u32 rule_entry_index = rule_entry % 16;
+>         u32 ridx = ch + RCANFD_RFFIFO_IDX;
+>
+>         if (ch == 0) {
 
-> 
-> And also of course, it allows us to _mandate_ that set_pte_at() is used so we do
-> the right thing re: arches :)
-> 
-> I could have named the parameter better though, in guard_install_pte_entry()
-> would be better to have called it 'new_pte' or something.
+The out-of-context code does:
 
-I'd suggest at least describing this in the documentation in pagewalk.h. Or
-better yet, you could make the pte the return value for the function. Then it is
-clear because you have no pointer. You'd lose the error code but the only user
-of this currently can't fail anyway.
+                start = 0; /* Channel 0 always starts from 0th rule */
+        } else {
+                /* Get number of Channel 0 rules and adjust */
+                cfg = rcar_canfd_read(gpriv->base, RCANFD_GAFLCFG(ch));
+                start = RCANFD_GAFLCFG_GETRNC(gpriv, 0, cfg);
+        }
 
-Anyway, just my 2 pence.
+After your changes below, "start" is set but never used.
 
-Thanks,
-Ryan
+Looking at the actual behavior of your patch, the same can be achieved
+by updating start, by adding a single line here:
 
-> 
->>
->> Thanks,
->> Ryan
->>
->>>
->>>>  	(*nr_pages)++;
->>>>
->>>>  	return 0;
->>>> --
->>>> 2.43.0
->>>>
->>
-> 
-> Thanks for looking at this by the way, obviously I appreciate your point in
-> chasing up cases like this as endeavoured to do the right thing here, albeit
-> abstracted away :)
+    start += (ch & -2) * num_rules;
 
+> @@ -802,7 +803,7 @@ static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
+>         }
+>
+>         /* Enable write access to entry */
+> -       page = RCANFD_GAFL_PAGENUM(start);
+> +       page = RCANFD_GAFL_PAGENUM(rule_entry);
+>         rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLECTR,
+>                            (RCANFD_GAFLECTR_AFLPN(gpriv, page) |
+>                             RCANFD_GAFLECTR_AFLDAE));
+
+Out of context code:
+
+        /* Write number of rules for channel */
+        rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLCFG(ch),
+                           RCANFD_GAFLCFG_SETRNC(gpriv, ch, num_rules));
+
+So the old code calculated the page number based on the pre-configured
+number of rules in the RCANFD_GAFLCFGw register, not taking into
+account ch > 2, and then reprogrammed the register with the new number
+of rules... Hmm...
+
+> @@ -818,13 +819,13 @@ static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
+>                 offset = RCANFD_C_GAFL_OFFSET;
+>
+>         /* Accept all IDs */
+> -       rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, start), 0);
+> +       rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, rule_entry_index), 0);
+>         /* IDE or RTR is not considered for matching */
+> -       rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, start), 0);
+> +       rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, rule_entry_index), 0);
+>         /* Any data length accepted */
+> -       rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, start), 0);
+> +       rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, rule_entry_index), 0);
+>         /* Place the msg in corresponding Rx FIFO entry */
+> -       rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, start),
+> +       rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, rule_entry_index),
+>                            RCANFD_GAFLP1_GAFLFDP(ridx));
+>
+>         /* Disable write access to page */
+> @@ -1851,6 +1852,7 @@ static int rcar_canfd_probe(struct platform_device *pdev)
+>         unsigned long channels_mask = 0;
+>         int err, ch_irq, g_irq;
+>         int g_err_irq, g_recc_irq;
+> +       u32 rule_entry = 0;
+>         bool fdmode = true;                     /* CAN FD only mode - default */
+>         char name[9] = "channelX";
+>         int i;
+> @@ -2023,7 +2025,8 @@ static int rcar_canfd_probe(struct platform_device *pdev)
+>                 rcar_canfd_configure_tx(gpriv, ch);
+>
+>                 /* Configure receive rules */
+> -               rcar_canfd_configure_afl_rules(gpriv, ch);
+> +               rcar_canfd_configure_afl_rules(gpriv, ch, rule_entry);
+> +               rule_entry += RCANFD_CHANNEL_NUMRULES;
+>         }
+>
+>         /* Configure common interrupts */
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
