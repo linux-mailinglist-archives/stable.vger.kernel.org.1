@@ -1,131 +1,171 @@
-Return-Path: <stable+bounces-121402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA1EA56B30
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 16:06:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDE5A56B6C
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 16:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB1FF189B669
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:05:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8D66179302
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 15:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77C121C166;
-	Fri,  7 Mar 2025 15:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="af5d+C1Q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B53921CC4A;
+	Fri,  7 Mar 2025 15:09:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C81521C179;
-	Fri,  7 Mar 2025 15:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6173921D3DD
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 15:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741359935; cv=none; b=WOz1+tP8B4abtCVq7H3YTbITeBIxDeOwAJX+ZgLSuBjhFsb9Wp9mm8xcgRkxoO38PAHRbJ6FBBJh0aq5Fv/Dfb1gBlypdH0TyqvJcuOHIzWHL78Ixps0ONsXeH8+73WXOeiTA6CzOetfYWXIC4Eqb6SwN27oN3E6L4BS9JyO8Uw=
+	t=1741360184; cv=none; b=Xo452Of4904cgJuifwRU4UB8PwplNYYE66B2pkkX5qi0+mOEl/8o6k0axA/NfEZK2Uk8uqHNPql+PCXlMeoZ7LjZBqyfEfxsgPgJLHB0Fr5Hr5UCoDQSMzMeMOs7MGKW2mXBiZ9LaMKAwIL/WDUp2tTWKKmi8TmxXrYYlkVgV28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741359935; c=relaxed/simple;
-	bh=vkajAd6C+aBL/cx4UI6cMxaNKhLSk483ukm9k5uqSgQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Chz5kvc8CuSDGUF2cN+D8v+bgh932Hh/eLF5yCz+JcE7nw2+WlLMo5i76YLIXyD+dZlALEjKYm332cbgytZeXPnUbLeIn37vskEXaEYB2Nifg3dZ+Sr5D5vzGQQVFn9FUBJVc7Egw4gpNoO3kp09Y2BQcY0Gei5Eqh7TZ+vzT7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=af5d+C1Q; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.79.65.43] (unknown [4.194.122.144])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 622232038F38;
-	Fri,  7 Mar 2025 07:05:28 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 622232038F38
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741359933;
-	bh=qBvGIF1Dvpc7Yt8ucophS5Ds134KAk4AkIU1eqWjtnc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=af5d+C1QG4E3Dv0RaNrDEOOwzVVn9PIMHtjh26hglj7DujoxrmFene6tAhUm1Yd29
-	 JFQlqKiizStpfrMS+PfMs/IlmYIJxb7z1bvO9NRLQQUtLsmbgn9H3PoeN2mmrOZSMi
-	 Fo6bvB8B2Z5etoYsJjYcs3NeeRz8mVohVhRokXY4=
-Message-ID: <81b11433-58ac-4a2c-a497-d6d91e330810@linux.microsoft.com>
-Date: Fri, 7 Mar 2025 20:35:23 +0530
+	s=arc-20240116; t=1741360184; c=relaxed/simple;
+	bh=nvInyBZ9SIDhwcj6V7u6ISgZ68zr/vHYYkDicntnXXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uCfZy59tznYCSCGgB07ffujXUQ+nXO3ExvNENxeFoP+QCnYTXbIoiDxlLu94B0qC/P+9kTKphX32IiGDAzd1ANeG3KUMOZDgWNT4ABCKNcvQJwoYEJmYl7KzoLTSxYwIK/0jO0i4BOMlrBBhceMzWxHXraGDj8h4dmxGcdtthg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tqZKK-0002tg-Oh; Fri, 07 Mar 2025 16:09:28 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tqZKJ-004VKm-2N;
+	Fri, 07 Mar 2025 16:09:27 +0100
+Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 5B79E3D4BA4;
+	Fri, 07 Mar 2025 15:09:27 +0000 (UTC)
+Date: Fri, 7 Mar 2025 16:09:27 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>, 
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, Rob Herring <robh@kernel.org>, 
+	Ulrich Hecht <ulrich.hecht+renesas@gmail.com>, linux-can@vger.kernel.org, 
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, Biju Das <biju.das.au@gmail.com>, 
+	linux-renesas-soc@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
+Message-ID: <20250307-weightless-malkoha-of-experiment-f9926c-mkl@pengutronix.de>
+References: <20250220094516.126598-1-biju.das.jz@bp.renesas.com>
+ <20250220094516.126598-3-biju.das.jz@bp.renesas.com>
+ <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] sched/topology: Enable topology_span_sane check only
- for debug builds
-To: Valentin Schneider <vschneid@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- Steve Wahl <steve.wahl@hpe.com>,
- Saurabh Singh Sengar <ssengar@linux.microsoft.com>, srivatsa@csail.mit.edu,
- K Prateek Nayak <kprateek.nayak@amd.com>,
- Michael Kelley <mhklinux@outlook.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>
-References: <20250306055354.52915-1-namjain@linux.microsoft.com>
- <xhsmhwmd2ds0o.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <xhsmhwmd2ds0o.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ne2omge6bmgxvr5z"
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUs=+niOyBW0us=UjZTnqeYjVsLWZSmROndCO8azER=3g@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
 
+--ne2omge6bmgxvr5z
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
+MIME-Version: 1.0
 
-On 3/6/2025 10:18 PM, Valentin Schneider wrote:
-> On 06/03/25 11:23, Naman Jain wrote:
->> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
->> index c49aea8c1025..666f0a18cc6c 100644
->> --- a/kernel/sched/topology.c
->> +++ b/kernel/sched/topology.c
->> @@ -2359,6 +2359,13 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
->>   {
->>        int i = cpu + 1;
->>
->> +	/* Skip the topology sanity check for non-debug, as it is a time-consuming operation */
->> +	if (!sched_debug()) {
->> +		pr_info_once("%s: Skipping topology span sanity check. Use `sched_verbose` boot parameter to enable it.\n",
->> +			     __func__);
-> 
-> FWIW I'm not against this change, however if you want to add messaging
-> about sched_verbose I'd put that in e.g. sched_domain_debug() (as a print
-> once like you've done here) with something along the lines of:
-> 
->    "Scheduler topology debugging disabled, add 'sched_verbose' to the cmdline to enable it"
+On 07.03.2025 15:41:52, Geert Uytterhoeven wrote:
+> Hi Biju,
+>=20
+> On Thu, 20 Feb 2025 at 10:45, Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> > There are a total of 96 AFL pages and each page has 16 entries with
+> > registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
+> > the rule entries (r =3D 0..15).
+> >
+> > Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
+> > which is incorrect as the testing on RZ/G3E shows ch1 and ch4
+> > gets a start value of 0 and the register contents are overwritten.
+> >
+> > Fix this issue by using rule_entry corresponding to the channel
+> > to find the page entries in the AFL list.
+> >
+> > Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+>=20
+> Thanks for your patch!
+>=20
+> This finally fixes CAN2 and CAN3 on the White Hawk and White Hawk
+> Single development boards based on R-Car V4H with 8 CAN channels
+> (the transceivers for CAN4-7 are not mounted), so
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>=20
+> Unfortunately, it does not fix CAN2 and CAN3 on the Gray Hawk Single
+> development board, which is based on R-Car V4M with 4 CAN channels.
+>=20
+> > --- a/drivers/net/can/rcar/rcar_canfd.c
+> > +++ b/drivers/net/can/rcar/rcar_canfd.c
+> > @@ -787,10 +787,11 @@ static void rcar_canfd_configure_controller(struc=
+t rcar_canfd_global *gpriv)
+> >  }
+> >
+> >  static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *g=
+priv,
+> > -                                          u32 ch)
+> > +                                          u32 ch, u32 rule_entry)
+> >  {
+> >         u32 cfg;
+> >         int offset, start, page, num_rules =3D RCANFD_CHANNEL_NUMRULES;
+> > +       u32 rule_entry_index =3D rule_entry % 16;
+> >         u32 ridx =3D ch + RCANFD_RFFIFO_IDX;
+> >
+> >         if (ch =3D=3D 0) {
+>=20
+> The out-of-context code does:
+>=20
+>                 start =3D 0; /* Channel 0 always starts from 0th rule */
+>         } else {
+>                 /* Get number of Channel 0 rules and adjust */
+>                 cfg =3D rcar_canfd_read(gpriv->base, RCANFD_GAFLCFG(ch));
+>                 start =3D RCANFD_GAFLCFG_GETRNC(gpriv, 0, cfg);
+>         }
+>=20
+> After your changes below, "start" is set but never used.
 
+If you don't need this variable anymore, please remove it.
 
-Thank you so much for reviewing.
-Please correct me if I misunderstood. Are you proposing below change?
+Marc
 
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -2361,7 +2361,7 @@ static bool topology_span_sane(struct 
-sched_domain_topology_level *tl,
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-         /* Skip the topology sanity check for non-debug, as it is a 
-time-consuming operation */
-         if (!sched_debug()) {
--               pr_info_once("%s: Skipping topology span sanity check. 
-Use `sched_verbose` boot parameter to enable it.\n",
-+               pr_info_once("%s: Scheduler topology debugging disabled, 
-add 'sched_verbose' to the cmdline to enable it\n",
-                              __func__);
-                 return true;
-         }
+--ne2omge6bmgxvr5z
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Regards,
-Naman
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfLDCQACgkQDHRl3/mQ
+kZy1BggAlWzSaoBsYVWmLWHhyU3Dd4rKAq1LByO9qoGwCqrJVsOECF8aWmp9MXEb
+9QeBSXlxUQ+w7Sk/N9NDmfZ1JxKHKM+GRW7nyXe8VdSk2mPcHTlkxZ1Zv4JTYOFW
+qvPuBPpWRq6QxEr1suN55jWD6OaRDsF6k6he8BJslgsRCkwveh7e1oj3k6eIUOyV
+/maNyCCO0LRqW9Ul8j3N/DCklIABNAGcaJZlLINZWOveHDvnN83YXPe5mv6dKOXM
+6kZMje9BsKhN1gnHrciaqT4U/A+wW8A+vv1w9k2b/MDN+u/+Q5vSGlO3cySKBnQT
+xMG1UorWo25zTKB9xVgtJ4wfd1S5eA==
+=pBDm
+-----END PGP SIGNATURE-----
 
-> 
->> +		return true;
->> +	}
->> +
->>        /* NUMA levels are allowed to overlap */
->>        if (tl->flags & SDTL_OVERLAP)
->>                return true;
->> --
->> 2.34.1
-
+--ne2omge6bmgxvr5z--
 
