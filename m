@@ -1,234 +1,235 @@
-Return-Path: <stable+bounces-121342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C7CA55FBE
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 06:02:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B794A560A9
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 07:14:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E8D1896632
-	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 05:02:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66CE0161176
+	for <lists+stable@lfdr.de>; Fri,  7 Mar 2025 06:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29F4148FF9;
-	Fri,  7 Mar 2025 05:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E26154430;
+	Fri,  7 Mar 2025 06:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZDESy6jf"
 X-Original-To: stable@vger.kernel.org
-Received: from cosmicgizmosystems.com (cosmicgizmosystems.com [63.249.102.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58981C27;
-	Fri,  7 Mar 2025 05:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.249.102.155
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741323752; cv=none; b=Kn/Ennbvl+D2aZvj23sXSro2bjP6yFT2JKLiYuuXmey8GWN3mOC0QNHoGDSwrwYpT9rnnogxfqFDk8fdKg7aBgxeZgNnmv/G0sMVqYMg3u1nFLxBSAsT/yl7Uk8QvOC497y4vreCACaMdGVfqLsAR1UOouhhzui+D5ukMhjq7G4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741323752; c=relaxed/simple;
-	bh=Zo3xPSerTkoI1tokLWdOrJC6QxrtBXMex6Fy9lgq5xk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SXclrp6WVSuECHlimpSq9Md6s9KkwwPlqa7g94bNaFxc9dLn4zwSpWTjxsMyJeAo5dks5Z4qRkjof6wIqwO9iVvgwlNSau1gpirB3VYWuptCjrqvyf1HOJat5ikUmIXv3ysCxS3IjrPA9HKQ4e/zqVXb1pnsBM+Adw4q7Sh8KQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com; spf=pass smtp.mailfrom=cosmicgizmosystems.com; arc=none smtp.client-ip=63.249.102.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cosmicgizmosystems.com
-Received: from terrys-Precision-M4600.hsd1.wa.comcast.net (c-71-63-147-217.hsd1.wa.comcast.net [71.63.147.217])
-	by host11.cruzio.com (Postfix) with ESMTPSA id 8A4B2274BD23;
-	Thu,  6 Mar 2025 20:56:06 -0800 (PST)
-From: Terry Junge <linuxhid@cosmicgizmosystems.com>
-To: Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-input@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	lvc-project@linuxtesting.org,
-	syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v1] HID: usbhid: Eliminate recurrent out-of-bounds bug in usbhid_parse()
-Date: Thu,  6 Mar 2025 20:54:43 -0800
-Message-ID: <20250307045449.745634-1-linuxhid@cosmicgizmosystems.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5060C1974FE
+	for <stable@vger.kernel.org>; Fri,  7 Mar 2025 06:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741328061; cv=fail; b=VW/PretarNy5YWuWhG+lLNRUWABlUX+AiIBjy05pD8CFl6Fwf3HbQBqzchu/1bd+uHJiqm3PjYK9XSTSMX6Gban01VP1kFhHr77+j8ejJ9RsAxuvr9/fWmSTJnz6qwh3jIr2DCfPWfYsjGtxqBw6TgWNszynu9rq+i4jzK6kYY8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741328061; c=relaxed/simple;
+	bh=yUSEAINXhb2GV8cqttr6d+lQLTmqPB8ZTQrPzT0ai7E=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EfIpc82TMuASkLCmAnwFyLg3oL7JvdHjdLTdjoB5Cqg6zBcoC9SpcwlW1MqVZwomjq5HaWw5N6TmYiaUa2oKQRJZXBcpTI+PSCA9WuEl0zvLn7GIDUsFQj+8IZObaJ7Oe8zCrCL0RYDKg/t1u2gvNTuWi0glel+uQPb2M04b5XY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZDESy6jf; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741328061; x=1772864061;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=yUSEAINXhb2GV8cqttr6d+lQLTmqPB8ZTQrPzT0ai7E=;
+  b=ZDESy6jfOLo61kS5AHJlLDf4p82M+7s5nWgRYGbJfJTvYnzyJvyWaYyD
+   Y4eDAW42BkUKJHGwNRZL2wcEuRbM+qK6/Pej7aXytLRhESopzdmMlhJBM
+   IOaoVhbIMlDf+BDXUaEhMWoPNbgSZJGQMOeFpcXJSL6mFhxuY4C151mU9
+   sNO44Pp/UdfD2hSZeayg0Qa39J+xJUGEzCO0rOw3qhH7hRN/g1oFCNQ2z
+   eGHpKDb83ErS7CQMi7dFotqgHQ5yIRrmSRq27XWN/mfObH0UfCa+H7fNJ
+   ot0gbF4OTZgD+cwX7E6ggxaCoWhudRxNaH8suplxTtHl1TZ2OWS1CC5sX
+   w==;
+X-CSE-ConnectionGUID: MdsAlEldTXe77PEDYRbRTA==
+X-CSE-MsgGUID: uHc4zKQ3QPWfEcM9xqAaPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53357248"
+X-IronPort-AV: E=Sophos;i="6.14,228,1736841600"; 
+   d="scan'208";a="53357248"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 22:14:20 -0800
+X-CSE-ConnectionGUID: BEw7BcHoThi9dY8XPFkOFQ==
+X-CSE-MsgGUID: IBTyGNXoTeO315SgQ77Ung==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="120155432"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 22:14:19 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 6 Mar 2025 22:14:18 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Thu, 6 Mar 2025 22:14:18 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.47) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 6 Mar 2025 22:14:17 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ww7OCnvAnXJVmihEowLDufHW1X4ylnoXpJap9O5Y0NRF8YWHthUohPXborD8/14MJFY+AHQZt2U7pa4cHCc9NtQgUGNifEEW3BU/IBFs3Xm2MBiPy6T91u9ZHDXszztWuGuQMHuV/F3Z4esqaJPIewyAJgEq1JDGfCQHyIh7dOnHmP2whNq28D3rzIxwS/4kQGK0vX9ESNDT57O+IbgZAsmd2bHj2GRt5yU6QOtjpLmbvKAT0P693T5ZaynmY8suN/QConJt2v3U5tdl/5w7RrsNCDxw42uoOO/U2NV2rRaGj+lOs1/LJaqtaYYZMIoypou5TfZ2o3BL5EdDWKYebw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CcDHj/pDpubV+FBfjU/cv5Bku4YiFvOeve9WmQwAR24=;
+ b=Uem9/T2S9TLdWen6VPA0gIexr5ntFl7CGOxSM+kQYBMqiMG6bQ/FMGDBg75A92x7Z1IcciQfWa4OqtNysMwx3/tl3MKL0oXvVX61C2keRXkL7rjdUCeydWs1PV/PsYc4WoOVPffl2zodKSF0uBH87eWOWdvKcVXFnwh2zU4rasSIwm2kSxXNblPKhpwsoqkkgiJhH2hEsEmRZMWwJJVvujCkGLl0KASvXPL6It/K2SSJxHfcHXBFiur2plnO1STKsAlP0r/DKHRDb/xPSn6u92y7tR4c+8pul6viBwFThE/J5UmvQrc9dcwpO4z/dZOydzWyOfs35HmWtq8HBPkuhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by BL4PR11MB8846.namprd11.prod.outlook.com (2603:10b6:208:5aa::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.19; Fri, 7 Mar
+ 2025 06:13:48 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%3]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
+ 06:13:48 +0000
+Date: Thu, 6 Mar 2025 22:14:55 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>, Tejas Upadhyay
+	<tejas.upadhyay@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, "Sasha
+ Levin" <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 058/150] drm/xe: cancel pending job timer before
+ freeing scheduler
+Message-ID: <Z8qO3xZ6VmHwCJN5@lstrano-desk.jf.intel.com>
+References: <20250305174503.801402104@linuxfoundation.org>
+ <20250305174506.154179603@linuxfoundation.org>
+ <Z8kklJj90JKGPCHC@lstrano-desk.jf.intel.com>
+ <2025030621-fame-chastity-0bbd@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025030621-fame-chastity-0bbd@gregkh>
+X-ClientProxiedBy: MW4PR04CA0268.namprd04.prod.outlook.com
+ (2603:10b6:303:88::33) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|BL4PR11MB8846:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98a805a1-6498-46a2-c8c8-08dd5d3f3973
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cTVUVUJLclhmSE1nOXllVUlGTklIalVkdTBTUVNuTUJFd01hNDRHcktGRm5I?=
+ =?utf-8?B?d2t6blVhc3hLRmNXaVFNSkROK29vQWg2Z0xNUTJ5OFpOb2dabjlySFkzNUNa?=
+ =?utf-8?B?b01lRXIzc2h6d05yb2JmdjZjTGdtbnVCQW4ralRQaW1JcFdrU3YrQU1GSmts?=
+ =?utf-8?B?VWNzU2NqbEl1ZlJmcUdDRk9KbElQRVFMR1I0VFlUL2ZuSWQ3aVJkb2ZTM1VG?=
+ =?utf-8?B?SVRGMmRkcGJQalVua0pDdCsrWHpqMC9KYnFDSkFNUlhxa2lZRExtVlFUMFRw?=
+ =?utf-8?B?VEI4bStIQ1RrOENvNlNKQi9pd0dtRHJvcndqMHIvY1NZVW1xYWtFTHVLZUZS?=
+ =?utf-8?B?NFZPOWJkQzlPT2hsK2MrdDlDL3UzUUw3Ynp5MW9GWHp3L0lHVzVwMjZ3bWti?=
+ =?utf-8?B?SlRVTU51Szg4OWdLYUZMZTFrRERVTFRXaE1tUzRHMEVINFFwZDZCYUFPR293?=
+ =?utf-8?B?V3FER25TTC9FRFpGRURadmo3cDRkS2d4Qmk3L0tNd2NDNnlVaDhMeHpBR1A1?=
+ =?utf-8?B?MHVFK1hKTVlxRlp4NUpNZzFwelVQVElBOUpYbnAvV3hGM0gvQVJGZmtmdWdV?=
+ =?utf-8?B?TFhvKzQ2eU83SEo2VkExdTR2S1k0amZ5M3liY0pCRmNsbmJEbkJnNjRIVW16?=
+ =?utf-8?B?YnI0VVZwNzY5MStDbVpUZzVnMFptb013RkVyTjZlRFdjb21rbWhZaG13UHRH?=
+ =?utf-8?B?Mk9URnJRUFN0Z1dDQlBud1JxVjZqQjdaWGRuNlhVM0llei9DdnJIemlPR0da?=
+ =?utf-8?B?QXUyZnVDcW1lRXBCczV0M0FWSnZZck5wanVmTkUrYld4ZG1ZUW9xTkp4ZWJL?=
+ =?utf-8?B?MmQvNXJRcHhwWGEraHpUenlBdzBpeXgxMmdDMU5yNkZjbmRhakRhdk10cDVK?=
+ =?utf-8?B?VEYvOHFaY2FKcFN2ZHQ1OW40emlVV1doNUZlSUExVWR3WlFXUEVZN2tVN2hp?=
+ =?utf-8?B?QzdjQ1RXS1dGdEJVSVJNUDRjcE9XWEhWNVBITWw3NlpraUdkVnBiWVBrNFM0?=
+ =?utf-8?B?RDVTaFluaU9WZ3hVYjZNeFBvQ1VUNTFUS0VxOUR6SGpCNDMyTjMvMit0azUy?=
+ =?utf-8?B?NTNaVEtGZlJYdG9UaThHRmt3M2x3aVBmVlpHVWhOVDZzTlZXTG5vU1VhMDZl?=
+ =?utf-8?B?WUVRZHVYTjZDb3V2SkFteDNLaUZBbklQQXd3dWY2aWtkekxEMVZmdlV2eldu?=
+ =?utf-8?B?V2tjWmpQbThFbkxiNGdMLzZJdTJLWVFkVG1OOXNXb0tpOWhVeDd1NXEzc0Iz?=
+ =?utf-8?B?emRtWC9xVDN5YlZvUnNlUE90ZFFZT0M4MmFTai9jYW9pdzVObzc1Uk5sQ1Fu?=
+ =?utf-8?B?SGJFK3E0WEg5S1dnY0NpRkMyQUJsMFFOQitkRjVxd2gvd21Rc3ZDcFJJUGkw?=
+ =?utf-8?B?eXY3aTZDMW51aXAwWkNGempaZzRycm9EM1N4MFpSbjIvN2tIakt4RUdZSnFp?=
+ =?utf-8?B?dHFBOGtwNG9TN0huTmlzd2xUeFZJa2pxcFVsZkk5YXd3M0VaUGYzMEVaR1BF?=
+ =?utf-8?B?QTF2a2xrOHJabm1QbWk1NUhRMHpPcXJuV0h4eDU3dTFGUnlkMncyRXpTaTNj?=
+ =?utf-8?B?bFUwcURuOWFnRmQzUnZCMUhjNHRZWEhpa00wT3JUZVg0Ukx4MjVTTkkwYUVz?=
+ =?utf-8?B?UnJha3c3SXVCMERWUzB3bHAwU1VYNHZmdEhCYSt3Zm5QZ05LTlJ1RVRXMDlH?=
+ =?utf-8?B?MUpxcFlKcVFHd2c2VjNHcnEvWUd0MjFrd0xabkJBa1ZxRzJuSEtibWZIdFFS?=
+ =?utf-8?B?L1ZpWmlhbkZYT0RxR1VkTllicldFa0Y4cmV5TjZlZ3ZwWFRyQWdCWHBqd09T?=
+ =?utf-8?B?eTJPWGlPRzRtS0ZLdjMvZz09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YVQ3TGV3eXdmbUhLRmJWeWdOSHhJWVM0Si9xMy9Kdm5KTFpUbFloNmdydmJ3?=
+ =?utf-8?B?cVpDd0t2d09TNG5iRkMxUW5seGtnOHphdG5iaGpHODRINTkrTzJMdU1Sak9y?=
+ =?utf-8?B?UngybGZaT2tjb3Zoc05idlhqVGpsRUZGc1lHS0M4RG4wbGNHb2xFN0NWbUZL?=
+ =?utf-8?B?M0hLeWFkNGpqZkFzdTRQT1dKMmg0b091WDV5VmludXpqU0NVZnR4OFhEaklw?=
+ =?utf-8?B?ZDlhZGkrU005WWtFZ3VQWllmK3lnaEYrWnh3RFBDb1VtbnBqTWVKUzNtV2I2?=
+ =?utf-8?B?QTh4ckFpMHBLQzZUS1c3L1BmcHZUSEtuczhVWEtpNFJwdlJVWEpSRFIyZ3k2?=
+ =?utf-8?B?K0JudFpadTJrRGJWQUg3RlYrY2hFV0s4OVB2ekh6b1A0U3V0cTlPZ3JWTm9R?=
+ =?utf-8?B?U2dpZi9ad1BoK0lXS0tZU3dWRFRwbTV1SXRxQm1ORTdCOWxucnRUQWVlcFdB?=
+ =?utf-8?B?dmxhWGpMc0NmbjYyYmcvQXE2ZUhkZWFLS0ErYUFwNzRHVkw5M2YwRFdEV241?=
+ =?utf-8?B?bHozYTBBalVWc3JiNHRTSnB2ckphWHNLYUZnNmF6V1NxbU9WZWNxWEtLbU1k?=
+ =?utf-8?B?UTI3Rkx4MnZVaU5VV2RmS1RnSFNyR2FTTk9VRTZHNXpEN21FeFAzUXZqKzgr?=
+ =?utf-8?B?T1FQQVZXZzBOeWJ1YXhMU1N1U2VQY1ZjMDZGcTRidi9YdE1ad09DT0FNeDVY?=
+ =?utf-8?B?Q1hVRFZrR3A0S3JkMEp2QW9QaEZlUmxDeGNTVVBudyt6OTIxaU9FdURRVzJG?=
+ =?utf-8?B?UFVZa1ZqYXZLQ3NyRHlCbnQ3UlFtaitxSjJPaFJiSlhlWDVLQVhzUEE4UU1m?=
+ =?utf-8?B?N1o5QWlnQUY4cVhDN25ObXoyQVlLQkNLNThLWDZxMlA1MXZFNVd5QkYyTnRG?=
+ =?utf-8?B?ZXZRbGM3bEJuVXlBbUp2Vld4blFwZGhJclJHZVJZZTB4YlY4N2tDWndLc0NU?=
+ =?utf-8?B?UzcyMkNlMklkcS9YMldFRzZpM2d2YlMvT21yeHZDakpzUU1DYnBtVGZORFRi?=
+ =?utf-8?B?dmNRQ0ZoS3VNVUVLc1VnYWU2SWhXdlNWY2dXQ1pzQmQwRThJanpmM202ODZD?=
+ =?utf-8?B?dlQ2Nzh4QndlSWdYYXJKQ2RPc0FMOEV1RWRBRC93VGxWVTVmQ0luZWcrMDg2?=
+ =?utf-8?B?aW9WdmhUMEhwd2pvWHhwYWhaRENhc1F2a3QyUTN1WTYxdjBjbTdHRmZrVnoy?=
+ =?utf-8?B?K1BOdTUxUEw2a2syQXBqeko5Y2RvcUo3YW9lSVFrL040clR5Y1R2bTh5eEhD?=
+ =?utf-8?B?OXZBZXFnY1EzRWRhUWo5dmpLVVJvNTZXbW5neTRiODlRZUlieFgxNWc1Qzd0?=
+ =?utf-8?B?dEk5K2plZzdPWE9jWWpOTkFoTG5jRXpwbWxlUFQ2Uk04NXFzRVlFWUJqL20y?=
+ =?utf-8?B?VG1kYjBwYkhJNTJFWmppU2pzUjd1b3o4K3FoVDhsVlRRU0FheVpxR2R4SXJV?=
+ =?utf-8?B?bXQ5WE1kNDV3WjFBeTl5MmUwMFBnbzRqeVpXVWN2WHVHSmtqMzQ3azgvdktv?=
+ =?utf-8?B?cVBDT080K2NBcjIvR2RkNmMxd09LMndLYUptYllaLzhCYmsyRmM0eWxFRHVv?=
+ =?utf-8?B?d1AvREdLRkx1ZTNpejZGK3V4Sjl4R1ZZNFFVL0pJRk9DNWtLdndiQzRNTUhM?=
+ =?utf-8?B?Rm1zL0s5aWxoS2REMWVIM0IzNkY0Zlc2OG9Pazl1Y3BCTVdMWU1FcktWdkhR?=
+ =?utf-8?B?SWkva1N3M0xtZUl1VFdiVW9PT3N1dmgvSForMmxHaXVPaEQyVHcxbGFXMGt4?=
+ =?utf-8?B?RlpyaW1WMVd5Nm5LWlZhcnI0cWpaaXR0N2NhM3VEdXd0a0dnSG5kTjZBRXZ1?=
+ =?utf-8?B?UVZuK1JWNDcybFF2TXJFcFRIZUNLa3Y2aFVOQUl6SVFjK1hzQjk5RkJFNWVi?=
+ =?utf-8?B?STJrRFNwNE1MZ2hBRjFoLzFjODZGSExtU2RJRjdQQjFqcnVLZ3ZlaGdCbFZM?=
+ =?utf-8?B?d3U4bnZoK0ZDU3NxaHNxdTJKcHo1b3ltZndmSGdrTGt1akdPOXBBdUhUV2pY?=
+ =?utf-8?B?a284blp0ZERIZ0hDK0w2NzVWUkNnd2trV1JSQkhuWWdZa1E5WFhVWDRWeW5j?=
+ =?utf-8?B?THpZY2cvVVB2R29OVDU2ZFNOa2YzOWhoS2R2QnZjNjRQOXk5dEFIeEVHMGlE?=
+ =?utf-8?B?NGVmbElkZWFKR0J6WmpncmxYYlVCZ0F5UFNsd1JmWTl4MFFRcURoS2kxcWM0?=
+ =?utf-8?B?V1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98a805a1-6498-46a2-c8c8-08dd5d3f3973
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 06:13:48.5806
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GkmKmgaS57Vw7IR8OMGdEe5Denh+2M8U6DPzdf6n8QV+q1+gwh/8OKCKiUPn+3S/N4D1cR/WfrjnwHeHWGbKig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR11MB8846
+X-OriginatorOrg: intel.com
 
-Update struct hid_descriptor to better reflect the mandatory and
-optional parts of the HID Descriptor as per USB HID 1.11 specification.
-Note: the kernel currently does not parse any optional HID class
-descriptors, only the mandatory report descriptor.
+On Thu, Mar 06, 2025 at 02:32:56PM +0100, Greg Kroah-Hartman wrote:
+> On Wed, Mar 05, 2025 at 08:29:08PM -0800, Matthew Brost wrote:
+> > On Wed, Mar 05, 2025 at 06:48:07PM +0100, Greg Kroah-Hartman wrote:
+> > > 6.12-stable review patch.  If anyone has any objections, please let me know.
+> > > 
+> > 
+> > We just got CI report on this patch, can you please hold off on backporting this.
+> 
+> Ok, but note you all better revert this upstream as well soon, otherwise
+> our tools have a tendancy to want to drag stuff like this back into
+> stable kernels to remain in sync with Linus's tree.
+> 
 
-Update all references to member element desc[0] to rpt_desc.
+Thank you for the information on the workflow for issues like this.
 
-Add test to verify bLength and bNumDescriptors values are valid.
+I'm pretty sure the follow-up in [1] will fix this and be merged any
+minute now—I just saw this email after reviewing [1]. Is the correct
+flow here to let the tools pick up the original offending patch and the
+subsequent fix, or is there something else we should do? Please advise.
 
-Replace the for loop with direct access to the mandatory HID class
-descriptor member for the report descriptor. This eliminates the
-possibility of getting an out-of-bounds fault.
+Matt
 
-Add a warning message if the HID descriptor contains any unsupported
-optional HID class descriptors.
+[1] https://patchwork.freedesktop.org/series/145907/
 
-Reported-by: syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c52569baf0c843f35495
-Fixes: f043bfc98c19 ("HID: usbhid: fix out-of-bounds bug")
-Cc: stable@vger.kernel.org
-Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
----
-v1: Remove unnecessary for loop searching for the report descriptor size.
-base-commit: 58c9bf3363e596d744f56616d407278ef5f97f5a
-
-P.S. This is an alternative to the solution proposed by Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/all/20250131151600.410242-1-n.zhandarovich@fintech.ru/
-
- include/linux/hid.h                 |  3 ++-
- drivers/usb/gadget/function/f_hid.c | 12 ++++++------
- drivers/hid/hid-hyperv.c            |  4 ++--
- drivers/hid/usbhid/hid-core.c       | 25 ++++++++++++++-----------
- 4 files changed, 24 insertions(+), 20 deletions(-)
-
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index cdc0dc13c87f..7abc8c74bdd5 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -738,8 +738,9 @@ struct hid_descriptor {
- 	__le16 bcdHID;
- 	__u8  bCountryCode;
- 	__u8  bNumDescriptors;
-+	struct hid_class_descriptor rpt_desc;
- 
--	struct hid_class_descriptor desc[1];
-+	struct hid_class_descriptor opt_descs[];
- } __attribute__ ((packed));
- 
- #define HID_DEVICE(b, g, ven, prod)					\
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index 740311c4fa24..c7a05f842745 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -144,8 +144,8 @@ static struct hid_descriptor hidg_desc = {
- 	.bcdHID				= cpu_to_le16(0x0101),
- 	.bCountryCode			= 0x00,
- 	.bNumDescriptors		= 0x1,
--	/*.desc[0].bDescriptorType	= DYNAMIC */
--	/*.desc[0].wDescriptorLenght	= DYNAMIC */
-+	/*.rpt_desc.bDescriptorType	= DYNAMIC */
-+	/*.rpt_desc.wDescriptorLength	= DYNAMIC */
- };
- 
- /* Super-Speed Support */
-@@ -939,8 +939,8 @@ static int hidg_setup(struct usb_function *f,
- 			struct hid_descriptor hidg_desc_copy = hidg_desc;
- 
- 			VDBG(cdev, "USB_REQ_GET_DESCRIPTOR: HID\n");
--			hidg_desc_copy.desc[0].bDescriptorType = HID_DT_REPORT;
--			hidg_desc_copy.desc[0].wDescriptorLength =
-+			hidg_desc_copy.rpt_desc.bDescriptorType = HID_DT_REPORT;
-+			hidg_desc_copy.rpt_desc.wDescriptorLength =
- 				cpu_to_le16(hidg->report_desc_length);
- 
- 			length = min_t(unsigned short, length,
-@@ -1210,8 +1210,8 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
- 	 * We can use hidg_desc struct here but we should not relay
- 	 * that its content won't change after returning from this function.
- 	 */
--	hidg_desc.desc[0].bDescriptorType = HID_DT_REPORT;
--	hidg_desc.desc[0].wDescriptorLength =
-+	hidg_desc.rpt_desc.bDescriptorType = HID_DT_REPORT;
-+	hidg_desc.rpt_desc.wDescriptorLength =
- 		cpu_to_le16(hidg->report_desc_length);
- 
- 	hidg_hs_in_ep_desc.bEndpointAddress =
-diff --git a/drivers/hid/hid-hyperv.c b/drivers/hid/hid-hyperv.c
-index 0fb210e40a41..9eafff0b6ea4 100644
---- a/drivers/hid/hid-hyperv.c
-+++ b/drivers/hid/hid-hyperv.c
-@@ -192,7 +192,7 @@ static void mousevsc_on_receive_device_info(struct mousevsc_dev *input_device,
- 		goto cleanup;
- 
- 	input_device->report_desc_size = le16_to_cpu(
--					desc->desc[0].wDescriptorLength);
-+					desc->rpt_desc.wDescriptorLength);
- 	if (input_device->report_desc_size == 0) {
- 		input_device->dev_info_status = -EINVAL;
- 		goto cleanup;
-@@ -210,7 +210,7 @@ static void mousevsc_on_receive_device_info(struct mousevsc_dev *input_device,
- 
- 	memcpy(input_device->report_desc,
- 	       ((unsigned char *)desc) + desc->bLength,
--	       le16_to_cpu(desc->desc[0].wDescriptorLength));
-+	       le16_to_cpu(desc->rpt_desc.wDescriptorLength));
- 
- 	/* Send the ack */
- 	memset(&ack, 0, sizeof(struct mousevsc_prt_msg));
-diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
-index a6eb6fe6130d..e668143b559d 100644
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -983,12 +983,11 @@ static int usbhid_parse(struct hid_device *hid)
- 	struct usb_host_interface *interface = intf->cur_altsetting;
- 	struct usb_device *dev = interface_to_usbdev (intf);
- 	struct hid_descriptor *hdesc;
-+	struct hid_class_descriptor *hcdesc;
- 	u32 quirks = 0;
- 	unsigned int rsize = 0;
- 	char *rdesc;
--	int ret, n;
--	int num_descriptors;
--	size_t offset = offsetof(struct hid_descriptor, desc);
-+	int ret;
- 
- 	quirks = hid_lookup_quirk(hid);
- 
-@@ -1010,20 +1009,19 @@ static int usbhid_parse(struct hid_device *hid)
- 		return -ENODEV;
- 	}
- 
--	if (hdesc->bLength < sizeof(struct hid_descriptor)) {
--		dbg_hid("hid descriptor is too short\n");
-+	if (!hdesc->bNumDescriptors ||
-+	    hdesc->bLength != sizeof(*hdesc) +
-+			      (hdesc->bNumDescriptors - 1) * sizeof(*hcdesc)) {
-+		dbg_hid("hid descriptor invalid, bLen=%hhu bNum=%hhu\n",
-+			hdesc->bLength, hdesc->bNumDescriptors);
- 		return -EINVAL;
- 	}
- 
- 	hid->version = le16_to_cpu(hdesc->bcdHID);
- 	hid->country = hdesc->bCountryCode;
- 
--	num_descriptors = min_t(int, hdesc->bNumDescriptors,
--	       (hdesc->bLength - offset) / sizeof(struct hid_class_descriptor));
--
--	for (n = 0; n < num_descriptors; n++)
--		if (hdesc->desc[n].bDescriptorType == HID_DT_REPORT)
--			rsize = le16_to_cpu(hdesc->desc[n].wDescriptorLength);
-+	if (hdesc->rpt_desc.bDescriptorType == HID_DT_REPORT)
-+		rsize = le16_to_cpu(hdesc->rpt_desc.wDescriptorLength);
- 
- 	if (!rsize || rsize > HID_MAX_DESCRIPTOR_SIZE) {
- 		dbg_hid("weird size of report descriptor (%u)\n", rsize);
-@@ -1051,6 +1049,11 @@ static int usbhid_parse(struct hid_device *hid)
- 		goto err;
- 	}
- 
-+	if (hdesc->bNumDescriptors > 1)
-+		hid_warn(intf,
-+			"%hhu unsupported optional hid class descriptors\n",
-+			hdesc->bNumDescriptors - 1);
-+
- 	hid->quirks |= quirks;
- 
- 	return 0;
--- 
-2.43.0
-
+> thanks,
+> 
+> greg k-h
 
