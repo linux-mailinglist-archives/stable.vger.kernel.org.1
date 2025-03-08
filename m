@@ -1,170 +1,199 @@
-Return-Path: <stable+bounces-121522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C24FA57708
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 01:49:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81ACA5771A
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 02:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793B31897630
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 00:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FF0E178966
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 01:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2CBDDCD;
-	Sat,  8 Mar 2025 00:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F937EACD;
+	Sat,  8 Mar 2025 01:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IBWRgk1u"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2Se0bQ0K"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2045.outbound.protection.outlook.com [40.107.94.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DDF2563
-	for <stable@vger.kernel.org>; Sat,  8 Mar 2025 00:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741394979; cv=none; b=oWhxFPnyKpUkooUD3qylWZKBYl22NT7nJe+ikE56s+w+BxjtJuD7kPrJZhDwHULeblBZNIW3pMvnwsv+VhE+thJLtj/kgYUfmrLAlzNmK4HIY0QwsrHDMQ7OrHf57cb8HUTcLt+0C9vflpsNvpj/O4Sxrb+enOT88Brka3Tc60s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741394979; c=relaxed/simple;
-	bh=CuhWp0qeie4GC5+52avMHSbpmsCuVMMarnl1Q+ufsnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=BLzT18qHx1YAM941Rm6ZovDiddsHU+dthGY5yhhYEOf684tJmSiHR9m13NWrxhvvyA9GvoMMytQa01sTa5JXUWxpnicCpFg00rvhLE6yUj7XABSifGjOuGxCLjpe3gpakKQD3xN/0GAzt0TF3YXfPwwia9CGhFOfE5OIx/10q7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IBWRgk1u; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741394978; x=1772930978;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=CuhWp0qeie4GC5+52avMHSbpmsCuVMMarnl1Q+ufsnE=;
-  b=IBWRgk1ulW+Y5dlCAZQU1+wDJtte3WvimXHqjFzlIRty5GUOS8a5fjAi
-   bjafm4nya+LAF9s/kWqg7zG9uSWWj0foGqRY+ffiRDwVtN35qNXWbn5/k
-   JXP8DR/Vqr5vIhUlIzASEDY2Hc9z38NIEamRIJpP4xbpk9dFhJCmwtvZC
-   LHrTkPMjAXEu3TaLPqcDw5LpIKHOuoStcYoDGBcAwubwy33YpOZIngcpS
-   HPB5T96KpepwbqgqdvO5Pp0zBIVFVFJ/3KX0kq2+uojURs2A9luWEiIwG
-   aNkufn+WgfyOphZZNkfdWyFPEE4Ut8+FSJfvJlLyF8jQkymumcwM0MN6a
-   g==;
-X-CSE-ConnectionGUID: M3JbkXtmS9qIgzWkcsnSjg==
-X-CSE-MsgGUID: wyvj2rMCRKic78L9UEMFZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="42336167"
-X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
-   d="scan'208";a="42336167"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:49:37 -0800
-X-CSE-ConnectionGUID: AqB+9NFsSomQ1egTf0x/lw==
-X-CSE-MsgGUID: qNyMv/YHQjKbP9n/eqPXWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="123650232"
-Received: from vward-mobl.amr.corp.intel.com (HELO desk) ([10.125.145.180])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:49:37 -0800
-Date: Fri, 7 Mar 2025 16:49:36 -0800
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Xi Ruoyao <xry111@xry111.site>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Voegtle <tv@lio96.de>
-Subject: [PATCH 5.10] x86/mm: Don't disable PCID when INVLPG has been fixed
- by microcode
-Message-ID: <20250307-clear-pcid-5-10-v1-1-79ed114bc031@linux.intel.com>
-X-B4-Tracking: v=1; b=H4sIAGWTy2cC/x3MQQqAIBBA0avErJsYTTO6SrQom2ogKhQikO6et
- HyL/xNEDsIRuiJB4FuinEeGKgvw23isjDJngyZtqSaHfucx4OVlRouKsDGL0a2bjPUOcnUFXuT
- 5jz3YShEM7/sBNelit2cAAAA=
-X-Mailer: b4 0.14.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8C52F30;
+	Sat,  8 Mar 2025 01:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741396254; cv=fail; b=UwY4wiSYFDOfX1mCT6G2KK5wsiRGhbhBFQiIe5Re34na+/7SsV6j5MXaslrL13uuPDkxPXHZH4Le7wTNeSYZ9pY25c3WSLI3NHqjheeXA3yV/rQFw4ua7UOE+yMdxHH6ttarysVLJ03bds7v5Ae/YSfIvH68bhbPSU7nI+4M0cw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741396254; c=relaxed/simple;
+	bh=qS7YDL3tvnPSF9quhO7lGWBcOCQo3azKLq/+w9IZU7Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=clbYyinrjhMpyWaCwuhbc/MsG3iEgQieIYr149FS/LnnBepSMeS4TyBjVvJqdruIV3JwdkhO2y/e5yOqW76wZpTfByqRYQjCV7Tqllcj4Z4qGQGDdAUfm06JyEI8GE3d76PlpE+hD/KKbtl0VvBwfMlJrzLjBTHvTJnng8rf+V4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2Se0bQ0K; arc=fail smtp.client-ip=40.107.94.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=twKR+jg6jSQmdDbl2wxTDTDOJMOn1WwmYwCCpOcqsAlojljueFxA6nAQYK0KDSQgb0J49tdk7Ow76WPVrXDr8duTUzTvzNOd+bSD4Qn1CoFmT7/2nfA7q8M+rLUBnZOJr1EGZisj2l8G88VirDDE9i6rZdz4zV2VMIg0kyk2xo6Y+VwV1Nc5knFfP388dlB/if/DvI+ueM6l00X7nfnKtynsRZl8L29EErJ6VsinyQCEnpag/3A7uvuGCf/+0WOkFx/t6DiOy93Lyn50OcrYrnIG2eYRq3yrzOEoTskLTkJUshSxwIdoBME4QHOC+MV9wArSRN/ObGluA3QXE5OGsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mjPRQrn39bxjzHouzN3oumF7N0sICFxKxkU+bq6+8eE=;
+ b=ER7XbMY0X7ovSau57vi8Gwa1IUI4ROiOCPE4sAS5qQTwXRRAKtorcwznHfiCptgHpCoU7c/BUiAmsp+vs9STtMZSwJs4D96yPzxY+zSBkQLTp4B/BCMxq2Dh9TOMi+5XxfNhHt3vxZWA+Eca2GEddQL7QQFDxP/2bOdfQYuRjeP19HQpGA15QfrF8LoPVfaIWECv5I2CwaIckZiRuZnR6oxW8Plr3esVPyJmOHob19mbS/I4thQHCDwHuUQkmVhjXAqscLm+4QpkM/mV6kvgslpm0wBXKwCJgrk1A3rXM6glm8eQCHl1ENqdyqJDodfj/wlL/zYYuJrAgQBiYZrhRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mjPRQrn39bxjzHouzN3oumF7N0sICFxKxkU+bq6+8eE=;
+ b=2Se0bQ0KCLVHOdbBqMUty0NnTxVqQHG/D1qxmU6Clb2w72iRagUXNIJEwYI4h6Lv1JwPjezw+38b69D9xPG7Yct7zeuBbUcY1nAKb3r6/5lHLTzQ2u1/Ci/ZWJ/YKzWAJPRqsTqA+np5JRMAy09JTBzG7F2GDCD7ARExvrv7jak=
+Received: from MN2PR22CA0009.namprd22.prod.outlook.com (2603:10b6:208:238::14)
+ by SN7PR12MB7177.namprd12.prod.outlook.com (2603:10b6:806:2a5::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Sat, 8 Mar
+ 2025 01:10:49 +0000
+Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
+ (2603:10b6:208:238:cafe::6) by MN2PR22CA0009.outlook.office365.com
+ (2603:10b6:208:238::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.19 via Frontend Transport; Sat,
+ 8 Mar 2025 01:10:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8511.15 via Frontend Transport; Sat, 8 Mar 2025 01:10:48 +0000
+Received: from aiemdee.l.aik.id.au (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 7 Mar
+ 2025 19:10:45 -0600
+From: Alexey Kardashevskiy <aik@amd.com>
+To: <linux-crypto@vger.kernel.org>
+CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>, Ashish Kalra
+	<ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Borislav
+ Petkov (AMD)" <bp@alien8.de>, Herbert Xu <herbert@gondor.apana.org.au>,
+	Alexey Kardashevskiy <aik@amd.com>, <stable@vger.kernel.org>, Dionna Glaze
+	<dionnaglaze@google.com>
+Subject: [PATCH] crypto: ccp: Fix uAPI definitions of PSP errors
+Date: Sat, 8 Mar 2025 12:10:28 +1100
+Message-ID: <20250308011028.719002-1-aik@amd.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|SN7PR12MB7177:EE_
+X-MS-Office365-Filtering-Correlation-Id: 41973dd7-f524-429a-b3f7-08dd5dde0fe6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?J5NEvAoV9OHOads4jYYpm7Ei5AbuHTbhfRhwtiKUokx0YMvzF988dAk9/gK7?=
+ =?us-ascii?Q?4bwhmZU4Rtm6dGZOp2Qi80+XVqm0oD7xKrCFz4DrFN3/ieP4+1DNk1iYjVrI?=
+ =?us-ascii?Q?fj2qZwUCzhWaqKNU9hdIUlmuqnhhh+tYUCgE31+iBXU5A27XQ0N6MC7QwKaH?=
+ =?us-ascii?Q?+RuwgeP1XuCl97yn5yg3N/Glm1NSwy4Czq6eQKe0uqd8HCaqc0gBjmuQBEIq?=
+ =?us-ascii?Q?ZTBv51G3d2aKCN8hk/Wsf4HVvRiLTignQdjPb3M8ckU8vUjARk6Nopi+ddG0?=
+ =?us-ascii?Q?q0tPA2y0j9W5Fj7cPNyrj9YJdR581JRf5jTVCLFoMrQMwAR02evBpRwBv6e/?=
+ =?us-ascii?Q?ScV86DgOfhPRtDMUaDgch7hNA3MW7MFxsVjaBo1gANMsq58txqBbeRonBOaM?=
+ =?us-ascii?Q?Nz8FiIx6CuMUQPwEGbjW7cCFqKpnsLwSQKK+EpFCjXX59SzjEJAeEUx2K5p4?=
+ =?us-ascii?Q?URUhoM9Woz/MtIjog05Ki61CuFoXBJXt4+PfDSE4DblIz23kzdMYOaEjBsMy?=
+ =?us-ascii?Q?y3T5DrncK+v4uUapSaDzRDJx23irADLlQRkRbxPf1HVGXD2gi2DjG2RbGROI?=
+ =?us-ascii?Q?zSCgQCRAl7zHOaIecQwuLb1Hdm20AjhYlQdSLoKMeVlI8qdzYksHWf1FcL0r?=
+ =?us-ascii?Q?AV5EGc/3vGBPcm+oo7wSh4qDnLRn7jrXgt+b3GAg6RPLCBbB3Qk+i2KLoRED?=
+ =?us-ascii?Q?LS4pJHytli5r4c325Rm9xaSJXDZfBVlmpzIP+D0e862VILBXagXowdY3TVkR?=
+ =?us-ascii?Q?InMweMUHz+0aY9qPfaoh0Fh634XAVTokpMM7WknHgabJs1Y/PgeGhhHTk7GK?=
+ =?us-ascii?Q?9mh/AE4swzpBU9CanxHTUzcKfVwS0eHbJW7tVH5VcsbFteHcwn9jS9ha276n?=
+ =?us-ascii?Q?PIR2OUAFpLgFT822vLY287lfU0uifauSnMUQqwqwfbpV2Xb5nJCpo5TuYWPF?=
+ =?us-ascii?Q?I0b9fFYIXnyxX3REaHqc0kbatVlkwBwFyRUQNU6lJ5EXa5dcqKgY8aiZbOZ9?=
+ =?us-ascii?Q?+ghLYOjPiDj/ANJuUOiNQV5ZsXOffStXz5HipfazROVUUAIIfJdgB3efg1V1?=
+ =?us-ascii?Q?2DGu8leZPgJsJssOhSYi4T//JGbYrB6wyW7xWtc/d7jTkjqTsafwHhDaFCdN?=
+ =?us-ascii?Q?awI1BvGRL3ph2C4wtito7Ljvq3kWfeYar0TnWlTemCWSz0EocPTjGpb5Eyl5?=
+ =?us-ascii?Q?i+xkpFZRIzrzxiC18QAgr7biXdwmQPUTJXFy5tqb9ZfnbJmA8htSh4Bevm07?=
+ =?us-ascii?Q?rRmi0J7DGZnKJWSFVrofw8imXHvAROR3QSQF64I7VuhiPZUvvKI+khbsHqjX?=
+ =?us-ascii?Q?iDDUNfm3f5juCjBHm8zA9Uu5qjfibLvNcuhGGN8B2rS3ltg4XNwRksUB9a/7?=
+ =?us-ascii?Q?GhHNYXk6ujqutu5i1PxlhIYJGzsZSM+cf/iRYUX+Kcg0U39Z+OKMgJqOCVQ2?=
+ =?us-ascii?Q?JtW0a3FmXw32qGImyH78VzXQxJOipRjbHAo6XL0hiqHWv3gSyruTW0vt3o4+?=
+ =?us-ascii?Q?sygzamPSngzB2ww=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2025 01:10:48.6910
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41973dd7-f524-429a-b3f7-08dd5dde0fe6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7177
 
-From: Xi Ruoyao <xry111@xry111.site>
+Additions to the error enum after explicit 0x27 setting for
+SEV_RET_INVALID_KEY leads to incorrect value assignments.
 
-commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
+Use explicit values to match the manufacturer specifications more
+clearly.
 
-Per the "Processor Specification Update" documentations referred by
-the intel-microcode-20240312 release note, this microcode release has
-fixed the issue for all affected models.
-
-So don't disable PCID if the microcode is new enough.  The precise
-minimum microcode revision fixing the issue was provided by Pawan
-Intel.
-
-[ dhansen: comment and changelog tweaks ]
-[ pawan: backported to 5.10
-	 s/ATOM_GRACEMONT/ALDERLAKE_N/ ]
-
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
-Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
-Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
-Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
-Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
-Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
+Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
+CC: stable@vger.kernel.org
+Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 ---
- arch/x86/mm/init.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 17f1a89e26fc..d4b6ca0221a7 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -258,28 +258,33 @@ static void __init probe_page_size_mask(void)
- }
- 
- /*
-- * INVLPG may not properly flush Global entries
-- * on these CPUs when PCIDs are enabled.
-+ * INVLPG may not properly flush Global entries on
-+ * these CPUs.  New microcode fixes the issue.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0x2e),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0x42c),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0x11),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0x118),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0x4117),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0x2e),
- 	{}
- };
- 
- static void setup_pcid(void)
- {
-+	const struct x86_cpu_id *invlpg_miss_match;
-+
- 	if (!IS_ENABLED(CONFIG_X86_64))
- 		return;
- 
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
--	if (x86_match_cpu(invlpg_miss_ids)) {
-+	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
-+
-+	if (invlpg_miss_match &&
-+	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
- 		pr_info("Incomplete global flushes, disabling PCID");
- 		setup_clear_cpu_cap(X86_FEATURE_PCID);
- 		return;
+Reposting as requested in
+https://lore.kernel.org/r/Z7f2S3MigLEY80P2@gondor.apana.org.au
 
+I wrote it in the first place but since then it travelled a lot,
+feel free to correct the chain of SOBs and RB :)
 ---
-base-commit: f0a53361993a94f602df6f35e78149ad2ac12c89
-change-id: 20250307-clear-pcid-5-10-64f4287b45c7
+ include/uapi/linux/psp-sev.h | 21 +++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-Best regards,
+diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
+index 832c15d9155b..eeb20dfb1fda 100644
+--- a/include/uapi/linux/psp-sev.h
++++ b/include/uapi/linux/psp-sev.h
+@@ -73,13 +73,20 @@ typedef enum {
+ 	SEV_RET_INVALID_PARAM,
+ 	SEV_RET_RESOURCE_LIMIT,
+ 	SEV_RET_SECURE_DATA_INVALID,
+-	SEV_RET_INVALID_KEY = 0x27,
+-	SEV_RET_INVALID_PAGE_SIZE,
+-	SEV_RET_INVALID_PAGE_STATE,
+-	SEV_RET_INVALID_MDATA_ENTRY,
+-	SEV_RET_INVALID_PAGE_OWNER,
+-	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
+-	SEV_RET_RMP_INIT_REQUIRED,
++	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
++	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
++	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
++	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
++	SEV_RET_AEAD_OFLOW                 = 0x001D,
++	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
++	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
++	SEV_RET_BAD_SVN                    = 0x0021,
++	SEV_RET_BAD_VERSION                = 0x0022,
++	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
++	SEV_RET_UPDATE_FAILED              = 0x0024,
++	SEV_RET_RESTORE_REQUIRED           = 0x0025,
++	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
++	SEV_RET_INVALID_KEY                = 0x0027,
+ 	SEV_RET_MAX,
+ } sev_ret_code;
+ 
 -- 
-Thanks,
-Pawan
-
+2.47.1
 
 
