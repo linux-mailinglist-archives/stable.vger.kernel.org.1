@@ -1,149 +1,145 @@
-Return-Path: <stable+bounces-121533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB932A57879
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 06:28:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552F8A5787C
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 06:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D1527A8394
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 05:27:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4E9916EBF2
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 05:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833C01714B3;
-	Sat,  8 Mar 2025 05:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfQd84zj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B6F187876;
+	Sat,  8 Mar 2025 05:38:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C9117A2E6;
-	Sat,  8 Mar 2025 05:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA70196;
+	Sat,  8 Mar 2025 05:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741411726; cv=none; b=a4bbJIEUsKRtYf1bQi/foXyc5HuvRtoK/6vV1aLAEoN+mchk6sRghNF8taNosRQzZQ24GK6EDknlN1RE2DH6GsYMymf53JTuSMBk+8KecPSUlGcEcjUKY4+czH13DsE7XcwjMmZEtvffmdEibSW/8ZagxSgCWgrybtFGsftj0r0=
+	t=1741412304; cv=none; b=N5aTtyICUZ6hV4S3iqGVlIsVeBathii9MhWViYTygCkOos1WACHm/UWIEYe4UR1Uq8TfC+KYnVl6k2tuTYjhMZr1Mh5TkFumDn2dn1J/vQCvCBro4bI8pW0flZei1qSkfkg08jds05buPhZ+0vWgbEXRRty0N07TdP47WR6iQ8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741411726; c=relaxed/simple;
-	bh=bf2oRrLyX61wmm9csWKqaHXp373r0RDGKowQWE05Wm0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LpvmxWrk4tDG1drHdVJcoN3GOrkeMkMjNliw7vin6dnYWNtN3a6PgkBhNdP2wTNh9aoxTuEsMPJTWFkWvb0Do7bx7v7KZYcbaXVyx6DFzeMRIQSdrWX+P2DEZUzuF/Dwni6FT7JOLyEFomNyo9DFtSynOa/1JjPX6NkcL2dYd1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfQd84zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D3FC4AF09;
-	Sat,  8 Mar 2025 05:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741411725;
-	bh=bf2oRrLyX61wmm9csWKqaHXp373r0RDGKowQWE05Wm0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MfQd84zj0WCS3WDjDja96SPDkDKjd+2NE62W1PkAi9bHplgBgO24wU22ENsJHdCuu
-	 MBVhGVqgI8uWsjRYVgSvUy6WBr0xkxjMiqpvFn+pJcbH/jHML3848r3ou7EqNHNsnu
-	 kU0g/iydv+N0P+cnk5v3eQGBA1WhKIGpVzTEzbgjzrLazl/6jjmRwKIfpiJQ8RWYiy
-	 nKN3N8baO3lqajoGQBwgYstjkHU4ZJsef6Vgsf31v9GF8zzFqhsqzBrvLwrCghj8HV
-	 PLlHRfFcJFBCyTylpO/iwVdJwXsMDuVzeDBCe/6G8SqWJCgF2cFlGBH5NKsyc4Pjvk
-	 7HzN17ZsmLRAw==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abf64aa2a80so485083566b.0;
-        Fri, 07 Mar 2025 21:28:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUhWK+PpaF+OsvyuRGLxp9VprGx1LL16WUsEVJ9LMcVp+eL2CxkDMzYeDnF4pG62Zgd9sn0J8KB@vger.kernel.org, AJvYcCXespZ3wGJbPbquy9eJUEJMxXErrw0KR14VjF77GvRb8TrUIpWeHNb2Wglz2Qa3dimptyvauhXA5ZkrR5g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKKcrdFDtAGgVhMEp9xWccG0woZs9FIdt51XnILNHqdIervIoU
-	LPqQsJ8KgUjDyBrCncCyXj9xwAo4Tg62E6L6YHtq+GjNQVDNE+3g4SIy8+d78QXtXRXHCrcrZEm
-	u5JIOe9kHjwv1kHjVLKZ7u/EeKKg=
-X-Google-Smtp-Source: AGHT+IGmBMWxNTIA9gWOEi+br3asuk6ba+EEBk7sBSjlNNzVHOnOv4RBDYUKXhxSogkNckgvoMcZT2chPBEHY7pKulE=
-X-Received: by 2002:a17:907:1b05:b0:abf:74d6:e2b0 with SMTP id
- a640c23a62f3a-ac252747c60mr676960166b.3.1741411724129; Fri, 07 Mar 2025
- 21:28:44 -0800 (PST)
+	s=arc-20240116; t=1741412304; c=relaxed/simple;
+	bh=YFAZgufb3emHD29pGSeY13qd+z0iS1KWRUTYdjfaGDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PuRTFO2zxYZthFPnAcMDMQGAmj0zM4d+LCnvQwhkLB8HN4qqt4x/pW7hbx0ygZim/jOf9pbCAyKXgGRE9qHGuhhIX4fjEbw6ZKNVe6np2TUE2JqzKUdSB/Z+0IOCZUJhyK9n+cUdaYP33o9v7DaSoWsoOAHKi/JKzV5UuHXVk3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.156])
+	by gateway (Coremail) with SMTP id _____8CxG6zD18tnQb+OAA--.14763S3;
+	Sat, 08 Mar 2025 13:38:11 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.156])
+	by front1 (Coremail) with SMTP id qMiowMBxWsS918tn2rg9AA--.14474S2;
+	Sat, 08 Mar 2025 13:38:09 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12/6.13] loongarch: Use ASM_REACHABLE
+Date: Sat,  8 Mar 2025 13:37:53 +0800
+Message-ID: <20250308053753.3632741-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025030745-flaxseed-unsubtly-c5e3@gregkh> <20250307214943.372210-1-ojeda@kernel.org>
-In-Reply-To: <20250307214943.372210-1-ojeda@kernel.org>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 8 Mar 2025 13:28:32 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5TZ5ZE1XEQpzDU_o407V6+-q7i8xMFnmKdvyexG8ZG1Q@mail.gmail.com>
-X-Gm-Features: AQ5f1JoR79KqQ8X2M9GvSz3UUmv0znvq0FO8VdTeRwCjtfFrzxdZGCv2L-NFnvo
-Message-ID: <CAAhV-H5TZ5ZE1XEQpzDU_o407V6+-q7i8xMFnmKdvyexG8ZG1Q@mail.gmail.com>
-Subject: Re: Linux 6.12.18
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: gregkh@linuxfoundation.org, akpm@linux-foundation.org, jslaby@suse.cz, 
-	linux-kernel@vger.kernel.org, lwn@lwn.net, stable@vger.kernel.org, 
-	torvalds@linux-foundation.org, WANG Xuerui <kernel@xen0n.name>, 
-	loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMBxWsS918tn2rg9AA--.14474S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7uF1UCr4kuFW5KFWDJFykCrX_yoW8Zw18pa
+	n7AFn8KFs5GryktwnFyr1F9F12qr4fCw47Ww18Wry0vayUZwnYqrsYqrsxZFyrGa92gryU
+	XFWfWwnaqFy5G3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jOa93UUUUU=
 
-Hi, Miguel,
+From: Peter Zijlstra <peterz@infradead.org>
 
-On Sat, Mar 8, 2025 at 5:50=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> On Fri, 07 Mar 2025 18:52:44 +0100 Greg Kroah-Hartman <gregkh@linuxfounda=
-tion.org> wrote:
-> >
-> > I'm announcing the release of the 6.12.18 kernel.
-> >
-> > All users of the 6.12 kernel series must upgrade.
->
-> While testing another backport, I found an unrelated build failure for
-> loongarch in v6.12.18 that I did not see in v6.12.17 -- I cannot find it
-> reported from a quick look, so I am doing so here:
->
->        CC      arch/loongarch/kernel/asm-offsets.s - due to target missin=
-g
->     In file included from arch/loongarch/kernel/asm-offsets.c:8:
->     In file included from ./include/linux/sched.h:12:
->     In file included from ./arch/loongarch/include/generated/asm/current.=
-h:1:
->     In file included from ./include/asm-generic/current.h:6:
->     ./include/linux/thread_info.h:249:6: error: call to undeclared functi=
-on 'annotate_reachable'; ISO C99 and later do not support implicit function=
- declarations [-Wimplicit-function-declaration]
->       249 |         if (WARN_ON_ONCE(bytes > INT_MAX))
->           |             ^
->     ./include/asm-generic/bug.h:113:3: note: expanded from macro 'WARN_ON=
-_ONCE'
->       113 |                 __WARN_FLAGS(BUGFLAG_ONCE |                  =
-   \
->           |                 ^
->     ./arch/loongarch/include/asm/bug.h:47:2: note: expanded from macro '_=
-_WARN_FLAGS'
->        47 |         annotate_reachable();                                =
-   \
->           |         ^
->
-> As well as warnings:
->
->     In file included from arch/loongarch/kernel/asm-offsets.c:9:
->     In file included from ./include/linux/mm.h:1120:
->     In file included from ./include/linux/huge_mm.h:8:
->     In file included from ./include/linux/fs.h:33:
->     In file included from ./include/linux/percpu-rwsem.h:7:
->     In file included from ./include/linux/rcuwait.h:6:
->     In file included from ./include/linux/sched/signal.h:6:
->     ./include/linux/signal.h:114:27: warning: array index 3 is past the e=
-nd of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
->       114 |                 return  (set1->sig[3] =3D=3D set2->sig[3]) &&
->           |                                          ^         ~
->     ./include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared =
-here
->        62 |         unsigned long sig[_NSIG_WORDS];
->           |         ^
->
-> I hope that helps.
-This is caused by the backport commit 06e24745985c8dd0da183 ("objtool:
-Remove annotate_{,un}reachable()"), but missing the commit
-624bde3465f660e54a7cd4c1 ("loongarch: Use ASM_REACHABLE"), I will fix
-it later.
+commit 624bde3465f660e54a7cd4c1efc3e536349fead5 upstream.
 
-In addition, it is better to also backport [1], since similar patches
-for x86 have been backported, otherwise there will be build warnings.
+annotate_reachable() is unreliable since the compiler is free to place
+random code inbetween two consecutive asm() statements.
 
-[1] https://lore.kernel.org/loongarch/20250211115016.26913-8-yangtiezhu@loo=
-ngson.cn/T/#u
+This removes the last and only annotate_reachable() user.
 
-Huacai
->
-> Cheers,
-> Miguel
+Backport to solve a build error since relevant commits have already been
+backported.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20241128094312.133437051@infradead.org
+Closes: https://lore.kernel.org/loongarch/20250307214943.372210-1-ojeda@kernel.org/
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/include/asm/bug.h | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/arch/loongarch/include/asm/bug.h b/arch/loongarch/include/asm/bug.h
+index 08388876ade4..561ac1bf79e2 100644
+--- a/arch/loongarch/include/asm/bug.h
++++ b/arch/loongarch/include/asm/bug.h
+@@ -4,6 +4,7 @@
+ 
+ #include <asm/break.h>
+ #include <linux/stringify.h>
++#include <linux/objtool.h>
+ 
+ #ifndef CONFIG_DEBUG_BUGVERBOSE
+ #define _BUGVERBOSE_LOCATION(file, line)
+@@ -33,25 +34,25 @@
+ 
+ #define ASM_BUG_FLAGS(flags)					\
+ 	__BUG_ENTRY(flags)					\
+-	break		BRK_BUG
++	break		BRK_BUG;
+ 
+ #define ASM_BUG()	ASM_BUG_FLAGS(0)
+ 
+-#define __BUG_FLAGS(flags)					\
+-	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags)));
++#define __BUG_FLAGS(flags, extra)					\
++	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags))		\
++			     extra);
+ 
+ #define __WARN_FLAGS(flags)					\
+ do {								\
+ 	instrumentation_begin();				\
+-	__BUG_FLAGS(BUGFLAG_WARNING|(flags));			\
+-	annotate_reachable();					\
++	__BUG_FLAGS(BUGFLAG_WARNING|(flags), ASM_REACHABLE);	\
+ 	instrumentation_end();					\
+ } while (0)
+ 
+ #define BUG()							\
+ do {								\
+ 	instrumentation_begin();				\
+-	__BUG_FLAGS(0);						\
++	__BUG_FLAGS(0, "");					\
+ 	unreachable();						\
+ } while (0)
+ 
+-- 
+2.47.1
+
 
