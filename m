@@ -1,103 +1,181 @@
-Return-Path: <stable+bounces-121548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D4FA57BF3
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 17:30:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBBFA57C8D
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 18:55:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BC943B0198
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 16:30:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FE416C951
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 17:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192881C84C1;
-	Sat,  8 Mar 2025 16:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC631DD0D5;
+	Sat,  8 Mar 2025 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HBwrCnu8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ST7AOBk8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F5F7E0E4;
-	Sat,  8 Mar 2025 16:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DB41A2C27
+	for <stable@vger.kernel.org>; Sat,  8 Mar 2025 17:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741451427; cv=none; b=qgdL5B//GXjneYJPiTsYCF9GgyHK9wLDOqUHQ5zzs2iHLOXOn5EpS8e1unh5LZF3SEXSeKTivbBiQTrzxz7ZFxHiLUsb1H92NZOYM75IA2jq3UIhjeYi3g4R7gm0AvYkvIxVyJ7Xks75UWV6NJFJvzvasw1lEBQGN7BkNFOTX4k=
+	t=1741456500; cv=none; b=Ngr/FjyPY6AE31N172Fo23qV3eteGGYCX4IAW6L5PXC9FqFvh/EtbqDbUv/fJlgUr7Ex8yWZQGYVuW7SAg2uvVjwVimY/wmU49YjQkUmXa3IxIJ5LWqSyu/xoWoL7ruX5JudFjq1olALIynYGYrdVVFQK+XR8H/GsuiXCVaRvo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741451427; c=relaxed/simple;
-	bh=aTYcRp57bT1OYG9nxqDyJy9XQ3/Br3Dm895WpJh602Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q3oivje402J+/X1w1Rq0SpH8OKIySlie76m/sgqL2NfDdVfqyMuS+aAOdsKVMVtXv/rXQk1Tx+ZWu16r22PFa1ChtzKz7AyElN+lsjXrWC3cJ/aTrh711hlzVx2ksu0CoJN3lnIjfaTeIs6kUhCRHwVD3aVgrm8J6qThB8F+HLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HBwrCnu8 reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D927940E016E;
-	Sat,  8 Mar 2025 16:30:22 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id YmxSReM9hOEA; Sat,  8 Mar 2025 16:30:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1741451418; bh=UI/rGNRBIENnzde8FpGvTKytRqVdRwI04dKrP3cm2Ug=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HBwrCnu8gEu3ySxfgChbEaSzMfiBfkgdTWSyuiLjJxePtnQ3RzsHGAE1xcPZg6038
-	 e6hGr8J3QbXfIa23rIrH3hKUfWBuROEzSdwk7GzvCqi+cYVYjSu0Fp8QAA6KthOLVw
-	 57692u+amc5KGWcuHJQlGnNxlTjzd7Sj2UWduC0f/09NAqDlUykaBbryi9lx7B94WC
-	 ZJnMAWrX1PiA4iH/lu96+astl91T1Ijr0PEzIiuWWuFVpnlX22/FM4iYwiTSn6A0YE
-	 MqulJHFqjkBMz+FR+EXm4svCQDyPvN/JuWC4uMmA037ug9A5jOb8NlFs7pmXHICBd+
-	 JoPORfUfltZFgp1Vo71H7MOyaSecQ/77ngb4lfA5D9Zo2oWRIOdmqWTd1WpDBS/fPa
-	 Yqmc7RN4DdSQ3t07S3QJgQjVOR37pFS6HW1T0zWHmVKKdCw0OwqY+WVZa3VrmV2cr2
-	 ot+aMIJoXdKV8IJGrsuXcho65Ju/QuX5Cqt7CsJpqT7NDtf0GjjiwJF3kSDCYKfJRy
-	 DCjeIPBMHbX0vfrO6VA6BNg+l9vNg7sLTqj5arf3PZ3T2Q1YxBFQvzw7BMYMECc2vk
-	 5GajemWMsW1i6WR51t5SWoC2ygpDdFuJmn/yHRRwZdL1QQaeCKA69vnIXphyz4iYBc
-	 WnmvHCVucsUCtf3aHu0m81Ic=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6C5CC40E01D1;
-	Sat,  8 Mar 2025 16:30:09 +0000 (UTC)
-Date: Sat, 8 Mar 2025 17:30:03 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: =?utf-8?Q?J=C3=B6rg-Volker?= Peetz <jvpeetz@web.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org,
-	x86@kernel.org, lwn@lwn.net, jslaby@suse.cz
-Subject: Re: Linux 6.13.6
-Message-ID: <20250308163003.GDZ8xwi0u3rAAX0J23@fat_crate.local>
-References: <2025030751-mongrel-unplug-83d8@gregkh>
- <1b3ea3ce-7754-494c-a87b-0b70b2d25f99@web.de>
+	s=arc-20240116; t=1741456500; c=relaxed/simple;
+	bh=tCsVWaRlJ7nqidGcvAFmfCWoB5bS4vA0O0zNrGbw55k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=rvuGySdswRO8Wt3pVgQlwRLLELdGGX/iX+Aal6mo5DyfF9aKxZXuweEBReTJC2cX0xkzNQFUJl3lXqpgOeEoo1MOapmonxVks8b7e/jDo/8zL/3OD/OtoTGngEHjiZ6Xut1MJuGkDWQujr/yxkqO89xQLfGszYa57UFWAwgcIhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ST7AOBk8; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741456499; x=1772992499;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=tCsVWaRlJ7nqidGcvAFmfCWoB5bS4vA0O0zNrGbw55k=;
+  b=ST7AOBk8TYoDKwy33LeuUbs6o+lGMys9gBtIlNbYeJfTV/Sekv4VrgLB
+   m59lcQ147R0yVjK8rKJBIunruEca+L6h2fpmldV0x91gCjGJbi+sLNe8+
+   5stzrkgc5MSvF51WzqMtE5Q6zOas9np2B3clrGUFf9NeOOlqicPBSUHSj
+   TFd5Bx8BQO4FKsSu3VvRNEjSUz8dSRVXiym9Y9TpQEMq+QLPfeG2HapJw
+   NYYpbcOTEBx2BBUI+cLvGWbI+WM6Ti+YfpIxp5A9CbivtF4ALoyE8UeWm
+   1P3aKjLRCHmYd/KFcnzU1T9kcNAVBWufFSoxHu7MmwBBiXLp02RqpAMSn
+   w==;
+X-CSE-ConnectionGUID: kFzIRzPFT7azK97cO4AUtg==
+X-CSE-MsgGUID: YovyqAStT260orbUfeCwmw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="30073174"
+X-IronPort-AV: E=Sophos;i="6.14,232,1736841600"; 
+   d="scan'208";a="30073174"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 09:54:58 -0800
+X-CSE-ConnectionGUID: zgznhRNSQfuoHECNza/K6Q==
+X-CSE-MsgGUID: ym1moXeSQFWbZjVx6P9KWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,232,1736841600"; 
+   d="scan'208";a="124186606"
+Received: from mupadhya-mobl.amr.corp.intel.com (HELO desk) ([10.125.145.181])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 09:54:58 -0800
+Date: Sat, 8 Mar 2025 09:54:57 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Xi Ruoyao <xry111@xry111.site>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Voegtle <tv@lio96.de>
+Subject: [PATCH 5.4] x86/mm: Don't disable PCID when INVLPG has been fixed by
+ microcode
+Message-ID: <20250308-clear-pcid-5-4-v1-1-e8bd7c402503@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAA6EzGcC/x3MQQqAIBBA0avErJuwUpKuEi1sGmsgKhQiEO+et
+ HyL/xNEDsIRxipB4EeiXGdBW1dAuzs3RlmLoVOdUb2ySAe7gDfJigY1Eg12Ye29cx5KdAf28v7
+ DCUyjYc75Ay8l98xlAAAA
+X-Mailer: b4 0.14.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1b3ea3ce-7754-494c-a87b-0b70b2d25f99@web.de>
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 08, 2025 at 05:03:08PM +0100, J=C3=B6rg-Volker Peetz wrote:
-> [    0.000000] microcode: You should not be seeing this. Please send th=
-e
-> following couple of lines to x86-<at>-kernel.org
-> [    0.000000] microcode: CPUID(1).EAX: 0xa50f00, current revision: 0xa=
-500011
+From: Xi Ruoyao <xry111@xry111.site>
 
-This should fix it:
+commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
 
-https://lore.kernel.org/r/20250307220256.11816-1-bp@kernel.org
+Per the "Processor Specification Update" documentations referred by
+the intel-microcode-20240312 release note, this microcode release has
+fixed the issue for all affected models.
 
-Thx.
+So don't disable PCID if the microcode is new enough.  The precise
+minimum microcode revision fixing the issue was provided by Pawan
+Intel.
 
---=20
-Regards/Gruss,
-    Boris.
+[ dhansen: comment and changelog tweaks ]
+[ pawan: backported to 5.4
+	 s/ATOM_GRACEMONT/ALDERLAKE_N/
+	 added microcode matching to INTEL_MATCH() and invlpg_miss_ids ]
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
+Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
+Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
+Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
+Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
+Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
+---
+ arch/x86/mm/init.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
+
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 086b274fa60f..b3bed9a9f78d 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -211,33 +211,39 @@ static void __init probe_page_size_mask(void)
+ 	}
+ }
+ 
+-#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
+-			      .family  = 6,			\
+-			      .model = _model,			\
+-			    }
++#define INTEL_MATCH(_model, ucode) { .vendor  = X86_VENDOR_INTEL,	\
++				     .family  = 6,			\
++				     .model = _model,			\
++				     .driver_data = ucode,		\
++				   }
+ /*
+- * INVLPG may not properly flush Global entries
+- * on these CPUs when PCIDs are enabled.
++ * INVLPG may not properly flush Global entries on
++ * these CPUs.  New microcode fixes the issue.
+  */
+ static const struct x86_cpu_id invlpg_miss_ids[] = {
+-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
+-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
+-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
+-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
+-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
+-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE,	0x2e),
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L,	0x42c),
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N,	0x11),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE,	0x118),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P,	0x4117),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S,	0x2e),
+ 	{}
+ };
+ 
+ static void setup_pcid(void)
+ {
++	const struct x86_cpu_id *invlpg_miss_match;
++
+ 	if (!IS_ENABLED(CONFIG_X86_64))
+ 		return;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_PCID))
+ 		return;
+ 
+-	if (x86_match_cpu(invlpg_miss_ids)) {
++	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
++
++	if (invlpg_miss_match &&
++	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
+ 		pr_info("Incomplete global flushes, disabling PCID");
+ 		setup_clear_cpu_cap(X86_FEATURE_PCID);
+ 		return;
+
+---
+base-commit: 856a224845f949243d6719165c88a70e4b473ec4
+change-id: 20250308-clear-pcid-5-4-cc78be4ffaaf
+
+Best regards,
+-- 
+Thanks,
+Pawan
+
+
 
