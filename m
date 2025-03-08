@@ -1,132 +1,165 @@
-Return-Path: <stable+bounces-121527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFCDA577D5
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 04:17:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347EDA577E3
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 04:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2554518987E3
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 03:18:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E21183B646F
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 03:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9472B33987;
-	Sat,  8 Mar 2025 03:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86482155A4D;
+	Sat,  8 Mar 2025 03:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2gEW4Qe"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5128F33E4;
-	Sat,  8 Mar 2025 03:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE23839F4;
+	Sat,  8 Mar 2025 03:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741403868; cv=none; b=F88qsY2Gwf0B8A4+1BhEvs1uconABmDMP3HZAkORGGXoFzEAg9eAHjoXAgkr4ML4nIN8pBdRfFohlxhUtfYFOyQXRoE84GvPpi3N64ZAgsq9weTbNByJRjdxebQZxwDT8UNoOf04OC4k4fr8iBIY95iD+QssakT0o8kBYBWDmGE=
+	t=1741404995; cv=none; b=eMx5GlZ0xkC1qYGFN74SG+iPQe9KPHkUjJfz2reIzgqpRYpr6LyoHHM0Jhkw1qDmiCmEHKNs9XmfiKyUTANRpA5QjNhdPnSn+KCKyz4R7OFAkV0GSllISuYvipQFw2rlxQ/SNF2IUwPeLIikKNxUuaTYZ5QnR+fyDDBecD0HnGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741403868; c=relaxed/simple;
-	bh=LcG19RuXtMOcSaf4ikCJ4v1EU2os9GEM0FqhrYn1QLw=;
-	h=Subject:To:References:CC:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ewPN6hvI6LkElGbUAQuqCBP1OtGyErp1TEIhEFna1AA7OHoizmFkW6udic2Qb3OyN5pWktTG3KB80egl9yVqf7yyQsSxznJ2YTp57uiamW1c0ncKVHg5fBhZUwUdE1eJAXl+vq06mfy3cCyM40DlEDB1TrQCI+Xc5jWHxZx9KLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Z8pBt3gs9z2SSjT;
-	Sat,  8 Mar 2025 11:13:26 +0800 (CST)
-Received: from kwepemg200013.china.huawei.com (unknown [7.202.181.64])
-	by mail.maildlp.com (Postfix) with ESMTPS id 909131402C3;
-	Sat,  8 Mar 2025 11:17:42 +0800 (CST)
-Received: from [10.174.179.24] (10.174.179.24) by
- kwepemg200013.china.huawei.com (7.202.181.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 8 Mar 2025 11:17:41 +0800
-Subject: Re: [PATCH v3] mm/migrate: fix shmem xarray update during migration
-To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	<linux-mm@kvack.org>
-References: <20250305200403.2822855-1-ziy@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, Barry Song <baohua@kernel.org>,
-	David Hildenbrand <david@redhat.com>, Kefeng Wang
-	<wangkefeng.wang@huawei.com>, Lance Yang <ioworker0@gmail.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>, Hugh Dickins
-	<hughd@google.com>, Charan Teja Kalla <quic_charante@quicinc.com>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-From: Liu Shixin <liushixin2@huawei.com>
-Message-ID: <00295311-2367-e210-c0bb-e410ba84d4ac@huawei.com>
-Date: Sat, 8 Mar 2025 11:17:40 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+	s=arc-20240116; t=1741404995; c=relaxed/simple;
+	bh=wLEqT0IC9gJ1SaLEGeSi2Lgq48p3Sz8pFixWAnU6Gj4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DsfwfunSxMxvV3cgkTeX0HCMXhA5IRDhBbRWNGd8XrmN1bJNWLX+ok4TSDF8lfbcqOCwfDKHpaFAfgF44whSCuNOtApVriU6DIJzA+v7UtFOFogiFOHt5IdbuAvQ/YM9k/o1pqLuCEuESxiXFS/dI4Z7ATwYwLs2Rq76GqV0WaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2gEW4Qe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824E2C4CED1;
+	Sat,  8 Mar 2025 03:36:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741404994;
+	bh=wLEqT0IC9gJ1SaLEGeSi2Lgq48p3Sz8pFixWAnU6Gj4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H2gEW4QeX38oiBqCP1qkGaua8cdgDgvAnVgZrCCL8gdBNvYqvK+u0Ru4MnaP0B3nU
+	 nG4UJK+irKKH3fr8JqFNeIfavwXOXHEez7xR8gfQ2EywxIyKmiGDI9p69+auzLW308
+	 94lClOOtc+06LFdXpuCtGEGl86LiIxTYNAXZ721T8t71QSU29lB1h/AS0TizRnpXdr
+	 PvWAU4zREeLaQjzNf9VI2Ovfghe70nqWP570vRzDTHGwJhHJEJpJUsy5zOPmKB0e5i
+	 zaTefESg7PDwrAk2G3CMdKBDPFAM6BP6njtX4mI9st8gARwjmqHIPxuxxNiT1m5KOt
+	 hhKJZymnSu8LA==
+Date: Fri, 7 Mar 2025 19:36:31 -0800
+From: Kees Cook <kees@kernel.org>
+To: Peter Collingbourne <pcc@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] string: Disable read_word_at_a_time() optimizations if
+ kernel MTE is enabled
+Message-ID: <202503071927.1A795821A@keescook>
+References: <20250308023314.3981455-1-pcc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250305200403.2822855-1-ziy@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemg200013.china.huawei.com (7.202.181.64)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250308023314.3981455-1-pcc@google.com>
 
+On Fri, Mar 07, 2025 at 06:33:13PM -0800, Peter Collingbourne wrote:
+> The optimized strscpy() and dentry_string_cmp() routines will read 8
+> unaligned bytes at a time via the function read_word_at_a_time(), but
+> this is incompatible with MTE which will fault on a partially invalid
+> read. The attributes on read_word_at_a_time() that disable KASAN are
+> invisible to the CPU so they have no effect on MTE. Let's fix the
+> bug for now by disabling the optimizations if the kernel is built
+> with HW tag-based KASAN and consider improvements for followup changes.
 
+Why is faulting on a partially invalid read a problem? It's still
+invalid, so ... it should fault, yes? What am I missing?
 
-On 2025/3/6 4:04, Zi Yan wrote:
-> A shmem folio can be either in page cache or in swap cache, but not at the
-> same time. Namely, once it is in swap cache, folio->mapping should be NULL,
-> and the folio is no longer in a shmem mapping.
->
-> In __folio_migrate_mapping(), to determine the number of xarray entries
-> to update, folio_test_swapbacked() is used, but that conflates shmem in
-> page cache case and shmem in swap cache case. It leads to xarray
-> multi-index entry corruption, since it turns a sibling entry to a
-> normal entry during xas_store() (see [1] for a userspace reproduction).
-> Fix it by only using folio_test_swapcache() to determine whether xarray
-> is storing swap cache entries or not to choose the right number of xarray
-> entries to update.
->
-> [1] https://lore.kernel.org/linux-mm/Z8idPCkaJW1IChjT@casper.infradead.org/
->
-> Note:
-> In __split_huge_page(), folio_test_anon() && folio_test_swapcache() is used
-> to get swap_cache address space, but that ignores the shmem folio in swap
-> cache case. It could lead to NULL pointer dereferencing when a
-> in-swap-cache shmem folio is split at __xa_store(), since
-> !folio_test_anon() is true and folio->mapping is NULL. But fortunately,
-> its caller split_huge_page_to_list_to_order() bails out early with EBUSY
-> when folio->mapping is NULL. So no need to take care of it here.
->
-> Fixes: fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
-> Reported-by: Liu Shixin <liushixin2@huawei.com>
-> Closes: https://lore.kernel.org/all/28546fb4-5210-bf75-16d6-43e1f8646080@huawei.com/
-> Suggested-by: Hugh Dickins <hughd@google.com>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> 
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
+> Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
+> Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
 > Cc: stable@vger.kernel.org
-Thanks for the patch, it works for me.
 > ---
->  mm/migrate.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index fb4afd31baf0..c0adea67cd62 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -518,15 +518,13 @@ static int __folio_migrate_mapping(struct address_space *mapping,
->  	if (folio_test_anon(folio) && folio_test_large(folio))
->  		mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
->  	folio_ref_add(newfolio, nr); /* add cache reference */
-> -	if (folio_test_swapbacked(folio)) {
-> +	if (folio_test_swapbacked(folio))
->  		__folio_set_swapbacked(newfolio);
-> -		if (folio_test_swapcache(folio)) {
-> -			folio_set_swapcache(newfolio);
-> -			newfolio->private = folio_get_private(folio);
-> -		}
-> +	if (folio_test_swapcache(folio)) {
-> +		folio_set_swapcache(newfolio);
-> +		newfolio->private = folio_get_private(folio);
->  		entries = nr;
->  	} else {
-> -		VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
->  		entries = 1;
->  	}
->  
+>  fs/dcache.c  | 2 +-
+>  lib/string.c | 3 ++-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 
+Why are DCACHE_WORD_ACCESS and HAVE_EFFICIENT_UNALIGNED_ACCESS separate
+things? I can see at least one place where it's directly tied:
+
+arch/arm/Kconfig:58:    select DCACHE_WORD_ACCESS if HAVE_EFFICIENT_UNALIGNED_ACCESS
+
+Would it make sense to sort this out so that KASAN_HW_TAGS can be taken
+into account at the Kconfig level instead?
+
+> diff --git a/fs/dcache.c b/fs/dcache.c
+> index e3634916ffb93..71f0830ac5e69 100644
+> --- a/fs/dcache.c
+> +++ b/fs/dcache.c
+> @@ -223,7 +223,7 @@ fs_initcall(init_fs_dcache_sysctls);
+>   * Compare 2 name strings, return 0 if they match, otherwise non-zero.
+>   * The strings are both count bytes long, and count is non-zero.
+>   */
+> -#ifdef CONFIG_DCACHE_WORD_ACCESS
+> +#if defined(CONFIG_DCACHE_WORD_ACCESS) && !defined(CONFIG_KASAN_HW_TAGS)
+
+Why not also the word_at_a_time use in fs/namei.c and lib/siphash.c?
+
+For reference, here are the DCACHE_WORD_ACCESS places:
+
+arch/arm/Kconfig:58:    select DCACHE_WORD_ACCESS if HAVE_EFFICIENT_UNALIGNED_ACCESS
+arch/arm64/Kconfig:137: select DCACHE_WORD_ACCESS
+arch/powerpc/Kconfig:192:       select DCACHE_WORD_ACCESS if PPC64 && CPU_LITTLE_ENDIAN
+arch/riscv/Kconfig:934: select DCACHE_WORD_ACCESS if MMU
+arch/s390/Kconfig:154:  select DCACHE_WORD_ACCESS if !KMSAN
+arch/x86/Kconfig:160:   select DCACHE_WORD_ACCESS if !KMSAN
+arch/x86/um/Kconfig:12: select DCACHE_WORD_ACCESS
+
+>  
+>  #include <asm/word-at-a-time.h>
+>  /*
+> diff --git a/lib/string.c b/lib/string.c
+> index eb4486ed40d25..9a43a3824d0d7 100644
+> --- a/lib/string.c
+> +++ b/lib/string.c
+> @@ -119,7 +119,8 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+>  	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
+>  		return -E2BIG;
+>  
+> -#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+> +#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && \
+> +	!defined(CONFIG_KASAN_HW_TAGS)
+
+There are lots more places checking CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS...
+Why only here?
+
+And the Kconfigs since I was comparing these against DCACHE_WORD_ACCESS
+
+arch/arc/Kconfig:352:   select HAVE_EFFICIENT_UNALIGNED_ACCESS
+arch/arm/Kconfig:107:   select HAVE_EFFICIENT_UNALIGNED_ACCESS if (CPU_V6 || CPU_V6K || CPU_V7) && MMU
+arch/arm64/Kconfig:222: select HAVE_EFFICIENT_UNALIGNED_ACCESS
+arch/loongarch/Kconfig:140:     select HAVE_EFFICIENT_UNALIGNED_ACCESS if !ARCH_STRICT_ALIGN
+arch/m68k/Kconfig:33:   select HAVE_EFFICIENT_UNALIGNED_ACCESS if !CPU_HAS_NO_UNALIGNED
+arch/powerpc/Kconfig:246:       select HAVE_EFFICIENT_UNALIGNED_ACCESS
+arch/riscv/Kconfig:935: select HAVE_EFFICIENT_UNALIGNED_ACCESS
+arch/s390/Kconfig:197:  select HAVE_EFFICIENT_UNALIGNED_ACCESS
+arch/x86/Kconfig:238:   select HAVE_EFFICIENT_UNALIGNED_ACCESS
+arch/x86/um/Kconfig:13: select HAVE_EFFICIENT_UNALIGNED_ACCESS
+
+>  	/*
+>  	 * If src is unaligned, don't cross a page boundary,
+>  	 * since we don't know if the next page is mapped.
+> -- 
+> 2.49.0.rc0.332.g42c0ae87b1-goog
+> 
+
+-Kees
+
+-- 
+Kees Cook
 
