@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-121521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA868A576F2
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 01:34:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C24FA57708
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 01:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 015491742D6
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 00:34:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793B31897630
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 00:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A68CA6F;
-	Sat,  8 Mar 2025 00:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2CBDDCD;
+	Sat,  8 Mar 2025 00:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eO8Z9+8D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IBWRgk1u"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CEF8F66
-	for <stable@vger.kernel.org>; Sat,  8 Mar 2025 00:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DDF2563
+	for <stable@vger.kernel.org>; Sat,  8 Mar 2025 00:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741393995; cv=none; b=ZuzJeuAsTYuApDkBhelMpXoVpDPdr3DkBhiDgBl5+N82+XyJ1cnTHldI2Z2lAv2Uc8rbjTDiINJDwrcvDSIiXGrh+uXc6FY1TQChKVIM3YNBFvByOD+76RP1X6jut3D2U1wim+KLxaM6wPKr4iVt+6KRpKlSRIJPdkAHStDyFaE=
+	t=1741394979; cv=none; b=oWhxFPnyKpUkooUD3qylWZKBYl22NT7nJe+ikE56s+w+BxjtJuD7kPrJZhDwHULeblBZNIW3pMvnwsv+VhE+thJLtj/kgYUfmrLAlzNmK4HIY0QwsrHDMQ7OrHf57cb8HUTcLt+0C9vflpsNvpj/O4Sxrb+enOT88Brka3Tc60s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741393995; c=relaxed/simple;
-	bh=Q1GJ2LGfYkIIoAH/ijT8chDthLBuX4ZAZOluqwCSWcI=;
+	s=arc-20240116; t=1741394979; c=relaxed/simple;
+	bh=CuhWp0qeie4GC5+52avMHSbpmsCuVMMarnl1Q+ufsnE=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=len5QldAbnntE7WR/1v7qT3VeyvQBEX+CqYYkYhpdCp3EGfN+kdSi12E5xGY8CuDz/EcleN28W9IifAjgAfvYUBni7UIH0BS91q8d4OMgBcwOU30K0agKXhqblakkiwR07vMHcg1RdVnsGs4Md7BTQZDwo0zyco/p45KbmKN/Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eO8Z9+8D; arc=none smtp.client-ip=198.175.65.21
+	 Content-Disposition; b=BLzT18qHx1YAM941Rm6ZovDiddsHU+dthGY5yhhYEOf684tJmSiHR9m13NWrxhvvyA9GvoMMytQa01sTa5JXUWxpnicCpFg00rvhLE6yUj7XABSifGjOuGxCLjpe3gpakKQD3xN/0GAzt0TF3YXfPwwia9CGhFOfE5OIx/10q7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IBWRgk1u; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741393994; x=1772929994;
+  t=1741394978; x=1772930978;
   h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Q1GJ2LGfYkIIoAH/ijT8chDthLBuX4ZAZOluqwCSWcI=;
-  b=eO8Z9+8DYFBd84gJy2KGE9oObXZ09c4E1/sOeoGcwYXvOM8gjQkHTLAD
-   hWiCBY650LhelyufSgVPcQNRoGsPkMXG+4W6zcqcMTxApnmX1EWxrEwE6
-   3chVVVs5HnlNy0+Zw326BiidABGQ403wpkjeiJnZvU9FRz6r/rJf7fE/b
-   ObucZ1i9daJAVhjw272TLysA14XD0BsN32b44lAP51TAy8spSWV4/KiLP
-   WUBtRwSSVopgoiJDQdzFOGZmGPHvYYcu6+yOOO8XHLrCr6bXMRczkEkRQ
-   Zw0g3Lni1ibzoHU+cCIg1Xo3hcisBlCAGmX/UYaZytS2jiTUujoJ4B+FA
+  bh=CuhWp0qeie4GC5+52avMHSbpmsCuVMMarnl1Q+ufsnE=;
+  b=IBWRgk1ulW+Y5dlCAZQU1+wDJtte3WvimXHqjFzlIRty5GUOS8a5fjAi
+   bjafm4nya+LAF9s/kWqg7zG9uSWWj0foGqRY+ffiRDwVtN35qNXWbn5/k
+   JXP8DR/Vqr5vIhUlIzASEDY2Hc9z38NIEamRIJpP4xbpk9dFhJCmwtvZC
+   LHrTkPMjAXEu3TaLPqcDw5LpIKHOuoStcYoDGBcAwubwy33YpOZIngcpS
+   HPB5T96KpepwbqgqdvO5Pp0zBIVFVFJ/3KX0kq2+uojURs2A9luWEiIwG
+   aNkufn+WgfyOphZZNkfdWyFPEE4Ut8+FSJfvJlLyF8jQkymumcwM0MN6a
    g==;
-X-CSE-ConnectionGUID: ee6BuPsVRe+goL3pjfvKRw==
-X-CSE-MsgGUID: ikHLxj7hQmuxlt807fVSFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="42371521"
+X-CSE-ConnectionGUID: M3JbkXtmS9qIgzWkcsnSjg==
+X-CSE-MsgGUID: wyvj2rMCRKic78L9UEMFZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="42336167"
 X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
-   d="scan'208";a="42371521"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:33:14 -0800
-X-CSE-ConnectionGUID: 4++ckDuGREuNBdkyNrJZqA==
-X-CSE-MsgGUID: UYlJRb9zQMWgc+0jhLJ0LQ==
+   d="scan'208";a="42336167"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:49:37 -0800
+X-CSE-ConnectionGUID: AqB+9NFsSomQ1egTf0x/lw==
+X-CSE-MsgGUID: qNyMv/YHQjKbP9n/eqPXWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="156681552"
+   d="scan'208";a="123650232"
 Received: from vward-mobl.amr.corp.intel.com (HELO desk) ([10.125.145.180])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:33:13 -0800
-Date: Fri, 7 Mar 2025 16:33:12 -0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:49:37 -0800
+Date: Fri, 7 Mar 2025 16:49:36 -0800
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Xi Ruoyao <xry111@xry111.site>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Voegtle <tv@lio96.de>
-Subject: [PATCH 5.15] x86/mm: Don't disable PCID when INVLPG has been fixed
+Subject: [PATCH 5.10] x86/mm: Don't disable PCID when INVLPG has been fixed
  by microcode
-Message-ID: <20250307-clear-pcid-5-15-v1-1-f20bafd8c5e4@linux.intel.com>
-X-B4-Tracking: v=1; b=H4sIANSPy2cC/x3MQQqAIBBA0avIrJvQapK6SrQwm2ogShQiiO6et
- HyL/x9IHIUT9OqByJckOY8MUyjwmztWRpmzodIV6Vpb9Du7iMHLjISGkDvbaF9P1DYd5CpEXuT
- +jwNQaQjG9/0AbyieM2cAAAA=
+Message-ID: <20250307-clear-pcid-5-10-v1-1-79ed114bc031@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAGWTy2cC/x3MQQqAIBBA0avErJsYTTO6SrQom2ogKhQikO6et
+ HyL/xNEDsIRuiJB4FuinEeGKgvw23isjDJngyZtqSaHfucx4OVlRouKsDGL0a2bjPUOcnUFXuT
+ 5jz3YShEM7/sBNelit2cAAAA=
 X-Mailer: b4 0.14.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -92,7 +92,7 @@ minimum microcode revision fixing the issue was provided by Pawan
 Intel.
 
 [ dhansen: comment and changelog tweaks ]
-[ pawan: backported to 5.15
+[ pawan: backported to 5.10
 	 s/ATOM_GRACEMONT/ALDERLAKE_N/ ]
 
 Signed-off-by: Xi Ruoyao <xry111@xry111.site>
@@ -110,10 +110,10 @@ Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
  1 file changed, 14 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 5953c7482016..1110f6dda352 100644
+index 17f1a89e26fc..d4b6ca0221a7 100644
 --- a/arch/x86/mm/init.c
 +++ b/arch/x86/mm/init.c
-@@ -264,28 +264,33 @@ static void __init probe_page_size_mask(void)
+@@ -258,28 +258,33 @@ static void __init probe_page_size_mask(void)
  }
  
  /*
@@ -158,8 +158,8 @@ index 5953c7482016..1110f6dda352 100644
  		return;
 
 ---
-base-commit: c16c81c81336c0912eb3542194f16215c0a40037
-change-id: 20250307-clear-pcid-5-15-e9740c3b5649
+base-commit: f0a53361993a94f602df6f35e78149ad2ac12c89
+change-id: 20250307-clear-pcid-5-10-64f4287b45c7
 
 Best regards,
 -- 
