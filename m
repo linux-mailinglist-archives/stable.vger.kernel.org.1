@@ -1,136 +1,148 @@
-Return-Path: <stable+bounces-121532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E809A57841
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 05:14:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93827A5783F
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 05:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 520393B446F
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 04:14:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8FB6174094
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 04:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461DD15B102;
-	Sat,  8 Mar 2025 04:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c043zgwn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB82158DD4;
+	Sat,  8 Mar 2025 04:13:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13072CAB;
-	Sat,  8 Mar 2025 04:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9202CAB;
+	Sat,  8 Mar 2025 04:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741407247; cv=none; b=dz4aQjkU6QWn17MPbvA5cteo5b0cPmhbOdi9ceQFgPlQQx9wrHK7bXOvcehW4cf9qJpq5EulAqOP6/fYVP5SViIYJ2Ng/PceWo8IFdDrAaZumBTfl/D3m+G+VcO0/bwsobDmuqGSMA1iYjQv2WbYPtabzc1N+qKP52ZIU/7e+6A=
+	t=1741407198; cv=none; b=iqU1WB/wg2rJAhnaxBoqesxBOtOJgCkP6JR+g1CXtljH5yDzsbhl/k7ToATYFUGBw8Im3tdvODzpdShaDNszAFtjMm4BGtM0Eq6IYR3yvS4g0U0TumX5WjdpxJyC2paeWYWLKXTW3FxnVBICr2P6O43Qa3Ww3lCyn2RbRKKbyZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741407247; c=relaxed/simple;
-	bh=DqtFNKP9MUEj9WZLATG65iYc6B7K9fovf6GYZcFZh+o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HD0KV6ssG4Z1b8+pM9eDCwwUnkFEcoRgAW7RamKB7CWYeMSvtFMyxewKdhbMDZ03LxR0Ug19r7TPMXs/v4lJP/xLqu2kMNEsmaQ+k0FpohK8/R1dyQ1PHBUwxuvnEbu3CbrhRuD37OFSzJEx41L8PEatZTBRWbwm78kk7Yr+w7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c043zgwn; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2f9b9c0088fso4494098a91.0;
-        Fri, 07 Mar 2025 20:14:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741407245; x=1742012045; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3INYmLaQOuwy6XzMyvhLucYfMGdX+9XqD8iYHVj5pcI=;
-        b=c043zgwneWaHO9lsobbOLjQ/XhiM/M7uynA3uhVrGOEcM1007LiTMcW40lNox/py7O
-         Tx/UxcN3++4rSLzbpQwv0P4aR/UoEFViFgdERzKG8xhqBXUsc7IwiCS/zjwz5KOA6C6G
-         RRem4vX9X8DtT8wWDdD0bdl+i/MlSYcFVPnoPTfdFuLk+UiWqqWyywixRWjZ2qc5zbMu
-         Zysx7Brax0qWGAlKKaH3DoHPnxTaOLuZC0NiqXSJHiZxAODf+v7+aAy4R8sG52AsUeB9
-         MRwFCrFuMKqhog1dP105NmOhhWSE49h6Ygan7DAFZSHss6E6P/l+JVxkelIUV8SLyoPG
-         UeIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741407245; x=1742012045;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3INYmLaQOuwy6XzMyvhLucYfMGdX+9XqD8iYHVj5pcI=;
-        b=XDAI8C/6y2ks7aAJWhnNtGngWwrV/dUZndS3UkgUODieOZyX3VkW8/koeF2DNdt1L8
-         HMdYT68CQH9dciMKrcPdQahDZRQ9VXex0FDbfkQrDqcT01V00wBJLEspSFCW1JI077U9
-         bpAleu2AJU4vpKwnQAELiEV6pXzItra9ZCBURIgpz4xs04ewj6KLHsS1ZvTASvkT6iqH
-         8KK0O26ym+Tl4HWpzxQBmGgS0fa21A0zoggxeKtCl6q3zwZ835g2UpzqR94lyPhFvYTK
-         Oij4vXoTTFl7h67xDMsW3RdWk4egIpnUYXp0JZGJGJzOlvh3Rl9Uqr7Dxxxj+XgZmaYe
-         jFSw==
-X-Forwarded-Encrypted: i=1; AJvYcCXu3mbQoG729ygpGlsPbbxqK4VqAtES9Q5LcMvilKGbwlCI5K666R/08FmbnTOig2x0WxGslV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTdSrdbnK87bijxKBRtkFXRBWgSWUZ599sJP4m+GBCpxGjTLqM
-	B6NmJnxMK3dSXzRfOcI0RmT0ijltQS6BOaYwpZlhcTMFDeZoauEVwN48gKp/
-X-Gm-Gg: ASbGnctrQoweqgfnnnmXhFXX0y0XGRnGD+r+SMapYxX2P6jymfYNFhnhHxlsLe5MKdw
-	03OHh7WESv5Ai7MC5a0TpXZN45ilij6COhwoV4NJfPAzfow88e0gtCIXE2P9u4fJx+kNy932RVe
-	whdMMOB2lRHyRnmjWCU1Up786SfBpIThyJ190UpjoYXhfdnYSM0MTbNNKZ3ohLIJtEnQY94X/sd
-	37AQIrvV9dWUf6z3Le05k5My8Ep59Ot/ElNxn50uZy1n4YOe9mvu8ghLg13EbRAqWZH2im2ieTF
-	Y1yt/nTu0LV3wih93xavldxxQn8HpmgvgVj56wM8hcTOHynBzZKFkKXPvfSaWvInFw7TWDoe0S3
-	EHIkhT0hEeoTIn3rGdRjp
-X-Google-Smtp-Source: AGHT+IFJfVkQfXrwaaOZOFpjOdt127kisOCsit/c9oQIMt1ghlNUdekIEzZ3n9aysSiPZnKUkNPj6g==
-X-Received: by 2002:a17:90a:d404:b0:2fa:562c:c1cf with SMTP id 98e67ed59e1d1-2ffbc1474a2mr3236143a91.1.1741407244789;
-        Fri, 07 Mar 2025 20:14:04 -0800 (PST)
-Received: from localhost.localdomain (host251.190-30-223.telecom.net.ar. [190.30.223.251])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff693e7fb5sm4354916a91.37.2025.03.07.20.14.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 20:14:04 -0800 (PST)
-From: Thomas Mizrahi <thomasmizra@gmail.com>
-To: broonie@kernel.org
-Cc: linux-sound@vger.kernel.org,
-	mario.limonciello@amd.com,
-	Thomas Mizrahi <thomasmizra@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ASoC: amd: yc: Support mic on another Lenovo ThinkPad E16 Gen 2 model
-Date: Sat,  8 Mar 2025 01:06:28 -0300
-Message-ID: <20250308041303.198765-1-thomasmizra@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1741407198; c=relaxed/simple;
+	bh=KvHtJtunMdjsrRjaHFm5thphwaG9HpwBQQwmM+IiVpc=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=vBtoL9lZYWaCn5hotGy0TtUSJC1SepZzWkiGC+dSln3vFgRPYKxq0vWH/xPL7poKWYpdD9eHR90v2CtuzVayOZUksFV2SKpCFwt5YRas5+AH854jXoZK4ygxXr3+frihKYWPWGkOOFOyTLGPlAFFm+N5JchoSvo41WkVGzlhN7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Z8qQt25Ghz1dyhD;
+	Sat,  8 Mar 2025 12:08:54 +0800 (CST)
+Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0229A1A0188;
+	Sat,  8 Mar 2025 12:13:11 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 8 Mar 2025 12:13:10 +0800
+Subject: Re: [PATCH] jffs2: check that raw node were preallocated before
+ writing summary
+To: Artem Sadovnikov <a.sadovnikov@ispras.ru>, <linux-mtd@lists.infradead.org>
+CC: David Woodhouse <dwmw2@infradead.org>, Richard Weinberger
+	<richard@nod.at>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
+References: <20250307163409.13491-2-a.sadovnikov@ispras.ru>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <6d0b7143-8e36-6bb7-16c1-817ef3287e10@huawei.com>
+Date: Sat, 8 Mar 2025 12:13:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20250307163409.13491-2-a.sadovnikov@ispras.ru>
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemk500005.china.huawei.com (7.202.194.90)
 
-The internal microphone on the Lenovo ThinkPad E16 model requires a
-quirk entry to work properly. This was fixed in a previous patch (linked
-below), but depending on the specific variant of the model, the product
-name may be "21M5" or "21M6".
+ÔÚ 2025/3/8 0:34, Artem Sadovnikov Ð´µÀ:
+> Syzkaller detected a kernel bug in jffs2_link_node_ref, caused by fault
+> injection in jffs2_prealloc_raw_node_refs. jffs2_sum_write_sumnode doesn't
+> check return value of jffs2_prealloc_raw_node_refs and simply lets any
+> error propagate into jffs2_sum_write_data, which eventually calls
+> jffs2_link_node_ref in order to link the summary to an expectedly allocated
+> node.
+> 
+> kernel BUG at fs/jffs2/nodelist.c:592!
+> invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+> CPU: 1 PID: 31277 Comm: syz-executor.7 Not tainted 6.1.128-syzkaller-00139-ge10f83ca10a1 #0
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+> RIP: 0010:jffs2_link_node_ref+0x570/0x690 fs/jffs2/nodelist.c:592
+> Call Trace:
+>   <TASK>
+>   jffs2_sum_write_data fs/jffs2/summary.c:841 [inline]
+>   jffs2_sum_write_sumnode+0xd1a/0x1da0 fs/jffs2/summary.c:874
+>   jffs2_do_reserve_space+0xa18/0xd60 fs/jffs2/nodemgmt.c:388
+>   jffs2_reserve_space+0x55f/0xaa0 fs/jffs2/nodemgmt.c:197
+>   jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+>   jffs2_write_end+0x726/0x15d0 fs/jffs2/file.c:301
+>   generic_perform_write+0x314/0x5d0 mm/filemap.c:3856
+>   __generic_file_write_iter+0x2ae/0x4d0 mm/filemap.c:3973
+>   generic_file_write_iter+0xe3/0x350 mm/filemap.c:4005
+>   call_write_iter include/linux/fs.h:2265 [inline]
+>   do_iter_readv_writev+0x20f/0x3c0 fs/read_write.c:735
+>   do_iter_write+0x186/0x710 fs/read_write.c:861
+>   vfs_iter_write+0x70/0xa0 fs/read_write.c:902
+>   iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
+>   do_splice_from fs/splice.c:763 [inline]
+>   direct_splice_actor+0x10c/0x170 fs/splice.c:950
+>   splice_direct_to_actor+0x337/0xa10 fs/splice.c:896
+>   do_splice_direct+0x1a9/0x280 fs/splice.c:1002
+>   do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
+>   __do_sys_sendfile64 fs/read_write.c:1323 [inline]
+>   __se_sys_sendfile64 fs/read_write.c:1309 [inline]
+>   __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
+>   do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+>   do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+>   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> 
+> Fix this issue by checking return value of jffs2_prealloc_raw_node_refs
+> before calling jffs2_sum_write_data.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+> Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+> ---
+>   fs/jffs2/summary.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
 
-The following patch fixed this issue for the 21M5 variant:
-  https://lore.kernel.org/all/20240725065442.9293-1-tiwai@suse.de/
-
-This patch adds support for the microphone on the 21M6 variant.
-
-Link: https://github.com/ramaureirac/thinkpad-e14-linux/issues/31
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Mizrahi <thomasmizra@gmail.com>
----
-I recently acquired a ThinkPad E16 Gen 2 AMD and could not get the internal
-microphone working. After some research, I discovered this issue. Since my
-machine is a 21M6 variant, the required quirk was not applied by the
-existing patch. After applying this patch and testing on my machine, the
-microphone was immediately recognized and worked without further issues.
-
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index b16587d8f97a..a7637056972a 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -248,6 +248,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21M5"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M6"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
--- 
-2.48.1
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> diff --git a/fs/jffs2/summary.c b/fs/jffs2/summary.c
+> index 4fe64519870f1..d83372d3e1a07 100644
+> --- a/fs/jffs2/summary.c
+> +++ b/fs/jffs2/summary.c
+> @@ -858,7 +858,10 @@ int jffs2_sum_write_sumnode(struct jffs2_sb_info *c)
+>   	spin_unlock(&c->erase_completion_lock);
+>   
+>   	jeb = c->nextblock;
+> -	jffs2_prealloc_raw_node_refs(c, jeb, 1);
+> +	ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
+> +
+> +	if (ret)
+> +		goto out;
+>   
+>   	if (!c->summary->sum_num || !c->summary->sum_list_head) {
+>   		JFFS2_WARNING("Empty summary info!!!\n");
+> @@ -872,6 +875,8 @@ int jffs2_sum_write_sumnode(struct jffs2_sb_info *c)
+>   	datasize += padsize;
+>   
+>   	ret = jffs2_sum_write_data(c, jeb, infosize, datasize, padsize);
+> +
+> +out:
+>   	spin_lock(&c->erase_completion_lock);
+>   	return ret;
+>   }
+> 
 
 
