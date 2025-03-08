@@ -1,125 +1,141 @@
-Return-Path: <stable+bounces-121541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD743A57A7E
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 14:33:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6A9A57B0A
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 15:34:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3D0D16F957
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 13:33:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A676D16E916
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 14:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFB81C6FEF;
-	Sat,  8 Mar 2025 13:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A08F1DC997;
+	Sat,  8 Mar 2025 14:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CAuEjA+o"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="DHmpM7ZW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA651BC41;
-	Sat,  8 Mar 2025 13:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A39013E02A;
+	Sat,  8 Mar 2025 14:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741440808; cv=none; b=L/ihbVKC1ezTRGDx3HaSAMp3WO5N5Tius7IftNhJKB/HWxjz9NIn/pksAJpXbAL7/0GbnHz+SjdPEiu/CBWsbXM7HP+dVujvYOtzBCYnfx1Ru2mbyrkf4jq6GfKVKcaw3GczsykUvyUbsI321ChynhzrA1/IIPLQKdgqMnCjelA=
+	t=1741444463; cv=none; b=V4NatbiFC/9IGsXG2K023OQCafVed8Gjd7WuoBa0V8ehqmjmSFBDbt/xPAePCxZkjBIYke+4nULXXzfoV+FCDZzPbT6jCaeEmezJ64iZYrBuQoXcmeMdyC3BpF8BTVjbFDW2Ku3xgUdarLtn0quh0IZsmVv3gTcryNj0cWuGpYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741440808; c=relaxed/simple;
-	bh=115Ze+IxI3/vfEm4pnf9cpZTmUZlkDAqgkOYFm8bgM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aLLPPUnZm9Z6KDpe6c+05SQnWP8sQ3EHuepSHQjng0wt72l+0l2kFTSqEF0KviE6rr9muUxvDlS1J53fOXnvYd/rSlzNvoLoYgqZP3uvDhNYD6u0328gOI4wt31Oac3anelbQyMx6WEF5Ke+fBjV+zNh72GbreG0I/HbwwSLSGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CAuEjA+o reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B3CF040E015E;
-	Sat,  8 Mar 2025 13:33:23 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id fUOTjdyFzZYW; Sat,  8 Mar 2025 13:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1741440798; bh=mGUnWVGEljwRD/vFW5lzAbLtqCZsrT5Mor9RAoXgYyQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CAuEjA+oufa4li9tDQ0w1Tt+g9NQ2+DCEOZiizHP92xumN76F16HsASw9+eAtvZ4D
-	 ZzSxv0mg09iZzSTaTycYd7JYASUXK9G05+DQmRpC3AXHoaSIEmHBY9bfSzzuBkHyit
-	 SA03K8Egc2lDY/c1OiPBemVPYZTX5z/XNRji4bWoAZhcstXdrN523dAZVtK0pEV9MB
-	 aTlGOguhVs8N2mRdotkvuBYybKADKYpLGE6QSpTc92cJ9M0dRwXCfJ8lg7GzmlvPMK
-	 wfuLdvFDWVRbuRWq3rU3xmPk4GK63QtoZDM3e0r1nhhuUR3KhT7/cPErryvt7kIWWM
-	 OB0AJROTpv1oFRLdxPsmZaV6tVilTndruIzlv3lQyVfydgymZWdi7OwV1UQxJmmWEK
-	 LLBP7taxoDK5WcaobNlt1TQyiNPJ3JA9jZmtN6iqf7nCX9YStC0TyyHxJhRmK/hPxm
-	 59sFO6Q55TkKduj+/y0FwKNUC256t3K5aGxn0BsbcfoK4bAHhJlYD93JPbEOUa2DgD
-	 lyxT4i3Il8cE2BtKLyH1T2Pn+8MW4YGHl7f33Y/PmWqcU0Sj/il3aqsjJ5OsHItkGK
-	 toJnZrFTyqwqMGvB95oJzz2vtUiWycr3MCTTDds63z4cnAF90Q2xpohgqHfYW16mDL
-	 7j5l97NE3JinsBfG0j9RDWYA=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8105740E015D;
-	Sat,  8 Mar 2025 13:33:09 +0000 (UTC)
-Date: Sat, 8 Mar 2025 14:33:08 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>
-Cc: linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>, stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: ccp: Fix uAPI definitions of PSP errors
-Message-ID: <20250308133308.GCZ8xHFOX4JKRG1Mpk@fat_crate.local>
-References: <20250308011028.719002-1-aik@amd.com>
- <CAAH4kHaK3Z-_aYizZM0Kvmsjvs_RT88tKG5aefm2_9GTUsU4bg@mail.gmail.com>
+	s=arc-20240116; t=1741444463; c=relaxed/simple;
+	bh=pdNymSlsbpe8uVRSyKz81wI5yqC96/2ZvFYAx5+wgKs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XQ5ZfvOmMhGQxSMmIgzt60kuPUDz/9MeFYNmoi0ejjfiqGRj3f3sD2YUUCOIO17ByDOCotmNSOV9yviCMfvWDoLCOCgFTFLQE9fuqdMoybN+84UySqUJKv9OIF+1pkB/Bo75/gSVxyyGDvmIlK3PFjvHevjIUCsKtV0w4HwLQZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=DHmpM7ZW; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=vu0h/BCZvBL2GttHEpScRi6sdoInP2Ddqbir3Sw4qwo=; b=DHmpM7ZW7ivLe4KvO/AohFXhco
+	LghEwzKuJ/aU59zQkP+lkMBnid+VJdtNaIRRYnE0dB9iRHOZhmtJLz1NHw5AT6svh069zLWkr3zbt
+	4WVtg8esuS5iFJQ66OILyfV2DVfJvTQuFLCytUszq70ZID/iygt2neUoOz4N171q8vTgDWpnuLzX9
+	BF6JnSxmWsqyT3RUm4uL9Wq9B04Eu5BGph1E46UCOQw8sdVEsD5aNpA8W2Z1SL3bVHjq8XXxlcJmI
+	5xiLqMuCuRo1UtkK1LGDA/S3xj8zwXAI/s7UDlsaw13wDkxuIdTGoVJYb1ew6D0iWAboKAd6jss8F
+	eoTal3LQ==;
+Received: from [189.7.87.170] (helo=1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tqvFi-005pPS-2E; Sat, 08 Mar 2025 15:34:16 +0100
+From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Subject: [PATCH v2 0/6] drm/v3d: Fix GPU reset issues on the Raspberry Pi 5
+Date: Sat, 08 Mar 2025 11:33:39 -0300
+Message-Id: <20250308-v3d-gpu-reset-fixes-v2-0-2939c30f0cc4@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAAH4kHaK3Z-_aYizZM0Kvmsjvs_RT88tKG5aefm2_9GTUsU4bg@mail.gmail.com>
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAERVzGcC/22NwQ6CMBBEf4Xs2TXtoiCc/A/DoWkX2ESBtNhoS
+ P/dSuLN45vJm9kgsBcO0BYbeI4SZJ4y0KEAO5ppYBSXGUjRWRGdMJYOh+WJngOv2MuLA5Ij3dt
+ a1Vo7yObieS+yeOsyjxLW2b/3k6i/6W+v+rsXNSq8lKapmt65xuqrDOYu5mjnB3QppQ8xfNHJt
+ wAAAA==
+X-Change-ID: 20250224-v3d-gpu-reset-fixes-2d21fc70711d
+To: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>, 
+ Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Cc: Phil Elwell <phil@raspberrypi.com>, dri-devel@lists.freedesktop.org, 
+ kernel-dev@igalia.com, stable@vger.kernel.org, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Nicolas Saenz Julienne <nsaenz@kernel.org>, devicetree@vger.kernel.org, 
+ Emma Anholt <emma@anholt.net>, "Rob Herring (Arm)" <robh@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2465; i=mcanal@igalia.com;
+ h=from:subject:message-id; bh=pdNymSlsbpe8uVRSyKz81wI5yqC96/2ZvFYAx5+wgKs=;
+ b=owEBbQGS/pANAwAIAT/zDop2iPqqAcsmYgBnzFVhxOl0dBvgSRGBD6facP8e1yDnsOI/56cJm
+ DhXl25Ttt6JATMEAAEIAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCZ8xVYQAKCRA/8w6Kdoj6
+ qqF+CACWPzSiYa3KsgTdGppJj6XUu5UqF7sw7+rMZhqkCgU2dFAeDuRZLMZMROq/kOToDUCMsXF
+ nG22Oy2uGnqF8NeeUqW3wx1f9cotjSdo4ZSPxoNJz1WSkfp5EcZfTysZ3djWJH75kZok+cdaVfI
+ XC+el5cj34gYPVTsGzpDiUpvZKXS3khVVGuGk2u5hk4QUEUUjSbufDokuSHvC2fNKeONNh49Uzt
+ sRRaqU6MiYZolgukxvvOnXZeis7JFF12x0P3oBAwurZsOuz9DlGh+V54SaOu6jT+xeaAG0ofhUI
+ GiUGMO5wJvkh6iPPimrVVUxVkbPfDlBVFe6Z5seDFPyyXzJo
+X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
+ fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
 
-On Fri, Mar 07, 2025 at 09:40:52PM -0800, Dionna Amalie Glaze wrote:
-> On Fri, Mar 7, 2025 at 5:10=E2=80=AFPM Alexey Kardashevskiy <aik@amd.co=
-m> wrote:
-> >
-> > Additions to the error enum after explicit 0x27 setting for
-> > SEV_RET_INVALID_KEY leads to incorrect value assignments.
-> >
-> > Use explicit values to match the manufacturer specifications more
-> > clearly.
-> >
-> > Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> > Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> > ---
-> >
-> > Reposting as requested in
-> > https://lore.kernel.org/r/Z7f2S3MigLEY80P2@gondor.apana.org.au
-> >
-> > I wrote it in the first place but since then it travelled a lot,
-> > feel free to correct the chain of SOBs and RB :)
->=20
-> It's all good. Thanks for seeing this through to the end.
+This series addresses GPU reset issues reported in [1], where running a
+long compute job would trigger repeated GPU resets, leading to a UI
+freeze.
 
-It should be corrected because the current SOB chain says that Dionna is =
-the
-author but From is yours, making you the author when it gets applied.
+Patches #1 and #2 prevent the same faulty job from being resubmitted in a
+loop, mitigating the first cause of the issue.
 
-All is documented here and in the following sections:
+However, the issue isn't entirely solved. Even with only a single GPU
+reset, the UI still freezes on the Raspberry Pi 5, indicating a GPU hang.
+Patches #3 to #5 address this by properly configuring the V3D_SMS
+registers, which are required for power management and resets in V3D 7.1.
 
-https://kernel.org/doc/html/latest/process/submitting-patches.html#sign-y=
-our-work-the-developer-s-certificate-of-origin
+Patch #6 updates the DT maintainership, replacing Emma with the current
+v3d driver maintainer.
 
---=20
-Regards/Gruss,
-    Boris.
+[1] https://github.com/raspberrypi/linux/issues/6660
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Best Regards,
+- Maíra
+
+---
+v1 -> v2:
+- [1/6, 2/6, 5/6] Add Iago's R-b (Iago Toral)
+- [3/6] Use V3D_GEN_* macros consistently throughout the driver (Phil Elwell)
+- [3/6] Don't add Iago's R-b in 3/6 due to changes in the patch
+- [4/6] Add per-compatible restrictions to enforce per‐SoC register rules (Conor Dooley)
+- [6/6] Add Emma's A-b, collected through IRC (Emma Anholt)
+- [6/6] Add Rob's A-b (Rob Herring)
+- Link to v1: https://lore.kernel.org/r/20250226-v3d-gpu-reset-fixes-v1-0-83a969fdd9c1@igalia.com
+
+---
+Maíra Canal (6):
+      drm/v3d: Don't run jobs that have errors flagged in its fence
+      drm/v3d: Set job pointer to NULL when the job's fence has an error
+      drm/v3d: Associate a V3D tech revision to all supported devices
+      dt-bindings: gpu: v3d: Add SMS to the registers' list
+      drm/v3d: Use V3D_SMS registers for power on/off and reset on V3D 7.x
+      dt-bindings: gpu: Add V3D driver maintainer as DT maintainer
+
+ .../devicetree/bindings/gpu/brcm,bcm-v3d.yaml      |  62 +++++++++-
+ drivers/gpu/drm/v3d/v3d_debugfs.c                  | 126 ++++++++++-----------
+ drivers/gpu/drm/v3d/v3d_drv.c                      |  62 +++++++++-
+ drivers/gpu/drm/v3d/v3d_drv.h                      |  22 +++-
+ drivers/gpu/drm/v3d/v3d_gem.c                      |  27 ++++-
+ drivers/gpu/drm/v3d/v3d_irq.c                      |   6 +-
+ drivers/gpu/drm/v3d/v3d_perfmon.c                  |   4 +-
+ drivers/gpu/drm/v3d/v3d_regs.h                     |  26 +++++
+ drivers/gpu/drm/v3d/v3d_sched.c                    |  29 ++++-
+ 9 files changed, 271 insertions(+), 93 deletions(-)
+---
+base-commit: 2c7aafc05c8330be4c5f0092b79843507a5e1023
+change-id: 20250224-v3d-gpu-reset-fixes-2d21fc70711d
+
 
