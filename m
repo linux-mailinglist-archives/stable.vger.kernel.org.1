@@ -1,149 +1,170 @@
-Return-Path: <stable+bounces-121519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3079AA5769D
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 01:09:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5012BA576AC
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 01:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A90BD188AA9C
-	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 00:09:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AAD7171502
+	for <lists+stable@lfdr.de>; Sat,  8 Mar 2025 00:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912F013A3F2;
-	Sat,  8 Mar 2025 00:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760504A1C;
+	Sat,  8 Mar 2025 00:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mq1KKxvb";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="911nkO5p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DaYTYl2q"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53D584D34;
-	Sat,  8 Mar 2025 00:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA35A48
+	for <stable@vger.kernel.org>; Sat,  8 Mar 2025 00:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741392498; cv=none; b=QeQoEd+ndbSK+OAjceSlkFzenNJoZMofzE2UD0JuCwHvb7u1m/RvQjwwc+We1wKWOHbOUJ28Z1/Jgfhedr7i7LVIKDRWDSOEAJoQxuCb7rXCILXauHWUP1IRFuvgjwbh9fXCR6KNvWwkMqk3ag7RZDgySSz38SNnEvi/DHAgH3E=
+	t=1741392940; cv=none; b=VJDAxb0slIQYK7H91m3oQP48foBe5UN34n+Rr4KZTZc1zQCpet+/LC5mV/GVEdq5zUGvYC1/oxEvUD4bBTN6CQzWDE0qKur9MBq6f+Rbf75bIZMoi78oiaqthu5Q/leQEEb/JjXZeqckgJSRd1BlM5+oDs2CdDNdXADN7NfhbqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741392498; c=relaxed/simple;
-	bh=5D35/4ohmfpcis5XOvEhRdcwDHLDWNRtFM9y/samnV0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=s0DFqrMyOo+B+r+D8rUp2RFia8HQd9o6xDpKkkx51zaBGTmIIhPj+njapcGru8m9E5efdCEJ2ftMKW7obFi8Jiq19iC98Qbx1n3yKCvES8XHycgJDYfivPJovlTycGTvjGG91KVxnNuk2ubwYH6FPTGU0tGfgJb/pf9uyWXGnDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mq1KKxvb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=911nkO5p; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 08 Mar 2025 00:08:14 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741392495;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4C35lSxeLOZfgjchJTfD0Qtk0qHxMzTuXFzGkO9UQ9c=;
-	b=Mq1KKxvb8V5/ywQak72ZKzRq/lc+yE89403C4tp/5C2l2YbrG/uCDoyHolXcpRUCEGmAAJ
-	i0s6H32J12yoy39IdvIBWEbEGgVlcqyblUvE/wjH8BUrsynWEVjVZB8/yV1tR9s7ty1/aL
-	n6PhcvhuUoulG9CYVAvzun9I/hwXM6uu98VljOQaaSSqnR2rROiaC/A64eeP86NElK3I/A
-	lTnxCv7Pw1SXJ9cO/V5LrjG06TD3irxZOwUhPZjZSTEJA9jBSGE+w2pQGgIiCuG0RxVe0N
-	07RKioC5Tvrj+ocELhAhbuJ5e9gCMbiLMWYxrsr9zqmZuigISiReUOn81EzjrA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741392495;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4C35lSxeLOZfgjchJTfD0Qtk0qHxMzTuXFzGkO9UQ9c=;
-	b=911nkO5p241RyvkjjPmN8ptsGrxKA+o3kAR0I3rIn964OZ+c4XLTpoBtd8ZmaKL2saJH2n
-	guG44w9nOIENFMDg==
-From: "tip-bot2 for Mitchell Levy" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] rust: lockdep: Remove support for dynamically
- allocated LockClassKeys
-Cc: Alice Ryhl <aliceryhl@google.com>, Mitchell Levy <levymitchell0@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Benno Lossin <benno.lossin@proton.me>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250307232717.1759087-11-boqun.feng@gmail.com>
-References: <20250307232717.1759087-11-boqun.feng@gmail.com>
+	s=arc-20240116; t=1741392940; c=relaxed/simple;
+	bh=s4cqDIESHsPP+/QYrwf6HevGwNRjCib34wQ+MJbTWFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=eUpU/VQdvZ2XXBVwesUCOw7W9ruq14QIRJXbDa0joR1LNoowWh/7upfEkT0C9otTlgY+9vChLw2k6CElQYvW70tiBDrYPX1hsfwEKsJhanAUvEcnOrCfPNnyh3LkRlhKI2GbnWyweetORp+CGm7AjmW0RmoT1HAALEdkMZfMkOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DaYTYl2q; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741392938; x=1772928938;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=s4cqDIESHsPP+/QYrwf6HevGwNRjCib34wQ+MJbTWFI=;
+  b=DaYTYl2qrL+aTCFiDscsgQ5Okh9ElJVi4TA3a1BqwQGpggqTeOQVPPcJ
+   WV2RGzelRUHUBPNFz/Q4xN3/RZWsF8+sZ+RWTF1ndKVCUiS5YkiK4U9uw
+   1zlZWOQEAbllbxOextKmUT6EYRgdwcuB5XhLj/mhn/KIcVu9CrEEiH601
+   ATL0zCP1jMM48o9tkmWqbq5vKX2XCE3ELrqCv/URpfb8F8ibpbCNX3MOV
+   pZuHBgbU0S0fLvMV3EAB6ExcHHLa0vFGHk9aTsBB5Xba1p9UHafScK+3i
+   wNYxw7lARpv6gnq3Mo8VNX4WrxAaql1tmz6SCUWLBHI/h0nn8uI93zYyt
+   Q==;
+X-CSE-ConnectionGUID: AKBbE1PzTaKWT7h6e8lgZw==
+X-CSE-MsgGUID: ZadcwBFcS3KpIy+KE35XNw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="59861288"
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="59861288"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:15:38 -0800
+X-CSE-ConnectionGUID: 2zdQHE4vQi6sN1A7GNa81g==
+X-CSE-MsgGUID: hYOUSkkoTaueK+E7KvSqsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="124381055"
+Received: from vward-mobl.amr.corp.intel.com (HELO desk) ([10.125.145.180])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 16:15:38 -0800
+Date: Fri, 7 Mar 2025 16:15:37 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Xi Ruoyao <xry111@xry111.site>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Voegtle <tv@lio96.de>
+Subject: [PATCH 6.1] x86/mm: Don't disable PCID when INVLPG has been fixed by
+ microcode
+Message-ID: <20250307-clear-pcid-6-1-v1-1-2cbbd0aa3150@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAKWLy2cC/x3MSQqAMAxA0atI1kY6oAWvIi46pBoQlRZEKL27x
+ eVb/F8gU2LKMHcFEj2c+TobZN+B3+25EXJoBiXUKLQw6A+yCW/PASeUqKNx0kY9eqegRXeiyO8
+ /XGAaJKy1fodd97tlAAAA
+X-Mailer: b4 0.14.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174139249455.14745.13816550054744263008.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The following commit has been merged into the locking/core branch of tip:
+From: Xi Ruoyao <xry111@xry111.site>
 
-Commit-ID:     966944f3711665db13e214fef6d02982c49bb972
-Gitweb:        https://git.kernel.org/tip/966944f3711665db13e214fef6d02982c49bb972
-Author:        Mitchell Levy <levymitchell0@gmail.com>
-AuthorDate:    Fri, 07 Mar 2025 15:27:00 -08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 08 Mar 2025 00:52:00 +01:00
+commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
 
-rust: lockdep: Remove support for dynamically allocated LockClassKeys
+Per the "Processor Specification Update" documentations referred by
+the intel-microcode-20240312 release note, this microcode release has
+fixed the issue for all affected models.
 
-Currently, dynamically allocated LockCLassKeys can be used from the Rust
-side without having them registered. This is a soundness issue, so
-remove them.
+So don't disable PCID if the microcode is new enough.  The precise
+minimum microcode revision fixing the issue was provided by Pawan
+Intel.
 
-Fixes: 6ea5aa08857a ("rust: sync: introduce `LockClassKey`")
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250307232717.1759087-11-boqun.feng@gmail.com
+[ dhansen: comment and changelog tweaks ]
+[ pawan: backported to 6.1
+         s/ATOM_GRACEMONT/ALDERLAKE_N/ ]
+
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
+Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
+Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
+Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
+Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
+Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
 ---
- rust/kernel/sync.rs | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ arch/x86/mm/init.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 3498fb3..16eab91 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -30,28 +30,20 @@ pub struct LockClassKey(Opaque<bindings::lock_class_key>);
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
--    /// Creates a new lock class key.
--    pub const fn new() -> Self {
--        Self(Opaque::uninit())
--    }
--
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.0.get()
-     }
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index ed861ef33f80..ab697ee64528 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -263,28 +263,33 @@ static void __init probe_page_size_mask(void)
  }
  
--impl Default for LockClassKey {
--    fn default() -> Self {
--        Self::new()
--    }
--}
--
- /// Defines a new static lock class and returns a pointer to it.
- #[doc(hidden)]
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
--        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        static CLASS: $crate::sync::LockClassKey =
-+            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-+            // lock_class_key
-+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
-         &CLASS
-     }};
- }
+ /*
+- * INVLPG may not properly flush Global entries
+- * on these CPUs when PCIDs are enabled.
++ * INVLPG may not properly flush Global entries on
++ * these CPUs.  New microcode fixes the issue.
+  */
+ static const struct x86_cpu_id invlpg_miss_ids[] = {
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0x2e),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0x42c),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0x11),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0x118),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0x4117),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0x2e),
+ 	{}
+ };
+ 
+ static void setup_pcid(void)
+ {
++	const struct x86_cpu_id *invlpg_miss_match;
++
+ 	if (!IS_ENABLED(CONFIG_X86_64))
+ 		return;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_PCID))
+ 		return;
+ 
+-	if (x86_match_cpu(invlpg_miss_ids)) {
++	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
++
++	if (invlpg_miss_match &&
++	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
+ 		pr_info("Incomplete global flushes, disabling PCID");
+ 		setup_clear_cpu_cap(X86_FEATURE_PCID);
+ 		return;
+
+---
+base-commit: 6ae7ac5c4251b139da4b672fe4157f2089a9d922
+change-id: 20250307-clear-pcid-6-1-3f7b1af35cb2
+
+Best regards,
+-- 
+Thanks,
+Pawan
+
+
 
