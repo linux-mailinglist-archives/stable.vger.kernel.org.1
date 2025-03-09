@@ -1,260 +1,343 @@
-Return-Path: <stable+bounces-121623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6EC1A58838
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:42:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054C7A5883C
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0673216AC55
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:42:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 726AD7A28EC
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499FE21D3E3;
-	Sun,  9 Mar 2025 20:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE6518FDC5;
+	Sun,  9 Mar 2025 20:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tKkmdoMH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b/NEDrcr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053D521D3EE;
-	Sun,  9 Mar 2025 20:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B92B145A18
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 20:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741552958; cv=none; b=JVk2miL1nN3+Tpx8NIrNWPInFWQX6qrO/J0FAkO55IrmviClk0ibXm7kbMU1efThECdCsXgx0P2UXiLMPffOCCKcPODc1lfdK4ZUgmril3nn6TG7Ngri9y+cf9Q0LEJbGlOTVLz4V3Ifg3RDfAJENrpp3pB9UnHsKekzque1y/k=
+	t=1741553211; cv=none; b=E3lRPD6heMVjInfz25aXRVwfzLkt57/VoOKmrSZqksArxzuQtJptWuRBikPEyVzNRsToIrgdfT0idbnhWGPRCXyFKyaGp2sTxY0erIAmHJgw76abM5t/EeMiz27xzOWKhrR/KsInBpKCV0kvzqeKR7hhuxLMCpRKncqgxQB4jCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741552958; c=relaxed/simple;
-	bh=pWhnxuKrNlYmZE4ntSbCJBytDkwmDJpWmIEulmWNJVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URW2ELXw5ZRhR2EAzPOh+vesD2igZEILMs73m3mX1TP/e83a6VOCgjLa+4VLDQrh8LwZAQKePHohAMVJTWtFGCoxt6Rk8YMwiFosEQkYcLlVhmx5twxOST2AvCYZzQd9zPy3jwxiSBEl6N7FL81XYVcNM6X4s1UgLgx1q1RIvPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tKkmdoMH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352B4C4CEEC;
-	Sun,  9 Mar 2025 20:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741552957;
-	bh=pWhnxuKrNlYmZE4ntSbCJBytDkwmDJpWmIEulmWNJVM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tKkmdoMHYQB+T37e/iIVn8tnZacg0t0PwzScax7iQS3N9/8kLG5RnNVdZmZxm7Ydv
-	 FhnccPsm9JR1Hb3Lx/idveljEBHl5DE+JFTncRdoknemtdNZ8AuZoh/91OeaCi/Hwk
-	 DDjUg7h9sCgWeioQjKyG9pZk9UlgLHq2xsXtGoxY7Uu4x8YjHiPKi7pnd/gd5zIY11
-	 27n87PMtVgVZ7DgxuPIYOTM//MAqm3swlIxfu4sVZbYuPNMzjPSCJ804nyRcT77YaZ
-	 0g/4sVwegyEO8Kh3Sn05BXGCh0cutQ/mESFH27iSITWUlwR90CB4/vagrnKKGrXrJJ
-	 IoqLPjy+vzYfw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alyssa Ross <hi@alyssa.is>,
-	NoisyCoil <noisycoil@disroot.org>,
-	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12.y 2/2] rust: map `long` to `isize` and `char` to `u8`
-Date: Sun,  9 Mar 2025 21:42:17 +0100
-Message-ID: <20250309204217.1553389-3-ojeda@kernel.org>
-In-Reply-To: <20250309204217.1553389-1-ojeda@kernel.org>
-References: <2025030955-kindness-designing-246c@gregkh>
- <20250309204217.1553389-1-ojeda@kernel.org>
+	s=arc-20240116; t=1741553211; c=relaxed/simple;
+	bh=gqD9Lg03jjRwHLSnN560AZHrM5W9ZWaHXUe5k9F7VC0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BLERtKTKkzPf7UArWAqCrTeeTDzSbeCLbCIkO/usH3FEkXXgwFBhvoGwtp5TIpzUASoarC2vhVYta6bCMXqwecEQRj/fknk6vsucl+CijcKEBKHRjZrP53lCaYEMtwyte0c1dnWy+RvthyF0tZawV6R4DI0kaO6w//y9F9Kpr/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b/NEDrcr; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5497e7bf2e0so3617859e87.3
+        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 13:46:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741553207; x=1742158007; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=De4c73TZo2aMarhixfoNUZAvRIIJWMV8jmo8FEVSrWg=;
+        b=b/NEDrcrnq+JA1lexGu1ZqNpI0IFSJaoiMrj8gkG5oL8NSXz6Rp3U+tlBLUOtYKwzz
+         g8fKwxKteV/FaFqzArxswXxoejeGr02Ji/eUOEQC4u2wsjXpw+z/tNiTPQPXqW4zAYhC
+         o+L015gAB7jMB1Pqo7hSl54GXDv47D2cKGOAI6qjzf59bgaE0FyDdw/WicP6+5sEJSNE
+         J5CCrj+bG95TXdZIC4KJCe0ggiUa+2rUmzyD7GhuH5+V6ezE2IcuTGjZhEaLCLgALhKR
+         mpyWXy+HfI4CqfPuchCr1hUDxwZSqM7608CRDeFQTRqJlh2hlXTVDWGkUuxrgbkddDtl
+         U+bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741553207; x=1742158007;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=De4c73TZo2aMarhixfoNUZAvRIIJWMV8jmo8FEVSrWg=;
+        b=kiD6TzDzAdCddXb8EFpoMdJew42GW6Fu6w2HCwDyMd6fk3Hm2wXuRErpgAm7BLVkAV
+         g4gyd0hriJVt4uMicATDJg3MN2sD2WWA5sEKE2zZhM4KKSckv43g5RRExCQKSNT7dJvA
+         ThSLl/jZTZLU0g4hrNMfb0P/z7NlAeKG540mpPZjopi76oDqR6N7hvpMRDI2hiooa2QD
+         Ch1MiStpmgGqnTUL2HRQIkSz5SFSAJnp0PfK4kNxPJGhafNk+uss56hbhiFd6/I8n/J2
+         Hp4Do1ZISgIyqrCkJmK6fpu0+L0QZPgqcfBcA3J0UV99pZLAi+SRCwGAuJfzm74m5vqp
+         +AYg==
+X-Forwarded-Encrypted: i=1; AJvYcCVrF/r2wEOP7afQy3mjIYC47hut0MXlhZzB2AFBjXwCtrdtJo9FdF0buYE9oIiHodd0tRpO5nM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpT9hX8QWLCTsVJKZ/voSsb6aLdcJ+5MJghUZ1PnPkuUuut0m2
+	bIWl+/yDfX9Ox2OLnu2HUchcYiQx3jydMjZ8HWklfyGbfcfEwcEqELBiKw==
+X-Gm-Gg: ASbGncsmiuuUwlqRhttbvijRRrUP0TkRXm4VqQhCH0UzE+d8AaBAcwwxno5PH3UHCLt
+	5BKncTL+4gM0HEI8o7YOzyHqqIGiV/6qf4nqF08OSjCPv9j1nGMENiAiszP001865eVsP2XEwgN
+	IzyF5FEdDLJgq/48d5I1ZxXSKZMf40rih+Aj2woUxPKgi4N+EYhY9j0PKK/vryYx6OXQzxZ8jRs
+	Q9k+Bgu9SRzYZCRYtkPbb99IQoTgt5STOLdY0VYPyx8vRUf0Tqn81T+R6jNPgIdZ/Cf9NYa8Udr
+	03IEB6ENSzGmjNL+TVuAc52JUS1HUJQouas45ac2sYFVBoY2l+pXqQ==
+X-Google-Smtp-Source: AGHT+IF5PV9CZuZcDG+ua6cTFKCTcl0mICdPVAQIBeaijmm/JNeoF1knHvuZCLJfQnNnLMeA5Otivw==
+X-Received: by 2002:a05:6512:3ba5:b0:545:2544:6ae2 with SMTP id 2adb3069b0e04-54990e3ee03mr4386642e87.16.1741553206977;
+        Sun, 09 Mar 2025 13:46:46 -0700 (PDT)
+Received: from localhost (morra.ispras.ru. [83.149.199.253])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498b0bcf82sm1216965e87.154.2025.03.09.13.46.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 13:46:46 -0700 (PDT)
+Date: Sun, 9 Mar 2025 23:46:43 +0300
+From: Fedor Pchelkin <boddah8794@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: lk@c--e.de, heikki.krogerus@linux.intel.com, stable@vger.kernel.org
+Subject: Re: patch "acpi: typec: ucsi: Introduce a ->poll_cci method" added
+ to usb-linus
+Message-ID: <6y2km6lrqjfzgmf6aoetm6ts2b5okzoxzejtqpulkppudwgc5i@ja2oaw6ljqml>
+References: <2025021909-thirstily-esteemed-c72c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2025021909-thirstily-esteemed-c72c@gregkh>
 
-From: Gary Guo <gary@garyguo.net>
+On Wed, 19. Feb 15:20, gregkh@linuxfoundation.org wrote:
+> 
+> This is a note to let you know that I've just added the patch titled
+> 
+>     acpi: typec: ucsi: Introduce a ->poll_cci method
+> 
+> to my usb git tree which can be found at
+>     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+> in the usb-linus branch.
+> 
+> The patch will show up in the next release of the linux-next tree
+> (usually sometime within the next 24 hours during the week.)
+> 
+> The patch will hopefully also be merged in Linus's tree for the
+> next -rc kernel release.
+> 
+> If you have any questions about this process, please let me know.
+> 
+> 
+> From 976e7e9bdc7719a023a4ecccd2e3daec9ab20a40 Mon Sep 17 00:00:00 2001
+> From: "Christian A. Ehrhardt" <lk@c--e.de>
+> Date: Mon, 17 Feb 2025 13:54:39 +0300
+> Subject: acpi: typec: ucsi: Introduce a ->poll_cci method
+> 
+> For the ACPI backend of UCSI the UCSI "registers" are just a memory copy
+> of the register values in an opregion. The ACPI implementation in the
+> BIOS ensures that the opregion contents are synced to the embedded
+> controller and it ensures that the registers (in particular CCI) are
+> synced back to the opregion on notifications. While there is an ACPI call
+> that syncs the actual registers to the opregion there is rarely a need to
+> do this and on some ACPI implementations it actually breaks in various
+> interesting ways.
+> 
+> The only reason to force a sync from the embedded controller is to poll
+> CCI while notifications are disabled. Only the ucsi core knows if this
+> is the case and guessing based on the current command is suboptimal, i.e.
+> leading to the following spurious assertion splat:
+> 
+> WARNING: CPU: 3 PID: 76 at drivers/usb/typec/ucsi/ucsi.c:1388 ucsi_reset_ppm+0x1b4/0x1c0 [typec_ucsi]
+> CPU: 3 UID: 0 PID: 76 Comm: kworker/3:0 Not tainted 6.12.11-200.fc41.x86_64 #1
+> Hardware name: LENOVO 21D0/LNVNB161216, BIOS J6CN45WW 03/17/2023
+> Workqueue: events_long ucsi_init_work [typec_ucsi]
+> RIP: 0010:ucsi_reset_ppm+0x1b4/0x1c0 [typec_ucsi]
+> Call Trace:
+>  <TASK>
+>  ucsi_init_work+0x3c/0xac0 [typec_ucsi]
+>  process_one_work+0x179/0x330
+>  worker_thread+0x252/0x390
+>  kthread+0xd2/0x100
+>  ret_from_fork+0x34/0x50
+>  ret_from_fork_asm+0x1a/0x30
+>  </TASK>
+> 
+> Thus introduce a ->poll_cci() method that works like ->read_cci() with an
+> additional forced sync and document that this should be used when polling
+> with notifications disabled. For all other backends that presumably don't
+> have this issue use the same implementation for both methods.
+> 
+> Fixes: fa48d7e81624 ("usb: typec: ucsi: Do not call ACPI _DSM method for UCSI read operations")
+> Cc: stable <stable@kernel.org>
 
-commit 1bae8729e50a900f41e9a1c17ae81113e4cf62b8 upstream.
+Oh, the stable tag has been mangled here.. I didn't notice this, sorry.
+Now Cc'ing the appropriate list.
 
-The following FFI types are replaced compared to `core::ffi`:
+Could you apply the patch to stables based on Fixes tag then, please?
+They are 6.12 and 6.13.
 
-1. `char` type is now always mapped to `u8`, since kernel uses
-   `-funsigned-char` on the C code. `core::ffi` maps it to platform
-   default ABI, which can be either signed or unsigned.
+Thanks!
 
-2. `long` is now always mapped to `isize`. It's very common in the
-   kernel to use `long` to represent a pointer-sized integer, and in
-   fact `intptr_t` is a typedef of `long` in the kernel. Enforce this
-   mapping rather than mapping to `i32/i64` depending on platform can
-   save us a lot of unnecessary casts.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240913213041.395655-5-gary@garyguo.net
-[ Moved `uaccess` changes from the next commit, since they were
-  irrefutable patterns that Rust >= 1.82.0 warns about. Reworded
-  slightly and reformatted a few documentation comments. Rebased on
-  top of `rust-next`. Added the removal of two casts to avoid Clippy
-  warnings. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/ffi.rs             | 37 ++++++++++++++++++++++++++++++++++++-
- rust/kernel/error.rs    |  5 +----
- rust/kernel/firmware.rs |  2 +-
- rust/kernel/uaccess.rs  | 27 +++++++--------------------
- 4 files changed, 45 insertions(+), 26 deletions(-)
-
-diff --git a/rust/ffi.rs b/rust/ffi.rs
-index be153c4d551b..584f75b49862 100644
---- a/rust/ffi.rs
-+++ b/rust/ffi.rs
-@@ -10,4 +10,39 @@
- 
- #![no_std]
- 
--pub use core::ffi::*;
-+macro_rules! alias {
-+    ($($name:ident = $ty:ty;)*) => {$(
-+        #[allow(non_camel_case_types, missing_docs)]
-+        pub type $name = $ty;
-+
-+        // Check size compatibility with `core`.
-+        const _: () = assert!(
-+            core::mem::size_of::<$name>() == core::mem::size_of::<core::ffi::$name>()
-+        );
-+    )*}
-+}
-+
-+alias! {
-+    // `core::ffi::c_char` is either `i8` or `u8` depending on architecture. In the kernel, we use
-+    // `-funsigned-char` so it's always mapped to `u8`.
-+    c_char = u8;
-+
-+    c_schar = i8;
-+    c_uchar = u8;
-+
-+    c_short = i16;
-+    c_ushort = u16;
-+
-+    c_int = i32;
-+    c_uint = u32;
-+
-+    // In the kernel, `intptr_t` is defined to be `long` in all platforms, so we can map the type to
-+    // `isize`.
-+    c_long = isize;
-+    c_ulong = usize;
-+
-+    c_longlong = i64;
-+    c_ulonglong = u64;
-+}
-+
-+pub use core::ffi::c_void;
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 52c502432447..5fece574ec02 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -153,11 +153,8 @@ pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
- 
-     /// Returns the error encoded as a pointer.
-     pub fn to_ptr<T>(self) -> *mut T {
--        #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
-         // SAFETY: `self.0` is a valid error due to its invariant.
--        unsafe {
--            bindings::ERR_PTR(self.0.get().into()) as *mut _
--        }
-+        unsafe { bindings::ERR_PTR(self.0.get() as _) as *mut _ }
-     }
- 
-     /// Returns a string representing the error, if one exists.
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index 13a374a5cdb7..c5162fdc95ff 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -12,7 +12,7 @@
- /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
- /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
- struct FwFunc(
--    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
-+    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
- );
- 
- impl FwFunc {
-diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index 66cc76e68428..5a3c2d4df65f 100644
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -8,7 +8,7 @@
-     alloc::Flags,
-     bindings,
-     error::Result,
--    ffi::{c_ulong, c_void},
-+    ffi::c_void,
-     prelude::*,
-     types::{AsBytes, FromBytes},
- };
-@@ -224,13 +224,9 @@ pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
--        // SAFETY: `out_ptr` points into a mutable slice of length `len_ulong`, so we may write
-+        // SAFETY: `out_ptr` points into a mutable slice of length `len`, so we may write
-         // that many bytes to it.
--        let res =
--            unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len_ulong) };
-+        let res = unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len) };
-         if res != 0 {
-             return Err(EFAULT);
-         }
-@@ -259,9 +255,6 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T> {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
-         let mut out: MaybeUninit<T> = MaybeUninit::uninit();
-         // SAFETY: The local variable `out` is valid for writing `size_of::<T>()` bytes.
-         //
-@@ -272,7 +265,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T> {
-             bindings::_copy_from_user(
-                 out.as_mut_ptr().cast::<c_void>(),
-                 self.ptr as *const c_void,
--                len_ulong,
-+                len,
-             )
-         };
-         if res != 0 {
-@@ -335,12 +328,9 @@ pub fn write_slice(&mut self, data: &[u8]) -> Result {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
--        // SAFETY: `data_ptr` points into an immutable slice of length `len_ulong`, so we may read
-+        // SAFETY: `data_ptr` points into an immutable slice of length `len`, so we may read
-         // that many bytes from it.
--        let res = unsafe { bindings::copy_to_user(self.ptr as *mut c_void, data_ptr, len_ulong) };
-+        let res = unsafe { bindings::copy_to_user(self.ptr as *mut c_void, data_ptr, len) };
-         if res != 0 {
-             return Err(EFAULT);
-         }
-@@ -359,9 +349,6 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
-         // SAFETY: The reference points to a value of type `T`, so it is valid for reading
-         // `size_of::<T>()` bytes.
-         //
-@@ -372,7 +359,7 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
-             bindings::_copy_to_user(
-                 self.ptr as *mut c_void,
-                 (value as *const T).cast::<c_void>(),
--                len_ulong,
-+                len,
-             )
-         };
-         if res != 0 {
--- 
-2.48.1
-
+> Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+> Tested-by: Fedor Pchelkin <boddah8794@gmail.com>
+> Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
+> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Link: https://lore.kernel.org/r/20250217105442.113486-2-boddah8794@gmail.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/usb/typec/ucsi/ucsi.c           | 10 +++++-----
+>  drivers/usb/typec/ucsi/ucsi.h           |  2 ++
+>  drivers/usb/typec/ucsi/ucsi_acpi.c      | 21 ++++++++++++++-------
+>  drivers/usb/typec/ucsi/ucsi_ccg.c       |  1 +
+>  drivers/usb/typec/ucsi/ucsi_glink.c     |  1 +
+>  drivers/usb/typec/ucsi/ucsi_stm32g0.c   |  1 +
+>  drivers/usb/typec/ucsi/ucsi_yoga_c630.c |  1 +
+>  7 files changed, 25 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> index fcf499cc9458..0fe1476f4c29 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -1346,7 +1346,7 @@ static int ucsi_reset_ppm(struct ucsi *ucsi)
+>  
+>  	mutex_lock(&ucsi->ppm_lock);
+>  
+> -	ret = ucsi->ops->read_cci(ucsi, &cci);
+> +	ret = ucsi->ops->poll_cci(ucsi, &cci);
+>  	if (ret < 0)
+>  		goto out;
+>  
+> @@ -1364,7 +1364,7 @@ static int ucsi_reset_ppm(struct ucsi *ucsi)
+>  
+>  		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
+>  		do {
+> -			ret = ucsi->ops->read_cci(ucsi, &cci);
+> +			ret = ucsi->ops->poll_cci(ucsi, &cci);
+>  			if (ret < 0)
+>  				goto out;
+>  			if (cci & UCSI_CCI_COMMAND_COMPLETE)
+> @@ -1393,7 +1393,7 @@ static int ucsi_reset_ppm(struct ucsi *ucsi)
+>  		/* Give the PPM time to process a reset before reading CCI */
+>  		msleep(20);
+>  
+> -		ret = ucsi->ops->read_cci(ucsi, &cci);
+> +		ret = ucsi->ops->poll_cci(ucsi, &cci);
+>  		if (ret)
+>  			goto out;
+>  
+> @@ -1929,8 +1929,8 @@ struct ucsi *ucsi_create(struct device *dev, const struct ucsi_operations *ops)
+>  	struct ucsi *ucsi;
+>  
+>  	if (!ops ||
+> -	    !ops->read_version || !ops->read_cci || !ops->read_message_in ||
+> -	    !ops->sync_control || !ops->async_control)
+> +	    !ops->read_version || !ops->read_cci || !ops->poll_cci ||
+> +	    !ops->read_message_in || !ops->sync_control || !ops->async_control)
+>  		return ERR_PTR(-EINVAL);
+>  
+>  	ucsi = kzalloc(sizeof(*ucsi), GFP_KERNEL);
+> diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+> index 82735eb34f0e..28780acc4af2 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.h
+> +++ b/drivers/usb/typec/ucsi/ucsi.h
+> @@ -62,6 +62,7 @@ struct dentry;
+>   * struct ucsi_operations - UCSI I/O operations
+>   * @read_version: Read implemented UCSI version
+>   * @read_cci: Read CCI register
+> + * @poll_cci: Read CCI register while polling with notifications disabled
+>   * @read_message_in: Read message data from UCSI
+>   * @sync_control: Blocking control operation
+>   * @async_control: Non-blocking control operation
+> @@ -76,6 +77,7 @@ struct dentry;
+>  struct ucsi_operations {
+>  	int (*read_version)(struct ucsi *ucsi, u16 *version);
+>  	int (*read_cci)(struct ucsi *ucsi, u32 *cci);
+> +	int (*poll_cci)(struct ucsi *ucsi, u32 *cci);
+>  	int (*read_message_in)(struct ucsi *ucsi, void *val, size_t val_len);
+>  	int (*sync_control)(struct ucsi *ucsi, u64 command);
+>  	int (*async_control)(struct ucsi *ucsi, u64 command);
+> diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+> index 5c5515551963..ac1ebb5d9527 100644
+> --- a/drivers/usb/typec/ucsi/ucsi_acpi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+> @@ -59,19 +59,24 @@ static int ucsi_acpi_read_version(struct ucsi *ucsi, u16 *version)
+>  static int ucsi_acpi_read_cci(struct ucsi *ucsi, u32 *cci)
+>  {
+>  	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+> -	int ret;
+> -
+> -	if (UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
+> -		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
+> -		if (ret)
+> -			return ret;
+> -	}
+>  
+>  	memcpy(cci, ua->base + UCSI_CCI, sizeof(*cci));
+>  
+>  	return 0;
+>  }
+>  
+> +static int ucsi_acpi_poll_cci(struct ucsi *ucsi, u32 *cci)
+> +{
+> +	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+> +	int ret;
+> +
+> +	ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return ucsi_acpi_read_cci(ucsi, cci);
+> +}
+> +
+>  static int ucsi_acpi_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
+>  {
+>  	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+> @@ -94,6 +99,7 @@ static int ucsi_acpi_async_control(struct ucsi *ucsi, u64 command)
+>  static const struct ucsi_operations ucsi_acpi_ops = {
+>  	.read_version = ucsi_acpi_read_version,
+>  	.read_cci = ucsi_acpi_read_cci,
+> +	.poll_cci = ucsi_acpi_poll_cci,
+>  	.read_message_in = ucsi_acpi_read_message_in,
+>  	.sync_control = ucsi_sync_control_common,
+>  	.async_control = ucsi_acpi_async_control
+> @@ -142,6 +148,7 @@ static int ucsi_gram_sync_control(struct ucsi *ucsi, u64 command)
+>  static const struct ucsi_operations ucsi_gram_ops = {
+>  	.read_version = ucsi_acpi_read_version,
+>  	.read_cci = ucsi_acpi_read_cci,
+> +	.poll_cci = ucsi_acpi_poll_cci,
+>  	.read_message_in = ucsi_gram_read_message_in,
+>  	.sync_control = ucsi_gram_sync_control,
+>  	.async_control = ucsi_acpi_async_control
+> diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+> index 740171f24ef9..4b1668733a4b 100644
+> --- a/drivers/usb/typec/ucsi/ucsi_ccg.c
+> +++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+> @@ -664,6 +664,7 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
+>  static const struct ucsi_operations ucsi_ccg_ops = {
+>  	.read_version = ucsi_ccg_read_version,
+>  	.read_cci = ucsi_ccg_read_cci,
+> +	.poll_cci = ucsi_ccg_read_cci,
+>  	.read_message_in = ucsi_ccg_read_message_in,
+>  	.sync_control = ucsi_ccg_sync_control,
+>  	.async_control = ucsi_ccg_async_control,
+> diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+> index fed39d458090..8af79101a2fc 100644
+> --- a/drivers/usb/typec/ucsi/ucsi_glink.c
+> +++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+> @@ -206,6 +206,7 @@ static void pmic_glink_ucsi_connector_status(struct ucsi_connector *con)
+>  static const struct ucsi_operations pmic_glink_ucsi_ops = {
+>  	.read_version = pmic_glink_ucsi_read_version,
+>  	.read_cci = pmic_glink_ucsi_read_cci,
+> +	.poll_cci = pmic_glink_ucsi_read_cci,
+>  	.read_message_in = pmic_glink_ucsi_read_message_in,
+>  	.sync_control = ucsi_sync_control_common,
+>  	.async_control = pmic_glink_ucsi_async_control,
+> diff --git a/drivers/usb/typec/ucsi/ucsi_stm32g0.c b/drivers/usb/typec/ucsi/ucsi_stm32g0.c
+> index 6923fad31d79..57ef7d83a412 100644
+> --- a/drivers/usb/typec/ucsi/ucsi_stm32g0.c
+> +++ b/drivers/usb/typec/ucsi/ucsi_stm32g0.c
+> @@ -424,6 +424,7 @@ static irqreturn_t ucsi_stm32g0_irq_handler(int irq, void *data)
+>  static const struct ucsi_operations ucsi_stm32g0_ops = {
+>  	.read_version = ucsi_stm32g0_read_version,
+>  	.read_cci = ucsi_stm32g0_read_cci,
+> +	.poll_cci = ucsi_stm32g0_read_cci,
+>  	.read_message_in = ucsi_stm32g0_read_message_in,
+>  	.sync_control = ucsi_sync_control_common,
+>  	.async_control = ucsi_stm32g0_async_control,
+> diff --git a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
+> index 4cae85c0dc12..d33e3f2dd1d8 100644
+> --- a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
+> +++ b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
+> @@ -74,6 +74,7 @@ static int yoga_c630_ucsi_async_control(struct ucsi *ucsi, u64 command)
+>  static const struct ucsi_operations yoga_c630_ucsi_ops = {
+>  	.read_version = yoga_c630_ucsi_read_version,
+>  	.read_cci = yoga_c630_ucsi_read_cci,
+> +	.poll_cci = yoga_c630_ucsi_read_cci,
+>  	.read_message_in = yoga_c630_ucsi_read_message_in,
+>  	.sync_control = ucsi_sync_control_common,
+>  	.async_control = yoga_c630_ucsi_async_control,
+> -- 
+> 2.48.1
+> 
+> 
 
