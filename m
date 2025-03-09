@@ -1,103 +1,119 @@
-Return-Path: <stable+bounces-121627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54861A58852
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 22:02:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0637AA58862
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 22:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E599F188DF9D
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8BB83A4D47
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC0D1E0E00;
-	Sun,  9 Mar 2025 21:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F1621D3ED;
+	Sun,  9 Mar 2025 21:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCPSi2WT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kpGdtMr4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E065C158A13;
-	Sun,  9 Mar 2025 21:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D19212C499
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 21:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741554161; cv=none; b=DfRtyQ2wux2Xq5r0/jQLWbz8pPsnMe9JJf/CxAIcnRRqNPUZzW8IkAUMBE8MSqdx6ITtyuo7gG42tAUQ6uAh+o3Tkzkm8+Ifp6RW/n7E1PgJyqMU89KIy43bgiySlVwkNCIVAsdKlPvoswY/cMyY5GjFF/Uigcp1p4LEyczhHzA=
+	t=1741554567; cv=none; b=c8aIDvxpNmHc41nrcV5nocuOP5+wrABh+heSExQ9bVsS7BCc8sWXxdE7tDL3iF+HUB3ykTdi7IyI2h9DajM7DmLHYpN6JEkn2PV1HV8epGddC4bcYyJcKVvQTd80doOI9dDTUW5bRqc/QYrhAfxPiaMiAn2cy9iqiqKQhvSsHKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741554161; c=relaxed/simple;
-	bh=Ic1WIKJ0UVZZzgfiMRYykl3vQLtQ/asCIjh48uwldc4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ux9TA1cqS93nK408XP6CK0swxoYwjRT+C2IrOuyAG/SDAhVwmsxKJkx5pbBWtxvn3O96tc7+KRp/XWeFQU6hpi7adhZ0NSxzcXXT8cmDqSCnKh0SwTQRrPq0hNYH8gyhYjcehKqLatqC3Q8fBeHlnMjOnPJiLoIQIA0yvNLBaH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCPSi2WT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0C5C4CEE3;
-	Sun,  9 Mar 2025 21:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741554160;
-	bh=Ic1WIKJ0UVZZzgfiMRYykl3vQLtQ/asCIjh48uwldc4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JCPSi2WTrCZwPcSspU5STrITzLjhP9j23DKZmljdG+lYUYgAsvN4C289QHU/2Ig/y
-	 4/M9M/3hKCITjSj5P8EgTVVK+ECCByWNDcHlapAv2ccHMczp5aSS17HUsY9plQUp7z
-	 Ma0uOj6auT98n4gJBSXlo3hDa9Dr0Xby6TQYENBw=
-Date: Sun, 9 Mar 2025 22:02:37 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Alyssa Ross <hi@alyssa.is>,
-	NoisyCoil <noisycoil@disroot.org>, patches@lists.linux.dev
-Subject: Re: [PATCH 6.12.y 0/2] The two missing ones
-Message-ID: <2025030931-fantasize-bats-d2b5@gregkh>
-References: <2025030955-kindness-designing-246c@gregkh>
- <20250309204217.1553389-1-ojeda@kernel.org>
+	s=arc-20240116; t=1741554567; c=relaxed/simple;
+	bh=4MozytYEjw9xLscPwBf12j0oqj3D3Y6Jlo34I03d3Fo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=atNJIhut+1tpxqNwPu3S3DB4W4wXVSVCBkBoZ9tQoORKBO7GSe8THwZUm+bqtNH7WDQd4463iq6VWQvz2aE1GHPNhzZGoTbaQNJf9of2p8V0SK57NYKzxKYHmdxVf0WJQQi1/4i7V6h/y+3JrjL5FbAAgNKQAdGFluBE1oKllDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kpGdtMr4; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aaec111762bso683380866b.2
+        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 14:09:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741554564; x=1742159364; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FsBRlcazmRwBGJXClWS6FOeEYoB3awN+z7M9OAzIMWk=;
+        b=kpGdtMr4wrqu2pmELJYvHHt92Ve5H5Sr4V7nWMybwC4zifA3F5+YZ9JRJ/PpZQHdtl
+         jIED19F9/BXDJFjCoKBDTvKEGWTX+sSMFnEtDdeN3d5QS+HZzbZGRgxHhOSgpaTUT0AO
+         OcJeA5+ZiDmEgkFWDmMw/SSFF1B0sPoSnaEKwZIPjl8qgGq7Ydh0lmINC1AlNeu53FGn
+         oKMkqkZl3RqFBjJV4oyaj69qzmN8SRK7nkdy0Y6PkUwZnyuVGB0aGFivuolUttL4sPoE
+         Aqea95yNs96x+v4KyPIhxyuW67spTPyAYQJEvkx6iWwqk9wzyNn1uoXgXDl+v9wZW9ie
+         TtLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741554564; x=1742159364;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FsBRlcazmRwBGJXClWS6FOeEYoB3awN+z7M9OAzIMWk=;
+        b=IFCPum08udgwgXJBW9FLF3/v6D35oQXWWgy6NRCn9FtoHsvHPNu53Hll23yHP6Sa2y
+         M7Fkm00wxLm6/DNuiquRP1LO30an+4Yi+aavYHKoIqsero1qIGNS60qb3w3f0a9UG1bS
+         bWkqA0rWimZowM6k5dw0Q7aXdRIUMVlxZNVEs2kyUkIagi4oV5nVJ4TBL5h1NkespXpm
+         xXEAmGFWvwlTrOCScXIRbFvdseZyU+Sfb+wS/ASZV6vGVfeBL0vEZtSKaQlj0bk+QotD
+         A342yQ3MTK8QG18YSSy5I1LIggqpurTbUxJlpskaY2oH48YzzE1UK2v26v3bn8CxvaiC
+         At4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXWuFdvROyycl4x1rd2CB2D4IDAQuel47mthWuhLpZcH0fZlkCBivz14Jmx1v7uGyydfnzLX5w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF65PHTtZVIWxEnNmhzQ+AjaiocXgS4MhlbHix/RYfAPdhfb7O
+	ujA4TTEtdeu/sWPWac9+qlTrz3pBc6KdpKjUcnHRIu9vDWoLMA5wAYNZvA==
+X-Gm-Gg: ASbGncs9xHqTqE3KAxAua17wpbN5S7PIxRVZIL8zBY5JAAynmy1nuqK7o75FrNOp4vf
+	2YrZSMrvT6BbYMywB4QklSCuHxJ6sCI/mf74G7yDJ1Q2pcOsAG/kGS5VAO4+6+598s7zna7WYmI
+	3O05kdFtcoYH/nLvAeh9dGi51eiK7SBKUvGL2yYjlZ8GnXkn8bePVebUslfjmdFSVDJiCblQmQM
+	mq4nMr9sjvzgNmWIdI+uYo8LYGnN30jjmRGFC8k+R4isLnthb1yy7I+QIOzkE+OBseTKaozQ47z
+	nxkbVIQaUFk/jp7NJZVQbMFdoLQEpVNOQpidQVuP+5f9ht1JKsM82jlCIaT3Pg==
+X-Google-Smtp-Source: AGHT+IGFjPW7lvvLyRA0ufrygcpCySVSdCXT+7gfdXWHKh8zFjW5tpIsxgvgzMQcUt0cql7FREoXIg==
+X-Received: by 2002:a17:907:15c1:b0:ac2:a10b:fe3 with SMTP id a640c23a62f3a-ac2a10b1313mr111299866b.56.1741554563235;
+        Sun, 09 Mar 2025 14:09:23 -0700 (PDT)
+Received: from foxbook (adts246.neoplus.adsl.tpnet.pl. [79.185.230.246])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac27d922c58sm274376766b.40.2025.03.09.14.09.22
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 09 Mar 2025 14:09:22 -0700 (PDT)
+Date: Sun, 9 Mar 2025 22:09:18 +0100
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: <gregkh@linuxfoundation.org>
+Cc: mathias.nyman@linux.intel.com, <stable@vger.kernel.org>
+Subject: Re: FAILED: patch "[PATCH] usb: xhci: Enable the TRB overfetch
+ quirk on VIA VL805" failed to apply to 5.15-stable tree
+Message-ID: <20250309220918.26951f03@foxbook>
+In-Reply-To: <2025030900-slaw-onstage-6b47@gregkh>
+References: <2025030900-slaw-onstage-6b47@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250309204217.1553389-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, Mar 09, 2025 at 09:42:15PM +0100, Miguel Ojeda wrote:
-> Two missing ones on top of the other 60 -- sorry again! I tested the end result
-> of applying the 62 on top of v6.12.18 with all combinations of:
-> 
->   - The minimum and maximum Rust compiler versions (i.e. 1.78.0 and 1.85.0).
-> 
->   - x86_64, arm64, riscv64 and loongarch64 (this last one with the other
->     unrelated-to-Rust fix on top).
-> 
->   - A defconfig with Rust users enabled (rust_minimal, rust_print, rnull,
->     drm_panic_qr, qt2025, ax88796b_rust) plus a similar with a couple debug
->     options on top (Rust debug assertions and KUnit Rust doctests).
-> 
-> All pass my usual tests, are `WERROR=y` and Clippy-clean etc.
-> 
-> Plus x86_64 out-of-tree build, a x86_64 subdir build and a x86_64 Rust disabled
-> build. On x86_64, it should still build commit-by-commit.
-> 
-> Cheers,
-> Miguel
-> 
-> Gary Guo (1):
->   rust: map `long` to `isize` and `char` to `u8`
-> 
-> Miguel Ojeda (1):
->   rust: finish using custom FFI integer types
-> 
->  drivers/gpu/drm/drm_panic_qr.rs |  2 +-
->  rust/ffi.rs                     | 37 ++++++++++++++++++++++++++++++++-
->  rust/kernel/error.rs            |  5 +----
->  rust/kernel/firmware.rs         |  2 +-
->  rust/kernel/uaccess.rs          | 27 +++++++-----------------
->  5 files changed, 46 insertions(+), 27 deletions(-)
-> 
-> --
-> 2.48.1
-> 
+On Sun, 09 Mar 2025 21:22:00 +0100, gregkh@linuxfoundation.org wrote:
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git
+> commit id to <stable@vger.kernel.org>.
 
-Now queued up, thanks.
+Hi Greg,
 
-greg k-h
+For 5.15 and later, the sole conflict appears to be
+
+0309ed83791c xhci: pci: Fix indentation in the PCI device ID definitions
+
+
+Would you still like a backport, or pull this small whitespace cleanup
+to keep PCI IDs in sync with mainline?
+
+Michal
+
+
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From c133ec0e5717868c9967fa3df92a55e537b1aead Mon Sep 17 00:00:00 2001
+> From: Michal Pecio <michal.pecio@gmail.com>
+> Date: Tue, 25 Feb 2025 11:59:27 +0200
+> Subject: [PATCH] usb: xhci: Enable the TRB overfetch quirk on VIA
+> VL805
 
