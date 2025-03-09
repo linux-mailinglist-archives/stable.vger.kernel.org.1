@@ -1,176 +1,132 @@
-Return-Path: <stable+bounces-121562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16753A582EF
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 11:15:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5CBAA58300
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 11:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E140B3AC49B
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 10:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95ADD3AE474
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 10:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845681A4F22;
-	Sun,  9 Mar 2025 10:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8DB19F104;
+	Sun,  9 Mar 2025 10:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="YM6DHCOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7bIapUt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ECF1A8418
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 10:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF2F2114
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 10:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741515306; cv=none; b=JmFPL+yC9Knt4+TJK8XQnKB7RiwX/4wzYsYJYHgxuxB88H44onkW3Y00EFxG5beCN3QVKJXw+vXBTrqbsQ84Qi6ba9zTLSvrWBzHc7eebETbwCOIdXmyuEKxdUWSK/0WWadyZPteq3MvZ1Q00gYy65HmfVSi02oOVCzjqknmAZs=
+	t=1741515972; cv=none; b=gNnIEUPJadl+QAuRiiDYQHJhVNnywx2K/OATNqPFN5u/myJYJHf/bljzBpThA2saGSVqfcuLipng6/Nn4fSOn/hOGmdXZDf6wHPPQLvyWJHdd+5qXR8zPA79wQrHvXvtRUL3WWiERnekhq6zOTsZfMUp03mNUw7PDzM3+18c1rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741515306; c=relaxed/simple;
-	bh=6+sx/uKbcT/XifleL+nJx9XxBtH/gNc4zUHID3ZvHVg=;
-	h=Message-ID:Date:MIME-Version:In-Reply-To:To:Cc:From:Subject:
-	 Content-Type; b=dW5cZQ5YC/Xo3CgnXV654FKg0H4HCFH/9lOf1PAGEQxWpY28I85q4cG8E+UWcs63dQn4pc8PzjMRw6ODl5lCCWli5TT4YeLf50NYr/VaHxuEB5jIoaBGFAxjI2FE6i/8Bow+G4ikPqlShLGMZjRE7s3kGdYGqoFg4dkr++sZf+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=YM6DHCOx; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id 3B5211C16F1
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 13:14:58 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:content-type:content-type:subject
-	:subject:from:from:to:in-reply-to:content-language:user-agent
-	:mime-version:date:date:message-id; s=dkim; t=1741515297; x=
-	1742379298; bh=6+sx/uKbcT/XifleL+nJx9XxBtH/gNc4zUHID3ZvHVg=; b=Y
-	M6DHCOxoSiR9EYSXxKZvJ6dVgq9PFXg+Am+Cp+KsDtExmmR9S+tUvprejlmz4ODF
-	TgZd7KAv34ild76Sd1aJIb/S4CyieVDxCAdphIcm2f1649fVP/HpeJQhMXW9m8Jv
-	Pbq4f5fHk1arETL5z77hY866YnRXZrUJyYMA/vcAdw=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id dDMRgxBwuXjf for <stable@vger.kernel.org>;
-	Sun,  9 Mar 2025 13:14:57 +0300 (MSK)
-Received: from [192.168.1.67] (unknown [46.72.98.152])
-	by mail.nppct.ru (Postfix) with ESMTPSA id DCEC91C0B18;
-	Sun,  9 Mar 2025 13:14:52 +0300 (MSK)
-Message-ID: <c315940b-dbdb-4acb-b319-d3b0fd53eb0d@nppct.ru>
-Date: Sun, 9 Mar 2025 13:14:51 +0300
+	s=arc-20240116; t=1741515972; c=relaxed/simple;
+	bh=KYGTStMmZi8kj98FBEWbKGHw/VMEFVF5b4LO2KqBMI0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EL3wfRhUZFzk2lytrz2EmSVyZ/Pn9Y07Lzf0qxZwqA1QSk4SVkKU1vs1c69J0ewWgwahSw47yxIG30MuHA7Bym6HaUaRACh9vSZlf+cuS37cDFFYoL/bltKLCyBk3kZtL4GIastf9X0Ia/GdKNn7ocEfB62TZqK2LfDUZKQfvMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7bIapUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A2BC4CEE5;
+	Sun,  9 Mar 2025 10:26:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741515971;
+	bh=KYGTStMmZi8kj98FBEWbKGHw/VMEFVF5b4LO2KqBMI0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=s7bIapUtpwbiQZ3ryh8Ql607kAVAxVbU84qkFVsk4PAKiqIzQ3KFY9GQtyWMMj4Nz
+	 OtzKOI89uCm4sxPLNrIxwxpe2Ns6kQ1/oqh8PEjp6OXTO8eenim7BqvsHUazg7ObLL
+	 NoJKKEpPzgV1T8mQ9ov0ktdywmnR6v4jdxsTgUnw=
+Subject: FAILED: patch "[PATCH] stmmac: loongson: Pass correct arg to PCI function" failed to apply to 6.6-stable tree
+To: phasta@kernel.org,andrew@lunn.ch,chenx97@aosc.io,kuba@kernel.org,si.yanteng@linux.dev
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 09 Mar 2025 11:24:55 +0100
+Message-ID: <2025030955-spruce-hence-17e4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: ru
-In-Reply-To: <Y8bTM3cbL3x9nhKa@google.com>
-To: lee@kernel.org
-Cc: ardb@kernel.org, greg@kroah.com, keescook@chromium.org,
- linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
- samitolvanen@google.com, stable@vger.kernel.org, will@kernel.org,
- lvc-project@linuxtesting.org
-From: SDL <sdl@nppct.ru>
-Subject: Re: [PATCH 1/2] arm64: efi: Execute runtime services from a dedicated
- stack
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Dear Linux Kernel Developers,
-I have reason to believe that the commit 
-4012603cbd469223f225637d265a233f034c567a, which was backported to the 
-linux-5.10 branch, is introducing a bug that leads to a kernel crash.
 
-Environment Details:
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Kernel Version: linux-5.10.234
-Architecture: aarch64
-Kernel Configuration: Available at
-https://syzkaller.appspot.com/bug?extid=75dc11b3aa0369757b7c
-QEMU Version: 8.2.2
+To reproduce the conflict and resubmit, you may use the following commands:
 
-QEMU Launch Command:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 00371a3f48775967950c2fe3ec97b7c786ca956d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030955-spruce-hence-17e4@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-qemu-system-aarch64 \
-     -m 4G \
-     -smp 4,sockets=1,cores=4,threads=1 \
-     -cpu cortex-a57 \
-     -machine virt,accel=tcg \
-     -kernel /home/user/lvc/linux-stable/arch/arm64/boot/Image \
-     -append "console=ttyS0 root=/dev/vda2 earlyprintk=serial 
-net.ifnames=0 rw debug loglevel=8" \
-     -drive 
-file=/home/user/lvc/image/disk.raw,format=raw,if=virtio,index=1 \
-     -bios /usr/share/AAVMF/AAVMF_CODE.fd \
-     -netdev user,id=net0,hostfwd=tcp::10022-:22 \
-     -device virtio-net-device,netdev=net0 \
-     -nographic
+Possible dependencies:
 
-Steps to Reproduce:
 
-mount -t sysfs sysfs /sys
-mount -t proc proc /proc
-mount -t efivarfs efivarfs /sys/firmware/efi/efivars
-tools/testing/selftests/efivarfs/efivarfs.sh
 
-Crash log:
+thanks,
 
-[  101.403235][   T38] Unable to handle kernel paging request at virtual 
-address ffffa00023b20000
-[  101.403905][   T38] Mem abort info:
-[  101.404159][   T38]   ESR = 0x96000047
-[  101.404448][   T38]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  101.404748][   T38]   SET = 0, FnV = 0
-[  101.404988][   T38]   EA = 0, S1PTW = 0
-[  101.405233][   T38] Data abort info:
-[  101.405469][   T38]   ISV = 0, ISS = 0x00000047
-[  101.405721][   T38]   CM = 0, WnR = 1
-[  101.406070][   T38] swapper pgtable: 4k pages, 48-bit VAs, 
-pgdp=0000000103336000
-[  101.406415][   T38] [ffffa00023b20000] pgd=000000013ffff003, 
-p4d=000000013ffff003, pud=000000013fffe003, pmd=000000013fff9003, 
-pte=0000000000000000
-[  101.407997][   T38] Internal error: Oops: 0000000096000047 [#1] 
-PREEMPT SMP
-[  101.408446][   T38] Modules linked in:
-[  101.409010][   T38] CPU: 1 PID: 38 Comm: kworker/u8:2 Not tainted 
-5.10.234 #61
-[  101.409376][   T38] Hardware name: QEMU QEMU Virtual Machine, BIOS 
-2024.02-2ubuntu0.1 10/25/2024
-[  101.410689][   T38] Workqueue: efi_rts_wq efi_call_rts
-[  101.411219][   T38] pstate: 000003c5 (nzcv DAIF -PAN -UAO -TCO BTYPE=--)
-[  101.411574][   T38] pc : el1_sync+0xc/0x140
-[  101.411930][   T38] lr : 0x0
-[  101.412132][   T38] sp : ffffa00023b1ffd0
-[  101.412363][   T38] x29: 0000000000000000 x28: ffff0000cc741a80
-[  101.412761][   T38] x27: 0000000000000001 x26: 0000000000e800e8
-[  101.413117][   T38] x25: 0000000000800080 x24: ffff940004765298
-[  101.413465][   T38] x23: 00000000100003c5 x22: ffffa00018c95600
-[  101.413809][   T38] x21: ffffa0001923a980 x20: ffffa00018d30380
-[  101.414170][   T38] x19: ffffa0001bab8008 x18: 1fffe000198e8491
-[  101.414515][   T38] x17: 0000000000000000 x16: ffffa000102a26c0
-[  101.414882][   T38] x15: 0000000000000001 x14: ffff0000ccf34400
-[  101.415277][   T38] x13: 000000000000003c x12: ffff0000ccf34000
-[  101.415656][   T38] x11: 0000000000000018 x10: 0000000000000054
-[  101.416072][   T38] x9 : 4fc79849210be57c x8 : 11d293ca8be4df61
-[  101.416446][   T38] x7 : 0000000041b58ab3 x6 : ffff94000476522a
-[  101.416820][   T38] x5 : 0000002200000000 x4 : 0000000200000000
-[  101.417190][   T38] x3 : 1fffe000198e8352 x2 : ffffa0001923a820
-[  101.417560][   T38] x1 : ffff0000cc741a80 x0 : 0000000000000000
-[  101.418109][   T38] Call trace:
-[  101.418601][   T38] Code: d503201f a90007e0 a9010fe2 a90217e4 (a9031fe6)
-[  101.419579][   T38] ---[ end trace 61316cddfdbbcb95 ]---
-[  103.623221][   T38] Kernel panic - not syncing: Oops: Fatal exception
-[  103.623723][   T38] SMP: stopping secondary CPUs
-[  105.221708][   T38] SMP: failed to stop secondary CPUs 0-3
-[  105.222306][   T38] Kernel Offset: disabled
-[  105.222711][   T38] CPU features: 0x28240022,61002082
-[  105.222969][   T38] Memory Limit: none
+greg k-h
 
-I identified this commit as the potential cause of the crash using git 
-bisect. The issue is reproducible with the above setup and 
-configuration. If you need more details or logs, I am more than willing 
-to provide them. Thank you for your attention to this matter.
+------------------ original commit in Linus's tree ------------------
 
-Best regards,
+From 00371a3f48775967950c2fe3ec97b7c786ca956d Mon Sep 17 00:00:00 2001
+From: Philipp Stanner <phasta@kernel.org>
+Date: Wed, 26 Feb 2025 09:52:05 +0100
+Subject: [PATCH] stmmac: loongson: Pass correct arg to PCI function
 
-Alexey Nepomnyashih
+pcim_iomap_regions() should receive the driver's name as its third
+parameter, not the PCI device's name.
+
+Define the driver name with a macro and use it at the appropriate
+places, including pcim_iomap_regions().
+
+Cc: stable@vger.kernel.org # v5.14+
+Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Tested-by: Henry Chen <chenx97@aosc.io>
+Link: https://patch.msgid.link/20250226085208.97891-2-phasta@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index f5acfb7d4ff6..ab7c2750c104 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -11,6 +11,8 @@
+ #include "dwmac_dma.h"
+ #include "dwmac1000.h"
+ 
++#define DRIVER_NAME "dwmac-loongson-pci"
++
+ /* Normal Loongson Tx Summary */
+ #define DMA_INTR_ENA_NIE_TX_LOONGSON	0x00040000
+ /* Normal Loongson Rx Summary */
+@@ -568,7 +570,7 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+ 	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+ 		if (pci_resource_len(pdev, i) == 0)
+ 			continue;
+-		ret = pcim_iomap_regions(pdev, BIT(0), pci_name(pdev));
++		ret = pcim_iomap_regions(pdev, BIT(0), DRIVER_NAME);
+ 		if (ret)
+ 			goto err_disable_device;
+ 		break;
+@@ -687,7 +689,7 @@ static const struct pci_device_id loongson_dwmac_id_table[] = {
+ MODULE_DEVICE_TABLE(pci, loongson_dwmac_id_table);
+ 
+ static struct pci_driver loongson_dwmac_driver = {
+-	.name = "dwmac-loongson-pci",
++	.name = DRIVER_NAME,
+ 	.id_table = loongson_dwmac_id_table,
+ 	.probe = loongson_dwmac_probe,
+ 	.remove = loongson_dwmac_remove,
+
 
