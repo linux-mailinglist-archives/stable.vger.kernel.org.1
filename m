@@ -1,122 +1,139 @@
-Return-Path: <stable+bounces-121610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7BEA58808
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:05:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5931A58810
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D421B3AD329
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:05:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DF1A188B98D
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3941DE4F8;
-	Sun,  9 Mar 2025 20:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE8F13C690;
+	Sun,  9 Mar 2025 20:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="O55SYx47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIj4Z/pP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7383C1DF279
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 20:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93419211C
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 20:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741550746; cv=none; b=msd8QRGiDNUdOydLUj7ThPt43akt3mGMOcLmXVpJHn8yDIMtabjJOjCo0ETV0FKwdeNBrVa8qdD7+cEk60xc9LtYiEH0LCjLTn+hLLv8piqrmxlRdVnjXgMnFWrs3TMXvNVjytatrYPIJCfqK18hyFdT1/gRm88pvTNxDXPH0Cs=
+	t=1741551683; cv=none; b=muB21ryaNa2uT/PoqrN9ImR2f/JJQ7uJfNiuCboxgktgLoTKj3Esy8UC3fIJ4YEU8LGSbF51gEVQTOk8w/S9g4hfPxNnUrtmd83sQxuk0AY6XaZg5TYNBjS85iHZQi3mGeXdg0nmVdRXvenAfGAKxDEt/KYXazacfnvMdGAD0jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741550746; c=relaxed/simple;
-	bh=5QNgz1DSwEz+JcQUvkPIVZFiV3jEVE3c+o+xtiwY6iM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qeMz1y+NQYhtsIJ6Gqqbjof3VQ1XUkCW6v7a3lp2/Ov6VcliNebzmI/huGoWl4/sbX87htrahy5hyOCBYeDG7I8DYXAJhQPXvUakgMOoXY/Hr58yzyNIqzgU6wnpvHZh12FDwEslvtu8tE5UE+aVEl6/1Z3AQD2K8DE2MiDIH7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=O55SYx47; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e6194e9d2cso2443688a12.2
-        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 13:05:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1741550742; x=1742155542; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zomZiYOBSa5a/dlFzwVwmAP1/cu0vUqOQ6lECx80PAs=;
-        b=O55SYx47ZyZ0tGMXkJAARLilJegA+GA+V8zg5seVS39tySHygUvYRkBP9bbhQ7bzfT
-         7/lMDdInMp+0TqeA56NuMJC5IxQs0k5BrCZKjw/vTnsi0Cnn/tY2hfHuQ30izK/pUGNg
-         zTba9oTLzO9kN4IiosChn51lOU+yeQsgogTDY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741550742; x=1742155542;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zomZiYOBSa5a/dlFzwVwmAP1/cu0vUqOQ6lECx80PAs=;
-        b=ZzLLu38DGqATaFxAowZF5+LN1Bo1omUttf0X4N+fveAy0rsESeE+UiehbK0127ccCq
-         XlBgl8atCRsf8Q0YqoHbRi6GowXwLd7n+YkzpbxDfe4jTd+D+n1PiNE3L3oybQi2Yzsr
-         Z5WwOBNaUvK7RZ16Ygr5DrDe1I+YThRpM9gxsXr3ebgjtS5sEvJufURs8KigbQfWXbUT
-         eLFD8NjrlPLzowiC7ZtuksXpe8L+LboF2FOTgZmeDfO0mIyEp30qOO+0cvdXIOEbyk2d
-         LOwGW/oSR1h5PFO7cYpB7+80tKMcg3b6LTc38wgwaqo2mxxmxB8jyNcZxArXGhOV4bRK
-         Aezg==
-X-Gm-Message-State: AOJu0Yy56YKXiiE9B3PAK3HyuehDzwg8UWMnnltd14ZxBwXEz7M6/7vH
-	r6AGzrjnSFYIS0WBsN1f3GsNsTwrdMpLsMzZOG3dxQ5QO3CFo1xn/Pk+zqWCisp71GIL/se17RR
-	WPQY=
-X-Gm-Gg: ASbGncsKx/i5mAmRFNpTmmiOxvzCVAOuaq9DIopoBZbyhttRyXDMSEWWKbKh/plZCij
-	5DBHs87ifDVxBzmrP02GoesetxDEzOhQb8X6rHStP5zFjm5oNrHkyUtJreQmVdu811+3+8rjy4L
-	VC8K7FDBt1grkn8Yg4f5IZWrhszzs1Vrghj47E7hCrfZDpEX6gf+2ohktBZzXR1Yrir0Ng3pYhg
-	PCADdqno8328yB9fIpwGDyF6ieldXCSbPIPZRQYOVtbytnhIiRCWMbSxbQRsYujEKABkUn/z6qu
-	QAkQwBfw7Not2ian83kzaGkxN5W8FHBGKc3BaPkYR8D0kubmBkPSVA0+tPppDYNbCbocwFiwlgL
-	nL6DuGndnCUnPUhYhKEs=
-X-Google-Smtp-Source: AGHT+IHhu5b+idgjNS2CS9OAfenv2kRC4Wa8pHYqnx6ReQJwhv5ItcYtFRVhZo6Zcpeohu5tQfpUow==
-X-Received: by 2002:a17:907:1b21:b0:ac1:dfab:d38e with SMTP id a640c23a62f3a-ac2525f6b9amr1151720666b.15.1741550742374;
-        Sun, 09 Mar 2025 13:05:42 -0700 (PDT)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac239438f9bsm650002766b.11.2025.03.09.13.05.41
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Mar 2025 13:05:41 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac286d4ed05so122857866b.3
-        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 13:05:41 -0700 (PDT)
-X-Received: by 2002:a17:907:7156:b0:ac2:26a6:fed5 with SMTP id
- a640c23a62f3a-ac252703847mr1064702866b.29.1741550741028; Sun, 09 Mar 2025
- 13:05:41 -0700 (PDT)
+	s=arc-20240116; t=1741551683; c=relaxed/simple;
+	bh=LXN9frbHeypIWnoFj07lQznh3fZJGMtoh4Mzlm2gW+0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Tb7tVajiWG7JN4sJKseKpVP+lIc4dm7hJe5yYT48p+43PcD9MnZMY9FvE1CzdSSsO7hwVlCT7BeyHBIgtkyw2ZbNgRIP8jMjpkqlFfWofUZTA0XnOY78b0QZZsoP8zphvZ3WJq2DGYTUbIz8KdZ1Qvf1W+Y4lzKv0Zr69gyLWks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIj4Z/pP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AE9C4CEE3;
+	Sun,  9 Mar 2025 20:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741551683;
+	bh=LXN9frbHeypIWnoFj07lQznh3fZJGMtoh4Mzlm2gW+0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=QIj4Z/pPyjOVF+60Qg4TTteK+51HfVFl9E2ubVoJrlzKoUIYU8BTvXQ7O/cG2Lbfg
+	 swLawiF2iJlTVZs//cRnkvRtFGLG8SbPUkzJ9NhCDczR1jFpG9ByJ+c9TqzkNtDvv3
+	 s44kIt8ON247fto6FRmjsQQpCwemufufUWIYj+Dw=
+Subject: FAILED: patch "[PATCH] usb: typec: ucsi: Fix NULL pointer access" failed to apply to 6.1-stable tree
+To: akuchynski@chromium.org,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,stable@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 09 Mar 2025 21:21:20 +0100
+Message-ID: <2025030920-fancy-such-266d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250309195202.4675-1-sashal@kernel.org>
-In-Reply-To: <20250309195202.4675-1-sashal@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 9 Mar 2025 10:05:24 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wgsHsVjOnETsRtY8ELEi1G1_0uLMYq2Fv9auhRfR5uJvg@mail.gmail.com>
-X-Gm-Features: AQ5f1JqZd31Ai6TLorPQKvvkOZNZdK8HJaaYWhzH0xBPB29dSHUTONoVoRxJzHQ
-Message-ID: <CAHk-=wgsHsVjOnETsRtY8ELEi1G1_0uLMYq2Fv9auhRfR5uJvg@mail.gmail.com>
-Subject: Re: Patch "fs/pipe: Read pipe->{head,tail} atomically outside
- pipe->mutex" has been added to the 5.10-stable tree
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-
-Note that this was a real fix, but the fix only matters if commit
-aaec5a95d596 ("pipe_read: don't wake up the writer if the pipe is
-still full") is in the tree.
-
-Now, the bug was pre-existing, and *maybe* it could be hit without
-that commit aaec5a95d596, but nobody has ever reported it, so it's
-very very unlikely.
-
-Also, this fix then had some fall-out, and while I think you've queued
-all the fallout fixes too, I think it might be a good idea to wait for
-more reports from the development tree before considering these for
-stable.
-
-Put another way: this fix caused some pain. It might not be worth
-back-porting to stable at all, and if it is, it might be worth waiting
-to see that there's no other fallout.
-
-              Linus
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-On Sun, 9 Mar 2025 at 09:52, Sasha Levin <sashal@kernel.org> wrote:
->
-> This is a note to let you know that I've just added the patch titled
->
->     fs/pipe: Read pipe->{head,tail} atomically outside pipe->mutex
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x b13abcb7ddd8d38de769486db5bd917537b32ab1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030920-fancy-such-266d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b13abcb7ddd8d38de769486db5bd917537b32ab1 Mon Sep 17 00:00:00 2001
+From: Andrei Kuchynski <akuchynski@chromium.org>
+Date: Wed, 5 Mar 2025 11:17:39 +0000
+Subject: [PATCH] usb: typec: ucsi: Fix NULL pointer access
+
+Resources should be released only after all threads that utilize them
+have been destroyed.
+This commit ensures that resources are not released prematurely by waiting
+for the associated workqueue to complete before deallocating them.
+
+Cc: stable <stable@kernel.org>
+Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250305111739.1489003-2-akuchynski@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 7a56d3f840d7..2a2915b0a645 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1825,11 +1825,11 @@ static int ucsi_init(struct ucsi *ucsi)
+ 
+ err_unregister:
+ 	for (con = connector; con->port; con++) {
++		if (con->wq)
++			destroy_workqueue(con->wq);
+ 		ucsi_unregister_partner(con);
+ 		ucsi_unregister_altmodes(con, UCSI_RECIPIENT_CON);
+ 		ucsi_unregister_port_psy(con);
+-		if (con->wq)
+-			destroy_workqueue(con->wq);
+ 
+ 		usb_power_delivery_unregister_capabilities(con->port_sink_caps);
+ 		con->port_sink_caps = NULL;
+@@ -2013,10 +2013,6 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 
+ 	for (i = 0; i < ucsi->cap.num_connectors; i++) {
+ 		cancel_work_sync(&ucsi->connector[i].work);
+-		ucsi_unregister_partner(&ucsi->connector[i]);
+-		ucsi_unregister_altmodes(&ucsi->connector[i],
+-					 UCSI_RECIPIENT_CON);
+-		ucsi_unregister_port_psy(&ucsi->connector[i]);
+ 
+ 		if (ucsi->connector[i].wq) {
+ 			struct ucsi_work *uwork;
+@@ -2032,6 +2028,11 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 			destroy_workqueue(ucsi->connector[i].wq);
+ 		}
+ 
++		ucsi_unregister_partner(&ucsi->connector[i]);
++		ucsi_unregister_altmodes(&ucsi->connector[i],
++					 UCSI_RECIPIENT_CON);
++		ucsi_unregister_port_psy(&ucsi->connector[i]);
++
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_sink_caps);
+ 		ucsi->connector[i].port_sink_caps = NULL;
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_source_caps);
+
 
