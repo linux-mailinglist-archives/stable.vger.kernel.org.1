@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-121617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ECAEA58816
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:22:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26DEA58817
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE37169374
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:22:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74B7B7A2830
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8265E13C690;
-	Sun,  9 Mar 2025 20:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ADF160783;
+	Sun,  9 Mar 2025 20:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ufd4LLlu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsimjdUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409FD211C
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 20:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937D846426
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 20:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741551739; cv=none; b=plqZ4ucRpLSoxIcqUrfSDo/WJzOrbLTiPDGVnmXu7oeYQ47n0Mv7d56MwoOdE/19aePl5zCZzaiWfb2E3Ezur53QoO98QOo595GVJI/q/QrtanoPV1cRzl6PlZ5yqce+MBe00tuMOLPkst6RvwhylRUi/u2qZhLsXNietFhRnyg=
+	t=1741551776; cv=none; b=Ob6SFRbbaNZAw2Tw1HEZ0zTkAva+B1U3tK4IA7ogJ5lIJ7V0xdNzwBzG0Sr6c7r7sz48nbyKbcf9ZrLuusTBzpJrhtT8MCJWcFpCRS9oFL9o+3+zrRRuyTSw2Df+o2zzpi/JolWsX/5D9nJLnxCAwarE1qciOXiQYmvIuQpxCHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741551739; c=relaxed/simple;
-	bh=zy98GbGyWltE92bZyyUtB4Bj7JuJXfmbGHLwkk7nJDM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BCe6tBqhJ5SqjBxGAkcMvm77Me9aIgVDchXlcyHIH2pO9YhYiMOeIoivOdSlAlpW6raWWKMRmcDF6tYTuE2W6NBJGicaigTg4cQ1o84teHwfeUQXtMUaQJycDWsZysquZpE+MXwCdYHy8OXMjubiNBw8MRecT4ZlRyOKTtGt5DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufd4LLlu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59926C4CEE3;
-	Sun,  9 Mar 2025 20:22:17 +0000 (UTC)
+	s=arc-20240116; t=1741551776; c=relaxed/simple;
+	bh=EJqgiVLwR6W74Q47K5L5TUQ7KFd0vBQ4jsoIIIhpyNg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YIHgTU6mUX3jbU3saD4efWTNKjB99eyLqQnpCGBJ+nob3ynN35aBeaCUY1gM5+QzhxEQlFWbCwRxHlB9dVPZzgywAMpNMiOhBf7AdJOIcTkW2RK/35gbF3guCWvyD8m17bP4g+knQKl5GEwTQiqu/g14835eZM71+wflCzUPViA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsimjdUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFE5C4CEE3;
+	Sun,  9 Mar 2025 20:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741551737;
-	bh=zy98GbGyWltE92bZyyUtB4Bj7JuJXfmbGHLwkk7nJDM=;
+	s=korg; t=1741551776;
+	bh=EJqgiVLwR6W74Q47K5L5TUQ7KFd0vBQ4jsoIIIhpyNg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Ufd4LLlulw8ZWzZf8+8aBnZcsLwB4zk025SPRIR3Bmoxpe1/pu8+iPJpr+pSF1w/f
-	 k5I0IqdmF0xpJn8x2sfkW2F7NEFGbfKf04Xb7P0lbjU9YLF9l9Tn0EDfjEhE66xmeT
-	 8ZspEBxJXy377xy7uR9w8xU/Slk7oiPFpugiR1ss=
-Subject: FAILED: patch "[PATCH] usb: xhci: Enable the TRB overfetch quirk on VIA VL805" failed to apply to 5.4-stable tree
-To: michal.pecio@gmail.com,gregkh@linuxfoundation.org,mathias.nyman@linux.intel.com
+	b=bsimjdUEVqYx5TT4vfpEj+hPMYvgVMtEzL36Hs7nk8nmc37qIfZw9spnGJekBj0OX
+	 8zBsixp63Qa+6lgeBgy2os+eToxvrEM8GpnPbTN5nBpmsit29o0FdaVzPE7fl9FwA9
+	 ME+wxFhG9+4JVoQ97zCVqMAeyMYbvIEZFn7B9KZQ=
+Subject: FAILED: patch "[PATCH] usb: dwc3: Set SUSPENDENABLE soon after phy init" failed to apply to 5.10-stable tree
+To: Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 09 Mar 2025 21:22:02 +0100
-Message-ID: <2025030902-fernlike-flashback-65c0@gregkh>
+Date: Sun, 09 Mar 2025 21:22:53 +0100
+Message-ID: <2025030953-washboard-overcrowd-fed5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x c133ec0e5717868c9967fa3df92a55e537b1aead
+git cherry-pick -x cc5bfc4e16fc1d1c520cd7bb28646e82b6e69217
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030902-fernlike-flashback-65c0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030953-washboard-overcrowd-fed5@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,102 +77,215 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c133ec0e5717868c9967fa3df92a55e537b1aead Mon Sep 17 00:00:00 2001
-From: Michal Pecio <michal.pecio@gmail.com>
-Date: Tue, 25 Feb 2025 11:59:27 +0200
-Subject: [PATCH] usb: xhci: Enable the TRB overfetch quirk on VIA VL805
+From cc5bfc4e16fc1d1c520cd7bb28646e82b6e69217 Mon Sep 17 00:00:00 2001
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Date: Thu, 30 Jan 2025 23:49:31 +0000
+Subject: [PATCH] usb: dwc3: Set SUSPENDENABLE soon after phy init
 
-Raspberry Pi is a major user of those chips and they discovered a bug -
-when the end of a transfer ring segment is reached, up to four TRBs can
-be prefetched from the next page even if the segment ends with link TRB
-and on page boundary (the chip claims to support standard 4KB pages).
+After phy initialization, some phy operations can only be executed while
+in lower P states. Ensure GUSB3PIPECTL.SUSPENDENABLE and
+GUSB2PHYCFG.SUSPHY are set soon after initialization to avoid blocking
+phy ops.
 
-It also appears that if the prefetched TRBs belong to a different ring
-whose doorbell is later rung, they may be used without refreshing from
-system RAM and the endpoint will stay idle if their cycle bit is stale.
+Previously the SUSPENDENABLE bits are only set after the controller
+initialization, which may not happen right away if there's no gadget
+driver or xhci driver bound. Revise this to clear SUSPENDENABLE bits
+only when there's mode switching (change in GCTL.PRTCAPDIR).
 
-Other users complain about IOMMU faults on x86 systems, unsurprisingly.
-
-Deal with it by using existing quirk which allocates a dummy page after
-each transfer ring segment. This was seen to resolve both problems. RPi
-came up with a more efficient solution, shortening each segment by four
-TRBs, but it complicated the driver and they ditched it for this quirk.
-
-Also rename the quirk and add VL805 device ID macro.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://github.com/raspberrypi/linux/issues/4685
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215906
-CC: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225095927.2512358-2-mathias.nyman@linux.intel.com
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/633aef0afee7d56d2316f7cc3e1b2a6d518a8cc9.1738280911.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 92703efda1f7..fdf0c1008225 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2437,7 +2437,8 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+	if (xhci->quirks & XHCI_TRB_OVERFETCH)
-+		/* Buggy HC prefetches beyond segment bounds - allocate dummy space at the end */
- 		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
- 				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
- 	else
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index ad0ff356f6fa..54460d11f7ee 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -38,6 +38,8 @@
- #define PCI_DEVICE_ID_ETRON_EJ168		0x7023
- #define PCI_DEVICE_ID_ETRON_EJ188		0x7052
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 2c472cb97f6c..66a08b527165 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -131,11 +131,24 @@ void dwc3_enable_susphy(struct dwc3 *dwc, bool enable)
+ 	}
+ }
  
-+#define PCI_DEVICE_ID_VIA_VL805			0x3483
+-void dwc3_set_prtcap(struct dwc3 *dwc, u32 mode)
++void dwc3_set_prtcap(struct dwc3 *dwc, u32 mode, bool ignore_susphy)
+ {
++	unsigned int hw_mode;
+ 	u32 reg;
+ 
+ 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
 +
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
-@@ -418,8 +420,10 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 			pdev->device == 0x3432)
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 
--	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
-+	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
- 		xhci->quirks |= XHCI_LPM_SUPPORT;
-+		xhci->quirks |= XHCI_TRB_OVERFETCH;
++	 /*
++	  * For DRD controllers, GUSB3PIPECTL.SUSPENDENABLE and
++	  * GUSB2PHYCFG.SUSPHY should be cleared during mode switching,
++	  * and they can be set after core initialization.
++	  */
++	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
++	if (hw_mode == DWC3_GHWPARAMS0_MODE_DRD && !ignore_susphy) {
++		if (DWC3_GCTL_PRTCAP(reg) != mode)
++			dwc3_enable_susphy(dwc, false);
 +	}
++
+ 	reg &= ~(DWC3_GCTL_PRTCAPDIR(DWC3_GCTL_PRTCAP_OTG));
+ 	reg |= DWC3_GCTL_PRTCAPDIR(mode);
+ 	dwc3_writel(dwc->regs, DWC3_GCTL, reg);
+@@ -216,7 +229,7 @@ static void __dwc3_set_mode(struct work_struct *work)
  
- 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
-@@ -467,11 +471,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	spin_lock_irqsave(&dwc->lock, flags);
  
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 		}
+-	dwc3_set_prtcap(dwc, desired_dr_role);
++	dwc3_set_prtcap(dwc, desired_dr_role, false);
  
- 		if (pdev->device == 0x9203)
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
+@@ -658,16 +671,7 @@ static int dwc3_ss_phy_setup(struct dwc3 *dwc, int index)
+ 	 */
+ 	reg &= ~DWC3_GUSB3PIPECTL_UX_EXIT_PX;
+ 
+-	/*
+-	 * Above DWC_usb3.0 1.94a, it is recommended to set
+-	 * DWC3_GUSB3PIPECTL_SUSPHY to '0' during coreConsultant configuration.
+-	 * So default value will be '0' when the core is reset. Application
+-	 * needs to set it to '1' after the core initialization is completed.
+-	 *
+-	 * Similarly for DRD controllers, GUSB3PIPECTL.SUSPENDENABLE must be
+-	 * cleared after power-on reset, and it can be set after core
+-	 * initialization.
+-	 */
++	/* Ensure the GUSB3PIPECTL.SUSPENDENABLE is cleared prior to phy init. */
+ 	reg &= ~DWC3_GUSB3PIPECTL_SUSPHY;
+ 
+ 	if (dwc->u2ss_inp3_quirk)
+@@ -747,15 +751,7 @@ static int dwc3_hs_phy_setup(struct dwc3 *dwc, int index)
+ 		break;
  	}
  
- 	if (pdev->vendor == PCI_VENDOR_ID_CDNS &&
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 8c164340a2c3..779b01dee068 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1632,7 +1632,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
--#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+-	/*
+-	 * Above DWC_usb3.0 1.94a, it is recommended to set
+-	 * DWC3_GUSB2PHYCFG_SUSPHY to '0' during coreConsultant configuration.
+-	 * So default value will be '0' when the core is reset. Application
+-	 * needs to set it to '1' after the core initialization is completed.
+-	 *
+-	 * Similarly for DRD controllers, GUSB2PHYCFG.SUSPHY must be cleared
+-	 * after power-on reset, and it can be set after core initialization.
+-	 */
++	/* Ensure the GUSB2PHYCFG.SUSPHY is cleared prior to phy init. */
+ 	reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
+ 
+ 	if (dwc->dis_enblslpm_quirk)
+@@ -830,6 +826,25 @@ static int dwc3_phy_init(struct dwc3 *dwc)
+ 			goto err_exit_usb3_phy;
+ 	}
+ 
++	/*
++	 * Above DWC_usb3.0 1.94a, it is recommended to set
++	 * DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY to '0' during
++	 * coreConsultant configuration. So default value will be '0' when the
++	 * core is reset. Application needs to set it to '1' after the core
++	 * initialization is completed.
++	 *
++	 * Certain phy requires to be in P0 power state during initialization.
++	 * Make sure GUSB3PIPECTL.SUSPENDENABLE and GUSB2PHYCFG.SUSPHY are clear
++	 * prior to phy init to maintain in the P0 state.
++	 *
++	 * After phy initialization, some phy operations can only be executed
++	 * while in lower P states. Ensure GUSB3PIPECTL.SUSPENDENABLE and
++	 * GUSB2PHYCFG.SUSPHY are set soon after initialization to avoid
++	 * blocking phy ops.
++	 */
++	if (!DWC3_VER_IS_WITHIN(DWC3, ANY, 194A))
++		dwc3_enable_susphy(dwc, true);
++
+ 	return 0;
+ 
+ err_exit_usb3_phy:
+@@ -1588,7 +1603,7 @@ static int dwc3_core_init_mode(struct dwc3 *dwc)
+ 
+ 	switch (dwc->dr_mode) {
+ 	case USB_DR_MODE_PERIPHERAL:
+-		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE);
++		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE, false);
+ 
+ 		if (dwc->usb2_phy)
+ 			otg_set_vbus(dwc->usb2_phy->otg, false);
+@@ -1600,7 +1615,7 @@ static int dwc3_core_init_mode(struct dwc3 *dwc)
+ 			return dev_err_probe(dev, ret, "failed to initialize gadget\n");
+ 		break;
+ 	case USB_DR_MODE_HOST:
+-		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_HOST);
++		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_HOST, false);
+ 
+ 		if (dwc->usb2_phy)
+ 			otg_set_vbus(dwc->usb2_phy->otg, true);
+@@ -1645,7 +1660,7 @@ static void dwc3_core_exit_mode(struct dwc3 *dwc)
+ 	}
+ 
+ 	/* de-assert DRVVBUS for HOST and OTG mode */
+-	dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE);
++	dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE, true);
+ }
+ 
+ static void dwc3_get_software_properties(struct dwc3 *dwc)
+@@ -2453,7 +2468,7 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+ 		if (ret)
+ 			return ret;
+ 
+-		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE);
++		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE, true);
+ 		dwc3_gadget_resume(dwc);
+ 		break;
+ 	case DWC3_GCTL_PRTCAP_HOST:
+@@ -2461,7 +2476,7 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+ 			ret = dwc3_core_init_for_resume(dwc);
+ 			if (ret)
+ 				return ret;
+-			dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_HOST);
++			dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_HOST, true);
+ 			break;
+ 		}
+ 		/* Restore GUSB2PHYCFG bits that were modified in suspend */
+@@ -2490,7 +2505,7 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+ 		if (ret)
+ 			return ret;
+ 
+-		dwc3_set_prtcap(dwc, dwc->current_dr_role);
++		dwc3_set_prtcap(dwc, dwc->current_dr_role, true);
+ 
+ 		dwc3_otg_init(dwc);
+ 		if (dwc->current_otg_role == DWC3_OTG_ROLE_HOST) {
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index c955039bb4f6..aaa39e663f60 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1558,7 +1558,7 @@ struct dwc3_gadget_ep_cmd_params {
+ #define DWC3_HAS_OTG			BIT(3)
+ 
+ /* prototypes */
+-void dwc3_set_prtcap(struct dwc3 *dwc, u32 mode);
++void dwc3_set_prtcap(struct dwc3 *dwc, u32 mode, bool ignore_susphy);
+ void dwc3_set_mode(struct dwc3 *dwc, u32 mode);
+ u32 dwc3_core_fifo_space(struct dwc3_ep *dep, u8 type);
+ 
+diff --git a/drivers/usb/dwc3/drd.c b/drivers/usb/dwc3/drd.c
+index d76ae676783c..7977860932b1 100644
+--- a/drivers/usb/dwc3/drd.c
++++ b/drivers/usb/dwc3/drd.c
+@@ -173,7 +173,7 @@ void dwc3_otg_init(struct dwc3 *dwc)
+ 	 * block "Initialize GCTL for OTG operation".
+ 	 */
+ 	/* GCTL.PrtCapDir=2'b11 */
+-	dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_OTG);
++	dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_OTG, true);
+ 	/* GUSB2PHYCFG0.SusPHY=0 */
+ 	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+ 	reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
+@@ -556,7 +556,7 @@ int dwc3_drd_init(struct dwc3 *dwc)
+ 
+ 		dwc3_drd_update(dwc);
+ 	} else {
+-		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_OTG);
++		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_OTG, true);
+ 
+ 		/* use OTG block to get ID event */
+ 		irq = dwc3_otg_get_irq(dwc);
 
 
