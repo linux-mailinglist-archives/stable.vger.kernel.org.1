@@ -1,86 +1,96 @@
-Return-Path: <stable+bounces-121555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB68BA581AD
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 09:38:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A382AA58299
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 10:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D92C516975A
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 08:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C654188D9EF
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 09:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4177C18871F;
-	Sun,  9 Mar 2025 08:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F81D19DF99;
+	Sun,  9 Mar 2025 09:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOSuRI4r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZH6VQHkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D247BDF42;
-	Sun,  9 Mar 2025 08:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBF219259F;
+	Sun,  9 Mar 2025 09:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741509482; cv=none; b=gVW4S+eTtX09xdd5QLvLgT9M2tyP+vWfhzOC3Mv0GCCiPaWArF3DqPmwEIaMEurcD9Vp53LCNIaQQnNvuaX7R8Hn0bPRB4Bp73suoHoKhZ5MABx5vpMxTP9kJ7B3Qmz0zk/gGC3Kc3urXWtcGJybSwx1AtGqQ9AmugJFh6w49mE=
+	t=1741511891; cv=none; b=oVoOPm/3YOHU6dNnfBVUD1/sNJSO+uCf7mmK+Y5zqwKIpDQE99dbv+nzmSroNFqlzk7OcfiwdDbHMgXpsBqrZ5Fk6aB4iaNepNNBkqGlI1cXN/ihdT63Hh9gHO75PACnoeRPqsQsSejsZ6LQbEsDd15PBeHO2i97SyBRzcYAgqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741509482; c=relaxed/simple;
-	bh=kgoPWWbhkvIOxxj2eTNTYspC8M/v0Q0oqBrkLYHoEz8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GtY6BbJoyhj8dU/FslOzf1/UYQHEwdPj2kv084O/9CiYOKmN0G4FRx178HTzFJRMSodEdLyWWQgeNoXyaM24kci0IKUOpzU1SoWJMpFZYO16SjuDe5PbMdpy55mpr0yCgvGkW8t13qgz55pokDp0oyoDRuOaVgXVnKLFHgv+7w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOSuRI4r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFFBC4CEEF;
-	Sun,  9 Mar 2025 08:38:00 +0000 (UTC)
+	s=arc-20240116; t=1741511891; c=relaxed/simple;
+	bh=Q77QRDZ4Pd4QE01w+F0Lno/svSsw0zVKxGGmOk7nNEM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J6sjki2e5CCSR0USMneSohGKb6E53W8izcnJ8JGH1JbHcO1qOrf4Y3QU83chaAHR6LSL7j7o5649RWiPNaO/phhzZsmINyqco1sYqL9VT9OqKMILY+4mb69dEpfllIFtKU8KdetzfkoojSpIlKWs3CzewKyW20JAGsRrKvzcdYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZH6VQHkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53712C4CEE5;
+	Sun,  9 Mar 2025 09:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741509481;
-	bh=kgoPWWbhkvIOxxj2eTNTYspC8M/v0Q0oqBrkLYHoEz8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BOSuRI4rUlD43zkeR9PXnMmGruucQDhpDuYVb3ELRReWKMIN2fMib8d8u9ObtTbDL
-	 TWOQ2LuYCUGb59Y78OOYb51jnMqFBQTOpAIaH4EBk06fQYYmbh35ISk6LciJhxwjYT
-	 W3gvb2YIrOnOczOBmQQmu81GkvG9a9kJVCN2LtOY=
-Date: Sun, 9 Mar 2025 09:36:44 +0100
+	s=korg; t=1741511890;
+	bh=Q77QRDZ4Pd4QE01w+F0Lno/svSsw0zVKxGGmOk7nNEM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZH6VQHkBTf2q7eFdtwEVhErqjfXu1RWSNfDqLvuls/YfmAiEiErXygpCCnCwfJMVl
+	 CUfGM1iQ/TwWhSdHUxsrRGzylfbX5CJuM+1ha1WnCbpB1uEnLq9OjgJUWe+wGLRXGb
+	 reNHimbZm/TvVdZD472xUl2iZQxu0LvyLvH+GLaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>, nik.borisov@suse.com,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 6.6 000/147] 6.6.81-rc2 review
-Message-ID: <2025030932-handler-reroute-f36d@gregkh>
-References: <20250306151412.957725234@linuxfoundation.org>
- <CA+G9fYtfmMThUC+erk6jVk8BN0jWJCw=FnKh68ypwhgv65OZ+w@mail.gmail.com>
- <20250306174442.GHZ8nfCiXOJj_fnQa7@fat_crate.local>
- <2025030633-deserve-postcard-9ed7@gregkh>
- <20250308201746.GKZ8yl6tHf4aNOEFgp@fat_crate.local>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.6.82
+Date: Sun,  9 Mar 2025 10:16:52 +0100
+Message-ID: <2025030919-hurdle-tapestry-5b79@gregkh>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250308201746.GKZ8yl6tHf4aNOEFgp@fat_crate.local>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Mar 08, 2025 at 09:17:46PM +0100, Borislav Petkov wrote:
-> On Thu, Mar 06, 2025 at 07:01:31PM +0100, Greg Kroah-Hartman wrote:
-> > A backported version would be great. If you want to just send me a
-> > single patch, or a whole new bundle, anything will work, whatever is
-> > easier for you.
-> 
-> Thanks, here's a tarball attached.
-> 
-> Now build- and boot-tested on my last 32-bit laptop.
+I'm announcing the release of the 6.6.82 kernel.
 
-Thanks, I'll go queue this up and do a new release now.
+All i386 users of the 6.6 kernel series must upgrade (as they skipped
+the last release.)  All other arches can skip this one as it should not
+affect them.
+
+The updated 6.6.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
 
 greg k-h
+
+------------
+
+ Makefile                         |    2 
+ arch/x86/Kconfig                 |    4 +
+ arch/x86/include/asm/microcode.h |    2 
+ arch/x86/include/asm/setup.h     |    1 
+ arch/x86/kernel/Makefile         |    1 
+ arch/x86/kernel/head32.c         |  117 ++++++++++++++++++++++++++++-----------
+ 6 files changed, 93 insertions(+), 34 deletions(-)
+
+Greg Kroah-Hartman (1):
+      Linux 6.6.82
+
+Thomas Gleixner (6):
+      x86/boot/32: Disable stackprotector and tracing for mk_early_pgtbl_32()
+      x86/boot: Use __pa_nodebug() in mk_early_pgtbl_32()
+      x86/boot/32: De-uglify the 2/3 level paging difference in mk_early_pgtbl_32()
+      x86/boot/32: Restructure mk_early_pgtbl_32()
+      x86/microcode: Provide CONFIG_MICROCODE_INITRD32
+      x86/boot/32: Temporarily map initrd for microcode loading
+
 
