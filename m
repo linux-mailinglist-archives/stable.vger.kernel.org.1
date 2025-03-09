@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-121569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3A4A58307
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 11:32:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9C8A58310
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 11:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3117A16BDB4
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 10:32:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F932188F821
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 10:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5E8191494;
-	Sun,  9 Mar 2025 10:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CF417CA12;
+	Sun,  9 Mar 2025 10:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xihwcn8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEcfOE5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D868C2C8
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 10:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E98C2C8
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 10:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741516320; cv=none; b=s34arBlhjg/Lz5jjNJMqgNXxFu8HxXb0pPIeWGodtConKEzyontjdOpEUumiYOmOTvIIRtcU9IFhipWVRWseslUJVSoR8JEx6JkG9bWk1VRFJb1M4XmVZdi3zr1ivH8gk/FnJ+pcSP5DkQkWdiIu3xv1aiE5KIVVcvVND3E5lIA=
+	t=1741516375; cv=none; b=czNVFatE6ts5R/CcGlL3Vn/CsxA3PmEe+5vG/Z1fzkMuvm9IiGzDItj7Vlwi1iIlHtzEd/+G801NR5P1IpYkRLWj+26Dw8Ny6wks3g3Vn/w+hj+R1W6c5MH3CoX9sFRrx4ATadfcCwDDZT1XbZKVbMi+iBr5oBB04NHVODV1MY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741516320; c=relaxed/simple;
-	bh=0+CE4h2vKjDT44vssyZbBDzunm0x2BAj5NW4r7PgrT8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C4nDQDbgFW9G/LvjDoznV+RzBGKE/pWckTFsYbWKXzAUEXPD9FLEIGt2NXSBPRSrnpNNSqw9nm5h1rLuEfrd+SPCCwM3hmrnc9ZZwjkBxOQ0ho9JEtwjfRBND4K/8o3Rb/8pH2wZdebpSt71o1Fu2vpmV732WHuz2PECv4Tuvgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xihwcn8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6CDC4CEEC;
-	Sun,  9 Mar 2025 10:31:59 +0000 (UTC)
+	s=arc-20240116; t=1741516375; c=relaxed/simple;
+	bh=HC0m90ZtfMPOOWjZO280sMrH7pRagY8pZBkrZcY62Pw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bjaXwAQ7GoWQBfQ/zm6Ss3cyvcTluTkiCeVMQJqJVSQAA+xCxZ7TJd1uz79EtFY8DRd210mPKzutNqDWKiwQ7E3HC5VRyAm+1wJgahl7OtniF3UO1qnPvW166yxckEaoiqS29nnsIa0JdaWQB9ZHdh/FNTp7wKuH44HJEBQQdHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEcfOE5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A52DC4CEEE;
+	Sun,  9 Mar 2025 10:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741516319;
-	bh=0+CE4h2vKjDT44vssyZbBDzunm0x2BAj5NW4r7PgrT8=;
+	s=korg; t=1741516375;
+	bh=HC0m90ZtfMPOOWjZO280sMrH7pRagY8pZBkrZcY62Pw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xihwcn8k2N470mX13NZG3GXygVyY0B8LF3XSIFPeMvTXs5K9G7qP/k9yey/E3hR+F
-	 ubCZ7b4pexn5AuMdaJcSUsbIK2t+NZn/2plovwJAPkx3IeYbbO3YFoT4TCiaJPFMiN
-	 Iwfix4LPmNvRNDZc1NKJtd3gRjjwvpbomUIf/FIQ=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix null check for pipe_ctx->plane_state in" failed to apply to 5.4-stable tree
-To: make24@iscas.ac.cn,alex.hung@amd.com,alexander.deucher@amd.com
+	b=xEcfOE5c9hhiclIPonlgvzg/Ynu5SPNmqomFlF93A92hLgZDEa4NP7GRR9rwIK2hE
+	 dCWhN1k2S45A2KyoRj+NCq6gmdY+Fir7JO3+MBFXOuokmpiYlz1lSmkSlyHH67D9mw
+	 VY44pMMTSrcqV/aQjyqeH02sM6f11xOBDLSjeLDc=
+Subject: FAILED: patch "[PATCH] drm/i915/mst: update max stream count to match number of" failed to apply to 6.12-stable tree
+To: jani.nikula@intel.com,imre.deak@intel.com,rodrigo.vivi@intel.com,ville.syrjala@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 09 Mar 2025 11:30:33 +0100
-Message-ID: <2025030933-vividness-retreat-a4bf@gregkh>
+Date: Sun, 09 Mar 2025 11:31:30 +0100
+Message-ID: <2025030930-spiritism-mankind-bea9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 374c9faac5a763a05bc3f68ad9f73dab3c6aec90
+git cherry-pick -x d1039a3c12fffe501c5379c7eb1372eaab318e0a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030933-vividness-retreat-a4bf@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030930-spiritism-mankind-bea9@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,38 +77,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 374c9faac5a763a05bc3f68ad9f73dab3c6aec90 Mon Sep 17 00:00:00 2001
-From: Ma Ke <make24@iscas.ac.cn>
-Date: Wed, 26 Feb 2025 16:37:31 +0800
-Subject: [PATCH] drm/amd/display: Fix null check for pipe_ctx->plane_state in
- resource_build_scaling_params
+From d1039a3c12fffe501c5379c7eb1372eaab318e0a Mon Sep 17 00:00:00 2001
+From: Jani Nikula <jani.nikula@intel.com>
+Date: Wed, 26 Feb 2025 15:56:26 +0200
+Subject: [PATCH] drm/i915/mst: update max stream count to match number of
+ pipes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Null pointer dereference issue could occur when pipe_ctx->plane_state
-is null. The fix adds a check to ensure 'pipe_ctx->plane_state' is not
-null before accessing. This prevents a null pointer dereference.
+We create the stream encoders and attach connectors for each pipe we
+have. As the number of pipes has increased, we've failed to update the
+topology manager maximum number of payloads to match that. Bump up the
+max stream count to match number of pipes, enabling the fourth stream on
+platforms that support four pipes.
 
-Found by code review.
-
-Fixes: 3be5262e353b ("drm/amd/display: Rename more dc_surface stuff to plane_state")
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 63e6a77ccf239337baa9b1e7787cde9fa0462092)
 Cc: stable@vger.kernel.org
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250226135626.1956012-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 15bccbfb78d63a2a621b30caff8b9424160c6c89)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 520a34a42827..a45037cb4cc0 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1455,7 +1455,8 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
- 	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
- 
- 	/* Invalid input */
--	if (!plane_state->dst_rect.width ||
-+	if (!plane_state ||
-+			!plane_state->dst_rect.width ||
- 			!plane_state->dst_rect.height ||
- 			!plane_state->src_rect.width ||
- 			!plane_state->src_rect.height) {
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+index a65cf97ad12d..86d6185fda50 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+@@ -1867,7 +1867,8 @@ intel_dp_mst_encoder_init(struct intel_digital_port *dig_port, int conn_base_id)
+ 	/* create encoders */
+ 	mst_stream_encoders_create(dig_port);
+ 	ret = drm_dp_mst_topology_mgr_init(&intel_dp->mst_mgr, display->drm,
+-					   &intel_dp->aux, 16, 3, conn_base_id);
++					   &intel_dp->aux, 16,
++					   INTEL_NUM_PIPES(display), conn_base_id);
+ 	if (ret) {
+ 		intel_dp->mst_mgr.cbs = NULL;
+ 		return ret;
 
 
