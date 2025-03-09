@@ -1,52 +1,91 @@
-Return-Path: <stable+bounces-121625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751C4A58847
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:56:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42D9A5884E
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 22:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 368353AC847
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE4E188DA63
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DF421ABD9;
-	Sun,  9 Mar 2025 20:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C70121D591;
+	Sun,  9 Mar 2025 21:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEA9j6PZ"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="VOZidbpM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39F01E1DF1
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 20:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7819F17A2FE
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 21:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741553777; cv=none; b=WHQYHPVg9ECm0niti4D6uSUs1tpTXB7v85tkIovsJL9pvqUa7385mKTGQoWPxhx1UFWzWwGrMpLmr27kKLeDc+Yftj9jIAmg0Pt585F7BGT8wltvnQr1pqbgz+F1dignPZbw7t2MFnGZ454R7w1Sfl9dP6uUutJz+P5oAtTQgtk=
+	t=1741554085; cv=none; b=JOiimqgVMKhbuxeGzBNfIfZfHO1rWDoQ2cPSJsrFEeKf454ze6vr0lOCshegBfRXqk2M9qiV1B1AhiG+PU0OOP1J3Yn95g1ZkW+EzOlcWbjy0cDh5IkI/4G9VEtomc+k40U27JPiXOMHCk5pLtLbbV88FKLCrDXAtxP2Vcq+spY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741553777; c=relaxed/simple;
-	bh=+wIprD5htUOThqNwNN9EIjBCKctur6dEjUgLAQUY/AA=;
+	s=arc-20240116; t=1741554085; c=relaxed/simple;
+	bh=Rqg6lJjhLHNh1Gx73PoQbbrakNT2FXl8F9OEd3Ik71Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UKci3st7lMEaZHArEPJHl2xmD+yTsmDkoM1HgZvhnsttQdQ++G+u7ZrNB4WmWT/P8H6cDpCgtqMtNpXJrklDnlqQJtyLXgrWes2FYdjVTvyN95ybP8wXpIDv77rePtanZhTTeJT7NqgNU/gfPa5ZSySsVsx3XSsQB6wf/zs6HsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEA9j6PZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1EDC4CEE3;
-	Sun,  9 Mar 2025 20:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741553777;
-	bh=+wIprD5htUOThqNwNN9EIjBCKctur6dEjUgLAQUY/AA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qEA9j6PZkVnwBqA18lDCxt9LVimvGkiWDZwrg53S5Y5LKwwk5M6pbYYLBodk/qtPv
-	 XCraEOXURg42hCpegf24RYkdLPSg4fVplK0ivJYqEk8qQS1X/EnXU0VUR8ROI1y9kh
-	 MQOyYmS52XZSNfbZl116xrvM44j0E9mgYA795BwM=
-Date: Sun, 9 Mar 2025 21:56:14 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Fedor Pchelkin <boddah8794@gmail.com>
-Cc: lk@c--e.de, heikki.krogerus@linux.intel.com, stable@vger.kernel.org
-Subject: Re: patch "acpi: typec: ucsi: Introduce a ->poll_cci method" added
- to usb-linus
-Message-ID: <2025030951-rally-umpire-66fa@gregkh>
-References: <2025021909-thirstily-esteemed-c72c@gregkh>
- <6y2km6lrqjfzgmf6aoetm6ts2b5okzoxzejtqpulkppudwgc5i@ja2oaw6ljqml>
+	 Content-Type:Content-Disposition:In-Reply-To; b=m644XZPjoQm2L9QfVVdnKx1iXu/sPO1WJBiFXsH7lyHjpIMIgB5pRpGrCVml2UfyLWOQc6w0BMwD8fTIkbWgb2LYlLSn2ogVvZMlRO6T2j4b//RW/GCnCg9AhqdSThfRuND8+1ujEDOVxuKmXf6swz8B0/VhkFd2+pLKUH7fOL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=VOZidbpM; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6e8f254b875so29075816d6.1
+        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 14:01:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1741554082; x=1742158882; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ow2CYWxdaijZqI5Ag3kkLaPmTFpnh0nUDA8vWXyWmOU=;
+        b=VOZidbpMzVPTWW2ifIvs9VymlUlKmfpPInavnHxtSTspuohMUCLlcDXLnIInCoaEjT
+         mi9mIdehYnVcce9ewPeeg0N7EyK2DGBkgQYCG4XyZnGpPW4OOhTDV8jWYvKPgpfqG0Li
+         jLbqQCnv+TGGrt9KXJL5cm6FLldEr0gjivnE6x7G24aC8Mph8nGEDxcHZHompWxoXMMz
+         59E5D9TvFawb3JahwNjdzJKUu7DxrawPAvNd9/yVcqy78smwokjKWyb2jMs0fga5zySJ
+         913Mv44uDbDNGA17jedm8XpCufCwG0uomqUk8ri6RJzIX9hWmX/2M+2Bl/CzMBZXqmlX
+         ZcXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741554082; x=1742158882;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ow2CYWxdaijZqI5Ag3kkLaPmTFpnh0nUDA8vWXyWmOU=;
+        b=pisGqddGxgwyTWxGD0gTJEceUmJ2pL2Ofml8fALw7mgIJzqQDoD6mauHdOsGjr6/WB
+         D03qL3zzxPHXyHNzBXenABCuyGZiOUgm1RxehEKOS4xICUHRDahiqlcvtHa1rP/GcPop
+         vsPQYrHkr+InKVcraR7Dbq7/AY6JpIEw4DBCSyN4VW82D7coLzH/ARTFyMYXRuym5G4m
+         hmBgBynw/kr6ryBIPuEb6jLOMWSSj55zx3awRBlfGFC7mtKgKMexI4ON+x1u5/fZICOz
+         AGa7gnduWNVXb84JYo5tFjib8p52D4cF+KfiPIPR6j7+EJK6gvLx1ldi3XEToHY6eFQk
+         jM+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUrvPkKuVzO5UDthDGYCQPUekZA2m9sTmcYm8pwei+JxMuBKtvBnIT8KrnZsccXiC8nclm6XQY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB21XJxBIZxq3RPFSnmojIGykwAtc/VdfVN7xirjmrTklT0OY3
+	zjLiMHgR14CfGnoQeKZrT13AueMBC+Nurvp2jMGkSg7SDkl0CyM165FSSxvL5g==
+X-Gm-Gg: ASbGncvRgG2WmRgwdi0y9e2P+6VkaOH6J3foiqhK/HYnfqEY4U/LPwjFiEcsb7/xM4c
+	Mx+Tuq8jCPN1T1FN8sRzxAoE7TklD558X0jhhyLSEczLipHWJPGC1F6NAp/DwnAgLJwpD/+DL99
+	wgTvzOJQQDYeYCquuzoZmQq+bRYBE6zkvBPSDEyuKyKKWgJnKbdb5KFSrazi4mUSvMpEmDJK7JZ
+	qNl6Yy0VAkN4d8WXbvnudEENnwpEPcGxVL+0GxsQ61GIfoVWZC3qGC7NTwTsJ+QLvaYXvXGvxm8
+	mCucXS69U/vhTZzanaMVFD+2vzVNBGIJom237xLvAheRKw==
+X-Google-Smtp-Source: AGHT+IF1UP7kfbT/QaDVu1T3uB4XHx8M2u5OwwjoVQIpuZIpfHKxHSwPcgfqyROtnHoV5EBZDojurQ==
+X-Received: by 2002:ad4:5cae:0:b0:6e8:f433:20a8 with SMTP id 6a1803df08f44-6e9005bc7e4mr149057166d6.9.1741554082266;
+        Sun, 09 Mar 2025 14:01:22 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::7929])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f7090cb3sm45901396d6.39.2025.03.09.14.01.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 14:01:21 -0700 (PDT)
+Date: Sun, 9 Mar 2025 17:01:18 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Colin Evans <colin.evans.parkstone@gmail.com>
+Cc: eichest@gmail.com, francesco.dolcini@toradex.com,
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org,
+	stefan.eichenberger@toradex.com
+Subject: Re: [PATCH v1] usb: core: fix pipe creation for get_bMaxPacketSize0
+Message-ID: <73963187-6dcb-480d-ae35-2cee11001834@rowland.harvard.edu>
+References: <Z6HxHXrmeEuTzE-c@eichest-laptop>
+ <857c8982-f09f-4788-b547-1face254946d@gmail.com>
+ <1005263f-0a07-4dae-b74f-28e6ae3952bf@rowland.harvard.edu>
+ <cf6c9693-49ae-4511-8f16-30168567f877@gmail.com>
+ <04cb3076-6e34-432f-9400-0df84c054e5c@rowland.harvard.edu>
+ <bf0fda83-d97d-4a50-94d6-a2d70607a917@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,81 +94,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6y2km6lrqjfzgmf6aoetm6ts2b5okzoxzejtqpulkppudwgc5i@ja2oaw6ljqml>
+In-Reply-To: <bf0fda83-d97d-4a50-94d6-a2d70607a917@gmail.com>
 
-On Sun, Mar 09, 2025 at 11:46:43PM +0300, Fedor Pchelkin wrote:
-> On Wed, 19. Feb 15:20, gregkh@linuxfoundation.org wrote:
-> > 
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     acpi: typec: ucsi: Introduce a ->poll_cci method
-> > 
-> > to my usb git tree which can be found at
-> >     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
-> > in the usb-linus branch.
-> > 
-> > The patch will show up in the next release of the linux-next tree
-> > (usually sometime within the next 24 hours during the week.)
-> > 
-> > The patch will hopefully also be merged in Linus's tree for the
-> > next -rc kernel release.
-> > 
-> > If you have any questions about this process, please let me know.
-> > 
-> > 
-> > From 976e7e9bdc7719a023a4ecccd2e3daec9ab20a40 Mon Sep 17 00:00:00 2001
-> > From: "Christian A. Ehrhardt" <lk@c--e.de>
-> > Date: Mon, 17 Feb 2025 13:54:39 +0300
-> > Subject: acpi: typec: ucsi: Introduce a ->poll_cci method
-> > 
-> > For the ACPI backend of UCSI the UCSI "registers" are just a memory copy
-> > of the register values in an opregion. The ACPI implementation in the
-> > BIOS ensures that the opregion contents are synced to the embedded
-> > controller and it ensures that the registers (in particular CCI) are
-> > synced back to the opregion on notifications. While there is an ACPI call
-> > that syncs the actual registers to the opregion there is rarely a need to
-> > do this and on some ACPI implementations it actually breaks in various
-> > interesting ways.
-> > 
-> > The only reason to force a sync from the embedded controller is to poll
-> > CCI while notifications are disabled. Only the ucsi core knows if this
-> > is the case and guessing based on the current command is suboptimal, i.e.
-> > leading to the following spurious assertion splat:
-> > 
-> > WARNING: CPU: 3 PID: 76 at drivers/usb/typec/ucsi/ucsi.c:1388 ucsi_reset_ppm+0x1b4/0x1c0 [typec_ucsi]
-> > CPU: 3 UID: 0 PID: 76 Comm: kworker/3:0 Not tainted 6.12.11-200.fc41.x86_64 #1
-> > Hardware name: LENOVO 21D0/LNVNB161216, BIOS J6CN45WW 03/17/2023
-> > Workqueue: events_long ucsi_init_work [typec_ucsi]
-> > RIP: 0010:ucsi_reset_ppm+0x1b4/0x1c0 [typec_ucsi]
-> > Call Trace:
-> >  <TASK>
-> >  ucsi_init_work+0x3c/0xac0 [typec_ucsi]
-> >  process_one_work+0x179/0x330
-> >  worker_thread+0x252/0x390
-> >  kthread+0xd2/0x100
-> >  ret_from_fork+0x34/0x50
-> >  ret_from_fork_asm+0x1a/0x30
-> >  </TASK>
-> > 
-> > Thus introduce a ->poll_cci() method that works like ->read_cci() with an
-> > additional forced sync and document that this should be used when polling
-> > with notifications disabled. For all other backends that presumably don't
-> > have this issue use the same implementation for both methods.
-> > 
-> > Fixes: fa48d7e81624 ("usb: typec: ucsi: Do not call ACPI _DSM method for UCSI read operations")
-> > Cc: stable <stable@kernel.org>
+On Sat, Mar 08, 2025 at 11:19:22PM +0000, Colin Evans wrote:
+> I believe I have the information requested. The output of usbmon for the "problem" scenario is
+> large, I hope it doesn't exceed any email attachment limits, but if it does I will have to work
+> out another way to share it.
 > 
-> Oh, the stable tag has been mangled here.. I didn't notice this, sorry.
-> Now Cc'ing the appropriate list.
+> It may be that 30s of data is more than is needed. If that's the case I can easily run a shorter
+> usbmon cycle.
 
-It's not mangled at all, it's correct.
+It is a lot more than needed, but that's okay.
 
-> Could you apply the patch to stables based on Fixes tag then, please?
-> They are 6.12 and 6.13.
+> Additional Observations
+> -----------------------
+> It appears that having pretty much any external device plugged into a motherboard port connected
+> to the _problem_ controller is enough to suppress the stream of "usb usb2-port4: Cannot enable.
+> Maybe the USB cable is bad?" dmesg errors.
+> 
+> For these tests the results named "working" had a USB2.0 memory stick plugged
+ into one
+> of the top 4 USB ports on the motherboard, while the "problem" results didn't.
+> 
+> For info- the older machine that exhibits this problem ("machine 1") also shows device manager
+> errors if booted into Windows 10, suggesting that machine may in fact have a motherboard
+> hardware fault.
+> 
+> However "machine 2" (which is less than 2 weeks old), shows no errors when booted into Windows.
 
-Will do so now, it was already in my queue.
+Well, I have no idea what Windows is doing on that machine.
 
-thanks,
+The usbmon trace shows that port 4 on bus 2 generates a continual
+stream of link-state-change events, constantly interrupting the system
+and consuming computational resources.  That's why the performance
+goes way down.
 
-greg k-h
+I can't tell what's causing those link-state changes.  It _looks_ like
+what you would get if there was an intermittent electrical connection
+causing random voltage fluctuations.  Whatever the cause is, plugging
+in the memory stick does seem to suppress those changes; they don't
+show up at all in the "working" trace.
+
+In theory, turning off power to port 4 might stop all the events from
+being reported.  You can try this to see if it works:
+
+	echo 1 >/sys/bus/usb/devices/2-0:1.0/usb2-port4/disable
+
+Alan Stern
 
