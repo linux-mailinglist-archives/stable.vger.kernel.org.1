@@ -1,105 +1,94 @@
-Return-Path: <stable+bounces-121581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108D5A58519
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 15:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B31AA5852E
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 16:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787E6188E52D
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 14:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 054C2188F3DC
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 15:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C2C14A09E;
-	Sun,  9 Mar 2025 14:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FAB1DE2C4;
+	Sun,  9 Mar 2025 14:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VprLWWUI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LdFTWUlp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113E09460
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 14:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39FC76026
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 14:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741532095; cv=none; b=sP04HQnXkF8Em9AA4dtOella2tLkLLJ56COGtn0yFPWAeXtUPSPhweIwAO7DuESKHIhUFWs7VytTs1uWWKp19VD7DpjrI+H7mPhWrif6MMIAjTvU8SKmhj5Nuo7cu9mD5EFKHGpgDGG6dLnT+fZXp1i20bh/HJsADNNY443CkfM=
+	t=1741532348; cv=none; b=EtzHlQ6tkwWV8opKpOHHQLpZw7iN/lenCvXkdM6I7CXmkDJahtvcV9b5KYwcUe3hwVm8boh3qjI6yHSOc/RHY/dWy25Uv0po7Jg15xEdX1GH3aLzTf9QtAnyt85GUyj2Q9KwAtd4llC9f3zDibfsv7YNCNYMnDBbDC6gbPB297Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741532095; c=relaxed/simple;
-	bh=qF2LT3v8via3NOe5kV/gSv7OT7v2j+Qy6kPpUwdbT1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=oZNTtWFW5OR9mi7NWbhFi0P/bSJp9FRdIiPPXEfaIAos/abvKSAociZDRvJsfA8KZRjC+bcpGZuRRdz5Q5Nylflf1STkrsVEZpcWF1aCueV8RjwQrLCbvANt7el4qxjKmZIB1oaiNfmGxSeTGoibNRC/pg4kkdPb98rptdcKgm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VprLWWUI; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1741532348; c=relaxed/simple;
+	bh=rjN+IvkouNcEO6Oipd/FmvbMLWPcGBGsEq5x9NXFmYo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C/cr6KuXSTSiJOKtirOduvhY6bPT2CQn6NgkZ5xjEYKL59ytD6vWuHPEUuIatH3ILg21cADnPEyvCyNYz0mU8bHPFgnOA0X4uxc8fwCKWf8QVHMwSJkNLM9dI/mJaz4oavo6lI39Y6Z0Sa0uuNVQt6yu0NWrkHJtp3b44yere10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LdFTWUlp; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf825f46bso32235e9.3
-        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 07:54:53 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43938828d02so4573775e9.1
+        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 07:59:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741532092; x=1742136892; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Nn10Lx68II/Cb77RP/oOgpTDoED/8NGgWqnJ5fqFJJ8=;
-        b=VprLWWUI49SBVC9ogJdnB9JZbvsTCZaa95t3QUVWXP03jshWjoGXAgcKm8rRxvd0my
-         1n4SZpTSIs3dBKf3AHA54BtTlbkMQzW8WIq+mQc61PiK/OC2j7fxFrYBtfBDowGmFEwY
-         iVvOkK34hC8SPnDGRhZEv5elFgpKl5WhJ7RiAOG2HuT3BFXhyPX01Ws0NDwfdxhBODOE
-         ap/Eq0vbDWQTXGFAHM/x8eeCR/e8jrYG1/4zqd14vfDcm83NgfY+FTgTPpE1QHAvy6mV
-         NIChu7QJcMHX/xxWDBBU+GVzK+rO6f+oiJg16zj0kwZcxvLMztT6UhT8vls3DytcokyX
-         LZAw==
+        d=gmail.com; s=20230601; t=1741532344; x=1742137144; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4eDKUpkWceGbLhKIC5MJoKk52Ya5XVk+vJg413podVw=;
+        b=LdFTWUlp6jHDivtLGFq/YsAh2ytdgSFLF6dLaWkH3Zy2zFa86m9tMRIVyXGVCgxfpO
+         FiowMwieXFdqYt3Ryn10yVOVHhDQjRL5Ai1cTklA+3Z5NNlLf4406fgqtPBZwCiXciO/
+         zyA+xjSnxQvUgEcu6/lkNSqUKryVfLSlYLR7fr9tKGy0Luuo23zHJsCiMTfLP3W/39ot
+         FSo0dcm+VcIdnW1c8a8lgD4/jvX7ztP4rDKkXpBRSLEoHmv0qpgAU0DckE6jlkmzTAXr
+         VtcyVAVCsnjwWd0I9albcSODVLgU/CoHvvMdwBWYEZrjtk7eTHIdTLdIhT7XsU66OrE4
+         jgKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741532092; x=1742136892;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nn10Lx68II/Cb77RP/oOgpTDoED/8NGgWqnJ5fqFJJ8=;
-        b=SPSzpKLVzfqlu3v7KitNVQU5NBPzxF9tT2B5ni10Ir5VfHHjnLCn031JWwDl3SAIRA
-         ObOSe2HBG2r6ZaG/CIy1cMrwzx3rJm78Itw+qzFBTLA7PjbeCKHYfQpNNIJOiyDQrB3R
-         aJgQr67rechqnUs3K9Ofew5j4BfWTT45jf9n0g7fDejfPg02tTAl1YgJf6R3kSD+ENUU
-         0BGPPqz1OyZQ9evEnA3Sd6ElHKVhYcvXQC3MdLlLa+8hSRRFHXe1Q8Ip/I1JXTK656iW
-         5LCfNsrkwtPTy5SaFumbg6im8mK0AVXPd2kBRB7K8yWIAg9KGxoc1TSDlN3N93bDeZa/
-         tWSA==
-X-Gm-Message-State: AOJu0YyPc8WVEL9Ct5SQPtl3pjKj6mOVliZe70CiPMQyLBPbJKqU+WUs
-	QBHcQn2VLu226uGC4/tCudR8o3HTMXHkm6CNdRyiUUnIQFOSx0QGu7YScGEE
-X-Gm-Gg: ASbGncufD3IcTvY9fGAFuX+YAI55dF3Onu2qP62xvETED4lsOHCT6te7IelK2B3JnJ7
-	3aWWBYsh3UU69a+A9yXrAyLE+ZgTj3X7RDC31zFxK2O4W+3NEfK/ACF1BeCjPDzPRspbfsskZ6F
-	8wf7UtDWe/ZLd6/q+kw78oATXp1GyMkR0zBxMfZ1JmeiJtNburUkJS4gve6USWAJEye7daXxSC9
-	Dqjac6/1RLOlM+Iio0aujyxJeltPQRQ13kE+3tKaT01X/pLAKFt3MHqN2NFTzhIpDiatuqjKZPL
-	CqRw7oROjpNB9SP3anA/EPMXVFgrsQZGMZb8ImRjzcpGyey46rnlC3GM5/kIhCDlvwHy+8+8NEl
-	9T9clrqAdFp663L/PoFPdRHIqrDCq+Pxwqg==
-X-Google-Smtp-Source: AGHT+IEFHbZ5UPgy2JrG7ZCzf5pYTeuDIPrARhmge/TFnSlGXeNmoQPxzycBSUsio4BZKuNp1s4xvg==
-X-Received: by 2002:a05:600c:1d1a:b0:43b:c825:6cde with SMTP id 5b1f17b1804b1-43ce6eb6c80mr13718575e9.3.1741532091736;
-        Sun, 09 Mar 2025 07:54:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741532344; x=1742137144;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4eDKUpkWceGbLhKIC5MJoKk52Ya5XVk+vJg413podVw=;
+        b=eopuGNRo92oFtDw3BWgAcw3EttJZ6/sXWIZmQyJt3wWU0U/XJ2fnMU+MUDBE5EyBQx
+         xFu5V3fKDxwMTHg+PQsI8u0IbP1rvfKljTzkhEvUP+Mfnp+hXA7hLh9F3Ctul+5kRwai
+         7QfEiGffBnauJAbb8CEVkEaAqXUcLB6DVX51OGZWiphLuqJDIoFwTatiCnqjiLpj08MM
+         wvBpajbAndHAqiF+iMPx7MO+5t6pubmFGC+mOSa12f9BTN0eQjrp0/JrBtfFc7t5RJJx
+         ZONQ+ijipLGkB+mAbblurtKa2SPzoCoqiJLWqTGK7lLiDFf/AsllUtFD7pNBFNojg726
+         UeAg==
+X-Gm-Message-State: AOJu0YxIPvM5vTRhnWES0kD9jKLZf0HaFjuHBF6cqHPQPVHS3djCzNvu
+	ujnb4ohDMTDmKTdOlmo6bM5YAcH0xEQqt28Amafvn0qrCiKdhwZIj6PnalYmvmQ=
+X-Gm-Gg: ASbGncu5ysQRTTSGhWKbN/XeANJMdgOnBcBZDmk5LaxMn2xfe+eaHJomYBKKcI6eVz2
+	Lv63Bl9YiApDDBMQA8qcuoQ9Sn6CWx1lmtIxginiLqkpkCPF75LIz8DR+NIctkg0QqkUG+8ksZc
+	4SXF9fUqzmkKIPcS8FVE4qfBTnW3PStN5mJcX4xzyZOqPURD3WkKiVEWl7Ou2ezsJwafMONlYzP
+	0oxa+4OTdNSmvhIWx13ZKQ/0j3Hm6LxGVfD7mmq2bUeaybKCdeXS2gkGGZaz2Tm1F0Lbh2JgGiS
+	5ZXslOCPvLxdexZbfHd31v8Dwg6mUd9iDludGJ0ZU0NqaUU5zy1UKOihBEEGqsX/kouz6RxhcRl
+	LwU1APtbelfp0BYSD1HswFr0=
+X-Google-Smtp-Source: AGHT+IH8/7K44LCBF6zyCvt5wxuWfOxZCDHN3q0zdQEilBTlMUUtyoLer9iwqxpYEHzLmK8TqW5nZw==
+X-Received: by 2002:a05:600c:3594:b0:439:88bb:d00b with SMTP id 5b1f17b1804b1-43ce6ebc91fmr13904205e9.5.1741532343475;
+        Sun, 09 Mar 2025 07:59:03 -0700 (PDT)
 Received: from pop-os.localdomain (16.146.78.188.dynamic.jazztel.es. [188.78.146.16])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ceb78e18dsm47728435e9.34.2025.03.09.07.54.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdfcb8sm12261643f8f.33.2025.03.09.07.59.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Mar 2025 07:54:50 -0700 (PDT)
-Date: Sun, 9 Mar 2025 15:54:48 +0100
-From: Miguel =?iso-8859-1?Q?Garc=EDa?= <miguelgarciaroman8@gmail.com>
+        Sun, 09 Mar 2025 07:59:02 -0700 (PDT)
+From: =?UTF-8?q?Miguel=20Garc=C3=ADa?= <miguelgarciaroman8@gmail.com>
 To: stable@vger.kernel.org
-Cc: skhan@linuxfoundation.org
+Cc: skhan@linuxfoundation.org,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzbot+010986becd65dbf9464b@syzkaller.appspotmail.com,
+	Miguel Garcia Roman <miguelgarciaroman8@gmail.com>
 Subject: [PATCH 5.15.y] fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super
-Message-ID: <Z82ruLLR+Z2ge3Vk@pop-os.localdomain>
+Date: Sun,  9 Mar 2025 15:56:36 +0100
+Message-Id: <20250309145636.633501-1-miguelgarciaroman8@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="KiOaL0ucxpoQ7HhZ"
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-
---KiOaL0ucxpoQ7HhZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-
---KiOaL0ucxpoQ7HhZ
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-fs-ntfs3-Fix-shift-out-of-bounds-in-ntfs_fill_super.patch"
-
-From 2a433fb910874180a57199f31cf01f65e27dcb00 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Date: Fri, 30 Jun 2023 16:25:25 +0400
-Subject: [PATCH 5.15.y] fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super
 
 commit 91a4b1ee78cb ("fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super")
 
@@ -267,6 +256,4 @@ index 78b086527331..abab388e413f 100644
 -- 
 2.34.1
 
-
---KiOaL0ucxpoQ7HhZ--
 
