@@ -1,348 +1,98 @@
-Return-Path: <stable+bounces-121608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F112CA5870A
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 19:17:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB1AA587FF
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 20:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AED7169C0D
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 18:17:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E5633AD47A
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 19:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4851F8758;
-	Sun,  9 Mar 2025 18:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CBC21A44E;
+	Sun,  9 Mar 2025 19:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmQf504F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jicQ10rx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE921F8751
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 18:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4921DA109;
+	Sun,  9 Mar 2025 19:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741544199; cv=none; b=LX8MR0QQ8dSwIz4eVpfM19+KEM0sMmiyO6Kropzxj3kOR8+GMVdIlvNeLhyZuP2H19wxtS9yOCX7IOh7dmNvQdUENbg20/DFO9eC5XHl9C96HuM+QmgxT5kUKA0v0Ct7K6RstNVrMBf8iIzzcQYDNMpKHvv/qmb3H0goho6gvUE=
+	t=1741550202; cv=none; b=ATAimBnqYTACeNz6V8DSPmUBFoylgzhFUh2fq+tBJYW+mGJ+WbVCuHPdxUpFfHA7XxREfZy4mhdHEktgVtXbPmVBtPDR1PLIEovWh2MY/tQDE7Uuht4U9tf3Op1+X0KpvQQq4DUqkdvohkEX4ni07TUmbGBR5JgeERGaFM6Da6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741544199; c=relaxed/simple;
-	bh=EvUnawpH6qbaAGSn611LXNAWUWliZ78p7TYshrEanNU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YObPuaR/jpimiciWIqYYSx+s/W6Yt9eVlih1WgSTrsyEdun6HUEwn/dID0G5XfRCUwUi+3EIssc3zeYe/j+ArbayEbk4N+FwO2f0GmpnwjpcBb3sYetjDmtqstRmaV9V1iqiInEfaWjBOlp3KH+bb+KUGX6FALtAVNqxNTxdoGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmQf504F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606B7C4CEE3;
-	Sun,  9 Mar 2025 18:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741544198;
-	bh=EvUnawpH6qbaAGSn611LXNAWUWliZ78p7TYshrEanNU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=jmQf504FGs36IOyGcX6KoHGtO0Wf4s9WlNI8O8oo1yGi/Nc8i66jxvi2YFT5LjA3K
-	 324PT0vnKuTidPvEh2EWojlMRxeOLS0yFymM4NIKSoXSDlXc4heRbxEDp6hfRWZPvk
-	 xP5wNQRrl06lVE8NN3qDPP9W5z7Xs9nluWNPbRJc=
-Subject: FAILED: patch "[PATCH] mm: fix kernel BUG when userfaultfd_move encounters swapcache" failed to apply to 6.12-stable tree
-To: baohua@kernel.org,Liam.Howlett@oracle.com,aarcange@redhat.com,akpm@linux-foundation.org,axelrasmussen@google.com,bgeffon@google.com,brauner@kernel.org,david@redhat.com,hughd@google.com,jannh@google.com,kaleshsingh@google.com,lokeshgidra@google.com,mhocko@suse.com,ngeoffray@google.com,peterx@redhat.com,rppt@kernel.org,ryan.roberts@arm.com,shuah@kernel.org,stable@vger.kernel.org,surenb@google.com,v-songbaohua@oppo.com,viro@zeniv.linux.org.uk,willy@infradead.org,zhangpeng362@huawei.com,zhengtangquan@oppo.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 09 Mar 2025 19:16:28 +0100
-Message-ID: <2025030928-bonanza-unscrew-4f1c@gregkh>
+	s=arc-20240116; t=1741550202; c=relaxed/simple;
+	bh=9zth3ji/1gSASSbT74qef/gpNPTW4q7Xzz9+gH90Nws=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ov02k0g0p/vj0jPmMW9XdBR8DeJRLi0LL6sD09ge2BsT76KrEhQLV/SJTwmFx8ZLs5f6x1+CVDmL6UI8dtdE4eNGqWcwrGhB8iSdEHCOpbyS2it8gELF7LIa0wosnjgkF/k42T+cQawr5oWe8F3vORO199u4I5+wZHe3A7NPO7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jicQ10rx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63392C4CEE3;
+	Sun,  9 Mar 2025 19:56:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741550202;
+	bh=9zth3ji/1gSASSbT74qef/gpNPTW4q7Xzz9+gH90Nws=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jicQ10rx8YCGb1nPT0GsF8Ry7D154mk/tl64osb5PD/y/trtNC1eYWB0RG6HadmAj
+	 vku4gl6GxXYHX/CK3nCWiMAY89EVbvOP29WJEEDaBiCwtWGPdBOqJxZn9wfkYU6Okd
+	 vUz0JObz4x9qxurQFGFLcM2sEW2Ttn2/qqXu7c1sDGFyu7vaFPmIYguxq83kUzgvT8
+	 JNlC/HBu+mEfP6Wo6kI1T+CKIblCSzTPBmcRPyNYrFO6oYbSkby8UdcXv11t84Srh7
+	 togOcLPwFW9v5JnB3Isvvrb8secp7GYyEUjQYdzp4O4B6wEytF4txoZMR6kdAgphWi
+	 nOG/BiVJQ3MTw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: chenhuacai@loongson.cn
+Cc: chenhuacai@kernel.org,
+	gregkh@linuxfoundation.org,
+	jpoimboe@kernel.org,
+	kernel@xen0n.name,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	peterz@infradead.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.12/6.13] loongarch: Use ASM_REACHABLE
+Date: Sun,  9 Mar 2025 20:56:22 +0100
+Message-ID: <20250309195622.1541936-1-ojeda@kernel.org>
+In-Reply-To: <20250308053753.3632741-1-chenhuacai@loongson.cn>
+References: <20250308053753.3632741-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+On Sat, 08 Mar 2025 13:37:53 +0800 Huacai Chen <chenhuacai@loongson.cn> wrote:
+>
+> From: Peter Zijlstra <peterz@infradead.org>
+>
+> commit 624bde3465f660e54a7cd4c1efc3e536349fead5 upstream.
+>
+> annotate_reachable() is unreliable since the compiler is free to place
+> random code inbetween two consecutive asm() statements.
+>
+> This removes the last and only annotate_reachable() user.
+>
+> Backport to solve a build error since relevant commits have already been
+> backported.
+>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> Link: https://lore.kernel.org/r/20241128094312.133437051@infradead.org
+> Closes: https://lore.kernel.org/loongarch/20250307214943.372210-1-ojeda@kernel.org/
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This indeed removes the build failure for me -- built-tested for loongarch64
+(together with the rest of the Rust long backport series):
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x c50f8e6053b0503375c2975bf47f182445aebb4c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030928-bonanza-unscrew-4f1c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+Thanks!
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c50f8e6053b0503375c2975bf47f182445aebb4c Mon Sep 17 00:00:00 2001
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 26 Feb 2025 13:14:00 +1300
-Subject: [PATCH] mm: fix kernel BUG when userfaultfd_move encounters swapcache
-
-userfaultfd_move() checks whether the PTE entry is present or a
-swap entry.
-
-- If the PTE entry is present, move_present_pte() handles folio
-  migration by setting:
-
-  src_folio->index = linear_page_index(dst_vma, dst_addr);
-
-- If the PTE entry is a swap entry, move_swap_pte() simply copies
-  the PTE to the new dst_addr.
-
-This approach is incorrect because, even if the PTE is a swap entry,
-it can still reference a folio that remains in the swap cache.
-
-This creates a race window between steps 2 and 4.
- 1. add_to_swap: The folio is added to the swapcache.
- 2. try_to_unmap: PTEs are converted to swap entries.
- 3. pageout: The folio is written back.
- 4. Swapcache is cleared.
-If userfaultfd_move() occurs in the window between steps 2 and 4,
-after the swap PTE has been moved to the destination, accessing the
-destination triggers do_swap_page(), which may locate the folio in
-the swapcache. However, since the folio's index has not been updated
-to match the destination VMA, do_swap_page() will detect a mismatch.
-
-This can result in two critical issues depending on the system
-configuration.
-
-If KSM is disabled, both small and large folios can trigger a BUG
-during the add_rmap operation due to:
-
- page_pgoff(folio, page) != linear_page_index(vma, address)
-
-[   13.336953] page: refcount:6 mapcount:1 mapping:00000000f43db19c index:0xffffaf150 pfn:0x4667c
-[   13.337520] head: order:2 mapcount:1 entire_mapcount:0 nr_pages_mapped:1 pincount:0
-[   13.337716] memcg:ffff00000405f000
-[   13.337849] anon flags: 0x3fffc0000020459(locked|uptodate|dirty|owner_priv_1|head|swapbacked|node=0|zone=0|lastcpupid=0xffff)
-[   13.338630] raw: 03fffc0000020459 ffff80008507b538 ffff80008507b538 ffff000006260361
-[   13.338831] raw: 0000000ffffaf150 0000000000004000 0000000600000000 ffff00000405f000
-[   13.339031] head: 03fffc0000020459 ffff80008507b538 ffff80008507b538 ffff000006260361
-[   13.339204] head: 0000000ffffaf150 0000000000004000 0000000600000000 ffff00000405f000
-[   13.339375] head: 03fffc0000000202 fffffdffc0199f01 ffffffff00000000 0000000000000001
-[   13.339546] head: 0000000000000004 0000000000000000 00000000ffffffff 0000000000000000
-[   13.339736] page dumped because: VM_BUG_ON_PAGE(page_pgoff(folio, page) != linear_page_index(vma, address))
-[   13.340190] ------------[ cut here ]------------
-[   13.340316] kernel BUG at mm/rmap.c:1380!
-[   13.340683] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-[   13.340969] Modules linked in:
-[   13.341257] CPU: 1 UID: 0 PID: 107 Comm: a.out Not tainted 6.14.0-rc3-gcf42737e247a-dirty #299
-[   13.341470] Hardware name: linux,dummy-virt (DT)
-[   13.341671] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   13.341815] pc : __page_check_anon_rmap+0xa0/0xb0
-[   13.341920] lr : __page_check_anon_rmap+0xa0/0xb0
-[   13.342018] sp : ffff80008752bb20
-[   13.342093] x29: ffff80008752bb20 x28: fffffdffc0199f00 x27: 0000000000000001
-[   13.342404] x26: 0000000000000000 x25: 0000000000000001 x24: 0000000000000001
-[   13.342575] x23: 0000ffffaf0d0000 x22: 0000ffffaf0d0000 x21: fffffdffc0199f00
-[   13.342731] x20: fffffdffc0199f00 x19: ffff000006210700 x18: 00000000ffffffff
-[   13.342881] x17: 6c203d2120296567 x16: 6170202c6f696c6f x15: 662866666f67705f
-[   13.343033] x14: 6567617028454741 x13: 2929737365726464 x12: ffff800083728ab0
-[   13.343183] x11: ffff800082996bf8 x10: 0000000000000fd7 x9 : ffff80008011bc40
-[   13.343351] x8 : 0000000000017fe8 x7 : 00000000fffff000 x6 : ffff8000829eebf8
-[   13.343498] x5 : c0000000fffff000 x4 : 0000000000000000 x3 : 0000000000000000
-[   13.343645] x2 : 0000000000000000 x1 : ffff0000062db980 x0 : 000000000000005f
-[   13.343876] Call trace:
-[   13.344045]  __page_check_anon_rmap+0xa0/0xb0 (P)
-[   13.344234]  folio_add_anon_rmap_ptes+0x22c/0x320
-[   13.344333]  do_swap_page+0x1060/0x1400
-[   13.344417]  __handle_mm_fault+0x61c/0xbc8
-[   13.344504]  handle_mm_fault+0xd8/0x2e8
-[   13.344586]  do_page_fault+0x20c/0x770
-[   13.344673]  do_translation_fault+0xb4/0xf0
-[   13.344759]  do_mem_abort+0x48/0xa0
-[   13.344842]  el0_da+0x58/0x130
-[   13.344914]  el0t_64_sync_handler+0xc4/0x138
-[   13.345002]  el0t_64_sync+0x1ac/0x1b0
-[   13.345208] Code: aa1503e0 f000f801 910f6021 97ff5779 (d4210000)
-[   13.345504] ---[ end trace 0000000000000000 ]---
-[   13.345715] note: a.out[107] exited with irqs disabled
-[   13.345954] note: a.out[107] exited with preempt_count 2
-
-If KSM is enabled, Peter Xu also discovered that do_swap_page() may
-trigger an unexpected CoW operation for small folios because
-ksm_might_need_to_copy() allocates a new folio when the folio index
-does not match linear_page_index(vma, addr).
-
-This patch also checks the swapcache when handling swap entries. If a
-match is found in the swapcache, it processes it similarly to a present
-PTE.
-However, there are some differences. For example, the folio is no longer
-exclusive because folio_try_share_anon_rmap_pte() is performed during
-unmapping.
-Furthermore, in the case of swapcache, the folio has already been
-unmapped, eliminating the risk of concurrent rmap walks and removing the
-need to acquire src_folio's anon_vma or lock.
-
-Note that for large folios, in the swapcache handling path, we directly
-return -EBUSY since split_folio() will return -EBUSY regardless if
-the folio is under writeback or unmapped. This is not an urgent issue,
-so a follow-up patch may address it separately.
-
-[v-songbaohua@oppo.com: minor cleanup according to Peter Xu]
-  Link: https://lkml.kernel.org/r/20250226024411.47092-1-21cnbao@gmail.com
-Link: https://lkml.kernel.org/r/20250226001400.9129-1-21cnbao@gmail.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: ZhangPeng <zhangpeng362@huawei.com>
-Cc: Tangquan Zheng <zhengtangquan@oppo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index af3dfc3633db..c45b672e10d1 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -18,6 +18,7 @@
- #include <asm/tlbflush.h>
- #include <asm/tlb.h>
- #include "internal.h"
-+#include "swap.h"
- 
- static __always_inline
- bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
-@@ -1076,16 +1077,14 @@ static int move_present_pte(struct mm_struct *mm,
- 	return err;
- }
- 
--static int move_swap_pte(struct mm_struct *mm,
-+static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 			 unsigned long dst_addr, unsigned long src_addr,
- 			 pte_t *dst_pte, pte_t *src_pte,
- 			 pte_t orig_dst_pte, pte_t orig_src_pte,
- 			 pmd_t *dst_pmd, pmd_t dst_pmdval,
--			 spinlock_t *dst_ptl, spinlock_t *src_ptl)
-+			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
-+			 struct folio *src_folio)
- {
--	if (!pte_swp_exclusive(orig_src_pte))
--		return -EBUSY;
--
- 	double_pt_lock(dst_ptl, src_ptl);
- 
- 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
-@@ -1094,6 +1093,16 @@ static int move_swap_pte(struct mm_struct *mm,
- 		return -EAGAIN;
- 	}
- 
-+	/*
-+	 * The src_folio resides in the swapcache, requiring an update to its
-+	 * index and mapping to align with the dst_vma, where a swap-in may
-+	 * occur and hit the swapcache after moving the PTE.
-+	 */
-+	if (src_folio) {
-+		folio_move_anon_rmap(src_folio, dst_vma);
-+		src_folio->index = linear_page_index(dst_vma, dst_addr);
-+	}
-+
- 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
- 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
- 	double_pt_unlock(dst_ptl, src_ptl);
-@@ -1141,6 +1150,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 			  __u64 mode)
- {
- 	swp_entry_t entry;
-+	struct swap_info_struct *si = NULL;
- 	pte_t orig_src_pte, orig_dst_pte;
- 	pte_t src_folio_pte;
- 	spinlock_t *src_ptl, *dst_ptl;
-@@ -1322,6 +1332,8 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 				       orig_dst_pte, orig_src_pte, dst_pmd,
- 				       dst_pmdval, dst_ptl, src_ptl, src_folio);
- 	} else {
-+		struct folio *folio = NULL;
-+
- 		entry = pte_to_swp_entry(orig_src_pte);
- 		if (non_swap_entry(entry)) {
- 			if (is_migration_entry(entry)) {
-@@ -1335,9 +1347,53 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 			goto out;
- 		}
- 
--		err = move_swap_pte(mm, dst_addr, src_addr, dst_pte, src_pte,
--				    orig_dst_pte, orig_src_pte, dst_pmd,
--				    dst_pmdval, dst_ptl, src_ptl);
-+		if (!pte_swp_exclusive(orig_src_pte)) {
-+			err = -EBUSY;
-+			goto out;
-+		}
-+
-+		si = get_swap_device(entry);
-+		if (unlikely(!si)) {
-+			err = -EAGAIN;
-+			goto out;
-+		}
-+		/*
-+		 * Verify the existence of the swapcache. If present, the folio's
-+		 * index and mapping must be updated even when the PTE is a swap
-+		 * entry. The anon_vma lock is not taken during this process since
-+		 * the folio has already been unmapped, and the swap entry is
-+		 * exclusive, preventing rmap walks.
-+		 *
-+		 * For large folios, return -EBUSY immediately, as split_folio()
-+		 * also returns -EBUSY when attempting to split unmapped large
-+		 * folios in the swapcache. This issue needs to be resolved
-+		 * separately to allow proper handling.
-+		 */
-+		if (!src_folio)
-+			folio = filemap_get_folio(swap_address_space(entry),
-+					swap_cache_index(entry));
-+		if (!IS_ERR_OR_NULL(folio)) {
-+			if (folio_test_large(folio)) {
-+				err = -EBUSY;
-+				folio_put(folio);
-+				goto out;
-+			}
-+			src_folio = folio;
-+			src_folio_pte = orig_src_pte;
-+			if (!folio_trylock(src_folio)) {
-+				pte_unmap(&orig_src_pte);
-+				pte_unmap(&orig_dst_pte);
-+				src_pte = dst_pte = NULL;
-+				put_swap_device(si);
-+				si = NULL;
-+				/* now we can block and wait */
-+				folio_lock(src_folio);
-+				goto retry;
-+			}
-+		}
-+		err = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
-+				orig_dst_pte, orig_src_pte, dst_pmd, dst_pmdval,
-+				dst_ptl, src_ptl, src_folio);
- 	}
- 
- out:
-@@ -1354,6 +1410,8 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 	if (src_pte)
- 		pte_unmap(src_pte);
- 	mmu_notifier_invalidate_range_end(&range);
-+	if (si)
-+		put_swap_device(si);
- 
- 	return err;
- }
-
+Cheers,
+Miguel
 
