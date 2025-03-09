@@ -1,116 +1,272 @@
-Return-Path: <stable+bounces-121580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41D1A584E7
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 15:21:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 108D5A58519
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 15:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E150A16AEDF
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 14:21:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787E6188E52D
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 14:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D2914D2BB;
-	Sun,  9 Mar 2025 14:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C2C14A09E;
+	Sun,  9 Mar 2025 14:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jr8/piEp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VprLWWUI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB041C84C1
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 14:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113E09460
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 14:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741530070; cv=none; b=C4NkV/U4OXDgInSutRpHC8lgXMv3VdwTQmmuNHcmgfdyWIIEG8ieMiJFhvtVkZqkjdPal0ERR2ChYRezHc/tJA+hIqz1GuFzv/pj4uxQUH+YlJAhn9AT4L2PKdVUqMeIn07DGoLwI5ci/HgpASxQndC26ituGSn6NsAJyVDVt0I=
+	t=1741532095; cv=none; b=sP04HQnXkF8Em9AA4dtOella2tLkLLJ56COGtn0yFPWAeXtUPSPhweIwAO7DuESKHIhUFWs7VytTs1uWWKp19VD7DpjrI+H7mPhWrif6MMIAjTvU8SKmhj5Nuo7cu9mD5EFKHGpgDGG6dLnT+fZXp1i20bh/HJsADNNY443CkfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741530070; c=relaxed/simple;
-	bh=kFz5YSiZo92lO+L2dWa5k9GVCC5TiWRcKiFDODFxgac=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TE9vYVl38UOxPfg7VDOZzgdE3BGeoHMtvYA8EoiQ+FPICy8fZyu0kjQ64G5ht8qzlafUZUE1sK3j65N7bUx6oTukcRACNMWG/8mbhtkTBltIYczofClLXqP84H8KzFvp6PZbV7wxDOJk0PpqW0cHe70H2QspWxQ+7OQ7ewFpJB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jr8/piEp; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1741532095; c=relaxed/simple;
+	bh=qF2LT3v8via3NOe5kV/gSv7OT7v2j+Qy6kPpUwdbT1A=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oZNTtWFW5OR9mi7NWbhFi0P/bSJp9FRdIiPPXEfaIAos/abvKSAociZDRvJsfA8KZRjC+bcpGZuRRdz5Q5Nylflf1STkrsVEZpcWF1aCueV8RjwQrLCbvANt7el4qxjKmZIB1oaiNfmGxSeTGoibNRC/pg4kkdPb98rptdcKgm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VprLWWUI; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22400301e40so7236135ad.1
-        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 07:21:08 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf825f46bso32235e9.3
+        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 07:54:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741530068; x=1742134868; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lcZKJiEWpL/ikPP0BnD1JJpmE5wF+3Sm+aFgv0bnpmY=;
-        b=Jr8/piEp/c5MIUEboh7p6U2OIP5GJqIxYmhk2y0SRzM7vq1fUBZvrVBIaRpN+gFlV4
-         PdRvGXifEXNAinubW9Y7Iut6COcc1LQ9A61rxhTYluhkCoIbkPoUsxI15vHHGMcbe30/
-         W6o3nEC9JgHR8Y0FK+wSnw5HEsaJLQ5pmHMIvUhOi9p7vnntslvtNOdf2i/Byl+cs0cL
-         te2OTTUzA5yLlIe8Bjd8XAl9fwNro4LhYN7jEyO6duSnSLxxolteGDZgXVLXkAd35gFl
-         DbLK+oFibnxEF4VJIOkR4e2zAzuHqy1QMuaH8FsJn0bPbzPW3pgGlTX0sQarw00xdInd
-         tjlA==
+        d=gmail.com; s=20230601; t=1741532092; x=1742136892; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Nn10Lx68II/Cb77RP/oOgpTDoED/8NGgWqnJ5fqFJJ8=;
+        b=VprLWWUI49SBVC9ogJdnB9JZbvsTCZaa95t3QUVWXP03jshWjoGXAgcKm8rRxvd0my
+         1n4SZpTSIs3dBKf3AHA54BtTlbkMQzW8WIq+mQc61PiK/OC2j7fxFrYBtfBDowGmFEwY
+         iVvOkK34hC8SPnDGRhZEv5elFgpKl5WhJ7RiAOG2HuT3BFXhyPX01Ws0NDwfdxhBODOE
+         ap/Eq0vbDWQTXGFAHM/x8eeCR/e8jrYG1/4zqd14vfDcm83NgfY+FTgTPpE1QHAvy6mV
+         NIChu7QJcMHX/xxWDBBU+GVzK+rO6f+oiJg16zj0kwZcxvLMztT6UhT8vls3DytcokyX
+         LZAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741530068; x=1742134868;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lcZKJiEWpL/ikPP0BnD1JJpmE5wF+3Sm+aFgv0bnpmY=;
-        b=qhYu4juWD8sA/5ch6DNzt0yds5M3WbPtn5H/IqbazB7YiM+hGnwIO4/ZsQ26TgL9GW
-         qV58zhC5n9wL5jroZfWnOXv42/Y5SXaO95Fu/nHBaQaiteKcPJTy8pnvzkEYRrqQ9xiq
-         L1SHsnyovB8XqVr46QYIZiflx5y9NaGlkXgYxXhlKiWRrtoOBk7758Y3KOkMvkRPqZzG
-         CBoI2OLLocYuhe+0Mj9md6aPbVoQQCHsUeSN0yieIp5An7QP1BnpvGN6++pkjzXJQzgD
-         lYc10i6t/K5t66yBO6rRCyQVt30jIKypCGOdGfII0fbX/YTwDOMusEduWIbPyv+W7mMY
-         0gQA==
-X-Forwarded-Encrypted: i=1; AJvYcCXPs1muhiyaUqBz2lh6tQS5aDyJNSoIRZSSeepl6y84l8SGLPgaavMCcphzp+vTy1dD5+9qp/U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKRHlibpW7fmjMBcOctkl4JaiON9g2XlUT0zJBlv+cqM4x6oJt
-	XIcfJmsD0J0ZDHP4YWDDLveFUoe2iYIp2tMpbXuA3y4Kd20UIDJimyTrnJza92453u2Cpb9G+FM
-	v4kF3QOWLWjNDR76Z6/Ja1ao6hlk=
-X-Gm-Gg: ASbGncsdfGEc4ke3ynFnceFOzewTz5lICK4Um8ZRp6q5twXxWRcM1K7q6RIckPmWBiD
-	nWAsJuHzd2OuJvDDruePRGWH7DzHFq4RfF0iJxm4//ClGsfhOCcFscg6W4z2P1IEgFVhJUYjbVR
-	jN/kD3eyq17yiP+iFrzC7gRRdbJf2KIHs3Sw3i
-X-Google-Smtp-Source: AGHT+IFqt9+K+LkkhZQI/j7j18xLXdUrgiOh381NANrLpi56JrycNnjHKVXe6M7Y/1XtbBF36GrsX8R3V2l5l5/ytlA=
-X-Received: by 2002:a17:902:ce05:b0:224:e0e:e08b with SMTP id
- d9443c01a7336-22541628a67mr37018065ad.0.1741530068141; Sun, 09 Mar 2025
- 07:21:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741532092; x=1742136892;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nn10Lx68II/Cb77RP/oOgpTDoED/8NGgWqnJ5fqFJJ8=;
+        b=SPSzpKLVzfqlu3v7KitNVQU5NBPzxF9tT2B5ni10Ir5VfHHjnLCn031JWwDl3SAIRA
+         ObOSe2HBG2r6ZaG/CIy1cMrwzx3rJm78Itw+qzFBTLA7PjbeCKHYfQpNNIJOiyDQrB3R
+         aJgQr67rechqnUs3K9Ofew5j4BfWTT45jf9n0g7fDejfPg02tTAl1YgJf6R3kSD+ENUU
+         0BGPPqz1OyZQ9evEnA3Sd6ElHKVhYcvXQC3MdLlLa+8hSRRFHXe1Q8Ip/I1JXTK656iW
+         5LCfNsrkwtPTy5SaFumbg6im8mK0AVXPd2kBRB7K8yWIAg9KGxoc1TSDlN3N93bDeZa/
+         tWSA==
+X-Gm-Message-State: AOJu0YyPc8WVEL9Ct5SQPtl3pjKj6mOVliZe70CiPMQyLBPbJKqU+WUs
+	QBHcQn2VLu226uGC4/tCudR8o3HTMXHkm6CNdRyiUUnIQFOSx0QGu7YScGEE
+X-Gm-Gg: ASbGncufD3IcTvY9fGAFuX+YAI55dF3Onu2qP62xvETED4lsOHCT6te7IelK2B3JnJ7
+	3aWWBYsh3UU69a+A9yXrAyLE+ZgTj3X7RDC31zFxK2O4W+3NEfK/ACF1BeCjPDzPRspbfsskZ6F
+	8wf7UtDWe/ZLd6/q+kw78oATXp1GyMkR0zBxMfZ1JmeiJtNburUkJS4gve6USWAJEye7daXxSC9
+	Dqjac6/1RLOlM+Iio0aujyxJeltPQRQ13kE+3tKaT01X/pLAKFt3MHqN2NFTzhIpDiatuqjKZPL
+	CqRw7oROjpNB9SP3anA/EPMXVFgrsQZGMZb8ImRjzcpGyey46rnlC3GM5/kIhCDlvwHy+8+8NEl
+	9T9clrqAdFp663L/PoFPdRHIqrDCq+Pxwqg==
+X-Google-Smtp-Source: AGHT+IEFHbZ5UPgy2JrG7ZCzf5pYTeuDIPrARhmge/TFnSlGXeNmoQPxzycBSUsio4BZKuNp1s4xvg==
+X-Received: by 2002:a05:600c:1d1a:b0:43b:c825:6cde with SMTP id 5b1f17b1804b1-43ce6eb6c80mr13718575e9.3.1741532091736;
+        Sun, 09 Mar 2025 07:54:51 -0700 (PDT)
+Received: from pop-os.localdomain (16.146.78.188.dynamic.jazztel.es. [188.78.146.16])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ceb78e18dsm47728435e9.34.2025.03.09.07.54.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 07:54:50 -0700 (PDT)
+Date: Sun, 9 Mar 2025 15:54:48 +0100
+From: Miguel =?iso-8859-1?Q?Garc=EDa?= <miguelgarciaroman8@gmail.com>
+To: stable@vger.kernel.org
+Cc: skhan@linuxfoundation.org
+Subject: [PATCH 5.15.y] fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super
+Message-ID: <Z82ruLLR+Z2ge3Vk@pop-os.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250307225008.779961-1-ojeda@kernel.org> <33f6c73c-4a2d-42b3-b033-921d2e1eaeac@0upti.me>
-In-Reply-To: <33f6c73c-4a2d-42b3-b033-921d2e1eaeac@0upti.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Mar 2025 15:20:56 +0100
-X-Gm-Features: AQ5f1JpUGPAQ7z4B6Amb_zgIIluN1p4Baws9MpoHBcRwia-Wvg6nXk_7CSYTFG8
-Message-ID: <CANiq72nu71ETyLpu=GwbzpnMJg3jetL5zSSh3AE+DoQDMgHAwA@mail.gmail.com>
-Subject: Re: [PATCH 6.12.y 00/60] `alloc`, `#[expect]` and "Custom FFI"
-To: Ilya K <me@0upti.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Alyssa Ross <hi@alyssa.is>, 
-	NoisyCoil <noisycoil@disroot.org>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="KiOaL0ucxpoQ7HhZ"
+Content-Disposition: inline
 
-On Sun, Mar 9, 2025 at 1:42=E2=80=AFPM Ilya K <me@0upti.me> wrote:
->
-> Hi, I think this is missing one final change, specifically 27c7518e,
-> or rather, the only line of it that applies:
->
->  pub unsafe extern "C" fn drm_panic_qr_generate(
-> -    url: *const i8,
-> +    url: *const kernel::ffi::c_char,
->
-> Without it, the build fails on Rust 1.85 / aarch64.
 
-Bah, sorry, my bad, that is embarrassing... It is not just that one --
-the actual remap is not there. Let me re-send...
+--KiOaL0ucxpoQ7HhZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Greg: no changes except for the 2 extra on top you will see.
 
-It still holds that the x86_64 build still builds commit-by-commit,
-and I double-checked that hash builds for x86_64, arm64 and riscv64
-with the min and max compilers.
+--KiOaL0ucxpoQ7HhZ
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename="0001-fs-ntfs3-Fix-shift-out-of-bounds-in-ntfs_fill_super.patch"
 
-Let me also run a test for loongarch64 with the unrelated fix applied.
+From 2a433fb910874180a57199f31cf01f65e27dcb00 Mon Sep 17 00:00:00 2001
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Date: Fri, 30 Jun 2023 16:25:25 +0400
+Subject: [PATCH 5.15.y] fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super
 
-Cheers,
-Miguel
+commit 91a4b1ee78cb ("fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super")
+
+This patch is a backport and fixes an UBSAN warning about shift-out-of-bounds in
+ntfs_fill_super() function of the NTFS3 driver. The original code
+incorrectly calculated MFT record size, causing undefined behavior
+when performing bit shifts with values that exceed type limits.
+
+The fix has been verified by executing the syzkaller reproducer test case.
+After applying this patch, the system successfully handles the test case
+without kernel panic or UBSAN warnings.
+
+Bug: https://syzkaller.appspot.com/bug?extid=010986becd65dbf9464b
+Reported-by: syzbot+010986becd65dbf9464b@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Miguel Garcia Roman <miguelgarciaroman8@gmail.com>
+(cherry picked from commit 91a4b1ee78cb100b19b70f077c247f211110348f)
+---
+ fs/ntfs3/ntfs_fs.h |  2 ++
+ fs/ntfs3/super.c   | 63 +++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 50 insertions(+), 15 deletions(-)
+
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 7b46926e920c..c5ef0e0cdf59 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -43,9 +43,11 @@ enum utf16_endian;
+ #define MINUS_ONE_T			((size_t)(-1))
+ /* Biggest MFT / smallest cluster */
+ #define MAXIMUM_BYTES_PER_MFT		4096
++#define MAXIMUM_SHIFT_BYTES_PER_MFT	12
+ #define NTFS_BLOCKS_PER_MFT_RECORD	(MAXIMUM_BYTES_PER_MFT / 512)
+ 
+ #define MAXIMUM_BYTES_PER_INDEX		4096
++#define MAXIMUM_SHIFT_BYTES_PER_INDEX	12
+ #define NTFS_BLOCKS_PER_INODE		(MAXIMUM_BYTES_PER_INDEX / 512)
+ 
+ /* NTFS specific error code when fixup failed. */
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 78b086527331..abab388e413f 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -680,7 +680,7 @@ static u32 true_sectors_per_clst(const struct NTFS_BOOT *boot)
+  * ntfs_init_from_boot - Init internal info from on-disk boot sector.
+  */
+ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+-			       u64 dev_size)
++		  u64 dev_size)
+ {
+ 	struct ntfs_sb_info *sbi = sb->s_fs_info;
+ 	int err;
+@@ -705,12 +705,12 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 
+ 	/* 0x55AA is not mandaroty. Thanks Maxim Suhanov*/
+ 	/*if (0x55 != boot->boot_magic[0] || 0xAA != boot->boot_magic[1])
+-	 *	goto out;
++	 *  goto out;
+ 	 */
+ 
+ 	boot_sector_size = (u32)boot->bytes_per_sector[1] << 8;
+ 	if (boot->bytes_per_sector[0] || boot_sector_size < SECTOR_SIZE ||
+-	    !is_power_of_2(boot_sector_size)) {
++		!is_power_of_2(boot_sector_size)) {
+ 		goto out;
+ 	}
+ 
+@@ -733,15 +733,49 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 
+ 	/* Check MFT record size. */
+ 	if ((boot->record_size < 0 &&
+-	     SECTOR_SIZE > (2U << (-boot->record_size))) ||
+-	    (boot->record_size >= 0 && !is_power_of_2(boot->record_size))) {
++		 SECTOR_SIZE > (2U << (-boot->record_size))) ||
++		(boot->record_size >= 0 && !is_power_of_2(boot->record_size))) {
++		goto out;
++	}
++
++	/* Calculate cluster size */
++	sbi->cluster_size = boot_sector_size * sct_per_clst;
++	sbi->cluster_bits = blksize_bits(sbi->cluster_size);
++
++	if (boot->record_size >= 0) {
++		record_size = (u32)boot->record_size << sbi->cluster_bits;
++	} else if (-boot->record_size <= MAXIMUM_SHIFT_BYTES_PER_MFT) {
++		record_size = 1u << (-boot->record_size);
++	} else {
++		ntfs_err(sb, "%s: invalid record size %d.", "NTFS",
++			 boot->record_size);
++		goto out;
++	}
++
++	sbi->record_size = record_size;
++	sbi->record_bits = blksize_bits(record_size);
++	sbi->attr_size_tr = (5 * record_size >> 4); // ~320 bytes
++
++	if (record_size > MAXIMUM_BYTES_PER_MFT) {
++		ntfs_err(sb, "Unsupported bytes per MFT record %u.",
++			 record_size);
++		goto out;
++	}
++
++	if (boot->index_size >= 0) {
++		sbi->index_size = (u32)boot->index_size << sbi->cluster_bits;
++	} else if (-boot->index_size <= MAXIMUM_SHIFT_BYTES_PER_INDEX) {
++		sbi->index_size = 1u << (-boot->index_size);
++	} else {
++		ntfs_err(sb, "%s: invalid index size %d.", "NTFS",
++			 boot->index_size);
+ 		goto out;
+ 	}
+ 
+ 	/* Check index record size. */
+ 	if ((boot->index_size < 0 &&
+-	     SECTOR_SIZE > (2U << (-boot->index_size))) ||
+-	    (boot->index_size >= 0 && !is_power_of_2(boot->index_size))) {
++		 SECTOR_SIZE > (2U << (-boot->index_size))) ||
++		(boot->index_size >= 0 && !is_power_of_2(boot->index_size))) {
+ 		goto out;
+ 	}
+ 
+@@ -762,9 +796,6 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 		dev_size += sector_size - 1;
+ 	}
+ 
+-	sbi->cluster_size = boot_sector_size * sct_per_clst;
+-	sbi->cluster_bits = blksize_bits(sbi->cluster_size);
+-
+ 	sbi->mft.lbo = mlcn << sbi->cluster_bits;
+ 	sbi->mft.lbo2 = mlcn2 << sbi->cluster_bits;
+ 
+@@ -785,9 +816,9 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 	sbi->cluster_mask = sbi->cluster_size - 1;
+ 	sbi->cluster_mask_inv = ~(u64)sbi->cluster_mask;
+ 	sbi->record_size = record_size = boot->record_size < 0
+-						 ? 1 << (-boot->record_size)
+-						 : (u32)boot->record_size
+-							   << sbi->cluster_bits;
++		? 1 << (-boot->record_size)
++		: (u32)boot->record_size
++		  << sbi->cluster_bits;
+ 
+ 	if (record_size > MAXIMUM_BYTES_PER_MFT || record_size < SECTOR_SIZE)
+ 		goto out;
+@@ -801,8 +832,8 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 		ALIGN(sizeof(enum ATTR_TYPE), 8);
+ 
+ 	sbi->index_size = boot->index_size < 0
+-				  ? 1u << (-boot->index_size)
+-				  : (u32)boot->index_size << sbi->cluster_bits;
++		? 1u << (-boot->index_size)
++		: (u32)boot->index_size << sbi->cluster_bits;
+ 
+ 	sbi->volume.ser_num = le64_to_cpu(boot->serial_num);
+ 
+@@ -879,6 +910,8 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 	return err;
+ }
+ 
++
++
+ /*
+  * ntfs_fill_super - Try to mount.
+  */
+-- 
+2.34.1
+
+
+--KiOaL0ucxpoQ7HhZ--
 
