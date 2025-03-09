@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-121597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79384A586F5
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 19:16:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B20AA586F6
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 19:16:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BE593AB3DC
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 18:15:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79A8F169A1A
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 18:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F70D7E105;
-	Sun,  9 Mar 2025 18:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826AB145A05;
+	Sun,  9 Mar 2025 18:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNhOF3iQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CYXP6q+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED0A288DB
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 18:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40701288DB
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 18:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741544166; cv=none; b=u6vykGY5TdZ0/gRx3xECZKFCZ0b7L8ryC9ybEia7f3ZKDd/GIAFtQhFmlD7wtv+VFBoUcb165nQ585L0GFcqwa2TSQO8XF/TILw6uKqOKD/zlXosyaPe0CsL3XFZNnXCdBBN8MDX8MufNoNuVAJ0LmPKJS82U3hN+W0K7XsCveQ=
+	t=1741544168; cv=none; b=Bv9dqzhD47CflpVc+FnFJ0V804THDRZYJYAnL13o9KHy6+9dtj34rcEyi0kAXhkhsVIUoPkQMDO6Ozbb151y9J0VJq33nKvnD3acDTHfwWrW3ZGW76hyO/077S/WwvdeL/v7G2JhDJPmJWdFkE1txM7VFgo0w6OxT7bI2C6lNJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741544166; c=relaxed/simple;
-	bh=IvkQ7kzZutWwx+raJBG4satMqGCaT5tI2392u2uQ9ks=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rWusaz0FBLWALXDhUn/VBv9VjHA2X14n352/+PCLEnMGmYLh+AjhQ0yNys+Ejpvxbo59GHxvLqavz/3tkqUFM14QLXToQxr9pouu7zGUh3bK/yh74xKX7BIN2e8exeNjNc7Y+F1T65HoAqbC9+xK/TDaqQoEUg2AaRaaDT6UQeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNhOF3iQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582E6C4CEE3;
-	Sun,  9 Mar 2025 18:16:04 +0000 (UTC)
+	s=arc-20240116; t=1741544168; c=relaxed/simple;
+	bh=UoHU/G0x+m9pbjfs9oVkfkEkg7/g6opI3DSuVQ1nLbE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FbXFaznkl+SL/tlUK+/ui+gMkf6KZyov2AnW/bWOA/LbGMgLJ/J1RSMseoUO2Kxn4FXitzL7YRUpKqvWAGa+qD9KRuNkUOuDioYhIYCtQB7f8Lq6SQSyW9+QaLVqNDJX1x3Y6VsNEk1g4xUEHJklhJwfqyLdQUMiWeTPn+aTzuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CYXP6q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF62C4CEE3;
+	Sun,  9 Mar 2025 18:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741544164;
-	bh=IvkQ7kzZutWwx+raJBG4satMqGCaT5tI2392u2uQ9ks=;
+	s=korg; t=1741544167;
+	bh=UoHU/G0x+m9pbjfs9oVkfkEkg7/g6opI3DSuVQ1nLbE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NNhOF3iQMFM1CMDA6NKdwcf0bmf3dssCmxRTtYwX3tNBNqfbAaZ47PCwx7L/m2Zbv
-	 wTvRWfcl19FGMqyCtcYdFHNEAYefmfPjlgKnyuZw3YrpF19cgq7mS4XV01KozkXiQB
-	 ikzR9UgrV5URX7PK3NrzKAsubMaSMLT04D2pcicM=
-Subject: FAILED: patch "[PATCH] mm: shmem: fix potential data corruption during shmem swapin" failed to apply to 6.12-stable tree
-To: baolin.wang@linux.alibaba.com,akpm@linux-foundation.org,alex_y_xu@yahoo.ca,david@redhat.com,hughd@google.com,ioworker0@gmail.com,kasong@tencent.com,ryncsn@gmail.com,stable@vger.kernel.org,willy@infradead.org
+	b=2CYXP6q+/w3Hp2CtKTGuEg1KNRAcONgEVcQajZK7UYHnK2EO5iTOk19VOtBOsXmT6
+	 DTiDxpqLO/gzNe3t6GFdvWd+fU4HQOsjUyeqpkF83IgQddYo57O3Oc/Am24Gts+Lmm
+	 nbZCvk/2KsTFVL8Svn+/Nb1TnE8eJZ6jqGvvUvos=
+Subject: FAILED: patch "[PATCH] mm/hugetlb: wait for hugetlb folios to be freed" failed to apply to 6.13-stable tree
+To: yangge1116@126.com,21cnbao@gmail.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@redhat.com,muchun.song@linux.dev,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 09 Mar 2025 19:15:54 +0100
-Message-ID: <2025030954-polish-overeater-d2be@gregkh>
+Date: Sun, 09 Mar 2025 19:16:02 +0100
+Message-ID: <2025030902-guidance-kung-0573@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.13-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 git checkout FETCH_HEAD
-git cherry-pick -x 058313515d5aab10d0a01dd634f92ed4a4e71d4c
+git cherry-pick -x 67bab13307c83fb742c2556b06cdc39dbad27f07
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030954-polish-overeater-d2be@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030902-guidance-kung-0573@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,105 +77,116 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 058313515d5aab10d0a01dd634f92ed4a4e71d4c Mon Sep 17 00:00:00 2001
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-Date: Tue, 25 Feb 2025 17:52:55 +0800
-Subject: [PATCH] mm: shmem: fix potential data corruption during shmem swapin
+From 67bab13307c83fb742c2556b06cdc39dbad27f07 Mon Sep 17 00:00:00 2001
+From: Ge Yang <yangge1116@126.com>
+Date: Wed, 19 Feb 2025 11:46:44 +0800
+Subject: [PATCH] mm/hugetlb: wait for hugetlb folios to be freed
 
-Alex and Kairui reported some issues (system hang or data corruption) when
-swapping out or swapping in large shmem folios.  This is especially easy
-to reproduce when the tmpfs is mount with the 'huge=within_size'
-parameter.  Thanks to Kairui's reproducer, the issue can be easily
-replicated.
+Since the introduction of commit c77c0a8ac4c52 ("mm/hugetlb: defer freeing
+of huge pages if in non-task context"), which supports deferring the
+freeing of hugetlb pages, the allocation of contiguous memory through
+cma_alloc() may fail probabilistically.
 
-The root cause of the problem is that swap readahead may asynchronously
-swap in order 0 folios into the swap cache, while the shmem mapping can
-still store large swap entries.  Then an order 0 folio is inserted into
-the shmem mapping without splitting the large swap entry, which overwrites
-the original large swap entry, leading to data corruption.
+In the CMA allocation process, if it is found that the CMA area is
+occupied by in-use hugetlb folios, these in-use hugetlb folios need to be
+migrated to another location.  When there are no available hugetlb folios
+in the free hugetlb pool during the migration of in-use hugetlb folios,
+new folios are allocated from the buddy system.  A temporary state is set
+on the newly allocated folio.  Upon completion of the hugetlb folio
+migration, the temporary state is transferred from the new folios to the
+old folios.  Normally, when the old folios with the temporary state are
+freed, it is directly released back to the buddy system.  However, due to
+the deferred freeing of hugetlb pages, the PageBuddy() check fails,
+ultimately leading to the failure of cma_alloc().
 
-When getting a folio from the swap cache, we should split the large swap
-entry stored in the shmem mapping if the orders do not match, to fix this
-issue.
+Here is a simplified call trace illustrating the process:
+cma_alloc()
+    ->__alloc_contig_migrate_range() // Migrate in-use hugetlb folios
+        ->unmap_and_move_huge_page()
+            ->folio_putback_hugetlb() // Free old folios
+    ->test_pages_isolated()
+        ->__test_page_isolated_in_pageblock()
+             ->PageBuddy(page) // Check if the page is in buddy
 
-Link: https://lkml.kernel.org/r/2fe47c557e74e9df5fe2437ccdc6c9115fa1bf70.1740476943.git.baolin.wang@linux.alibaba.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Alex Xu (Hello71) <alex_y_xu@yahoo.ca>
-Reported-by: Kairui Song <ryncsn@gmail.com>
-Closes: https://lore.kernel.org/all/1738717785.im3r5g2vxc.none@localhost/
-Tested-by: Kairui Song <kasong@tencent.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <ioworker0@gmail.com>
-Cc: Matthew Wilcow <willy@infradead.org>
-Cc: Hugh Dickins <hughd@google.com>
+To resolve this issue, we have implemented a function named
+wait_for_freed_hugetlb_folios().  This function ensures that the hugetlb
+folios are properly released back to the buddy system after their
+migration is completed.  By invoking wait_for_freed_hugetlb_folios()
+before calling PageBuddy(), we ensure that PageBuddy() will succeed.
+
+Link: https://lkml.kernel.org/r/1739936804-18199-1-git-send-email-yangge1116@126.com
+Fixes: c77c0a8ac4c5 ("mm/hugetlb: defer freeing of huge pages if in non-task context")
+Signed-off-by: Ge Yang <yangge1116@126.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 4ea6109a8043..cebbac97a221 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2253,7 +2253,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	struct folio *folio = NULL;
- 	bool skip_swapcache = false;
- 	swp_entry_t swap;
--	int error, nr_pages;
-+	int error, nr_pages, order, split_order;
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index ec8c0ccc8f95..dbe76d4f1bfc 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -682,6 +682,7 @@ struct huge_bootmem_page {
  
- 	VM_BUG_ON(!*foliop || !xa_is_value(*foliop));
- 	swap = radix_to_swp_entry(*foliop);
-@@ -2272,10 +2272,9 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ int isolate_or_dissolve_huge_page(struct page *page, struct list_head *list);
+ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
++void wait_for_freed_hugetlb_folios(void);
+ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 				unsigned long addr, bool cow_from_owner);
+ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+@@ -1066,6 +1067,10 @@ static inline int replace_free_hugepage_folios(unsigned long start_pfn,
+ 	return 0;
+ }
  
- 	/* Look it up and read it in.. */
- 	folio = swap_cache_get_folio(swap, NULL, 0);
-+	order = xa_get_order(&mapping->i_pages, index);
- 	if (!folio) {
--		int order = xa_get_order(&mapping->i_pages, index);
- 		bool fallback_order0 = false;
--		int split_order;
- 
- 		/* Or update major stats only when swapin succeeds?? */
- 		if (fault_type) {
-@@ -2339,6 +2338,29 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 			error = -ENOMEM;
- 			goto failed;
- 		}
-+	} else if (order != folio_order(folio)) {
-+		/*
-+		 * Swap readahead may swap in order 0 folios into swapcache
-+		 * asynchronously, while the shmem mapping can still stores
-+		 * large swap entries. In such cases, we should split the
-+		 * large swap entry to prevent possible data corruption.
-+		 */
-+		split_order = shmem_split_large_entry(inode, index, swap, gfp);
-+		if (split_order < 0) {
-+			error = split_order;
-+			goto failed;
-+		}
++static inline void wait_for_freed_hugetlb_folios(void)
++{
++}
 +
-+		/*
-+		 * If the large swap entry has already been split, it is
-+		 * necessary to recalculate the new swap entry based on
-+		 * the old order alignment.
-+		 */
-+		if (split_order > 0) {
-+			pgoff_t offset = index - round_down(index, 1 << split_order);
-+
-+			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
-+		}
- 	}
+ static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 					   unsigned long addr,
+ 					   bool cow_from_owner)
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 163190e89ea1..811b29f77abf 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2943,6 +2943,14 @@ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
+ 	return ret;
+ }
  
- alloced:
-@@ -2346,7 +2368,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	folio_lock(folio);
- 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
- 	    folio->swap.val != swap.val ||
--	    !shmem_confirm_swap(mapping, index, swap)) {
-+	    !shmem_confirm_swap(mapping, index, swap) ||
-+	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
++void wait_for_freed_hugetlb_folios(void)
++{
++	if (llist_empty(&hpage_freelist))
++		return;
++
++	flush_work(&free_hpage_work);
++}
++
+ typedef enum {
+ 	/*
+ 	 * For either 0/1: we checked the per-vma resv map, and one resv
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index c608e9d72865..a051a29e95ad 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -607,6 +607,16 @@ int test_pages_isolated(unsigned long start_pfn, unsigned long end_pfn,
+ 	struct zone *zone;
+ 	int ret;
+ 
++	/*
++	 * Due to the deferred freeing of hugetlb folios, the hugepage folios may
++	 * not immediately release to the buddy system. This can cause PageBuddy()
++	 * to fail in __test_page_isolated_in_pageblock(). To ensure that the
++	 * hugetlb folios are properly released back to the buddy system, we
++	 * invoke the wait_for_freed_hugetlb_folios() function to wait for the
++	 * release to complete.
++	 */
++	wait_for_freed_hugetlb_folios();
++
+ 	/*
+ 	 * Note: pageblock_nr_pages != MAX_PAGE_ORDER. Then, chunks of free
+ 	 * pages are not aligned to pageblock_nr_pages.
 
 
