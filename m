@@ -1,76 +1,140 @@
-Return-Path: <stable+bounces-121559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27B8A582AB
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 10:23:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C429DA582AE
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 10:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3C777A4097
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 09:22:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6321D1890686
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 09:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF5719D89D;
-	Sun,  9 Mar 2025 09:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51EC19259F;
+	Sun,  9 Mar 2025 09:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UB+Wn7e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkC6ZBV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA8A18CBFE;
-	Sun,  9 Mar 2025 09:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61376ECF;
+	Sun,  9 Mar 2025 09:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741512227; cv=none; b=Cnmk+jZMDsW8b/MJgYuNQaWIBrsjeHcQXqSkKv7WwGjMFpSITpT9XnooSyV6r00BS7npdmrdA/UfiVuKEGVXl5LfSginlAP6XYuAVBiVC5jlU5gHX0fnICEHEQXx8rmm4b/aMejrrBS8u0hGSR1KS8UhSYu4zr/sVw9BbUmEdUE=
+	t=1741512471; cv=none; b=mKoMIvPRNaGHsuZlaC5su6P1ygnY5ZSjbb5voppBdYJgRvpGMqwVf4H2QZQSpMCpi/4Eptdki6Rv9oeJXxOqz4bSIvIaSbHCNMB76o+noy0Vlm0uUYFcs0tqeDtTo8Z1hGiuWJKKTFIwQBnc1V/l6DU3nb6WFcIKk+o6oX6cra8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741512227; c=relaxed/simple;
-	bh=NGUThif1MWAbt3yYjCQawzz72SNY3fuWhUbs+gZEPUI=;
+	s=arc-20240116; t=1741512471; c=relaxed/simple;
+	bh=iIZxroa4u4ehd4+mCTaqXpZgoTcRYMgH0lLH4b1yMws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cnG7NPzPc1Tpd9+G2CawHwBgwRGub3kYaFgURfldfpYbUaUb+5fmb4w6L52QsEtYHehSu9RT15enqXkpv/LOnIZ1CtxTB212UzE9Ab00ruvBzKvqGVzkxNpF9m+6mwYvWvzGp8CoNdaZDD3BV8hDpXE/rpy4rOInRw7r+arF41Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UB+Wn7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F30C4CEE5;
-	Sun,  9 Mar 2025 09:23:46 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pz0+P+v+8aUnL7vNTVAt2Ze+XF559F/l8mvAFfsI1cvg8vcQcnDNG/QWwZe7W2Q/MKxIZvdrEHcuwFZWBX5r8RAqUOiA+c9KdRPBpUvHyaFD6rxui445AQ4jLzmJ9puNPiawx9B+aFL6pIV93K5BLr4qIZogMQqKDPszIJqXbgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkC6ZBV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FF8C4CEE5;
+	Sun,  9 Mar 2025 09:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741512227;
-	bh=NGUThif1MWAbt3yYjCQawzz72SNY3fuWhUbs+gZEPUI=;
+	s=korg; t=1741512470;
+	bh=iIZxroa4u4ehd4+mCTaqXpZgoTcRYMgH0lLH4b1yMws=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1UB+Wn7eTNO9nmCReuyR+Sc17w/eBSy8b0Rpoz7PckNrstPyXF2RqKe5fK71qCcct
-	 OYdK5Z5lx9DR1wq9zWqWrWu15wRN1iK1nfMHOkyODbDidhOJhU5sfuemRW6LS/Uiv+
-	 5yNzaZBMUVueoeSQvvLADP73aOTIlPZItCgexsgU=
-Date: Sun, 9 Mar 2025 10:22:30 +0100
+	b=tkC6ZBV3jzmt5WQRVfHrOPA6IWVBEw8zyaHH0t7WI11LbLLhMfrtsoPUcf/NGyC9q
+	 +Dq/GshnfXbZWHZ8L9wJ+GtG7YyoPUzIxs5M03oqoTwnxAf+9Mv/Uk1DNX0AduSxyf
+	 rzHzEfOmUG3s7a0SMmSzV9XEQ3ijzbePHWAUuz1w=
+Date: Sun, 9 Mar 2025 10:26:34 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: =?iso-8859-1?Q?J=F6rg-Volker?= Peetz <jvpeetz@web.de>,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org,
-	x86@kernel.org, lwn@lwn.net, jslaby@suse.cz
-Subject: Re: Linux 6.13.6
-Message-ID: <2025030925-crazed-swerve-57a3@gregkh>
-References: <2025030751-mongrel-unplug-83d8@gregkh>
- <1b3ea3ce-7754-494c-a87b-0b70b2d25f99@web.de>
- <20250308163003.GDZ8xwi0u3rAAX0J23@fat_crate.local>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.13 070/157] objtool: Remove annotate_{,un}reachable()
+Message-ID: <2025030903-juiciness-gusto-ad85@gregkh>
+References: <20250305174505.268725418@linuxfoundation.org>
+ <20250305174508.115393593@linuxfoundation.org>
+ <20250307212625.GA2700602@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250308163003.GDZ8xwi0u3rAAX0J23@fat_crate.local>
+In-Reply-To: <20250307212625.GA2700602@ax162>
 
-On Sat, Mar 08, 2025 at 05:30:03PM +0100, Borislav Petkov wrote:
-> On Sat, Mar 08, 2025 at 05:03:08PM +0100, Jörg-Volker Peetz wrote:
-> > [    0.000000] microcode: You should not be seeing this. Please send the
-> > following couple of lines to x86-<at>-kernel.org
-> > [    0.000000] microcode: CPUID(1).EAX: 0xa50f00, current revision: 0xa500011
+On Fri, Mar 07, 2025 at 10:26:25PM +0100, Nathan Chancellor wrote:
+> On Wed, Mar 05, 2025 at 06:48:26PM +0100, Greg Kroah-Hartman wrote:
+> > 6.13-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Peter Zijlstra <peterz@infradead.org>
+> > 
+> > [ Upstream commit 06e24745985c8dd0da18337503afcf2f2fdbdff1 ]
+> > 
+> > There are no users of annotate_reachable() left.
 > 
-> This should fix it:
+> This is not true in 6.13.y because it was taken without upstream commit
+> 624bde3465f6 ("loongarch: Use ASM_REACHABLE"), resulting in:
 > 
-> https://lore.kernel.org/r/20250307220256.11816-1-bp@kernel.org
+>   In file included from include/linux/bug.h:5,
+>                    from include/linux/thread_info.h:13,
+>                    from include/asm-generic/current.h:6,
+>                    from ./arch/loongarch/include/generated/asm/current.h:1,
+>                    from include/linux/sched.h:12,
+>                    from arch/loongarch/kernel/asm-offsets.c:8:
+>   include/linux/thread_info.h: In function 'check_copy_size':
+>   arch/loongarch/include/asm/bug.h:47:9: error: implicit declaration of function 'annotate_reachable' [-Wimplicit-function-declaration]
+>      47 |         annotate_reachable();                                   \
+>         |         ^~~~~~~~~~~~~~~~~~
+>   include/asm-generic/bug.h:113:17: note: in expansion of macro '__WARN_FLAGS'
+>     113 |                 __WARN_FLAGS(BUGFLAG_ONCE |                     \
+>         |                 ^~~~~~~~~~~~
+>   include/linux/thread_info.h:262:13: note: in expansion of macro 'WARN_ON_ONCE'
+>     262 |         if (WARN_ON_ONCE(bytes > INT_MAX))
+>         |             ^~~~~~~~~~~~
+> 
+> when trying to build ARCH=loongarch now. That applies cleanly and
+> resolves the build failure.
+> 
+> > And the annotate_unreachable() usage in unreachable() is plain wrong;
+> > it will hide dangerous fall-through code-gen.
+> 
+> This may be reason enough to take this patch into stable... (but then
+> why wasn't it Cc'd in the first place, the tip folks are usually good
+> about that?)
+> 
+> > Remove both.
+> > 
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> > Link: https://lore.kernel.org/r/20241128094312.235637588@infradead.org
+> > Stable-dep-of: 73cfc53cc3b6 ("objtool: Fix C jump table annotations for Clang")
+> 
+> But I do not think avoiding the conflict generated by this patch is...
+> With the "diff3" merge.conflictstyle setting in git, I only see this
+> conflict in that change:
+> 
+>   /* Annotate a C jump table to allow objtool to follow the code flow */
+>   <<<<<<< HEAD
+>   #define __annotate_jump_table __section(".rodata..c_jump_table,\"a\",@progbits #")
+> 
+>   ||||||| parent of 73cfc53cc3b6 (objtool: Fix C jump table annotations for Clang)
+>   #define __annotate_jump_table __section(".rodata..c_jump_table,\"a\",@progbits #")
+>   =======
+>   #define __annotate_jump_table __section(".data.rel.ro.c_jump_table")
+>   >>>>>>> 73cfc53cc3b6 (objtool: Fix C jump table annotations for Clang)
+> 
+> which seems incredibly simple to resolve without dragging in two extra
+> patches.
+> 
+> If we do want to keep this change in 6.13.y, maybe it would be worth
+> dragging in
+> 
+>   2190966fbc14 ("x86: Convert unreachable() to BUG()")
+>   41a1e976623e ("x86/mm: Convert unreachable() to BUG()")
+> 
+> as well?
 
-Now queued up.
+Both are already in the release, thanks!
 
+greg k-h
 
