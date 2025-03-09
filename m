@@ -1,211 +1,230 @@
-Return-Path: <stable+bounces-121630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1FCA588AD
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 22:57:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94676A588BA
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 23:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9B1188DBBF
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 21:57:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C39AE16A278
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 22:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F950219A74;
-	Sun,  9 Mar 2025 21:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D4C19B5B8;
+	Sun,  9 Mar 2025 22:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jvdp6uGf"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="O5uw8rl5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11021080.outbound.protection.outlook.com [40.93.194.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1EF1EF368;
-	Sun,  9 Mar 2025 21:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741557446; cv=none; b=HT2L0EEeorfWFIpTQC2Rp7DTR3IgRi0zSTt6swFHY4r7Xpbtt6FdcpKLp8PKpEo3cjF0hlgDwh89osUCT1EAaPSb2A4nx5pJpK0tF7MozHZBb/C7OHdlKssbOu3CWvPzKn43SoMuidm7ORatZagXbY0QRDL21mAqEsDTManN6Qg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741557446; c=relaxed/simple;
-	bh=Pn56n8GBE8UCxvs12+4IV/Um/R07UV7tjGPzLbAQ+OQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dyNRkNVoKgcMN7fMzR3xFRXaAMmU91x1tcUBvEz/vno7i3142L8zwRb6VyDWCHcD8B/KqDAkVlSoJg3wiBE8AeVx6xm662RXwpNfX5AA6hq/UGA+LczVmSEOoPLjlg9/c92cSJrbHFLN0fKbrkO8meynEnD846Tz1+SMfVcyhLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jvdp6uGf; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3914bc3e01aso9182f8f.2;
-        Sun, 09 Mar 2025 14:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741557443; x=1742162243; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NSfpy4/Aj1B+p0UMwIBKpz+PCflfZnDM7kqd3UIKSwE=;
-        b=jvdp6uGfPrmf1+UBFcYqGC1lmWW++7AyWkvbkbCmp2yxFym/4Xal2JT9Lu2uiWRvyf
-         T60/iKLr8PdAvWE09oEmEHQI2yovnJwHTN8Ry9Eq39O6KIOT5iAe0BQCUb6Ry3P5Jipi
-         KeRQEnfaqRL9fE7oMj89JpAREYInEO0woZryvCRUAFR5sxOgreIhyhea2G89n3n5NKWT
-         +6Iusm4UISGcjaqOK42X14YBWb5Nlr/1mS1qUaOhIlFhCRaHzyd6YCgbL6aWmlvpG3Ru
-         pW/xQpi/pG0Wos5xxsGLNkIFjTjcIO86Axi/muwJsC8V9kymec6x876cQUp8iaDvJtXm
-         vBKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741557443; x=1742162243;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NSfpy4/Aj1B+p0UMwIBKpz+PCflfZnDM7kqd3UIKSwE=;
-        b=lBpm1bBR8IjM5LcmFShmjqjT5ZOVOrw8jsRqCf+Xic2o3J8sHEDyX7BiHBjYqji045
-         30a25ZR+rfRetYrOiSU1DYwJKqF+x8hhRGi9jDGG2agMau4hFFVBBW8udAngaLPMOiH7
-         e3L5LuuOmJR1j8r4sH1XE72C94fLVte8muNfhR0+BJISmxFs1BSwn5Rl9ne1lJq7nMWH
-         fcM+4u1jxJe5nuqilzg7+l7Q7yOc9wSUQH7jlUGP/4tXFqVxpJcQcE3G2A6KDWQlX9eg
-         +MRWvFLmtJ1LXNw7igDU4b6r/UOGFeRwvRrsRONNC9bUlaV2X0i4+c8HCzy9yBoRNoF1
-         tRRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVUBJqT+7ulBNhWvrVNbFAVup//vwoD7aPSEJc8o2WLhjJtZilT8SBv00N34/9ZJLEbBS/8T9CxaZw@vger.kernel.org, AJvYcCWlOEe7FNe6+VmWR4mY8YgdawwYOMCjg6pm8iFNAaRFgnRaFv7UMkOeToWnXrV7BwFdUjlss9Tr@vger.kernel.org, AJvYcCX7DmFHk4b4pSQgUOCYPL65XpqJ9y+epI8M1jQnagrcQYdWQrgtzfwXIy//pkr5PQK9yUI+ThbL9v1zDeM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiiTV3Uo97XEgnidfDnlTU86EeHeu8AmGXUwvKZ7Wv90SLqwnb
-	I248VQV5fmZf4beYndW6H89oEboGF3u7ftN/hKj8meh7pCMQV91l
-X-Gm-Gg: ASbGnctOjbmMXrOkuYg1gmA2cqk0AenA8tMvZyDYv5n8YlOrJ8aqTMJugvpKfqwNfyy
-	YBOe1fm7aLYOEzV+/75sH47ddU9U6X3LxnD0yz14VZP0TNGUfIO2Dh7Ig6EePog2n8ndga/iELe
-	7W4z5YtkQaMr7ZfBzGpDVY5ZB+GIPawhVZfvFAjgT5m4t05YUTPS8eHrpAdOTqnI90HBGAhdKam
-	Ts0Lq9XF+FvAzt/HIhDi+0q29119vB7VcLfnX96wa+doFBs+kYlZIk4skaCJyT7lpZEmsi/aowa
-	Oq8yqxpjyze6uToGM1dBOMaHVRTjTIVzkc3GlkhQVTIs4RVaZf12DpsW5eNJ8rieODYlU0aYYNA
-	o9SyK4ihdmuT//HA10Ws7Aw==
-X-Google-Smtp-Source: AGHT+IHlFjNw4bjS7AfhnTSwAFcFZZVIoiG6l6ku1hA+7wcsMiJQFaX7fACndu509scn+6IFClWZYA==
-X-Received: by 2002:a05:6000:1a87:b0:391:2391:2f79 with SMTP id ffacd0b85a97d-39132d98a8emr7605490f8f.43.1741557442749;
-        Sun, 09 Mar 2025 14:57:22 -0700 (PDT)
-Received: from [192.168.0.66] (host-89-241-216-251.as13285.net. [89.241.216.251])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3912c0193bfsm13121734f8f.55.2025.03.09.14.57.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Mar 2025 14:57:22 -0700 (PDT)
-Message-ID: <dc8894f5-8960-4e0f-93ff-47f305cd902e@gmail.com>
-Date: Sun, 9 Mar 2025 21:57:21 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE90C2FA;
+	Sun,  9 Mar 2025 22:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741557697; cv=fail; b=Unea210CMSXfFV8T4zk2rMmsI1shxRzboV1bjmWysjWQaBiTAEdZjc/LoPm2UKrfIjj7Mkjz4xcSPa+tDe9b/uxE/mOnQrqb08ZC61bDPZk8j+hqt3FgLIAF5yugll60bDyII6NsHa9o3bFr/XOZ65h0cC+eQgbgIt89+2oXkRM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741557697; c=relaxed/simple;
+	bh=6/NfFkPxTKRVMMt0ks2iN5kesscuS4V0WU18MX5eHC0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Asd81c1L5RCVf54IpjZYWEmQMncXrBvESq0T4qoUspxA7qve4WREpZ+5DTSlMRmDXOi70GitK4zoyPltt/f7CJI8PtNRzUcMHVxPQtGeoSI5YbmHTuTrJup0xuZC5DHWFIQdF1QCbn3qWij+mw3bNtY63qZQVGtsrcflPuIz5J0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=O5uw8rl5; arc=fail smtp.client-ip=40.93.194.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Nzee8Cw9AUnhEUeEtqA4IiCuUoqiYrvpX/mQwuGBczCapa4d4SmJHuq4WqHfDAAixi3bqLmKFMZqsKpfxK1HWtjMO+svWO4OVIn17hCHPeWqwv2D9C6Kb8CspKQrhHDrCz7+1+2kHurrBh1pySaQSHAtC7Lrs0jkys/IjT8mMceKpSrnw4bdYfdi4qMABDYQXjU1eUGRHpWDUFFmFQ0yxtW3+shmsgRAkay3v1bOulPYdj0ZIZGwuwX+BS3w+BugrtFjNbcOwyq6XYUjmbQ5DiGDrrn0m5i83oV/5zQEDzM4r7JeMyGvszEBh7aoKscIVlkO0oRZWRCN6AjMnp0TUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sWofr6bSiZlhzkcCyjDFYvf3cFtVdPTSm7VoLZIdS84=;
+ b=leUr1mmhV/RWutbuXDa6BgLMLizXEJua74xKbEuIllwcjP4FVoDsBGvJdnQiR3uaGhw4cSibHBlRXc+d00QXbf94mBjm62w5pD8tppbEMOUMymhiHvBcy5SyJ/6TahntgzMpYQfYFR75dGSRFEPbtmzu0SwgUgod04YQ8IGV+wQXwdqjUzUQWKz5Fk2VqLksj7YI4Vbf9C6KKhkeXTOQBO9Mw14+ObLA9o8iTKzgmxIGSXD1ma+XIGmLv9onKiP65LG7H3nWcynqe9sIr/np82yibRTYSw3wCtp91K5va898plIMJTNd9cdsZQm5ChxJ8P7AlQWOsD2+nYibfu20wA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sWofr6bSiZlhzkcCyjDFYvf3cFtVdPTSm7VoLZIdS84=;
+ b=O5uw8rl5CLBnzDEu2xrhvO751fNH/NCmKVyX+ArVtVnUwXkfIGFaGZeGFKgDZHnUSIxl6+vTh3mqvy1DM+f8lshhoCY09piBEXsNp5+GjDDo8dRExYadPdNX3q0+VrAHqpYwoXBb4ldOlyglJGZurDMkuQ9DeT7fH44iNrb1o+M=
+Received: from MN0PR21MB3437.namprd21.prod.outlook.com (2603:10b6:208:3d2::17)
+ by BL4PR21MB4556.namprd21.prod.outlook.com (2603:10b6:208:586::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.20; Sun, 9 Mar
+ 2025 22:01:33 +0000
+Received: from MN0PR21MB3437.namprd21.prod.outlook.com
+ ([fe80::19f:96c4:be9a:c684]) by MN0PR21MB3437.namprd21.prod.outlook.com
+ ([fe80::19f:96c4:be9a:c684%5]) with mapi id 15.20.8511.012; Sun, 9 Mar 2025
+ 22:01:33 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, "stephen@networkplumber.org"
+	<stephen@networkplumber.org>, KY Srinivasan <kys@microsoft.com>, Paul
+ Rosswurm <paulros@microsoft.com>, "olaf@aepfle.de" <olaf@aepfle.de>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "leon@kernel.org" <leon@kernel.org>, Long Li
+	<longli@microsoft.com>, "ssengar@linux.microsoft.com"
+	<ssengar@linux.microsoft.com>, "linux-rdma@vger.kernel.org"
+	<linux-rdma@vger.kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "bpf@vger.kernel.org"
+	<bpf@vger.kernel.org>, "ast@kernel.org" <ast@kernel.org>, "hawk@kernel.org"
+	<hawk@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [EXTERNAL] Re: [PATCH net] net: mana: Support holes in device
+ list reply msg
+Thread-Topic: [EXTERNAL] Re: [PATCH net] net: mana: Support holes in device
+ list reply msg
+Thread-Index: AQHbjhgyS8cLhRPnh0m8BhGByKtsWbNonkeAgALCjVA=
+Date: Sun, 9 Mar 2025 22:01:33 +0000
+Message-ID:
+ <MN0PR21MB3437F80F3AD98C82870A9173CAD72@MN0PR21MB3437.namprd21.prod.outlook.com>
+References: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
+ <20250307195029.1dc74f8e@kernel.org>
+In-Reply-To: <20250307195029.1dc74f8e@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=59979798-71db-4022-bf10-2e14231d7f06;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-03-09T21:59:20Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR21MB3437:EE_|BL4PR21MB4556:EE_
+x-ms-office365-filtering-correlation-id: c4d3b294-fcc3-4870-6cd3-08dd5f55f466
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?WlNg9SIW6iFXpeLgLOultMaq2W7qa/bObmVooRm0yO0ShdSdPIPud6BXIk6h?=
+ =?us-ascii?Q?O7U5rjVvdmt0EltYm/xmdU6YP9qXLThZFT9J0Rp7I0/zlEWBfHpN5qwntR79?=
+ =?us-ascii?Q?xoIZB2cIZlZ6Sg2hXlxf2Cq0SQ5d/WWAVIANLaTNW1ZfJmSh7mWYqUVC85bp?=
+ =?us-ascii?Q?On9QajLcGneMKJ5StpZV056heakQWEnVhwhqze4v9WcYM9QCI9OzODeKIZ9K?=
+ =?us-ascii?Q?lOf/c4NlLbmhhynUOiDvXIRthXd7/K5bXZvtBv+fBaacdSWYvczNeBCz/97q?=
+ =?us-ascii?Q?iTZI0MDSLtDhPToHtPoWe6h+Mnd2l1p7gl2o4kitEQfEDO4FPBU3/o1Rcwu6?=
+ =?us-ascii?Q?JP5GVBiKmaG0SXZ4yPItcLuoWKHQ4RJjLEnFIsCdx72FSvYhEaLKqQFyYoDk?=
+ =?us-ascii?Q?t9HcB1QA+FDIO3GQz7yBnPdhCZB1dxnYeL3JK1lYBc26+X1FeoY//4TzZXD/?=
+ =?us-ascii?Q?7ZS+19Gna0BzQbKH1mSfrc9LP2/e3XhHfV0o769wHyKWKWsfW11Ht0NlPR2R?=
+ =?us-ascii?Q?RQPWg2+Ew1LUDXnWA0sQjASCgAxTZLnhKokT5O0CRKeJY5PtrjnEAdbxFxY5?=
+ =?us-ascii?Q?TBZq+WrdVAINLwtqrhIW9K1KZv4IIFK45vFlpgNoaXoJOzlWN4oqDUxtkXhE?=
+ =?us-ascii?Q?2HehOOx9sYuS049zHUBKizxv4BrabTDJn9jTBrRXArVqx9gA6+OdbM/O0XSR?=
+ =?us-ascii?Q?Eb2QqcCiKTERuPwsSvMy4FSiFyO6vYfjople0vNgBciOCwaK77a7AkZCsDve?=
+ =?us-ascii?Q?raam1JZ5Hjds0nZh6IB1rGQTnEDl7QMkNpOoZ8sxFHsjKUQ8+kqTRVww3nvZ?=
+ =?us-ascii?Q?w7sKKmyafgyR7s2m/gElV+2lILJag1MUAH0cdmyBNSxWW2iNvQWzNBtyA/Li?=
+ =?us-ascii?Q?byrnLrf1l7ZqbMTNvyh0kdvn/HzfeHQdQ8kpjBc2jq5HxCOwzijuwlFDS9sD?=
+ =?us-ascii?Q?zmZJ1IY0xy6zYEBt2YyrQCxRxLMfy0iLs50mucOCVFc3dH7jZS85DiQigw5D?=
+ =?us-ascii?Q?88buABFYeITaBs5zCjKeBsWNUD8pQ6Ocl3VFvlF1M81YLI44EEVMu/+h2o1+?=
+ =?us-ascii?Q?2Qovsr4xCq4SgxS4psIqUAwAGcwPMCZKkfDFZj90JAy1y/fReeh6TJuTqIZt?=
+ =?us-ascii?Q?3o+XJ4sSGfAs8ljKsNnHGqhAnYbBfiC5grddU6IIvzqVVpQerLTSSLdsJVYA?=
+ =?us-ascii?Q?wijsa08p2QR8l8OjoyRRmI6Zs20ZT0nAsPebwtU5zrijBAXJUOVr2tvIbyFI?=
+ =?us-ascii?Q?w8RFcTg3c4ohdR6ciX3yaQjYyB5PATvMywmGUVQM7HI/+SDAEP1ys6+sNl7T?=
+ =?us-ascii?Q?17jGH4zZ5axerIEZGZ2/H+CDMfYlPovv+QkK1HbGXzuHwfNAcWwV/X8h8l75?=
+ =?us-ascii?Q?zCG9XzDqIuKX+DDkFYU+imPqb6kJwYyV2QS6Lzga7xRAZgBVv8AvNLGEQHgy?=
+ =?us-ascii?Q?hkOrEsOMhfO+ntBRoEbzNaz9mUadtUhu?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR21MB3437.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?wqy3Z7dKA/2YFQYom5hejk8NEdbUUWEEU1wcvSDWDbTx/gIaqW8q6nOdd05f?=
+ =?us-ascii?Q?k0tDvxgPur1qdu5qlZBdCH2Xw8fB6HWq2bjCPpjNGrvINyw1Ia+dpu9a8QuD?=
+ =?us-ascii?Q?lsXNHaUasTfv6B3Xluj2wsG6f13uXkr3a29ow3cWn+u3gGQtk5A0OMGnT2Sa?=
+ =?us-ascii?Q?V5GkbySJ6xFggeWqnuCyXJT9toipr+B9xXtT/1A6JiRuIMltvGGx90tB4j/o?=
+ =?us-ascii?Q?Pl1kv3sdVzWjYb3QVOs1TOCbMIBzITh01+yi8WloeqrztQ6e/GPZvvuX3bxm?=
+ =?us-ascii?Q?isZVasrxJAxHCHEgaSCQAoODOVmwfkfwEZ+Bpzf2Ldm4sA3ktIwx4a5rLcxQ?=
+ =?us-ascii?Q?M//T9QXUU3NzvZe4hgzYArFdLoCwj5nZN4mrYLk6R6GdJ2Toa/rrunTiIHI2?=
+ =?us-ascii?Q?AO/T78sZePPKlOzRgdyg+Busk6oXnLzA0VsoLLgMHVBDSb84jowYA1gUfJjn?=
+ =?us-ascii?Q?PL8B3QP1kIeoTb2aajqRod6K7YB4o4EjxK4n/Ccum+//aQgmnN7mNjLzTwH3?=
+ =?us-ascii?Q?Cb+yNHDfGOqICtMMuoAsSGlb2j+5iT3jYhMNJoCHJzyp/GGafQ3P00G8VnJN?=
+ =?us-ascii?Q?ykSjpCy0bKlDm3ilUcm8x1Of3lGd/2BBWiX6hLOQzU3Fr4t95nJeO1BX1uf9?=
+ =?us-ascii?Q?qhS0pn7PeTrDS4p3iZMXwmiUnuQwHvwQBLPGio82e3wyyfM7oF/wGRN8xDIq?=
+ =?us-ascii?Q?iqZSgdDx96gWi+LzcBie/KlynXE3JPx/b/kEAL1jbwvYmP2jMukEbvpeUWeb?=
+ =?us-ascii?Q?fXEYHzji5v3ZLlO8NbIKf4f0PZTy/7slLeBdJEYUWvdOveIqnzDrU+88rU5c?=
+ =?us-ascii?Q?z3+9E8oJ+8ttdk49of8X2N0NyQV+vfmQHjx1DDlCX88CR04sOlaYkdbstA3u?=
+ =?us-ascii?Q?dpg9t941NLoXGAlOh9Vvd62M78W8TGVHccH5MVLBimtG3Wf4NQJG5AXRz74M?=
+ =?us-ascii?Q?TQNQbwMJfnurUhUbzSFp6rliSfoyFLR2YqhkobxmftxVg9MLTTD1yVAwqX5V?=
+ =?us-ascii?Q?GAOdElACkcMyW6OShQYrunnRjwX0mtCphwU8EX52cH5W7Lj+3iX0LdB6wczT?=
+ =?us-ascii?Q?EpWIICLq1Z/j//QtdwQ1w7jCjIYQyx86/rVKuJvYwf5fK/KJHo9fu7/UaGUF?=
+ =?us-ascii?Q?8fKbOqJqMrvg3HoU0jKGyVM8fZuQXw4kCP1OLXPpZWsTeMh+2QCTrorUeCOC?=
+ =?us-ascii?Q?EXXffoi8+ad9Q7masMVstmTB+8dpTJNndYFrlfazs5PCTLR6GFH5AB5T+QZA?=
+ =?us-ascii?Q?J0A375eAhnQyR4HIMpQgT/31wb7SnbTJJPZ8jp2TTOaFxfQ8xQ+nZ8ylmKh2?=
+ =?us-ascii?Q?jgzEi4C3ysQpeg76moc8EZi71/cnJ3z4rChIGl1jPxi0tCsB3f/rAsWFCTz3?=
+ =?us-ascii?Q?KmYOMWrIUiIizd1s35PixLYPdoW1puxOKMQApBmqoUt4/3ddQ7fjJSKarJdE?=
+ =?us-ascii?Q?NVxScM2VHQTiUjlHW0jznXqGYZDE+3GBw5WoVMMnvPGIaT0YLU7uoqI/KGSc?=
+ =?us-ascii?Q?+p/Pe93q7A4AZ9whe5upTBY/qNAXn4LoTZqwTItChR2VXeMM175yIyeBqerX?=
+ =?us-ascii?Q?K9n6Kmb9XWNn+FdQ0pZ+ivdcw6zX2onbEmSqYNbF?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH v1] usb: core: fix pipe creation for get_bMaxPacketSize0
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: eichest@gmail.com, francesco.dolcini@toradex.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, stable@vger.kernel.org,
- stefan.eichenberger@toradex.com
-References: <Z6HxHXrmeEuTzE-c@eichest-laptop>
- <857c8982-f09f-4788-b547-1face254946d@gmail.com>
- <1005263f-0a07-4dae-b74f-28e6ae3952bf@rowland.harvard.edu>
- <cf6c9693-49ae-4511-8f16-30168567f877@gmail.com>
- <04cb3076-6e34-432f-9400-0df84c054e5c@rowland.harvard.edu>
- <bf0fda83-d97d-4a50-94d6-a2d70607a917@gmail.com>
- <73963187-6dcb-480d-ae35-2cee11001834@rowland.harvard.edu>
-Content-Language: en-US
-From: Colin Evans <colin.evans.parkstone@gmail.com>
-In-Reply-To: <73963187-6dcb-480d-ae35-2cee11001834@rowland.harvard.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR21MB3437.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4d3b294-fcc3-4870-6cd3-08dd5f55f466
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Mar 2025 22:01:33.3054
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: v4bFZSXHQF403ZHcSqJxDxabvWA9sD8gs022FhM3VPHbfQZ6vk/BB2oHTWZPzGYyBEA4UJgiIE/3q6/OzFsSmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR21MB4556
 
-On 09/03/2025 21:01, Alan Stern wrote:
-> On Sat, Mar 08, 2025 at 11:19:22PM +0000, Colin Evans wrote:
->> I believe I have the information requested. The output of usbmon for the "problem" scenario is
->> large, I hope it doesn't exceed any email attachment limits, but if it does I will have to work
->> out another way to share it.
->>
->> It may be that 30s of data is more than is needed. If that's the case I can easily run a shorter
->> usbmon cycle.
-> It is a lot more than needed, but that's okay.
->
->> Additional Observations
->> -----------------------
->> It appears that having pretty much any external device plugged into a motherboard port connected
->> to the _problem_ controller is enough to suppress the stream of "usb usb2-port4: Cannot enable.
->> Maybe the USB cable is bad?" dmesg errors.
->>
->> For these tests the results named "working" had a USB2.0 memory stick plugged
->   into one
->> of the top 4 USB ports on the motherboard, while the "problem" results didn't.
->>
->> For info- the older machine that exhibits this problem ("machine 1") also shows device manager
->> errors if booted into Windows 10, suggesting that machine may in fact have a motherboard
->> hardware fault.
->>
->> However "machine 2" (which is less than 2 weeks old), shows no errors when booted into Windows.
-> Well, I have no idea what Windows is doing on that machine.
->
-> The usbmon trace shows that port 4 on bus 2 generates a continual
-> stream of link-state-change events, constantly interrupting the system
-> and consuming computational resources.  That's why the performance
-> goes way down.
->
-> I can't tell what's causing those link-state changes.  It _looks_ like
-> what you would get if there was an intermittent electrical connection
-> causing random voltage fluctuations.  Whatever the cause is, plugging
-> in the memory stick does seem to suppress those changes; they don't
-> show up at all in the "working" trace.
->
-> In theory, turning off power to port 4 might stop all the events from
-> being reported.  You can try this to see if it works:
->
-> 	echo 1 >/sys/bus/usb/devices/2-0:1.0/usb2-port4/disable
->
-> Alan Stern
 
-Thank you, that is very helpful, for a couple of reasons.
 
-"Machine 2" is a new build, so if (as it sounds) the motherboard has a 
-hardware problem, then I need to
-look into returning it.
+> -----Original Message-----
+> From: Jakub Kicinski <kuba@kernel.org>
+> Sent: Friday, March 7, 2025 10:50 PM
+> To: Haiyang Zhang <haiyangz@microsoft.com>
+> Cc: linux-hyperv@vger.kernel.org; netdev@vger.kernel.org; Dexuan Cui
+> <decui@microsoft.com>; stephen@networkplumber.org; KY Srinivasan
+> <kys@microsoft.com>; Paul Rosswurm <paulros@microsoft.com>;
+> olaf@aepfle.de; vkuznets@redhat.com; davem@davemloft.net;
+> wei.liu@kernel.org; edumazet@google.com; pabeni@redhat.com;
+> leon@kernel.org; Long Li <longli@microsoft.com>;
+> ssengar@linux.microsoft.com; linux-rdma@vger.kernel.org;
+> daniel@iogearbox.net; john.fastabend@gmail.com; bpf@vger.kernel.org;
+> ast@kernel.org; hawk@kernel.org; tglx@linutronix.de;
+> shradhagupta@linux.microsoft.com; linux-kernel@vger.kernel.org;
+> stable@vger.kernel.org
+> Subject: [EXTERNAL] Re: [PATCH net] net: mana: Support holes in device
+> list reply msg
+>=20
+> On Wed,  5 Mar 2025 13:46:21 -0800 Haiyang Zhang wrote:
+> > -	for (i =3D 0; i < max_num_devs; i++) {
+> > +	for (i =3D 0; i < GDMA_DEV_LIST_SIZE &&
+> > +		found_dev < resp.num_of_devs; i++) {
+>=20
+> unfortunate mis-indent here, it blend with the code.
+> checkpatch is right that it should be aligned with opening bracket
+Will fix it.
 
-BTW- it seems I spoke too soon about the USB stick suppressing the 
-error. After a couple of reboots with
-it in place the problem re-occurred. It does seem that connecting a hub 
-(switch) is the  only way
-to reliably stop the error. The switch has a bunch of wiring connected 
-to USB peripherals and other
-machines. I would have guessed that might make the likelihood of picking 
-up electrical noise
-actually worse, but that seems not to be the case here.
+>=20
+> >  		dev =3D resp.devs[i];
+> >  		dev_type =3D dev.type;
+> >
+> > +		/* Skip empty devices */
+> > +		if (dev.as_uint32 =3D=3D 0)
+> > +			continue;
+> > +
+> > +		found_dev++;
+> > +		dev_info(gc->dev, "Got devidx:%u, type:%u, instance:%u\n", i,
+> > +			 dev.type, dev.instance);
+>=20
+> Are you sure you want to print this info message for each device,
+> each time it's probed? Seems pretty noisy. We generally recommend
+> printing about _unusual_ things.
+Ok. I can remove it.
 
-"Machine 1" is several years old, it's actually the guts of the same PC 
-that was upgraded to make M/c 2.
-It's not usable, or sellable, with this performance hit happening. I 
-have tried all the external USB ports
-on this machine and not found the failing controller, my guess is it's 
-going to be one that supports
-some of the on-board USB headers.
-
-I had been looking on the web for a way to shut down the problem port, 
-or worst case the whole hub,
-however all the Linux examples I found worked by either-
-
-a) Preventing the loading of the driver for the chipset, by type. 
-However that would kill all ports supported by
-     the same type of controller, and this motherboard has multiple 
-controllers of the same type onboard.
-
-b) Shutting down a port by searching for the connected device 
-identifier. However in these cases there
-     _are_ no connected devlces, the fault happens when the controller 
-is not connected to anything.
-
-Hopefully the command you recommended will do the trick, I will let you 
-know.
-
-Would I be correct in thinking this would need to be run at every boot, 
-some time after device enumeration,
-or would it need to be run after every re-enumeration of devices after a 
-USB device is connected /
-disconnected? Not sure how to achieve that.
-
-I very much appreciate your help in identifying the fault. Thank you.
-
-Regards: C Evans
-
--- 
-
-*Mr. C. J. Evans
-Parkstone
-Davis Street
-Hurst
-RG10 0TH
-
-Tel: 0118 9340297
-Mob: 07434 491984
-*
+Thanks,
+- Haiyang
 
