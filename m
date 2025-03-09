@@ -1,193 +1,126 @@
-Return-Path: <stable+bounces-121635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529EBA5890D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 00:02:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA9EA58913
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 00:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8564A3ABA6F
-	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 23:02:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CB333AC2C9
+	for <lists+stable@lfdr.de>; Sun,  9 Mar 2025 23:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A6E2144AE;
-	Sun,  9 Mar 2025 23:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8EA22171F;
+	Sun,  9 Mar 2025 23:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CDipUIJg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="giXcKCOK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2CA182D0
-	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 23:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974761AA1FE
+	for <stable@vger.kernel.org>; Sun,  9 Mar 2025 23:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741561349; cv=none; b=rdkGl720ksjejc6FVAWmB4kn0vNpwz8ysvCwN7OawK7d+VVZZ4xkgHvb1su35vfSwWPNhFHmAkaLjtQCh2sw1++wUgbq7ZsVQx+9CGNaLYRdKW370E2a8/22aL5WZG5P0bIY35sfL/WLbafvi4lMvdC0Pjhw7IO0lo0x+YFFkf4=
+	t=1741561506; cv=none; b=SCTtGwzS2IEccIfXBGHocvI5XQxdr3PsQ79GkT+86K8ZAPx9D4x5tUiWWUUCivRG9mwEEYWFuTZ8Rzval1F2wp4ImH/kkxvo64bikl9C7NOeVS0KEXSJj4Ae8YGGrwmqxShEtN1xIVnHAySwCuhW+216ibd0JFe4pfRGD7z9dn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741561349; c=relaxed/simple;
-	bh=BdNEga+4oSMAZ4FCw1Yv62nZmbK2xtqsUQSUKFSpLbc=;
+	s=arc-20240116; t=1741561506; c=relaxed/simple;
+	bh=GyTQkuqeTxhma+gD2YDcbFJwT+7AuRcIG0+3H2omrQg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=owVcnWIN5FeS9rkWLIKN/y1B9Qrx/36sx1wKQ5jYaPum5MPuIrK8jBR3gGq/4Hv2NEsPwNfiWznB8VV4ZasX+2qnC35OVicWz4IMJSOl+Rtco9nCOw3qsWmjgs3ijgoLucARg3OoTNOJkwZeYtf9g5w3SfFf2yX10jHrCSq8Tlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CDipUIJg; arc=none smtp.client-ip=209.85.208.52
+	 MIME-Version:Content-Type; b=YTV28ah59xR/+iPgmhLZtufrumzP6kimUYNANFIyTgRLCNnfBADhhai/kttI963pN7Gf6ymM5gR9mn7Yo9bxq6raid7+CCPxgu9UYaQxlAVVoL/f4q+Xq9HVTqMc5XcksvrfGpuR+Q5EZF9jsFLjfT+0kX9XRTHnSnQUTDuiwYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=giXcKCOK; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5dce099f4so4482648a12.1
-        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 16:02:27 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e60cfef9cfso2650998a12.2
+        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 16:05:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741561346; x=1742166146; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741561503; x=1742166303; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A2wChi6jE/rXxQ+om9NGLmPPyb/wa2izstEZzMc1IH4=;
-        b=CDipUIJgrUilvGqI3IDf7nDOGd8DOYsqlv1vApgamsKdYE/zCo64OyoNY4FN/fjJgl
-         kbW61avw5htOfIuKoxEFItjWIAnyWrfcUdyFt2WBNDETcICscNzPuNLmAWiNCn7vrpVk
-         NNz9OjPLSm56Mc8foBC/BIxkPgkxwV5izTRWTcPQ9rQIObn450Guy0C5BDj2VNSUvj65
-         ulCXI04zxeqLDczSX2j8kgWV5EpyyqvyP825OMIfFqsHMWFT3IO9mHzV9J8y33f4WVtu
-         u+lfb+fd/Wlm6ZOQ69N2crKEMy8ZijNk9CIHC1XTIKKDE2RQyfeZZ11LPmwYvsZkdQuf
-         rjuw==
+        bh=p5hpZitqBMQVlF7J08zn9wRX2rf7bvs1kUek1crATEg=;
+        b=giXcKCOKRi7loLOOkZ6MTWtrpB10v/2XG8ipP3P4u14GtI6zHstDRPUfZ3ypC+lHWA
+         0IFr+Qh6qt15Z6K2lrUFfTsCdXw0nZxxnvvdmnfXE2Hd8rErok4rJqIzixDjkrn4IwkN
+         5MjBgeTePbH0UCCvAAtyW9hwTeSCo2YTVFKxoy+tznYczJiKMUFAozkfqGKESpdAvZEP
+         qPjSZGbMN2yNFgrGbifRZ1I/UJBKPPKmmQhentdD9z5ADFj/mn3x60f61NR7Eoc5YTvk
+         83N5RXhXACCGDASxXVtBcLVp+Aq381MsrINRu1HpLzKyR6FkQeQOJMp3f9wPs4QGmIbc
+         dhgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741561346; x=1742166146;
+        d=1e100.net; s=20230601; t=1741561503; x=1742166303;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=A2wChi6jE/rXxQ+om9NGLmPPyb/wa2izstEZzMc1IH4=;
-        b=RG8f1k3GaqqWmj/qv8H5v9MrVfcWZ39qqfdaFRaxtqSoZlk3e5ovfEaVFo53KnVcWu
-         H/97zuouWXvNhByEuIowT78f+FyzRSBxqyhY8BYDG49kPunSyKelP+lw6VspJwj6yK5i
-         d2tI6k8bhuLKC0MLH2FFTSOCxVKyLZs/co0eRs1ZD0AoFGSc8ZyvpUV43REDw8svrp/K
-         MHaiDs+bGZJo57J9zKFa2lJaKTeMltMEpLGEwFybbuCibA4wnda1GVAibqixU3LCCsNU
-         PA7bralw/bhnkDFcconu1CNswwzD9SrXenNfQ5/f5Lvf0ku8MUOSMiCW3smHwKlQb6zu
-         Jcpg==
-X-Gm-Message-State: AOJu0YzovIfa7hXI9OHwZc2QaKKH8kXjuV/RcU+OOhs7jGKsVrkUZs3d
-	ixT44V9OiqKirfl0h/Jp5Vdyj7vx/w5fj4LWh9F7WVSdVTemzWt+
-X-Gm-Gg: ASbGnctDbuUr8WPZpPQDt8bPADmnXjm5KhEbgWIIYdY8+BvPDKmRkQXGkQK1j28zHEv
-	srpKBYIv+jeJmZYgd7xmy9TpJ+fV7xnH74s+Rd3AQfs8vWyJANG3p2Ue8evXvzONFVB0pE4gmpR
-	Ivbq/po4VafAwpTSUVSeRfPqtKjVbWPNe+jZpm2OmEcrZ7749LkPMOPHopqQ2gVAD6W03JR8MlT
-	/sxd3HWbOpkLXlTPwgpegGDSjBZfLNlE1Xuik1tLJYM5JBAzRnqJQWAbvC9u48jidncuD6EcpqJ
-	mTb7HhKISeIcnsBY/Z/ZrvkHuL4HigYA673DJEqyYixME7/4nKX8j7gjGt58FQ==
-X-Google-Smtp-Source: AGHT+IFrodM5IDbFAOX/SPYXtbsTYV/ocD72s31M/47mqApu9ITtqel53sktIoo5IG0zYr9aywPLxA==
-X-Received: by 2002:a05:6402:2115:b0:5e6:616f:42e4 with SMTP id 4fb4d7f45d1cf-5e6617e8eb9mr4811422a12.27.1741561346043;
-        Sun, 09 Mar 2025 16:02:26 -0700 (PDT)
+        bh=p5hpZitqBMQVlF7J08zn9wRX2rf7bvs1kUek1crATEg=;
+        b=qX0DPK1kq1gFYE7MBPuD6FY+b9HVs2cVhHi9Wsdss5fzFqn0HuSM+AoO0ArgLT3qYx
+         FzBpJ+ARmmM3HV3htIhac6X+v8QeoQjQZ0tA43zQAJKAwsIVMvsFvxcA0qllRJUEjHJ5
+         0oI8qMa+HG14vllDvNCAaT5ps/oR0lbA196QsuKrSngAWDgtWL4nXWf7ehRp8rfKcFqk
+         RYBV4yDKn154pyBdQiXhcggrRMjbhnVWT3CMhripSftRdUvyer3ORLCAhIMYriF4GZJY
+         +2RU0VtkHGD/VXEEsiqrH9MTK+Hs7YuoZlqcT5nhSCUJ2ddkgrrXyYcZAGmjkTudwCZT
+         nF2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXwcWUfnyLwR7kwjL2XdYgtekK+TGBb89xjhq6864YGduDFph+Rh8KqHvf2+pgmgC7muxblOPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9stW7IOHJSqnXX+l8A5xNxkGkIh4nZoDiwx5ZHWKU7sWqKZuv
+	sv+3tV0pOSGOdmqLMF5/XiZwhvRFB7NBJQAm5vZBaUnXFN+4h2Gk
+X-Gm-Gg: ASbGncv77CJ6xza5j7261K6D9WbI0hhU9+bV0AxFcRbjvxM27ZHZ1nxOUuIQ4vHUynm
+	ZK+scozcVClGI+WPWK430yS4xIBBLIsjT7FBkbWrMTaS9BjfaTYzUtVRZmSYdERUdk6hA7Xak/A
+	qH6Xnv5jfxo4ix3zw3vlINhkARJtMEKFD7e3773EmH/fXqoZ9RZPcCnLz6L4iPzmU7lFqkfV1OP
+	la6GuUIM0/URvlijYhBPmyb6Xwn9EGZUKSYM/ips/6bEc4RzSZHdrUO2u3nThe/txCOp2/PnptC
+	aZtF2O4zeg+UFyq1EoBNodEnCtZ6IDgnmS4gXs+8EgvEvxw3jyY2PTdgmEPEcg==
+X-Google-Smtp-Source: AGHT+IEmuqEYfqUikNXZX5I3soDsPKPk/u9g8nMVIcnLkpo8dwmE0n2iNDDg12hxwpAAmDC+1pcXtw==
+X-Received: by 2002:a17:907:3e82:b0:abf:6f44:bffa with SMTP id a640c23a62f3a-ac252e9e7c4mr1487323166b.36.1741561502541;
+        Sun, 09 Mar 2025 16:05:02 -0700 (PDT)
 Received: from foxbook (adts246.neoplus.adsl.tpnet.pl. [79.185.230.246])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e5c74a8f3bsm6020036a12.44.2025.03.09.16.02.25
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac283e4d50csm249886766b.175.2025.03.09.16.05.01
         (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sun, 09 Mar 2025 16:02:25 -0700 (PDT)
-Date: Mon, 10 Mar 2025 00:02:21 +0100
-From: Michal Pecio <michal.pecio@gmail.com>
-To: <stable@vger.kernel.org>
-Cc: <gregkh@linuxfoundation.org>, mathias.nyman@linux.intel.com
-Subject: [PATCH 5.10.y] usb: xhci: Enable the TRB overfetch quirk on VIA
- VL805
-Message-ID: <20250310000221.1a7d4993@foxbook>
-In-Reply-To: <2025030901-banshee-unwomanly-f19e@gregkh>
-References: <2025030901-banshee-unwomanly-f19e@gregkh>
+        Sun, 09 Mar 2025 16:05:02 -0700 (PDT)
+Date: Mon, 10 Mar 2025 00:04:58 +0100
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: mathias.nyman@linux.intel.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] usb: xhci: Enable the TRB overfetch
+ quirk on VIA VL805" failed to apply to 5.15-stable tree
+Message-ID: <20250310000458.1cbe89f7@foxbook>
+In-Reply-To: <2025030921-blank-obscurity-1a26@gregkh>
+References: <2025030900-slaw-onstage-6b47@gregkh>
+	<20250309220918.26951f03@foxbook>
+	<2025030921-blank-obscurity-1a26@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Raspberry Pi is a major user of those chips and they discovered a bug -
-when the end of a transfer ring segment is reached, up to four TRBs can
-be prefetched from the next page even if the segment ends with link TRB
-and on page boundary (the chip claims to support standard 4KB pages).
+On Sun, 9 Mar 2025 22:21:51 +0100, Greg KH wrote:
+> On Sun, Mar 09, 2025 at 10:09:18PM +0100, Micha=C5=82 Pecio wrote:
+> > On Sun, 09 Mar 2025 21:22:00 +0100, gregkh@linuxfoundation.org
+> > wrote: =20
+> > > The patch below does not apply to the 5.15-stable tree.
+> > > If someone wants it applied there, or to any other stable or
+> > > longterm tree, then please email the backport, including the
+> > > original git commit id to <stable@vger.kernel.org>. =20
+> >=20
+> > Hi Greg,
+> >=20
+> > For 5.15 and later, the sole conflict appears to be
+> >=20
+> > 0309ed83791c xhci: pci: Fix indentation in the PCI device ID
+> > definitions
+> >=20
+> >=20
+> > Would you still like a backport, or pull this small whitespace
+> > cleanup to keep PCI IDs in sync with mainline? =20
+>=20
+> I took the dependent patch now, but 5.10.y and 5.4.y still do not
+> apply cleanly.  Ify ou need/want this there, can you provide a working
+> backport?
 
-It also appears that if the prefetched TRBs belong to a different ring
-whose doorbell is later rung, they may be used without refreshing from
-system RAM and the endpoint will stay idle if their cycle bit is stale.
+5.10 done.
 
-Other users complain about IOMMU faults on x86 systems, unsurprisingly.
+5.4 has a few piecese missing, not sure why. I won't bother fixing it
+for a branch which is dead by the end of this year.
 
-Deal with it by using existing quirk which allocates a dummy page after
-each transfer ring segment. This was seen to resolve both problems. RPi
-came up with a more efficient solution, shortening each segment by four
-TRBs, but it complicated the driver and they ditched it for this quirk.
-
-Also rename the quirk and add VL805 device ID macro.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://github.com/raspberrypi/linux/issues/4685
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215906
-CC: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225095927.2512358-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit c133ec0e5717868c9967fa3df92a55e537b1aead)
-[ Michal: merge conflict with white space and an unrelated quirk ]
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
----
- drivers/usb/host/xhci-mem.c | 3 ++-
- drivers/usb/host/xhci-pci.c | 9 ++++++---
- drivers/usb/host/xhci.h     | 2 +-
- 3 files changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 006e1b15fbda..cdf9806c87a4 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2492,7 +2492,8 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+	if (xhci->quirks & XHCI_TRB_OVERFETCH)
-+		/* Buggy HC prefetches beyond segment bounds - allocate dummy space at the end */
- 		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
- 				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
- 	else
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 030e2383f025..6dc0c22268ca 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -37,6 +37,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
- 
-+#define PCI_DEVICE_ID_VIA_VL805			0x3483
-+
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
-@@ -296,8 +298,9 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 			pdev->device == 0x3432)
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 
--	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483) {
-+	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
- 		xhci->quirks |= XHCI_LPM_SUPPORT;
-+		xhci->quirks |= XHCI_TRB_OVERFETCH;
- 		xhci->quirks |= XHCI_EP_CTX_BROKEN_DCS;
- 	}
- 
-@@ -347,11 +350,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 		}
- 
- 		if (pdev->device == 0x9203)
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 	}
- 
- 	/* xHC spec requires PCI devices to support D3hot and D3cold */
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 6304e9b00ecc..165f57911d94 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1897,7 +1897,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
--#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- 
- 	unsigned int		num_active_eps;
--- 
-2.48.1
+Thanks,
+Michal
 
