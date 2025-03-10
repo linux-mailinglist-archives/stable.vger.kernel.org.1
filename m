@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-122267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC49A59EDF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C672A59F51
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2BFA3A70CC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAC4F1889026
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3DC23026D;
-	Mon, 10 Mar 2025 17:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAF6230BF8;
+	Mon, 10 Mar 2025 17:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOK9JJ14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CADm8Fc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B7D2253FE;
-	Mon, 10 Mar 2025 17:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4A21B3927;
+	Mon, 10 Mar 2025 17:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628008; cv=none; b=i7BECDP1OmWDhQr/gGTg28lzbUu0BN6hSMvoSb2h34kqOkUAI9YZizIDvrxquS+pVVUqCFsj5F6mlEseLsdWO2WGSPAo2KLUdLUOtmhjOvbhK7ZA5yeeUOB0/bG+l0I7F+HyKnz7OpoA8dTSZN0vMUUG/tSbbIABwEyllzOvpGY=
+	t=1741628323; cv=none; b=cP5Iikxe1w1CKBGfwYusVbmA/NhUNvNLxY5HCUG6c/rvMPFg54ppBkVVUIXdaW7Ugw03PQl0IvydBbFd97+Rd/n2GFqQ05BIs0B8cJRztPUjJ/uc3PfgGG/gzyg48o1KVaE4aSEs4NNm5RqtLZ95CxQZOc4JObGYWHTNZSkzQsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628008; c=relaxed/simple;
-	bh=W0o5rhr0Bp3M4PtUiwV9M424wIFvAYJfC4cKOY+D1bE=;
+	s=arc-20240116; t=1741628323; c=relaxed/simple;
+	bh=AZiF63Di2n/qcVWkyg0rxYricfWXoescIA39/PzL1M0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P46U00JgSpWrxiBA8ogcwttz5v8b5A0WPGuDL4/eT6xpPdTHomz+v/uIjWcAJI86Uul+GDLPRsEot6ZySfUhcqbUjf4U6uOj/FK0LcMFHWnmGlX4nUJdPiBU4i9ZooXFE6pvUdmDMyZ7VzU5qSF5xFlpaZDlyms1ddjaXW85NTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOK9JJ14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ABAC4CEE5;
-	Mon, 10 Mar 2025 17:33:27 +0000 (UTC)
+	 MIME-Version; b=e2KfKxmLlRaOVJIhba2HaS8lsPUE28hXO1camR/dQlF2X7YSwnXftlBLjkZBYt8F4u0oD5A4kmdTmGprw/vNqf8vSPW5+8J1bHuHHI+0fkhatg2Dea6+/AsseC2Aem/5qG7qDt0tyc2vo4xohaPOl/DHCJ/6izcmu32slFpaMYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CADm8Fc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60E3C4CEEC;
+	Mon, 10 Mar 2025 17:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628007;
-	bh=W0o5rhr0Bp3M4PtUiwV9M424wIFvAYJfC4cKOY+D1bE=;
+	s=korg; t=1741628323;
+	bh=AZiF63Di2n/qcVWkyg0rxYricfWXoescIA39/PzL1M0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOK9JJ14dVe3fpCCQ6aYqsADYF6XqtLNO5VqB191f1SkDc1sAja8pOictInJN8/sp
-	 UKYQ/POs5bXpRz6xyQL67UoDUu0yd9TysnFadxkBMWoPXp+fZRIiL+gLTQrFb5XwwN
-	 IP0qtOczP7MdJUG5uAJqXA6CKgsnDJGAyWe7to7s=
+	b=CADm8Fc15m7AQysAX21c+9nOreq6MoR6NINTKlOm277AZsukb7kWilEFcFzCmf0LN
+	 s0Qk9Ff4G1VtPxFnmBuY3I/hLm4frUbZlU5xyqEg8EnkypLd2cP19TWbttY2vGQIQo
+	 IkOfcSiWr4bU1d82ap8PbWUSXFYPD9NsUTgqqcXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 055/145] NFS: fix nfs_release_folio() to not deadlock via kcompactd writeback
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 005/109] cpuidle, intel_idle: Fix CPUIDLE_FLAG_IBRS
 Date: Mon, 10 Mar 2025 18:05:49 +0100
-Message-ID: <20250310170436.959538635@linuxfoundation.org>
+Message-ID: <20250310170427.760538798@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +66,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit ce6d9c1c2b5cc785016faa11b48b6cd317eb367e upstream.
+[ Upstream commit 9b461a6faae7b220c32466261965778b10189e54 ]
 
-Add PF_KCOMPACTD flag and current_is_kcompactd() helper to check for it so
-nfs_release_folio() can skip calling nfs_wb_folio() from kcompactd.
+objtool to the rescue:
 
-Otherwise NFS can deadlock waiting for kcompactd enduced writeback which
-recurses back to NFS (which triggers writeback to NFSD via NFS loopback
-mount on the same host, NFSD blocks waiting for XFS's call to
-__filemap_get_folio):
+  vmlinux.o: warning: objtool: intel_idle_ibrs+0x17: call to spec_ctrl_current() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: intel_idle_ibrs+0x27: call to wrmsrl.constprop.0() leaves .noinstr.text section
 
-6070.550357] INFO: task kcompactd0:58 blocked for more than 4435 seconds.
-
-{---
-[58] "kcompactd0"
-[<0>] folio_wait_bit+0xe8/0x200
-[<0>] folio_wait_writeback+0x2b/0x80
-[<0>] nfs_wb_folio+0x80/0x1b0 [nfs]
-[<0>] nfs_release_folio+0x68/0x130 [nfs]
-[<0>] split_huge_page_to_list_to_order+0x362/0x840
-[<0>] migrate_pages_batch+0x43d/0xb90
-[<0>] migrate_pages_sync+0x9a/0x240
-[<0>] migrate_pages+0x93c/0x9f0
-[<0>] compact_zone+0x8e2/0x1030
-[<0>] compact_node+0xdb/0x120
-[<0>] kcompactd+0x121/0x2e0
-[<0>] kthread+0xcf/0x100
-[<0>] ret_from_fork+0x31/0x40
-[<0>] ret_from_fork_asm+0x1a/0x30
----}
-
-[akpm@linux-foundation.org: fix build]
-Link: https://lkml.kernel.org/r/20250225022002.26141-1-snitzer@kernel.org
-Fixes: 96780ca55e3c ("NFS: fix up nfs_release_folio() to try to release the page")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20230112195540.556912863@infradead.org
+Stable-dep-of: c157d351460b ("intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/file.c              |    3 ++-
- include/linux/compaction.h |    5 +++++
- include/linux/sched.h      |    2 +-
- mm/compaction.c            |    3 +++
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 2 +-
+ drivers/idle/intel_idle.c  | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -29,6 +29,7 @@
- #include <linux/pagemap.h>
- #include <linux/gfp.h>
- #include <linux/swap.h>
-+#include <linux/compaction.h>
- 
- #include <linux/uaccess.h>
- #include <linux/filelock.h>
-@@ -450,7 +451,7 @@ static bool nfs_release_folio(struct fol
- 	/* If the private flag is set, then the folio is not freeable */
- 	if (folio_test_private(folio)) {
- 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
--		    current_is_kswapd())
-+		    current_is_kswapd() || current_is_kcompactd())
- 			return false;
- 		if (nfs_wb_folio(folio_file_mapping(folio)->host, folio) < 0)
- 			return false;
---- a/include/linux/compaction.h
-+++ b/include/linux/compaction.h
-@@ -80,6 +80,11 @@ static inline unsigned long compact_gap(
- 	return 2UL << order;
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 03221a060ae77..7d73b53115514 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -92,7 +92,7 @@ void update_spec_ctrl_cond(u64 val)
+ 		wrmsrl(MSR_IA32_SPEC_CTRL, val);
  }
  
-+static inline int current_is_kcompactd(void)
-+{
-+	return current->flags & PF_KCOMPACTD;
-+}
-+
- #ifdef CONFIG_COMPACTION
- 
- extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1746,7 +1746,7 @@ extern struct pid *cad_pid;
- #define PF_USED_MATH		0x00002000	/* If unset the fpu must be initialized before use */
- #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
- #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
--#define PF__HOLE__00010000	0x00010000
-+#define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
- #define PF_KSWAPD		0x00020000	/* I am kswapd */
- #define PF_MEMALLOC_NOFS	0x00040000	/* All allocation requests will inherit GFP_NOFS */
- #define PF_MEMALLOC_NOIO	0x00080000	/* All allocation requests will inherit GFP_NOIO */
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -3050,6 +3050,7 @@ static int kcompactd(void *p)
- 	if (!cpumask_empty(cpumask))
- 		set_cpus_allowed_ptr(tsk, cpumask);
- 
-+	current->flags |= PF_KCOMPACTD;
- 	set_freezable();
- 
- 	pgdat->kcompactd_max_order = 0;
-@@ -3106,6 +3107,8 @@ static int kcompactd(void *p)
- 			pgdat->proactive_compact_trigger = false;
- 	}
- 
-+	current->flags &= ~PF_KCOMPACTD;
-+
- 	return 0;
+-u64 spec_ctrl_current(void)
++noinstr u64 spec_ctrl_current(void)
+ {
+ 	return this_cpu_read(x86_spec_ctrl_current);
  }
+diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+index 5d7bbccb52b5e..ae07dc018e666 100644
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -188,12 +188,12 @@ static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
+ 	int ret;
  
+ 	if (smt_active)
+-		wrmsrl(MSR_IA32_SPEC_CTRL, 0);
++		native_wrmsrl(MSR_IA32_SPEC_CTRL, 0);
+ 
+ 	ret = __intel_idle(dev, drv, index);
+ 
+ 	if (smt_active)
+-		wrmsrl(MSR_IA32_SPEC_CTRL, spec_ctrl);
++		native_wrmsrl(MSR_IA32_SPEC_CTRL, spec_ctrl);
+ 
+ 	return ret;
+ }
+-- 
+2.39.5
+
 
 
 
