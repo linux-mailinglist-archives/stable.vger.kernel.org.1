@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-121881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF301A59CE5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B55A59EAD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB3B93A9FCC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15C90188FD1E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E2422B8D0;
-	Mon, 10 Mar 2025 17:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEED2253FE;
+	Mon, 10 Mar 2025 17:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiFu5+q4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCrDk5cN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63FB230BE6;
-	Mon, 10 Mar 2025 17:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEA0226D0B;
+	Mon, 10 Mar 2025 17:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626900; cv=none; b=Cywkex/8Xr/7eu+f2fB7jWpJCPOIQXmtxxqLWhCFOWcE388YcmUxGiNnXDpd0zSwmwXlQu+Vgz4a+HEwz39cB/phBo79nJTXg8V8Ns3os6NArM87J4r9tz5UzBqlvnkkEqnNmELIKpVHP/UAl6NMUQtzJobEZ+XOBLROD51MhPA=
+	t=1741627996; cv=none; b=qC54pofAm4n7+fQaJGMbOfTtz5XyGhN4ljKzCURCGhjskEbufNF6ED6r/HEV2zICDJqH9paGZtKAtAFSTb2B6ebcKMgSXUAgqve/04OsEIEfe3eLUOxk2K0Z7JEjgAiXQ8yyEfVkaMrV+iBTnLZQ+HjUCAx/GqpkqwFd3gECXO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626900; c=relaxed/simple;
-	bh=mY2qvHevQxthjQKGYM0ASLMeINxY5CDFiVgssH01xg8=;
+	s=arc-20240116; t=1741627996; c=relaxed/simple;
+	bh=ErflIqqbS0aE0EZ8D4MFhlTKh4ugIQ+O1fPxBdfN18s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqxAc2tppJcQahkcSOgTDDGtrrc4yG861H85IGp/AhJVL30FNDByo1v7ow+/NBYghHXvtxYTmI5IOE73+maN4PB51Q8FTywaWNRziQ9esbq4P9HDFCdCfU/b34gJHj80GOnQn11CqV+dxx5iif49WBNoIv1igaAZERaWWFjS9f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiFu5+q4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7E0C4CEE5;
-	Mon, 10 Mar 2025 17:14:59 +0000 (UTC)
+	 MIME-Version; b=P57LHpvr3hbG7aHYkDeRmcuoyGr04fo5P1GPH1+RXG5s6P89oNsbGoR8vDeD8cqEhwlLqnx+E1LJENMB2HqL2P28rH+dsMI2EIaCmL8KavV27FSUtSRwXw8GzvMPtvac8jSSb2S+HiqMWpOhFU5uh+Qq+NE9wxwk369am6QaDe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCrDk5cN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AB3C4CEE5;
+	Mon, 10 Mar 2025 17:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626900;
-	bh=mY2qvHevQxthjQKGYM0ASLMeINxY5CDFiVgssH01xg8=;
+	s=korg; t=1741627995;
+	bh=ErflIqqbS0aE0EZ8D4MFhlTKh4ugIQ+O1fPxBdfN18s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiFu5+q4Dznr8fcmLMtni/d78RIKUWdwve08m5SZJsAFY6r5jQkFa6XN4/5C2jl3k
-	 TQzM/R7Z7YBroBZcliqJuD07B2La0nlbhmtCUuPMbKawcA0Cpqu+vExaGj6zrClLL/
-	 LwGjfCuYv/+jL1TKyY7qoRWhQ/M59sfi5T6KTtU0=
+	b=TCrDk5cNGFjyMZ5u4zOeqVihhRGh3N49QUX1RaqCdct6oY1AEitr70rkhgM/HLm8d
+	 x74qN713UQLfkKenj/FgUnKQaKZIhlRM4ofb9Q7P7qSSYPYjTdnBeL9E68P+5UpCzy
+	 WWLLCGKT5bxmOwSY7VBIF0Bl5iTpPcXEyFuhD6ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.13 152/207] usb: renesas_usbhs: Call clk_put()
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 051/145] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
 Date: Mon, 10 Mar 2025 18:05:45 +0100
-Message-ID: <20250310170453.839249198@linuxfoundation.org>
+Message-ID: <20250310170436.796027897@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit b5ea08aa883da05106fcc683d12489a4292d1122 upstream.
+commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
 
-Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
-clk_put() on priv->clks[0] on error path.
+The return value of rio_add_net() should be checked.  If it fails,
+put_device() should be called to free the memory and give up the reference
+initialized in rio_add_net().
 
-Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com
+Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
+Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/rapidio/rio-scan.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device
- 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
- 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
- 		priv->clks[1] = NULL;
--	else if (IS_ERR(priv->clks[1]))
-+	else if (IS_ERR(priv->clks[1])) {
-+		clk_put(priv->clks[0]);
- 		return PTR_ERR(priv->clks[1]);
-+	}
+--- a/drivers/rapidio/rio-scan.c
++++ b/drivers/rapidio/rio-scan.c
+@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
+ 		dev_set_name(&net->dev, "rnet_%d", net->id);
+ 		net->dev.parent = &mport->dev;
+ 		net->dev.release = rio_scan_release_dev;
+-		rio_add_net(net);
++		if (rio_add_net(net)) {
++			put_device(&net->dev);
++			net = NULL;
++		}
+ 	}
  
- 	return 0;
- }
+ 	return net;
 
 
 
