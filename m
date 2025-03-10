@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-121868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B89A59CB4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D03A59EF4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC905188A754
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6BC23AC4B0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FAB23236D;
-	Mon, 10 Mar 2025 17:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1A823237F;
+	Mon, 10 Mar 2025 17:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIId12NB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIY2vY9l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4139E231CB0;
-	Mon, 10 Mar 2025 17:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBD42253FE;
+	Mon, 10 Mar 2025 17:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626862; cv=none; b=Ss1dTJ9rCHYkM+SmFppIk3s7pOyVd8gyTnjPExSXeFeD7Qn/1sEH6Y+Qnifr20yYl8iNM71lokh2pLdfRIOQDx7MVOrRJbbd1UGh1h4bl9Q9IPpSGuRm0YBZ40gfOUbFlsPOVXhxnUp3ldPsi7XtnH9L9z9zRAiqrliCTpx9PW4=
+	t=1741628042; cv=none; b=oxm/8cQBWUfqRHZpWPCy/nIP0trBsAfu6kMkVTOEgVlSPPvYJCf9VETxUXxUFkqJ3JH3lHNgejZxg2RPN9vR5mV+fBrii7mEnX+BUVasw7pEWLGRPVRUHnogU3awZyOLMFplt2r9FBi7RvBk4XCLfOFwejCwzJA5m/z4MSA968o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626862; c=relaxed/simple;
-	bh=7s+SjlOmhpDtZyJ3yPLEThT5oCWKPfmxyX6YkABccGk=;
+	s=arc-20240116; t=1741628042; c=relaxed/simple;
+	bh=ArRubSPPYm4NSamvtpy6vMv1xVjMC88UKQ4NqsbrDTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFcMUHw3Cbzgkrpy4T5UpU0BOpIb4EJ/Pmi7hXU1opGJrTGIspfKEaw507fLuHjnrk9TU99E9Fml/+uCKqL06KOLcy4aR+Evp3/1Ag9mU1IKZ2G0JeLFtd5oP7bxzRKS1uLXSU5Hh+3ANo0z1G4DHRqKa0TDlWAD0jp6OQqUo+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIId12NB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD71C4CEE5;
-	Mon, 10 Mar 2025 17:14:21 +0000 (UTC)
+	 MIME-Version; b=tOrLsEMrSkujPQGA6N97p6WVGdbwrchPyLUns8UaFFFz1R+9xTXcQysjWbmY23caFjf4Arf6dPlDsJJLwnNYCYyTuID0zUrNh8tP3TjlEj0oUV8CEBnKxbM6mxFHdZPahUUy2z7D4FtAg3xHwtOZR5DwGbRj2SFe0UG27OLIVUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIY2vY9l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A13C4CEE5;
+	Mon, 10 Mar 2025 17:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626862;
-	bh=7s+SjlOmhpDtZyJ3yPLEThT5oCWKPfmxyX6YkABccGk=;
+	s=korg; t=1741628042;
+	bh=ArRubSPPYm4NSamvtpy6vMv1xVjMC88UKQ4NqsbrDTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIId12NBqOqDHVg8f4uQ0lQ9WIEaCKO4f1ZW0LyBmz0Uq3KTsqOlnAIKuzOzjyc6H
-	 OT/bUtLZjTlJBRVhkSPlvMTOT9HQVyo4Vj5QUWNGvQGGXUm6jbM8yW01XlhsMvJKae
-	 /PqHfYQNBvcCtzJrYvBmO/Mr7UhIPL8Ij7oOZtjw=
+	b=RIY2vY9l+ShG6LoMBE7mUDNx9zI2urzumXDEe9ykar/nf6OIXaIy70W8nGSy4KZUZ
+	 yHlP9MMBp+gX9ibM0MXHk3UG+URKul3dBWo7usLfCdGaGZls8lyG1Q/q2C+u13HAn1
+	 h9ZdgS7L8QqnCS3qcM6psxKjYHg+ipSwxsAnAngc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 137/207] x86/sgx: Fix size overflows in sgx_encl_create()
+	Hoku Ishibe <me@hokuishi.be>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 036/145] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
 Date: Mon, 10 Mar 2025 18:05:30 +0100
-Message-ID: <20250310170453.242445525@linuxfoundation.org>
+Message-ID: <20250310170436.188003384@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Hoku Ishibe <me@hokuishi.be>
 
-[ Upstream commit 0d3e0dfd68fb9e6b0ec865be9f3377cc3ff55733 ]
+commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
 
-The total size calculated for EPC can overflow u64 given the added up page
-for SECS.  Further, the total size calculated for shmem can overflow even
-when the EPC size stays within limits of u64, given that it adds the extra
-space for 128 byte PCMD structures (one for each page).
+Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
+persistent humming noise when the power_save mode is enabled.
+This issue occurs when the codec enters power saving mode,
+leading to unwanted noise from the speakers.
 
-Address this by pre-evaluating the micro-architectural requirement of
-SGX: the address space size must be power of two. This is eventually
-checked up by ECREATE but the pre-check has the additional benefit of
-making sure that there is some space for additional data.
+This patch adds the affected model (PCI ID 0x1028:0x0962) to the
+power_save denylist to ensure power_save is disabled by default,
+preventing power-off related noise issues.
 
-Fixes: 888d24911787 ("x86/sgx: Add SGX_IOC_ENCLAVE_CREATE")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20250305050006.43896-1-jarkko@kernel.org
+Steps to Reproduce
+1. Boot the system with `snd_hda_intel` loaded.
+2. Verify that `power_save` mode is enabled:
+```sh
+cat /sys/module/snd_hda_intel/parameters/power_save
+````
+output: 10 (default power save timeout)
+3. Wait for the power save timeout
+4. Observe a persistent humming noise from the speakers
+5. Disable `power_save` manually:
+```sh
+echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+````
+6. Confirm that the noise disappears immediately.
 
-Closes: https://lore.kernel.org/linux-sgx/c87e01a0-e7dd-4749-a348-0980d3444f04@stanley.mountain/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue has been observed on my system, and this patch
+successfully eliminates the unwanted noise. If other users
+experience similar issues, additional reports would be helpful.
+
+Signed-off-by: Hoku Ishibe <me@hokuishi.be>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/sgx/ioctl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-index b65ab214bdf57..776a20172867e 100644
---- a/arch/x86/kernel/cpu/sgx/ioctl.c
-+++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-@@ -64,6 +64,13 @@ static int sgx_encl_create(struct sgx_encl *encl, struct sgx_secs *secs)
- 	struct file *backing;
- 	long ret;
- 
-+	/*
-+	 * ECREATE would detect this too, but checking here also ensures
-+	 * that the 'encl_size' calculations below can never overflow.
-+	 */
-+	if (!is_power_of_2(secs->size))
-+		return -EINVAL;
-+
- 	va_page = sgx_encl_grow(encl, true);
- 	if (IS_ERR(va_page))
- 		return PTR_ERR(va_page);
--- 
-2.39.5
-
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2222,6 +2222,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
+ 	/* KONTRON SinglePC may cause a stall at runtime resume */
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
++	/* Dell ALC3271 */
++	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
+ 	{}
+ };
+ #endif /* CONFIG_PM */
 
 
 
