@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8BCA59FB6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F25DA59F4C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C623F3A86D1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D065E164450
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7356E22DFB1;
-	Mon, 10 Mar 2025 17:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253BA233D72;
+	Mon, 10 Mar 2025 17:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHxITJSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5a8cvgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30325223702;
-	Mon, 10 Mar 2025 17:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B1F233731;
+	Mon, 10 Mar 2025 17:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628509; cv=none; b=jqdRSGBqqjYOJKHdEh/DIdMt1NnAA4E7Ea2yXb5DukpT6U93N9BypfXy62PkDLYmjPAZJ967prnLAY+AH6TJ83pFu3rOc5a92cgc+VYriZuRflz1ttZRoa3wVAzgwsiOeI53fy5lHcopu+RdEdu+wyCKY29sQzM/Rq9bhVg+59g=
+	t=1741628291; cv=none; b=kpNCQGpk/2Hsj234d8I+Jsbfmx2OSCjEMIvwBMXM6FOYU01r8wlydQtK8v935c9x6S9Exo9JNjFAjPsceY/7EZc5/WWfknpynwWxykT/23Jl4H62gUyEtPMLHjf8aZp7KraAgEcxv/JVnzzw4nimA8eC0ORsMbJrUynyEvlpq30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628509; c=relaxed/simple;
-	bh=f3lSIkUfH9o7zNSFghLTUm7enZqFfx7G/rEdKHzW7jI=;
+	s=arc-20240116; t=1741628291; c=relaxed/simple;
+	bh=IVKb3LvF+3JmRR2lBLhuoJEcy1z2BBwtM1tJHmEvLKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6pnuZGc2X0jKk0TleWF3j03rWsq6OeqvaTbkHRhKXmUVjyLzkM1F3wGVkpHV/rXJEXdmijcie/0GHaEZNVBMbIMpoggQqKSLbOsCeCIgH4mgTLsIIiu0XwYW3rMxdjq9NQENPNJ4NbzElb9Y4bsnYRqMxR2DOJjFyHQmbgK0EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHxITJSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB8EC4CEE5;
-	Mon, 10 Mar 2025 17:41:48 +0000 (UTC)
+	 MIME-Version; b=Q5KQWm1vCdcEYt0v/nFaOxzt++tZJobHGfKwWNR20mQCciLXXi7t6laFEUHD3Z6necylImARDvxYCAIwVSSjfYdT77SIkHP2QaMgUzvix7SXxvCY43A8R9subtAGOrf47CFbcgiHhaHJmZX0dSGsO2hYTcc9k6J9lwhmRpRTRJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5a8cvgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE50C4CEEC;
+	Mon, 10 Mar 2025 17:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628508;
-	bh=f3lSIkUfH9o7zNSFghLTUm7enZqFfx7G/rEdKHzW7jI=;
+	s=korg; t=1741628291;
+	bh=IVKb3LvF+3JmRR2lBLhuoJEcy1z2BBwtM1tJHmEvLKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHxITJSMRtv8IO4WCPDpEyDn7+OcLCU82A/AY49t7ZyOodP5sjd39ouSF0Qt6XZ5V
-	 Tf1xdO5rSt9epdSmRkkbCUe/9x2ReH2QXR5kUemwbgEje2Hx8wmXuU5/etEzEcY1Vl
-	 9smlIOcv0ZhJVUcOMjikikrQP4xYW+nsex2oRW6k=
+	b=d5a8cvghMJ75fJHf3ZDrIrR3vECN/lymzDtOE2CDJcbRUqO4I8h1g2sSpB2QO89a8
+	 JNLRGztV2UqYZBBKZgW3KdH8uQP/vMzVH7JVxWEFns5QJoZCMHxWPVzJPgSgZ/KCzZ
+	 SA2rHp8XzvTDGYMK/bMmwCqX7+zNdj4EZSswG7Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Chmielewski <pawel.chmielewski@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 081/109] intel_th: pci: Add Arrow Lake support
-Date: Mon, 10 Mar 2025 18:07:05 +0100
-Message-ID: <20250310170430.787630784@linuxfoundation.org>
+	Samuel Holland <samuel.holland@sifive.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 132/145] riscv: Save/restore envcfg CSR during CPU suspend
+Date: Mon, 10 Mar 2025 18:07:06 +0100
+Message-ID: <20250310170440.088791382@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Chmielewski <pawel.chmielewski@intel.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit b5edccae9f447a92d475267d94c33f4926963eec upstream.
+commit 05ab803d1ad8ac505ade77c6bd3f86b1b4ea0dc4 upstream.
 
-Add support for the Trace Hub in Arrow Lake.
+The value of the [ms]envcfg CSR is lost when entering a nonretentive
+idle state, so the CSR must be rewritten when resuming the CPU.
 
-Signed-off-by: Pawel Chmielewski <pawel.chmielewski@intel.com>
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20250211185017.1759193-4-alexander.shishkin@linux.intel.com
+Cc: <stable@vger.kernel.org> # v6.7+
+Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240228065559.3434837-4-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/include/asm/suspend.h |    1 +
+ arch/riscv/kernel/suspend.c      |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -330,6 +330,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Arrow Lake */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7724),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/arch/riscv/include/asm/suspend.h
++++ b/arch/riscv/include/asm/suspend.h
+@@ -14,6 +14,7 @@ struct suspend_context {
+ 	struct pt_regs regs;
+ 	/* Saved and restored by high-level functions */
+ 	unsigned long scratch;
++	unsigned long envcfg;
+ 	unsigned long tvec;
+ 	unsigned long ie;
+ #ifdef CONFIG_MMU
+--- a/arch/riscv/kernel/suspend.c
++++ b/arch/riscv/kernel/suspend.c
+@@ -11,6 +11,8 @@
+ void suspend_save_csrs(struct suspend_context *context)
+ {
+ 	context->scratch = csr_read(CSR_SCRATCH);
++	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
++		context->envcfg = csr_read(CSR_ENVCFG);
+ 	context->tvec = csr_read(CSR_TVEC);
+ 	context->ie = csr_read(CSR_IE);
+ 
+@@ -32,6 +34,8 @@ void suspend_save_csrs(struct suspend_co
+ void suspend_restore_csrs(struct suspend_context *context)
+ {
+ 	csr_write(CSR_SCRATCH, context->scratch);
++	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
++		csr_write(CSR_ENVCFG, context->envcfg);
+ 	csr_write(CSR_TVEC, context->tvec);
+ 	csr_write(CSR_IE, context->ie);
+ 
 
 
 
