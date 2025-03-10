@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5985CA59DEE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB661A59EC2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05EC418868AA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE41B3A8BD3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679EB2309A6;
-	Mon, 10 Mar 2025 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F4223026D;
+	Mon, 10 Mar 2025 17:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XS8KKoUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQqaSX9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A311C5F1B;
-	Mon, 10 Mar 2025 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AF42253FE;
+	Mon, 10 Mar 2025 17:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627538; cv=none; b=FaiLPhE3VRgBIYY0d0s0sj0vJWNuUbYJh0/UfyAiZ97F8nVthIUUlxozX4EgqaG/1BspEr/6WrY0QBv3MAXYYd7T89Y4wqTgZ0FmQGQtewwiMgcZHU9wRO4Y1uVTxFOSHQtyGvtDhuVIYOj3o4WSn6IAdLHoltrUPO86LY1PbwU=
+	t=1741627936; cv=none; b=GjrMpJjIO9/XrhEEOIMhl1wk2Q8PEEMXnA+JWPkMKCCAHRqeAn9Rpsd2UkbeU0if6tTQdNG8wntJHxFGlUEE+D5raG6IVQxFfPrmM2FiLSTPewazBNti7bxFSIbfP5rRchQbDYxHUakjTjOlT4LTIFZPBt5VA/M5U28cOzgOmMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627538; c=relaxed/simple;
-	bh=WrKPHqA2O1no9e5PYAHmymPBAONXJfOPf1IeqUdIluw=;
+	s=arc-20240116; t=1741627936; c=relaxed/simple;
+	bh=tpp+wP6cNWZIpkhEGTxLkWw5mLV7EItUrmB2kZi4nnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHXQIQTOXyipwtD3VPzjKTX31RqWQxSKfllfTlZQeUNuBQe4fNFNCUDFOSt8zpPkmfUXoPEUAtcPY2LZcMurtbww4LgFi8po0FASbgqLES3hgffqUn5hx8evgY6RzOHm37jUlzGcxVj+FN1zJUL5FD9AkjYUtXPy9lhkeXJu4xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XS8KKoUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98420C4CEE5;
-	Mon, 10 Mar 2025 17:25:37 +0000 (UTC)
+	 MIME-Version; b=J1N3xVJOnCGdUxE785745phmRM//xVVBjcrzNxNVEISI9aEDVS/v8QPNPyxX05ZOuSsRwbcXJ5BY+uF4/5XB8GdMAq9C15WD5VLiUpb/yfMK0LYTht66l1HlV/RSnbuX5ry2FkgVLLSrn/+blM72kjvfQJUckKIqMPRga+BXLMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQqaSX9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CCFC4CEE5;
+	Mon, 10 Mar 2025 17:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627538;
-	bh=WrKPHqA2O1no9e5PYAHmymPBAONXJfOPf1IeqUdIluw=;
+	s=korg; t=1741627936;
+	bh=tpp+wP6cNWZIpkhEGTxLkWw5mLV7EItUrmB2kZi4nnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XS8KKoUXcEmkbaivJVXTSlW69LeIqUs+Qkp99riL7ulYTB1cFlAd0hpeGVYAQxuXO
-	 hyuNbwzITCWumxGIQnB/cpDIjrrdA9pi/8qFMu8dGoI19sIQElwhETyJOStMwh+L9W
-	 PJR/zS9dm79SVm10StDhvJ+ypTxEOky05rLF6J78=
+	b=tQqaSX9MjP1oP3LJsXJHxiAGgb0lBDidXuGGasAmqON7VNWEiMFDWz22NA4Jm7wvy
+	 4nesdiAdmwBSeTxJMXB9W1SfPbC0G2mxKq2pgKLaaOdSboVwLko73HxQOqs5VCzKBC
+	 3HQIHEnC2q97qoAtHt2sUqKnR3mUniNoc/AE60kE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Farouk Bouabid <farouk.bouabid@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/269] HID: google: fix unused variable warning under !CONFIG_ACPI
+Subject: [PATCH 6.6 005/145] arm64: dts: rockchip: add rs485 support on uart5 of px30-ringneck-haikou
 Date: Mon, 10 Mar 2025 18:04:59 +0100
-Message-ID: <20250310170503.536553520@linuxfoundation.org>
+Message-ID: <20250310170434.958553347@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Farouk Bouabid <farouk.bouabid@theobroma-systems.com>
 
-[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
+[ Upstream commit 5963d97aa780619ffb66cf4886c0ca1175ccbd3e ]
 
-As reported by the kernel test robot, the following warning occurs:
+A hardware switch can set the rs485 transceiver into half or full duplex
+mode.
 
->> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
-     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
-         |                                    ^~~~~~~~~~~~~~~~
+Switching to the half-duplex mode requires the user to enable em485 on
+uart5 using ioctl, DE/RE are both connected to GPIO0_B5 which is the
+RTS signal for uart0. Implement GPIO0_B5 as rts-gpios with RTS_ON_SEND
+option enabled (default) so that driver mode gets enabled while sending
+(RTS high) and receiver mode gets enabled while not sending (RTS low).
 
-The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
-Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
-prevents a compiler warning when ACPI is disabled.
+In full-duplex mode (em485 is disabled), DE is connected to GPIO0_B5 and
+RE is grounded (enabled). Since GPIO0_B5 is implemented as rts-gpios, the
+driver mode gets enabled whenever we want to send something and RE is not
+affected (always enabled) in this case by the state of RTS.
 
-Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Farouk Bouabid <farouk.bouabid@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240208-dev-rx-enable-v6-2-39e68e17a339@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: 5ae4dca718ea ("arm64: dts: rockchip: Disable DMA for uart5 on px30-ringneck")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-google-hammer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
-index 22683ec819aac..646ba5b92e0b2 100644
---- a/drivers/hid/hid-google-hammer.c
-+++ b/drivers/hid/hid-google-hammer.c
-@@ -268,11 +268,13 @@ static void cbas_ec_remove(struct platform_device *pdev)
- 	mutex_unlock(&cbas_ec_reglock);
- }
+diff --git a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
+index de0a1f2af983b..56f73c17363fd 100644
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
+@@ -226,6 +226,7 @@ &uart0 {
  
-+#ifdef CONFIG_ACPI
- static const struct acpi_device_id cbas_ec_acpi_ids[] = {
- 	{ "GOOG000B", 0 },
- 	{ }
+ &uart5 {
+ 	pinctrl-0 = <&uart5_xfer>;
++	rts-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
  };
- MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
-+#endif
  
- #ifdef CONFIG_OF
- static const struct of_device_id cbas_ec_of_match[] = {
 -- 
 2.39.5
 
