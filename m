@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52794A59C16
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64697A5A165
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9C0188D799
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1293ADB75
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D22231A5F;
-	Mon, 10 Mar 2025 17:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3FC2253FE;
+	Mon, 10 Mar 2025 18:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7jZPFub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmDIfjpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE15A231A30;
-	Mon, 10 Mar 2025 17:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875E717A2E8;
+	Mon, 10 Mar 2025 18:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626494; cv=none; b=QXQkIUzZKmhkTUUm/+otCULxP9h4biKsYSC1T0/uvMjfimWi51H0m5E4GUhws4vLke6qQqxWcyYo7F7rrlXaSQsW3hCx9XXUCOlkpFEkhNCva3N9koqPSq4lFsboPg/JzpNaH75dfioyVbda9VksKtT0wuBYq3pz97lw64iStjk=
+	t=1741629626; cv=none; b=Lv1zakXoPvS4KMBxCSWrhPLRbq3Ry0J5RP/5+U+AxOlt7nmYppmbz5ty7pLgW/uaulj48aQYitE9whsdrtuo1Iv6tM3Ly8o00OaBrtExaomDUSeiLidfuxP3FCh8UXlMtZkOe4HcheX22BFaSiDmL99JP+f15CKMus1H6fuSWCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626494; c=relaxed/simple;
-	bh=tNnHXWV1c5/Uh6Pes2bJ9aR2gIm+mSr79ICLwMzSyY8=;
+	s=arc-20240116; t=1741629626; c=relaxed/simple;
+	bh=SUtUdeaF4ljXG4VQeN80iCOAjxKSpBaShh9xvZsnbsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XzkaD5mV8n6xndqDBf+1sgPZuT0lbfm+VgkMqorpDtKllBerEEcHU6csZFc4cGfikEvhtodFeynjl1Z21nd2ITPYZJDjolthLcsCZsWUzCtPfxIB59+SmfOf6k4W3G0pE7NWcq1VWbSbzB3rIU/gKQ/lF7PvQ2POgA6W56Y7zfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7jZPFub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3373EC4CEE5;
-	Mon, 10 Mar 2025 17:08:14 +0000 (UTC)
+	 MIME-Version; b=FOOZsrGU6uWjUzhnm3/St950v9Bl5CCOuv3Vbj7iQL8jtpb2PU46FsIBAEPuvAX0lU4tQ6U/KH1bYTioceSjssTM/EqOCuqDiOjdw32xvjvWWEe8LqknRqpiBSp3b7aFUj5kP/0nQZi0jqfKTwHWgoOM5Bo+YEkvrwcU2Savcus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmDIfjpM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E67BC4CEE5;
+	Mon, 10 Mar 2025 18:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626494;
-	bh=tNnHXWV1c5/Uh6Pes2bJ9aR2gIm+mSr79ICLwMzSyY8=;
+	s=korg; t=1741629626;
+	bh=SUtUdeaF4ljXG4VQeN80iCOAjxKSpBaShh9xvZsnbsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7jZPFubrMI251ah3nGfNBa69ofNOOBrRoyUQxfMwZXETZVoK5foM6fQTr+YgMyu2
-	 CQAj+DbRGMPwqiXDZjPNi2bxpOXCqRE55prbUJJU9/WKvh7fZVlHIPgAIh+eXTdGtW
-	 zbLKEbUHUsjzQhHiRl5HvFgsn+w+eqR9BZuSKj4c=
+	b=kmDIfjpMa5vgre3guTwOEuoJYsYIWKlbvuVTENRTaQs/APC0c86t/igOzh4loyurK
+	 FwX/736eo9zfBbiZfV5jiDvFL0dElfxYJLtkrjfs++Mq78LXkvUjwLksElTRsTyQQH
+	 OivQzLH9o6rNYrUB3YReqYbc0Mc6TSF38mD+vf08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erpeng Xu <xuerpeng@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.13 012/207] LoongArch: Use polling play_dead() when resuming from hibernation
-Date: Mon, 10 Mar 2025 18:03:25 +0100
-Message-ID: <20250310170448.254364481@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 360/620] usb: roles: set switch registered flag early on
+Date: Mon, 10 Mar 2025 18:03:26 +0100
+Message-ID: <20250310170559.820052908@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-commit c9117434c8f7523f0b77db4c5766f5011cc94677 upstream.
+commit 634775a752a86784511018a108f3b530cc3399a7 upstream.
 
-When CONFIG_RANDOM_KMALLOC_CACHES or other randomization infrastructrue
-enabled, the idle_task's stack may different between the booting kernel
-and target kernel. So when resuming from hibernation, an ACTION_BOOT_CPU
-IPI wakeup the idle instruction in arch_cpu_idle_dead() and jump to the
-interrupt handler. But since the stack pointer is changed, the interrupt
-handler cannot restore correct context.
+The role switch registration and set_role() can happen in parallel as they
+are invoked independent of each other. There is a possibility that a driver
+might spend significant amount of time in usb_role_switch_register() API
+due to the presence of time intensive operations like component_add()
+which operate under common mutex. This leads to a time window after
+allocating the switch and before setting the registered flag where the set
+role notifications are dropped. Below timeline summarizes this behavior
 
-So rename the current arch_cpu_idle_dead() to idle_play_dead(), make it
-as the default version of play_dead(), and the new arch_cpu_idle_dead()
-call play_dead() directly. For hibernation, implement an arch-specific
-hibernate_resume_nonboot_cpu_disable() to use the polling version (idle
-instruction is replace by nop, and irq is disabled) of play_dead(), i.e.
-poll_play_dead(), to avoid IPI handler corrupting the idle_task's stack
-when resuming from hibernation.
+Thread1				|	Thread2
+usb_role_switch_register()	|
+	|			|
+	---> allocate switch	|
+	|			|
+	---> component_add()	|	usb_role_switch_set_role()
+	|			|	|
+	|			|	--> Drop role notifications
+	|			|	    since sw->registered
+	|			|	    flag is not set.
+	|			|
+	--->Set registered flag.|
 
-This solution is a little similar to commit 406f992e4a372dafbe3c ("x86 /
-hibernate: Use hlt_play_dead() when resuming from hibernation").
+To avoid this, set the registered flag early on in the switch register
+API.
 
-Cc: stable@vger.kernel.org
-Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
-Tested-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: b787a3e78175 ("usb: roles: don't get/set_role() when usb_role_switch is unregistered")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206193950.22421-1-quic_eserrao@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/smp.c |   47 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ drivers/usb/roles/class.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -19,6 +19,7 @@
- #include <linux/smp.h>
- #include <linux/threads.h>
- #include <linux/export.h>
-+#include <linux/suspend.h>
- #include <linux/syscore_ops.h>
- #include <linux/time.h>
- #include <linux/tracepoint.h>
-@@ -423,7 +424,7 @@ void loongson_cpu_die(unsigned int cpu)
- 	mb();
- }
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -354,14 +354,15 @@ usb_role_switch_register(struct device *
+ 	dev_set_name(&sw->dev, "%s-role-switch",
+ 		     desc->name ? desc->name : dev_name(parent));
  
--void __noreturn arch_cpu_idle_dead(void)
-+static void __noreturn idle_play_dead(void)
- {
- 	register uint64_t addr;
- 	register void (*init_fn)(void);
-@@ -447,6 +448,50 @@ void __noreturn arch_cpu_idle_dead(void)
- 	BUG();
- }
++	sw->registered = true;
++
+ 	ret = device_register(&sw->dev);
+ 	if (ret) {
++		sw->registered = false;
+ 		put_device(&sw->dev);
+ 		return ERR_PTR(ret);
+ 	}
  
-+#ifdef CONFIG_HIBERNATION
-+static void __noreturn poll_play_dead(void)
-+{
-+	register uint64_t addr;
-+	register void (*init_fn)(void);
-+
-+	idle_task_exit();
-+	__this_cpu_write(cpu_state, CPU_DEAD);
-+
-+	__smp_mb();
-+	do {
-+		__asm__ __volatile__("nop\n\t");
-+		addr = iocsr_read64(LOONGARCH_IOCSR_MBUF0);
-+	} while (addr == 0);
-+
-+	init_fn = (void *)TO_CACHE(addr);
-+	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
-+
-+	init_fn();
-+	BUG();
-+}
-+#endif
-+
-+static void (*play_dead)(void) = idle_play_dead;
-+
-+void __noreturn arch_cpu_idle_dead(void)
-+{
-+	play_dead();
-+	BUG(); /* play_dead() doesn't return */
-+}
-+
-+#ifdef CONFIG_HIBERNATION
-+int hibernate_resume_nonboot_cpu_disable(void)
-+{
-+	int ret;
-+
-+	play_dead = poll_play_dead;
-+	ret = suspend_disable_secondary_cpus();
-+	play_dead = idle_play_dead;
-+
-+	return ret;
-+}
-+#endif
-+
- #endif
+-	sw->registered = true;
+-
+ 	/* TODO: Symlinks for the host port and the device controller. */
  
- /*
+ 	return sw;
 
 
 
