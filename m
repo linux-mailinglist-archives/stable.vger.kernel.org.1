@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565E0A5A288
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2036BA59E3B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0356D1895033
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14D9B16B19B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D6A22576A;
-	Mon, 10 Mar 2025 18:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBA1230D0F;
+	Mon, 10 Mar 2025 17:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbWwTqjE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aacot8x5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537651C3F34;
-	Mon, 10 Mar 2025 18:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094DD23237B;
+	Mon, 10 Mar 2025 17:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630865; cv=none; b=OkcJ4QQmtu6s885LQ38pJN7BkKHJw3R1Unkrc1Q8/rhzgUgmvpPU3xS8blj6IB9vwm6tAGYzUs0zS5nbyogGZX314PBF8i6hKpc/kq1V9PLZMYvOVhZUelrF5oXChSpRw6o6Y4YNMIlM0hxgIEWJTBnrhH8DijeHx5AxzyGvJXI=
+	t=1741627709; cv=none; b=jhz+w6m2NEl10vGMRHrOsPwtQf3oSt6QV9ePscu90WCzX5gQutfG07twvbnvPluTeu/LbUp9P0BveTnQ/a6j8a+EGZlBEmqeRl2PC5lmR1LibibL8XBu8LUpaZd7Tjd6yaz85nzmaa2RfeEpIO7+4P0liA3rCHcWlQrqLvRlMlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630865; c=relaxed/simple;
-	bh=Y0FAHoOQB3FRI4waLBQnvS1E2Tirwe/DtPn5r7zDkek=;
+	s=arc-20240116; t=1741627709; c=relaxed/simple;
+	bh=wlu4jhbYiJ6620ppVatZkv9VPDAeN4QkmSqqaWf+opI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHhZ077x3sWcfiaalXm872yAMszukWK5BPgK+rbDyhtMShtb5Dbl403vGR8HPdS65PI6EqkJuSNHLw4BSfAGFy/BZ/EMmBXBI/mQSdAvAsXZNE0SbJRadoF5SySdIP2QNVkbhAMjd+NPp9ibGNJXrMMBpkhXOLP9JcEuWR/N768=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbWwTqjE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB588C4CEE5;
-	Mon, 10 Mar 2025 18:21:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vAudOeF+Kwd/SeDjAe8tzGOmD7HlA//gcT6LA6zCDb7R7lskGyEoWbahzf4fJo4vSPwlf3cIjZHSLZqdz9GfUdPWsLp/y9oHHikbxbJdAOPyqWogFeu9o3Zqg4XRelOQwzoMaFz9IMBhqZ2VTv2/MuEUrJPzltneEB76v7zEHKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aacot8x5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AC0C4CEE5;
+	Mon, 10 Mar 2025 17:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630865;
-	bh=Y0FAHoOQB3FRI4waLBQnvS1E2Tirwe/DtPn5r7zDkek=;
+	s=korg; t=1741627708;
+	bh=wlu4jhbYiJ6620ppVatZkv9VPDAeN4QkmSqqaWf+opI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QbWwTqjEtUSjtbT0tvlwSg1jwSFNrDBeWrTXF8uIlh3454bTW+8OHkJzAFL9iPL1Y
-	 J2PdTLJEgzsobd108MbsCYIvJPwvHD4VV3pP6wUYdxdfzM0GrkQZOUhd+1Cz6/UpAx
-	 WyrCwwbWWc5F4vjfLn7mLvPw23sPNPXy4zzWYLUc=
+	b=aacot8x5X8/gk3qimYvnOd8FQFMrFNiaYCfnrICufjZcqmYBbigqa5RlED81GepSb
+	 +84qJlInLrASJMtOqtVIrQtKdhJfsqW9d6US6u4X3Ftk7MF7oPB3Klv640V255eBK5
+	 AjnpD7uL4Hd8/CXPYt7BuLSVxTDzQMHpxo9eg8zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 530/620] smb: client: Add check for next_buffer in receive_encrypted_standard()
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.12 223/269] kbuild: userprogs: use correct lld when linking through clang
 Date: Mon, 10 Mar 2025 18:06:16 +0100
-Message-ID: <20250310170606.465730900@linuxfoundation.org>
+Message-ID: <20250310170506.568721785@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 860ca5e50f73c2a1cef7eefc9d39d04e275417f7 ]
+commit dfc1b168a8c4b376fa222b27b97c2c4ad4b786e1 upstream.
 
-Add check for the return value of cifs_buf_get() and cifs_small_buf_get()
-in receive_encrypted_standard() to prevent null pointer dereference.
+The userprog infrastructure links objects files through $(CC).
+Either explicitly by manually calling $(CC) on multiple object files or
+implicitly by directly compiling a source file to an executable.
+The documentation at Documentation/kbuild/llvm.rst indicates that ld.lld
+would be used for linking if LLVM=1 is specified.
+However clang instead will use either a globally installed cross linker
+from $PATH called ${target}-ld or fall back to the system linker, which
+probably does not support crosslinking.
+For the normal kernel build this is not an issue because the linker is
+always executed directly, without the compiler being involved.
 
-Fixes: eec04ea11969 ("smb: client: fix OOB in receive_encrypted_standard()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Explicitly pass --ld-path to clang so $(LD) is respected.
+As clang 13.0.1 is required to build the kernel, this option is available.
+
+Fixes: 7f3a59db274c ("kbuild: add infrastructure to build userspace programs")
+Cc: stable@vger.kernel.org # needs wrapping in $(cc-option) for < 6.9
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2ops.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Makefile |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index ee9a1e6550e3c..7bce1ab86c4da 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -5198,6 +5198,10 @@ receive_encrypted_standard(struct TCP_Server_Info *server,
- 			next_buffer = (char *)cifs_buf_get();
- 		else
- 			next_buffer = (char *)cifs_small_buf_get();
-+		if (!next_buffer) {
-+			cifs_server_dbg(VFS, "No memory for (large) SMB response\n");
-+			return -1;
-+		}
- 		memcpy(next_buffer, buf + next_cmd, pdu_length - next_cmd);
- 	}
+--- a/Makefile
++++ b/Makefile
+@@ -1067,6 +1067,11 @@ endif
+ KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+ KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
--- 
-2.39.5
-
++# userspace programs are linked via the compiler, use the correct linker
++ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
++KBUILD_USERLDFLAGS += --ld-path=$(LD)
++endif
++
+ # make the checker run with the right architecture
+ CHECKFLAGS += --arch=$(ARCH)
+ 
 
 
 
