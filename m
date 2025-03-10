@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC9BA59F41
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA44A59FBC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C30918903F7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B09FC7A47A8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A58234972;
-	Mon, 10 Mar 2025 17:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF8522ACDC;
+	Mon, 10 Mar 2025 17:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZI2q7/9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTrzBTl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9982253FE;
-	Mon, 10 Mar 2025 17:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1319223702;
+	Mon, 10 Mar 2025 17:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628283; cv=none; b=VDqpOf0mtHhGWPmK4opMt9Ucn9GYIELdkXasTOFvUDcjae5o7+63C1wLyUFVqpRDNqFBmlCllDm5PM6gw4Dw67JBbh89ZLa7vPKOgtbbNS4YtTnF9HI6A0cZ0UaHwAeuNZGuuDWGW8hSoMpsgIJoC+OqYy5YaBfLYzaafOE56PQ=
+	t=1741628592; cv=none; b=q1ICDrVxyJc/5BE5YrZKk0DO5/iJDmMnvn+oUhIvzqlFXvTqEoKqJOz26YQpnvTxkGiR7lc6qU6rwl0O1Ccaj7Q70hiXKVlMamTTKRoF4yUePKaRMsvWImWgec9HALxT33FrhLBTzUfd6H98W0c6Ky1AO2zwVS0KPTl5DkvW7Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628283; c=relaxed/simple;
-	bh=zKvKM6kVGHvS3GCnuzI9NZBL4qT/wjYRgzlU0PJ4kWY=;
+	s=arc-20240116; t=1741628592; c=relaxed/simple;
+	bh=xaU9UVnRhDHN9dhd1GwwCwd9EB0TWVA3h17a6Fyvgk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9fDTDVG4agHnRLHWz4gbks7KvJhVGH/whFLjqiPs3LvuQ8Fg9BQsFS7zDcysZkXHhVkx958RIbxCzuAkHIKoQcdxhTCA6dClQdvZa+7M3dutNCOTonQ1JCbo9WY3TUxqkTP3yuvSQsmRq08vtxErHfk2+lXOlXEU7dDlXEBOTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZI2q7/9q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4B5C4CEE5;
-	Mon, 10 Mar 2025 17:38:02 +0000 (UTC)
+	 MIME-Version; b=tNu3XPEom2vSbr2HqOyKSqyPiN3BNGWCp5q+IsPgm0PHFjrQWn+82iKslY13wrGgKufX/79/aE03Gr7Mh2C5WfHkg7G7Cy4mgXUmndWzBQ2+UNIJ/zxw2Zi6Ia/I170KIadbF3lRCJ95XZRY5SIENbPF0jdokjYPB0jE3Mb3jYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTrzBTl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54962C4CEE5;
+	Mon, 10 Mar 2025 17:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628282;
-	bh=zKvKM6kVGHvS3GCnuzI9NZBL4qT/wjYRgzlU0PJ4kWY=;
+	s=korg; t=1741628592;
+	bh=xaU9UVnRhDHN9dhd1GwwCwd9EB0TWVA3h17a6Fyvgk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZI2q7/9q4v5vjKPZ3slLOAFIeBSGS1twQjQ9IpH4UCkS4cXbW9xos6p3XjLzUmfm7
-	 UveNXHoHlaUuk79AVgTW+bOcsbYOZXswj+BUzdIcKXE6dGLkt8UCJ7whf8nbfLLdNu
-	 2X31wFl0TWuN5dl0Lh8moZ/U1ENriSGW2VXc07Fk=
+	b=uTrzBTl80qxkrQlvbPF1/kEGmCivLvcWLKWAoi/TGuokwiJjtyACROuig9aZmRqZq
+	 6dSwt8mlRO6kbzEDUdqR4cqCubO5J2yePgbncd9WDRJn6NCFPbYlBq7A2mwKaySDch
+	 ojGv1G9uXqFEvp1cEq31pPgtug14STqn/WS76UEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 6.6 139/145] x86/mm: Dont disable PCID when INVLPG has been fixed by microcode
+	Sam Winchenbach <swinchenbach@arka.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 089/109] iio: filter: admv8818: Force initialization of SDO
 Date: Mon, 10 Mar 2025 18:07:13 +0100
-Message-ID: <20250310170440.365081479@linuxfoundation.org>
+Message-ID: <20250310170431.104083900@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Sam Winchenbach <swinchenbach@arka.org>
 
-commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
+commit cc2c3540d9477a9931fb0fd851fcaeba524a5b35 upstream.
 
-Per the "Processor Specification Update" documentations referred by
-the intel-microcode-20240312 release note, this microcode release has
-fixed the issue for all affected models.
+When a weak pull-up is present on the SDO line, regmap_update_bits fails
+to write both the SOFTRESET and SDOACTIVE bits because it incorrectly
+reads them as already set.
 
-So don't disable PCID if the microcode is new enough.  The precise
-minimum microcode revision fixing the issue was provided by Pawan
-Intel.
+Since the soft reset disables the SDO line, performing a
+read-modify-write operation on ADI_SPI_CONFIG_A to enable the SDO line
+doesn't make sense. This change directly writes to the register instead
+of using regmap_update_bits.
 
-[ dhansen: comment and changelog tweaks ]
-
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
-Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
-Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
-Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
-Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
-Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+Link: https://patch.msgid.link/SA1P110MB106904C961B0F3FAFFED74C0BCF5A@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/init.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/iio/filter/admv8818.c |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -262,28 +262,33 @@ static void __init probe_page_size_mask(
- }
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -527,21 +527,15 @@ static int admv8818_init(struct admv8818
+ 	struct spi_device *spi = st->spi;
+ 	unsigned int chip_id;
  
- /*
-- * INVLPG may not properly flush Global entries
-- * on these CPUs when PCIDs are enabled.
-+ * INVLPG may not properly flush Global entries on
-+ * these CPUs.  New microcode fixes the issue.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
--	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0x2e),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0x42c),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0x11),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0x118),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0x4117),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0x2e),
- 	{}
- };
+-	ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
+-				 ADMV8818_SOFTRESET_N_MSK |
+-				 ADMV8818_SOFTRESET_MSK,
+-				 FIELD_PREP(ADMV8818_SOFTRESET_N_MSK, 1) |
+-				 FIELD_PREP(ADMV8818_SOFTRESET_MSK, 1));
++	ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
++			   ADMV8818_SOFTRESET_N_MSK | ADMV8818_SOFTRESET_MSK);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "ADMV8818 Soft Reset failed.\n");
+ 		return ret;
+ 	}
  
- static void setup_pcid(void)
- {
-+	const struct x86_cpu_id *invlpg_miss_match;
-+
- 	if (!IS_ENABLED(CONFIG_X86_64))
- 		return;
- 
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
--	if (x86_match_cpu(invlpg_miss_ids)) {
-+	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
-+
-+	if (invlpg_miss_match &&
-+	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
- 		pr_info("Incomplete global flushes, disabling PCID");
- 		setup_clear_cpu_cap(X86_FEATURE_PCID);
- 		return;
+-	ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
+-				 ADMV8818_SDOACTIVE_N_MSK |
+-				 ADMV8818_SDOACTIVE_MSK,
+-				 FIELD_PREP(ADMV8818_SDOACTIVE_N_MSK, 1) |
+-				 FIELD_PREP(ADMV8818_SDOACTIVE_MSK, 1));
++	ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
++			   ADMV8818_SDOACTIVE_N_MSK | ADMV8818_SDOACTIVE_MSK);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "ADMV8818 SDO Enable failed.\n");
+ 		return ret;
 
 
 
