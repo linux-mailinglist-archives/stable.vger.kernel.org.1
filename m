@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ED5A59E0E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D5DA59CC8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 709F5188F1CD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CECF16F044
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBF6233716;
-	Mon, 10 Mar 2025 17:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1206F230996;
+	Mon, 10 Mar 2025 17:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBTzX2TR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rc7l/d8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CBB230BC3;
-	Mon, 10 Mar 2025 17:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C330B230988;
+	Mon, 10 Mar 2025 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627633; cv=none; b=nVVAKCvrkpOIe1WRPP0RpGV26uINfUh/fSfWDUg6N8wnubYRBnrc+f7WzjTt65uG4htI422KlPMnx3BK0/uiwQTbTngfs7bv40bEMdIVwzix24IHpDgPjdcDGLgigvaNIS1apCDZjOHqOiL1zubdwXm7pewe2Vxh7EJ2cBlnuos=
+	t=1741626914; cv=none; b=dCPZTh7LCXGfFoXygyz9dBcrkXrOt9x89Qv/p9xSrMTpXc3Fe+QKDbL43LuO98qByxWTz3kJOwmEk/dvYW/NPPH4rNiTxb7Db9sNIcB0SDMCMHxuMGY045nVKuXOOMSv3pd266lkVmhHJbhmuy9s8Fx6j5zLFHRYMqRrs1I0KKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627633; c=relaxed/simple;
-	bh=4h5DEU5YzhKUlHRsAAFC3inR05CU5AQyVv2bt8Oo/Qc=;
+	s=arc-20240116; t=1741626914; c=relaxed/simple;
+	bh=1AmeVFjHe+0LP4SSkNVGniDiUjFHVVnaswomeBpUmDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EspPeltGrwI79lyWkHnsXrJsnUVnQPjz+kXdJqnOfu9tQflCzqnF3pGRYQzed5u4Uvdp5TDsFLHs8REVbeXIFSdncJddaAHg5lPF9DYpEIXKNUM3Fm6aAP8oALinqXaj8Esggk9Bjdgu1xIzEvVGMsYceEspWrY5in8xBVmFQDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBTzX2TR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A233C4CEE5;
-	Mon, 10 Mar 2025 17:27:13 +0000 (UTC)
+	 MIME-Version; b=GcD1e6gT7d08vwDIJA/uWH1bfkQy9CiaGq4zMbfyivTzAZ9wxBH83gpycrSqKoVe5yKQFxZxzCckseXZDGlazShMQtFkDDdPQIFFewi6l3VFyKQOTaLpQmXWXnk6PZOX3akGPNRq/Y21HaYtUL9oZaUxzEqYQyT93wHkTz3UsmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rc7l/d8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43103C4CEEB;
+	Mon, 10 Mar 2025 17:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627633;
-	bh=4h5DEU5YzhKUlHRsAAFC3inR05CU5AQyVv2bt8Oo/Qc=;
+	s=korg; t=1741626914;
+	bh=1AmeVFjHe+0LP4SSkNVGniDiUjFHVVnaswomeBpUmDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBTzX2TRJHSI9PG1r2BEHEMdtZ2zzNXX4KQo+RFQrit2loenOjqK4zPVOyqMISW/e
-	 CMHl+dOUOOnWftbJ1Fe9HzeetYPgte9qAODZMR2B0lcHgITE4xa6a/T6iVqTjhtgk9
-	 8x17DbvMGU0gzQm+HlJiPLDbCT9vxsQnYkGg1JeY=
+	b=rc7l/d8VwDQ2vjFCOOlWp+Y9cABpA85HyNfgOWilroc7bTuF7tWuHU5wPcLgiPNBM
+	 1x6VgV5Q7WtuqSFoJ5mXNshyjQM9eeRx5SNjOO6phBUZqvSUmT8K4cZGH2/H24qKAa
+	 w6SgmUMdvD/hn8Y8XOzwEAm667hQJxEi1yufalxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/269] net-timestamp: support TCP GSO case for a few missing flags
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.13 157/207] usb: xhci: Fix host controllers "dying" after suspend and resume
 Date: Mon, 10 Mar 2025 18:05:50 +0100
-Message-ID: <20250310170505.550212094@linuxfoundation.org>
+Message-ID: <20250310170454.034631245@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
+commit c7c1f3b05c67173f462d73d301d572b3f9e57e3b upstream.
 
-When I read through the TSO codes, I found out that we probably
-miss initializing the tx_flags of last seg when TSO is turned
-off, which means at the following points no more timestamp
-(for this last one) will be generated. There are three flags
-to be handled in this patch:
-1. SKBTX_HW_TSTAMP
-2. SKBTX_BPF
-3. SKBTX_SCHED_TSTAMP
-Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
-6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
-and only belongs to net-next branch material for now. The common
-issue of the above three flags can be fixed by this single patch.
+A recent cleanup went a bit too far and dropped clearing the cycle bit
+of link TRBs, so it stays different from the rest of the ring half of
+the time. Then a race occurs: if the xHC reaches such link TRB before
+more commands are queued, the link's cycle bit unintentionally matches
+the xHC's cycle so it follows the link and waits for further commands.
+If more commands are queued before the xHC gets there, inc_enq() flips
+the bit so the xHC later sees a mismatch and stops executing commands.
 
-This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
-the UDP GSO does to make the newly segmented last skb inherit the
-tx_flags so that requested timestamp will be generated in each
-certain layer, or else that last one has zero value of tx_flags
-which leads to no timestamp at all.
+This function is called before suspend and 50% of times after resuming
+the xHC is doomed to get stuck sooner or later. Then some Stop Endpoint
+command fails to complete in 5 seconds and this shows up
 
-Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+xhci_hcd 0000:00:10.0: xHCI host not responding to stop endpoint command
+xhci_hcd 0000:00:10.0: xHCI host controller not responding, assume dead
+xhci_hcd 0000:00:10.0: HC died; cleaning up
+
+followed by loss of all USB decives on the affected bus. That's if you
+are lucky, because if Set Deq gets stuck instead, the failure is silent.
+
+Likely responsible for kernel bug 219824. I found this while searching
+for possible causes of that regression and reproduced it locally before
+hearing back from the reporter. To repro, simply wait for link cycle to
+become set (debugfs), then suspend, resume and wait. To accelerate the
+failure I used a script which repeatedly starts and stops a UVC camera.
+
+Some HCs get fully reinitialized on resume and they are not affected.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219824
+Fixes: 36b972d4b7ce ("usb: xhci: improve xhci_clear_command_ring()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250304113147.3322584-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_offload.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index 2308665b51c53..2dfac79dc78b8 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -13,12 +13,15 @@
- #include <net/tcp.h>
- #include <net/protocol.h>
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -779,8 +779,12 @@ static void xhci_clear_command_ring(stru
+ 	struct xhci_segment *seg;
  
--static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
-+static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
- 			   unsigned int seq, unsigned int mss)
- {
-+	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
-+	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
-+
- 	while (skb) {
- 		if (before(ts_seq, seq + mss)) {
--			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
-+			skb_shinfo(skb)->tx_flags |= flags;
- 			skb_shinfo(skb)->tskey = ts_seq;
- 			return;
- 		}
-@@ -193,8 +196,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
- 	th = tcp_hdr(skb);
- 	seq = ntohl(th->seq);
+ 	ring = xhci->cmd_ring;
+-	xhci_for_each_ring_seg(ring->first_seg, seg)
++	xhci_for_each_ring_seg(ring->first_seg, seg) {
++		/* erase all TRBs before the link */
+ 		memset(seg->trbs, 0, sizeof(union xhci_trb) * (TRBS_PER_SEGMENT - 1));
++		/* clear link cycle bit */
++		seg->trbs[TRBS_PER_SEGMENT - 1].link.control &= cpu_to_le32(~TRB_CYCLE);
++	}
  
--	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
--		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
-+	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
-+		tcp_gso_tstamp(segs, gso_skb, seq, mss);
- 
- 	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
- 
--- 
-2.39.5
-
+ 	xhci_initialize_ring_info(ring);
+ 	/*
 
 
 
