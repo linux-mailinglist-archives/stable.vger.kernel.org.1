@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-122999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608D8A5A25A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FA2A59CF4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F7A4173DBA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A039216EF90
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E321C57B2;
-	Mon, 10 Mar 2025 18:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A23B1AF0BB;
+	Mon, 10 Mar 2025 17:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzfoUDQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IneYddWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4DD374EA;
-	Mon, 10 Mar 2025 18:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AD8233145;
+	Mon, 10 Mar 2025 17:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630752; cv=none; b=bKmbAllKnYzANr2J+2LKuhXtl13EPgwmEngIVfH+C3mXRGKEWlSi3QqfCm7/aqGlK9DGeN+i5v2qTu++MK1ehG4/78WUBWn/HmYCA7Fim75MWdkPx50Hrxcg0HnooMRlUEqMQ3sF9wXeEkh11qVtxUCnbfLOLEq8kBloCAVoxrU=
+	t=1741626966; cv=none; b=X5orb1QYsbjt8gD9tb0cWqtkI9QR6T2jjEmb1eAwDzoqg+T65q+2nGByRaN2f83xD9/Vr/AVAsQSyNBSY/GMh2lbk/ui6K56TVcrgKg4Tfhci35+I3t6w5AFnhmtUytTKxoMTpw+iLG2lDEkjmpN7srr50lvMW4Kx2y5Akd4iWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630752; c=relaxed/simple;
-	bh=ylwZ8VyUEp8XyAb4DQLsZ796QncVTFi59eLpuHgmqaQ=;
+	s=arc-20240116; t=1741626966; c=relaxed/simple;
+	bh=6jNz0ikYRwIx/UfDYWXLL+rc/XnpGoGSK3r0fNDAsdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ide+gBfH8RvjNBsoPHfjMBkgDqjSJ27KXHWWh9jSvgTk86y+OS/TJVIpEFtIu0cfnTWIglscZOgDw9l7yZcp7i/Rm4z8d9EtoGUP82f8WpGFBq/I6zkq6WyuTDn/wVtT981lTICwJGlBgOj5DFyUzHplv2XylMVmNgob82AxJIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzfoUDQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94F9C4CEE5;
-	Mon, 10 Mar 2025 18:19:11 +0000 (UTC)
+	 MIME-Version; b=bJ9Fgq48Q5Csecn96MGDP2lw5o7UMkNmHHlWx82VdnU3544mfQnKIJD6eSUm7qZere7VIL3/OW5PxnFrbgByxBuVfyph2wOJtcwQDm3bZyQr84DCm2q6tZeBoTqYSnO8iYL4UmlyhM7F/rlRLe5xBFjcZhkJUsmaskJDE/PrHm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IneYddWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35D6C4CEE5;
+	Mon, 10 Mar 2025 17:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630752;
-	bh=ylwZ8VyUEp8XyAb4DQLsZ796QncVTFi59eLpuHgmqaQ=;
+	s=korg; t=1741626966;
+	bh=6jNz0ikYRwIx/UfDYWXLL+rc/XnpGoGSK3r0fNDAsdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RzfoUDQ/Bm9SQKV+hQFhEoMIVcL6LgY02/uP+x5cnGdVX4r7gjeXIRmvkSTbzW5Ak
-	 2qAFmsTS7xa9kof7GQY5xBp5gVunbmLPXQmLmxUkn2WrwZuRHmPp5/F/c7odQlhlU6
-	 KEqN59QMuDaUl21c9/eo98uiQVvY/cUu9vDYhWhw=
+	b=IneYddWYkkqeC6H2B4yOvVF+Gh9zkhJCqnyRQe8YpOHXcUJYUvkjBAdtFODSWwSfH
+	 uSohQ0ScepCcpaW2Prpbj1ETQuhnQUb7iPkwiP4FDETXocj6Mkyb1pJ/85XziHv5IG
+	 DKf5kGh1hmWV6VLbQzOHE8mtTVc7nvYdvu66EwAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	John Garry <john.garry@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 490/620] scsi: core: Dont memset() the entire scsi_cmnd in scsi_init_command()
+	Zecheng Li <zecheng@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: [PATCH 6.13 143/207] sched/fair: Fix potential memory corruption in child_cfs_rq_on_list
 Date: Mon, 10 Mar 2025 18:05:36 +0100
-Message-ID: <20250310170604.914108099@linuxfoundation.org>
+Message-ID: <20250310170453.484712475@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Zecheng Li <zecheng@google.com>
 
-[ Upstream commit 71bada345b33b9297e7cc9415db6328c99b554f9 ]
+[ Upstream commit 3b4035ddbfc8e4521f85569998a7569668cccf51 ]
 
-Replace the big fat memset that requires saving and restoring various
-fields with just initializing those fields that need initialization.
+child_cfs_rq_on_list attempts to convert a 'prev' pointer to a cfs_rq.
+This 'prev' pointer can originate from struct rq's leaf_cfs_rq_list,
+making the conversion invalid and potentially leading to memory
+corruption. Depending on the relative positions of leaf_cfs_rq_list and
+the task group (tg) pointer within the struct, this can cause a memory
+fault or access garbage data.
 
-All the clearing to 0 is moved to scsi_prepare_cmd() as scsi_ioctl_reset()
-alreadly uses kzalloc() to allocate a pre-zeroed command.
+The issue arises in list_add_leaf_cfs_rq, where both
+cfs_rq->leaf_cfs_rq_list and rq->leaf_cfs_rq_list are added to the same
+leaf list. Also, rq->tmp_alone_branch can be set to rq->leaf_cfs_rq_list.
 
-This is still conservative and can probably be optimized further.
+This adds a check `if (prev == &rq->leaf_cfs_rq_list)` after the main
+conditional in child_cfs_rq_on_list. This ensures that the container_of
+operation will convert a correct cfs_rq struct.
 
-Link: https://lore.kernel.org/r/20220224175552.988286-3-hch@lst.de
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: dce5c4afd035 ("scsi: core: Clear driver private data when retrying request")
+This check is sufficient because only cfs_rqs on the same CPU are added
+to the list, so verifying the 'prev' pointer against the current rq's list
+head is enough.
+
+Fixes a potential memory corruption issue that due to current struct
+layout might not be manifesting as a crash but could lead to unpredictable
+behavior when the layout changes.
+
+Fixes: fdaba61ef8a2 ("sched/fair: Ensure that the CFS parent is added after unthrottling")
+Signed-off-by: Zecheng Li <zecheng@google.com>
+Reviewed-and-tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20250304214031.2882646-1-zecheng@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c | 60 +++++++++++++++++++----------------------
- 1 file changed, 28 insertions(+), 32 deletions(-)
+ kernel/sched/fair.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 9721984fd9bc6..ddaffaea2c32c 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1114,45 +1114,16 @@ static void scsi_cleanup_rq(struct request *rq)
- /* Called before a request is prepared. See also scsi_mq_prep_fn(). */
- void scsi_init_command(struct scsi_device *dev, struct scsi_cmnd *cmd)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7d0a05660e5ef..4f850edf16401 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4046,15 +4046,17 @@ static inline bool child_cfs_rq_on_list(struct cfs_rq *cfs_rq)
  {
--	void *buf = cmd->sense_buffer;
--	void *prot = cmd->prot_sdb;
- 	struct request *rq = scsi_cmd_to_rq(cmd);
--	unsigned int flags = cmd->flags & SCMD_PRESERVED_FLAGS;
--	unsigned long jiffies_at_alloc;
--	int retries, to_clear;
--	bool in_flight;
--	int budget_token = cmd->budget_token;
+ 	struct cfs_rq *prev_cfs_rq;
+ 	struct list_head *prev;
++	struct rq *rq = rq_of(cfs_rq);
+ 
+ 	if (cfs_rq->on_list) {
+ 		prev = cfs_rq->leaf_cfs_rq_list.prev;
+ 	} else {
+-		struct rq *rq = rq_of(cfs_rq);
 -
--	if (!blk_rq_is_passthrough(rq) && !(flags & SCMD_INITIALIZED)) {
--		flags |= SCMD_INITIALIZED;
-+
-+	if (!blk_rq_is_passthrough(rq) && !(cmd->flags & SCMD_INITIALIZED)) {
-+		cmd->flags |= SCMD_INITIALIZED;
- 		scsi_initialize_rq(rq);
+ 		prev = rq->tmp_alone_branch;
  	}
  
--	jiffies_at_alloc = cmd->jiffies_at_alloc;
--	retries = cmd->retries;
--	in_flight = test_bit(SCMD_STATE_INFLIGHT, &cmd->state);
--	/*
--	 * Zero out the cmd, except for the embedded scsi_request. Only clear
--	 * the driver-private command data if the LLD does not supply a
--	 * function to initialize that data.
--	 */
--	to_clear = sizeof(*cmd) - sizeof(cmd->req);
--	if (!dev->host->hostt->init_cmd_priv)
--		to_clear += dev->host->hostt->cmd_size;
--	memset((char *)cmd + sizeof(cmd->req), 0, to_clear);
--
- 	cmd->device = dev;
--	cmd->sense_buffer = buf;
--	cmd->prot_sdb = prot;
--	cmd->flags = flags;
- 	INIT_LIST_HEAD(&cmd->eh_entry);
- 	INIT_DELAYED_WORK(&cmd->abort_work, scmd_eh_abort_handler);
--	cmd->jiffies_at_alloc = jiffies_at_alloc;
--	cmd->retries = retries;
--	if (in_flight)
--		__set_bit(SCMD_STATE_INFLIGHT, &cmd->state);
--	cmd->budget_token = budget_token;
--
- }
- 
- static blk_status_t scsi_setup_scsi_cmnd(struct scsi_device *sdev,
-@@ -1539,10 +1510,35 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
- 	struct scsi_cmnd *cmd = blk_mq_rq_to_pdu(req);
- 	struct scsi_device *sdev = req->q->queuedata;
- 	struct Scsi_Host *shost = sdev->host;
-+	bool in_flight = test_bit(SCMD_STATE_INFLIGHT, &cmd->state);
- 	struct scatterlist *sg;
- 
- 	scsi_init_command(sdev, cmd);
- 
-+	cmd->eh_eflags = 0;
-+	cmd->allowed = 0;
-+	cmd->prot_type = 0;
-+	cmd->prot_flags = 0;
-+	cmd->submitter = 0;
-+	cmd->cmd_len = 0;
-+	cmd->cmnd = NULL;
-+	memset(&cmd->sdb, 0, sizeof(cmd->sdb));
-+	cmd->underflow = 0;
-+	cmd->transfersize = 0;
-+	cmd->host_scribble = NULL;
-+	cmd->result = 0;
-+	cmd->extra_len = 0;
-+	cmd->state = 0;
-+	if (in_flight)
-+		__set_bit(SCMD_STATE_INFLIGHT, &cmd->state);
++	if (prev == &rq->leaf_cfs_rq_list)
++		return false;
 +
-+	/*
-+	 * Only clear the driver-private command data if the LLD does not supply
-+	 * a function to initialize that data.
-+	 */
-+	if (!shost->hostt->init_cmd_priv)
-+		memset(cmd + 1, 0, shost->hostt->cmd_size);
-+
- 	cmd->prot_op = SCSI_PROT_NORMAL;
- 	if (blk_rq_bytes(req))
- 		cmd->sc_data_direction = rq_dma_dir(req);
+ 	prev_cfs_rq = container_of(prev, struct cfs_rq, leaf_cfs_rq_list);
+ 
+ 	return (prev_cfs_rq->tg->parent == cfs_rq->tg);
 -- 
 2.39.5
 
