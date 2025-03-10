@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-121899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DC5A59CF1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B9CA5A255
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D34E516F672
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A92D173A00
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45849230BD5;
-	Mon, 10 Mar 2025 17:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8191B22B597;
+	Mon, 10 Mar 2025 18:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBkiRohi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyF8gy1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039571A315A;
-	Mon, 10 Mar 2025 17:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D691C3F34;
+	Mon, 10 Mar 2025 18:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626952; cv=none; b=q9PXebUxTgVV8rWQ5ShGwc/BsbDQOKezet73ttBt+AN26nRmlwoyJ219ZVzNi0E3yyNPhAKdEUBsVKBnHMJ1bRN1NaWLDjgfWdL0HzITcWwR79aBqh6UwfjIXRveeejRQbaoxUOQaWVSOS5NOGdWpSP7KJB+eSKdPjFHur7as7Y=
+	t=1741630738; cv=none; b=f0p0mPRmtXB00dR0NSl51QDD3hBunr0cMn+6a9eHrAT4rV/kifU4qZaB2rVglfsCVx5fCvKG3QM7xK1ZeMYNMDzBKti/8hiWfohtBzre8cDHrF0d3Jypbe8/IsVUY+Nie2Ko2xgr2a3Ha8q4p9OpE2J455NNUHi+Qp747HG8sY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626952; c=relaxed/simple;
-	bh=RsP8HV1YBAVrURIS3ywfPtaULdL+xFUkQy7Kpdm+LQY=;
+	s=arc-20240116; t=1741630738; c=relaxed/simple;
+	bh=7tz+K5dHSo+Ud2jCycnj0qpaNIdXtehQPyWcISuWPYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqjegRFMBAqx4GksGLl6DaBXJZcphvjzLBtjCKxDSB9RFy6c6OzKunE10T8/xC0Qsr2coytM50cyns1zbK8oilbSMgdrmN/12HLSMIC3T/r9yu3VejTSEDmHNSX9T8bRMo7h/vRNtQg9BiNN9eF+CF4KQKdAMiO60cHks6eDhjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBkiRohi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDDBC4CEE5;
-	Mon, 10 Mar 2025 17:15:51 +0000 (UTC)
+	 MIME-Version; b=oGgNQczN42Qniit0Sne5k08GyJrQerxllUZnB4EDNmQBbz9FfOaF+jvnDDd93NsXvaVM1EoLczoVpqJDfnyAarlz/X43/PysVE0FyohYCKHUOYoA8xkLBmpfriZ5UZs+oArGxO3oeg7xxb1atdU/O88awGyiTWq9Bza7oyQMpwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyF8gy1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58442C4CEED;
+	Mon, 10 Mar 2025 18:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626951;
-	bh=RsP8HV1YBAVrURIS3ywfPtaULdL+xFUkQy7Kpdm+LQY=;
+	s=korg; t=1741630737;
+	bh=7tz+K5dHSo+Ud2jCycnj0qpaNIdXtehQPyWcISuWPYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBkiRohitOmITKXEjfllr+hIkR9SKOG4ZnoSQ4zVheIHv72JjqJmtd9HlmGC1CuU7
-	 rIEs7hmY8xPANZh+U30PkCcsawMpnvYcooyyEjHHiX9Rwd6BkzrkDtcIET/cVkmcWs
-	 NpMBRMNCPJQz8/x8VObaiMvmh9YhoFBBJ5xsaRZ8=
+	b=WyF8gy1ChxXDTKHU4RSuoECanMsLl0jueHuCQ25QiUTAAQwR5zZF2dCa3a74grNCN
+	 I+llndOWfkwD+/rkkhl653xSaAFaEGCwZCGZdEgnw/oOAuGXRhyNoLeSFmS2XqhRil
+	 EtuziuzWYCUboJf7CwTDWD6y75KHJA3dXsN/HwmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.13 168/207] usb: gadget: Fix setting self-powered state on suspend
-Date: Mon, 10 Mar 2025 18:06:01 +0100
-Message-ID: <20250310170454.465086039@linuxfoundation.org>
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 5.15 516/620] perf/core: Fix low freq setting via IOC_PERIOD
+Date: Mon, 10 Mar 2025 18:06:02 +0100
+Message-ID: <20250310170605.924396695@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit c783e1258f29c5caac9eea0aea6b172870f1baf8 upstream.
+commit 0d39844150546fa1415127c5fbae26db64070dd3 upstream.
 
-cdev->config might be NULL, so check it before dereferencing.
+A low attr::freq value cannot be set via IOC_PERIOD on some platforms.
 
-CC: stable <stable@kernel.org>
-Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
+The perf_event_check_period() introduced in:
+
+  81ec3f3c4c4d ("perf/x86: Add check_period PMU callback")
+
+was intended to check the period, rather than the frequency.
+A low frequency may be mistakenly rejected by limit_period().
+
+Fix it.
+
+Fixes: 81ec3f3c4c4d ("perf/x86: Add check_period PMU callback")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250117151913.3043942-2-kan.liang@linux.intel.com
+Closes: https://lore.kernel.org/lkml/20250115154949.3147-1-ravi.bangoria@amd.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/events/core.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2616,7 +2616,8 @@ void composite_suspend(struct usb_gadget
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5773,14 +5773,15 @@ static int _perf_event_period(struct per
+ 	if (!value)
+ 		return -EINVAL;
  
- 	cdev->suspended = 1;
+-	if (event->attr.freq && value > sysctl_perf_event_sample_rate)
+-		return -EINVAL;
+-
+-	if (perf_event_check_period(event, value))
+-		return -EINVAL;
+-
+-	if (!event->attr.freq && (value & (1ULL << 63)))
+-		return -EINVAL;
++	if (event->attr.freq) {
++		if (value > sysctl_perf_event_sample_rate)
++			return -EINVAL;
++	} else {
++		if (perf_event_check_period(event, value))
++			return -EINVAL;
++		if (value & (1ULL << 63))
++			return -EINVAL;
++	}
  
--	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+	if (cdev->config &&
-+	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
- 		usb_gadget_set_selfpowered(gadget);
+ 	event_function_call(event, __perf_event_period, &value);
  
- 	usb_gadget_vbus_draw(gadget, 2);
 
 
 
