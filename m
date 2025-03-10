@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-121818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96BAA59C7C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012FCA59DC9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54101188DBC7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81C867A5CA9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAFD2309B0;
-	Mon, 10 Mar 2025 17:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F4722B8D0;
+	Mon, 10 Mar 2025 17:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgrz/M1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoaHV0uj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067FC1E519;
-	Mon, 10 Mar 2025 17:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1576423099F;
+	Mon, 10 Mar 2025 17:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626718; cv=none; b=V9fAMRxwKYtACQb8qgRDb+kqe2MixhhFRmmP7ncKZKP9PC3hxlBnUoCCjlTnht76cuaeA8m7GLfFyPteL4Nw2/+H27QiVOMbtvy54iJSkHWEa9ivDYXTnbxliHWjzfqtvIW61pj4tpvr7DT4PBUohu9PAHSEvuW/2FE6Zs8sCes=
+	t=1741627436; cv=none; b=Kzo5KBTxr9fwaislOI2zkbLAg6YkBcq8dT4hRbAOISHnwEIEB6Kg/Oq32IN266AsUzGPBlheTIhYbbiLbLXhFZJACpKsxCfyJIVUPeP1KsVts9aKH4DUMs37vMGE0iHjPAVsVs0NyXq9Bkz0kcssQlExFwD18vFVZ1I9W2VWBE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626718; c=relaxed/simple;
-	bh=UPYWuaSx4CJecMOlOyEVJVv1eQQvQUU7kF4QHFi2Ix8=;
+	s=arc-20240116; t=1741627436; c=relaxed/simple;
+	bh=qAJ7OIp4YLRTQ5PoKHBdDljlpk6oLgAHcK2WqqWwclA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nnu66OWCm0CV2Zv5Roysy3M5dQNQVOl95mrVR/OM8idxYTd42AwYgtUo9FiCpkzlS/lde7Qc/TXjGASaBwUCXitE822k9988gs0GOSDHrRSlIcAAWUc3a0jJ96MJPqlbuHj+fzT+rEVvUeAF2kI4LGcLJqjDO1HmXKZdaLFASE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgrz/M1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD0AC4CEE5;
-	Mon, 10 Mar 2025 17:11:57 +0000 (UTC)
+	 MIME-Version; b=rcl7DacIHoee5hNTbCUa+facmB5zafxf1jexX+rWiTLq8ltFkJj0PAckt4J7ovzFPDxNnuDKD/CaUI2/JUms1hyJIzjrA0g6iCaHPLzLO+cKylgjMLeJHjnlpQ40BW30k9svNDbrAQt7bSI7RdCDlvdeVPfc9EvWtnf0EH0hYQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoaHV0uj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96221C4CEE5;
+	Mon, 10 Mar 2025 17:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626717;
-	bh=UPYWuaSx4CJecMOlOyEVJVv1eQQvQUU7kF4QHFi2Ix8=;
+	s=korg; t=1741627436;
+	bh=qAJ7OIp4YLRTQ5PoKHBdDljlpk6oLgAHcK2WqqWwclA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgrz/M1ENnVmV84eaLoBGCXx/y5Z+I265bOFMxEcZwknkIK/zzPpVykJRbOMCmljT
-	 +P9ga3/zvo6Cz/XGAH0aAQBawouSEn3WtAljtrGKqLCa7ec+/W2FGYPVkZ41BwkN11
-	 Th6GO4ObaSMWyBOAskIxacw/b1eOMBiZotyoot6Y=
+	b=yoaHV0ujdvdqudLvWBhXoFPWoiJ8wfFlRZ6pWovRn0Vc6qJ83ulPU5CC4wSvtcsYm
+	 dhRzEzfThSVU4BIepMyec5lEzmynMa2J4t85OK1EaIROFhUmWLu9/AXzJqyKCPmOc+
+	 DgPOJzbpDPNxtFo0iHPulHf/ZlBITW61/MJdJhXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 089/207] HID: google: fix unused variable warning under !CONFIG_ACPI
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Macro Elver <elver@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 129/269] dma: kmsan: export kmsan_handle_dma() for modules
 Date: Mon, 10 Mar 2025 18:04:42 +0100
-Message-ID: <20250310170451.296398727@linuxfoundation.org>
+Message-ID: <20250310170502.863367670@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +67,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
+commit 19fac3c93991502a22c5132824c40b6a2e64b136 upstream.
 
-As reported by the kernel test robot, the following warning occurs:
+kmsan_handle_dma() is used by virtio_ring() which can be built as a
+module.  kmsan_handle_dma() needs to be exported otherwise building the
+virtio_ring fails.
 
->> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
-     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
-         |                                    ^~~~~~~~~~~~~~~~
+Export kmsan_handle_dma for modules.
 
-The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
-Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
-prevents a compiler warning when ACPI is disabled.
-
-Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
+Link: https://lkml.kernel.org/r/20250218091411.MMS3wBN9@linutronix.de
 Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502150634.qjxwSeJR-lkp@intel.com/
+Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Macro Elver <elver@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-google-hammer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/kmsan/hooks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
-index 0f292b5d3e26d..eb6fd2dc75d0a 100644
---- a/drivers/hid/hid-google-hammer.c
-+++ b/drivers/hid/hid-google-hammer.c
-@@ -268,11 +268,13 @@ static void cbas_ec_remove(struct platform_device *pdev)
- 	mutex_unlock(&cbas_ec_reglock);
+--- a/mm/kmsan/hooks.c
++++ b/mm/kmsan/hooks.c
+@@ -357,6 +357,7 @@ void kmsan_handle_dma(struct page *page,
+ 		size -= to_go;
+ 	}
  }
++EXPORT_SYMBOL_GPL(kmsan_handle_dma);
  
-+#ifdef CONFIG_ACPI
- static const struct acpi_device_id cbas_ec_acpi_ids[] = {
- 	{ "GOOG000B", 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
-+#endif
- 
- #ifdef CONFIG_OF
- static const struct of_device_id cbas_ec_of_match[] = {
--- 
-2.39.5
-
+ void kmsan_handle_dma_sg(struct scatterlist *sg, int nents,
+ 			 enum dma_data_direction dir)
 
 
 
