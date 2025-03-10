@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B22A59EB5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75E2A5A228
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A44E93AB03D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EF3D3A2A2D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C8522FF40;
-	Mon, 10 Mar 2025 17:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEE7236441;
+	Mon, 10 Mar 2025 18:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAMGF5r/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpzPUhhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BF62253FE;
-	Mon, 10 Mar 2025 17:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3902356D3;
+	Mon, 10 Mar 2025 18:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627905; cv=none; b=WcqdRev1o32rcYnNO1js7DLsaYXC3ONgF8VaXdRkV8WM+G0VPupWGiYdAP5+7kbPdCo/54Qffa/dFW4W6Tyfh+KTY1dP/W1UEdhb2FCpBBBOVKeMQAeM8OdPUeTZYDoTMwLQECoH/hZpLpWL+iH/8fLEW5MtlpoH2j1pQZMirGM=
+	t=1741630591; cv=none; b=XcmXF5SKyio6xRTkSRZxOHZt81W5T6q6k2+uWMszGknphi0NIl4x10+nSbCSfanTvIshuCkwY6zyuxEhyCGzPO5il+tadYZayPVGPKOcORZqs3erAiMkI/xBSpLsYyT5RXICWTxnlIviu2c+FVL9S+a4/pbe78u52Wmeed1hkEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627905; c=relaxed/simple;
-	bh=yyrHDpfsZMFhqfeBn9BR9U3ootYguqpT51wvxg+6o94=;
+	s=arc-20240116; t=1741630591; c=relaxed/simple;
+	bh=A2j9whO/U10vPRoaH0bwTSsdJwkEcLGxlCV12uO+Yqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNLfXQCj0EGQngXu2ohKS9i9nJPuqcNgCtRS8XT2l1wD7IaPOBVB7ByRr7ngUv+DEijBeIg/7jeiaWQF2eyw+Ji3xzDMqct7fyDaH61Ei9PFv/csWmp+Sz4m/eaBZI9m8H3gDAb8j2VOa+K9hwlZ28YDmnFoo8unn4EcVxXz6s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAMGF5r/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F71DC4CEE5;
-	Mon, 10 Mar 2025 17:31:44 +0000 (UTC)
+	 MIME-Version; b=G92Z1h9Spzf74xvb0NSXKbq/U3umnPuImjjAFcxoRuD1D24oY7uJFA4FVeCBavZV7sdKtBTQbL+xV6t3ABE/ONPgT1262IH5lUyc9gUs19GRyhYOKDKizOGq4Wrr++WD75WDKptE4R9xca2eBaPR/k17TDIQ5PaRYOcakAi7SWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpzPUhhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EA0C4CEED;
+	Mon, 10 Mar 2025 18:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627904;
-	bh=yyrHDpfsZMFhqfeBn9BR9U3ootYguqpT51wvxg+6o94=;
+	s=korg; t=1741630591;
+	bh=A2j9whO/U10vPRoaH0bwTSsdJwkEcLGxlCV12uO+Yqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAMGF5r/XmDL74fwbjpI5ghdo6PxyqXWY8/V0LQYdFosF1N5MDxWQOudHUyehEUZ8
-	 pslu5aaaeajRxgCegtHrFhHYebtSaJiu3RGvU52f+oqoC+aCZvvt4vk5q0NHKy157H
-	 b0V414Qlquf0SAjJ2T8aSxoaFxfaszOZbaC/gh+Y=
+	b=YpzPUhhwcE6wPo4W66/OOhas2k0WgbOUTuJaNXstGieuGVhig6DCldpGi+CWHWnV5
+	 KGIldK5Qomug/o07K2DiGUVqa/eZYV3bDiyq+foasiypMuPr7dASjbYeMdm6sOyKL2
+	 h1HfMgITQEHlmP1x3JAmPbRgMhFNSgI9jWunwE40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Volodymyr Mytnyk <volodymyr.mytnyk@plvision.eu>,
+	Maksym Glubokiy <maksym.glubokiy@plvision.eu>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/145] RISC-V: Enable cbo.zero in usermode
+Subject: [PATCH 5.15 468/620] net: extract port range fields from fl_flow_key
 Date: Mon, 10 Mar 2025 18:05:14 +0100
-Message-ID: <20250310170435.556027990@linuxfoundation.org>
+Message-ID: <20250310170604.051811219@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,171 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Maksym Glubokiy <maksym.glubokiy@plvision.eu>
 
-[ Upstream commit 43c16d51a19b0ba2ed66978d5924d486ec1e42bc ]
+[ Upstream commit 83d85bb069152b790caad905fa53e6d50cd3734d ]
 
-When Zicboz is present, enable its instruction (cbo.zero) in
-usermode by setting its respective senvcfg bit. We don't bother
-trying to set this bit per-task, which would also require an
-interface for tasks to request enabling and/or disabling. Instead,
-permanently set the bit for each hart which has the extension when
-bringing it online.
+So it can be used for port range filter offloading.
 
-This patch also introduces riscv_cpu_has_extension_[un]likely()
-functions to check a specific hart's ISA bitmap for extensions.
-Prior to checking the specific hart's bitmap in these functions
-we try the bitmap which represents the LCD of extensions, but only
-when we know it will use its optimized, alternatives path by gating
-its call on CONFIG_RISCV_ALTERNATIVE. When alternatives are used, the
-compiler ensures that the invocation of the LCD search becomes a
-constant true or false. When it's true, even the new functions will
-completely vanish from their callsites. OTOH, when the LCD check is
-false, we need to do a search of the hart's ISA bitmap. Had we also
-checked the LCD bitmap without the use of alternatives, then we would
-have ended up with two bitmap searches instead of one.
-
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20230918131518.56803-10-ajones@ventanamicro.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: 564fc8eb6f78 ("riscv: signal: fix signal_minsigstksz")
+Co-developed-by: Volodymyr Mytnyk <volodymyr.mytnyk@plvision.eu>
+Signed-off-by: Volodymyr Mytnyk <volodymyr.mytnyk@plvision.eu>
+Signed-off-by: Maksym Glubokiy <maksym.glubokiy@plvision.eu>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 3e5796862c69 ("flow_dissector: Fix handling of mixed port and port-range keys")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/cpufeature.h |  1 +
- arch/riscv/include/asm/csr.h        |  1 +
- arch/riscv/include/asm/hwcap.h      | 16 ++++++++++++++++
- arch/riscv/kernel/cpufeature.c      |  6 ++++++
- arch/riscv/kernel/setup.c           |  4 ++++
- arch/riscv/kernel/smpboot.c         |  4 ++++
- 6 files changed, 32 insertions(+)
+ include/net/flow_dissector.h | 16 ++++++++++++++++
+ include/net/flow_offload.h   |  6 ++++++
+ net/core/flow_offload.c      |  7 +++++++
+ net/sched/cls_flower.c       |  8 +-------
+ 4 files changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
-index d0345bd659c94..13b7d35648a9c 100644
---- a/arch/riscv/include/asm/cpufeature.h
-+++ b/arch/riscv/include/asm/cpufeature.h
-@@ -31,5 +31,6 @@ DECLARE_PER_CPU(long, misaligned_access_speed);
- extern struct riscv_isainfo hart_isa[NR_CPUS];
+diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
+index c8d1c5e187e4b..8d0d0cf93a785 100644
+--- a/include/net/flow_dissector.h
++++ b/include/net/flow_dissector.h
+@@ -178,6 +178,22 @@ struct flow_dissector_key_ports {
+ 	};
+ };
  
- void check_unaligned_access(int cpu);
-+void riscv_user_isa_enable(void);
++/**
++ * struct flow_dissector_key_ports_range
++ * @tp: port number from packet
++ * @tp_min: min port number in range
++ * @tp_max: max port number in range
++ */
++struct flow_dissector_key_ports_range {
++	union {
++		struct flow_dissector_key_ports tp;
++		struct {
++			struct flow_dissector_key_ports tp_min;
++			struct flow_dissector_key_ports tp_max;
++		};
++	};
++};
++
+ /**
+  * flow_dissector_key_icmp:
+  *		type: ICMP type
+diff --git a/include/net/flow_offload.h b/include/net/flow_offload.h
+index 7a2b0223a02c7..41f8dcd3505c1 100644
+--- a/include/net/flow_offload.h
++++ b/include/net/flow_offload.h
+@@ -48,6 +48,10 @@ struct flow_match_ports {
+ 	struct flow_dissector_key_ports *key, *mask;
+ };
  
- #endif
-diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
-index 777cb8299551c..5fba25db82d2a 100644
---- a/arch/riscv/include/asm/csr.h
-+++ b/arch/riscv/include/asm/csr.h
-@@ -275,6 +275,7 @@
- #define CSR_SIE			0x104
- #define CSR_STVEC		0x105
- #define CSR_SCOUNTEREN		0x106
-+#define CSR_SENVCFG		0x10a
- #define CSR_SSCRATCH		0x140
- #define CSR_SEPC		0x141
- #define CSR_SCAUSE		0x142
-diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
-index f4157034efa9c..e215d3399a179 100644
---- a/arch/riscv/include/asm/hwcap.h
-+++ b/arch/riscv/include/asm/hwcap.h
-@@ -70,6 +70,7 @@
- #ifndef __ASSEMBLY__
- 
- #include <linux/jump_label.h>
-+#include <asm/cpufeature.h>
- 
- unsigned long riscv_get_elf_hwcap(void);
- 
-@@ -137,6 +138,21 @@ riscv_has_extension_unlikely(const unsigned long ext)
- 	return true;
++struct flow_match_ports_range {
++	struct flow_dissector_key_ports_range *key, *mask;
++};
++
+ struct flow_match_icmp {
+ 	struct flow_dissector_key_icmp *key, *mask;
+ };
+@@ -94,6 +98,8 @@ void flow_rule_match_ip(const struct flow_rule *rule,
+ 			struct flow_match_ip *out);
+ void flow_rule_match_ports(const struct flow_rule *rule,
+ 			   struct flow_match_ports *out);
++void flow_rule_match_ports_range(const struct flow_rule *rule,
++				 struct flow_match_ports_range *out);
+ void flow_rule_match_tcp(const struct flow_rule *rule,
+ 			 struct flow_match_tcp *out);
+ void flow_rule_match_icmp(const struct flow_rule *rule,
+diff --git a/net/core/flow_offload.c b/net/core/flow_offload.c
+index fb11103fa8afc..d8f19f4080f4a 100644
+--- a/net/core/flow_offload.c
++++ b/net/core/flow_offload.c
+@@ -104,6 +104,13 @@ void flow_rule_match_ports(const struct flow_rule *rule,
  }
+ EXPORT_SYMBOL(flow_rule_match_ports);
  
-+static __always_inline bool riscv_cpu_has_extension_likely(int cpu, const unsigned long ext)
++void flow_rule_match_ports_range(const struct flow_rule *rule,
++				 struct flow_match_ports_range *out)
 +{
-+	if (IS_ENABLED(CONFIG_RISCV_ALTERNATIVE) && riscv_has_extension_likely(ext))
-+		return true;
-+
-+	return __riscv_isa_extension_available(hart_isa[cpu].isa, ext);
++	FLOW_DISSECTOR_MATCH(rule, FLOW_DISSECTOR_KEY_PORTS_RANGE, out);
 +}
++EXPORT_SYMBOL(flow_rule_match_ports_range);
 +
-+static __always_inline bool riscv_cpu_has_extension_unlikely(int cpu, const unsigned long ext)
-+{
-+	if (IS_ENABLED(CONFIG_RISCV_ALTERNATIVE) && riscv_has_extension_unlikely(ext))
-+		return true;
-+
-+	return __riscv_isa_extension_available(hart_isa[cpu].isa, ext);
-+}
- #endif
- 
- #endif /* _ASM_RISCV_HWCAP_H */
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index bb5fb2b820a21..a6b6bbf3f8598 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -676,6 +676,12 @@ static int check_unaligned_access_boot_cpu(void)
- 
- arch_initcall(check_unaligned_access_boot_cpu);
- 
-+void riscv_user_isa_enable(void)
-+{
-+	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
-+		csr_set(CSR_SENVCFG, ENVCFG_CBZE);
-+}
-+
- #ifdef CONFIG_RISCV_ALTERNATIVE
- /*
-  * Alternative patch sites consider 48 bits when determining when to patch
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index ff802d100a571..89ff6395dadbc 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -26,6 +26,7 @@
- #include <asm/acpi.h>
- #include <asm/alternative.h>
- #include <asm/cacheflush.h>
-+#include <asm/cpufeature.h>
- #include <asm/cpu_ops.h>
- #include <asm/early_ioremap.h>
- #include <asm/pgtable.h>
-@@ -307,10 +308,13 @@ void __init setup_arch(char **cmdline_p)
- 	riscv_fill_hwcap();
- 	init_rt_signal_env();
- 	apply_boot_alternatives();
-+
- 	if (IS_ENABLED(CONFIG_RISCV_ISA_ZICBOM) &&
- 	    riscv_isa_extension_available(NULL, ZICBOM))
- 		riscv_noncoherent_supported();
- 	riscv_set_dma_cache_alignment();
-+
-+	riscv_user_isa_enable();
- }
- 
- static int __init topology_init(void)
-diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-index 1b8da4e40a4d6..d1b0a6fc3adfc 100644
---- a/arch/riscv/kernel/smpboot.c
-+++ b/arch/riscv/kernel/smpboot.c
-@@ -25,6 +25,8 @@
- #include <linux/of.h>
- #include <linux/sched/task_stack.h>
- #include <linux/sched/mm.h>
-+
-+#include <asm/cpufeature.h>
- #include <asm/cpu_ops.h>
- #include <asm/cpufeature.h>
- #include <asm/irq.h>
-@@ -253,6 +255,8 @@ asmlinkage __visible void smp_callin(void)
- 			elf_hwcap &= ~COMPAT_HWCAP_ISA_V;
- 	}
- 
-+	riscv_user_isa_enable();
-+
- 	/*
- 	 * Remote TLB flushes are ignored while the CPU is offline, so emit
- 	 * a local TLB flush right now just in case.
+ void flow_rule_match_tcp(const struct flow_rule *rule,
+ 			 struct flow_match_tcp *out)
+ {
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 057612c97a372..35842b51a24e2 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -62,13 +62,7 @@ struct fl_flow_key {
+ 	struct flow_dissector_key_ip ip;
+ 	struct flow_dissector_key_ip enc_ip;
+ 	struct flow_dissector_key_enc_opts enc_opts;
+-	union {
+-		struct flow_dissector_key_ports tp;
+-		struct {
+-			struct flow_dissector_key_ports tp_min;
+-			struct flow_dissector_key_ports tp_max;
+-		};
+-	} tp_range;
++	struct flow_dissector_key_ports_range tp_range;
+ 	struct flow_dissector_key_ct ct;
+ 	struct flow_dissector_key_hash hash;
+ } __aligned(BITS_PER_LONG / 8); /* Ensure that we can do comparisons as longs. */
 -- 
 2.39.5
 
