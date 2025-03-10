@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEB6A5A26C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4686FA59F17
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DE4A175403
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 529BF3AAC8F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB31B1C5D6F;
-	Mon, 10 Mar 2025 18:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967481DE89C;
+	Mon, 10 Mar 2025 17:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onXPpVGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgFVMs+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B28374EA;
-	Mon, 10 Mar 2025 18:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53725231A51;
+	Mon, 10 Mar 2025 17:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630801; cv=none; b=B2WvgTRdaOIp0rwQlg70MzVpUHtjIl9jj761wIOMlS7bM77R1eJK+Zh9PeSS9QrmfAv/V42seJtzbo3Jl7TyqnjP0iQBx4+PMD1Y4KiMY+k9gNVuv3dwJB8jqKOmA8SrDpVg3Jlx0nL8xYeMbQ0xxJ3NrUlsm4mUVTOP0CsCYNY=
+	t=1741628121; cv=none; b=qjLMfvj209iIJK2WNVS4NFai2Ndq8xdHdwWBS/8TYPICe31yjgCH9dUfMnZeTH3ixQ4gGJLLzZ7bQ03WvVbbjuUnenIauaaeooz8RVxgGAygnjhKvIBt2TNpOr0vJnSv5H+Mleqep4MxOzw9XNIHiXx2UZ7lm+vMQF+2yBsFLT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630801; c=relaxed/simple;
-	bh=jpdpz44es24qwxAO7fbqpejqdFzkjwpwPNEfliwDMm4=;
+	s=arc-20240116; t=1741628121; c=relaxed/simple;
+	bh=H91Eu9/JbA0+d+FMpzSpsWbiZH9twQH+BcW8JKrzOdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i4SCesvSReYaY1pUcN/br2WVcy59x6mmHfZDf+VrFQXuakh1LqsVB/VpbguH2l7d649TYiZniM7BwkKkszX1NKkW+hdE4cDUQIGg0kOaOUQ7CbCvJH/3WQvUO8bjbqzoWv93bPc1pnscqjtVk+AlML4uANB/D34bfl6uX5p4AXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onXPpVGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E74C4CEE5;
-	Mon, 10 Mar 2025 18:20:00 +0000 (UTC)
+	 MIME-Version; b=JZw0P1vkd7Z2hL2WK/QZ5fqtOyzFLrSdiQtY/zqspR+4mN1+1th8EDk/Mtt9C9/VxuUT2K5XAiycZL9hO1VqpPcnNw41uuGS9Pr77Jd1PyGuBqdT2L1Ti9HM39/BnMYCkFQKC8jqAA9p05OQ59zgB8su4UAqtKQsRvOV0iduY9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgFVMs+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC00CC4CEE5;
+	Mon, 10 Mar 2025 17:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630801;
-	bh=jpdpz44es24qwxAO7fbqpejqdFzkjwpwPNEfliwDMm4=;
+	s=korg; t=1741628121;
+	bh=H91Eu9/JbA0+d+FMpzSpsWbiZH9twQH+BcW8JKrzOdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onXPpVGuVag9RzjJm6LG8/ZaseWggHCA5hqoUpoGt98sos/pTk8q6yOyqfuF7pM10
-	 oMCVZoj09RU4O2kO/xvBkpoe4WEYDdpPGJH1S4KJuLcSDYdsrWWLQ/B+KpZJTztwkR
-	 T5Q0wABZRl2X26f2WAh5blNJ5BfHpuDG5YUDBBQ0=
+	b=DgFVMs+PmHAWuYtM/G111nt8nhJba/J9hRlxANM58Y8KAWPlwZkX034HpkSD7inc5
+	 F3E9nKyQSeqXsuTQ4KP+Vwjq6EIOiU7IPT3x5Zr1QTzMvB9lN0dsS34uk2cEIaO51E
+	 7o2JIZ/FRHy/WgWa3oT/eOES5yHa0hp7bkl7rn0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Yang <804284660@qq.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 540/620] platform/x86: thinkpad_acpi: Add battery quirk for ThinkPad X131e
-Date: Mon, 10 Mar 2025 18:06:26 +0100
-Message-ID: <20250310170606.864066405@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.6 093/145] usb: renesas_usbhs: Call clk_put()
+Date: Mon, 10 Mar 2025 18:06:27 +0100
+Message-ID: <20250310170438.510696462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit d0d10eaedcb53740883d7e5d53c5e15c879b48fb upstream.
+commit b5ea08aa883da05106fcc683d12489a4292d1122 upstream.
 
-Based on the dmesg messages from the original reporter:
+Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
+clk_put() on priv->clks[0] on error path.
 
-[    4.964073] ACPI: \_SB_.PCI0.LPCB.EC__.HKEY: BCTG evaluated but flagged as error
-[    4.964083] thinkpad_acpi: Error probing battery 2
-
-Lenovo ThinkPad X131e also needs this battery quirk.
-
-Reported-by: Fan Yang <804284660@qq.com>
-Tested-by: Fan Yang <804284660@qq.com>
-Co-developed-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250221164825.77315-1-jeffbai@aosc.io
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/renesas_usbhs/common.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -9766,6 +9766,7 @@ static const struct tpacpi_quirk battery
- 	 * Individual addressing is broken on models that expose the
- 	 * primary battery as BAT1.
- 	 */
-+	TPACPI_Q_LNV('G', '8', true),       /* ThinkPad X131e */
- 	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
- 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
- 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device
+ 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
+ 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
+ 		priv->clks[1] = NULL;
+-	else if (IS_ERR(priv->clks[1]))
++	else if (IS_ERR(priv->clks[1])) {
++		clk_put(priv->clks[0]);
+ 		return PTR_ERR(priv->clks[1]);
++	}
+ 
+ 	return 0;
+ }
 
 
 
