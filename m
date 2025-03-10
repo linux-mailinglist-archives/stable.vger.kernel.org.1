@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-121794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC006A59C50
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0AEA59D9F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3323188B6E4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B8E63A6F85
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF66233145;
-	Mon, 10 Mar 2025 17:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E3F22D799;
+	Mon, 10 Mar 2025 17:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7/8BXC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mabeAsZ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD86231A3F;
-	Mon, 10 Mar 2025 17:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821BF1B3927;
+	Mon, 10 Mar 2025 17:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626648; cv=none; b=DIGmULN+2sfLXDqKzDafjzRsONuLrL/wRZKna4KB6VyWiNBDfR+2Y5zU4z+wBhIKce5/qlWGqhVpt1vzL88/dh6jGzFqb1GD6kifBWuPvbHuJiYhNlu/3aWssY95FJSVVIuCqUA1wGTzcwSGNnM0vcUGjBTAuQSMJwnDC36v4Z0=
+	t=1741627367; cv=none; b=LVdoUDeQWFqvcZU3SPMYAqHqAgB4o33539BSVgoUdmdyWutZ6SnF+A74dllFYqKGpNEuzfpF/yPwbhPx3TLKqlPXXq/zUz2FB5NJw7x9503ysW70rgKxWdjI/WXc38LXYUodvXW33K9ORo/1eWDUasAhngww4ocdbWsA4AXb8nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626648; c=relaxed/simple;
-	bh=hGZs9yY4I/5KCRq7flYvLT8K69CYKirLwecGoaIZhKk=;
+	s=arc-20240116; t=1741627367; c=relaxed/simple;
+	bh=gRNpEvdXjkAcf/HeEkFQMmQkcwKSZdEXb8AN50Wsj8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlSg2TRqfX62e4a63iXnZVTY7kYqbW9pGLIhEvxMguODMfrpLDpbKPRAZzLpyIcYBuv8y59D1nomXRxXyNfcGc8a15obY7R9Dt9LFLEcpu04miEnm2UZ9EThXiT/PV8HmWfzJtS3IsKTWf9yzQA7XzuNSD3+Kyg8gpZhMcrETuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7/8BXC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4872C4CEE5;
-	Mon, 10 Mar 2025 17:10:47 +0000 (UTC)
+	 MIME-Version; b=rruNpxvdvfSL8/EvrKPzCv0fo1bdPRvFu2brVrdfXNiYVvxP2jCTzYV6OYPcurQPBk3xbdvke/6jjnrsqFDiQQohQonSCmgC9e+tWRwsQPsaVo5LPexmEv5E6N5W/0HcGhLSwM0fEBlu50HlTBSUWFdaTm3uVBM9T33rE0LQ8EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mabeAsZ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1AEC4CEE5;
+	Mon, 10 Mar 2025 17:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626648;
-	bh=hGZs9yY4I/5KCRq7flYvLT8K69CYKirLwecGoaIZhKk=;
+	s=korg; t=1741627367;
+	bh=gRNpEvdXjkAcf/HeEkFQMmQkcwKSZdEXb8AN50Wsj8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7/8BXC8MPAOvlx/uYF7u3f13LqKnL2wCe8h1CgZnydWvUccf7mNBHjQngC7PE1x6
-	 PDg1oPVwbh4RiC5lPigtezAEwVPEVku2v7KjqPQuuDwEyOXqQcVPo/fOLlTbJ45b+c
-	 2xfkIAAtRicTtxKXpItfjGwHUZ7iZLofJxkADC7w=
+	b=mabeAsZ0PMtnSnZswN2iabdX/17xg7xOban67vEAm5SOrEOHsNdLc4hJswBc0uVUn
+	 NS699+WhT5oXlGq+cfQzVSHTFS7a2HwlGpMcQMa6pjHw+gDKy1N8whCPOD0Buet4zO
+	 Wl9qxtTwzZvDkt7Yavwq+0cH9iU9ZTspG9vbvQqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 064/207] selftests/damon/damon_nr_regions: set ops update for merge results check to 100ms
-Date: Mon, 10 Mar 2025 18:04:17 +0100
-Message-ID: <20250310170450.312885482@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.12 105/269] x86/boot: Sanitize boot params before parsing command line
+Date: Mon, 10 Mar 2025 18:04:18 +0100
+Message-ID: <20250310170501.896831257@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 695469c07a65547acb6e229b3fdf6aaa881817e3 upstream.
+commit c00b413a96261faef4ce22329153c6abd4acef25 upstream.
 
-damon_nr_regions.py updates max_nr_regions to a number smaller than
-expected number of real regions and confirms DAMON respect the harsh
-limit.  To give time for DAMON to make changes for the regions, 3
-aggregation intervals (300 milliseconds) are given.
+The 5-level paging code parses the command line to look for the 'no5lvl'
+string, and does so very early, before sanitize_boot_params() has been
+called and has been given the opportunity to wipe bogus data from the
+fields in boot_params that are not covered by struct setup_header, and
+are therefore supposed to be initialized to zero by the bootloader.
 
-The internal mechanism works with not only the max_nr_regions, but also
-sz_limit, though.  It avoids merging region if that casn make region of
-size larger than sz_limit.  In the test, sz_limit is set too small to
-achive the new max_nr_regions, unless it is updated for the new
-min_nr_regions.  But the update is done only once per operations set
-update interval, which is one second by default.
+This triggers an early boot crash when using syslinux-efi to boot a
+recent kernel built with CONFIG_X86_5LEVEL=y and CONFIG_EFI_STUB=n, as
+the 0xff padding that now fills the unused PE/COFF header is copied into
+boot_params by the bootloader, and interpreted as the top half of the
+command line pointer.
 
-Hence, the test randomly incurs false positive failures.  Fix it by
-setting the ops interval same to aggregation interval, to make sure
-sz_limit is updated by the time of the check.
+Fix this by sanitizing the boot_params before use. Note that there is no
+harm in calling this more than once; subsequent invocations are able to
+spot that the boot_params have already been cleaned up.
 
-Link: https://lkml.kernel.org/r/20250225222333.505646-3-sj@kernel.org
-Fixes: 8bf890c81612 ("selftests/damon/damon_nr_regions: test online-tuned max_nr_regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Link: https://lore.kernel.org/r/20250306155915.342465-2-ardb+git@google.com
+Closes: https://lore.kernel.org/all/202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/damon/damon_nr_regions.py |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/boot/compressed/pgtable_64.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/damon/damon_nr_regions.py
-+++ b/tools/testing/selftests/damon/damon_nr_regions.py
-@@ -109,6 +109,7 @@ def main():
-     attrs = kdamonds.kdamonds[0].contexts[0].monitoring_attrs
-     attrs.min_nr_regions = 3
-     attrs.max_nr_regions = 7
-+    attrs.update_us = 100000
-     err = kdamonds.kdamonds[0].commit()
-     if err is not None:
-         proc.terminate()
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "misc.h"
+ #include <asm/bootparam.h>
++#include <asm/bootparam_utils.h>
+ #include <asm/e820/types.h>
+ #include <asm/processor.h>
+ #include "pgtable.h"
+@@ -107,6 +108,7 @@ asmlinkage void configure_5level_paging(
+ 	bool l5_required = false;
+ 
+ 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
++	sanitize_boot_params(bp);
+ 	boot_params_ptr = bp;
+ 
+ 	/*
 
 
 
