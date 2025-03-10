@@ -1,129 +1,113 @@
-Return-Path: <stable+bounces-121667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BDBA58D7E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 09:01:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD1AA58E83
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 09:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2897B164DC2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 08:01:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10B17188D0FC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 08:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDD1221F37;
-	Mon, 10 Mar 2025 08:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="rkXbZsPW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ARDupAQp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D843C224247;
+	Mon, 10 Mar 2025 08:47:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1975215F76;
-	Mon, 10 Mar 2025 08:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301B3221F13;
+	Mon, 10 Mar 2025 08:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741593673; cv=none; b=ebm2ZqrWYUwWIcqWWaTaVqDO4Qry4HObf3KGedGbXwxAHaszzzFaflDudH4pyx6qWymMZLJcrik8dnO8L2zc/uJmJ/GwARJ+en2jmdMyybRVlBnTxP9J4DVP+QZ7a0ZN80zBI4DrsNguAAJ5lq+2DvhV9F0AHZd4JNt5tusvCnA=
+	t=1741596434; cv=none; b=b57tcbFzbr/9kQSe6/ToNz+NskRBkvtqfgf8DcNswfBOc9LvLsFEeLHKFTdOrS9M1yBKBLOZgzgh49mUJJF49RI/5qooRc+CVhp+pj4k9l13SXscodwS2RHs8SNwiYloHEvCzeE9RhvqQ6pSHVXrIBBss0OEXr2Lb9xgi8PC13E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741593673; c=relaxed/simple;
-	bh=uzu2zPnx18GsAtkAlqoE5750Hm8jxpUihyCgbZ9mNSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n5bZr3EgEvRGsFHR7M6ZwfKKJBC6BCl4224qGmBU2qGTtUlKvW6UFOIiAxwYLMf3wffy9vVwWYmFArXaGG2bBbllqDCqkVZPdtGcn2dVh6fP/BVQtK+mkhCR68vHhGYvK/e++kL6NLzGA2JoNIgOYs/KOmTuvZP6J1E4e7pCsYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=rkXbZsPW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ARDupAQp; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A99CE254014C;
-	Mon, 10 Mar 2025 04:01:07 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Mon, 10 Mar 2025 04:01:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1741593667; x=1741680067; bh=Vlk1i88H5d
-	NBj9iBB3fmrWC5ZhgsWyEe7GBoEvn2KXI=; b=rkXbZsPWWo4So1ZBX5BFn/YuI3
-	dgVVteedxY1agter1d4uEpmSQokvh8Dc4yvDrUAdWH0xZAtgiNGmmLIaN4GXTFSU
-	DQQMNGGSsq3Jr+b+U1Q5BvHrh/4hcvDUFIGwp4aqYLXV+SL+dlP/wAjG2oD6k+BG
-	Bwn3t9wp7ZIVMZkgN1caYmHkEftNkxPlme2jI0jNtGf2EZWczdlDptf0lixmtG8z
-	jE5WG+MkqzGFg+1QzzMl6CbzOnoDy6jdLNyrZ0Kx0EIqT/tCRtxCxDUtjGV9p0Hz
-	ipy0o2Ely3XJ5EM3f4P4RKLO9e18q5ijF/5Uly72zMAYEDLTNaOvmHXa1sPw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1741593667; x=1741680067; bh=Vlk1i88H5dNBj9iBB3fmrWC5ZhgsWyEe7GB
-	oEvn2KXI=; b=ARDupAQpzxiPYlOJmAkeWDE3f8Vv6t8rMncgJvOr9Ta4injKK/C
-	BywE3KbBVcyU843mt6DlkF9Q3H2v3BfF7RIO+EhAcyR7rD4qLueb9Qf7lmBaeBeI
-	73sd5GMyPcU1AP8ABmKj1p+kTTiJPDiFvFgWtteYZ36poAbrxvh8JlQyakrOnNZZ
-	Iz1MH5FnOkubE21PtQqgzwOtYHWLcLT7X6MtKPyjUnRw+YT613syM5qIBsKxrR8Y
-	ljLor2rYTrUhJ/7YqiXIahkC+pS5XQz7GCC/SGnkOBWMjLeNdeERbbMeKNgvmss3
-	0pbXT57nvYakj5IsvEo9j/WlZDQFyQxc31Q==
-X-ME-Sender: <xms:QpzOZwYPNuE38lT2kQcAj2NVv2GKQGxucnpVtav31YP8Hs9P5rbqjA>
-    <xme:QpzOZ7blAcsjOXz2JND7FNJtBRct8iINTljXWlDIS3r3Prl1mNTyrZRXSplOV-_t0
-    E5yC6M_qiZ8lQ>
-X-ME-Received: <xmr:QpzOZ6-qWLMsU8DU4YXUCls5tFHV9uSpnO5iXSjLOT-JCDSI0Sueb4iU0grbBvBvH_PpTkzD9eibbb1lbIRVMk_i_W0Y1A1vEwvzXw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudekkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecugg
-    ftrfgrthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeu
-    fefhgfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtohepshhtrggslhgvqdgtohhmmhhithhssehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhvrdhlihhnuhigrdhorhhg
-    rdhukh
-X-ME-Proxy: <xmx:QpzOZ6pSUWbPOouMB12XFmaEPivHFsCLcWwD9jYpaoXj28PNv4YoVQ>
-    <xmx:QpzOZ7qy4H3Xj0i-DCuFHlo5qnpnKHcsgHs5crUgA-SWavVTtnSDtA>
-    <xmx:QpzOZ4TRnQluvs1gh-U1u26EJFzMiNQcbQwjM3nSlF4WkI3M2sqizQ>
-    <xmx:QpzOZ7pevPIGdT8BhSvQThDi8rpThWELalQKMNySJDKzvx5X6141nw>
-    <xmx:Q5zOZ_ec02k3G6mWuSE9CdAX2SgXWckwtymkIiaQiELkFQWac-JYZ1vO>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Mar 2025 04:01:05 -0400 (EDT)
-Date: Mon, 10 Mar 2025 09:00:59 +0100
-From: Greg KH <greg@kroah.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: Re: Patch "fs/pipe: Read pipe->{head,tail} atomically outside
- pipe->mutex" has been added to the 5.10-stable tree
-Message-ID: <2025031039-arbitrate-manned-f66a@gregkh>
-References: <20250309195202.4675-1-sashal@kernel.org>
- <CAHk-=wgsHsVjOnETsRtY8ELEi1G1_0uLMYq2Fv9auhRfR5uJvg@mail.gmail.com>
+	s=arc-20240116; t=1741596434; c=relaxed/simple;
+	bh=7eYxJiXXyvsA4PJuVaPR8SWKzbE9Klceg0t0r2NLctQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ee6mnsyPROgYEsQmimM2as9a45cmDO44THkEBIT+Ll9UyCIA3M2JlfDe2kxua8SBMlTnMaHzop9fSfjtvuFnfE2QRueN9xynSwtXeDs6/34fO9cOA8RALzg3Q4A24BJBD6roy8UtToz+wZpCJO2IeNvdhfb9pB8fA/RGAwBJ8CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cebe06e9eso7681155e9.3;
+        Mon, 10 Mar 2025 01:47:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741596431; x=1742201231;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+KtY77mY4u59FBf462AarhG9KG7rTrsBhUE1IoAfDc0=;
+        b=cr5Q6GLnho2+SlxvckGVxYy6SxVwKXXvrqfUtYX5akAD+ZMo+geVB43gxyevoA4jmg
+         IC9/KtGYtBMYFCJ1Zq9nJYC0yBOyPWmTTpu92ZwwW0R/qbEMvmKrVgHfgjzuXJo8hpB9
+         A9mIaDrIvTL9d/l7qJ1lcaapo5SIuqdcKi5hszU9SJOTdx2u4GOJs9cZyOQj6aaQZOaN
+         WCFNqv1AM5A9V8Su7OGlCOtk1dmMhbKoMwnW5Z5sX1DXSo4DyArpquz9u+1ulkmKQLd7
+         4VjNR6XJoE0rIlGGDngfnS1Y2Gi4wlrW2Rzdzl66vJI474OIdfJ+5xWZOJKOnLJCch2G
+         +Xgw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbORXq9M9CIcmD0ybgoeCcXcYBXq3q666zSQDzN+Kw4+UrT0Ws8xao7gUb4j96c9Dw8ertsYs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVauTn4xfgBoPPHYtQHNRQ6AlcklIzM5cWyyTzt6U6Ffe3ug8a
+	0TBrZ2CzcDLvT0t3HqQjKie8TSbZTPqS9sSKVHROFPCCWRVc3yOu
+X-Gm-Gg: ASbGnctckEnoI9kiyh83ceEyI32xtEnGL/pAl2mm+qfP2V/9Ce20Aj+pcZggpct3EZZ
+	l0cBulp+zan9MXM+RNiO12kahGOFYBA2l171KuvoHSn4uzY+ldOEJc86wB2OOvaYh+9Lqg6lPac
+	+FRC5J1vEgCi6n5MflsMdZiBqSNp16gn09Ux85vwkDiHeUKd2cJ089FSJO+smJeAGnFhNKihoiG
+	huQ1fpVC/SOLEluwCZ/dtnzbVWB68I9PG7XuEHjSRyKLMCdpuNs8qxC1TQw7qkHz3Cu9X9nBsOr
+	ceUbmwn0vyZQ6BPf11yQBAX6y5TEXU1XSmf1VJvgWCcKihyypGnctru10fDBqlkHKs3TJI1lpMb
+	U1NkQ0V76BOcLrcGI2SiYqZompX76Y8RLIq1ihw==
+X-Google-Smtp-Source: AGHT+IGLA3YDys0mrOMYJGrn/b+QddIi0nCx7Fb8mHhlLaz+GWXXXaiAbYgc13p1mplmr2Cyg3HGtg==
+X-Received: by 2002:a05:600c:1c8f:b0:43c:fae1:5151 with SMTP id 5b1f17b1804b1-43cfae151f4mr7605275e9.25.1741596431097;
+        Mon, 10 Mar 2025 01:47:11 -0700 (PDT)
+Received: from nuc.fritz.box (p200300f6f7433100fa633ffffe02074c.dip0.t-ipconnect.de. [2003:f6:f743:3100:fa63:3fff:fe02:74c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ce70d13b4sm77093465e9.38.2025.03.10.01.47.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 01:47:10 -0700 (PDT)
+From: Johannes Thumshirn <jth@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org,
+	Johannes Thumshirn <jth@kernel.org>
+Subject: [PATCH 1/1] mcb: fix a double free bug in chameleon_parse_gdd()
+Date: Mon, 10 Mar 2025 09:46:57 +0100
+Message-ID: <6201d09e2975ae5789879f79a6de4c38de9edd4a.1741596225.git.jth@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1741596225.git.jth@kernel.org>
+References: <cover.1741596225.git.jth@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgsHsVjOnETsRtY8ELEi1G1_0uLMYq2Fv9auhRfR5uJvg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Mar 09, 2025 at 10:05:24AM -1000, Linus Torvalds wrote:
-> Note that this was a real fix, but the fix only matters if commit
-> aaec5a95d596 ("pipe_read: don't wake up the writer if the pipe is
-> still full") is in the tree.
-> 
-> Now, the bug was pre-existing, and *maybe* it could be hit without
-> that commit aaec5a95d596, but nobody has ever reported it, so it's
-> very very unlikely.
-> 
-> Also, this fix then had some fall-out, and while I think you've queued
-> all the fallout fixes too, I think it might be a good idea to wait for
-> more reports from the development tree before considering these for
-> stable.
-> 
-> Put another way: this fix caused some pain. It might not be worth
-> back-porting to stable at all, and if it is, it might be worth waiting
-> to see that there's no other fallout.
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-Thanks for letting us know, I've dropped these and the other "fixups"
-for the pipe patch from all stable queues now.
+In chameleon_parse_gdd(), if mcb_device_register() fails, 'mdev'
+would be released in mcb_device_register() via put_device().
+Thus, goto 'err' label and free 'mdev' again causes a double free.
+Just return if mcb_device_register() fails.
 
-greg k-h
+Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+---
+ drivers/mcb/mcb-parse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mcb/mcb-parse.c b/drivers/mcb/mcb-parse.c
+index 02a680c73979..bf0d7d58c8b0 100644
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -96,7 +96,7 @@ static int chameleon_parse_gdd(struct mcb_bus *bus,
+ 
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+-		goto err;
++		return ret;
+ 
+ 	return 0;
+ 
+-- 
+2.43.0
+
 
