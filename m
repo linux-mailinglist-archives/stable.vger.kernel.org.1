@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-122375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DA1A59F52
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A51AA5A252
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C839A16E22B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A24CE188BC10
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3F12327A3;
-	Mon, 10 Mar 2025 17:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB8122FF40;
+	Mon, 10 Mar 2025 18:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP1bexli"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hl9ye7xw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4052309A6;
-	Mon, 10 Mar 2025 17:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0681BBBFD;
+	Mon, 10 Mar 2025 18:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628312; cv=none; b=r22eAgRtdTHzzDwWu5PM5NdDwb3cSqkw8YxewHLdKTy2XFCBagei/OogWrBRDTkGwtoLTOpo0KMys/FTleUpfPRb+rFnDukINkLyFdoEZyM6X02Q/YAFDUaz7oO6EVxpFhhIJgOrIJZyYoreROWiFooz+zNnUQf580bw/da5sQ0=
+	t=1741630728; cv=none; b=CnpSi2II/UgZvYWeCIW3aSbJgRLWOnpSbUm46UyP96lICAOEuLW4d3SVvfeIQPFtwPHh3UXqqLphCgE3o+zI6ttcKfumABx2/iHIcttJ36kZhLYpDMYKnTcTTSM/J/BcAWC1gv/wSRLvxM6NMZAVSnW0XB6Hovxv7Qjq7dWciRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628312; c=relaxed/simple;
-	bh=0VzJWoiJ9xvPxdbC1s5kYKo1lCJU4FtjQmM6e/aQABI=;
+	s=arc-20240116; t=1741630728; c=relaxed/simple;
+	bh=2wPI4jV5H8MhbHbbHylCqvAW4qVcUO/9W7CHwohYDFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJq+qYqkVZhGmvPM4y9rC9WRQcLJo5cZ93sMsJt2uxITbWPifdIW9ghesZEGQc0zpWRb5KBilcrj7OG2YRLLeUCpZW+x4zfb5quqoaNrdFb4DpGy/UyYo7KxQtFKt7Wns+zIA8qIUJ4Fsl6OYdnynVNSgf8368SZkG00BNZh3F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP1bexli; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6DAC4CEE5;
-	Mon, 10 Mar 2025 17:38:31 +0000 (UTC)
+	 MIME-Version; b=e1jxTEoCaC8C705pPWkfgIqoOpWBlzwo0aXycRuab3z2KZimmzp1/T3BK3n207shGj0X6hiyAhyOTz8ic199/N++Y27ZOy4X24IwTX3SO/Fg5MQJzqofnb/+q25grWkJHraSYDyeCFvkRTKdop9v5/jnMA84rJJr35Zv8Cx0mwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hl9ye7xw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5499CC4CEE5;
+	Mon, 10 Mar 2025 18:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628311;
-	bh=0VzJWoiJ9xvPxdbC1s5kYKo1lCJU4FtjQmM6e/aQABI=;
+	s=korg; t=1741630728;
+	bh=2wPI4jV5H8MhbHbbHylCqvAW4qVcUO/9W7CHwohYDFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aP1bexlimmj0D291oqWXFxIX43cAN05MoyTObmW0WmWiwzLZPUklfZukeRP3GBXdL
-	 IIM9+7XfKfoOHrBt9v0R7UAHrRm3rdurmU6b6Yr+ecJcL7SmQbEGubr7WMx7dYyME+
-	 zbzyPuQ8Xikzo+b/XqT+nLYmCZUSlgYCWZhmcNec=
+	b=hl9ye7xwL/D63kpjy2Xy5Hjq5XMTljc4ntV/H+Herwv2hCTavvuFvO105fFSSvhnA
+	 1Mti5W5B8pPZSHn846GrZ3Br2EUQmQT1I9upevRTXFLJI7u/B466jMggh9K0ESWe77
+	 zVxZXQrRoTSrgr/5SEPCpB3Sawo3bufdEEEl3mno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.1 015/109] gpio: aggregator: protect driver attr handlers against module unload
-Date: Mon, 10 Mar 2025 18:05:59 +0100
-Message-ID: <20250310170428.157502566@linuxfoundation.org>
+	Wen Yang <wenyang@linux.alibaba.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 514/620] ftrace: Avoid potential division by zero in function_stat_show()
+Date: Mon, 10 Mar 2025 18:06:00 +0100
+Message-ID: <20250310170605.847424421@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,137 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit 12f65d1203507f7db3ba59930fe29a3b8eee9945 upstream.
+commit a1a7eb89ca0b89dc1c326eeee2596f263291aca3 upstream.
 
-Both new_device_store and delete_device_store touch module global
-resources (e.g. gpio_aggregator_lock). To prevent race conditions with
-module unload, a reference needs to be held.
+Check whether denominator expression x * (x - 1) * 1000 mod {2^32, 2^64}
+produce zero and skip stddev computation in that case.
 
-Add try_module_get() in these handlers.
+For now don't care about rec->counter * rec->counter overflow because
+rec->time * rec->time overflow will likely happen earlier.
 
-For new_device_store, this eliminates what appears to be the most dangerous
-scenario: if an id is allocated from gpio_aggregator_idr but
-platform_device_register has not yet been called or completed, a concurrent
-module unload could fail to unregister/delete the device, leaving behind a
-dangling platform device/GPIO forwarder. This can result in various issues.
-The following simple reproducer demonstrates these problems:
-
-  #!/bin/bash
-  while :; do
-    # note: whether 'gpiochip0 0' exists or not does not matter.
-    echo 'gpiochip0 0' > /sys/bus/platform/drivers/gpio-aggregator/new_device
-  done &
-  while :; do
-    modprobe gpio-aggregator
-    modprobe -r gpio-aggregator
-  done &
-  wait
-
-  Starting with the following warning, several kinds of warnings will appear
-  and the system may become unstable:
-
-  ------------[ cut here ]------------
-  list_del corruption, ffff888103e2e980->next is LIST_POISON1 (dead000000000100)
-  WARNING: CPU: 1 PID: 1327 at lib/list_debug.c:56 __list_del_entry_valid_or_report+0xa3/0x120
-  [...]
-  RIP: 0010:__list_del_entry_valid_or_report+0xa3/0x120
-  [...]
-  Call Trace:
-   <TASK>
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   ? __warn.cold+0x93/0xf2
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   ? report_bug+0xe6/0x170
-   ? __irq_work_queue_local+0x39/0xe0
-   ? handle_bug+0x58/0x90
-   ? exc_invalid_op+0x13/0x60
-   ? asm_exc_invalid_op+0x16/0x20
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   gpiod_remove_lookup_table+0x22/0x60
-   new_device_store+0x315/0x350 [gpio_aggregator]
-   kernfs_fop_write_iter+0x137/0x1f0
-   vfs_write+0x262/0x430
-   ksys_write+0x60/0xd0
-   do_syscall_64+0x6c/0x180
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   [...]
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-Fixes: 828546e24280 ("gpio: Add GPIO Aggregator")
 Cc: stable@vger.kernel.org
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Link: https://lore.kernel.org/r/20250224143134.3024598-2-koichiro.den@canonical.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: Wen Yang <wenyang@linux.alibaba.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250206090156.1561783-1-kniv@yandex-team.ru
+Fixes: e31f7939c1c27 ("ftrace: Avoid potential division by zero in function profiler")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-aggregator.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ kernel/trace/ftrace.c |   27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
---- a/drivers/gpio/gpio-aggregator.c
-+++ b/drivers/gpio/gpio-aggregator.c
-@@ -116,10 +116,15 @@ static ssize_t new_device_store(struct d
- 	struct platform_device *pdev;
- 	int res, id;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -510,6 +510,7 @@ static int function_stat_show(struct seq
+ 	static struct trace_seq s;
+ 	unsigned long long avg;
+ 	unsigned long long stddev;
++	unsigned long long stddev_denom;
+ #endif
+ 	mutex_lock(&ftrace_profile_lock);
  
-+	if (!try_module_get(THIS_MODULE))
-+		return -ENOENT;
-+
- 	/* kernfs guarantees string termination, so count + 1 is safe */
- 	aggr = kzalloc(sizeof(*aggr) + count + 1, GFP_KERNEL);
--	if (!aggr)
--		return -ENOMEM;
-+	if (!aggr) {
-+		res = -ENOMEM;
-+		goto put_module;
-+	}
+@@ -531,23 +532,19 @@ static int function_stat_show(struct seq
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ 	seq_puts(m, "    ");
  
- 	memcpy(aggr->args, buf, count + 1);
- 
-@@ -158,6 +163,7 @@ static ssize_t new_device_store(struct d
+-	/* Sample standard deviation (s^2) */
+-	if (rec->counter <= 1)
+-		stddev = 0;
+-	else {
+-		/*
+-		 * Apply Welford's method:
+-		 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
+-		 */
++	/*
++	 * Variance formula:
++	 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
++	 * Maybe Welford's method is better here?
++	 * Divide only by 1000 for ns^2 -> us^2 conversion.
++	 * trace_print_graph_duration will divide by 1000 again.
++	 */
++	stddev = 0;
++	stddev_denom = rec->counter * (rec->counter - 1) * 1000;
++	if (stddev_denom) {
+ 		stddev = rec->counter * rec->time_squared -
+ 			 rec->time * rec->time;
+-
+-		/*
+-		 * Divide only 1000 for ns^2 -> us^2 conversion.
+-		 * trace_print_graph_duration will divide 1000 again.
+-		 */
+-		stddev = div64_ul(stddev,
+-				  rec->counter * (rec->counter - 1) * 1000);
++		stddev = div64_ul(stddev, stddev_denom);
  	}
  
- 	aggr->pdev = pdev;
-+	module_put(THIS_MODULE);
- 	return count;
- 
- remove_table:
-@@ -172,6 +178,8 @@ free_table:
- 	kfree(aggr->lookups);
- free_ga:
- 	kfree(aggr);
-+put_module:
-+	module_put(THIS_MODULE);
- 	return res;
- }
- 
-@@ -200,13 +208,19 @@ static ssize_t delete_device_store(struc
- 	if (error)
- 		return error;
- 
-+	if (!try_module_get(THIS_MODULE))
-+		return -ENOENT;
-+
- 	mutex_lock(&gpio_aggregator_lock);
- 	aggr = idr_remove(&gpio_aggregator_idr, id);
- 	mutex_unlock(&gpio_aggregator_lock);
--	if (!aggr)
-+	if (!aggr) {
-+		module_put(THIS_MODULE);
- 		return -ENOENT;
-+	}
- 
- 	gpio_aggregator_free(aggr);
-+	module_put(THIS_MODULE);
- 	return count;
- }
- static DRIVER_ATTR_WO(delete_device);
+ 	trace_seq_init(&s);
 
 
 
