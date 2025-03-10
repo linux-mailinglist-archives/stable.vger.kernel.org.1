@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-122822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E9BA5A15B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8F0A59C2E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF5BE16D7AF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FAC16DD31
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB78B230BF9;
-	Mon, 10 Mar 2025 17:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C99923371E;
+	Mon, 10 Mar 2025 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDTho9ar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4fJYf27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AAE22ACDC;
-	Mon, 10 Mar 2025 17:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFA1233714;
+	Mon, 10 Mar 2025 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629597; cv=none; b=iZ4/n5Y93xQSpcxi8GllW7t8VkumzM9bW3QNYlxymdB/mL8sTJqujpN/6DIBcRm2DgBaWalmmBFWUcG7WquNXmgIkmTsSKk9bO1B60bMTWLATre/Z2rlhjfPqp9EqmUadHZez9bqQHKBoLuzpA7/fvuYQPb2REOif8pu+SlQkm8=
+	t=1741626584; cv=none; b=jm08ezJkp65HJak7p60czN97m/+ZS1JQI6RSAuXJluVSvo+48XtEkK/wQEjh1QsfTahm+7cEd/aL9G/gOtQqqOcwV2WfERwh/EcA2SX62zLwofGSmQWnTo0eXLVRlE49XvuGXlLKkxYd8kULNc/FSsUHpNcu9Cb3r+faWPw8lT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629597; c=relaxed/simple;
-	bh=kHMHq7pkOAHgruKB+/u1gSNuOByOzsWTkhzUIGBRXXU=;
+	s=arc-20240116; t=1741626584; c=relaxed/simple;
+	bh=KNL5oaUqacsuUaiNRG2cIfM/OROJoCPN38v4y2d6OaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ja2Sd1kMsENfSRhs4V/1wRxVnRo8OH8TmOiDKO2eBcUo6dUW6uJnLJUlqZMGdEbN6HFAdyMBogwb8Wq0Kyti1914ekIoGNtjiZXBPkqKSxkS9e8ioAfwI11GaFGKExH80VEn6mKlkX5MTbkSEjbmMOfaulLJJYt8pwoVQYxwglo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDTho9ar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23695C4CEE5;
-	Mon, 10 Mar 2025 17:59:56 +0000 (UTC)
+	 MIME-Version; b=pgFpsKR+sZoqMOeAm3uMWDXyLYjIjDi1CNFRcLobyGhaUU/m9NPsYiqss1kE0cYgGqFgCPGWU31t2bS/J1KdPJAB+4hQu7rQH8lJz+071pdCZ4u4J5XbrXH1xHLZxS8gLXPStWcl1TMT5Oeo+tgZyPoS7ug/qhojxKWGNiLj5h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4fJYf27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53076C4CEEB;
+	Mon, 10 Mar 2025 17:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629597;
-	bh=kHMHq7pkOAHgruKB+/u1gSNuOByOzsWTkhzUIGBRXXU=;
+	s=korg; t=1741626584;
+	bh=KNL5oaUqacsuUaiNRG2cIfM/OROJoCPN38v4y2d6OaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDTho9arMr2apTgf0WjBS4k5bZYQ6ikmg7CDqUYN8nYAjVKd/KOo5CRULQ7eXjb21
-	 vWDm48zxgYiQGDIE27Wm/k2GeKYsD8xblU0Vx/WLeRK/9YX+ZI9/frGUM2k1yNQpQl
-	 qNQ9HRAr4jredggdDy+WBJm6U8LO9ELLpdm2bT28=
+	b=h4fJYf27rJ/q5pycWDA6FweRa20l0tftOXi2wRNC4Hn1AsdxQklYkrNND6XE5M9bh
+	 QDVe53bQUGDcsnHyi9rCJoX4Ip2aw5m2SNbztfvxJHZzQYTQVfaosaqXXDOf3mCawQ
+	 M9tAIDtu2DpP9orHhiHZE2k+5Z34UfxpIkjSLWw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 348/620] media: cxd2841er: fix 64-bit division on gcc-9
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.13 001/207] x86/amd_nb: Use rdmsr_safe() in amd_get_mmconfig_range()
 Date: Mon, 10 Mar 2025 18:03:14 +0100
-Message-ID: <20250310170559.347656088@linuxfoundation.org>
+Message-ID: <20250310170447.800398540@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit 8d46603eeeb4c6abff1d2e49f2a6ae289dac765e ]
+commit 14cb5d83068ecf15d2da6f7d0e9ea9edbcbc0457 upstream.
 
-It appears that do_div() once more gets confused by a complex
-expression that ends up not quite being constant despite
-__builtin_constant_p() thinking it is:
+Xen doesn't offer MSR_FAM10H_MMIO_CONF_BASE to all guests.  This results
+in the following warning:
 
-ERROR: modpost: "__aeabi_uldivmod" [drivers/media/dvb-frontends/cxd2841er.ko] undefined!
+  unchecked MSR access error: RDMSR from 0xc0010058 at rIP: 0xffffffff8101d19f (xen_do_read_msr+0x7f/0xa0)
+  Call Trace:
+   xen_read_msr+0x1e/0x30
+   amd_get_mmconfig_range+0x2b/0x80
+   quirk_amd_mmconfig_area+0x28/0x100
+   pnp_fixup_device+0x39/0x50
+   __pnp_add_device+0xf/0x150
+   pnp_add_device+0x3d/0x100
+   pnpacpi_add_device_handler+0x1f9/0x280
+   acpi_ns_get_device_callback+0x104/0x1c0
+   acpi_ns_walk_namespace+0x1d0/0x260
+   acpi_get_devices+0x8a/0xb0
+   pnpacpi_init+0x50/0x80
+   do_one_initcall+0x46/0x2e0
+   kernel_init_freeable+0x1da/0x2f0
+   kernel_init+0x16/0x1b0
+   ret_from_fork+0x30/0x50
+   ret_from_fork_asm+0x1b/0x30
 
-Use div_u64() instead, forcing the expression to be evaluated
-first, and making it a bit more readable.
+based on quirks for a "PNP0c01" device.  Treating MMCFG as disabled is the
+right course of action, so no change is needed there.
 
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: added Closes tags]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was most likely exposed by fixing the Xen MSR accessors to not be
+silently-safe.
+
+Fixes: 3fac3734c43a ("xen/pv: support selecting safe/unsafe msr accesses")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250307002846.3026685-1-andrew.cooper3@citrix.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/cxd2841er.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/kernel/amd_nb.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
-index e9d1eef40c627..798da50421368 100644
---- a/drivers/media/dvb-frontends/cxd2841er.c
-+++ b/drivers/media/dvb-frontends/cxd2841er.c
-@@ -311,12 +311,8 @@ static int cxd2841er_set_reg_bits(struct cxd2841er_priv *priv,
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -405,7 +405,6 @@ bool __init early_is_amd_nb(u32 device)
  
- static u32 cxd2841er_calc_iffreq_xtal(enum cxd2841er_xtal xtal, u32 ifhz)
+ struct resource *amd_get_mmconfig_range(struct resource *res)
  {
--	u64 tmp;
--
--	tmp = (u64) ifhz * 16777216;
--	do_div(tmp, ((xtal == SONY_XTAL_24000) ? 48000000 : 41000000));
--
--	return (u32) tmp;
-+	return div_u64(ifhz * 16777216ull,
-+		       (xtal == SONY_XTAL_24000) ? 48000000 : 41000000);
- }
+-	u32 address;
+ 	u64 base, msr;
+ 	unsigned int segn_busn_bits;
  
- static u32 cxd2841er_calc_iffreq(u32 ifhz)
--- 
-2.39.5
-
+@@ -413,13 +412,11 @@ struct resource *amd_get_mmconfig_range(
+ 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+ 		return NULL;
+ 
+-	/* assume all cpus from fam10h have mmconfig */
+-	if (boot_cpu_data.x86 < 0x10)
++	/* Assume CPUs from Fam10h have mmconfig, although not all VMs do */
++	if (boot_cpu_data.x86 < 0x10 ||
++	    rdmsrl_safe(MSR_FAM10H_MMIO_CONF_BASE, &msr))
+ 		return NULL;
+ 
+-	address = MSR_FAM10H_MMIO_CONF_BASE;
+-	rdmsrl(address, msr);
+-
+ 	/* mmconfig is not enabled */
+ 	if (!(msr & FAM10H_MMIO_CONF_ENABLE))
+ 		return NULL;
 
 
 
