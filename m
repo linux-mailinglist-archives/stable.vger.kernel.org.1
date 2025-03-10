@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1D3A59F87
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF99A5A262
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAE6C3A4E7F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071A63AF515
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5F82253FE;
-	Mon, 10 Mar 2025 17:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19811C57B2;
+	Mon, 10 Mar 2025 18:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hidddK2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzhsOMWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17E722D799;
-	Mon, 10 Mar 2025 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7B8374EA;
+	Mon, 10 Mar 2025 18:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628427; cv=none; b=JJF35yfdDdXw3y8OZSGogWMkynWJ+Kyh4eDWu2tjxtvpncyA2sMX5ghum3JbZxDtpfg/vkXFpR7yykzA3aH7ZZPBQzvN+T9iClWZTOO2IoZc81nNi9cJJUrCn8/RJMAm5O8PdM7juwZd8yuCPH1U8yu1IH1g8twSKaWtFSpKhRo=
+	t=1741630772; cv=none; b=J3ElMDBEQhQVHTAToHgpK7UyaFLDa9gsXzBKY2EBj79s0czK7qLQW7NoaOI2I8eGDlJUbqY/l9m04CCj9/hF+xeBxaVVNCHhjateOsMW0ISxaXewKEFd0m736VmdFAEUBWeTNKDJ438T/+HlCZhMuHFkMP2U/FGVYHxmRcq6ssY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628427; c=relaxed/simple;
-	bh=uVtbkal8FKMFA3Lc+UFmVV+cWdbvm72/9x48WJx9EPk=;
+	s=arc-20240116; t=1741630772; c=relaxed/simple;
+	bh=SSouJf3D3p5GCdCXb9lGd56L7zOYV+YnUVfk88drQHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnWhLVhHWEtIv/dGipBWRt1uT12IhIyzIXfPyPL1p7ys/rRLIFCE7IgLGqep4yIJD0NG6ueAeA+eyNvTqP392bsbVnOeyRAMXcGEmiG4K+5mB1iIvKEE7OvcrBBOLtYyvq6EMEA9HGIiWeIQ5dUbSnhIylrK02GgN55yhj+aY14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hidddK2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696E0C4CEE5;
-	Mon, 10 Mar 2025 17:40:26 +0000 (UTC)
+	 MIME-Version; b=j2XSet/MLtO69Pxp+qrnoXQH56ryrkbpMsxyre04DXr59f4rrsujBUI3x0TbnYrpWVN9TBYBnt1If+/DH2O3EscS3yMFwueoFJRFNCAxeWIkZ2oAmP05u3awuy4JDMgQmxJWMz2Q+o9XyHDdj7KAYHPvOCp+8kImPBSQnwsGehk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzhsOMWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9583C4CEE5;
+	Mon, 10 Mar 2025 18:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628426;
-	bh=uVtbkal8FKMFA3Lc+UFmVV+cWdbvm72/9x48WJx9EPk=;
+	s=korg; t=1741630772;
+	bh=SSouJf3D3p5GCdCXb9lGd56L7zOYV+YnUVfk88drQHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hidddK2O0tfiT82B1h6Nqoj8ivZlKKRxHBuiayrWXP/LAIKSi8an3aAg4qrXD8Gzd
-	 Qmxv9U3n7E42/GOqlUgGJaBF7Zsqk0pIRVWe//lL60dZyQqTGLjm5pr9Xhl3aTdSAJ
-	 hTol60FU/03Ab3u43ASNc/HT9canNqnTzrNC72Aw=
+	b=vzhsOMWb/5iJ0iICc4eFHDmCKxO2ybZjst4E3avQq3zT60q8eKRflDjLIX4juD464
+	 dqy0oDqKVQFh6wfdKN92K0NEKYbEK0aL+aZZvt93ODNcDYw0AbkpiL9G0bQeDVvz/J
+	 YbHQWllymp1+yeAEIYTU8IUDi2HFgNF1zoW/MiBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 023/109] x86/cpu: Validate CPUID leaf 0x2 EDX output
-Date: Mon, 10 Mar 2025 18:06:07 +0100
-Message-ID: <20250310170428.471552718@linuxfoundation.org>
+	Wei Fang <wei.fang@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 522/620] net: enetc: correct the xdp_tx statistics
+Date: Mon, 10 Mar 2025 18:06:08 +0100
+Message-ID: <20250310170606.157617978@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
+commit 432a2cb3ee97a7c6ea578888fe81baad035b9307 upstream.
 
-CPUID leaf 0x2 emits one-byte descriptors in its four output registers
-EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
-significant bit (MSB) of each register must be clear.
+The 'xdp_tx' is used to count the number of XDP_TX frames sent, not the
+number of Tx BDs.
 
-Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
-ECX, but left EDX unchecked.
-
-Validate EDX's most-significant bit as well.
-
-Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
+Fixes: 7ed2bc80074e ("net: enetc: add support for XDP_TX")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-4-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/intel.c |    2 +-
+ drivers/net/ethernet/freescale/enetc/enetc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -948,7 +948,7 @@ static void intel_detect_tlb(struct cpui
- 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
- 
- 		/* If bit 31 is set, this is an unknown format */
--		for (j = 0 ; j < 3 ; j++)
-+		for (j = 0 ; j < 4 ; j++)
- 			if (regs[j] & (1 << 31))
- 				regs[j] = 0;
- 
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1343,7 +1343,7 @@ static int enetc_clean_rx_ring_xdp(struc
+ 				enetc_xdp_drop(rx_ring, orig_i, i);
+ 				tx_ring->stats.xdp_tx_drops++;
+ 			} else {
+-				tx_ring->stats.xdp_tx += xdp_tx_bd_cnt;
++				tx_ring->stats.xdp_tx++;
+ 				rx_ring->xdp.xdp_tx_in_flight += xdp_tx_bd_cnt;
+ 				xdp_tx_frm_cnt++;
+ 				/* The XDP_TX enqueue was successful, so we
 
 
 
