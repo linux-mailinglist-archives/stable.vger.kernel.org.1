@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-123001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9869A5A25D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902A1A59EA6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2ADA1893799
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47FD6188FC82
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BAA71C5D6F;
-	Mon, 10 Mar 2025 18:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61637233715;
+	Mon, 10 Mar 2025 17:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjTQYZ9d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Znb2sIMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27ADE1CAA6C;
-	Mon, 10 Mar 2025 18:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F95233150;
+	Mon, 10 Mar 2025 17:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630758; cv=none; b=Q84vXCl4ppDeUd17j17BxL/OTQA4q1QvQ34klxG8JfQ/RbBSUMXzBpt9vSlXhfQ8BBFRlemsyqFEo0MUL1Fi/f7GFdOVSsGdpvXN81kVKUGZ/k8y2dxMFJuqm+s0H/fQ5rkXaprfL/jYVBZqxIzitfeHvQJcul3HcawIPVHlFeY=
+	t=1741627973; cv=none; b=NmzOpYyulVLYJxuenyvKvn3+tIk7HOxKgF0hnbUjEMf7CFt5k1EXyBLfEGjxZGzYsdPDKl0vO2ZSP3z0nzx6YY9g4KnxBcXnmw2G0M2kMMcCHwdsI9ghDkqs+FSjiShk0tkqWsMowrHA+bt/Qc4MNRKFAidGD9o2wHz5TWXouYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630758; c=relaxed/simple;
-	bh=MhLHbD+ui/D8kcjuUof68BS64S76tMvdoSKYHqimyv0=;
+	s=arc-20240116; t=1741627973; c=relaxed/simple;
+	bh=2H25ZCCGDqOthYJZyot5P+yPA7BTQHXjtH40qw+XsZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nO17hywCosmOXkqW5I6Thf/kdeXDJNVkGSiXHl28jUAl2+Aue+uCFb/MwboEfiQh90CbOOjQTPkNHpHMe9hCrLenOhNeaBsxXmuDEVmVrPM2bc3V5lRqjvkaxngve2Sur8/XtYmBF/6OJBwbMWK4Yp5SucYWHCJHL+QWvufaYmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjTQYZ9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C89EC4CEEC;
-	Mon, 10 Mar 2025 18:19:17 +0000 (UTC)
+	 MIME-Version; b=CMDM8UxFWkw/I+eR4ISuV+AzUaMohNrIxIbRzb04s9b7xpPkqc5w2DQutMdbX7cXeVl57en9HemaTjR8BmMSqRmlwHrhDHjz7fSwSPpk4uutEvVFj2+6e2LSUH16wyygsgK+vuxCarWgf8NgDooRgSIPxtui+5yvwcDINrmOYHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Znb2sIMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9558DC4CEE5;
+	Mon, 10 Mar 2025 17:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630758;
-	bh=MhLHbD+ui/D8kcjuUof68BS64S76tMvdoSKYHqimyv0=;
+	s=korg; t=1741627973;
+	bh=2H25ZCCGDqOthYJZyot5P+yPA7BTQHXjtH40qw+XsZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PjTQYZ9dWzIDh/hOe72Es+TkNT8FfftDLp5cs5+A4DMv6Y9U5w4HYfY6YQjNX/l5O
-	 Gcp2LLcUlqW8Ad1HWDrYau7RFQaQXcKl2CDqndOLaqYrM0cXSCs0FRtxLDYraIhZsA
-	 8TZOxXeP9z8d4GMbPadyDPI/3v9irfrreHMCU4/0=
+	b=Znb2sIMoVlWSvO8HeEdKwI5bYOxBjczvmqhIfPrgNIlBveDeK8Tm+fTXtPUUC05mN
+	 63KPo5w6mUALHmTQQ843B7cV3z+GBHpJH0LcwrGMjWwcvduOqJD9AtAfib9p/uJZw8
+	 cjP9h+54jGFxW//zks8zgZVJKTxb7SvPOhJ6h87A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 492/620] RDMA/mlx5: Fix bind QP error cleanup flow
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 044/145] x86/cpu: Validate CPUID leaf 0x2 EDX output
 Date: Mon, 10 Mar 2025 18:05:38 +0100
-Message-ID: <20250310170604.991314001@linuxfoundation.org>
+Message-ID: <20250310170436.513249442@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit e1a0bdbdfdf08428f0ede5ae49c7f4139ac73ef5 ]
+commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
 
-When there is a failure during bind QP, the cleanup flow destroys the
-counter regardless if it is the one that created it or not, which is
-problematic since if it isn't the one that created it, that counter could
-still be in use.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-Fix that by destroying the counter only if it was created during this call.
+Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
+ECX, but left EDX unchecked.
 
-Fixes: 45842fc627c7 ("IB/mlx5: Support statistic q counter configuration")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://patch.msgid.link/25dfefddb0ebefa668c32e06a94d84e3216257cf.1740033937.git.leon@kernel.org
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Validate EDX's most-significant bit as well.
+
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/counters.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/intel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
-index 1a0ecf439c099..870a089198116 100644
---- a/drivers/infiniband/hw/mlx5/counters.c
-+++ b/drivers/infiniband/hw/mlx5/counters.c
-@@ -337,6 +337,7 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
- 				   struct ib_qp *qp)
- {
- 	struct mlx5_ib_dev *dev = to_mdev(qp->device);
-+	bool new = false;
- 	int err;
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -912,7 +912,7 @@ static void intel_detect_tlb(struct cpui
+ 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
  
- 	if (!counter->id) {
-@@ -351,6 +352,7 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
- 			return err;
- 		counter->id =
- 			MLX5_GET(alloc_q_counter_out, out, counter_set_id);
-+		new = true;
- 	}
+ 		/* If bit 31 is set, this is an unknown format */
+-		for (j = 0 ; j < 3 ; j++)
++		for (j = 0 ; j < 4 ; j++)
+ 			if (regs[j] & (1 << 31))
+ 				regs[j] = 0;
  
- 	err = mlx5_ib_qp_set_counter(qp, counter);
-@@ -360,8 +362,10 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
- 	return 0;
- 
- fail_set_counter:
--	mlx5_ib_counter_dealloc(counter);
--	counter->id = 0;
-+	if (new) {
-+		mlx5_ib_counter_dealloc(counter);
-+		counter->id = 0;
-+	}
- 
- 	return err;
- }
--- 
-2.39.5
-
 
 
 
