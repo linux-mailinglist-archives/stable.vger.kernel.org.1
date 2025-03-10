@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-122532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4EEA5A010
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:46:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D93EFA5A022
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:47:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 949CE7A25BA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:45:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270521891A59
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C036D23536B;
-	Mon, 10 Mar 2025 17:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976DB234966;
+	Mon, 10 Mar 2025 17:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0raCQgC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLIsI5Oy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F117233D98;
-	Mon, 10 Mar 2025 17:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1702343C5;
+	Mon, 10 Mar 2025 17:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628763; cv=none; b=swWfz7FcMSOffztLSncKdmnLYmobmf7SdpMrPlUmFfAAFT7ZsuEsrhaaSDuWzM9FoBSTWYbZIVHhVPXDhs0yeOGM8p43wvaLXyJrqqNqEmr+Z73a3yFeM61jzarLnN+Pz7XI6fT0euVH8+MFQT5EQS4RdU7GNHvOPCZPJkVO7EU=
+	t=1741628769; cv=none; b=dfuuK170CtlqaJAXIBLJALtqWVfzDMpjqyNnO2Ym025FhTRAzOziDgt0XUQViuVhp+5rbCiJUhwMenEj+Wx/gXc+M0ZG9dnEdVoQCC/Uf7+BLy+d8Cb9tcwhfs+Zp1CgiUL1sW0cxQQducEqGUr9caSNO2HUV2j8Ek95Gpu5Qlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628763; c=relaxed/simple;
-	bh=uTkmPZsxYeHXt3H66JV35zUMhXrRNKL5qSSWpKzWVWI=;
+	s=arc-20240116; t=1741628769; c=relaxed/simple;
+	bh=jp66Wxsr21Ef46y19d2GKiPvA4jjcPcLw9s5U4eD0Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CZCadotdtiZr3cwjIvaajvu+Z57lRvQq59+HHxrZiyYqSPRm6v7C90bqOEaZvML46ZFtuoYKcSVFMUfP08dLE25PoCbuCKi32M23vs3Li4Q025JfU3vrxQ+QoX0qXwThLq6834bEVSHamo8HIOFd8aU2764pfRqa/1tpbUZAJc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0raCQgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2ED1C4CEE5;
-	Mon, 10 Mar 2025 17:46:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I4MW8e6H3R1/u18bBooHSJEkcxWWro1Bjd5M/YU4C2D51/AKZJiM28zNdz9PdJ+JXhxqNl1ApvA0HyTM9aJr72gZ3djhItX8XPaEdRK+zb+5M6s2hSctT9O5hnbuuhpVNpNGAYyy1LTrC64ERXUMj+Cxko28csHAe4tODgZW3SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLIsI5Oy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC1AC4CEE5;
+	Mon, 10 Mar 2025 17:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628763;
-	bh=uTkmPZsxYeHXt3H66JV35zUMhXrRNKL5qSSWpKzWVWI=;
+	s=korg; t=1741628769;
+	bh=jp66Wxsr21Ef46y19d2GKiPvA4jjcPcLw9s5U4eD0Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0raCQgCva6ZRDF60+BAOxD1QhDZFht+jVg9/jmwb7imN3HfpfxeHhCSGn75yKbM8
-	 ujkEL5i6drCfnlIUkCGgZVEJHBLazWxEkVbrjMTd/I7t1v8/PZWiUWoVEvv0/NqEfb
-	 IMJ4WdTahXZ6I08uLwzklVMliOXV7iZ+83D5ocB4=
+	b=PLIsI5OyPYKlLuUJZ9FNqTEjddo5AFh/SiBo7ebYc1HEtQkSMAF7DBD2d6huUmLxK
+	 CaCPdKpgeWRcm323D1mr96AsNf3vicNiWYGAQxgaDtypsc+MRbjGfdwWSfiAVYgOM2
+	 A+4CyIKblS9dY+pjEu1LaN+ykQQBbSx7E39tttEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <david@fromorbit.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Paul Moore <paul@paul-moore.com>,
-	syzbot+34b68f850391452207df@syzkaller.appspotmail.com,
-	syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com,
-	Ubisectech Sirius <bugreport@ubisectech.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Xu Rao <raoxu@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/620] landlock: Handle weird files
-Date: Mon, 10 Mar 2025 17:58:27 +0100
-Message-ID: <20250310170547.993917891@linuxfoundation.org>
+Subject: [PATCH 5.15 062/620] wifi: mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
+Date: Mon, 10 Mar 2025 17:58:28 +0100
+Message-ID: <20250310170548.032629676@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -73,62 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 49440290a0935f428a1e43a5ac8dc275a647ff80 ]
+[ Upstream commit f1b1e133a770fcdbd89551651232b034d2f7a27a ]
 
-A corrupted filesystem (e.g. bcachefs) might return weird files.
-Instead of throwing a warning and allowing access to such file, treat
-them as regular files.
+When initializing the network card, unplugging the device will
+trigger an -EPROTO error, resulting in a flood of error messages
+being printed frantically.
 
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Paul Moore <paul@paul-moore.com>
-Reported-by: syzbot+34b68f850391452207df@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000a65b35061cffca61@google.com
-Reported-by: syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/67379b3f.050a0220.85a0.0001.GAE@google.com
-Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/r/c426821d-8380-46c4-a494-7008bbd7dd13.bugreport@ubisectech.com
-Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20250110153918.241810-1-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+The exception is printed as follows：
+
+         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
+         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
+         ...
+
+It will continue to print more than 2000 times for about 5 minutes,
+causing the usb device to be unable to be disconnected. During this
+period, the usb port cannot recognize the new device because the old
+device has not disconnected.
+
+There may be other operating methods that cause -EPROTO, but -EPROTO is
+a low-level hardware error. It is unwise to repeat vendor requests
+expecting to read correct data. It is a better choice to treat -EPROTO
+and -ENODEV the same way.
+
+Similar to commit 9b0f100c1970 ("mt76: usb: process URBs with status
+EPROTO properly") do no schedule rx_worker for urb marked with status
+set  -EPROTO. I also reproduced this situation when plugging and
+unplugging the device, and this patch is effective.
+
+Just do not vendor request again for urb marked with status set -EPROTO.
+
+Link: https://lore.kernel.org/all/531681bd-30f5-4a70-a156-bf8754b8e072@intel.com/
+Link: https://lore.kernel.org/all/D4B9CC1FFC0CBAC3+20250105040607.154706-1-wangyuli@uniontech.com/
+Fixes: b40b15e1521f ("mt76: add usb support to mt76 layer")
+Co-developed-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://patch.msgid.link/9DD7DE7AAB497CB7+20250113070241.63590-1-wangyuli@uniontech.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/fs.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index 7b7860039a08b..a3d99bba5f1e7 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -370,10 +370,6 @@ static inline access_mask_t get_mode_access(const umode_t mode)
- 	switch (mode & S_IFMT) {
- 	case S_IFLNK:
- 		return LANDLOCK_ACCESS_FS_MAKE_SYM;
--	case 0:
--		/* A zero mode translates to S_IFREG. */
--	case S_IFREG:
--		return LANDLOCK_ACCESS_FS_MAKE_REG;
- 	case S_IFDIR:
- 		return LANDLOCK_ACCESS_FS_MAKE_DIR;
- 	case S_IFCHR:
-@@ -384,9 +380,12 @@ static inline access_mask_t get_mode_access(const umode_t mode)
- 		return LANDLOCK_ACCESS_FS_MAKE_FIFO;
- 	case S_IFSOCK:
- 		return LANDLOCK_ACCESS_FS_MAKE_SOCK;
-+	case S_IFREG:
-+	case 0:
-+		/* A zero mode translates to S_IFREG. */
- 	default:
--		WARN_ON_ONCE(1);
--		return 0;
-+		/* Treats weird files as regular files. */
-+		return LANDLOCK_ACCESS_FS_MAKE_REG;
- 	}
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 392632c3f1b1d..e40569fc7edea 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -34,9 +34,9 @@ static int __mt76u_vendor_request(struct mt76_dev *dev, u8 req,
  
+ 		ret = usb_control_msg(udev, pipe, req, req_type, val,
+ 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV || ret == -EPROTO)
+ 			set_bit(MT76_REMOVED, &dev->phy.state);
+-		if (ret >= 0 || ret == -ENODEV)
++		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
+ 			return ret;
+ 		usleep_range(5000, 10000);
+ 	}
 -- 
 2.39.5
 
