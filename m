@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-121742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCE9A59C23
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3022A59D5C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0579B3A6FE9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D6516F44B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C412309A1;
-	Mon, 10 Mar 2025 17:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ACB231A2A;
+	Mon, 10 Mar 2025 17:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXzafwaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpAkHezo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C82A230BCE;
-	Mon, 10 Mar 2025 17:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22A92309B6;
+	Mon, 10 Mar 2025 17:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626498; cv=none; b=jyl/Uziwn3y2E+HogUvZa3QX5VQC8lpaZz7Jzw9/EEYP4r22CJPJ7dUGL4+n88F56n+2b4dR2Mj53tjfbf/G/mBxBwPpUlhE8ouHzsStF/Re1COHZ5VTbRjnaBfrfAohFlJ3UczVeuoGlOoH10igrr6pS0G14wDQYQ4bDkahtZs=
+	t=1741627216; cv=none; b=FHCpsGs89f3cxJdP9SH/YcUhR1hU0ZUMs1Orc8oYlJsKI6M0yDkg/lGwh98Cq63vbSf/MtVL3w4QST9/eQvfwUoEHdg73SmzjX/b6IsCHaMN0n3ZiqgC4p/xKPfCNnxyPtvSUo60bUE27E2ZZntOF99noiUujT5wmRmwwC1Ni2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626498; c=relaxed/simple;
-	bh=eL+K/G5hg5aWcP90VkByzxV4QNfFcc4qVJdkPEN6M4Q=;
+	s=arc-20240116; t=1741627216; c=relaxed/simple;
+	bh=Ya6a1uhaRteuLUbOALOreS6aRgq0/cYLUmDZn80oCEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6nNWol1ohyS5LmgwhZPbVwz+pBC5uiZj46ZxbaVpmh6FUpABWLIhWJg0/T5dyLTT+u2wUMMzkUMhjRgVj5dGxJHlGdFCRhl/z48UUzAaMTWTEn8VeWypaJmSHh//w6bd/5Mk3xDkCOPUYT+u4tf/thLK8HecbgAOxY8rBAJeH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXzafwaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1A4C4CEE5;
-	Mon, 10 Mar 2025 17:08:17 +0000 (UTC)
+	 MIME-Version; b=lcqm2u3MWqkG8XyJh2NK0hC5gQ56yckXzIZlO48JE4XVa/AZ7ffss6ys3qmxPEZYHLYKwUwCHBo4o+E+BOait9ZOSdy7Z8xS3WC+f9rbgrMLFE/eJLbHFmVgYG9FAT1HZ4pGuTVJZHh9uNQmy440Lz0owMOG6aipMRCp+fwonSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpAkHezo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCE1C4CEED;
+	Mon, 10 Mar 2025 17:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626497;
-	bh=eL+K/G5hg5aWcP90VkByzxV4QNfFcc4qVJdkPEN6M4Q=;
+	s=korg; t=1741627216;
+	bh=Ya6a1uhaRteuLUbOALOreS6aRgq0/cYLUmDZn80oCEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXzafwaJ21Yh4uYkTqNyseylCiodxzTSra1POZPc/2ddQlAS/RgVoYr8MaLCg0BGQ
-	 0zrVmxqae8Dke/5XiYSfaLHltOlI6hfj0FvAuApNsM8txZHnb2OU+ZX61/rrsQT4cc
-	 34j3BDIvRr5kXgLMKjYCTZoUKq2Z2uevyj22uMzo=
+	b=WpAkHezokgtTcuJiS6ok268alKV0U28tdV0u8PZoG+kJp6snBYb/FwpJf7f1ToF/q
+	 Hi3AV/CujZxuVaM9nUE8W4xuUiuaWyw8jgF9ZTShtlFJHRm0l2d9m5836kI/CFXxZ0
+	 RRA8KznoAtKbFZ1FCHojZzFSCZ4mvCwmPPYlgSds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.13 013/207] LoongArch: Set hugetlb mmap base address aligned with pmd size
-Date: Mon, 10 Mar 2025 18:03:26 +0100
-Message-ID: <20250310170448.293512634@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 054/269] rust: alloc: implement `contains` for `Flags`
+Date: Mon, 10 Mar 2025 18:03:27 +0100
+Message-ID: <20250310170459.879462074@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit 3109d5ff484b7bc7b955f166974c6776d91f247b upstream.
+commit 909037ce0369bc3f4fd31743fd2d8d7096f06002 upstream.
 
-With ltp test case "testcases/bin/hugefork02", there is a dmesg error
-report message such as:
+Provide a simple helper function to check whether given flags do
+contain one or multiple other flags.
 
- kernel BUG at mm/hugetlb.c:5550!
- Oops - BUG[#1]:
- CPU: 0 UID: 0 PID: 1517 Comm: hugefork02 Not tainted 6.14.0-rc2+ #241
- Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 2/2/2022
- pc 90000000004eaf1c ra 9000000000485538 tp 900000010edbc000 sp 900000010edbf940
- a0 900000010edbfb00 a1 9000000108d20280 a2 00007fffe9474000 a3 00007ffff3474000
- a4 0000000000000000 a5 0000000000000003 a6 00000000003cadd3 a7 0000000000000000
- t0 0000000001ffffff t1 0000000001474000 t2 900000010ecd7900 t3 00007fffe9474000
- t4 00007fffe9474000 t5 0000000000000040 t6 900000010edbfb00 t7 0000000000000001
- t8 0000000000000005 u0 90000000004849d0 s9 900000010edbfa00 s0 9000000108d20280
- s1 00007fffe9474000 s2 0000000002000000 s3 9000000108d20280 s4 9000000002b38b10
- s5 900000010edbfb00 s6 00007ffff3474000 s7 0000000000000406 s8 900000010edbfa08
-    ra: 9000000000485538 unmap_vmas+0x130/0x218
-   ERA: 90000000004eaf1c __unmap_hugepage_range+0x6f4/0x7d0
-  PRMD: 00000004 (PPLV0 +PIE -PWE)
-  EUEN: 00000007 (+FPE +SXE +ASXE -BTE)
-  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
- ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
- PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
- Process hugefork02 (pid: 1517, threadinfo=00000000a670eaf4, task=000000007a95fc64)
- Call Trace:
- [<90000000004eaf1c>] __unmap_hugepage_range+0x6f4/0x7d0
- [<9000000000485534>] unmap_vmas+0x12c/0x218
- [<9000000000494068>] exit_mmap+0xe0/0x308
- [<900000000025fdc4>] mmput+0x74/0x180
- [<900000000026a284>] do_exit+0x294/0x898
- [<900000000026aa30>] do_group_exit+0x30/0x98
- [<900000000027bed4>] get_signal+0x83c/0x868
- [<90000000002457b4>] arch_do_signal_or_restart+0x54/0xfa0
- [<90000000015795e8>] irqentry_exit_to_user_mode+0xb8/0x138
- [<90000000002572d0>] tlb_do_page_fault_1+0x114/0x1b4
+This is used by a subsequent patch implementing the Cmalloc `Allocator`
+to check for __GFP_ZERO.
 
-The problem is that base address allocated from hugetlbfs is not aligned
-with pmd size. Here add a checking for hugetlbfs and align base address
-with pmd size. After this patch the test case "testcases/bin/hugefork02"
-passes to run.
-
-This is similar to the commit 7f24cbc9c4d42db8a3c8484d1 ("mm/mmap: teach
-generic_get_unmapped_area{_topdown} to handle hugetlb mappings").
-
-Cc: stable@vger.kernel.org  # 6.13+
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-25-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/mmap.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ rust/kernel/alloc.rs |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/mm/mmap.c
-+++ b/arch/loongarch/mm/mmap.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-  */
- #include <linux/export.h>
-+#include <linux/hugetlb.h>
- #include <linux/io.h>
- #include <linux/kfence.h>
- #include <linux/memblock.h>
-@@ -63,8 +64,11 @@ static unsigned long arch_get_unmapped_a
- 	}
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -35,7 +35,7 @@ use core::{alloc::Layout, ptr::NonNull};
+ /// They can be combined with the operators `|`, `&`, and `!`.
+ ///
+ /// Values can be used from the [`flags`] module.
+-#[derive(Clone, Copy)]
++#[derive(Clone, Copy, PartialEq)]
+ pub struct Flags(u32);
  
- 	info.length = len;
--	info.align_mask = do_color_align ? (PAGE_MASK & SHM_ALIGN_MASK) : 0;
- 	info.align_offset = pgoff << PAGE_SHIFT;
-+	if (filp && is_file_hugepages(filp))
-+		info.align_mask = huge_page_mask_align(filp);
-+	else
-+		info.align_mask = do_color_align ? (PAGE_MASK & SHM_ALIGN_MASK) : 0;
+ impl Flags {
+@@ -43,6 +43,11 @@ impl Flags {
+     pub(crate) fn as_raw(self) -> u32 {
+         self.0
+     }
++
++    /// Check whether `flags` is contained in `self`.
++    pub fn contains(self, flags: Flags) -> bool {
++        (self & flags) == flags
++    }
+ }
  
- 	if (dir == DOWN) {
- 		info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ impl core::ops::BitOr for Flags {
 
 
 
