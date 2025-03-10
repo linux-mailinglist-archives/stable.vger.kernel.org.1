@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-121998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBA2A59D67
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D6CA59C3B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DCD47A566F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF4F83A6449
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB30230BC3;
-	Mon, 10 Mar 2025 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3968230BDA;
+	Mon, 10 Mar 2025 17:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o851TrJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxbN+1b3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B5222154C;
-	Mon, 10 Mar 2025 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F53422D786;
+	Mon, 10 Mar 2025 17:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627237; cv=none; b=m8ajxOmE9SvvuoNPreDoBOYAa3SFnXvEQ+fxOI4/HEH4ndWCLcvhp+8RBow1LHGJ9N3Im6DybYO0YCnn1PQOrmj+hJalGHVjLsWcXODtnNNMYeE+7KlXfiXMv08qhG/Yntgr18o6L6CJoTWAKag3Yd8zXvYAY8PyfAHi1EsNmGg=
+	t=1741626552; cv=none; b=lqOMiiTLfykUG4wr35KEiH9gQrPbbkqh72jGIm7GG1AdWLbCgx/SQeNbDPtZabMBquU70A7zm2ZgOP8+WFrYMrSpHGrHATzADt2IX0ixMKbvipCMfPvrHmx0THeS/sj6J7eqXiLgV6abS/gROogqmWZLwTLXiWU+cndsXUPYna4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627237; c=relaxed/simple;
-	bh=zpjAtEmDe/P98AvS5LlJVbdxyaH77pnAlQo64LN/2nM=;
+	s=arc-20240116; t=1741626552; c=relaxed/simple;
+	bh=GpfBPjqPUa+gY4qYBcq7tvky5tWRYyG0n6vPDD4pe9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYFsBrFJn/KaBuLonKweo/DanAXigDLimpD+InGccae8Qh+nodBNqTZ4/uE7Ng/tVdiGHxmA6fMue5bSjG97RZpjGVEfLaA39FezL4W7hnX/xGyX10L+geRrRZ6n7vCR/EZ56gMfcASyc1w5Wy4AlJSbr1uoaKBOffMau6t6E5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o851TrJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F30AC4CEE5;
-	Mon, 10 Mar 2025 17:20:36 +0000 (UTC)
+	 MIME-Version; b=ikvN/a8SCVwdHpjgovccFMqcTOryEvYYNyz2SzQU+dPHmn2rd2k9FQA3V8iJuM19VONvl0GuXY438dkp7As+7RZ2NnjAbFcg63VvpfqhB8SeCSsDDuc/YBdl6C2LXIJhw1jUuW6dZXE5zof/AvMyz9icGPx5OnLO9sL6iJ7he6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxbN+1b3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60FFC4CEE5;
+	Mon, 10 Mar 2025 17:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627237;
-	bh=zpjAtEmDe/P98AvS5LlJVbdxyaH77pnAlQo64LN/2nM=;
+	s=korg; t=1741626552;
+	bh=GpfBPjqPUa+gY4qYBcq7tvky5tWRYyG0n6vPDD4pe9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o851TrJnay5J1ugNuiB3a44+adnLYKPBgGe0CwYsCGJjqcEeK1F/6wLwTcyKkJiqP
-	 ahr9omHI0I/gyla42y5jW/mtiVXMI8bWHfAWx0oSiepYYvjotWI3ifW8cCGLiNoY56
-	 Oy3Frdfw+MvuOGgUa9enm0bgyk8EXuKFuc/j0OW0=
+	b=wxbN+1b3lp/2cyJ6pj5gocTsPrwwONuHaPFAEZIrVKgPLDPQM6xWgh2lRfrFKpgSf
+	 spGywlmbQx9XqTCWYcbuMzukHk2/4GO0OeBCC21yPrnfmUHYsXEfGCcDO9hq7LWLP1
+	 DyTy+EVH56/XwJ1udZS5WlgJbPPLtxtz/lFPnKw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 043/269] rust: alloc: remove extension of stds `Box`
-Date: Mon, 10 Mar 2025 18:03:16 +0100
-Message-ID: <20250310170459.439740761@linuxfoundation.org>
+	Oleh Nykyforchyn <oleh.nyk@gmail.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 004/207] smb311: failure to open files of length 1040 when mounting with SMB3.1.1 POSIX extensions
+Date: Mon, 10 Mar 2025 18:03:17 +0100
+Message-ID: <20250310170447.926613061@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,313 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit e8c6ccdbcaaf31f26c0fffd4073edd0b0147cdc6 upstream.
+[ Upstream commit 9df23801c83d3e12b4c09be39d37d2be385e52f9 ]
 
-Now that all existing `Box` users were moved to the kernel `Box` type,
-remove the `BoxExt` extension and all other related extensions.
+If a file size has bits 0x410 = ATTR_DIRECTORY | ATTR_REPARSE set
+then during queryinfo (stat) the file is regarded as a directory
+and subsequent opens can fail. A simple test example is trying
+to open any file 1040 bytes long when mounting with "posix"
+(SMB3.1.1 POSIX/Linux Extensions).
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-14-dakr@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The cause of this bug is that Attributes field in smb2_file_all_info
+struct occupies the same place that EndOfFile field in
+smb311_posix_qinfo, and sometimes the latter struct is incorrectly
+processed as if it was the first one.
+
+Reported-by: Oleh Nykyforchyn <oleh.nyk@gmail.com>
+Tested-by: Oleh Nykyforchyn <oleh.nyk@gmail.com>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/alloc.rs         |    1 
- rust/kernel/alloc/box_ext.rs |   89 -------------------------------------------
- rust/kernel/init.rs          |   46 ----------------------
- rust/kernel/lib.rs           |    1 
- rust/kernel/prelude.rs       |    4 -
- rust/kernel/types.rs         |   50 ------------------------
- 6 files changed, 3 insertions(+), 188 deletions(-)
- delete mode 100644 rust/kernel/alloc/box_ext.rs
+ fs/smb/client/cifsglob.h  |  1 +
+ fs/smb/client/reparse.h   | 28 ++++++++++++++++++++++------
+ fs/smb/client/smb2inode.c |  4 ++++
+ fs/smb/client/smb2ops.c   |  3 ++-
+ 4 files changed, 29 insertions(+), 7 deletions(-)
 
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -4,7 +4,6 @@
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 3877b861529ea..37b7d84e26913 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -216,6 +216,7 @@ struct cifs_cred {
+ struct cifs_open_info_data {
+ 	bool adjust_tz;
+ 	bool reparse_point;
++	bool contains_posix_file_info;
+ 	struct {
+ 		/* ioctl response buffer */
+ 		struct {
+diff --git a/fs/smb/client/reparse.h b/fs/smb/client/reparse.h
+index ff05b0e75c928..f080f92cb1e74 100644
+--- a/fs/smb/client/reparse.h
++++ b/fs/smb/client/reparse.h
+@@ -97,14 +97,30 @@ static inline bool reparse_inode_match(struct inode *inode,
  
- #[cfg(not(any(test, testlib)))]
- pub mod allocator;
--pub mod box_ext;
- pub mod kbox;
- pub mod vec_ext;
+ static inline bool cifs_open_data_reparse(struct cifs_open_info_data *data)
+ {
+-	struct smb2_file_all_info *fi = &data->fi;
+-	u32 attrs = le32_to_cpu(fi->Attributes);
++	u32 attrs;
+ 	bool ret;
  
---- a/rust/kernel/alloc/box_ext.rs
-+++ /dev/null
-@@ -1,89 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--//! Extensions to [`Box`] for fallible allocations.
--
--use super::{AllocError, Flags};
--use alloc::boxed::Box;
--use core::{mem::MaybeUninit, ptr, result::Result};
--
--/// Extensions to [`Box`].
--pub trait BoxExt<T>: Sized {
--    /// Allocates a new box.
--    ///
--    /// The allocation may fail, in which case an error is returned.
--    fn new(x: T, flags: Flags) -> Result<Self, AllocError>;
--
--    /// Allocates a new uninitialised box.
--    ///
--    /// The allocation may fail, in which case an error is returned.
--    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
--
--    /// Drops the contents, but keeps the allocation.
--    ///
--    /// # Examples
--    ///
--    /// ```
--    /// use kernel::alloc::{flags, box_ext::BoxExt};
--    /// let value = Box::new([0; 32], flags::GFP_KERNEL)?;
--    /// assert_eq!(*value, [0; 32]);
--    /// let mut value = Box::drop_contents(value);
--    /// // Now we can re-use `value`:
--    /// value.write([1; 32]);
--    /// // SAFETY: We just wrote to it.
--    /// let value = unsafe { value.assume_init() };
--    /// assert_eq!(*value, [1; 32]);
--    /// # Ok::<(), Error>(())
--    /// ```
--    fn drop_contents(this: Self) -> Box<MaybeUninit<T>>;
--}
--
--impl<T> BoxExt<T> for Box<T> {
--    fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
--        let mut b = <Self as BoxExt<_>>::new_uninit(flags)?;
--        b.write(x);
--        // SAFETY: We just wrote to it.
--        Ok(unsafe { b.assume_init() })
--    }
--
--    #[cfg(any(test, testlib))]
--    fn new_uninit(_flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
--        Ok(Box::new_uninit())
--    }
--
--    #[cfg(not(any(test, testlib)))]
--    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
--        let ptr = if core::mem::size_of::<MaybeUninit<T>>() == 0 {
--            core::ptr::NonNull::<_>::dangling().as_ptr()
--        } else {
--            let layout = core::alloc::Layout::new::<MaybeUninit<T>>();
--
--            // SAFETY: Memory is being allocated (first arg is null). The only other source of
--            // safety issues is sleeping on atomic context, which is addressed by klint. Lastly,
--            // the type is not a SZT (checked above).
--            let ptr =
--                unsafe { super::allocator::krealloc_aligned(core::ptr::null_mut(), layout, flags) };
--            if ptr.is_null() {
--                return Err(AllocError);
--            }
--
--            ptr.cast::<MaybeUninit<T>>()
--        };
--
--        // SAFETY: For non-zero-sized types, we allocate above using the global allocator. For
--        // zero-sized types, we use `NonNull::dangling`.
--        Ok(unsafe { Box::from_raw(ptr) })
--    }
--
--    fn drop_contents(this: Self) -> Box<MaybeUninit<T>> {
--        let ptr = Box::into_raw(this);
--        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
--        unsafe { ptr::drop_in_place(ptr) };
--
--        // CAST: `MaybeUninit<T>` is a transparent wrapper of `T`.
--        let ptr = ptr.cast::<MaybeUninit<T>>();
--
--        // SAFETY: `ptr` is valid for writes, because it came from `Box::into_raw` and it is valid for
--        // reads, since the pointer came from `Box::into_raw` and the type is `MaybeUninit<T>`.
--        unsafe { Box::from_raw(ptr) }
--    }
--}
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -211,13 +211,12 @@
- //! [`pin_init!`]: crate::pin_init!
- 
- use crate::{
--    alloc::{box_ext::BoxExt, AllocError, Flags, KBox},
-+    alloc::{AllocError, Flags, KBox},
-     error::{self, Error},
-     sync::Arc,
-     sync::UniqueArc,
-     types::{Opaque, ScopeGuard},
- };
--use alloc::boxed::Box;
- use core::{
-     cell::UnsafeCell,
-     convert::Infallible,
-@@ -588,7 +587,6 @@ macro_rules! pin_init {
- /// # Examples
- ///
- /// ```rust
--/// # #![feature(new_uninit)]
- /// use kernel::{init::{self, PinInit}, error::Error};
- /// #[pin_data]
- /// struct BigBuf {
-@@ -1245,26 +1243,6 @@ impl<T> InPlaceInit<T> for Arc<T> {
-     }
+-	ret = data->reparse_point || (attrs & ATTR_REPARSE);
+-	if (ret)
+-		attrs |= ATTR_REPARSE;
+-	fi->Attributes = cpu_to_le32(attrs);
++	if (data->contains_posix_file_info) {
++		struct smb311_posix_qinfo *fi = &data->posix_fi;
++
++		attrs = le32_to_cpu(fi->DosAttributes);
++		if (data->reparse_point) {
++			attrs |= ATTR_REPARSE;
++			fi->DosAttributes = cpu_to_le32(attrs);
++		}
++
++	} else {
++		struct smb2_file_all_info *fi = &data->fi;
++
++		attrs = le32_to_cpu(fi->Attributes);
++		if (data->reparse_point) {
++			attrs |= ATTR_REPARSE;
++			fi->Attributes = cpu_to_le32(attrs);
++		}
++	}
++
++	ret = attrs & ATTR_REPARSE;
++
+ 	return ret;
  }
  
--impl<T> InPlaceInit<T> for Box<T> {
--    type PinnedSelf = Pin<Self>;
--
--    #[inline]
--    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedSelf, E>
--    where
--        E: From<AllocError>,
--    {
--        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_pin_init(init)
--    }
--
--    #[inline]
--    fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
--    where
--        E: From<AllocError>,
--    {
--        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_init(init)
--    }
--}
--
- impl<T> InPlaceInit<T> for UniqueArc<T> {
-     type PinnedSelf = Pin<Self>;
- 
-@@ -1301,28 +1279,6 @@ pub trait InPlaceWrite<T> {
-     fn write_pin_init<E>(self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E>;
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 7dfd3eb3847b3..6048b3fed3e78 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -648,6 +648,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 		switch (cmds[i]) {
+ 		case SMB2_OP_QUERY_INFO:
+ 			idata = in_iov[i].iov_base;
++			idata->contains_posix_file_info = false;
+ 			if (rc == 0 && cfile && cfile->symlink_target) {
+ 				idata->symlink_target = kstrdup(cfile->symlink_target, GFP_KERNEL);
+ 				if (!idata->symlink_target)
+@@ -671,6 +672,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 			break;
+ 		case SMB2_OP_POSIX_QUERY_INFO:
+ 			idata = in_iov[i].iov_base;
++			idata->contains_posix_file_info = true;
+ 			if (rc == 0 && cfile && cfile->symlink_target) {
+ 				idata->symlink_target = kstrdup(cfile->symlink_target, GFP_KERNEL);
+ 				if (!idata->symlink_target)
+@@ -768,6 +770,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 				idata = in_iov[i].iov_base;
+ 				idata->reparse.io.iov = *iov;
+ 				idata->reparse.io.buftype = resp_buftype[i + 1];
++				idata->contains_posix_file_info = false; /* BB VERIFY */
+ 				rbuf = reparse_buf_ptr(iov);
+ 				if (IS_ERR(rbuf)) {
+ 					rc = PTR_ERR(rbuf);
+@@ -789,6 +792,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 		case SMB2_OP_QUERY_WSL_EA:
+ 			if (!rc) {
+ 				idata = in_iov[i].iov_base;
++				idata->contains_posix_file_info = false;
+ 				qi_rsp = rsp_iov[i + 1].iov_base;
+ 				data[0] = (u8 *)qi_rsp + le16_to_cpu(qi_rsp->OutputBufferOffset);
+ 				size[0] = le32_to_cpu(qi_rsp->OutputBufferLength);
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 793e9b2b79d6f..17c3063a9ca5b 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -1001,6 +1001,7 @@ static int smb2_query_file_info(const unsigned int xid, struct cifs_tcon *tcon,
+ 		if (!data->symlink_target)
+ 			return -ENOMEM;
+ 	}
++	data->contains_posix_file_info = false;
+ 	return SMB2_query_info(xid, tcon, fid->persistent_fid, fid->volatile_fid, &data->fi);
  }
  
--impl<T> InPlaceWrite<T> for Box<MaybeUninit<T>> {
--    type Initialized = Box<T>;
+@@ -5150,7 +5151,7 @@ int __cifs_sfu_make_node(unsigned int xid, struct inode *inode,
+ 			     FILE_CREATE, CREATE_NOT_DIR |
+ 			     CREATE_OPTION_SPECIAL, ACL_NO_MODE);
+ 	oparms.fid = &fid;
 -
--    fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
--        let slot = self.as_mut_ptr();
--        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
--        // slot is valid.
--        unsafe { init.__init(slot)? };
--        // SAFETY: All fields have been initialized.
--        Ok(unsafe { self.assume_init() })
--    }
--
--    fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
--        let slot = self.as_mut_ptr();
--        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
--        // slot is valid and will not be moved, because we pin it later.
--        unsafe { init.__pinned_init(slot)? };
--        // SAFETY: All fields have been initialized.
--        Ok(unsafe { self.assume_init() }.into())
--    }
--}
--
- impl<T> InPlaceWrite<T> for UniqueArc<MaybeUninit<T>> {
-     type Initialized = UniqueArc<T>;
- 
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -16,7 +16,6 @@
- #![feature(coerce_unsized)]
- #![feature(dispatch_from_dyn)]
- #![feature(lint_reasons)]
--#![feature(new_uninit)]
- #![feature(unsize)]
- 
- // Ensure conditional compilation based on the kernel configuration works;
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -14,10 +14,10 @@
- #[doc(no_inline)]
- pub use core::pin::Pin;
- 
--pub use crate::alloc::{box_ext::BoxExt, flags::*, vec_ext::VecExt, KBox, KVBox, VBox};
-+pub use crate::alloc::{flags::*, vec_ext::VecExt, KBox, KVBox, VBox};
- 
- #[doc(no_inline)]
--pub use alloc::{boxed::Box, vec::Vec};
-+pub use alloc::vec::Vec;
- 
- #[doc(no_inline)]
- pub use macros::{module, pin_data, pinned_drop, vtable, Zeroable};
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -3,13 +3,11 @@
- //! Kernel types.
- 
- use crate::init::{self, PinInit};
--use alloc::boxed::Box;
- use core::{
-     cell::UnsafeCell,
-     marker::{PhantomData, PhantomPinned},
-     mem::{ManuallyDrop, MaybeUninit},
-     ops::{Deref, DerefMut},
--    pin::Pin,
-     ptr::NonNull,
- };
- 
-@@ -71,54 +69,6 @@ pub trait ForeignOwnable: Sized {
-     }
- }
- 
--impl<T: 'static> ForeignOwnable for Box<T> {
--    type Borrowed<'a> = &'a T;
--
--    fn into_foreign(self) -> *const core::ffi::c_void {
--        Box::into_raw(self) as _
--    }
--
--    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
--        // SAFETY: The safety requirements for this function ensure that the object is still alive,
--        // so it is safe to dereference the raw pointer.
--        // The safety requirements of `from_foreign` also ensure that the object remains alive for
--        // the lifetime of the returned value.
--        unsafe { &*ptr.cast() }
--    }
--
--    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
--        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
--        // call to `Self::into_foreign`.
--        unsafe { Box::from_raw(ptr as _) }
--    }
--}
--
--impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
--    type Borrowed<'a> = Pin<&'a T>;
--
--    fn into_foreign(self) -> *const core::ffi::c_void {
--        // SAFETY: We are still treating the box as pinned.
--        Box::into_raw(unsafe { Pin::into_inner_unchecked(self) }) as _
--    }
--
--    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Pin<&'a T> {
--        // SAFETY: The safety requirements for this function ensure that the object is still alive,
--        // so it is safe to dereference the raw pointer.
--        // The safety requirements of `from_foreign` also ensure that the object remains alive for
--        // the lifetime of the returned value.
--        let r = unsafe { &*ptr.cast() };
--
--        // SAFETY: This pointer originates from a `Pin<Box<T>>`.
--        unsafe { Pin::new_unchecked(r) }
--    }
--
--    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
--        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
--        // call to `Self::into_foreign`.
--        unsafe { Pin::new_unchecked(Box::from_raw(ptr as _)) }
--    }
--}
--
- impl ForeignOwnable for () {
-     type Borrowed<'a> = ();
- 
++	idata.contains_posix_file_info = false;
+ 	rc = server->ops->open(xid, &oparms, &oplock, &idata);
+ 	if (rc)
+ 		goto out;
+-- 
+2.39.5
+
 
 
 
