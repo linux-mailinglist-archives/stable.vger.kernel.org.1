@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-122328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D96AA59F2E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75548A59F11
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D823A7D57
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB6A0170012
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C88523536F;
-	Mon, 10 Mar 2025 17:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A80D2253FE;
+	Mon, 10 Mar 2025 17:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRJKzhTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOB3CbIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4996223535F;
-	Mon, 10 Mar 2025 17:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB10823026D;
+	Mon, 10 Mar 2025 17:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628185; cv=none; b=ouLBDHtbaa4//erXWA3UBQJNl5dkCoACOFI5ECGsmpY4dsSIgPPIvwksKqVurSwtI9OVDj4cU1D6T0CPyVDpC/DGdxVuhgPsu1rkg5C138fGGUnjMpHz5iO9hNOMgS3g0jb3XRnNdMRtNh/nOVYtQ97AqsJsInB+C7ePTNCfMrs=
+	t=1741628191; cv=none; b=rOXy+B/paUsElkv8vajRo1GT70T+2cnetL4tvJ8M1jfYRS/23CdUs5ogojMVKA6Atb4HEbtpQqon7/2zVU6HMBkpcO8qzNg5gOhf7zjX4DPJms6E2edw4uIpJRE1YAg0f9SstxFY40rdmGOqHaLCm3wyVy3sI37VoYPBBHLFKKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628185; c=relaxed/simple;
-	bh=c1kKYygG+kNCLBTHJ+Uidlhoq949N/jShltRBgyWwVA=;
+	s=arc-20240116; t=1741628191; c=relaxed/simple;
+	bh=ojbLLdVm9skDDwxhbTKeOALQkDcyaH979jYaj3T6ytM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ph+LojdY1FFJf7BT9f+GGM17qPVHL6pq7f0Hw4mLfVLdanUQFd+8gNZT8IRbns1aoJb8I5070Gw8rMYYV4OOR/MaQtoczWC6CnBkmEUazgRfp1pCZbCsn4kCOxNQaUv8eh/Y3PnwET3P9c8uFZuTJ0eGr5iLBhB7I1Q6NED6d2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRJKzhTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5D5C4CEF5;
-	Mon, 10 Mar 2025 17:36:24 +0000 (UTC)
+	 MIME-Version; b=R9d80Elil8fIj6xSEuk6WzViS960riSJcE5sw2Arl5r4nkHqxsY//5RuX2MbWwzKAZGGpOKp4PFxI+FvKS7NPgV+LyPU6SaMa1JVFDiu7jrMsqA1c3poZ4mecxovqTgwa+RG0npbXhIDOSkS9DwebYFBaI3HnsOv9GsE5y4V6V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOB3CbIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149EDC4CEE5;
+	Mon, 10 Mar 2025 17:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628184;
-	bh=c1kKYygG+kNCLBTHJ+Uidlhoq949N/jShltRBgyWwVA=;
+	s=korg; t=1741628190;
+	bh=ojbLLdVm9skDDwxhbTKeOALQkDcyaH979jYaj3T6ytM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kRJKzhTwevgxLrSN2JKSrIT6wEGWrGMMdLFeD4anl9dY/b71lY/rELwIZo2kzjyfV
-	 4ZN0TNbdtWviH5fKPRGzl1OYRv3H+peWHzki9AkXaIEqdPGy9lmnB7FP1cbQEu0yYo
-	 b4ZyFITeOG6AsZYfCxP/1IUssKDmAizhgAzj+0YU=
+	b=XOB3CbIFTFdqw9cZCHhOggXZ++lOvXOJIxDOsZKt9p2LMZjA4j/i7IxhF/n1QjY1D
+	 9sK3hgM7VBzm1O+btzNsWrYQ+gZfi1Izz++BLPLCwRKSa0V3TXbyLyI4J/33tCvqHd
+	 TZUXip4Z5EKNIlAom2ZWpl13zYH+zgcSyIevM3/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 117/145] intel_th: pci: Add Panther Lake-P/U support
-Date: Mon, 10 Mar 2025 18:06:51 +0100
-Message-ID: <20250310170439.482344399@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.6 118/145] char: misc: deallocate static minor in error path
+Date: Mon, 10 Mar 2025 18:06:52 +0100
+Message-ID: <20250310170439.527135856@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
 References: <20250310170434.733307314@linuxfoundation.org>
@@ -66,35 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 49114ff05770264ae233f50023fc64a719a9dcf9 upstream.
+commit 6d991f569c5ef6eaeadf1238df2c36e3975233ad upstream.
 
-Add support for the Trace Hub in Panther Lake-P/U.
+When creating sysfs files fail, the allocated minor must be freed such that
+it can be later reused. That is specially harmful for static minor numbers,
+since those would always fail to register later on.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20250211185017.1759193-6-alexander.shishkin@linux.intel.com
+Fixes: 6d04d2b554b1 ("misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Link: https://lore.kernel.org/r/20250123123249.4081674-5-cascardo@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/char/misc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -340,6 +340,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Panther Lake-P/U */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xe424),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -264,8 +264,8 @@ int misc_register(struct miscdevice *mis
+ 		device_create_with_groups(&misc_class, misc->parent, dev,
+ 					  misc, misc->groups, "%s", misc->name);
+ 	if (IS_ERR(misc->this_device)) {
++		misc_minor_free(misc->minor);
+ 		if (is_dynamic) {
+-			misc_minor_free(misc->minor);
+ 			misc->minor = MISC_DYNAMIC_MINOR;
+ 		}
+ 		err = PTR_ERR(misc->this_device);
 
 
 
