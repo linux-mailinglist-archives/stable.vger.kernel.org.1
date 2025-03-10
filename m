@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-122070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6431A59DCF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF5EA5A1F3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B76D3A66E5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 862F87A8B5D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC10C232395;
-	Mon, 10 Mar 2025 17:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097C123535B;
+	Mon, 10 Mar 2025 18:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rT3/0N7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tD2mP57x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686FB233149;
-	Mon, 10 Mar 2025 17:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB37F23536A;
+	Mon, 10 Mar 2025 18:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627442; cv=none; b=I8o8COk2ccOwckx5GlbgJ2Wt3k9KbGJxKaQyjoFE/4ELMEuI73+a2YmP+xXurPG7oDfZGopyIJTcIHvZMUuZwHuTel8QCWfm6ZVmlA4bcHHGEvjV+CXaBtgg4JQG9iYhe5wOJwEWgYyVB2b/86Wwl691LPTxwCuau691Ab756cc=
+	t=1741630508; cv=none; b=OyujuFZi+dClMN+GSI/rHWn9V17sdzK9kjGvv2DlRNmDCEsY6Sn1aHYJH9FcPsFL/QHrJ75NCet5jIngCG46qKXYGmukY6gQnCyyz1Sea8l+b7ieAqOaSYPqNdorI9ZAqj6x+QLkAIhLMl0AmpmVfIEMJWzWKHFS9YWi3iDq7QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627442; c=relaxed/simple;
-	bh=koPw3EbEcyxUkGx2lzzLr8dxLYv3JlB9mLH5UxoSUkk=;
+	s=arc-20240116; t=1741630508; c=relaxed/simple;
+	bh=i/MJjERGQYGwHpvYhu5i9Qk2VzD2sMBMgvxCfbnPnLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYzsq6wVuHEN+xxo9Iv0DQ50cCMhnyI5M1+Wqs2Ct+olTzdJ7s1KDO7g3OOKE6uoTj8NycWP8kOX+NNmxUBICd4GhazgBQHRV6x1Sy+UXBdqe9/NC88suV9Two5Y5u0zQl/5Gl+pBhUkZ8ycXIw9M0R3zLwbYEcIPRoRdIwkRDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rT3/0N7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DFAC4CEE5;
-	Mon, 10 Mar 2025 17:24:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C/V/nnpfmP4e7YVTlv0oMZ4e2HoiecHIgNMqNe7NuCDapLrAAUTcuEyf65OGhvZxCHKUJ3PN9KFFHKHSgyh5iwqB7wQDRyqVCIvVUDXCuszMrhUg8zuNAjSVWfLXj/053o0wNxjLyHfpEc/ZM9DM4vE71beUsSMfwSg7u59CfYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tD2mP57x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF9FC4CEEE;
+	Mon, 10 Mar 2025 18:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627442;
-	bh=koPw3EbEcyxUkGx2lzzLr8dxLYv3JlB9mLH5UxoSUkk=;
+	s=korg; t=1741630508;
+	bh=i/MJjERGQYGwHpvYhu5i9Qk2VzD2sMBMgvxCfbnPnLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rT3/0N7lNLd0RGh3ruYLbn4cMfYs0rMNcEgTgM/I86qh2Xdh8ik6oIZ6RLJFWPC7t
-	 DB9gXOYbALZDBHjX7xnMxVV0MmHUcD6LwGRy0X3lNTHukpgY94CSBl9Q+AKCZ1rKQe
-	 e0zcyyM6aXCtQ1/89qNHuc9bSXUjTwUEIYWyAJBM=
+	b=tD2mP57x6wOMUTFBahSxKg6wX4l1nYLoeUEHOGtG5V9WI+Mggjxp6mrGcCQWTe89X
+	 doFWHmSmEzOlgWbr1ZLcOtUnKjnT6UXmTJZeL5AU+8ZTrwD5Ri4Oglj0cBubpOI/rx
+	 5oPUKhEoA7Z5wdkcw49BBY1YAuYuyzOkxTiYpyFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.12 130/269] s390/traps: Fix test_monitor_call() inline assembly
-Date: Mon, 10 Mar 2025 18:04:43 +0100
-Message-ID: <20250310170502.903419287@linuxfoundation.org>
+	Chen Ridong <chenridong@huawei.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeelb@google.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 438/620] memcg: fix soft lockup in the OOM process
+Date: Mon, 10 Mar 2025 18:04:44 +0100
+Message-ID: <20250310170602.890181759@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +66,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 5623bc23a1cb9f9a9470fa73b3a20321dc4c4870 upstream.
+[ Upstream commit ade81479c7dda1ce3eedb215c78bc615bbd04f06 ]
 
-The test_monitor_call() inline assembly uses the xgr instruction, which
-also modifies the condition code, to clear a register. However the clobber
-list of the inline assembly does not specify that the condition code is
-modified, which may lead to incorrect code generation.
+A soft lockup issue was found in the product with about 56,000 tasks were
+in the OOM cgroup, it was traversing them when the soft lockup was
+triggered.
 
-Use the lhi instruction instead to clear the register without that the
-condition code is modified. Furthermore this limits clearing to the lower
-32 bits of val, since its type is int.
+watchdog: BUG: soft lockup - CPU#2 stuck for 23s! [VM Thread:1503066]
+CPU: 2 PID: 1503066 Comm: VM Thread Kdump: loaded Tainted: G
+Hardware name: Huawei Cloud OpenStack Nova, BIOS
+RIP: 0010:console_unlock+0x343/0x540
+RSP: 0000:ffffb751447db9a0 EFLAGS: 00000247 ORIG_RAX: ffffffffffffff13
+RAX: 0000000000000001 RBX: 0000000000000000 RCX: 00000000ffffffff
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000247
+RBP: ffffffffafc71f90 R08: 0000000000000000 R09: 0000000000000040
+R10: 0000000000000080 R11: 0000000000000000 R12: ffffffffafc74bd0
+R13: ffffffffaf60a220 R14: 0000000000000247 R15: 0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2fe6ad91f0 CR3: 00000004b2076003 CR4: 0000000000360ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ vprintk_emit+0x193/0x280
+ printk+0x52/0x6e
+ dump_task+0x114/0x130
+ mem_cgroup_scan_tasks+0x76/0x100
+ dump_header+0x1fe/0x210
+ oom_kill_process+0xd1/0x100
+ out_of_memory+0x125/0x570
+ mem_cgroup_out_of_memory+0xb5/0xd0
+ try_charge+0x720/0x770
+ mem_cgroup_try_charge+0x86/0x180
+ mem_cgroup_try_charge_delay+0x1c/0x40
+ do_anonymous_page+0xb5/0x390
+ handle_mm_fault+0xc4/0x1f0
 
-Fixes: 17248ea03674 ("s390: fix __EMIT_BUG() macro")
-Cc: stable@vger.kernel.org
-Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because thousands of processes are in the OOM cgroup, it takes a
+long time to traverse all of them.  As a result, this lead to soft lockup
+in the OOM process.
+
+To fix this issue, call 'cond_resched' in the 'mem_cgroup_scan_tasks'
+function per 1000 iterations.  For global OOM, call
+'touch_softlockup_watchdog' per 1000 iterations to avoid this issue.
+
+Link: https://lkml.kernel.org/r/20241224025238.3768787-1-chenridong@huaweicloud.com
+Fixes: 9cbb78bb3143 ("mm, memcg: introduce own oom handler to iterate only over its own threads")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/traps.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/memcontrol.c | 7 ++++++-
+ mm/oom_kill.c   | 8 +++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/arch/s390/kernel/traps.c
-+++ b/arch/s390/kernel/traps.c
-@@ -284,10 +284,10 @@ static void __init test_monitor_call(voi
- 		return;
- 	asm volatile(
- 		"	mc	0,0\n"
--		"0:	xgr	%0,%0\n"
-+		"0:	lhi	%[val],0\n"
- 		"1:\n"
--		EX_TABLE(0b,1b)
--		: "+d" (val));
-+		EX_TABLE(0b, 1b)
-+		: [val] "+d" (val));
- 	if (!val)
- 		panic("Monitor call doesn't work!\n");
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 6dd32ed164eaf..804f7be74a657 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1194,6 +1194,7 @@ int mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
+ {
+ 	struct mem_cgroup *iter;
+ 	int ret = 0;
++	int i = 0;
+ 
+ 	BUG_ON(memcg == root_mem_cgroup);
+ 
+@@ -1202,8 +1203,12 @@ int mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
+ 		struct task_struct *task;
+ 
+ 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
+-		while (!ret && (task = css_task_iter_next(&it)))
++		while (!ret && (task = css_task_iter_next(&it))) {
++			/* Avoid potential softlockup warning */
++			if ((++i & 1023) == 0)
++				cond_resched();
+ 			ret = fn(task, arg);
++		}
+ 		css_task_iter_end(&it);
+ 		if (ret) {
+ 			mem_cgroup_iter_break(memcg, iter);
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 8be6ffc0336f5..5fd826f3f3da7 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -45,6 +45,7 @@
+ #include <linux/init.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/cred.h>
++#include <linux/nmi.h>
+ 
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -433,10 +434,15 @@ static void dump_tasks(struct oom_control *oc)
+ 		mem_cgroup_scan_tasks(oc->memcg, dump_task, oc);
+ 	else {
+ 		struct task_struct *p;
++		int i = 0;
+ 
+ 		rcu_read_lock();
+-		for_each_process(p)
++		for_each_process(p) {
++			/* Avoid potential softlockup warning */
++			if ((++i & 1023) == 0)
++				touch_softlockup_watchdog();
+ 			dump_task(p, oc);
++		}
+ 		rcu_read_unlock();
+ 	}
  }
+-- 
+2.39.5
+
 
 
 
