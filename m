@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-122447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA6DA59FB8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11DFA59F30
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBB693AA4E2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B17C170D27
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9153233703;
-	Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E03922D7A6;
+	Mon, 10 Mar 2025 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7dmDvsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEnEvSTK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95332232378;
-	Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1A52253FE;
+	Mon, 10 Mar 2025 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628517; cv=none; b=EWU4wTPH8kuLM/IGbQp3QAgRl+wA5CJSlNc7P7PAnhFzCr22ehVuUnE0yfTUAxD4Q0hh4+tGn/lghslmynveQgD0LI925rOPJ/VV9SUw1/KCrTXH3/NYP6W4AUwwda5dveSq4FYveo4ibs3ukEzgWBNgAaCfkEZEDQ7QKCnVASo=
+	t=1741628271; cv=none; b=HEVVHC75pK1eeMsVqdPb8lwe4vkOFuaHFEbkt4QkBYxYbAUAgXegCKOAKf3wkrBUpcdacHt5EFLzuV8z7lA5h80eVlj4X3TB8cfBwgc0smdqIFje4z5OS/OsqNOpNg+dFYARvCm5S30KrRy9/kQDvbC5hSpN6Zwuz63RMwQRryQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628517; c=relaxed/simple;
-	bh=+xCaLLgbiUOkCen/jHx4c4EptJftgK4Z2SiG7sVDCbk=;
+	s=arc-20240116; t=1741628271; c=relaxed/simple;
+	bh=gwB+enhjYsW+JQ4VR9BaDxpz6HAtKYOqBY33lYkJJJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsHNOCfLRcvit/37bjv868YVEpnBCxJeoQmWUSaRWqBML/PVaSOrbMLDSUs+zAoUq1v5HPfOgoE7s8nxA2tMw6A0L0m46fuc3dgPw+dtwgWBZDOlW/fboejKcK6ijzUraOwzEDycEDHLuV0XX0za/ncVHxQe1LLQCDW3GZZcRw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7dmDvsF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E0CC4CEE5;
-	Mon, 10 Mar 2025 17:41:56 +0000 (UTC)
+	 MIME-Version; b=N5+tYFdfp/gl3pMlEnxGdwbHm8kW4y9TbUWyWFQFTSy7rjNHkzStOjkuQV+Cz/SELax4fxTaMDIVvCAs2YkS6s+ykXXccP6j34iZd6aiT0OMd7emk2QnuWmflJ4SwmXt2RM689b+5Aufbv9f8fv9v4k6+6FG6UQh72dH2UPT1c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEnEvSTK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A887DC4CEE5;
+	Mon, 10 Mar 2025 17:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628517;
-	bh=+xCaLLgbiUOkCen/jHx4c4EptJftgK4Z2SiG7sVDCbk=;
+	s=korg; t=1741628271;
+	bh=gwB+enhjYsW+JQ4VR9BaDxpz6HAtKYOqBY33lYkJJJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7dmDvsFI49nB4viNRef758XvQFyjO+CuGBOO4O0+mA9lcn+FqWL7QqLO47PqScAG
-	 WOv5+PiBsA3ESU0s8Yl3lc3K80yUkf1K0Rot0Ya2gGtv5mM+e+7lZy4mB/TRiclbph
-	 T0TV9iRznt+5YY4Lw9pjauDW6oKuhbB8uvDBbRSQ=
+	b=kEnEvSTKJDRGc56DFqLpWbp4bUvCCPCzSnpsqAEjsY08qQ7FPIhEGeJwsegZY3Smb
+	 3Onx+Xsp/FhrEmQrCSfja/aECYzOb9MBtVMvCn7Qxb4GTGQ8mJ5oQhJdlSh3FDwsA/
+	 fO+F9bN0gAUuez5B1WuDvsyp87e99k/nJVn9HhSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.1 084/109] drivers: core: fix device leak in __fw_devlink_relax_cycles()
-Date: Mon, 10 Mar 2025 18:07:08 +0100
-Message-ID: <20250310170430.905508462@linuxfoundation.org>
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 135/145] Revert "KVM: PPC: e500: Mark "struct page" pfn accessed before dropping mmu_lock"
+Date: Mon, 10 Mar 2025 18:07:09 +0100
+Message-ID: <20250310170440.207881241@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 78eb41f518f414378643ab022241df2a9dcd008b upstream.
+This reverts commit 59e21c4613b0a46f46eb124984928df46d88ad57 which is
+commit 84cf78dcd9d65c45ab73998d4ad50f433d53fb93 upstream.
 
-Commit bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize
-cycle detection logic") introduced a new struct device *con_dev and a
-get_dev_from_fwnode() call to get it, but without adding a corresponding
-put_device().
+It should not have been applied.
 
-Closes: https://lore.kernel.org/all/20241204124826.2e055091@booty/
-Fixes: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
-Cc: stable@vger.kernel.org
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://lore.kernel.org/r/20250213-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-8cd3b03e6a3f@bootlin.com
+Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kvm/e500_mmu_host.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2023,6 +2023,7 @@ static bool __fw_devlink_relax_cycles(st
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -498,9 +498,11 @@ static inline int kvmppc_e500_shadow_map
+ 	kvmppc_mmu_flush_icache(pfn);
+ 
  out:
- 	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
- 	put_device(sup_dev);
-+	put_device(con_dev);
- 	put_device(par_dev);
++	spin_unlock(&kvm->mmu_lock);
++
+ 	/* Drop refcount on page, so that mmu notifiers can clear it */
+ 	kvm_release_pfn_clean(pfn);
+-	spin_unlock(&kvm->mmu_lock);
++
  	return ret;
  }
+ 
 
 
 
