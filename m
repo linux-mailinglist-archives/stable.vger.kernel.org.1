@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-123069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B61A5A2B4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DCBA59E97
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DA1D3AE820
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4F083AB3A4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFEB22758F;
-	Mon, 10 Mar 2025 18:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8758022FF40;
+	Mon, 10 Mar 2025 17:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH/dWnwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtB41jsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC0C1B395F;
-	Mon, 10 Mar 2025 18:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F7F22F175;
+	Mon, 10 Mar 2025 17:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630956; cv=none; b=ryL8efIcyZKGF8DYtkWvIkqxUVVNcYgjJFa2GI7U92XNoKuac9V3xD/kySx9uesQZtMl322DjgaBAf8s1uo4YwY1aaxMIbGxrpCRqEPMt2MRWuGVGbUD9CuOXROP6PhU7L+5u2QNgDicFLiPBuU7ScoRnyGDexaKYtVlFWMmS5U=
+	t=1741627856; cv=none; b=eqZbJQpOnXUkOzIICxRjRrg+no1ReM6l6TFt1xdX45TSg6fvmLiSPeWt1SjaN5fo90Rcc/ssRJdCgpnlo0ZaJwpBXhvgbR4RAS70vrKlhry4L0azWyuvisqZvnjFfPGd3MmH4n/+Gfch4eo5QmBf1CYKm7dB6Jhg3ddg5FyvJHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630956; c=relaxed/simple;
-	bh=F8Kzt+K3lFXl8PiXaCzy2cnIS/hK+T2dp9Mqk52nG94=;
+	s=arc-20240116; t=1741627856; c=relaxed/simple;
+	bh=QrvE4dGuOHGyp6dozB+Pi8SllBpY4cWM53keGvin2Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMO68BMQ53OJ2Q8Zw+O3zkbq/zK0Bx9mJ3V2YhxqQAtNOFrcEURfOltPtmyIq3V3tUhQaJ3ZLx0eUbHY/3XLP0H5nDcUtkHy4kvW+GBKv/N9vanKR+1QhdGzqrNBIc0qei3uRVz6iDZG7cLiSLyCn0wnYtFPYW8tkHcISYCaLNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH/dWnwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65A4C4CEE5;
-	Mon, 10 Mar 2025 18:22:35 +0000 (UTC)
+	 MIME-Version; b=opFvwwtqwka0W8EiT8qMkpKcUiCumwEyh7LYvKm64ZRD9g38vGFRPnNPElr3uCs0lAH8JOgNlAq4a2Fopgatimj7AbfdhQ91L75KlDzp4JCD0Mkf/FUIjlLGQS9sBGm2lTMpAv+ULwZQc2y5i945LkjzesIZfT65ALfnxq0DUvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtB41jsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90792C4CEE5;
+	Mon, 10 Mar 2025 17:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630956;
-	bh=F8Kzt+K3lFXl8PiXaCzy2cnIS/hK+T2dp9Mqk52nG94=;
+	s=korg; t=1741627856;
+	bh=QrvE4dGuOHGyp6dozB+Pi8SllBpY4cWM53keGvin2Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PH/dWnwEhIwD31D0RbwM7XP7CyvhHwfr4BZzdj9X2T4bDG8C7g6jNUe/n9rbwnrTQ
-	 ZqExwY3df/lgpeoepSbB3T8gfavjZQxhuJhCgSMENMjBzatHIxTeibJr2suUiCJMLJ
-	 AseWgGrh7DEOsO6t7Q1tssgTIY32gsdNs+XUCp5I=
+	b=wtB41jsHJtwJxmXanjg4W0nlLPaVc/+4P9lOLR42je6Wa3EBNWPGLKiRoKUf6zkSC
+	 lUqQmnb3DOWUpdvvTa9pnTenG5WvqkzrVSVrzTM0riqcxlfeSXcpOLmgu3GspA1//e
+	 Z8JEK9BSpUph+rXyz9xnue4Io/ZAswqwNyByyeD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 561/620] ALSA: usx2y: validate nrpacks module parameter on probe
+	David Hildenbrand <david@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.12 254/269] mm: hugetlb: Add huge page size param to huge_ptep_get_and_clear()
 Date: Mon, 10 Mar 2025 18:06:47 +0100
-Message-ID: <20250310170607.685597693@linuxfoundation.org>
+Message-ID: <20250310170507.919891140@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +67,345 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 172a0f509723fe4741d4b8e9190cf434b18320d8 ]
+commit 02410ac72ac3707936c07ede66e94360d0d65319 upstream.
 
-The module parameter defines number of iso packets per one URB. User is
-allowed to set any value to the parameter of type int, which can lead to
-various kinds of weird and incorrect behavior like integer overflows,
-truncations, etc. Number of packets should be a small non-negative number.
+In order to fix a bug, arm64 needs to be told the size of the huge page
+for which the huge_pte is being cleared in huge_ptep_get_and_clear().
+Provide for this by adding an `unsigned long sz` parameter to the
+function. This follows the same pattern as huge_pte_clear() and
+set_huge_pte_at().
 
-Since this parameter is read-only, its value can be validated on driver
-probe.
+This commit makes the required interface modifications to the core mm as
+well as all arches that implement this function (arm64, loongarch, mips,
+parisc, powerpc, riscv, s390, sparc). The actual arm64 bug will be fixed
+in a separate commit.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250303100413.835-1-m.masimov@mt-integration.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
+Link: https://lore.kernel.org/r/20250226120656.2400136-2-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/usx2y/usbusx2y.c      | 11 +++++++++++
- sound/usb/usx2y/usbusx2y.h      | 26 ++++++++++++++++++++++++++
- sound/usb/usx2y/usbusx2yaudio.c | 27 ---------------------------
- 3 files changed, 37 insertions(+), 27 deletions(-)
+ arch/arm64/include/asm/hugetlb.h     |    4 ++--
+ arch/arm64/mm/hugetlbpage.c          |    8 +++++---
+ arch/loongarch/include/asm/hugetlb.h |    6 ++++--
+ arch/mips/include/asm/hugetlb.h      |    6 ++++--
+ arch/parisc/include/asm/hugetlb.h    |    2 +-
+ arch/parisc/mm/hugetlbpage.c         |    2 +-
+ arch/powerpc/include/asm/hugetlb.h   |    6 ++++--
+ arch/riscv/include/asm/hugetlb.h     |    3 ++-
+ arch/riscv/mm/hugetlbpage.c          |    2 +-
+ arch/s390/include/asm/hugetlb.h      |   17 ++++++++++++-----
+ arch/s390/mm/hugetlbpage.c           |    4 ++--
+ arch/sparc/include/asm/hugetlb.h     |    2 +-
+ arch/sparc/mm/hugetlbpage.c          |    2 +-
+ include/asm-generic/hugetlb.h        |    2 +-
+ include/linux/hugetlb.h              |    4 +++-
+ mm/hugetlb.c                         |    4 ++--
+ 16 files changed, 46 insertions(+), 28 deletions(-)
 
-diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
-index c3292afa883ee..b8f0c0298f14a 100644
---- a/sound/usb/usx2y/usbusx2y.c
-+++ b/sound/usb/usx2y/usbusx2y.c
-@@ -151,6 +151,12 @@ static int snd_usx2y_card_used[SNDRV_CARDS];
- static void snd_usx2y_card_private_free(struct snd_card *card);
- static void usx2y_unlinkseq(struct snd_usx2y_async_seq *s);
+--- a/arch/arm64/include/asm/hugetlb.h
++++ b/arch/arm64/include/asm/hugetlb.h
+@@ -34,8 +34,8 @@ extern int huge_ptep_set_access_flags(st
+ 				      unsigned long addr, pte_t *ptep,
+ 				      pte_t pte, int dirty);
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+-extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-				     unsigned long addr, pte_t *ptep);
++extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++				     pte_t *ptep, unsigned long sz);
+ #define __HAVE_ARCH_HUGE_PTEP_SET_WRPROTECT
+ extern void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 				    unsigned long addr, pte_t *ptep);
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -385,8 +385,8 @@ void huge_pte_clear(struct mm_struct *mm
+ 		__pte_clear(mm, addr, ptep);
+ }
  
-+#ifdef USX2Y_NRPACKS_VARIABLE
-+int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
-+module_param(nrpacks, int, 0444);
-+MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
-+#endif
-+
- /*
-  * pipe 4 is used for switching the lamps, setting samplerate, volumes ....
-  */
-@@ -433,6 +439,11 @@ static int snd_usx2y_probe(struct usb_interface *intf,
- 	struct snd_card *card;
- 	int err;
- 
-+#ifdef USX2Y_NRPACKS_VARIABLE
-+	if (nrpacks < 0 || nrpacks > USX2Y_NRPACKS_MAX)
-+		return -EINVAL;
-+#endif
-+
- 	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
- 	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
- 	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
-diff --git a/sound/usb/usx2y/usbusx2y.h b/sound/usb/usx2y/usbusx2y.h
-index 8d82f5cc2fe1c..0538c457921e6 100644
---- a/sound/usb/usx2y/usbusx2y.h
-+++ b/sound/usb/usx2y/usbusx2y.h
-@@ -7,6 +7,32 @@
- 
- #define NRURBS	        2
- 
-+/* Default value used for nr of packs per urb.
-+ * 1 to 4 have been tested ok on uhci.
-+ * To use 3 on ohci, you'd need a patch:
-+ * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
-+ * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
-+ *
-+ * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
-+ * Bigger is safer operation, smaller gives lower latencies.
-+ */
-+#define USX2Y_NRPACKS 4
-+
-+#define USX2Y_NRPACKS_MAX 1024
-+
-+/* If your system works ok with this module's parameter
-+ * nrpacks set to 1, you might as well comment
-+ * this define out, and thereby produce smaller, faster code.
-+ * You'd also set USX2Y_NRPACKS to 1 then.
-+ */
-+#define USX2Y_NRPACKS_VARIABLE 1
-+
-+#ifdef USX2Y_NRPACKS_VARIABLE
-+extern int nrpacks;
-+#define nr_of_packs() nrpacks
-+#else
-+#define nr_of_packs() USX2Y_NRPACKS
-+#endif
- 
- #define URBS_ASYNC_SEQ 10
- #define URB_DATA_LEN_ASYNC_SEQ 32
-diff --git a/sound/usb/usx2y/usbusx2yaudio.c b/sound/usb/usx2y/usbusx2yaudio.c
-index c39cc6851e2d7..a6ed4f0230b7f 100644
---- a/sound/usb/usx2y/usbusx2yaudio.c
-+++ b/sound/usb/usx2y/usbusx2yaudio.c
-@@ -28,33 +28,6 @@
- #include "usx2y.h"
- #include "usbusx2y.h"
- 
--/* Default value used for nr of packs per urb.
-- * 1 to 4 have been tested ok on uhci.
-- * To use 3 on ohci, you'd need a patch:
-- * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
-- * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
-- *
-- * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
-- * Bigger is safer operation, smaller gives lower latencies.
-- */
--#define USX2Y_NRPACKS 4
--
--/* If your system works ok with this module's parameter
-- * nrpacks set to 1, you might as well comment
-- * this define out, and thereby produce smaller, faster code.
-- * You'd also set USX2Y_NRPACKS to 1 then.
-- */
--#define USX2Y_NRPACKS_VARIABLE 1
--
--#ifdef USX2Y_NRPACKS_VARIABLE
--static int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
--#define  nr_of_packs() nrpacks
--module_param(nrpacks, int, 0444);
--MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
--#else
--#define nr_of_packs() USX2Y_NRPACKS
--#endif
--
- static int usx2y_urb_capt_retire(struct snd_usx2y_substream *subs)
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep)
++pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++			      pte_t *ptep, unsigned long sz)
  {
- 	struct urb	*urb = subs->completed_urb;
--- 
-2.39.5
-
+ 	int ncontig;
+ 	size_t pgsize;
+@@ -538,6 +538,8 @@ bool __init arch_hugetlb_valid_size(unsi
+ 
+ pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
+ {
++	unsigned long psize = huge_page_size(hstate_vma(vma));
++
+ 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_2645198)) {
+ 		/*
+ 		 * Break-before-make (BBM) is required for all user space mappings
+@@ -547,7 +549,7 @@ pte_t huge_ptep_modify_prot_start(struct
+ 		if (pte_user_exec(__ptep_get(ptep)))
+ 			return huge_ptep_clear_flush(vma, addr, ptep);
+ 	}
+-	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, psize);
+ }
+ 
+ void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
+--- a/arch/loongarch/include/asm/hugetlb.h
++++ b/arch/loongarch/include/asm/hugetlb.h
+@@ -41,7 +41,8 @@ static inline void huge_pte_clear(struct
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	pte_t clear;
+ 	pte_t pte = ptep_get(ptep);
+@@ -56,8 +57,9 @@ static inline pte_t huge_ptep_clear_flus
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_tlb_page(vma, addr);
+ 	return pte;
+ }
+--- a/arch/mips/include/asm/hugetlb.h
++++ b/arch/mips/include/asm/hugetlb.h
+@@ -32,7 +32,8 @@ static inline int prepare_hugepage_range
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	pte_t clear;
+ 	pte_t pte = *ptep;
+@@ -47,13 +48,14 @@ static inline pte_t huge_ptep_clear_flus
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+ 	/*
+ 	 * clear the huge pte entry firstly, so that the other smp threads will
+ 	 * not get old pte entry after finishing flush_tlb_page and before
+ 	 * setting new huge pte entry
+ 	 */
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_tlb_page(vma, addr);
+ 	return pte;
+ }
+--- a/arch/parisc/include/asm/hugetlb.h
++++ b/arch/parisc/include/asm/hugetlb.h
+@@ -10,7 +10,7 @@ void set_huge_pte_at(struct mm_struct *m
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep);
++			      pte_t *ptep, unsigned long sz);
+ 
+ /*
+  * If the arch doesn't supply something else, assume that hugepage
+--- a/arch/parisc/mm/hugetlbpage.c
++++ b/arch/parisc/mm/hugetlbpage.c
+@@ -147,7 +147,7 @@ void set_huge_pte_at(struct mm_struct *m
+ 
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	pte_t entry;
+ 
+--- a/arch/powerpc/include/asm/hugetlb.h
++++ b/arch/powerpc/include/asm/hugetlb.h
+@@ -45,7 +45,8 @@ void set_huge_pte_at(struct mm_struct *m
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	return __pte(pte_update(mm, addr, ptep, ~0UL, 0, 1));
+ }
+@@ -55,8 +56,9 @@ static inline pte_t huge_ptep_clear_flus
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_hugetlb_page(vma, addr);
+ 	return pte;
+ }
+--- a/arch/riscv/include/asm/hugetlb.h
++++ b/arch/riscv/include/asm/hugetlb.h
+@@ -28,7 +28,8 @@ void set_huge_pte_at(struct mm_struct *m
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep);
++			      unsigned long addr, pte_t *ptep,
++			      unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -293,7 +293,7 @@ int huge_ptep_set_access_flags(struct vm
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+ 			      unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	pte_t orig_pte = ptep_get(ptep);
+ 	int pte_num;
+--- a/arch/s390/include/asm/hugetlb.h
++++ b/arch/s390/include/asm/hugetlb.h
+@@ -20,8 +20,15 @@ void set_huge_pte_at(struct mm_struct *m
+ void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 		     pte_t *ptep, pte_t pte);
+ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep);
++pte_t __huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++				pte_t *ptep);
++
++static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
++{
++	return __huge_ptep_get_and_clear(mm, addr, ptep);
++}
+ 
+ /*
+  * If the arch doesn't supply something else, assume that hugepage
+@@ -57,7 +64,7 @@ static inline void huge_pte_clear(struct
+ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 					  unsigned long address, pte_t *ptep)
+ {
+-	return huge_ptep_get_and_clear(vma->vm_mm, address, ptep);
++	return __huge_ptep_get_and_clear(vma->vm_mm, address, ptep);
+ }
+ 
+ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+@@ -66,7 +73,7 @@ static inline int huge_ptep_set_access_f
+ {
+ 	int changed = !pte_same(huge_ptep_get(vma->vm_mm, addr, ptep), pte);
+ 	if (changed) {
+-		huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++		__huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
+ 		__set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
+ 	}
+ 	return changed;
+@@ -75,7 +82,7 @@ static inline int huge_ptep_set_access_f
+ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 					   unsigned long addr, pte_t *ptep)
+ {
+-	pte_t pte = huge_ptep_get_and_clear(mm, addr, ptep);
++	pte_t pte = __huge_ptep_get_and_clear(mm, addr, ptep);
+ 	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(pte));
+ }
+ 
+--- a/arch/s390/mm/hugetlbpage.c
++++ b/arch/s390/mm/hugetlbpage.c
+@@ -174,8 +174,8 @@ pte_t huge_ptep_get(struct mm_struct *mm
+ 	return __rste_to_pte(pte_val(*ptep));
+ }
+ 
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep)
++pte_t __huge_ptep_get_and_clear(struct mm_struct *mm,
++				unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte = huge_ptep_get(mm, addr, ptep);
+ 	pmd_t *pmdp = (pmd_t *) ptep;
+--- a/arch/sparc/include/asm/hugetlb.h
++++ b/arch/sparc/include/asm/hugetlb.h
+@@ -20,7 +20,7 @@ void __set_huge_pte_at(struct mm_struct
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep);
++			      pte_t *ptep, unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+--- a/arch/sparc/mm/hugetlbpage.c
++++ b/arch/sparc/mm/hugetlbpage.c
+@@ -368,7 +368,7 @@ void set_huge_pte_at(struct mm_struct *m
+ }
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	unsigned int i, nptes, orig_shift, shift;
+ 	unsigned long size;
+--- a/include/asm-generic/hugetlb.h
++++ b/include/asm-generic/hugetlb.h
+@@ -84,7 +84,7 @@ static inline void set_huge_pte_at(struc
+ 
+ #ifndef __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-		unsigned long addr, pte_t *ptep)
++		unsigned long addr, pte_t *ptep, unsigned long sz)
+ {
+ 	return ptep_get_and_clear(mm, addr, ptep);
+ }
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1009,7 +1009,9 @@ static inline void hugetlb_count_sub(lon
+ static inline pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma,
+ 						unsigned long addr, pte_t *ptep)
+ {
+-	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	unsigned long psize = huge_page_size(hstate_vma(vma));
++
++	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, psize);
+ }
+ #endif
+ 
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5395,7 +5395,7 @@ static void move_huge_pte(struct vm_area
+ 	if (src_ptl != dst_ptl)
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 
+-	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
++	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte, sz);
+ 
+ 	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
+ 		huge_pte_clear(mm, new_addr, dst_pte, sz);
+@@ -5570,7 +5570,7 @@ void __unmap_hugepage_range(struct mmu_g
+ 			set_vma_resv_flags(vma, HPAGE_RESV_UNMAPPED);
+ 		}
+ 
+-		pte = huge_ptep_get_and_clear(mm, address, ptep);
++		pte = huge_ptep_get_and_clear(mm, address, ptep, sz);
+ 		tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
+ 		if (huge_pte_dirty(pte))
+ 			set_page_dirty(page);
 
 
 
