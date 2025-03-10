@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0A6A59F4D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF301A59CE5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0CF2171316
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB3B93A9FCC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8671234966;
-	Mon, 10 Mar 2025 17:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E2422B8D0;
+	Mon, 10 Mar 2025 17:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0cu+4R3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiFu5+q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9657A230BD4;
-	Mon, 10 Mar 2025 17:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63FB230BE6;
+	Mon, 10 Mar 2025 17:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628294; cv=none; b=aiaRJHcuqrFY3i+ud5i+ZvRGqhQQ1Z+K0QvlNo5LBWz9aZq0SYEwhdRqIoz8AV8FNoQUiVq7ybmePoIH/GjifIZfVxuRzJwCmWnSNyiU4jjK6kRIqTvrje/U5QRs/9QZJ4QaY1zJICb0ft4/yfkkDCjjIhqVjnU96fjUZS5Z8DU=
+	t=1741626900; cv=none; b=Cywkex/8Xr/7eu+f2fB7jWpJCPOIQXmtxxqLWhCFOWcE388YcmUxGiNnXDpd0zSwmwXlQu+Vgz4a+HEwz39cB/phBo79nJTXg8V8Ns3os6NArM87J4r9tz5UzBqlvnkkEqnNmELIKpVHP/UAl6NMUQtzJobEZ+XOBLROD51MhPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628294; c=relaxed/simple;
-	bh=y9Th0CYYsyU/bkZpZEaV+deCsdXpGy49+E0ldqBc07A=;
+	s=arc-20240116; t=1741626900; c=relaxed/simple;
+	bh=mY2qvHevQxthjQKGYM0ASLMeINxY5CDFiVgssH01xg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rM0S+tj/miiwywvNcOp3gZSPXu44MMXC3XfDxeX04AQ7OiWJds8hVmp503zrJvXf1Z6T4O99CuR4QlHJ64gLakyy4gEHWdIsRO9FFxacxu9kuv0NBeP64PQBfwXRkwRZJN48myi/f5t2fAtNtuMCx6jSgEtcLahRj3hwqwYvgxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0cu+4R3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24931C4CEEE;
-	Mon, 10 Mar 2025 17:38:13 +0000 (UTC)
+	 MIME-Version; b=HqxAc2tppJcQahkcSOgTDDGtrrc4yG861H85IGp/AhJVL30FNDByo1v7ow+/NBYghHXvtxYTmI5IOE73+maN4PB51Q8FTywaWNRziQ9esbq4P9HDFCdCfU/b34gJHj80GOnQn11CqV+dxx5iif49WBNoIv1igaAZERaWWFjS9f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiFu5+q4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7E0C4CEE5;
+	Mon, 10 Mar 2025 17:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628294;
-	bh=y9Th0CYYsyU/bkZpZEaV+deCsdXpGy49+E0ldqBc07A=;
+	s=korg; t=1741626900;
+	bh=mY2qvHevQxthjQKGYM0ASLMeINxY5CDFiVgssH01xg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D0cu+4R3wgcSW02j9QM4+XEzFZ8t5cWWZqbsV87w9t7iOorNTBiPl/ltBnUGYorWC
-	 TpgGYuUK2x2wVPcPa/Xfp1bNrvWdJ3YY9F9sZO+2RP90rCxpWSQOgYkYQJXgCvTETZ
-	 1+nH9I0xz+DbGZpbf8AWVXLrHypNF0U/Cy26W+WA=
+	b=TiFu5+q4Dznr8fcmLMtni/d78RIKUWdwve08m5SZJsAFY6r5jQkFa6XN4/5C2jl3k
+	 TQzM/R7Z7YBroBZcliqJuD07B2La0nlbhmtCUuPMbKawcA0Cpqu+vExaGj6zrClLL/
+	 LwGjfCuYv/+jL1TKyY7qoRWhQ/M59sfi5T6KTtU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/109] ibmvnic: Perform tx CSO during send scrq direct
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.13 152/207] usb: renesas_usbhs: Call clk_put()
 Date: Mon, 10 Mar 2025 18:05:45 +0100
-Message-ID: <20250310170427.597226299@linuxfoundation.org>
+Message-ID: <20250310170453.839249198@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,139 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit e633e32b60fd6701bed73599b273a2a03621ea54 ]
+commit b5ea08aa883da05106fcc683d12489a4292d1122 upstream.
 
-During initialization with the vnic server, a bitstring is communicated
-to the client regarding header info needed during CSO (See "VNIC
-Capabilities" in PAPR). Most of the time, to be safe, vnic server
-requests header info for CSO. When header info is needed, multiple TX
-descriptors are required per skb; This limits the driver to use
-send_subcrq_indirect instead of send_subcrq_direct.
+Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
+clk_put() on priv->clks[0] on error path.
 
-Previously, the vnic server request for header info was ignored. This
-allowed the use of send_sub_crq_direct. Transmissions were successful
-because the bitstring returned by vnic server is broad and over
-cautionary. It was observed that mlx backing devices could actually
-transmit and handle CSO packets without the vnic server receiving
-header info (despite the fact that the bitstring requested it).
-
-There was a trust issue: The bitstring was overcautionary. This extra
-precaution (requesting header info when the backing device may not use
-it) comes at the cost of performance (using direct vs indirect hcalls
-has a 30% delta in small packet RR transaction rate). So it has been
-requested that the vnic server team tries to ensure that the bitstring
-is more exact. In the meantime, disable CSO when it is possible to use
-the skb in the send_subcrq_direct path. In other words, calculate the
-checksum before handing the packet to FW when the packet is not
-segmented and xmit_more is false.
-
-Since the code path is only possible if the skb is non GSO and xmit_more
-is false, the cost of doing checksum in the send_subcrq_direct path is
-minimal. Any large segmented skb will have xmit_more set to true more
-frequently and it is inexpensive to do checksumming on a small skb.
-The worst-case workload would be a 9000 MTU TCP_RR test with close
-to MTU sized packets (and TSO off). This allows xmit_more to be false
-more frequently and open the code path up to use send_subcrq_direct.
-Observing trace data (graph-time = 1) and packet rate with this workload
-shows minimal performance degradation:
-
-1. NIC does checksum w headers, safely use send_subcrq_indirect:
-  - Packet rate: 631k txs
-  - Trace data:
-    ibmvnic_xmit = 44344685.87 us / 6234576 hits = AVG 7.11 us
-      skb_checksum_help = 4.07 us / 2 hits = AVG 2.04 us
-       ^ Notice hits, tracing this just for reassurance
-      ibmvnic_tx_scrq_flush = 33040649.69 us / 5638441 hits = AVG 5.86 us
-        send_subcrq_indirect = 37438922.24 us / 6030859 hits = AVG 6.21 us
-
-2. NIC does checksum w/o headers, dangerously use send_subcrq_direct:
-  - Packet rate: 831k txs
-  - Trace data:
-    ibmvnic_xmit = 48940092.29 us / 8187630 hits = AVG 5.98 us
-      skb_checksum_help = 2.03 us / 1 hits = AVG 2.03
-      ibmvnic_tx_scrq_flush = 31141879.57 us / 7948960 hits = AVG 3.92 us
-        send_subcrq_indirect = 8412506.03 us / 728781 hits = AVG 11.54
-         ^ notice hits is much lower b/c send_subcrq_direct was called
-                                            ^ wasn't traceable
-
-3. driver does checksum, safely use send_subcrq_direct (THIS PATCH):
-  - Packet rate: 829k txs
-  - Trace data:
-    ibmvnic_xmit = 56696077.63 us / 8066168 hits = AVG 7.03 us
-      skb_checksum_help = 8587456.16 us / 7526072 hits = AVG 1.14 us
-      ibmvnic_tx_scrq_flush = 30219545.55 us / 7782409 hits = AVG 3.88 us
-        send_subcrq_indirect = 8638326.44 us / 763693 hits = AVG 11.31 us
-
-When the bitstring ever specifies that CSO does not require headers
-(dependent on VIOS vnic server changes), then this patch should be
-removed and replaced with one that investigates the bitstring before
-using send_subcrq_direct.
-
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Link: https://patch.msgid.link/20240807211809.1259563-8-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: de390657b5d6 ("ibmvnic: Inspect header requirements before using scrq direct")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 44991cae94045..578b9b5460108 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2237,6 +2237,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	unsigned int skblen;
- 	union sub_crq tx_crq;
- 	unsigned int offset;
-+	bool use_scrq_send_direct = false;
- 	int num_entries = 1;
- 	unsigned char *dst;
- 	int bufidx = 0;
-@@ -2296,6 +2297,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	memset(dst, 0, tx_pool->buf_size);
- 	data_dma_addr = ltb->addr + offset;
- 
-+	/* if we are going to send_subcrq_direct this then we need to
-+	 * update the checksum before copying the data into ltb. Essentially
-+	 * these packets force disable CSO so that we can guarantee that
-+	 * FW does not need header info and we can send direct.
-+	 */
-+	if (!skb_is_gso(skb) && !ind_bufp->index && !netdev_xmit_more()) {
-+		use_scrq_send_direct = true;
-+		if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+		    skb_checksum_help(skb))
-+			use_scrq_send_direct = false;
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device
+ 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
+ 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
+ 		priv->clks[1] = NULL;
+-	else if (IS_ERR(priv->clks[1]))
++	else if (IS_ERR(priv->clks[1])) {
++		clk_put(priv->clks[0]);
+ 		return PTR_ERR(priv->clks[1]);
 +	}
-+
- 	if (skb_shinfo(skb)->nr_frags) {
- 		int cur, i;
  
-@@ -2381,11 +2394,13 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		tx_crq.v1.flags1 |= IBMVNIC_TX_LSO;
- 		tx_crq.v1.mss = cpu_to_be16(skb_shinfo(skb)->gso_size);
- 		hdrs += 2;
--	} else if (!ind_bufp->index && !netdev_xmit_more()) {
--		ind_bufp->indir_arr[0] = tx_crq;
-+	} else if (use_scrq_send_direct) {
-+		/* See above comment, CSO disabled with direct xmit */
-+		tx_crq.v1.flags1 &= ~(IBMVNIC_TX_CHKSUM_OFFLOAD);
- 		ind_bufp->index = 1;
- 		tx_buff->num_entries = 1;
- 		netdev_tx_sent_queue(txq, skb->len);
-+		ind_bufp->indir_arr[0] = tx_crq;
- 		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq, false);
- 		if (lpar_rc != H_SUCCESS)
- 			goto tx_err;
--- 
-2.39.5
-
+ 	return 0;
+ }
 
 
 
