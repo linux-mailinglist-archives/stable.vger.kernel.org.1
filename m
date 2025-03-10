@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AFCA59EAA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D06BA59E52
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C078162DB7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DBF13AB159
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C126231A2A;
-	Mon, 10 Mar 2025 17:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06F8231A24;
+	Mon, 10 Mar 2025 17:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZ+c3pAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzUzBHhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079B21A7264;
-	Mon, 10 Mar 2025 17:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6C322FE18;
+	Mon, 10 Mar 2025 17:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627976; cv=none; b=qTNKVtqL2CIcVgXXUe8sBEVkpCak8AcW8Vgb4+WH8B6SlH5lJnmzXSnhmxBUbMmsuhxiDzeWtW6aLb7irZoY8eTEFfKw+WyUsJo5uiVfpR84Ff9Qb2fOSQuB+w64lwH4F+Kw8G/rQcbSZ94lY6BUndZ63J/Pti6bdUDfZunEoLA=
+	t=1741627694; cv=none; b=X+3+Vopot9CCpOpHLZM6lSUWkN55veb6rRxGynpPhmryGUSGnj//KwkfzWetmukyM1PWozCZhwxXHw/hWPh0RJV1kb9KAS42fcLV4D47EtHbVe+1uLX/OI2MfxzgB+EHySt5iGZhb4XZcpozI60OXGzXB4mCVd80fzxlvpeZ/6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627976; c=relaxed/simple;
-	bh=JpYXekJF5VX+UGMxEGCMJ5Dx0essXakSMOYOPTwdqlg=;
+	s=arc-20240116; t=1741627694; c=relaxed/simple;
+	bh=qkBq99Ue2+DwG+JUiLkTnakek6KX6QD27xH2i3XuCE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtpKgJ4un/NykG1RrLhqRp2/n2U9+PnpyDrbJ1WmHIuUhk6K1XVtBkFPHkRwhXno5mxPCjwvTRXTqQiUXultDpIGLGwa0iTzuAAtbpcRUAe+/4rlzUSkdRftx7V+zlew8hoMUcKU7Nc0KeTISJjbtpDuPzULb9pD3csl2psy7MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZ+c3pAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF17C4CEE5;
-	Mon, 10 Mar 2025 17:32:55 +0000 (UTC)
+	 MIME-Version; b=QGhmlSrweVeykQt6w0CfmR2hlFfqq89XvQ1evji16Ivj7HJ3z79MUyYDKyZrNeSB2QjQtPdqR+QLhCfuMvZgOJa5bNBzjjD6rXIHKFN0on8SHX4mQPCmpF+rKCWfMGyK9/V2OqPXavxZwKCto3RKikLhJmbrggLLRXwtv8VVmi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzUzBHhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B160C4CEE5;
+	Mon, 10 Mar 2025 17:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627975;
-	bh=JpYXekJF5VX+UGMxEGCMJ5Dx0essXakSMOYOPTwdqlg=;
+	s=korg; t=1741627694;
+	bh=qkBq99Ue2+DwG+JUiLkTnakek6KX6QD27xH2i3XuCE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZ+c3pAI4TRg/ZWMiSMV9WiVkwy93hlHddsK0JLt2zHPDaJB91Z9y1qOqUp1Z7K+a
-	 TcJEX2g4WsqqlhwqS/YtKyTPwSaSlr96FMBuvHS4N3+glcG5RAbDnVstkbnqcu7lhV
-	 JJc+puafRfUQCZarkyiZwEv0kxjHWAP2Lgum91ak=
+	b=TzUzBHhSGFs5izlWlXjDrUia7+XOHIyUb5nSPfK2y8VAIJt3MQukA0D9+ngRgHkJm
+	 OLBVaebZFW65O7lC9Whi998z9UcCBM4ClVzgG6Al8d51WKFQy7KGQ5TQDFMcV7iPGQ
+	 xQfhIPu3nh1rvDqDDlOXaeK6G7MrR9w1z+oLYd6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 045/145] x86/cpu: Properly parse CPUID leaf 0x2 TLB descriptor 0x63
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Alex Elder <elder@riscstar.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 186/269] net: ipa: Fix QSB data for v4.7
 Date: Mon, 10 Mar 2025 18:05:39 +0100
-Message-ID: <20250310170436.552377165@linuxfoundation.org>
+Message-ID: <20250310170505.120874504@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit f6bdaab79ee4228a143ee1b4cb80416d6ffc0c63 upstream.
+[ Upstream commit 6a2843aaf551d87beb92d774f7d5b8ae007fe774 ]
 
-CPUID leaf 0x2's one-byte TLB descriptors report the number of entries
-for specific TLB types, among other properties.
+As per downstream reference, max_writes should be 12 and max_reads
+should be 13.
 
-Typically, each emitted descriptor implies the same number of entries
-for its respective TLB type(s).  An emitted 0x63 descriptor is an
-exception: it implies 4 data TLB entries for 1GB pages and 32 data TLB
-entries for 2MB or 4MB pages.
-
-For the TLB descriptors parsing code, the entry count for 1GB pages is
-encoded at the intel_tlb_table[] mapping, but the 2MB/4MB entry count is
-totally ignored.
-
-Update leaf 0x2's parsing logic 0x2 to account for 32 data TLB entries
-for 2MB/4MB pages implied by the 0x63 descriptor.
-
-Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-4-darwi@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Link: https://patch.msgid.link/20250227-ipa-v4-7-fixes-v1-2-a88dd8249d8a@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/intel.c |   60 ++++++++++++++++++++++++++++----------------
- 1 file changed, 39 insertions(+), 21 deletions(-)
+ drivers/net/ipa/data/ipa_data-v4.7.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -748,26 +748,37 @@ static unsigned int intel_size_cache(str
- }
- #endif
- 
--#define TLB_INST_4K	0x01
--#define TLB_INST_4M	0x02
--#define TLB_INST_2M_4M	0x03
--
--#define TLB_INST_ALL	0x05
--#define TLB_INST_1G	0x06
--
--#define TLB_DATA_4K	0x11
--#define TLB_DATA_4M	0x12
--#define TLB_DATA_2M_4M	0x13
--#define TLB_DATA_4K_4M	0x14
--
--#define TLB_DATA_1G	0x16
--
--#define TLB_DATA0_4K	0x21
--#define TLB_DATA0_4M	0x22
--#define TLB_DATA0_2M_4M	0x23
--
--#define STLB_4K		0x41
--#define STLB_4K_2M	0x42
-+#define TLB_INST_4K		0x01
-+#define TLB_INST_4M		0x02
-+#define TLB_INST_2M_4M		0x03
-+
-+#define TLB_INST_ALL		0x05
-+#define TLB_INST_1G		0x06
-+
-+#define TLB_DATA_4K		0x11
-+#define TLB_DATA_4M		0x12
-+#define TLB_DATA_2M_4M		0x13
-+#define TLB_DATA_4K_4M		0x14
-+
-+#define TLB_DATA_1G		0x16
-+#define TLB_DATA_1G_2M_4M	0x17
-+
-+#define TLB_DATA0_4K		0x21
-+#define TLB_DATA0_4M		0x22
-+#define TLB_DATA0_2M_4M		0x23
-+
-+#define STLB_4K			0x41
-+#define STLB_4K_2M		0x42
-+
-+/*
-+ * All of leaf 0x2's one-byte TLB descriptors implies the same number of
-+ * entries for their respective TLB types.  The 0x63 descriptor is an
-+ * exception: it implies 4 dTLB entries for 1GB pages 32 dTLB entries
-+ * for 2MB or 4MB pages.  Encode descriptor 0x63 dTLB entry count for
-+ * 2MB/4MB pages here, as its count for dTLB 1GB pages is already at the
-+ * intel_tlb_table[] mapping.
-+ */
-+#define TLB_0x63_2M_4M_ENTRIES	32
- 
- static const struct _tlb_table intel_tlb_table[] = {
- 	{ 0x01, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages, 4-way set associative" },
-@@ -789,7 +800,8 @@ static const struct _tlb_table intel_tlb
- 	{ 0x5c, TLB_DATA_4K_4M,		128,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x5d, TLB_DATA_4K_4M,		256,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x61, TLB_INST_4K,		48,	" TLB_INST 4 KByte pages, full associative" },
--	{ 0x63, TLB_DATA_1G,		4,	" TLB_DATA 1 GByte pages, 4-way set associative" },
-+	{ 0x63, TLB_DATA_1G_2M_4M,	4,	" TLB_DATA 1 GByte pages, 4-way set associative"
-+						" (plus 32 entries TLB_DATA 2 MByte or 4 MByte pages, not encoded here)" },
- 	{ 0x6b, TLB_DATA_4K,		256,	" TLB_DATA 4 KByte pages, 8-way associative" },
- 	{ 0x6c, TLB_DATA_2M_4M,		128,	" TLB_DATA 2 MByte or 4 MByte pages, 8-way associative" },
- 	{ 0x6d, TLB_DATA_1G,		16,	" TLB_DATA 1 GByte pages, fully associative" },
-@@ -889,6 +901,12 @@ static void intel_tlb_lookup(const unsig
- 		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
- 		break;
-+	case TLB_DATA_1G_2M_4M:
-+		if (tlb_lld_2m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_2m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		if (tlb_lld_4m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_4m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		fallthrough;
- 	case TLB_DATA_1G:
- 		if (tlb_lld_1g[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_1g[ENTRIES] = intel_tlb_table[k].entries;
+diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
+index 7e315779e6648..e63dcf8d45567 100644
+--- a/drivers/net/ipa/data/ipa_data-v4.7.c
++++ b/drivers/net/ipa/data/ipa_data-v4.7.c
+@@ -38,8 +38,8 @@ enum ipa_rsrc_group_id {
+ /* QSB configuration data for an SoC having IPA v4.7 */
+ static const struct ipa_qsb_data ipa_qsb_data[] = {
+ 	[IPA_QSB_MASTER_DDR] = {
+-		.max_writes		= 8,
+-		.max_reads		= 0,	/* no limit (hardware max) */
++		.max_writes		= 12,
++		.max_reads		= 13,
+ 		.max_reads_beats	= 120,
+ 	},
+ };
+-- 
+2.39.5
+
 
 
 
