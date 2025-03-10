@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-122332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8016A59F14
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E1DA5A28F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28FDE170334
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 184261757D7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3A322FE18;
-	Mon, 10 Mar 2025 17:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2336322FF4E;
+	Mon, 10 Mar 2025 18:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsUgcMUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz44moqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1A318DB24;
-	Mon, 10 Mar 2025 17:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D465ABA3D;
+	Mon, 10 Mar 2025 18:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628196; cv=none; b=vGWtMvIoKJFKPET/17MTLW2Nr0zP5rBh/OcE0K0BUbUwzhdX6zVW9gOVBcgZaX+CPqMRn3Zv/sXF0kk2AOEn7iZOJHvJrrUyYm4tS4R3oVOEze2+oX2J09O5YvtxPnE2IW3birYUcqs7Ej2f5rqodiWPLgjtfsAcwcK0dshZnHQ=
+	t=1741630885; cv=none; b=WLzsJqZQ9aw+xGbD3MN8T921zZa/SFui5b2uq6acwAS80CUcK39OozmXWmL9XgsgNCUQuXIY0meWHckLl20H6dzPvp8EpmNuq/gNohXUFD3onKS2QBp99Xwe91u+J9hAuerQNexFRhVtuuWwU8gokXZCt0JWBWdHI5Ov/OSv59c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628196; c=relaxed/simple;
-	bh=vaYheL08dtBnQXLh7VdR11NxPGe4XzKTBs30V5w+7S4=;
+	s=arc-20240116; t=1741630885; c=relaxed/simple;
+	bh=owkFvLq+dFWQFXe774RJDTTurhS3H33RyOLsr/elrO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Is6wkoZMrWjPMp3Pum9EFzFbW9xPkO9lPayu1W89QMx3mRzhro9VvrsKtHEDmeq4LQHY+PqbUEpElN/CVj0khnXQKD/JXUBLp2m6c99mPhrSOFqdCUKFeHWNytO+4i5ZmPYcqAa2zT2DtNcG1QEJafUlLhgtRRKkwaV8R/nas9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsUgcMUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B725DC4CEE5;
-	Mon, 10 Mar 2025 17:36:35 +0000 (UTC)
+	 MIME-Version; b=NCb9sMg3rfjiJUXHFJHLm3g/kLJ0N1YnpqMqoUFuCKvf9wYExoXvF6shnYhqrUa+lzvdV8dcx7DMyKCehD+iUX2PMke2vslSnkUJcD+9zS1JKsK+JOVZ1d5JmB5noPYVVEkLqTZ1tEpNAu+BScghK/ruw0oP9GO53zcJxh7w5NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz44moqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC68C4CEE5;
+	Mon, 10 Mar 2025 18:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628196;
-	bh=vaYheL08dtBnQXLh7VdR11NxPGe4XzKTBs30V5w+7S4=;
+	s=korg; t=1741630885;
+	bh=owkFvLq+dFWQFXe774RJDTTurhS3H33RyOLsr/elrO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsUgcMUnraD/9iyTUxi5z0R0OLiQwEq6NYtjfNDz+wVb+znGmTaeLP75+wkQ81Kg0
-	 SUjaCIQMgCT7RRSi6LDYNMXYGkzKacZlRRcMl0WFQowtbw0M2QNSow/f14gcB5eOIr
-	 +ma0p5hTZO/0gxKmVrPAkwjmr5XQHS9Z2pDcZ078=
+	b=kz44moqDIEnh+N9C4fakiaK+ySJEI5PxipmRxRcqDSIirespaEqVoDepx76XPhh2Y
+	 Gm/jglHDV3ssY6QdN0qRHZazUCcpdAnXhp9Qo7JzWc5o9h1mQOJkV+2qU7/59oo/4G
+	 bERkbn7V2FKIbDuAg7DLdhV3iRDbIzz0Ha4pvnzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Visweswara Tanuku <quic_vtanuku@quicinc.com>
-Subject: [PATCH 6.6 120/145] slimbus: messaging: Free transaction ID in delayed interrupt scenario
-Date: Mon, 10 Mar 2025 18:06:54 +0100
-Message-ID: <20250310170439.609393536@linuxfoundation.org>
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 569/620] x86/sgx: Support loading enclave page without VMA permissions check
+Date: Mon, 10 Mar 2025 18:06:55 +0100
+Message-ID: <20250310170608.004496373@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Visweswara Tanuku <quic_vtanuku@quicinc.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-commit dcb0d43ba8eb9517e70b1a0e4b0ae0ab657a0e5a upstream.
+[ Upstream commit b3fb517dc6020fec85c82171a909da10c6a6f90a ]
 
-In case of interrupt delay for any reason, slim_do_transfer()
-returns timeout error but the transaction ID (TID) is not freed.
-This results into invalid memory access inside
-qcom_slim_ngd_rx_msgq_cb() due to invalid TID.
+sgx_encl_load_page() is used to find and load an enclave page into
+enclave (EPC) memory, potentially loading it from the backing storage.
+Both usages of sgx_encl_load_page() are during an access to the
+enclave page from a VMA and thus the permissions of the VMA are
+considered before the enclave page is loaded.
 
-Fix the issue by freeing the TID in slim_do_transfer() before
-returning timeout error to avoid invalid memory access.
+SGX2 functions operating on enclave pages belonging to an initialized
+enclave requiring the page to be in EPC. It is thus required to
+support loading enclave pages into the EPC independent from a VMA.
 
-Call trace:
-__memcpy_fromio+0x20/0x190
-qcom_slim_ngd_rx_msgq_cb+0x130/0x290 [slim_qcom_ngd_ctrl]
-vchan_complete+0x2a0/0x4a0
-tasklet_action_common+0x274/0x700
-tasklet_action+0x28/0x3c
-_stext+0x188/0x620
-run_ksoftirqd+0x34/0x74
-smpboot_thread_fn+0x1d8/0x464
-kthread+0x178/0x238
-ret_from_fork+0x10/0x20
-Code: aa0003e8 91000429 f100044a 3940002b (3800150b)
----[ end trace 0fe00bec2b975c99 ]---
-Kernel panic - not syncing: Oops: Fatal exception in interrupt.
+Split the current sgx_encl_load_page() to support the two usages:
+A new call, sgx_encl_load_page_in_vma(), behaves exactly like the
+current sgx_encl_load_page() that takes VMA permissions into account,
+while sgx_encl_load_page() just loads an enclave page into EPC.
 
-Fixes: afbdcc7c384b ("slimbus: Add messaging APIs to slimbus framework")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Visweswara Tanuku <quic_vtanuku@quicinc.com>
-Link: https://lore.kernel.org/r/20250124125740.16897-1-quic_vtanuku@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+VMA, PTE, and EPCM permissions continue to dictate whether
+the pages can be accessed from within an enclave.
+
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/d4393513c1f18987c14a490bcf133bfb71a5dc43.1652137848.git.reinette.chatre@intel.com
+Stable-dep-of: 0d3e0dfd68fb ("x86/sgx: Fix size overflows in sgx_encl_create()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/slimbus/messaging.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/sgx/encl.c | 57 ++++++++++++++++++++++------------
+ arch/x86/kernel/cpu/sgx/encl.h |  2 ++
+ 2 files changed, 40 insertions(+), 19 deletions(-)
 
---- a/drivers/slimbus/messaging.c
-+++ b/drivers/slimbus/messaging.c
-@@ -147,8 +147,9 @@ int slim_do_transfer(struct slim_control
- 	}
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index fa5777af8da1a..70fd9aa47c68d 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -232,25 +232,10 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 	return epc_page;
+ }
  
- 	ret = ctrl->xfer_msg(ctrl, txn);
+-static struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
+-						unsigned long addr,
+-						unsigned long vm_flags)
++static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
++						  struct sgx_encl_page *entry)
+ {
+-	unsigned long vm_prot_bits = vm_flags & (VM_READ | VM_WRITE | VM_EXEC);
+ 	struct sgx_epc_page *epc_page;
+-	struct sgx_encl_page *entry;
 -
--	if (!ret && need_tid && !txn->msg->comp) {
-+	if (ret == -ETIMEDOUT) {
-+		slim_free_txn_tid(ctrl, txn);
-+	} else if (!ret && need_tid && !txn->msg->comp) {
- 		unsigned long ms = txn->rl + HZ;
+-	entry = xa_load(&encl->page_array, PFN_DOWN(addr));
+-	if (!entry)
+-		return ERR_PTR(-EFAULT);
+-
+-	/*
+-	 * Verify that the faulted page has equal or higher build time
+-	 * permissions than the VMA permissions (i.e. the subset of {VM_READ,
+-	 * VM_WRITE, VM_EXECUTE} in vma->vm_flags).
+-	 */
+-	if ((entry->vm_max_prot_bits & vm_prot_bits) != vm_prot_bits)
+-		return ERR_PTR(-EFAULT);
  
- 		timeout = wait_for_completion_timeout(txn->comp,
+ 	/* Entry successfully located. */
+ 	if (entry->epc_page) {
+@@ -276,6 +261,40 @@ static struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
+ 	return entry;
+ }
+ 
++static struct sgx_encl_page *sgx_encl_load_page_in_vma(struct sgx_encl *encl,
++						       unsigned long addr,
++						       unsigned long vm_flags)
++{
++	unsigned long vm_prot_bits = vm_flags & (VM_READ | VM_WRITE | VM_EXEC);
++	struct sgx_encl_page *entry;
++
++	entry = xa_load(&encl->page_array, PFN_DOWN(addr));
++	if (!entry)
++		return ERR_PTR(-EFAULT);
++
++	/*
++	 * Verify that the page has equal or higher build time
++	 * permissions than the VMA permissions (i.e. the subset of {VM_READ,
++	 * VM_WRITE, VM_EXECUTE} in vma->vm_flags).
++	 */
++	if ((entry->vm_max_prot_bits & vm_prot_bits) != vm_prot_bits)
++		return ERR_PTR(-EFAULT);
++
++	return __sgx_encl_load_page(encl, entry);
++}
++
++struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
++					 unsigned long addr)
++{
++	struct sgx_encl_page *entry;
++
++	entry = xa_load(&encl->page_array, PFN_DOWN(addr));
++	if (!entry)
++		return ERR_PTR(-EFAULT);
++
++	return __sgx_encl_load_page(encl, entry);
++}
++
+ static vm_fault_t sgx_vma_fault(struct vm_fault *vmf)
+ {
+ 	unsigned long addr = (unsigned long)vmf->address;
+@@ -297,7 +316,7 @@ static vm_fault_t sgx_vma_fault(struct vm_fault *vmf)
+ 
+ 	mutex_lock(&encl->lock);
+ 
+-	entry = sgx_encl_load_page(encl, addr, vma->vm_flags);
++	entry = sgx_encl_load_page_in_vma(encl, addr, vma->vm_flags);
+ 	if (IS_ERR(entry)) {
+ 		mutex_unlock(&encl->lock);
+ 
+@@ -445,7 +464,7 @@ static struct sgx_encl_page *sgx_encl_reserve_page(struct sgx_encl *encl,
+ 	for ( ; ; ) {
+ 		mutex_lock(&encl->lock);
+ 
+-		entry = sgx_encl_load_page(encl, addr, vm_flags);
++		entry = sgx_encl_load_page_in_vma(encl, addr, vm_flags);
+ 		if (PTR_ERR(entry) != -EBUSY)
+ 			break;
+ 
+diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
+index 332ef3568267e..a4894cf3f56a2 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.h
++++ b/arch/x86/kernel/cpu/sgx/encl.h
+@@ -119,5 +119,7 @@ unsigned int sgx_alloc_va_slot(struct sgx_va_page *va_page);
+ void sgx_free_va_slot(struct sgx_va_page *va_page, unsigned int offset);
+ bool sgx_va_page_full(struct sgx_va_page *va_page);
+ void sgx_encl_free_epc_page(struct sgx_epc_page *page);
++struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
++					 unsigned long addr);
+ 
+ #endif /* _X86_ENCL_H */
+-- 
+2.39.5
+
 
 
 
