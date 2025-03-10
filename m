@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7866A5A16B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD603A59D61
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 746D4189383B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC9DD16F468
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1549F22DFB1;
-	Mon, 10 Mar 2025 18:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EF52309A6;
+	Mon, 10 Mar 2025 17:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjuBgk19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdK+mL8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CE217A2E8;
-	Mon, 10 Mar 2025 18:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5478230BC8;
+	Mon, 10 Mar 2025 17:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629643; cv=none; b=iMuJsfiNVqQREmwmtvdg48Nm1cDgGCgnT5QbPzGmcFE0yclG8X/koj9IaH7qTF7SFKudu+irL/z1aMMnjl3P7w/8RNvWL3IF0Aei+7Zq9g6ORJNhz1XiKpLX1aUp5SI0taTIjvPRVRsP4ztoGbgJ/jyxUrii20KjVSa2QjuJdbs=
+	t=1741627231; cv=none; b=RbrwjSWf0Mn9RRUygXBAJuMtOizW2h4zV7Gd4Eo99219ImYr3JyvFPLGXrj83FC7IFyB9p3FDr39nS46UzQ00Rmp3XeA4Fgfyjmrx4/PVltR92Ec+xjEE4IGslzW428egsqWI8vHy6LCJJQTgDuwjw0tQnS2eGvPHMjgEUHoV1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629643; c=relaxed/simple;
-	bh=0QJ5IzyOXmlGxC9psVlTKLxlBMxTYx9fbr+yqZg8xT0=;
+	s=arc-20240116; t=1741627231; c=relaxed/simple;
+	bh=mJzbCvK7A8BKYLf145P7WYxDPB/vFZyIPT+67z1HplY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RulKEAF/JUUZUzASKHfk9O5biSbrJ5J9oUJsN9Hfgfhp/gDfqf93Y2gCFa7gyDPPhazrSSLuEGk/oi86vHNxkwEMOiOFEFJkqfK3DC4DcHIpm3qypT+TOrIydjaES3TMkuyfZekaND0G2rgxd5DAay4iv31cHxN+Kx/D4f1VZKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjuBgk19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48109C4CEE5;
-	Mon, 10 Mar 2025 18:00:43 +0000 (UTC)
+	 MIME-Version; b=rBMKUTlxMLY5PaL6EguqX0ymhf3C/ahzimG5Ay7U013Jko0SUm0LDitDCk3ny51Ya1RJkrVtYxHfVgvOGPRy6LBWG/Hu9i1QGvvEQOysWBHoVvvpM2zWSjkFZNcLpkJxUPsgxbJm5WJZeGVdrTHPbLO896cpwUvxOLHC3D287Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdK+mL8e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA704C4CEE5;
+	Mon, 10 Mar 2025 17:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629643;
-	bh=0QJ5IzyOXmlGxC9psVlTKLxlBMxTYx9fbr+yqZg8xT0=;
+	s=korg; t=1741627231;
+	bh=mJzbCvK7A8BKYLf145P7WYxDPB/vFZyIPT+67z1HplY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjuBgk19mBrU4yjrYQRGbnPfnv208FMkkIf0aeTZtYOBIuG1GST1eUOKWmBskqpbt
-	 tMvKqQF0GyfQb9XY5wmbrV7OmnvmpsNeuKb7Q870LJxWbjhMHtvSmWTrQttxRDe4WO
-	 H3xH1mzkr2exFWRRAZnkkrjyPtqN0JfTeRdxhE2Y=
+	b=vdK+mL8eU9xKvvzXyWaqUZ0EXiRuaql510i0Y6jSMDblwxCEFiiSvcu7lo/x4r1Lx
+	 XRwiep8ZQtTrdHk67FjbYfBWxrQcTGU+LgNe8tGjiG6h7ExButASRveTAZEEMCJsXU
+	 OyhJ9YgR7wMH3mfxTBfvwrXWtPot49QZ5Gx27bEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Forest <forestix@nom.one>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 366/620] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 059/269] MAINTAINERS: add entry for the Rust `alloc` module
 Date: Mon, 10 Mar 2025 18:03:32 +0100
-Message-ID: <20250310170600.051127436@linuxfoundation.org>
+Message-ID: <20250310170500.080467324@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
+commit 6ce162a002657910104c7a07fb50017681bc476c upstream.
 
-The fastboot tool for communicating with Android bootloaders does not
-work reliably with this device if USB 2 Link Power Management (LPM)
-is enabled.
+Add maintainers entry for the Rust `alloc` module.
 
-Various fastboot commands are affected, including the
-following, which usually reproduces the problem within two tries:
+Currently, this includes the `Allocator` API itself, `Allocator`
+implementations, such as `Kmalloc` or `Vmalloc`, as well as the kernel's
+implementation of the primary memory allocation data structures, `Box`
+and `Vec`.
 
-  fastboot getvar kernel
-  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
-
-This issue was hidden on many systems up until commit 63a1f8454962
-("xhci: stored cached port capability values in one place") as the xhci
-driver failed to detect USB 2 LPM support if USB 3 ports were listed
-before USB 2 ports in the "supported protocol capabilities".
-
-Adding the quirk resolves the issue. No drawbacks are expected since
-the device uses different USB product IDs outside of fastboot mode, and
-since fastboot commands worked before, until LPM was enabled on the
-tested system by the aforementioned commit.
-
-Based on a patch from Forest <forestix@nom.one> from which most of the
-code and commit message is taken.
-
-Cc: stable <stable@kernel.org>
-Reported-by: Forest <forestix@nom.one>
-Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
-Tested-by: Forest <forestix@nom.one>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-30-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ MAINTAINERS |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -429,6 +429,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
- 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20183,6 +20183,13 @@ F:	scripts/*rust*
+ F:	tools/testing/selftests/rust/
+ K:	\b(?i:rust)\b
  
-+	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
-+	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
++RUST [ALLOC]
++M:	Danilo Krummrich <dakr@kernel.org>
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	rust/kernel/alloc.rs
++F:	rust/kernel/alloc/
 +
- 	/* Action Semiconductor flash disk */
- 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
- 			USB_QUIRK_STRING_FETCH_255 },
+ RXRPC SOCKETS (AF_RXRPC)
+ M:	David Howells <dhowells@redhat.com>
+ M:	Marc Dionne <marc.dionne@auristor.com>
 
 
 
