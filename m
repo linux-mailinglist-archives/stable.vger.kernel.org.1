@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E93AA59DF0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8A4A5A22F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7AC18847B8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A366A3ABD96
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E25233706;
-	Mon, 10 Mar 2025 17:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797DF235BEE;
+	Mon, 10 Mar 2025 18:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBhnIBjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnLPmBaa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05BF230BC8;
-	Mon, 10 Mar 2025 17:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276C722CBE9;
+	Mon, 10 Mar 2025 18:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627549; cv=none; b=i5UG3pwzjIfrDf3adm//Ve+3atsbwMtF1RXQb1p4RLjOGaakqXZbZBBE+GArZ0+O7VSl9SWVl7niORrer7W2i2HBfGlrle4sYL3Pk8fiTjnLpfNsBW6EnezQiap+CdtrI15Vu9N16V4lv30F7l9e6cKqs7X3war9omltuYY6G5Q=
+	t=1741630612; cv=none; b=qShaiqjifB4p7M+0OsuHk+8JGxcYCLJwIaUR3rNMkHombjw8A07fOy5MM4HIdSi6Fz1tVak1wWT9wZbGVKSDkUjeY10hg5wsoWL2wLZoNR8wE9FMXVg9IBQHv+/3jWuw0vhdMJLz3oUok6P4KLNpBBaYKGha0kfkrxzC+We53Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627549; c=relaxed/simple;
-	bh=63dMqJLdCKQejNRXclrFCmV+VTAc4Yt85et9tjK1fAM=;
+	s=arc-20240116; t=1741630612; c=relaxed/simple;
+	bh=tvAOI3V5jZhHw95fyjiKjdIjXmRP6KoTWyjCcZOOQKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMfdhAWb5hd4fgx9JrJa0CtbsCnGCVdm7Mam/MJVV9H+6FI9jgPc89B568WLbkCrgGNjSET/MULuNPxeSJPb+MY6/Wntv7M1v4kQHdTH9JiuldkEl9Xln8PbB2EHDAF108A+5xoOFIqBW7MKnA6fE0f4v/Q9oZ9qukNZUmHY7Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBhnIBjs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2596CC4CEE5;
-	Mon, 10 Mar 2025 17:25:48 +0000 (UTC)
+	 MIME-Version; b=IZ1T9tKm27QO8ps9+BFjs1EnnUy1lhw1DuJhnSB1CSeD4E//YUT3EqL2gmA3wOBGFwCIEnzqD1XCbJ/v1mgcF+kvtDHVDX3v9KnFW5uibF3XGBbVsqh80EEj5B/Bn90fxVPZ6CHMHsHjaLtf5h9XoMcL0UBdFp2ROqAgwGZjqjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnLPmBaa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B39C4CEE5;
+	Mon, 10 Mar 2025 18:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627549;
-	bh=63dMqJLdCKQejNRXclrFCmV+VTAc4Yt85et9tjK1fAM=;
+	s=korg; t=1741630612;
+	bh=tvAOI3V5jZhHw95fyjiKjdIjXmRP6KoTWyjCcZOOQKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBhnIBjsuc7P4EO/nsf4iAlVfLVX0L8Tyh/aX6pAHiYovJyZHMenr1k2ES0wk2oZ0
-	 UJ0uOfaCgNFUS+uZDm6YT7Mhjg9BiaVNBeWs4IpXd2IQCS7jstnnBBX8azso/1BTcp
-	 sKE3CAFzzJZqqzjwp7CTfV8g3lIJ6nVzzZ8CmvIk=
+	b=MnLPmBaaM9JTDUJfZCgJEUWfEHTpow2FmvinBM4SA1iGfG8s7HPiYPFGsrgjWh7jN
+	 QM4SzhX5qi9L84/WjHBeMldmbGwuD3Sh9AeVlX4TCIsm6IPn0fP6T6FXrgfvfOe1BV
+	 0JAa4EL51qJboJ6/s+yHSsEErjGJvTgOahhvT3MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/269] net: gso: fix ownership in __udp_gso_segment
+Subject: [PATCH 5.15 474/620] nvme/ioctl: add missing space in err message
 Date: Mon, 10 Mar 2025 18:05:20 +0100
-Message-ID: <20250310170504.372102523@linuxfoundation.org>
+Message-ID: <20250310170604.287265697@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
+[ Upstream commit 487a3ea7b1b8ba2ca7d2c2bb3c3594dc360d6261 ]
 
-In __udp_gso_segment the skb destructor is removed before segmenting the
-skb but the socket reference is kept as-is. This is an issue if the
-original skb is later orphaned as we can hit the following bug:
+nvme_validate_passthru_nsid() logs an err message whose format string is
+split over 2 lines. There is a missing space between the two pieces,
+resulting in log lines like "... does not match nsid (1)of namespace".
+Add the missing space between ")" and "of". Also combine the format
+string pieces onto a single line to make the err message easier to grep.
 
-  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
-  RIP: 0010:ip_rcv_core+0x8b2/0xca0
-  Call Trace:
-   ip_rcv+0xab/0x6e0
-   __netif_receive_skb_one_core+0x168/0x1b0
-   process_backlog+0x384/0x1100
-   __napi_poll.constprop.0+0xa1/0x370
-   net_rx_action+0x925/0xe50
-
-The above can happen following a sequence of events when using
-OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
-OVS_ACTION_ATTR_OUTPUT action:
-
-1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
-   goes through queue_gso_packets and then __udp_gso_segment, where its
-   destructor is removed.
-2. The segments' data are copied and sent to userspace.
-3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
-   same original skb is sent to its path.
-4. If it later hits skb_orphan, we hit the bug.
-
-Fix this by also removing the reference to the socket in
-__udp_gso_segment.
-
-Fixes: ad405857b174 ("udp: better wmem accounting on gso")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e7d4b5493a2d ("nvme: factor out a nvme_validate_passthru_nsid helper")
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/nvme/host/ioctl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index a5be6e4ed326f..ecfca59f31f13 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -321,13 +321,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 
- 	/* clear destructor to avoid skb_segment assigning it to tail */
- 	copy_dtor = gso_skb->destructor == sock_wfree;
--	if (copy_dtor)
-+	if (copy_dtor) {
- 		gso_skb->destructor = NULL;
-+		gso_skb->sk = NULL;
-+	}
- 
- 	segs = skb_segment(gso_skb, features);
- 	if (IS_ERR_OR_NULL(segs)) {
--		if (copy_dtor)
-+		if (copy_dtor) {
- 			gso_skb->destructor = sock_wfree;
-+			gso_skb->sk = sk;
-+		}
- 		return segs;
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index 22ff0e617b8f0..f160e2b760d13 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -183,8 +183,7 @@ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
+ {
+ 	if (ns && nsid != ns->head->ns_id) {
+ 		dev_err(ctrl->device,
+-			"%s: nsid (%u) in cmd does not match nsid (%u)"
+-			"of namespace\n",
++			"%s: nsid (%u) in cmd does not match nsid (%u) of namespace\n",
+ 			current->comm, nsid, ns->head->ns_id);
+ 		return false;
  	}
- 
 -- 
 2.39.5
 
