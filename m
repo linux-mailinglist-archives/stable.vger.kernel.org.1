@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-122242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD0BA59EC1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB6BA59DF5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E97463A840E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C85F3A7428
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20587230BF6;
-	Mon, 10 Mar 2025 17:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B2E235BF0;
+	Mon, 10 Mar 2025 17:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRfMtWRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5b2eho+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCB0230BED;
-	Mon, 10 Mar 2025 17:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93BE230D2B;
+	Mon, 10 Mar 2025 17:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627933; cv=none; b=O8K+IA2d8B3MaLKGriDET6fpHZLsNy1BMCZ6mLYWkhXWyDVHQu0qoh1i1FSYuKKDaDHZzzU+G+Fk5MTswCjIsHmpkg/HC92eQQEU565CKoFeEC5XOfGfruTFUFRnN+L+1ksfk1aybNwsg5/h5X1WeZqxwgEN7Py6wfEOeRj3Tgo=
+	t=1741627506; cv=none; b=CfKYutazARxW/gcszqAgw8gWA16KSChWB/pONT31Md4M226hXHfC3GbsQ/6R8GLKbj9yUubAXYU6c+F//XHHAQVb9Im2cLFhh24CbKpnxk33P/AMxE2gxlsZrVtfue81Z4iOQU865mzC3ljroKR7cXcoEGSGv817DwmT/UtlPsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627933; c=relaxed/simple;
-	bh=A4WYIwcvvBHBe7PxNtbZvOJdwDU1c50pjz5cOlRTV2Y=;
+	s=arc-20240116; t=1741627506; c=relaxed/simple;
+	bh=I0iLzMlPIZbnLJOqxWciokRwf/45RgvVYmNxDaEhoBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lqlsm7gj0fvRK/geciSFCA2Tny3wGemplIwQCEvHq4kwJ3VOdXbK7gxNhGhVwdcKTUm9Adwm1LYPy4PsHtH3gKaUXvVpn9asfPxZzQj63B9xZ8xYcpcAieNwaDugunFCeQ8ite2LLqaELVxHxVlR+1sw/OrUk/YyUqJKZnalBPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRfMtWRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BD9C4CEE5;
-	Mon, 10 Mar 2025 17:32:13 +0000 (UTC)
+	 MIME-Version; b=Q0g+yWhO2Nc9E1St/WJmDPavBD1xfStbnp+cR4CwNSCnrdWSC75AkbmZ5hFi+gwvK0EUlV/jqgSSIzdsI+ZCk7Z25eKiXZtyLZ8hCuScxf7FlWw/ci7CNsjqtLuftxLhrk8NEpkrEmeGTUldozGl0YzouWMCxnschrLtBcZUzBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5b2eho+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E32EC4CEE5;
+	Mon, 10 Mar 2025 17:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627933;
-	bh=A4WYIwcvvBHBe7PxNtbZvOJdwDU1c50pjz5cOlRTV2Y=;
+	s=korg; t=1741627506;
+	bh=I0iLzMlPIZbnLJOqxWciokRwf/45RgvVYmNxDaEhoBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRfMtWRcn8LK5UMdgdio3pbGoAeciNVLLBNtWAQZZuIuRrGUjQh32rUa45wk1Dns1
-	 9FN3BBUKOqmvaNZgxVtNW7C4BuBiKN1yC+0NBTDAp+GJK8MGhhdlkfS5bIcfoko6DH
-	 GNlg+jHsKM8IpZbmWLlGUoyxSqe57mildDPg+lxg=
+	b=o5b2eho+B0FxMa5gRBOjD7ZlAtxbCZkdAFUfZN90/3aNiMwg856mCyQPScfW5nZIZ
+	 qaXZsLlOK8bqvOb914FFP5NjyaWahUveDtTWNOgQe+ZkJYfF57DnC7bEGJO7sht7wC
+	 zvm2sxraKgAGbASY6eNYmFphDiMxvnq9xUNHIkWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/145] drm/i915/ddi: Fix HDMI port width programming in DDI_BUF_CTL
+Subject: [PATCH 6.12 145/269] wifi: iwlwifi: Fix A-MSDU TSO preparation
 Date: Mon, 10 Mar 2025 18:04:58 +0100
-Message-ID: <20250310170434.918297991@linuxfoundation.org>
+Message-ID: <20250310170503.496875600@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 166ce267ae3f96e439d8ccc838e8ec4d8b4dab73 ]
+[ Upstream commit 3640dbc1f75ce15d128ea4af44226960d894f3fd ]
 
-Fix the port width programming in the DDI_BUF_CTL register on MTLP+,
-where this had an off-by-one error.
+The TSO preparation assumed that the skb head contained the headers
+while the rest of the data was in the fragments. Since this is not
+always true, e.g., it is possible that the data was linearised, modify
+the TSO preparation to start the data processing after the network
+headers.
 
-Cc: <stable@vger.kernel.org> # v6.5+
-Fixes: b66a8abaa48a ("drm/i915/display/mtl: Fill port width in DDI_BUF_/TRANS_DDI_FUNC_/PORT_BUF_CTL for HDMI")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250214142001.552916-3-imre.deak@intel.com
-(cherry picked from commit b2ecdabe46d23db275f94cd7c46ca414a144818b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 7f5e3038f029 ("wifi: iwlwifi: map entire SKB when sending AMSDUs")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.75769a4769bf.Iaf79e8538093cdf8c446c292cc96164ad6498f61@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_ddi.c | 2 +-
- drivers/gpu/drm/i915/i915_reg.h          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  5 +++--
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  5 +++--
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 20 +++++++++++--------
+ 3 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index 9ac9df70e713c..893ecee3949ac 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -3242,7 +3242,7 @@ static void intel_enable_ddi_hdmi(struct intel_atomic_state *state,
- 		intel_de_rmw(dev_priv, XELPDP_PORT_BUF_CTL1(port),
- 			     XELPDP_PORT_WIDTH_MASK | XELPDP_PORT_REVERSAL, port_buf);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 27a7e0b5b3d51..ebe9b25cc53a9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2003-2015, 2018-2024 Intel Corporation
++ * Copyright (C) 2003-2015, 2018-2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -643,7 +643,8 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned int offset,
+ 				    unsigned int len);
+ struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
+ 				   struct iwl_cmd_meta *cmd_meta,
+-				   u8 **hdr, unsigned int hdr_room);
++				   u8 **hdr, unsigned int hdr_room,
++				   unsigned int offset);
  
--		buf_ctl |= DDI_PORT_WIDTH(lane_count);
-+		buf_ctl |= DDI_PORT_WIDTH(crtc_state->lane_count);
+ void iwl_pcie_free_tso_pages(struct iwl_trans *trans, struct sk_buff *skb,
+ 			     struct iwl_cmd_meta *cmd_meta);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index 7bb74a480d7f1..477a05cd1288b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2020, 2023-2024 Intel Corporation
++ * Copyright (C) 2018-2020, 2023-2025 Intel Corporation
+  */
+ #include <net/tso.h>
+ #include <linux/tcp.h>
+@@ -188,7 +188,8 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
+ 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr));
  
- 		if (DISPLAY_VER(dev_priv) >= 20)
- 			buf_ctl |= XE2LPD_DDI_BUF_D2D_LINK_ENABLE;
-diff --git a/drivers/gpu/drm/i915/i915_reg.h b/drivers/gpu/drm/i915/i915_reg.h
-index 4e588fd1c82ed..589a10253d898 100644
---- a/drivers/gpu/drm/i915/i915_reg.h
-+++ b/drivers/gpu/drm/i915/i915_reg.h
-@@ -5737,7 +5737,7 @@ enum skl_power_gate {
- #define  DDI_BUF_IS_IDLE			(1 << 7)
- #define  DDI_BUF_CTL_TC_PHY_OWNERSHIP		REG_BIT(6)
- #define  DDI_A_4_LANES				(1 << 4)
--#define  DDI_PORT_WIDTH(width)			(((width) - 1) << 1)
-+#define  DDI_PORT_WIDTH(width)			(((width) == 3 ? 4 : ((width) - 1)) << 1)
- #define  DDI_PORT_WIDTH_MASK			(7 << 1)
- #define  DDI_PORT_WIDTH_SHIFT			1
- #define  DDI_INIT_DISPLAY_DETECTED		(1 << 0)
+ 	/* Our device supports 9 segments at most, it will fit in 1 page */
+-	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
++	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room,
++				snap_ip_tcp_hdrlen + hdr_len);
+ 	if (!sgt)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 9fe050f0ddc16..a74ce5ccf59bd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2003-2014, 2018-2021, 2023-2024 Intel Corporation
++ * Copyright (C) 2003-2014, 2018-2021, 2023-2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -1853,6 +1853,7 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned int offset,
+  * @cmd_meta: command meta to store the scatter list information for unmapping
+  * @hdr: output argument for TSO headers
+  * @hdr_room: requested length for TSO headers
++ * @offset: offset into the data from which mapping should start
+  *
+  * Allocate space for a scatter gather list and TSO headers and map the SKB
+  * using the scatter gather list. The SKB is unmapped again when the page is
+@@ -1862,18 +1863,20 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned int offset,
+  */
+ struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
+ 				   struct iwl_cmd_meta *cmd_meta,
+-				   u8 **hdr, unsigned int hdr_room)
++				   u8 **hdr, unsigned int hdr_room,
++				   unsigned int offset)
+ {
+ 	struct sg_table *sgt;
++	unsigned int n_segments;
+ 
+ 	if (WARN_ON_ONCE(skb_has_frag_list(skb)))
+ 		return NULL;
+ 
++	n_segments = DIV_ROUND_UP(skb->len - offset, skb_shinfo(skb)->gso_size);
+ 	*hdr = iwl_pcie_get_page_hdr(trans,
+ 				     hdr_room + __alignof__(struct sg_table) +
+ 				     sizeof(struct sg_table) +
+-				     (skb_shinfo(skb)->nr_frags + 1) *
+-				     sizeof(struct scatterlist),
++				     n_segments * sizeof(struct scatterlist),
+ 				     skb);
+ 	if (!*hdr)
+ 		return NULL;
+@@ -1881,11 +1884,11 @@ struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
+ 	sgt = (void *)PTR_ALIGN(*hdr + hdr_room, __alignof__(struct sg_table));
+ 	sgt->sgl = (void *)(sgt + 1);
+ 
+-	sg_init_table(sgt->sgl, skb_shinfo(skb)->nr_frags + 1);
++	sg_init_table(sgt->sgl, n_segments);
+ 
+ 	/* Only map the data, not the header (it is copied to the TSO page) */
+-	sgt->orig_nents = skb_to_sgvec(skb, sgt->sgl, skb_headlen(skb),
+-				       skb->data_len);
++	sgt->orig_nents = skb_to_sgvec(skb, sgt->sgl, offset,
++				       skb->len - offset);
+ 	if (WARN_ON_ONCE(sgt->orig_nents <= 0))
+ 		return NULL;
+ 
+@@ -1937,7 +1940,8 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+ 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr)) + iv_len;
+ 
+ 	/* Our device supports 9 segments at most, it will fit in 1 page */
+-	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
++	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room,
++				snap_ip_tcp_hdrlen + hdr_len + iv_len);
+ 	if (!sgt)
+ 		return -ENOMEM;
+ 
 -- 
 2.39.5
 
