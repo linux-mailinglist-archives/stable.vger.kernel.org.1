@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-122726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92C6A5A0EC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:55:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA36A5A0CC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F151892B2B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4682B1885378
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335E0232369;
-	Mon, 10 Mar 2025 17:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9769F22FAF8;
+	Mon, 10 Mar 2025 17:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0ARlvyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8ECYYFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51042D023;
-	Mon, 10 Mar 2025 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5490817CA12;
+	Mon, 10 Mar 2025 17:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629322; cv=none; b=IM2aFpJVG/7sAIribj5BIZusbiRsKLtGczo0r0SuYs/PAnDYJ3gy7k11mmS0ZdQ9WSv8FHgsE0WsFhgkVy5eDNevmtE/SRSv1C+j1lH96WoRFbjK1KDYhbnjPMy/azvfihkBzqw9P7DWiB3Bd/0xdIxmhkcLAZVYJS0HkrXPoV4=
+	t=1741629227; cv=none; b=Nhe0BD0Ed2DWwZi5L4j7RKZyD1yJUidHOxUTsYEJNpaCNx0ejwod20FanFR8XNHfRmUDa3K8XAIcAfEejfTvtY/WLjrFy1PYLp3WAyMZfuiYkQmcmAkGw3jks4Owq3Dj2aoMGohO4cm88z5XfS5scKIgeuxOwqxj5G9Oi5Dq5AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629322; c=relaxed/simple;
-	bh=Ybc8gaUDeU7hhgSk+D4Wk5tlGq6SesJ6a8Ls1I2/6+s=;
+	s=arc-20240116; t=1741629227; c=relaxed/simple;
+	bh=DHXA/iyvxg1z4jTz7Q+MjN/Sf3QkZcN4KmKCHUm05xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/ud0GRFz3voxJFFkBfAqnN3VuyvPCyRj2ixYk1/ZZnXs+k/Smt6Pyvbp4dP6M8SVTwrrkqiPqkhjf0V0GkIU9DXOIZltPFcEkKf4zF+hP13/by5CyErNMb5Lp5zDrNnTYw3BFbnfyDw9WXQhY7zTJ2LzaOLQXW5UMXsDA3sDIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0ARlvyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3D7C4CEE5;
-	Mon, 10 Mar 2025 17:55:21 +0000 (UTC)
+	 MIME-Version; b=gSBV2T71d5B6i7oJ3mkDMrCl48z6QZQIlMTxkY3GyiIGDFgpHQm9wD/LdOLvVQ3aaaDDSExtLbjDtNArgqggamBS23dudPKwOuviy+WxGM23B+jl+n5sVY1BWLeMT6+G37gRL4lJVEcKalZCe3HSvv9HP8b+XfGXXElL5FYvqZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8ECYYFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5709C4CEE5;
+	Mon, 10 Mar 2025 17:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629321;
-	bh=Ybc8gaUDeU7hhgSk+D4Wk5tlGq6SesJ6a8Ls1I2/6+s=;
+	s=korg; t=1741629227;
+	bh=DHXA/iyvxg1z4jTz7Q+MjN/Sf3QkZcN4KmKCHUm05xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0ARlvyNCbMbBx5j0SHm98FQOeAMMkUsV8h4+mSDmSNULPdwtteTQ9QlswEceLHEk
-	 j+xy/BPdcTGmSS8NwgGg6zb41VqFGBIZxTKTQkZnbXcFieNPIZ1Eabvl2zAVH4fGIe
-	 bVHNV/KOZpW0cCGKM61zyrBE33a1vlRCoJ4upjoM=
+	b=g8ECYYFUnUrw1BJ1vFJDj6/q4rV/z1Hke34NXSpjDNm+YxKcb2PINNhjMtP+NnKLz
+	 C4q95A6rc/54f2yIVmO2Kksj0iHQz26AwKDM1J6ZElVIDxeFgABmWVY7bwK+mc54Ea
+	 kPuDNJcAmGfK01VVU5xLgGFiSGhYWf3xDVke8bxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Even Xu <even.xu@intel.com>,
+	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 213/620] mfd: lpc_ich: Add another Gemini Lake ISA bridge PCI device-id
-Date: Mon, 10 Mar 2025 18:00:59 +0100
-Message-ID: <20250310170554.032938461@linuxfoundation.org>
+Subject: [PATCH 5.15 214/620] HID: Wacom: Add PCI Wacom device support
+Date: Mon, 10 Mar 2025 18:01:00 +0100
+Message-ID: <20250310170554.073167486@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -67,40 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Even Xu <even.xu@intel.com>
 
-[ Upstream commit 1e89d21f8189d286f80b900e1b7cf57cb1f3037e ]
+[ Upstream commit c4c123504a65583e3689b3de04a61dc5272e453a ]
 
-On N4100 / N4120 Gemini Lake SoCs the ISA bridge PCI device-id is 31e8
-rather the 3197 found on e.g. the N4000 / N4020.
+Add PCI device ID of wacom device into driver support list.
 
-While at fix the existing GLK PCI-id table entry breaking the table
-being sorted by device-id.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241114193808.110132-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Even Xu <even.xu@intel.com>
+Tested-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/lpc_ich.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_wac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mfd/lpc_ich.c b/drivers/mfd/lpc_ich.c
-index 9ffab9aafd81b..15a6004218521 100644
---- a/drivers/mfd/lpc_ich.c
-+++ b/drivers/mfd/lpc_ich.c
-@@ -688,8 +688,9 @@ static const struct pci_device_id lpc_ich_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x2917), LPC_ICH9ME},
- 	{ PCI_VDEVICE(INTEL, 0x2918), LPC_ICH9},
- 	{ PCI_VDEVICE(INTEL, 0x2919), LPC_ICH9M},
--	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x2b9c), LPC_COUGARMOUNTAIN},
-+	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
-+	{ PCI_VDEVICE(INTEL, 0x31e8), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x3a14), LPC_ICH10DO},
- 	{ PCI_VDEVICE(INTEL, 0x3a16), LPC_ICH10R},
- 	{ PCI_VDEVICE(INTEL, 0x3a18), LPC_ICH10},
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index 9a82cd124918f..a5e6c16c883dc 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -4882,6 +4882,10 @@ static const struct wacom_features wacom_features_0x94 =
+ 	HID_DEVICE(BUS_I2C, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
+ 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
+ 
++#define PCI_DEVICE_WACOM(prod)						\
++	HID_DEVICE(BUS_PCI, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
++	.driver_data = (kernel_ulong_t)&wacom_features_##prod
++
+ #define USB_DEVICE_LENOVO(prod)					\
+ 	HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, prod),			\
+ 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
+@@ -5051,6 +5055,7 @@ const struct hid_device_id wacom_ids[] = {
+ 
+ 	{ USB_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ I2C_DEVICE_WACOM(HID_ANY_ID) },
++	{ PCI_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ BT_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ }
+ };
 -- 
 2.39.5
 
