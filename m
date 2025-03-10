@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-123056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583A1A5A29B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D96A59F3B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6D881895503
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A04B83A4420
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB33923370D;
-	Mon, 10 Mar 2025 18:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC40C22D7A6;
+	Mon, 10 Mar 2025 17:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEyjN/++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6qCdsAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BBF22FF4E;
-	Mon, 10 Mar 2025 18:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D6718DB24;
+	Mon, 10 Mar 2025 17:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630918; cv=none; b=J0uSsKkMxJIYFdjMZrLW3ayXeP7XvwyBZAZzBHmOFHNYiBwhqyPJh25rhg7ulECClHEKZrL743SyfeQkrjmkUQuoKEwM/NK044Uh2iB5ippELjK0cYzNsIC5Ec28Q6V/BVuq9xQDUqTHGQqWtfWY4Or97fWgiwVCap5s53TBFUM=
+	t=1741628230; cv=none; b=dCrwB3rgki7XrUy1TaitSbuR6sDQTspNbvSL5FxuKemKHk1rhxy6vnrTp2yIYs0iKWajSBq5Skl8yV+p/7lFPK2PzKlLsUpLEB/m3jFQjKALIjnwRRJtzaZEaxAP8RIjr7ZDKr6mcPSyoPBeLxk+ktSPJhyyYoS/jzs+w54/VAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630918; c=relaxed/simple;
-	bh=oqiqWduC2as5eC4UUQ7yyJaaYiL+lE/vgIRDiYthqQY=;
+	s=arc-20240116; t=1741628230; c=relaxed/simple;
+	bh=hCdAsGjTVw3LAduvr2P1TR2iJXAvZKjyDYgBsmk+zX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LjrcARdxVCCIc8ueMKPKuLlAlBP9bKJWKjuBxd1ctfLqvY+QPBq2/pQC/pHP9USVrufxyTYwuuEfVlmjM4VgjsZ2uCeG4bL5KwlGwDN2ywALNO8MkuELgse5Gv6+WRAOTNUPcBGgHNOD8VPAgaCPBLJ31e9Ce698XkdESEC4be8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEyjN/++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E228C4CEE5;
-	Mon, 10 Mar 2025 18:21:57 +0000 (UTC)
+	 MIME-Version; b=P5eSSnIGe9g7XZ3qWXg83TSFMLJjWvC2nc1Y/nFhElPRiR3uGbbxw/6hhYO4s4RIB13zpZgMyWYfh3kTKkEf04Z6qNrVAA3XyTzCelf6ijpoWTr8V+ss7/+SodfbUzu/EeXV7jKWylDu1tKeHMq4yaK3TBSGa0A0g6wQFJjdqR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6qCdsAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35683C4CEE5;
+	Mon, 10 Mar 2025 17:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630918;
-	bh=oqiqWduC2as5eC4UUQ7yyJaaYiL+lE/vgIRDiYthqQY=;
+	s=korg; t=1741628230;
+	bh=hCdAsGjTVw3LAduvr2P1TR2iJXAvZKjyDYgBsmk+zX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEyjN/++nGQD9vqB9QPM8R+O/wLOwEgHr58UixrCiA/gTK0uq/9+1zBEx+jicXYDe
-	 T5wKXrQ+Jz7DSqIXoxrHq9t77s2gp6sMET5NLVHNtpHXh06N19uyx3KYan+b4eq6BA
-	 IDYjFN6uqW8h0Tre5EL8uU/+msHw0WrxKAWq0JXs=
+	b=N6qCdsApjaHb4NQBZ8eBdeUFyYIfSbpvUeP7ixQA1yw06kiEciv5ewXB4hwRy4GsI
+	 cuVbrMmozsJXItcVEKEMxvF4QSOMda0o5VH/OSlwokzzFMxUdMGcZAcoYGBmohogSL
+	 +EFpnP2FspIwEmVfzGzkgmvtGwzG1fA7/FYcNBb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 579/620] gpio: rcar: Fix missing of_node_put() call
+	Andrew Jones <ajones@ventanamicro.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 131/145] riscv: Fix enabling cbo.zero when running in M-mode
 Date: Mon, 10 Mar 2025 18:07:05 +0100
-Message-ID: <20250310170608.392896405@linuxfoundation.org>
+Message-ID: <20250310170440.051068889@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 391b41f983bf7ff853de44704d8e14e7cc648a9b ]
+commit 3fb3f7164edc467450e650dca51dbe4823315a56 upstream.
 
-of_parse_phandle_with_fixed_args() requires its caller to
-call into of_node_put() on the node pointer from the output
-structure, but such a call is currently missing.
+When the kernel is running in M-mode, the CBZE bit must be set in the
+menvcfg CSR, not in senvcfg.
 
-Call into of_node_put() to rectify that.
-
-Fixes: 159f8a0209af ("gpio-rcar: Add DT support")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20250305163753.34913-2-fabrizio.castro.jz@renesas.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240228065559.3434837-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-rcar.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/csr.h   |    2 ++
+ arch/riscv/kernel/cpufeature.c |    2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-rcar.c b/drivers/gpio/gpio-rcar.c
-index f4612a62fd96a..8e2acf3b022f7 100644
---- a/drivers/gpio/gpio-rcar.c
-+++ b/drivers/gpio/gpio-rcar.c
-@@ -452,7 +452,12 @@ static int gpio_rcar_parse_dt(struct gpio_rcar_priv *p, unsigned int *npins)
- 	p->info = *info;
+--- a/arch/riscv/include/asm/csr.h
++++ b/arch/riscv/include/asm/csr.h
+@@ -398,6 +398,7 @@
+ # define CSR_STATUS	CSR_MSTATUS
+ # define CSR_IE		CSR_MIE
+ # define CSR_TVEC	CSR_MTVEC
++# define CSR_ENVCFG	CSR_MENVCFG
+ # define CSR_SCRATCH	CSR_MSCRATCH
+ # define CSR_EPC	CSR_MEPC
+ # define CSR_CAUSE	CSR_MCAUSE
+@@ -422,6 +423,7 @@
+ # define CSR_STATUS	CSR_SSTATUS
+ # define CSR_IE		CSR_SIE
+ # define CSR_TVEC	CSR_STVEC
++# define CSR_ENVCFG	CSR_SENVCFG
+ # define CSR_SCRATCH	CSR_SSCRATCH
+ # define CSR_EPC	CSR_SEPC
+ # define CSR_CAUSE	CSR_SCAUSE
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -679,7 +679,7 @@ arch_initcall(check_unaligned_access_boo
+ void riscv_user_isa_enable(void)
+ {
+ 	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
+-		csr_set(CSR_SENVCFG, ENVCFG_CBZE);
++		csr_set(CSR_ENVCFG, ENVCFG_CBZE);
+ }
  
- 	ret = of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3, 0, &args);
--	*npins = ret == 0 ? args.args[2] : RCAR_MAX_GPIO_PER_BANK;
-+	if (ret) {
-+		*npins = RCAR_MAX_GPIO_PER_BANK;
-+	} else {
-+		*npins = args.args[2];
-+		of_node_put(args.np);
-+	}
- 
- 	if (*npins == 0 || *npins > RCAR_MAX_GPIO_PER_BANK) {
- 		dev_warn(p->dev, "Invalid number of gpio lines %u, using %u\n",
--- 
-2.39.5
-
+ #ifdef CONFIG_RISCV_ALTERNATIVE
 
 
 
