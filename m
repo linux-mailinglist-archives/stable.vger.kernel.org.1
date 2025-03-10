@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DE0A5A24B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A1EA59EBE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5920C7A6E72
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A9D16F192
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C60F1C5F1B;
-	Mon, 10 Mar 2025 18:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0D6233155;
+	Mon, 10 Mar 2025 17:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cwjf24Jt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKzQm87D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384381BBBFD;
-	Mon, 10 Mar 2025 18:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B29722B8BD;
+	Mon, 10 Mar 2025 17:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630711; cv=none; b=fWNSkl0914VVOmfWGdOPMjrVnAInZspX03Mka3Yo3Hnl4iJQb+hhd7hB2UJdUDuc3MUzrXydbOJl+MSPRze13Ciu87iKcgwZFQq0bUak34V9FVPoZk1AMWU2hrglG+I0H7EgL9xd1P+5b4FeLDgu+engUtiXfbDQMrLBaWWeYCA=
+	t=1741628025; cv=none; b=BPFF9Q5ilXDJnZeFDB5o+N78bdxjtuPOaJhetadBtF3P/v5o+bBknQJQOeVI8GhfYrJghK1KeoMHADQnOHJTonEgJZtmO4YII9EfDwBZuhT6a6OFx01FcU9O6tM1oWVs0OxuJ2JyS3FqONv5+wbGJLkk/BF7Jk8RGsidssKiNUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630711; c=relaxed/simple;
-	bh=q4sMQjdAQyi4+NJ6HtpZhyKadFZxu1R5CkKHQM6LSdk=;
+	s=arc-20240116; t=1741628025; c=relaxed/simple;
+	bh=GDjL9XVYXFnIJZ816SlDvf1hTR1lGeKIlC3n20QyZkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7Dw26g5Go5FMtt/fo1S7Fd5v7b08NLictrspZ03IDJclzciJ3wc4X0zioDPvtnBE5SMWt7GIOAuXyllDY08rGpIz/k+Vio/pKZs7ybAaEeWni8HbY5+Djttj9vxya5G35nLwK+MymdBRTgtUVO2iymruq27Jhy87KGWThETyUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cwjf24Jt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2425C4CEED;
-	Mon, 10 Mar 2025 18:18:30 +0000 (UTC)
+	 MIME-Version; b=Jmcf6aJFyunoDalw+9/ALPptgMUl4ehFTztk1BTKsedQufcw9L5EzFe8QEwug7IJbhgdpZ/cL9YUYRT7Ucuu4lPU4l2jCYudzNclgzXpzM5OZtn+cxhVUh95ZuUAU0KHQxk8E0Payz3aGN/H7XbBUB104eg2gTXND1oAKhOqs9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKzQm87D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BE4C4CEE5;
+	Mon, 10 Mar 2025 17:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630711;
-	bh=q4sMQjdAQyi4+NJ6HtpZhyKadFZxu1R5CkKHQM6LSdk=;
+	s=korg; t=1741628024;
+	bh=GDjL9XVYXFnIJZ816SlDvf1hTR1lGeKIlC3n20QyZkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cwjf24Jt+IYSNnBpFRmhpk0URvEEsd+jYgmahGVD4qu4zqutNea5rkrutDWK1xaYb
-	 pO4LlaXdZyDDBwZ5qF2lqfQap5cvIlY+DUpkwIhIFUdFD/EijQDgFmxtSqugGoxkWV
-	 n4UbL+D3UPjTe2nPkekzzcn5u9/zLgCDOQVQiPU8=
+	b=LKzQm87DEhcpWhWtf+eUgCroYYXxQozWxcEh4eqTxTbDddDEr4ov7qTMM3VittgLV
+	 3ZVD9ETfYWorgXeMsdC7csZ92jCPf0MkgtVYfqBRecgvuQ/6NyJgZtopJrAkWVd8S8
+	 xHt0w7AL2JiZ9tsHVEheNHl/bjpsLsmWfC1f/j7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 508/620] include: net: add static inline dst_dev_overhead() to dst.h
+Subject: [PATCH 6.6 060/145] HID: google: fix unused variable warning under !CONFIG_ACPI
 Date: Mon, 10 Mar 2025 18:05:54 +0100
-Message-ID: <20250310170605.610947999@linuxfoundation.org>
+Message-ID: <20250310170437.166791136@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 0600cf40e9b36fe17f9c9f04d4f9cef249eaa5e7 ]
+[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
 
-Add static inline dst_dev_overhead() function to include/net/dst.h. This
-helper function is used by ioam6_iptunnel, rpl_iptunnel and
-seg6_iptunnel to get the dev's overhead based on a cache entry
-(dst_entry). If the cache is empty, the default and generic value
-skb->mac_len is returned. Otherwise, LL_RESERVED_SPACE() over dst's dev
-is returned.
+As reported by the kernel test robot, the following warning occurs:
 
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: c64a0727f9b1 ("net: ipv6: fix dst ref loop on input in seg6 lwt")
+>> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
+     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+         |                                    ^~~~~~~~~~~~~~~~
+
+The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
+Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
+prevents a compiler warning when ACPI is disabled.
+
+Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/hid/hid-google-hammer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 827f99d577331..bf0a9b0cc269c 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -433,6 +433,15 @@ static inline void dst_set_expires(struct dst_entry *dst, int timeout)
- 		dst->expires = expires;
+diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
+index c6bdb9c4ef3e0..d25291ed900d0 100644
+--- a/drivers/hid/hid-google-hammer.c
++++ b/drivers/hid/hid-google-hammer.c
+@@ -269,11 +269,13 @@ static int cbas_ec_remove(struct platform_device *pdev)
+ 	return 0;
  }
  
-+static inline unsigned int dst_dev_overhead(struct dst_entry *dst,
-+					    struct sk_buff *skb)
-+{
-+	if (likely(dst))
-+		return LL_RESERVED_SPACE(dst->dev);
-+
-+	return skb->mac_len;
-+}
-+
- INDIRECT_CALLABLE_DECLARE(int ip6_output(struct net *, struct sock *,
- 					 struct sk_buff *));
- INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
++#ifdef CONFIG_ACPI
+ static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+ 	{ "GOOG000B", 0 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
++#endif
+ 
+ #ifdef CONFIG_OF
+ static const struct of_device_id cbas_ec_of_match[] = {
 -- 
 2.39.5
 
