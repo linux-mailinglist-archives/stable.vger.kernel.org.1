@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB96A5A2B1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FDEA59F43
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F553ADA56
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2FDC18904F3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FA72309B0;
-	Mon, 10 Mar 2025 18:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3256E22FE18;
+	Mon, 10 Mar 2025 17:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRXWh4It"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K74YrU9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D362E22F3BD;
-	Mon, 10 Mar 2025 18:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BA51DE89C;
+	Mon, 10 Mar 2025 17:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630947; cv=none; b=e2PFAiNXteFSCDgsTTwmG91OGaTf1qu4Su8hjR4BTNqvstqMOOlwemmtEWLAGFkww+mG1EoETkpx3gxpVPgvSGnbxazRkZ8slelXh6kPk5zFNx3Ja1t5+fBH61RpekKriRZX0nMYfsS5ar065y3hqskbgcqZQlYE5Wi6m3FghX0=
+	t=1741628286; cv=none; b=DJndGBZZmWPPFGlSQfUjC7i9bM3E/h8RrBo2saMlD3vt9lNaj7Egz3oRSs9qKnJSPD5O33+QDwiv9Z6lE6KtWRK3J8Ei0pzXqjak0KDNHPto1ukosX+/0nfgMGxdPJkWb5iauyDBjQ9UMC4A0LjPkUFHlXgYoBulYtckD7Dsl4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630947; c=relaxed/simple;
-	bh=77YyvaKIfmsmWUPv9rLOqWYM/NZKYGtAbOajXh5ZBPw=;
+	s=arc-20240116; t=1741628286; c=relaxed/simple;
+	bh=GBoY/r60u0R+vOFhGPNGjGVEustp1xTkDQfjXA2F00Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3L/HvXX6MFeKr0R0z5036CloszfpfBlWV1xu3Sjn/bmDX8vTBS9GeU/euaYNEKdqMPjc3W+Vt521CfRN0OC7NMEZ1m4a+czhOPVuo0G9pJISej28TRE+YSZdehlTxoC9z2xeMJvTutMf/ivMh8cnzjDAog2PpcanSk8YrDtWhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRXWh4It; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3413C4CEE5;
-	Mon, 10 Mar 2025 18:22:26 +0000 (UTC)
+	 MIME-Version; b=KgJI/RCjwr5esPaPowd4lY4YmqdBZ6TTzUuLDNu6HjnEZJk63B7h+tRqAwg0aWQ3DeigE+SwgBO7xkcbX4BGYfEKvnSC7pqurdn7zkmOki3SHhjHigFJw1yzQN3Ecs8iLhRbcuy3poEuWVxKzVLhC9MMpIrwlkdOId7A6uEVwtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K74YrU9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4FEC4CEE5;
+	Mon, 10 Mar 2025 17:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630947;
-	bh=77YyvaKIfmsmWUPv9rLOqWYM/NZKYGtAbOajXh5ZBPw=;
+	s=korg; t=1741628285;
+	bh=GBoY/r60u0R+vOFhGPNGjGVEustp1xTkDQfjXA2F00Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRXWh4ItHETCpVWwBY51QwCxHoamgXbw9W3cWkgTwFKGCY2bucygPXOFqQvTrnIAy
-	 IdeUXRpK3URaKHeKt190zd1vL05TAbql0vDTK2xBm4tFnGEuj0tLnPTWKe+Tn85BKm
-	 N6WPN+qoS1FEX7aqpmxYeC9xpo6GPef8MKwwT/e0=
+	b=K74YrU9xUW3y429t16S5sEwdDQVW06BSJYYNy7VVVZ8fmPUJOlLku8OfybgAh80PX
+	 nCoyegFkav9KNUWq96xSG+44JTesY7YumoPHcOCkIc0zsyRQyE7dWpS8YGr3eo5IeH
+	 yQbY8/yig4xTjtSKmy9TeL7zufRoipTYdzU3nw20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 5.15 588/620] usb: dwc3: gadget: Prevent irq storm when TH re-executes
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.6 140/145] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
 Date: Mon, 10 Mar 2025 18:07:14 +0100
-Message-ID: <20250310170608.740927151@linuxfoundation.org>
+Message-ID: <20250310170440.405840272@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-commit 69c58deec19628c8a686030102176484eb94fed4 upstream.
+commit 57a0ef02fefafc4b9603e33a18b669ba5ce59ba3 upstream.
 
-While commit d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in
-event cache") makes sure that top half(TH) does not end up overwriting the
-cached events before processing them when the TH gets invoked more than one
-time, returning IRQ_HANDLED results in occasional irq storm where the TH
-hogs the CPU. The irq storm can be prevented by the flag before event
-handler busy is cleared. Default enable interrupt moderation in all
-versions which support them.
+Commit 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
+mistakenly reverted the performance improvement introduced in commit
+42a4c603198f0 ("ima: fix ima_inode_post_setattr"). The unused bit mask was
+subsequently removed by commit 11c60f23ed13 ("integrity: Remove unused
+macro IMA_ACTION_RULE_FLAGS").
 
-ftrace event stub during dwc3 irq storm:
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000866: irq_handler_exit: irq=14 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000872: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000874: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000881: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000883: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000889: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000892: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000898: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000901: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000907: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000909: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000915: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000918: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000924: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000927: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000933: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000935: irq_handler_exit: irq=504 ret=handled
-    ....
+Restore the performance improvement by introducing the new mask
+IMA_NONACTION_RULE_FLAGS, equal to IMA_NONACTION_FLAGS without
+IMA_NEW_FILE, which is not a rule-specific flag.
 
-Cc: stable <stable@kernel.org>
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Fixes: d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in event cache")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250216223003.3568039-1-badhri@google.com
+Finally, reset IMA_NONACTION_RULE_FLAGS instead of IMA_NONACTION_FLAGS in
+process_measurement(), if the IMA_CHANGE_ATTR atomic flag is set (after
+file metadata modification).
+
+With this patch, new files for which metadata were modified while they are
+still open, can be reopened before the last file close (when security.ima
+is written), since the IMA_NEW_FILE flag is not cleared anymore. Otherwise,
+appraisal fails because security.ima is missing (files with IMA_NEW_FILE
+set are an exception).
+
+Cc: stable@vger.kernel.org # v4.16.x
+Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c   |   16 ++++++----------
- drivers/usb/dwc3/gadget.c |   10 +++++++---
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ security/integrity/ima/ima_main.c |    7 +++++--
+ security/integrity/integrity.h    |    3 +++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1456,8 +1456,6 @@ static void dwc3_get_properties(struct d
- 	dwc->tx_thr_num_pkt_prd = tx_thr_num_pkt_prd;
- 	dwc->tx_max_burst_prd = tx_max_burst_prd;
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -267,10 +267,13 @@ static int process_measurement(struct fi
+ 	mutex_lock(&iint->mutex);
  
--	dwc->imod_interval = 0;
--
- 	dwc->tx_fifo_resize_max_num = tx_fifo_resize_max_num;
- }
+ 	if (test_and_clear_bit(IMA_CHANGE_ATTR, &iint->atomic_flags))
+-		/* reset appraisal flags if ima_inode_post_setattr was called */
++		/*
++		 * Reset appraisal flags (action and non-action rule-specific)
++		 * if ima_inode_post_setattr was called.
++		 */
+ 		iint->flags &= ~(IMA_APPRAISE | IMA_APPRAISED |
+ 				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
+-				 IMA_NONACTION_FLAGS);
++				 IMA_NONACTION_RULE_FLAGS);
  
-@@ -1475,21 +1473,19 @@ static void dwc3_check_params(struct dwc
- 	unsigned int hwparam_gen =
- 		DWC3_GHWPARAMS3_SSPHY_IFC(dwc->hwparams.hwparams3);
- 
--	/* Check for proper value of imod_interval */
--	if (dwc->imod_interval && !dwc3_has_imod(dwc)) {
--		dev_warn(dwc->dev, "Interrupt moderation not supported\n");
--		dwc->imod_interval = 0;
--	}
--
  	/*
-+	 * Enable IMOD for all supporting controllers.
-+	 *
-+	 * Particularly, DWC_usb3 v3.00a must enable this feature for
-+	 * the following reason:
-+	 *
- 	 * Workaround for STAR 9000961433 which affects only version
- 	 * 3.00a of the DWC_usb3 core. This prevents the controller
- 	 * interrupt from being masked while handling events. IMOD
- 	 * allows us to work around this issue. Enable it for the
- 	 * affected version.
- 	 */
--	if (!dwc->imod_interval &&
--	    DWC3_VER_IS(DWC3, 300A))
-+	if (dwc3_has_imod((dwc)))
- 		dwc->imod_interval = 1;
+ 	 * Re-evaulate the file if either the xattr has changed or the
+--- a/security/integrity/integrity.h
++++ b/security/integrity/integrity.h
+@@ -42,6 +42,9 @@
+ #define IMA_CHECK_BLACKLIST	0x40000000
+ #define IMA_VERITY_REQUIRED	0x80000000
  
- 	/* Check the maximum_speed parameter */
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4297,14 +4297,18 @@ static irqreturn_t dwc3_process_event_bu
- 	reg &= ~DWC3_GEVNTSIZ_INTMASK;
- 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0), reg);
- 
-+	evt->flags &= ~DWC3_EVENT_PENDING;
-+	/*
-+	 * Add an explicit write memory barrier to make sure that the update of
-+	 * clearing DWC3_EVENT_PENDING is observed in dwc3_check_event_buf()
-+	 */
-+	wmb();
++/* Exclude non-action flags which are not rule-specific. */
++#define IMA_NONACTION_RULE_FLAGS	(IMA_NONACTION_FLAGS & ~IMA_NEW_FILE)
 +
- 	if (dwc->imod_interval) {
- 		dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), DWC3_GEVNTCOUNT_EHB);
- 		dwc3_writel(dwc->regs, DWC3_DEV_IMOD(0), dwc->imod_interval);
- 	}
- 
--	/* Keep the clearing of DWC3_EVENT_PENDING at the end */
--	evt->flags &= ~DWC3_EVENT_PENDING;
--
- 	return ret;
- }
- 
+ #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
+ 				 IMA_HASH | IMA_APPRAISE_SUBMASK)
+ #define IMA_DONE_MASK		(IMA_MEASURED | IMA_APPRAISED | IMA_AUDITED | \
 
 
 
