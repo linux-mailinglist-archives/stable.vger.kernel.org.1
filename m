@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-123029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BBBA5A27F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45C2A59E55
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A68991894EEB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E224170415
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6820122CBE9;
-	Mon, 10 Mar 2025 18:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2800B22CBF1;
+	Mon, 10 Mar 2025 17:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMx5rcF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuJCQO5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D301BBBFD;
-	Mon, 10 Mar 2025 18:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E0122DFA5;
+	Mon, 10 Mar 2025 17:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630839; cv=none; b=TUENez+Jw+gU6RkoWVE//M7FvVkKEHCHBlr9g07KWh91M57j4VBZZrQ3zDjJvvXuOCvgf9KvwX9l8mmw0NNNEwZWCSaXxzD+B3u403EIJ5CzbRqVujQ1Xa4sk4lgDq2aTJTMZBXYtQ4EPTPpEx5tTu8aWtQIIZzqBaoOuC8s8Yw=
+	t=1741627775; cv=none; b=aOtsYGQqlMPfOLNb2APElTajanRckiZrTqW7O335FpKlNm8p6JqLZGH5fl0ZmCYJokdbAr4APq1275tc5j4zVl3l95zS+XJhR95yyr7TsXt1tIEOnxpFtuL7ROjQCW10FFmVSlJjK9ZeokXTpI+yLdryahVlVtJGuKj6bangRFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630839; c=relaxed/simple;
-	bh=8+o09/tUdQZZIy6qgV18tcdtJv9UhjX8rPX+uhucWSM=;
+	s=arc-20240116; t=1741627775; c=relaxed/simple;
+	bh=ct3L0Nm0Z+NAacsefIlLnMBTVPIc4eb0RH77khvHjUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhkV3+GyXOsUri53RBPgNbc8E6CYGMmfqNmdObez6CYUChd4wmdoUNJr3j4RuH5HNX5n2QhgEsVBQtqRGRbOpTL142lyZs0xcsEmcz2edKnREoiOvkEkXpmR4AWIHxaH1Xb+WERSnl9D3EZ0FXp07NJs6j3RwO/X4AIdSCUJ9kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMx5rcF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B18C4CEE5;
-	Mon, 10 Mar 2025 18:20:38 +0000 (UTC)
+	 MIME-Version; b=V8SkgbaRIOnf9mk+AoIq78Oj32kEheaLBByuJDNfFhLXFYvag7/miCSLcmp5Csx0Ae5Hf3JEWexasRmNJoOymSj48nXSF4IgnR2Xd1GZ/6GFMWHmHbf7BWl8m7LPax/JdHDlsLb87lxXbdsyME4KzhE5yw3OU2Ggb+ei1Zh6y74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuJCQO5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0104C4CEE5;
+	Mon, 10 Mar 2025 17:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630839;
-	bh=8+o09/tUdQZZIy6qgV18tcdtJv9UhjX8rPX+uhucWSM=;
+	s=korg; t=1741627775;
+	bh=ct3L0Nm0Z+NAacsefIlLnMBTVPIc4eb0RH77khvHjUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMx5rcF5vqAWFZPGIxY/e1PRQZaZ0BFoz5RPKMdrZsOFkU4NzcUQb7GH6sJtSgChL
-	 pZCj1F+5OsltDpl1CDtFSv8wvNhAsSDFiHhSf1RobGhBl6lWzsujQxxRjIQbNdLiiI
-	 ih+ab/SM2KSaAxvKGa5h8othjCpnieFDTv4Z6J3Y=
+	b=DuJCQO5FxRhC8dz1SgU68roFjPKeAG8NpUdzGGT2ZZtaeqi2O8PP5oLnpwm2yBwHt
+	 70/dS1Rzri/BIdAQpDnnZ+i9hguS5x20t1x0lHvH8eyFWdphaiFbZvOVXi6pguCBtk
+	 g9oRvaXAScxnoZUBDJLc8qM5D9m0IJSEWKHBMAeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christop Hellwig <hch@infradead.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 551/620] mm: dont skip arch_sync_kernel_mappings() in error paths
+	Saravana Kannan <saravanak@google.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 6.12 244/269] drivers: core: fix device leak in __fw_devlink_relax_cycles()
 Date: Mon, 10 Mar 2025 18:06:37 +0100
-Message-ID: <20250310170607.292006566@linuxfoundation.org>
+Message-ID: <20250310170507.521324798@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 3685024edd270f7c791f993157d65d3c928f3d6e upstream.
+commit 78eb41f518f414378643ab022241df2a9dcd008b upstream.
 
-Fix callers that previously skipped calling arch_sync_kernel_mappings() if
-an error occurred during a pgtable update.  The call is still required to
-sync any pgtable updates that may have occurred prior to hitting the error
-condition.
+Commit bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize
+cycle detection logic") introduced a new struct device *con_dev and a
+get_dev_from_fwnode() call to get it, but without adding a corresponding
+put_device().
 
-These are theoretical bugs discovered during code review.
-
-Link: https://lkml.kernel.org/r/20250226121610.2401743-1-ryan.roberts@arm.com
-Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
-Fixes: 0c95cba49255 ("mm: apply_to_pte_range warn and fail if a large pte is encountered")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christop Hellwig <hch@infradead.org>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Closes: https://lore.kernel.org/all/20241204124826.2e055091@booty/
+Fixes: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
+Cc: stable@vger.kernel.org
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20250213-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-8cd3b03e6a3f@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c  |    6 ++++--
- mm/vmalloc.c |    4 ++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/base/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2713,8 +2713,10 @@ static int __apply_to_page_range(struct
- 		next = pgd_addr_end(addr, end);
- 		if (pgd_none(*pgd) && !create)
- 			continue;
--		if (WARN_ON_ONCE(pgd_leaf(*pgd)))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(pgd_leaf(*pgd))) {
-+			err = -EINVAL;
-+			break;
-+		}
- 		if (!pgd_none(*pgd) && WARN_ON_ONCE(pgd_bad(*pgd))) {
- 			if (!create)
- 				continue;
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -556,13 +556,13 @@ static int vmap_small_pages_range_noflus
- 			mask |= PGTBL_PGD_MODIFIED;
- 		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
- 		if (err)
--			return err;
-+			break;
- 	} while (pgd++, addr = next, addr != end);
- 
- 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
- 		arch_sync_kernel_mappings(start, end);
- 
--	return 0;
-+	return err;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2079,6 +2079,7 @@ static bool __fw_devlink_relax_cycles(st
+ out:
+ 	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
+ 	put_device(sup_dev);
++	put_device(con_dev);
+ 	put_device(par_dev);
+ 	return ret;
  }
- 
- /*
 
 
 
