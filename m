@@ -1,54 +1,65 @@
-Return-Path: <stable+bounces-122578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2773A5A056
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:48:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B4DA5A04C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:48:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6879C3A95B3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:48:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1E471890B31
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DDC22DFF3;
-	Mon, 10 Mar 2025 17:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A1F22B5AD;
+	Mon, 10 Mar 2025 17:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lROu/tdH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7oAvqFs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8466618FDAB;
-	Mon, 10 Mar 2025 17:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EE217CA12;
+	Mon, 10 Mar 2025 17:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628896; cv=none; b=bj3PHFnP8E+Pkr5K13o3CbSEtDuPZFhSnmi9e04n71DhAYWLjlxLzN4W8u+nRkpLnZ/N0hRNwdLbZCK5LxmsTLke8fv49sIwlQ4L9sZydkRWJkcp3lCilsBdeZarDWNuioouZm/TU/7g4bDTTMOFVXguELRANZ7s2upkfJZ6Q4s=
+	t=1741628911; cv=none; b=AcsE/0abpeQyEPBuswzR8HkC4+myJMSD3jwaBvs4e2bFxkIIdCQlmf27E/UJGUVxFO+uDjma8/+uL6IIQrGQfr2JdicU7SN+9l1fShaKk+DiXxzLrQn6qUhDE4YNLDrQGiY9Zo12D51WO7g5lnNDOXdtqHsr9U/7fB3ZOLzKXOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628896; c=relaxed/simple;
-	bh=BeCHZincLAyM3wmxxE9gM2fBMSLYoYS8iA2Zw4P12+A=;
+	s=arc-20240116; t=1741628911; c=relaxed/simple;
+	bh=BUVbQMiILl6zJNnN87jE4tt638LWwT3DLkxUy2+sbSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4mrxluudukAM+Ea6P8UIPO7+R+T4N+CGvEpiGD567FOOe8+BybQeZvit9i996kowVffGvgHcsA75zVOSGYoUNsuJpkw9Rq27l4GW/c5rw9J8urFmsJbuGB+n5vbpcSSgrZR/MpPu4WTTtZPBHCTlIXB3Y+KTI3SBb0J/UxpLW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lROu/tdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA330C4CEE5;
-	Mon, 10 Mar 2025 17:48:15 +0000 (UTC)
+	 MIME-Version; b=DFnP8VgEAh8vwANxS07Il4QyRxqBxdcUUbC/FD2WGiy7wDv64rzI8BktSdTMQxrGW+5vKXhixwpGY9tVM9M94Icqw3PvhXyLDoSCiYn45HZhNUg2hMQQI6ClSFCJh8LPlR4LkZdzy7ZC+J/gsFaoFVLuijhpdZebXys0aGvLunc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7oAvqFs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BCAC4CEE5;
+	Mon, 10 Mar 2025 17:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628896;
-	bh=BeCHZincLAyM3wmxxE9gM2fBMSLYoYS8iA2Zw4P12+A=;
+	s=korg; t=1741628910;
+	bh=BUVbQMiILl6zJNnN87jE4tt638LWwT3DLkxUy2+sbSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lROu/tdHoMpkqWYhuQ1jvHG4X5oaX4JjCjf7j0InphMmnSjOVzYDZZzNsJYynorTt
-	 afxiv34zui3Fs5ssD7i7DDr+6Ebvr4C3mbhgQr+bLF4iOs4akbOvB6aWe864OcXgW0
-	 oCiDoxJkjLpVlwL7OaXIYT9VDjBZ7L1bTdSYSFeQ=
+	b=t7oAvqFszTwggzq9kcvCzPrJCxSdgnEWV5FBJv3z/rdcWsp7P6x3TgN7NCI+9JIFS
+	 0cBQ3vnURiNoU/H6V3YGpFI5q+hx/hP0CKO212Ml3i7vWjo8gD5/+ktJOyBKvQKBpr
+	 E7zYqg8sqJNRE1jY7Z+RlwBteSKkUaR96YOQBfsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	George Lander <lander@jagmn.com>,
-	Marcus Cooper <codekipper@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <song@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/620] ASoC: sun4i-spdif: Add clock multiplier settings
-Date: Mon, 10 Mar 2025 17:58:45 +0100
-Message-ID: <20250310170548.700448571@linuxfoundation.org>
+Subject: [PATCH 5.15 080/620] perf header: Fix one memory leakage in process_bpf_btf()
+Date: Mon, 10 Mar 2025 17:58:46 +0100
+Message-ID: <20250310170548.741041534@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -67,84 +78,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: George Lander <lander@jagmn.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 0a2319308de88b9e819c0b43d0fccd857123eb31 ]
+[ Upstream commit 875d22980a062521beed7b5df71fb13a1af15d83 ]
 
-There have been intermittent issues with the SPDIF output on H3
-and H2+ devices which has been fixed by setting the s_clk to 4
-times the audio pll.
-Add a quirk for the clock multiplier as not every supported SoC
-requires it. Without the multiplier, the audio at normal sampling
-rates was distorted and did not play at higher sampling rates.
+If __perf_env__insert_btf() returns false due to a duplicate btf node
+insertion, the temporary node will leak. Add a check to ensure the memory
+is freed if the function returns false.
 
-Fixes: 1bd92af877ab ("ASoC: sun4i-spdif: Add support for the H3 SoC")
-Signed-off-by: George Lander <lander@jagmn.com>
-Signed-off-by: Marcus Cooper <codekipper@gmail.com>
-Link: https://patch.msgid.link/20241111165600.57219-2-codekipper@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a70a1123174ab592 ("perf bpf: Save BTF information as headers to perf.data")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20241205084500.823660-2-quic_zhonhan@quicinc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sunxi/sun4i-spdif.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/header.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
-index dd8d13f3fd121..e885af039b92f 100644
---- a/sound/soc/sunxi/sun4i-spdif.c
-+++ b/sound/soc/sunxi/sun4i-spdif.c
-@@ -175,6 +175,7 @@ struct sun4i_spdif_quirks {
- 	unsigned int reg_dac_txdata;
- 	bool has_reset;
- 	unsigned int val_fctl_ftx;
-+	unsigned int mclk_multiplier;
- };
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 8b0a8ac7afefd..7937ff460c446 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -3120,7 +3120,8 @@ static int process_bpf_btf(struct feat_fd *ff, void *data __maybe_unused)
+ 		if (__do_read(ff, node->data, data_size))
+ 			goto out;
  
- struct sun4i_spdif_dev {
-@@ -311,6 +312,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
- 	default:
- 		return -EINVAL;
+-		__perf_env__insert_btf(env, node);
++		if (!__perf_env__insert_btf(env, node))
++			free(node);
+ 		node = NULL;
  	}
-+	mclk *= host->quirks->mclk_multiplier;
  
- 	ret = clk_set_rate(host->spdif_clk, mclk);
- 	if (ret < 0) {
-@@ -345,6 +347,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
- 	default:
- 		return -EINVAL;
- 	}
-+	mclk_div *= host->quirks->mclk_multiplier;
- 
- 	reg_val = 0;
- 	reg_val |= SUN4I_SPDIF_TXCFG_ASS;
-@@ -427,24 +430,28 @@ static struct snd_soc_dai_driver sun4i_spdif_dai = {
- static const struct sun4i_spdif_quirks sun4i_a10_spdif_quirks = {
- 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
-+	.mclk_multiplier = 1,
- };
- 
- static const struct sun4i_spdif_quirks sun6i_a31_spdif_quirks = {
- 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
- 	.has_reset	= true,
-+	.mclk_multiplier = 1,
- };
- 
- static const struct sun4i_spdif_quirks sun8i_h3_spdif_quirks = {
- 	.reg_dac_txdata	= SUN8I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
- 	.has_reset	= true,
-+	.mclk_multiplier = 4,
- };
- 
- static const struct sun4i_spdif_quirks sun50i_h6_spdif_quirks = {
- 	.reg_dac_txdata = SUN8I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN50I_H6_SPDIF_FCTL_FTX,
- 	.has_reset      = true,
-+	.mclk_multiplier = 1,
- };
- 
- static const struct of_device_id sun4i_spdif_of_match[] = {
 -- 
 2.39.5
 
