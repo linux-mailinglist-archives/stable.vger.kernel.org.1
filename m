@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-122390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6867A59F75
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C39A59D18
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 199513AC583
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F293188E4F4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41182230BD4;
-	Mon, 10 Mar 2025 17:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14BD22D7A6;
+	Mon, 10 Mar 2025 17:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqWrCi+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP87s0/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BB022D799;
-	Mon, 10 Mar 2025 17:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8BE21E087;
+	Mon, 10 Mar 2025 17:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628355; cv=none; b=KWy9IS4JY5dZzF4JFCg03qrhnzD8fG2LIBWMmQLVSDH/rw04YA+O9ogiR15M5oUupTyqVCDo8h15xlGi7doZdyjv62XUHBgEvNHRftYAjuKn+o0b7VxbjDuzshD8Mv2U4uWdqT5DjI3gxqo3ctITREO7O+gXKQQwZ/8w9iWgNVs=
+	t=1741627078; cv=none; b=Z2Ok4Yz6U8ibaXCrTPeireRRRlFVpE+g/p6znQ2LPUd/RaKzacqeMI/n2JnByynoo62QYIn0ZrzOHMx/IhD8uF5FQM3LnZAs+NOpJmfdj6kxDXCRye0JrCZM4h8IWDqBcQFzJRJfhPrynpTroNBbKuMQD5Ecjnd03Zmko8OH0TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628355; c=relaxed/simple;
-	bh=LxnzMrsbXodEz9fo8AlnT62HLMMfl1hDfRMUAMmuVwg=;
+	s=arc-20240116; t=1741627078; c=relaxed/simple;
+	bh=TC37pz90bmuSeR0zMVVd7H7h1N3M4gXRR4KerhxSHbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlAgUxkIUR+RwCsUDwHOTIFOY3SxdY5D0qaWGCy8QoHU6qbhyjPvwvAw7x+GwYrgkCczuyzLQZJS3tKhhxdDmpjPgTLMXkIYcKyyP/HbgQYHSLn3nLEHOUkRZobu+fk2uLZnk8SUIYxBlLH8CPht05QZd5gwnQdpXbo/CKinfwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqWrCi+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE73C4CEE5;
-	Mon, 10 Mar 2025 17:39:14 +0000 (UTC)
+	 MIME-Version; b=X99PssV+09sGNS2TgS+Pml7An2APSva2mGgPJhUJ9TyDoa0cWo0/6A09YFmimUDZy2G3hMIvrnPpfxuxO+yiSGE1g1s9PXjxTMkgwAPuqtZKnSFvdzlLc4vM+LjQ10SNiT41PaGo/ifd87IBYkYn5qGJ2zjPvA09HuE/GyKSgFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP87s0/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087D3C4CEE5;
+	Mon, 10 Mar 2025 17:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628354;
-	bh=LxnzMrsbXodEz9fo8AlnT62HLMMfl1hDfRMUAMmuVwg=;
+	s=korg; t=1741627078;
+	bh=TC37pz90bmuSeR0zMVVd7H7h1N3M4gXRR4KerhxSHbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqWrCi+X9rSa9mQZxovbCRYJQG3CvbwihKqVe4HJPYE3BidJOi8HR+PZM2aAa1P+b
-	 J3XADpTF5jrxmHL+fe0PBdoqoOAUBTGW2Xe1D1U5aDEfoLtvdTaKW5BTq1r69dp5jf
-	 8voQE8ODOHna+CJyix0m22/1wKdbLOu6E7U7GmSI=
+	b=aP87s0/srwU6Vbu5JF+Enu+okiwzaLZTVeng54Oscg5vbA0tOjOvL2bKLoHOxVv8H
+	 UfMuARfOVbdTSOeneQsr9nkNg7SeX0LqEIDfrw0RIu4/QXcEpu6uYLC6BOYyAnv26+
+	 optguKpEG7CgKrhR1XxC8gtb/0R1y9vf9aSwAe+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 030/109] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.13 181/207] mei: me: add panther lake P DID
 Date: Mon, 10 Mar 2025 18:06:14 +0100
-Message-ID: <20250310170428.752184178@linuxfoundation.org>
+Message-ID: <20250310170454.983157769@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
+commit a8e8ffcc3afce2ee5fb70162aeaef3f03573ee1e upstream.
 
-The return value of rio_add_net() should be checked.  If it fails,
-put_device() should be called to free the memory and give up the reference
-initialized in rio_add_net().
+Add Panther Lake P device id.
 
-Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250209110550.1582982-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rapidio/rio-scan.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
- 		dev_set_name(&net->dev, "rnet_%d", net->id);
- 		net->dev.parent = &mport->dev;
- 		net->dev.release = rio_scan_release_dev;
--		rio_add_net(net);
-+		if (rio_add_net(net)) {
-+			put_device(&net->dev);
-+			net = NULL;
-+		}
- 	}
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,8 @@
  
- 	return net;
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ 
++#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,8 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
