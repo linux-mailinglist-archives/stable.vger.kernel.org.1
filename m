@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DF5A59F72
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB3EA59D15
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D81BE3AC529
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B598C7A1395
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36982253FE;
-	Mon, 10 Mar 2025 17:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269811AF0BB;
+	Mon, 10 Mar 2025 17:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUrxCvY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQcROO8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A4E22D4C3;
-	Mon, 10 Mar 2025 17:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93302F28;
+	Mon, 10 Mar 2025 17:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628346; cv=none; b=jKnoZm/1Ipv6Dh44Z1TI+6hoCqbIowpCVvaNRwsxq3rl4kKnhQpS11mcuFHvYNfOT+tytanOR+bnDS71ZaTtLkMbl9sB567xUHeqSx+Ld6XZj6btpaqoA+B69JqtflKCnsLvFr9hVHQ9sX2Q4sy0TjsIjlr7Q8riTIKyF/Odne4=
+	t=1741627069; cv=none; b=Jcyu2vQLNKBh9mLMQZZoGFcihxNJS6CDxbhCVTBXNbl2lDRV9x8Slqd9oL+/lel9feRMu2JTivHPln3u0prkj64a0GpcMCRUef+mzA+iV5cJruyhtbrOr9VIv54G3+X6VKmCkLI63wCHgYnUyWzMtJUFYss/iM/MIiEZZ7c9d3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628346; c=relaxed/simple;
-	bh=XwTKVDogXgjxZxV8tXO6mISeJwOPFmwFe7C9WH6G28c=;
+	s=arc-20240116; t=1741627069; c=relaxed/simple;
+	bh=QmrS8jk5qbpb3vu5J6QFNSoCOmr6zGz54TaMG4fusIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cykxz6nYuRnZ3RR9VoJ/JQvq7488BNoo22l9GJHys9eG02aJ7vCf+1KuQf8ply4g8sG2qJxfKLiNoX6A9EGhfMDob/vgf3iZVlH+P0vyKyhNm/tfqflzQ6UiKzJ9aplln3Jc0RuoOptpkYC3LXxJSfL0FjlXROppjHxt76dWCng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUrxCvY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D414CC4CEE5;
-	Mon, 10 Mar 2025 17:39:05 +0000 (UTC)
+	 MIME-Version; b=VxNHeZYBNPZCIDtyqZ8Xcq8K8XYzrNj+JfflLpvO4tAunUK0c9DCB2+Rda1EXNM/+xhZMPW/XSGJO9dhULMauBlHC5l3MqqSJpwdyT+tcRueOztDv4/y9IBVVgKJwEpoRft3qRjK7dF1Xqth0nQ8cFxkCMr86StTRCdkSThslIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQcROO8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63462C4CEE5;
+	Mon, 10 Mar 2025 17:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628346;
-	bh=XwTKVDogXgjxZxV8tXO6mISeJwOPFmwFe7C9WH6G28c=;
+	s=korg; t=1741627069;
+	bh=QmrS8jk5qbpb3vu5J6QFNSoCOmr6zGz54TaMG4fusIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUrxCvY9ywXc5uEdCzzpMzCI1yr3Ltecz2H/O+vUOANSxd0pOLTu7OJlaJmKVZi/z
-	 vDB6cNhYQWISFsbL9AOyNYFTkISBK9FcpE1L4YvxAjkXirYzHbRh/aXFavNQgcND01
-	 /uMEJGUntV5Q6PezUGWxKioHUISkj/s40iOKjhZY=
+	b=HQcROO8BWYQ9IL8fquKTIaC0VZhRzM7uhcl0+fk+Yum15qvvfWopV5LsPIjPzPja2
+	 oixbZfPIzr4b1KLH9gGNaYQ51wc9dCe1FywTeqTSa+NahXJN3ApMyTnLeY6sYKOt1A
+	 JgMgP8XoJDeXA1e5cyeOQDCSQ73ODFWOu0yzrw60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 027/109] Bluetooth: Add check for mgmt_alloc_skb() in mgmt_device_connected()
+	Sean Christopherson <seanjc@google.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>
+Subject: [PATCH 6.13 178/207] KVM: x86: Snapshot the hosts DEBUGCTL after disabling IRQs
 Date: Mon, 10 Mar 2025 18:06:11 +0100
-Message-ID: <20250310170428.633253837@linuxfoundation.org>
+Message-ID: <20250310170454.864976884@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit d8df010f72b8a32aaea393e36121738bb53ed905 upstream.
+commit 189ecdb3e112da703ac0699f4ec76aa78122f911 upstream.
 
-Add check for the return value of mgmt_alloc_skb() in
-mgmt_device_connected() to prevent null pointer dereference.
+Snapshot the host's DEBUGCTL after disabling IRQs, as perf can toggle
+debugctl bits from IRQ context, e.g. when enabling/disabling events via
+smp_call_function_single().  Taking the snapshot (long) before IRQs are
+disabled could result in KVM effectively clobbering DEBUGCTL due to using
+a stale snapshot.
 
-Fixes: e96741437ef0 ("Bluetooth: mgmt: Make use of mgmt_send_event_skb in MGMT_EV_DEVICE_CONNECTED")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250227222411.3490595-6-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/x86.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -9733,6 +9733,9 @@ void mgmt_device_connected(struct hci_de
- 				     sizeof(*ev) + (name ? eir_precalc_len(name_len) : 0) +
- 				     eir_precalc_len(sizeof(conn->dev_class)));
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4976,7 +4976,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu
  
-+	if (!skb)
-+		return;
+ 	/* Save host pkru register if supported */
+ 	vcpu->arch.host_pkru = read_pkru();
+-	vcpu->arch.host_debugctl = get_debugctlmsr();
+ 
+ 	/* Apply any externally detected TSC adjustments (due to suspend) */
+ 	if (unlikely(vcpu->arch.tsc_offset_adjustment)) {
+@@ -10961,6 +10960,8 @@ static int vcpu_enter_guest(struct kvm_v
+ 		set_debugreg(0, 7);
+ 	}
+ 
++	vcpu->arch.host_debugctl = get_debugctlmsr();
 +
- 	ev = skb_put(skb, sizeof(*ev));
- 	bacpy(&ev->addr.bdaddr, &conn->dst);
- 	ev->addr.type = link_to_bdaddr(conn->type, conn->dst_type);
+ 	guest_timing_enter_irqoff();
+ 
+ 	for (;;) {
 
 
 
