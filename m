@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-121955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28C9A59D2A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D667A5A13E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C6C16E42F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C085F3AA0A2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DCF230BF8;
-	Mon, 10 Mar 2025 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BF522D7A6;
+	Mon, 10 Mar 2025 17:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOaH7xyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqgk2CqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668FB230BC8;
-	Mon, 10 Mar 2025 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056FB227EA0;
+	Mon, 10 Mar 2025 17:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627113; cv=none; b=Mk0OFwZFf2Uh2uG+0z1F47wIU6JDJIpILfe5Ck9qTXK91H4bHsU3WNyj7kyjUzzrISOYqW71EbeeMZrmZC2gbAwNCurEYKBG/H5AYxEHoY0g1wehhE7321a+a3o5W15PuLQjDw9A8H2RPahrMT+iy//uEQ/NJwjty6a0V+YgL7A=
+	t=1741629525; cv=none; b=AYTUQln4/8r4NrhXfzrVJmEJa3UMnN6OaalWZOdtERikZhIQGXPTbl8kVtccJQdltJ8wcLh1QxdBMIHwLF4ji7SxxUO4aVwU75gPP6nv0bOAxo34emj+LYn/u3x5r7AdI1Tou9+MkgvITKCZsM72McHsVogCxwubS5nsBAauYZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627113; c=relaxed/simple;
-	bh=JtupEimtiUMSVJBjPTYwUj4KokLpbb+E1dUIfK87syQ=;
+	s=arc-20240116; t=1741629525; c=relaxed/simple;
+	bh=AP5az0qgiQytymeP04DCIiwsresSZBByl8lknPeYjI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZvIqoKvr4EfFYQTpQxX9LDwFQa01l5wz2bLLbfXbKtZyoj6p2rwkiU208JaRnTr7ocpBz/QgSIAPoWolCCM2P+uK/bIoNqGPFTvlDu3Hmy58YjqMZydvD4g2aoWioutRX5+uDR0M8cvXaIF9qgXj+zZmYXnSWLeSkHaUvL+1B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOaH7xyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9ECFC4CEED;
-	Mon, 10 Mar 2025 17:18:32 +0000 (UTC)
+	 MIME-Version; b=uaINko+d8ZqV/OqVUTKVe8fwPDwt/qqoENYxL0cLpIUSyMbxOJKBWNVXSvoNs8LyywH+c+/yy0vM+5QO5kzXHZ+p6r8d+mA4YZNDWmte+CPGrhENvkP0jpggcl9GQqAikbilkJI92/xQBpx+tZ1ewGcW6Kjb33mXDX/OiakUZvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqgk2CqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800ECC4CEE5;
+	Mon, 10 Mar 2025 17:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627113;
-	bh=JtupEimtiUMSVJBjPTYwUj4KokLpbb+E1dUIfK87syQ=;
+	s=korg; t=1741629524;
+	bh=AP5az0qgiQytymeP04DCIiwsresSZBByl8lknPeYjI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOaH7xytsuU4MNpJx35kBbhYSJeNN9HUSa24QlgIG87YbwqIDlIwYtVLCaPEjwtTt
-	 hsnTe5ctstkiIZdksxivuSqZbsqi6Ynfer1atz18Ahv/ECBpSGk12bigECeX0db/fP
-	 iAgGlisCyerBuOhjHGKuTt2xXqXFTKRNfjoevTpk=
+	b=mqgk2CqK9lbgXRA76lsV/bAC72e2Ir3JcSCD90iEWgtHWPF6PhOP/Hhsgvm+YaO/4
+	 kOuzCOClXGKEUMyMYHFVtFEv0I1PPVnvKOHgqqdXxateXegmTGtQ0f4qHeQJwt/5x7
+	 GDYtB27fPhONIXCoWAR2GDc2UpNO7xJvuNcu2YFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 018/269] rust: enable `clippy::ignored_unit_patterns` lint
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 325/620] net/ncsi: wait for the last response to Deselect Package before configuring channel
 Date: Mon, 10 Mar 2025 18:02:51 +0100
-Message-ID: <20250310170458.434685650@linuxfoundation.org>
+Message-ID: <20250310170558.435370665@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Paul Fertser <fercerpav@gmail.com>
 
-commit 3fcc23397628c2357dbe66df59644e09f72ac725 upstream.
+commit 6bb194d036c6e1b329dcdff459338cdd9a54802a upstream.
 
-In Rust 1.73.0, Clippy introduced the `ignored_unit_patterns` lint [1]:
+The NCSI state machine as it's currently implemented assumes that
+transition to the next logical state is performed either explicitly by
+calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
+after processing the predefined (ndp->pending_req_num) number of
+replies. Thus to avoid the configuration FSM from advancing prematurely
+and getting out of sync with the process it's essential to not skip
+waiting for a reply.
 
-> Matching with `()` explicitly instead of `_` outlines the fact that
-> the pattern contains no data. Also it would detect a type change
-> that `_` would ignore.
+This patch makes the code wait for reception of the Deselect Package
+response for the last package probed before proceeding to channel
+configuration.
 
-There is only a single case that requires a change:
+Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
+testing.
 
-    error: matching over `()` is more explicit
-       --> rust/kernel/types.rs:176:45
-        |
-    176 |         ScopeGuard::new_with_data((), move |_| cleanup())
-        |                                             ^ help: use `()` instead of `_`: `()`
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ignored_unit_patterns
-        = note: requested on the command line with `-D clippy::ignored-unit-patterns`
-
-Thus clean it up and enable the lint -- no functional change intended.
-
-Link: https://rust-lang.github.io/rust-clippy/master/index.html#/ignored_unit_patterns [1]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Tested-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240904204347.168520-8-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250116152900.8656-1-fercerpav@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile             |    1 +
- rust/kernel/types.rs |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/ncsi/ncsi-manage.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -453,6 +453,7 @@ export rust_common_flags := --edition=20
- 			    -Wunreachable_pub \
- 			    -Wclippy::all \
- 			    -Wclippy::dbg_macro \
-+			    -Wclippy::ignored_unit_patterns \
- 			    -Wclippy::mut_mut \
- 			    -Wclippy::needless_bitwise_bool \
- 			    -Wclippy::needless_continue \
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -225,7 +225,7 @@ impl<T, F: FnOnce(T)> ScopeGuard<T, F> {
- impl ScopeGuard<(), fn(())> {
-     /// Creates a new guarded object with the given cleanup function.
-     pub fn new(cleanup: impl FnOnce()) -> ScopeGuard<(), impl FnOnce(())> {
--        ScopeGuard::new_with_data((), move |_| cleanup())
-+        ScopeGuard::new_with_data((), move |()| cleanup())
-     }
- }
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1385,6 +1385,12 @@ static void ncsi_probe_channel(struct nc
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		break;
+ 	case ncsi_dev_state_probe_package:
++		if (ndp->package_probe_id >= 8) {
++			/* Last package probed, finishing */
++			ndp->flags |= NCSI_DEV_PROBED;
++			break;
++		}
++
+ 		ndp->pending_req_num = 1;
  
+ 		nca.type = NCSI_PKT_CMD_SP;
+@@ -1501,13 +1507,8 @@ static void ncsi_probe_channel(struct nc
+ 		if (ret)
+ 			goto error;
+ 
+-		/* Probe next package */
++		/* Probe next package after receiving response */
+ 		ndp->package_probe_id++;
+-		if (ndp->package_probe_id >= 8) {
+-			/* Probe finished */
+-			ndp->flags |= NCSI_DEV_PROBED;
+-			break;
+-		}
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		ndp->active_package = NULL;
+ 		break;
 
 
 
