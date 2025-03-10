@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F99A5A2AB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D14A59F86
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BD8718953E0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52161188F630
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015F6233729;
-	Mon, 10 Mar 2025 18:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AA2233703;
+	Mon, 10 Mar 2025 17:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pgk+4DmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1WDq9nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31FB231A24;
-	Mon, 10 Mar 2025 18:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102DF22D799;
+	Mon, 10 Mar 2025 17:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630953; cv=none; b=cR+PDlkJ1CJoKlT4vOEWip05AK0xXwIF+lGc0iLI5T6xkuQiY3RmBwOj18JSdURIcyGDuLTsozWw4EDMQTZKqZp7enANFSWlw9ms2aOFgoV3gzv4LhuWCa8Ar2LcUQCdCvrFmQ+alKqLRPvM4Rsy/JeIpVnVdjhoNmsGzro0U7w=
+	t=1741628451; cv=none; b=OwK+fgVs0uE9HT+aF2Zmx552aRYyu+qOuLNfd9rqweYyLDlPCKqY9HRyWDsOplsmqrsXNf0ov6vVGly7X1dKytfH0J82kpajlEXD/A5HugJ5r1W7gtkL+ypvsfxn4k+JpjOn+L7VqP4dA5XN3UIlTYXgwAVYprgx/yZNo9OI6hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630953; c=relaxed/simple;
-	bh=w6O/0Z/+DjwKy2nDT62KLTFDZ1OVsFK5S2NRYC2nz1U=;
+	s=arc-20240116; t=1741628451; c=relaxed/simple;
+	bh=AwztAlnlqZLYIIqjKTIzyyzZrJwAk+2U8TOMt5XSdLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VDLZ7YHoTYgBRDAx/qcq63kKaiCZ0YlF+alrkIZ5Zhdg1RsPtz5mmKXsEEcWWqtJJyfecUsAwzW3BVXowBV/MhtL23w2fIW4VQy0PJzV24jPvJzUA2p0EInBG4lZtgnWJw8MF9BfjH5DqmckxKmL4maj7z8ySd59HkwaO+9UgSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pgk+4DmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4F0C4CEE5;
-	Mon, 10 Mar 2025 18:22:32 +0000 (UTC)
+	 MIME-Version; b=co3Qyipq3+RwtzKtNYTKX/gc3R9wVm2bhKbTGQEo1rvC/gWyVLc7HqHmVFyycl3ZrgruNS6fd5DTe+N1QzPzXYSIr35YAR+UR9UBFqk/zi1XkYqFrk3jOswukhH4763UwTnHbaind17AZtwiwoaKHQ2sSpKpHMi6pDLif00UWeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1WDq9nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918CDC4CEE5;
+	Mon, 10 Mar 2025 17:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630953;
-	bh=w6O/0Z/+DjwKy2nDT62KLTFDZ1OVsFK5S2NRYC2nz1U=;
+	s=korg; t=1741628450;
+	bh=AwztAlnlqZLYIIqjKTIzyyzZrJwAk+2U8TOMt5XSdLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pgk+4DmR8iZL8Ow4WLH9zHmUhebCml5GPTQV1HOQqz5WKEgQgqgmvR8bO3NJ3OPce
-	 0PDmamlMe3tyibHSLk1c5xW36dTMQjkApROxrwvHlC2cljTas72jUphw5sOkqaCiHE
-	 mYmEVCWtSAq4aIC+WKj1LDlIeGwLAJSJwWAxwM4g=
+	b=n1WDq9nxe+jEWjjlmXYF0UJm6/UbOD0puX7YUF0qfDcXfvOoCbAey5Q794SOQ8bGR
+	 v64+2xD8y8KCMnUaue9Yf0NUpCqYpH0VrbmPMJLRjpo6OyikChs0p/GWCI25ceGh48
+	 ZZhk4B+qRdcRLc1cvaMlRBHha9Irk4QY+g+zokDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Schumacher <erik.schumacher@iris-sensing.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 560/620] hwmon: (ad7314) Validate leading zero bits and return error
-Date: Mon, 10 Mar 2025 18:06:46 +0100
-Message-ID: <20250310170607.646534301@linuxfoundation.org>
+	qf <quintafeira@tutanota.com>,
+	Christian Heusel <christian@heusel.eu>
+Subject: [PATCH 6.1 063/109] Revert "drivers/card_reader/rtsx_usb: Restore interrupt based detection"
+Date: Mon, 10 Mar 2025 18:06:47 +0100
+Message-ID: <20250310170430.073325857@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Schumacher <erik.schumacher@iris-sensing.com>
+From: Christian Heusel <christian@heusel.eu>
 
-[ Upstream commit e278d5e8aef4c0a1d9a9fa8b8910d713a89aa800 ]
+commit 2397d61ee45cddb8f3bd3a3a9840ef0f0b5aa843 upstream.
 
-Leading zero bits are sent on the bus before the temperature value is
-transmitted. If any of these bits are high, the connection might be
-unstable or there could be no AD7314 / ADT730x (or compatible) at all.
-Return -EIO in that case.
+This reverts commit 235b630eda072d7e7b102ab346d6b8a2c028a772.
 
-Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
-Fixes: 4f3a659581cab ("hwmon: AD7314 driver (ported from IIO)")
-Link: https://lore.kernel.org/r/24a50c2981a318580aca8f50d23be7987b69ea00.camel@iris-sensing.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit was found responsible for issues with SD card recognition,
+as users had to re-insert their cards in the readers and wait for a
+while. As for some people the SD card was involved in the boot process
+it also caused boot failures.
+
+Cc: stable@vger.kernel.org
+Link: https://bbs.archlinux.org/viewtopic.php?id=303321
+Fixes: 235b630eda07 ("drivers/card_reader/rtsx_usb: Restore interrupt based detection")
+Reported-by: qf <quintafeira@tutanota.com>
+Closes: https://lore.kernel.org/all/1de87dfa-1e81-45b7-8dcb-ad86c21d5352@heusel.eu
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://lore.kernel.org/r/20250224-revert-sdcard-patch-v1-1-d1a457fbb796@heusel.eu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ad7314.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/misc/cardreader/rtsx_usb.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/drivers/hwmon/ad7314.c b/drivers/hwmon/ad7314.c
-index 7802bbf5f9587..59424103f6348 100644
---- a/drivers/hwmon/ad7314.c
-+++ b/drivers/hwmon/ad7314.c
-@@ -22,11 +22,13 @@
-  */
- #define AD7314_TEMP_MASK		0x7FE0
- #define AD7314_TEMP_SHIFT		5
-+#define AD7314_LEADING_ZEROS_MASK	BIT(15)
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -286,7 +286,6 @@ static int rtsx_usb_get_status_with_bulk
+ int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+ {
+ 	int ret;
+-	u8 interrupt_val = 0;
+ 	u16 *buf;
  
- /*
-  * ADT7301 and ADT7302 temperature masks
-  */
- #define ADT7301_TEMP_MASK		0x3FFF
-+#define ADT7301_LEADING_ZEROS_MASK	(BIT(15) | BIT(14))
+ 	if (!status)
+@@ -309,20 +308,6 @@ int rtsx_usb_get_card_status(struct rtsx
+ 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
+ 	}
  
- enum ad7314_variant {
- 	adt7301,
-@@ -65,12 +67,20 @@ static ssize_t ad7314_temperature_show(struct device *dev,
+-	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
+-	/* Cross check presence with interrupts */
+-	if (*status & XD_CD)
+-		if (!(interrupt_val & XD_INT))
+-			*status &= ~XD_CD;
+-
+-	if (*status & SD_CD)
+-		if (!(interrupt_val & SD_INT))
+-			*status &= ~SD_CD;
+-
+-	if (*status & MS_CD)
+-		if (!(interrupt_val & MS_INT))
+-			*status &= ~MS_CD;
+-
+ 	/* usb_control_msg may return positive when success */
+ 	if (ret < 0)
  		return ret;
- 	switch (spi_get_device_id(chip->spi_dev)->driver_data) {
- 	case ad7314:
-+		if (ret & AD7314_LEADING_ZEROS_MASK) {
-+			/* Invalid read-out, leading zero part is missing */
-+			return -EIO;
-+		}
- 		data = (ret & AD7314_TEMP_MASK) >> AD7314_TEMP_SHIFT;
- 		data = sign_extend32(data, 9);
- 
- 		return sprintf(buf, "%d\n", 250 * data);
- 	case adt7301:
- 	case adt7302:
-+		if (ret & ADT7301_LEADING_ZEROS_MASK) {
-+			/* Invalid read-out, leading zero part is missing */
-+			return -EIO;
-+		}
- 		/*
- 		 * Documented as a 13 bit twos complement register
- 		 * with a sign bit - which is a 14 bit 2's complement
--- 
-2.39.5
-
 
 
 
