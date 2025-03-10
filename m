@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-122928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C01A5A20D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAEEA59E06
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BDD47A93B4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B388188B6AF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F39922CBE9;
-	Mon, 10 Mar 2025 18:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290292356D1;
+	Mon, 10 Mar 2025 17:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkVcJd4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BApqQ8n/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C179822B597;
-	Mon, 10 Mar 2025 18:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9595234971;
+	Mon, 10 Mar 2025 17:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630545; cv=none; b=XJGJfTGrYR3scIgrfFcVWuLtNctn3MBspzCHfJX3AnqFG7wJbJ6uF4qUvbozWPL3+4qLpujWEFvN4c9cMUrSldbVnzRcY1pnUVR76qv1OwbNdFonSz15xjJuQQLPkpAAEZ0hujUhl4FJWvz0tmfStgA28VkaHNKm/N3hhuN151Q=
+	t=1741627604; cv=none; b=czTFy8wFuPPywcfeXPReGI0wJLIo/030vHBTDLsoRh57L9rfc680xcPoqhN9dAE5HSQL0KZ0awwFsPqJdZ3xHKoKGj5kszbrFYGpXjHGbHeSND30a7EGSflzmZJ1dGa8WhCaKL6sMr67ykjazFH6ugVI8F8YJEhnYIPTRedqLWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630545; c=relaxed/simple;
-	bh=uLHARftLsXwh2ZwLFZCATKBU39GqKLpoPr0K4xGtMl8=;
+	s=arc-20240116; t=1741627604; c=relaxed/simple;
+	bh=D9Ziw+bHYeUITQfFvLxE1Mh/eVnKVcsI/AmKheCKIt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIS55pAoDJeWXSWZFvxeYiGlfYoi1bYRRRCcHAtNJGllV/sTNYpwoOrLMabzzVvpK808cbuKdnW+S+dH+ljq5cZjE/Pg+HROTKEyVml6Y/6K6PqP96CfR9uMgD9zfLYQnOlsGE54R0TXZl+pU0AsUC3eQdpBw0sLxRgETUEehlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkVcJd4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48452C4CEEE;
-	Mon, 10 Mar 2025 18:15:45 +0000 (UTC)
+	 MIME-Version; b=DjLk7zbwLYim960Ndl8lrftndRPUQhRMn4vhJJcJ4E4el0BdJBhzS6qF2tYbt2t8ElIffd5/7jxBQRuxHwbFGg9ukOoB3XWAi+jojiaePZXwqPvVZH0U18lV9jHwDcE7Vanx48ptcK7obZq64+fbBbX0rD0TwFl8Ddphf78F93Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BApqQ8n/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59823C4CEE5;
+	Mon, 10 Mar 2025 17:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630545;
-	bh=uLHARftLsXwh2ZwLFZCATKBU39GqKLpoPr0K4xGtMl8=;
+	s=korg; t=1741627604;
+	bh=D9Ziw+bHYeUITQfFvLxE1Mh/eVnKVcsI/AmKheCKIt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkVcJd4RkQdiFHEvcd8r6pD3+jpek29AvWG2ui5YHWw/sO3lP3yHOiKa6TojcASOw
-	 v5gwzDdsYMuwh4R06I8uPXzR79eDvOzfWh1PEUfJtrPxU0eHB1/2zs91tGUBZ41oAQ
-	 X+ZbQXe/fmEQFjGVrUX0TdaUgZGZwQjQLtTB03CA=
+	b=BApqQ8n/h/WAeZD+kYw9bAF5d11KrTwpydseJupSZzNone4sa3nn0MinrzCq2bexZ
+	 gdNDkCzUcSK9tI2IROkZfHAYBp/KzDtjUChNkY81PbSmFamWh26Tg7mQbtm3zNDUwy
+	 RX6WjnCcoT+j9R2pz+6jBvTc5pzuaIUgCKNMdVwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 450/620] soc: mediatek: mtk-devapc: Fix leaking IO map on error paths
-Date: Mon, 10 Mar 2025 18:04:56 +0100
-Message-ID: <20250310170603.354424142@linuxfoundation.org>
+Subject: [PATCH 6.12 144/269] wifi: iwlwifi: Free pages allocated when failing to build A-MSDU
+Date: Mon, 10 Mar 2025 18:04:57 +0100
+Message-ID: <20250310170503.456657764@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit c0eb059a4575ed57f265d9883a5203799c19982c ]
+[ Upstream commit 3b08e608d50c44ca1135beed179f266aa0461da7 ]
 
-Error paths of mtk_devapc_probe() should unmap the memory.  Reported by
-Smatch:
+When failing to prepare the data needed for A-MSDU transmission, the memory
+allocated for the TSO management was not freed. Fix it.
 
-  drivers/soc/mediatek/mtk-devapc.c:292 mtk_devapc_probe() warn: 'ctx->infra_base' from of_iomap() not released on lines: 277,281,286.
-
-Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250104142012.115974-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 7f5e3038f029 ("wifi: iwlwifi: map entire SKB when sending AMSDUs")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.bc27fad9b3d5.Ibf43dd18fb652b1a59061204e081f11c9fa34a3f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/mediatek/mtk-devapc.c b/drivers/soc/mediatek/mtk-devapc.c
-index 1ab7ca82745c6..552726456fa2f 100644
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -258,23 +258,31 @@ static int mtk_devapc_probe(struct platform_device *pdev)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index b1846abb99b78..7bb74a480d7f1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -347,6 +347,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx_amsdu(struct iwl_trans *trans,
+ 	return tfd;
  
- 	devapc_irq = irq_of_parse_and_map(node, 0);
--	if (!devapc_irq)
--		return -EINVAL;
-+	if (!devapc_irq) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	ctx->infra_clk = devm_clk_get_enabled(&pdev->dev, "devapc-infra-clock");
--	if (IS_ERR(ctx->infra_clk))
--		return -EINVAL;
-+	if (IS_ERR(ctx->infra_clk)) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	ret = devm_request_irq(&pdev->dev, devapc_irq, devapc_violation_irq,
- 			       IRQF_TRIGGER_NONE, "devapc", ctx);
- 	if (ret)
--		return ret;
-+		goto err;
- 
- 	platform_set_drvdata(pdev, ctx);
- 
- 	start_devapc(ctx);
- 
- 	return 0;
-+
-+err:
-+	iounmap(ctx->infra_base);
-+	return ret;
+ out_err:
++	iwl_pcie_free_tso_pages(trans, skb, out_meta);
+ 	iwl_txq_gen2_tfd_unmap(trans, out_meta, tfd);
+ 	return NULL;
  }
- 
- static int mtk_devapc_remove(struct platform_device *pdev)
 -- 
 2.39.5
 
