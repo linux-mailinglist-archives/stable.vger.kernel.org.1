@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C440A59FD6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:44:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D278CA5A2DC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4806F3AA67F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B0201884365
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA1322D7A6;
-	Mon, 10 Mar 2025 17:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1FB233729;
+	Mon, 10 Mar 2025 18:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="js3u14Us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxjeQ7La"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8E11DE89C;
-	Mon, 10 Mar 2025 17:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798ED1C3C1C;
+	Mon, 10 Mar 2025 18:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628598; cv=none; b=Krfu+7GDURRx+tSCPNThM5e7NlQbwuT+a+/a7WpdxlacnGzs5yahq1yKZuExFwNmDxXFHbML/rHqh+SvYwjqNbjlZa7mVePPNkt7N4qlowJALVlKKjGc2kOEnsBOS4ewnus4ImiOrDZSRc3gVYhSBzcQclsrvogaq2s1sjhRoTQ=
+	t=1741631063; cv=none; b=Zv6ZCC+WyY02/SJ4ncYI/BL3LbKwC5Ujb7YFB5jIlOAVmmqw3GIrJ8uw7Ev/N3gurONyQrh15yeLKky+lttmcQBlGMsv41kPRdaWnKxPjdtnZqdQHm5aVUymyLbdzbZyrIdqBPS/Weu35UmkXWR9PPOE6wU7XraU1oNIpDsY9Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628598; c=relaxed/simple;
-	bh=AX2lYH7PSgGSQraSZ0fUW5jlzs2QPQx8fFcMMEZ1qSk=;
+	s=arc-20240116; t=1741631063; c=relaxed/simple;
+	bh=Em3qfVxQAjCdXy/yha8bycWvhEhmiEI0OgwaicH5hDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAUP/1SFEAxKe6i1t3/kPB9OcAJLlwr+FheLcU8uUNZp3i9bxRK5lp7+GEhSl1UJ9LwelYYATV3+5GdnUNoOB3Qe5M0R/BUnyxXjG4Xi3MinGvMCgcpr58kCpeJa3Lmg5esAQmRrf2kOnnzqZoVOsu2lG/IH6xUrWOCAlwe65YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=js3u14Us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223CBC4CEE5;
-	Mon, 10 Mar 2025 17:43:17 +0000 (UTC)
+	 MIME-Version; b=TUk21Cebv+MGWjRXsU1+Dr5ZqgAyGtVxTjLyh/jRaft+t5vkpLvUlT6OEE3XHTmR4fsRw+cJdaKl6ILtq5C52fX0wXO+cPUVx4lzk/ZdgLpf7Ev5DeCEOnpzTtbqUHBgW1jSfjq3daAJ88+CP9DYxfoeGEnUjlzWgEZbBobaHmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxjeQ7La; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B677C4CEE5;
+	Mon, 10 Mar 2025 18:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628598;
-	bh=AX2lYH7PSgGSQraSZ0fUW5jlzs2QPQx8fFcMMEZ1qSk=;
+	s=korg; t=1741631063;
+	bh=Em3qfVxQAjCdXy/yha8bycWvhEhmiEI0OgwaicH5hDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=js3u14UseVYaVAG7uMBFjeyhivU15jpE+u6I9dIHwwoU8UkVXRp8LBGkz1FhAy6Th
-	 7/vqJ34dbp3OvW6lrgezsHor9e50dyXRAUutRV0M/Chmv/XFdTgJEtLnKm9X8g03NX
-	 qpQFkvjxqbqRWhg6LFzWvsTs9C/5GQC63Lv8qiig=
+	b=KxjeQ7LaTHhGBzc6EkBcWUsHX7tsV2tw1qGyWjSmqy7OOx81J47PAFvbmIUck9tqk
+	 AoTcPsKxpNsxtdnv3sPifpw1M1I59cJHHhd37sD+nkbQUV4GGBgQH3pyXcOrABswht
+	 82InjbsRXUePGCo19wvOBqtxBNay5U4EmIaY4Vs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nayab Sayed <nayabbasha.sayed@microchip.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 091/109] iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <boddah8794@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 589/620] usb: typec: ucsi: increase timeout for PPM reset operations
 Date: Mon, 10 Mar 2025 18:07:15 +0100
-Message-ID: <20250310170431.183079152@linuxfoundation.org>
+Message-ID: <20250310170608.778912272@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,139 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nayab Sayed <nayabbasha.sayed@microchip.com>
+From: Fedor Pchelkin <boddah8794@gmail.com>
 
-commit aa5119c36d19639397d29ef305aa53a5ecd72b27 upstream.
+commit bf4f9ae1cb08ccaafbe6874be6c46f59b83ae778 upstream.
 
-The number of valid bits in SAMA7G5 ADC channel data register are 16.
-Hence changing the realbits value to 16
+It is observed that on some systems an initial PPM reset during the boot
+phase can trigger a timeout:
 
-Fixes: 840bf6cb983f ("iio: adc: at91-sama5d2_adc: add support for sama7g5 device")
-Signed-off-by: Nayab Sayed <nayabbasha.sayed@microchip.com>
-Link: https://patch.msgid.link/20250115-fix-sama7g5-adc-realbits-v2-1-58a6e4087584@microchip.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
+[    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
+
+Still, increasing the timeout value, albeit being the most straightforward
+solution, eliminates the problem: the initial PPM reset may take up to
+~8000-10000ms on some Lenovo laptops. When it is reset after the above
+period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
+works as expected.
+
+Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
+system has booted, reading the CCI values and resetting the PPM works
+perfectly, without any timeout. Thus it's only a boot-time issue.
+
+The reason for this behavior is not clear but it may be the consequence
+of some tricks that the firmware performs or be an actual firmware bug.
+As a workaround, increase the timeout to avoid failing the UCSI
+initialization prematurely.
+
+Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion timeout value")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250217105442.113486-3-boddah8794@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/at91-sama5d2_adc.c |   68 +++++++++++++++++++++----------------
- 1 file changed, 40 insertions(+), 28 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -329,7 +329,7 @@ static const struct at91_adc_reg_layout
- #define AT91_HWFIFO_MAX_SIZE_STR	"128"
- #define AT91_HWFIFO_MAX_SIZE		128
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -25,7 +25,7 @@
+  * difficult to estimate the time it takes for the system to process the command
+  * before it is actually passed to the PPM.
+  */
+-#define UCSI_TIMEOUT_MS		5000
++#define UCSI_TIMEOUT_MS		10000
  
--#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+#define AT91_SAMA_CHAN_SINGLE(index, num, addr, rbits)			\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.channel = num,						\
-@@ -337,7 +337,7 @@ static const struct at91_adc_reg_layout
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 'u',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -350,7 +350,13 @@ static const struct at91_adc_reg_layout
- 		.indexed = 1,						\
- 	}
- 
--#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 16)
-+
-+#define AT91_SAMA_CHAN_DIFF(index, num, num2, addr, rbits)		\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.differential = 1,					\
-@@ -360,7 +366,7 @@ static const struct at91_adc_reg_layout
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 's',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -373,6 +379,12 @@ static const struct at91_adc_reg_layout
- 		.indexed = 1,						\
- 	}
- 
-+#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 16)
-+
- #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
- 	{								\
- 		.type = IIO_POSITIONRELATIVE,				\
-@@ -666,30 +678,30 @@ static const struct iio_chan_spec at91_s
- };
- 
- static const struct iio_chan_spec at91_sama7g5_adc_channels[] = {
--	AT91_SAMA5D2_CHAN_SINGLE(0, 0, 0x60),
--	AT91_SAMA5D2_CHAN_SINGLE(1, 1, 0x64),
--	AT91_SAMA5D2_CHAN_SINGLE(2, 2, 0x68),
--	AT91_SAMA5D2_CHAN_SINGLE(3, 3, 0x6c),
--	AT91_SAMA5D2_CHAN_SINGLE(4, 4, 0x70),
--	AT91_SAMA5D2_CHAN_SINGLE(5, 5, 0x74),
--	AT91_SAMA5D2_CHAN_SINGLE(6, 6, 0x78),
--	AT91_SAMA5D2_CHAN_SINGLE(7, 7, 0x7c),
--	AT91_SAMA5D2_CHAN_SINGLE(8, 8, 0x80),
--	AT91_SAMA5D2_CHAN_SINGLE(9, 9, 0x84),
--	AT91_SAMA5D2_CHAN_SINGLE(10, 10, 0x88),
--	AT91_SAMA5D2_CHAN_SINGLE(11, 11, 0x8c),
--	AT91_SAMA5D2_CHAN_SINGLE(12, 12, 0x90),
--	AT91_SAMA5D2_CHAN_SINGLE(13, 13, 0x94),
--	AT91_SAMA5D2_CHAN_SINGLE(14, 14, 0x98),
--	AT91_SAMA5D2_CHAN_SINGLE(15, 15, 0x9c),
--	AT91_SAMA5D2_CHAN_DIFF(16, 0, 1, 0x60),
--	AT91_SAMA5D2_CHAN_DIFF(17, 2, 3, 0x68),
--	AT91_SAMA5D2_CHAN_DIFF(18, 4, 5, 0x70),
--	AT91_SAMA5D2_CHAN_DIFF(19, 6, 7, 0x78),
--	AT91_SAMA5D2_CHAN_DIFF(20, 8, 9, 0x80),
--	AT91_SAMA5D2_CHAN_DIFF(21, 10, 11, 0x88),
--	AT91_SAMA5D2_CHAN_DIFF(22, 12, 13, 0x90),
--	AT91_SAMA5D2_CHAN_DIFF(23, 14, 15, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(0, 0, 0x60),
-+	AT91_SAMA7G5_CHAN_SINGLE(1, 1, 0x64),
-+	AT91_SAMA7G5_CHAN_SINGLE(2, 2, 0x68),
-+	AT91_SAMA7G5_CHAN_SINGLE(3, 3, 0x6c),
-+	AT91_SAMA7G5_CHAN_SINGLE(4, 4, 0x70),
-+	AT91_SAMA7G5_CHAN_SINGLE(5, 5, 0x74),
-+	AT91_SAMA7G5_CHAN_SINGLE(6, 6, 0x78),
-+	AT91_SAMA7G5_CHAN_SINGLE(7, 7, 0x7c),
-+	AT91_SAMA7G5_CHAN_SINGLE(8, 8, 0x80),
-+	AT91_SAMA7G5_CHAN_SINGLE(9, 9, 0x84),
-+	AT91_SAMA7G5_CHAN_SINGLE(10, 10, 0x88),
-+	AT91_SAMA7G5_CHAN_SINGLE(11, 11, 0x8c),
-+	AT91_SAMA7G5_CHAN_SINGLE(12, 12, 0x90),
-+	AT91_SAMA7G5_CHAN_SINGLE(13, 13, 0x94),
-+	AT91_SAMA7G5_CHAN_SINGLE(14, 14, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(15, 15, 0x9c),
-+	AT91_SAMA7G5_CHAN_DIFF(16, 0, 1, 0x60),
-+	AT91_SAMA7G5_CHAN_DIFF(17, 2, 3, 0x68),
-+	AT91_SAMA7G5_CHAN_DIFF(18, 4, 5, 0x70),
-+	AT91_SAMA7G5_CHAN_DIFF(19, 6, 7, 0x78),
-+	AT91_SAMA7G5_CHAN_DIFF(20, 8, 9, 0x80),
-+	AT91_SAMA7G5_CHAN_DIFF(21, 10, 11, 0x88),
-+	AT91_SAMA7G5_CHAN_DIFF(22, 12, 13, 0x90),
-+	AT91_SAMA7G5_CHAN_DIFF(23, 14, 15, 0x98),
- 	IIO_CHAN_SOFT_TIMESTAMP(24),
- 	AT91_SAMA5D2_CHAN_TEMP(AT91_SAMA7G5_ADC_TEMP_CHANNEL, "temp", 0xdc),
- };
+ /*
+  * UCSI_SWAP_TIMEOUT_MS - Timeout for role swap requests
 
 
 
