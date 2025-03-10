@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE6AA59F74
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 667EFA59F03
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 172923A7D1E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 246063AB835
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A08A232378;
-	Mon, 10 Mar 2025 17:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B12022DF80;
+	Mon, 10 Mar 2025 17:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tr7z/fEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BacxbGIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DA022D4C3;
-	Mon, 10 Mar 2025 17:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD03A1DE89C;
+	Mon, 10 Mar 2025 17:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628352; cv=none; b=WfbRh1hgbULlYxKiDdBk+Agldmq0WDEgNTrigySkrM3ADLMsieBWZMDYQrrZ0iZdMtVGFYb2QPJnijVgQ6pS+VrsKK7nDI4HX20uBRVnDXf8PNqCXVkRJ82aVH2eZNgGISaRXAgVIo1KtOreudjO10/0SJtsYCVqYnmstm3MwwQ=
+	t=1741628075; cv=none; b=Oj3znol0y8U+8pxeaKtvD+2B9hTBXrvGmlgbg6zNNBlC7B2B7ZlXq5XmhKeSeEPLtUGGHMjlqOC7fNPxjYww+6OsgrsmtLAkC/HnQ8xQhMac9jDILGrCug3T1XhLfNJOyjT29QwD7wEklfze9VFSyCV+yZxeTcaLiV7uB1BrvEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628352; c=relaxed/simple;
-	bh=iGQiihMkQOQy3tyUlKQEnNP5YmUCrHKsU8dKEoZs0+Y=;
+	s=arc-20240116; t=1741628075; c=relaxed/simple;
+	bh=M+tc8hCqG+rubFaBDnPRUCgXafa2Wt3z2PIPiMIr3xQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5937qsWOW9Qr/yNCK5i75SJgX7S63qAlQ7a/Z01UWki4sAlm8cJKcQli1BexWChA1EhszSSJasL9Nh8uJN11hHnkbjE1DNDkgPW66yUMGpPX4EI2RHIeNh8w1W7wxx2qUOghE7wbnoDUi7vm9yk1m7N/zAVnIiibtmSuY2D3uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tr7z/fEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91931C4CEE5;
-	Mon, 10 Mar 2025 17:39:11 +0000 (UTC)
+	 MIME-Version; b=TCHG8x7avDCsiPJFmJDd/Qe5G8/mXkYu7aqbxZvVg+1Lhw6BZ1EA2YyS6qmsNzVl1jVrA9Hc2BPfdPrpk6yWSpz2d/lEW42E8pMAm1v8nCSTAWCUbBa5ANu8olStA642S6UY+BcEDTpNbmu7ZmG8hjIDbzVzQF+zQnFb52FG+JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BacxbGIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65073C4CEE5;
+	Mon, 10 Mar 2025 17:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628352;
-	bh=iGQiihMkQOQy3tyUlKQEnNP5YmUCrHKsU8dKEoZs0+Y=;
+	s=korg; t=1741628074;
+	bh=M+tc8hCqG+rubFaBDnPRUCgXafa2Wt3z2PIPiMIr3xQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tr7z/fEFEKczjMSyhjc6gI0eQdd8hZC8mUh9usrwKIV/lD2tSCy0JoGD+g7GfB2gf
-	 sEiUCYjfr1+k3FoT00h55EmIQqOblJGr9Cl7prYrhhSVzsAeNMUZbcO0AcZbpQOCR7
-	 sOZYdhL+78wmq2H84TkZOnr0QzeK7fWccIRcwXm0=
+	b=BacxbGIVI239dQkEpvYBhgyLsn088FVmiM9YThdhbNEjmdjZsAcDEvcbFhOE3oo/0
+	 wWNeU4NNZi9ru4DiDnsK2R9D3ujfahA9QWS9ynEiI6tPSqusL32EMJo1l613fyHzYj
+	 lCT4GLGn2sRFS8abuj5rGkw+1ikSdUvuaNXc9o0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 029/109] wifi: nl80211: reject cooked mode if it is set along with other flags
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Alex Elder <elder@riscstar.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 079/145] net: ipa: Fix QSB data for v4.7
 Date: Mon, 10 Mar 2025 18:06:13 +0100
-Message-ID: <20250310170428.710853099@linuxfoundation.org>
+Message-ID: <20250310170437.943735271@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit 49f27f29446a5bfe633dd2cc0cfebd48a1a5e77f upstream.
+[ Upstream commit 6a2843aaf551d87beb92d774f7d5b8ae007fe774 ]
 
-It is possible to set both MONITOR_FLAG_COOK_FRAMES and MONITOR_FLAG_ACTIVE
-flags simultaneously on the same monitor interface from the userspace. This
-causes a sub-interface to be created with no IEEE80211_SDATA_IN_DRIVER bit
-set because the monitor interface is in the cooked state and it takes
-precedence over all other states. When the interface is then being deleted
-the kernel calls WARN_ONCE() from check_sdata_in_driver() because of missing
-that bit.
+As per downstream reference, max_writes should be 12 and max_reads
+should be 13.
 
-Fix this by rejecting MONITOR_FLAG_COOK_FRAMES if it is set along with
-other flags.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 66f7ac50ed7c ("nl80211: Add monitor interface configuration flags")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Link: https://patch.msgid.link/20250131152657.5606-1-v.shevtsov@mt-integration.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Link: https://patch.msgid.link/20250227-ipa-v4-7-fixes-v1-2-a88dd8249d8a@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ipa/data/ipa_data-v4.7.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4050,6 +4050,11 @@ static int parse_monitor_flags(struct nl
- 		if (flags[flag])
- 			*mntrflags |= (1<<flag);
- 
-+	/* cooked monitor mode is incompatible with other modes */
-+	if (*mntrflags & MONITOR_FLAG_COOK_FRAMES &&
-+	    *mntrflags != MONITOR_FLAG_COOK_FRAMES)
-+		return -EOPNOTSUPP;
-+
- 	*mntrflags |= MONITOR_FLAG_CHANGED;
- 
- 	return 0;
+diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
+index f8e64b9025820..4ff666e98878e 100644
+--- a/drivers/net/ipa/data/ipa_data-v4.7.c
++++ b/drivers/net/ipa/data/ipa_data-v4.7.c
+@@ -37,8 +37,8 @@ enum ipa_rsrc_group_id {
+ /* QSB configuration data for an SoC having IPA v4.7 */
+ static const struct ipa_qsb_data ipa_qsb_data[] = {
+ 	[IPA_QSB_MASTER_DDR] = {
+-		.max_writes		= 8,
+-		.max_reads		= 0,	/* no limit (hardware max) */
++		.max_writes		= 12,
++		.max_reads		= 13,
+ 		.max_reads_beats	= 120,
+ 	},
+ };
+-- 
+2.39.5
+
 
 
 
