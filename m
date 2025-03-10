@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1306A59E2F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7495A59EEC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3DF1642E5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64AEF7A71C2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970F722D786;
-	Mon, 10 Mar 2025 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7EB231A51;
+	Mon, 10 Mar 2025 17:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ7dWfeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUlIDIJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BBE23099F;
-	Mon, 10 Mar 2025 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BABB22ACDC;
+	Mon, 10 Mar 2025 17:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627674; cv=none; b=ohFnnZXz4/gS2tnDSHVT0xgRCk5P9/ugsXrPE8TXbG0zWy5tLclc/l3tcCaWslBvR/oWMSpOBWkOs1ZodQDCfhqdxMjEKDU0+9gjrYCT4bp9gvPelWoao1hq0IfYTWw6WYvkkkUOIRaOIoY3pXAzKiZEVv5fpHYVFb44mzKNmWc=
+	t=1741628138; cv=none; b=F3ONw0cttOT3QCmkp1FtT1isaEowodXcGb54r6Wr/I5Va6SoxCE2VV8WnfRtGpLpWP4BaSrKzqsfUj8Fw6RIjcXn8ydcC86WZkZ+UAZ/eCL5DcdzW4FPo9gTcKNOjRyjnDihKOIVbj0tpT5yUkGcaLY/Aj5QeUTpmbScWncLBLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627674; c=relaxed/simple;
-	bh=IQpvhF6RO95FGGL2sE1VpFsyl4O7IependeAO0oHSWE=;
+	s=arc-20240116; t=1741628138; c=relaxed/simple;
+	bh=Zp3CN3YZhLqgDAUH0AuwChnrRs1xfff9afHLpsPWn8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdID+qBVtNfdIbitJKbveHNU38JVxv/NuG0yZCJmOtzFHJm8QbfI4Qf0hEyKhe2Y/y2ZDyUqMGJILcjKScSHBV48Oy81tSGw/0DjAGRxYp53dGVSGg3E1ae9l4AYWV/S8cAAEoGN56hC57zpRb2KI5VV0Dm8RAZP9FHrZ4kvQt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ7dWfeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFE7C4CEE5;
-	Mon, 10 Mar 2025 17:27:53 +0000 (UTC)
+	 MIME-Version; b=kpDM3w1Wg3VPJrKAGKcLWP4BlcCkHMxik1d6l13+XIaVN1YGRFg2Ycwk7StXLHVqYuysoEl/zSjL+cKR0QrbVaDdNNL2vETkV4AEm8+R7bbaLbr7MW8kPYt5a/TVQFxqahUivb0JB9z3nr89ASeFWjuvyVvdnlfQJt5BNhvEDs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUlIDIJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F711C4CEE5;
+	Mon, 10 Mar 2025 17:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627674;
-	bh=IQpvhF6RO95FGGL2sE1VpFsyl4O7IependeAO0oHSWE=;
+	s=korg; t=1741628138;
+	bh=Zp3CN3YZhLqgDAUH0AuwChnrRs1xfff9afHLpsPWn8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZ7dWfebaLOp7GH/aBswwSvahiYiRZIA3NqEuM2VT5LtCMXOp+orMir0ZTBRrk82u
-	 7NIRAPZUwvHO+FpCYd2ROVuqQEPTDWdIsBRnExHPPQUMc6twohlBa6d5kOdwlde63W
-	 rUCsTe9O0b+s7knzG5rbY0eMAKdKHaMCBWEcLzCU=
+	b=sUlIDIJ8laLQKPq80fyCmzCMAVgmLeWkAqCXxWyiy1HToDkW2y3lola6v3jH2l94r
+	 gST7IQRhIEUrojthw4EQjPN9QqvLTOSCZe8VrT4vM2pPwyPTEWeAKapk6H3oEDzQY4
+	 uZy6KOSdHd0ly/NqKJDyMfiVUOL9yiDiVWSqDYqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.12 209/269] usb: renesas_usbhs: Use devm_usb_get_phy()
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 068/145] hwmon: (ntc_thermistor) Fix the ncpXXxh103 sensor table
 Date: Mon, 10 Mar 2025 18:06:02 +0100
-Message-ID: <20250310170506.026524796@linuxfoundation.org>
+Message-ID: <20250310170437.494531647@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
+[ Upstream commit 1c7932d5ae0f5c22fa52ac811b4c427bbca5aff5 ]
 
-The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
-never released. Use devm_usb_get_phy() to handle this scenario.
+I could not find a single table that has the values currently present in
+the table, change it to the actual values that can be found in [1]/[2]
+and [3] (page 15 column 2)
 
-This issue was identified through code investigation. No issue was found
-without this change.
+[1]: https://www.murata.com/products/productdetail?partno=NCP15XH103F03RC
+[2]: https://www.murata.com/products/productdata/8796836626462/NTHCG83.txt?1437969843000
+[3]: https://nl.mouser.com/datasheet/2/281/r44e-522712.pdf
 
-Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 54ce3a0d8011 ("hwmon: (ntc_thermistor) Add support for ncpXXxh103")
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Link: https://lore.kernel.org/r/20250227-ntc_thermistor_fixes-v1-3-70fa73200b52@gocontroll.com
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/ntc_thermistor.c | 66 +++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/mod_gadget.c
-+++ b/drivers/usb/renesas_usbhs/mod_gadget.c
-@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
- 		goto usbhs_mod_gadget_probe_err_gpriv;
- 	}
+diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+index b5352900463fb..0d29c8f97ba7c 100644
+--- a/drivers/hwmon/ntc_thermistor.c
++++ b/drivers/hwmon/ntc_thermistor.c
+@@ -181,40 +181,40 @@ static const struct ntc_compensation ncpXXwf104[] = {
+ };
  
--	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
-+	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
- 	dev_info(dev, "%stransceiver found\n",
- 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
+ static const struct ntc_compensation ncpXXxh103[] = {
+-	{ .temp_c	= -40, .ohm	= 247565 },
+-	{ .temp_c	= -35, .ohm	= 181742 },
+-	{ .temp_c	= -30, .ohm	= 135128 },
+-	{ .temp_c	= -25, .ohm	= 101678 },
+-	{ .temp_c	= -20, .ohm	= 77373 },
+-	{ .temp_c	= -15, .ohm	= 59504 },
+-	{ .temp_c	= -10, .ohm	= 46222 },
+-	{ .temp_c	= -5, .ohm	= 36244 },
+-	{ .temp_c	= 0, .ohm	= 28674 },
+-	{ .temp_c	= 5, .ohm	= 22878 },
+-	{ .temp_c	= 10, .ohm	= 18399 },
+-	{ .temp_c	= 15, .ohm	= 14910 },
+-	{ .temp_c	= 20, .ohm	= 12169 },
++	{ .temp_c	= -40, .ohm	= 195652 },
++	{ .temp_c	= -35, .ohm	= 148171 },
++	{ .temp_c	= -30, .ohm	= 113347 },
++	{ .temp_c	= -25, .ohm	= 87559 },
++	{ .temp_c	= -20, .ohm	= 68237 },
++	{ .temp_c	= -15, .ohm	= 53650 },
++	{ .temp_c	= -10, .ohm	= 42506 },
++	{ .temp_c	= -5, .ohm	= 33892 },
++	{ .temp_c	= 0, .ohm	= 27219 },
++	{ .temp_c	= 5, .ohm	= 22021 },
++	{ .temp_c	= 10, .ohm	= 17926 },
++	{ .temp_c	= 15, .ohm	= 14674 },
++	{ .temp_c	= 20, .ohm	= 12081 },
+ 	{ .temp_c	= 25, .ohm	= 10000 },
+-	{ .temp_c	= 30, .ohm	= 8271 },
+-	{ .temp_c	= 35, .ohm	= 6883 },
+-	{ .temp_c	= 40, .ohm	= 5762 },
+-	{ .temp_c	= 45, .ohm	= 4851 },
+-	{ .temp_c	= 50, .ohm	= 4105 },
+-	{ .temp_c	= 55, .ohm	= 3492 },
+-	{ .temp_c	= 60, .ohm	= 2985 },
+-	{ .temp_c	= 65, .ohm	= 2563 },
+-	{ .temp_c	= 70, .ohm	= 2211 },
+-	{ .temp_c	= 75, .ohm	= 1915 },
+-	{ .temp_c	= 80, .ohm	= 1666 },
+-	{ .temp_c	= 85, .ohm	= 1454 },
+-	{ .temp_c	= 90, .ohm	= 1275 },
+-	{ .temp_c	= 95, .ohm	= 1121 },
+-	{ .temp_c	= 100, .ohm	= 990 },
+-	{ .temp_c	= 105, .ohm	= 876 },
+-	{ .temp_c	= 110, .ohm	= 779 },
+-	{ .temp_c	= 115, .ohm	= 694 },
+-	{ .temp_c	= 120, .ohm	= 620 },
+-	{ .temp_c	= 125, .ohm	= 556 },
++	{ .temp_c	= 30, .ohm	= 8315 },
++	{ .temp_c	= 35, .ohm	= 6948 },
++	{ .temp_c	= 40, .ohm	= 5834 },
++	{ .temp_c	= 45, .ohm	= 4917 },
++	{ .temp_c	= 50, .ohm	= 4161 },
++	{ .temp_c	= 55, .ohm	= 3535 },
++	{ .temp_c	= 60, .ohm	= 3014 },
++	{ .temp_c	= 65, .ohm	= 2586 },
++	{ .temp_c	= 70, .ohm	= 2228 },
++	{ .temp_c	= 75, .ohm	= 1925 },
++	{ .temp_c	= 80, .ohm	= 1669 },
++	{ .temp_c	= 85, .ohm	= 1452 },
++	{ .temp_c	= 90, .ohm	= 1268 },
++	{ .temp_c	= 95, .ohm	= 1110 },
++	{ .temp_c	= 100, .ohm	= 974 },
++	{ .temp_c	= 105, .ohm	= 858 },
++	{ .temp_c	= 110, .ohm	= 758 },
++	{ .temp_c	= 115, .ohm	= 672 },
++	{ .temp_c	= 120, .ohm	= 596 },
++	{ .temp_c	= 125, .ohm	= 531 },
+ };
  
+ /*
+-- 
+2.39.5
+
 
 
 
