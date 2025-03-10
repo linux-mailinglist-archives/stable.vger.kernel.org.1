@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0103EA59CC0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B217A59DEB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB513AAB36
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E528218847B8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8A223236D;
-	Mon, 10 Mar 2025 17:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B53236A62;
+	Mon, 10 Mar 2025 17:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bhzYBGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjRf+KWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A62232367;
-	Mon, 10 Mar 2025 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C67230D0F;
+	Mon, 10 Mar 2025 17:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626804; cv=none; b=r/Qyo8MCycWkJ82Way3sM2B7pInn2idvjRXzOeJMA7VaYXaacxEe9h7xQiGlT5SDaXzrmKKCMm24l9zL02B3MI9H14JXUKPQ6p2lKYLkpbRdc0q7A2WFaJn9rsYQr0DMEypcdclXGMgbiFdX1Fwblk7VMb67u2Jos07g2r27bG4=
+	t=1741627524; cv=none; b=gzpD17vnYu/8Kn8veUq84STzOG9XShn4FyBzKHVpoRpJqruXj1CO291mmu2x8UijfsEaTeVHIgGMYAvQSYcQVB6tmiEZ4V0FH/c8YC5+XEUZLEGQJU9Bu3HRv/CfHAwK3e8PIy2lhtjC6jRMeapqv3V9a+LbN3hi9+qpK4OWjOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626804; c=relaxed/simple;
-	bh=JnwZ6TYHGF5K48LO9ZzZBqW7oVBOMJvf4d7n9lu3v9Y=;
+	s=arc-20240116; t=1741627524; c=relaxed/simple;
+	bh=2dIfekDVl4IYopIj6mUy2340jIawcqKOctgwD/LCQEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iua+W2Son5Ep/cq+Mv+Wpd2ZhS5Vs54/4211OGWrsf4/eolSCTDFFYFw+cX7I5tMMv3AQVEsMKUZiq+bis50jmnfc4yDO9ITjACiODoJAr3bq3waXZQTBO07y6pgpJOrhGg6NXeoIaFMqvH6zp1qb5qeRgDUpMjO+SMJr88IhB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bhzYBGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6DAC4CEE5;
-	Mon, 10 Mar 2025 17:13:24 +0000 (UTC)
+	 MIME-Version; b=cGHMTCCXp3uhZ7l+zoVq710QQRgDlQ7EWa0W0l3JWezButZAajF71nDubhIlJ4skvdHI4ksbyGwUyGOls5Qm4NyR1Mcm/63UVRAZUDSzN5PkksqV0Si3z3E+xwFU+RKUwkRRO/zCk1WzWm7AiKTViJx1HWM5Rm1ZKNI6ZyPGjSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjRf+KWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A10DC4CEE5;
+	Mon, 10 Mar 2025 17:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626804;
-	bh=JnwZ6TYHGF5K48LO9ZzZBqW7oVBOMJvf4d7n9lu3v9Y=;
+	s=korg; t=1741627523;
+	bh=2dIfekDVl4IYopIj6mUy2340jIawcqKOctgwD/LCQEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bhzYBGnw0HvMcyj7v3zR6W2SvkGl38rNCZPXJxTVWUUQX2LexIpjSq152XCex2B0
-	 QhzXReoWms+dMJNSLIA8Bu82rdKddPYSwVdRcx7tx6p6XtMwXYBM8m++Kri8a+2Gsy
-	 ymp0bnehEQU4EaMrc0tNr2QofSXM3oZOVlznSsmE=
+	b=RjRf+KWDOLlB055Ro/vbEZH8Ae4qf1jUPcQ0lIWGyItsUlVLMjxZgFyi5Bcwbsxff
+	 U1RXWuKO/5dcn1ipiMRMF8cvl2GKoeqgQJ0TTjby0CMlw9G79Q3xJyqaCfGvkKj0SS
+	 +6vAaoxvuu3vo7s0ZgEHeFQn3WGA/gtmslk1xqUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 119/207] tracing: probe-events: Remove unused MAX_ARG_BUF_LEN macro
+Subject: [PATCH 6.12 159/269] drm/fbdev-ttm: Support struct drm_driver.fbdev_probe
 Date: Mon, 10 Mar 2025 18:05:12 +0100
-Message-ID: <20250310170452.540299713@linuxfoundation.org>
+Message-ID: <20250310170504.059819713@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,221 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit fd5ba38390c59e1c147480ae49b6133c4ac24001 ]
+[ Upstream commit c7c1b9e1d52b0a0dbb0ee552efdc3360c0f5363c ]
 
-Commit 18b1e870a496 ("tracing/probes: Add $arg* meta argument for all
-function args") introduced MAX_ARG_BUF_LEN but it is not used.
-Remove it.
+Rework fbdev probing to support fbdev_probe in struct drm_driver
+and reimplement the old fb_probe callback on top of it. Provide an
+initializer macro for struct drm_driver that sets the callback
+according to the kernel configuration.
 
-Link: https://lore.kernel.org/all/174055075876.4079315.8805416872155957588.stgit@mhiramat.tok.corp.google.com/
+This change allows the common fbdev client to run on top of TTM-
+based DRM drivers.
 
-Fixes: 18b1e870a496 ("tracing/probes: Add $arg* meta argument for all function args")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240924071734.98201-65-tzimmermann@suse.de
+Stable-dep-of: 6b481ab0e685 ("drm/nouveau: select FW caching")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/drm_fbdev_ttm.c | 142 +++++++++++++++++---------------
+ include/drm/drm_fbdev_ttm.h     |  13 +++
+ 2 files changed, 90 insertions(+), 65 deletions(-)
 
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index c47ca002347a7..96792bc4b0924 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -36,7 +36,6 @@
- #define MAX_BTF_ARGS_LEN	128
- #define MAX_DENTRY_ARGS_LEN	256
- #define MAX_STRING_SIZE		PATH_MAX
--#define MAX_ARG_BUF_LEN		(MAX_TRACE_ARGS * MAX_ARG_NAME_LEN)
+diff --git a/drivers/gpu/drm/drm_fbdev_ttm.c b/drivers/gpu/drm/drm_fbdev_ttm.c
+index 119ffb28aaf95..d799cbe944cd3 100644
+--- a/drivers/gpu/drm/drm_fbdev_ttm.c
++++ b/drivers/gpu/drm/drm_fbdev_ttm.c
+@@ -71,71 +71,7 @@ static const struct fb_ops drm_fbdev_ttm_fb_ops = {
+ static int drm_fbdev_ttm_helper_fb_probe(struct drm_fb_helper *fb_helper,
+ 					     struct drm_fb_helper_surface_size *sizes)
+ {
+-	struct drm_client_dev *client = &fb_helper->client;
+-	struct drm_device *dev = fb_helper->dev;
+-	struct drm_client_buffer *buffer;
+-	struct fb_info *info;
+-	size_t screen_size;
+-	void *screen_buffer;
+-	u32 format;
+-	int ret;
+-
+-	drm_dbg_kms(dev, "surface width(%d), height(%d) and bpp(%d)\n",
+-		    sizes->surface_width, sizes->surface_height,
+-		    sizes->surface_bpp);
+-
+-	format = drm_driver_legacy_fb_format(dev, sizes->surface_bpp,
+-					     sizes->surface_depth);
+-	buffer = drm_client_framebuffer_create(client, sizes->surface_width,
+-					       sizes->surface_height, format);
+-	if (IS_ERR(buffer))
+-		return PTR_ERR(buffer);
+-
+-	fb_helper->buffer = buffer;
+-	fb_helper->fb = buffer->fb;
+-
+-	screen_size = buffer->gem->size;
+-	screen_buffer = vzalloc(screen_size);
+-	if (!screen_buffer) {
+-		ret = -ENOMEM;
+-		goto err_drm_client_framebuffer_delete;
+-	}
+-
+-	info = drm_fb_helper_alloc_info(fb_helper);
+-	if (IS_ERR(info)) {
+-		ret = PTR_ERR(info);
+-		goto err_vfree;
+-	}
+-
+-	drm_fb_helper_fill_info(info, fb_helper, sizes);
+-
+-	info->fbops = &drm_fbdev_ttm_fb_ops;
+-
+-	/* screen */
+-	info->flags |= FBINFO_VIRTFB | FBINFO_READS_FAST;
+-	info->screen_buffer = screen_buffer;
+-	info->fix.smem_len = screen_size;
+-
+-	/* deferred I/O */
+-	fb_helper->fbdefio.delay = HZ / 20;
+-	fb_helper->fbdefio.deferred_io = drm_fb_helper_deferred_io;
+-
+-	info->fbdefio = &fb_helper->fbdefio;
+-	ret = fb_deferred_io_init(info);
+-	if (ret)
+-		goto err_drm_fb_helper_release_info;
+-
+-	return 0;
+-
+-err_drm_fb_helper_release_info:
+-	drm_fb_helper_release_info(fb_helper);
+-err_vfree:
+-	vfree(screen_buffer);
+-err_drm_client_framebuffer_delete:
+-	fb_helper->fb = NULL;
+-	fb_helper->buffer = NULL;
+-	drm_client_framebuffer_delete(buffer);
+-	return ret;
++	return drm_fbdev_ttm_driver_fbdev_probe(fb_helper, sizes);
+ }
  
- /* Reserved field names */
- #define FIELD_STRING_IP		"__probe_ip"
+ static void drm_fbdev_ttm_damage_blit_real(struct drm_fb_helper *fb_helper,
+@@ -240,6 +176,82 @@ static const struct drm_fb_helper_funcs drm_fbdev_ttm_helper_funcs = {
+ 	.fb_dirty = drm_fbdev_ttm_helper_fb_dirty,
+ };
+ 
++/*
++ * struct drm_driver
++ */
++
++int drm_fbdev_ttm_driver_fbdev_probe(struct drm_fb_helper *fb_helper,
++				     struct drm_fb_helper_surface_size *sizes)
++{
++	struct drm_client_dev *client = &fb_helper->client;
++	struct drm_device *dev = fb_helper->dev;
++	struct drm_client_buffer *buffer;
++	struct fb_info *info;
++	size_t screen_size;
++	void *screen_buffer;
++	u32 format;
++	int ret;
++
++	drm_dbg_kms(dev, "surface width(%d), height(%d) and bpp(%d)\n",
++		    sizes->surface_width, sizes->surface_height,
++		    sizes->surface_bpp);
++
++	format = drm_driver_legacy_fb_format(dev, sizes->surface_bpp,
++					     sizes->surface_depth);
++	buffer = drm_client_framebuffer_create(client, sizes->surface_width,
++					       sizes->surface_height, format);
++	if (IS_ERR(buffer))
++		return PTR_ERR(buffer);
++
++	fb_helper->funcs = &drm_fbdev_ttm_helper_funcs;
++	fb_helper->buffer = buffer;
++	fb_helper->fb = buffer->fb;
++
++	screen_size = buffer->gem->size;
++	screen_buffer = vzalloc(screen_size);
++	if (!screen_buffer) {
++		ret = -ENOMEM;
++		goto err_drm_client_framebuffer_delete;
++	}
++
++	info = drm_fb_helper_alloc_info(fb_helper);
++	if (IS_ERR(info)) {
++		ret = PTR_ERR(info);
++		goto err_vfree;
++	}
++
++	drm_fb_helper_fill_info(info, fb_helper, sizes);
++
++	info->fbops = &drm_fbdev_ttm_fb_ops;
++
++	/* screen */
++	info->flags |= FBINFO_VIRTFB | FBINFO_READS_FAST;
++	info->screen_buffer = screen_buffer;
++	info->fix.smem_len = screen_size;
++
++	/* deferred I/O */
++	fb_helper->fbdefio.delay = HZ / 20;
++	fb_helper->fbdefio.deferred_io = drm_fb_helper_deferred_io;
++
++	info->fbdefio = &fb_helper->fbdefio;
++	ret = fb_deferred_io_init(info);
++	if (ret)
++		goto err_drm_fb_helper_release_info;
++
++	return 0;
++
++err_drm_fb_helper_release_info:
++	drm_fb_helper_release_info(fb_helper);
++err_vfree:
++	vfree(screen_buffer);
++err_drm_client_framebuffer_delete:
++	fb_helper->fb = NULL;
++	fb_helper->buffer = NULL;
++	drm_client_framebuffer_delete(buffer);
++	return ret;
++}
++EXPORT_SYMBOL(drm_fbdev_ttm_driver_fbdev_probe);
++
+ static void drm_fbdev_ttm_client_unregister(struct drm_client_dev *client)
+ {
+ 	struct drm_fb_helper *fb_helper = drm_fb_helper_from_client(client);
+diff --git a/include/drm/drm_fbdev_ttm.h b/include/drm/drm_fbdev_ttm.h
+index 9e6c3bdf35376..243685d02eb13 100644
+--- a/include/drm/drm_fbdev_ttm.h
++++ b/include/drm/drm_fbdev_ttm.h
+@@ -3,11 +3,24 @@
+ #ifndef DRM_FBDEV_TTM_H
+ #define DRM_FBDEV_TTM_H
+ 
++#include <linux/stddef.h>
++
+ struct drm_device;
++struct drm_fb_helper;
++struct drm_fb_helper_surface_size;
+ 
+ #ifdef CONFIG_DRM_FBDEV_EMULATION
++int drm_fbdev_ttm_driver_fbdev_probe(struct drm_fb_helper *fb_helper,
++				     struct drm_fb_helper_surface_size *sizes);
++
++#define DRM_FBDEV_TTM_DRIVER_OPS \
++	.fbdev_probe = drm_fbdev_ttm_driver_fbdev_probe
++
+ void drm_fbdev_ttm_setup(struct drm_device *dev, unsigned int preferred_bpp);
+ #else
++#define DRM_FBDEV_TTM_DRIVER_OPS \
++	.fbdev_probe = NULL
++
+ static inline void drm_fbdev_ttm_setup(struct drm_device *dev, unsigned int preferred_bpp)
+ { }
+ #endif
 -- 
 2.39.5
 
