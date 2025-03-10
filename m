@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFE5A59F6B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65744A5A272
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 824F87A20C1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A231C175491
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F622253FE;
-	Mon, 10 Mar 2025 17:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2601CAA6C;
+	Mon, 10 Mar 2025 18:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNsua/w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiPMUMRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C6922D4C3;
-	Mon, 10 Mar 2025 17:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADB9374EA;
+	Mon, 10 Mar 2025 18:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628409; cv=none; b=ftXACL+f9eAQWRtnufleLns4kCw9aBniCp3wRFsvEF1cKVCtVio3RJwtt4UGJclaw4PvJJnf/kyW9YnV/EysFdfMtqBvAszv2i4FY9C7VUXlH4+FoI+6jB3n5MM/LceSuZDgu0Okw7QaSH6Jo6XcS+Q69MYFIZFvA7oUnnUXlYg=
+	t=1741630818; cv=none; b=oGUsKk02m22G8WsKF+SwLt1R9P5CQ76wTZD7lml3+FJmOyBpafR+yy6ZMJoaZduBG2gW5eL75qXoKxhzEzWiH62DBDcMi5ZusCIZrdEZAjWds1Uwg3l1M5Uv83EIEmYYCN7ob5GNMPxztbm/xOsnDhOOorX/6ap9pmbQX0PP2mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628409; c=relaxed/simple;
-	bh=4NlWcc3GQHV3PTbXMswiX3ygcqhb/O/DauxM3TMMWIE=;
+	s=arc-20240116; t=1741630818; c=relaxed/simple;
+	bh=5lpaH16CQRYKprFja1E8ddWt4nJhp1144YiwEN1OD00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLGcCNaVKAoAsOocpwZvfhTGTnnKIs4RmVeQAxSwm+hTCt4WQluO4Bde69atyO44cUqySlQoIta2ZGK1AlkWA6M4SaopwPcbN6MXXc9u9VZT1B5wNsRIdYEf6uKd8nlR61I/EL6fNE4e/kP5J2D/K5PnEfnCDq23iwsANXQYmAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNsua/w+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACE6C4CEE5;
-	Mon, 10 Mar 2025 17:40:08 +0000 (UTC)
+	 MIME-Version; b=MIxj3XGkwI7HKHGX2r9ph2vUVEQWxgsu4lIFKbUwrI+u2kuUr5tPlMfXGk2yghtbgfRR/wm6zekp1Q5B4whtzcbd5+qIul25AP4eah5ZQBPrSsq/N9/m3GQt1KcKpal3HP7VMNM9zJbBIdDdl7iAhaU2Cevp/BSx9MfZZrnr7yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiPMUMRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CE2C4CEE5;
+	Mon, 10 Mar 2025 18:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628409;
-	bh=4NlWcc3GQHV3PTbXMswiX3ygcqhb/O/DauxM3TMMWIE=;
+	s=korg; t=1741630818;
+	bh=5lpaH16CQRYKprFja1E8ddWt4nJhp1144YiwEN1OD00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNsua/w+z3vYB0PYj1lVXJcJRht518FVAIlvc+PmONnMZlqnxjno23zGX+aK/Ydia
-	 zblFCGk2b6HVj/RCC1p5NkAuOqFCsrYwoqhqhgIJHJVv7CE3ou8EbhNSQaVawgmL1E
-	 mXPupqPunr0GVl162JS8JB9kb16ziwPjOCA8Y/nQ=
+	b=LiPMUMRxInFi7X9T3k0I068mucpVX+XQ03w7mmpS/odwDptdqSjrKRSd8naFsZ/f/
+	 DdKPGQCBDY71+GxwEMTjImYgCwOFT5no6KwWOv6h6Kr5EnVsiiVsSHesuiyEvkKYpu
+	 EcdlMnK7nqaJbnUqvBNqKNmham+8pamL8tY7eDHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/109] ALSA: usx2y: validate nrpacks module parameter on probe
+	syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 545/620] wifi: nl80211: reject cooked mode if it is set along with other flags
 Date: Mon, 10 Mar 2025 18:06:31 +0100
-Message-ID: <20250310170429.437231847@linuxfoundation.org>
+Message-ID: <20250310170607.058365035@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-[ Upstream commit 172a0f509723fe4741d4b8e9190cf434b18320d8 ]
+commit 49f27f29446a5bfe633dd2cc0cfebd48a1a5e77f upstream.
 
-The module parameter defines number of iso packets per one URB. User is
-allowed to set any value to the parameter of type int, which can lead to
-various kinds of weird and incorrect behavior like integer overflows,
-truncations, etc. Number of packets should be a small non-negative number.
+It is possible to set both MONITOR_FLAG_COOK_FRAMES and MONITOR_FLAG_ACTIVE
+flags simultaneously on the same monitor interface from the userspace. This
+causes a sub-interface to be created with no IEEE80211_SDATA_IN_DRIVER bit
+set because the monitor interface is in the cooked state and it takes
+precedence over all other states. When the interface is then being deleted
+the kernel calls WARN_ONCE() from check_sdata_in_driver() because of missing
+that bit.
 
-Since this parameter is read-only, its value can be validated on driver
-probe.
+Fix this by rejecting MONITOR_FLAG_COOK_FRAMES if it is set along with
+other flags.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250303100413.835-1-m.masimov@mt-integration.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 66f7ac50ed7c ("nl80211: Add monitor interface configuration flags")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Link: https://patch.msgid.link/20250131152657.5606-1-v.shevtsov@mt-integration.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/usx2y/usbusx2y.c      | 11 +++++++++++
- sound/usb/usx2y/usbusx2y.h      | 26 ++++++++++++++++++++++++++
- sound/usb/usx2y/usbusx2yaudio.c | 27 ---------------------------
- 3 files changed, 37 insertions(+), 27 deletions(-)
+ net/wireless/nl80211.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
-index 4c4ce0319d624..0fe989a633769 100644
---- a/sound/usb/usx2y/usbusx2y.c
-+++ b/sound/usb/usx2y/usbusx2y.c
-@@ -151,6 +151,12 @@ static int snd_usx2y_card_used[SNDRV_CARDS];
- static void snd_usx2y_card_private_free(struct snd_card *card);
- static void usx2y_unlinkseq(struct snd_usx2y_async_seq *s);
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3800,6 +3800,11 @@ static int parse_monitor_flags(struct nl
+ 		if (flags[flag])
+ 			*mntrflags |= (1<<flag);
  
-+#ifdef USX2Y_NRPACKS_VARIABLE
-+int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
-+module_param(nrpacks, int, 0444);
-+MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
-+#endif
++	/* cooked monitor mode is incompatible with other modes */
++	if (*mntrflags & MONITOR_FLAG_COOK_FRAMES &&
++	    *mntrflags != MONITOR_FLAG_COOK_FRAMES)
++		return -EOPNOTSUPP;
 +
- /*
-  * pipe 4 is used for switching the lamps, setting samplerate, volumes ....
-  */
-@@ -433,6 +439,11 @@ static int snd_usx2y_probe(struct usb_interface *intf,
- 	struct snd_card *card;
- 	int err;
+ 	*mntrflags |= MONITOR_FLAG_CHANGED;
  
-+#ifdef USX2Y_NRPACKS_VARIABLE
-+	if (nrpacks < 0 || nrpacks > USX2Y_NRPACKS_MAX)
-+		return -EINVAL;
-+#endif
-+
- 	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
- 	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
- 	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
-diff --git a/sound/usb/usx2y/usbusx2y.h b/sound/usb/usx2y/usbusx2y.h
-index 8d82f5cc2fe1c..0538c457921e6 100644
---- a/sound/usb/usx2y/usbusx2y.h
-+++ b/sound/usb/usx2y/usbusx2y.h
-@@ -7,6 +7,32 @@
- 
- #define NRURBS	        2
- 
-+/* Default value used for nr of packs per urb.
-+ * 1 to 4 have been tested ok on uhci.
-+ * To use 3 on ohci, you'd need a patch:
-+ * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
-+ * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
-+ *
-+ * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
-+ * Bigger is safer operation, smaller gives lower latencies.
-+ */
-+#define USX2Y_NRPACKS 4
-+
-+#define USX2Y_NRPACKS_MAX 1024
-+
-+/* If your system works ok with this module's parameter
-+ * nrpacks set to 1, you might as well comment
-+ * this define out, and thereby produce smaller, faster code.
-+ * You'd also set USX2Y_NRPACKS to 1 then.
-+ */
-+#define USX2Y_NRPACKS_VARIABLE 1
-+
-+#ifdef USX2Y_NRPACKS_VARIABLE
-+extern int nrpacks;
-+#define nr_of_packs() nrpacks
-+#else
-+#define nr_of_packs() USX2Y_NRPACKS
-+#endif
- 
- #define URBS_ASYNC_SEQ 10
- #define URB_DATA_LEN_ASYNC_SEQ 32
-diff --git a/sound/usb/usx2y/usbusx2yaudio.c b/sound/usb/usx2y/usbusx2yaudio.c
-index 5197599e7aa61..98d0e8edc9832 100644
---- a/sound/usb/usx2y/usbusx2yaudio.c
-+++ b/sound/usb/usx2y/usbusx2yaudio.c
-@@ -28,33 +28,6 @@
- #include "usx2y.h"
- #include "usbusx2y.h"
- 
--/* Default value used for nr of packs per urb.
-- * 1 to 4 have been tested ok on uhci.
-- * To use 3 on ohci, you'd need a patch:
-- * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
-- * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
-- *
-- * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
-- * Bigger is safer operation, smaller gives lower latencies.
-- */
--#define USX2Y_NRPACKS 4
--
--/* If your system works ok with this module's parameter
-- * nrpacks set to 1, you might as well comment
-- * this define out, and thereby produce smaller, faster code.
-- * You'd also set USX2Y_NRPACKS to 1 then.
-- */
--#define USX2Y_NRPACKS_VARIABLE 1
--
--#ifdef USX2Y_NRPACKS_VARIABLE
--static int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
--#define  nr_of_packs() nrpacks
--module_param(nrpacks, int, 0444);
--MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
--#else
--#define nr_of_packs() USX2Y_NRPACKS
--#endif
--
- static int usx2y_urb_capt_retire(struct snd_usx2y_substream *subs)
- {
- 	struct urb	*urb = subs->completed_urb;
--- 
-2.39.5
-
+ 	return 0;
 
 
 
