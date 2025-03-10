@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-121941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1FEA59D16
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B753A5A285
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1048188E0F7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59CE717561D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7871A315A;
-	Mon, 10 Mar 2025 17:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2D122CBE9;
+	Mon, 10 Mar 2025 18:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWfbGbNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9pEzle9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE282F28;
-	Mon, 10 Mar 2025 17:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9675A2236E4;
+	Mon, 10 Mar 2025 18:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627072; cv=none; b=R78RYYMPpAMQi+aZOYrI/gsyRi6FNiTnMr4DrmfYofKN6xYMbxNX3VNJbbS9nsJfZgScau0zoKX5l/QGUvWU3O7WEwQvTCEKIg8Ks2KArt+HK9yjll3M2Kojxwa/ZH2UnhD/XF1ahOdtKpSpyxGWO4Hc20GFFzUcBLcBS4H3gwE=
+	t=1741630856; cv=none; b=SHvmQtO9dKg++9uYA0uO1hSWl4thIAqGvxwKRF8iifHMtwmakl1hfSLOKFz58bd9rI4dMheyqmBXIiROy5HUR8m557GoI2X+iSkfrORDj3spszlerdXtWvehloOKN+wrQoz+8SJ7swnL3oyI7EYkrPWe89aQSnHRt/ZbSXsL+vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627072; c=relaxed/simple;
-	bh=XqxBMi1bpAH5Qo42dDNiLc5BscLFwrEoqEbeBC84D0k=;
+	s=arc-20240116; t=1741630856; c=relaxed/simple;
+	bh=8O5bmcoSnHw54jmpj5V2OaiXud1EJ0IAEqTLQAYsbzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFRnjGdC0hAiXpyyVYC5QOJYtIt/6ryFgdsDOP+B/3UGO9llJsH6ILBh8iDa6SiUCIpZ+BQbHH/e6Zzye/RP5mN+5zcbbZorqYTNIpuX27/Rl3Xhl4mim6CARfcobACZoR/aUyvn83x1gcgdRH8+SBWHhwmMe1wzhOyuJTf++I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWfbGbNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B877C4CEE5;
-	Mon, 10 Mar 2025 17:17:52 +0000 (UTC)
+	 MIME-Version; b=NozDXoz1Qe9mFYyLTwLBTirxoDgfiUxvBpuaY6Y44K6S4uezBR/ITjQVRrqfzxy3QWKojiY1RhQCesKZCAYoTk6GnrVcwBK92E7fXhas+tPmKCUn404kLElIgWjTB5SzmbIiFRpCuHMwET8sGvRhNNp8Enw6xCj3y6nEVw3s110=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9pEzle9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4F2C4CEE5;
+	Mon, 10 Mar 2025 18:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627072;
-	bh=XqxBMi1bpAH5Qo42dDNiLc5BscLFwrEoqEbeBC84D0k=;
+	s=korg; t=1741630856;
+	bh=8O5bmcoSnHw54jmpj5V2OaiXud1EJ0IAEqTLQAYsbzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWfbGbNvFFWdFSt59CqyDbeDa2bgsj2PTUe/mZ+yu817PrVmsNZLJoyyKohNA2kjc
-	 JmpvRQwlNnxNTUa+rv4AVk+lXfdsJbhRguy6U50l8mkLrv9++Pb8+KLqay70FT8H5y
-	 m3T/32XdgVFVmDSY2IGu8YIhx2vpCAOEc7EtNYJI=
+	b=U9pEzle950RBLRYAfhnJJwHxYXQu3c1k+1xTyQg4EeTIqhMFgcofVb9R+YWbpVaR4
+	 KNOTGeIyjabvvQs+0T0bD4QPtI8KLUBedduUrVFVu3V1pK8FCANTzN/OxHKFNRIDbW
+	 32TMOOS881WNYWyDsyPMQ3bXVuWplGcCnk450QJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.13 179/207] KVM: x86: Explicitly zero EAX and EBX when PERFMON_V2 isnt supported by KVM
-Date: Mon, 10 Mar 2025 18:06:12 +0100
-Message-ID: <20250310170454.905903776@linuxfoundation.org>
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 527/620] sched/core: Prevent rescheduling when interrupts are disabled
+Date: Mon, 10 Mar 2025 18:06:13 +0100
+Message-ID: <20250310170606.348919968@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit f9dc8fb3afc968042bdaf4b6e445a9272071c9f3 upstream.
+commit 82c387ef7568c0d96a918a5a78d9cad6256cfa15 upstream.
 
-Fix a goof where KVM sets CPUID.0x80000022.EAX to CPUID.0x80000022.EBX
-instead of zeroing both when PERFMON_V2 isn't supported by KVM.  In
-practice, barring a buggy CPU (or vCPU model when running nested) only the
-!enable_pmu case is affected, as KVM always supports PERFMON_V2 if it's
-available in hardware, i.e. CPUID.0x80000022.EBX will be '0' if PERFMON_V2
-is unsupported.
+David reported a warning observed while loop testing kexec jump:
 
-For the !enable_pmu case, the bug is relatively benign as KVM will refuse
-to enable PMU capabilities, but a VMM that reflects KVM's supported CPUID
-into the guest could inadvertently induce #GPs in the guest due to
-advertising support for MSRs that KVM refuses to emulate.
+  Interrupts enabled after irqrouter_resume+0x0/0x50
+  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
+   kernel_kexec+0xf6/0x180
+   __do_sys_reboot+0x206/0x250
+   do_syscall_64+0x95/0x180
 
-Fixes: 94cdeebd8211 ("KVM: x86/cpuid: Add AMD CPUID ExtPerfMonAndDbg leaf 0x80000022")
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250304082314.472202-3-xiaoyao.li@intel.com
-[sean: massage shortlog and changelog, tag for stable]
+The corresponding interrupt flag trace:
+
+  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
+  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
+
+That means __up_console_sem() was invoked with interrupts enabled. Further
+instrumentation revealed that in the interrupt disabled section of kexec
+jump one of the syscore_suspend() callbacks woke up a task, which set the
+NEED_RESCHED flag. A later callback in the resume path invoked
+cond_resched() which in turn led to the invocation of the scheduler:
+
+  __cond_resched+0x21/0x60
+  down_timeout+0x18/0x60
+  acpi_os_wait_semaphore+0x4c/0x80
+  acpi_ut_acquire_mutex+0x3d/0x100
+  acpi_ns_get_node+0x27/0x60
+  acpi_ns_evaluate+0x1cb/0x2d0
+  acpi_rs_set_srs_method_data+0x156/0x190
+  acpi_pci_link_set+0x11c/0x290
+  irqrouter_resume+0x54/0x60
+  syscore_resume+0x6a/0x200
+  kernel_kexec+0x145/0x1c0
+  __do_sys_reboot+0xeb/0x240
+  do_syscall_64+0x95/0x180
+
+This is a long standing problem, which probably got more visible with
+the recent printk changes. Something does a task wakeup and the
+scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
+invokes schedule() from a completely bogus context. The scheduler
+enables interrupts after context switching, which causes the above
+warning at the end.
+
+Quite some of the code paths in syscore_suspend()/resume() can result in
+triggering a wakeup with the exactly same consequences. They might not
+have done so yet, but as they share a lot of code with normal operations
+it's just a question of time.
+
+The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
+models. Full preemption is not affected as cond_resched() is disabled and
+the preemption check preemptible() takes the interrupt disabled flag into
+account.
+
+Cure the problem by adding a corresponding check into cond_resched().
+
+Reported-by: David Woodhouse <dwmw@amazon.co.uk>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |    2 +-
+ kernel/sched/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1393,7 +1393,7 @@ static inline int __do_cpuid_func(struct
- 
- 		entry->ecx = entry->edx = 0;
- 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
--			entry->eax = entry->ebx;
-+			entry->eax = entry->ebx = 0;
- 			break;
- 		}
- 
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8247,7 +8247,7 @@ SYSCALL_DEFINE0(sched_yield)
+ #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
+ int __sched __cond_resched(void)
+ {
+-	if (should_resched(0)) {
++	if (should_resched(0) && !irqs_disabled()) {
+ 		preempt_schedule_common();
+ 		return 1;
+ 	}
 
 
 
