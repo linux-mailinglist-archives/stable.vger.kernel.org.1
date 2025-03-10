@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-121847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CBFA59C93
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D35A5A21D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA754188DF53
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA840189451E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EC922D4D0;
-	Mon, 10 Mar 2025 17:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0D4236428;
+	Mon, 10 Mar 2025 18:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7+Se9ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJb/xteN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC47B231A24;
-	Mon, 10 Mar 2025 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CED4235377;
+	Mon, 10 Mar 2025 18:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626802; cv=none; b=DW2Tbjo1mvCu2mnlOFgErXX/7d5JRjVkK4CAphojAVMDQYRDA7P2mdGPKXX9NvgiNVIpz8TzPhzYlb3P/pCP18BONeHyedDmFzDGc9w4/gtlLHvwihk0TK0aSqLewuibSTfh1c+cqdpZmjXYsdChcMK8ZXvGk94vs6owebI8/z4=
+	t=1741630586; cv=none; b=XkYJRy8hyqCNma0Rbhaq0DVpSPGvyK6vQ1oyZUWIAlbFSAwyEl1KnCipBib8ya54rKEJDTrNpdYAUZGyH/ZpLoow+mxOHFbvfDOd78pAkmKzmBMFbMzMoKYrbsWAn862RGY1QsQbsf06DQAJXwQj420CSK3h6Hj0jzWGI0fmU+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626802; c=relaxed/simple;
-	bh=9Xpry+DZKprjuwZUfALHI1nd9/xxZYXW6wgnuY4NGA8=;
+	s=arc-20240116; t=1741630586; c=relaxed/simple;
+	bh=2hsl+iW3fO2/OVF7LIA9S6ID4ALMNtttnMANYp4IMw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gD6tZlOJssk1EB1Qu24jmjbwsaoj+NJVElsmDHc126sPbEfZqU4f0ahBBQR7hEaGR1EizptgCtHJDfQVP0dpdiHoEGT/w2vmXX/U6xW+JNv7TLhDpaAaAP5raR7atQr1K33SDCrjPtIFTijMzpPCCYEo8v8ygMyxEnrmwCS7WCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7+Se9ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78286C4CEED;
-	Mon, 10 Mar 2025 17:13:21 +0000 (UTC)
+	 MIME-Version; b=QcRoMssS9GjOhSK8nbciaT4hIFxFnOjP7lFM1Mp4WnZp/Bso49VicjGZC1WdEd2HmrJ/bdyE4QCOM8fGXINFGrYR3x+UyUC/Ftzf5v7HXFVAiBj+f0E+PsZ09BVaS3eNTRsUi5JXnWjBJqjQG8c0+C8aP9J+CHIqu7WVj+2Dy+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJb/xteN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F358C4CEE5;
+	Mon, 10 Mar 2025 18:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626801;
-	bh=9Xpry+DZKprjuwZUfALHI1nd9/xxZYXW6wgnuY4NGA8=;
+	s=korg; t=1741630585;
+	bh=2hsl+iW3fO2/OVF7LIA9S6ID4ALMNtttnMANYp4IMw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7+Se9ckcc9qOZ5XivwzEmuvfZiXW1hWI9yClrQkQnRJMBR1+IFwsZ6fYuJeQVtal
-	 kjH9odsU6HogmOsrwkdm4azGJh47momMGma9eAy8aJKlrEFfz+30osrXAb6m0vqSex
-	 7c7B4/KtpMfJzKR0iC+Et1/nlLtqgLXMvf//YOHA=
+	b=DJb/xteN7HxwUQp/im+VHs/JqqimP8MSgIhvRmIs6bWLLwJwVRnJ/NpfYTX54kh2+
+	 4m+loBALrPCMsTgTQAt8iD2ojAzxatFBnXjxeojnM9tgKko4c0gwLU8vm112TShtPz
+	 eRS8NIY9a/rmgL7bmIycVD6SYlYAW65Iq8ZykmhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Schumacher <erik.schumacher@iris-sensing.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Brad Spengler <spender@grsecurity.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 118/207] hwmon: (ad7314) Validate leading zero bits and return error
-Date: Mon, 10 Mar 2025 18:05:11 +0100
-Message-ID: <20250310170452.501789396@linuxfoundation.org>
+Subject: [PATCH 5.15 466/620] gtp: Suppress list corruption splat in gtp_net_exit_batch_rtnl().
+Date: Mon, 10 Mar 2025 18:05:12 +0100
+Message-ID: <20250310170603.975535211@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Schumacher <erik.schumacher@iris-sensing.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit e278d5e8aef4c0a1d9a9fa8b8910d713a89aa800 ]
+[ Upstream commit 4ccacf86491d33d2486b62d4d44864d7101b299d ]
 
-Leading zero bits are sent on the bus before the temperature value is
-transmitted. If any of these bits are high, the connection might be
-unstable or there could be no AD7314 / ADT730x (or compatible) at all.
-Return -EIO in that case.
+Brad Spengler reported the list_del() corruption splat in
+gtp_net_exit_batch_rtnl(). [0]
 
-Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
-Fixes: 4f3a659581cab ("hwmon: AD7314 driver (ported from IIO)")
-Link: https://lore.kernel.org/r/24a50c2981a318580aca8f50d23be7987b69ea00.camel@iris-sensing.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Commit eb28fd76c0a0 ("gtp: Destroy device along with udp socket's netns
+dismantle.") added the for_each_netdev() loop in gtp_net_exit_batch_rtnl()
+to destroy devices in each netns as done in geneve and ip tunnels.
+
+However, this could trigger ->dellink() twice for the same device during
+->exit_batch_rtnl().
+
+Say we have two netns A & B and gtp device B that resides in netns B but
+whose UDP socket is in netns A.
+
+  1. cleanup_net() processes netns A and then B.
+
+  2. gtp_net_exit_batch_rtnl() finds the device B while iterating
+     netns A's gn->gtp_dev_list and calls ->dellink().
+
+  [ device B is not yet unlinked from netns B
+    as unregister_netdevice_many() has not been called. ]
+
+  3. gtp_net_exit_batch_rtnl() finds the device B while iterating
+     netns B's for_each_netdev() and calls ->dellink().
+
+gtp_dellink() cleans up the device's hash table, unlinks the dev from
+gn->gtp_dev_list, and calls unregister_netdevice_queue().
+
+Basically, calling gtp_dellink() multiple times is fine unless
+CONFIG_DEBUG_LIST is enabled.
+
+Let's remove for_each_netdev() in gtp_net_exit_batch_rtnl() and
+delegate the destruction to default_device_exit_batch() as done
+in bareudp.
+
+[0]:
+list_del corruption, ffff8880aaa62c00->next (autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc00/0x1000 [slab object]) is LIST_POISON1 (ffffffffffffff02) (prev is 0xffffffffffffff04)
+kernel BUG at lib/list_debug.c:58!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 UID: 0 PID: 1804 Comm: kworker/u8:7 Tainted: G                T   6.12.13-grsec-full-20250211091339 #1
+Tainted: [T]=RANDSTRUCT
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: netns cleanup_net
+RIP: 0010:[<ffffffff84947381>] __list_del_entry_valid_or_report+0x141/0x200 lib/list_debug.c:58
+Code: c2 76 91 31 c0 e8 9f b1 f7 fc 0f 0b 4d 89 f0 48 c7 c1 02 ff ff ff 48 89 ea 48 89 ee 48 c7 c7 e0 c2 76 91 31 c0 e8 7f b1 f7 fc <0f> 0b 4d 89 e8 48 c7 c1 04 ff ff ff 48 89 ea 48 89 ee 48 c7 c7 60
+RSP: 0018:fffffe8040b4fbd0 EFLAGS: 00010283
+RAX: 00000000000000cc RBX: dffffc0000000000 RCX: ffffffff818c4054
+RDX: ffffffff84947381 RSI: ffffffff818d1512 RDI: 0000000000000000
+RBP: ffff8880aaa62c00 R08: 0000000000000001 R09: fffffbd008169f32
+R10: fffffe8040b4f997 R11: 0000000000000001 R12: a1988d84f24943e4
+R13: ffffffffffffff02 R14: ffffffffffffff04 R15: ffff8880aaa62c08
+RBX: kasan shadow of 0x0
+RCX: __wake_up_klogd.part.0+0x74/0xe0 kernel/printk/printk.c:4554
+RDX: __list_del_entry_valid_or_report+0x141/0x200 lib/list_debug.c:58
+RSI: vprintk+0x72/0x100 kernel/printk/printk_safe.c:71
+RBP: autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc00/0x1000 [slab object]
+RSP: process kstack fffffe8040b4fbd0+0x7bd0/0x8000 [kworker/u8:7+netns 1804 ]
+R09: kasan shadow of process kstack fffffe8040b4f990+0x7990/0x8000 [kworker/u8:7+netns 1804 ]
+R10: process kstack fffffe8040b4f997+0x7997/0x8000 [kworker/u8:7+netns 1804 ]
+R15: autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc08/0x1000 [slab object]
+FS:  0000000000000000(0000) GS:ffff888116000000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000748f5372c000 CR3: 0000000015408000 CR4: 00000000003406f0 shadow CR4: 00000000003406f0
+Stack:
+ 0000000000000000 ffffffff8a0c35e7 ffffffff8a0c3603 ffff8880aaa62c00
+ ffff8880aaa62c00 0000000000000004 ffff88811145311c 0000000000000005
+ 0000000000000001 ffff8880aaa62000 fffffe8040b4fd40 ffffffff8a0c360d
+Call Trace:
+ <TASK>
+ [<ffffffff8a0c360d>] __list_del_entry_valid include/linux/list.h:131 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] __list_del_entry include/linux/list.h:248 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] list_del include/linux/list.h:262 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] gtp_dellink+0x16d/0x360 drivers/net/gtp.c:1557 fffffe8040b4fc28
+ [<ffffffff8a0d0404>] gtp_net_exit_batch_rtnl+0x124/0x2c0 drivers/net/gtp.c:2495 fffffe8040b4fc88
+ [<ffffffff8e705b24>] cleanup_net+0x5a4/0xbe0 net/core/net_namespace.c:635 fffffe8040b4fcd0
+ [<ffffffff81754c97>] process_one_work+0xbd7/0x2160 kernel/workqueue.c:3326 fffffe8040b4fd88
+ [<ffffffff81757195>] process_scheduled_works kernel/workqueue.c:3407 [inline] fffffe8040b4fec0
+ [<ffffffff81757195>] worker_thread+0x6b5/0xfa0 kernel/workqueue.c:3488 fffffe8040b4fec0
+ [<ffffffff817782a0>] kthread+0x360/0x4c0 kernel/kthread.c:397 fffffe8040b4ff78
+ [<ffffffff814d8594>] ret_from_fork+0x74/0xe0 arch/x86/kernel/process.c:172 fffffe8040b4ffb8
+ [<ffffffff8110f509>] ret_from_fork_asm+0x29/0xc0 arch/x86/entry/entry_64.S:399 fffffe8040b4ffe8
+ </TASK>
+Modules linked in:
+
+Fixes: eb28fd76c0a0 ("gtp: Destroy device along with udp socket's netns dismantle.")
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250217203705.40342-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/ad7314.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/gtp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/hwmon/ad7314.c b/drivers/hwmon/ad7314.c
-index 7802bbf5f9587..59424103f6348 100644
---- a/drivers/hwmon/ad7314.c
-+++ b/drivers/hwmon/ad7314.c
-@@ -22,11 +22,13 @@
-  */
- #define AD7314_TEMP_MASK		0x7FE0
- #define AD7314_TEMP_SHIFT		5
-+#define AD7314_LEADING_ZEROS_MASK	BIT(15)
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 2d306971d4fde..8f76fd927ff4a 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1414,11 +1414,6 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
+ 	list_for_each_entry(net, net_list, exit_list) {
+ 		struct gtp_net *gn = net_generic(net, gtp_net_id);
+ 		struct gtp_dev *gtp, *gtp_next;
+-		struct net_device *dev;
+-
+-		for_each_netdev(net, dev)
+-			if (dev->rtnl_link_ops == &gtp_link_ops)
+-				gtp_dellink(dev, dev_to_kill);
  
- /*
-  * ADT7301 and ADT7302 temperature masks
-  */
- #define ADT7301_TEMP_MASK		0x3FFF
-+#define ADT7301_LEADING_ZEROS_MASK	(BIT(15) | BIT(14))
- 
- enum ad7314_variant {
- 	adt7301,
-@@ -65,12 +67,20 @@ static ssize_t ad7314_temperature_show(struct device *dev,
- 		return ret;
- 	switch (spi_get_device_id(chip->spi_dev)->driver_data) {
- 	case ad7314:
-+		if (ret & AD7314_LEADING_ZEROS_MASK) {
-+			/* Invalid read-out, leading zero part is missing */
-+			return -EIO;
-+		}
- 		data = (ret & AD7314_TEMP_MASK) >> AD7314_TEMP_SHIFT;
- 		data = sign_extend32(data, 9);
- 
- 		return sprintf(buf, "%d\n", 250 * data);
- 	case adt7301:
- 	case adt7302:
-+		if (ret & ADT7301_LEADING_ZEROS_MASK) {
-+			/* Invalid read-out, leading zero part is missing */
-+			return -EIO;
-+		}
- 		/*
- 		 * Documented as a 13 bit twos complement register
- 		 * with a sign bit - which is a 14 bit 2's complement
+ 		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
+ 			gtp_dellink(gtp->dev, dev_to_kill);
 -- 
 2.39.5
 
