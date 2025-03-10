@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7F0A59E76
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F86A59F25
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F7FC7A3CE6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1311C18903F1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FA8233D72;
-	Mon, 10 Mar 2025 17:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205CA22F164;
+	Mon, 10 Mar 2025 17:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rhdQgG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUuU45UB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF85233737;
-	Mon, 10 Mar 2025 17:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D431B2309B0;
+	Mon, 10 Mar 2025 17:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627867; cv=none; b=V6DhLl2O5WEULdVdS8BkKaX65s9XvJ7PK20XfW2ti65garZN+Hfphn9npKHBze1atq+B0mNFsE4hwyb+oHve5cTrddIdCtXD0KE23M/gadIQmCN3SWxvDo8RBuz4hzv+Inl7s6KxgZtLCkxshOw320N9XlwrNvEbZ9h+sCJOXZ8=
+	t=1741628247; cv=none; b=CGRAtwv2vgtTX0nQpYKIGnOtTbimWf3ItLmGwNBp1PKZDU4nC8tjuI1l3sQKk0rU66fVSFeK8sjwAUUrqG/XX8IQcmnPQJnncPy3NpWqTieD+sDtjeDcKpZEqeTuihqKsCiJ/tLwLu0rk/TJpS7+u25dR/w7fX9LFUzxLeIqaEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627867; c=relaxed/simple;
-	bh=z3A6RVN8GU17GC1ObGDK7VIMrKRS1mbkj9Dn5cXuLuw=;
+	s=arc-20240116; t=1741628247; c=relaxed/simple;
+	bh=h8QpQHbZnpZlvKI7zyoHW8PecK/vw5fT8kbfRTYcRFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpdN2d3rrRdpnFLxYZvXxEAFURh+n0LR6Dd9/4+ppmx+t7zrDjkodbyrglqYBhwlJkdOIrfrDTkidca8z4CE8D+qSynSv2C8eZX6Q2j9c296N7xRYHN8wcXQ+7TqFRGyBIlA7dfvvLKZyHGgWtzPVmX9okzr2mcG7O/9/PP394U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rhdQgG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E55C4CEEE;
-	Mon, 10 Mar 2025 17:31:06 +0000 (UTC)
+	 MIME-Version; b=rB/3N4XNs4EPD5ZsugIH6K9btHZps3DKQmS88j0INnahIj1U0GTTWbvEag6jWIGZSxpCA0i2jq8AFRsJdPAz9WgW5IpPLpN6G3xTIXByvEG4i1I5PU5W2dn0F86ayYVeSksLEXFoq3qkiAOExR/U2Xq6L9Odam7Ruz2mcYFiuNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUuU45UB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD19C4CEEC;
+	Mon, 10 Mar 2025 17:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627867;
-	bh=z3A6RVN8GU17GC1ObGDK7VIMrKRS1mbkj9Dn5cXuLuw=;
+	s=korg; t=1741628247;
+	bh=h8QpQHbZnpZlvKI7zyoHW8PecK/vw5fT8kbfRTYcRFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rhdQgG9DVzV2+eiNZvI8orGwhyjMGtHF7PnO8PDBjqUpq45O6Bn1P+6o+vituvii
-	 /wcisydBLHV0Y3Nxo+Jyac/OQmYUKLsD7cIsgUcLcFHkwG11wvbWYD3Iy+iPV0JVe3
-	 Xsf7erePF8HBG2dJ6BFO3Eoy0YpQDB0XPE9SzrLA=
+	b=CUuU45UBw9OqU8XUhVL5Z0uE2xZAtuoaD4I7lbJSJmf3OdF2G4SsK7zqIfdf6WXXR
+	 TLNxrl7kaKrq3vkC2Ruo40rsNkxcf76P72bZIJm22pIh2eECeQ8x79+bkp+CAkzYwE
+	 Q5xKle52svyjVKI6/cK1MRZWC4D+qS9mMe+gkdMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoyu Li <lihaoyu499@gmail.com>,
 	stable <stable@kernel.org>,
-	Fei Li <fei1.li@intel.com>
-Subject: [PATCH 6.12 248/269] drivers: virt: acrn: hsm: Use kzalloc to avoid info leak in pmcmd_ioctl
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.6 107/145] usb: gadget: Check bmAttributes only if configuration is valid
 Date: Mon, 10 Mar 2025 18:06:41 +0100
-Message-ID: <20250310170507.679323990@linuxfoundation.org>
+Message-ID: <20250310170439.078250870@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoyu Li <lihaoyu499@gmail.com>
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
 
-commit 819cec1dc47cdeac8f5dd6ba81c1dbee2a68c3bb upstream.
+commit 8e812e9355a6f14dffd54a33d951ca403b9732f5 upstream.
 
-In the "pmcmd_ioctl" function, three memory objects allocated by
-kmalloc are initialized by "hcall_get_cpu_state", which are then
-copied to user space. The initializer is indeed implemented in
-"acrn_hypercall2" (arch/x86/include/asm/acrn.h). There is a risk of
-information leakage due to uninitialized bytes.
+If the USB configuration is not valid, then avoid checking for
+bmAttributes to prevent null pointer deference.
 
-Fixes: 3d679d5aec64 ("virt: acrn: Introduce interfaces to query C-states and P-states allowed by hypervisor")
-Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
 Cc: stable <stable@kernel.org>
-Acked-by: Fei Li <fei1.li@intel.com>
-Link: https://lore.kernel.org/r/20250130115811.92424-1-lihaoyu499@gmail.com
+Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250224085604.417327-1-prashanth.k@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/virt/acrn/hsm.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/composite.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/virt/acrn/hsm.c
-+++ b/drivers/virt/acrn/hsm.c
-@@ -49,7 +49,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
- 	switch (cmd & PMCMD_TYPE_MASK) {
- 	case ACRN_PMCMD_GET_PX_CNT:
- 	case ACRN_PMCMD_GET_CX_CNT:
--		pm_info = kmalloc(sizeof(u64), GFP_KERNEL);
-+		pm_info = kzalloc(sizeof(u64), GFP_KERNEL);
- 		if (!pm_info)
- 			return -ENOMEM;
- 
-@@ -64,7 +64,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
- 		kfree(pm_info);
- 		break;
- 	case ACRN_PMCMD_GET_PX_DATA:
--		px_data = kmalloc(sizeof(*px_data), GFP_KERNEL);
-+		px_data = kzalloc(sizeof(*px_data), GFP_KERNEL);
- 		if (!px_data)
- 			return -ENOMEM;
- 
-@@ -79,7 +79,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
- 		kfree(px_data);
- 		break;
- 	case ACRN_PMCMD_GET_CX_DATA:
--		cx_data = kmalloc(sizeof(*cx_data), GFP_KERNEL);
-+		cx_data = kzalloc(sizeof(*cx_data), GFP_KERNEL);
- 		if (!cx_data)
- 			return -ENOMEM;
- 
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1051,7 +1051,7 @@ static int set_config(struct usb_composi
+ 		usb_gadget_set_remote_wakeup(gadget, 0);
+ done:
+ 	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
+-	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
++	    (c && !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER)))
+ 		usb_gadget_clear_selfpowered(gadget);
+ 	else
+ 		usb_gadget_set_selfpowered(gadget);
 
 
 
