@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-121803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8273BA59C60
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA42A59DA8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB08188D830
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D733A6ED2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB00231A42;
-	Mon, 10 Mar 2025 17:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13ACE231A37;
+	Mon, 10 Mar 2025 17:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEwBmNC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5CJqzk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B933230D14;
-	Mon, 10 Mar 2025 17:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ADE230D0F;
+	Mon, 10 Mar 2025 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626674; cv=none; b=ZFMHjZp38t1KxwdEN25CZWYvqd8ILnqIb+oaOPQytSpCX85rJm3KQ8BnicvFM8aRpYUz6IkEsbj9rkJgQeGuTQ1EecjKS7K95g0hyhF3S660emX1NkK47WQ5cpCk48vsO5ynicRfIvPoJakqzGAx/1O6tBpOYolOa99dwUV/yIw=
+	t=1741627387; cv=none; b=OHOtiGAV26pbmcl/BO+oIFzN3JgmrUAAkn0fPNdB78vWYeH7ZyXV/AAKuA24fuKjvb7MoK9OA7PQiwA7y1gg0wEUtJjDgUjfx787S9sLJY12au39NVUuILS6RTjC2vq53QN3BbowdIOus8AM65lseSzN+zuaqtnqIAN33xON4fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626674; c=relaxed/simple;
-	bh=qyssn6DFMeCEssTknjcgETP+v63N7MpYW3GNjwwtAQM=;
+	s=arc-20240116; t=1741627387; c=relaxed/simple;
+	bh=dV7IMrglaS2mWMRPqwxl9HsQZOnc4vKZjT0AcBI/Uuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G574+wioiAsTCgbkZcwI6jPPAkz+N7azQytrI9MZh8lz3XtC27AFXMkFJIRHCoq0+/HDcNxb5oP1VlX9sluckP8jK9Bg2AcLfZ7vDTYOZC1kXN9eMO5rvyH8O7758NiUmOzfEqgdcnXj0Eo1aNIR20eUBzYbZrMrVaqoKkKIwBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEwBmNC4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882EAC4CEE5;
-	Mon, 10 Mar 2025 17:11:13 +0000 (UTC)
+	 MIME-Version; b=bsRVaOCXRMQYLli2EcgMN7Ysej5Thhd2oLWxBfa8/uuHto3WHzAVuBXdJb8C4Rv9AQJ8E1rczW6xxzdl4omZ65gyLiZKtdYQtHQCqG5PnMH3MI1Iqpn6w9NKdZkXTWTp5UNvjJFdPB3Q7c2UTiJPJGAYgX1/z2696PNXtv1CSeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5CJqzk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E52CC4CEE5;
+	Mon, 10 Mar 2025 17:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626673;
-	bh=qyssn6DFMeCEssTknjcgETP+v63N7MpYW3GNjwwtAQM=;
+	s=korg; t=1741627387;
+	bh=dV7IMrglaS2mWMRPqwxl9HsQZOnc4vKZjT0AcBI/Uuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEwBmNC4HLIppBL8H6PGbcnqYihZXR3W/xPRYFDtBsEO82NjrSVyuVOctuwO3W5Dl
-	 lhejgSnHv5DugmwnUrNtHvZn/PkU1mSm0hJKyOzyeEArPs79RGUo1oC63qy2JOwhL/
-	 68dom1VNGtg9HMad/TiQGEC72UuZyeZSQDegsXQo=
+	b=b5CJqzk2w8wC22SWUqxaRRXztupZPMrfkO7bBXpEdjEnF57/vEeXdgcpsqduqRPca
+	 8los+fmqvR59J6a5URUo1JI9LFMUt/oL3CvUL/5pxBr+tpDMLB/6NyYJteh2KMxOMP
+	 eJuSSMTEZ+3F4BJjBbYo7igmnDLYsCXNIUeOpaho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Baoquan He <bhe@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 041/207] Revert "mm/page_alloc.c: dont show protection in zones ->lowmem_reserve[] for empty zone"
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 081/269] LoongArch: KVM: Fix GPA size issue about VM
 Date: Mon, 10 Mar 2025 18:03:54 +0100
-Message-ID: <20250310170449.402180229@linuxfoundation.org>
+Message-ID: <20250310170500.952700456@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit eae116d1f0449ade3269ca47a67432622f5c6438 upstream.
+commit 6bdbb73dc8d99fbb77f5db79dbb6f108708090b4 upstream.
 
-Commit 96a5c186efff ("mm/page_alloc.c: don't show protection in zone's
-->lowmem_reserve[] for empty zone") removes the protection of lower zones
-from allocations targeting memory-less high zones.  This had an unintended
-impact on the pattern of reclaims because it makes the high-zone-targeted
-allocation more likely to succeed in lower zones, which adds pressure to
-said zones.  I.e, the following corresponding checks in
-zone_watermark_ok/zone_watermark_fast are less likely to trigger:
+Physical address space is 48 bit on Loongson-3A5000 physical machine,
+however it is 47 bit for VM on Loongson-3A5000 system. Size of physical
+address space of VM is the same with the size of virtual user space (a
+half) of physical machine.
 
-        if (free_pages <= min + z->lowmem_reserve[highest_zoneidx])
-                return false;
+Variable cpu_vabits represents user address space, kernel address space
+is not included (user space and kernel space are both a half of total).
+Here cpu_vabits, rather than cpu_vabits - 1, is to represent the size of
+guest physical address space.
 
-As a result, we are observing an increase in reclaim and kswapd scans, due
-to the increased pressure.  This was initially observed as increased
-latency in filesystem operations when benchmarking with fio on a machine
-with some memory-less zones, but it has since been associated with
-increased contention in locks related to memory reclaim.  By reverting
-this patch, the original performance was recovered on that machine.
+Also there is strict checking about page fault GPA address, inject error
+if it is larger than maximum GPA address of VM.
 
-The original commit was introduced as a clarification of the
-/proc/zoneinfo output, so it doesn't seem there are usecases depending on
-it, making the revert a simple solution.
-
-For reference, I collected vmstat with and without this patch on a freshly
-booted system running intensive randread io from an nvme for 5 minutes.  I
-got:
-
-rpm-6.12.0-slfo.1.2 ->  pgscan_kswapd 5629543865
-Patched             ->  pgscan_kswapd 33580844
-
-33M scans is similar to what we had in kernels predating this patch.
-These numbers is fairly representative of the workload on this machine, as
-measured in several runs.  So we are talking about a 2-order of magnitude
-increase.
-
-Link: https://lkml.kernel.org/r/20250226032258.234099-1-krisman@suse.de
-Fixes: 96a5c186efff ("mm/page_alloc.c: don't show protection in zone's ->lowmem_reserve[] for empty zone")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/loongarch/kvm/exit.c |    6 ++++++
+ arch/loongarch/kvm/vm.c   |    6 +++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5858,11 +5858,10 @@ static void setup_per_zone_lowmem_reserv
+--- a/arch/loongarch/kvm/exit.c
++++ b/arch/loongarch/kvm/exit.c
+@@ -624,6 +624,12 @@ static int kvm_handle_rdwr_fault(struct
+ 	struct kvm_run *run = vcpu->run;
+ 	unsigned long badv = vcpu->arch.badv;
  
- 			for (j = i + 1; j < MAX_NR_ZONES; j++) {
- 				struct zone *upper_zone = &pgdat->node_zones[j];
--				bool empty = !zone_managed_pages(upper_zone);
++	/* Inject ADE exception if exceed max GPA size */
++	if (unlikely(badv >= vcpu->kvm->arch.gpa_size)) {
++		kvm_queue_exception(vcpu, EXCCODE_ADE, EXSUBCODE_ADEM);
++		return RESUME_GUEST;
++	}
++
+ 	ret = kvm_handle_mm_fault(vcpu, badv, write);
+ 	if (ret) {
+ 		/* Treat as MMIO */
+--- a/arch/loongarch/kvm/vm.c
++++ b/arch/loongarch/kvm/vm.c
+@@ -46,7 +46,11 @@ int kvm_arch_init_vm(struct kvm *kvm, un
+ 	if (kvm_pvtime_supported())
+ 		kvm->arch.pv_features |= BIT(KVM_FEATURE_STEAL_TIME);
  
- 				managed_pages += zone_managed_pages(upper_zone);
- 
--				if (clear || empty)
-+				if (clear)
- 					zone->lowmem_reserve[j] = 0;
- 				else
- 					zone->lowmem_reserve[j] = managed_pages / ratio;
+-	kvm->arch.gpa_size = BIT(cpu_vabits - 1);
++	/*
++	 * cpu_vabits means user address space only (a half of total).
++	 * GPA size of VM is the same with the size of user address space.
++	 */
++	kvm->arch.gpa_size = BIT(cpu_vabits);
+ 	kvm->arch.root_level = CONFIG_PGTABLE_LEVELS - 1;
+ 	kvm->arch.invalid_ptes[0] = 0;
+ 	kvm->arch.invalid_ptes[1] = (unsigned long)invalid_pte_table;
 
 
 
