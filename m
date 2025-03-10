@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-121844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1C1A59CBD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69479A5A21B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 340593A86E5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B5B97A5FAB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB85B230D2B;
-	Mon, 10 Mar 2025 17:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CFE23370D;
+	Mon, 10 Mar 2025 18:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10p/hUdT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9Low/xQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AFA2236FB;
-	Mon, 10 Mar 2025 17:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E791230D0F;
+	Mon, 10 Mar 2025 18:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626793; cv=none; b=gmiAMOir5BUvCIKx+JLMTYmSjX/TkENnudPkX0A7O0M2ftxkMjaEdzZaEuR3znQXAuMs9kfsF2APaCr34CChgrlmMJCmCD77X5zPkqN2bWlyOdTEp2smki/jUhGnpf6ZtiWPnqCTmpHH3c0YUBlsgxLXjIzM8FOy6Sc9JwRxdCM=
+	t=1741630574; cv=none; b=ERoNqCX5/iQQC7obZvaQn3N5FxOtXVcwqmK6FrnPazwYZIncQe9yuDnb9sZSqJHCGyux00FPNwJTvIgH3GC6hEP/zgtwvuZv/Wyec1trxZXdmrVyfEcdpZ4FhysVUlJcyqVtnxrQOHCYkPOy4vR7aTZcN8841q0GjaoMLz8LMpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626793; c=relaxed/simple;
-	bh=7LzbM3UV+RcA80JnfMG/jGbucYIgaDGxHfhbrQaYN4A=;
+	s=arc-20240116; t=1741630574; c=relaxed/simple;
+	bh=6br4VAfI2VkqQjw3k6koFSyojs8yH4b/+yjaP+XBae0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C15f5XrEqH8du2a0zJSXLWah2KIM9oWhZg/avrDtFDZFz1VVcni6B1unrTBIZqT0TyW0ELDR7+Y5RyhseCpvoL2X10HFGjkfBHwjRjgk4JAiFdjEMn7azEq8TFkWWTFgS6kREpCOpKwW1SyoOawUYD0DORZDMmjooLqaoXh7Khs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10p/hUdT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F94C4CEE5;
-	Mon, 10 Mar 2025 17:13:12 +0000 (UTC)
+	 MIME-Version; b=O+qrnGWpgzlAUGNQ5YT74YF/W2xiwAn/ALyzdKskgHNBPo3Ftam/EbOwWzXMg9idEix7e8r36uLuSUQikw3gkP407N2vzXK5eGZMk0Zqc12VDldf4nV9h90eAR+M6CFscrLU+15sjaXdpsPk71F5XifMUhdSghHCXPxGmm/sIZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9Low/xQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E879FC4CEE5;
+	Mon, 10 Mar 2025 18:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626793;
-	bh=7LzbM3UV+RcA80JnfMG/jGbucYIgaDGxHfhbrQaYN4A=;
+	s=korg; t=1741630574;
+	bh=6br4VAfI2VkqQjw3k6koFSyojs8yH4b/+yjaP+XBae0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10p/hUdTxUlTJRGlHoLbA7YJQEH5SuFcaffI6ukTo3F7l3wPyn+bglX0aYYyo5t8a
-	 WIQUNn0jn88TjnL5pvwf23WYVjNUvBt+3AR2DcU8tnH4ExCoWKreN5/KYsjUdgFJYj
-	 R2+lfy4y3YDBG0SgVe9pSzHW1k3k1E13KHJVx5lY=
+	b=J9Low/xQBNMPDpiJGfTuKPBIPLuaFmFuKLhEbNB4LYnYXZfH/70p88fDhShK12n5r
+	 ABEUmATvuClNhEtLdm/6HJw9GDaWi9n3IlTtgDTv/Kf5PglZAl6EDuLouVX9j9hr+A
+	 jAY2IMTwRTCtR0BMRIOXsRM9eP5Fb9AEPD4e4yZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Christian Brauner <brauner@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 115/207] cred: Fix RCU warnings in override/revert_creds
+Subject: [PATCH 5.15 462/620] powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
 Date: Mon, 10 Mar 2025 18:05:08 +0100
-Message-ID: <20250310170452.383376333@linuxfoundation.org>
+Message-ID: <20250310170603.820949189@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit e04918dc594669068f5d59d567d08db531167188 ]
+[ Upstream commit 61bcc752d1b81fde3cae454ff20c1d3c359df500 ]
 
-Fix RCU warnings in override_creds and revert_creds by turning
-the RCU pointer into a normal pointer using rcu_replace_pointer.
+Rewrite __real_pte() and __rpte_to_hidx() as static inline in order to
+avoid following warnings/errors when building with 4k page size:
 
-These warnings were previously private to the cred code, but due
-to the move into the header file they are now polluting unrelated
-subsystems.
+	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
+	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
+	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
+	   49 |         int i, offset;
+	      |                ^~~~~~
 
-Fixes: 49dffdfde462 ("cred: Add a light version of override/revert_creds()")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Link: https://lore.kernel.org/r/Z8QGQGW0IaSklKG7@gondor.apana.org.au
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+	  CC      arch/powerpc/mm/book3s64/hash_native.o
+	arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
+	arch/powerpc/mm/book3s64/hash_native.c:782:29: error: variable 'index' set but not used [-Werror=unused-but-set-variable]
+	  782 |         unsigned long hash, index, hidx, shift, slot;
+	      |                             ^~~~~
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
+Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/e0d340a5b7bd478ecbf245d826e6ab2778b74e06.1736706263.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cred.h | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/book3s/64/hash-4k.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cred.h b/include/linux/cred.h
-index 382768a9707b5..1e1ec8834e454 100644
---- a/include/linux/cred.h
-+++ b/include/linux/cred.h
-@@ -179,18 +179,12 @@ static inline bool cap_ambient_invariant_ok(const struct cred *cred)
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+index 5a79dd66b2ed0..433d164374cb6 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+@@ -92,9 +92,17 @@ static inline int hash__hugepd_ok(hugepd_t hpd)
+ /*
+  * With 4K page size the real_pte machinery is all nops.
   */
- static inline const struct cred *override_creds_light(const struct cred *override_cred)
- {
--	const struct cred *old = current->cred;
--
--	rcu_assign_pointer(current->cred, override_cred);
--	return old;
-+	return rcu_replace_pointer(current->cred, override_cred, 1);
- }
+-#define __real_pte(e, p, o)		((real_pte_t){(e)})
++static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
++{
++	return (real_pte_t){pte};
++}
++
+ #define __rpte_to_pte(r)	((r).pte)
+-#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
++
++static inline unsigned long __rpte_to_hidx(real_pte_t rpte, unsigned long index)
++{
++	return pte_val(__rpte_to_pte(rpte)) >> H_PAGE_F_GIX_SHIFT;
++}
  
- static inline const struct cred *revert_creds_light(const struct cred *revert_cred)
- {
--	const struct cred *override_cred = current->cred;
--
--	rcu_assign_pointer(current->cred, revert_cred);
--	return override_cred;
-+	return rcu_replace_pointer(current->cred, revert_cred, 1);
- }
- 
- /**
+ #define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
+ 	do {							         \
 -- 
 2.39.5
 
