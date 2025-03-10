@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-121759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0C6A59C39
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7816FA59D72
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 926E23A8A59
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B707A16F460
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB25230BED;
-	Mon, 10 Mar 2025 17:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C70230BF0;
+	Mon, 10 Mar 2025 17:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSMv7faG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YON47DH5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC3F2309B6;
-	Mon, 10 Mar 2025 17:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61262230BC3;
+	Mon, 10 Mar 2025 17:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626547; cv=none; b=QoQ93Gbfl0pEsfyAjeCUjMiMhj8JhszEkd+Mt8LAsNSan/FAlHV4UOVAmkTFRtJ8fcHbY7mGN2DnEFNSxg1+aryKXLq5xl7H2uW9zD0E0kVXEra7QiJKJdENFUmYWWrukxp+sc2WVXOsPoOn86S7XO7H88yrEH4Qzcou0ceB7Xk=
+	t=1741627263; cv=none; b=hDSr2Gq0CJxMhIhiNhDdoOfjZy+GwYQCcj5Ymm/fh5DjvkW0YJhoHHGNzJ5AmZxT8+ZT5Au5fHkSWbpjoCwIt27bJjnCbCsncSHXETqkAMA9YMC9xZKfgaOeeZkdCKB+a8Td1MDcWssTiMl/f/ZvOt+ffACJSjCBz7U0nR34evU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626547; c=relaxed/simple;
-	bh=+KqfaAwSLXdizpGFb8Zelyh1Mvt4EOk9dzBLdt3rnVM=;
+	s=arc-20240116; t=1741627263; c=relaxed/simple;
+	bh=hQhbVSVp/WrSrf/FnRZeoMV+qb2M4YV8zfRdQx6dw/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hk4+Ukx1aOrHeRGEbioZr18R2mUGHlvG1SoCCrDlv+3IDBtkXfOyoN8CR24WQAO0OF+R4txv/iP1R/RWmq9KyF80yR6ZrNEU/NvAhcuaVISDnEOhF9R+baq+uC1PlpDCvtHEobqQmRD80Mn8gVjJDZHtRF04MoG/aHXmDbKSpEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSMv7faG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D9BC4CEE5;
-	Mon, 10 Mar 2025 17:09:06 +0000 (UTC)
+	 MIME-Version; b=fLeFnu5xf2ePcOKVVX8WvpmSsUmSmmADf+RBDw3NW6fjqQ/uAzydTXc9RnCiATT+yybp+alZbiQXCOOGG61bs06S1WwWdL1QafDwiLF3fbFhtLf9TaG4oeKSbx4Qyi6mSNhAkyeU8Hxz1tW/6MfCzxDlWvEkI4xduEMGulQHv5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YON47DH5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF46BC4CEE5;
+	Mon, 10 Mar 2025 17:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626546;
-	bh=+KqfaAwSLXdizpGFb8Zelyh1Mvt4EOk9dzBLdt3rnVM=;
+	s=korg; t=1741627263;
+	bh=hQhbVSVp/WrSrf/FnRZeoMV+qb2M4YV8zfRdQx6dw/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSMv7faGi0cxPzBtRIseVH04hLPq0RqmF8GmyomToYb4pkPZXpU0hIODvGSVyEfUa
-	 n18RzLBIxPGlaf/tRGCWLVfzJIWjgW763n3iW0Xt0Gje0bn80ZL/jGmaRkdVeV7nVR
-	 +txdOzTQzRXlKnfngp1Tmn2LUhxko1DdDvTThxCI=
+	b=YON47DH5CcjSUiEYwjxKqRAduUUCdBBbElAVpgdWc4S6tHOIp1uU4+XBNVx2pmLk1
+	 HFU+XiZBqUUiZNxeNFjUMQ5pRWIpIruLqpoGx8hsRg6ZKz7L3XECqVnhoEdyDsWGaV
+	 modtHlc6b810u7E764c8kcJ5/AQfqvieGYDQwZVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.13 029/207] ALSA: hda/realtek: update ALC222 depop optimize
+	Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 069/269] rust: map `__kernel_size_t` and friends also to usize/isize
 Date: Mon, 10 Mar 2025 18:03:42 +0100
-Message-ID: <20250310170448.931420768@linuxfoundation.org>
+Message-ID: <20250310170500.480250839@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Gary Guo <gary@garyguo.net>
 
-commit ca0dedaff92307591f66c9206933fbdfe87add10 upstream.
+commit 2fd6f55c048d0c863ffbc8590b1bd2edb5ff13e5 upstream.
 
-Add ALC222 its own depop functions for alc_init and alc_shutup.
+Currently bindgen has special logic to recognise `size_t` and `ssize_t`
+and map them to Rust `usize` and `isize`. Similarly, `ptrdiff_t` is
+mapped to `isize`.
 
-[note: this fixes pop noise issues on the models with two headphone
- jacks -- tiwai ]
+However this falls short for `__kernel_size_t`, `__kernel_ssize_t` and
+`__kernel_ptrdiff_t`. To ensure that they are mapped to usize/isize
+rather than 32/64 integers depending on platform, blocklist them in
+bindgen parameters and manually provide their definition.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Link: https://lore.kernel.org/r/20240913213041.395655-3-gary@garyguo.net
+[ Formatted comment. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   76 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
+ rust/bindgen_parameters |    5 +++++
+ rust/bindings/lib.rs    |    5 +++++
+ rust/uapi/lib.rs        |    5 +++++
+ 3 files changed, 15 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3845,6 +3845,79 @@ static void alc225_shutup(struct hda_cod
- 	}
- }
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -1,5 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0
  
-+static void alc222_init(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	hda_nid_t hp_pin = alc_get_hp_pin(spec);
-+	bool hp1_pin_sense, hp2_pin_sense;
++# We want to map these types to `isize`/`usize` manually, instead of
++# define them as `int`/`long` depending on platform bitwidth.
++--blocklist-type __kernel_s?size_t
++--blocklist-type __kernel_ptrdiff_t
 +
-+	if (!hp_pin)
-+		return;
+ --opaque-type xregs_state
+ --opaque-type desc_struct
+ --opaque-type arch_lbr_state
+--- a/rust/bindings/lib.rs
++++ b/rust/bindings/lib.rs
+@@ -27,6 +27,11 @@
+ #[allow(dead_code)]
+ #[allow(clippy::undocumented_unsafe_blocks)]
+ mod bindings_raw {
++    // Manual definition for blocklisted types.
++    type __kernel_size_t = usize;
++    type __kernel_ssize_t = isize;
++    type __kernel_ptrdiff_t = isize;
 +
-+	msleep(30);
+     // Use glob import here to expose all helpers.
+     // Symbols defined within the module will take precedence to the glob import.
+     pub use super::bindings_helper::*;
+--- a/rust/uapi/lib.rs
++++ b/rust/uapi/lib.rs
+@@ -25,4 +25,9 @@
+     unsafe_op_in_unsafe_fn
+ )]
+ 
++// Manual definition of blocklisted types.
++type __kernel_size_t = usize;
++type __kernel_ssize_t = isize;
++type __kernel_ptrdiff_t = isize;
 +
-+	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
-+	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
-+
-+	if (hp1_pin_sense || hp2_pin_sense) {
-+		msleep(2);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		msleep(75);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+
-+		msleep(75);
-+	}
-+}
-+
-+static void alc222_shutup(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	hda_nid_t hp_pin = alc_get_hp_pin(spec);
-+	bool hp1_pin_sense, hp2_pin_sense;
-+
-+	if (!hp_pin)
-+		hp_pin = 0x21;
-+
-+	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
-+	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
-+
-+	if (hp1_pin_sense || hp2_pin_sense) {
-+		msleep(2);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
-+
-+		msleep(75);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+
-+		msleep(75);
-+	}
-+	alc_auto_setup_eapd(codec, false);
-+	alc_shutup_pins(codec);
-+}
-+
- static void alc_default_init(struct hda_codec *codec)
- {
- 	struct alc_spec *spec = codec->spec;
-@@ -11888,8 +11961,11 @@ static int patch_alc269(struct hda_codec
- 		spec->codec_variant = ALC269_TYPE_ALC300;
- 		spec->gen.mixer_nid = 0; /* no loopback on ALC300 */
- 		break;
-+	case 0x10ec0222:
- 	case 0x10ec0623:
- 		spec->codec_variant = ALC269_TYPE_ALC623;
-+		spec->shutup = alc222_shutup;
-+		spec->init_hook = alc222_init;
- 		break;
- 	case 0x10ec0700:
- 	case 0x10ec0701:
+ include!(concat!(env!("OBJTREE"), "/rust/uapi/uapi_generated.rs"));
 
 
 
