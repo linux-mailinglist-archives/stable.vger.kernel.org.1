@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58667A59CE4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A4FA59E1F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A72BB1888DFE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0CE6170965
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E240233D9D;
-	Mon, 10 Mar 2025 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FA4233714;
+	Mon, 10 Mar 2025 17:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCb8choy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvCj6q8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A840233D91;
-	Mon, 10 Mar 2025 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91CF230D0F;
+	Mon, 10 Mar 2025 17:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626949; cv=none; b=DDh2927K8LdfInE3hNB7ipB1h2WguWwy8eqwiyR71IUfeolylYsHutgNLeZC77Gix5k2rgtNG78qJuO/YcP3558yiF256Pe5JkVvbSR11iV+29bp9L7lYaY/hgPRiVjBN0CqGVcNslJ7R+pmF0E/DVeb37iy7Yu2mLkBD/fh+cA=
+	t=1741627640; cv=none; b=RC51L+SFJ65YA1XW8hkJDx6hmj7anL9tfER+V4aawaZZ50aAAUsRLs0yKNlHJfX/IXl/8QJ9yZsKn2/BFv1DTAoa0fWguDllbx7WSKO9PkZn/pHHm2Mj/1P6bvqce8RvfV7YUxAQftJxQ1AubAwLYC5Ix5U9b6fdOFIfgm/ivPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626949; c=relaxed/simple;
-	bh=0ZhmcFYuVjbs09y8Y7CMvj9SzN87zFrslXX6/UWIHuE=;
+	s=arc-20240116; t=1741627640; c=relaxed/simple;
+	bh=BZN8RhzyCd6aIfl01iJ98EE9A1g/ZPvxoDlmR4Krl2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuRAoaGs+nRtKGP95t8ziY8WcAfHV48PShV8b9HnJWTo6ePGQwkxA6Gpjlq4qGTYkJdf30KSD4HNWZ4+0Zsvhp6z8JXkr+n9IumQzMXWpt59z+Y6XJ4nYsT9c/8BgkzInq36HwJj80rLugJEVXF9a3uNvNED8DR0ejX7DNihyYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCb8choy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C5BC4CEE5;
-	Mon, 10 Mar 2025 17:15:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ivZi9FYjy55ukvqmpeA9F93KKDfUFLWY03/jk8NgXFvsS6Xnd1BXQOgKoCKy95GOcIjviQwqeDCBwSK+wLuHUt9y3rJv3J7jkJZ5QAI0E34rfDwJWMDXstYZoiSvTFlNPFfbEmHzRyFQvftS9YRV6qyhjkmBH+lUX/B02DOPfWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvCj6q8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A278C4CEE5;
+	Mon, 10 Mar 2025 17:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626949;
-	bh=0ZhmcFYuVjbs09y8Y7CMvj9SzN87zFrslXX6/UWIHuE=;
+	s=korg; t=1741627639;
+	bh=BZN8RhzyCd6aIfl01iJ98EE9A1g/ZPvxoDlmR4Krl2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCb8choy8Qj9WL2njNNCdc+0h5OrfM+Uqb40C1zlRDGnSkII+Ex49c8VRtX/FuIqQ
-	 oY2Ydqv9lCiIMaJJbJ+706WAugICai5qHjveofZcuKAuFRB+dzQIhg/FdxpLYZ69o4
-	 0KJKz9kIceW4Semyg6Q4pXYrm9tP8ir0iqisCHTg=
+	b=fvCj6q8U8uxgPLHCHykZFCrrrffWwtdd1q7EMGB+waPNIwys4FBPItehZ0z0znP/5
+	 k1JrO2N5j18gjbR2tmvWLUfmZWyIPA+pbpPdhp1AMigcYX3Ycz3pJTRkmIRgw0/uGB
+	 Li46i+haO4lCYz0XMk73E7Vebef/yYPev1X4VvjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 141/207] net-timestamp: support TCP GSO case for a few missing flags
+Subject: [PATCH 6.12 181/269] drm/i915/color: Extract intel_color_modeset()
 Date: Mon, 10 Mar 2025 18:05:34 +0100
-Message-ID: <20250310170453.406987345@linuxfoundation.org>
+Message-ID: <20250310170504.924742892@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
+[ Upstream commit 84d2d0430f0833cdf52a3d051906add051f20ef0 ]
 
-When I read through the TSO codes, I found out that we probably
-miss initializing the tx_flags of last seg when TSO is turned
-off, which means at the following points no more timestamp
-(for this last one) will be generated. There are three flags
-to be handled in this patch:
-1. SKBTX_HW_TSTAMP
-2. SKBTX_BPF
-3. SKBTX_SCHED_TSTAMP
-Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
-6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
-and only belongs to net-next branch material for now. The common
-issue of the above three flags can be fixed by this single patch.
+We always perform the same steps to program color management
+stuff during a full modeset. Extract that code to a helper
+to avoid duplication.
 
-This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
-the UDP GSO does to make the newly segmented last skb inherit the
-tx_flags so that requested timestamp will be generated in each
-certain layer, or else that last one has zero value of tx_flags
-which leads to no timestamp at all.
-
-Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240916152958.17332-2-ville.syrjala@linux.intel.com
+Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
+Stable-dep-of: 30bfc151f0c1 ("drm/xe: Remove double pageflip")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_offload.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_color.c   | 17 ++++++++++
+ drivers/gpu/drm/i915/display/intel_color.h   |  1 +
+ drivers/gpu/drm/i915/display/intel_display.c | 33 +++-----------------
+ 3 files changed, 22 insertions(+), 29 deletions(-)
 
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index 2308665b51c53..2dfac79dc78b8 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -13,12 +13,15 @@
- #include <net/tcp.h>
- #include <net/protocol.h>
+diff --git a/drivers/gpu/drm/i915/display/intel_color.c b/drivers/gpu/drm/i915/display/intel_color.c
+index ec55cb651d449..808bece71c247 100644
+--- a/drivers/gpu/drm/i915/display/intel_color.c
++++ b/drivers/gpu/drm/i915/display/intel_color.c
+@@ -1912,6 +1912,23 @@ void intel_color_post_update(const struct intel_crtc_state *crtc_state)
+ 		i915->display.funcs.color->color_post_update(crtc_state);
+ }
  
--static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
-+static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
- 			   unsigned int seq, unsigned int mss)
- {
-+	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
-+	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
++void intel_color_modeset(const struct intel_crtc_state *crtc_state)
++{
++	struct intel_display *display = to_intel_display(crtc_state);
 +
- 	while (skb) {
- 		if (before(ts_seq, seq + mss)) {
--			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
-+			skb_shinfo(skb)->tx_flags |= flags;
- 			skb_shinfo(skb)->tskey = ts_seq;
- 			return;
- 		}
-@@ -193,8 +196,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
- 	th = tcp_hdr(skb);
- 	seq = ntohl(th->seq);
++	intel_color_load_luts(crtc_state);
++	intel_color_commit_noarm(crtc_state);
++	intel_color_commit_arm(crtc_state);
++
++	if (DISPLAY_VER(display) < 9) {
++		struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
++		struct intel_plane *plane = to_intel_plane(crtc->base.primary);
++
++		/* update DSPCNTR to configure gamma/csc for pipe bottom color */
++		plane->disable_arm(plane, crtc_state);
++	}
++}
++
+ void intel_color_prepare_commit(struct intel_atomic_state *state,
+ 				struct intel_crtc *crtc)
+ {
+diff --git a/drivers/gpu/drm/i915/display/intel_color.h b/drivers/gpu/drm/i915/display/intel_color.h
+index 79f230a1709ad..ab3aaec06a2ac 100644
+--- a/drivers/gpu/drm/i915/display/intel_color.h
++++ b/drivers/gpu/drm/i915/display/intel_color.h
+@@ -28,6 +28,7 @@ void intel_color_commit_noarm(const struct intel_crtc_state *crtc_state);
+ void intel_color_commit_arm(const struct intel_crtc_state *crtc_state);
+ void intel_color_post_update(const struct intel_crtc_state *crtc_state);
+ void intel_color_load_luts(const struct intel_crtc_state *crtc_state);
++void intel_color_modeset(const struct intel_crtc_state *crtc_state);
+ void intel_color_get_config(struct intel_crtc_state *crtc_state);
+ bool intel_color_lut_equal(const struct intel_crtc_state *crtc_state,
+ 			   const struct drm_property_blob *blob1,
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index 2c6d0da8a16f8..ac5febd076e10 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -1502,14 +1502,6 @@ static void intel_encoders_update_pipe(struct intel_atomic_state *state,
+ 	}
+ }
  
--	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
--		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
-+	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
-+		tcp_gso_tstamp(segs, gso_skb, seq, mss);
+-static void intel_disable_primary_plane(const struct intel_crtc_state *crtc_state)
+-{
+-	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+-	struct intel_plane *plane = to_intel_plane(crtc->base.primary);
+-
+-	plane->disable_arm(plane, crtc_state);
+-}
+-
+ static void ilk_configure_cpu_transcoder(const struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+@@ -1575,11 +1567,7 @@ static void ilk_crtc_enable(struct intel_atomic_state *state,
+ 	 * On ILK+ LUT must be loaded before the pipe is running but with
+ 	 * clocks enabled
+ 	 */
+-	intel_color_load_luts(new_crtc_state);
+-	intel_color_commit_noarm(new_crtc_state);
+-	intel_color_commit_arm(new_crtc_state);
+-	/* update DSPCNTR to configure gamma for pipe bottom color */
+-	intel_disable_primary_plane(new_crtc_state);
++	intel_color_modeset(new_crtc_state);
  
- 	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
+ 	intel_initial_watermarks(state, crtc);
+ 	intel_enable_transcoder(new_crtc_state);
+@@ -1741,12 +1729,7 @@ static void hsw_crtc_enable(struct intel_atomic_state *state,
+ 		 * On ILK+ LUT must be loaded before the pipe is running but with
+ 		 * clocks enabled
+ 		 */
+-		intel_color_load_luts(pipe_crtc_state);
+-		intel_color_commit_noarm(pipe_crtc_state);
+-		intel_color_commit_arm(pipe_crtc_state);
+-		/* update DSPCNTR to configure gamma/csc for pipe bottom color */
+-		if (DISPLAY_VER(dev_priv) < 9)
+-			intel_disable_primary_plane(pipe_crtc_state);
++		intel_color_modeset(pipe_crtc_state);
  
+ 		hsw_set_linetime_wm(pipe_crtc_state);
+ 
+@@ -2147,11 +2130,7 @@ static void valleyview_crtc_enable(struct intel_atomic_state *state,
+ 
+ 	i9xx_pfit_enable(new_crtc_state);
+ 
+-	intel_color_load_luts(new_crtc_state);
+-	intel_color_commit_noarm(new_crtc_state);
+-	intel_color_commit_arm(new_crtc_state);
+-	/* update DSPCNTR to configure gamma for pipe bottom color */
+-	intel_disable_primary_plane(new_crtc_state);
++	intel_color_modeset(new_crtc_state);
+ 
+ 	intel_initial_watermarks(state, crtc);
+ 	intel_enable_transcoder(new_crtc_state);
+@@ -2187,11 +2166,7 @@ static void i9xx_crtc_enable(struct intel_atomic_state *state,
+ 
+ 	i9xx_pfit_enable(new_crtc_state);
+ 
+-	intel_color_load_luts(new_crtc_state);
+-	intel_color_commit_noarm(new_crtc_state);
+-	intel_color_commit_arm(new_crtc_state);
+-	/* update DSPCNTR to configure gamma for pipe bottom color */
+-	intel_disable_primary_plane(new_crtc_state);
++	intel_color_modeset(new_crtc_state);
+ 
+ 	if (!intel_initial_watermarks(state, crtc))
+ 		intel_update_watermarks(dev_priv);
 -- 
 2.39.5
 
