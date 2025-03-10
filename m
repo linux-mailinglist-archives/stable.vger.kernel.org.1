@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3E0A5A2DA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B533CA59FB2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B6B18961D4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:24:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19FC718908CA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE99233D85;
-	Mon, 10 Mar 2025 18:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8AA22FAF8;
+	Mon, 10 Mar 2025 17:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwuSrTD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZprwCSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FA6232367;
-	Mon, 10 Mar 2025 18:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3DA22D7A6;
+	Mon, 10 Mar 2025 17:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741631051; cv=none; b=anEosZ4+6aqAZkAyTFUtTCPvUOc/mT0tXKWFwoh2SypVuq6ewE0ZvQbZwtFra845KY/wluznSyVDDZ4oi/TsSJa3PXZxsOEc4dXnyxASTvYMUTlihk2MOctxIEOLvo1voNfFI0iFSimyx3lVfjXr/WQI4b3FGE6VOjJ0c/b0x/Q=
+	t=1741628553; cv=none; b=Xd3PLnO1kssdWj/BTTGTbhrpR71iBqpcVtI1afjafOAJbub+5m80Wicvw4+Lis1YVHQriUvf5w7loaCVx53yt61aoF9bD6n0yw2Gx+lcQ5y7XpEz7wtkoc6oTmR4qSvMiSmj49MaYiczwCtFbOdbtB9QemfkPo/jjx4qiGnxo6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741631051; c=relaxed/simple;
-	bh=DMvu03iB7X6hTvgVEZI1JTDCJ1UI7aWrBnqEaPg4pX4=;
+	s=arc-20240116; t=1741628553; c=relaxed/simple;
+	bh=sFUhukOp3igGTidZku8sPLnuZyHYoMg1Zfz+7xVOZSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9SkbNDdIaIGQd++AUrntjeurWwJwnGrncKKLi5WidsSQQezPdQqfcziMMD1ShSdDQ1jFdHEmGFd8xg+KMuFiSMyvHi5IhNYg8O9yMoDhNfHnoEpB+kDVi3vD2PT5NaZYOsK2/oLfYTMgwwRR9u4T9uS53dveAH2sDa5O3kTwFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwuSrTD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9B2C4CEE5;
-	Mon, 10 Mar 2025 18:24:11 +0000 (UTC)
+	 MIME-Version; b=QqTrDvm0zFuvYcoqZTN7DDOimbR5gcz8JNsGefkFjJrbX9n7lIjc0dIV9/yWL8BGRb2CW2rhjcEvbvfScIaWmWh43l/V4jf3ZQDaiic/hPufBi5Pmjn01RlraWROOgm0//bIC0g7gyA8McS1BbSNVUpuWFJH+T7G2RI8YxioF5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZprwCSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DC9C4CEE5;
+	Mon, 10 Mar 2025 17:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741631051;
-	bh=DMvu03iB7X6hTvgVEZI1JTDCJ1UI7aWrBnqEaPg4pX4=;
+	s=korg; t=1741628552;
+	bh=sFUhukOp3igGTidZku8sPLnuZyHYoMg1Zfz+7xVOZSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwuSrTD4T8TcP0e0IsQ5x30mJglBuK7ZfudZJbFXkZAkbVLRHG/ronpytMfLjEfdr
-	 ED583pmjihNlBih0mQAmkxS6V+CcXUqhH31/k4YYLMl+2/eon18CFsFW38VavgLk7a
-	 2O9g0KNLjCWNVdYNouUusK3G9uwLed2HYN3pAKoQ=
+	b=XZprwCSS2UTG+a5OYK+B6NbVhpapSvLIArWgo1gNNa2v6HK1NvtZmzrCH//b0o0E/
+	 azPzLxVEz/zi6aNEffVkiYTlUW+8rZqjjDiFxbwpttf456VMIZOeQioxQBjNBFVdNo
+	 aoIpOTNSmNCBA5J8oo6KLRhT+X9NGRPN3uUm6Erg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 595/620] usb: xhci: Enable the TRB overfetch quirk on VIA VL805
-Date: Mon, 10 Mar 2025 18:07:21 +0100
-Message-ID: <20250310170609.021982680@linuxfoundation.org>
+	Xi Ruoyao <xry111@xry111.site>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 6.1 098/109] x86/mm: Dont disable PCID when INVLPG has been fixed by microcode
+Date: Mon, 10 Mar 2025 18:07:22 +0100
+Message-ID: <20250310170431.459252461@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Xi Ruoyao <xry111@xry111.site>
 
-commit c133ec0e5717868c9967fa3df92a55e537b1aead upstream.
+commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
 
-Raspberry Pi is a major user of those chips and they discovered a bug -
-when the end of a transfer ring segment is reached, up to four TRBs can
-be prefetched from the next page even if the segment ends with link TRB
-and on page boundary (the chip claims to support standard 4KB pages).
+Per the "Processor Specification Update" documentations referred by
+the intel-microcode-20240312 release note, this microcode release has
+fixed the issue for all affected models.
 
-It also appears that if the prefetched TRBs belong to a different ring
-whose doorbell is later rung, they may be used without refreshing from
-system RAM and the endpoint will stay idle if their cycle bit is stale.
+So don't disable PCID if the microcode is new enough.  The precise
+minimum microcode revision fixing the issue was provided by Pawan
+Intel.
 
-Other users complain about IOMMU faults on x86 systems, unsurprisingly.
+[ dhansen: comment and changelog tweaks ]
 
-Deal with it by using existing quirk which allocates a dummy page after
-each transfer ring segment. This was seen to resolve both problems. RPi
-came up with a more efficient solution, shortening each segment by four
-TRBs, but it complicated the driver and they ditched it for this quirk.
-
-Also rename the quirk and add VL805 device ID macro.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://github.com/raspberrypi/linux/issues/4685
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215906
-CC: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225095927.2512358-2-mathias.nyman@linux.intel.com
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
+Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
+Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
+Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
+Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
+Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c |    3 ++-
- drivers/usb/host/xhci-pci.c |   10 +++++++---
- drivers/usb/host/xhci.h     |    2 +-
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ arch/x86/mm/init.c |   23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2406,7 +2406,8 @@ int xhci_mem_init(struct xhci_hcd *xhci,
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+	if (xhci->quirks & XHCI_TRB_OVERFETCH)
-+		/* Buggy HC prefetches beyond segment bounds - allocate dummy space at the end */
- 		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
- 				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
- 	else
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -38,6 +38,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -263,28 +263,33 @@ static void __init probe_page_size_mask(
+ }
  
-+#define PCI_DEVICE_ID_VIA_VL805			0x3483
+ /*
+- * INVLPG may not properly flush Global entries
+- * on these CPUs when PCIDs are enabled.
++ * INVLPG may not properly flush Global entries on
++ * these CPUs.  New microcode fixes the issue.
+  */
+ static const struct x86_cpu_id invlpg_miss_ids[] = {
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
+-	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0x2e),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0x42c),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0x11),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0x118),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0x4117),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0x2e),
+ 	{}
+ };
+ 
+ static void setup_pcid(void)
+ {
++	const struct x86_cpu_id *invlpg_miss_match;
 +
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
-@@ -305,8 +307,10 @@ static void xhci_pci_quirks(struct devic
- 			pdev->device == 0x3432)
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	if (!IS_ENABLED(CONFIG_X86_64))
+ 		return;
  
--	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
-+	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
- 		xhci->quirks |= XHCI_LPM_SUPPORT;
-+		xhci->quirks |= XHCI_TRB_OVERFETCH;
-+	}
+ 	if (!boot_cpu_has(X86_FEATURE_PCID))
+ 		return;
  
- 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
-@@ -354,11 +358,11 @@ static void xhci_pci_quirks(struct devic
- 
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 		}
- 
- 		if (pdev->device == 0x9203)
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 	}
- 
- 	if (pdev->vendor == PCI_DEVICE_ID_CADENCE &&
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1665,7 +1665,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
--#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+-	if (x86_match_cpu(invlpg_miss_ids)) {
++	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
++
++	if (invlpg_miss_match &&
++	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
+ 		pr_info("Incomplete global flushes, disabling PCID");
+ 		setup_clear_cpu_cap(X86_FEATURE_PCID);
+ 		return;
 
 
 
