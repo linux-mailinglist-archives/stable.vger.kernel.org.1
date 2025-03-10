@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-122449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54852A59FA8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3FDA59E56
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F460170F6C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41B87162DEF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A191C232378;
-	Mon, 10 Mar 2025 17:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DFF230BF0;
+	Mon, 10 Mar 2025 17:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpKue9et"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2DhJN2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D19D22AE7C;
-	Mon, 10 Mar 2025 17:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1521B4F0F;
+	Mon, 10 Mar 2025 17:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628523; cv=none; b=Tyjb5KjJTrU1kIb5WNdeAjecX6mAuH7hkhRkdv2HYHi2gQtp8pPOcVOQiCDfE/XChWtRAQe/46+bTbuKcNjoXIr37op3dS/ncR99WqpicvcSvvuyDVqaMuQPbujUW7laZJw+PO1wAcpDETA/c7PtiYmps4YF2IujuihKddiwhpA=
+	t=1741627781; cv=none; b=DehwSJIz3CuGu4VdKSAIVP2f5rfoh4gzpUYodFB8u24ryjOQxiWXxonA33jRRXgvblKu33JIheplfH7dr3TcwbOa5VpQxlxemk5w8sjyOoJ1EMEXb4i6gq10mv196rsfGp8v+PuOC2xxu3z+lcyum0PiWbnk875SoDVSay0nxuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628523; c=relaxed/simple;
-	bh=tpMmqdQTU6RIrhhNFt7p6GmMcYgC78XPUitXco05280=;
+	s=arc-20240116; t=1741627781; c=relaxed/simple;
+	bh=El9RUlQrUIHYD6+0NVpp5eDjZ0Zs7fey3GRsDBj9CRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpR+yQ1vKHL82u+fid2cme/b9eaS4EjfT4MG92w2/8O9xXBcE4ccow2KcARqbFBs1G+oUobNUZmQWbssugP6rE3xr6Yyfxugq5ErAh288F8+lpjsq8/0l+xpjLU8AQVgvHYFETA6raXJnywYn79hTrLl34FkNhuuRlKoS5KKG14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpKue9et; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D564EC4CEE5;
-	Mon, 10 Mar 2025 17:42:02 +0000 (UTC)
+	 MIME-Version; b=bRC6RDmv7Q79gxTlP/jYVRj+mRuRTKTbXuC981n3CqAg56rUBn0w9NXOgs8nF1y6RVdrRb5n1xsD9Iq/eUJXU47QXcw+k0OSQ2w/hyhyLvFjdYDUBSTQDZ+3fVvXxFztzcmeZb4PmBB4G3vO+v0Z0RUFia8DZTfnjiFbec9wb3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2DhJN2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B716CC4CEE5;
+	Mon, 10 Mar 2025 17:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628523;
-	bh=tpMmqdQTU6RIrhhNFt7p6GmMcYgC78XPUitXco05280=;
+	s=korg; t=1741627781;
+	bh=El9RUlQrUIHYD6+0NVpp5eDjZ0Zs7fey3GRsDBj9CRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpKue9et8iIMmXNB0YfdSjZ9uJxFz1h6NkVpemJw/XZljFbDlxY1CqsFyj63Cbe+I
-	 m7lsXJOvSf5wW2X58GIQZQqfsYpo1/W9TDpz08FDILFL2YWkTQzxrOvWwaU2YEPTvY
-	 wtQ/fnI6lc9SBKXDHYWUWWH6uP7a/NTRR5iPnBG8=
+	b=r2DhJN2BKx7x7EgBt+M0papRZuHaUv/PW8T7CY/yjCgU94/WeLI/WUD7K3KRUPsFy
+	 mnbzuCPRV4AApjQDqckkknOBChKpp1EkNvGL0Aq0ZzsOSzE36adpWrt3RSmS3vGiU/
+	 QKP5+BcXA4YVYeHxt+XLAz+9by01dWPCXiS/oEeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/109] x86/sgx: Fix size overflows in sgx_encl_create()
+	Johan Hovold <johan@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.12 246/269] bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
 Date: Mon, 10 Mar 2025 18:06:39 +0100
-Message-ID: <20250310170429.759893441@linuxfoundation.org>
+Message-ID: <20250310170507.599028067@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 0d3e0dfd68fb9e6b0ec865be9f3377cc3ff55733 ]
+commit a321d163de3d8aa38a6449ab2becf4b1581aed96 upstream.
 
-The total size calculated for EPC can overflow u64 given the added up page
-for SECS.  Further, the total size calculated for shmem can overflow even
-when the EPC size stays within limits of u64, given that it adds the extra
-space for 128 byte PCMD structures (one for each page).
+There are multiple places from where the recovery work gets scheduled
+asynchronously. Also, there are multiple places where the caller waits
+synchronously for the recovery to be completed. One such place is during
+the PM shutdown() callback.
 
-Address this by pre-evaluating the micro-architectural requirement of
-SGX: the address space size must be power of two. This is eventually
-checked up by ECREATE but the pre-check has the additional benefit of
-making sure that there is some space for additional data.
+If the device is not alive during recovery_work, it will try to reset the
+device using pci_reset_function(). This function internally will take the
+device_lock() first before resetting the device. By this time, if the lock
+has already been acquired, then recovery_work will get stalled while
+waiting for the lock. And if the lock was already acquired by the caller
+which waits for the recovery_work to be completed, it will lead to
+deadlock.
 
-Fixes: 888d24911787 ("x86/sgx: Add SGX_IOC_ENCLAVE_CREATE")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20250305050006.43896-1-jarkko@kernel.org
+This is what happened on the X1E80100 CRD device when the device died
+before shutdown() callback. Driver core calls the driver's shutdown()
+callback while holding the device_lock() leading to deadlock.
 
-Closes: https://lore.kernel.org/linux-sgx/c87e01a0-e7dd-4749-a348-0980d3444f04@stanley.mountain/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And this deadlock scenario can occur on other paths as well, like during
+the PM suspend() callback, where the driver core would hold the
+device_lock() before calling driver's suspend() callback. And if the
+recovery_work was already started, it could lead to deadlock. This is also
+observed on the X1E80100 CRD.
+
+So to fix both issues, use pci_try_reset_function() in recovery_work. This
+function first checks for the availability of the device_lock() before
+trying to reset the device. If the lock is available, it will acquire it
+and reset the device. Otherwise, it will return -EAGAIN. If that happens,
+recovery_work will fail with the error message "Recovery failed" as not
+much could be done.
+
+Cc: stable@vger.kernel.org # 5.12
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
+Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Analyzed-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Link: https://lore.kernel.org/r/20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/sgx/ioctl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/bus/mhi/host/pci_generic.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-index da8b8ea6b063d..9634ac0fef1df 100644
---- a/arch/x86/kernel/cpu/sgx/ioctl.c
-+++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-@@ -64,6 +64,13 @@ static int sgx_encl_create(struct sgx_encl *encl, struct sgx_secs *secs)
- 	struct file *backing;
- 	long ret;
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -1040,8 +1040,9 @@ static void mhi_pci_recovery_work(struct
+ err_unprepare:
+ 	mhi_unprepare_after_power_down(mhi_cntrl);
+ err_try_reset:
+-	if (pci_reset_function(pdev))
+-		dev_err(&pdev->dev, "Recovery failed\n");
++	err = pci_try_reset_function(pdev);
++	if (err)
++		dev_err(&pdev->dev, "Recovery failed: %d\n", err);
+ }
  
-+	/*
-+	 * ECREATE would detect this too, but checking here also ensures
-+	 * that the 'encl_size' calculations below can never overflow.
-+	 */
-+	if (!is_power_of_2(secs->size))
-+		return -EINVAL;
-+
- 	va_page = sgx_encl_grow(encl, true);
- 	if (IS_ERR(va_page))
- 		return PTR_ERR(va_page);
--- 
-2.39.5
-
+ static void health_check(struct timer_list *t)
 
 
 
