@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-122646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F38A5A097
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:51:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC61A5A09C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60C93ABFBC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:51:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60DCA7A2E73
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2E4231A2A;
-	Mon, 10 Mar 2025 17:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3225231A3B;
+	Mon, 10 Mar 2025 17:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h74lW2Od"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO2QFtkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A4617CA12;
-	Mon, 10 Mar 2025 17:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8182717CA12;
+	Mon, 10 Mar 2025 17:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629092; cv=none; b=rRz6z2pacaArbeBKp2ZMHY3pXdbrxaYGTc24RTl715TUEJBJOuibx0KKayKZ5IPbeFN5UtQ7qQPfU0IxhqUsubl1M+hOENSX31YJmGR7aUPw6gR1D8i7Zxh7SQxr3S3JlfoqFNmG4LRnV19k+hnXfVreq08O+QEUKkos1oORO/c=
+	t=1741629106; cv=none; b=EPpEN513v/TOEvxZ4yyoJzOzszb8WCUylZQMB8yzEbaMx/4waDZcAHJwA4VR/6VwSLne1fG6Bm89kKfp/OosMFEdyhYX41aT7huxka5j/FUd6KTpqsS0qjke+WOBaqlEhTYjBIu9MxQ8DJ7/vL+jNfXWlFj9em5refXJGVLun60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629092; c=relaxed/simple;
-	bh=XSGDD9lmOq5dZIr2zye4Xs7kKOIA6b6erHy+IcHKa/M=;
+	s=arc-20240116; t=1741629106; c=relaxed/simple;
+	bh=wz1hBuQRlN6oyVKkYm/fCI0efCqOnThP34Gl2eFWMvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6xtLokvGmll5WHQiBreOr+6vANpj+BUxKjsxdfA0tToJdu4FN1Iho3pQUPAvJfNJGf1m7kUNRP7OvTDs2Cy0GsQ0R/Dt2vR67ugrpJv+G5mWdRXzlrucgc5rMW1gUOHEmpa/Hkh3c/13mr27EpYuJaHJP1QUNZRQL0rYL/B0co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h74lW2Od; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A58C4CEE5;
-	Mon, 10 Mar 2025 17:51:31 +0000 (UTC)
+	 MIME-Version; b=YZIGVImB/M4y+L777zCH8Iu4Q8gcdB/9vNqIleNda68Py9++ucvE+Uwdck7lIhfMvPiRtdK15JGczB7/BDC6dgrP+AIMdF6gMkycU+kH1gclBnXqU7M+whQuBQiboM/B57+puAiHLkpgiGpNNqR0JTu6pdKTd+QCa8Gohjg/w2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO2QFtkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B97C4CEE5;
+	Mon, 10 Mar 2025 17:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629092;
-	bh=XSGDD9lmOq5dZIr2zye4Xs7kKOIA6b6erHy+IcHKa/M=;
+	s=korg; t=1741629106;
+	bh=wz1hBuQRlN6oyVKkYm/fCI0efCqOnThP34Gl2eFWMvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h74lW2OdM2G5gTzCaiWzy+NGVdiHBd2mgxqwlax4CSbJqO21xmEYnXI7YRJCO/h1n
-	 eoaayrVjnX3iUdkreslal9OUooM++67h0DfCRYwClIzBWY88IdC9OHzCLhtuNJV0xP
-	 axLyVTXd9sjSybEOsdh0VHPUUm77sL5SAXHGR5Mc=
+	b=qO2QFtkqk3H0PEtWBGjC22ieRcPXhtB0bHQiw8x9ql09RGXnE7ol6CRATu5/QYo8f
+	 zJSQHztQwCCNoWGwyRQme0KACHSyPH79z6NlbmqXJfmD6rOpI1ooeL2c5JiIuC7uip
+	 2KEa8TctEziRcP0EGekK2+FRnsX9rNBAFBycurq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/620] mtd: hyperbus: hbmc-am654: fix an OF node reference leak
-Date: Mon, 10 Mar 2025 17:59:53 +0100
-Message-ID: <20250310170551.407716992@linuxfoundation.org>
+Subject: [PATCH 5.15 148/620] staging: media: imx: fix OF node leak in imx_media_add_of_subdevs()
+Date: Mon, 10 Mar 2025 17:59:54 +0100
+Message-ID: <20250310170551.445171185@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,78 +70,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit bf5821909eb9c7f5d07d5c6e852ead2c373c94a0 ]
+[ Upstream commit 094f5c315f756b19198e6c401aa821ac0e868750 ]
 
-In am654_hbmc_platform_driver, .remove() and the error path of .probe()
-do not decrement the refcount of an OF node obtained by
-  of_get_next_child(). Fix this by adding of_node_put() calls.
+imx_media_add_of_subdevs() calls of_parse_phandle() and passes the
+obtained node to imx_media_of_add_csi(). The passed node is used in
+v4l2_async_nf_add_fwnode(), which increments the refcount of the node.
+Therefore, while the current implementation only releases the node when
+imx_media_of_add_csi() fails, but should always release it. Call
+of_node_put() right after imx_media_of_add_csi().
 
-Fixes: aca31ce96814 ("mtd: hyperbus: hbmc-am654: Fix direct mapping setup flash access")
+Fixes: dee747f88167 ("media: imx: Don't register IPU subdevs/links if CSI port missing")
 Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/hyperbus/hbmc-am654.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/staging/media/imx/imx-media-of.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
-index dbe3eb361cca2..4b6cbee23fe89 100644
---- a/drivers/mtd/hyperbus/hbmc-am654.c
-+++ b/drivers/mtd/hyperbus/hbmc-am654.c
-@@ -174,26 +174,30 @@ static int am654_hbmc_probe(struct platform_device *pdev)
- 	priv->hbdev.np = of_get_next_child(np, NULL);
- 	ret = of_address_to_resource(priv->hbdev.np, 0, &res);
- 	if (ret)
--		return ret;
-+		goto put_node;
+diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
+index b677cf0e0c849..386ff38821e2f 100644
+--- a/drivers/staging/media/imx/imx-media-of.c
++++ b/drivers/staging/media/imx/imx-media-of.c
+@@ -55,22 +55,18 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
+ 			break;
  
- 	if (of_property_read_bool(dev->of_node, "mux-controls")) {
- 		struct mux_control *control = devm_mux_control_get(dev, NULL);
- 
--		if (IS_ERR(control))
--			return PTR_ERR(control);
-+		if (IS_ERR(control)) {
-+			ret = PTR_ERR(control);
-+			goto put_node;
-+		}
- 
- 		ret = mux_control_select(control, 1);
+ 		ret = imx_media_of_add_csi(imxmd, csi_np);
++		of_node_put(csi_np);
  		if (ret) {
- 			dev_err(dev, "Failed to select HBMC mux\n");
--			return ret;
-+			goto put_node;
+ 			/* unavailable or already added is not an error */
+ 			if (ret == -ENODEV || ret == -EEXIST) {
+-				of_node_put(csi_np);
+ 				continue;
+ 			}
+ 
+ 			/* other error, can't continue */
+-			goto err_out;
++			return ret;
  		}
- 		priv->mux_ctrl = control;
  	}
  
- 	priv->hbdev.map.size = resource_size(&res);
- 	priv->hbdev.map.virt = devm_ioremap_resource(dev, &res);
--	if (IS_ERR(priv->hbdev.map.virt))
--		return PTR_ERR(priv->hbdev.map.virt);
-+	if (IS_ERR(priv->hbdev.map.virt)) {
-+		ret = PTR_ERR(priv->hbdev.map.virt);
-+		goto disable_mux;
-+	}
- 
- 	priv->ctlr.dev = dev;
- 	priv->ctlr.ops = &am654_hbmc_ops;
-@@ -226,6 +230,8 @@ static int am654_hbmc_probe(struct platform_device *pdev)
- disable_mux:
- 	if (priv->mux_ctrl)
- 		mux_control_deselect(priv->mux_ctrl);
-+put_node:
-+	of_node_put(priv->hbdev.np);
- 	return ret;
+ 	return 0;
+-
+-err_out:
+-	of_node_put(csi_np);
+-	return ret;
  }
- 
-@@ -241,6 +247,7 @@ static void am654_hbmc_remove(struct platform_device *pdev)
- 
- 	if (dev_priv->rx_chan)
- 		dma_release_channel(dev_priv->rx_chan);
-+	of_node_put(priv->hbdev.np);
- }
- 
- static const struct of_device_id am654_hbmc_dt_ids[] = {
+ EXPORT_SYMBOL_GPL(imx_media_add_of_subdevs);
 -- 
 2.39.5
 
