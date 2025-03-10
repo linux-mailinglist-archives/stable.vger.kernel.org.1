@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-122431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50960A59F8D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B54D3A59E48
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0224188F80D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7CAB7A85AF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4D923236D;
-	Mon, 10 Mar 2025 17:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B2A22FF40;
+	Mon, 10 Mar 2025 17:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVroIhrg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzSO1wW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24809230BC5;
-	Mon, 10 Mar 2025 17:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EA722CBF1;
+	Mon, 10 Mar 2025 17:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628471; cv=none; b=FKcKdTx4sFQhIUL0bQT8/SsQhcrdZlDYR1VwOmLFSyGeGAAPVAG9G3B54JDTbpPtbM4YW/EqCGhcP7DOWvmNOfd/uA4HjDMdWlZPJC0L5zu6F0t+kCYPdZPiHmESRSkyvTwltycwJsCvmWnmcB9XhKXSWGsLUdcRuoA85f2JvRQ=
+	t=1741627772; cv=none; b=CoByChe4/02BXsTwsMy62pfRqozhtdgkxqdF+cgo/gOWnQ8UaqJ4wt4UbAcPpx1lo34md2HKYtn68QYkZgwWq6QEZmmCF2Vq5zHyIl3KiGuBYXb/xEoTIIzJzmrtkamynWrwr/JaTup5/80YoHonC+ObYwpd75ubWlyJ0TiEwBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628471; c=relaxed/simple;
-	bh=8hgQ5wC09AJSmtSamIDokwYQrGu5i22Nu9R7Zu/lcNU=;
+	s=arc-20240116; t=1741627772; c=relaxed/simple;
+	bh=xkmjvycN8455oS2TxFK7cZ7gl5QFt+XyQgwtZNoYTjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1qyfWxI7B6KuctsWZ2aUBO5HiwXiyLvzqY9BrXCQcpol3gcDEHJJGQoiCZBKxpuDKcVoplLlVueKdrzZfCAuS3KJ0ZDsQihd/IW219Y29CavBAqsMbY1csFsyyfKmcK3/Ds+2gJIYEmsiwwjp/jJz2ztOzGhCTPJ7nXdJcj3H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVroIhrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B03C4CEE5;
-	Mon, 10 Mar 2025 17:41:10 +0000 (UTC)
+	 MIME-Version; b=MbXnEbjO2yC8MrEdFBjti7HsDLqA+0N65/jOfAzclWlyCIJzor/YUSLzFZN+nMlH7u6xpY4gcGRJkPpSlC1MJ/Txoa7WxtnNd0sniC0SZVtCh424p8iu3ieZQx/Bveg02vsGSIHVuyi/uk7WfQAumJxhMWUKhkxaXCLCZbENe9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzSO1wW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20362C4CEE5;
+	Mon, 10 Mar 2025 17:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628471;
-	bh=8hgQ5wC09AJSmtSamIDokwYQrGu5i22Nu9R7Zu/lcNU=;
+	s=korg; t=1741627772;
+	bh=xkmjvycN8455oS2TxFK7cZ7gl5QFt+XyQgwtZNoYTjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVroIhrgAzhNfCphyrTpg2+3mav2isf7UDgvFzOh3spfNTHQ4fkfkcxxlWrgjIhhe
-	 HwkkGr2e0gIKp6rAE5/GbZRspP6L8RX1gJR0mYPkcEwSWFR+EpPA8uLmg/Pufl/jzI
-	 emrtPHMUjlc5DoHsnPP0ZLT3AC6o1L0gQb5bRJI8=
+	b=CzSO1wW9dPtTRS90T3BuPBCAhAFC0Gqr5qjsOkVKDY9HJ23w7QKHg9Q4EluW/+iu5
+	 apzWN+whxgzYl+2SCkl5B+FWQkv82gqT1MocL/I9I1A1FaUtVQ+OJrRGoZK66akWVS
+	 iZEMgZW26+y6S5m6q4JdBy8KCMzlpdfkveKg+C8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/109] net: hns3: make sure ptp clock is unregister and freed if hclge_ptp_get_cycle returns an error
+	stable <stable@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.12 243/269] char: misc: deallocate static minor in error path
 Date: Mon, 10 Mar 2025 18:06:36 +0100
-Message-ID: <20250310170429.636951378@linuxfoundation.org>
+Message-ID: <20250310170507.482853230@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit b7365eab39831487a84e63a9638209b68dc54008 ]
+commit 6d991f569c5ef6eaeadf1238df2c36e3975233ad upstream.
 
-During the initialization of ptp, hclge_ptp_get_cycle might return an error
-and returned directly without unregister clock and free it. To avoid that,
-call hclge_ptp_destroy_clock to unregist and free clock if
-hclge_ptp_get_cycle failed.
+When creating sysfs files fail, the allocated minor must be freed such that
+it can be later reused. That is specially harmful for static minor numbers,
+since those would always fail to register later on.
 
-Fixes: 8373cd38a888 ("net: hns3: change the method of obtaining default ptp cycle")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250228105258.1243461-1-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6d04d2b554b1 ("misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Link: https://lore.kernel.org/r/20250123123249.4081674-5-cascardo@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 2 +-
+ drivers/char/misc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-index 0f06f95b09bc2..4d4cea1f50157 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-@@ -496,7 +496,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 
- 		ret = hclge_ptp_get_cycle(hdev);
- 		if (ret)
--			return ret;
-+			goto out;
- 	}
- 
- 	ret = hclge_ptp_int_en(hdev, true);
--- 
-2.39.5
-
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -264,8 +264,8 @@ int misc_register(struct miscdevice *mis
+ 		device_create_with_groups(&misc_class, misc->parent, dev,
+ 					  misc, misc->groups, "%s", misc->name);
+ 	if (IS_ERR(misc->this_device)) {
++		misc_minor_free(misc->minor);
+ 		if (is_dynamic) {
+-			misc_minor_free(misc->minor);
+ 			misc->minor = MISC_DYNAMIC_MINOR;
+ 		}
+ 		err = PTR_ERR(misc->this_device);
 
 
 
