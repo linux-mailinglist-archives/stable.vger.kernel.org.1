@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78236A59D8A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7D8A5A192
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7279216F888
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E473A473D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AED22D799;
-	Mon, 10 Mar 2025 17:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BAA22B8A5;
+	Mon, 10 Mar 2025 18:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11LPjSnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSR7nd+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B83233136;
-	Mon, 10 Mar 2025 17:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848B51C4A24;
+	Mon, 10 Mar 2025 18:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627306; cv=none; b=Sr6W3Ua8a+yz0lpAcUl9pVAmItias1pV2WKyt8gC363hrMyiWHmJEGm0VYkMqH3O+jw7inicaMaRQZJYrZ78/B8uKlHORHxJkXqs+lgwsi2OWHQWRQ7/h5ORaqE8s6EgLraRPqJzIqg5hQH6ycsjCOmtDinVD7cXt1fWa0urr2A=
+	t=1741629753; cv=none; b=qOt/kUozbbr51XyvSxfMJoEJOB8YZv63iuWpVmGPi6CVMl7Mg2TT3fRht6/6yFbkvboGYL8o9AN95V0/n0WCqguCzBz2MlXhogcRnY1sNEMj1vUGuZri9mRRJOz9QSs0E1kAi/OHlFbACJPAyiq1dlltOURfqQPMqgHhma8pbBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627306; c=relaxed/simple;
-	bh=lN9Plcqy2M4KZnE9ZW6QQ9iaRS6Y+D6GlU6X91kDhaE=;
+	s=arc-20240116; t=1741629753; c=relaxed/simple;
+	bh=2T/S3LDjsr94lcEbq/7DH2xz0jSUL2bT2SaIRs2E/cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcywutNVDMKA06N6NTSwoQQHPGVxH0jmeV9JBZHyKipq4y13OpILGrYR/vPV3peVXHMP8vQCpPr9Z7D+XwOJgicKxmHJ/Q85fqE/hHnx9MKdl1rHAeeebyGvJ1k+rlhRIaAn2p71KorQVJV8bevqrPE3fnmgjBVu282SoJOznFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11LPjSnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37490C4CEED;
-	Mon, 10 Mar 2025 17:21:46 +0000 (UTC)
+	 MIME-Version; b=RUZFQUamrTYNaEdEYKaq9ccwNzJgyPHo56F14DnxPqEyGgDZ149XSb04kV3XscI3AzvJFJcqxEEVwwAueZ5FuoMidb8EZvKApL0khviOJ1ezTppYjbn2ZT3BfBXCEPhXBZ5hYKooPMeG3k6+r5tsDW7wxdt9xUvXSL0gvz7RZXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSR7nd+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AA7C4CEE5;
+	Mon, 10 Mar 2025 18:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627306;
-	bh=lN9Plcqy2M4KZnE9ZW6QQ9iaRS6Y+D6GlU6X91kDhaE=;
+	s=korg; t=1741629753;
+	bh=2T/S3LDjsr94lcEbq/7DH2xz0jSUL2bT2SaIRs2E/cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11LPjSnX0u1NWx9+SHYPfqaU6fyUFJV4g/iUAPhRfWtZiCpbiBFaY0NGgIeqrl8eq
-	 1ttrK9ZNu95LPyE332x8zxVMHScdVAS16WUVqb1IPf3ct7WRN2Lfj8AuxJuTR1Kj/D
-	 vXYO4pAaK+sf77ItXLtlCsH/LkRGfw/uryxYkUho=
+	b=gSR7nd+979Tg7KU21oBB1E8k3tTEfgU8+bkXPT5x/FOwj8ZRqPc+OZ7qbLKX02K3T
+	 MU7L1wLsLF0ENoHKD1mMjzt9h0G189210ymD9V6alr0ELUxJOfb2AUhhlWJYJ8HPEY
+	 mqZbSd5pEe08DjR6WFVQGeO071zUeGFT+cGRToLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erpeng Xu <xuerpeng@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 077/269] LoongArch: Use polling play_dead() when resuming from hibernation
+	Jann Horn <jannh@google.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 384/620] partitions: mac: fix handling of bogus partition table
 Date: Mon, 10 Mar 2025 18:03:50 +0100
-Message-ID: <20250310170500.794065489@linuxfoundation.org>
+Message-ID: <20250310170600.750537790@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jann Horn <jannh@google.com>
 
-commit c9117434c8f7523f0b77db4c5766f5011cc94677 upstream.
+commit 80e648042e512d5a767da251d44132553fe04ae0 upstream.
 
-When CONFIG_RANDOM_KMALLOC_CACHES or other randomization infrastructrue
-enabled, the idle_task's stack may different between the booting kernel
-and target kernel. So when resuming from hibernation, an ACTION_BOOT_CPU
-IPI wakeup the idle instruction in arch_cpu_idle_dead() and jump to the
-interrupt handler. But since the stack pointer is changed, the interrupt
-handler cannot restore correct context.
+Fix several issues in partition probing:
 
-So rename the current arch_cpu_idle_dead() to idle_play_dead(), make it
-as the default version of play_dead(), and the new arch_cpu_idle_dead()
-call play_dead() directly. For hibernation, implement an arch-specific
-hibernate_resume_nonboot_cpu_disable() to use the polling version (idle
-instruction is replace by nop, and irq is disabled) of play_dead(), i.e.
-poll_play_dead(), to avoid IPI handler corrupting the idle_task's stack
-when resuming from hibernation.
-
-This solution is a little similar to commit 406f992e4a372dafbe3c ("x86 /
-hibernate: Use hlt_play_dead() when resuming from hibernation").
+ - The bailout for a bad partoffset must use put_dev_sector(), since the
+   preceding read_part_sector() succeeded.
+ - If the partition table claims a silly sector size like 0xfff bytes
+   (which results in partition table entries straddling sector boundaries),
+   bail out instead of accessing out-of-bounds memory.
+ - We must not assume that the partition table contains proper NUL
+   termination - use strnlen() and strncmp() instead of strlen() and
+   strcmp().
 
 Cc: stable@vger.kernel.org
-Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
-Tested-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20250214-partition-mac-v1-1-c1c626dffbd5@google.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/smp.c |   47 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ block/partitions/mac.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -19,6 +19,7 @@
- #include <linux/smp.h>
- #include <linux/threads.h>
- #include <linux/export.h>
-+#include <linux/suspend.h>
- #include <linux/syscore_ops.h>
- #include <linux/time.h>
- #include <linux/tracepoint.h>
-@@ -423,7 +424,7 @@ void loongson_cpu_die(unsigned int cpu)
- 	mb();
- }
+--- a/block/partitions/mac.c
++++ b/block/partitions/mac.c
+@@ -51,13 +51,25 @@ int mac_partition(struct parsed_partitio
+ 	}
+ 	secsize = be16_to_cpu(md->block_size);
+ 	put_dev_sector(sect);
++
++	/*
++	 * If the "block size" is not a power of 2, things get weird - we might
++	 * end up with a partition straddling a sector boundary, so we wouldn't
++	 * be able to read a partition entry with read_part_sector().
++	 * Real block sizes are probably (?) powers of two, so just require
++	 * that.
++	 */
++	if (!is_power_of_2(secsize))
++		return -1;
+ 	datasize = round_down(secsize, 512);
+ 	data = read_part_sector(state, datasize / 512, &sect);
+ 	if (!data)
+ 		return -1;
+ 	partoffset = secsize % 512;
+-	if (partoffset + sizeof(*part) > datasize)
++	if (partoffset + sizeof(*part) > datasize) {
++		put_dev_sector(sect);
+ 		return -1;
++	}
+ 	part = (struct mac_partition *) (data + partoffset);
+ 	if (be16_to_cpu(part->signature) != MAC_PARTITION_MAGIC) {
+ 		put_dev_sector(sect);
+@@ -110,8 +122,8 @@ int mac_partition(struct parsed_partitio
+ 				int i, l;
  
--void __noreturn arch_cpu_idle_dead(void)
-+static void __noreturn idle_play_dead(void)
- {
- 	register uint64_t addr;
- 	register void (*init_fn)(void);
-@@ -447,6 +448,50 @@ void __noreturn arch_cpu_idle_dead(void)
- 	BUG();
- }
- 
-+#ifdef CONFIG_HIBERNATION
-+static void __noreturn poll_play_dead(void)
-+{
-+	register uint64_t addr;
-+	register void (*init_fn)(void);
-+
-+	idle_task_exit();
-+	__this_cpu_write(cpu_state, CPU_DEAD);
-+
-+	__smp_mb();
-+	do {
-+		__asm__ __volatile__("nop\n\t");
-+		addr = iocsr_read64(LOONGARCH_IOCSR_MBUF0);
-+	} while (addr == 0);
-+
-+	init_fn = (void *)TO_CACHE(addr);
-+	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
-+
-+	init_fn();
-+	BUG();
-+}
-+#endif
-+
-+static void (*play_dead)(void) = idle_play_dead;
-+
-+void __noreturn arch_cpu_idle_dead(void)
-+{
-+	play_dead();
-+	BUG(); /* play_dead() doesn't return */
-+}
-+
-+#ifdef CONFIG_HIBERNATION
-+int hibernate_resume_nonboot_cpu_disable(void)
-+{
-+	int ret;
-+
-+	play_dead = poll_play_dead;
-+	ret = suspend_disable_secondary_cpus();
-+	play_dead = idle_play_dead;
-+
-+	return ret;
-+}
-+#endif
-+
- #endif
- 
- /*
+ 				goodness++;
+-				l = strlen(part->name);
+-				if (strcmp(part->name, "/") == 0)
++				l = strnlen(part->name, sizeof(part->name));
++				if (strncmp(part->name, "/", sizeof(part->name)) == 0)
+ 					goodness++;
+ 				for (i = 0; i <= l - 4; ++i) {
+ 					if (strncasecmp(part->name + i, "root",
 
 
 
