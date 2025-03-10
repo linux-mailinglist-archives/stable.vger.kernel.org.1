@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514AAA59F16
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15F4A59F76
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4024E3A8F0B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69D2E7A287E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1D523026D;
-	Mon, 10 Mar 2025 17:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC426231CB0;
+	Mon, 10 Mar 2025 17:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2Z3wxfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afF1uY+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692C41DE89C;
-	Mon, 10 Mar 2025 17:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894CC230BC5;
+	Mon, 10 Mar 2025 17:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628118; cv=none; b=PXXoPUWG6NpHYG0LghBOjohtqxFQQ3YtRS7PNhNdf88cHzXkYIU96ctqnue8MKlZuktsn9FVoGbWO39SZT6jZCa/weQfnp7EUS0eJDVmWsyx4LuHb6SApQJfNOEOE4JiimG8Me5wjeTosJLB380NnyH2OuMHxYucD18RcnVa6x0=
+	t=1741628435; cv=none; b=j/P/N93NnoGqUNQ3s7bj3cy5jLgfelobZLbiHT23NWeJnnMiFq3pDT+hzL6zJxpFBrH37ic/vme64yYnFXTeHgREIxQfFLsAiQBb93HoaEQXd8FHKFJPjlTG1X5XCjdm8WeVbDNY8Q224VEHmgdgVm2bgZQ0Q4K3MFeRz+RCN7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628118; c=relaxed/simple;
-	bh=YvHVFuMMYHhbHMdneNJS7zha00RfUsO5f/tSMo/pSUM=;
+	s=arc-20240116; t=1741628435; c=relaxed/simple;
+	bh=MaPBEVHmNfAnix2IIa/zWYJMQIhbKgeFoY19/rpa0tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzoRglQZ300kjRxbq6V8Cbnb/qPOoyOnoTQpix6SxBHPBfkYhVwqxWuMCVsXxPEC37mRcooU9PzG011+8qQ1zQS59ifgC12RVkx30aqhBqkHwoN1mZc231nv4neEkfIFjfqMtAa9ldiGtYWvkQd+7sAhRqXpsZiP9VGDtve4M8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2Z3wxfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D06C4CEE5;
-	Mon, 10 Mar 2025 17:35:17 +0000 (UTC)
+	 MIME-Version; b=UpwJf+0VEdFHZ616F5sR4F7UhdOB/VTqlCu3aBEWpFO0qFz6BCiEVYHT6QVztuZFYg90Q43wPhk8tjRmub4tXMrrDYcQRVhAKu8da0hu+CEIXSd9qeha0RgWOd32XswhLUkQGzPsAlmdNTD6TuV0ammv6C24MxptkxT2YbPw3yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afF1uY+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC60C4CEE5;
+	Mon, 10 Mar 2025 17:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628118;
-	bh=YvHVFuMMYHhbHMdneNJS7zha00RfUsO5f/tSMo/pSUM=;
+	s=korg; t=1741628435;
+	bh=MaPBEVHmNfAnix2IIa/zWYJMQIhbKgeFoY19/rpa0tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2Z3wxfeirw6ya70FRz7CD+XuGvLrhLLKr2Wz2JFOwW5UK8o54aGr4NLrIyV0c0LN
-	 v8v7xNLLt/pFnUwVqlACP1gS5/SnkZd1cAF5UapaoxO7MBqCsZkutbi2HKOT8AbnuT
-	 Le6LOjAA0ahj9j3dGV1Whfo0ktKye7JowBDkoLUo=
+	b=afF1uY+B8axvd4JtNbhbrZmxEhyDWQhllJOn51lleo+hG4ut8hCD19ImJUPFWfG0P
+	 9g10I4erLswOv/z4MJsWlUq26t2pKaJGBTz8NKtP9I5mLQa1zoQK/sHVSCJurSPnER
+	 g/+h4F/e8mpQVYWsBWXaDqnZaMEnXk+ZFILvUwxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/145] perf/core: Fix pmus_lock vs. pmus_srcu ordering
+	Hoku Ishibe <me@hokuishi.be>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 016/109] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
 Date: Mon, 10 Mar 2025 18:06:00 +0100
-Message-ID: <20250310170437.414791689@linuxfoundation.org>
+Message-ID: <20250310170428.196885738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Hoku Ishibe <me@hokuishi.be>
 
-[ Upstream commit 2565e42539b120b81a68a58da961ce5d1e34eac8 ]
+commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
 
-Commit a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
-placed pmus_lock inside pmus_srcu, this makes perf_pmu_unregister()
-trip lockdep.
+Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
+persistent humming noise when the power_save mode is enabled.
+This issue occurs when the codec enters power saving mode,
+leading to unwanted noise from the speakers.
 
-Move the locking about such that only pmu_idr and pmus (list) are
-modified while holding pmus_lock. This avoids doing synchronize_srcu()
-while holding pmus_lock and all is well again.
+This patch adds the affected model (PCI ID 0x1028:0x0962) to the
+power_save denylist to ensure power_save is disabled by default,
+preventing power-off related noise issues.
 
-Fixes: a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20241104135517.679556858@infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Steps to Reproduce
+1. Boot the system with `snd_hda_intel` loaded.
+2. Verify that `power_save` mode is enabled:
+```sh
+cat /sys/module/snd_hda_intel/parameters/power_save
+````
+output: 10 (default power save timeout)
+3. Wait for the power save timeout
+4. Observe a persistent humming noise from the speakers
+5. Disable `power_save` manually:
+```sh
+echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+````
+6. Confirm that the noise disappears immediately.
+
+This issue has been observed on my system, and this patch
+successfully eliminates the unwanted noise. If other users
+experience similar issues, additional reports would be helpful.
+
+Signed-off-by: Hoku Ishibe <me@hokuishi.be>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4f6b18ecfdb21..4dd8936b5aa09 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11660,6 +11660,8 @@ void perf_pmu_unregister(struct pmu *pmu)
- {
- 	mutex_lock(&pmus_lock);
- 	list_del_rcu(&pmu->entry);
-+	idr_remove(&pmu_idr, pmu->type);
-+	mutex_unlock(&pmus_lock);
- 
- 	/*
- 	 * We dereference the pmu list under both SRCU and regular RCU, so
-@@ -11669,7 +11671,6 @@ void perf_pmu_unregister(struct pmu *pmu)
- 	synchronize_rcu();
- 
- 	free_percpu(pmu->pmu_disable_count);
--	idr_remove(&pmu_idr, pmu->type);
- 	if (pmu_bus_running && pmu->dev && pmu->dev != PMU_NULL_DEV) {
- 		if (pmu->nr_addr_filters)
- 			device_remove_file(pmu->dev, &dev_attr_nr_addr_filters);
-@@ -11677,7 +11678,6 @@ void perf_pmu_unregister(struct pmu *pmu)
- 		put_device(pmu->dev);
- 	}
- 	free_pmu_context(pmu);
--	mutex_unlock(&pmus_lock);
- }
- EXPORT_SYMBOL_GPL(perf_pmu_unregister);
- 
--- 
-2.39.5
-
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2217,6 +2217,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
+ 	/* KONTRON SinglePC may cause a stall at runtime resume */
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
++	/* Dell ALC3271 */
++	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
+ 	{}
+ };
+ #endif /* CONFIG_PM */
 
 
 
