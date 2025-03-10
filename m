@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E15A59ED4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67663A59D1B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94C6E1643FB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CBDA3A87ED
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7ED8230BED;
-	Mon, 10 Mar 2025 17:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2702B230BC3;
+	Mon, 10 Mar 2025 17:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naJN1jKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfuML2Gf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A637B1DE89C;
-	Mon, 10 Mar 2025 17:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D980A21E087;
+	Mon, 10 Mar 2025 17:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628095; cv=none; b=ZT+KLfCjPoXX72vpTMrcH+R+NWhOV9FkUH9eNkyQi+pwHSo+Ft/aMGKvF+u9DwG7kyTvIiWR1/RgyqLwThhEopvbhbNKxQZGJ2oFT92eIlseIwB9dAjcjobo3BK8jvHMUxX20TiBTj9yE3Z9ee3Q/hEAZg44m+SVXH9jYZeTE+E=
+	t=1741626997; cv=none; b=X5KGdowA7ocdi9j80bzPf6bqNCL1Rfk8oWB/AeIHKkhYOfNXf+MtOuWshugmQtBlGTU3G7MeTe41Qj+ZrGkoFUQ3nSBPI7YelVulx3L0hadgwmAmIOwtpb1gj7vhK2P9svloRdhxw3nR988ZXmcq+Z4muHw+apXW3KpUTDooXYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628095; c=relaxed/simple;
-	bh=vpYC7RKmtv8u9MFweLVT0immuap8sYtmsrgDlS7ElBc=;
+	s=arc-20240116; t=1741626997; c=relaxed/simple;
+	bh=uvu/ku6+mejnkkWhS4aiFc3FotPHFr43bva/IC5VaPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVh19MdYtrYsEnxoZDlzcjMLqocjg+bRQLz02HN3PgIALlhstaEWhcQ/qFjXz3poGsBhZXu7nZ9NEJJnkx20mUwBzLXth8Mg0OYfwBZMUDsT4ZopZsIvA0Qcmxst4NsxmJCvqs2cqglBaGqko8Bh0YEKRvt572uxrJi4kWwGRuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naJN1jKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D001C4CEE5;
-	Mon, 10 Mar 2025 17:34:55 +0000 (UTC)
+	 MIME-Version; b=oUs1P5j8SVaoFDm0dZTcUExowKi/IkMML4V6S3HpECTLL7Z1xj4LD5ebpHtuDjxYCmJLa0BGWTSss2myX25Cq1u2nUwYQBcMMcnli3jctw9foyEYyqGkUFrVqqu4+VrxX5dNWGdFlwPVDcmd6C9cnxlTOEJh8hmTd/y4Evv1yHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfuML2Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFECC4CEE5;
+	Mon, 10 Mar 2025 17:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628095;
-	bh=vpYC7RKmtv8u9MFweLVT0immuap8sYtmsrgDlS7ElBc=;
+	s=korg; t=1741626997;
+	bh=uvu/ku6+mejnkkWhS4aiFc3FotPHFr43bva/IC5VaPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=naJN1jKoVOuqW1ZpLVCO3WrheVLqfAo8v6Xrx9BtSWcBXUB3nRDAE6t7jpRo14ldD
-	 VeTYsN8l4ot8PFE0t1IXaotF/O/2hKE+FoDiDPpdEAgKdbEfw8kh+VUJtkbCT5Qddr
-	 S53B3WE5btbSRsLiRm9KJPaxCwnJF/5LNJEwVB5g=
+	b=qfuML2Gf4zyH3Ipi/8ePmdfqquP9Zbqf1z/EJGsWqFGcGVeUQeChSHiFvRwPHn2vy
+	 gZCDBon6f0tbcOxrOK8faY30TFNbLgY92k6NL73Mw9oGGDx1P2Qq+07YXHb7NkRqW5
+	 ZeS4Dbd2JZN9eD5is3vHqz0UISIpdHAqSw502pls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/145] net-timestamp: support TCP GSO case for a few missing flags
+	stable <stable@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.13 186/207] char: misc: deallocate static minor in error path
 Date: Mon, 10 Mar 2025 18:06:19 +0100
-Message-ID: <20250310170438.191133908@linuxfoundation.org>
+Message-ID: <20250310170455.178304627@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
+commit 6d991f569c5ef6eaeadf1238df2c36e3975233ad upstream.
 
-When I read through the TSO codes, I found out that we probably
-miss initializing the tx_flags of last seg when TSO is turned
-off, which means at the following points no more timestamp
-(for this last one) will be generated. There are three flags
-to be handled in this patch:
-1. SKBTX_HW_TSTAMP
-2. SKBTX_BPF
-3. SKBTX_SCHED_TSTAMP
-Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
-6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
-and only belongs to net-next branch material for now. The common
-issue of the above three flags can be fixed by this single patch.
+When creating sysfs files fail, the allocated minor must be freed such that
+it can be later reused. That is specially harmful for static minor numbers,
+since those would always fail to register later on.
 
-This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
-the UDP GSO does to make the newly segmented last skb inherit the
-tx_flags so that requested timestamp will be generated in each
-certain layer, or else that last one has zero value of tx_flags
-which leads to no timestamp at all.
-
-Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6d04d2b554b1 ("misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Link: https://lore.kernel.org/r/20250123123249.4081674-5-cascardo@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_offload.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/char/misc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index 69e6012ae82fb..f1f723579a490 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -13,12 +13,15 @@
- #include <net/tcp.h>
- #include <net/protocol.h>
- 
--static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
-+static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
- 			   unsigned int seq, unsigned int mss)
- {
-+	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
-+	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
-+
- 	while (skb) {
- 		if (before(ts_seq, seq + mss)) {
--			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
-+			skb_shinfo(skb)->tx_flags |= flags;
- 			skb_shinfo(skb)->tskey = ts_seq;
- 			return;
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -264,8 +264,8 @@ int misc_register(struct miscdevice *mis
+ 		device_create_with_groups(&misc_class, misc->parent, dev,
+ 					  misc, misc->groups, "%s", misc->name);
+ 	if (IS_ERR(misc->this_device)) {
++		misc_minor_free(misc->minor);
+ 		if (is_dynamic) {
+-			misc_minor_free(misc->minor);
+ 			misc->minor = MISC_DYNAMIC_MINOR;
  		}
-@@ -120,8 +123,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
- 	th = tcp_hdr(skb);
- 	seq = ntohl(th->seq);
- 
--	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
--		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
-+	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
-+		tcp_gso_tstamp(segs, gso_skb, seq, mss);
- 
- 	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
- 
--- 
-2.39.5
-
+ 		err = PTR_ERR(misc->this_device);
 
 
 
