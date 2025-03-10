@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-122105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8FCA59DF6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DBCA5A220
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 307B47A38ED
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE7E174CF7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496C1230BFC;
-	Mon, 10 Mar 2025 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33A12356CF;
+	Mon, 10 Mar 2025 18:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCrfTiRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwlVmV9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B331C5F1B;
-	Mon, 10 Mar 2025 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800D4233735;
+	Mon, 10 Mar 2025 18:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627541; cv=none; b=k0Be171LRJbOGAt70vttCFQzwvTA8gZhFkkdXzpXdRHD39OZ43f5ZmzdMVPaT9mvvwU11Hel9Km5C2bsKnkWIKdDAzrZI1otPFQZsHbbsd8Cb1823dRmbapkWMgk76kZYHHbszjFo7iwnHDen99hySd93Qv/6uq6ecEo45PYdUw=
+	t=1741630600; cv=none; b=uB/dxK6CkAo5yrfrAbOo+9JpzM8qJfF2FWBbe4kzNPbDR7VZ6iMotD2mFaMs3Md1RO6KPRXL70JlY80NViGroJXIv9yI0dG2V+L5NLn5rpvUdAkaESQrt4RY7hHlprbHnKgxCA3nPEnk3XtFTHKAazxO+odBo0DmxZ5MHjlXHvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627541; c=relaxed/simple;
-	bh=UtlB5nZ+R6xmX8CptkZs5jlnzouolKmsAJd7g+bcS3M=;
+	s=arc-20240116; t=1741630600; c=relaxed/simple;
+	bh=wo8aHhft/orC3KrvTRrrX8UgiXf+F8q5Vp/wfq6Sovk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTRC/isbzQUgxeVFl3Z6qh1xsn9rhs8kxIN2fAuQHEpkPxlxG/G3MPUTZkqKQsDhmytnNjSxh4U75KkWp2leVGpGzaG/oAPefq64dheqUiF7okhJoENPnHM0DChF8xHgrrANd87Gf7i2xFfp951aF13h3kPPLbCDzVThE34oN3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCrfTiRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798ACC4CEE5;
-	Mon, 10 Mar 2025 17:25:40 +0000 (UTC)
+	 MIME-Version; b=lwrK2LVR0cjMs5IWT0UcBmrdphJoGLHRd9WfdrNMGavObRpwBCxrKjBJyW6jhBcGcmGQ1Z6MWp15VBi1u4mDaVVLd47QpAgExgcEU/aVVyAlETAW7XXz9qA7d4ZcFVxXwEZTYEwf0TicSUqD14csLR+yrUz+IsWeqbfnHNXzSWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwlVmV9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0676DC4CEE5;
+	Mon, 10 Mar 2025 18:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627540;
-	bh=UtlB5nZ+R6xmX8CptkZs5jlnzouolKmsAJd7g+bcS3M=;
+	s=korg; t=1741630600;
+	bh=wo8aHhft/orC3KrvTRrrX8UgiXf+F8q5Vp/wfq6Sovk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCrfTiRfDDUXrxu9Oo2tobKR2VHQIoX2ymYi7RcEkR/KfCWXpLR/ThmsPfkfT3AuV
-	 ujSpTUibMFFZ1bTFp86MWBKnS0DEIKEngPuGCN4sGXk6K8SH4qXh70tH47NLxko0Iy
-	 QTdDGLZHBuxdpPR2tx8CfxaRUyey49HlRC4Ps3Ug=
+	b=EwlVmV9hP343Rt2tXvElKrgWvGkpnk6ZAP8y1+jwIt8MceHOAvF8dmRfyHT7sX9W3
+	 PToA1nyHFm9f1/SRg37VnpwtiY19Mwlo95BuTHIEsCwdWQ0FKFPea8Iu01e63f/vKE
+	 b3OrN3ryNN2u6FUta/o6nvtpCpQihnR1XWivIg/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	kuniyu@amazon.com,
+	ushankar@purestorage.com,
+	Eric Dumazet <edumazet@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/269] nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu()
+Subject: [PATCH 5.15 471/620] net: Add non-RCU dev_getbyhwaddr() helper
 Date: Mon, 10 Mar 2025 18:05:17 +0100
-Message-ID: <20250310170504.257163247@linuxfoundation.org>
+Message-ID: <20250310170604.170003770@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +65,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit ad95bab0cd28ed77c2c0d0b6e76e03e031391064 ]
+[ Upstream commit 4b5a28b38c4a0106c64416a1b2042405166b26ce ]
 
-nvme_tcp_recv_pdu() doesn't check the validity of the header length.
-When header digests are enabled, a target might send a packet with an
-invalid header length (e.g. 255), causing nvme_tcp_verify_hdgst()
-to access memory outside the allocated area and cause memory corruptions
-by overwriting it with the calculated digest.
+Add dedicated helper for finding devices by hardware address when
+holding rtnl_lock, similar to existing dev_getbyhwaddr_rcu(). This prevents
+PROVE_LOCKING warnings when rtnl_lock is held but RCU read lock is not.
 
-Fix this by rejecting packets with an unexpected header length.
+Extract common address comparison logic into dev_addr_cmp().
 
-Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+The context about this change could be found in the following
+discussion:
+
+Link: https://lore.kernel.org/all/20250206-scarlet-ermine-of-improvement-1fcac5@leitao/
+
+Cc: kuniyu@amazon.com
+Cc: ushankar@purestorage.com
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250218-arm_fix_selftest-v5-1-d3d6892db9e1@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4eae0ee0f1e6 ("arp: switch to dev_getbyhwaddr() in arp_req_set_public()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ include/linux/netdevice.h |  2 ++
+ net/core/dev.c            | 37 ++++++++++++++++++++++++++++++++++---
+ 2 files changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 749d464bef9f7..0bcc9bf57d1d0 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -217,6 +217,19 @@ static inline int nvme_tcp_queue_id(struct nvme_tcp_queue *queue)
- 	return queue - queue->ctrl->queues;
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 79b528c128c14..179c569a55c42 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2966,6 +2966,8 @@ static inline struct net_device *first_net_device_rcu(struct net *net)
  }
  
-+static inline bool nvme_tcp_recv_pdu_supported(enum nvme_tcp_pdu_type type)
+ int netdev_boot_setup_check(struct net_device *dev);
++struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
++				   const char *hwaddr);
+ struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
+ 				       const char *hwaddr);
+ struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 15ed4a79be46f..81f9fd0c5830a 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -972,6 +972,12 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
+ 	return ret;
+ }
+ 
++static bool dev_addr_cmp(struct net_device *dev, unsigned short type,
++			 const char *ha)
 +{
-+	switch (type) {
-+	case nvme_tcp_c2h_term:
-+	case nvme_tcp_c2h_data:
-+	case nvme_tcp_r2t:
-+	case nvme_tcp_rsp:
-+		return true;
-+	default:
-+		return false;
-+	}
++	return dev->type == type && !memcmp(dev->dev_addr, ha, dev->addr_len);
 +}
 +
- /*
-  * Check if the queue is TLS encrypted
-  */
-@@ -818,6 +831,16 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		return 0;
+ /**
+  *	dev_getbyhwaddr_rcu - find a device by its hardware address
+  *	@net: the applicable net namespace
+@@ -980,7 +986,7 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
+  *
+  *	Search for an interface by MAC address. Returns NULL if the device
+  *	is not found or a pointer to the device.
+- *	The caller must hold RCU or RTNL.
++ *	The caller must hold RCU.
+  *	The returned device has not had its ref count increased
+  *	and the caller must therefore be careful about locking
+  *
+@@ -992,14 +998,39 @@ struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
+ 	struct net_device *dev;
  
- 	hdr = queue->pdu;
-+	if (unlikely(hdr->hlen != sizeof(struct nvme_tcp_rsp_pdu))) {
-+		if (!nvme_tcp_recv_pdu_supported(hdr->type))
-+			goto unsupported_pdu;
-+
-+		dev_err(queue->ctrl->ctrl.device,
-+			"pdu type %d has unexpected header length (%d)\n",
-+			hdr->type, hdr->hlen);
-+		return -EPROTO;
-+	}
-+
- 	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
- 		/*
- 		 * C2HTermReq never includes Header or Data digests.
-@@ -850,10 +873,13 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		nvme_tcp_init_recv_ctx(queue);
- 		return nvme_tcp_handle_r2t(queue, (void *)queue->pdu);
- 	default:
--		dev_err(queue->ctrl->ctrl.device,
--			"unsupported pdu type (%d)\n", hdr->type);
--		return -EINVAL;
-+		goto unsupported_pdu;
- 	}
-+
-+unsupported_pdu:
-+	dev_err(queue->ctrl->ctrl.device,
-+		"unsupported pdu type (%d)\n", hdr->type);
-+	return -EINVAL;
+ 	for_each_netdev_rcu(net, dev)
+-		if (dev->type == type &&
+-		    !memcmp(dev->dev_addr, ha, dev->addr_len))
++		if (dev_addr_cmp(dev, type, ha))
+ 			return dev;
+ 
+ 	return NULL;
  }
+ EXPORT_SYMBOL(dev_getbyhwaddr_rcu);
  
- static inline void nvme_tcp_end_request(struct request *rq, u16 status)
++/**
++ * dev_getbyhwaddr() - find a device by its hardware address
++ * @net: the applicable net namespace
++ * @type: media type of device
++ * @ha: hardware address
++ *
++ * Similar to dev_getbyhwaddr_rcu(), but the owner needs to hold
++ * rtnl_lock.
++ *
++ * Context: rtnl_lock() must be held.
++ * Return: pointer to the net_device, or NULL if not found
++ */
++struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
++				   const char *ha)
++{
++	struct net_device *dev;
++
++	ASSERT_RTNL();
++	for_each_netdev(net, dev)
++		if (dev_addr_cmp(dev, type, ha))
++			return dev;
++
++	return NULL;
++}
++EXPORT_SYMBOL(dev_getbyhwaddr);
++
+ struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type)
+ {
+ 	struct net_device *dev, *ret = NULL;
 -- 
 2.39.5
 
