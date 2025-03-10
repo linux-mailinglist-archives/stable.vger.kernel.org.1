@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280F7A59D78
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22A9A5A16E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 665AA16F4BA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5018A7A7193
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC864230BF0;
-	Mon, 10 Mar 2025 17:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31BA22D4FD;
+	Mon, 10 Mar 2025 18:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gclCOwE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKTwMKuR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BC3230BD5;
-	Mon, 10 Mar 2025 17:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE3F17A2E8;
+	Mon, 10 Mar 2025 18:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627269; cv=none; b=PjxRMVV2MY3KU4CYt7VNOJeYBXx9nD+PWlCXRcw6rdZaVVrTi5Ze8hTmpZ8Eg9ovM0NtAjARwuLoP57Z9VglIUxM6gQmARCXiNsbgo1O+NPgXfRtY3nN4AkWroOwxpWBuZOQW9NCxUROPynROP2gXvy7Da1dWM7Kj16kqtA3XrI=
+	t=1741629652; cv=none; b=QE5um5KTtpJ/5lPukElO6pDxK2TG/FJSjfs+UhlIaAVw2wi+oStKk2ykpc1b1+hmSYTQSEB0SwC47RD1rp6gONBsFcmybE9LCoA73ChUYIO7F9kIQMNULV4v2tAhAT3gJe+x5loSG++yGiCaaabhKDyhDG6PsMvwMaaG1Q1LGvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627269; c=relaxed/simple;
-	bh=wU34VqXVSoarVmIkaPsPi5Razvjzu6zdHfByTKeWnF4=;
+	s=arc-20240116; t=1741629652; c=relaxed/simple;
+	bh=bd8uJWOCu4NySSRMf33j7vpGeVcquDS8cv5UHc9+hHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/O0kuYqt46u5QjSA+WVibUPZz4nO5kreEvw7wW6HysBtRnGxUh0e3AGgRUZBdnYu++Pvbzt00BJghjPPUyPTmuzLKNtVv4xAg10L7PiUWRhCcdH075P5FF6Bdr7M1kaCOA33wJmy7En9jO8kzkWV+5xXj+XRHtQF2PK85FTXY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gclCOwE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB933C4CEE5;
-	Mon, 10 Mar 2025 17:21:08 +0000 (UTC)
+	 MIME-Version; b=kGd21gdJitOU0gJd5LK4BI7+3RB21QHuja3VyCEG4ERthSTh3RNLxFRXWuTKp7DWqZlCfK3qZsrGaQGeWTwWVW2uL4f/xBu6aIkSYpyqUCZrny/JEJHYhi6yJeg7LZV029YYrYj5O08fQlDmXE+j0XSE0rl88iP7XHErKtX/kIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKTwMKuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E00C4CEE5;
+	Mon, 10 Mar 2025 18:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627269;
-	bh=wU34VqXVSoarVmIkaPsPi5Razvjzu6zdHfByTKeWnF4=;
+	s=korg; t=1741629652;
+	bh=bd8uJWOCu4NySSRMf33j7vpGeVcquDS8cv5UHc9+hHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gclCOwE7VZo+IDgB8NdaoEHJoiWxvpMk8fr65gpa7hCepeSbFm48faiDERFWF4px7
-	 TJPZwqPtQ79pgWlTxW3DNECidVEjgzF6v+m0poySCVmRI1CivDWc7s9KjqjzoAzXsr
-	 MfQqY4GpVcybmE+KfL+LEmUkPL+L4W9uxt++IIdE=
+	b=PKTwMKuRiBiZxhPtPkwA7XJOCm4hErBcMSTkxABGianqEK7KNrciBhuesI6tydfL9
+	 PSYzX+x8E71Me+yLR71muXROX0fDNLWr9hD6QgiiA/+VJpUGwVBFe4htsZKcXVJVtB
+	 9RpDaIP8idtQTvheutm0qc4q20pqu/ZR5kOoJkjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 044/269] rust: alloc: add `Box` to prelude
+	Ramesh Thomas <ramesh.thomas@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 351/620] vfio/pci: Enable iowrite64 and ioread64 for vfio pci
 Date: Mon, 10 Mar 2025 18:03:17 +0100
-Message-ID: <20250310170459.479412731@linuxfoundation.org>
+Message-ID: <20250310170559.464805967@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Ramesh Thomas <ramesh.thomas@intel.com>
 
-commit e1044c2238f54ae5bd902cac6d12e48835df418b upstream.
+[ Upstream commit 2b938e3db335e3670475e31a722c2bee34748c5a ]
 
-Now that we removed `BoxExt` and the corresponding includes in
-prelude.rs, add the new kernel `Box` type instead.
+Definitions of ioread64 and iowrite64 macros in asm/io.h called by vfio
+pci implementations are enclosed inside check for CONFIG_GENERIC_IOMAP.
+They don't get defined if CONFIG_GENERIC_IOMAP is defined. Include
+linux/io-64-nonatomic-lo-hi.h to define iowrite64 and ioread64 macros
+when they are not defined. io-64-nonatomic-lo-hi.h maps the macros to
+generic implementation in lib/iomap.c. The generic implementation does
+64 bit rw if readq/writeq is defined for the architecture, otherwise it
+would do 32 bit back to back rw.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-15-dakr@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that there are two versions of the generic implementation that
+differs in the order the 32 bit words are written if 64 bit support is
+not present. This is not the little/big endian ordering, which is
+handled separately. This patch uses the lo followed by hi word ordering
+which is consistent with current back to back implementation in the
+vfio/pci code.
+
+Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241210131938.303500-2-ramesh.thomas@intel.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/prelude.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vfio/pci/vfio_pci_rdwr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -14,7 +14,7 @@
- #[doc(no_inline)]
- pub use core::pin::Pin;
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index 82ac1569deb05..e45c15e210ffd 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -16,6 +16,7 @@
+ #include <linux/io.h>
+ #include <linux/vfio.h>
+ #include <linux/vgaarb.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
  
--pub use crate::alloc::{flags::*, vec_ext::VecExt, KBox, KVBox, VBox};
-+pub use crate::alloc::{flags::*, vec_ext::VecExt, Box, KBox, KVBox, VBox};
+ #include <linux/vfio_pci_core.h>
  
- #[doc(no_inline)]
- pub use alloc::vec::Vec;
+-- 
+2.39.5
+
 
 
 
