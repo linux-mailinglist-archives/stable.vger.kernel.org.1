@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-121800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0502BA59C5B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA255A59DF4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4308616E563
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A8F03A9B5E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD32A230BDF;
-	Mon, 10 Mar 2025 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256782356CA;
+	Mon, 10 Mar 2025 17:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOMJCMqY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZ2ipDmv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0AA232787;
-	Mon, 10 Mar 2025 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D85230BFC;
+	Mon, 10 Mar 2025 17:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626665; cv=none; b=P/HqPUaJXqHVX8/7q0M4YGmHUw7+haclTIl7KoelVlhtOATytz8RSylsMr4923jbf/6aaSjKr1Ds10TIXJNgi2HDYPebF42J3jEsmBH6P51HeAaAV3tUAuI5JtXAoNKMA2rRL8Udx4EQlq3AaEDrQ4FfwShaB4JjIGYee0ZAGsU=
+	t=1741627503; cv=none; b=B2azDJukeEGtciBNjtHpBmvNdB7qFOTsLjp8ZxY2G8YTM5ATEDCOz3RrOC0jc2F4Atzt5nRBZ00W9t5oSetuuXQJw7DPvqR+HY1dumERIkPAv2usVksO34M5ne6+6bJwUyJA0jLbhJJw3l7oBOL0jwyYUHxbjv8eqpmp5gx8KQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626665; c=relaxed/simple;
-	bh=Nz1c/u0QpDr2Vb1fVHFsJeOkvn164i+7dznHDhMOgwM=;
+	s=arc-20240116; t=1741627503; c=relaxed/simple;
+	bh=wmQ1Gt539lqV67lPDip5h3vDEdyhjLQiHWCpUvC6rJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVdieQSDmPPcTFLrfyka5KJyivE88PvsNWW19V8D+zBrGQJqASa9ztwcla5q1JjW78mECaRIkvV1Z0qmGVx1eUHhszXWtTJQCP62PGGaGYn7dssxxqvtBi+IjUcvYoWkxK1whG5Sg0ApAunwASuX/sWG23PZg1WaClFSXkftCqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOMJCMqY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA49DC4CEEB;
-	Mon, 10 Mar 2025 17:11:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XiiMEMlnH+i98rewsDbUyqM+QePIMeAHGgP8xE8mpOHEyJwukkAqQQXKvdnTui9SxvKut5jdtKKD+FYpI4E1Aspk0ynB8r+0tLaOBDvwKc03GKQ3u+BEgPFO7e8oXqHOBwEPtQHhMuxzxu5tFHuepVeJNPbDkXSIbff9VfeIcSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZ2ipDmv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63124C4CEE5;
+	Mon, 10 Mar 2025 17:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626665;
-	bh=Nz1c/u0QpDr2Vb1fVHFsJeOkvn164i+7dznHDhMOgwM=;
+	s=korg; t=1741627503;
+	bh=wmQ1Gt539lqV67lPDip5h3vDEdyhjLQiHWCpUvC6rJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOMJCMqYZgKQiqirr46wjfyi8yhx+4KLe9AHGKWBgJGGLPFayg147s0a8R+lGxtbT
-	 jLJy/Y3J1CHYW7jpRfl1ZpRGI1znSxmBsoB+wp70+6NlGPJyY9Q3snCtdm0bEv1eRU
-	 ZL8SxAAeD9h3ZpLr87KFKvpqUvFE+UJIdN9dvEW4=
+	b=uZ2ipDmvT1cxyQzzmtQ+ExeyL6VU4MHN2UK3D0WUxv/y2NNOFiE/jMMFad9n54gvz
+	 pVaU70IukQqW1WflJv1oSQ+/NetO8TnHfp7fY8yrCqiq5ZZXtvxc3F9oCFh7/zFWfD
+	 FEii0Lddk/uxCOCNo5DEhDPmaZ9noXnriQOySUlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.13 069/207] s390/traps: Fix test_monitor_call() inline assembly
-Date: Mon, 10 Mar 2025 18:04:22 +0100
-Message-ID: <20250310170450.507869263@linuxfoundation.org>
+	Oak Zeng <oak.zeng@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Matthew Brost <MatthewBrostmatthew.brost@intel.com>
+Subject: [PATCH 6.12 110/269] drm/xe/hmm: Style- and include fixes
+Date: Mon, 10 Mar 2025 18:04:23 +0100
+Message-ID: <20250310170502.099043129@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit 5623bc23a1cb9f9a9470fa73b3a20321dc4c4870 upstream.
+commit e3e2e7fc4cd8414c9a966ef1b344db543f8614f4 upstream.
 
-The test_monitor_call() inline assembly uses the xgr instruction, which
-also modifies the condition code, to clear a register. However the clobber
-list of the inline assembly does not specify that the condition code is
-modified, which may lead to incorrect code generation.
+Add proper #ifndef around the xe_hmm.h header, proper spacing
+and since the documentation mostly follows kerneldoc format,
+make it kerneldoc. Also prepare for upcoming -stable fixes.
 
-Use the lhi instruction instead to clear the register without that the
-condition code is modified. Furthermore this limits clearing to the lower
-32 bits of val, since its type is int.
-
-Fixes: 17248ea03674 ("s390: fix __EMIT_BUG() macro")
-Cc: stable@vger.kernel.org
-Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
+Cc: Oak Zeng <oak.zeng@intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: Matthew Brost <Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250304173342.22009-2-thomas.hellstrom@linux.intel.com
+(cherry picked from commit bbe2b06b55bc061c8fcec034ed26e88287f39143)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/traps.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_hmm.c | 9 +++------
+ drivers/gpu/drm/xe/xe_hmm.h | 5 +++++
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/s390/kernel/traps.c
-+++ b/arch/s390/kernel/traps.c
-@@ -285,10 +285,10 @@ static void __init test_monitor_call(voi
- 		return;
- 	asm volatile(
- 		"	mc	0,0\n"
--		"0:	xgr	%0,%0\n"
-+		"0:	lhi	%[val],0\n"
- 		"1:\n"
--		EX_TABLE(0b,1b)
--		: "+d" (val));
-+		EX_TABLE(0b, 1b)
-+		: [val] "+d" (val));
- 	if (!val)
- 		panic("Monitor call doesn't work!\n");
+diff --git a/drivers/gpu/drm/xe/xe_hmm.c b/drivers/gpu/drm/xe/xe_hmm.c
+index 2e4ae61567d8..6ddcf88d8a39 100644
+--- a/drivers/gpu/drm/xe/xe_hmm.c
++++ b/drivers/gpu/drm/xe/xe_hmm.c
+@@ -19,11 +19,10 @@ static u64 xe_npages_in_range(unsigned long start, unsigned long end)
+ 	return (end - start) >> PAGE_SHIFT;
  }
+ 
+-/*
++/**
+  * xe_mark_range_accessed() - mark a range is accessed, so core mm
+  * have such information for memory eviction or write back to
+  * hard disk
+- *
+  * @range: the range to mark
+  * @write: if write to this range, we mark pages in this range
+  * as dirty
+@@ -43,11 +42,10 @@ static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+ 	}
+ }
+ 
+-/*
++/**
+  * xe_build_sg() - build a scatter gather table for all the physical pages/pfn
+  * in a hmm_range. dma-map pages if necessary. dma-address is save in sg table
+  * and will be used to program GPU page table later.
+- *
+  * @xe: the xe device who will access the dma-address in sg table
+  * @range: the hmm range that we build the sg table from. range->hmm_pfns[]
+  * has the pfn numbers of pages that back up this hmm address range.
+@@ -112,9 +110,8 @@ static int xe_build_sg(struct xe_device *xe, struct hmm_range *range,
+ 	return ret;
+ }
+ 
+-/*
++/**
+  * xe_hmm_userptr_free_sg() - Free the scatter gather table of userptr
+- *
+  * @uvma: the userptr vma which hold the scatter gather table
+  *
+  * With function xe_userptr_populate_range, we allocate storage of
+diff --git a/drivers/gpu/drm/xe/xe_hmm.h b/drivers/gpu/drm/xe/xe_hmm.h
+index 909dc2bdcd97..9602cb7d976d 100644
+--- a/drivers/gpu/drm/xe/xe_hmm.h
++++ b/drivers/gpu/drm/xe/xe_hmm.h
+@@ -3,9 +3,14 @@
+  * Copyright © 2024 Intel Corporation
+  */
+ 
++#ifndef _XE_HMM_H_
++#define _XE_HMM_H_
++
+ #include <linux/types.h>
+ 
+ struct xe_userptr_vma;
+ 
+ int xe_hmm_userptr_populate_range(struct xe_userptr_vma *uvma, bool is_mm_mmap_locked);
++
+ void xe_hmm_userptr_free_sg(struct xe_userptr_vma *uvma);
++#endif
+-- 
+2.48.1
+
 
 
 
