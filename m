@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-121959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64920A59D46
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2D9A5A140
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06F3A3A6B38
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA1A9168DA9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65FE2309B6;
-	Mon, 10 Mar 2025 17:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04475227EA0;
+	Mon, 10 Mar 2025 17:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7vPXaEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNxaFy3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6080E17C225;
-	Mon, 10 Mar 2025 17:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A7222ACDC;
+	Mon, 10 Mar 2025 17:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627125; cv=none; b=Tcs8GkwRIg1D2+Yf06qP+rNycdQP5ht8ujMm1u5WGEFAFZ6qsa9hOvsSpWSRLoE6aDJ0igYKRaVuAVun3yBtpRKpR8kIeUKW5Ot4Xk7IWN9CklP6L6SkS8VwvtUQ/WfnXDf63bvmFjMZJZvIyt4V1/tNswHQY4NpVizYuNFaepI=
+	t=1741629536; cv=none; b=s/0ZYdAP+iCRIhEdHeIChTPjRkMsL/QT0ZyUUdjQtkjksYUL2ZKsXiaQlT3y3RJWkb2Q7zuczqQBTqRnSZZvoILLZPJhCeGQD4vHZ1FweXAEA/pUsOIEK/gioMc8Jf3agWZCWQZwrrCz3liL5y0wuEVDqtUrGJDyqjedKcEv/1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627125; c=relaxed/simple;
-	bh=gMC8zxHhylH1oAqJChWuodSqVrxslUVHG8LtSLA8L4o=;
+	s=arc-20240116; t=1741629536; c=relaxed/simple;
+	bh=JW5vbDVrarkuSkIlLysiHVhvpzMhu1NTarycRa/xSuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQL6F+6evpQXt3WdOI1dLduUOS4NmKNqBFqELh+0QlxAFNFyalrLwJdA8KACjy+aFH9+RmHTD13Ha21uX3o8JswUyfVxX7fVx5dFHhJ8YM2SUQDV3u7PDfaGPUdKzfS5axSJRiEFf+ZybDFDiSQ4Em44s2sxVyxJLkIDwiTplwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7vPXaEH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741FFC4CEE5;
-	Mon, 10 Mar 2025 17:18:44 +0000 (UTC)
+	 MIME-Version; b=XOg5Rz6FosrNCg2bs1QNqtL4TEdOqk7fnQ53dZm+w0vbp2/mnnw2h6IP103uuBThxt1DPzBidejmXLW8OFnqGXouKv7gzkzuHlHHytbISllU3g4L9l7+2IEXt4ZQ9VAdWOh7UvRIMi1s6F3DDkx6S5EB7wbFNq1hzKEzpiPWMJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNxaFy3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7C1C4CEEE;
+	Mon, 10 Mar 2025 17:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627124;
-	bh=gMC8zxHhylH1oAqJChWuodSqVrxslUVHG8LtSLA8L4o=;
+	s=korg; t=1741629536;
+	bh=JW5vbDVrarkuSkIlLysiHVhvpzMhu1NTarycRa/xSuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7vPXaEHiEVqKif2+f3KS5vFE6EYiaROhCkfY2Ev3kFNkCLi9kI8QUsZjgl8HFan6
-	 zDvjD5B3OvnUyNsw4XxRFYvtUkCcMTr2doQcwF1IdYzhISn+Rr4mi33ws7tftEv67T
-	 vi3wEe7K3RFUvpeAJco/oC3AlBZewgFFJyoo5VYM=
+	b=uNxaFy3LogNKSn3J3fXtyFus/oC1KW9Asyqc5YWpipaRjo3+dcNuE4/OBoB6v+McH
+	 6UVA/BSd1Sv6+xLMf61TGmoDvMDanOBafV3M5YefogKCN3yb5R8vgjObZj9QkdVtEn
+	 6jX2tMVleVfDVpnIOXVklYiS7V+mh3FsD3RmUnT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 022/269] rust: introduce `.clippy.toml`
+	Paul Fertser <fercerpav@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 329/620] net/ncsi: use dev_set_mac_address() for Get MC MAC Address handling
 Date: Mon, 10 Mar 2025 18:02:55 +0100
-Message-ID: <20250310170458.594728659@linuxfoundation.org>
+Message-ID: <20250310170558.591765655@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Paul Fertser <fercerpav@gmail.com>
 
-commit 7d56786edcbdf58b6367fd7f01d5861214ad1c95 upstream.
+commit 05d91cdb1f9108426b14975ef4eeddf15875ca05 upstream.
 
-Some Clippy lints can be configured/tweaked. We will use these knobs to
-our advantage in later commits.
+Copy of the rationale from 790071347a0a1a89e618eedcd51c687ea783aeb3:
 
-This is done via a configuration file, `.clippy.toml` [1]. The file is
-currently unstable. This may be a problem in the future, but we can adapt
-as needed. In addition, we proposed adding Clippy to the Rust CI's RFL
-job [2], so we should be able to catch issues pre-merge.
+Change ndo_set_mac_address to dev_set_mac_address because
+dev_set_mac_address provides a way to notify network layer about MAC
+change. In other case, services may not aware about MAC change and keep
+using old one which set from network adapter driver.
 
-Thus introduce the file.
+As example, DHCP client from systemd do not update MAC address without
+notification from net subsystem which leads to the problem with acquiring
+the right address from DHCP server.
 
-Link: https://doc.rust-lang.org/clippy/configuration.html [1]
-Link: https://github.com/rust-lang/rust/pull/128928 [2]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Tested-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240904204347.168520-12-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Since dev_set_mac_address requires RTNL lock the operation can not be
+performed directly in the response handler, see
+9e2bbab94b88295dcc57c7580393c9ee08d7314d.
+
+The way of selecting the first suitable MAC address from the list is
+changed, instead of having the driver check it this patch just assumes
+any valid MAC should be good.
+
+Fixes: b8291cf3d118 ("net/ncsi: Add NC-SI 1.2 Get MC MAC Address command")
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .clippy.toml |    1 +
- .gitignore   |    1 +
- MAINTAINERS  |    1 +
- Makefile     |    3 +++
- 4 files changed, 6 insertions(+)
- create mode 100644 .clippy.toml
+ net/ncsi/ncsi-rsp.c |   18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
---- /dev/null
-+++ b/.clippy.toml
-@@ -0,0 +1 @@
-+# SPDX-License-Identifier: GPL-2.0
---- a/.gitignore
-+++ b/.gitignore
-@@ -103,6 +103,7 @@ modules.order
- # We don't want to ignore the following even if they are dot-files
- #
- !.clang-format
-+!.clippy.toml
- !.cocciconfig
- !.editorconfig
- !.get_maintainer.ignore
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20175,6 +20175,7 @@ B:	https://github.com/Rust-for-Linux/lin
- C:	zulip://rust-for-linux.zulipchat.com
- P:	https://rust-for-linux.com/contributing
- T:	git https://github.com/Rust-for-Linux/linux.git rust-next
-+F:	.clippy.toml
- F:	Documentation/rust/
- F:	rust/
- F:	samples/rust/
---- a/Makefile
-+++ b/Makefile
-@@ -588,6 +588,9 @@ endif
- # Allows the usage of unstable features in stable compilers.
- export RUSTC_BOOTSTRAP := 1
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -1089,14 +1089,12 @@ static int ncsi_rsp_handler_netlink(stru
+ static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
+ {
+ 	struct ncsi_dev_priv *ndp = nr->ndp;
++	struct sockaddr *saddr = &ndp->pending_mac;
+ 	struct net_device *ndev = ndp->ndev.dev;
+ 	struct ncsi_rsp_gmcma_pkt *rsp;
+-	struct sockaddr saddr;
+-	int ret = -1;
+ 	int i;
  
-+# Allows finding `.clippy.toml` in out-of-srctree builds.
-+export CLIPPY_CONF_DIR := $(srctree)
-+
- export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
- export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN
- export HOSTRUSTC KBUILD_HOSTRUSTFLAGS
+ 	rsp = (struct ncsi_rsp_gmcma_pkt *)skb_network_header(nr->rsp);
+-	saddr.sa_family = ndev->type;
+ 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+ 
+ 	netdev_info(ndev, "NCSI: Received %d provisioned MAC addresses\n",
+@@ -1108,20 +1106,20 @@ static int ncsi_rsp_handler_gmcma(struct
+ 			    rsp->addresses[i][4], rsp->addresses[i][5]);
+ 	}
+ 
++	saddr->sa_family = ndev->type;
+ 	for (i = 0; i < rsp->address_count; i++) {
+-		memcpy(saddr.sa_data, &rsp->addresses[i], ETH_ALEN);
+-		ret = ndev->netdev_ops->ndo_set_mac_address(ndev, &saddr);
+-		if (ret < 0) {
++		if (!is_valid_ether_addr(rsp->addresses[i])) {
+ 			netdev_warn(ndev, "NCSI: Unable to assign %pM to device\n",
+-				    saddr.sa_data);
++				    rsp->addresses[i]);
+ 			continue;
+ 		}
+-		netdev_warn(ndev, "NCSI: Set MAC address to %pM\n", saddr.sa_data);
++		memcpy(saddr->sa_data, rsp->addresses[i], ETH_ALEN);
++		netdev_warn(ndev, "NCSI: Will set MAC address to %pM\n", saddr->sa_data);
+ 		break;
+ 	}
+ 
+-	ndp->gma_flag = ret == 0;
+-	return ret;
++	ndp->gma_flag = 1;
++	return 0;
+ }
+ 
+ static struct ncsi_rsp_handler {
 
 
 
