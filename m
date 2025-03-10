@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-122479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23872A59FCC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DEAA59FBD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 117311714F7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEEB13A521C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5981F2309B3;
-	Mon, 10 Mar 2025 17:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658C322D4C3;
+	Mon, 10 Mar 2025 17:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8B3FiCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUa36ccb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163C022B8A9;
-	Mon, 10 Mar 2025 17:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2247222DFB1;
+	Mon, 10 Mar 2025 17:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628610; cv=none; b=P7z2THAqa4aczgsX9dlYysE8nxu4hz9qnl7RdeB1Rl7EInJY6OBx7oTbmVASu+OKudyIvEqLyIRECUmmYd+M8djaKHRPuVrd90lCAmoFw6CPIlEKovrIINcAjBzVlwW+IP+e5LgRy9AqX+YgsJZ10HHXbZ4iR7d9C9Y4D7HoNsU=
+	t=1741628541; cv=none; b=PnSvKAlfoNxWxk/85HBCoHLSprB6RxqtBbdSStZXTsNKM7OLP2I4RrhCaXzyoOCAq6LvG51+0Wkf6toANbEUvdCDrbAteRTHlzfS1SJv5bOaDldT5QDDTUp3nxacxlpIqLnCHSevZhHLCsi07U0mR5kit/b46DCTTdd/H2xNRsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628610; c=relaxed/simple;
-	bh=PSvdKAj037Y5qlfLRROj1jObZIy9yAORWBCa/Dcrxos=;
+	s=arc-20240116; t=1741628541; c=relaxed/simple;
+	bh=RoGrguD4LEcWs611ktCH2bFqQC+I14oVZ74DdNpI0V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYyt9S9LGRDuPL/rNw6fMVx9SadYnHn0syyQ5ZVdnA5MSGe85W7IcJ0UqMzIzKvlViUw9XxoEp82HJ/MKXD7vZFGcFx9tGJdHNaa02xmdQz3o6n04j2b467aq/a0Ez8sqz75FtWFVO5mgtckk66n3UQYXxK/XycaXG2Ppm3NxFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8B3FiCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C53C4CEEC;
-	Mon, 10 Mar 2025 17:43:29 +0000 (UTC)
+	 MIME-Version; b=Hk0qInGZbOiCEuANhMW/QjI7dBSlXcJtW75/FR8cdOV4i24jyPDf7KE4aIQSwFqyFNOU3RSruQOg8nEL3IHwkm6sCbKK0ZEgr0x2F+XQL3tv2U3yS/XThMuzxSKlW2UN05tJdxjsCM1pto9rUzKDJ3x3K2YRDMp8eRWPT2omomo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUa36ccb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4373BC4CEE5;
+	Mon, 10 Mar 2025 17:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628610;
-	bh=PSvdKAj037Y5qlfLRROj1jObZIy9yAORWBCa/Dcrxos=;
+	s=korg; t=1741628540;
+	bh=RoGrguD4LEcWs611ktCH2bFqQC+I14oVZ74DdNpI0V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b8B3FiCs0ffbDGSbqMEf/Dm98/R/N4RgecMogGHYSMiAu7QkV/h7Rh5vbllw+cUjQ
-	 d4PLNJIore3L+N/uiS0CrDJgUj+yzP+fNtvvpgh86duv9IaXonMwU1/t2gqWbreFyW
-	 3HI6Auwwp383iNWdCfYq8zlDmNy3VEjWAMv/JEgA=
+	b=DUa36ccbHv1oBHKzHzAObQ19TiOBkhAz5Rh3IhgB5bfzn2TGdYQoKCLOvd7SOucld
+	 er86ubi5E0Wwn4+zvx5kLan02ZZ/hIcOAbUdbLx8xCNoAe1JRt5KR47wkfsyKv49hF
+	 vIV85TS1Tha8Q3g48tKOfKT4sDrg662WmQmqClZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Visweswara Tanuku <quic_vtanuku@quicinc.com>
-Subject: [PATCH 6.1 085/109] slimbus: messaging: Free transaction ID in delayed interrupt scenario
-Date: Mon, 10 Mar 2025 18:07:09 +0100
-Message-ID: <20250310170430.944585305@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.1 086/109] bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
+Date: Mon, 10 Mar 2025 18:07:10 +0100
+Message-ID: <20250310170430.983555680@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
 References: <20250310170427.529761261@linuxfoundation.org>
@@ -65,56 +67,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Visweswara Tanuku <quic_vtanuku@quicinc.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit dcb0d43ba8eb9517e70b1a0e4b0ae0ab657a0e5a upstream.
+commit a321d163de3d8aa38a6449ab2becf4b1581aed96 upstream.
 
-In case of interrupt delay for any reason, slim_do_transfer()
-returns timeout error but the transaction ID (TID) is not freed.
-This results into invalid memory access inside
-qcom_slim_ngd_rx_msgq_cb() due to invalid TID.
+There are multiple places from where the recovery work gets scheduled
+asynchronously. Also, there are multiple places where the caller waits
+synchronously for the recovery to be completed. One such place is during
+the PM shutdown() callback.
 
-Fix the issue by freeing the TID in slim_do_transfer() before
-returning timeout error to avoid invalid memory access.
+If the device is not alive during recovery_work, it will try to reset the
+device using pci_reset_function(). This function internally will take the
+device_lock() first before resetting the device. By this time, if the lock
+has already been acquired, then recovery_work will get stalled while
+waiting for the lock. And if the lock was already acquired by the caller
+which waits for the recovery_work to be completed, it will lead to
+deadlock.
 
-Call trace:
-__memcpy_fromio+0x20/0x190
-qcom_slim_ngd_rx_msgq_cb+0x130/0x290 [slim_qcom_ngd_ctrl]
-vchan_complete+0x2a0/0x4a0
-tasklet_action_common+0x274/0x700
-tasklet_action+0x28/0x3c
-_stext+0x188/0x620
-run_ksoftirqd+0x34/0x74
-smpboot_thread_fn+0x1d8/0x464
-kthread+0x178/0x238
-ret_from_fork+0x10/0x20
-Code: aa0003e8 91000429 f100044a 3940002b (3800150b)
----[ end trace 0fe00bec2b975c99 ]---
-Kernel panic - not syncing: Oops: Fatal exception in interrupt.
+This is what happened on the X1E80100 CRD device when the device died
+before shutdown() callback. Driver core calls the driver's shutdown()
+callback while holding the device_lock() leading to deadlock.
 
-Fixes: afbdcc7c384b ("slimbus: Add messaging APIs to slimbus framework")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Visweswara Tanuku <quic_vtanuku@quicinc.com>
-Link: https://lore.kernel.org/r/20250124125740.16897-1-quic_vtanuku@quicinc.com
+And this deadlock scenario can occur on other paths as well, like during
+the PM suspend() callback, where the driver core would hold the
+device_lock() before calling driver's suspend() callback. And if the
+recovery_work was already started, it could lead to deadlock. This is also
+observed on the X1E80100 CRD.
+
+So to fix both issues, use pci_try_reset_function() in recovery_work. This
+function first checks for the availability of the device_lock() before
+trying to reset the device. If the lock is available, it will acquire it
+and reset the device. Otherwise, it will return -EAGAIN. If that happens,
+recovery_work will fail with the error message "Recovery failed" as not
+much could be done.
+
+Cc: stable@vger.kernel.org # 5.12
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
+Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Analyzed-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Link: https://lore.kernel.org/r/20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/messaging.c |    5 +++--
+ drivers/bus/mhi/host/pci_generic.c |    5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/slimbus/messaging.c
-+++ b/drivers/slimbus/messaging.c
-@@ -147,8 +147,9 @@ int slim_do_transfer(struct slim_control
- 	}
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -824,8 +824,9 @@ static void mhi_pci_recovery_work(struct
+ err_unprepare:
+ 	mhi_unprepare_after_power_down(mhi_cntrl);
+ err_try_reset:
+-	if (pci_reset_function(pdev))
+-		dev_err(&pdev->dev, "Recovery failed\n");
++	err = pci_try_reset_function(pdev);
++	if (err)
++		dev_err(&pdev->dev, "Recovery failed: %d\n", err);
+ }
  
- 	ret = ctrl->xfer_msg(ctrl, txn);
--
--	if (!ret && need_tid && !txn->msg->comp) {
-+	if (ret == -ETIMEDOUT) {
-+		slim_free_txn_tid(ctrl, txn);
-+	} else if (!ret && need_tid && !txn->msg->comp) {
- 		unsigned long ms = txn->rl + HZ;
- 
- 		timeout = wait_for_completion_timeout(txn->comp,
+ static void health_check(struct timer_list *t)
 
 
 
