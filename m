@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C035A59E0D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7949CA59CB1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BB3517031B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A07016EF1F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B255A234984;
-	Mon, 10 Mar 2025 17:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7B7230BEC;
+	Mon, 10 Mar 2025 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/joFH7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1HFp/7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA18234970;
-	Mon, 10 Mar 2025 17:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B6230BE3;
+	Mon, 10 Mar 2025 17:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627590; cv=none; b=eNBuq3qg6mXOykCyjT9wVCB0sSu4R8Fa2FqdK+dWISfozrDhSIXg8iVCKaHv6RrozCXq1kAsTJhaBO218BVBh/PwruOkl4TmBZv1SRhX0fyf7hfvvTfxbfPBPOMMgwiLGLU7hvCxAT/h1UYvdO7Ni/JF/Qo38qe5+lZ6TrqWR/8=
+	t=1741626871; cv=none; b=SbScUUAwzTz1wBnIa68ksBybYfDS3Xnkq5WcmG4HJZX6EBpGJX9pyOQ8IA3F1qLTfjbqEGpOKWJeEf8STovdQ9qcraox1yyPVXkh6sLwesk146enKMsaoYgvRoAYN8glG5auXyQjP5e/03cQ7FOlC4ysQ1A5YeHQKbAwdY9DyiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627590; c=relaxed/simple;
-	bh=bCaGCj6MjvVfdxaMLs3QiqPQxl13RhRLkZURA9xyovQ=;
+	s=arc-20240116; t=1741626871; c=relaxed/simple;
+	bh=k3gvsyVbioMkiEECDAIV1VaDzmKXrnDgtuL9JmG10nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRvHF6sPfj7THRzLQaDX5FkqnNE3FLjE+djGVN+2Pfz1t3dmTRgNscYW2OaR0gdm9FpxjPkQ1OHkXuwou5KIdZlPZYysZ6EEyzS5IZ96pi2ST49a4wOeRfV3c57TSVWQYeqxVtped+uSjXHKAFMw5mJMZZ6PK2niv3CPpIFAHUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/joFH7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BE8C4CEEC;
-	Mon, 10 Mar 2025 17:26:29 +0000 (UTC)
+	 MIME-Version; b=h0yveDEblnchRN251uOjWOLcg6lsHHpsH9M5+BLVIvhFNsQfWdFHfhc5Tpowl1FQYWmG6Co2N/NqPYVNVtULM2SwmEFgmr9W6a3kOO44vv6o2azr9kUfMAy9FEZ8tMIGgUMOn6pDBKhUAcZPPIdxBYZuZBlnODN5FSEkLGG/mBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1HFp/7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DFFC4CEE5;
+	Mon, 10 Mar 2025 17:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627590;
-	bh=bCaGCj6MjvVfdxaMLs3QiqPQxl13RhRLkZURA9xyovQ=;
+	s=korg; t=1741626870;
+	bh=k3gvsyVbioMkiEECDAIV1VaDzmKXrnDgtuL9JmG10nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/joFH7Y3tWNz9mHbXchGBNZL9zM49yFDqBmuhhw07npIT3xmlCuUpnLqQ4GU0iML
-	 D7ziM+V+Ff3bjjnsv3qnz3CP4iSKqYEIDCpGsf007HcHMMRpbritkXw00UiqmVcDkR
-	 RGd8uiteFVe8p3NMoW/BiWJoqtTVV8Km1Nrq/lws=
+	b=Y1HFp/7bTrqG1leSVXdAvKI0xINeSd4y5aWgA72vZsrPgChAZXBOA8Nb3k/EhLWUT
+	 ENyrDMxrajcXIjHNukaA84o6cqIuG0XvCi+37BZugW+K7o0r5eBs+kPsHrFpG76Esy
+	 8fe0vcyBqma7ewjRD/oTY1XFDocW1/CwomajkOGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Stapelberg <michael@stapelberg.ch>,
-	Kees Cook <kees@kernel.org>,
+	Meir Elisha <meir.elisha@volumez.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 149/269] coredump: Only sort VMAs when core_sort_vma sysctl is set
+Subject: [PATCH 6.13 109/207] nvmet-tcp: Fix a possible sporadic response drops in weakly ordered arch
 Date: Mon, 10 Mar 2025 18:05:02 +0100
-Message-ID: <20250310170503.656244583@linuxfoundation.org>
+Message-ID: <20250310170452.090395786@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Meir Elisha <meir.elisha@volumez.com>
 
-[ Upstream commit 39ec9eaaa165d297d008d1fa385748430bd18e4d ]
+[ Upstream commit a16f88964c647103dad7743a484b216d488a6352 ]
 
-The sorting of VMAs by size in commit 7d442a33bfe8 ("binfmt_elf: Dump
-smaller VMAs first in ELF cores") breaks elfutils[1]. Instead, sort
-based on the setting of the new sysctl, core_sort_vma, which defaults
-to 0, no sorting.
+The order in which queue->cmd and rcv_state are updated is crucial.
+If these assignments are reordered by the compiler, the worker might not
+get queued in nvmet_tcp_queue_response(), hanging the IO. to enforce the
+the correct reordering, set rcv_state using smp_store_release().
 
-Reported-by: Michael Stapelberg <michael@stapelberg.ch>
-Closes: https://lore.kernel.org/all/20250218085407.61126-1-michael@stapelberg.de/ [1]
-Fixes: 7d442a33bfe8 ("binfmt_elf: Dump smaller VMAs first in ELF cores")
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: bdaf13279192 ("nvmet-tcp: fix a segmentation fault during io parsing error")
+
+Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/sysctl/kernel.rst | 11 +++++++++++
- fs/coredump.c                               | 15 +++++++++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ drivers/nvme/target/tcp.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
-index f8bc1630eba05..fa21cdd610b21 100644
---- a/Documentation/admin-guide/sysctl/kernel.rst
-+++ b/Documentation/admin-guide/sysctl/kernel.rst
-@@ -212,6 +212,17 @@ pid>/``).
- This value defaults to 0.
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 7c51c2a8c109a..4f9cac8a5abe0 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -571,10 +571,16 @@ static void nvmet_tcp_queue_response(struct nvmet_req *req)
+ 	struct nvmet_tcp_cmd *cmd =
+ 		container_of(req, struct nvmet_tcp_cmd, req);
+ 	struct nvmet_tcp_queue	*queue = cmd->queue;
++	enum nvmet_tcp_recv_state queue_state;
++	struct nvmet_tcp_cmd *queue_cmd;
+ 	struct nvme_sgl_desc *sgl;
+ 	u32 len;
  
- 
-+core_sort_vma
-+=============
+-	if (unlikely(cmd == queue->cmd)) {
++	/* Pairs with store_release in nvmet_prepare_receive_pdu() */
++	queue_state = smp_load_acquire(&queue->rcv_state);
++	queue_cmd = READ_ONCE(queue->cmd);
 +
-+The default coredump writes VMAs in address order. By setting
-+``core_sort_vma`` to 1, VMAs will be written from smallest size
-+to largest size. This is known to break at least elfutils, but
-+can be handy when dealing with very large (and truncated)
-+coredumps where the more useful debugging details are included
-+in the smaller VMAs.
-+
-+
- core_uses_pid
- =============
++	if (unlikely(cmd == queue_cmd)) {
+ 		sgl = &cmd->req.cmd->common.dptr.sgl;
+ 		len = le32_to_cpu(sgl->length);
  
-diff --git a/fs/coredump.c b/fs/coredump.c
-index 45737b43dda5c..2b8c36c9660c5 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -63,6 +63,7 @@ static void free_vma_snapshot(struct coredump_params *cprm);
- 
- static int core_uses_pid;
- static unsigned int core_pipe_limit;
-+static unsigned int core_sort_vma;
- static char core_pattern[CORENAME_MAX_SIZE] = "core";
- static int core_name_size = CORENAME_MAX_SIZE;
- unsigned int core_file_note_size_limit = CORE_FILE_NOTE_SIZE_DEFAULT;
-@@ -1025,6 +1026,15 @@ static struct ctl_table coredump_sysctls[] = {
- 		.extra1		= (unsigned int *)&core_file_note_size_min,
- 		.extra2		= (unsigned int *)&core_file_note_size_max,
- 	},
-+	{
-+		.procname	= "core_sort_vma",
-+		.data		= &core_sort_vma,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_douintvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_ONE,
-+	},
- };
- 
- static int __init init_fs_coredump_sysctls(void)
-@@ -1255,8 +1265,9 @@ static bool dump_vma_snapshot(struct coredump_params *cprm)
- 		cprm->vma_data_size += m->dump_size;
- 	}
- 
--	sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
--		cmp_vma_size, NULL);
-+	if (core_sort_vma)
-+		sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
-+		     cmp_vma_size, NULL);
- 
- 	return true;
+@@ -583,7 +589,7 @@ static void nvmet_tcp_queue_response(struct nvmet_req *req)
+ 		 * Avoid using helpers, this might happen before
+ 		 * nvmet_req_init is completed.
+ 		 */
+-		if (queue->rcv_state == NVMET_TCP_RECV_PDU &&
++		if (queue_state == NVMET_TCP_RECV_PDU &&
+ 		    len && len <= cmd->req.port->inline_data_size &&
+ 		    nvme_is_write(cmd->req.cmd))
+ 			return;
+@@ -847,8 +853,9 @@ static void nvmet_prepare_receive_pdu(struct nvmet_tcp_queue *queue)
+ {
+ 	queue->offset = 0;
+ 	queue->left = sizeof(struct nvme_tcp_hdr);
+-	queue->cmd = NULL;
+-	queue->rcv_state = NVMET_TCP_RECV_PDU;
++	WRITE_ONCE(queue->cmd, NULL);
++	/* Ensure rcv_state is visible only after queue->cmd is set */
++	smp_store_release(&queue->rcv_state, NVMET_TCP_RECV_PDU);
  }
+ 
+ static void nvmet_tcp_free_crypto(struct nvmet_tcp_queue *queue)
 -- 
 2.39.5
 
