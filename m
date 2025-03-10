@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-122926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBD5A5A209
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AE7A59DD5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA7F41893114
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D38A18872BF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8AF2356DE;
-	Mon, 10 Mar 2025 18:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C902356AD;
+	Mon, 10 Mar 2025 17:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYDGsobS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1L18rjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC7623535D;
-	Mon, 10 Mar 2025 18:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C7B231A24;
+	Mon, 10 Mar 2025 17:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630540; cv=none; b=XjfN1fIbxhRr1xl+isbzfYYU3SmNfgLZPyQ9Gj34F9PK4rC3mhezVpWnD0u4AUOlKiIz+nq2ZIsC9pckvWlEJqa5buBkOShydcWG8MsewT7UXSoKIBvAzoSb2M0zKFygJ58TUFYq/caufOwsm+P9TBi2p94PV7I2e2p8MfHha4w=
+	t=1741627478; cv=none; b=beN7X6Edd8t07CwAi0znmxkM0jgVSiYiSwI8Y4u90q556+NHIhVJLMpztANgF08pFdNVtjeWA8PIDazyZOwzx/bTNiAhLndgoTUYH1kssGW0SJzSF3nPnUaOgPqBfvSA4PvayqiG2pR4rvptwX+aOx6z1edh6ZYpf/OIXPP4v+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630540; c=relaxed/simple;
-	bh=N2xFR1EjNhEEmrqB+4G06evZyATe01NxpJrtqU/Wn+k=;
+	s=arc-20240116; t=1741627478; c=relaxed/simple;
+	bh=5t9EZmJdNdL/IDkHgVxDAdN/KmZxzuJZYISNw2ZFF+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxnL7IEnS/WJTT5PSsywTPCaD6r7+8H/uzsj6yDbLXaHduafgJyPo2ONasyZmdpoWmt6+hjbQjuBw4vJuFCc78CxkLhyAU1WgF/xwtFVEBOog0q/ipzET9qbYxM8aXs/ekMOIFA6PLJ3rbVhNB8rfB77efHXE65CxxRySupjTRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYDGsobS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764AAC4CEE5;
-	Mon, 10 Mar 2025 18:15:39 +0000 (UTC)
+	 MIME-Version; b=IoR00QWMWVIEMUPbLihS2211ZD906hyTRtZI5/FBr1eVnA85enDvwAYfx9zUzaLk7gDmYoqoK4igdVp7XvATlLrHYzNnNw6QGOJl3P+/4Cg/SjA2vyTICTVpsvsWphkjeW/+ots+nb4Ebbiq025xuYH8Y4jqZpYZ5mr4n9leLZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1L18rjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8CCC4CEE5;
+	Mon, 10 Mar 2025 17:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630539;
-	bh=N2xFR1EjNhEEmrqB+4G06evZyATe01NxpJrtqU/Wn+k=;
+	s=korg; t=1741627477;
+	bh=5t9EZmJdNdL/IDkHgVxDAdN/KmZxzuJZYISNw2ZFF+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYDGsobS8f2XbJ1bOV+ky5anRyFPiyVelIGhxO+fg5egAmwlcFd2sGKfSwRqssssB
-	 hcY8AZ6efysuFzwUrhthOyurtRmVxd+rvRWiB6BWtXOBi20u/opZq1AhBJpi4FCUJ0
-	 PdCQOK5IsF1BflNt9gYy47JaHI5ypcoS5vbw42KI=
+	b=U1L18rjG8GsV2MLe7H9D46E9apUkIm9e1cXpohLzQWJqpE/cu1VECwN1jp1wReMN9
+	 RlnuQZDGuGWpziXMySzRf/kmGJnCn2ERq230fW0jph13GRNDJjO412QIzplXHCvogj
+	 AZ0gRF+MiuZssmkR/k3VMShypIQqBEY8mTFbHfD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christoph Lameter <cl@linux.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 448/620] kfence: skip __GFP_THISNODE allocations on NUMA systems
+Subject: [PATCH 6.12 141/269] wifi: iwlwifi: mvm: clean up ROC on failure
 Date: Mon, 10 Mar 2025 18:04:54 +0100
-Message-ID: <20250310170603.279306136@linuxfoundation.org>
+Message-ID: <20250310170503.338875547@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit e64f81946adf68cd75e2207dd9a51668348a4af8 ]
+[ Upstream commit f9751163bffd3fe60794929829f810968c6de73d ]
 
-On NUMA systems, __GFP_THISNODE indicates that an allocation _must_ be on
-a particular node, and failure to allocate on the desired node will result
-in a failed allocation.
+If the firmware fails to start the session protection, then we
+do call iwl_mvm_roc_finished() here, but that won't do anything
+at all because IWL_MVM_STATUS_ROC_P2P_RUNNING was never set.
+Set IWL_MVM_STATUS_ROC_P2P_RUNNING in the failure/stop path.
+If it started successfully before, it's already set, so that
+doesn't matter, and if it didn't start it needs to be set to
+clean up.
 
-Skip __GFP_THISNODE allocations if we are running on a NUMA system, since
-KFENCE can't guarantee which node its pool pages are allocated on.
+Not doing so will lead to a WARN_ON() later on a fresh remain-
+on-channel, since the link is already active when activated as
+it was never deactivated.
 
-Link: https://lkml.kernel.org/r/20250124120145.410066-1-elver@google.com
-Fixes: 236e9f153852 ("kfence: skip all GFP_ZONEMASK allocations")
-Signed-off-by: Marco Elver <elver@google.com>
-Reported-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Chistoph Lameter <cl@linux.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 35c1bbd93c4e ("wifi: iwlwifi: mvm: remove IWL_MVM_STATUS_NEED_FLUSH_P2P")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.0fe36c291068.I67f5dac742170dd937f11e4d4f937f45f71b7cb4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kfence/core.c | 2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/time-event.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 0d1a66811c32b..c49bc76b3a389 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -21,6 +21,7 @@
- #include <linux/log2.h>
- #include <linux/memblock.h>
- #include <linux/moduleparam.h>
-+#include <linux/nodemask.h>
- #include <linux/notifier.h>
- #include <linux/panic_notifier.h>
- #include <linux/random.h>
-@@ -906,6 +907,7 @@ void *__kfence_alloc(struct kmem_cache *s, size_t size, gfp_t flags)
- 	 * properties (e.g. reside in DMAable memory).
- 	 */
- 	if ((flags & GFP_ZONEMASK) ||
-+	    ((flags & __GFP_THISNODE) && num_online_nodes() > 1) ||
- 	    (s->flags & (SLAB_CACHE_DMA | SLAB_CACHE_DMA32))) {
- 		atomic_long_inc(&counters[KFENCE_COUNTER_SKIP_INCOMPAT]);
- 		return NULL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index 72fa7ac86516c..17b8ccc275693 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -1030,6 +1030,8 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
+ 		/* End TE, notify mac80211 */
+ 		mvmvif->time_event_data.id = SESSION_PROTECT_CONF_MAX_ID;
+ 		mvmvif->time_event_data.link_id = -1;
++		/* set the bit so the ROC cleanup will actually clean up */
++		set_bit(IWL_MVM_STATUS_ROC_P2P_RUNNING, &mvm->status);
+ 		iwl_mvm_roc_finished(mvm);
+ 		ieee80211_remain_on_channel_expired(mvm->hw);
+ 	} else if (le32_to_cpu(notif->start)) {
 -- 
 2.39.5
 
