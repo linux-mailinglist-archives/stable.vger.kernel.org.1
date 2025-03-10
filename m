@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6FCCA59EBD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD239A59F6C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFBB1647DD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C17263AC25F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0EC23026D;
-	Mon, 10 Mar 2025 17:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782F822D7A6;
+	Mon, 10 Mar 2025 17:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7UUtSYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyA1bedg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC47230BED;
-	Mon, 10 Mar 2025 17:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326CA2253FE;
+	Mon, 10 Mar 2025 17:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628022; cv=none; b=LEUryDxNA+BHQqlCuTpXb2n7xgMUFhGBTLbsDxUTzZr+M4XsnLRQRIsFS4Xym+MJnyBhdJs7MJPErzLBzkrDOwkwUEtMps1aYMEp9w5iywAYOWSHEs8LeRS9x/mbhh8GPOg7JOHHz87nB+0st/SfKhFhc8EQ7OssmFy0EimCK0g=
+	t=1741628335; cv=none; b=qD5zp954IZ4PMB4CJuzSWh3+ggWi7oMkz909siGtY3ewfd3O73P/wq8Z3kKYpuOODk4g3Y5iawQA6/kVftj1EW9uGVB0y4DZjNiyyti28U50d00WPT0a/Tm8qOBkYG7XftUMWOoYnSZZTQMaf2sFaVvA4h1+ENnEKMqdqfXdJW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628022; c=relaxed/simple;
-	bh=QqGkch5w4x199tVWu4Sju9C2w+vEocE7OF67GKO6NVo=;
+	s=arc-20240116; t=1741628335; c=relaxed/simple;
+	bh=F1ytBQ8Uq2ScJF+3uhNyM33YO/rcLKR1FvD8kQYsyYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFi5pntWgnR18A3J1vxyodDm6Bt/O+PVgJdVXqY10sEoep7MJ1wzQIjfCMEd2wEP73Clye08UMwxwJhW+BZ05dHDX+Ls9JrNH9Srbgp8odxS0s368J7oP6Iv8k8CIFVHtni6AL0knZ05Wszp0bN5/yvgZ+dEqfCvRVxwQuzd/28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7UUtSYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B584CC4CEE5;
-	Mon, 10 Mar 2025 17:33:41 +0000 (UTC)
+	 MIME-Version; b=VEX9oWt/osq5h0X7Oi3NrJ/L0cviAMVOYg+Eu83i0QML0hrMdMCUQAJIXFbSCQLycoThJZ0VBQitZ5ctWNqCPJVWn9OTGbGdqGb11u9BZmmIJ+o09615KL80JJAT0ERDcLMJKRhBB1nWbola/0GNgP3uT98v5bIlKIoBENq9rA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyA1bedg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871DDC4CEE5;
+	Mon, 10 Mar 2025 17:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628022;
-	bh=QqGkch5w4x199tVWu4Sju9C2w+vEocE7OF67GKO6NVo=;
+	s=korg; t=1741628334;
+	bh=F1ytBQ8Uq2ScJF+3uhNyM33YO/rcLKR1FvD8kQYsyYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7UUtSYoRsx5sHazAryDCOQns4P7CXWAwwEZMoRggHxAEmcgnmv4iGlAnAJR+9zzb
-	 xxp2IAZYB6pD3GLwoFFUbltyPyYgW8ZNStBhvrZlO6SSxbCjSW+TKu6WS/Q8jlIsaF
-	 laYsfMdxnPokqWvLS6MaZ9W3A9BhX+o9w+dayhtE=
+	b=IyA1bedg4/XHpYx1Q+Vw0JBRRjPnm1qGnOe7Incm/8ogWkelkmUy1OuW8ZmZrR9ia
+	 1oA0eShcgYJiaQDHC/nPHfsckC6f2Z4uAPwWoXadS3R1ofz64mMYszehhre23v2FOY
+	 M3RtaMtFkiJbCWw/kiJUKJYlNhzRro0wLEYSvjGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/145] wifi: iwlwifi: limit printed string from FW file
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 009/109] LoongArch: Convert unreachable() to BUG()
 Date: Mon, 10 Mar 2025 18:05:53 +0100
-Message-ID: <20250310170437.127784982@linuxfoundation.org>
+Message-ID: <20250310170427.920763068@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
+commit da64a2359092ceec4f9dea5b329d0aef20104217 upstream.
 
-There's no guarantee here that the file is always with a
-NUL-termination, so reading the string may read beyond the
-end of the TLV. If that's the last TLV in the file, it can
-perhaps even read beyond the end of the file buffer.
+When compiling on LoongArch, there exists the following objtool warning
+in arch/loongarch/kernel/machine_kexec.o:
 
-Fix that by limiting the print format to the size of the
-buffer we have.
+  kexec_reboot() falls through to next function crash_shutdown_secondary()
 
-Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid using unreachable() as it can (and will in the absence of UBSAN)
+generate fall-through code. Use BUG() so we get a "break BRK_BUG" trap
+(with unreachable annotation).
+
+Cc: stable@vger.kernel.org  # 6.12+
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kernel/machine_kexec.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 47bea1855e8c8..42f7f95dac225 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1200,7 +1200,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -126,14 +126,14 @@ void kexec_reboot(void)
+ 	/* All secondary cpus go to kexec_smp_wait */
+ 	if (smp_processor_id() > 0) {
+ 		relocated_kexec_smp_wait(NULL);
+-		unreachable();
++		BUG();
+ 	}
+ #endif
  
- 			if (tlv_len != sizeof(*fseq_ver))
- 				goto invalid_tlv_len;
--			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
-+			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
- 				 fseq_ver->version);
- 			}
- 			break;
--- 
-2.39.5
-
+ 	do_kexec = (void *)reboot_code_buffer;
+ 	do_kexec(efi_boot, cmdline_ptr, systable_ptr, start_addr, first_ind_entry);
+ 
+-	unreachable();
++	BUG();
+ }
+ 
+ 
 
 
 
