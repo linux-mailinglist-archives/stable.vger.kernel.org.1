@@ -1,82 +1,60 @@
-Return-Path: <stable+bounces-121832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD382A59C88
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBD5A5A209
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30648188CF90
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA7F41893114
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030F1232792;
-	Mon, 10 Mar 2025 17:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8AF2356DE;
+	Mon, 10 Mar 2025 18:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1k2pXHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYDGsobS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10C5231A42;
-	Mon, 10 Mar 2025 17:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC7623535D;
+	Mon, 10 Mar 2025 18:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626758; cv=none; b=j3HIRLXRFWhcSQ+yQoaU4CM/h/sbQbS7mdiZiAjtsllracVKUeivYT4xS5sOWcIfEFMCYbJ5ONznP1qcvKf5hUMnZRKM/9kj6qlNcwBjC+EQjkVr1bVbGZndMp8PkWxtqcTq5atYYL1c8Qodb83bU4VDH8uFFgVUh0WYAwDc59Y=
+	t=1741630540; cv=none; b=XjfN1fIbxhRr1xl+isbzfYYU3SmNfgLZPyQ9Gj34F9PK4rC3mhezVpWnD0u4AUOlKiIz+nq2ZIsC9pckvWlEJqa5buBkOShydcWG8MsewT7UXSoKIBvAzoSb2M0zKFygJ58TUFYq/caufOwsm+P9TBi2p94PV7I2e2p8MfHha4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626758; c=relaxed/simple;
-	bh=oDfEwi6QpeSbKVgC7N8bFmmLCUGXcipq2u/e3d37Ehw=;
+	s=arc-20240116; t=1741630540; c=relaxed/simple;
+	bh=N2xFR1EjNhEEmrqB+4G06evZyATe01NxpJrtqU/Wn+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mz0LL91JSf8C1tI8AkSiid3erTgvAHe8YZZt9w0soavP4vXDe/Td1sVhhKcagLFLuWFD2g4wQuBzIUxrpr+wyzM76M8HURjYQDQC9OjFX7ny2sL3HmMjhE1obO45G08jVPMpYfbBkXGzHJSdfyyPcAXSg8xDPMLG8dS12Wlqbmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1k2pXHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0951FC4CEE5;
-	Mon, 10 Mar 2025 17:12:38 +0000 (UTC)
+	 MIME-Version; b=pxnL7IEnS/WJTT5PSsywTPCaD6r7+8H/uzsj6yDbLXaHduafgJyPo2ONasyZmdpoWmt6+hjbQjuBw4vJuFCc78CxkLhyAU1WgF/xwtFVEBOog0q/ipzET9qbYxM8aXs/ekMOIFA6PLJ3rbVhNB8rfB77efHXE65CxxRySupjTRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYDGsobS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764AAC4CEE5;
+	Mon, 10 Mar 2025 18:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626758;
-	bh=oDfEwi6QpeSbKVgC7N8bFmmLCUGXcipq2u/e3d37Ehw=;
+	s=korg; t=1741630539;
+	bh=N2xFR1EjNhEEmrqB+4G06evZyATe01NxpJrtqU/Wn+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q1k2pXHF/pQZ87WuoHhVLhYnrPkbX+kav4MXbL8ru2xO4j/Pyx/5aAydz7U5Nl45c
-	 OO/2ftOEQwjgsjCn/bFXCEBv1Xaxhc4AIO9ntBgMWgoS6HvHEYEJG1dxudjG/EXnEP
-	 WVD5fjiSz0nIsBW0BjAuPbDVIhdI/i42E7vzac14=
+	b=jYDGsobS8f2XbJ1bOV+ky5anRyFPiyVelIGhxO+fg5egAmwlcFd2sGKfSwRqssssB
+	 hcY8AZ6efysuFzwUrhthOyurtRmVxd+rvRWiB6BWtXOBi20u/opZq1AhBJpi4FCUJ0
+	 PdCQOK5IsF1BflNt9gYy47JaHI5ypcoS5vbw42KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Florent Revest <revest@chromium.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	bpf <bpf@vger.kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Marco Elver <elver@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christoph Lameter <cl@linux.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 101/207] tracing: Add ftrace_fill_perf_regs() for perf event
+Subject: [PATCH 5.15 448/620] kfence: skip __GFP_THISNODE allocations on NUMA systems
 Date: Mon, 10 Mar 2025 18:04:54 +0100
-Message-ID: <20250310170451.774820357@linuxfoundation.org>
+Message-ID: <20250310170603.279306136@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -88,173 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit d5d01b71996ec03af51b3c0736c92d0fc89703b5 ]
+[ Upstream commit e64f81946adf68cd75e2207dd9a51668348a4af8 ]
 
-Add ftrace_fill_perf_regs() which should be compatible with the
-perf_fetch_caller_regs(). In other words, the pt_regs returned from the
-ftrace_fill_perf_regs() must satisfy 'user_mode(regs) == false' and can be
-used for stack tracing.
+On NUMA systems, __GFP_THISNODE indicates that an allocation _must_ be on
+a particular node, and failure to allocate on the desired node will result
+in a failed allocation.
 
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Alan Maguire <alan.maguire@oracle.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/173518997908.391279.15910334347345106424.stgit@devnote2
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: db5e228611b1 ("tracing: fprobe-events: Log error for exceeding the number of entry args")
+Skip __GFP_THISNODE allocations if we are running on a NUMA system, since
+KFENCE can't guarantee which node its pool pages are allocated on.
+
+Link: https://lkml.kernel.org/r/20250124120145.410066-1-elver@google.com
+Fixes: 236e9f153852 ("kfence: skip all GFP_ZONEMASK allocations")
+Signed-off-by: Marco Elver <elver@google.com>
+Reported-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Chistoph Lameter <cl@linux.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/ftrace.h   |  7 +++++++
- arch/powerpc/include/asm/ftrace.h |  7 +++++++
- arch/s390/include/asm/ftrace.h    |  6 ++++++
- arch/x86/include/asm/ftrace.h     |  7 +++++++
- include/linux/ftrace.h            | 31 +++++++++++++++++++++++++++++++
- 5 files changed, 58 insertions(+)
+ mm/kfence/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/include/asm/ftrace.h b/arch/arm64/include/asm/ftrace.h
-index 09210f853f12d..10e56522122aa 100644
---- a/arch/arm64/include/asm/ftrace.h
-+++ b/arch/arm64/include/asm/ftrace.h
-@@ -148,6 +148,13 @@ ftrace_partial_regs(const struct ftrace_regs *fregs, struct pt_regs *regs)
- 	return regs;
- }
- 
-+#define arch_ftrace_fill_perf_regs(fregs, _regs) do {		\
-+		(_regs)->pc = arch_ftrace_regs(fregs)->pc;			\
-+		(_regs)->regs[29] = arch_ftrace_regs(fregs)->fp;		\
-+		(_regs)->sp = arch_ftrace_regs(fregs)->sp;			\
-+		(_regs)->pstate = PSR_MODE_EL1h;		\
-+	} while (0)
-+
- int ftrace_regs_query_register_offset(const char *name);
- 
- int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec);
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index db481b336bca4..fe181bafdca4f 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -43,6 +43,13 @@ static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *
- 	return arch_ftrace_regs(fregs)->regs.msr ? &arch_ftrace_regs(fregs)->regs : NULL;
- }
- 
-+#define arch_ftrace_fill_perf_regs(fregs, _regs) do {		\
-+		(_regs)->result = 0;				\
-+		(_regs)->nip = arch_ftrace_regs(fregs)->regs.nip;		\
-+		(_regs)->gpr[1] = arch_ftrace_regs(fregs)->regs.gpr[1];		\
-+		asm volatile("mfmsr %0" : "=r" ((_regs)->msr));	\
-+	} while (0)
-+
- static __always_inline void
- ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
- 				    unsigned long ip)
-diff --git a/arch/s390/include/asm/ftrace.h b/arch/s390/include/asm/ftrace.h
-index 5c94c1fc1bc1c..5b7cb49c41ee0 100644
---- a/arch/s390/include/asm/ftrace.h
-+++ b/arch/s390/include/asm/ftrace.h
-@@ -76,6 +76,12 @@ ftrace_regs_get_frame_pointer(struct ftrace_regs *fregs)
- 	return ftrace_regs_get_stack_pointer(fregs);
- }
- 
-+#define arch_ftrace_fill_perf_regs(fregs, _regs)	 do {		\
-+		(_regs)->psw.mask = 0;					\
-+		(_regs)->psw.addr = arch_ftrace_regs(fregs)->regs.psw.addr;		\
-+		(_regs)->gprs[15] = arch_ftrace_regs(fregs)->regs.gprs[15];		\
-+	} while (0)
-+
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- /*
-  * When an ftrace registered caller is tracing a function that is
-diff --git a/arch/x86/include/asm/ftrace.h b/arch/x86/include/asm/ftrace.h
-index d61407c680c28..7e06f8c7937aa 100644
---- a/arch/x86/include/asm/ftrace.h
-+++ b/arch/x86/include/asm/ftrace.h
-@@ -47,6 +47,13 @@ arch_ftrace_get_regs(struct ftrace_regs *fregs)
- 	return &arch_ftrace_regs(fregs)->regs;
- }
- 
-+#define arch_ftrace_fill_perf_regs(fregs, _regs) do {	\
-+		(_regs)->ip = arch_ftrace_regs(fregs)->regs.ip;		\
-+		(_regs)->sp = arch_ftrace_regs(fregs)->regs.sp;		\
-+		(_regs)->cs = __KERNEL_CS;		\
-+		(_regs)->flags = 0;			\
-+	} while (0)
-+
- #define ftrace_regs_set_instruction_pointer(fregs, _ip)	\
- 	do { arch_ftrace_regs(fregs)->regs.ip = (_ip); } while (0)
- 
-diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
-index 863c014dff683..56cb3d243c6c4 100644
---- a/include/linux/ftrace.h
-+++ b/include/linux/ftrace.h
-@@ -207,6 +207,37 @@ ftrace_partial_regs(struct ftrace_regs *fregs, struct pt_regs *regs)
- 
- #endif /* !CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS || CONFIG_HAVE_FTRACE_REGS_HAVING_PT_REGS */
- 
-+#ifdef CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS
-+
-+/*
-+ * Please define arch dependent pt_regs which compatible to the
-+ * perf_arch_fetch_caller_regs() but based on ftrace_regs.
-+ * This requires
-+ *   - user_mode(_regs) returns false (always kernel mode).
-+ *   - able to use the _regs for stack trace.
-+ */
-+#ifndef arch_ftrace_fill_perf_regs
-+/* As same as perf_arch_fetch_caller_regs(), do nothing by default */
-+#define arch_ftrace_fill_perf_regs(fregs, _regs) do {} while (0)
-+#endif
-+
-+static __always_inline struct pt_regs *
-+ftrace_fill_perf_regs(struct ftrace_regs *fregs, struct pt_regs *regs)
-+{
-+	arch_ftrace_fill_perf_regs(fregs, regs);
-+	return regs;
-+}
-+
-+#else /* !CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS */
-+
-+static __always_inline struct pt_regs *
-+ftrace_fill_perf_regs(struct ftrace_regs *fregs, struct pt_regs *regs)
-+{
-+	return &arch_ftrace_regs(fregs)->regs;
-+}
-+
-+#endif
-+
- /*
-  * When true, the ftrace_regs_{get,set}_*() functions may be used on fregs.
-  * Note: this can be true even when ftrace_get_regs() cannot provide a pt_regs.
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 0d1a66811c32b..c49bc76b3a389 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -21,6 +21,7 @@
+ #include <linux/log2.h>
+ #include <linux/memblock.h>
+ #include <linux/moduleparam.h>
++#include <linux/nodemask.h>
+ #include <linux/notifier.h>
+ #include <linux/panic_notifier.h>
+ #include <linux/random.h>
+@@ -906,6 +907,7 @@ void *__kfence_alloc(struct kmem_cache *s, size_t size, gfp_t flags)
+ 	 * properties (e.g. reside in DMAable memory).
+ 	 */
+ 	if ((flags & GFP_ZONEMASK) ||
++	    ((flags & __GFP_THISNODE) && num_online_nodes() > 1) ||
+ 	    (s->flags & (SLAB_CACHE_DMA | SLAB_CACHE_DMA32))) {
+ 		atomic_long_inc(&counters[KFENCE_COUNTER_SKIP_INCOMPAT]);
+ 		return NULL;
 -- 
 2.39.5
 
