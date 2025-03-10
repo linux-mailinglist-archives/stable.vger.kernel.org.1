@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-122657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4AABA5A0A3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:52:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8451A5A081
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:50:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E7443AC45F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:51:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85E207A44BA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2731B23236F;
-	Mon, 10 Mar 2025 17:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7935231A3B;
+	Mon, 10 Mar 2025 17:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1Sz46y7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNserKBy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EDE17CA12;
-	Mon, 10 Mar 2025 17:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9384217CA12;
+	Mon, 10 Mar 2025 17:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629123; cv=none; b=AcH03QVN50fvPloIfAt0rwwo5xRodTPU+f8m5uRFbtfj3hwzN6QaDj5ENFdl0VT2exLCpop0nYYrMg2+pkgOWpODx/8whb1GJXgpg9eyrLSUSNcAfxqkBwq8uz15zAm5DEpoPP+51/b3ulilbah/XkqVbKyoYc2K6/9G6y600ow=
+	t=1741629029; cv=none; b=DFdfJVCh7leehp8ZzSuxFjfhWQVKeYsquI7gilQtgohZbEPcXulwEN9bWhJ8sOLdf9gk/MKosyDQL0EwgrTZRWt0MwrgWdEPtSf9LhaLJ6XzdVE50CSXCePSY3uvrrtAMAlzj6I5tnD6GQ3XyrVJSaZ3smtR7Izx4OeROuW8pa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629123; c=relaxed/simple;
-	bh=MIka3Pfzy3Drq36w2ai3Fi6tNHtdGvBWeaTj8lxTdvg=;
+	s=arc-20240116; t=1741629029; c=relaxed/simple;
+	bh=4JkL20vtnwKFjxhGcaDiyFim8+P2kRcNMycc5bJG5aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAXhIL+qKk/yMzXcHngrlkdTHX8pm2SZtkEC72QVEZDHvMs0geKfuURRFg2gNRfjQtSPaSrscp8/6NXCSib0DkL2ZLYHiefVWPB7wvSsYYuJEjhCMKLA/LooVwLs54tWMVc3K4mTI9KRl+SLO+N3H+HO3+jApyAQv+4adLYqXd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1Sz46y7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAA8C4CEE5;
-	Mon, 10 Mar 2025 17:52:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QXJPS/B+JLkxqEhUzodHYXAkS96s6HB25Q0an4f6/1iByWv0mmBWFikFcXfd+f56u8+cg2wubuYVXcnjjSQ1msgyyPLgPWAziXTMxQWdPhRBkZfWGpl47o2Cx/0h9PTK+uydfuHCvTBRddnRmAlX835+9sSRWClZS3rZp73srx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNserKBy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F53C4CEE5;
+	Mon, 10 Mar 2025 17:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629123;
-	bh=MIka3Pfzy3Drq36w2ai3Fi6tNHtdGvBWeaTj8lxTdvg=;
+	s=korg; t=1741629029;
+	bh=4JkL20vtnwKFjxhGcaDiyFim8+P2kRcNMycc5bJG5aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1Sz46y7gwjVP5ZjoXu0FeVuvJTUu4NrCxk4g3J8xdXWGLAyIySNibmIdJbs9FvKw
-	 PsMz1hILKSlvKxFT0zOgWTb57NkPvr16Dqej9qwTurjN1s1FltOm2k/B5kv+oDE/B6
-	 yY8CXWGb9SmNnaojII7Zm0OjjBXL8CYMNj//y0S4=
+	b=WNserKBySVn7Bl8TBsPRd5EkZQumztVtcY/1nKW6LbWseQal8DBrpr5ufCOOWZ2XA
+	 PBlS07/nV+ZioLEd1j/te3aS4EZnWxSddT84MRP4LlRFVdyKJm8Ua2pTUtxHIEuV3t
+	 34CgKKNrWcM9MoLMJkYTrzBdwypriZYTZbBu0504=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 144/620] media: uvcvideo: Propagate buf->error to userspace
-Date: Mon, 10 Mar 2025 17:59:50 +0100
-Message-ID: <20250310170551.281761491@linuxfoundation.org>
+Subject: [PATCH 5.15 145/620] mtd: hyperbus: Make hyperbus_unregister_device() return void
+Date: Mon, 10 Mar 2025 17:59:51 +0100
+Message-ID: <20250310170551.329323847@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -62,48 +60,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 87ce177654e388451850905a1d376658aebe8699 ]
+[ Upstream commit 0c90466a7985d39355f743e9cd2139da3e86c4d8 ]
 
-Now we return VB2_BUF_STATE_DONE for valid and invalid frames. Propagate
-the correct value, so the user can know if the frame is valid or not via
-struct v4l2_buffer->flags.
+The only thing that could theoretically fail in that function is
+mtd_device_unregister(). However it's not supposed to fail and when
+used correctly it doesn't. So wail loudly if it does anyhow.
 
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/84b0f212-cd88-46bb-8e6f-b94ec3eccba6@redhat.com
-Fixes: 6998b6fb4b1c ("[media] uvcvideo: Use videobuf2-vmalloc")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241218-uvc-deprecate-v2-1-ab814139e983@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+This matches how other drivers (e.g. nand/raw/nandsim.c) use
+mtd_device_unregister().
+
+This is a preparation for making platform remove callbacks return void.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20220603210758.148493-2-u.kleine-koenig@pengutronix.de
+Stable-dep-of: bf5821909eb9 ("mtd: hyperbus: hbmc-am654: fix an OF node reference leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/hyperbus/hbmc-am654.c    | 6 +++---
+ drivers/mtd/hyperbus/hyperbus-core.c | 8 ++------
+ drivers/mtd/hyperbus/rpc-if.c        | 5 +++--
+ include/linux/mtd/hyperbus.h         | 4 +---
+ 4 files changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-index 21a907d32bb73..f1f58f2d820f8 100644
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -481,7 +481,8 @@ static void uvc_queue_buffer_complete(struct kref *ref)
+diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
+index a3439b791eeb4..a6161ce340d4e 100644
+--- a/drivers/mtd/hyperbus/hbmc-am654.c
++++ b/drivers/mtd/hyperbus/hbmc-am654.c
+@@ -233,16 +233,16 @@ static int am654_hbmc_remove(struct platform_device *pdev)
+ {
+ 	struct am654_hbmc_priv *priv = platform_get_drvdata(pdev);
+ 	struct am654_hbmc_device_priv *dev_priv = priv->hbdev.priv;
+-	int ret;
  
- 	buf->state = buf->error ? UVC_BUF_STATE_ERROR : UVC_BUF_STATE_DONE;
- 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, buf->bytesused);
--	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
-+	vb2_buffer_done(&buf->buf.vb2_buf, buf->error ? VB2_BUF_STATE_ERROR :
-+							VB2_BUF_STATE_DONE);
+-	ret = hyperbus_unregister_device(&priv->hbdev);
++	hyperbus_unregister_device(&priv->hbdev);
++
+ 	if (priv->mux_ctrl)
+ 		mux_control_deselect(priv->mux_ctrl);
+ 
+ 	if (dev_priv->rx_chan)
+ 		dma_release_channel(dev_priv->rx_chan);
+ 
+-	return ret;
++	return 0;
  }
  
- /*
+ static const struct of_device_id am654_hbmc_dt_ids[] = {
+diff --git a/drivers/mtd/hyperbus/hyperbus-core.c b/drivers/mtd/hyperbus/hyperbus-core.c
+index 2f9fc4e17d53e..4d8047d43e48e 100644
+--- a/drivers/mtd/hyperbus/hyperbus-core.c
++++ b/drivers/mtd/hyperbus/hyperbus-core.c
+@@ -126,16 +126,12 @@ int hyperbus_register_device(struct hyperbus_device *hbdev)
+ }
+ EXPORT_SYMBOL_GPL(hyperbus_register_device);
+ 
+-int hyperbus_unregister_device(struct hyperbus_device *hbdev)
++void hyperbus_unregister_device(struct hyperbus_device *hbdev)
+ {
+-	int ret = 0;
+-
+ 	if (hbdev && hbdev->mtd) {
+-		ret = mtd_device_unregister(hbdev->mtd);
++		WARN_ON(mtd_device_unregister(hbdev->mtd));
+ 		map_destroy(hbdev->mtd);
+ 	}
+-
+-	return ret;
+ }
+ EXPORT_SYMBOL_GPL(hyperbus_unregister_device);
+ 
+diff --git a/drivers/mtd/hyperbus/rpc-if.c b/drivers/mtd/hyperbus/rpc-if.c
+index dc164c18f8429..cd0e577684ff0 100644
+--- a/drivers/mtd/hyperbus/rpc-if.c
++++ b/drivers/mtd/hyperbus/rpc-if.c
+@@ -151,11 +151,12 @@ static int rpcif_hb_probe(struct platform_device *pdev)
+ static int rpcif_hb_remove(struct platform_device *pdev)
+ {
+ 	struct rpcif_hyperbus *hyperbus = platform_get_drvdata(pdev);
+-	int error = hyperbus_unregister_device(&hyperbus->hbdev);
++
++	hyperbus_unregister_device(&hyperbus->hbdev);
+ 
+ 	rpcif_disable_rpm(&hyperbus->rpc);
+ 
+-	return error;
++	return 0;
+ }
+ 
+ static struct platform_driver rpcif_platform_driver = {
+diff --git a/include/linux/mtd/hyperbus.h b/include/linux/mtd/hyperbus.h
+index 0ce612428aea2..bb6b7121a5427 100644
+--- a/include/linux/mtd/hyperbus.h
++++ b/include/linux/mtd/hyperbus.h
+@@ -89,9 +89,7 @@ int hyperbus_register_device(struct hyperbus_device *hbdev);
+ /**
+  * hyperbus_unregister_device - deregister HyperBus slave memory device
+  * @hbdev: hyperbus_device to be unregistered
+- *
+- * Return: 0 for success, others for failure.
+  */
+-int hyperbus_unregister_device(struct hyperbus_device *hbdev);
++void hyperbus_unregister_device(struct hyperbus_device *hbdev);
+ 
+ #endif /* __LINUX_MTD_HYPERBUS_H__ */
 -- 
 2.39.5
 
