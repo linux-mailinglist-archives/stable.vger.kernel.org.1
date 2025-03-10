@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B0DA5A18E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6B5A59C64
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF70A3A62C5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F028C7A2BA0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92E92253FE;
-	Mon, 10 Mar 2025 18:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2C92236FB;
+	Mon, 10 Mar 2025 17:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8BkN2hh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rwvr0/7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D9B17A2E8;
-	Mon, 10 Mar 2025 18:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D162F231C9C;
+	Mon, 10 Mar 2025 17:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629742; cv=none; b=CdQOh7fbm8R/jgLRBx+lxyxNJhBBQfBtBgO0JSclOxHJgyz22pmmMqoiG34WZ6cVWOZcajVENK6OfmowXFPzlS4lGNRnmT1zVbCzf8k+qN7C3UMvj5puVrUOW5ub2D0gh0nJ7oKTEYBS+EqOl9yUFbuOnllMQjeGGsPP20nmYjQ=
+	t=1741626679; cv=none; b=pAzdEOMvQ/kOJGdNZtNC7xqwAQYK/9elg8FAKJJd9p53KYbaP7fXj7+WZgoFsQuBpjvG+rMJsuJR85McWyFNyl/m1wZfUAyvB/2B8/HXm3UHw5YyhHrtLy8d4zNUoYxiiRylWaYLo4volakqlJgjbGtbc36SXrGxoYdp2teTGEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629742; c=relaxed/simple;
-	bh=PG5y7xgbJcNTRzA3tuTo/4ptGaWbiwHZ5UHnekJ58+0=;
+	s=arc-20240116; t=1741626679; c=relaxed/simple;
+	bh=IElROczVDSWoXLY+SB4m97M24MVAQ+dFJx1BU6xJUrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuXmZEO2teis6N6Ty0cjFXr7Hz/A4voQVzLrdSioCuxwdDQVCj/8aLec/aaA57BBhYTUm6DFO7wWqLAu+qaCUi8t1HzOPTITyL5bLOA+j+195lLLrrRiUyToiuA/dOW8M+5GfDbSLHfBlfzMr096OLUwXXT56M5A7H0E0ozGkTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8BkN2hh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D32C4CEE5;
-	Mon, 10 Mar 2025 18:02:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sQiLkaxwA8rQPr7Hkvmv8Af5RyvVdGVNft+ZEnCaJdY0hLHYsa3GX9ud8+JtPyGIaXoVX5sfMzGJEvsKMbFyVuVQnfwb2cflMDpbPEAgH5vVmpHyuMXitTpqjijTjysw+zIFKqWdW7/7FJLjzLsuJoe+PLu+1DlTVlloI9HpH2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rwvr0/7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6E9C4CEE5;
+	Mon, 10 Mar 2025 17:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629741;
-	bh=PG5y7xgbJcNTRzA3tuTo/4ptGaWbiwHZ5UHnekJ58+0=;
+	s=korg; t=1741626679;
+	bh=IElROczVDSWoXLY+SB4m97M24MVAQ+dFJx1BU6xJUrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8BkN2hhDRTCBgvs+wuanM2wo5EzVWxa2BzX/bRNVJKVxMQwB04+YJIjHWI75hW5c
-	 szZxZDQRWWgVXt4FEFU9Vv4hUBtM8F5cjBJIZUClmHWfkDEbDYpr5DH2GzROVz697+
-	 9wNjqqV9/TZh8Rr5P4UY7T9DKoh5U7J2dP4+EeiE=
+	b=Rwvr0/7+Q3ZAemNwoQEyEA/GC0yNwq9+RBiwppx93jbGmS3t1DpL4JTdDhrK3rekh
+	 0BJHrni1f1WA5sgjpyMDFjBk3D+Kk5IOHwFMFrUFmFl/t+AegXM1t2BCOfjSYrddAl
+	 ZvlSqgeAurAYVdLb46+h6B587nw0w10A6wgU86yU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 390/620] clocksource: Use pr_info() for "Checking clocksource synchronization" message
+	Fan Yang <804284660@qq.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.13 043/207] platform/x86: thinkpad_acpi: Add battery quirk for ThinkPad X131e
 Date: Mon, 10 Mar 2025 18:03:56 +0100
-Message-ID: <20250310170600.990564180@linuxfoundation.org>
+Message-ID: <20250310170449.481239139@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-[ Upstream commit 1f566840a82982141f94086061927a90e79440e5 ]
+commit d0d10eaedcb53740883d7e5d53c5e15c879b48fb upstream.
 
-The "Checking clocksource synchronization" message is normally printed
-when clocksource_verify_percpu() is called for a given clocksource if
-both the CLOCK_SOURCE_UNSTABLE and CLOCK_SOURCE_VERIFY_PERCPU flags
-are set.
+Based on the dmesg messages from the original reporter:
 
-It is an informational message and so pr_info() is the correct choice.
+[    4.964073] ACPI: \_SB_.PCI0.LPCB.EC__.HKEY: BCTG evaluated but flagged as error
+[    4.964083] thinkpad_acpi: Error probing battery 2
 
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20250125015442.3740588-1-longman@redhat.com
-Stable-dep-of: 6bb05a33337b ("clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Lenovo ThinkPad X131e also needs this battery quirk.
+
+Reported-by: Fan Yang <804284660@qq.com>
+Tested-by: Fan Yang <804284660@qq.com>
+Co-developed-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250221164825.77315-1-jeffbai@aosc.io
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/clocksource.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index ee7e8d0dc182f..8d9b11555f7ef 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -351,7 +351,8 @@ void clocksource_verify_percpu(struct clocksource *cs)
- 		return;
- 	}
- 	testcpu = smp_processor_id();
--	pr_warn("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n", cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
-+	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
-+		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
- 	for_each_cpu(cpu, &cpus_chosen) {
- 		if (cpu == testcpu)
- 			continue;
--- 
-2.39.5
-
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -9958,6 +9958,7 @@ static const struct tpacpi_quirk battery
+ 	 * Individual addressing is broken on models that expose the
+ 	 * primary battery as BAT1.
+ 	 */
++	TPACPI_Q_LNV('G', '8', true),       /* ThinkPad X131e */
+ 	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
+ 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
+ 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
 
 
 
