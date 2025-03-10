@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-122832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64697A5A165
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E823BA59D6E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1293ADB75
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E42093A7E2C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3FC2253FE;
-	Mon, 10 Mar 2025 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6964522154C;
+	Mon, 10 Mar 2025 17:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmDIfjpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcTXnktZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875E717A2E8;
-	Mon, 10 Mar 2025 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D4F230BC3;
+	Mon, 10 Mar 2025 17:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629626; cv=none; b=Lv1zakXoPvS4KMBxCSWrhPLRbq3Ry0J5RP/5+U+AxOlt7nmYppmbz5ty7pLgW/uaulj48aQYitE9whsdrtuo1Iv6tM3Ly8o00OaBrtExaomDUSeiLidfuxP3FCh8UXlMtZkOe4HcheX22BFaSiDmL99JP+f15CKMus1H6fuSWCU=
+	t=1741627214; cv=none; b=g7CXqjLQFqebM0AK3/AVInDI+WC64Mtclg6YeA2EzC7+iit66wLA2SkirATdrRscIGKtKCYqDw2puaAynpd3Kv/0euFvmNHOCdzIBP46KuHD2rJTw6tn+VJhevs/DM8pW0MFlEYOl3Uew+hyGzHgNzV2LRyiAQdZNcj82Py8i44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629626; c=relaxed/simple;
-	bh=SUtUdeaF4ljXG4VQeN80iCOAjxKSpBaShh9xvZsnbsY=;
+	s=arc-20240116; t=1741627214; c=relaxed/simple;
+	bh=V0N4r8++I6evdcIb3Ubs0vOmAWmGqtDRjKVJVNY7fgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOOZsrGU6uWjUzhnm3/St950v9Bl5CCOuv3Vbj7iQL8jtpb2PU46FsIBAEPuvAX0lU4tQ6U/KH1bYTioceSjssTM/EqOCuqDiOjdw32xvjvWWEe8LqknRqpiBSp3b7aFUj5kP/0nQZi0jqfKTwHWgoOM5Bo+YEkvrwcU2Savcus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmDIfjpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E67BC4CEE5;
-	Mon, 10 Mar 2025 18:00:25 +0000 (UTC)
+	 MIME-Version; b=ffFEtUyg9jIRS3ajXxFsSeM8pz0T8z7wnK7j6CHkqDMYrIT7wUpLKhVrGeb5us9hTrld5jyllLJMjy/+MPmnKBfjkgSXYe3S6TFtdrdePOMqqu5XerF/wUUZqyuQPHxUZ8CWfALKAMs2ZWZMOu9LXLVcXL3Kjf2js0KIczgeuP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcTXnktZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDC2C4CEE5;
+	Mon, 10 Mar 2025 17:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629626;
-	bh=SUtUdeaF4ljXG4VQeN80iCOAjxKSpBaShh9xvZsnbsY=;
+	s=korg; t=1741627214;
+	bh=V0N4r8++I6evdcIb3Ubs0vOmAWmGqtDRjKVJVNY7fgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmDIfjpMa5vgre3guTwOEuoJYsYIWKlbvuVTENRTaQs/APC0c86t/igOzh4loyurK
-	 FwX/736eo9zfBbiZfV5jiDvFL0dElfxYJLtkrjfs++Mq78LXkvUjwLksElTRsTyQQH
-	 OivQzLH9o6rNYrUB3YReqYbc0Mc6TSF38mD+vf08=
+	b=OcTXnktZYQ7ljfKMgj1YhQiCjr7NlftxfYVBZZKFwAqrF1bP/MgtNfNGlndzu2NGS
+	 USq9cpImFgzkD5ZDWVr7dPLkKeCVmiZ9mQHuDw1YLffbXrBJ0EoQueigUzo0pdjBcT
+	 7NOyIIMviKxug4vwEJCsgnZuxxJrJWqfzq2iDT4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Elson Roy Serrao <quic_eserrao@quicinc.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 360/620] usb: roles: set switch registered flag early on
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 053/269] rust: error: check for config `test` in `Error::name`
 Date: Mon, 10 Mar 2025 18:03:26 +0100
-Message-ID: <20250310170559.820052908@linuxfoundation.org>
+Message-ID: <20250310170459.839104689@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit 634775a752a86784511018a108f3b530cc3399a7 upstream.
+commit 4a28ab469ff01855eb819dfd94754d1792f03f2a upstream.
 
-The role switch registration and set_role() can happen in parallel as they
-are invoked independent of each other. There is a possibility that a driver
-might spend significant amount of time in usb_role_switch_register() API
-due to the presence of time intensive operations like component_add()
-which operate under common mutex. This leads to a time window after
-allocating the switch and before setting the registered flag where the set
-role notifications are dropped. Below timeline summarizes this behavior
+Additional to `testlib` also check for `test` in `Error::name`. This is
+required by a subsequent patch that (indirectly) uses `Error` in test
+cases.
 
-Thread1				|	Thread2
-usb_role_switch_register()	|
-	|			|
-	---> allocate switch	|
-	|			|
-	---> component_add()	|	usb_role_switch_set_role()
-	|			|	|
-	|			|	--> Drop role notifications
-	|			|	    since sw->registered
-	|			|	    flag is not set.
-	|			|
-	--->Set registered flag.|
-
-To avoid this, set the registered flag early on in the switch register
-API.
-
-Fixes: b787a3e78175 ("usb: roles: don't get/set_role() when usb_role_switch is unregistered")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206193950.22421-1-quic_eserrao@quicinc.com
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-24-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/roles/class.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ rust/kernel/error.rs |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -354,14 +354,15 @@ usb_role_switch_register(struct device *
- 	dev_set_name(&sw->dev, "%s-role-switch",
- 		     desc->name ? desc->name : dev_name(parent));
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -161,7 +161,7 @@ impl Error {
+     }
  
-+	sw->registered = true;
-+
- 	ret = device_register(&sw->dev);
- 	if (ret) {
-+		sw->registered = false;
- 		put_device(&sw->dev);
- 		return ERR_PTR(ret);
- 	}
- 
--	sw->registered = true;
--
- 	/* TODO: Symlinks for the host port and the device controller. */
- 
- 	return sw;
+     /// Returns a string representing the error, if one exists.
+-    #[cfg(not(testlib))]
++    #[cfg(not(any(test, testlib)))]
+     pub fn name(&self) -> Option<&'static CStr> {
+         // SAFETY: Just an FFI call, there are no extra safety requirements.
+         let ptr = unsafe { bindings::errname(-self.0.get()) };
+@@ -178,7 +178,7 @@ impl Error {
+     /// When `testlib` is configured, this always returns `None` to avoid the dependency on a
+     /// kernel function so that tests that use this (e.g., by calling [`Result::unwrap`]) can still
+     /// run in userspace.
+-    #[cfg(testlib)]
++    #[cfg(any(test, testlib))]
+     pub fn name(&self) -> Option<&'static CStr> {
+         None
+     }
 
 
 
