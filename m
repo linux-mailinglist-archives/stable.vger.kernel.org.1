@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-121905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2832A59CF0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BD9A59ED3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 840EC1883D19
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BDAE3A3FA5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B533F231A2A;
-	Mon, 10 Mar 2025 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725E9233153;
+	Mon, 10 Mar 2025 17:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJV69H0s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7cviOdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71993233148;
-	Mon, 10 Mar 2025 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317652253FE;
+	Mon, 10 Mar 2025 17:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626969; cv=none; b=VIb/X8tx7AjGIGO2x/UdxzYMdpo7v1kFgsy9DZ9moTBGftsgoEFL+4ks7h319Dr7XzEVuPgxv80D+B/TkYTORwnG8p3L0AdIo3orpEm33BVOsLADFB0FoY7chYdq0esc94TpcykLBWZNBD8UfBtHSbUwm1bUMpt2GdzgJCxRY1o=
+	t=1741627970; cv=none; b=fAm6wesuX+a5IBIC9IVMrr0YA8L8byc7qEOIiA3gJjPsBcP6hz9fCP3l4vEh1Za+yzPZtNJiDKaDkvFELN9V2wy6XEWkGRbHOKWivOyyCPHk3z5iCws2rdqqCap/8kH9zh+EnwVq+mUOeT82h6ixxo+c/i6hv5/pISAGUqIuUdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626969; c=relaxed/simple;
-	bh=y9+VU2xmPaRjAoDrXqU/TBtH7tp1M8ZY2yfh7cQ64Gk=;
+	s=arc-20240116; t=1741627970; c=relaxed/simple;
+	bh=x2lZaaefwm8M7fu7HveeRPgTkwTpg4Oqac20bpLdPTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2xBlmYiQxvqMxslhN31zMG244/yc0RBlvDNz1z53NixGB3BoQmQ02ZybH2iaKmGv0DlaCTMrLM9isv/K6uvlzY342pr0ZlXTssQWa2FeZISXMGeUvDa7EkUN28aWL+FAwI/R4aQBwpPDqnPFHR7ou78xeqa9fKg2/7IerXqvTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJV69H0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977C9C4CEE5;
-	Mon, 10 Mar 2025 17:16:08 +0000 (UTC)
+	 MIME-Version; b=qK55/23eDkO8MvnrMgrkRNk919d8Nq5m61ei2qb8qG8OBTfbed4j8YJm28WXrI6oOP6807YBBCEY+cLd2WGg8bfFbusFqJixsgCKIS7ZDzlmGffSWOcP6L2qZ4ECopBOFQC/yLrcFGPL6DfDLrvdBPdr0Cr42svtdUffAMRjHzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7cviOdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE621C4CEEC;
+	Mon, 10 Mar 2025 17:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626969;
-	bh=y9+VU2xmPaRjAoDrXqU/TBtH7tp1M8ZY2yfh7cQ64Gk=;
+	s=korg; t=1741627970;
+	bh=x2lZaaefwm8M7fu7HveeRPgTkwTpg4Oqac20bpLdPTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJV69H0sm1Qi5YUft8x3NCFXEzET58nr65/CGT4Nsh9Y5lYtIcln0NOEMTnzDfUrv
-	 P5mvwHlaIdpcbV9Uf5soT2nK9AiHvwURggvtxH+Z/ls0pihTJNh/d+/XM8/E7NoHZs
-	 G3aUdrq2kHuPCfbZMuSgFNRkDSLJupguWDcEpgu8=
+	b=p7cviOdWSJm+VO2DAqzzNrnkSV15bbsK6GJCT6MRkN134OvOXMX5oB0XpizwqHIaA
+	 f/vRmu6yk93rJVUgwmjpzJk30f8sxs+JwlCVQX2K+el35VekFw3pZgAJfbcwI563TG
+	 MMSDxhQSvs5kSopDIoy70oir9iIFkX6J8mnUfHuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 144/207] nvme-tcp: fix signedness bug in nvme_tcp_init_connection()
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 043/145] x86/cacheinfo: Validate CPUID leaf 0x2 EDX output
 Date: Mon, 10 Mar 2025 18:05:37 +0100
-Message-ID: <20250310170453.523260801@linuxfoundation.org>
+Message-ID: <20250310170436.473451823@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit 528361c49962708a60f51a1afafeb00987cebedf ]
+commit 8177c6bedb7013cf736137da586cf783922309dd upstream.
 
-The kernel_recvmsg() function returns an int which could be either
-negative error codes or the number of bytes received.  The problem is
-that the condition:
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-        if (ret < sizeof(*icresp)) {
+The historical Git commit:
 
-is type promoted to type unsigned long and negative values are treated
-as high positive values which is success, when they should be treated as
-failure.  Handle invalid positive returns separately from negative
-error codes to avoid this problem.
+  019361a20f016 ("- pre6: Intel: start to add Pentium IV specific stuff (128-byte cacheline etc)...")
 
-Fixes: 578539e09690 ("nvme-tcp: fix connect failure on receiving partial ICResp PDU")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+introduced leaf 0x2 output parsing.  It only validated the MSBs of EAX,
+EBX, and ECX, but left EDX unchecked.
+
+Validate EDX's most-significant bit.
+
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-2-darwi@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/tcp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/cacheinfo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index ade7f1af33d80..5c50f1a5af957 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1521,11 +1521,11 @@ static int nvme_tcp_init_connection(struct nvme_tcp_queue *queue)
- 	msg.msg_flags = MSG_WAITALL;
- 	ret = kernel_recvmsg(queue->sock, &msg, &iov, 1,
- 			iov.iov_len, msg.msg_flags);
--	if (ret < sizeof(*icresp)) {
-+	if (ret >= 0 && ret < sizeof(*icresp))
-+		ret = -ECONNRESET;
-+	if (ret < 0) {
- 		pr_warn("queue %d: failed to receive icresp, error %d\n",
- 			nvme_tcp_queue_id(queue), ret);
--		if (ret >= 0)
--			ret = -ECONNRESET;
- 		goto free_icresp;
- 	}
- 	ret = -ENOTCONN;
--- 
-2.39.5
-
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -810,7 +810,7 @@ void init_intel_cacheinfo(struct cpuinfo
+ 			cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
+ 
+ 			/* If bit 31 is set, this is an unknown format */
+-			for (j = 0 ; j < 3 ; j++)
++			for (j = 0 ; j < 4 ; j++)
+ 				if (regs[j] & (1 << 31))
+ 					regs[j] = 0;
+ 
 
 
 
