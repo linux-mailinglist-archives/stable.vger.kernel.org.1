@@ -1,107 +1,197 @@
-Return-Path: <stable+bounces-122051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6049BA59DA6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC86EA59DE0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ADB23A687B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 228C93A8F09
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFC3230BC3;
-	Mon, 10 Mar 2025 17:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34977238159;
+	Mon, 10 Mar 2025 17:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ssTS0NxK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MDrChP47"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3FD1B3927;
-	Mon, 10 Mar 2025 17:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF08C233D89
+	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 17:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627386; cv=none; b=SaKD20zxSjnWubvCtE3K0K+DUnC/1JE2dup41hMnrqHdwOAPzfM5YYxvCIRNlnPn+N8TizxTiZRISvWGW0j062XsaCvu++zHT7WAc8B9bHW3JIsiaCT+t7526J4o1XFBpZd5qgP0pRVjfvDjDjfD3w6MtZikoXEAQ7oBpof9r6g=
+	t=1741627456; cv=none; b=J4NupDIjY3BUazjbTGZ0MzomFPhSlXT+XMbdGxRv5xStZ0C3vE0xYNmHVHjrHXvM/ybGPd6Q94aXOV7mAwRhT0mbOKARteVjprOsujrelzMvZAn2lbzGj+r0HpTQSMX/As9CVbTGjXc3hM2aYgYAAStQ+vN56/KBPW8IxWzCFCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627386; c=relaxed/simple;
-	bh=jlzWbQi6FSX4pGVuiIfsnBv+KXTDLyfqFbdvUJu/6wA=;
+	s=arc-20240116; t=1741627456; c=relaxed/simple;
+	bh=ozllqk5S67aFz36fwplmFyIVSyxFwwEnKQYA9usfaxc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JQExZ5lXUELg2xKwrxBImLVu21urib8SrrO44tgFexOFJz7LRQ5hJnEQ9O4els++5+SgnbxaHoxHE0mC7gEvX3jmmQy5SIa2l3yyoyPcuHAvpMsOm4UpolRiZRCT67fcw7+8yXJDsNCFvvp3KBOeKtM4lMIuldyZyQzVuuWHvLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ssTS0NxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22F2C4CEEC;
-	Mon, 10 Mar 2025 17:23:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741627386;
-	bh=jlzWbQi6FSX4pGVuiIfsnBv+KXTDLyfqFbdvUJu/6wA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ssTS0NxKGh6DuuYColWaTucMp0yRzZVsJCU4D50CjkLlg0ByMw+YfL5+v1lDYEw1B
-	 fHPNE0z1rlQOgj3/dGO0N38d2GIYnO02i8vIzJ2Z0LFQ4dJ+mqakOXZQ8XvS5ZQmeC
-	 sX6cnLkN5Ta9DnaJmRa/8m4H3MqXiek/rp9QYuuNpD+SrIfnFAgge+ALxwjXF0pL91
-	 e6QidE5cndhV4wilVLZ+4Da08gPO2DL0TKg1P+oycokt/brtvErI9lEiEmdHUlBe1R
-	 i6ZlE+0wU3bMYpPQCERWje26bLn7+gMu3f8pG+NJZxk87qCOM4NCkdlHTfS4He/od2
-	 wUgRDZC3zlFXg==
-Date: Mon, 10 Mar 2025 17:23:02 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Christian Eggers <ceggers@arri.de>
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] regulator: assert that dummy regulator has been
- probed before using it
-Message-ID: <3d195bf7-de99-4fe9-87b0-291e156f083c@sirena.org.uk>
-References: <20250310163302.15276-1-ceggers@arri.de>
- <20250310163302.15276-2-ceggers@arri.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4wD317oKzXrWRnBirA07PAlqvVBLeR5QDmuBckg3DrAec9orR1KLOtbvR51KCvdsHi0QylZtgL8QZA130Xgwdz0zOjS2e3C2rtjWlWJ+zMU8thzA1QPF1IOAz7gSOWJpqS+JOpHfnTZXb0Z+693Eq3MfMStZSK6oNrXJsxeAmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MDrChP47; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741627454; x=1773163454;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   mime-version:in-reply-to;
+  bh=ozllqk5S67aFz36fwplmFyIVSyxFwwEnKQYA9usfaxc=;
+  b=MDrChP47yq92kLWysETHAGVnNWjC9ZDgXEnuLWZchjsqSRd/VBsBO58j
+   SIZRhQV56VvFUQarIAb0IfdemUVkJ8WYJmzSE/tCV8xPL89oeMDT7faGt
+   4vrq/7XOi16XpUcMlzpCD1XriLanDDtpnRb1cHOOBRycs1YCfjC6G3qEr
+   nRGeQcwp2bDW72sWnMjSZt/Fc968hT81os3vBXW2tJA2s3N4rlhIHfyZ/
+   M1p3bQpTWv078rFfAoDpc+wg8+H0jt3mLyMTeTNqFP+B9JBIhE+llGQSI
+   fR7xuE7XlKJ0EBS4QHDTuW+4qFb+qkohUT+jv5XRcB/J/3J2ZZHGMxEx0
+   Q==;
+X-CSE-ConnectionGUID: S5XwHv28Q6+wfAR9JcJz/g==
+X-CSE-MsgGUID: kPRb+NOySsC1jJoCtxAY+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42543760"
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="42543760"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:24:14 -0700
+X-CSE-ConnectionGUID: CRiOwP2AQ2eGeJiacZziTw==
+X-CSE-MsgGUID: p8H1nH1+Q3ydkmlaaaFggg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="124217238"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:24:11 -0700
+Date: Mon, 10 Mar 2025 19:24:09 +0200
+From: Imre Deak <imre.deak@intel.com>
+To: Wayne Lin <Wayne.Lin@amd.com>, Lyude Paul <lyude@redhat.com>
+Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/dp_mst: Fix locking when skipping CSN before
+ topology probing
+Message-ID: <Z88gObXxfqUCiqBe@ideak-desk.fi.intel.com>
+Reply-To: imre.deak@intel.com
+References: <20250307183152.3822170-1-imre.deak@intel.com>
+ <CO6PR12MB5489FF5590A559FD1B48A34EFCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
+ <Z87GNTziGPAl6UCv@ideak-desk.fi.intel.com>
+ <CO6PR12MB548903C49BF9AD7F335E3EC8FCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xdmiKqSCkyIynQfL"
-Content-Disposition: inline
-In-Reply-To: <20250310163302.15276-2-ceggers@arri.de>
-X-Cookie: Dieters live life in the fasting lane.
-
-
---xdmiKqSCkyIynQfL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CO6PR12MB548903C49BF9AD7F335E3EC8FCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
 
-On Mon, Mar 10, 2025 at 05:33:02PM +0100, Christian Eggers wrote:
-> Due to asynchronous driver probing there is a chance that the dummy
-> regulator hasn't already been probed when first accessing it.
+On Mon, Mar 10, 2025 at 01:01:25PM +0000, Lin, Wayne wrote:
+> [Public]
+> 
+> > -----Original Message-----
+> > From: Imre Deak <imre.deak@intel.com>
+> > Sent: Monday, March 10, 2025 7:00 PM
+> > To: Lin, Wayne <Wayne.Lin@amd.com>
+> > Cc: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org; dri-
+> > devel@lists.freedesktop.org; Lyude Paul <lyude@redhat.com>;
+> > stable@vger.kernel.org
+> > Subject: Re: [PATCH] drm/dp_mst: Fix locking when skipping CSN before topology
+> > probing
+> >
+> > On Mon, Mar 10, 2025 at 08:59:51AM +0000, Lin, Wayne wrote:
+> > >
+> > > > -----Original Message-----
+> > > > From: Imre Deak <imre.deak@intel.com>
+> > > > Sent: Saturday, March 8, 2025 2:32 AM
+> > > > To: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org;
+> > > > dri- devel@lists.freedesktop.org
+> > > > Cc: Lin, Wayne <Wayne.Lin@amd.com>; Lyude Paul <lyude@redhat.com>;
+> > > > stable@vger.kernel.org
+> > > > Subject: [PATCH] drm/dp_mst: Fix locking when skipping CSN before
+> > > > topology probing
+> > > >
+> > > > The handling of the MST Connection Status Notify message is skipped
+> > > > if the probing of the topology is still pending. Acquiring the
+> > > > drm_dp_mst_topology_mgr::probe_lock
+> > > > for this in
+> > > > drm_dp_mst_handle_up_req() is problematic: the task/work this
+> > > > function is called from is also responsible for handling MST
+> > > > down-request replies (in drm_dp_mst_handle_down_rep()). Thus
+> > > > drm_dp_mst_link_probe_work() - holding already probe_lock - could be
+> > > > blocked waiting for an MST down-request reply while
+> > > > drm_dp_mst_handle_up_req() is waiting for probe_lock while
+> > > > processing a CSN message. This leads to the probe
+> > > > work's down-request message timing out.
+> > > >
+> > > > A scenario similar to the above leading to a down-request timeout is
+> > > > handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
+> > > > probe_lock and sending down-request messages while a second CSN
+> > > > message sent by the sink subsequently is handled by drm_dp_mst_handle_up_req().
+> > > >
+> > > > Fix the above by moving the logic to skip the CSN handling to
+> > > > drm_dp_mst_process_up_req(). This function is called from a work
+> > > > (separate from the task/work handling new up/down messages), already
+> > > > holding probe_lock. This solves the above timeout issue, since
+> > > > handling of down-request replies won't be blocked by probe_lock.
+> > > >
+> > > > Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is
+> > > > not done yet")
+> > > > Cc: Wayne Lin <Wayne.Lin@amd.com>
+> > > > Cc: Lyude Paul <lyude@redhat.com>
+> > > > Cc: stable@vger.kernel.org # v6.6+
+> > > > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > > > ---
+> > > >  drivers/gpu/drm/display/drm_dp_mst_topology.c | 40
+> > > > +++++++++++--------
+> > > >  1 file changed, 24 insertions(+), 16 deletions(-)
+> > > >
+> > > > diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > > b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > > index 8b68bb3fbffb0..3a1f1ffc7b552 100644
+> > > > --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > > +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > > @@ -4036,6 +4036,22 @@ static int drm_dp_mst_handle_down_rep(struct
+> > > > drm_dp_mst_topology_mgr *mgr)
+> > > >       return 0;
+> > > >  }
+> > > >
+> > > > +static bool primary_mstb_probing_is_done(struct drm_dp_mst_topology_mgr *mgr)
+> > > > +{
+> > > > +     bool probing_done = false;
+> > > > +
+> > > > +     mutex_lock(&mgr->lock);
+> > >
+> > > Thanks for catching this, Imre!
+> > >
+> > > Here I think using mgr->lock is not sufficient for determining probing
+> > > is done or not by mst_primary->link_address_sent. Since it might still
+> > > be probing the rest of the topology with mst_primary probed. Use
+> > > probe_lock instead? Thanks!
+> >
+> > mgr->lock is taken here to guard the mgr->mst_primary access.
+> >
+> > probe_lock is also held, taken already by the caller in drm_dp_mst_up_req_work().
+> 
+> Oh I see. It looks good to me. Feel free to add:
+> 
+> Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
 
->  		if (have_full_constraints()) {
->  			r = dummy_regulator_rdev;
-> +			BUG_ON(!r);
->  			get_device(&r->dev);
->  		} else {
->  			dev_err(dev, "Failed to resolve %s-supply for %s\n",
-> @@ -2086,6 +2087,7 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
->  			goto out;
->  		}
->  		r = dummy_regulator_rdev;
-> +		BUG_ON(!r);
+Thanks for the review.
 
-This doesn't actually help anything - I'd expect this to trigger probe
-deferral.
+Lyude, are you ok with the change and if I push it to drm-misc-fixes?
 
---xdmiKqSCkyIynQfL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfPH/UACgkQJNaLcl1U
-h9BENwf+Pnz6DsxLngVcoZ/7H2J0VK8TSBaKvObZBWu2F1oJrk3GhqO3u+2lhxHF
-mbzQSgJLRAm2y4BSd8mbQ8Hnlxz5bQbZJ6pGuOprzgT22Pc57SC0jxRnNBaGhMcf
-3tApPPS4FbbV0ZtLa/jVJhRaRAwqwzUlpDtu7Rgp+v8ji8WyrX2NOIq9ZU0/D8Ge
-oQq0sBEyMQzw3LYFB1qW3a4XLhWMfBOw8xVcb3NyTPZmNKM7VbtV0cqOvnczanJJ
-4r313TnbeRgEEyBhWOrq4xgMkKYYKnQWmDLpSbFURRgQj+DQ8HV+mdmkir85z/Se
-2XUWUzjizWHlhlNsJlNXzv85ouxerw==
-=nw3j
------END PGP SIGNATURE-----
-
---xdmiKqSCkyIynQfL--
+> 
+> Thanks!
+> >
+> > > > +
+> > > > +     if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->mst_primary)) {
+> > > > +             probing_done = mgr->mst_primary->link_address_sent;
+> > > > +             drm_dp_mst_topology_put_mstb(mgr->mst_primary);
+> > > > +     }
+> > > > +
+> > > > +     mutex_unlock(&mgr->lock);
+> > > > +
+> > > > +     return probing_done;
+> > > > +}
+> --
+> Regards,
+> Wayne Lin
 
