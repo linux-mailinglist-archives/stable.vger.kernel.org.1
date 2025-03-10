@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-121904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FA2A59CF4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E45DA59E51
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A039216EF90
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2496E3AAFFB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A23B1AF0BB;
-	Mon, 10 Mar 2025 17:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9D922D4C3;
+	Mon, 10 Mar 2025 17:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IneYddWY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKEGaJDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AD8233145;
-	Mon, 10 Mar 2025 17:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB932F28;
+	Mon, 10 Mar 2025 17:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626966; cv=none; b=X5orb1QYsbjt8gD9tb0cWqtkI9QR6T2jjEmb1eAwDzoqg+T65q+2nGByRaN2f83xD9/Vr/AVAsQSyNBSY/GMh2lbk/ui6K56TVcrgKg4Tfhci35+I3t6w5AFnhmtUytTKxoMTpw+iLG2lDEkjmpN7srr50lvMW4Kx2y5Akd4iWA=
+	t=1741627689; cv=none; b=skYYZmw6pwQE8XMHAH/3lnHs/7eUYJnDbUWBxKqeFIsh02bJQi9pt1mv4rManfUCMo0dHs6Cs30dY/K0zMe64Y/AlABuuah85v4dfaSYv5SJuvX01rAnoC/9teFU9dPMg8i7jGhVxuvQgsS3jjtu/iu+T0O6mSFtzaua95GRzWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626966; c=relaxed/simple;
-	bh=6jNz0ikYRwIx/UfDYWXLL+rc/XnpGoGSK3r0fNDAsdA=;
+	s=arc-20240116; t=1741627689; c=relaxed/simple;
+	bh=yQtIqnj5fwGkfxPLG7PvdOltm8eN3whRD8k2VP0cneE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJ9Fgq48Q5Csecn96MGDP2lw5o7UMkNmHHlWx82VdnU3544mfQnKIJD6eSUm7qZere7VIL3/OW5PxnFrbgByxBuVfyph2wOJtcwQDm3bZyQr84DCm2q6tZeBoTqYSnO8iYL4UmlyhM7F/rlRLe5xBFjcZhkJUsmaskJDE/PrHm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IneYddWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35D6C4CEE5;
-	Mon, 10 Mar 2025 17:16:05 +0000 (UTC)
+	 MIME-Version; b=EcAQFcgN6axp1Rh6wE4g+kYO6CqjWUzwztHxoYhWXQ97m14u1FHPPtGNLvaXUUimfsup65kSlVRMQjJ8i8GahhsKwGuTN0ENXPIy/uO2TPalwTBo4bsg9gFsXCVZc7hWRemG3CmLQ28XaHg5VFV5mmP/PGWEDDN2SxbpiSyq9yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKEGaJDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51412C4CEE5;
+	Mon, 10 Mar 2025 17:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626966;
-	bh=6jNz0ikYRwIx/UfDYWXLL+rc/XnpGoGSK3r0fNDAsdA=;
+	s=korg; t=1741627688;
+	bh=yQtIqnj5fwGkfxPLG7PvdOltm8eN3whRD8k2VP0cneE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IneYddWYkkqeC6H2B4yOvVF+Gh9zkhJCqnyRQe8YpOHXcUJYUvkjBAdtFODSWwSfH
-	 uSohQ0ScepCcpaW2Prpbj1ETQuhnQUb7iPkwiP4FDETXocj6Mkyb1pJ/85XziHv5IG
-	 DKf5kGh1hmWV6VLbQzOHE8mtTVc7nvYdvu66EwAI=
+	b=oKEGaJDr0Y+/cJX2FVvIOAcPkw0eEWgKxLRUJx7r6X9vucnzOpBu53VBkYXLq67yh
+	 o7Ry482yHFD5ah0hek8m8cjK+mhUUWIex3mUUew9kohkPLDzTgSc2kNAitWZHbri3o
+	 tJX2hbjYZxucI38holcR4DC1+g2Sz3SZ39NG1AIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zecheng Li <zecheng@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: [PATCH 6.13 143/207] sched/fair: Fix potential memory corruption in child_cfs_rq_on_list
-Date: Mon, 10 Mar 2025 18:05:36 +0100
-Message-ID: <20250310170453.484712475@linuxfoundation.org>
+	syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com,
+	Vicki Pfau <vi@endrift.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 184/269] HID: hid-steam: Fix use-after-free when detaching device
+Date: Mon, 10 Mar 2025 18:05:37 +0100
+Message-ID: <20250310170505.042220051@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zecheng Li <zecheng@google.com>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit 3b4035ddbfc8e4521f85569998a7569668cccf51 ]
+[ Upstream commit e53fc232a65f7488ab75d03a5b95f06aaada7262 ]
 
-child_cfs_rq_on_list attempts to convert a 'prev' pointer to a cfs_rq.
-This 'prev' pointer can originate from struct rq's leaf_cfs_rq_list,
-making the conversion invalid and potentially leading to memory
-corruption. Depending on the relative positions of leaf_cfs_rq_list and
-the task group (tg) pointer within the struct, this can cause a memory
-fault or access garbage data.
+When a hid-steam device is removed it must clean up the client_hdev used for
+intercepting hidraw access. This can lead to scheduling deferred work to
+reattach the input device. Though the cleanup cancels the deferred work, this
+was done before the client_hdev itself is cleaned up, so it gets rescheduled.
+This patch fixes the ordering to make sure the deferred work is properly
+canceled.
 
-The issue arises in list_add_leaf_cfs_rq, where both
-cfs_rq->leaf_cfs_rq_list and rq->leaf_cfs_rq_list are added to the same
-leaf list. Also, rq->tmp_alone_branch can be set to rq->leaf_cfs_rq_list.
-
-This adds a check `if (prev == &rq->leaf_cfs_rq_list)` after the main
-conditional in child_cfs_rq_on_list. This ensures that the container_of
-operation will convert a correct cfs_rq struct.
-
-This check is sufficient because only cfs_rqs on the same CPU are added
-to the list, so verifying the 'prev' pointer against the current rq's list
-head is enough.
-
-Fixes a potential memory corruption issue that due to current struct
-layout might not be manifesting as a crash but could lead to unpredictable
-behavior when the layout changes.
-
-Fixes: fdaba61ef8a2 ("sched/fair: Ensure that the CFS parent is added after unthrottling")
-Signed-off-by: Zecheng Li <zecheng@google.com>
-Reviewed-and-tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20250304214031.2882646-1-zecheng@google.com
+Reported-by: syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com
+Fixes: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/hid-steam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7d0a05660e5ef..4f850edf16401 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4046,15 +4046,17 @@ static inline bool child_cfs_rq_on_list(struct cfs_rq *cfs_rq)
- {
- 	struct cfs_rq *prev_cfs_rq;
- 	struct list_head *prev;
-+	struct rq *rq = rq_of(cfs_rq);
- 
- 	if (cfs_rq->on_list) {
- 		prev = cfs_rq->leaf_cfs_rq_list.prev;
- 	} else {
--		struct rq *rq = rq_of(cfs_rq);
--
- 		prev = rq->tmp_alone_branch;
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index 7b35966898785..19b7bb0c3d7f9 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -1327,11 +1327,11 @@ static void steam_remove(struct hid_device *hdev)
+ 		return;
  	}
  
-+	if (prev == &rq->leaf_cfs_rq_list)
-+		return false;
-+
- 	prev_cfs_rq = container_of(prev, struct cfs_rq, leaf_cfs_rq_list);
- 
- 	return (prev_cfs_rq->tg->parent == cfs_rq->tg);
++	hid_destroy_device(steam->client_hdev);
+ 	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->work_connect);
+ 	cancel_work_sync(&steam->rumble_work);
+ 	cancel_work_sync(&steam->unregister_work);
+-	hid_destroy_device(steam->client_hdev);
+ 	steam->client_hdev = NULL;
+ 	steam->client_opened = 0;
+ 	if (steam->quirks & STEAM_QUIRK_WIRELESS) {
 -- 
 2.39.5
 
