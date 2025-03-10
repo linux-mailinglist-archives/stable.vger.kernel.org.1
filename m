@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7936CA59D1A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00020A59F24
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03B3B7A132D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EE631708E1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F07F22154C;
-	Mon, 10 Mar 2025 17:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5C322DF80;
+	Mon, 10 Mar 2025 17:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5Z43X6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIbPFA72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E48017C225;
-	Mon, 10 Mar 2025 17:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5A21B3927;
+	Mon, 10 Mar 2025 17:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627084; cv=none; b=O0ONj7LLZwn7PQdg1XSbr0WZ/dF6Ch3cqwfaJPsIvc8ebnKL0dMcwl8DtpOUlaK1v20dCCfhV4C3gEP6udgvYfW6/PQaSoBb3/HPXriAntioYsjtenkp8vwc4ngOAHIYY/pt1+u8BAEKOUwkyt1d/S3MX4wgfOWSpnP02mqUjLM=
+	t=1741628245; cv=none; b=Sdst7061eVFSSZ9IytFb4VEvGokPxD0Fv1dVi3TwNvXQTLPuk8LpyU5MflRbxClj1qOGvQLHXRzE6qsgAx875wxdlyViMI7Mm2QgPLBPT8YLHEpAuu2TSeXAjCDvqjnKFjSnWgl5grG2MBuPE0iJ9jsEHImbnVhJ2uc1AKIQ91U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627084; c=relaxed/simple;
-	bh=J2RWL60gbpUklli1LjNU+hTbjMuSTGXqCevg+ZLv/1w=;
+	s=arc-20240116; t=1741628245; c=relaxed/simple;
+	bh=/XA6DY7HdSz2KfG509VuOh+oW6LcOEOU0Ozb0bpr34I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfRPs/U5zFCU7KRzHHLnRYmNMlyMw8k9Hspea0jiVfFEoQDO0tJMQrpsJu4zjto+xjQh3O7L74a/DxjxK52ug3TQVoAjAl+iNvNd9HaUxgXyN/Z6OisEN1PIUAOrJbZXtnjEnI5nS/qFZ57D8Cz0izom6zryLRrPakyPiLk5SFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5Z43X6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4BBC4CEED;
-	Mon, 10 Mar 2025 17:18:03 +0000 (UTC)
+	 MIME-Version; b=PFZPQjoFgl91gX93pM7oVJ1G4pXb8dQzLzmFwdVkZnWfQK3sCuo9VHtrm5++5C2MMiRXLcnEdChrns2j6BYpQFqSqp489+bqes314eH6Wlq+CDJMpnractgaVzmk7z8S9+vrgWwiAfG2Gt9AaTJU679TeOEqEprPA0vH5tSIPIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIbPFA72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A90C4CEE5;
+	Mon, 10 Mar 2025 17:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627083;
-	bh=J2RWL60gbpUklli1LjNU+hTbjMuSTGXqCevg+ZLv/1w=;
+	s=korg; t=1741628244;
+	bh=/XA6DY7HdSz2KfG509VuOh+oW6LcOEOU0Ozb0bpr34I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5Z43X6RuchOjIr6RT6xauO2QslRP1kOYiYaIUJEWgWkSfiUW9U/ULW+49zeY9um4
-	 ti2itzuFdLMW/qa/oyfgHiFhK6I9vkpK/vO56WaKxiZpjd/V/+d3GOh9gcFV7PlNl1
-	 zioA+h5dnBlwV8dWlue0kf6oaZ3mI3oJ4Prs8mRQ=
+	b=VIbPFA72/EeAWlHjgt5zkCV1s/Uc/Cvfz8ZSZrusfKYL8lYyoK1/GoKrVE3rjYpvg
+	 Zh7PvJ9vBTq6ZjuYlCS1i/Ghm2Bf1UVNUGLt8Dll5a3scWJn4HoD2mArBItktJtD/W
+	 PJH/8hJuoiCiCg/Tq2pqKvZv5sgFKzY56KS5BuI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.13 207/207] nvme-tcp: Fix a C2HTermReq error message
+	stable <stable@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 6.6 106/145] usb: gadget: Fix setting self-powered state on suspend
 Date: Mon, 10 Mar 2025 18:06:40 +0100
-Message-ID: <20250310170456.004222276@linuxfoundation.org>
+Message-ID: <20250310170439.041196173@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit afb41b08c44e5386f2f52fa859010ac4afd2b66f upstream.
+commit c783e1258f29c5caac9eea0aea6b172870f1baf8 upstream.
 
-In H2CTermReq, a FES with value 0x05 means "R2T Limit Exceeded"; but
-in C2HTermReq the same value has a different meaning (Data Transfer Limit
-Exceeded).
+cdev->config might be NULL, so check it before dereferencing.
 
-Fixes: 84e009042d0f ("nvme-tcp: add basic support for the C2HTermReq PDU")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+CC: stable <stable@kernel.org>
+Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/tcp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/composite.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -788,7 +788,7 @@ static void nvme_tcp_handle_c2h_term(str
- 		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
- 		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
- 		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
--		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
-+		[NVME_TCP_FES_DATA_LIMIT_EXCEEDED] = "Data Transfer Limit Exceeded",
- 		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
- 	};
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2616,7 +2616,8 @@ void composite_suspend(struct usb_gadget
  
+ 	cdev->suspended = 1;
+ 
+-	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
++	if (cdev->config &&
++	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
+ 		usb_gadget_set_selfpowered(gadget);
+ 
+ 	usb_gadget_vbus_draw(gadget, 2);
 
 
 
