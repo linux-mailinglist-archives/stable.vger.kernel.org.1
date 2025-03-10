@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D96A59F3B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8BCA59FB6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A04B83A4420
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C623F3A86D1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC40C22D7A6;
-	Mon, 10 Mar 2025 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7356E22DFB1;
+	Mon, 10 Mar 2025 17:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6qCdsAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHxITJSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D6718DB24;
-	Mon, 10 Mar 2025 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30325223702;
+	Mon, 10 Mar 2025 17:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628230; cv=none; b=dCrwB3rgki7XrUy1TaitSbuR6sDQTspNbvSL5FxuKemKHk1rhxy6vnrTp2yIYs0iKWajSBq5Skl8yV+p/7lFPK2PzKlLsUpLEB/m3jFQjKALIjnwRRJtzaZEaxAP8RIjr7ZDKr6mcPSyoPBeLxk+ktSPJhyyYoS/jzs+w54/VAo=
+	t=1741628509; cv=none; b=jqdRSGBqqjYOJKHdEh/DIdMt1NnAA4E7Ea2yXb5DukpT6U93N9BypfXy62PkDLYmjPAZJ967prnLAY+AH6TJ83pFu3rOc5a92cgc+VYriZuRflz1ttZRoa3wVAzgwsiOeI53fy5lHcopu+RdEdu+wyCKY29sQzM/Rq9bhVg+59g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628230; c=relaxed/simple;
-	bh=hCdAsGjTVw3LAduvr2P1TR2iJXAvZKjyDYgBsmk+zX8=;
+	s=arc-20240116; t=1741628509; c=relaxed/simple;
+	bh=f3lSIkUfH9o7zNSFghLTUm7enZqFfx7G/rEdKHzW7jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5eSSnIGe9g7XZ3qWXg83TSFMLJjWvC2nc1Y/nFhElPRiR3uGbbxw/6hhYO4s4RIB13zpZgMyWYfh3kTKkEf04Z6qNrVAA3XyTzCelf6ijpoWTr8V+ss7/+SodfbUzu/EeXV7jKWylDu1tKeHMq4yaK3TBSGa0A0g6wQFJjdqR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6qCdsAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35683C4CEE5;
-	Mon, 10 Mar 2025 17:37:10 +0000 (UTC)
+	 MIME-Version; b=n6pnuZGc2X0jKk0TleWF3j03rWsq6OeqvaTbkHRhKXmUVjyLzkM1F3wGVkpHV/rXJEXdmijcie/0GHaEZNVBMbIMpoggQqKSLbOsCeCIgH4mgTLsIIiu0XwYW3rMxdjq9NQENPNJ4NbzElb9Y4bsnYRqMxR2DOJjFyHQmbgK0EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHxITJSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB8EC4CEE5;
+	Mon, 10 Mar 2025 17:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628230;
-	bh=hCdAsGjTVw3LAduvr2P1TR2iJXAvZKjyDYgBsmk+zX8=;
+	s=korg; t=1741628508;
+	bh=f3lSIkUfH9o7zNSFghLTUm7enZqFfx7G/rEdKHzW7jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N6qCdsApjaHb4NQBZ8eBdeUFyYIfSbpvUeP7ixQA1yw06kiEciv5ewXB4hwRy4GsI
-	 cuVbrMmozsJXItcVEKEMxvF4QSOMda0o5VH/OSlwokzzFMxUdMGcZAcoYGBmohogSL
-	 +EFpnP2FspIwEmVfzGzkgmvtGwzG1fA7/FYcNBb8=
+	b=EHxITJSMRtv8IO4WCPDpEyDn7+OcLCU82A/AY49t7ZyOodP5sjd39ouSF0Qt6XZ5V
+	 Tf1xdO5rSt9epdSmRkkbCUe/9x2ReH2QXR5kUemwbgEje2Hx8wmXuU5/etEzEcY1Vl
+	 9smlIOcv0ZhJVUcOMjikikrQP4xYW+nsex2oRW6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 131/145] riscv: Fix enabling cbo.zero when running in M-mode
+	Pawel Chmielewski <pawel.chmielewski@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 081/109] intel_th: pci: Add Arrow Lake support
 Date: Mon, 10 Mar 2025 18:07:05 +0100
-Message-ID: <20250310170440.051068889@linuxfoundation.org>
+Message-ID: <20250310170430.787630784@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Pawel Chmielewski <pawel.chmielewski@intel.com>
 
-commit 3fb3f7164edc467450e650dca51dbe4823315a56 upstream.
+commit b5edccae9f447a92d475267d94c33f4926963eec upstream.
 
-When the kernel is running in M-mode, the CBZE bit must be set in the
-menvcfg CSR, not in senvcfg.
+Add support for the Trace Hub in Arrow Lake.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240228065559.3434837-2-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Pawel Chmielewski <pawel.chmielewski@intel.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20250211185017.1759193-4-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/csr.h   |    2 ++
- arch/riscv/kernel/cpufeature.c |    2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/riscv/include/asm/csr.h
-+++ b/arch/riscv/include/asm/csr.h
-@@ -398,6 +398,7 @@
- # define CSR_STATUS	CSR_MSTATUS
- # define CSR_IE		CSR_MIE
- # define CSR_TVEC	CSR_MTVEC
-+# define CSR_ENVCFG	CSR_MENVCFG
- # define CSR_SCRATCH	CSR_MSCRATCH
- # define CSR_EPC	CSR_MEPC
- # define CSR_CAUSE	CSR_MCAUSE
-@@ -422,6 +423,7 @@
- # define CSR_STATUS	CSR_SSTATUS
- # define CSR_IE		CSR_SIE
- # define CSR_TVEC	CSR_STVEC
-+# define CSR_ENVCFG	CSR_SENVCFG
- # define CSR_SCRATCH	CSR_SSCRATCH
- # define CSR_EPC	CSR_SEPC
- # define CSR_CAUSE	CSR_SCAUSE
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -679,7 +679,7 @@ arch_initcall(check_unaligned_access_boo
- void riscv_user_isa_enable(void)
- {
- 	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
--		csr_set(CSR_SENVCFG, ENVCFG_CBZE);
-+		csr_set(CSR_ENVCFG, ENVCFG_CBZE);
- }
- 
- #ifdef CONFIG_RISCV_ALTERNATIVE
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -330,6 +330,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Arrow Lake */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7724),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
