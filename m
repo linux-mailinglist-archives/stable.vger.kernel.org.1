@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AD1A59C21
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B36EA5A16D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77A84188DE92
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93C4172E6A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6718E233735;
-	Mon, 10 Mar 2025 17:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FAB22DFF3;
+	Mon, 10 Mar 2025 18:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmEkKE+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKnNH073"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20352231A37;
-	Mon, 10 Mar 2025 17:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942B817A2E8;
+	Mon, 10 Mar 2025 18:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626524; cv=none; b=NocwPhmOLUeWpuvzeaibMNqf913NFdXhjnsXMfG3J0yLGlD5zwJI1Vc0f1kz0WR+moifo6dGpWxZ3Q2y8BP5wO/2RRX2LcmqsFNTfe1kaYlPCqFkRwp7lxzjj2XX0ELTWeqftsZ+2OhP2+jRUHxcYIIXA9WIdQSTFBmf+fcXDPE=
+	t=1741629649; cv=none; b=jUMAzs42RXLbLfgf3knJYRVNe4O8lF6W1N4a4EI3ZEpyANEhFP/9WjQ2sp3WIJcTR7CO253HnyNJamjxdGyjU2jrt5AeYzA65+z9IlgRio98QyjBgn6AcQZ3R5WM/slD9NXVZCJ2odk61n6PIFrFKUgq+cG54cq0qokIB8KJITs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626524; c=relaxed/simple;
-	bh=dm1+6peYKhdDJ61SrGk5sjpX16gd6MEYSEjgK9wAxMA=;
+	s=arc-20240116; t=1741629649; c=relaxed/simple;
+	bh=bU34KvswcYy/9EiswDDJNFKE4dxrK1va4IlP9eqvUXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvPf+TSoFPWoZmHTVYVvLBGtI8EmvgyFCHhn/lyji1ONqB5WZLFISIa/w1QsAWEJtfdebVcRKN9gBV/qILUkpZyP2scI1EShiAIcvC/h5L1l5RpTS8IUDJX4v0ugLYf86SNMg7xWn6kKtN/q9DABMKk79wnwNcN69mhYkUky6xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmEkKE+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A506C4CEE5;
-	Mon, 10 Mar 2025 17:08:43 +0000 (UTC)
+	 MIME-Version; b=qOLBz1NJiLfkLsrTuCaigVE1spkUw7O5nMwFKQrax4p1XYTGYKuaHqfcoXr6821gp3w2RhePLMtsOKXGDwhMxnx77+ZCr5dPW+o8mwowRmy1XI80DkJZXFhP318FiKt+InlxtSfOdQvVK6iypvAQ9A3pMepRJmVcnMk459+o/MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKnNH073; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18977C4CEE5;
+	Mon, 10 Mar 2025 18:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626523;
-	bh=dm1+6peYKhdDJ61SrGk5sjpX16gd6MEYSEjgK9wAxMA=;
+	s=korg; t=1741629649;
+	bh=bU34KvswcYy/9EiswDDJNFKE4dxrK1va4IlP9eqvUXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmEkKE+z42Ve6L3m5ibly60Z9IGRQeVlmTa9M9P33Rr3kzbZ4uhqyBCUtxk0h51fK
-	 GVu9btn4kBJsNoyVGBezJUq8IipONGnDZdFCIXcQTIKyLEDRQ/sD+XGb+Ke5+NbAcd
-	 dreiZkLljAaCeuT+SWb2vb/8UJIBXCZp+QL25zcw=
+	b=tKnNH073DfCWaPYUcFdx4k+KGeuUUxweaHgVyCMVQ5FDkHsV+84VIl8ExDvcpoa/w
+	 sF9Bt2U4pO92u0gnMTpjqB3MbO3PMmqOG/XwK8NivLjdbn5F7f/EJlKxVmeHde0nUH
+	 sC0f1uVZqyIYHAxY3959UjTjlETTqRRT5hUsbSII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 021/207] ksmbd: fix out-of-bounds in parse_sec_desc()
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Robert Morris <rtm@csail.mit.edu>
+Subject: [PATCH 5.15 368/620] USB: hub: Ignore non-compliant devices with too many configs or interfaces
 Date: Mon, 10 Mar 2025 18:03:34 +0100
-Message-ID: <20250310170448.612373422@linuxfoundation.org>
+Message-ID: <20250310170600.131656635@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit d6e13e19063db24f94b690159d0633aaf72a0f03 upstream.
+commit 2240fed37afbcdb5e8b627bc7ad986891100e05d upstream.
 
-If osidoffset, gsidoffset and dacloffset could be greater than smb_ntsd
-struct size. If it is smaller, It could cause slab-out-of-bounds.
-And when validating sid, It need to check it included subauth array size.
+Robert Morris created a test program which can cause
+usb_hub_to_struct_hub() to dereference a NULL or inappropriate
+pointer:
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Oops: general protection fault, probably for non-canonical address
+0xcccccccccccccccc: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
+CPU: 7 UID: 0 PID: 117 Comm: kworker/7:1 Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #14
+Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_hub_adjust_deviceremovable+0x78/0x110
+...
+Call Trace:
+ <TASK>
+ ? die_addr+0x31/0x80
+ ? exc_general_protection+0x1b4/0x3c0
+ ? asm_exc_general_protection+0x26/0x30
+ ? usb_hub_adjust_deviceremovable+0x78/0x110
+ hub_probe+0x7c7/0xab0
+ usb_probe_interface+0x14b/0x350
+ really_probe+0xd0/0x2d0
+ ? __pfx___device_attach_driver+0x10/0x10
+ __driver_probe_device+0x6e/0x110
+ driver_probe_device+0x1a/0x90
+ __device_attach_driver+0x7e/0xc0
+ bus_for_each_drv+0x7f/0xd0
+ __device_attach+0xaa/0x1a0
+ bus_probe_device+0x8b/0xa0
+ device_add+0x62e/0x810
+ usb_set_configuration+0x65d/0x990
+ usb_generic_driver_probe+0x4b/0x70
+ usb_probe_device+0x36/0xd0
+
+The cause of this error is that the device has two interfaces, and the
+hub driver binds to interface 1 instead of interface 0, which is where
+usb_hub_to_struct_hub() looks.
+
+We can prevent the problem from occurring by refusing to accept hub
+devices that violate the USB spec by having more than one
+configuration or interface.
+
+Reported-and-tested-by: Robert Morris <rtm@csail.mit.edu>
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/linux-usb/95564.1737394039@localhost/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/c27f3bf4-63d8-4fb5-ac82-09e3cd19f61c@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/usb/core/hub.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -807,6 +807,13 @@ static int parse_sid(struct smb_sid *psi
- 		return -EINVAL;
- 	}
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1804,6 +1804,17 @@ static int hub_probe(struct usb_interfac
+ 	hdev = interface_to_usbdev(intf);
  
-+	if (!psid->num_subauth)
-+		return 0;
-+
-+	if (psid->num_subauth > SID_MAX_SUB_AUTHORITIES ||
-+	    end_of_acl < (char *)psid + 8 + sizeof(__le32) * psid->num_subauth)
+ 	/*
++	 * The USB 2.0 spec prohibits hubs from having more than one
++	 * configuration or interface, and we rely on this prohibition.
++	 * Refuse to accept a device that violates it.
++	 */
++	if (hdev->descriptor.bNumConfigurations > 1 ||
++			hdev->actconfig->desc.bNumInterfaces > 1) {
++		dev_err(&intf->dev, "Invalid hub with more than one config or interface\n");
 +		return -EINVAL;
++	}
 +
- 	return 0;
- }
- 
-@@ -848,6 +855,9 @@ int parse_sec_desc(struct mnt_idmap *idm
- 	pntsd->type = cpu_to_le16(DACL_PRESENT);
- 
- 	if (pntsd->osidoffset) {
-+		if (le32_to_cpu(pntsd->osidoffset) < sizeof(struct smb_ntsd))
-+			return -EINVAL;
-+
- 		rc = parse_sid(owner_sid_ptr, end_of_acl);
- 		if (rc) {
- 			pr_err("%s: Error %d parsing Owner SID\n", __func__, rc);
-@@ -863,6 +873,9 @@ int parse_sec_desc(struct mnt_idmap *idm
- 	}
- 
- 	if (pntsd->gsidoffset) {
-+		if (le32_to_cpu(pntsd->gsidoffset) < sizeof(struct smb_ntsd))
-+			return -EINVAL;
-+
- 		rc = parse_sid(group_sid_ptr, end_of_acl);
- 		if (rc) {
- 			pr_err("%s: Error %d mapping Owner SID to gid\n",
-@@ -884,6 +897,9 @@ int parse_sec_desc(struct mnt_idmap *idm
- 		pntsd->type |= cpu_to_le16(DACL_PROTECTED);
- 
- 	if (dacloffset) {
-+		if (dacloffset < sizeof(struct smb_ntsd))
-+			return -EINVAL;
-+
- 		parse_dacl(idmap, dacl_ptr, end_of_acl,
- 			   owner_sid_ptr, group_sid_ptr, fattr);
- 	}
++	/*
+ 	 * Set default autosuspend delay as 0 to speedup bus suspend,
+ 	 * based on the below considerations:
+ 	 *
 
 
 
