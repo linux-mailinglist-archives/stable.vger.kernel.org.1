@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-122704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FE0A5A0D1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:54:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04024A5A0DF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F2E171D3D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:54:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67A4F7A1EBA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D24231A2A;
-	Mon, 10 Mar 2025 17:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F851231A2A;
+	Mon, 10 Mar 2025 17:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd9moVfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBxL0cSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B612D023;
-	Mon, 10 Mar 2025 17:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D760232792;
+	Mon, 10 Mar 2025 17:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629258; cv=none; b=o8CbZpf48/nhZ2pk4NIt94yVMqM+x/gMINFYlfFuCRoDuIl3JAuDCjz+a7gMDmD24lfA/ucjpiPq1L36s9FMDrrKBfdexoZijPhzt1IgOMiCo4wUP1QvB6GGrP1YXy9fwui+mSovCzazy87fBWqI+lyN95JeeuPt/Ds8XcDU2GM=
+	t=1741629290; cv=none; b=ZHd556J9VevT+k7aRrf8yx5y9PJA6OB5QuRefGTL81snF8SWW4G02bGVfoQWzje3YO7YR90q04zIBGQowCWdAw4eByymvbDF4SlgILuT+8rnL7E/R7Gv/f1P9mH7uKXWmwNesgOIq83DXxjWAyXhRYz5QVkCpFGfqhPiLlRMeYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629258; c=relaxed/simple;
-	bh=fB2zWnVZys+TQTwxRjFpbvGwZPWLYMxTzinUobxj8Kk=;
+	s=arc-20240116; t=1741629290; c=relaxed/simple;
+	bh=FsbeXE5kb2/4ZRH9pOuMZTBavUPwi4cdqr9Qzo8f4JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8XjMkJ3nKD9n+m9LDUzHpT25pnBo10vG7g1/0fFADowQenIhzxw+mt/8SPI610CmHmGvJq0qCXVPmi+mzZqybLdzG65VI8Y7eKJvb1BOzPn0nAcYgHL7bVx7eN8OoSwfMytgRZERXArwem0PTFj4AmSca80ku2M15xNHD0vG1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd9moVfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54692C4CEE5;
-	Mon, 10 Mar 2025 17:54:18 +0000 (UTC)
+	 MIME-Version; b=IM+mhxBV0eyfw1kvTjrZvc7mmdwKQH2Tt46fcZHdh6HlmwhPrT6XwAHh74EZpp8O9E+I5j/UnBdUUepVvR5cPZ0dSOXOkRlStJqsYVFfYBKxn/QTXcFhPIsifyBgWR3yP/vXqICwghMTGoBvGHUBwmqoq6Y2tiB4c1q/jhaI/yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBxL0cSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93E6C4CEE5;
+	Mon, 10 Mar 2025 17:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629258;
-	bh=fB2zWnVZys+TQTwxRjFpbvGwZPWLYMxTzinUobxj8Kk=;
+	s=korg; t=1741629290;
+	bh=FsbeXE5kb2/4ZRH9pOuMZTBavUPwi4cdqr9Qzo8f4JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jd9moVfdz0V5715naKxDtR6AZAk7VSJl4pUEuWDDhjDBBlyVFYKFN6QmGo6xV8ms6
-	 BM42ocj1i4eYjoFboP4WnYAvSyYNm980YoVjUUzqujQZYsrwwe6gu4wY8DdZTyro4X
-	 mtcdXIOPGKkxbhvuXS2/5384/Y0GGUr24z9TXG/o=
+	b=VBxL0cSF7CUQSsp7ztYttBSt1+W53NFqOiLTjr9J/atSGcNHgmIYDUyIhvbIlugK2
+	 0n3PHgtFXbn4cC5Eq28UkF6CuolTu4gWZrcZ2VYKA0ldZLz6a3VvzkUUmT5MVCBzWs
+	 dK71FvK3qaGe+yq9TY1sYUcdpWnLIxkOqyEODpzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Vadim Fedorenko <vadfed@meta.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 215/620] net/mlx5: use do_aux_work for PHC overflow checks
-Date: Mon, 10 Mar 2025 18:01:01 +0100
-Message-ID: <20250310170554.111560183@linuxfoundation.org>
+Subject: [PATCH 5.15 216/620] wifi: iwlwifi: avoid memory leak
+Date: Mon, 10 Mar 2025 18:01:02 +0100
+Message-ID: <20250310170554.151822908@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,127 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vadim Fedorenko <vadfed@meta.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit e61e6c415ba9ff2b32bb6780ce1b17d1d76238f1 ]
+[ Upstream commit 80e96206a3ef348fbd658d98f2f43149c36df8bc ]
 
-The overflow_work is using system wq to do overflow checks and updates
-for PHC device timecounter, which might be overhelmed by other tasks.
-But there is dedicated kthread in PTP subsystem designed for such
-things. This patch changes the work queue to proper align with PTP
-subsystem and to avoid overloading system work queue.
-The adjfine() function acts the same way as overflow check worker,
-we can postpone ptp aux worker till the next overflow period after
-adjfine() was called.
+A caller of iwl_acpi_get_dsm_object must free the returned object.
+iwl_acpi_get_dsm_integer returns immediately without freeing
+it if the expected size is more than 8 bytes. Fix that.
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
-Acked-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250107104812.380225-1-vadfed@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Note that with the current code this will never happen, since the caller
+of iwl_acpi_get_dsm_integer already checks that the expected size if
+either 1 or 4 bytes, so it can't exceed 8 bytes.
+
+While at it, print the DSM value instead of the return value, as this
+was the intention in the first place.
+
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241228223206.bf61eaab99f8.Ibdc5df02f885208c222456d42c889c43b7e3b2f7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/lib/clock.c   | 24 ++++++++++---------
- include/linux/mlx5/driver.h                   |  1 -
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-index 6fece284de0f3..26d91b080d3c4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -177,17 +177,16 @@ static void mlx5_pps_out(struct work_struct *work)
- 	}
- }
- 
--static void mlx5_timestamp_overflow(struct work_struct *work)
-+static long mlx5_timestamp_overflow(struct ptp_clock_info *ptp_info)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 0b1c6bf729c3e..eefd42ea535cd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -98,7 +98,7 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
+ 				    size_t expected_size)
  {
--	struct delayed_work *dwork = to_delayed_work(work);
- 	struct mlx5_core_dev *mdev;
- 	struct mlx5_timer *timer;
- 	struct mlx5_clock *clock;
- 	unsigned long flags;
+ 	union acpi_object *obj;
+-	int ret = 0;
++	int ret;
  
--	timer = container_of(dwork, struct mlx5_timer, overflow_work);
--	clock = container_of(timer, struct mlx5_clock, timer);
-+	clock = container_of(ptp_info, struct mlx5_clock, ptp_info);
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
-+	timer = &clock->timer;
+ 	obj = iwl_acpi_get_dsm_object(dev, rev, func, NULL, guid);
+ 	if (IS_ERR(obj)) {
+@@ -113,8 +113,10 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
+ 	} else if (obj->type == ACPI_TYPE_BUFFER) {
+ 		__le64 le_value = 0;
  
- 	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
- 		goto out;
-@@ -198,7 +197,7 @@ static void mlx5_timestamp_overflow(struct work_struct *work)
- 	write_sequnlock_irqrestore(&clock->lock, flags);
+-		if (WARN_ON_ONCE(expected_size > sizeof(le_value)))
+-			return -EINVAL;
++		if (WARN_ON_ONCE(expected_size > sizeof(le_value))) {
++			ret = -EINVAL;
++			goto out;
++		}
  
- out:
--	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
-+	return timer->overflow_period;
- }
- 
- static int mlx5_ptp_settime_real_time(struct mlx5_core_dev *mdev,
-@@ -366,6 +365,7 @@ static int mlx5_ptp_adjfreq(struct ptp_clock_info *ptp, s32 delta)
- 				       timer->nominal_c_mult + diff;
- 	mlx5_update_clock_info_page(mdev);
- 	write_sequnlock_irqrestore(&clock->lock, flags);
-+	ptp_schedule_worker(clock->ptp, timer->overflow_period);
- 
- 	return 0;
- }
-@@ -616,6 +616,7 @@ static const struct ptp_clock_info mlx5_ptp_clock_info = {
- 	.settime64	= mlx5_ptp_settime,
- 	.enable		= NULL,
- 	.verify		= NULL,
-+	.do_aux_work	= mlx5_timestamp_overflow,
- };
- 
- static int mlx5_query_mtpps_pin_mode(struct mlx5_core_dev *mdev, u8 pin,
-@@ -809,12 +810,11 @@ static void mlx5_init_overflow_period(struct mlx5_clock *clock)
- 	do_div(ns, NSEC_PER_SEC / HZ);
- 	timer->overflow_period = ns;
- 
--	INIT_DELAYED_WORK(&timer->overflow_work, mlx5_timestamp_overflow);
--	if (timer->overflow_period)
--		schedule_delayed_work(&timer->overflow_work, 0);
--	else
-+	if (!timer->overflow_period) {
-+		timer->overflow_period = HZ;
- 		mlx5_core_warn(mdev,
--			       "invalid overflow period, overflow_work is not scheduled\n");
-+			       "invalid overflow period, overflow_work is scheduled once per second\n");
-+	}
- 
- 	if (clock_info)
- 		clock_info->overflow_period = timer->overflow_period;
-@@ -900,6 +900,9 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
- 
- 	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
- 	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
-+
-+	if (clock->ptp)
-+		ptp_schedule_worker(clock->ptp, 0);
- }
- 
- void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
-@@ -916,7 +919,6 @@ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+ 		/* if the buffer size doesn't match the expected size */
+ 		if (obj->buffer.length != expected_size)
+@@ -135,8 +137,9 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
  	}
  
- 	cancel_work_sync(&clock->pps_info.out_work);
--	cancel_delayed_work_sync(&clock->timer.overflow_work);
- 
- 	if (mdev->clock_info) {
- 		free_page((unsigned long)mdev->clock_info);
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 8f0c321674a88..ff47cff408aad 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -685,7 +685,6 @@ struct mlx5_timer {
- 	struct timecounter         tc;
- 	u32                        nominal_c_mult;
- 	unsigned long              overflow_period;
--	struct delayed_work        overflow_work;
- };
- 
- struct mlx5_clock {
+ 	IWL_DEBUG_DEV_RADIO(dev,
+-			    "ACPI: DSM method evaluated: func=%d, ret=%d\n",
+-			    func, ret);
++			    "ACPI: DSM method evaluated: func=%d, value=%lld\n",
++			    func, *value);
++	ret = 0;
+ out:
+ 	ACPI_FREE(obj);
+ 	return ret;
 -- 
 2.39.5
 
