@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A187A59E29
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F01A59EF9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62D417A5597
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CC6C3A9198
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FED222D786;
-	Mon, 10 Mar 2025 17:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F96922DF80;
+	Mon, 10 Mar 2025 17:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x00ii5PU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBVl/9w3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B87A22FF40;
-	Mon, 10 Mar 2025 17:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B5C1DE89C;
+	Mon, 10 Mar 2025 17:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627706; cv=none; b=i5Uke7nBwuHKN8y6aQupKbeE3YF3A9MYM/STxl9t9JWPmLvW/wbiFt33rC6alEvYvCwwHkRLGdtRras0TU0m7D+hgokjviU+R0nL/b/9x12YCzQH1JQQ4Z3g2+3GI0HCFtZpjFkCs8c8JQ0d5QxvqoBvhBr63inmfKSQtleCeK0=
+	t=1741628056; cv=none; b=f3xUFKj59XYa1xXJhseOS95clVeY0h34YWaUQcilUJ1WIZFiny4p1QId3rUAeSCpIEQE1ItWjNpC4dHzLsPuUN6LyCl6sfG51e/Qsu0pWFkb92bNANzvRcdU9OIK5Fl8KcA55VSxBUz6ZpAOcQo/PemmbXHk9WeL3kcAIPnKa/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627706; c=relaxed/simple;
-	bh=z5PrInUGLfASbmlLzdE14Mmlh4G+uoJmRhpV8Tpw0Pc=;
+	s=arc-20240116; t=1741628056; c=relaxed/simple;
+	bh=zTCWSVYy1P4omgywWK9I0fGnvXCzE1kRXdP6gFXSaw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9ep6hQx0uWQvIxY6xvjf8w86HF3RRIYCOqt4NG6sF60nBtScaYQOgXDuFNNiVZnMgJiBvyZSWXU4EzjVuJ1VvYbi8M4UArbDfLKoEbMPmXgR4wcDlCxU0bwZF80/fpDXeQXuA8NkG6GJgUlvq87XPZC46ermoSw2ypksFDEFMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x00ii5PU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9563C4CEE5;
-	Mon, 10 Mar 2025 17:28:25 +0000 (UTC)
+	 MIME-Version; b=iJYSlWxJDq1SI50jvzhrf3OGWVr3Me/nwN1yidL9u3bhsur6V4MC+ouqjBC7lBsqJS9fKD2Hjgys2BGionsNDKstDeHCPckB1AtK3lAgaLzi9Lh1kfWidi1S2UtyqMU+9wcSSmxW8h4hLn/osdwcmTNvingL4hb4LyEXvcBQO1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBVl/9w3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B20EC4CEE5;
+	Mon, 10 Mar 2025 17:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627706;
-	bh=z5PrInUGLfASbmlLzdE14Mmlh4G+uoJmRhpV8Tpw0Pc=;
+	s=korg; t=1741628056;
+	bh=zTCWSVYy1P4omgywWK9I0fGnvXCzE1kRXdP6gFXSaw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x00ii5PUrjOvcyHweh8VFhmIB8D1bmjYeBSUO7sK0UUqNBQoqKIDoviRF38Mf5cYx
-	 1j79WY97o8YTHqhGNICbLxTeFX2RF1JgYbNcl0XUaJcuczx5GU9KXxJn7i3OCdjo1d
-	 xXbBJ7+NIU4zyLQQao0OyO8BBGiYRa41LvxsIJcM=
+	b=qBVl/9w3HqYgxcbeeBXNzj9LfgrUkgGNhMOeclCve0//A9f8mf56hc0piROa3Mi8N
+	 maSwCStmXBjeMz1vW8kL/loaMieAs984kxpbT5r1D+bHw8kEaEZLSX59FuzjIiNA43
+	 Hu5yFKfZcz+Tgl9e52Q87JsBqqYgIuFiPqwymYBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.12 214/269] usb: gadget: u_ether: Set is_suspend flag if remote wakeup fails
+	Xinghuo Chen <xinghuo.chen@foxmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 073/145] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
 Date: Mon, 10 Mar 2025 18:06:07 +0100
-Message-ID: <20250310170506.218744614@linuxfoundation.org>
+Message-ID: <20250310170437.699239954@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Xinghuo Chen <xinghuo.chen@foxmail.com>
 
-commit 17c2c87c37862c3e95b55f660681cc6e8d66660e upstream.
+[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
 
-Currently while UDC suspends, u_ether attempts to remote wakeup
-the host if there are any pending transfers. However, if remote
-wakeup fails, the UDC remains suspended but the is_suspend flag
-is not set. And since is_suspend flag isn't set, the subsequent
-eth_start_xmit() would queue USB requests to suspended UDC.
+The devm_memremap() function returns error pointers on error,
+it doesn't return NULL.
 
-To fix this, bail out from gether_suspend() only if remote wakeup
-operation is successful.
-
-Cc: stable <stable@kernel.org>
-Fixes: 0a1af6dfa077 ("usb: gadget: f_ecm: Add suspend/resume and remote wakeup support")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250212100840.3812153-1-prashanth.k@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
+Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_ether.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/xgene-hwmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -1052,8 +1052,8 @@ void gether_suspend(struct gether *link)
- 		 * There is a transfer in progress. So we trigger a remote
- 		 * wakeup to inform the host.
- 		 */
--		ether_wakeup_host(dev->port_usb);
--		return;
-+		if (!ether_wakeup_host(dev->port_usb))
-+			return;
- 	}
- 	spin_lock_irqsave(&dev->lock, flags);
- 	link->is_suspend = true;
+diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
+index 78d9f52e2a719..207084d55044a 100644
+--- a/drivers/hwmon/xgene-hwmon.c
++++ b/drivers/hwmon/xgene-hwmon.c
+@@ -712,7 +712,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
+ 			goto out;
+ 		}
+ 
+-		if (!ctx->pcc_comm_addr) {
++		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
+ 			dev_err(&pdev->dev,
+ 				"Failed to ioremap PCC comm region\n");
+ 			rc = -ENOMEM;
+-- 
+2.39.5
+
 
 
 
