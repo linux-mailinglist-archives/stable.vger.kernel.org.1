@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-122946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A312A5A22B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FDFA59DFC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9780B3A7C40
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C17616EFF7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCC2236436;
-	Mon, 10 Mar 2025 18:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2BB233157;
+	Mon, 10 Mar 2025 17:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jo8yRSVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO6mJrg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B6F215F49;
-	Mon, 10 Mar 2025 18:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459A1230D3A;
+	Mon, 10 Mar 2025 17:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630598; cv=none; b=j+0StnjvAWuwVivpU4No36m9DArwGJPQOBryAl/qb+KxrHIf89kddmbTpQpJQoIGlZN5B9fAgY+6EVCAGrixbIcDzr/dCQ0QYp3ODn4VnsQzdDd6IK4+/ZDIDDrlXfQBExDPBihUTTf7P2CGZm0TB/KN3pwBo06V2IEQf9Pljj0=
+	t=1741627535; cv=none; b=VODG3fHgDzGH11t+2L9A10bWZbteQTHmX0QBuoCrPTbojHPQPEfshs0G+cppJ+HZbgTbePi1BxMdzINCYU9IL4SXmOKYZzJEO0SyLXPUblkkKIEznwzHgoxzq+Bn6lnBFADWHO85Q6Wme502MicP8YThqyX71Wk5M9mW3qjbbSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630598; c=relaxed/simple;
-	bh=DSqXEc0B4puV7ECrK1pI9BJyOyTj47mI4aawi4jlKe8=;
+	s=arc-20240116; t=1741627535; c=relaxed/simple;
+	bh=LJKCKaTkYHUYn23MS2Yuc3iRwAB4h2VSo42gTaxZIjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q48a+gtbtrmIqEgUkKd9Jwo2dzOmgu+2h2/kcPuiTfh+4dcCRZJjS/tb1svS+SrV/fF0k3h9x8IwsX+n0/kbSgef5snvtt4pHFoWBoC8bIGQONQrXwF8rdUjw1Kp3a4c8RutHCG9VhNOJ5ZS92LMeuZXryihFLOVt9AIZLvaZQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jo8yRSVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8A4C4CEE5;
-	Mon, 10 Mar 2025 18:16:37 +0000 (UTC)
+	 MIME-Version; b=VC4526nA6Nc+HVFI8Ntu/Rp+5HiM1X+eXSRXUsb2tUkLyVD+F2GLZ6IWTCFtqEayHYtYIzi8XInoQp8UHDGVTc7TkNpT7gS1Oz29EAz++zIRf3/ndHkI2PC5M/DGXCUr+ODDjOxD9d9nw6Znef8I5xB5DH6YKrcUBdL2tg6sk6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO6mJrg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03FAC4CEE5;
+	Mon, 10 Mar 2025 17:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630597;
-	bh=DSqXEc0B4puV7ECrK1pI9BJyOyTj47mI4aawi4jlKe8=;
+	s=korg; t=1741627535;
+	bh=LJKCKaTkYHUYn23MS2Yuc3iRwAB4h2VSo42gTaxZIjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jo8yRSVtWL2oXPirzP71ExyjGQRF1bsAqmkhLFy8+XX23yK0JrrVhJQivaPfy2lWo
-	 DnzAahIU+gkqkDeBZ/BrwFk983ah0GHWIQgRPw9/0uEColKP3t6ZhaOqo3PH0+l63C
-	 VAZfM0nCryu9NBTvwaHnA9S2DvkBy3dbdOhEVLPw=
+	b=SO6mJrg+yCBPNK+mF4ctW8KMhhZ32e0D2nUxr6Jia7a75TZ17Fi38tgH9FqLIbMCh
+	 2pwlVmy4bL6NMOsZ4gjH1c8z7+avTHpDgxYAaMQS7AiRBOi0cqRSXfrBTMgMy2XD7K
+	 OGRDC6x1d7+5FMkbk2xuW05Q6//J+XQg9VEmcdts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <dtzq01@gmail.com>,
-	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 470/620] flow_dissector: Fix port range key handling in BPF conversion
+Subject: [PATCH 6.12 163/269] nvme-tcp: add basic support for the C2HTermReq PDU
 Date: Mon, 10 Mar 2025 18:05:16 +0100
-Message-ID: <20250310170604.130542600@linuxfoundation.org>
+Message-ID: <20250310170504.214831645@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 69ab34f705fbfabcace64b5d53bb7a4450fac875 ]
+[ Upstream commit 84e009042d0f3dfe91bec60bcd208ee3f866cbcd ]
 
-Fix how port range keys are handled in __skb_flow_bpf_to_target() by:
-- Separating PORTS and PORTS_RANGE key handling
-- Using correct key_ports_range structure for range keys
-- Properly initializing both key types independently
+Previously, the NVMe/TCP host driver did not handle the C2HTermReq PDU,
+instead printing "unsupported pdu type (3)" when received. This patch adds
+support for processing the C2HTermReq PDU, allowing the driver
+to print the Fatal Error Status field.
 
-This ensures port range information is correctly stored in its dedicated
-structure rather than incorrectly using the regular ports key structure.
+Example of output:
+nvme nvme4: Received C2HTermReq (FES = Invalid PDU Header Field)
 
-Fixes: 59fb9b62fb6c ("flow_dissector: Fix to use new variables for port ranges in bpf hook")
-Reported-by: Qiang Zhang <dtzq01@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
-Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Link: https://patch.msgid.link/20250218043210.732959-4-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Stable-dep-of: ad95bab0cd28 ("nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/flow_dissector.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/nvme/host/tcp.c  | 43 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/nvme-tcp.h |  2 ++
+ 2 files changed, 45 insertions(+)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 7dfc7ac0624d8..ba437cfcbe90f 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -803,6 +803,7 @@ static void __skb_flow_bpf_to_target(const struct bpf_flow_keys *flow_keys,
- 				     struct flow_dissector *flow_dissector,
- 				     void *target_container)
- {
-+	struct flow_dissector_key_ports_range *key_ports_range = NULL;
- 	struct flow_dissector_key_ports *key_ports = NULL;
- 	struct flow_dissector_key_control *key_control;
- 	struct flow_dissector_key_basic *key_basic;
-@@ -847,20 +848,21 @@ static void __skb_flow_bpf_to_target(const struct bpf_flow_keys *flow_keys,
- 		key_control->addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
- 	}
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 840ae475074d0..749d464bef9f7 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -763,6 +763,40 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
+ 	return 0;
+ }
  
--	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
-+	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS)) {
- 		key_ports = skb_flow_dissector_target(flow_dissector,
- 						      FLOW_DISSECTOR_KEY_PORTS,
- 						      target_container);
--	else if (dissector_uses_key(flow_dissector,
--				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
--		key_ports = skb_flow_dissector_target(flow_dissector,
--						      FLOW_DISSECTOR_KEY_PORTS_RANGE,
--						      target_container);
--
--	if (key_ports) {
- 		key_ports->src = flow_keys->sport;
- 		key_ports->dst = flow_keys->dport;
- 	}
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_PORTS_RANGE)) {
-+		key_ports_range = skb_flow_dissector_target(flow_dissector,
-+							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
-+							    target_container);
-+		key_ports_range->tp.src = flow_keys->sport;
-+		key_ports_range->tp.dst = flow_keys->dport;
++static void nvme_tcp_handle_c2h_term(struct nvme_tcp_queue *queue,
++		struct nvme_tcp_term_pdu *pdu)
++{
++	u16 fes;
++	const char *msg;
++	u32 plen = le32_to_cpu(pdu->hdr.plen);
++
++	static const char * const msg_table[] = {
++		[NVME_TCP_FES_INVALID_PDU_HDR] = "Invalid PDU Header Field",
++		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
++		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
++		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
++		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
++		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
++	};
++
++	if (plen < NVME_TCP_MIN_C2HTERM_PLEN ||
++	    plen > NVME_TCP_MAX_C2HTERM_PLEN) {
++		dev_err(queue->ctrl->ctrl.device,
++			"Received a malformed C2HTermReq PDU (plen = %u)\n",
++			plen);
++		return;
 +	}
++
++	fes = le16_to_cpu(pdu->fes);
++	if (fes && fes < ARRAY_SIZE(msg_table))
++		msg = msg_table[fes];
++	else
++		msg = "Unknown";
++
++	dev_err(queue->ctrl->ctrl.device,
++		"Received C2HTermReq (FES = %s)\n", msg);
++}
++
+ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
+ 		unsigned int *offset, size_t *len)
+ {
+@@ -784,6 +818,15 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
+ 		return 0;
  
- 	if (dissector_uses_key(flow_dissector,
- 			       FLOW_DISSECTOR_KEY_FLOW_LABEL)) {
+ 	hdr = queue->pdu;
++	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
++		/*
++		 * C2HTermReq never includes Header or Data digests.
++		 * Skip the checks.
++		 */
++		nvme_tcp_handle_c2h_term(queue, (void *)queue->pdu);
++		return -EINVAL;
++	}
++
+ 	if (queue->hdr_digest) {
+ 		ret = nvme_tcp_verify_hdgst(queue, queue->pdu, hdr->hlen);
+ 		if (unlikely(ret))
+diff --git a/include/linux/nvme-tcp.h b/include/linux/nvme-tcp.h
+index e07e8978d691b..e435250fcb4d0 100644
+--- a/include/linux/nvme-tcp.h
++++ b/include/linux/nvme-tcp.h
+@@ -13,6 +13,8 @@
+ #define NVME_TCP_ADMIN_CCSZ	SZ_8K
+ #define NVME_TCP_DIGEST_LENGTH	4
+ #define NVME_TCP_MIN_MAXH2CDATA 4096
++#define NVME_TCP_MIN_C2HTERM_PLEN	24
++#define NVME_TCP_MAX_C2HTERM_PLEN	152
+ 
+ enum nvme_tcp_pfv {
+ 	NVME_TCP_PFV_1_0 = 0x0,
 -- 
 2.39.5
 
