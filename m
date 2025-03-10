@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-121768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDA5A59C29
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B9CA5A180
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D79C716DF6D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 919F53AE028
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E091DE89C;
-	Mon, 10 Mar 2025 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31E522DFF3;
+	Mon, 10 Mar 2025 18:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rABz2MUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBbYIGYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349D8232367;
-	Mon, 10 Mar 2025 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067417A2E8;
+	Mon, 10 Mar 2025 18:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626573; cv=none; b=IjLvQXAa1VaaI0O+NuLcIYrb+ftNY7Pff2Xrmjci9UNrGHzL+6Em4jKYQHkWMlprWyQ8bPLcwQPgSnbhg+rhFWSSmBViBflHDloGdNUmfwRoJbT+nhu1jspz320oMSbsWi4uFbaNU3Qp06u0D0ruI0RE/DqpAUMkuAZkYwAm2Ik=
+	t=1741629704; cv=none; b=XYZIF1eTJSkq1L0+FdUSWy7wKvToG4BXvuqj7WNnlq3dRh6jgt0J3BP5Ba82JtTvxGUrzH7x6OTWhSqsoL1twR9Ka0FYfVMRjWRwEuHVt9KJlaZDLuEeFnorUvg0IR5VOrY0FvpCb8QFUYkxWzgXqi7eR0iKB5iAjIh5hCJZkCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626573; c=relaxed/simple;
-	bh=0pPobXUKYXhdR3tL6TOq33YD00+kySJc1PoiYgBQZMk=;
+	s=arc-20240116; t=1741629704; c=relaxed/simple;
+	bh=qK7tm43rx/bO8fj4yDdZ/koBqsVfK3Ud44h6+scw9vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbuuwYfYZPqf6XeaR+iEHQQIgTNIz+FDe8fJTssbhE3W4lpEBApKegWbOSEyrfEA0cdPpXPr87ePiTJexfBtDKi14e96QrWoYKbPGnfLC2QKYwZfNDci1G6qR3RDr6CYr47iOb9re+XJxjUoqMcwrLRFRl/s95Y6d8RyGeZF0/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rABz2MUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD4AC4CEE5;
-	Mon, 10 Mar 2025 17:09:32 +0000 (UTC)
+	 MIME-Version; b=koeTX1wtE4jXEUo6opPP6wjMlt+nG+z9IMWwchywRMUWTuyV9oRaQ3x/FfXwBhAWa6PJWIDbrrKmz9bzwAhmihcB5OGqojssQVbkPCnUj6J7tamv67XJ0mCL2rV33PYBY+ZK2tcL0WmZwVZS5VEn9YVyZYELL64xWfqwXmhX5sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBbYIGYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FC1C4CEE5;
+	Mon, 10 Mar 2025 18:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626573;
-	bh=0pPobXUKYXhdR3tL6TOq33YD00+kySJc1PoiYgBQZMk=;
+	s=korg; t=1741629704;
+	bh=qK7tm43rx/bO8fj4yDdZ/koBqsVfK3Ud44h6+scw9vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rABz2MUccZEQLIhUTEnyxcOlcZ3fhVUKQ7f4f62siLH+g1qdbvxSLmxZBPf35SU6W
-	 vuyMOvlufmYuvTWj5/w8K4VOi8qIUeiQR65yGF0AMIDe+pXuthoWBBiO0KS48UGAnr
-	 aVeDuArT7CNr8mbacTvY9Z8N8a/8ppGcJhexPe8k=
+	b=HBbYIGYO+LN5JlIR4ossTs3oqB3mus2ZtauNNMGHvW1hUQgItBHS6bp+RPiNb47c5
+	 R+48/nuac7g7NanuJ7ky7M5EPU8z9S7TEee1Hxl4+ucMJ4SPqfn/Smnv669WHdztpp
+	 xMHuxfn5e7ckNnfzF7vhpk/y6Kco7EmVHSCdkKEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.13 007/207] Revert "of: reserved-memory: Fix using wrong number of cells to get property alignment"
+	Mike Marshall <hubcap@omnibond.com>,
+	syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 354/620] orangefs: fix a oob in orangefs_debug_write
 Date: Mon, 10 Mar 2025 18:03:20 +0100
-Message-ID: <20250310170448.046914952@linuxfoundation.org>
+Message-ID: <20250310170559.584311100@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Mike Marshall <hubcap@omnibond.com>
 
-commit 75f1f311d883dfaffb98be3c1da208d6ed5d4df9 upstream.
+[ Upstream commit f7c848431632598ff9bce57a659db6af60d75b39 ]
 
-This reverts commit 267b21d0bef8e67dbe6c591c9991444e58237ec9.
+I got a syzbot report: slab-out-of-bounds Read in
+orangefs_debug_write... several people suggested fixes,
+I tested Al Viro's suggestion and made this patch.
 
-Turns out some DTs do depend on this behavior. Specifically, a
-downstream Pixel 6 DT. Revert the change at least until we can decide if
-the DT spec can be changed instead.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reported-by: syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/of_reserved_mem.c |    4 ++--
+ fs/orangefs/orangefs-debugfs.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -415,12 +415,12 @@ static int __init __reserved_mem_alloc_s
- 
- 	prop = of_get_flat_dt_prop(node, "alignment", &len);
- 	if (prop) {
--		if (len != dt_root_size_cells * sizeof(__be32)) {
-+		if (len != dt_root_addr_cells * sizeof(__be32)) {
- 			pr_err("invalid alignment property in '%s' node.\n",
- 				uname);
- 			return -EINVAL;
- 		}
--		align = dt_mem_next_cell(dt_root_size_cells, &prop);
-+		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
+diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
+index 1b508f5433846..fa41db0884880 100644
+--- a/fs/orangefs/orangefs-debugfs.c
++++ b/fs/orangefs/orangefs-debugfs.c
+@@ -393,9 +393,9 @@ static ssize_t orangefs_debug_write(struct file *file,
+ 	 * Thwart users who try to jamb a ridiculous number
+ 	 * of bytes into the debug file...
+ 	 */
+-	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN + 1) {
++	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN) {
+ 		silly = count;
+-		count = ORANGEFS_MAX_DEBUG_STRING_LEN + 1;
++		count = ORANGEFS_MAX_DEBUG_STRING_LEN;
  	}
  
- 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+ 	buf = kzalloc(ORANGEFS_MAX_DEBUG_STRING_LEN, GFP_KERNEL);
+-- 
+2.39.5
+
 
 
 
