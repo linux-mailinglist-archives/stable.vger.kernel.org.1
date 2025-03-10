@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-122359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA57A59F31
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9765EA5A2A8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27D2318904D1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85F4F3A5F35
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D3A18DB24;
-	Mon, 10 Mar 2025 17:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3F423370B;
+	Mon, 10 Mar 2025 18:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrgQHnIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICj1DEtu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763EB22ACDC;
-	Mon, 10 Mar 2025 17:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3669A230BF9;
+	Mon, 10 Mar 2025 18:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628274; cv=none; b=WfiKpcBIfq8RXOE5ACo9pwk2Omvr7stlQiLUSbXVDDB73F/tnmUl8zcDX/CIlKOBz5Hxh9OOQIot+MzdUrbwLVGSF9WG6sODl9hz/60WmGhnY8MNbX3bvDRAVUrgeS0UAob4G/KLim9dTHoZ5lWn3inOWvnMVCw4cmBgKm1cICw=
+	t=1741630933; cv=none; b=SS+vJSvbSgbbRvIi7A2AtgdeEnQ+w9qMnr0rLzWBVo0sj6r8heg1fKyj39zJSxSQqWaqMIJQeo3OHYEU5CUxjofVdd+qTn3FnKjZdeh6T6u382eeQhU69gPPKJb3nCSsi99zQRO6+1VLgufeqzur4w3KWilweDrsgaaIvG+yJIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628274; c=relaxed/simple;
-	bh=700NkAp/4AxpLOMLkeTAKyLxVEQzinTUCm7LcZgxDiw=;
+	s=arc-20240116; t=1741630933; c=relaxed/simple;
+	bh=kPGuL+NwJ3pvr8T0Hc9mDHFrDL53KE57GAkio42+fjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RLbeI4R8S0nSeqSs82rE2J/FFSKKthGmiDrgNh/NWv0bFMHEE4vJEoKM1jjUT0H7+q5uKer+ouJohRnwTBxgs6TckvfnXNtn8it6Ze+Ydb8eej58gRmkFSOdL5bt/9o0QijlugJfPnGtHRtd7FALPUzn6XZ9OVX4iDDMR9jh6gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrgQHnIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D296C4CEEC;
-	Mon, 10 Mar 2025 17:37:53 +0000 (UTC)
+	 MIME-Version; b=QpwtT35p45G/VjV6ytfmhGihNp/BaV803lMF02fOUBDCO5Utyc77huswYkR9mwIlWLhgkpfBTWnsp30W4C3AKcYqRCRVzzeYlUBYeXyjjkBeLUNOsmZQkZHNYzNHSRJfS5DxxZZF74N/wJnVDBt+D4/txk+MNSspnYZALRNO1Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICj1DEtu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AEDC4CEE5;
+	Mon, 10 Mar 2025 18:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628273;
-	bh=700NkAp/4AxpLOMLkeTAKyLxVEQzinTUCm7LcZgxDiw=;
+	s=korg; t=1741630932;
+	bh=kPGuL+NwJ3pvr8T0Hc9mDHFrDL53KE57GAkio42+fjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrgQHnIRZ7/D3FHIc5uQ8JwTbMSrhSZvdD9ObrrGF75rsjUnEzSzPYqTCigMbICdq
-	 g5uhXdThBWOEr+uKZcV8hmOk5tKL/epAe11i7uxd5tcE56IdkkSpkmG4Q/fgxjf4ky
-	 iNILNVimvok4xMWQTYHMRFZNG2WfMvX2WHlawNSk=
+	b=ICj1DEtuUCN8j3qbtGFS9Jws+tSvs7l0hzLnH8n9ZoneQEb3Ovhy8Miti1wvL3wyf
+	 /KmaDfs42fNkuqNuWrkSQrZ+L8cHbCkAQ9p8GoNDokFNj6S1P2Pr7YWBr8TvnnxzFZ
+	 EVeYOGcIVxYm0PukP+clmGibGnkg52P4uWUgVnzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 136/145] Revert "KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()"
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 584/620] usb: quirks: Add DELAY_INIT and NO_LPM for Prolific Mass Storage Card Reader
 Date: Mon, 10 Mar 2025 18:07:10 +0100
-Message-ID: <20250310170440.246428388@linuxfoundation.org>
+Message-ID: <20250310170608.586282951@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Miao Li <limiao@kylinos.cn>
 
-This reverts commit 15d60c13b704f770ba45c58477380d4577cebfa3 which is
-commit c9be85dabb376299504e0d391d15662c0edf8273 upstream.
+commit ff712188daa3fe3ce7e11e530b4dca3826dae14a upstream.
 
-It should not have been applied.
+When used on Huawei hisi platforms, Prolific Mass Storage Card Reader
+which the VID:PID is in 067b:2731 might fail to enumerate at boot time
+and doesn't work well with LPM enabled, combination quirks:
+	USB_QUIRK_DELAY_INIT + USB_QUIRK_NO_LPM
+fixed the problems.
 
-Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
-Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250304070757.139473-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/core/quirks.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -242,7 +242,7 @@ static inline int tlbe_is_writable(struc
- 	return tlbe->mas7_3 & (MAS3_SW|MAS3_UW);
- }
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -338,6 +338,10 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0638, 0x0a13), .driver_info =
+ 	  USB_QUIRK_STRING_FETCH_255 },
  
--static inline bool kvmppc_e500_ref_setup(struct tlbe_ref *ref,
-+static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
- 					 struct kvm_book3e_206_tlb_entry *gtlbe,
- 					 kvm_pfn_t pfn, unsigned int wimg)
- {
-@@ -252,7 +252,11 @@ static inline bool kvmppc_e500_ref_setup
- 	/* Use guest supplied MAS2_G and MAS2_E */
- 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
- 
--	return tlbe_is_writable(gtlbe);
-+	/* Mark the page accessed */
-+	kvm_set_pfn_accessed(pfn);
++	/* Prolific Single-LUN Mass Storage Card Reader */
++	{ USB_DEVICE(0x067b, 0x2731), .driver_info = USB_QUIRK_DELAY_INIT |
++	  USB_QUIRK_NO_LPM },
 +
-+	if (tlbe_is_writable(gtlbe))
-+		kvm_set_pfn_dirty(pfn);
- }
- 
- static inline void kvmppc_e500_ref_release(struct tlbe_ref *ref)
-@@ -333,7 +337,6 @@ static inline int kvmppc_e500_shadow_map
- 	unsigned int wimg = 0;
- 	pgd_t *pgdir;
- 	unsigned long flags;
--	bool writable = false;
- 
- 	/* used to check for invalidations in progress */
- 	mmu_seq = kvm->mmu_invalidate_seq;
-@@ -487,9 +490,7 @@ static inline int kvmppc_e500_shadow_map
- 			goto out;
- 		}
- 	}
--	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
--	if (writable)
--		kvm_set_pfn_dirty(pfn);
-+	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
- 
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
+ 	/* Saitek Cyborg Gold Joystick */
+ 	{ USB_DEVICE(0x06a3, 0x0006), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
