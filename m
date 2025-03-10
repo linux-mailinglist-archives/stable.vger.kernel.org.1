@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-121755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1758A59C36
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0110A5A173
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E3303A6953
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9323B3ADDCC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89764232363;
-	Mon, 10 Mar 2025 17:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760C522DFB1;
+	Mon, 10 Mar 2025 18:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2zjVwFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUCcAsFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4517B230D0D;
-	Mon, 10 Mar 2025 17:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C112253FE;
+	Mon, 10 Mar 2025 18:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626535; cv=none; b=Wn2PUJWUAZiVJWenrskAlmw+EN9Xl2Z3dfY3V+jd8gnNbmf42ul2R8TNKSPGuT40N02rW3XN3Vrmhgp7wamTwj3ZNwSzmKLzhD01qFJX7xaNpg6tkODwecdbDrBOnYNqEkrYZMoQUw7qLIgymjMtJtkpNi14FtaiVT5ZQsHN6Ho=
+	t=1741629667; cv=none; b=Eir4tkAtpiCQD/r2gCaertG2kXQBGAdnUHutj/bAa1XSSpwyCENJSNcp5ntazeieKVvluMlNsSVQcESpZOWq2ktnAlZv+vfPUrfdtulgut2ZiHkk3ASD2sUIwedZ8VoO4SgRDsw5x4nK5RB2mY0/LuPeLvQtItMDahden4rtUKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626535; c=relaxed/simple;
-	bh=iAMxOPMQGQzA33Srec0vKQOtui7IkTtZdIek+IWmFPY=;
+	s=arc-20240116; t=1741629667; c=relaxed/simple;
+	bh=yBHZkwIHisssgcebtyligLY49/6AaVNLm31uybFY6B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I421/xERQjHU6iwnw7wAa2UrxKIh/OCEtz7wLVu1QTpB1v/XPB5ewBBpZmaDd7NliUpnb7ugCGbQXRqJn63cd1D2kiIo0jjwQI+F1Y5XvzuKwRU3xCaFfRsZH9TfQdFRkW9947uuGytO+PEtvHVwvcUx1H+sS5j+DLlqbWbzM4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2zjVwFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0906C4CEE5;
-	Mon, 10 Mar 2025 17:08:54 +0000 (UTC)
+	 MIME-Version; b=n37tJsvFh3zl0t4TOaiukR8dFwsPD0lc1J5wav+cnXtYyI5Cq496bc8JGWV7xp3YHbIGCH/WNyV4f8eEkrGapec5QttQ3nESA1IbB5W/j5A+vHpsKiFrTZEzvE8YKNRM6reqs3USDsgQXsTXhVUZtY5ZgejJSxgLc1Qmi69orrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUCcAsFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEFAC4CEE5;
+	Mon, 10 Mar 2025 18:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626535;
-	bh=iAMxOPMQGQzA33Srec0vKQOtui7IkTtZdIek+IWmFPY=;
+	s=korg; t=1741629667;
+	bh=yBHZkwIHisssgcebtyligLY49/6AaVNLm31uybFY6B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2zjVwFTWYTuPCHx68d0BUr1Qck8jfb6xOleX1sI+FFo5vTZoypj1TaSS7VbJpmQv
-	 5OfHSGMNRZVtXaox9jE0rKx6kPhpJ94bjSoGG6tfMoxPz0tj8yH9PfUBV63y8TRror
-	 eJLyFD09Mjpk0BlO5OPNyuACsppculDxpFVqYbq0=
+	b=bUCcAsFiGzteh2ne8CY/iDo6iDlRqduZs078wkNA05/Kd04ZYoTtLh10xy0n0tZTe
+	 jLYzCQIUn3P7BbfeFIEKwIzKaEMB4uTOS1fQKu240vCDkQb+rMeR77deaiTeZnQnLN
+	 P/gE4Q52zgPQ1BpkbMLczxSnDXEs8+iYaECxrbsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.13 025/207] gpio: aggregator: protect driver attr handlers against module unload
-Date: Mon, 10 Mar 2025 18:03:38 +0100
-Message-ID: <20250310170448.773122307@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 373/620] USB: serial: option: add Telit Cinterion FN990B compositions
+Date: Mon, 10 Mar 2025 18:03:39 +0100
+Message-ID: <20250310170600.325164191@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,137 +62,213 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 12f65d1203507f7db3ba59930fe29a3b8eee9945 upstream.
+commit c979fb5ece2dc11cc9cc3d5c66f750e210bfdee2 upstream.
 
-Both new_device_store and delete_device_store touch module global
-resources (e.g. gpio_aggregator_lock). To prevent race conditions with
-module unload, a reference needs to be held.
+Add the following Telit Cinterion FN990B40 compositions:
 
-Add try_module_get() in these handlers.
+0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-For new_device_store, this eliminates what appears to be the most dangerous
-scenario: if an id is allocated from gpio_aggregator_idr but
-platform_device_register has not yet been called or completed, a concurrent
-module unload could fail to unregister/delete the device, leaving behind a
-dangling platform device/GPIO forwarder. This can result in various issues.
-The following simple reproducer demonstrates these problems:
+0x10d1: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 16 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d1 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-  #!/bin/bash
-  while :; do
-    # note: whether 'gpiochip0 0' exists or not does not matter.
-    echo 'gpiochip0 0' > /sys/bus/platform/drivers/gpio-aggregator/new_device
-  done &
-  while :; do
-    modprobe gpio-aggregator
-    modprobe -r gpio-aggregator
-  done &
-  wait
+0x10d2: RNDIS + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 18 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d2 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-  Starting with the following warning, several kinds of warnings will appear
-  and the system may become unstable:
+0x10d3: ECM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 20 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d3 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-  ------------[ cut here ]------------
-  list_del corruption, ffff888103e2e980->next is LIST_POISON1 (dead000000000100)
-  WARNING: CPU: 1 PID: 1327 at lib/list_debug.c:56 __list_del_entry_valid_or_report+0xa3/0x120
-  [...]
-  RIP: 0010:__list_del_entry_valid_or_report+0xa3/0x120
-  [...]
-  Call Trace:
-   <TASK>
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   ? __warn.cold+0x93/0xf2
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   ? report_bug+0xe6/0x170
-   ? __irq_work_queue_local+0x39/0xe0
-   ? handle_bug+0x58/0x90
-   ? exc_invalid_op+0x13/0x60
-   ? asm_exc_invalid_op+0x16/0x20
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   gpiod_remove_lookup_table+0x22/0x60
-   new_device_store+0x315/0x350 [gpio_aggregator]
-   kernfs_fop_write_iter+0x137/0x1f0
-   vfs_write+0x262/0x430
-   ksys_write+0x60/0xd0
-   do_syscall_64+0x6c/0x180
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   [...]
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-Fixes: 828546e24280 ("gpio: Add GPIO Aggregator")
 Cc: stable@vger.kernel.org
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Link: https://lore.kernel.org/r/20250224143134.3024598-2-koichiro.den@canonical.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-aggregator.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/gpio/gpio-aggregator.c
-+++ b/drivers/gpio/gpio-aggregator.c
-@@ -119,10 +119,15 @@ static ssize_t new_device_store(struct d
- 	struct platform_device *pdev;
- 	int res, id;
- 
-+	if (!try_module_get(THIS_MODULE))
-+		return -ENOENT;
-+
- 	/* kernfs guarantees string termination, so count + 1 is safe */
- 	aggr = kzalloc(sizeof(*aggr) + count + 1, GFP_KERNEL);
--	if (!aggr)
--		return -ENOMEM;
-+	if (!aggr) {
-+		res = -ENOMEM;
-+		goto put_module;
-+	}
- 
- 	memcpy(aggr->args, buf, count + 1);
- 
-@@ -161,6 +166,7 @@ static ssize_t new_device_store(struct d
- 	}
- 
- 	aggr->pdev = pdev;
-+	module_put(THIS_MODULE);
- 	return count;
- 
- remove_table:
-@@ -175,6 +181,8 @@ free_table:
- 	kfree(aggr->lookups);
- free_ga:
- 	kfree(aggr);
-+put_module:
-+	module_put(THIS_MODULE);
- 	return res;
- }
- 
-@@ -203,13 +211,19 @@ static ssize_t delete_device_store(struc
- 	if (error)
- 		return error;
- 
-+	if (!try_module_get(THIS_MODULE))
-+		return -ENOENT;
-+
- 	mutex_lock(&gpio_aggregator_lock);
- 	aggr = idr_remove(&gpio_aggregator_idr, id);
- 	mutex_unlock(&gpio_aggregator_lock);
--	if (!aggr)
-+	if (!aggr) {
-+		module_put(THIS_MODULE);
- 		return -ENOENT;
-+	}
- 
- 	gpio_aggregator_free(aggr);
-+	module_put(THIS_MODULE);
- 	return count;
- }
- static DRIVER_ATTR_WO(delete_device);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1406,6 +1406,22 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
++	  .driver_info = NCTRL(5) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
++	  .driver_info = NCTRL(6) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
++	  .driver_info = NCTRL(6) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
++	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
 
 
 
