@@ -1,251 +1,125 @@
-Return-Path: <stable+bounces-122421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F702A59F83
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5F9A5A132
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4B8A188D818
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 357EB7A4B00
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50462343AB;
-	Mon, 10 Mar 2025 17:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="aPWTjWg3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E6E23237F;
+	Mon, 10 Mar 2025 17:58:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9098A23372F;
-	Mon, 10 Mar 2025 17:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A461C4A24;
+	Mon, 10 Mar 2025 17:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628443; cv=none; b=by3UEA3vRSP/i6vTawhIxc6GdNR8ygvh2MyjZpYPBNMHRyLjVnQFzG4bzFlXo/L+cHxqUlJG8n7v+ygs8ZNdvwGZ6wDEjnO7xLBvfn/tGNe5W59tcWB8UpT5IMzU8WtMZOk1cYg/7Ni0xqjCXdZFVA9M6R2jdUAswKkqxV7hJVU=
+	t=1741629492; cv=none; b=TNuqsJahexFekkZAabM7p7mmJBwodkd88m9cZTMU3FehXtehgXehm904yxk3Se1HN9HnK6aj58s2MJKveNitJTPr7dIfjnLP2ttL0D3Eg7S9F8v8WVVQTCVC/USnx8uOvC4enIbyiyvXabHzAfTj7prDdEOOPtBu5+G6ARlfAJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628443; c=relaxed/simple;
-	bh=SoSvxThbacRApDtgtkB8xW5OigpPt6XCYjdjhfv5a4g=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IQ5lcnWvuRJzyWkb+WOqj91ms/TUViZoGCpEVBfL0dLH7wvXP+coPTIfQCoGwc5knaJ75lQUcPKoU243ecgyV9H4d3y6ufHID9uTee+xt9/6MsofqLcQ5X8Tr4g5Ah2skbpLY36JQZegoUXMQaOYxu9mPm+dEfdDiuWMXWdXvLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=aPWTjWg3; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=wQ4D5QKHMIWNCaQvOfTHTeNkiuHKNnCopjm4zd/mJUE=;
-	t=1741628441; x=1742838041; b=aPWTjWg31CV4G3WJ83Cf3z7pS/u8Ru/xJwQy7HvuVC9Hdo+
-	h4gR7GKNH/JBmUnTBHqKHRREGazvPw/hYdNVuK5YkKNScq03mn8Mdebg4/vReMJFcu7zEW6S54SkJ
-	q+ST2L006fg4WAnfAOx3OjexmIJxtkpfy7/5GOI+uJRSe2JKV9AzduRwBb9910C721RPrSToq9pfa
-	mz/1d8Hbp0gEB5gePPQM9GeD4tNvtdawFu6CJmprwswpF5LeYD/t4YsZrn2CgXR1lzCDMTp7GRb9+
-	TujW+NSCm3/kXMjMG9GhcKQSaoOaXNjcrUNviOlSntfAqQRqhq7VPBPY84Ig7DHQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <benjamin@sipsolutions.net>)
-	id 1trh7A-00000006xwX-2frH;
-	Mon, 10 Mar 2025 18:40:32 +0100
-Message-ID: <5d129bda966b7a55b444f4d48f225038361e9253.camel@sipsolutions.net>
-Subject: Re: [PATCH 6.13 088/207] wifi: iwlwifi: Fix A-MSDU TSO preparation
-From: Benjamin Berg <benjamin@sipsolutions.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>, Miri Korenblit
-	 <miriam.rachel.korenblit@intel.com>, Johannes Berg
- <johannes.berg@intel.com>,  Sasha Levin <sashal@kernel.org>
-Date: Mon, 10 Mar 2025 18:40:31 +0100
-In-Reply-To: <20250310170451.257508843@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
-	 <20250310170451.257508843@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1741629492; c=relaxed/simple;
+	bh=oZAX4ZsFkwdrUYXqPWdEuU4XKuGxf5NrIGOTkEDVuB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g0sXYMjPgt30MDzj+/IXmkP5h2Q7u069BlsRn/I0Myw9ZxdimVEE1qm28fs5qVVBfZ8yjfo0tyip6Ew3c0rdGjMXRLp6HODRkkQaVuOXgrhpqdqB+NiCbzkg3egBCWBaFkkZ0jdEC4PRpIINt/eyBy3bhojh8z67iXKPpjeeifI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCD851516;
+	Mon, 10 Mar 2025 10:58:20 -0700 (PDT)
+Received: from pluto.guest.local (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E3DA83F673;
+	Mon, 10 Mar 2025 10:58:07 -0700 (PDT)
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	arm-scmi@vger.kernel.org
+Cc: sudeep.holla@arm.com,
+	dan.carpenter@linaro.org,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Huangjie <huangjie1663@phytium.com.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] firmware: arm_scmi: Fix timeout checks on polling path
+Date: Mon, 10 Mar 2025 17:58:00 +0000
+Message-ID: <20250310175800.1444293-1-cristian.marussi@arm.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Polling mode transactions wait for a reply busy-looping without holding a
+spinlock, but currently the timeout checks are based only on elapsed time:
+as a result we could hit a false positive whenever our busy-looping thread
+is pre-empted and scheduled out for a time greater than the polling
+timeout.
 
-if you pick this patch, then please also pick "wifi: iwlwifi: pcie: Fix
-TSO preparation" which was submitted recently. Otherwise there is a
-regression in the n_segments calculation that can lead to packet loss.
+Change the checks at the end of the busy-loop to make sure that the polling
+wasn't indeed successful or an out-of-order reply caused the polling to be
+forcibly terminated.
 
+Fixes: 31d2f803c19c ("firmware: arm_scmi: Add sync_cmds_completed_on_ret transport flag")
+Reported-by: Huangjie <huangjie1663@phytium.com.cn>
+Closes: https://lore.kernel.org/arm-scmi/20250123083323.2363749-1-jackhuang021@gmail.com/
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Cc: <stable@vger.kernel.org> # 5.18.x
+---
+This fix got to be backported to 5.4/5.10./5.15 due to small changes in the
+context
+---
+ drivers/firmware/arm_scmi/driver.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-https://lore.kernel.org/linux-wireless/20250306122425.8c0e23a3d583.I3cb4d67=
-68c9d28ce3da6cd0a6c65466176cfc1ee@changeid/
-
-Benjamin
-
-On Mon, 2025-03-10 at 18:04 +0100, Greg Kroah-Hartman wrote:
-> 6.13-stable review patch.=C2=A0 If anyone has any objections, please let =
-me know.
->=20
-> ------------------
->=20
-> From: Ilan Peer <ilan.peer@intel.com>
->=20
-> [ Upstream commit 3640dbc1f75ce15d128ea4af44226960d894f3fd ]
->=20
-> The TSO preparation assumed that the skb head contained the headers
-> while the rest of the data was in the fragments. Since this is not
-> always true, e.g., it is possible that the data was linearised, modify
-> the TSO preparation to start the data processing after the network
-> headers.
->=20
-> Fixes: 7f5e3038f029 ("wifi: iwlwifi: map entire SKB when sending AMSDUs")
-> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-> Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
-> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-> Link: https://patch.msgid.link/20250209143303.75769a4769bf.Iaf79e8538093c=
-df8c446c292cc96164ad6498f61@changeid
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> =C2=A0.../wireless/intel/iwlwifi/pcie/internal.h=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 5 +++--
-> =C2=A0.../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |=C2=A0 5 +++--
-> =C2=A0drivers/net/wireless/intel/iwlwifi/pcie/tx.c=C2=A0 | 20 +++++++++++=
---------
-> =C2=A03 files changed, 18 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers=
-/net/wireless/intel/iwlwifi/pcie/internal.h
-> index 27a7e0b5b3d51..ebe9b25cc53a9 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-> @@ -1,6 +1,6 @@
-> =C2=A0/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-> =C2=A0/*
-> - * Copyright (C) 2003-2015, 2018-2024 Intel Corporation
-> + * Copyright (C) 2003-2015, 2018-2025 Intel Corporation
-> =C2=A0 * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-> =C2=A0 * Copyright (C) 2016-2017 Intel Deutschland GmbH
-> =C2=A0 */
-> @@ -643,7 +643,8 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *=
-sgt, unsigned int offset,
-> =C2=A0				=C2=A0=C2=A0=C2=A0 unsigned int len);
-> =C2=A0struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct =
-sk_buff *skb,
-> =C2=A0				=C2=A0=C2=A0 struct iwl_cmd_meta *cmd_meta,
-> -				=C2=A0=C2=A0 u8 **hdr, unsigned int hdr_room);
-> +				=C2=A0=C2=A0 u8 **hdr, unsigned int hdr_room,
-> +				=C2=A0=C2=A0 unsigned int offset);
-> =C2=A0
-> =C2=A0void iwl_pcie_free_tso_pages(struct iwl_trans *trans, struct sk_buf=
-f *skb,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 struct iwl_cmd_meta *cmd_meta);
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/=
-net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-> index 7bb74a480d7f1..477a05cd1288b 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-> @@ -1,7 +1,7 @@
-> =C2=A0// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-> =C2=A0/*
-> =C2=A0 * Copyright (C) 2017 Intel Deutschland GmbH
-> - * Copyright (C) 2018-2020, 2023-2024 Intel Corporation
-> + * Copyright (C) 2018-2020, 2023-2025 Intel Corporation
-> =C2=A0 */
-> =C2=A0#include <net/tso.h>
-> =C2=A0#include <linux/tcp.h>
-> @@ -188,7 +188,8 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans =
-*trans,
-> =C2=A0		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr));
-> =C2=A0
-> =C2=A0	/* Our device supports 9 segments at most, it will fit in 1 page *=
-/
-> -	sgt =3D iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
-> +	sgt =3D iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room,
-> +				snap_ip_tcp_hdrlen + hdr_len);
-> =C2=A0	if (!sgt)
-> =C2=A0		return -ENOMEM;
-> =C2=A0
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/w=
-ireless/intel/iwlwifi/pcie/tx.c
-> index 1ef14340953c3..f46bdc0a5fec9 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-> @@ -1,6 +1,6 @@
-> =C2=A0// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-> =C2=A0/*
-> - * Copyright (C) 2003-2014, 2018-2021, 2023-2024 Intel Corporation
-> + * Copyright (C) 2003-2014, 2018-2021, 2023-2025 Intel Corporation
-> =C2=A0 * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-> =C2=A0 * Copyright (C) 2016-2017 Intel Deutschland GmbH
-> =C2=A0 */
-> @@ -1853,6 +1853,7 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table=
- *sgt, unsigned int offset,
-> =C2=A0 * @cmd_meta: command meta to store the scatter list information fo=
-r unmapping
-> =C2=A0 * @hdr: output argument for TSO headers
-> =C2=A0 * @hdr_room: requested length for TSO headers
-> + * @offset: offset into the data from which mapping should start
-> =C2=A0 *
-> =C2=A0 * Allocate space for a scatter gather list and TSO headers and map=
- the SKB
-> =C2=A0 * using the scatter gather list. The SKB is unmapped again when th=
-e page is
-> @@ -1862,18 +1863,20 @@ dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_tab=
-le *sgt, unsigned int offset,
-> =C2=A0 */
-> =C2=A0struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct =
-sk_buff *skb,
-> =C2=A0				=C2=A0=C2=A0 struct iwl_cmd_meta *cmd_meta,
-> -				=C2=A0=C2=A0 u8 **hdr, unsigned int hdr_room)
-> +				=C2=A0=C2=A0 u8 **hdr, unsigned int hdr_room,
-> +				=C2=A0=C2=A0 unsigned int offset)
-> =C2=A0{
-> =C2=A0	struct sg_table *sgt;
-> +	unsigned int n_segments;
-> =C2=A0
-> =C2=A0	if (WARN_ON_ONCE(skb_has_frag_list(skb)))
-> =C2=A0		return NULL;
-> =C2=A0
-> +	n_segments =3D DIV_ROUND_UP(skb->len - offset, skb_shinfo(skb)->gso_siz=
-e);
-> =C2=A0	*hdr =3D iwl_pcie_get_page_hdr(trans,
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 hdr_room + __alignof__(struct sg_table=
-) +
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(struct sg_table) +
-> -				=C2=A0=C2=A0=C2=A0=C2=A0 (skb_shinfo(skb)->nr_frags + 1) *
-> -				=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(struct scatterlist),
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 n_segments * sizeof(struct scatterlist),
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 skb);
-> =C2=A0	if (!*hdr)
-> =C2=A0		return NULL;
-> @@ -1881,11 +1884,11 @@ struct sg_table *iwl_pcie_prep_tso(struct iwl_tra=
-ns *trans, struct sk_buff *skb,
-> =C2=A0	sgt =3D (void *)PTR_ALIGN(*hdr + hdr_room, __alignof__(struct sg_t=
-able));
-> =C2=A0	sgt->sgl =3D (void *)(sgt + 1);
-> =C2=A0
-> -	sg_init_table(sgt->sgl, skb_shinfo(skb)->nr_frags + 1);
-> +	sg_init_table(sgt->sgl, n_segments);
-> =C2=A0
-> =C2=A0	/* Only map the data, not the header (it is copied to the TSO page=
-) */
-> -	sgt->orig_nents =3D skb_to_sgvec(skb, sgt->sgl, skb_headlen(skb),
-> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 skb->data_len);
-> +	sgt->orig_nents =3D skb_to_sgvec(skb, sgt->sgl, offset,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 skb->len - offset);
-> =C2=A0	if (WARN_ON_ONCE(sgt->orig_nents <=3D 0))
-> =C2=A0		return NULL;
-> =C2=A0
-> @@ -1937,7 +1940,8 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans=
- *trans, struct sk_buff *skb,
-> =C2=A0		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr)) + iv_len;
-> =C2=A0
-> =C2=A0	/* Our device supports 9 segments at most, it will fit in 1 page *=
-/
-> -	sgt =3D iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
-> +	sgt =3D iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room,
-> +				snap_ip_tcp_hdrlen + hdr_len + iv_len);
-> =C2=A0	if (!sgt)
-> =C2=A0		return -ENOMEM;
-> =C2=A0
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 60050da54bf2..e6cf83950875 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -1248,7 +1248,8 @@ static void xfer_put(const struct scmi_protocol_handle *ph,
+ }
+ 
+ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
+-				      struct scmi_xfer *xfer, ktime_t stop)
++				      struct scmi_xfer *xfer, ktime_t stop,
++				      bool *ooo)
+ {
+ 	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
+ 
+@@ -1257,7 +1258,7 @@ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
+ 	 * in case of out-of-order receptions of delayed responses
+ 	 */
+ 	return info->desc->ops->poll_done(cinfo, xfer) ||
+-	       try_wait_for_completion(&xfer->done) ||
++	       (*ooo = try_wait_for_completion(&xfer->done)) ||
+ 	       ktime_after(ktime_get(), stop);
+ }
+ 
+@@ -1274,15 +1275,17 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 		 * itself to support synchronous commands replies.
+ 		 */
+ 		if (!desc->sync_cmds_completed_on_ret) {
++			bool ooo = false;
++
+ 			/*
+ 			 * Poll on xfer using transport provided .poll_done();
+ 			 * assumes no completion interrupt was available.
+ 			 */
+ 			ktime_t stop = ktime_add_ms(ktime_get(), timeout_ms);
+ 
+-			spin_until_cond(scmi_xfer_done_no_timeout(cinfo,
+-								  xfer, stop));
+-			if (ktime_after(ktime_get(), stop)) {
++			spin_until_cond(scmi_xfer_done_no_timeout(cinfo, xfer,
++								  stop, &ooo));
++			if (!ooo && !info->desc->ops->poll_done(cinfo, xfer)) {
+ 				dev_err(dev,
+ 					"timed out in resp(caller: %pS) - polling\n",
+ 					(void *)_RET_IP_);
+-- 
+2.47.0
 
 
