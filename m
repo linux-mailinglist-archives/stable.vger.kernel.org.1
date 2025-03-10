@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32DFA5A124
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:57:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0781A59D1C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 607D01893383
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1270A7A2A15
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A9F22FF4E;
-	Mon, 10 Mar 2025 17:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424B018DB24;
+	Mon, 10 Mar 2025 17:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOFtOcR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ju6/M5D2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FCC1C4A24;
-	Mon, 10 Mar 2025 17:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CF82F28;
+	Mon, 10 Mar 2025 17:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629476; cv=none; b=j2Yn6nX1pKx10nUYWJEwbEyWn0za1N0dYg/b/T4FexSU/fqXgVRRV5HcBniagNLpicQsmxcCfOXrZ/3QRmhAOABoYX/whUrb9bT0g9KUinlihCGFL3FqnRX3/nG0VttX8lC9kDkKrn6b2A3Xf3kjWzdpJNwkdGkYWJCZPbGsCUQ=
+	t=1741627087; cv=none; b=SO96VF3cP8RpXdCNsimDttvvgIDK+dxJyTICZAIAXXEt/LovAVP6lCuY2NJEilggbYD/ZLMiFZ+Vrr7sLxgiN+U8VuVI7lc+7KINWHcjisM9+8p+/MY7fQAK7XbDzfwI61KNX/l3LUW7+R7ijaqsdSUXOv/oPDgC74QhaJQZxfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629476; c=relaxed/simple;
-	bh=lnFvfk0qg3VNdwdp5lGHklcmti48l/YJnzIsP2vo+G8=;
+	s=arc-20240116; t=1741627087; c=relaxed/simple;
+	bh=DGOxVxHbbJ1SY0z/XB874Q2gH+84eCcu1dIFRogSyaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgdbpEqZ6KqdH9eAwSh32uahk370K+OoKKTVOHxo7ES3rTM8tnhpdttBgB1wXkfCuNoFPPP815rRxLhCc+2MZpLKFQhxwcCQ1iIjHzQFmkSYht2zwfpE4tfMLFZ9d+hkQa3oJt9zT1+XVht3QgO6pAZkwBejS3MZBXmCzUZ/iuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOFtOcR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E7CC4CEE5;
-	Mon, 10 Mar 2025 17:57:55 +0000 (UTC)
+	 MIME-Version; b=YfpEGEfaX4S2hxVMz0ToIJ0PvI5IZWaeJ9lbEflcaClyssbSpBkSdj+JmTxQyDX6H/zRv2cIVoEx1bE/YO7XU6xV2UE3WFp+abTBhPdZKL8PE7ZFbEUUpa55gglT4gj8E9wPrvSgZMhttgBZsFmZIZKmRMvtMKpwumNDflNiPfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ju6/M5D2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FB0C4CEE5;
+	Mon, 10 Mar 2025 17:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629476;
-	bh=lnFvfk0qg3VNdwdp5lGHklcmti48l/YJnzIsP2vo+G8=;
+	s=korg; t=1741627086;
+	bh=DGOxVxHbbJ1SY0z/XB874Q2gH+84eCcu1dIFRogSyaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOFtOcR8/1maHz4L6zoGY9Jp9oZI+XkFAO1jE1AoYQs0/fcDhFmOMO8EnrtbWGnDj
-	 P0rc6OONTGuf08VDHAvXlJX/HV3WeGCzBM7uIHd/btmTMwDdXORpgcz+RTtY7a3bct
-	 A0ghN66CrURZueSifTafs9VpBvNkZ6XesosOIBKc=
+	b=Ju6/M5D2WERF60mRq+fF4/Vol1v9CPbydc6as6yg91ZHxh6Ctp+BhvMLZ6V9PLg3J
+	 pBNiYzAy/Sa0KIBIXL0oSo8AftcVwp/SNtKTlBQfePm5UlvhQ6C2tdgQ5rx3hkZnUt
+	 kxk+vco75O5eaz3CaLX0wbu0TPwlD2Q3SseU0Nw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 307/620] media: mc: fix endpoint iteration
-Date: Mon, 10 Mar 2025 18:02:33 +0100
-Message-ID: <20250310170557.737138522@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.12 001/269] x86/amd_nb: Use rdmsr_safe() in amd_get_mmconfig_range()
+Date: Mon, 10 Mar 2025 18:02:34 +0100
+Message-ID: <20250310170457.762242525@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-commit fb2bd86270cd0ad004f4c614ba4f8c63a5720e25 upstream.
+commit 14cb5d83068ecf15d2da6f7d0e9ea9edbcbc0457 upstream.
 
-When creating links from a subdev to a sink, the current logic tries to
-iterate over the endpoints of dev's fwnode.
+Xen doesn't offer MSR_FAM10H_MMIO_CONF_BASE to all guests.  This results
+in the following warning:
 
-This might not be correct when the subdev uses a different fwnode
-compared to the dev's fwnode.
+  unchecked MSR access error: RDMSR from 0xc0010058 at rIP: 0xffffffff8101d19f (xen_do_read_msr+0x7f/0xa0)
+  Call Trace:
+   xen_read_msr+0x1e/0x30
+   amd_get_mmconfig_range+0x2b/0x80
+   quirk_amd_mmconfig_area+0x28/0x100
+   pnp_fixup_device+0x39/0x50
+   __pnp_add_device+0xf/0x150
+   pnp_add_device+0x3d/0x100
+   pnpacpi_add_device_handler+0x1f9/0x280
+   acpi_ns_get_device_callback+0x104/0x1c0
+   acpi_ns_walk_namespace+0x1d0/0x260
+   acpi_get_devices+0x8a/0xb0
+   pnpacpi_init+0x50/0x80
+   do_one_initcall+0x46/0x2e0
+   kernel_init_freeable+0x1da/0x2f0
+   kernel_init+0x16/0x1b0
+   ret_from_fork+0x30/0x50
+   ret_from_fork_asm+0x1b/0x30
 
-If, when registering, the subdev's fwnode is not set, the code inside
-v4l2_async_register_subdev will set it to the dev's fwnode.
+based on quirks for a "PNP0c01" device.  Treating MMCFG as disabled is the
+right course of action, so no change is needed there.
 
-To fix this, just use the subdev's fwnode.
+This was most likely exposed by fixing the Xen MSR accessors to not be
+silently-safe.
 
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Fixes: 0d3c81e82da9 ("media: v4l2-mc: add v4l2_create_fwnode_links helpers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 3fac3734c43a ("xen/pv: support selecting safe/unsafe msr accesses")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250307002846.3026685-1-andrew.cooper3@citrix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-mc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/amd_nb.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-mc.c
-+++ b/drivers/media/v4l2-core/v4l2-mc.c
-@@ -321,7 +321,7 @@ int v4l2_create_fwnode_links_to_pad(stru
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -405,7 +405,6 @@ bool __init early_is_amd_nb(u32 device)
  
- 	sink_sd = media_entity_to_v4l2_subdev(sink->entity);
+ struct resource *amd_get_mmconfig_range(struct resource *res)
+ {
+-	u32 address;
+ 	u64 base, msr;
+ 	unsigned int segn_busn_bits;
  
--	fwnode_graph_for_each_endpoint(dev_fwnode(src_sd->dev), endpoint) {
-+	fwnode_graph_for_each_endpoint(src_sd->fwnode, endpoint) {
- 		struct fwnode_handle *remote_ep;
- 		int src_idx, sink_idx, ret;
- 		struct media_pad *src;
+@@ -413,13 +412,11 @@ struct resource *amd_get_mmconfig_range(
+ 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+ 		return NULL;
+ 
+-	/* assume all cpus from fam10h have mmconfig */
+-	if (boot_cpu_data.x86 < 0x10)
++	/* Assume CPUs from Fam10h have mmconfig, although not all VMs do */
++	if (boot_cpu_data.x86 < 0x10 ||
++	    rdmsrl_safe(MSR_FAM10H_MMIO_CONF_BASE, &msr))
+ 		return NULL;
+ 
+-	address = MSR_FAM10H_MMIO_CONF_BASE;
+-	rdmsrl(address, msr);
+-
+ 	/* mmconfig is not enabled */
+ 	if (!(msr & FAM10H_MMIO_CONF_ENABLE))
+ 		return NULL;
 
 
 
