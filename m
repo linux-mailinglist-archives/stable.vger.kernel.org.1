@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-122945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78915A5A21E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D91CA59CAE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE049174C7A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 277B77A8722
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFD8235377;
-	Mon, 10 Mar 2025 18:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC34230BE3;
+	Mon, 10 Mar 2025 17:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7lmt44u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQ/7CgXg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5FF215F49;
-	Mon, 10 Mar 2025 18:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B31522E00A;
+	Mon, 10 Mar 2025 17:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630595; cv=none; b=BYxayIJikTV2DiYwKmKTreSM1sXBKDna13HfDrQBP7UcbEbQNmJOJzaYBmIEg7Xet+w52X9nv+iZf3og637xQyYt+tMAjdgkhm1UVl53L58svxr+Nt+XAJyYvOCOfy52pG0bwyAjICNVrLvdkFArZg5vWOl2ZBC91foi3BF85OY=
+	t=1741626819; cv=none; b=bwbG3q/N7oJoPd0UfwouoHjbwbiGISKE/UbfY4BMZWJ0GS50Qzs/Dc1QOMAkxz7AH2nvQyxy3YUpmDsjMAZG0yiWdN3essOw7ICE5NmMVlYV/lhUw1lgqDFoZ66dsnzNADHDAs43oZS1+s8SBeFJedfKOqe9bumf1qzmx+xiym8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630595; c=relaxed/simple;
-	bh=lFfSTqhWtOaCXW2qwLRQIC9MeJPR7AQS52IP7VSq23I=;
+	s=arc-20240116; t=1741626819; c=relaxed/simple;
+	bh=3pZ5Y4tMmMYTYOLRAK6aQ870PJqhb5Z9OG7Xtik7KN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9LTkatn+UuPOdGklMoy0suoWa2jfNQnJDCAULahpZUYf1agMhpoVx+3SxL3UJ97kMSw/vSZNwmebwsBv7pzu4pRO3NgkKlcVedrLr8RbHAoa7p/4Y02UrW121PHmO+azMOiBEIDhKZJRd7BwSGBKJExLxQHx6LKx2fLgdJY0Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7lmt44u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB32C4CEE5;
-	Mon, 10 Mar 2025 18:16:34 +0000 (UTC)
+	 MIME-Version; b=t1ej3HQKGA3c9T+t4fEZe+XAwtYFqMQQRpEAWUiqITClGl9obhrOqR/oPqnO/xEpMsHQ7MgVfFfOmfgd9v7kKQMMxpwWzqweqjw3DuyMJHsmFH5krK+tz9ovgfAEXGMV6D3INeD88HtFzyfPBDZ8a5T8gBhRznPGANS3I719BME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQ/7CgXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F02C4CEE5;
+	Mon, 10 Mar 2025 17:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630594;
-	bh=lFfSTqhWtOaCXW2qwLRQIC9MeJPR7AQS52IP7VSq23I=;
+	s=korg; t=1741626819;
+	bh=3pZ5Y4tMmMYTYOLRAK6aQ870PJqhb5Z9OG7Xtik7KN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7lmt44uN7fDPNB58zlQJxUTRm1vBt9p7lV44FhYQk6bcWicdsotQSEKPNozMVu6X
-	 /S9p5JD4Sx6zUc3XLaIN9QLAS/v1EQyUf4wMKOqfK8Q6jBde4lsSFMHCDsEde/uwig
-	 v8QfNUFHzL8uGbUJqQ20t216T+GAeqKra++4bdZQ=
+	b=uQ/7CgXgVFYJXGsS4RJ4E6fiClB/cOWj3RfurW6e8ZERUE9JY+EDPUwMT3uYT5Cgu
+	 BfHF5XoXKiL8bH/B33w6fNGk/WVV9DMyEjKcHoT2cTHAQclmwTN7LSkzV7s1SSovra
+	 XgWXcgs439HAkq4EN1ApBl7rElxBms5DSKcOF0cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <dtzq01@gmail.com>,
-	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xinghuo Chen <xinghuo.chen@foxmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 469/620] flow_dissector: Fix handling of mixed port and port-range keys
-Date: Mon, 10 Mar 2025 18:05:15 +0100
-Message-ID: <20250310170604.090632273@linuxfoundation.org>
+Subject: [PATCH 6.13 123/207] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
+Date: Mon, 10 Mar 2025 18:05:16 +0100
+Message-ID: <20250310170452.693360089@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Xinghuo Chen <xinghuo.chen@foxmail.com>
 
-[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
+[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
 
-This patch fixes a bug in TC flower filter where rules combining a
-specific destination port with a source port range weren't working
-correctly.
+The devm_memremap() function returns error pointers on error,
+it doesn't return NULL.
 
-The specific case was when users tried to configure rules like:
-
-tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
-dst_port 5000 src_port 2000-3000 action drop
-
-The root cause was in the flow dissector code. While both
-FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
-were being set correctly in the classifier, the __skb_flow_dissect_ports()
-function was only populating one of them: whichever came first in
-the enum check. This meant that when the code needed both a specific
-port and a port range, one of them would be left as 0, causing the
-filter to not match packets as expected.
-
-Fix it by removing the either/or logic and instead checking and
-populating both key types independently when they're in use.
-
-Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
-Reported-by: Qiang Zhang <dtzq01@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
-Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
+Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/flow_dissector.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ drivers/hwmon/xgene-hwmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index a1efbd0f2ad32..7dfc7ac0624d8 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -725,23 +725,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
- 			 void *target_container, const void *data,
- 			 int nhoff, u8 ip_proto, int hlen)
- {
--	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
--	struct flow_dissector_key_ports *key_ports;
-+	struct flow_dissector_key_ports_range *key_ports_range = NULL;
-+	struct flow_dissector_key_ports *key_ports = NULL;
-+	__be32 ports;
+diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
+index 1e3bd129a922d..7087197383c96 100644
+--- a/drivers/hwmon/xgene-hwmon.c
++++ b/drivers/hwmon/xgene-hwmon.c
+@@ -706,7 +706,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
+ 			goto out;
+ 		}
  
- 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
--		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
--	else if (dissector_uses_key(flow_dissector,
--				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
--		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
-+		key_ports = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_PORTS,
-+						      target_container);
-+
-+	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
-+		key_ports_range = skb_flow_dissector_target(flow_dissector,
-+							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
-+							    target_container);
- 
--	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
-+	if (!key_ports && !key_ports_range)
- 		return;
- 
--	key_ports = skb_flow_dissector_target(flow_dissector,
--					      dissector_ports,
--					      target_container);
--	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
--						data, hlen);
-+	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
-+
-+	if (key_ports)
-+		key_ports->ports = ports;
-+
-+	if (key_ports_range)
-+		key_ports_range->tp.ports = ports;
- }
- 
- static void
+-		if (!ctx->pcc_comm_addr) {
++		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
+ 			dev_err(&pdev->dev,
+ 				"Failed to ioremap PCC comm region\n");
+ 			rc = -ENOMEM;
 -- 
 2.39.5
 
