@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-122453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462CBA59FAC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5B1A5A2A2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6BA27A20BD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA7A3175AC2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CACA2236FB;
-	Mon, 10 Mar 2025 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D6623370D;
+	Mon, 10 Mar 2025 18:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDzq0Oe7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iq6qPJvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4CF81E;
-	Mon, 10 Mar 2025 17:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C5222576A;
+	Mon, 10 Mar 2025 18:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628535; cv=none; b=bLh19Nb9P5bvWrpMEJ4D1nwdptNr0BLpGdaAHvf912445FcAPvZ9f1XEK4Q/dMi78Le3mYCkSuB8SusIsUb6OcpIme4HpvhwATIq2AvW4ppoBZSrbSl+jdjeAztKQZxlzovgDRz+q3kt9eE17gqBoUQENjhfenvOjscJBbgAz6I=
+	t=1741630935; cv=none; b=bIl1L8I6tWl9l6oLYP/Bo/tEYDwD3f0nYKbvJE43g8ByJFn4s0QSdg9gsYiyToh8c2uQC0NiSkEEuZWhUrTbkFl4xfbMNPgmbVFiS4+u2kkOFDKu844lL0C0LVXp7/ChBXRvVXuRsrfduccNCQMSIXTTGpSesJEPsj2T0DDX0sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628535; c=relaxed/simple;
-	bh=fEBnFKoMLJBx99TmTGvLwqW9vLd1ymqK2vIHotP01mA=;
+	s=arc-20240116; t=1741630935; c=relaxed/simple;
+	bh=2mmOC3S8YEUIcFYcmdfyTC0HFO2ikpUTQhAC/jtjvS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eM0kUHXy/MWHez2dFCnEb0OXbdge9ohx6MW1QADqE4YzZWYpQ65seuoa7ED+XTy22+7mV3S6lD656u1KAKuxAKnV6ZrQY902yjj6sE4sPTO8Hr4Wqy0bWD4ebF3CgqjXaEmqCTVqk8m0VEL7BhFHKXbt1FJrJBAki5OrmvSszu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDzq0Oe7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74467C4CEE5;
-	Mon, 10 Mar 2025 17:42:14 +0000 (UTC)
+	 MIME-Version; b=qaUfyOqCxQl9+qnKDmkJ3Mu4V+LUiMG6N1OhR7i8RrhKv2aWXcGE5NPj2du5sIaSVmjurbcXmnHGLJsBbFe4LlDic9wGkeVYttzyTKlPJU/ahNU6cMYNb7Y5vEVRukQwYhRyZ2IQ58YuR6osgQlXQf+RJPD7A9s+SYE3JlLN3+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iq6qPJvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D447C4CEE5;
+	Mon, 10 Mar 2025 18:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628534;
-	bh=fEBnFKoMLJBx99TmTGvLwqW9vLd1ymqK2vIHotP01mA=;
+	s=korg; t=1741630935;
+	bh=2mmOC3S8YEUIcFYcmdfyTC0HFO2ikpUTQhAC/jtjvS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDzq0Oe7YSRdwIcrVYcul2+ybJinQSpGRm275+JDPh9SVhpYc80SPPWYllYeCeHpX
-	 oL4MV8C+DS6cIVgv3FjpyHMdgk2ICk5rbicoDcDhTqQF1qyWiuBdvXZ6WXq2gC2xiy
-	 ayTzSkD3XboVQmEm1Ld1aW5RJIrVAJqso9BuiGjs=
+	b=iq6qPJvRxriW7DNbBhF2q+GXvtd0kZjcNaVIBqoydMVRSoFaqTRkA6CRIkDJDNQer
+	 rY0YaDi1sNrClD7fef9DdaJ9/EIvsntXvkm+bHZBe+FyxLi5rA6MNqON/ZJBqfYXeq
+	 d+yBySwIXpktS2SSoSMUxBxp9khq8ech/WiCjpoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zecheng Li <zecheng@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: [PATCH 6.1 059/109] sched/fair: Fix potential memory corruption in child_cfs_rq_on_list
-Date: Mon, 10 Mar 2025 18:06:43 +0100
-Message-ID: <20250310170429.919497036@linuxfoundation.org>
+	Titus Rwantare <titusr@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 558/620] hwmon: (pmbus) Initialise page count in pmbus_identify()
+Date: Mon, 10 Mar 2025 18:06:44 +0100
+Message-ID: <20250310170607.571075058@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zecheng Li <zecheng@google.com>
+From: Titus Rwantare <titusr@google.com>
 
-[ Upstream commit 3b4035ddbfc8e4521f85569998a7569668cccf51 ]
+[ Upstream commit 6b6e2e8fd0de3fa7c6f4f8fe6841b01770b2e7bc ]
 
-child_cfs_rq_on_list attempts to convert a 'prev' pointer to a cfs_rq.
-This 'prev' pointer can originate from struct rq's leaf_cfs_rq_list,
-making the conversion invalid and potentially leading to memory
-corruption. Depending on the relative positions of leaf_cfs_rq_list and
-the task group (tg) pointer within the struct, this can cause a memory
-fault or access garbage data.
+The `pmbus_identify()` function fails to correctly determine the number
+of supported pages on PMBus devices. This occurs because `info->pages`
+is implicitly zero-initialised, and `pmbus_set_page()` does not perform
+writes to the page register if `info->pages` is not yet initialised.
+Without this patch, `info->pages` is always set to the maximum after
+scanning.
 
-The issue arises in list_add_leaf_cfs_rq, where both
-cfs_rq->leaf_cfs_rq_list and rq->leaf_cfs_rq_list are added to the same
-leaf list. Also, rq->tmp_alone_branch can be set to rq->leaf_cfs_rq_list.
+This patch initialises `info->pages` to `PMBUS_PAGES` before the probing
+loop, enabling `pmbus_set_page()` writes to make it out onto the bus
+correctly identifying the number of pages. `PMBUS_PAGES` seemed like a
+reasonable non-zero number because that's the current result of the
+identification process.
 
-This adds a check `if (prev == &rq->leaf_cfs_rq_list)` after the main
-conditional in child_cfs_rq_on_list. This ensures that the container_of
-operation will convert a correct cfs_rq struct.
+Testing was done with a PMBus device in QEMU.
 
-This check is sufficient because only cfs_rqs on the same CPU are added
-to the list, so verifying the 'prev' pointer against the current rq's list
-head is enough.
-
-Fixes a potential memory corruption issue that due to current struct
-layout might not be manifesting as a crash but could lead to unpredictable
-behavior when the layout changes.
-
-Fixes: fdaba61ef8a2 ("sched/fair: Ensure that the CFS parent is added after unthrottling")
-Signed-off-by: Zecheng Li <zecheng@google.com>
-Reviewed-and-tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20250304214031.2882646-1-zecheng@google.com
+Signed-off-by: Titus Rwantare <titusr@google.com>
+Fixes: 442aba78728e7 ("hwmon: PMBus device driver")
+Link: https://lore.kernel.org/r/20250227222455.2583468-1-titusr@google.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/pmbus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index eedbe66e05273..d30e0936cfecc 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3550,15 +3550,17 @@ static inline bool child_cfs_rq_on_list(struct cfs_rq *cfs_rq)
- {
- 	struct cfs_rq *prev_cfs_rq;
- 	struct list_head *prev;
-+	struct rq *rq = rq_of(cfs_rq);
+diff --git a/drivers/hwmon/pmbus/pmbus.c b/drivers/hwmon/pmbus/pmbus.c
+index d0d386990af5e..6366610a90827 100644
+--- a/drivers/hwmon/pmbus/pmbus.c
++++ b/drivers/hwmon/pmbus/pmbus.c
+@@ -103,6 +103,8 @@ static int pmbus_identify(struct i2c_client *client,
+ 		if (pmbus_check_byte_register(client, 0, PMBUS_PAGE)) {
+ 			int page;
  
- 	if (cfs_rq->on_list) {
- 		prev = cfs_rq->leaf_cfs_rq_list.prev;
- 	} else {
--		struct rq *rq = rq_of(cfs_rq);
--
- 		prev = rq->tmp_alone_branch;
- 	}
- 
-+	if (prev == &rq->leaf_cfs_rq_list)
-+		return false;
++			info->pages = PMBUS_PAGES;
 +
- 	prev_cfs_rq = container_of(prev, struct cfs_rq, leaf_cfs_rq_list);
- 
- 	return (prev_cfs_rq->tg->parent == cfs_rq->tg);
+ 			for (page = 1; page < PMBUS_PAGES; page++) {
+ 				if (pmbus_set_page(client, page, 0xff) < 0)
+ 					break;
 -- 
 2.39.5
 
