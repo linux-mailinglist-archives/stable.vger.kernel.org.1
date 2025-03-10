@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1609BA59FA9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB120A5A282
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7BA0188F700
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B9497A848E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA401233716;
-	Mon, 10 Mar 2025 17:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F0922FF4E;
+	Mon, 10 Mar 2025 18:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwIouIO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/mNPnO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C0122D4C3;
-	Mon, 10 Mar 2025 17:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F371BBBFD;
+	Mon, 10 Mar 2025 18:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628520; cv=none; b=cFAA6MEGrIpFzVmiZ1s4grlm5/YQOaFQgOtLgGApMtfCaff9wFd6hj6MKF3gVF7MgdmLKKcUHcb7D/2Si1xjdm6rskIAGpNCViZ9blCfvAo7KTzodAxywkERjQq+RQUkzPmw9vaB+KUCR8B2wlixKuzXLr79rdxkfIR4sgSLL4c=
+	t=1741630845; cv=none; b=VR/YiZbGYpO4w+E7Fh4YCMw/+yNIB6alWe7l3JgiiRQchE4w01Ns0yigj/1s48hjkTXJWBwCfHbyOfIhl1B/q7DjA6YQ4zEvgFQ2X90xcFNvhnS/dOpPbt+sIzfrDf8r2otvp1lfiv1ew1b9sxhG5DvygPieF14jza+CCcq7tRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628520; c=relaxed/simple;
-	bh=hmq7+7UYSUrbskUO8/ynQrF0mVnEYC7NQFEn4HFEo6w=;
+	s=arc-20240116; t=1741630845; c=relaxed/simple;
+	bh=QOudwY9eaw2R3WAr8181oqSYMJDb6QSy8T3ykxNqlf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxwFMDdAMbb6FJyGuLp3gkD/BgDf9K9UL0alcZjyaRqwBtS6dhVjq76mbRoqTRGXywaZnUODO+TLYRGYUuAlxWukMBZCtkTTw0mRe2s9RojKwt1s95ZnETCgDHYHRzTdzpQd12l0MSGuOLogiNHUTM3acq2t624/o7sXpPcM2es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwIouIO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE79CC4CEE5;
-	Mon, 10 Mar 2025 17:41:59 +0000 (UTC)
+	 MIME-Version; b=WUlT+6uJAUeqLsDVXC4cDdHiYyHO4SJdF1+CoIzT92dp2rQP19Wu+D+01VB78rjJqMqH1/JENddR2DKUx0rTUgherP26JWvGdro53BaUl3zOofrdEFKTWOzSB2v4RL+lr+uiwIkBT27TIAv8wPPLXDg5mmYaU2CHngTjbpYnKRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/mNPnO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAEFC4CEE5;
+	Mon, 10 Mar 2025 18:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628520;
-	bh=hmq7+7UYSUrbskUO8/ynQrF0mVnEYC7NQFEn4HFEo6w=;
+	s=korg; t=1741630844;
+	bh=QOudwY9eaw2R3WAr8181oqSYMJDb6QSy8T3ykxNqlf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AwIouIO7r1frcHvxxmawKJPiUUrndTV0rBeOL3WX9uU1zDptOh1MwCw0CCmm7Ywmu
-	 D3Q0sBgMJN5xKpZNeu2zW3hJioHJi0s6p+uHFV+6kqp7cXjp3L5zo+UI0lht7pc8Nj
-	 rZDYNf3eozXgOmY91x2DrooMN+PrsT3CogJ04ZU4=
+	b=O/mNPnO8DcP5YYiKoO4DMhDoe4wu/tuAe72CaYuQoH+DglGobmg6QNNiLM9RUTPik
+	 jAW0eKI4a7mIpckCcgG+YP+ChIIEOkpN4Yhy5T6e1/qE0lzZyQ/adCf6rG7sN8yxdD
+	 u0+OznDNxZBe16rS2z25ifib1tOUlak063Eyftw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com,
-	Oscar Maes <oscmaes92@gmail.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/109] vlan: enforce underlying device type
-Date: Mon, 10 Mar 2025 18:06:38 +0100
-Message-ID: <20250310170429.719504377@linuxfoundation.org>
+Subject: [PATCH 5.15 553/620] HID: google: fix unused variable warning under !CONFIG_ACPI
+Date: Mon, 10 Mar 2025 18:06:39 +0100
+Message-ID: <20250310170607.372711575@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit b33a534610067ade2bdaf2052900aaad99701353 ]
+[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
 
-Currently, VLAN devices can be created on top of non-ethernet devices.
+As reported by the kernel test robot, the following warning occurs:
 
-Besides the fact that it doesn't make much sense, this also causes a
-bug which leaks the address of a kernel function to usermode.
+>> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
+     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+         |                                    ^~~~~~~~~~~~~~~~
 
-When creating a VLAN device, we initialize GARP (garp_init_applicant)
-and MRP (mrp_init_applicant) for the underlying device.
+The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
+Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
+prevents a compiler warning when ACPI is disabled.
 
-As part of the initialization process, we add the multicast address of
-each applicant to the underlying device, by calling dev_mc_add.
-
-__dev_mc_add uses dev->addr_len to determine the length of the new
-multicast address.
-
-This causes an out-of-bounds read if dev->addr_len is greater than 6,
-since the multicast addresses provided by GARP and MRP are only 6
-bytes long.
-
-This behaviour can be reproduced using the following commands:
-
-ip tunnel add gretest mode ip6gre local ::1 remote ::2 dev lo
-ip l set up dev gretest
-ip link add link gretest name vlantest type vlan id 100
-
-Then, the following command will display the address of garp_pdu_rcv:
-
-ip maddr show | grep 01:80:c2:00:00:21
-
-Fix the bug by enforcing the type of the underlying device during VLAN
-device initialization.
-
-Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
-Reported-by: syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/000000000000ca9a81061a01ec20@google.com/
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20250303155619.8918-1-oscmaes92@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-google-hammer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index e40aa3e3641cb..b477ba37a6991 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -131,7 +131,8 @@ int vlan_check_real_dev(struct net_device *real_dev,
- {
- 	const char *name = real_dev->name;
+diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
+index 6a227e07f8943..5f20925bdc21f 100644
+--- a/drivers/hid/hid-google-hammer.c
++++ b/drivers/hid/hid-google-hammer.c
+@@ -267,11 +267,13 @@ static int cbas_ec_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
--	if (real_dev->features & NETIF_F_VLAN_CHALLENGED) {
-+	if (real_dev->features & NETIF_F_VLAN_CHALLENGED ||
-+	    real_dev->type != ARPHRD_ETHER) {
- 		pr_info("VLANs not supported on %s\n", name);
- 		NL_SET_ERR_MSG_MOD(extack, "VLANs not supported on device");
- 		return -EOPNOTSUPP;
++#ifdef CONFIG_ACPI
+ static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+ 	{ "GOOG000B", 0 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
++#endif
+ 
+ #ifdef CONFIG_OF
+ static const struct of_device_id cbas_ec_of_match[] = {
 -- 
 2.39.5
 
