@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B23A59D05
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C55AEA5A276
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21D95188DF72
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36CC57A5455
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824B51A315A;
-	Mon, 10 Mar 2025 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C1722576A;
+	Mon, 10 Mar 2025 18:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlj1qBw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mULaoJka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0FE17C225;
-	Mon, 10 Mar 2025 17:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50944374EA;
+	Mon, 10 Mar 2025 18:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627044; cv=none; b=iXaPzMEgK09D83OSQGuVzC4lRGoEGEjexFe+Ppb9EE+VEP43KZDwSLUBC3Hba6dW4lSQ1pmjLlafZMlGqb/1UJfeoHPWsPpk92twDRddZLRW/kkgQBuy9FZcrcSVjgbFerj1xu+4cYOymLkjMRt4dNvpvtPlkKHWYEcIqTx8O9c=
+	t=1741630827; cv=none; b=JymkNc+4GGkOLUy2Fq2X32LyPap4aIAFvJZICHhauCc4UTxV5A0D2D3ejsaJ/PSAPrXbzCFCUwhcrTQ1Do5mkr35HXD1ff8cVF0UsjyxIZ15lMfZNKD2DiqG7re0zDpK1PcHbLNsDIpKwTELZSL0Oz1/ajviCU8YyDV7wS6Yocw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627044; c=relaxed/simple;
-	bh=PDRbe/vVs6OHFJ+8vUp08TGRBn/Y4r4BS4iIJy1/w2o=;
+	s=arc-20240116; t=1741630827; c=relaxed/simple;
+	bh=SCZpNYYkQfFQRwEqFQlK6I4HWLUFjqrx6tlbJwCiGQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+AvDuNwqrkUJiHIwIF8byf5Pwi4vaE8vBXUTwAYZ7vGWOoa3ETawPdZGD0sdBggUijeXK87GZTr/oQIHX72lCD3J7VLAR/NuG5JIbp2sDnmwPw1OnmEmxyPPBlMrHPJX+6KzS8FbvwRqbY0mvHJYKqeAJc71mrVmz4q4VN2V+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlj1qBw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BBCC4CEED;
-	Mon, 10 Mar 2025 17:17:23 +0000 (UTC)
+	 MIME-Version; b=X9YLkgFH2WedW7M2t3xYre0FPsZOyP2aTe+sl7k651KeKUp8Mt82Q5Juy/TTwwI2ZjrscOzZ8xZYUbaXN+BkgdQf42zrBfVdldWU5pb3mvyq9r1FlY5tfGWQqFyXNiUpfpOlrj+QLoBF2KtXdeXUdz3VahI6UOS+ahB1FbY3ujw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mULaoJka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED46C4AF0B;
+	Mon, 10 Mar 2025 18:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627043;
-	bh=PDRbe/vVs6OHFJ+8vUp08TGRBn/Y4r4BS4iIJy1/w2o=;
+	s=korg; t=1741630827;
+	bh=SCZpNYYkQfFQRwEqFQlK6I4HWLUFjqrx6tlbJwCiGQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlj1qBw9Tqt6upU6DKskdnioH+WYP8iFTfOIt2A2vwAB9Xpk0ZzRL0CjVgykSyMqD
-	 OH/nnvysp/FXlFkaRsZjf3a/BtFQxFnRjKzMDrcoHwsQMJxe6sKBDT8dlftldu/p53
-	 J/8UF+q3NtBgJ3ayj96V/S8uAOqwXNN8LvDZi+kI=
+	b=mULaoJkav0Hd0QlUDtJkqSNJkzLoE8a2IYst2aJzx8f+MG4rBVXaWzMmsDfBvghi0
+	 FQ2LCjtzwxqvx1KkK4gywOrQOYiegJUqZMSNOtWgC79Fz8aOSYxAG1IzYwsRD32UNM
+	 DrwBzfNhkdXP9q5I9mBz3yb4UT1APWbAkXyYJe/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 201/207] iio: adc: ad7606: fix wrong scale available
+	Juergen Christ <jchrist@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 5.15 548/620] s390/traps: Fix test_monitor_call() inline assembly
 Date: Mon, 10 Mar 2025 18:06:34 +0100
-Message-ID: <20250310170455.771922551@linuxfoundation.org>
+Message-ID: <20250310170607.176803736@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit bead181694df16de464ca2392d0cec2cf15fb978 ]
+commit 5623bc23a1cb9f9a9470fa73b3a20321dc4c4870 upstream.
 
-Fix wrong scale available list since only one value is returned:
+The test_monitor_call() inline assembly uses the xgr instruction, which
+also modifies the condition code, to clear a register. However the clobber
+list of the inline assembly does not specify that the condition code is
+modified, which may lead to incorrect code generation.
 
-...
-iio:device1: ad7606b (buffer capable)
-    8 channels found:
-           voltage0:  (input, index: 0, format: le:S16/16>>0)
-           2 channel-specific attributes found:
-                 attr  0: scale value: 0.305176
-                 attr  1: scale_available value: 0.076293
-Fix as:
-           voltage0:  (input, index: 0, format: le:S16/16>>0)
-           2 channel-specific attributes found:
-                 attr  0: scale value: 0.305176
-                 attr  1: scale_available value: 0.076293 0.152588 0.305176
+Use the lhi instruction instead to clear the register without that the
+condition code is modified. Furthermore this limits clearing to the lower
+32 bits of val, since its type is int.
 
-Fixes: 97c6d857041d ("iio: adc: ad7606: rework scale-available to be static")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250129-wip-bl-ad7606_add_backend_sw_mode-v3-3-c3aec77c0ab7@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17248ea03674 ("s390: fix __EMIT_BUG() macro")
+Cc: stable@vger.kernel.org
+Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7606.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/traps.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index e35d55d03d86a..b60be98f877d6 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -1039,7 +1039,7 @@ static int ad7606_read_avail(struct iio_dev *indio_dev,
- 
- 		cs = &st->chan_scales[ch];
- 		*vals = (int *)cs->scale_avail;
--		*length = cs->num_scales;
-+		*length = cs->num_scales * 2;
- 		*type = IIO_VAL_INT_PLUS_MICRO;
- 
- 		return IIO_AVAIL_LIST;
--- 
-2.39.5
-
+--- a/arch/s390/kernel/traps.c
++++ b/arch/s390/kernel/traps.c
+@@ -281,10 +281,10 @@ static void __init test_monitor_call(voi
+ 		return;
+ 	asm volatile(
+ 		"	mc	0,0\n"
+-		"0:	xgr	%0,%0\n"
++		"0:	lhi	%[val],0\n"
+ 		"1:\n"
+-		EX_TABLE(0b,1b)
+-		: "+d" (val));
++		EX_TABLE(0b, 1b)
++		: [val] "+d" (val));
+ 	if (!val)
+ 		panic("Monitor call doesn't work!\n");
+ }
 
 
 
