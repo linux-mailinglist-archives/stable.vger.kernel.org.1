@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-122263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B55A59EAD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2C5A5A23A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15C90188FD1E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDF36175170
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEED2253FE;
-	Mon, 10 Mar 2025 17:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA4E1DE89C;
+	Mon, 10 Mar 2025 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCrDk5cN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os/Yvz9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEA0226D0B;
-	Mon, 10 Mar 2025 17:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE162F28;
+	Mon, 10 Mar 2025 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627996; cv=none; b=qC54pofAm4n7+fQaJGMbOfTtz5XyGhN4ljKzCURCGhjskEbufNF6ED6r/HEV2zICDJqH9paGZtKAtAFSTb2B6ebcKMgSXUAgqve/04OsEIEfe3eLUOxk2K0Z7JEjgAiXQ8yyEfVkaMrV+iBTnLZQ+HjUCAx/GqpkqwFd3gECXO0=
+	t=1741630681; cv=none; b=IMEcQV9g9RPb8cpVNaxxGutcjo2YcGj+B8ycUFGL1UsdP+tWVU0tLZXDGaXYul2tdleoze7a0X1Twr+0SwwL19qC439zGqCaiJH92ssYIsnkhb6w3+rO1C2sjmnvrcfsZEWhiikRY6SnseEpdasmT9Bx1ZWuiu3N4PtjKSlQRUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627996; c=relaxed/simple;
-	bh=ErflIqqbS0aE0EZ8D4MFhlTKh4ugIQ+O1fPxBdfN18s=;
+	s=arc-20240116; t=1741630681; c=relaxed/simple;
+	bh=BLMmwmwh5Cz+NVNca2+wY5iZ4f6OFv+iQkuRhTEClBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P57LHpvr3hbG7aHYkDeRmcuoyGr04fo5P1GPH1+RXG5s6P89oNsbGoR8vDeD8cqEhwlLqnx+E1LJENMB2HqL2P28rH+dsMI2EIaCmL8KavV27FSUtSRwXw8GzvMPtvac8jSSb2S+HiqMWpOhFU5uh+Qq+NE9wxwk369am6QaDe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCrDk5cN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AB3C4CEE5;
-	Mon, 10 Mar 2025 17:33:15 +0000 (UTC)
+	 MIME-Version; b=aavSxlOB5LsAPCbm0Czzao7W2qN9XsKFvMuQxMc+nuo52YAeixHlqp97jwKQwLZ8Og4M7VcSqKN6359bAD1XjBCieZz5laJ38Ud2Pe2JaD2pzHfjBRdiFZ+5V7dCLobFQYD6Q/TRIQ0wjM6H9Db8KTsSjdcUhkSS0UU+d/9J/WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Os/Yvz9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336FBC4CEE5;
+	Mon, 10 Mar 2025 18:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627995;
-	bh=ErflIqqbS0aE0EZ8D4MFhlTKh4ugIQ+O1fPxBdfN18s=;
+	s=korg; t=1741630681;
+	bh=BLMmwmwh5Cz+NVNca2+wY5iZ4f6OFv+iQkuRhTEClBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCrDk5cNGFjyMZ5u4zOeqVihhRGh3N49QUX1RaqCdct6oY1AEitr70rkhgM/HLm8d
-	 x74qN713UQLfkKenj/FgUnKQaKZIhlRM4ofb9Q7P7qSSYPYjTdnBeL9E68P+5UpCzy
-	 WWLLCGKT5bxmOwSY7VBIF0Bl5iTpPcXEyFuhD6ts=
+	b=Os/Yvz9Tnx9NeRy8J8Yfg/QkVBQgdEWIDUZ+v84iJrIoiEqO3XX5Z25ATuNaV9fEu
+	 RulfJxG2Se7ytkho1X9I86Tz7CFBQtnZpc84q85asWnEM6xBUWCfH0SkotfoknO1fM
+	 BdMrDSwyGrqAkEDKmZz2dt6mDIjJI38kH9l6tW3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 051/145] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
+	Florian Meister <fmei@sfs.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 499/620] net: loopback: Avoid sending IP packets without an Ethernet header
 Date: Mon, 10 Mar 2025 18:05:45 +0100
-Message-ID: <20250310170436.796027897@linuxfoundation.org>
+Message-ID: <20250310170605.266217970@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
+[ Upstream commit 0e4427f8f587c4b603475468bb3aee9418574893 ]
 
-The return value of rio_add_net() should be checked.  If it fails,
-put_device() should be called to free the memory and give up the reference
-initialized in rio_add_net().
+After commit 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
+IPv4 neighbors can be constructed on the blackhole net device, but they
+are constructed with an output function (neigh_direct_output()) that
+simply calls dev_queue_xmit(). The latter will transmit packets via
+'skb->dev' which might not be the blackhole net device if dst_dev_put()
+switched 'dst->dev' to the blackhole net device while another CPU was
+using the dst entry in ip_output(), but after it already initialized
+'skb->dev' from 'dst->dev'.
 
-Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Specifically, the following can happen:
+
+    CPU1                                      CPU2
+
+udp_sendmsg(sk1)                          udp_sendmsg(sk2)
+udp_send_skb()                            [...]
+ip_output()
+    skb->dev = skb_dst(skb)->dev
+                                          dst_dev_put()
+                                              dst->dev = blackhole_netdev
+ip_finish_output2()
+    resolves neigh on dst->dev
+neigh_output()
+neigh_direct_output()
+dev_queue_xmit()
+
+This will result in IPv4 packets being sent without an Ethernet header
+via a valid net device:
+
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on enp9s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+22:07:02.329668 20:00:40:11:18:fb > 45:00:00:44:f4:94, ethertype Unknown
+(0x58c6), length 68:
+        0x0000:  8dda 74ca f1ae ca6c ca6c 0098 969c 0400  ..t....l.l......
+        0x0010:  0000 4730 3f18 6800 0000 0000 0000 9971  ..G0?.h........q
+        0x0020:  c4c9 9055 a157 0a70 9ead bf83 38ca ab38  ...U.W.p....8..8
+        0x0030:  8add ab96 e052                           .....R
+
+Fix by making sure that neighbors are constructed on top of the
+blackhole net device with an output function that simply consumes the
+packets, in a similar fashion to dst_discard_out() and
+blackhole_netdev_xmit().
+
+Fixes: 8d7017fd621d ("blackhole_netdev: use blackhole_netdev to invalidate dst entries")
+Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
+Reported-by: Florian Meister <fmei@sfs.com>
+Closes: https://lore.kernel.org/netdev/20250210084931.23a5c2e4@hermes.local/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250220072559.782296-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rapidio/rio-scan.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/loopback.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
- 		dev_set_name(&net->dev, "rnet_%d", net->id);
- 		net->dev.parent = &mport->dev;
- 		net->dev.release = rio_scan_release_dev;
--		rio_add_net(net);
-+		if (rio_add_net(net)) {
-+			put_device(&net->dev);
-+			net = NULL;
-+		}
- 	}
+diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
+index 498e5c8013efb..0160a4f57ce92 100644
+--- a/drivers/net/loopback.c
++++ b/drivers/net/loopback.c
+@@ -243,8 +243,22 @@ static netdev_tx_t blackhole_netdev_xmit(struct sk_buff *skb,
+ 	return NETDEV_TX_OK;
+ }
  
- 	return net;
++static int blackhole_neigh_output(struct neighbour *n, struct sk_buff *skb)
++{
++	kfree_skb(skb);
++	return 0;
++}
++
++static int blackhole_neigh_construct(struct net_device *dev,
++				     struct neighbour *n)
++{
++	n->output = blackhole_neigh_output;
++	return 0;
++}
++
+ static const struct net_device_ops blackhole_netdev_ops = {
+ 	.ndo_start_xmit = blackhole_netdev_xmit,
++	.ndo_neigh_construct = blackhole_neigh_construct,
+ };
+ 
+ /* This is a dst-dummy device used specifically for invalidated
+-- 
+2.39.5
+
 
 
 
