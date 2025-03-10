@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-121779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7EE4A59C67
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CE9A59D8F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10563A8C89
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D13173A567C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D57922D4D0;
-	Mon, 10 Mar 2025 17:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9272309B0;
+	Mon, 10 Mar 2025 17:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rm0pXZrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kx61N/Xr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDC31E519;
-	Mon, 10 Mar 2025 17:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBD5226D0B;
+	Mon, 10 Mar 2025 17:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626604; cv=none; b=CiPR5r/D5KCVZxabE6FHhc93aP9v14Jfe6u7Q3v5q1pLN1X+QcqyoToeyAG10rwRJP2D+0zun3ik8bE7L7P4ITyEQu2+vE7oY4zLs/iV/RNqSj7zZjX3tNCz1uvawQeE8t4SkFkIkI9fyXtVZwFMo1LIgKgFkt+tXCRPdO5G5+8=
+	t=1741627321; cv=none; b=Fr6FTqW6MxPnF5iAyZQlK0TUEwXqaOM86WEtbWhLut7J14rrhKikBHX4M770ItvkAT5WkUQLLMh1OOw96fe/avAkUikuJzk5QUdYqxWNVR528trRWMIRu4ruMnSjbBq9s9Pu1bChxOtYyT33cD6ZpgvhmIJC/4Ck2Irw3tx9jqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626604; c=relaxed/simple;
-	bh=yQ3Fo+g5PKr5ttCGfQ9Cn12uEOBsigEFdJrxfO5Q+6I=;
+	s=arc-20240116; t=1741627321; c=relaxed/simple;
+	bh=rTks+dO1Jd4ZuaS4uV68Y4SM7Lq5jSFwYzfAkr+4o6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dB4zqsvX0cKkDRyI2pBj7qq7tx/5tXFTnHRbj3N3WyP3C1FHcsxB3JJKKto7g6DO5lI2CY6nu056qmWIBaJK/V70sqPRLmTOQNC8NybLX9PpL40rKWxxJ+377ElJDTYyLs1vXFEeilAIbe0jJYwUUzgeHZc5IxATPsGwTzvDLC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rm0pXZrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583C0C4CEE5;
-	Mon, 10 Mar 2025 17:10:04 +0000 (UTC)
+	 MIME-Version; b=QnOMQEz1R8fXnnRgF8jumxPKhX2XvvaqCex26kVWsaEIcfY39Lpnt5Lhh+sxccpZuj5jRBRGYMJVwLgpiM9222VtKIUV3WhDTIPfVt5XNmWtzD6lNMYY0m/Rly8BdnnzcZzU+kFI/LRmpNAST/KHKOEzp/IUsn3+DfkCbKIids0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kx61N/Xr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9621C4CEEC;
+	Mon, 10 Mar 2025 17:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626604;
-	bh=yQ3Fo+g5PKr5ttCGfQ9Cn12uEOBsigEFdJrxfO5Q+6I=;
+	s=korg; t=1741627321;
+	bh=rTks+dO1Jd4ZuaS4uV68Y4SM7Lq5jSFwYzfAkr+4o6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rm0pXZrsDRgqj+D5bJNpUV0hN90kzet/tABrWQrrGlE04MRekDa9k8HZJceX+aeyw
-	 vCWQ9QO4WE2uUEk+OvjTSmaHVyXTFEotrAjynn8Z6NB3JYrNzZeY2lC/JlfDmS8jHB
-	 8vROQCGajgUBR+tvba4MRvoMft8Pmr/cdNPLGMLY=
+	b=Kx61N/XrAHE1MwbpjBFXVtny5EZIeJRSoUSk/zqRX7NHHe7Vlq70buDh2BLCoBBTq
+	 hYLNZ888MzveCyXl6Mr6mkJzzhZOHKZvjqmxA6K0RP/wT8ZIXWNZvbDmNZf5zeLDOS
+	 SsnHEzDK9U7ibTu6OG2WO5C4AkwHTY1wwZN6JlIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oak Zeng <oak.zeng@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 050/207] drm/xe/hmm: Dont dereference struct page pointers without notifier lock
+	Hoku Ishibe <me@hokuishi.be>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 090/269] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
 Date: Mon, 10 Mar 2025 18:04:03 +0100
-Message-ID: <20250310170449.758277082@linuxfoundation.org>
+Message-ID: <20250310170501.301359607@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,223 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Hoku Ishibe <me@hokuishi.be>
 
-commit 0a98219bcc961edd3388960576e4353e123b4a51 upstream.
+commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
 
-The pnfs that we obtain from hmm_range_fault() point to pages that
-we don't have a reference on, and the guarantee that they are still
-in the cpu page-tables is that the notifier lock must be held and the
-notifier seqno is still valid.
+Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
+persistent humming noise when the power_save mode is enabled.
+This issue occurs when the codec enters power saving mode,
+leading to unwanted noise from the speakers.
 
-So while building the sg table and marking the pages accesses / dirty
-we need to hold this lock with a validated seqno.
+This patch adds the affected model (PCI ID 0x1028:0x0962) to the
+power_save denylist to ensure power_save is disabled by default,
+preventing power-off related noise issues.
 
-However, the lock is reclaim tainted which makes
-sg_alloc_table_from_pages_segment() unusable, since it internally
-allocates memory.
+Steps to Reproduce
+1. Boot the system with `snd_hda_intel` loaded.
+2. Verify that `power_save` mode is enabled:
+```sh
+cat /sys/module/snd_hda_intel/parameters/power_save
+````
+output: 10 (default power save timeout)
+3. Wait for the power save timeout
+4. Observe a persistent humming noise from the speakers
+5. Disable `power_save` manually:
+```sh
+echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+````
+6. Confirm that the noise disappears immediately.
 
-Instead build the sg-table manually. For the non-iommu case
-this might lead to fewer coalesces, but if that's a problem it can
-be fixed up later in the resource cursor code. For the iommu case,
-the whole sg-table may still be coalesced to a single contigous
-device va region.
+This issue has been observed on my system, and this patch
+successfully eliminates the unwanted noise. If other users
+experience similar issues, additional reports would be helpful.
 
-This avoids marking pages that we don't own dirty and accessed, and
-it also avoid dereferencing struct pages that we don't own.
-
-v2:
-- Use assert to check whether hmm pfns are valid (Matthew Auld)
-- Take into account that large pages may cross range boundaries
-  (Matthew Auld)
-
-v3:
-- Don't unnecessarily check for a non-freed sg-table. (Matthew Auld)
-- Add a missing up_read() in an error path. (Matthew Auld)
-
-Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
-Cc: Oak Zeng <oak.zeng@intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Acked-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250304173342.22009-3-thomas.hellstrom@linux.intel.com
-(cherry picked from commit ea3e66d280ce2576664a862693d1da8fd324c317)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Hoku Ishibe <me@hokuishi.be>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_hmm.c |  120 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 90 insertions(+), 30 deletions(-)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_hmm.c
-+++ b/drivers/gpu/drm/xe/xe_hmm.c
-@@ -42,6 +42,42 @@ static void xe_mark_range_accessed(struc
- 	}
- }
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2242,6 +2242,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
+ 	/* KONTRON SinglePC may cause a stall at runtime resume */
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
++	/* Dell ALC3271 */
++	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
+ 	{}
+ };
  
-+static int xe_alloc_sg(struct xe_device *xe, struct sg_table *st,
-+		       struct hmm_range *range, struct rw_semaphore *notifier_sem)
-+{
-+	unsigned long i, npages, hmm_pfn;
-+	unsigned long num_chunks = 0;
-+	int ret;
-+
-+	/* HMM docs says this is needed. */
-+	ret = down_read_interruptible(notifier_sem);
-+	if (ret)
-+		return ret;
-+
-+	if (mmu_interval_read_retry(range->notifier, range->notifier_seq)) {
-+		up_read(notifier_sem);
-+		return -EAGAIN;
-+	}
-+
-+	npages = xe_npages_in_range(range->start, range->end);
-+	for (i = 0; i < npages;) {
-+		unsigned long len;
-+
-+		hmm_pfn = range->hmm_pfns[i];
-+		xe_assert(xe, hmm_pfn & HMM_PFN_VALID);
-+
-+		len = 1UL << hmm_pfn_to_map_order(hmm_pfn);
-+
-+		/* If order > 0 the page may extend beyond range->start */
-+		len -= (hmm_pfn & ~HMM_PFN_FLAGS) & (len - 1);
-+		i += len;
-+		num_chunks++;
-+	}
-+	up_read(notifier_sem);
-+
-+	return sg_alloc_table(st, num_chunks, GFP_KERNEL);
-+}
-+
- /**
-  * xe_build_sg() - build a scatter gather table for all the physical pages/pfn
-  * in a hmm_range. dma-map pages if necessary. dma-address is save in sg table
-@@ -50,6 +86,7 @@ static void xe_mark_range_accessed(struc
-  * @range: the hmm range that we build the sg table from. range->hmm_pfns[]
-  * has the pfn numbers of pages that back up this hmm address range.
-  * @st: pointer to the sg table.
-+ * @notifier_sem: The xe notifier lock.
-  * @write: whether we write to this range. This decides dma map direction
-  * for system pages. If write we map it bi-diretional; otherwise
-  * DMA_TO_DEVICE
-@@ -76,38 +113,41 @@ static void xe_mark_range_accessed(struc
-  * Returns 0 if successful; -ENOMEM if fails to allocate memory
-  */
- static int xe_build_sg(struct xe_device *xe, struct hmm_range *range,
--		       struct sg_table *st, bool write)
-+		       struct sg_table *st,
-+		       struct rw_semaphore *notifier_sem,
-+		       bool write)
- {
-+	unsigned long npages = xe_npages_in_range(range->start, range->end);
- 	struct device *dev = xe->drm.dev;
--	struct page **pages;
--	u64 i, npages;
--	int ret;
--
--	npages = xe_npages_in_range(range->start, range->end);
--	pages = kvmalloc_array(npages, sizeof(*pages), GFP_KERNEL);
--	if (!pages)
--		return -ENOMEM;
--
--	for (i = 0; i < npages; i++) {
--		pages[i] = hmm_pfn_to_page(range->hmm_pfns[i]);
--		xe_assert(xe, !is_device_private_page(pages[i]));
--	}
--
--	ret = sg_alloc_table_from_pages_segment(st, pages, npages, 0, npages << PAGE_SHIFT,
--						xe_sg_segment_size(dev), GFP_KERNEL);
--	if (ret)
--		goto free_pages;
--
--	ret = dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE,
--			      DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
--	if (ret) {
--		sg_free_table(st);
--		st = NULL;
-+	struct scatterlist *sgl;
-+	struct page *page;
-+	unsigned long i, j;
-+
-+	lockdep_assert_held(notifier_sem);
-+
-+	i = 0;
-+	for_each_sg(st->sgl, sgl, st->nents, j) {
-+		unsigned long hmm_pfn, size;
-+
-+		hmm_pfn = range->hmm_pfns[i];
-+		page = hmm_pfn_to_page(hmm_pfn);
-+		xe_assert(xe, !is_device_private_page(page));
-+
-+		size = 1UL << hmm_pfn_to_map_order(hmm_pfn);
-+		size -= page_to_pfn(page) & (size - 1);
-+		i += size;
-+
-+		if (unlikely(j == st->nents - 1)) {
-+			if (i > npages)
-+				size -= (i - npages);
-+			sg_mark_end(sgl);
-+		}
-+		sg_set_page(sgl, page, size << PAGE_SHIFT, 0);
- 	}
-+	xe_assert(xe, i == npages);
- 
--free_pages:
--	kvfree(pages);
--	return ret;
-+	return dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE,
-+			       DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
- }
- 
- /**
-@@ -235,16 +275,36 @@ int xe_hmm_userptr_populate_range(struct
- 	if (ret)
- 		goto free_pfns;
- 
--	ret = xe_build_sg(vm->xe, &hmm_range, &userptr->sgt, write);
-+	ret = xe_alloc_sg(vm->xe, &userptr->sgt, &hmm_range, &vm->userptr.notifier_lock);
- 	if (ret)
- 		goto free_pfns;
- 
-+	ret = down_read_interruptible(&vm->userptr.notifier_lock);
-+	if (ret)
-+		goto free_st;
-+
-+	if (mmu_interval_read_retry(hmm_range.notifier, hmm_range.notifier_seq)) {
-+		ret = -EAGAIN;
-+		goto out_unlock;
-+	}
-+
-+	ret = xe_build_sg(vm->xe, &hmm_range, &userptr->sgt,
-+			  &vm->userptr.notifier_lock, write);
-+	if (ret)
-+		goto out_unlock;
-+
- 	xe_mark_range_accessed(&hmm_range, write);
- 	userptr->sg = &userptr->sgt;
- 	userptr->notifier_seq = hmm_range.notifier_seq;
-+	up_read(&vm->userptr.notifier_lock);
-+	kvfree(pfns);
-+	return 0;
- 
-+out_unlock:
-+	up_read(&vm->userptr.notifier_lock);
-+free_st:
-+	sg_free_table(&userptr->sgt);
- free_pfns:
- 	kvfree(pfns);
- 	return ret;
- }
--
 
 
 
