@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-122510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FAD6A59FF4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:45:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB0BA5A017
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:46:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F188B171909
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:45:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DB263AB830
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4A22253FE;
-	Mon, 10 Mar 2025 17:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D512356CB;
+	Mon, 10 Mar 2025 17:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7wuxUbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJ0xyq09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07E722FF40;
-	Mon, 10 Mar 2025 17:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27072356C3;
+	Mon, 10 Mar 2025 17:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628700; cv=none; b=TCAh5BeZJlRsQPf9ZoHde3kHFCMOw5J/uKTYz8r6y40thwV7Dmnm4ZwSFjsVdZjbMHZKKo7NazM5438ONLVM40IXxxt2N3EY4sPE81j4wZfC2Ibsewx7zCVrX3nlwaAmzY7xSXVQqf6A8qZ/AfWwHZ7dpulJtRMYjT1yY96txRE=
+	t=1741628714; cv=none; b=bRyXUzxogeJw8j239lJQOOHa16eX2jFS9laLXbswPBidsd8Wy2ws0tRXqj2dGu7hwM79tM3Yxb3Lyisd+uARDnrwaxZIDUSvtAoRT5jWfwG50/qlL1sBVu9efvKucH6/AufwoTxxH0TlPENNgXFstM4Fxh7PeDSJlg4FglYC9nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628700; c=relaxed/simple;
-	bh=+1DzazQBnn/A1a4rS/sKj+A6gRj6IWzAPV4Wf/XJLSw=;
+	s=arc-20240116; t=1741628714; c=relaxed/simple;
+	bh=BS34qGHapdKo2x9ubnDWtHbDqbuvLCeaaJSvFC4UDQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8uMVgvGT69kCy63yOsZpQ0vUK9ZfJK6hOP7ElopJc3m5o4RpWS+CaW+g5YNU/wa5FxufisXMoDc9nQ6Rdev1YhrpHO5hWIC1z/WKvkvGGitloqVrPqujpAUvvigRS27pe3+lEkbpmLrnSTznExm6k5deWREUpsWiFTwBTe1nDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7wuxUbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68775C4CEE5;
-	Mon, 10 Mar 2025 17:44:59 +0000 (UTC)
+	 MIME-Version; b=Lc6vnjaezAKC2QDF6V7A8MWbBb6GfmCcUp2OjxAEfMeIKBBrfihW2GFlo8bEAkCusXi20pYsVFCWsc+eJruYCopdk4mf7TNGhjjbIPV7VPnRbGmoz1KwKrydsdfP9EC+v6XGzTbiFtepGFWDgwPB723Klo5ru4V5zCzZWYXiV+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJ0xyq09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D992C4CEE5;
+	Mon, 10 Mar 2025 17:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628699;
-	bh=+1DzazQBnn/A1a4rS/sKj+A6gRj6IWzAPV4Wf/XJLSw=;
+	s=korg; t=1741628714;
+	bh=BS34qGHapdKo2x9ubnDWtHbDqbuvLCeaaJSvFC4UDQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7wuxUbHVLKGQIlguF8wNnFC9lKjoWE8wDVLjQ9DPHqCaFhYa1AHRrU5GigjeLsNG
-	 qiOgAVoPMgaBJ4qaqie58bD2s0QklwkgdmAYub8Zt4UK34kV4XvKXNJxAtccJ48jQa
-	 y2viwXdUluoMT8ipf2EBDWclQy2mGsNAgQrUwlwA=
+	b=EJ0xyq09lLIu+Rih1NRs0qz+z/IJe2QHJ/mL6OJ86ThT+6pi0wPp5pec3NUJ60Wp2
+	 Tocw9qTe9E98QWt6cyy5lvopk1DA9nE/z1CSc3qmT2Tf8Qz3dEMNzNADd67YWC1MtT
+	 MUPnGgJ3elG8tR35vJFhDkoZS/OOJ/0SfzNXr8Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 011/620] nbd: dont allow reconnect after disconnect
-Date: Mon, 10 Mar 2025 17:57:37 +0100
-Message-ID: <20250310170546.021871757@linuxfoundation.org>
+Subject: [PATCH 5.15 012/620] pstore/blk: trivial typo fixes
+Date: Mon, 10 Mar 2025 17:57:38 +0100
+Message-ID: <20250310170546.062161202@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,73 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Eugen Hristev <eugen.hristev@linaro.org>
 
-[ Upstream commit 844b8cdc681612ff24df62cdefddeab5772fadf1 ]
+[ Upstream commit 542243af7182efaeaf6d0f4643f7de437541a9af ]
 
-Following process can cause nbd_config UAF:
+Fix trivial typos in comments.
 
-1) grab nbd_config temporarily;
-
-2) nbd_genl_disconnect() flush all recv_work() and release the
-initial reference:
-
-  nbd_genl_disconnect
-   nbd_disconnect_and_put
-    nbd_disconnect
-     flush_workqueue(nbd->recv_workq)
-    if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF, ...))
-     nbd_config_put
-     -> due to step 1), reference is still not zero
-
-3) nbd_genl_reconfigure() queue recv_work() again;
-
-  nbd_genl_reconfigure
-   config = nbd_get_config_unlocked(nbd)
-   if (!config)
-   -> succeed
-   if (!test_bit(NBD_RT_BOUND, ...))
-   -> succeed
-   nbd_reconnect_socket
-    queue_work(nbd->recv_workq, &args->work)
-
-4) step 1) release the reference;
-
-5) Finially, recv_work() will trigger UAF:
-
-  recv_work
-   nbd_config_put(nbd)
-   -> nbd_config is freed
-   atomic_dec(&config->recv_threads)
-   -> UAF
-
-Fix the problem by clearing NBD_RT_BOUND in nbd_genl_disconnect(), so
-that nbd_genl_reconfigure() will fail.
-
-Fixes: b7aa3d39385d ("nbd: add a reconfigure netlink command")
-Reported-by: syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/675bfb65.050a0220.1a2d0d.0006.GAE@google.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250103092859.3574648-1-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 2a03ddbde1e1 ("pstore/blk: Move verify_size() macro out of function")
+Fixes: 17639f67c1d6 ("pstore/blk: Introduce backend for block devices")
+Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+Link: https://lore.kernel.org/r/20250101111921.850406-1-eugen.hristev@linaro.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/pstore/blk.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index d12e9f1721c8e..1b04fd7c6b98a 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2055,6 +2055,7 @@ static void nbd_disconnect_and_put(struct nbd_device *nbd)
- 	flush_workqueue(nbd->recv_workq);
- 	nbd_clear_que(nbd);
- 	nbd->task_setup = NULL;
-+	clear_bit(NBD_RT_BOUND, &nbd->config->runtime_flags);
- 	mutex_unlock(&nbd->config_lock);
+diff --git a/fs/pstore/blk.c b/fs/pstore/blk.c
+index 6093088de49fd..cb5fe2f28c708 100644
+--- a/fs/pstore/blk.c
++++ b/fs/pstore/blk.c
+@@ -89,7 +89,7 @@ static struct pstore_device_info *pstore_device_info;
+ 		_##name_ = check_size(name, alignsize);		\
+ 	else							\
+ 		_##name_ = 0;					\
+-	/* Synchronize module parameters with resuls. */	\
++	/* Synchronize module parameters with results. */	\
+ 	name = _##name_ / 1024;					\
+ 	dev->zone.name = _##name_;				\
+ }
+@@ -121,7 +121,7 @@ static int __register_pstore_device(struct pstore_device_info *dev)
+ 	if (pstore_device_info)
+ 		return -EBUSY;
  
- 	if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF,
+-	/* zero means not limit on which backends to attempt to store. */
++	/* zero means no limit on which backends attempt to store. */
+ 	if (!dev->flags)
+ 		dev->flags = UINT_MAX;
+ 
 -- 
 2.39.5
 
