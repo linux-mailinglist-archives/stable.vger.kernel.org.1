@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F25DA59F4C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6011FA5A29C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D065E164450
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBCBF1895538
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253BA233D72;
-	Mon, 10 Mar 2025 17:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B8022FF4E;
+	Mon, 10 Mar 2025 18:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5a8cvgh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOq7KSS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B1F233731;
-	Mon, 10 Mar 2025 17:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43481C3F34;
+	Mon, 10 Mar 2025 18:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628291; cv=none; b=kpNCQGpk/2Hsj234d8I+Jsbfmx2OSCjEMIvwBMXM6FOYU01r8wlydQtK8v935c9x6S9Exo9JNjFAjPsceY/7EZc5/WWfknpynwWxykT/23Jl4H62gUyEtPMLHjf8aZp7KraAgEcxv/JVnzzw4nimA8eC0ORsMbJrUynyEvlpq30=
+	t=1741630922; cv=none; b=oHrR3kfY0QxYtb1kcuFKMF9GDBKTc3PWlnR1JraHCbrndWLgYOxfqQLAjKArgB9eN8fgGiCcE8gaSIfg5QnoS0uzXpD/EolMBq9znBIQ/I+Ivc6GK4M0PLiR4xEiVH43sdvOP2i0qhHF4W7WYUoyNif8e3rs5WWg/xG00H3WHW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628291; c=relaxed/simple;
-	bh=IVKb3LvF+3JmRR2lBLhuoJEcy1z2BBwtM1tJHmEvLKs=;
+	s=arc-20240116; t=1741630922; c=relaxed/simple;
+	bh=G1br3qEc76hXBnr6DQkQGyiE4wbp7ATZRyMhN540Mn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5KQWm1vCdcEYt0v/nFaOxzt++tZJobHGfKwWNR20mQCciLXXi7t6laFEUHD3Z6necylImARDvxYCAIwVSSjfYdT77SIkHP2QaMgUzvix7SXxvCY43A8R9subtAGOrf47CFbcgiHhaHJmZX0dSGsO2hYTcc9k6J9lwhmRpRTRJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5a8cvgh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE50C4CEEC;
-	Mon, 10 Mar 2025 17:38:11 +0000 (UTC)
+	 MIME-Version; b=N2YhrIgX8wN+nC+kSry+WJvJsrci9lTqsHfu1/sR4/LKNwHJPEH7VbBEDfLazPPn8ioD0AAUOk73sW1CcsvwJv8ckuM9OuFJ2pKkRwGtoKNg9Sc30OFdWWNT4vVlZoI6ISLMdtW4HktUy16SpROtLhMWMh1L2cQTHgEPN0Ea2kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOq7KSS7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E2FC4CEE5;
+	Mon, 10 Mar 2025 18:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628291;
-	bh=IVKb3LvF+3JmRR2lBLhuoJEcy1z2BBwtM1tJHmEvLKs=;
+	s=korg; t=1741630921;
+	bh=G1br3qEc76hXBnr6DQkQGyiE4wbp7ATZRyMhN540Mn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5a8cvghMJ75fJHf3ZDrIrR3vECN/lymzDtOE2CDJcbRUqO4I8h1g2sSpB2QO89a8
-	 JNLRGztV2UqYZBBKZgW3KdH8uQP/vMzVH7JVxWEFns5QJoZCMHxWPVzJPgSgZ/KCzZ
-	 SA2rHp8XzvTDGYMK/bMmwCqX7+zNdj4EZSswG7Uc=
+	b=NOq7KSS7UWVqegf3gGAqLpPrSQePjlFMmyYwm32ydCnA+fab9USbn0KrN7Ry8d4gK
+	 gJbOv6tKINO/Kai49XpAneh+xHi7zXvnOodi7/+8E5hBLRK9bOyXr0beHh1p7afqKL
+	 NDtbdM77JJuW9eIbFB7xbS3VT/Wc6BncfVeoAiC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 132/145] riscv: Save/restore envcfg CSR during CPU suspend
+	qf <quintafeira@tutanota.com>,
+	Christian Heusel <christian@heusel.eu>
+Subject: [PATCH 5.15 580/620] Revert "drivers/card_reader/rtsx_usb: Restore interrupt based detection"
 Date: Mon, 10 Mar 2025 18:07:06 +0100
-Message-ID: <20250310170440.088791382@linuxfoundation.org>
+Message-ID: <20250310170608.431744649@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Christian Heusel <christian@heusel.eu>
 
-commit 05ab803d1ad8ac505ade77c6bd3f86b1b4ea0dc4 upstream.
+commit 2397d61ee45cddb8f3bd3a3a9840ef0f0b5aa843 upstream.
 
-The value of the [ms]envcfg CSR is lost when entering a nonretentive
-idle state, so the CSR must be rewritten when resuming the CPU.
+This reverts commit 235b630eda072d7e7b102ab346d6b8a2c028a772.
 
-Cc: <stable@vger.kernel.org> # v6.7+
-Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240228065559.3434837-4-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+This commit was found responsible for issues with SD card recognition,
+as users had to re-insert their cards in the readers and wait for a
+while. As for some people the SD card was involved in the boot process
+it also caused boot failures.
+
+Cc: stable@vger.kernel.org
+Link: https://bbs.archlinux.org/viewtopic.php?id=303321
+Fixes: 235b630eda07 ("drivers/card_reader/rtsx_usb: Restore interrupt based detection")
+Reported-by: qf <quintafeira@tutanota.com>
+Closes: https://lore.kernel.org/all/1de87dfa-1e81-45b7-8dcb-ad86c21d5352@heusel.eu
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://lore.kernel.org/r/20250224-revert-sdcard-patch-v1-1-d1a457fbb796@heusel.eu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/suspend.h |    1 +
- arch/riscv/kernel/suspend.c      |    4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/misc/cardreader/rtsx_usb.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
---- a/arch/riscv/include/asm/suspend.h
-+++ b/arch/riscv/include/asm/suspend.h
-@@ -14,6 +14,7 @@ struct suspend_context {
- 	struct pt_regs regs;
- 	/* Saved and restored by high-level functions */
- 	unsigned long scratch;
-+	unsigned long envcfg;
- 	unsigned long tvec;
- 	unsigned long ie;
- #ifdef CONFIG_MMU
---- a/arch/riscv/kernel/suspend.c
-+++ b/arch/riscv/kernel/suspend.c
-@@ -11,6 +11,8 @@
- void suspend_save_csrs(struct suspend_context *context)
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -286,7 +286,6 @@ static int rtsx_usb_get_status_with_bulk
+ int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
  {
- 	context->scratch = csr_read(CSR_SCRATCH);
-+	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
-+		context->envcfg = csr_read(CSR_ENVCFG);
- 	context->tvec = csr_read(CSR_TVEC);
- 	context->ie = csr_read(CSR_IE);
+ 	int ret;
+-	u8 interrupt_val = 0;
+ 	u16 *buf;
  
-@@ -32,6 +34,8 @@ void suspend_save_csrs(struct suspend_co
- void suspend_restore_csrs(struct suspend_context *context)
- {
- 	csr_write(CSR_SCRATCH, context->scratch);
-+	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
-+		csr_write(CSR_ENVCFG, context->envcfg);
- 	csr_write(CSR_TVEC, context->tvec);
- 	csr_write(CSR_IE, context->ie);
+ 	if (!status)
+@@ -309,20 +308,6 @@ int rtsx_usb_get_card_status(struct rtsx
+ 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
+ 	}
  
+-	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
+-	/* Cross check presence with interrupts */
+-	if (*status & XD_CD)
+-		if (!(interrupt_val & XD_INT))
+-			*status &= ~XD_CD;
+-
+-	if (*status & SD_CD)
+-		if (!(interrupt_val & SD_INT))
+-			*status &= ~SD_CD;
+-
+-	if (*status & MS_CD)
+-		if (!(interrupt_val & MS_INT))
+-			*status &= ~MS_CD;
+-
+ 	/* usb_control_msg may return positive when success */
+ 	if (ret < 0)
+ 		return ret;
 
 
 
