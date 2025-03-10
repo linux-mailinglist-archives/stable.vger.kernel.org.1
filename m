@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4ABFA5A2A9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7E2A59FBE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E6F63A7073
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF46D16487C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBD61C5D6F;
-	Mon, 10 Mar 2025 18:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6CE2236FB;
+	Mon, 10 Mar 2025 17:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWgiwby2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8V5zS9d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C071156861;
-	Mon, 10 Mar 2025 18:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC23B22D4C3;
+	Mon, 10 Mar 2025 17:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630939; cv=none; b=qNPW0/2rOWnMhODIxj7H5+9jBkuq08l1XOu0v3NGbnvb+GtTPouJKubOYZTK8glTdYBLkHpfemP221S10Aj65zQNdDOhmPg+T9LxYCb568kBsB6maF2vIemdOyzqwvLuIWaAdGKmNcFHktY11vkeT651GY5xKeNY8RFb0vb+kcA=
+	t=1741628590; cv=none; b=TuvovHTdfczxbQk+MMmiABDc2SXHSBtkFScPrrn+y9kZVE6rjdTTfsaDPkNUAHI/mQBR4sliMq5w6usgsGtLk58o6QDy+Jf8jQ/0F/Dir3qesJCL0Y/rmfrF7YdRYXRAWlXgcAvyhxGNJRzYK8jQ75oZ/rJX6TV/Um9F1AKWYeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630939; c=relaxed/simple;
-	bh=7+U6i/4lAiPxk2mQIjcaZreQhOmlC1oEi2l/PtjO01c=;
+	s=arc-20240116; t=1741628590; c=relaxed/simple;
+	bh=Am4TlsNUEE8XvCjl78ti2bZnfX55CXUGpPSS+VcW6nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNOsYu0uVkUqn519d/edkG/qVqpLEj+yqvJdtiTs/Symr8fKh6W9EWZLlqlbYw4NVcYyJ7xNPHMEXgP8v+jzuL+Fgwz2RQmf3RPMKZn780/gSYi4a1P1J863RkgPKDRzUrzDdEFXyvikDBxJzGrhdMv1Xgf1aux8hl0oYIGY3zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWgiwby2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C608C4CEE5;
-	Mon, 10 Mar 2025 18:22:17 +0000 (UTC)
+	 MIME-Version; b=D/62NNs4A/9kAlmNsVp/vnSEUktts0Mqs4WY3daLBbdIjB9cjx1JopJ4EZZgMy9X1zYE4rfy6E3Z/uVCM/zY6iOspWf7N75z4FStgzcT5+CdEdJGjcHFWNemXIZsyiADOZAm5zsNzE4oWBmKMM9pjzqNBN3dXLzejGjn4RDfH98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8V5zS9d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721CFC4CEE5;
+	Mon, 10 Mar 2025 17:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630938;
-	bh=7+U6i/4lAiPxk2mQIjcaZreQhOmlC1oEi2l/PtjO01c=;
+	s=korg; t=1741628589;
+	bh=Am4TlsNUEE8XvCjl78ti2bZnfX55CXUGpPSS+VcW6nM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWgiwby2FFYUzfCz4tos+jUX5Zzi2TMQLukBB6z1kS02hMAHi30QayxXjIWe4nCan
-	 chy4EIaCKNQKuoR4H+CokOJq3xrzoGWtotlsFp38u4xUMyNKNWMtp6w8axiypxMRuq
-	 Ugkq+acbOIbGHsNMR2uvuWPzHL//GIaUwr+Y7pIs=
+	b=R8V5zS9dAoKhyYQUEg6rYY4HdYH3YnSORq1/W1/vTRfEXdBVvq3d3saVlWikaWy6M
+	 j508kD7xlfw6iBUp2LV51h4V2u3/X37ofs2pqgKfYNOVHGDFh9UC1e3NLbLHjiFbJH
+	 qabDwnNe29NuM9wZlIZeIxmdWB2VpLgSOjatPefE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Haoyu Li <lihaoyu499@gmail.com>,
 	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.15 585/620] usb: renesas_usbhs: Flush the notify_hotplug_work
-Date: Mon, 10 Mar 2025 18:07:11 +0100
-Message-ID: <20250310170608.624479339@linuxfoundation.org>
+	Fei Li <fei1.li@intel.com>
+Subject: [PATCH 6.1 088/109] drivers: virt: acrn: hsm: Use kzalloc to avoid info leak in pmcmd_ioctl
+Date: Mon, 10 Mar 2025 18:07:12 +0100
+Message-ID: <20250310170431.065201395@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Haoyu Li <lihaoyu499@gmail.com>
 
-commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
+commit 819cec1dc47cdeac8f5dd6ba81c1dbee2a68c3bb upstream.
 
-When performing continuous unbind/bind operations on the USB drivers
-available on the Renesas RZ/G2L SoC, a kernel crash with the message
-"Unable to handle kernel NULL pointer dereference at virtual address"
-may occur. This issue points to the usbhsc_notify_hotplug() function.
+In the "pmcmd_ioctl" function, three memory objects allocated by
+kmalloc are initialized by "hcall_get_cpu_state", which are then
+copied to user space. The initializer is indeed implemented in
+"acrn_hypercall2" (arch/x86/include/asm/acrn.h). There is a risk of
+information leakage due to uninitialized bytes.
 
-Flush the delayed work to avoid its execution when driver resources are
-unavailable.
-
-Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
+Fixes: 3d679d5aec64 ("virt: acrn: Introduce interfaces to query C-states and P-states allowed by hypervisor")
+Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
 Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
+Acked-by: Fei Li <fei1.li@intel.com>
+Link: https://lore.kernel.org/r/20250130115811.92424-1-lihaoyu499@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/virt/acrn/hsm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -774,6 +774,8 @@ static int usbhs_remove(struct platform_
+--- a/drivers/virt/acrn/hsm.c
++++ b/drivers/virt/acrn/hsm.c
+@@ -49,7 +49,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
+ 	switch (cmd & PMCMD_TYPE_MASK) {
+ 	case ACRN_PMCMD_GET_PX_CNT:
+ 	case ACRN_PMCMD_GET_CX_CNT:
+-		pm_info = kmalloc(sizeof(u64), GFP_KERNEL);
++		pm_info = kzalloc(sizeof(u64), GFP_KERNEL);
+ 		if (!pm_info)
+ 			return -ENOMEM;
  
- 	dev_dbg(&pdev->dev, "usb remove\n");
+@@ -64,7 +64,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
+ 		kfree(pm_info);
+ 		break;
+ 	case ACRN_PMCMD_GET_PX_DATA:
+-		px_data = kmalloc(sizeof(*px_data), GFP_KERNEL);
++		px_data = kzalloc(sizeof(*px_data), GFP_KERNEL);
+ 		if (!px_data)
+ 			return -ENOMEM;
  
-+	flush_delayed_work(&priv->notify_hotplug_work);
-+
- 	/* power off */
- 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
- 		usbhsc_power_ctrl(priv, 0);
+@@ -79,7 +79,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
+ 		kfree(px_data);
+ 		break;
+ 	case ACRN_PMCMD_GET_CX_DATA:
+-		cx_data = kmalloc(sizeof(*cx_data), GFP_KERNEL);
++		cx_data = kzalloc(sizeof(*cx_data), GFP_KERNEL);
+ 		if (!cx_data)
+ 			return -ENOMEM;
+ 
 
 
 
