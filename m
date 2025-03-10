@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-121786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C68A59C49
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DA7A5A1D0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C08DC188BC23
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7FA17192D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334F8231C8D;
-	Mon, 10 Mar 2025 17:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E796231A3B;
+	Mon, 10 Mar 2025 18:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBSU8WhZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUrfMSjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3294231A2A;
-	Mon, 10 Mar 2025 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A13D22576A;
+	Mon, 10 Mar 2025 18:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626625; cv=none; b=uWv1wE60l4nroxIgrGziWZnYJ6qKOB/NkA8xJS5natzA7OR4s5DC7mXHF4ZPBiJzEq9NCNTrQz2VumfzjudJnt8odPrZ7OnWKUUqAtMjcKI9HEHUeoyJmsQ6reRlK3e7i6Ok4EqwmJvd5FfI8MGUG4W1YKpAypzjMC3n8a1i69o=
+	t=1741630430; cv=none; b=Jlr2M5zj/9qt2KXG9AI4Zu4c62PgP9og482CgASPr+WGYLZqNOx6RIkUYNIXwI4zld3Q4QOhUf0xaHraESPt+kSGOhhSi7hM9neH56mxmiSjPLSPQ8pEXTedj5xcgY77eICFv5uIF4qP3ywL5KbQBoP9lUpNAA0PQdFXaTvIcMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626625; c=relaxed/simple;
-	bh=DdRMA6bvAUl3+BltA5lcjc7IsNJijo7JvopzdvLhF4Q=;
+	s=arc-20240116; t=1741630430; c=relaxed/simple;
+	bh=f4bcPVqlQBKz4t+nHpapg4tPpqFDAAaL5VBaXEJYEIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IoF/Ijvlpcsg+2R5XP1o+5S8p52txeALYdGR2f2us4cL5UahDCMvQUhddahlb3Z3mfRKJnz8UmpiLG76tm1aLsulW1xcgVOFUgXSdaGd/2r1cFjtuHFGRJfawVMfIbmnWnAje0umLmP4jzs+jnJ3DZwBnBJ6zNTKkgHw+Wmbgkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBSU8WhZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE16C4CEE5;
-	Mon, 10 Mar 2025 17:10:24 +0000 (UTC)
+	 MIME-Version; b=heNOnx9QPgPhbIxlupQm/JPdv4B37nNfk66XcB5MDKY7OwD2WZ1dekbuA2rtB/113m4rgtWaCGuG3X3e36tBqn/0V2bsxLlKMzVsvRSh8E2+apVzV41gNuhz0bohY8+EuelM5j85cKgoh2+Mcc5w89W64fFg+WlHGXzBhOkADW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUrfMSjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42024C4CEE5;
+	Mon, 10 Mar 2025 18:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626624;
-	bh=DdRMA6bvAUl3+BltA5lcjc7IsNJijo7JvopzdvLhF4Q=;
+	s=korg; t=1741630429;
+	bh=f4bcPVqlQBKz4t+nHpapg4tPpqFDAAaL5VBaXEJYEIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBSU8WhZmG3RPINTZ9CqB7GAnp8k7Eya7/dvvpoDlk+tYvITV++IhklE1UTx1npPC
-	 /KgrGKHO3SfB7BzFlMfIvT4WwsZLObPHCanYTw1rAHm3JOlJ9/7pABPFAYqH7Ctq6o
-	 BHVWEJ7F79aydErFQ+n9HlrDlGE86Pvc5ISwIF6U=
+	b=jUrfMSjLUgvVJ/fxEYMfPQFufoKugveQor2RK9NddRZiQhra3Ouvg8zD+3ubGhvHJ
+	 i3fBLzdL7H6/8FOKJtZkgzKUboVpHqPII4ngLAB2VjiCYjkdPgAJKBOqtnUUMlc1kW
+	 qJ+ZKwygu+vN49XYiFqcYLku3ditv7+KpKFC3Oy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 056/207] drm/xe/userptr: properly setup pfn_flags_mask
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 403/620] ndisc: use RCU protection in ndisc_alloc_skb()
 Date: Mon, 10 Mar 2025 18:04:09 +0100
-Message-ID: <20250310170449.999160091@linuxfoundation.org>
+Message-ID: <20250310170601.499605257@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 475d06e00b7496c7915d87f7ae67af26738e4649 upstream.
+[ Upstream commit 628e6d18930bbd21f2d4562228afe27694f66da9 ]
 
-Currently we just leave it uninitialised, which at first looks harmless,
-however we also don't zero out the pfn array, and with pfn_flags_mask
-the idea is to be able set individual flags for a given range of pfn or
-completely ignore them, outside of default_flags. So here we end up with
-pfn[i] & pfn_flags_mask, and if both are uninitialised we might get back
-an unexpected flags value, like asking for read only with default_flags,
-but getting back write on top, leading to potentially bogus behaviour.
+ndisc_alloc_skb() can be called without RTNL or RCU being held.
 
-To fix this ensure we zero the pfn_flags_mask, such that hmm only
-considers the default_flags and not also the initial pfn[i] value.
+Add RCU protection to avoid possible UAF.
 
-v2 (Thomas):
- - Prefer proper initializer.
-
-Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250226174748.294285-2-matthew.auld@intel.com
-(cherry picked from commit dd8c01e42f4c5c1eaf02f003d7d588ba6706aa71)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: de09334b9326 ("ndisc: Introduce ndisc_alloc_skb() helper.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_hmm.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ net/ipv6/ndisc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_hmm.c
-+++ b/drivers/gpu/drm/xe/xe_hmm.c
-@@ -203,13 +203,20 @@ int xe_hmm_userptr_populate_range(struct
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 63c1420c58249..3972189c09b14 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -417,15 +417,11 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
  {
- 	unsigned long timeout =
- 		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
--	unsigned long *pfns, flags = HMM_PFN_REQ_FAULT;
-+	unsigned long *pfns;
- 	struct xe_userptr *userptr;
- 	struct xe_vma *vma = &uvma->vma;
- 	u64 userptr_start = xe_vma_userptr(vma);
- 	u64 userptr_end = userptr_start + xe_vma_size(vma);
- 	struct xe_vm *vm = xe_vma_vm(vma);
--	struct hmm_range hmm_range;
-+	struct hmm_range hmm_range = {
-+		.pfn_flags_mask = 0, /* ignore pfns */
-+		.default_flags = HMM_PFN_REQ_FAULT,
-+		.start = userptr_start,
-+		.end = userptr_end,
-+		.notifier = &uvma->userptr.notifier,
-+		.dev_private_owner = vm->xe,
-+	};
- 	bool write = !xe_vma_read_only(vma);
- 	unsigned long notifier_seq;
- 	u64 npages;
-@@ -236,19 +243,14 @@ int xe_hmm_userptr_populate_range(struct
- 		return -ENOMEM;
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	struct sock *sk = dev_net(dev)->ipv6.ndisc_sk;
+ 	struct sk_buff *skb;
  
- 	if (write)
--		flags |= HMM_PFN_REQ_WRITE;
-+		hmm_range.default_flags |= HMM_PFN_REQ_WRITE;
+ 	skb = alloc_skb(hlen + sizeof(struct ipv6hdr) + len + tlen, GFP_ATOMIC);
+-	if (!skb) {
+-		ND_PRINTK(0, err, "ndisc: %s failed to allocate an skb\n",
+-			  __func__);
++	if (!skb)
+ 		return NULL;
+-	}
  
- 	if (!mmget_not_zero(userptr->notifier.mm)) {
- 		ret = -EFAULT;
- 		goto free_pfns;
- 	}
+ 	skb->protocol = htons(ETH_P_IPV6);
+ 	skb->dev = dev;
+@@ -436,7 +432,9 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
+ 	/* Manually assign socket ownership as we avoid calling
+ 	 * sock_alloc_send_pskb() to bypass wmem buffer limits
+ 	 */
+-	skb_set_owner_w(skb, sk);
++	rcu_read_lock();
++	skb_set_owner_w(skb, dev_net_rcu(dev)->ipv6.ndisc_sk);
++	rcu_read_unlock();
  
--	hmm_range.default_flags = flags;
- 	hmm_range.hmm_pfns = pfns;
--	hmm_range.notifier = &userptr->notifier;
--	hmm_range.start = userptr_start;
--	hmm_range.end = userptr_end;
--	hmm_range.dev_private_owner = vm->xe;
- 
- 	while (true) {
- 		hmm_range.notifier_seq = mmu_interval_read_begin(&userptr->notifier);
+ 	return skb;
+ }
+-- 
+2.39.5
+
 
 
 
