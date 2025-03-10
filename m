@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBBDA5A253
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB84A59EA7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 372603AB4CC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 727077A5CEC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B951E22A808;
-	Mon, 10 Mar 2025 18:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83332233155;
+	Mon, 10 Mar 2025 17:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJm6Dsc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raKyyzsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783951C3F34;
-	Mon, 10 Mar 2025 18:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4181C226D0B;
+	Mon, 10 Mar 2025 17:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630734; cv=none; b=Bsgq4F3JYQWa9VRNaIgPyI0wWc+JIwQTJplVfnWOrpPzQrP6L/lhzPinkTDzI+hmPhpdSELd6aYLh1ScmuPD+Ea7UYhSpJO0dbJKl1tKofRaBj3vwn3G3noS6rvfbs9SadT+DjkSNFSNxAiz0PMp0bdb3WlJz1RMrS/ILLzeCbs=
+	t=1741627967; cv=none; b=YGo648T2X68g8mLyjeNPW34zRoJDBZ9+GPNJ3yAY8T54z1AI1RLbKH3YFkPyM3WB2DpOtfAx8T6pzE+n/40Sf2ZfcTVaOpy/FTeqRYh9d2KA0HsiTC6c6UmW4UqjyXd+jJRUCE6NmM7BDgPqmt8v3kuYZpyHnV6dLQYDTRW2MEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630734; c=relaxed/simple;
-	bh=OfLPkag+Aiz0gV7wnWWcTIKV+DY0JLWgpsVLayUJeJA=;
+	s=arc-20240116; t=1741627967; c=relaxed/simple;
+	bh=Axfo/L64th7j0VT7l4jJBEE8uC5q4gH2OkQ4vS6j83Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQUgmBMnOynmlgF/RbnY7QyH1miRvv8vPmVDz2QPO0z5G/7IdeXGeZjTMX1H/d1uvAEsRaZyZjgl9IjiKjXCT2P2SlE43gnEKrjZYbTYTug5RKCcyKtTOsxABKuY6hvtiSXNskfEahjXyV3k9+DlAqaxCfI/dvXXm/MAfmsFUyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJm6Dsc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F404AC4CEED;
-	Mon, 10 Mar 2025 18:18:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KqEVclW42xxmyHam/8QBXGsJ0DEyywzgGguSYojq4v+HfZuFEYbl8qnPFmAgXn9IuWPRPtU+Zhste58VEodWNbQoL++/Cciq9Wv8KpF9r5agl2z5aVo+iRv1ZYjY8p3CJvzATFx47cndA5Xf1vYwFjUvdOOMOOl/iN6cz1xiPkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raKyyzsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA11C4CEED;
+	Mon, 10 Mar 2025 17:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630734;
-	bh=OfLPkag+Aiz0gV7wnWWcTIKV+DY0JLWgpsVLayUJeJA=;
+	s=korg; t=1741627967;
+	bh=Axfo/L64th7j0VT7l4jJBEE8uC5q4gH2OkQ4vS6j83Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJm6Dsc4BqUbw3bIHMLIYDpIFcUyt61CU5UuoKECWg/Jqlc2/6nKSwujfc01yvF6i
-	 Vl5FRiVbN3mUla+2We89mgkbybaZXUxBw+RObC8UW5hNyAbYOTLJoy7iqNpA64UX1L
-	 I91iNK7GVo/qTXpgKAVmXcqL5110YTdPrjZ1cL0Y=
+	b=raKyyzszK5Cx8GyMHyWbqSkjaA22PaX4vcwD+Vw3m/Zyfrq52QgbFD86H6T5Y+vTY
+	 tpB7y/tR7EZgPyhnAe3K0MfvQGU/kxITIAaWlJGWhBt4avF6TFj2Wco2KdRhhw3rdf
+	 alLMDOiZGYD2nWaMQarJ/OCm0d10DIgmYXfWRKeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 489/620] ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up
-Date: Mon, 10 Mar 2025 18:05:35 +0100
-Message-ID: <20250310170604.875691972@linuxfoundation.org>
+	Fan Yang <804284660@qq.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.6 042/145] platform/x86: thinkpad_acpi: Add battery quirk for ThinkPad X131e
+Date: Mon, 10 Mar 2025 18:05:36 +0100
+Message-ID: <20250310170436.434297030@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-[ Upstream commit c84e125fff2615b4d9c259e762596134eddd2f27 ]
+commit d0d10eaedcb53740883d7e5d53c5e15c879b48fb upstream.
 
-The issue was caused by dput(upper) being called before
-ovl_dentry_update_reval(), while upper->d_flags was still
-accessed in ovl_dentry_remote().
+Based on the dmesg messages from the original reporter:
 
-Move dput(upper) after its last use to prevent use-after-free.
+[    4.964073] ACPI: \_SB_.PCI0.LPCB.EC__.HKEY: BCTG evaluated but flagged as error
+[    4.964083] thinkpad_acpi: Error probing battery 2
 
-BUG: KASAN: slab-use-after-free in ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
-BUG: KASAN: slab-use-after-free in ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
+Lenovo ThinkPad X131e also needs this battery quirk.
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
- ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
- ovl_link_up fs/overlayfs/copy_up.c:610 [inline]
- ovl_copy_up_one+0x2105/0x3490 fs/overlayfs/copy_up.c:1170
- ovl_copy_up_flags+0x18d/0x200 fs/overlayfs/copy_up.c:1223
- ovl_rename+0x39e/0x18c0 fs/overlayfs/dir.c:1136
- vfs_rename+0xf84/0x20a0 fs/namei.c:4893
-...
- </TASK>
-
-Fixes: b07d5cc93e1b ("ovl: update of dentry revalidate flags after copy up")
-Reported-by: syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=316db8a1191938280eb6
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20250214215148.761147-1-kovalev@altlinux.org
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Fan Yang <804284660@qq.com>
+Tested-by: Fan Yang <804284660@qq.com>
+Co-developed-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250221164825.77315-1-jeffbai@aosc.io
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/copy_up.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 205238c73dbc5..5fc32483afed8 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -537,7 +537,6 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 	err = PTR_ERR(upper);
- 	if (!IS_ERR(upper)) {
- 		err = ovl_do_link(ofs, ovl_dentry_upper(c->dentry), udir, upper);
--		dput(upper);
- 
- 		if (!err) {
- 			/* Restore timestamps on parent (best effort) */
-@@ -545,6 +544,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
- 			ovl_dentry_set_upper_alias(c->dentry);
- 			ovl_dentry_update_reval(c->dentry, upper);
- 		}
-+		dput(upper);
- 	}
- 	inode_unlock(udir);
- 	if (err)
--- 
-2.39.5
-
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -9911,6 +9911,7 @@ static const struct tpacpi_quirk battery
+ 	 * Individual addressing is broken on models that expose the
+ 	 * primary battery as BAT1.
+ 	 */
++	TPACPI_Q_LNV('G', '8', true),       /* ThinkPad X131e */
+ 	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
+ 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
+ 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
 
 
 
