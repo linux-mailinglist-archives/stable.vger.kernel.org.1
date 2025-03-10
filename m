@@ -1,153 +1,279 @@
-Return-Path: <stable+bounces-121708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BA8A594F9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 13:45:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DABFA5957F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 14:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE4023AF9CC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 12:44:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC68164767
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 13:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D376722A7E5;
-	Mon, 10 Mar 2025 12:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E222206A3;
+	Mon, 10 Mar 2025 13:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="BShcHsEC"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wt9tNwfH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2043.outbound.protection.outlook.com [40.107.244.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141E0227EB2
-	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 12:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741610553; cv=none; b=sHVW6W4RKabxhBSmc4AdqPz1jMA0VzyQei3IlmV6fcPJkR9ikBp5EmjtvCRdgBrgxjCmNg0ormEZ0Aty7z2b6Rt8dhGwYWd1W5Mc1c58UYwYKf3vb3mQLR+ACF828VG/ePmneUaF8/D5OUKTomEbzC8szoenhpaMBikCULSOKaM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741610553; c=relaxed/simple;
-	bh=F5Y3TJCFvogHFL1RdUDCuxulwadqr9cQodbJimssnwE=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=rJgECVmJOAwYUYfkw48rowF++9EpuMjSlbIepXnOGl2Gi8ApsiI/7A9sZZUxXTSI7+IxT2Qfi0uy1kY0ZOYQMRRQCT0AOr1i0o0BFqbhcP0z+2w2WAD/8WwopEMuAV7RCxVJLdG/zLaCZ1AgVwpV8LW8cHAXbB86Z8WzFx2hP7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=BShcHsEC; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6fef1d35589so8111567b3.0
-        for <stable@vger.kernel.org>; Mon, 10 Mar 2025 05:42:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1741610551; x=1742215351; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gx4K9UhLW08N8dVLenqqjH2AIylMl5Barvs/GXMgyeM=;
-        b=BShcHsECdI/HRzkvXx8FM8P+eaGbtvwncHHLXHHK1rtjqcWm1lV6LgyBxeSBZI8B8L
-         +mVNrfTBjjzRS8W49Q/eUZd3pYGdspb114WbcV5m3E810+PQlcNtx4V0vGoCEE7tzhQb
-         sC05SabbcdO4I3FqshcRv9e7c6DayC8cFVRJYzlozcr6yPcsIkLceyHQOHH1eT127K0e
-         uPY4vFQVeti0rPYSDz1soJ06wv4kowguCuF0S8HJYJqsAm3Ham6FUSS5ZjQNDBj1Ckgu
-         rUDbS+d9NrGnuEmjzvKDZ8rlO4pcTK8OuolqsHCf5PpQBuwVv06NB6Nkf1JsynWgFRUU
-         q+vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741610551; x=1742215351;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gx4K9UhLW08N8dVLenqqjH2AIylMl5Barvs/GXMgyeM=;
-        b=mNJKbx+Daw/HdMJ2Vuq/ohrkqrVs/DwbYUyzOPzu+fgWCqxgWbSpC0L8SvQ/L9N/jH
-         WYS2RhNRi17MhoaBOKLWbYADe3DTnGS4A4pRMYUXVCiZBybs9f90YhbSv0LZYyDk58wR
-         bHpKPJ7f4z6y8TqiZbjOSkPRdEHiMgGevsfAiZmcM88IpuPsvqapnqRLpkK0bjkilBlc
-         kyT+JX+JiEo5kHDA8yYe26EB9u7Xwg6QxGUN2BQxLcrLIeGaAx3FO45wqkX9Wlt0ZBME
-         hW7YPaggSyglgeUJ5/PJ8jQxwFF47zAqulSJGuwHEhlHBIfjnTe5KRITtR328mPVCUb4
-         rw+A==
-X-Forwarded-Encrypted: i=1; AJvYcCV5CAxBpf9lnZt9LvUE9+KEBLd33P0gT1zaDP3Zu3EYYl+5VPhrGf4u4H9BlDCqb9kyoWgz4zE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXbP5sQCi4ohb8jrFnh50TLXj6PNK4U3S4Zq4MZ6nE1ft4ue6I
-	oQo5NQUHNTNaik3C5ZjRTVQxhjaam9V5VTfg8r+wA1GvRhQy5l1KT9klEyV6O3ROt50jadDRWOd
-	2bi1AzVUWKXpxy1A4IWqR5ClaVj3JW39Beg/8WBVf0YG0YKNxHS8=
-X-Gm-Gg: ASbGncu514TBnZJRovzitTUrmK7iiIOPrB1a7UgBcHunHfrPK/xX7aw0qflYfE8s2v0
-	g0X8gGvxD84tjTua/odxp8aVoB0RJxX5E6LWheWvGK6o7ThRDoXDagdp3LMnvy9ZNI2UMo7LEcO
-	1stf4d/YXnQYAWuW4YJs1BkpKtkeHkSOOA1xgAH83MZQyp3xc+gXryZcYpfl+U5XmAoRzRQg==
-X-Google-Smtp-Source: AGHT+IF1H9a9c324h623BbWX4MkV2NfLC83ES+TWwy8/pN2MAzIqGnjD4dRkAFI5kIiREYGXJXtHLNrDzGnkffL+MVw=
-X-Received: by 2002:a05:690c:3802:b0:6ef:9e74:c0b8 with SMTP id
- 00721157ae682-6febf2fc7b9mr191831467b3.17.1741610550918; Mon, 10 Mar 2025
- 05:42:30 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 10 Mar 2025 05:42:29 -0700
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 10 Mar 2025 05:42:29 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB96E1ADC7F
+	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 13:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741611693; cv=fail; b=DMWTYyXNmUlKd1SYLQjwpeZfDkPqIFhR+oZsBAszhwtFjZXDb0KSqlNHhhTCBJ2d6JnO0Oq0Vb4nIpGW94YJGUr7/fzOPeTSDEczyijqZJqZc61AYGM3QHex8QiG4LnSxmykotrO5Mrof6inbFKsDwkSDwzAHwhX7oSS31WiieU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741611693; c=relaxed/simple;
+	bh=+bzlPzjPrs6cgwgBKGATYjDWhzZ/sMjWD6Jl080APxI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=SG0MeHYBylsPuENE7a+QA38q5pYK3HszFaFT75Mt8+quZnYr7p2gK82d/SQq4VsUZdmLsfeBZotLk9c0JoPSDoSvk3lW1peTrhpoZSJIHyyM1EDofXXDFmDiJ2auGLteLcdJYlzLP/SwYMExdeEZbU50euCogaZXXf3EzlJCq14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wt9tNwfH; arc=fail smtp.client-ip=40.107.244.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qr1JnYoKN2UMq/KfnO7ZqE6E3MyeDWbXFca7HgO0H0Es6mpSO4+S3uGpco56pJwHTlsVedp2yPn7a4jKgw6RxDe6hbqBv2N46fYbjWXvTTPBxUsivqg9LsFwzo4iGe/JhG3k412mfiF+QykPtXXmrLe+UCGuIzG9Ei2PwGOhQNnWUlZbJwoM1jj1An395rkvjYABMNugOznZ8vCl3nUH7Khwpx7rJ0k0wz6gzoU1ovBA86EFWG8A+35e+05n2uBZVo5aSGjoz+pvLkSZwhklK9jIHjuQLUM9HQKaYHdVOB1H+TQjdSzJWqZ4GvIkjjXsuWOnpXJFRj+8sQ32jgCuvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SKfJY2qhhehgh+mG9wIC/Jb/LJcN4lujIh5kgoPY4IY=;
+ b=LzPuCHCAO2fJ6ts/2WhzteQ81s1fHtHQWScsLPqItVA/9jXrd8mQeiiZiDuUqQsxSsrIMkfH2pKtu53/Jk3415yClkbK4RfgGqNBUdy6B+w3XC4itI079fPzzPn0mXD44QnJvqBPK36Gq5ey+IYkn85L3NFrDp/6Noub0wPNA+ZlsQ66e6cFAfmUdZitZ+xcmSXTQgI5uiaUlyUhb0YOrqIGxNQMUZWiw41h4SPeYRlBff4okDK/2zdHK+e0E0UcicvUQMZmPOzo/d5iRLja8QgTKRf3KEOafKYspSo5HRYwlv2V2Q+t7Y5tAAbt1+Kh7DwQ34vmcgaPJ9na0NQivQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SKfJY2qhhehgh+mG9wIC/Jb/LJcN4lujIh5kgoPY4IY=;
+ b=Wt9tNwfHx1Bh2OIspu4bymGPMdaRaNJUZz5w1kROSePxaZYQJqtROa5FvSOhHXVrw89mQcZlEf2nX/s1uOJ2FRYvuFTYwQ0uRN2jPXZeJ41RkxO31i/cFce5932BcYEPirLuBNTyvaPNA9aHubdHXRlToETvfSdId3aadg/R1i0=
+Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
+ by DS4PR12MB9659.namprd12.prod.outlook.com (2603:10b6:8:27f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Mon, 10 Mar
+ 2025 13:01:25 +0000
+Received: from CO6PR12MB5489.namprd12.prod.outlook.com
+ ([fe80::5f4:a2a9:3d28:3282]) by CO6PR12MB5489.namprd12.prod.outlook.com
+ ([fe80::5f4:a2a9:3d28:3282%4]) with mapi id 15.20.8511.026; Mon, 10 Mar 2025
+ 13:01:25 +0000
+From: "Lin, Wayne" <Wayne.Lin@amd.com>
+To: "imre.deak@intel.com" <imre.deak@intel.com>
+CC: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, Lyude
+ Paul <lyude@redhat.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] drm/dp_mst: Fix locking when skipping CSN before topology
+ probing
+Thread-Topic: [PATCH] drm/dp_mst: Fix locking when skipping CSN before
+ topology probing
+Thread-Index: AQHbj482QRprfF/0iEK8Px6Ys6YLELNsC6BwgAAsaoCAAB6fMA==
+Date: Mon, 10 Mar 2025 13:01:25 +0000
+Message-ID:
+ <CO6PR12MB548903C49BF9AD7F335E3EC8FCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
+References: <20250307183152.3822170-1-imre.deak@intel.com>
+ <CO6PR12MB5489FF5590A559FD1B48A34EFCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
+ <Z87GNTziGPAl6UCv@ideak-desk.fi.intel.com>
+In-Reply-To: <Z87GNTziGPAl6UCv@ideak-desk.fi.intel.com>
+Accept-Language: en-US, zh-TW
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=53778b97-bbae-46c6-a1db-d46197d1c55e;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
+ Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-03-10T12:49:52Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Tag=10,
+ 0, 1, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|DS4PR12MB9659:EE_
+x-ms-office365-filtering-correlation-id: 4891fe14-d015-4341-f5ed-08dd5fd3aa21
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?VId/MQ2uhESY4CFk5U7JI7xe7m3kV4yYnZT1rDCb4T35BPJimz8qgtzkpViG?=
+ =?us-ascii?Q?UXzb6gk94cEYgB6VV/CzY0kzH8lBjqZPC7DZN6rt+sLc6ixJlZkXPSpsqLBE?=
+ =?us-ascii?Q?tNlpqD2Dqmc7VgBPXFuCTneKz7kaUEKpoTbUgXheFIncQPPQoM7d+9HZrtwB?=
+ =?us-ascii?Q?/cJnX6oC+mMb+8Xn2D1VmpK8TJA+rl39NmPR+BVOnOQXWJCCgeMvJ5ymKQ2e?=
+ =?us-ascii?Q?4IJJQ9/+gZYR87mb9rBGDDZUfjfeifcxLwFzpTS+ZGzMuhuj6/VZv5EAekTK?=
+ =?us-ascii?Q?3yRepGhGx8SbNrLIya61XycSeFY2zgTwPY7H9UtpWjGYg5hLehhCNlQiH6ly?=
+ =?us-ascii?Q?KwvfVguu5ize6voxXFTCyz1HFVTCAPPb7a50KS1ZswgYcQ05jPhWPwFG8nOk?=
+ =?us-ascii?Q?Q3STvYBnIUQErgwd/zpgOuxpYQiX6EIKby4kjdt2p7UBsL5BgVoFxG63L8VX?=
+ =?us-ascii?Q?AE1+ThlL8i68EdDvJ1lCNj0uWjqYaXssJ5zmB3O+5I1fo4XjMA6oDQQdpwRI?=
+ =?us-ascii?Q?lwMq05faZy9eFU8XmDOE8vGe2Vx3nZs47ia7HqmASBD3PdU0/RyG0rHGJc9G?=
+ =?us-ascii?Q?uPWTIu7VE5P2ckrahjiSSdPLZBsyqodycczTY+CDDyI4cxEP/NlldcyFKFmV?=
+ =?us-ascii?Q?6Kzne0OPUCXqHG2p9DM56WxsrIIEMbhANCb43y5aSBZgtaLvVnyvZ7RDh+XM?=
+ =?us-ascii?Q?fjkKvaVjZpeX0PNTXSLxe+CrmPwgBP/4swrJ/9NYfU7QMRCT9cxWKRT31fp5?=
+ =?us-ascii?Q?vyv+wqRQkjEfJ4hTRRdwjj7o0xEHtyrxJMSJZxZTYviyRnD5JiG823X1XxpD?=
+ =?us-ascii?Q?yA0ap0laRGVnu3qQftjsE4jwYjHS6lep0olvjf42cLApJiadOuEcMc4PogqC?=
+ =?us-ascii?Q?UhkgUqKB4NeZ1jKj4SeWfle04Vcx7mRxkgCoayKzp9tz0PsqYgynkm84tHOg?=
+ =?us-ascii?Q?WLr0E0dDFNwrwY3JSG+YR40erKck7O6GLMuyzVW+XfRGGjuP6+/Pj2ratb2j?=
+ =?us-ascii?Q?zJXN5Oq3NmXpOm/DMh0DD/rMsoQHjAFmHgloqT+wG7NWOJhUvd1z3SBQNmJo?=
+ =?us-ascii?Q?KSIF5tvKvsmss+gc/4jnjI0pGKBHqhxSZTM8a4ErJ5v6ukeOtbTaoKx8f0kB?=
+ =?us-ascii?Q?DjobXB81pYWpwhq5yejY/GGgCU/3d9AuZMSZyGJotPlMPPx77TuolKYa9xoF?=
+ =?us-ascii?Q?AKq6aKxDna3f6PEcX/gUPUWJWy5KYhiO3N5+toCBC55R1FOqEedCIuTP9KZ+?=
+ =?us-ascii?Q?u6p73kXPLivkayd3U3hMon5zasCYD1HRyT7IS5y4VQPKKvOJ9L28dXHeh0xf?=
+ =?us-ascii?Q?/BJ1y97qnj2U+4HrTYhKEYcNW4zva1DLVkzGJOHGAybFcP4XlGEJAd0czdJM?=
+ =?us-ascii?Q?xhZDJNerch0zqQGYr6zsN1d9cHcNIXqBiTCOC/R1t8c7lOmnpfKxmONU/66N?=
+ =?us-ascii?Q?RKD651BZJ0IRq97bduSq9Bo9S9nivzms?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Go4l53jU1WHIwUhAP5rP5BfMSRou+QVskBNCeBtiVY6cDCMpMqUMg11sB/QX?=
+ =?us-ascii?Q?9P/EfzhasRvnJ4XRVqioxfCfEsyrVfKeOZB7c5tWFKEcqyMIKoeKLQjyl+7r?=
+ =?us-ascii?Q?fc6IWjh8wQCZlBGHAMt4Kz5dK837GdJWEenAqE1bsjqz9WcsyN3dXS3rH4LY?=
+ =?us-ascii?Q?yE05dEiveO6eMcWJi067wRHUnpEk2v62dwwAqVVbR6AHkxoAzMxMFMychnNy?=
+ =?us-ascii?Q?lNDw7rg5MA9/MbP/AKwDsy35QhSKfLMaAPvOxXjpt903CjMYyY5+stkWX9/D?=
+ =?us-ascii?Q?jrUS9g0/fzcqTnJZ/7Pd+eCQFr8E1aVuKjXX/8ARs3Z276k3/6arj+pTUFkd?=
+ =?us-ascii?Q?HbU8fEOMRFW45eY5HfmumxjpARaItU7lWMTw4D4buYpgoinodcXsMUY9TNcU?=
+ =?us-ascii?Q?Ah+3mfrANvpOSAGpVVhNsxISk65JjtdWhIGYM6u/2sx8IUS4m62M9BWcnXoA?=
+ =?us-ascii?Q?uO3Ip+BAWZZrainiq09Cg0DFZFMcFJmOC3ly+bRG8815ASzVvpVi+sjWqo0+?=
+ =?us-ascii?Q?JXKkTvrRQ7+ot3x6IudzvwOk+RqwJ5QBSNkF9Yf0V0Cb+0feFlom9oDNaRtK?=
+ =?us-ascii?Q?ojrlRnTIZqiVA0FpcleuNn4WMurRgeY/np3YfGq+YHFMiX7U42oeo4tXfKeE?=
+ =?us-ascii?Q?jKfjtvCYWRuypPTc8aSHkuAYsiGZfG7GIMRMx3V/83xq5Yv6kdOn5HSccDhu?=
+ =?us-ascii?Q?gbheNYMIYVddIhB9K1tfF07Uo2o+RSbEcxpvO+IKBvkqoDlro98poV9cgR6q?=
+ =?us-ascii?Q?3uhCLm8/AhzxwngUTEeE1d8Y5CTt7DUFJ0hjaqTSkeWUQasXvokMzv647UnA?=
+ =?us-ascii?Q?oG9UCztjIeZUK0TGNlh9hefcEaTyX4GAx3jzSBn358fdvUZDkV99DKkYGGOm?=
+ =?us-ascii?Q?ao+ACNvfEKMQLvAiqz1a7j00TvhgHwSCFchlj57f7PAhv4yiqA79qJm4d2AP?=
+ =?us-ascii?Q?mo1vqpVLk9rV48lLVRVZoXJOzxHPEC5+n7LUgxTZZ7+HhieENoarfSBZTsko?=
+ =?us-ascii?Q?JQ8XLKAH8l65YSbT0QPJRoQvOP1feD0BKl4NBnt9j7lYDwPVln6EQBzDzLsP?=
+ =?us-ascii?Q?vhT51h1T4SJdWk/6q2uOpWmLhbY2gxRRwWrjfvDjDsG6yYtLpgUcx8AbPpTW?=
+ =?us-ascii?Q?on84lKtP+Zqz3IerQPDgE6XFvuOLva/Z5YjvOpS8owcOt9efzCd9E4GjCx6p?=
+ =?us-ascii?Q?jB9skqEUxvQHOKMQSUz6SQ/VgRRncS7KK2S+BDeExwypioQaRFyiPnECWo69?=
+ =?us-ascii?Q?ATTdMRiZe30C64h6knHQg+yyYVoIanrQNgZl/OWOxQvlpzmCPOjpy40AFU+b?=
+ =?us-ascii?Q?/Do1CB/+a78wQAfdNiGM5YAVWoGGdbwRo+IMMM3ulJAncg5Akyn4ak1oHlDh?=
+ =?us-ascii?Q?OhEOe0Ybkb67e/yRjrX/xUMsURfa5RJquVene8SSmRkPS6Sr0TfdM6hFN7ZL?=
+ =?us-ascii?Q?BVJx4lRHkFzF5cmbSbGmHFv29p9kocoBUNmNYnU7/TAMW5DK7bW4Be7NENaz?=
+ =?us-ascii?Q?YZKhOw0Zw5tHZblU07zjdnpJA0YdP7rhWIw8WWe+Q1xsL7nu1eIaziIxTCjs?=
+ =?us-ascii?Q?twGcO/wAm1RTmjthRYA=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Mon, 10 Mar 2025 05:42:29 -0700
-X-Gm-Features: AQ5f1Jq84g0r_2i6GmLe0CpOufWeD2Rh2unkM2GCf66wSfUIWs8KVAnOk0Wwpmk
-Message-ID: <CACo-S-2HY43+WQPb6PjO76oktpdN_ODtjKypF-GOwPqZJO7nZQ@mail.gmail.com>
-Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC01LjE1Lnk6IChidWlsZCkgaW1wbGljaQ==?=
-	=?UTF-8?B?dCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiDigJhhY3BpX2dldF9jYWNoZV9pbmZv4oCZOyBkaWQgeW91?=
-	=?UTF-8?B?IG1lLi4u?=
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4891fe14-d015-4341-f5ed-08dd5fd3aa21
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Mar 2025 13:01:25.3160
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DarhhXbcTxxo2EAwJCfvgv6sptMZ1tvj6rakcHfy2zky5kubOoVBzzNEr3Dhzok41btYZHl/+E3CcMiTz+HClg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9659
 
-Hello,
+[Public]
 
-New build issue found on stable-rc/linux-5.15.y:
+> -----Original Message-----
+> From: Imre Deak <imre.deak@intel.com>
+> Sent: Monday, March 10, 2025 7:00 PM
+> To: Lin, Wayne <Wayne.Lin@amd.com>
+> Cc: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org; dri-
+> devel@lists.freedesktop.org; Lyude Paul <lyude@redhat.com>;
+> stable@vger.kernel.org
+> Subject: Re: [PATCH] drm/dp_mst: Fix locking when skipping CSN before top=
+ology
+> probing
+>
+> On Mon, Mar 10, 2025 at 08:59:51AM +0000, Lin, Wayne wrote:
+> >
+> > > -----Original Message-----
+> > > From: Imre Deak <imre.deak@intel.com>
+> > > Sent: Saturday, March 8, 2025 2:32 AM
+> > > To: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org;
+> > > dri- devel@lists.freedesktop.org
+> > > Cc: Lin, Wayne <Wayne.Lin@amd.com>; Lyude Paul <lyude@redhat.com>;
+> > > stable@vger.kernel.org
+> > > Subject: [PATCH] drm/dp_mst: Fix locking when skipping CSN before
+> > > topology probing
+> > >
+> > > The handling of the MST Connection Status Notify message is skipped
+> > > if the probing of the topology is still pending. Acquiring the
+> > > drm_dp_mst_topology_mgr::probe_lock
+> > > for this in
+> > > drm_dp_mst_handle_up_req() is problematic: the task/work this
+> > > function is called from is also responsible for handling MST
+> > > down-request replies (in drm_dp_mst_handle_down_rep()). Thus
+> > > drm_dp_mst_link_probe_work() - holding already probe_lock - could be
+> > > blocked waiting for an MST down-request reply while
+> > > drm_dp_mst_handle_up_req() is waiting for probe_lock while
+> > > processing a CSN message. This leads to the probe work's down-request
+> message timing out.
+> > >
+> > > A scenario similar to the above leading to a down-request timeout is
+> > > handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
+> > > probe_lock and sending down-request messages while a second CSN
+> > > message sent by the sink subsequently is handled by
+> drm_dp_mst_handle_up_req().
+> > >
+> > > Fix the above by moving the logic to skip the CSN handling to
+> > > drm_dp_mst_process_up_req(). This function is called from a work
+> > > (separate from the task/work handling new up/down messages), already
+> > > holding probe_lock. This solves the above timeout issue, since
+> > > handling of down-request replies won't be blocked by probe_lock.
+> > >
+> > > Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is
+> > > not done yet")
+> > > Cc: Wayne Lin <Wayne.Lin@amd.com>
+> > > Cc: Lyude Paul <lyude@redhat.com>
+> > > Cc: stable@vger.kernel.org # v6.6+
+> > > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > > ---
+> > >  drivers/gpu/drm/display/drm_dp_mst_topology.c | 40
+> > > +++++++++++--------
+> > >  1 file changed, 24 insertions(+), 16 deletions(-)
+> > >
+> > > diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > index 8b68bb3fbffb0..3a1f1ffc7b552 100644
+> > > --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> > > @@ -4036,6 +4036,22 @@ static int drm_dp_mst_handle_down_rep(struct
+> > > drm_dp_mst_topology_mgr *mgr)
+> > >       return 0;
+> > >  }
+> > >
+> > > +static bool primary_mstb_probing_is_done(struct
+> > > +drm_dp_mst_topology_mgr
+> > > +*mgr) {
+> > > +     bool probing_done =3D false;
+> > > +
+> > > +     mutex_lock(&mgr->lock);
+> >
+> > Thanks for catching this, Imre!
+> >
+> > Here I think using mgr->lock is not sufficient for determining probing
+> > is done or not by mst_primary->link_address_sent. Since it might still
+> > be probing the rest of the topology with mst_primary probed. Use
+> > probe_lock instead? Thanks!
+>
+> mgr->lock is taken here to guard the mgr->mst_primary access.
+>
+> probe_lock is also held, taken already by the caller in drm_dp_mst_up_req=
+_work().
 
----
- implicit declaration of function =E2=80=98acpi_get_cache_info=E2=80=99; di=
-d you mean
-=E2=80=98acpi_get_system_info=E2=80=99? [-Werror=3Dimplicit-function-declar=
-ation] in
-arch/riscv/kernel/cacheinfo.o (arch/riscv/kernel/cacheinfo.c)
-[logspec:kbuild,kbuild.compiler.error]
----
 
-- dashboard: https://d.kernelci.org/issue/maestro:c4d70565f303a7d7450fbf5ad=
-d7ca4cc80a96112
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  2ae395ef666caf57984ff9d2ad7bca6be851f719
+Oh I see. It looks good to me. Feel free to add:
 
+Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
 
-Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-arch/riscv/kernel/cacheinfo.c:127:23: error: implicit declaration of
-function =E2=80=98acpi_get_cache_info=E2=80=99; did you mean =E2=80=98acpi_=
-get_system_info=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-  127 |                 ret =3D acpi_get_cache_info(cpu, &fw_levels,
-&split_levels);
-      |                       ^~~~~~~~~~~~~~~~~~~
-      |                       acpi_get_system_info
-cc1: some warnings being treated as errors
-  CC      arch/riscv/kernel/patch.o
-  CC      fs/proc/generic.o
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-
-
-# Builds where the incident occurred:
-
-## defconfig on (riscv):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67ced73618018371957dfa8e
-
-## nommu_k210_defconfig on (riscv):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67ced73a18018371957dfa91
-
-
-#kernelci issue maestro:c4d70565f303a7d7450fbf5add7ca4cc80a96112
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
+Thanks!
+>
+> > > +
+> > > +     if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->
+> >mst_primary)) {
+> > > +             probing_done =3D mgr->mst_primary->link_address_sent;
+> > > +             drm_dp_mst_topology_put_mstb(mgr->mst_primary);
+> > > +     }
+> > > +
+> > > +     mutex_unlock(&mgr->lock);
+> > > +
+> > > +     return probing_done;
+> > > +}
 --
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Regards,
+Wayne Lin
 
