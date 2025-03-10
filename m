@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA25DA5A1EA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316C5A59C71
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365203A74FC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05A6188DBC7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D56D234966;
-	Mon, 10 Mar 2025 18:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C908F231A57;
+	Mon, 10 Mar 2025 17:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GvuBHJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U762HFPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1716322576A;
-	Mon, 10 Mar 2025 18:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A451E519;
+	Mon, 10 Mar 2025 17:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630482; cv=none; b=pzwRWI28Hpx4+1uMWUB2mLRcGimjnGXqpv3ZSZg1OtnOIBX197K/nudutPaZD2AT4J8t+X7VL/cSW9PMMhz3afp43aoZ8ynMUxW1i6LVJv6e0xS8LEhUkoymZpFvxC2O/T07BCUhcYnfwGtN0ZtshC6umLHHELZDgXlND5ZJUi8=
+	t=1741626700; cv=none; b=O2VvC9XLcDImfSI/BFzIC7/9myyTYRhm/TDlsUywrqakwPLNhapqLeED5/g1ZNguZjXef7Q26donpNyt74+wuxXYbwdtvU774LS5+aFkmy+UBLChFGOhF27P1oZLaVNW1KobC23GHuYraqGv/s0rxmqqW+8VDwYcMg5SAK3NZqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630482; c=relaxed/simple;
-	bh=bxyVf9YF8ex398v5pUrK/8c3dH+gwVGdOg55qjU6g3g=;
+	s=arc-20240116; t=1741626700; c=relaxed/simple;
+	bh=yrLK4/EAMW64ZsK5FTq2T5QDwkkGkyeq7nMgTsEdy1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ToeGZ7LFo16CoJJcgVmUbpaTALJ517RZHu0GvtrRf+srzYVTsSRwheuUcAg0s7CHdlQv5/k0acwWh0s9P1ULEgMRH6tUug3tyYKn2kiad/wX8KU+odGeSMAkb4SKEJnjPGuXz2HAN22GOIbaGxxpFWsU900Qgu9zCfWDRTbX0kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GvuBHJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D55DC4CEEC;
-	Mon, 10 Mar 2025 18:14:41 +0000 (UTC)
+	 MIME-Version; b=lu4ufnmABFI3VFISmhE/2IHMzeg3mWHqlt3xpB5WVLREQ/QVI84W5R+/ozHPaSAYl6QAaNAC5D5VDcv2yC+ZBV1SWl0C/qc/zs8R5TwSkXWyGQ4zU3DcUB8Cj75mBnE9SFClogG6o8jrZAPAvfbVVAt2hmOd3cDAXYfWMtR75C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U762HFPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBD1C4CEE5;
+	Mon, 10 Mar 2025 17:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630481;
-	bh=bxyVf9YF8ex398v5pUrK/8c3dH+gwVGdOg55qjU6g3g=;
+	s=korg; t=1741626700;
+	bh=yrLK4/EAMW64ZsK5FTq2T5QDwkkGkyeq7nMgTsEdy1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2GvuBHJ+QJim2RpveiOXl/J+Owi+N2bjsLx9ryoh/AoaNOVKCXAjlP7B94yKrQ79p
-	 EC90UpXpgE2soqFobVNqKodxGjwxLx/ULt0XixGf20IWSpMxfJYeP51BEuBlSCWsFl
-	 EE0VoNRZSWEhTzJDYPTMWZGqgrjbSAHfeeL3Fr1k=
+	b=U762HFPkqnObSdvJmM8ET0yg1hz08CeAVA4am1V7s4ivsjwfpqnc4AZL4IaF08S+U
+	 FLYJ0heJgrQaBEiX1Ga4Lin/Raxq9QdfRFFW7qigN239bUduJZYKbfjwmm65rTCWOU
+	 aVOJzA7uHepO2Q6nD90LUmI04vl3DTh/ViPK4vV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"yang@os.amperecomputing.com, Naresh Kamboju" <naresh.kamboju@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: [PATCH 5.15 430/620] arm64: mte: Do not allow PROT_MTE on MAP_HUGETLB user mappings
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 083/207] wifi: iwlwifi: mvm: log error for failures after D3
 Date: Mon, 10 Mar 2025 18:04:36 +0100
-Message-ID: <20250310170602.571340049@linuxfoundation.org>
+Message-ID: <20250310170451.061279580@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-PROT_MTE (memory tagging extensions) is not supported on all user mmap()
-types for various reasons (memory attributes, backing storage, CoW
-handling). The arm64 arch_validate_flags() function checks whether the
-VM_MTE_ALLOWED flag has been set for a vma during mmap(), usually by
-arch_calc_vm_flag_bits().
+[ Upstream commit f8f13ea27fffff51ee257171a8604f944c876fd4 ]
 
-Linux prior to 6.13 does not support PROT_MTE hugetlb mappings. This was
-added by commit 25c17c4b55de ("hugetlb: arm64: add mte support").
-However, earlier kernels inadvertently set VM_MTE_ALLOWED on
-(MAP_ANONYMOUS | MAP_HUGETLB) mappings by only checking for
-MAP_ANONYMOUS.
+We only logged an error in the fast resume path. However, as the
+hardware is being restarted it makes sense to log an error to make it
+easier to understand what is happening.
 
-Explicitly check MAP_HUGETLB in arch_calc_vm_flag_bits() and avoid
-setting VM_MTE_ALLOWED for such mappings.
+Add a new error message into the normal resume path and update the
+error in the fast resume path to match.
 
-Fixes: 9f3419315f3c ("arm64: mte: Add PROT_MTE support to mmap() and mprotect()")
-Cc: <stable@vger.kernel.org> # 5.10.x-6.12.x
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241226174257.df1e451d4928.Ibe286bc010ad7fecebba5650097e16ed22a654e4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: d48ff3ce9225 ("wifi: iwlwifi: mvm: don't dump the firmware state upon RFKILL while suspend")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/mman.h |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/mman.h
-+++ b/arch/arm64/include/asm/mman.h
-@@ -31,9 +31,12 @@ static inline unsigned long arch_calc_vm
- 	 * backed by tags-capable memory. The vm_flags may be overridden by a
- 	 * filesystem supporting MTE (RAM-based).
- 	 */
--	if (system_supports_mte() &&
--	    ((flags & MAP_ANONYMOUS) || shmem_file(file)))
--		return VM_MTE_ALLOWED;
-+	if (system_supports_mte()) {
-+		if ((flags & MAP_ANONYMOUS) && !(flags & MAP_HUGETLB))
-+			return VM_MTE_ALLOWED;
-+		if (shmem_file(file))
-+			return VM_MTE_ALLOWED;
-+	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 4d1daff1e070d..33794780d5c9e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -3523,6 +3523,7 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
+ 	iwl_fw_dbg_read_d3_debug_data(&mvm->fwrt);
  
- 	return 0;
- }
+ 	if (iwl_mvm_check_rt_status(mvm, vif)) {
++		IWL_ERR(mvm, "FW Error occurred during suspend. Restarting.\n");
+ 		set_bit(STATUS_FW_ERROR, &mvm->trans->status);
+ 		iwl_mvm_dump_nic_error_log(mvm);
+ 		iwl_dbg_tlv_time_point(&mvm->fwrt,
+@@ -3695,8 +3696,7 @@ int iwl_mvm_fast_resume(struct iwl_mvm *mvm)
+ 	iwl_fw_dbg_read_d3_debug_data(&mvm->fwrt);
+ 
+ 	if (iwl_mvm_check_rt_status(mvm, NULL)) {
+-		IWL_ERR(mvm,
+-			"iwl_mvm_check_rt_status failed, device is gone during suspend\n");
++		IWL_ERR(mvm, "FW Error occurred during suspend. Restarting.\n");
+ 		set_bit(STATUS_FW_ERROR, &mvm->trans->status);
+ 		iwl_mvm_dump_nic_error_log(mvm);
+ 		iwl_dbg_tlv_time_point(&mvm->fwrt,
+-- 
+2.39.5
+
 
 
 
