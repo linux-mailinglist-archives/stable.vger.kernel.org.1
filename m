@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-122692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B6AA5A0CA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35476A5A0A4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:52:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32975188216E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5B21892162
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C67231A2A;
-	Mon, 10 Mar 2025 17:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E3B231A2A;
+	Mon, 10 Mar 2025 17:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CeU/yEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYPcmNQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8757517CA12;
-	Mon, 10 Mar 2025 17:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB8822AE7C;
+	Mon, 10 Mar 2025 17:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629224; cv=none; b=Qt90mjDobU5AZbvH4inWhYqHWsw+a01xXXpy9kE7cCe49SM/3H04bPoioglZv6WvKG0UFOmcXyuUvAF4d/Zm2vfqqOuitloUpWtcv3qK4V/xR7zQu91RHhI3bBAY55ZhBeG74ahgMv4XdgZ71/+v9MTIbvi9ZylMEizQbEcuit0=
+	t=1741629127; cv=none; b=u8tBYUygIc81Emtr0qAx7pk37sNdFSSXkaAeyzoq3K+nHLEiWe1TwG3sGLxXXr691fZKqozrDnXUwzzt9xW0U7zTuStySLt18lcreWi+BOxw/zR+dg4p5B76lVsisXZvqPIcEtFB1iUML9OGqP4ZBWuZDM6u1+WECtmc8iW1SUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629224; c=relaxed/simple;
-	bh=FrnwbTMpN3QeLIwZRXDZ9EEyspJv8vo5DNP6Lvo1Wgo=;
+	s=arc-20240116; t=1741629127; c=relaxed/simple;
+	bh=RjwPNjzL8ekAadipPT3FO8Apk/oSH1XErcziTpzntUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSLscxjZff9wb8aXu1U4dIb3h/O/FOTNlspJ+W4eSzmZcgyz5BG8K4iYAqV/QuQ1mcQpiJ/YhyXMF3n1AU5rFkXGZKXvCCbzkgC2XmIUmPMNuWXmumhhzx8eKL0TKbQmDCUXxFOSkDuOstA61Sz1j9uHdpN4W8QP1nVGRftwClM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CeU/yEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124D3C4CEE5;
-	Mon, 10 Mar 2025 17:53:43 +0000 (UTC)
+	 MIME-Version; b=YLwC9g7zQGJ2ETrPTRCZU9YlO/diQr+Jc8rp7h4uHZobxKOFAhnXJLW86ec5GWjLscePGXrQPR8W1BNYiCrHQK/p7C663WRRdp+Mp8T13NcYZxZjqGZ/gT/tCZyTCzDG55frw6WiTTqvR8L5Sna4wl9cUb8WM2isO6uDTuCaDHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYPcmNQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFB3C4CEE5;
+	Mon, 10 Mar 2025 17:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629224;
-	bh=FrnwbTMpN3QeLIwZRXDZ9EEyspJv8vo5DNP6Lvo1Wgo=;
+	s=korg; t=1741629126;
+	bh=RjwPNjzL8ekAadipPT3FO8Apk/oSH1XErcziTpzntUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1CeU/yEaf9usn6TgFbRicZMBRXom4RI6fhVu3YGWnrAqgnGLO22j3du7Zbh5Ys5lr
-	 YPuQcP0eeItaUhmbJXFQJOI9i9R/EXexDqcEBZKnWkGaXWgNvOycdQvvKSCGY9W8pX
-	 SOwZYBeSLmzcrxUe4GJ7/EKjvvYox/MEJ2H4arHU=
+	b=xYPcmNQcubh0bU0u34aUrfrV3ibEYOtSKW4YjJ2PrThnvDxv3ekgspGUhmJ31rgj/
+	 HpJhMvnxQyjk4ZbZM3SnIaEr9DC8lRLOy87o7tUAQf4Uo4GHM/lXcaU0VKCoCAoXV6
+	 67L7VOwfv/Fg96fFbvsYOvQcQT9d+PXeB5HZEosM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 178/620] kconfig: add warn-unknown-symbols sanity check
-Date: Mon, 10 Mar 2025 18:00:24 +0100
-Message-ID: <20250310170552.648717703@linuxfoundation.org>
+Subject: [PATCH 5.15 179/620] kconfig: require a space after # for valid input
+Date: Mon, 10 Mar 2025 18:00:25 +0100
+Message-ID: <20250310170552.688689370@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,113 +65,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 7cd343008b967423b06af8f6d3236749c67d12e8 ]
+[ Upstream commit 4d137ab0107ead0f2590fc0314e627431e3b9e3f ]
 
-Introduce KCONFIG_WARN_UNKNOWN_SYMBOLS environment variable,
-which makes Kconfig warn about unknown config symbols.
+Currently, when an input line starts with '#', (line + 2) is passed to
+memcmp() without checking line[1].
 
-This is especially useful for continuous kernel uprevs when
-some symbols can be either removed or renamed between kernel
-releases (which can go unnoticed otherwise).
+It means that line[1] can be any arbitrary character. For example,
+"#KCONFIG_FOO is not set" is accepted as valid input, functioning the
+same as "# CONFIG_FOO is not set".
 
-By default KCONFIG_WARN_UNKNOWN_SYMBOLS generates warnings,
-which are non-terminal. There is an additional environment
-variable KCONFIG_WERROR that overrides this behaviour and
-turns warnings into errors.
+More importantly, this can potentially lead to a buffer overrun if
+line[1] == '\0'. It occurs if the input only contains '#', as
+(line + 2) points to an uninitialized buffer.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Check line[1], and skip the line if it is not a space.
+
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Stable-dep-of: a409fc1463d6 ("kconfig: fix memory leak in sym_warn_unmet_dep()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/kbuild/kconfig.rst |  9 +++++++++
- scripts/kconfig/confdata.c       | 21 +++++++++++++++++++--
- 2 files changed, 28 insertions(+), 2 deletions(-)
+ scripts/kconfig/confdata.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/kbuild/kconfig.rst b/Documentation/kbuild/kconfig.rst
-index 5967c79c3baa7..eee0d298774ab 100644
---- a/Documentation/kbuild/kconfig.rst
-+++ b/Documentation/kbuild/kconfig.rst
-@@ -54,6 +54,15 @@ KCONFIG_OVERWRITECONFIG
- If you set KCONFIG_OVERWRITECONFIG in the environment, Kconfig will not
- break symlinks when .config is a symlink to somewhere else.
- 
-+KCONFIG_WARN_UNKNOWN_SYMBOLS
-+----------------------------
-+This environment variable makes Kconfig warn about all unrecognized
-+symbols in the config input.
-+
-+KCONFIG_WERROR
-+--------------
-+If set, Kconfig treats warnings as errors.
-+
- `CONFIG_`
- ---------
- If you set `CONFIG_` in the environment, Kconfig will prefix all symbols
 diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
-index 469450b0a5176..033f2882436d3 100644
+index 033f2882436d3..80160aee01ff6 100644
 --- a/scripts/kconfig/confdata.c
 +++ b/scripts/kconfig/confdata.c
-@@ -351,7 +351,11 @@ int conf_read_simple(const char *name, int def)
- 	char *p, *p2;
- 	struct symbol *sym;
- 	int i, def_flags;
-+	const char *warn_unknown;
-+	const char *werror;
- 
-+	warn_unknown = getenv("KCONFIG_WARN_UNKNOWN_SYMBOLS");
-+	werror = getenv("KCONFIG_WERROR");
- 	if (name) {
- 		in = zconf_fopen(name);
- 	} else {
-@@ -441,6 +445,10 @@ int conf_read_simple(const char *name, int def)
- 			if (def == S_DEF_USER) {
- 				sym = sym_find(line + 2 + strlen(CONFIG_));
- 				if (!sym) {
-+					if (warn_unknown)
-+						conf_warning("unknown symbol: %s",
-+							     line + 2 + strlen(CONFIG_));
-+
- 					conf_set_changed(true);
- 					continue;
- 				}
-@@ -475,7 +483,7 @@ int conf_read_simple(const char *name, int def)
- 
- 			sym = sym_find(line + strlen(CONFIG_));
- 			if (!sym) {
--				if (def == S_DEF_AUTO)
-+				if (def == S_DEF_AUTO) {
- 					/*
- 					 * Reading from include/config/auto.conf
- 					 * If CONFIG_FOO previously existed in
-@@ -483,8 +491,13 @@ int conf_read_simple(const char *name, int def)
- 					 * include/config/FOO must be touched.
- 					 */
- 					conf_touch_dep(line + strlen(CONFIG_));
--				else
-+				} else {
-+					if (warn_unknown)
-+						conf_warning("unknown symbol: %s",
-+							     line + strlen(CONFIG_));
-+
- 					conf_set_changed(true);
-+				}
+@@ -434,6 +434,8 @@ int conf_read_simple(const char *name, int def)
+ 		conf_lineno++;
+ 		sym = NULL;
+ 		if (line[0] == '#') {
++			if (line[1] != ' ')
++				continue;
+ 			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
  				continue;
- 			}
- 
-@@ -523,6 +536,10 @@ int conf_read_simple(const char *name, int def)
- 	}
- 	free(line);
- 	fclose(in);
-+
-+	if (conf_warnings && werror)
-+		exit(1);
-+
- 	return 0;
- }
- 
+ 			p = strchr(line + 2 + strlen(CONFIG_), ' ');
 -- 
 2.39.5
 
