@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-122295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23995A59ED5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91E9A5A263
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 071ED188B7A4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79BD77A7A97
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33053230BF6;
-	Mon, 10 Mar 2025 17:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0671CAA6C;
+	Mon, 10 Mar 2025 18:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2RuiLT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGEI980i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B9A22D4F4;
-	Mon, 10 Mar 2025 17:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B347374EA;
+	Mon, 10 Mar 2025 18:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628090; cv=none; b=YCrGqVv1JM2TGAPtffFkaclsnLLqgyKf5j10woYGMBBElIpZkgqc/3MdQbb4vnSr2bjCS+YNtkqDnM0HIQuPWFwX+LS4tqmjDdaa6G/sexaLraQoE0jbNzLuINFzJiGa5dWG/S2tgo+/M+KGxWzffi/UIF83XdrE5Ygl3XqGDrE=
+	t=1741630775; cv=none; b=ZDXEvMGbZWbSxBWxrv5GQIi9wJzqKOqo125Vn0BnS4y/6sfAaUfgpfi265z4g8muOzC+6rdqlqGw7YFE02QPtODSslgbIiu8xWBd5jS0Z4VJ8Y26FoPqq1RgE3u3eTqJdAZnLz7H0vvJsALaJfN66wWil34mFW1ZE0euWjsSL6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628090; c=relaxed/simple;
-	bh=GoI7V0Oqm59EzFgvjygAm9yXuUWPY/PtMPbTx0UzgxY=;
+	s=arc-20240116; t=1741630775; c=relaxed/simple;
+	bh=X4uqBeeFslA0P5jDTSJ8/ePEGJFU3GAJhqz8uOR/Sdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngjrssgJ5yCW88LsGqxtUMN2Gf1V5nuDM3CG4Mq/PNYSUiMJZsIbRJuUOEkt0k6C+8c+vBvXzqu4N58QVs9aMCr5S7Zyp+NV8QKlMvzW1apAx55REUyYG2kR6Mv4M1Mvn6LjZhpy80Apz/mfjHLAU6g8hG0tM5gxVRzHgQPGha0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2RuiLT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F97C4CEE5;
-	Mon, 10 Mar 2025 17:34:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XQxYrlcMM++oGshAGsXwU8HZsX3zNqnbEEFZIYiqij7K9eBH7MfYqPCj+51NKUpZq66skDwFXydaP+NwkuwA+tcMPfStwg1jKF6nt9wEHsErJRDSfuLRScv8GZccKBbDxxLBtdBlZbxoAzn4sxHPnr+2ZbfJ2MTNhZILtq2A4ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGEI980i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD66CC4CEE5;
+	Mon, 10 Mar 2025 18:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628089;
-	bh=GoI7V0Oqm59EzFgvjygAm9yXuUWPY/PtMPbTx0UzgxY=;
+	s=korg; t=1741630775;
+	bh=X4uqBeeFslA0P5jDTSJ8/ePEGJFU3GAJhqz8uOR/Sdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2RuiLT/ZsS37aZ7nKUoNjgBciioUtVAnigmoAR9k9b7PRVxxlbnf+YXrC4GD0jTF
-	 BzWHs6q7wCP/GfFZq+pyzWDWljT6fzSKi7jwWME+CbNIXHH+TjXpRKHvjsIkmDQPTR
-	 EIhg6N2KVkHHJyX2ZGrnPM7ew1zVeq+ZAR0hd1m8=
+	b=nGEI980iRUkLHz/n2OwxamkyDUN/cRxHsVsF6FN1kGNcLu4yoTU1Y9i7iiVrW1HGC
+	 t6mCvpb2jHNMNsUHzdPJ7h+WBR/hkg0lLDjwBFFOeXCkVlTHrllxcF5lTh26ScXHWx
+	 FVlPSpPqaiWauuwtNrAVji2F6Z3At1jlfQsgfRBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/145] x86/sgx: Fix size overflows in sgx_encl_create()
+Subject: [PATCH 5.15 531/620] drm/amdgpu: Check extended configuration space register when system uses large bar
 Date: Mon, 10 Mar 2025 18:06:17 +0100
-Message-ID: <20250310170438.108267112@linuxfoundation.org>
+Message-ID: <20250310170606.505830585@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 0d3e0dfd68fb9e6b0ec865be9f3377cc3ff55733 ]
+[ Upstream commit e372baeb3d336b20fd9463784c577fd8824497cd ]
 
-The total size calculated for EPC can overflow u64 given the added up page
-for SECS.  Further, the total size calculated for shmem can overflow even
-when the EPC size stays within limits of u64, given that it adds the extra
-space for 128 byte PCMD structures (one for each page).
+Some customer platforms do not enable mmconfig for various reasons,
+such as bios bug, and therefore cannot access the GPU extend configuration
+space through mmio.
 
-Address this by pre-evaluating the micro-architectural requirement of
-SGX: the address space size must be power of two. This is eventually
-checked up by ECREATE but the pre-check has the additional benefit of
-making sure that there is some space for additional data.
+When the system enters the d3cold state and resumes, the amdgpu driver
+fails to resume because the extend configuration space registers of
+GPU can't be restored. At this point, Usually we only see some failure
+dmesg log printed by amdgpu driver, it is difficult to find the root
+cause.
 
-Fixes: 888d24911787 ("x86/sgx: Add SGX_IOC_ENCLAVE_CREATE")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20250305050006.43896-1-jarkko@kernel.org
+Therefor print a warnning message if the system can't access the
+extended configuration space register when using large bar.
 
-Closes: https://lore.kernel.org/linux-sgx/c87e01a0-e7dd-4749-a348-0980d3444f04@stanley.mountain/
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 099bffc7cadf ("drm/amdgpu: disable BAR resize on Dell G5 SE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/ioctl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-index 5d390df214406..a59a0011c930a 100644
---- a/arch/x86/kernel/cpu/sgx/ioctl.c
-+++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-@@ -64,6 +64,13 @@ static int sgx_encl_create(struct sgx_encl *encl, struct sgx_secs *secs)
- 	struct file *backing;
- 	long ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 4be8d2ca50f3a..387538f0ca54b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1202,6 +1202,10 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
+ 	if (amdgpu_sriov_vf(adev))
+ 		return 0;
  
-+	/*
-+	 * ECREATE would detect this too, but checking here also ensures
-+	 * that the 'encl_size' calculations below can never overflow.
-+	 */
-+	if (!is_power_of_2(secs->size))
-+		return -EINVAL;
++	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
++	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
++		DRM_WARN("System can't access extended configuration space,please check!!\n");
 +
- 	va_page = sgx_encl_grow(encl, true);
- 	if (IS_ERR(va_page))
- 		return PTR_ERR(va_page);
+ 	/* skip if the bios has already enabled large BAR */
+ 	if (adev->gmc.real_vram_size &&
+ 	    (pci_resource_len(adev->pdev, 0) >= adev->gmc.real_vram_size))
 -- 
 2.39.5
 
