@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF84A59E67
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944C6A59F00
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C08188F678
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D376716FEA0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9480423372C;
-	Mon, 10 Mar 2025 17:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E0B230BD4;
+	Mon, 10 Mar 2025 17:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLo/bWzv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xnr8LlJD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416B823026D;
-	Mon, 10 Mar 2025 17:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97F11DE89C;
+	Mon, 10 Mar 2025 17:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627853; cv=none; b=ojSMtiNEwEjlP6FOvzzwKWV6kXDvOawWIp6vCi4xtBlnsJVxyvHIc+0oBGKx0uYIkuKWFcEdg7wPbYtyjj1+nfPDeTbt3WqO4rqtZEs0gEJ5VeYytPbTaBMYF73Yh1kX4bCmDgfAy3MyWkcWx5zw2AwnWYqv4hVAlqA+rTwXQgU=
+	t=1741628170; cv=none; b=eVQs964iNp60kKDvz4XIeCl4gt6+vcrcOnPBUgtjUTwzJtb/1kj8opM2LaWqsCPym23f1FcfbDLcJpGqMrSEqxNpV0U8nARRUh6gncwUOegjKIJAALSYy1oHmjeHNI3gaThctE2PRtTIQqAE00ZLOvjBFTSSJkwceiLyaOAB/D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627853; c=relaxed/simple;
-	bh=OKoICI5tNCqMxlE2eUckimKWoin0V7p+S6rICbSypuU=;
+	s=arc-20240116; t=1741628170; c=relaxed/simple;
+	bh=KSfMBLieZYt9IQc/+43bHhqlw9SjLfx5Vzh3l7Bjyk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPgg8CJAIvJdTo8XPswpa68iRT1p3lhFgWY9XVpH80OeMOtDhObPzfepwX73xDGHLqu8UU/8OlwqrEcSwZDYOs0nXorex6CV8dCJOIuH7HDNRRH7wg7o3oWEm4Q+Ops4pkgAaI0s3njnT8XvDoNp7WvZn4c/chavpxdmZQSGrzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLo/bWzv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD0FC4CEE5;
-	Mon, 10 Mar 2025 17:30:52 +0000 (UTC)
+	 MIME-Version; b=jKaVigsf32sjrr93IBltZGLJ/dnihLbp+4ceJWJEoTsZ+amchsXTiaaRoBej5m0FyOU9hZ75oOGY2+kPCqhC8XsWGFFHB1vCSB14dcWf9vnAunIjilxSdoR1exoecAB0z/miXhZHIgKQKo32/8mCxvnzMuZiHWuj92kAbl+anb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xnr8LlJD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708B6C4CEE5;
+	Mon, 10 Mar 2025 17:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627853;
-	bh=OKoICI5tNCqMxlE2eUckimKWoin0V7p+S6rICbSypuU=;
+	s=korg; t=1741628169;
+	bh=KSfMBLieZYt9IQc/+43bHhqlw9SjLfx5Vzh3l7Bjyk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLo/bWzvbcJpBYG9V/ab43LBGGKzOeYN5QentAT3qORfnBu+1MAGUcH7i116w6Pj8
-	 Di4ud6yLepPr2IEG2kiLufOCz7rApmBcMcYI2Mr2+y683a+DB2wTNw5ftmo78nUJct
-	 o2sOJR6l90x7Hxjp49AZEsvbBYZC4Q+PZvQIeqEk=
+	b=Xnr8LlJDRSigEx69omon1sx2ojM8KPNPo0F8mnjXZOOEQwp3X7QwRmZj/M/Dczu4j
+	 sowsEq69JrlAtiYhv9o4aX6fszpe9LmdUr3Yk0kU3yzXilHf0iYu3yTVPKCcst/NdG
+	 3XmdJqjl0ow7jv6guLfx9NI0ILEPv3rcLUTcJWms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nayab Sayed <nayabbasha.sayed@microchip.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 253/269] iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 112/145] KVM: x86: Explicitly zero EAX and EBX when PERFMON_V2 isnt supported by KVM
 Date: Mon, 10 Mar 2025 18:06:46 +0100
-Message-ID: <20250310170507.881085765@linuxfoundation.org>
+Message-ID: <20250310170439.280730572@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,139 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nayab Sayed <nayabbasha.sayed@microchip.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-commit aa5119c36d19639397d29ef305aa53a5ecd72b27 upstream.
+commit f9dc8fb3afc968042bdaf4b6e445a9272071c9f3 upstream.
 
-The number of valid bits in SAMA7G5 ADC channel data register are 16.
-Hence changing the realbits value to 16
+Fix a goof where KVM sets CPUID.0x80000022.EAX to CPUID.0x80000022.EBX
+instead of zeroing both when PERFMON_V2 isn't supported by KVM.  In
+practice, barring a buggy CPU (or vCPU model when running nested) only the
+!enable_pmu case is affected, as KVM always supports PERFMON_V2 if it's
+available in hardware, i.e. CPUID.0x80000022.EBX will be '0' if PERFMON_V2
+is unsupported.
 
-Fixes: 840bf6cb983f ("iio: adc: at91-sama5d2_adc: add support for sama7g5 device")
-Signed-off-by: Nayab Sayed <nayabbasha.sayed@microchip.com>
-Link: https://patch.msgid.link/20250115-fix-sama7g5-adc-realbits-v2-1-58a6e4087584@microchip.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+For the !enable_pmu case, the bug is relatively benign as KVM will refuse
+to enable PMU capabilities, but a VMM that reflects KVM's supported CPUID
+into the guest could inadvertently induce #GPs in the guest due to
+advertising support for MSRs that KVM refuses to emulate.
+
+Fixes: 94cdeebd8211 ("KVM: x86/cpuid: Add AMD CPUID ExtPerfMonAndDbg leaf 0x80000022")
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250304082314.472202-3-xiaoyao.li@intel.com
+[sean: massage shortlog and changelog, tag for stable]
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/at91-sama5d2_adc.c |   68 +++++++++++++++++++++----------------
- 1 file changed, 40 insertions(+), 28 deletions(-)
+ arch/x86/kvm/cpuid.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -329,7 +329,7 @@ static const struct at91_adc_reg_layout
- #define AT91_HWFIFO_MAX_SIZE_STR	"128"
- #define AT91_HWFIFO_MAX_SIZE		128
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1307,7 +1307,7 @@ static inline int __do_cpuid_func(struct
  
--#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+#define AT91_SAMA_CHAN_SINGLE(index, num, addr, rbits)			\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.channel = num,						\
-@@ -337,7 +337,7 @@ static const struct at91_adc_reg_layout
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 'u',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -350,7 +350,13 @@ static const struct at91_adc_reg_layout
- 		.indexed = 1,						\
- 	}
+ 		entry->ecx = entry->edx = 0;
+ 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
+-			entry->eax = entry->ebx;
++			entry->eax = entry->ebx = 0;
+ 			break;
+ 		}
  
--#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 16)
-+
-+#define AT91_SAMA_CHAN_DIFF(index, num, num2, addr, rbits)		\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.differential = 1,					\
-@@ -360,7 +366,7 @@ static const struct at91_adc_reg_layout
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 's',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -373,6 +379,12 @@ static const struct at91_adc_reg_layout
- 		.indexed = 1,						\
- 	}
- 
-+#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 16)
-+
- #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
- 	{								\
- 		.type = IIO_POSITIONRELATIVE,				\
-@@ -666,30 +678,30 @@ static const struct iio_chan_spec at91_s
- };
- 
- static const struct iio_chan_spec at91_sama7g5_adc_channels[] = {
--	AT91_SAMA5D2_CHAN_SINGLE(0, 0, 0x60),
--	AT91_SAMA5D2_CHAN_SINGLE(1, 1, 0x64),
--	AT91_SAMA5D2_CHAN_SINGLE(2, 2, 0x68),
--	AT91_SAMA5D2_CHAN_SINGLE(3, 3, 0x6c),
--	AT91_SAMA5D2_CHAN_SINGLE(4, 4, 0x70),
--	AT91_SAMA5D2_CHAN_SINGLE(5, 5, 0x74),
--	AT91_SAMA5D2_CHAN_SINGLE(6, 6, 0x78),
--	AT91_SAMA5D2_CHAN_SINGLE(7, 7, 0x7c),
--	AT91_SAMA5D2_CHAN_SINGLE(8, 8, 0x80),
--	AT91_SAMA5D2_CHAN_SINGLE(9, 9, 0x84),
--	AT91_SAMA5D2_CHAN_SINGLE(10, 10, 0x88),
--	AT91_SAMA5D2_CHAN_SINGLE(11, 11, 0x8c),
--	AT91_SAMA5D2_CHAN_SINGLE(12, 12, 0x90),
--	AT91_SAMA5D2_CHAN_SINGLE(13, 13, 0x94),
--	AT91_SAMA5D2_CHAN_SINGLE(14, 14, 0x98),
--	AT91_SAMA5D2_CHAN_SINGLE(15, 15, 0x9c),
--	AT91_SAMA5D2_CHAN_DIFF(16, 0, 1, 0x60),
--	AT91_SAMA5D2_CHAN_DIFF(17, 2, 3, 0x68),
--	AT91_SAMA5D2_CHAN_DIFF(18, 4, 5, 0x70),
--	AT91_SAMA5D2_CHAN_DIFF(19, 6, 7, 0x78),
--	AT91_SAMA5D2_CHAN_DIFF(20, 8, 9, 0x80),
--	AT91_SAMA5D2_CHAN_DIFF(21, 10, 11, 0x88),
--	AT91_SAMA5D2_CHAN_DIFF(22, 12, 13, 0x90),
--	AT91_SAMA5D2_CHAN_DIFF(23, 14, 15, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(0, 0, 0x60),
-+	AT91_SAMA7G5_CHAN_SINGLE(1, 1, 0x64),
-+	AT91_SAMA7G5_CHAN_SINGLE(2, 2, 0x68),
-+	AT91_SAMA7G5_CHAN_SINGLE(3, 3, 0x6c),
-+	AT91_SAMA7G5_CHAN_SINGLE(4, 4, 0x70),
-+	AT91_SAMA7G5_CHAN_SINGLE(5, 5, 0x74),
-+	AT91_SAMA7G5_CHAN_SINGLE(6, 6, 0x78),
-+	AT91_SAMA7G5_CHAN_SINGLE(7, 7, 0x7c),
-+	AT91_SAMA7G5_CHAN_SINGLE(8, 8, 0x80),
-+	AT91_SAMA7G5_CHAN_SINGLE(9, 9, 0x84),
-+	AT91_SAMA7G5_CHAN_SINGLE(10, 10, 0x88),
-+	AT91_SAMA7G5_CHAN_SINGLE(11, 11, 0x8c),
-+	AT91_SAMA7G5_CHAN_SINGLE(12, 12, 0x90),
-+	AT91_SAMA7G5_CHAN_SINGLE(13, 13, 0x94),
-+	AT91_SAMA7G5_CHAN_SINGLE(14, 14, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(15, 15, 0x9c),
-+	AT91_SAMA7G5_CHAN_DIFF(16, 0, 1, 0x60),
-+	AT91_SAMA7G5_CHAN_DIFF(17, 2, 3, 0x68),
-+	AT91_SAMA7G5_CHAN_DIFF(18, 4, 5, 0x70),
-+	AT91_SAMA7G5_CHAN_DIFF(19, 6, 7, 0x78),
-+	AT91_SAMA7G5_CHAN_DIFF(20, 8, 9, 0x80),
-+	AT91_SAMA7G5_CHAN_DIFF(21, 10, 11, 0x88),
-+	AT91_SAMA7G5_CHAN_DIFF(22, 12, 13, 0x90),
-+	AT91_SAMA7G5_CHAN_DIFF(23, 14, 15, 0x98),
- 	IIO_CHAN_SOFT_TIMESTAMP(24),
- 	AT91_SAMA5D2_CHAN_TEMP(AT91_SAMA7G5_ADC_TEMP_CHANNEL, "temp", 0xdc),
- };
 
 
 
