@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-122207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28E3A59E65
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CFAA5A293
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 090581639BE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E291F18952AF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181772343AB;
-	Mon, 10 Mar 2025 17:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8143A22576A;
+	Mon, 10 Mar 2025 18:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rL5BbHFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Unmhurd7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FB3232786;
-	Mon, 10 Mar 2025 17:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F63A156861;
+	Mon, 10 Mar 2025 18:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627832; cv=none; b=bqfNPwxrQQKmIr3yoze9LekjG8774DXnra7R6uc9gkbRcUkTeacpxJ6O1EArQCNAfsm2IvmaHx6CFKzFQYlPtZmZ/XC8ZTIFn7BaTi8QuVDSJ6SWZztAUTROj00A6hQ+2+tHKILNulqbdWtAs2IY+28vpVFomMrl+21lYb2d6lY=
+	t=1741630897; cv=none; b=Jepbi797gjHVNA+OvabykX7zstJS0EQhkbUsKjF3EN0TP1fsetpoNXD4J71QPdk6NkCoHLJnj3OeRZ3IqwfbXiS+oqQ2xaHeapMLbJuMVglvY27n4QsNz6Z5EiwNJCKjA1uKJ6TvhUhL3N9cqM0lvmdHDBrCGeck5hh/nkbWH9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627832; c=relaxed/simple;
-	bh=UiiLWJnaAq/JaffZ0Db3lhw07iFOYna8FdQcn74a5CU=;
+	s=arc-20240116; t=1741630897; c=relaxed/simple;
+	bh=qjV47PCCBSJvXmFd1K+M2Ctx/6w3O/YdD34M/Ipi3BE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzKGECTjt2NGOkuh0nnTG6rU+erouTtzljCy+bHJDmKxaflUyA0xf9jzm39h68Tw/0aZCCDXDIbSNmPjKErR8V8u1v44qXrKrRFHZirqzYANfCUpONQihHoeWWBFfqdxS+/Byb8d4QeUx1K0vzJ5d53AXCb7LspHdnZeiSlJHJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rL5BbHFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5103FC4CEE5;
-	Mon, 10 Mar 2025 17:30:32 +0000 (UTC)
+	 MIME-Version; b=CmzK65iAtc13HqGu5sbMUBl5YY4gdW4NnqfHEJT/Bz2JAtTredCUncJy47i2AkEC3KGSy+ykPwY4FzQLPjq0JdpBnbkCUT0O0I6qXnALjujfNK5RLrgdeIQZHBh86fnH2g68NqUC/NiqU/Kz+jdlWi7Trt8wwBci31sF7xf5B/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Unmhurd7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC301C4CEE5;
+	Mon, 10 Mar 2025 18:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627832;
-	bh=UiiLWJnaAq/JaffZ0Db3lhw07iFOYna8FdQcn74a5CU=;
+	s=korg; t=1741630897;
+	bh=qjV47PCCBSJvXmFd1K+M2Ctx/6w3O/YdD34M/Ipi3BE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rL5BbHFz1iItTTsiAYYgGIqKGpZUr6BXSIZBX+Rr5CKc2L+DOUxd06PbY03+XGktN
-	 19fmFbnlIHxKPPDn6mnm0dv7bQARCb+r5yTTncTPDvnYTl/I7pcF+9Ds8T6AHAxScS
-	 ujI3+hDJSxOwjmk7/LDq1VSPc3+8pJzwuhF+CF/8=
+	b=Unmhurd7RON4lvxeW9DkjB6ZTWSXkWzHN8TXpHgbEJACS60HaiLCqGSG+FEObS0Oo
+	 hf0p6w7YKOlnf73Y3sd3qVyD0jvEWk/iScuSmFlhch3zP99IBSGDGcrheq34NqS2zi
+	 UraXTPHDg7/oYuMVq6LFf/TkuM9mONkeL8mheV8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 266/269] KVM: e500: always restore irqs
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 573/620] x86/sgx: Fix size overflows in sgx_encl_create()
 Date: Mon, 10 Mar 2025 18:06:59 +0100
-Message-ID: <20250310170508.390540199@linuxfoundation.org>
+Message-ID: <20250310170608.158030551@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit 87ecfdbc699cc95fac73291b52650283ddcf929d upstream.
+[ Upstream commit 0d3e0dfd68fb9e6b0ec865be9f3377cc3ff55733 ]
 
-If find_linux_pte fails, IRQs will not be restored.  This is unlikely
-to happen in practice since it would have been reported as hanging
-hosts, but it should of course be fixed anyway.
+The total size calculated for EPC can overflow u64 given the added up page
+for SECS.  Further, the total size calculated for shmem can overflow even
+when the EPC size stays within limits of u64, given that it adds the extra
+space for 128 byte PCMD structures (one for each page).
 
-Cc: stable@vger.kernel.org
-Reported-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Address this by pre-evaluating the micro-architectural requirement of
+SGX: the address space size must be power of two. This is eventually
+checked up by ECREATE but the pre-check has the additional benefit of
+making sure that there is some space for additional data.
+
+Fixes: 888d24911787 ("x86/sgx: Add SGX_IOC_ENCLAVE_CREATE")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20250305050006.43896-1-jarkko@kernel.org
+
+Closes: https://lore.kernel.org/linux-sgx/c87e01a0-e7dd-4749-a348-0980d3444f04@stanley.mountain/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/sgx/ioctl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -481,7 +481,6 @@ static inline int kvmppc_e500_shadow_map
- 		if (pte_present(pte)) {
- 			wimg = (pte_val(pte) >> PTE_WIMGE_SHIFT) &
- 				MAS2_WIMGE_MASK;
--			local_irq_restore(flags);
- 		} else {
- 			local_irq_restore(flags);
- 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
-@@ -490,8 +489,9 @@ static inline int kvmppc_e500_shadow_map
- 			goto out;
- 		}
- 	}
--	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+	local_irq_restore(flags);
+diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
+index 4de31b0b0dd5d..14ee6d2180034 100644
+--- a/arch/x86/kernel/cpu/sgx/ioctl.c
++++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+@@ -64,6 +64,13 @@ static int sgx_encl_create(struct sgx_encl *encl, struct sgx_secs *secs)
+ 	struct file *backing;
+ 	long ret;
  
-+	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
- 
++	/*
++	 * ECREATE would detect this too, but checking here also ensures
++	 * that the 'encl_size' calculations below can never overflow.
++	 */
++	if (!is_power_of_2(secs->size))
++		return -EINVAL;
++
+ 	va_page = sgx_encl_grow(encl, true);
+ 	if (IS_ERR(va_page))
+ 		return PTR_ERR(va_page);
+-- 
+2.39.5
+
 
 
 
