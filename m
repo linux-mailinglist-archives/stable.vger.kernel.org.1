@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-122987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE4AA5A24E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F4CA59EC0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCA203ACEB3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BEC816B466
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0CF1C5D6F;
-	Mon, 10 Mar 2025 18:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A9B230BF6;
+	Mon, 10 Mar 2025 17:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0eF+4LD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDJPPYlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFA5374EA;
-	Mon, 10 Mar 2025 18:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39FB22D7A6;
+	Mon, 10 Mar 2025 17:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630717; cv=none; b=vFOK+U+1nWfUzivMjcVS/mTvqtOXlh+c4L8HdfgE+cX4Uzdamel8ZzQm0dZhRzGs1N4XGuCZXLRTRqT9p0bRYRdCO+6PqQAl/17qGBchnvfW61MZKYNQDbzTl5Q8trFhBTNnz2dK2GC+XN96UHaD0XAeUVyMj5oJsBYjKZI1KFg=
+	t=1741628030; cv=none; b=iq46YdtWDO7AYsNIq8FC6a8CynWL7TVzSdz4SBmTcEijUsHAtD8keWkmoiO2x/p7KCm6xmyeBtQcsmYqU6++fGXgRzMpjPSM/IMhUlgZyvMdHMrKjSysc4jEiEVoZP6zP0juoLBtXUalOteevt4FeVz5xl/w1C+CsXYVs3prbX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630717; c=relaxed/simple;
-	bh=P5pASNILi0xSrIrsy9L5jVJUfSFDMTZx9acZrJDeVyY=;
+	s=arc-20240116; t=1741628030; c=relaxed/simple;
+	bh=CYPI40PVO1KCRhZ5CQPQTF/3tiGTAvHABlxq0b1CVrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpItjfpujtXwPLu/E07itRygY7X3nOpOXXnLyBcmHPzl2gBIMDyCNCRo9gbhB49SDwnU+T3nfmfg0b4y8yxXX2WIjSpmyblJKFT8Ecm5HHwVr+63f1+593eY54Z1j+e/bmOzJ0fhR0Q6IY31Mf4rCfuMWE4jkZoP76rTA6yFqg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0eF+4LD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A912C4CEE5;
-	Mon, 10 Mar 2025 18:18:36 +0000 (UTC)
+	 MIME-Version; b=FoTSyEPn8EZUTcV0H5zD8dMVxMSLnocIZKLfqCxfx2yHbBLsgbVeooDs2nmcip5tOUy1dZdmPLTyvPMDsKQSqXBQqz8GwlJF2ggJ+ocEvrBFS5Rq40q66k1Zu9nK4pOO7On5jmWeuQ2zujPvJEcjD0jFVSadcjQxTp0IH1xQQEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDJPPYlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4729DC4CEE5;
+	Mon, 10 Mar 2025 17:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630717;
-	bh=P5pASNILi0xSrIrsy9L5jVJUfSFDMTZx9acZrJDeVyY=;
+	s=korg; t=1741628030;
+	bh=CYPI40PVO1KCRhZ5CQPQTF/3tiGTAvHABlxq0b1CVrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0eF+4LD6SScQ9ai8kmrOdNNTVAu7fo3YkoXEXNnutToTsK+Yh5iWox8l//gKRnS0
-	 98vbZ5Zv2UVQE1uHs+fPHbqgr3pbDVYBv2ka1xsmtdb9xd6g5atEzVp6BEOZ3Dvn/M
-	 LoSolkUZ2itpoXJ5NodUhnhI5wlWLTvo2hFRyr6k=
+	b=QDJPPYljKilEziCc+7HXc4z4mUGsA5Ct4QYehMBg/jSvbO6slZulJqK0SgtR6QC2q
+	 1K6cmvk++/B+zz/QY6NdZUdvsRiwB/MnT1RxaHfL71KRT6fWpT8QKPY1vJcOwZ9PAL
+	 EVp7yBHncjQ2e+ypyV7E2cowE9oNsnmO3xCcE/T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lebrun <dlebrun@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Salah Triki <salah.triki@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 510/620] net: ipv6: fix dst ref loop on input in seg6 lwt
+Subject: [PATCH 6.6 062/145] bluetooth: btusb: Initialize .owner field of force_poll_sync_fops
 Date: Mon, 10 Mar 2025 18:05:56 +0100
-Message-ID: <20250310170605.686461142@linuxfoundation.org>
+Message-ID: <20250310170437.247560856@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Salah Triki <salah.triki@gmail.com>
 
-[ Upstream commit c64a0727f9b1cbc63a5538c8c0014e9a175ad864 ]
+[ Upstream commit cbf85b9cb80bec6345ffe0368dfff98386f4714f ]
 
-Prevent a dst ref loop on input in seg6_iptunnel.
+Initialize .owner field of force_poll_sync_fops to THIS_MODULE in order to
+prevent btusb from being unloaded while its operations are in use.
 
-Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-Cc: David Lebrun <dlebrun@google.com>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 800fe5ec302e ("Bluetooth: btusb: Add support for queuing during polling interval")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_iptunnel.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index c161298c8b335..b186d85ec5b3f 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -472,10 +472,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- {
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
-+	struct lwtunnel_state *lwtst;
- 	struct seg6_lwt *slwt;
- 	int err;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index c80b5aa7628ae..bc3f63f1ccd86 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4230,6 +4230,7 @@ static ssize_t force_poll_sync_write(struct file *file,
+ }
  
--	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
-+	/* We cannot dereference "orig_dst" once ip6_route_input() or
-+	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
-+	 * need the address of its lwtstate. So, save the address of lwtstate
-+	 * now and use it later as a comparison.
-+	 */
-+	lwtst = orig_dst->lwtstate;
-+
-+	slwt = seg6_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
-@@ -490,7 +498,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
--		if (!dst->error) {
-+
-+		/* cache only if we don't create a dst reference loop */
-+		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&slwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
+ static const struct file_operations force_poll_sync_fops = {
++	.owner		= THIS_MODULE,
+ 	.open		= simple_open,
+ 	.read		= force_poll_sync_read,
+ 	.write		= force_poll_sync_write,
 -- 
 2.39.5
 
