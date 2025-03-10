@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-122210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73591A59E90
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D28A59F1A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 808633AB1EF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2BE91700EB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8F423371B;
-	Mon, 10 Mar 2025 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FCD2309B6;
+	Mon, 10 Mar 2025 17:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCeySBmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbXiI/tc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70481A7264;
-	Mon, 10 Mar 2025 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7263A1DE89C;
+	Mon, 10 Mar 2025 17:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627841; cv=none; b=rWSu9bhueFyYc43TeJLV2LQbGg7H0m5G2DQI/9pgGymEQ+EnXsxQlMyjjXfx7UxM4sEQJVI857f4Gse6OqBi4/bdyqdACnG3vdYFOx6Tjrb7yg4MshY2KI0/rU4bolApgx7JsJvqkRPfY4wG9GVZ6+E1XMdcBV7/q9lGwOFppag=
+	t=1741628216; cv=none; b=PrVuIwhiFxm471wj7Xe3nJshtwDN9BHFBfC6algnid2C69hI1fh43W0M0uYvKveg+3S2ySoaLey2Xetl2B7JfEV9y2U/ma9fHVTqOYLvJYi1GrLZbpa4iL0Zoyx84QlOCrq4sQzoI+EbGCoVySA6EwyyfVZznuqnBWU7oVnKA+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627841; c=relaxed/simple;
-	bh=WCimsoKnksEH8UlJFwiM6EBXQgJo/QSAbfqnxiy/ySo=;
+	s=arc-20240116; t=1741628216; c=relaxed/simple;
+	bh=1NffvLjPjdyvWAyg7ooTKrRy65NKYNgaX6IJpdvKAbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6Hdq0xbJnwL0d1mOKt93o4pBP22nbnK4eLwIPPy2V5Wn7g7TSVtSXuo+NSv5BdOfx6WgSahO4dPVZxQrYW2l+SubFQbemcOpNzHTYdzlWdD/x+cZKHm7KlaYu2/N5x9Tf6iLiB4mJSqbuzRg80FZVLLx5IeOsxZu2D++uQqsZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCeySBmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE35C4CEE5;
-	Mon, 10 Mar 2025 17:30:41 +0000 (UTC)
+	 MIME-Version; b=RUEKpd8qlTp70DeA+i8FGO+R50oTsXTCUsPQqjk38DH+wX9xKGf4ps3wQuXEYOhmZbTdmgUOmjgxgV3TS7ZCK+4cj0DLRA2NSMAsPrVpxoorxvCy5CWzIswnJQG0ahyN1V00oQVCaz5ySt9IHDbpm2BBagLV+SpiHvm93d6DwVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbXiI/tc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05E6C4CEE5;
+	Mon, 10 Mar 2025 17:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627841;
-	bh=WCimsoKnksEH8UlJFwiM6EBXQgJo/QSAbfqnxiy/ySo=;
+	s=korg; t=1741628216;
+	bh=1NffvLjPjdyvWAyg7ooTKrRy65NKYNgaX6IJpdvKAbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCeySBmPaJdlTVwY4MHrfM4aAtO9lsKqaTgLDssdZig35v8C9cd8EcLLlMz5z2H2N
-	 tfKM6NuRwBwANw8EHAKdmx7uMKEFCrEgmIy/qqpkjF7QImvSSAT/K3qbVtJOJdtj6g
-	 dy2dFfstklRGiV5d3i7Etto42Idu5L5UAK3Ngte0=
+	b=XbXiI/tclHtwHa9yffBQvfxZrfP6homS/nAkGySm4yONRMwSZ6VtuIRzEQegOqacD
+	 VUxlFTX45Fhb0kF8rjva290gdF/Lg4lbxj6CIXYCid/++Z1sW8oImr0g0KyHdbkhSu
+	 K+EG0lO7YF+oH3STW4nnVxWIZGnn9MVceIhUcEE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Colm Harrington <colm.harrington@oracle.com>,
-	Alan Maguire <alan.maguire@oracle.com>
-Subject: [PATCH 6.12 268/269] selftests/bpf: Clean up open-coded gettid syscall invocations
+	David Hildenbrand <david@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.6 127/145] mm: hugetlb: Add huge page size param to huge_ptep_get_and_clear()
 Date: Mon, 10 Mar 2025 18:07:01 +0100
-Message-ID: <20250310170508.467223185@linuxfoundation.org>
+Message-ID: <20250310170439.892354940@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,267 +67,345 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit 0e2fb011a0ba8e2258ce776fdf89fbd589c2a3a6 upstream.
+commit 02410ac72ac3707936c07ede66e94360d0d65319 upstream.
 
-Availability of the gettid definition across glibc versions supported by
-BPF selftests is not certain. Currently, all users in the tree open-code
-syscall to gettid. Convert them to a common macro definition.
+In order to fix a bug, arm64 needs to be told the size of the huge page
+for which the huge_pte is being cleared in huge_ptep_get_and_clear().
+Provide for this by adding an `unsigned long sz` parameter to the
+function. This follows the same pattern as huge_pte_clear() and
+set_huge_pte_at().
 
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241104171959.2938862-3-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+This commit makes the required interface modifications to the core mm as
+well as all arches that implement this function (arm64, loongarch, mips,
+parisc, powerpc, riscv, s390, sparc). The actual arm64 bug will be fixed
+in a separate commit.
+
+Cc: stable@vger.kernel.org
+Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
+Link: https://lore.kernel.org/r/20250226120656.2400136-2-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reported-by: Colm Harrington <colm.harrington@oracle.com>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
 ---
- tools/testing/selftests/bpf/benchs/bench_trigger.c           |    3 ++-
- tools/testing/selftests/bpf/bpf_util.h                       |    9 +++++++++
- tools/testing/selftests/bpf/map_tests/task_storage_map.c     |    3 ++-
- tools/testing/selftests/bpf/prog_tests/bpf_cookie.c          |    2 +-
- tools/testing/selftests/bpf/prog_tests/bpf_iter.c            |    6 +++---
- tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c  |   10 +++++-----
- tools/testing/selftests/bpf/prog_tests/core_reloc.c          |    2 +-
- tools/testing/selftests/bpf/prog_tests/linked_funcs.c        |    2 +-
- tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c |    2 +-
- tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c       |    4 ++--
- tools/testing/selftests/bpf/prog_tests/task_local_storage.c  |    8 ++++----
- tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c   |    2 +-
- 12 files changed, 32 insertions(+), 21 deletions(-)
+ arch/arm64/include/asm/hugetlb.h     |    4 ++--
+ arch/arm64/mm/hugetlbpage.c          |    8 +++++---
+ arch/loongarch/include/asm/hugetlb.h |    6 ++++--
+ arch/mips/include/asm/hugetlb.h      |    6 ++++--
+ arch/parisc/include/asm/hugetlb.h    |    2 +-
+ arch/parisc/mm/hugetlbpage.c         |    2 +-
+ arch/powerpc/include/asm/hugetlb.h   |    6 ++++--
+ arch/riscv/include/asm/hugetlb.h     |    3 ++-
+ arch/riscv/mm/hugetlbpage.c          |    2 +-
+ arch/s390/include/asm/hugetlb.h      |   17 ++++++++++++-----
+ arch/s390/mm/hugetlbpage.c           |    4 ++--
+ arch/sparc/include/asm/hugetlb.h     |    2 +-
+ arch/sparc/mm/hugetlbpage.c          |    2 +-
+ include/asm-generic/hugetlb.h        |    2 +-
+ include/linux/hugetlb.h              |    4 +++-
+ mm/hugetlb.c                         |    4 ++--
+ 16 files changed, 46 insertions(+), 28 deletions(-)
 
---- a/tools/testing/selftests/bpf/benchs/bench_trigger.c
-+++ b/tools/testing/selftests/bpf/benchs/bench_trigger.c
-@@ -4,6 +4,7 @@
- #include <argp.h>
- #include <unistd.h>
- #include <stdint.h>
-+#include "bpf_util.h"
- #include "bench.h"
- #include "trigger_bench.skel.h"
- #include "trace_helpers.h"
-@@ -72,7 +73,7 @@ static __always_inline void inc_counter(
- 	unsigned slot;
+--- a/arch/arm64/include/asm/hugetlb.h
++++ b/arch/arm64/include/asm/hugetlb.h
+@@ -34,8 +34,8 @@ extern int huge_ptep_set_access_flags(st
+ 				      unsigned long addr, pte_t *ptep,
+ 				      pte_t pte, int dirty);
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+-extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-				     unsigned long addr, pte_t *ptep);
++extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++				     pte_t *ptep, unsigned long sz);
+ #define __HAVE_ARCH_HUGE_PTEP_SET_WRPROTECT
+ extern void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 				    unsigned long addr, pte_t *ptep);
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -403,8 +403,8 @@ void huge_pte_clear(struct mm_struct *mm
+ 		pte_clear(mm, addr, ptep);
+ }
  
- 	if (unlikely(tid == 0))
--		tid = syscall(SYS_gettid);
-+		tid = sys_gettid();
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep)
++pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	int ncontig;
+ 	size_t pgsize;
+@@ -556,6 +556,8 @@ bool __init arch_hugetlb_valid_size(unsi
  
- 	/* multiplicative hashing, it's fast */
- 	slot = 2654435769U * tid;
---- a/tools/testing/selftests/bpf/bpf_util.h
-+++ b/tools/testing/selftests/bpf/bpf_util.h
-@@ -6,6 +6,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <errno.h>
-+#include <syscall.h>
- #include <bpf/libbpf.h> /* libbpf_num_possible_cpus */
+ pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
+ {
++	unsigned long psize = huge_page_size(hstate_vma(vma));
++
+ 	if (IS_ENABLED(CONFIG_ARM64_ERRATUM_2645198) &&
+ 	    cpus_have_const_cap(ARM64_WORKAROUND_2645198)) {
+ 		/*
+@@ -566,7 +568,7 @@ pte_t huge_ptep_modify_prot_start(struct
+ 		if (pte_user_exec(READ_ONCE(*ptep)))
+ 			return huge_ptep_clear_flush(vma, addr, ptep);
+ 	}
+-	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, psize);
+ }
  
- static inline unsigned int bpf_num_possible_cpus(void)
-@@ -59,4 +60,12 @@ static inline void bpf_strlcpy(char *dst
- 	(offsetof(TYPE, MEMBER)	+ sizeof_field(TYPE, MEMBER))
+ void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
+--- a/arch/loongarch/include/asm/hugetlb.h
++++ b/arch/loongarch/include/asm/hugetlb.h
+@@ -41,7 +41,8 @@ static inline void huge_pte_clear(struct
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	pte_t clear;
+ 	pte_t pte = *ptep;
+@@ -56,8 +57,9 @@ static inline pte_t huge_ptep_clear_flus
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_tlb_page(vma, addr);
+ 	return pte;
+ }
+--- a/arch/mips/include/asm/hugetlb.h
++++ b/arch/mips/include/asm/hugetlb.h
+@@ -32,7 +32,8 @@ static inline int prepare_hugepage_range
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	pte_t clear;
+ 	pte_t pte = *ptep;
+@@ -47,13 +48,14 @@ static inline pte_t huge_ptep_clear_flus
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+ 	/*
+ 	 * clear the huge pte entry firstly, so that the other smp threads will
+ 	 * not get old pte entry after finishing flush_tlb_page and before
+ 	 * setting new huge pte entry
+ 	 */
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_tlb_page(vma, addr);
+ 	return pte;
+ }
+--- a/arch/parisc/include/asm/hugetlb.h
++++ b/arch/parisc/include/asm/hugetlb.h
+@@ -10,7 +10,7 @@ void set_huge_pte_at(struct mm_struct *m
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep);
++			      pte_t *ptep, unsigned long sz);
+ 
+ /*
+  * If the arch doesn't supply something else, assume that hugepage
+--- a/arch/parisc/mm/hugetlbpage.c
++++ b/arch/parisc/mm/hugetlbpage.c
+@@ -147,7 +147,7 @@ void set_huge_pte_at(struct mm_struct *m
+ 
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	pte_t entry;
+ 
+--- a/arch/powerpc/include/asm/hugetlb.h
++++ b/arch/powerpc/include/asm/hugetlb.h
+@@ -46,7 +46,8 @@ void hugetlb_free_pgd_range(struct mmu_g
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	return __pte(pte_update(mm, addr, ptep, ~0UL, 0, 1));
+ }
+@@ -56,8 +57,9 @@ static inline pte_t huge_ptep_clear_flus
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_hugetlb_page(vma, addr);
+ 	return pte;
+ }
+--- a/arch/riscv/include/asm/hugetlb.h
++++ b/arch/riscv/include/asm/hugetlb.h
+@@ -28,7 +28,8 @@ void set_huge_pte_at(struct mm_struct *m
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep);
++			      unsigned long addr, pte_t *ptep,
++			      unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -293,7 +293,7 @@ int huge_ptep_set_access_flags(struct vm
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+ 			      unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	pte_t orig_pte = ptep_get(ptep);
+ 	int pte_num;
+--- a/arch/s390/include/asm/hugetlb.h
++++ b/arch/s390/include/asm/hugetlb.h
+@@ -20,8 +20,15 @@ void set_huge_pte_at(struct mm_struct *m
+ void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 		     pte_t *ptep, pte_t pte);
+ pte_t huge_ptep_get(pte_t *ptep);
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep);
++pte_t __huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++				pte_t *ptep);
++
++static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
++{
++	return __huge_ptep_get_and_clear(mm, addr, ptep);
++}
+ 
+ /*
+  * If the arch doesn't supply something else, assume that hugepage
+@@ -57,7 +64,7 @@ static inline void huge_pte_clear(struct
+ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 					  unsigned long address, pte_t *ptep)
+ {
+-	return huge_ptep_get_and_clear(vma->vm_mm, address, ptep);
++	return __huge_ptep_get_and_clear(vma->vm_mm, address, ptep);
+ }
+ 
+ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+@@ -66,7 +73,7 @@ static inline int huge_ptep_set_access_f
+ {
+ 	int changed = !pte_same(huge_ptep_get(ptep), pte);
+ 	if (changed) {
+-		huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++		__huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
+ 		__set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
+ 	}
+ 	return changed;
+@@ -75,7 +82,7 @@ static inline int huge_ptep_set_access_f
+ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 					   unsigned long addr, pte_t *ptep)
+ {
+-	pte_t pte = huge_ptep_get_and_clear(mm, addr, ptep);
++	pte_t pte = __huge_ptep_get_and_clear(mm, addr, ptep);
+ 	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(pte));
+ }
+ 
+--- a/arch/s390/mm/hugetlbpage.c
++++ b/arch/s390/mm/hugetlbpage.c
+@@ -174,8 +174,8 @@ pte_t huge_ptep_get(pte_t *ptep)
+ 	return __rste_to_pte(pte_val(*ptep));
+ }
+ 
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep)
++pte_t __huge_ptep_get_and_clear(struct mm_struct *mm,
++				unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte = huge_ptep_get(ptep);
+ 	pmd_t *pmdp = (pmd_t *) ptep;
+--- a/arch/sparc/include/asm/hugetlb.h
++++ b/arch/sparc/include/asm/hugetlb.h
+@@ -20,7 +20,7 @@ void __set_huge_pte_at(struct mm_struct
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep);
++			      pte_t *ptep, unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+--- a/arch/sparc/mm/hugetlbpage.c
++++ b/arch/sparc/mm/hugetlbpage.c
+@@ -371,7 +371,7 @@ void set_huge_pte_at(struct mm_struct *m
+ }
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	unsigned int i, nptes, orig_shift, shift;
+ 	unsigned long size;
+--- a/include/asm-generic/hugetlb.h
++++ b/include/asm-generic/hugetlb.h
+@@ -84,7 +84,7 @@ static inline void set_huge_pte_at(struc
+ 
+ #ifndef __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-		unsigned long addr, pte_t *ptep)
++		unsigned long addr, pte_t *ptep, unsigned long sz)
+ {
+ 	return ptep_get_and_clear(mm, addr, ptep);
+ }
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1007,7 +1007,9 @@ static inline void hugetlb_count_sub(lon
+ static inline pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma,
+ 						unsigned long addr, pte_t *ptep)
+ {
+-	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	unsigned long psize = huge_page_size(hstate_vma(vma));
++
++	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, psize);
+ }
  #endif
  
-+/* Availability of gettid across glibc versions is hit-and-miss, therefore
-+ * fallback to syscall in this macro and use it everywhere.
-+ */
-+#ifndef sys_gettid
-+#define sys_gettid() syscall(SYS_gettid)
-+#endif
-+
-+
- #endif /* __BPF_UTIL__ */
---- a/tools/testing/selftests/bpf/map_tests/task_storage_map.c
-+++ b/tools/testing/selftests/bpf/map_tests/task_storage_map.c
-@@ -12,6 +12,7 @@
- #include <bpf/bpf.h>
- #include <bpf/libbpf.h>
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5236,7 +5236,7 @@ static void move_huge_pte(struct vm_area
+ 	if (src_ptl != dst_ptl)
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
  
-+#include "bpf_util.h"
- #include "test_maps.h"
- #include "task_local_storage_helpers.h"
- #include "read_bpf_task_storage_busy.skel.h"
-@@ -115,7 +116,7 @@ void test_task_storage_map_stress_lookup
- 	CHECK(err, "attach", "error %d\n", err);
+-	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
++	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte, sz);
+ 	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
  
- 	/* Trigger program */
--	syscall(SYS_gettid);
-+	sys_gettid();
- 	skel->bss->pid = 0;
+ 	if (src_ptl != dst_ptl)
+@@ -5399,7 +5399,7 @@ void __unmap_hugepage_range(struct mmu_g
+ 			set_vma_resv_flags(vma, HPAGE_RESV_UNMAPPED);
+ 		}
  
- 	CHECK(skel->bss->busy != 0, "bad bpf_task_storage_busy", "got %d\n", skel->bss->busy);
---- a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-@@ -690,7 +690,7 @@ void test_bpf_cookie(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open"))
- 		return;
- 
--	skel->bss->my_tid = syscall(SYS_gettid);
-+	skel->bss->my_tid = sys_gettid();
- 
- 	if (test__start_subtest("kprobe"))
- 		kprobe_subtest(skel);
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-@@ -226,7 +226,7 @@ static void test_task_common_nocheck(str
- 	ASSERT_OK(pthread_create(&thread_id, NULL, &do_nothing_wait, NULL),
- 		  "pthread_create");
- 
--	skel->bss->tid = syscall(SYS_gettid);
-+	skel->bss->tid = sys_gettid();
- 
- 	do_dummy_read_opts(skel->progs.dump_task, opts);
- 
-@@ -255,10 +255,10 @@ static void *run_test_task_tid(void *arg
- 	union bpf_iter_link_info linfo;
- 	int num_unknown_tid, num_known_tid;
- 
--	ASSERT_NEQ(getpid(), syscall(SYS_gettid), "check_new_thread_id");
-+	ASSERT_NEQ(getpid(), sys_gettid(), "check_new_thread_id");
- 
- 	memset(&linfo, 0, sizeof(linfo));
--	linfo.task.tid = syscall(SYS_gettid);
-+	linfo.task.tid = sys_gettid();
- 	opts.link_info = &linfo;
- 	opts.link_info_len = sizeof(linfo);
- 	test_task_common(&opts, 0, 1);
---- a/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c
-@@ -63,14 +63,14 @@ static void test_tp_btf(int cgroup_fd)
- 	if (!ASSERT_OK(err, "map_delete_elem"))
- 		goto out;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	err = cgrp_ls_tp_btf__attach(skel);
- 	if (!ASSERT_OK(err, "skel_attach"))
- 		goto out;
- 
--	syscall(SYS_gettid);
--	syscall(SYS_gettid);
-+	sys_gettid();
-+	sys_gettid();
- 
- 	skel->bss->target_pid = 0;
- 
-@@ -154,7 +154,7 @@ static void test_recursion(int cgroup_fd
- 		goto out;
- 
- 	/* trigger sys_enter, make sure it does not cause deadlock */
--	syscall(SYS_gettid);
-+	sys_gettid();
- 
- out:
- 	cgrp_ls_recursion__destroy(skel);
-@@ -224,7 +224,7 @@ static void test_yes_rcu_lock(__u64 cgro
- 		return;
- 
- 	CGROUP_MODE_SET(skel);
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	bpf_program__set_autoload(skel->progs.yes_rcu_lock, true);
- 	err = cgrp_ls_sleepable__load(skel);
---- a/tools/testing/selftests/bpf/prog_tests/core_reloc.c
-+++ b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
-@@ -1010,7 +1010,7 @@ static void run_core_reloc_tests(bool us
- 	struct data *data;
- 	void *mmap_data = NULL;
- 
--	my_pid_tgid = getpid() | ((uint64_t)syscall(SYS_gettid) << 32);
-+	my_pid_tgid = getpid() | ((uint64_t)sys_gettid() << 32);
- 
- 	for (i = 0; i < ARRAY_SIZE(test_cases); i++) {
- 		char btf_file[] = "/tmp/core_reloc.btf.XXXXXX";
---- a/tools/testing/selftests/bpf/prog_tests/linked_funcs.c
-+++ b/tools/testing/selftests/bpf/prog_tests/linked_funcs.c
-@@ -20,7 +20,7 @@ void test_linked_funcs(void)
- 	bpf_program__set_autoload(skel->progs.handler1, true);
- 	bpf_program__set_autoload(skel->progs.handler2, true);
- 
--	skel->rodata->my_tid = syscall(SYS_gettid);
-+	skel->rodata->my_tid = sys_gettid();
- 	skel->bss->syscall_id = SYS_getpgid;
- 
- 	err = linked_funcs__load(skel);
---- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-@@ -23,7 +23,7 @@ static int get_pid_tgid(pid_t *pid, pid_
- 	struct stat st;
- 	int err;
- 
--	*pid = syscall(SYS_gettid);
-+	*pid = sys_gettid();
- 	*tgid = getpid();
- 
- 	err = stat("/proc/self/ns/pid", &st);
---- a/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c
-+++ b/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c
-@@ -21,7 +21,7 @@ static void test_success(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open"))
- 		return;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	bpf_program__set_autoload(skel->progs.get_cgroup_id, true);
- 	bpf_program__set_autoload(skel->progs.task_succ, true);
-@@ -58,7 +58,7 @@ static void test_rcuptr_acquire(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open"))
- 		return;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	bpf_program__set_autoload(skel->progs.task_acquire, true);
- 	err = rcu_read_lock__load(skel);
---- a/tools/testing/selftests/bpf/prog_tests/task_local_storage.c
-+++ b/tools/testing/selftests/bpf/prog_tests/task_local_storage.c
-@@ -23,14 +23,14 @@ static void test_sys_enter_exit(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
- 		return;
- 
--	skel->bss->target_pid = syscall(SYS_gettid);
-+	skel->bss->target_pid = sys_gettid();
- 
- 	err = task_local_storage__attach(skel);
- 	if (!ASSERT_OK(err, "skel_attach"))
- 		goto out;
- 
--	syscall(SYS_gettid);
--	syscall(SYS_gettid);
-+	sys_gettid();
-+	sys_gettid();
- 
- 	/* 3x syscalls: 1x attach and 2x gettid */
- 	ASSERT_EQ(skel->bss->enter_cnt, 3, "enter_cnt");
-@@ -99,7 +99,7 @@ static void test_recursion(void)
- 
- 	/* trigger sys_enter, make sure it does not cause deadlock */
- 	skel->bss->test_pid = getpid();
--	syscall(SYS_gettid);
-+	sys_gettid();
- 	skel->bss->test_pid = 0;
- 	task_ls_recursion__detach(skel);
- 
---- a/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
-+++ b/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
-@@ -125,7 +125,7 @@ static void *child_thread(void *ctx)
- 	struct child *child = ctx;
- 	int c = 0, err;
- 
--	child->tid = syscall(SYS_gettid);
-+	child->tid = sys_gettid();
- 
- 	/* let parent know we are ready */
- 	err = write(child->c2p[1], &c, 1);
+-		pte = huge_ptep_get_and_clear(mm, address, ptep);
++		pte = huge_ptep_get_and_clear(mm, address, ptep, sz);
+ 		tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
+ 		if (huge_pte_dirty(pte))
+ 			set_page_dirty(page);
 
 
 
