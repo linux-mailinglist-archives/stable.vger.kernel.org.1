@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B6A59DFF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5718A5A222
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6669816FE31
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF62189461C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13142232395;
-	Mon, 10 Mar 2025 17:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE55233735;
+	Mon, 10 Mar 2025 18:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK6za9hp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzrAm/iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1F42309B6;
-	Mon, 10 Mar 2025 17:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98462356CC;
+	Mon, 10 Mar 2025 18:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627546; cv=none; b=RFDmYpdBzG2sMi94B1QVCh632I5f/gjyQz65fJu5+mVq0FtiTP5yOfmBSSUDQJIiVZzHY+dPe1GWVJcySL0JHulR3/p36wvSFhG4tbDqPw1wXaBEqDNHqDH9DYuPVUVPYHpi/slKJ2MnIRbHNXgewQ5v113nPu2beeHPp4NywBE=
+	t=1741630609; cv=none; b=gYtq9Wi7roAFjkUfJyQ41Bmud3kxKmINoXa5zZK53zpN8cD/OWYs8ONRB1lMh2oopFLvkA77/Mi2jC8WBmpu6pJBLi1qOAhca6aAt3gnuHjBniseaFnT5lGGE5LDkh9FJ41cqMdL0xhajdOwHrWgHmJY+JJXrwbPw6MZ5xQk7ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627546; c=relaxed/simple;
-	bh=qBpjzcuRzyvFz2XK5RtbTmTemVMQ3EqiDQ4XVz9nxMc=;
+	s=arc-20240116; t=1741630609; c=relaxed/simple;
+	bh=2ySZ0YuGx3hvOkPONry/+iGRwUcq8SLOu9E7kFh+bWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOCC+Gzx/j5J0GU5FUxfub4DAca38vJESlUR8HQxuz54PHyc5BT3Rsg6k6fwBnvpZcgOOKv0XyQ3PwmxGTap0s72HuePjDIhhaShRJsA+Ut88ZrZCAuALMagVGQ7Qx4ybwadO2YjljzSD0goNBhSreQ6mveslnwIdLg75e3HFW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK6za9hp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C06C4CEE5;
-	Mon, 10 Mar 2025 17:25:46 +0000 (UTC)
+	 MIME-Version; b=ZEj27NIjt8dGhsK+dvmIO5of+T2r2LBg+d84XiexBFFKtzo81cSm8FYnmkZsmjb9stXWdvCnFm//obuRY1qR4nCLvrCErbI+41UfN9KMoS3ZcoxEv0KVFvd2opbvdNz3dNXgBSBeYUfOjiqygMjLV3pMjz10C/6IOM8embnlrY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzrAm/iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFE3C4CEE5;
+	Mon, 10 Mar 2025 18:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627546;
-	bh=qBpjzcuRzyvFz2XK5RtbTmTemVMQ3EqiDQ4XVz9nxMc=;
+	s=korg; t=1741630609;
+	bh=2ySZ0YuGx3hvOkPONry/+iGRwUcq8SLOu9E7kFh+bWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LK6za9hp9IHxw+LTSH810AxQKU0R7DDXY2cPBI+D8phjm/r5+Rk0H26IepuacyLmc
-	 PGpHshF4kSvUzcYjHhzLefhaWYcmsq6oySdYNzNzu4nQIIa8SQ31G50wzZC54fra2w
-	 3D6bicJ2nd/jUWj5pElGx/A8m9CY2CZDOcEkZ010=
+	b=KzrAm/iz6Gib6QzfcYAQsA9M3tCCroMFouy7Ym2YFpkgYma9M6GEEHP5pWaNpHUjT
+	 1jAaKe1/408hQhtUn5OQ8dYkSHWE0xDTobmUypJvAJs+WzkGhlZqYCqgwUohNs0IOJ
+	 7AcmDeB/Qp/JLGgtrhuQPto2GkLD7eKe1Xz+mrcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/269] ALSA: hda/realtek: Remove (revert) duplicate Ally X config
+Subject: [PATCH 5.15 473/620] power: supply: da9150-fg: fix potential overflow
 Date: Mon, 10 Mar 2025 18:05:19 +0100
-Message-ID: <20250310170504.333199237@linuxfoundation.org>
+Message-ID: <20250310170604.249360687@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-[ Upstream commit 3414cda9d41f41703832d0abd01063dd8de82b89 ]
+[ Upstream commit 3fb3cb4350befc4f901c54e0cb4a2a47b1302e08 ]
 
-In commit 1e9c708dc3ae ("ALSA: hda/tas2781: Add new quirk for Lenovo,
-ASUS, Dell projects") Baojun adds a bunch of projects to the file,
-including for the Ally X. Turns out the initial Ally X was not sorted
-properly, so the kernel had 2 quirks for it.
+Size of variable sd_gain equals four bytes - DA9150_QIF_SD_GAIN_SIZE.
+Size of variable shunt_val equals two bytes - DA9150_QIF_SHUNT_VAL_SIZE.
 
-The previous quirk overrode the new one due to being earlier and they
-are different. When AB testing, the normal pin fixup seems to work ok
-but causes a bit of a minor popping. Given the other config is more
-complicated and may cause undefined behavior, revert it.
+The expression sd_gain * shunt_val is currently being evaluated using
+32-bit arithmetic. So during the multiplication an overflow may occur.
 
-Fixes: 1e9c708dc3ae ("ALSA: hda/tas2781: Add new quirk for Lenovo, ASUS, Dell projects")
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://patch.msgid.link/20250227175107.33432-2-lkml@antheas.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+As the value of type 'u64' is used as storage for the eventual result, put
+ULL variable at the first position of each expression in order to give the
+compiler complete information about the proper arithmetic to use. According
+to C99 the guaranteed width for a variable of type 'unsigned long long' >=
+64 bits.
+
+Remove the explicit cast to u64 as it is meaningless.
+
+Just for the sake of consistency, perform the similar trick with another
+expression concerning 'iavg'.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: a419b4fd9138 ("power: Add support for DA9150 Fuel-Gauge")
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Link: https://lore.kernel.org/r/20250130090030.53422-1-a.vatoropin@crpt.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/power/supply/da9150-fg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 9997bf0150576..d3a81d3638872 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7741,7 +7741,6 @@ enum {
- 	ALC285_FIXUP_THINKPAD_X1_GEN7,
- 	ALC285_FIXUP_THINKPAD_HEADSET_JACK,
- 	ALC294_FIXUP_ASUS_ALLY,
--	ALC294_FIXUP_ASUS_ALLY_X,
- 	ALC294_FIXUP_ASUS_ALLY_PINS,
- 	ALC294_FIXUP_ASUS_ALLY_VERBS,
- 	ALC294_FIXUP_ASUS_ALLY_SPEAKER,
-@@ -9184,12 +9183,6 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC294_FIXUP_ASUS_ALLY_PINS
- 	},
--	[ALC294_FIXUP_ASUS_ALLY_X] = {
--		.type = HDA_FIXUP_FUNC,
--		.v.func = tas2781_fixup_i2c,
--		.chained = true,
--		.chain_id = ALC294_FIXUP_ASUS_ALLY_PINS
--	},
- 	[ALC294_FIXUP_ASUS_ALLY_PINS] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -10674,7 +10667,6 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1740, "ASUS UX430UA", ALC295_FIXUP_ASUS_DACS),
- 	SND_PCI_QUIRK(0x1043, 0x17d1, "ASUS UX431FL", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x17f3, "ROG Ally NR2301L/X", ALC294_FIXUP_ASUS_ALLY),
--	SND_PCI_QUIRK(0x1043, 0x1eb3, "ROG Ally X RC72LA", ALC294_FIXUP_ASUS_ALLY_X),
- 	SND_PCI_QUIRK(0x1043, 0x1863, "ASUS UX6404VI/VV", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1881, "ASUS Zephyrus S/M", ALC294_FIXUP_ASUS_GX502_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x18b1, "Asus MJ401TA", ALC256_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/drivers/power/supply/da9150-fg.c b/drivers/power/supply/da9150-fg.c
+index 6e367826aae92..d5e1fbac87f22 100644
+--- a/drivers/power/supply/da9150-fg.c
++++ b/drivers/power/supply/da9150-fg.c
+@@ -247,9 +247,9 @@ static int da9150_fg_current_avg(struct da9150_fg *fg,
+ 				      DA9150_QIF_SD_GAIN_SIZE);
+ 	da9150_fg_read_sync_end(fg);
+ 
+-	div = (u64) (sd_gain * shunt_val * 65536ULL);
++	div = 65536ULL * sd_gain * shunt_val;
+ 	do_div(div, 1000000);
+-	res = (u64) (iavg * 1000000ULL);
++	res = 1000000ULL * iavg;
+ 	do_div(res, div);
+ 
+ 	val->intval = (int) res;
 -- 
 2.39.5
 
