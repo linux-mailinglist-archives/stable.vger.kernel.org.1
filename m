@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-122981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F2AA5A24A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC18A59E3A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7723ACDA8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 505D23A91B6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BBF22576A;
-	Mon, 10 Mar 2025 18:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059C6233705;
+	Mon, 10 Mar 2025 17:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnawJBdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9EYYcsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78411B4F09;
-	Mon, 10 Mar 2025 18:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7819230BC3;
+	Mon, 10 Mar 2025 17:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630700; cv=none; b=ubz/vqpB2R623aCpXcHfBWDZSa4EeSZoZ1ZxDqPZPW53wi8xDIpnh5ddLWO3VPrqKhNaRZL48zaHi+HkSDt2sxdgqEcaQM0W1ZZ6P/3pgVts7t0UMF+Vw7HIOhGZOwH9WbsrAdwByhj/R/e4Nj9N3SigzqFLahKLGUnMz9IDMY8=
+	t=1741627636; cv=none; b=kx4/x/abgUxYbrQdukgHMIZFrDdpTmcK9S9newkWELkXtt6xUAvbWfo9tLTcn3vg8f3cgSaa2tUejzmPQ/0qQd8f0HTMYiZTNARe9eoVOkzIJ2w7SmUSM9HOCkefNGeSfloARnnpbCw76B+FYblaLWyOcHWpTpSKj713HfyPLqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630700; c=relaxed/simple;
-	bh=R16s6iKxN3MtbOuT1VmI0B7pVqiEMHfDOxV/egX8L4E=;
+	s=arc-20240116; t=1741627636; c=relaxed/simple;
+	bh=TUdTjrqL9uSonjN/ZgoQPSQCONrMG7X6i6U6EGPbH38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xp3PHq+D33KDFpD75kQCHq/KJBeZhXQZE97TMRWWbYNczexntVa+2FBsfJofEN7S+bb6/CTGjGQ6flZ8HrA6QPDYhzC5I8cg3/c5FYdnIuQzm2FbC1KRQdhcgvZfLll4TElwxzwC+2n2Oml0lLBgDCdSfJlJHTv5QzqDNbjlX6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnawJBdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6D0C4CEE5;
-	Mon, 10 Mar 2025 18:18:18 +0000 (UTC)
+	 MIME-Version; b=sNIonAscT0H4NbZtuSCn5ZDhjjp7SVv6n6bBS64+qgAwIDzZPGw0d9ybxftsAZuGG0dY58GFq8Q8GiGixLWJde8uGMWtriy7uy2VqO+FhPS8b/0nhlTpCsxfdb3yb8mVbCtsQl0r1/2FO7E/D3pblE+VpHTQ5/RxWGYAcpypSBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9EYYcsd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF95C4CEE5;
+	Mon, 10 Mar 2025 17:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630699;
-	bh=R16s6iKxN3MtbOuT1VmI0B7pVqiEMHfDOxV/egX8L4E=;
+	s=korg; t=1741627636;
+	bh=TUdTjrqL9uSonjN/ZgoQPSQCONrMG7X6i6U6EGPbH38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnawJBdGT3f81EQ8QcMzHiHO498/+lrU6egF4iBDZNeyblQib8knvqRbmheCMB2OE
-	 +SmM4tmcpjjN/OGQAnwvNalAPd9vZ6+zPgXxx6WV2Fen7u3V39qvF4cloXD8l+RmQY
-	 Ay5twAwuO12UyQDfCYFQXXTe7Q/elYCBeRjidpno=
+	b=h9EYYcsdeAbn8kJwNT5XsPjpRW2wwj6kS2uI8AvvoCcBu0NFk6ktLpBnN25aftNSP
+	 ET1Y++xlRiKyBbVHFDi41QWYQkSPoun/Xov6EcOG3x6VLlaUrXr/676GUxyPPxUQ+5
+	 kO0s4qDvrFoWPDnWWvdVbLKOvBY76T6+YEoPKG+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	kernel test robot <lkp@intel.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 505/620] net/mlx5: IRQ, Fix null string in debug print
+Subject: [PATCH 6.12 198/269] ublk: set_params: properly check if parameters can be applied
 Date: Mon, 10 Mar 2025 18:05:51 +0100
-Message-ID: <20250310170605.495710668@linuxfoundation.org>
+Message-ID: <20250310170505.591214665@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,44 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit 2f5a6014eb168a97b24153adccfa663d3b282767 ]
+[ Upstream commit 5ac60242b0173be83709603ebaf27a473f16c4e4 ]
 
-irq_pool_alloc() debug print can print a null string.
-Fix it by providing a default string to print.
+The parameters set by the set_params call are only applied to the block
+device in the start_dev call. So if a device has already been started, a
+subsequently issued set_params on that device will not have the desired
+effect, and should return an error. There is an existing check for this
+- set_params fails on devices in the LIVE state. But this check is not
+sufficient to cover the recovery case. In this case, the device will be
+in the QUIESCED or FAIL_IO states, so set_params will succeed. But this
+success is misleading, because the parameters will not be applied, since
+the device has already been started (by a previous ublk server). The bit
+UB_STATE_USED is set on completion of the start_dev; use it to detect
+and fail set_params commands which arrive too late to be applied (after
+start_dev).
 
-Fixes: 71e084e26414 ("net/mlx5: Allocating a pool of MSI-X vectors for SFs")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501141055.SwfIphN0-lkp@intel.com/
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250225072608.526866-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Fixes: 0aa73170eba5 ("ublk_drv: add SET_PARAMS/GET_PARAMS control command")
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250304-set_params-v1-1-17b5e0887606@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index 2fa84556bc20e..4c78821f5edb3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -474,7 +474,7 @@ irq_pool_alloc(struct mlx5_core_dev *dev, int start, int size, char *name,
- 	pool->min_threshold = min_threshold * MLX5_EQ_REFS_PER_IRQ;
- 	pool->max_threshold = max_threshold * MLX5_EQ_REFS_PER_IRQ;
- 	mlx5_core_dbg(dev, "pool->name = %s, pool->size = %d, pool->start = %d",
--		      name, size, start);
-+		      name ? name : "mlx5_pcif_pool", size, start);
- 	return pool;
- }
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 458ac54e7b201..c7d728d686e5a 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -2665,9 +2665,12 @@ static int ublk_ctrl_set_params(struct ublk_device *ub,
+ 	if (ph.len > sizeof(struct ublk_params))
+ 		ph.len = sizeof(struct ublk_params);
  
+-	/* parameters can only be changed when device isn't live */
+ 	mutex_lock(&ub->mutex);
+-	if (ub->dev_info.state == UBLK_S_DEV_LIVE) {
++	if (test_bit(UB_STATE_USED, &ub->state)) {
++		/*
++		 * Parameters can only be changed when device hasn't
++		 * been started yet
++		 */
+ 		ret = -EACCES;
+ 	} else if (copy_from_user(&ub->params, argp, ph.len)) {
+ 		ret = -EFAULT;
 -- 
 2.39.5
 
