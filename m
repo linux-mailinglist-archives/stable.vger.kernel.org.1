@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A26A59EA8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F7BA5A260
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F7A188FBFC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B1913AF476
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B5722E407;
-	Mon, 10 Mar 2025 17:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0194622B597;
+	Mon, 10 Mar 2025 18:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajUs+ICh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHZ5h9BU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B612C1A7264;
-	Mon, 10 Mar 2025 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38021BBBFD;
+	Mon, 10 Mar 2025 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627981; cv=none; b=KGqBI8hbtXgGiCo9QKrvMhS9AG31Tk80rO3cOcTa6mZDM/n1nK27HxOHIOFmYi95b+mJEMvaxW8mELCMV3YcUgz65ASxg61pW8EpDUbhwiKLJR8HDxWGjZJtViOxpxNoUm6yECMNoht/09QOjV5Dy+q6BEwn3wb+o0BsgoQlQac=
+	t=1741630766; cv=none; b=gQWhALfVoFVoBJe+Qqvjpbox+bPz7eFaINe3enuY5xirwueBZpANiGV1011/FFFC0JCMU8MBcG1j4El5vtfE9Cnue+rBQJ7PtgASdFbGK0PRZG4TaHtOPdlAhtWKfboP6CJ0lDzWa7b8ZmVkmvukq7FJdHzs1h3wNGbRwSdj3zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627981; c=relaxed/simple;
-	bh=oB0/tzJw7k/fsPuLavSfO9rzjh6L+/gkh/9LBg4EaRU=;
+	s=arc-20240116; t=1741630766; c=relaxed/simple;
+	bh=lTZf9Q6rz1Dn9g4Wh5Z2kjNuCRhnzGmsrVwcU/Jm5ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4AhEpZcD3XGi7FEMW+fM7QCe36diSiEX02Q15fT1ciF69xSNw4TACGVAsJy78qgBloN3NMBA7BGp4szGbQC60FkQ1w18eXYbbVQU8hWM979rS7jKi43EMWsIx6BFivuckeq+LcuLGzpXs/Hs2GvKs3m0lqkq8j34y9ZPgsZ8Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajUs+ICh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB40C4CEE5;
-	Mon, 10 Mar 2025 17:33:01 +0000 (UTC)
+	 MIME-Version; b=Dxmxsc+eG9cnn8wiVkWASZqVypOQGYt1PMwVTbSljAsESpYhahjHIwdTaTC4mA+8pHNrPtvl5duzcCuj5xrQk6gn9YIEKO7wcCYsbU5F1ZEU2YKLH108G5dodv4abcxWhB695PuHeznSyrtZR/9+6MkK/7Ub7JLeYR3X+nhPM1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHZ5h9BU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BB9C4CEE5;
+	Mon, 10 Mar 2025 18:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627981;
-	bh=oB0/tzJw7k/fsPuLavSfO9rzjh6L+/gkh/9LBg4EaRU=;
+	s=korg; t=1741630766;
+	bh=lTZf9Q6rz1Dn9g4Wh5Z2kjNuCRhnzGmsrVwcU/Jm5ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajUs+IChZun8nXAMmnHVmbzKydbNpx05E47KZ/UzBItkCcLbFAzfj78xqIknVK4s3
-	 CWoMPTA3BoBtZR5MB/O+bU07SVwKKlAT7FLnLVHX9+xSBYaajKOVYqyi3U9vX+V+hn
-	 cRq1QFofZbYw1zZgY2ltaovUhWqHCdsXyKA8Luqs=
+	b=zHZ5h9BUDTHx6RCHiqzWW7T8oPKNHm/sueyg0fSHpyKX8da9GLzUUnVxsBlXEINva
+	 AmX34VwVA8HKX8fWMICglyFnLMyW+oJ4bBD/fdxqCAGRRMjkJ5nLpKWvDTb2xtRrSF
+	 /Y7rOoZh5jXwZxkN8XFTqYZpvk36RHz5fQzWgNNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 047/145] Bluetooth: Add check for mgmt_alloc_skb() in mgmt_remote_name()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 495/620] Bluetooth: L2CAP: Fix L2CAP_ECRED_CONN_RSP response
 Date: Mon, 10 Mar 2025 18:05:41 +0100
-Message-ID: <20250310170436.635598489@linuxfoundation.org>
+Message-ID: <20250310170605.112261144@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit f2176a07e7b19f73e05c805cf3d130a2999154cb upstream.
+[ Upstream commit b25120e1d5f2ebb3db00af557709041f47f7f3d0 ]
 
-Add check for the return value of mgmt_alloc_skb() in
-mgmt_remote_name() to prevent null pointer dereference.
+L2CAP_ECRED_CONN_RSP needs to respond DCID in the same order received as
+SCID but the order is reversed due to use of list_add which actually
+prepend channels to the list so the response is reversed:
 
-Fixes: ba17bb62ce41 ("Bluetooth: Fix skb allocation in mgmt_remote_name() & mgmt_device_connected()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ACL Data RX: Handle 16 flags 0x02 dlen 26
+      LE L2CAP: Enhanced Credit Connection Request (0x17) ident 2 len 18
+        PSM: 39 (0x0027)
+        MTU: 256
+        MPS: 251
+        Credits: 65535
+        Source CID: 116
+        Source CID: 117
+        Source CID: 118
+        Source CID: 119
+        Source CID: 120
+< ACL Data TX: Handle 16 flags 0x00 dlen 26
+      LE L2CAP: Enhanced Credit Connection Response (0x18) ident 2 len 18
+        MTU: 517
+        MPS: 247
+        Credits: 3
+        Result: Connection successful (0x0000)
+        Destination CID: 68
+        Destination CID: 67
+        Destination CID: 66
+        Destination CID: 65
+        Destination CID: 64
+
+Also make sure the response don't include channels that are not on
+BT_CONNECT2 since the chan->ident can be set to the same value as in the
+following trace:
+
+< ACL Data TX: Handle 16 flags 0x00 dlen 12
+      LE L2CAP: LE Flow Control Credit (0x16) ident 6 len 4
+        Source CID: 64
+        Credits: 1
+...
+> ACL Data RX: Handle 16 flags 0x02 dlen 18
+      LE L2CAP: Enhanced Credit Connection Request (0x17) ident 6 len 10
+        PSM: 39 (0x0027)
+        MTU: 517
+        MPS: 251
+        Credits: 255
+        Source CID: 70
+< ACL Data TX: Handle 16 flags 0x00 dlen 20
+      LE L2CAP: Enhanced Credit Connection Response (0x18) ident 6 len 12
+        MTU: 517
+        MPS: 247
+        Credits: 3
+        Result: Connection successful (0x0000)
+        Destination CID: 64
+        Destination CID: 68
+
+Closes: https://github.com/bluez/bluez/issues/1094
+Fixes: 9aa9d9473f15 ("Bluetooth: L2CAP: Fix responding with wrong PDU type")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/l2cap_core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -10443,6 +10443,8 @@ void mgmt_remote_name(struct hci_dev *hd
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 496634c359eb7..2d451009a6477 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -632,7 +632,8 @@ void __l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan)
+ 	    test_bit(FLAG_HOLD_HCI_CONN, &chan->flags))
+ 		hci_conn_hold(conn->hcon);
  
- 	skb = mgmt_alloc_skb(hdev, MGMT_EV_DEVICE_FOUND,
- 			     sizeof(*ev) + (name ? eir_precalc_len(name_len) : 0));
-+	if (!skb)
-+		return;
+-	list_add(&chan->list, &conn->chan_l);
++	/* Append to the list since the order matters for ECRED */
++	list_add_tail(&chan->list, &conn->chan_l);
+ }
  
- 	ev = skb_put(skb, sizeof(*ev));
- 	bacpy(&ev->addr.bdaddr, bdaddr);
+ void l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan)
+@@ -3971,7 +3972,11 @@ static void l2cap_ecred_rsp_defer(struct l2cap_chan *chan, void *data)
+ {
+ 	struct l2cap_ecred_rsp_data *rsp = data;
+ 
+-	if (test_bit(FLAG_ECRED_CONN_REQ_SENT, &chan->flags))
++	/* Check if channel for outgoing connection or if it wasn't deferred
++	 * since in those cases it must be skipped.
++	 */
++	if (test_bit(FLAG_ECRED_CONN_REQ_SENT, &chan->flags) ||
++	    !test_and_clear_bit(FLAG_DEFER_SETUP, &chan->flags))
+ 		return;
+ 
+ 	/* Reset ident so only one response is sent */
+-- 
+2.39.5
+
 
 
 
