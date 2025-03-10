@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-121910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FFDA59CFD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19787A5A289
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9A1B16F1E5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C699E3AF955
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AC4233719;
-	Mon, 10 Mar 2025 17:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E84ABA3D;
+	Mon, 10 Mar 2025 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSP5vrGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0y0R6Nne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56BC233700;
-	Mon, 10 Mar 2025 17:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD6F1C3F34;
+	Mon, 10 Mar 2025 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626983; cv=none; b=HIK6h+QYO1WxjKk9/zGxZp8nsQaS9l6JKZVx2koyOoaWRZ/2mc2+W2SpTwjsD+T9q9TwztrFOVAjMPLpq3eD7phn9OtCwnVJUsvMEiZtW7TnYKp22obX5FoOebsJiECFpEWmKMEHM9BX3Mx+GS8KhxNOyKk16UiGY3C3NMzrBYI=
+	t=1741630868; cv=none; b=Y00b9z6Zj63iarjDHFli+7mlXNSL78E2zbxEUfQcegikoaNptnhHB6xyKjB0H3DiooXsM5LE85JUwai41uiHfq9zGJtf1CNQnpELn29cnrDHJNnEawPJvyrczUBeQbOTr1TEXhmONwz5MHNAY568ACGWsdDmxmzuOyc6Srcu4nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626983; c=relaxed/simple;
-	bh=Mbyy0O265FrzhyeiqJjy/oGp4Pch4AI2k032BhkxjsU=;
+	s=arc-20240116; t=1741630868; c=relaxed/simple;
+	bh=gF/y9RF2oiyzcGStYRVWhvb2Vy27RyYS5RrAMpGdnas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwvyehlGqUaASFVp+y26fhD0i99JB+WgHVpHFJZRxFJlD12WJw/i5bloRRqXEr1kinLOxBkIK1fhAvKW7rZqAMERyk0tkj+1K7o6dDPjB9UIvL+EqFuAKiTjxTCkwE59uxKrukukJtPZNCILnHQmImS7QjKHsXN/SSoUUXUx4bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSP5vrGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3785C4CEE5;
-	Mon, 10 Mar 2025 17:16:22 +0000 (UTC)
+	 MIME-Version; b=VL30vF/NnvTecZ9+yJWf7LigEMq8ffhAOw1o4rjeRiOqauMnLySqBwyprToXdmnMpY+bKJRF/xODtwOj6uvCiHNAYcOEefJRj5F9LjoeGipmmmaE8xRH/+6BCirNJOK8VzGH0XbiyopoUm6qee1DVI7Gd0fR5TPUi4EQc59iAik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0y0R6Nne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77B4C4CEE5;
+	Mon, 10 Mar 2025 18:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626983;
-	bh=Mbyy0O265FrzhyeiqJjy/oGp4Pch4AI2k032BhkxjsU=;
+	s=korg; t=1741630868;
+	bh=gF/y9RF2oiyzcGStYRVWhvb2Vy27RyYS5RrAMpGdnas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSP5vrGz8sWdycT1mEhPsoiArux5xs3m+cQyLxlWoLabH3SLzlzmPJa6h0rr+Y+j9
-	 lQR26NBWmjtoy3rYN8OzCBKr+33pgaYSbFSnL384t3VQTK3yox9BfPxsCuolTSIT56
-	 02djdSGVWY+TeGjb4MZNmINUETmNyRd/frerEgjc=
+	b=0y0R6NnewgIhOyPCkucFKB2RT4ateCBV004C7cDLsLvtx6li3sPeKV/+v+P0JE4mq
+	 ajIh7MCyFdfvMx5ynfY0o5UEMYjKzny8Dl641h7W8OblcIBr/gMIIieR/A31Gdc4ew
+	 NVJGQbDQNp60Mt9/qfSWsfEfjQgIZlHg2lV8tmNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.13 173/207] KVM: SVM: Save host DR masks on CPUs with DebugSwap
-Date: Mon, 10 Mar 2025 18:06:06 +0100
-Message-ID: <20250310170454.669386919@linuxfoundation.org>
+	Wei Fang <wei.fang@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 521/620] net: enetc: update UDP checksum when updating originTimestamp field
+Date: Mon, 10 Mar 2025 18:06:07 +0100
+Message-ID: <20250310170606.118145558@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit b2653cd3b75f62f29b72df4070e20357acb52bc4 upstream.
+commit bbcbc906ab7b5834c1219cd17a38d78dba904aa0 upstream.
 
-When running SEV-SNP guests on a CPU that supports DebugSwap, always save
-the host's DR0..DR3 mask MSR values irrespective of whether or not
-DebugSwap is enabled, to ensure the host values aren't clobbered by the
-CPU.  And for now, also save DR0..DR3, even though doing so isn't
-necessary (see below).
+There is an issue with one-step timestamp based on UDP/IP. The peer will
+discard the sync packet because of the wrong UDP checksum. For ENETC v1,
+the software needs to update the UDP checksum when updating the
+originTimestamp field, so that the hardware can correctly update the UDP
+checksum when updating the correction field. Otherwise, the UDP checksum
+in the sync packet will be wrong.
 
-SVM_VMGEXIT_AP_CREATE is deeply flawed in that it allows the *guest* to
-create a VMSA with guest-controlled SEV_FEATURES.  A well behaved guest
-can inform the hypervisor, i.e. KVM, of its "requested" features, but on
-CPUs without ALLOWED_SEV_FEATURES support, nothing prevents the guest from
-lying about which SEV features are being enabled (or not!).
-
-If a misbehaving guest enables DebugSwap in a secondary vCPU's VMSA, the
-CPU will load the DR0..DR3 mask MSRs on #VMEXIT, i.e. will clobber the
-MSRs with '0' if KVM doesn't save its desired value.
-
-Note, DR0..DR3 themselves are "ok", as DR7 is reset on #VMEXIT, and KVM
-restores all DRs in common x86 code as needed via hw_breakpoint_restore().
-I.e. there is no risk of host DR0..DR3 being clobbered (when it matters).
-However, there is a flaw in the opposite direction; because the guest can
-lie about enabling DebugSwap, i.e. can *disable* DebugSwap without KVM's
-knowledge, KVM must not rely on the CPU to restore DRs.  Defer fixing
-that wart, as it's more of a documentation issue than a bug in the code.
-
-Note, KVM added support for DebugSwap on commit d1f85fbe836e ("KVM: SEV:
-Enable data breakpoints in SEV-ES"), but that is not an appropriate Fixes,
-as the underlying flaw exists in hardware, not in KVM.  I.e. all kernels
-that support SEV-SNP need to be patched, not just kernels with KVM's full
-support for DebugSwap (ignoring that DebugSwap support landed first).
-
-Opportunistically fix an incorrect statement in the comment; on CPUs
-without DebugSwap, the CPU does NOT save or load debug registers, i.e.
-
-Fixes: e366f92ea99e ("KVM: SEV: Support SEV-SNP AP Creation NAE event")
+Fixes: 7294380c5211 ("enetc: support PTP Sync packet one-step timestamping")
 Cc: stable@vger.kernel.org
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Kim Phillips <kim.phillips@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20250227012541.3234589-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-6-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   41 ++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4567,6 +4567,8 @@ void sev_es_vcpu_reset(struct vcpu_svm *
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -228,9 +228,11 @@ static int enetc_map_tx_buffs(struct ene
+ 		}
  
- void sev_es_prepare_switch_to_guest(struct vcpu_svm *svm, struct sev_es_save_area *hostsa)
- {
-+	struct kvm *kvm = svm->vcpu.kvm;
+ 		if (do_onestep_tstamp) {
+-			u32 lo, hi, val;
+-			u64 sec, nsec;
++			__be32 new_sec_l, new_nsec;
++			u32 lo, hi, nsec, val;
++			__be16 new_sec_h;
+ 			u8 *data;
++			u64 sec;
+ 
+ 			lo = enetc_rd_hot(hw, ENETC_SICTR0);
+ 			hi = enetc_rd_hot(hw, ENETC_SICTR1);
+@@ -244,13 +246,38 @@ static int enetc_map_tx_buffs(struct ene
+ 			/* Update originTimestamp field of Sync packet
+ 			 * - 48 bits seconds field
+ 			 * - 32 bits nanseconds field
++			 *
++			 * In addition, the UDP checksum needs to be updated
++			 * by software after updating originTimestamp field,
++			 * otherwise the hardware will calculate the wrong
++			 * checksum when updating the correction field and
++			 * update it to the packet.
+ 			 */
+ 			data = skb_mac_header(skb);
+-			*(__be16 *)(data + offset2) =
+-				htons((sec >> 32) & 0xffff);
+-			*(__be32 *)(data + offset2 + 2) =
+-				htonl(sec & 0xffffffff);
+-			*(__be32 *)(data + offset2 + 6) = htonl(nsec);
++			new_sec_h = htons((sec >> 32) & 0xffff);
++			new_sec_l = htonl(sec & 0xffffffff);
++			new_nsec = htonl(nsec);
++			if (udp) {
++				struct udphdr *uh = udp_hdr(skb);
++				__be32 old_sec_l, old_nsec;
++				__be16 old_sec_h;
 +
- 	/*
- 	 * All host state for SEV-ES guests is categorized into three swap types
- 	 * based on how it is handled by hardware during a world switch:
-@@ -4590,10 +4592,15 @@ void sev_es_prepare_switch_to_guest(stru
++				old_sec_h = *(__be16 *)(data + offset2);
++				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
++							 new_sec_h, false);
++
++				old_sec_l = *(__be32 *)(data + offset2 + 2);
++				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
++							 new_sec_l, false);
++
++				old_nsec = *(__be32 *)(data + offset2 + 6);
++				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
++							 new_nsec, false);
++			}
++
++			*(__be16 *)(data + offset2) = new_sec_h;
++			*(__be32 *)(data + offset2 + 2) = new_sec_l;
++			*(__be32 *)(data + offset2 + 6) = new_nsec;
  
- 	/*
- 	 * If DebugSwap is enabled, debug registers are loaded but NOT saved by
--	 * the CPU (Type-B). If DebugSwap is disabled/unsupported, the CPU both
--	 * saves and loads debug registers (Type-A).
-+	 * the CPU (Type-B). If DebugSwap is disabled/unsupported, the CPU does
-+	 * not save or load debug registers.  Sadly, on CPUs without
-+	 * ALLOWED_SEV_FEATURES, KVM can't prevent SNP guests from enabling
-+	 * DebugSwap on secondary vCPUs without KVM's knowledge via "AP Create".
-+	 * Save all registers if DebugSwap is supported to prevent host state
-+	 * from being clobbered by a misbehaving guest.
- 	 */
--	if (sev_vcpu_has_debug_swap(svm)) {
-+	if (sev_vcpu_has_debug_swap(svm) ||
-+	    (sev_snp_guest(kvm) && cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP))) {
- 		hostsa->dr0 = native_get_debugreg(0);
- 		hostsa->dr1 = native_get_debugreg(1);
- 		hostsa->dr2 = native_get_debugreg(2);
+ 			/* Configure single-step register */
+ 			val = ENETC_PM0_SINGLE_STEP_EN;
 
 
 
