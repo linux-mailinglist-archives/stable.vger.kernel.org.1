@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391CFA59D96
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288ECA5A1D9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 652A33A5066
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADB6118897FE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE93A1C5F1B;
-	Mon, 10 Mar 2025 17:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE29223237F;
+	Mon, 10 Mar 2025 18:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q5MhGjJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oL3QSDhN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A52309A6;
-	Mon, 10 Mar 2025 17:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E232206BD;
+	Mon, 10 Mar 2025 18:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627341; cv=none; b=ea6Io21qvtfyx0NGD5nQtkwuPmA8357yZXyv3p3W3qOs82bdUmmkAO4gCy24OvmJRpmDUjfcKceWsNBP7Lqdl0PsUNny12K3mkYXu6emQUpI87G3jB9U5coBOmXZgyAtL4mhBLjs9QdPtdLYtMZ1G2AzfH58J7HOXveR7WIpGXM=
+	t=1741630432; cv=none; b=UwiAEtieKGIWcDLOKR9VHKlhAETIWDLv3oGu7xbkDCM2RA3tk7OFfWEjE3XheT0ykMC0mA8VSSLv2t+iYBiYkPv/X37fKUz3Eesb835VZR7HdTV2ZassIPgfKZV7THqA197bL2P3eZegwYmsnJE82t+zZsTcw8/PqntJKIeTSNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627341; c=relaxed/simple;
-	bh=Z88eIT1DY4oFUHb7nXN/+Ozn1WYZOIf9AturofdDWkE=;
+	s=arc-20240116; t=1741630432; c=relaxed/simple;
+	bh=ZgA4kHqqJVMGJhUT6P3VfVs6iMWIM/OM+ieLoXF01dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pAHhJkj8HkSXyoluLTX3kbSxTbiG4/1rFOdYHQlxnBbhRPU57HXfU4FmwuGVXPnwOi1I+JqGxFFDUWyMlGWkG2eY+EApHaJmKvFhma5sE/hcv4aI9WBoUApkjMjoLdPnoNbZgMSw8aO4VVTdF3xt7QpBro4S3M99irP4n2Pnh2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q5MhGjJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0541FC4CEE5;
-	Mon, 10 Mar 2025 17:22:20 +0000 (UTC)
+	 MIME-Version; b=No6gPumPiMZokjHrAx9YI3qjPpSvBMSihlqwXJ5tEdYJUJFmMuniqsK2x2RmcHoiYSh+1FgH2hOIfoBJk5zCXj8G2f2xlKWo5ng1hidlu97oE2RY9bnbSbAjAkW3waS+UVWJ+Z00FYFH89yOe8b9aprg1BfKZ21N3MgSIbDvL68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oL3QSDhN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D909C4CEE5;
+	Mon, 10 Mar 2025 18:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627341;
-	bh=Z88eIT1DY4oFUHb7nXN/+Ozn1WYZOIf9AturofdDWkE=;
+	s=korg; t=1741630432;
+	bh=ZgA4kHqqJVMGJhUT6P3VfVs6iMWIM/OM+ieLoXF01dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1q5MhGjJldW5DWtuFGPoI40sblFTe3FD1cmhpyGrHpBHP748KSnmR9Aj6hnQLGsDO
-	 tKuKmt9W/zufsC8woN0jA55yDcSgeMQMEoSZFYfJbmonpllBcQYphW/cchIwpnsh41
-	 AuL2mmWiigvFkLFd4z90ooV/8Uw2B5exjZAnwuqc=
+	b=oL3QSDhNFocaYsXzI9K/l8v6AtJrXWOmevBTNb3JUhNNvyd3lQBV9KIK3eOsQYsl9
+	 pi78+t8fYrnNrV/2GWkEP8Qm9NygvuBEdqaO0BsVcYL464eEQbq4xeEJO9za4pd4uA
+	 ISdTfvMCLxYQwCL1y6z1ISFav18QVCrzXdmrzpUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Martin <Andrew.Martin@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 096/269] drm/amdkfd: Fix NULL Pointer Dereference in KFD queue
-Date: Mon, 10 Mar 2025 18:04:09 +0100
-Message-ID: <20250310170501.536887411@linuxfoundation.org>
+	Li Zetao <lizetao1@huawei.com>,
+	Petr Machata <petrm@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 404/620] neighbour: delete redundant judgment statements
+Date: Mon, 10 Mar 2025 18:04:10 +0100
+Message-ID: <20250310170601.538889738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Martin <Andrew.Martin@amd.com>
+From: Li Zetao <lizetao1@huawei.com>
 
-commit fd617ea3b79d2116d53f76cdb5a3601c0ba6e42f upstream.
+[ Upstream commit c25bdd2ac8cf7da70a226f1a66cdce7af15ff86f ]
 
-Through KFD IOCTL Fuzzing we encountered a NULL pointer derefrence
-when calling kfd_queue_acquire_buffers.
+The initial value of err is -ENOBUFS, and err is guaranteed to be
+less than 0 before all goto errout. Therefore, on the error path
+of errout, there is no need to repeatedly judge that err is less than 0,
+and delete redundant judgments to make the code more concise.
 
-Fixes: 629568d25fea ("drm/amdkfd: Validate queue cwsr area and eop buffer size")
-Signed-off-by: Andrew Martin <Andrew.Martin@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Andrew Martin <Andrew.Martin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 049e5bf3c8406f87c3d8e1958e0a16804fa1d530)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: becbd5850c03 ("neighbour: use RCU protection in __neigh_notify()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/neighbour.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-index ecccd7adbab4..24396a2c77bd 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-@@ -266,8 +266,8 @@ int kfd_queue_acquire_buffers(struct kfd_process_device *pdd, struct queue_prope
- 	/* EOP buffer is not required for all ASICs */
- 	if (properties->eop_ring_buffer_address) {
- 		if (properties->eop_ring_buffer_size != topo_dev->node_props.eop_buffer_size) {
--			pr_debug("queue eop bo size 0x%lx not equal to node eop buf size 0x%x\n",
--				properties->eop_buf_bo->tbo.base.size,
-+			pr_debug("queue eop bo size 0x%x not equal to node eop buf size 0x%x\n",
-+				properties->eop_ring_buffer_size,
- 				topo_dev->node_props.eop_buffer_size);
- 			err = -EINVAL;
- 			goto out_err_unreserve;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 6f3bd1a4ec8ca..7fffbe0424342 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3387,8 +3387,7 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+ 	return;
+ errout:
+-	if (err < 0)
+-		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
+ }
+ 
+ void neigh_app_ns(struct neighbour *n)
 -- 
-2.48.1
+2.39.5
 
 
 
