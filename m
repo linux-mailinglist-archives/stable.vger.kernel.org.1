@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-122320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB7DA59EFD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462CBA59FAC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B9E716FD9F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6BA27A20BD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3BA22D7A6;
-	Mon, 10 Mar 2025 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CACA2236FB;
+	Mon, 10 Mar 2025 17:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/e3Bjfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDzq0Oe7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9251DE89C;
-	Mon, 10 Mar 2025 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4CF81E;
+	Mon, 10 Mar 2025 17:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628161; cv=none; b=HDYI6ATLSQ72J6ek9HA6TrtyUYdCI+8ewFaNumeyBROefWvtjIYOikjDuIvZthzeaKnqIjuMULIPIb3rDrf74gSWHK0aQK2Suq3QOsy/kIDY8Ssp/lOgPIBF2URcE6j7nhKrKuBoUckcZ6HoXkidmjCbaTnZxT6j0A5VhyWce9Q=
+	t=1741628535; cv=none; b=bLh19Nb9P5bvWrpMEJ4D1nwdptNr0BLpGdaAHvf912445FcAPvZ9f1XEK4Q/dMi78Le3mYCkSuB8SusIsUb6OcpIme4HpvhwATIq2AvW4ppoBZSrbSl+jdjeAztKQZxlzovgDRz+q3kt9eE17gqBoUQENjhfenvOjscJBbgAz6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628161; c=relaxed/simple;
-	bh=LGCE7Mq1Bz+FiIikO4vYEEyWq33yIlx+KeK8Ll3qKMw=;
+	s=arc-20240116; t=1741628535; c=relaxed/simple;
+	bh=fEBnFKoMLJBx99TmTGvLwqW9vLd1ymqK2vIHotP01mA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzV3OjS1sTE6xY1iyLgtB9sPnOQw/U51K2ddPpZYkfHyl4FBFuvsbHRB+Jh29c1z5IJaMjsGNVGU8r5GI+N95QUzoCD5MrHaVijdUNqFlSCziGVoJBuAYPPNsz6x0MrKxOhSxvjJ2tqPogWDd7bUhspSnMALoo/7LsI6/p7jpmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/e3Bjfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C856EC4CEE5;
-	Mon, 10 Mar 2025 17:36:00 +0000 (UTC)
+	 MIME-Version; b=eM0kUHXy/MWHez2dFCnEb0OXbdge9ohx6MW1QADqE4YzZWYpQ65seuoa7ED+XTy22+7mV3S6lD656u1KAKuxAKnV6ZrQY902yjj6sE4sPTO8Hr4Wqy0bWD4ebF3CgqjXaEmqCTVqk8m0VEL7BhFHKXbt1FJrJBAki5OrmvSszu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDzq0Oe7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74467C4CEE5;
+	Mon, 10 Mar 2025 17:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628161;
-	bh=LGCE7Mq1Bz+FiIikO4vYEEyWq33yIlx+KeK8Ll3qKMw=;
+	s=korg; t=1741628534;
+	bh=fEBnFKoMLJBx99TmTGvLwqW9vLd1ymqK2vIHotP01mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/e3BjfpGwyTlM3ai38Zj7J5bcu3QOMtljeDNuncl0FYbP3SEQvz/6CgIT57YwJ5g
-	 wZ6/18c6tovMVrrftoD8KArDqGKR8MA7o9CfS6p/syar569/a7U8s2MqeEUB6ck5gZ
-	 Dx20Z5eSqzNWmoaHel4f5xMNErVLJdS9RwwnDCCc=
+	b=eDzq0Oe7YSRdwIcrVYcul2+ybJinQSpGRm275+JDPh9SVhpYc80SPPWYllYeCeHpX
+	 oL4MV8C+DS6cIVgv3FjpyHMdgk2ICk5rbicoDcDhTqQF1qyWiuBdvXZ6WXq2gC2xiy
+	 ayTzSkD3XboVQmEm1Ld1aW5RJIrVAJqso9BuiGjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 109/145] usb: xhci: Enable the TRB overfetch quirk on VIA VL805
+	Zecheng Li <zecheng@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: [PATCH 6.1 059/109] sched/fair: Fix potential memory corruption in child_cfs_rq_on_list
 Date: Mon, 10 Mar 2025 18:06:43 +0100
-Message-ID: <20250310170439.162550987@linuxfoundation.org>
+Message-ID: <20250310170429.919497036@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Zecheng Li <zecheng@google.com>
 
-commit c133ec0e5717868c9967fa3df92a55e537b1aead upstream.
+[ Upstream commit 3b4035ddbfc8e4521f85569998a7569668cccf51 ]
 
-Raspberry Pi is a major user of those chips and they discovered a bug -
-when the end of a transfer ring segment is reached, up to four TRBs can
-be prefetched from the next page even if the segment ends with link TRB
-and on page boundary (the chip claims to support standard 4KB pages).
+child_cfs_rq_on_list attempts to convert a 'prev' pointer to a cfs_rq.
+This 'prev' pointer can originate from struct rq's leaf_cfs_rq_list,
+making the conversion invalid and potentially leading to memory
+corruption. Depending on the relative positions of leaf_cfs_rq_list and
+the task group (tg) pointer within the struct, this can cause a memory
+fault or access garbage data.
 
-It also appears that if the prefetched TRBs belong to a different ring
-whose doorbell is later rung, they may be used without refreshing from
-system RAM and the endpoint will stay idle if their cycle bit is stale.
+The issue arises in list_add_leaf_cfs_rq, where both
+cfs_rq->leaf_cfs_rq_list and rq->leaf_cfs_rq_list are added to the same
+leaf list. Also, rq->tmp_alone_branch can be set to rq->leaf_cfs_rq_list.
 
-Other users complain about IOMMU faults on x86 systems, unsurprisingly.
+This adds a check `if (prev == &rq->leaf_cfs_rq_list)` after the main
+conditional in child_cfs_rq_on_list. This ensures that the container_of
+operation will convert a correct cfs_rq struct.
 
-Deal with it by using existing quirk which allocates a dummy page after
-each transfer ring segment. This was seen to resolve both problems. RPi
-came up with a more efficient solution, shortening each segment by four
-TRBs, but it complicated the driver and they ditched it for this quirk.
+This check is sufficient because only cfs_rqs on the same CPU are added
+to the list, so verifying the 'prev' pointer against the current rq's list
+head is enough.
 
-Also rename the quirk and add VL805 device ID macro.
+Fixes a potential memory corruption issue that due to current struct
+layout might not be manifesting as a crash but could lead to unpredictable
+behavior when the layout changes.
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://github.com/raspberrypi/linux/issues/4685
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215906
-CC: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225095927.2512358-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fdaba61ef8a2 ("sched/fair: Ensure that the CFS parent is added after unthrottling")
+Signed-off-by: Zecheng Li <zecheng@google.com>
+Reviewed-and-tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20250304214031.2882646-1-zecheng@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c |    3 ++-
- drivers/usb/host/xhci-pci.c |   10 +++++++---
- drivers/usb/host/xhci.h     |    2 +-
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ kernel/sched/fair.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2364,7 +2364,8 @@ int xhci_mem_init(struct xhci_hcd *xhci,
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+	if (xhci->quirks & XHCI_TRB_OVERFETCH)
-+		/* Buggy HC prefetches beyond segment bounds - allocate dummy space at the end */
- 		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
- 				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
- 	else
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -38,6 +38,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index eedbe66e05273..d30e0936cfecc 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3550,15 +3550,17 @@ static inline bool child_cfs_rq_on_list(struct cfs_rq *cfs_rq)
+ {
+ 	struct cfs_rq *prev_cfs_rq;
+ 	struct list_head *prev;
++	struct rq *rq = rq_of(cfs_rq);
  
-+#define PCI_DEVICE_ID_VIA_VL805			0x3483
-+
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
-@@ -480,8 +482,10 @@ static void xhci_pci_quirks(struct devic
- 			pdev->device == 0x3432)
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 
--	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
-+	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
- 		xhci->quirks |= XHCI_LPM_SUPPORT;
-+		xhci->quirks |= XHCI_TRB_OVERFETCH;
-+	}
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
-@@ -529,11 +533,11 @@ static void xhci_pci_quirks(struct devic
- 
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 		}
- 
- 		if (pdev->device == 0x9203)
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
+ 	if (cfs_rq->on_list) {
+ 		prev = cfs_rq->leaf_cfs_rq_list.prev;
+ 	} else {
+-		struct rq *rq = rq_of(cfs_rq);
+-
+ 		prev = rq->tmp_alone_branch;
  	}
  
- 	if (pdev->vendor == PCI_DEVICE_ID_CADENCE &&
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1657,7 +1657,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
--#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
++	if (prev == &rq->leaf_cfs_rq_list)
++		return false;
++
+ 	prev_cfs_rq = container_of(prev, struct cfs_rq, leaf_cfs_rq_list);
+ 
+ 	return (prev_cfs_rq->tg->parent == cfs_rq->tg);
+-- 
+2.39.5
+
 
 
 
