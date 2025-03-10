@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CD4A5A259
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2654A59E24
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83B43AED1E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 394D97A5B7E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1768022B5AD;
-	Mon, 10 Mar 2025 18:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57597230D2B;
+	Mon, 10 Mar 2025 17:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7CGl9gd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vp6hgzdI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94741BBBFD;
-	Mon, 10 Mar 2025 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1436D2309A6;
+	Mon, 10 Mar 2025 17:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630746; cv=none; b=Yv1VjBSWmuXUrL57zpJK0ra0UX6i34/Qa0WIMSrYpifdMSWCYcycliSBngYYFTEhlAAv2zBOfBDyLlXfwS6cV8M+NUJZVzyJn8I4pGqm/HcQdJTZ+IrCbMpfjFqim/nyNGuAka5COiGKfil2DP/qBi82QOMj6gGMZ58dCbgOJPs=
+	t=1741627683; cv=none; b=o774HQvzzDEzJMvLyHHvE2S9sCQem3PzwaevYlM9JREmCGiDAOiHc3/RHNrtGJUu/TnOR32yJqrCpF+KuKIevHtNJSLbL30EqTNKVw/aPHMcpRkwvg1VIrxNFv20l4pqXGnXI3Jf/zYGfnfVN/DyrsIUxlYk2I9KFza4rQ3RQZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630746; c=relaxed/simple;
-	bh=cTXbLgmM0JE8bFNCfhax71HAhVA9m+93NJkQQGanMwE=;
+	s=arc-20240116; t=1741627683; c=relaxed/simple;
+	bh=mwylIw7E7ZrrG7mlV+m83IoKU4BFCkMTzqM7L1euvn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8inUcYTJv5fYKS/AML2MPzSUKYvQ03+w4EF60GFLVM9gsNm4FnE+x4yZlFSDhSjboborquuZcwzXMOr8KM/YnNL4YEsdWacHC4tOiZi3Mw75OTK11Hlp2TFfA0YxafMlKtCPwAR/RUKptS3IyCGitNRqqhrdgRj79NF+WNe/ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7CGl9gd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED597C4CEE5;
-	Mon, 10 Mar 2025 18:19:05 +0000 (UTC)
+	 MIME-Version; b=aF91Pb4TtIcNaYHu+cGgkWALAFBY/ju43hxc0EdHHjiSadU7YGi/lFsNZRAOB+Ir8wEOYVW3YcZ3oVG84AiNYJoiLzTCpxyBd4SYBeW3v5g0X2PY6xFGLXZxeionILl8+29gJ6mbnCD10CRF7mYwcSo2t2NHHbF03yhrMvZL5jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vp6hgzdI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903A7C4CEE5;
+	Mon, 10 Mar 2025 17:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630746;
-	bh=cTXbLgmM0JE8bFNCfhax71HAhVA9m+93NJkQQGanMwE=;
+	s=korg; t=1741627683;
+	bh=mwylIw7E7ZrrG7mlV+m83IoKU4BFCkMTzqM7L1euvn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7CGl9gdML86nF86iKQknW8JQp1y+OkV5AjA2eDvRZTeVU+3Js9uG42tXrkHGIXby
-	 zXYn3U+eHwGgP0vaXH7T3kMX2N0pNQ+2L2hQH/q2rNGpMpPmhBIyzMPAa1sXJrPyLI
-	 9yt+n35lsQuCyQqr7DWRWW3Hlfl5yOwNTvVDIF8k=
+	b=Vp6hgzdIJoHoPZxGj/Mz7DQic9duIj52gkQ/earoqmZHm2mDSaLqRHWfUpG480PlY
+	 Kv1l5duP0ti6DMMi6AxUbHahEujMPOfO7ytAJ50omL4FL5hf7n2hKbpyYHnNC7Uplk
+	 j7VAPxrYl2nMTf0HplbyCtK2DxyGFfJFH5Tq9XKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d693c07c6f647e0388d3@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 519/620] usbnet: gl620a: fix endpoint checking in genelink_bind()
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 212/269] usb: typec: ucsi: Fix NULL pointer access
 Date: Mon, 10 Mar 2025 18:06:05 +0100
-Message-ID: <20250310170606.039915544@linuxfoundation.org>
+Message-ID: <20250310170506.142143696@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit 1cf9631d836b289bd5490776551961c883ae8a4f upstream.
+commit b13abcb7ddd8d38de769486db5bd917537b32ab1 upstream.
 
-Syzbot reports [1] a warning in usb_submit_urb() triggered by
-inconsistencies between expected and actually present endpoints
-in gl620a driver. Since genelink_bind() does not properly
-verify whether specified eps are in fact provided by the device,
-in this case, an artificially manufactured one, one may get a
-mismatch.
+Resources should be released only after all threads that utilize them
+have been destroyed.
+This commit ensures that resources are not released prematurely by waiting
+for the associated workqueue to complete before deallocating them.
 
-Fix the issue by resorting to a usbnet utility function
-usbnet_get_endpoints(), usually reserved for this very problem.
-Check for endpoints and return early before proceeding further if
-any are missing.
-
-[1] Syzbot report:
-usb 5-1: Manufacturer: syz
-usb 5-1: SerialNumber: syz
-usb 5-1: config 0 descriptor??
-gl620a 5-1:0.23 usb0: register 'gl620a' at usb-dummy_hcd.0-1, ...
-------------[ cut here ]------------
-usb 5-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 2 PID: 1841 at drivers/usb/core/urb.c:503 usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
-Modules linked in:
-CPU: 2 UID: 0 PID: 1841 Comm: kworker/2:2 Not tainted 6.12.0-syzkaller-07834-g06afb0f36106 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: mld mld_ifc_work
-RIP: 0010:usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
-...
-Call Trace:
- <TASK>
- usbnet_start_xmit+0x6be/0x2780 drivers/net/usb/usbnet.c:1467
- __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
- netdev_start_xmit include/linux/netdevice.h:5011 [inline]
- xmit_one net/core/dev.c:3590 [inline]
- dev_hard_start_xmit+0x9a/0x7b0 net/core/dev.c:3606
- sch_direct_xmit+0x1ae/0xc30 net/sched/sch_generic.c:343
- __dev_xmit_skb net/core/dev.c:3827 [inline]
- __dev_queue_xmit+0x13d4/0x43e0 net/core/dev.c:4400
- dev_queue_xmit include/linux/netdevice.h:3168 [inline]
- neigh_resolve_output net/core/neighbour.c:1514 [inline]
- neigh_resolve_output+0x5bc/0x950 net/core/neighbour.c:1494
- neigh_output include/net/neighbour.h:539 [inline]
- ip6_finish_output2+0xb1b/0x2070 net/ipv6/ip6_output.c:141
- __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
- ip6_finish_output+0x3f9/0x1360 net/ipv6/ip6_output.c:226
- NF_HOOK_COND include/linux/netfilter.h:303 [inline]
- ip6_output+0x1f8/0x540 net/ipv6/ip6_output.c:247
- dst_output include/net/dst.h:450 [inline]
- NF_HOOK include/linux/netfilter.h:314 [inline]
- NF_HOOK include/linux/netfilter.h:308 [inline]
- mld_sendpack+0x9f0/0x11d0 net/ipv6/mcast.c:1819
- mld_send_cr net/ipv6/mcast.c:2120 [inline]
- mld_ifc_work+0x740/0xca0 net/ipv6/mcast.c:2651
- process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
- process_scheduled_works kernel/workqueue.c:3310 [inline]
- worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-Reported-by: syzbot+d693c07c6f647e0388d3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d693c07c6f647e0388d3
-Fixes: 47ee3051c856 ("[PATCH] USB: usbnet (5/9) module for genesys gl620a cables")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250224172919.1220522-1-n.zhandarovich@fintech.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable <stable@kernel.org>
+Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250305111739.1489003-2-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/gl620a.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/net/usb/gl620a.c
-+++ b/drivers/net/usb/gl620a.c
-@@ -179,9 +179,7 @@ static int genelink_bind(struct usbnet *
- {
- 	dev->hard_mtu = GL_RCV_BUF_SIZE;
- 	dev->net->hard_header_len += 4;
--	dev->in = usb_rcvbulkpipe(dev->udev, dev->driver_info->in);
--	dev->out = usb_sndbulkpipe(dev->udev, dev->driver_info->out);
--	return 0;
-+	return usbnet_get_endpoints(dev, intf);
- }
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1809,11 +1809,11 @@ static int ucsi_init(struct ucsi *ucsi)
  
- static const struct driver_info	genelink_info = {
+ err_unregister:
+ 	for (con = connector; con->port; con++) {
++		if (con->wq)
++			destroy_workqueue(con->wq);
+ 		ucsi_unregister_partner(con);
+ 		ucsi_unregister_altmodes(con, UCSI_RECIPIENT_CON);
+ 		ucsi_unregister_port_psy(con);
+-		if (con->wq)
+-			destroy_workqueue(con->wq);
+ 
+ 		usb_power_delivery_unregister_capabilities(con->port_sink_caps);
+ 		con->port_sink_caps = NULL;
+@@ -1997,10 +1997,6 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 
+ 	for (i = 0; i < ucsi->cap.num_connectors; i++) {
+ 		cancel_work_sync(&ucsi->connector[i].work);
+-		ucsi_unregister_partner(&ucsi->connector[i]);
+-		ucsi_unregister_altmodes(&ucsi->connector[i],
+-					 UCSI_RECIPIENT_CON);
+-		ucsi_unregister_port_psy(&ucsi->connector[i]);
+ 
+ 		if (ucsi->connector[i].wq) {
+ 			struct ucsi_work *uwork;
+@@ -2016,6 +2012,11 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 			destroy_workqueue(ucsi->connector[i].wq);
+ 		}
+ 
++		ucsi_unregister_partner(&ucsi->connector[i]);
++		ucsi_unregister_altmodes(&ucsi->connector[i],
++					 UCSI_RECIPIENT_CON);
++		ucsi_unregister_port_psy(&ucsi->connector[i]);
++
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_sink_caps);
+ 		ucsi->connector[i].port_sink_caps = NULL;
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_source_caps);
 
 
 
