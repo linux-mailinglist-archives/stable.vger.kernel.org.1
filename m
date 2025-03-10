@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA2FA5A2CA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B45A59FCF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 984593B0DD5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6613B3A7F0D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DB6230BC5;
-	Mon, 10 Mar 2025 18:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEB12253FE;
+	Mon, 10 Mar 2025 17:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4J3gAl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsxTT//O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E825D2309BD;
-	Mon, 10 Mar 2025 18:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D102F190072;
+	Mon, 10 Mar 2025 17:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630983; cv=none; b=r0uCCPLv8jyI5keVnVZAxwplkTQt8l2BTBniEIvYtSRzSKgFS06XxqIMQwA2Lg4Y6Hi6i38t21eR25ZbecjCIq021p91cKO2lS4u3g34ty0rWPFcwebBzfvstfdZQzOoNfo2mwWbDVWybYLq0CilXqZB/0PQOubtCDqhE2u4xVw=
+	t=1741628575; cv=none; b=Q3GW8+Ecz4rQ1fW+qFFAWp7HYlTki2GfcpniiXJ4onsyC9/nCz2uE4Ur9afT1j/sKySgYMvZs2K9zvC+9/VnCf/SkGvUx/Ix4bMFbz098LRJIxeJCMdODtOwK1sAbsX1mV11X6aNrZeQoMW+N9+NcATVW0mOp20m1hiVkXEBe2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630983; c=relaxed/simple;
-	bh=3j6TWCdPuW8p2Gfc1eF43cbz3q8OJaXPBEDTAYzkXc0=;
+	s=arc-20240116; t=1741628575; c=relaxed/simple;
+	bh=z24/pwxPOEsbL2G7MKKrcpL3wRYAMyc+Vm6Fch7PGUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlBaHvk6xsgoJ51JR1bxl+l/Hu8IkVh2PCwPl/m7TkE7NgLDJMWUDIjRZxuxDURhhKkNFl+vok9hzAG5oZxrTXNz580VKWg9CSO3qh6UHUQKGzb0FK2kixsvh3FBNvlveZeyOvgU/1JN6+600Ors655mGgEFlcqJ9VXb5NRcUqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4J3gAl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE941C4CEE5;
-	Mon, 10 Mar 2025 18:23:01 +0000 (UTC)
+	 MIME-Version; b=OWXC1qUJn8e8lpg/iNJcM19nzAZIBuwD4Fzl4pGAnHqc3cLYZwCYpgYwO4bsenaCFMUB5dnAqvBmy4tV4PrSJCoZ9gWqwLViySQcU8fH0HZqlcWjDimvcRciaxGe+11eb+4Es3E9ct70doYEnLo5zcPwkmyhDtMhOhuh8JcYHeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsxTT//O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97EDC4CEE5;
+	Mon, 10 Mar 2025 17:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630982;
-	bh=3j6TWCdPuW8p2Gfc1eF43cbz3q8OJaXPBEDTAYzkXc0=;
+	s=korg; t=1741628575;
+	bh=z24/pwxPOEsbL2G7MKKrcpL3wRYAMyc+Vm6Fch7PGUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4J3gAl7SwsjIabMKDwK6AcBcehfiJtcoRaDM9kjYD3RMGUrNn0BAuUn+p9vEMvxf
-	 JVnUIqdsleUgOMX4p5wtsLNudbaLWDzaJOfMgv2dbtXkpkJfF7KJtp3seqdaN8rXka
-	 XXYr67HG9hwHJV2FXC/Pp/TuEsPZ29bJVBSgd5Yg=
+	b=YsxTT//OtysiaiftafNhMMJ1O/jKpg8TgEQiIVYYU81VhsVRRJxdeSpX72XXHS0PL
+	 /lYLWNUQSu8Lt0krdNfPGUlIgbDJT53FpCBsX8gwCLY6ln9FzYF0vS58bAhIfJlYgR
+	 uzstXpopxcrINkn+0BaNwLP9ubMwy8r8vp73xwaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 5.15 602/620] bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
-Date: Mon, 10 Mar 2025 18:07:28 +0100
-Message-ID: <20250310170609.294745063@linuxfoundation.org>
+	syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 105/109] fs/ntfs3: Add rough attr alloc_size check
+Date: Mon, 10 Mar 2025 18:07:29 +0100
+Message-ID: <20250310170431.734296678@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit a321d163de3d8aa38a6449ab2becf4b1581aed96 upstream.
+commit c4a8ba334262e9a5c158d618a4820e1b9c12495c upstream.
 
-There are multiple places from where the recovery work gets scheduled
-asynchronously. Also, there are multiple places where the caller waits
-synchronously for the recovery to be completed. One such place is during
-the PM shutdown() callback.
-
-If the device is not alive during recovery_work, it will try to reset the
-device using pci_reset_function(). This function internally will take the
-device_lock() first before resetting the device. By this time, if the lock
-has already been acquired, then recovery_work will get stalled while
-waiting for the lock. And if the lock was already acquired by the caller
-which waits for the recovery_work to be completed, it will lead to
-deadlock.
-
-This is what happened on the X1E80100 CRD device when the device died
-before shutdown() callback. Driver core calls the driver's shutdown()
-callback while holding the device_lock() leading to deadlock.
-
-And this deadlock scenario can occur on other paths as well, like during
-the PM suspend() callback, where the driver core would hold the
-device_lock() before calling driver's suspend() callback. And if the
-recovery_work was already started, it could lead to deadlock. This is also
-observed on the X1E80100 CRD.
-
-So to fix both issues, use pci_try_reset_function() in recovery_work. This
-function first checks for the availability of the device_lock() before
-trying to reset the device. If the lock is available, it will acquire it
-and reset the device. Otherwise, it will return -EAGAIN. If that happens,
-recovery_work will fail with the error message "Recovery failed" as not
-much could be done.
-
-Cc: stable@vger.kernel.org # 5.12
-Reported-by: Johan Hovold <johan@kernel.org>
-Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
-Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Analyzed-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Link: https://lore.kernel.org/r/20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reported-by: syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ntfs3/record.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -732,8 +732,9 @@ static void mhi_pci_recovery_work(struct
- err_unprepare:
- 	mhi_unprepare_after_power_down(mhi_cntrl);
- err_try_reset:
--	if (pci_reset_function(pdev))
--		dev_err(&pdev->dev, "Recovery failed\n");
-+	err = pci_try_reset_function(pdev);
-+	if (err)
-+		dev_err(&pdev->dev, "Recovery failed: %d\n", err);
- }
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -325,6 +325,9 @@ struct ATTRIB *mi_enum_attr(struct mft_i
+ 	} else {
+ 		if (attr->nres.c_unit)
+ 			return NULL;
++
++		if (alloc_size > mi->sbi->volume.size)
++			return NULL;
+ 	}
  
- static void health_check(struct timer_list *t)
+ 	return attr;
 
 
 
