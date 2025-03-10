@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-121883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2ECFA59CE7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9528A59EDC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED153AA658
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CD153A1A5D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6957A232786;
-	Mon, 10 Mar 2025 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6B623026D;
+	Mon, 10 Mar 2025 17:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhnZ2Kq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MfSL7ZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A7B18DB24;
-	Mon, 10 Mar 2025 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE941A7264;
+	Mon, 10 Mar 2025 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626906; cv=none; b=d9XyXyakl9Q7ZLpQMmVNjNnH+ovz4JkG8vTzzyLn3xWh9Qv1wkZywdd7LiMZ1pMyDqV/ImdYVzh5mmHe2QtCcjXKzliAgK6kNoREnotPJLubiYXr1UKiNFlG6Cgvr8vZvvS2PTl0xKA6cFjTUZNqg8To/YTQqiUmQgOsRcRwv1E=
+	t=1741628001; cv=none; b=JNfpTAxI18E/qy5GWpYkZYposdo0jtyW5V+8bV0M8md/qGT/SWlCLIiXYAdNLfS7Fu4pTSpw/3B2YuG6TlVXawDlDzWXLUwv/srZJYKkCG8sVgZdQ4JJGAnixR9pTmh3KkQ+DPoboyyvAfhKe8Nwu9Ow4Btmpg45VQz+I+I8voo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626906; c=relaxed/simple;
-	bh=Xnp0dnC4m060HAwKIhEIcT0waTkGTxWFIAlMG37i5a8=;
+	s=arc-20240116; t=1741628001; c=relaxed/simple;
+	bh=LA8eGNcH6Sr9ynNLe18G+xp37hsJEK+NIu3QPZiTDxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AP/zaSuBzaI0Kmx6iiQyD+oP8ostNf0tZFBBONZZRGJpa8KGUsS4LpWmmMLzWG4wBfD7d8cVJtoXWn65sy5D05l8yH5BhUjgbJqxs16Xb1TEsMRjubenRU6I8VRI64dxWCvzSMJA9SbmU5hDtNz68IwYJyCVMPfgvqlTvKJ9nyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhnZ2Kq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991DCC4CEE5;
-	Mon, 10 Mar 2025 17:15:05 +0000 (UTC)
+	 MIME-Version; b=NELVnGY1HSCZBGliuKed4qYsIXDfQm0gMUJpOfF3vb4ZXEEt+gE/zwOtCmNVtQg17rVrMXAiCJpa5d/Hjd4D6WEYN7Chor+HQl45P9W1JSIAoyWqpKdgpUMp8dKHi6E9slc9QFFGbIt4T2aDYHG7QkAUmX+Vm8Nj0gWAFUDHrSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MfSL7ZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDF2C4CEE5;
+	Mon, 10 Mar 2025 17:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626906;
-	bh=Xnp0dnC4m060HAwKIhEIcT0waTkGTxWFIAlMG37i5a8=;
+	s=korg; t=1741628001;
+	bh=LA8eGNcH6Sr9ynNLe18G+xp37hsJEK+NIu3QPZiTDxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhnZ2Kq6q0njDDxJFQPIT8u9/8P7waCNJLBQbsra8/jWJ7HGg/f29FLWAbHtX1OR4
-	 6h9UNKiWDgHxOMFmYAmdctcPh+8NCpuvdAglHr7zirn04ssjmlNIzhSnLPsh8DgeSQ
-	 VU1UqDf+RS290wZaFGLaZeTMDKIEpe/5RQy7Pk2I=
+	b=0MfSL7ZHgydImwM9PWzrtdC9djNJYpm3/g9ZkYupaQh1YXZlgLsgPdlZs4Z39fTqd
+	 4Ze8MYV/rMLGS2eHMaTz7phgg37RZ6iDgTBdvgTrj2EoLsyJPZ+GkUjXseP/mRcTUu
+	 rVCEzmhOwiY95d/Ebg2tp5lYrjt6hADWK+fEBGgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.13 154/207] usb: renesas_usbhs: Use devm_usb_get_phy()
+	kernel test robot <lkp@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Macro Elver <elver@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 053/145] dma: kmsan: export kmsan_handle_dma() for modules
 Date: Mon, 10 Mar 2025 18:05:47 +0100
-Message-ID: <20250310170453.916702369@linuxfoundation.org>
+Message-ID: <20250310170436.879950288@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +67,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
+commit 19fac3c93991502a22c5132824c40b6a2e64b136 upstream.
 
-The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
-never released. Use devm_usb_get_phy() to handle this scenario.
+kmsan_handle_dma() is used by virtio_ring() which can be built as a
+module.  kmsan_handle_dma() needs to be exported otherwise building the
+virtio_ring fails.
 
-This issue was identified through code investigation. No issue was found
-without this change.
+Export kmsan_handle_dma for modules.
 
-Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
+Link: https://lkml.kernel.org/r/20250218091411.MMS3wBN9@linutronix.de
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502150634.qjxwSeJR-lkp@intel.com/
+Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Macro Elver <elver@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/kmsan/hooks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/renesas_usbhs/mod_gadget.c
-+++ b/drivers/usb/renesas_usbhs/mod_gadget.c
-@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
- 		goto usbhs_mod_gadget_probe_err_gpriv;
+--- a/mm/kmsan/hooks.c
++++ b/mm/kmsan/hooks.c
+@@ -346,6 +346,7 @@ void kmsan_handle_dma(struct page *page,
+ 		size -= to_go;
  	}
+ }
++EXPORT_SYMBOL_GPL(kmsan_handle_dma);
  
--	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
-+	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
- 	dev_info(dev, "%stransceiver found\n",
- 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
- 
+ void kmsan_handle_dma_sg(struct scatterlist *sg, int nents,
+ 			 enum dma_data_direction dir)
 
 
 
