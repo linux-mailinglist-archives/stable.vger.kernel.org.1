@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0461A59FA1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDBCA59F36
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21DE2170EAE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 270C53AAC6B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07668233727;
-	Mon, 10 Mar 2025 17:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCFC233153;
+	Mon, 10 Mar 2025 17:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCXt9Eyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRHACI2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA16723237F;
-	Mon, 10 Mar 2025 17:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8891C22D7A6;
+	Mon, 10 Mar 2025 17:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628485; cv=none; b=T8GbEKdxUvHaXYRmrt8/j/1BIeOR+M/IRobwQX0xER1MZyy+Ztw8Q4TBF/pk2rCPj+ovXhIfkRcnVUQgcg6bnpbIFcVhC2+oOUUeP3IM+9fQQwosGBy0pmqCkhF9Jz2nuULZhlFwzNiY040rUOzEU9Qbpl/+zlWoqKJX0jcfpgM=
+	t=1741628210; cv=none; b=crF2/OeffAsgjW3xQ6J8VyEXyhSGpKhrLDbtqVQ2BTvICSIEb97Y91mXSVosjXK2jFX2o5e0/6QHeUPZlJjwauVotQIzwdlnOf20kmcONOck7JFmyVNiAhj9cn12vwSjwBEPEvpQ3XUH8RpQuJUVAstILqzENqwGnsbIXgODcdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628485; c=relaxed/simple;
-	bh=+W3kRukJE6Qy90DVqgj2G2OXVvU/HAYzhqhexBkMDNk=;
+	s=arc-20240116; t=1741628210; c=relaxed/simple;
+	bh=yEUpq0zqHnVN4+Ac6MKS+djdfaty5uzFO3i6wPAVl5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggPMzdoXeW3BCQo7CkPy6VUzMoikybCO7lwOZmNpXpjJtCKxOdH28IKLgZF63EFr6UM5hhOkd58hMGEr++oi41TMQkALWwImF2evFcSPVW0QF8G1IG0xqoFk8twAF6A0FBKH+N0aQXO35xNfjdiLqXYDulz8Vi4432HmVrgbves=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCXt9Eyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F978C4CEE5;
-	Mon, 10 Mar 2025 17:41:25 +0000 (UTC)
+	 MIME-Version; b=DxdHWQVVGmDhPP911CHonoc56PHPyQ2eSj6NlGh9JHVETsIt74qbRI82j1mMOeJ0ZYbLjF6AQpGUduj8YWhJYJPyhv0DT9ub2WtqY8Qg56uksYJFKC4lkd4V92F5jeDL/OtflHAjv9T96xvtZ/hTrnLQ+6bfek2C9WOSqUcBqdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRHACI2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1B6C4CEE5;
+	Mon, 10 Mar 2025 17:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628485;
-	bh=+W3kRukJE6Qy90DVqgj2G2OXVvU/HAYzhqhexBkMDNk=;
+	s=korg; t=1741628210;
+	bh=yEUpq0zqHnVN4+Ac6MKS+djdfaty5uzFO3i6wPAVl5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCXt9Eyog7Oozlisk5wo/npBCTc1k1eMNSbf/0O7peVllE5Fytx/uBOh+b9rw4uwZ
-	 6UBDdkxMthFnl0/kYIGDZGKGXIujgpz2RzDlnuGxieZg5BsLBFrMS4ZS7V0ExkLXeD
-	 Rfhr061oWJpoCU/GOl70T0LWKiXXzYbvI/h4nQlM=
+	b=vRHACI2o5x0QEuTJVvlaBONPdy0Y3cLHYcNrLjRMTiX2N7GqeiCOD5SnPPjGvrIJ/
+	 GCLiJfm7xSEm442HcM82zZ7OwoDaHHQD5siJqUa8qx7jvXnIjs/SBcBesWC9UKzzLS
+	 xgbAzgfiIhmECqHmMtLVCQhgsmuCow40weysD+mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.1 074/109] usb: gadget: Set self-powered based on MaxPower and bmAttributes
-Date: Mon, 10 Mar 2025 18:06:58 +0100
-Message-ID: <20250310170430.504220762@linuxfoundation.org>
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 125/145] iio: dac: ad3552r: clear reset status flag
+Date: Mon, 10 Mar 2025 18:06:59 +0100
+Message-ID: <20250310170439.813290769@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-commit 40e89ff5750fca2c1d6da93f98a2038716bba86c upstream.
+commit e17b9f20da7d2bc1f48878ab2230523b2512d965 upstream.
 
-Currently the USB gadget will be set as bus-powered based solely
-on whether its bMaxPower is greater than 100mA, but this may miss
-devices that may legitimately draw less than 100mA but still want
-to report as bus-powered. Similarly during suspend & resume, USB
-gadget is incorrectly marked as bus/self powered without checking
-the bmAttributes field. Fix these by configuring the USB gadget
-as self or bus powered based on bmAttributes, and explicitly set
-it as bus-powered if it draws more than 100mA.
+Clear reset status flag, to keep error status register clean after reset
+(ad3552r manual, rev B table 38).
 
-Cc: stable <stable@kernel.org>
-Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250217120328.2446639-1-prashanth.k@oss.qualcomm.com
+Reset error flag was left to 1, so debugging registers, the "Error
+Status Register" was dirty (0x01). It is important to clear this bit, so
+if there is any reset event over normal working mode, it is possible to
+detect it.
+
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Link: https://patch.msgid.link/20250125-wip-bl-ad3552r-clear-reset-v2-1-aa3a27f3ff8c@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/iio/dac/ad3552r.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1018,10 +1018,11 @@ static int set_config(struct usb_composi
- 	else
- 		usb_gadget_set_remote_wakeup(gadget, 0);
- done:
--	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
--		usb_gadget_set_selfpowered(gadget);
--	else
-+	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 		usb_gadget_clear_selfpowered(gadget);
-+	else
-+		usb_gadget_set_selfpowered(gadget);
- 
- 	usb_gadget_vbus_draw(gadget, power);
- 	if (result >= 0 && cdev->delayed_status)
-@@ -2490,7 +2491,9 @@ void composite_suspend(struct usb_gadget
- 
- 	cdev->suspended = 1;
- 
--	usb_gadget_set_selfpowered(gadget);
-+	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+		usb_gadget_set_selfpowered(gadget);
-+
- 	usb_gadget_vbus_draw(gadget, 2);
- }
- 
-@@ -2519,8 +2522,11 @@ void composite_resume(struct usb_gadget
- 		else
- 			maxpower = min(maxpower, 900U);
- 
--		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW)
-+		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 			usb_gadget_clear_selfpowered(gadget);
-+		else
-+			usb_gadget_set_selfpowered(gadget);
- 
- 		usb_gadget_vbus_draw(gadget, maxpower);
+--- a/drivers/iio/dac/ad3552r.c
++++ b/drivers/iio/dac/ad3552r.c
+@@ -703,6 +703,12 @@ static int ad3552r_reset(struct ad3552r_
+ 		return ret;
  	}
+ 
++	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
++	ret = ad3552r_write_reg(dac, AD3552R_REG_ADDR_ERR_STATUS,
++				AD3552R_MASK_RESET_STATUS);
++	if (ret)
++		return ret;
++
+ 	return ad3552r_update_reg_field(dac,
+ 					addr_mask_map[AD3552R_ADDR_ASCENSION][0],
+ 					addr_mask_map[AD3552R_ADDR_ASCENSION][1],
 
 
 
