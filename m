@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B924A59E9B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A416EA59CB2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B84188FBC4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9FB516EEE7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9F223237F;
-	Mon, 10 Mar 2025 17:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E76231A3F;
+	Mon, 10 Mar 2025 17:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epR0oQq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzGVLwC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AFB17A31A;
-	Mon, 10 Mar 2025 17:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42946230BF6;
+	Mon, 10 Mar 2025 17:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627945; cv=none; b=B4yKvUUYGf5w3r0/ipzkpQPVXrlaRvhucAURXiBYXW7Ara0A56mbi0NUgTMWuThwTk0KSRorERBRDFDDSXLXWW3woaOv8Azxa8nu8eWqB4DV8Zth6vzzVojEtw7xNMxQAPSbzDP7tPfC48qMQPNyytGjVR9E+3+F0oU7afo5t/4=
+	t=1741626874; cv=none; b=ECK5uK0feuewMBgesfRXJJ08ZfkiECcMt+OpX5NT3kzAWV8kd24YYqbQ76ajvs+XcCwgaLFkAwevpUMB/jxkXQ9o67or/NwKRSnKVJpz2No4T2SdgQ05+Q3sYLUh7hGgAMkSB8x+TGHSaBFHDURV48Co6JI5txElnON1xvFdh6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627945; c=relaxed/simple;
-	bh=n/fZjVSEJfQgY5h15ghT3uHfy9/bnspL9cGK4/yAhnc=;
+	s=arc-20240116; t=1741626874; c=relaxed/simple;
+	bh=GyGavryKUjHq22byAEmoywGMpp3F8S1EQtdWrgQ7Hgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqEqTREwc4rMveZN7R0TjIhbodZxB/2E2nd8fA9BZPKTH8XsIGtw598La6mD89SOCT5OLSOSysDBrgizbijTX1AbjhfUHN0C0kqEidk6YARfsY39aFa+93jw7q1mpJgZo3nFK9jY6zGnKiqVTQo+3D3wcxdV1IvZFcPEUD47Ibc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epR0oQq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23DCC4CEEC;
-	Mon, 10 Mar 2025 17:32:24 +0000 (UTC)
+	 MIME-Version; b=Zql0OsUkCBVA1MqV4yP5kvVyOC/t/WZWCk3yABnJw4PJJ0aWEaoWA4CZR1Ea8fnFEFtKb+KnTdMJ+mdRavkr8WgimJDUxIfuSbbqEgjlPhZzzEd2MqFXRX/RZqX128mZpe424VQCMghShs1m228CZ5HQBglY6Fn7fmJBA3a0/oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzGVLwC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62331C4CEE5;
+	Mon, 10 Mar 2025 17:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627945;
-	bh=n/fZjVSEJfQgY5h15ghT3uHfy9/bnspL9cGK4/yAhnc=;
+	s=korg; t=1741626873;
+	bh=GyGavryKUjHq22byAEmoywGMpp3F8S1EQtdWrgQ7Hgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epR0oQq45savx2T09fSsBkdOfNaE63Siqm8pmL/ezsn3tqUtoVDIUZ5y+LVrcGe6K
-	 /FKBhXWe7rH7NDMqwlXWjS4ZJL/ZN+gNad7VCAJaxSmSnztK2hpmmAgxHzI4MTKoOj
-	 T73zMjN/yiYMuwfJZyPoe9WcVwKxUYFWaPtMrQ9g=
+	b=mzGVLwC5KUnxe3/aL5PDK5rCDE+s9NoCEzL2pZylh5zq1tvJv5rsed9uLiU5wDI5z
+	 MyU2pAqGTOWvFwaxLm708zBf4di9js0nY5MnuX46RPIXvxp5vlRp4aeM6jvN280y7G
+	 3fWyOGX1SFnIIY6UjXjgzRIMnc/hvrk0NBPmuyfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/145] ibmvnic: Inspect header requirements before using scrq direct
-Date: Mon, 10 Mar 2025 18:05:02 +0100
-Message-ID: <20250310170435.079910301@linuxfoundation.org>
+Subject: [PATCH 6.13 110/207] ALSA: hda/realtek: Remove (revert) duplicate Ally X config
+Date: Mon, 10 Mar 2025 18:05:03 +0100
+Message-ID: <20250310170452.129058302@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit de390657b5d6f7deb9d1d36aaf45f02ba51ec9dc ]
+[ Upstream commit 3414cda9d41f41703832d0abd01063dd8de82b89 ]
 
-Previously, the TX header requirement for standard frames was ignored.
-This requirement is a bitstring sent from the VIOS which maps to the
-type of header information needed during TX. If no header information,
-is needed then send subcrq direct can be used (which can be more
-performant).
+In commit 1e9c708dc3ae ("ALSA: hda/tas2781: Add new quirk for Lenovo,
+ASUS, Dell projects") Baojun adds a bunch of projects to the file,
+including for the Ally X. Turns out the initial Ally X was not sorted
+properly, so the kernel had 2 quirks for it.
 
-This bitstring was previously ignored for standard packets (AKA non LSO,
-non CSO) due to the belief that the bitstring was over-cautionary. It
-turns out that there are some configurations where the backing device
-does need header information for transmission of standard packets. If
-the information is not supplied then this causes continuous "Adapter
-error" transport events. Therefore, this bitstring should be respected
-and observed before considering the use of send subcrq direct.
+The previous quirk overrode the new one due to being earlier and they
+are different. When AB testing, the normal pin fixup seems to work ok
+but causes a bit of a minor popping. Given the other config is more
+complicated and may cause undefined behavior, revert it.
 
-Fixes: 74839f7a8268 ("ibmvnic: Introduce send sub-crq direct")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241001163200.1802522-2-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1e9c708dc3ae ("ALSA: hda/tas2781: Add new quirk for Lenovo, ASUS, Dell projects")
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://patch.msgid.link/20250227175107.33432-2-lkml@antheas.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 4bcfdf6e6d3f2..05f410999a5a1 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2490,9 +2490,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	/* if we are going to send_subcrq_direct this then we need to
- 	 * update the checksum before copying the data into ltb. Essentially
- 	 * these packets force disable CSO so that we can guarantee that
--	 * FW does not need header info and we can send direct.
-+	 * FW does not need header info and we can send direct. Also, vnic
-+	 * server must be able to xmit standard packets without header data
- 	 */
--	if (!skb_is_gso(skb) && !ind_bufp->index && !netdev_xmit_more()) {
-+	if (*hdrs == 0 && !skb_is_gso(skb) &&
-+	    !ind_bufp->index && !netdev_xmit_more()) {
- 		use_scrq_send_direct = true;
- 		if (skb->ip_summed == CHECKSUM_PARTIAL &&
- 		    skb_checksum_help(skb))
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 2cd606900b8b0..e86c4d894ea30 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7761,7 +7761,6 @@ enum {
+ 	ALC285_FIXUP_THINKPAD_X1_GEN7,
+ 	ALC285_FIXUP_THINKPAD_HEADSET_JACK,
+ 	ALC294_FIXUP_ASUS_ALLY,
+-	ALC294_FIXUP_ASUS_ALLY_X,
+ 	ALC294_FIXUP_ASUS_ALLY_PINS,
+ 	ALC294_FIXUP_ASUS_ALLY_VERBS,
+ 	ALC294_FIXUP_ASUS_ALLY_SPEAKER,
+@@ -9206,12 +9205,6 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC294_FIXUP_ASUS_ALLY_PINS
+ 	},
+-	[ALC294_FIXUP_ASUS_ALLY_X] = {
+-		.type = HDA_FIXUP_FUNC,
+-		.v.func = tas2781_fixup_i2c,
+-		.chained = true,
+-		.chain_id = ALC294_FIXUP_ASUS_ALLY_PINS
+-	},
+ 	[ALC294_FIXUP_ASUS_ALLY_PINS] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -10705,7 +10698,6 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1740, "ASUS UX430UA", ALC295_FIXUP_ASUS_DACS),
+ 	SND_PCI_QUIRK(0x1043, 0x17d1, "ASUS UX431FL", ALC294_FIXUP_ASUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x17f3, "ROG Ally NR2301L/X", ALC294_FIXUP_ASUS_ALLY),
+-	SND_PCI_QUIRK(0x1043, 0x1eb3, "ROG Ally X RC72LA", ALC294_FIXUP_ASUS_ALLY_X),
+ 	SND_PCI_QUIRK(0x1043, 0x1863, "ASUS UX6404VI/VV", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1881, "ASUS Zephyrus S/M", ALC294_FIXUP_ASUS_GX502_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x18b1, "Asus MJ401TA", ALC256_FIXUP_ASUS_HEADSET_MIC),
 -- 
 2.39.5
 
