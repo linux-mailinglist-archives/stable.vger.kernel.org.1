@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-123059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25291A5A2A1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A19A59F2F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D3FC3AFBC8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56830170D02
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA8B233D9D;
-	Mon, 10 Mar 2025 18:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937FB22FE18;
+	Mon, 10 Mar 2025 17:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRPYLeSW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIkE6U8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB68233735;
-	Mon, 10 Mar 2025 18:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7E518DB24;
+	Mon, 10 Mar 2025 17:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630927; cv=none; b=r1oBJaa4IHh3N0Xem6QtiRCUFVsAvqt6vXcMq4BjoHcM62kNC4ENcCU33aEsZrXK89uUIZSP6W/GfivZAib15kCIKh9t0T9qc66CvjwTpKwcJBu2IJAECKFTNWZQlYE9Mes+U2+M/JHr4Bx/jiiNfPLh7Vc7PWaQNCNbrgmNg+0=
+	t=1741628268; cv=none; b=Ats0xHvRfVrydRZzAC9WXY1xKsAnLnA65YOOt7L+M9v7GLscUuQNrbouhDRVCKuwCaIcgUbyXzkbVpZG/7Zd2mccVVwvRul1GAW4oyzlX7mk2pTUosh7DwzFqWNPfsnU8Mbec/MHMATISKn0AFKsmx0jNf94XhKEkHbSiu3Yz/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630927; c=relaxed/simple;
-	bh=umFPZy9Ps6u++MSNQ77FiULbDRApknsHVPaezloeZjo=;
+	s=arc-20240116; t=1741628268; c=relaxed/simple;
+	bh=t3K9/WTSgo3gYvTbjKNJImJ++vR9VXnNnWNjPcLQ4FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCWzPwvZ1/ALPCmJtKR/adkBTyQJ3a378er7dmMotw1kAhXRCdWBhngUm5OaXYDVMaB3WnLWTFi8BXlGg3ByVX8Fj3t6kmKWpjyrPqXjTywgzNrJqHaK7nGH5Eq8CSXGzYFRgNmWVwjwBmIgUKzTPohZxBWdnB82dpIj/N5wlXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRPYLeSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834EFC4CEED;
-	Mon, 10 Mar 2025 18:22:06 +0000 (UTC)
+	 MIME-Version; b=HRX8Izhdto9DIDRpqbkMDpnVQEQCmhRd16eVjhPUn26XbfRNb33tZIL2k1zi1w2pQiP3FxRTINbk8APTqeq31t/RSeNGU+Wy6GizVkc4jCrzTXrtBfW2UnFw3EjvKesQk4oPbleXYsYqyoSP5pChfj2fakgOJ3qzOCY8NB+mQro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIkE6U8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EC2C4CEEC;
+	Mon, 10 Mar 2025 17:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630926;
-	bh=umFPZy9Ps6u++MSNQ77FiULbDRApknsHVPaezloeZjo=;
+	s=korg; t=1741628268;
+	bh=t3K9/WTSgo3gYvTbjKNJImJ++vR9VXnNnWNjPcLQ4FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRPYLeSWMuQuUhhBCflMvqlk3gTBva4FMd6EWULf0lsvjVVEi3V0zTUPvolKMvXlZ
-	 g6miro1U/HhxppO3zfDl/8eQG7IlFgurOVnlk55VI4ZaLd7D+znEtb9WHJbbJ4Vndc
-	 D8G0TvjmHySl6YFOoGCzqTUNIc6klrVnRpEHipzk=
+	b=SIkE6U8aAPOjBv1os/5uOMHfhFfl/PihO3vUOaIGRgNnb7Se6W1CW2Wq3XoAQqKSp
+	 f455TZjVT9VVH6cTRHReNtgTI7Kr3iCOA0JD40uCX6MraYj00wQvHgjSMwbmY1EGhJ
+	 0grDw+P4gIaG21fbYyApnYNl1nsS6zgruArznyHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.15 582/620] usb: renesas_usbhs: Use devm_usb_get_phy()
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 134/145] Revert "KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults"
 Date: Mon, 10 Mar 2025 18:07:08 +0100
-Message-ID: <20250310170608.508410843@linuxfoundation.org>
+Message-ID: <20250310170440.167680294@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
+This reverts commit ba3cf83f4a5063edb6ee150633e641954ce30478 which is
+commit 419cfb983ca93e75e905794521afefcfa07988bb upstream.
 
-The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
-never released. Use devm_usb_get_phy() to handle this scenario.
+It should not have been applied.
 
-This issue was identified through code investigation. No issue was found
-without this change.
-
-Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
+Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/e500_mmu_host.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/mod_gadget.c
-+++ b/drivers/usb/renesas_usbhs/mod_gadget.c
-@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
- 		goto usbhs_mod_gadget_probe_err_gpriv;
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -322,7 +322,6 @@ static inline int kvmppc_e500_shadow_map
+ {
+ 	struct kvm_memory_slot *slot;
+ 	unsigned long pfn = 0; /* silence GCC warning */
+-	struct page *page = NULL;
+ 	unsigned long hva;
+ 	int pfnmap = 0;
+ 	int tsize = BOOK3E_PAGESZ_4K;
+@@ -444,7 +443,7 @@ static inline int kvmppc_e500_shadow_map
+ 
+ 	if (likely(!pfnmap)) {
+ 		tsize_pages = 1UL << (tsize + 10 - PAGE_SHIFT);
+-		pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
++		pfn = gfn_to_pfn_memslot(slot, gfn);
+ 		if (is_error_noslot_pfn(pfn)) {
+ 			if (printk_ratelimit())
+ 				pr_err("%s: real page not found for gfn %lx\n",
+@@ -489,6 +488,8 @@ static inline int kvmppc_e500_shadow_map
+ 		}
  	}
+ 	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
++	if (writable)
++		kvm_set_pfn_dirty(pfn);
  
--	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
-+	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
- 	dev_info(dev, "%stransceiver found\n",
- 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
+@@ -497,7 +498,8 @@ static inline int kvmppc_e500_shadow_map
+ 	kvmppc_mmu_flush_icache(pfn);
  
+ out:
+-	kvm_release_faultin_page(kvm, page, !!ret, writable);
++	/* Drop refcount on page, so that mmu notifiers can clear it */
++	kvm_release_pfn_clean(pfn);
+ 	spin_unlock(&kvm->mmu_lock);
+ 	return ret;
+ }
 
 
 
