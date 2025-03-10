@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-122024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1586FA59D8C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB180A59C3F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A15DE3A4D0E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1553C16DC26
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9D122ACDC;
-	Mon, 10 Mar 2025 17:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFCE234989;
+	Mon, 10 Mar 2025 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHgIoWBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAK5mPtq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7581DE89C;
-	Mon, 10 Mar 2025 17:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D218230D0D;
+	Mon, 10 Mar 2025 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627309; cv=none; b=IYORmTzMPJULvXaU8fk5kOF2VqmLr+3Hc8MJFSGumwmDJfILncP3GkzVf35+4QtIBuNstRiWGODx1DPLe4WjXyb9FwZhJwqzKlw4p0U7mlaxlciCo+5Ek8jUnyumTHisuMtnozOzQ073gONGc7sMevUNNlCRASdbVhOaO4Gdhyg=
+	t=1741626593; cv=none; b=JmOO8owCEXvGbRfCAqFH+rsp9bNRTrJrMz6yAjj1E/IKG01crB18eQbQ0hUSeP8XXbUQ5K+goTqdz/Iqlo5NQQbSVpPeEFfKaYbZPYZCzvgUxlORXX3mp44N+9FsSdAbw+alejm1nYzADQWn/x2KllbCiHyxR+syggmQReR+vN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627309; c=relaxed/simple;
-	bh=zVHlTjdMiMp9YMnFyusUNQy0MBL5dctImEFuIQS2UYg=;
+	s=arc-20240116; t=1741626593; c=relaxed/simple;
+	bh=fzrEwIjUbMuEdPNp8H67LvdcPtKkPT1mSGQkWXUs+qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aECiakG4h+8D2kWdlxguvNtYjlaRKray1DJuLYQadvlMNg59ZXnkSM8XfR/+vSOR9Zq7j3MNH5il1rT8LJ+9FDP6LIZf1MmuyVQXlH5TrepIBO+PxP1GwiwcRWwmnKUgxBA27ZN3dXlgMDQUieFmA3NWPY6wWbC2LsVZZJLLH4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHgIoWBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222DCC4CEE5;
-	Mon, 10 Mar 2025 17:21:48 +0000 (UTC)
+	 MIME-Version; b=e0/FoAF1KVdmgT6eOyBW1HrtMdMvMtRKLEIanrUf3l/beDLwJXbZrW8US1fP/HENAnl7422/NUMsplDBsnGaM3VSI5kghSKvgtq9IXVOg6E4Uq0blkQdQQeU1fAgkuhIJbq1RO/y4290qQyAk/f1/KDjha1nfVFusJipsY0hY+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAK5mPtq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA488C4CEE5;
+	Mon, 10 Mar 2025 17:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627309;
-	bh=zVHlTjdMiMp9YMnFyusUNQy0MBL5dctImEFuIQS2UYg=;
+	s=korg; t=1741626593;
+	bh=fzrEwIjUbMuEdPNp8H67LvdcPtKkPT1mSGQkWXUs+qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHgIoWBP1MtpG+TrwYN+T8oDhcLUoYIzGCDIwRjIEYrFAHRfxj1PxtW5lVHcz3HsF
-	 eBWHp+glJiBc1TMPrSqAXrmqCcSIPRrNHEVGHfCL/rLkc7O678MinsI9pvWeN6GDp2
-	 lYTP+u2yPXqpZ5RfkkZAXOqxnjphDsJRsQgQSodo=
+	b=BAK5mPtqGYk6vKD5s17CIjuiWejZ0u0LRiL5vLe6zfL+vD4xf5W622wTFtV5hKdXc
+	 kIjtitdoDZNfFWU+OcTK2C1CEBBIv11kHitZjqyGN0jNPaVpOgloFX8h9xKv3mKI2x
+	 IYbZbezPo/aVCWHklBxTwao3Cn61mY8tLPvRs7D0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 086/269] ksmbd: fix bug on trap in smb2_lock
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.13 046/207] x86/cpu: Validate CPUID leaf 0x2 EDX output
 Date: Mon, 10 Mar 2025 18:03:59 +0100
-Message-ID: <20250310170501.145538770@linuxfoundation.org>
+Message-ID: <20250310170449.598003603@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit e26e2d2e15daf1ab33e0135caf2304a0cfa2744b upstream.
+commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
 
-If lock count is greater than 1, flags could be old value.
-It should be checked with flags of smb_lock, not flags.
-It will cause bug-on trap from locks_free_lock in error handling
-routine.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
+ECX, but left EDX unchecked.
+
+Validate EDX's most-significant bit as well.
+
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    2 +-
+ arch/x86/kernel/cpu/intel.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7451,7 +7451,7 @@ no_check_cl:
- retry:
- 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
- skip:
--		if (flags & SMB2_LOCKFLAG_UNLOCK) {
-+		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
- 			if (!rc) {
- 				ksmbd_debug(SMB, "File unlocked\n");
- 			} else if (rc == -ENOENT) {
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -804,7 +804,7 @@ static void intel_detect_tlb(struct cpui
+ 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
+ 
+ 		/* If bit 31 is set, this is an unknown format */
+-		for (j = 0 ; j < 3 ; j++)
++		for (j = 0 ; j < 4 ; j++)
+ 			if (regs[j] & (1 << 31))
+ 				regs[j] = 0;
+ 
 
 
 
