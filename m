@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-122725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C682A5A0EB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2E5A5A0C8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9B873ACBF0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:55:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAD373AC7A8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5122C231A2A;
-	Mon, 10 Mar 2025 17:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC6D232787;
+	Mon, 10 Mar 2025 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFA7Yc7z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGsaeCji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3962D023;
-	Mon, 10 Mar 2025 17:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6A622AE7C;
+	Mon, 10 Mar 2025 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629319; cv=none; b=hujxoetmBqwrrG5uJq4O2Kt2jJXPhAyAzuPnDw4EA9oux07dsBTOHaLrfpdGWzuWZV4uPvR2dHRtYFvfFZQrCJgoJwu9xi+YUj0vR6+C402m5O/RotwyDahO3dntvMrdYTNCCOa5siIsOLChddSwKIWnN55cLz9wzoyRA2VC8FA=
+	t=1741629230; cv=none; b=DgI5zrbbytWfNP+oFBW7Efy4OdhtbFn1LUs9qWZxGG+xy3YdaVGx4k+970FNqsVEjEpYrCFgaSm/Df3mbLkEUNcW1cByPrmZAXEaBXlxV3WZ1urlw1sBiXxaLrX0fJlfgW0q6c7YL8N8LkB8Ccr2ySxrhYslyTlP1KnP+GZolss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629319; c=relaxed/simple;
-	bh=5UyX8yvYY/l0qV+QIgGtOTLCwxGG+MKDbg+Z5ITAo3w=;
+	s=arc-20240116; t=1741629230; c=relaxed/simple;
+	bh=I7qYiFGQMhMk/5BwkrUeQcVurWR7tKWjHxTcfxE19l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBxp/6BkeJbSQ+oMC/dXHZpPHKwci/05ogmqeAshbFdm0Uq3pHVseZ6gaY/IVIVrzxPyq4cZiPIzACSWkLHo3TljT9fIg4XRwMiFA6MejgKmjCuX2FY7xqMc1TG9yYK4NHP5b8Ro6gJB7R5pLhPqM7+4XsKckfKpwYnsx1UFzRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFA7Yc7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803D7C4CEE5;
-	Mon, 10 Mar 2025 17:55:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jbgHhqyDATjvaU4feORszgvhFZpwMnnn0+NTOfVmbRgZwW0nnw03umbyoZJLINcJunH9TWu47B1dRzuERaGQ5426i6i//ijyVg/9AX4cZNk3KAe/JmRAqj7IDDw7jbkQ78y4pmL3qgkSmLoJhHdhx1A2kY25nUlVGm9kd1CubWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGsaeCji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31D7C4CEE5;
+	Mon, 10 Mar 2025 17:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629318;
-	bh=5UyX8yvYY/l0qV+QIgGtOTLCwxGG+MKDbg+Z5ITAo3w=;
+	s=korg; t=1741629230;
+	bh=I7qYiFGQMhMk/5BwkrUeQcVurWR7tKWjHxTcfxE19l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFA7Yc7zKeSgBIxVMrOb/+r5w3wT2Ir68QeI/rxaJLAJ25tbeA1ePF2OI1JikECxe
-	 6FLbijRwY60J5nKGglbu3qhbgodB/ZFllbZ3QC7mDuIhLDyXMyKye21g39RFazMh9N
-	 G4lLD42k8odfjZGC9+EAVbfQc6kzHs0SjEH/Nbm0=
+	b=YGsaeCjizCYZtDBcZGpzf6uKjWiiNjAlmTOY5nZ9aXm0RnpWq/dqyZ1MeKxp/xaF5
+	 0raNp4/+w8wm3d8OMQJocU8N1ifflcQxY30UGPxY7rN3HNM/rWanz0o3qki0AE9LXS
+	 N2+2ALUi7e6MBBU5CqetSjYglsGc/Qaor08ZLnvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Ye <liuye@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Illia Ostapyshyn <illia@yshyn.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 222/620] selftests/net/ipsec: Fix Null pointer dereference in rtattr_pack()
-Date: Mon, 10 Mar 2025 18:01:08 +0100
-Message-ID: <20250310170554.384322847@linuxfoundation.org>
+Subject: [PATCH 5.15 223/620] Input: allocate keycode for phone linking
+Date: Mon, 10 Mar 2025 18:01:09 +0100
+Message-ID: <20250310170554.422360536@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -60,54 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Ye <liuye@kylinos.cn>
+From: Illia Ostapyshyn <illia@yshyn.com>
 
-[ Upstream commit 3a0b7fa095212b51ed63892540c4f249991a2d74 ]
+[ Upstream commit 1bebc7869c99d466f819dd2cffaef0edf7d7a035 ]
 
-Address Null pointer dereference / undefined behavior in rtattr_pack
-(note that size is 0 in the bad case).
+The F11 key on the new Lenovo Thinkpad T14 Gen 5, T16 Gen 3, and P14s
+Gen 5 laptops includes a symbol showing a smartphone and a laptop
+chained together.  According to the user manual, it starts the Microsoft
+Phone Link software used to connect to Android/iOS devices and relay
+messages/calls or sync data.
 
-Flagged by cppcheck as:
-    tools/testing/selftests/net/ipsec.c:230:25: warning: Possible null pointer
-    dereference: payload [nullPointer]
-    memcpy(RTA_DATA(attr), payload, size);
-                           ^
-    tools/testing/selftests/net/ipsec.c:1618:54: note: Calling function 'rtattr_pack',
-    4th argument 'NULL' value is 0
-    if (rtattr_pack(&req.nh, sizeof(req), XFRMA_IF_ID, NULL, 0)) {
-                                                       ^
-    tools/testing/selftests/net/ipsec.c:230:25: note: Null pointer dereference
-    memcpy(RTA_DATA(attr), payload, size);
-                           ^
-Signed-off-by: Liu Ye <liuye@kylinos.cn>
+As there are no suitable keycodes for this action, introduce a new one.
 
-Link: https://patch.msgid.link/20250116013037.29470-1-liuye@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20241114173930.44983-2-illia@yshyn.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/ipsec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/uapi/linux/input-event-codes.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
-index c5be3f390849b..ae3da27b00973 100644
---- a/tools/testing/selftests/net/ipsec.c
-+++ b/tools/testing/selftests/net/ipsec.c
-@@ -189,7 +189,8 @@ static int rtattr_pack(struct nlmsghdr *nh, size_t req_sz,
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index bed20a89c14c1..6128146bb133b 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -519,6 +519,7 @@
+ #define KEY_NOTIFICATION_CENTER	0x1bc	/* Show/hide the notification center */
+ #define KEY_PICKUP_PHONE	0x1bd	/* Answer incoming call */
+ #define KEY_HANGUP_PHONE	0x1be	/* Decline incoming call */
++#define KEY_LINK_PHONE		0x1bf   /* AL Phone Syncing */
  
- 	attr->rta_len = RTA_LENGTH(size);
- 	attr->rta_type = rta_type;
--	memcpy(RTA_DATA(attr), payload, size);
-+	if (payload)
-+		memcpy(RTA_DATA(attr), payload, size);
- 
- 	return 0;
- }
+ #define KEY_DEL_EOL		0x1c0
+ #define KEY_DEL_EOS		0x1c1
 -- 
 2.39.5
 
