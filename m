@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04FDA59E2E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B78A59F70
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B75F7163E98
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B67DC3AC493
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F93C232787;
-	Mon, 10 Mar 2025 17:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1905233719;
+	Mon, 10 Mar 2025 17:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB9+5/H0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4So/pT2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EB022CBED;
-	Mon, 10 Mar 2025 17:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BF2233155;
+	Mon, 10 Mar 2025 17:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627669; cv=none; b=kgXBIL9fftrXWlJ2ZbvmKWNOOsCyXiakwPWHejWgQZ/IOoF38YkI6PWIEFshuT9vMEVVLfY6ojOazwDy1vBCFOcwmCs43W0fvrbiV/U8EEdjBt82yAOGJQsZnliFzLLtwqdzDdobxe8jvoSDCRWbFz7JYQjV+IhExeVlh+LxUTU=
+	t=1741628340; cv=none; b=HNKh93SCY/JWFNALVWHAQ7gDjwSBAo742BoIcSYvAg9QnrTLjQfvitrp0dF32+fZpYs0pF3aKxpAwcSj+0vyAqrqgnjX7U3IgVcz2yR6VDnBp/MouzXBY1XqW9pddbVijNyjwLxLpxgjo9g86ggMwnXcEJ1qEaYoY3DQKOaWZwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627669; c=relaxed/simple;
-	bh=Pz5mWZTYFyyWAqKAqj89bWx0L9B0Ol7OMcT63vo++C4=;
+	s=arc-20240116; t=1741628340; c=relaxed/simple;
+	bh=6tycHJHE/hD7TEe5aaDTTSuUUGZ6UUu9JTlOT4KAvXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdSoOuZGbN033uBXfmQJdO5PhUws/b6HndohViPAnkS4bNnWIZYr/jg+sEznjgcIyS7MYh9m2vfj10rDQENu+Ko3f4D0kw5TVCp6vQ8IGutwB8FeMla96C3ZXdAFvQ/eMYC8zvRKTiVuluDLSy6cjBjzHqo8u6BfHdo0nowYVAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LB9+5/H0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F95C4CEE5;
-	Mon, 10 Mar 2025 17:27:47 +0000 (UTC)
+	 MIME-Version; b=tTegxZrEXbdspmjwPNsk6ey51x8CwqOSSXZf2Keicl7mL2AyQXyV7zai237CzJxZHsrU70kJFLikla5PTLefY7MFUyTl8qP3cHbHt+Y2FedpC/N8i7xUQGXG8i1qMoTO7HAoiykbMnFtg1tDEhvaOjFKiwx9mMbtMAjgIaulDiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4So/pT2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E021C4CEE5;
+	Mon, 10 Mar 2025 17:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627668;
-	bh=Pz5mWZTYFyyWAqKAqj89bWx0L9B0Ol7OMcT63vo++C4=;
+	s=korg; t=1741628340;
+	bh=6tycHJHE/hD7TEe5aaDTTSuUUGZ6UUu9JTlOT4KAvXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LB9+5/H0eYK+kRDbJUHfMinh4Fn3h2v+0o2s8A8E9EVWjgrp2PTvFR3I8208hqAvP
-	 dR+U4KJkaXzE0ra1RZTylgaWhWE8WhuN+fiQJdfycn2M2IcVrUeF1ZL5A6qR4Oxxwi
-	 mSWt9S7kY/djR6axdGTpmSiyZknbKAVZOhXrOen4=
+	b=Z4So/pT2HCSRfdh3ts5PC7GUKV8dQryUem/YZsTqYX1lLqcgZpc6lwpgZcA2QXIPv
+	 4BqaLYNZPkoymI+JjeIOPt27bgpaUL9C0tAKitMw9EFgrLjnckMtenUAKxuxTg5c9l
+	 BDPssfJ87/0eH1Cbu03awwcr24Sij7PTA+CIJZeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 208/269] xhci: Restrict USB4 tunnel detection for USB3 devices to Intel hosts
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 017/109] ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform
 Date: Mon, 10 Mar 2025 18:06:01 +0100
-Message-ID: <20250310170505.987699761@linuxfoundation.org>
+Message-ID: <20250310170428.236588688@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 487cfd4a8e3dc42d34a759017978a4edaf85fce0 upstream.
+commit f603b159231b0c58f0c27ab39348534063d38223 upstream.
 
-When adding support for USB3-over-USB4 tunnelling detection, a check
-for an Intel-specific capability was added. This capability, which
-goes by ID 206, is used without any check that we are actually
-dealing with an Intel host.
+Support Mic Mute LED for ThinkCentre M series.
 
-As it turns out, the Cadence XHCI controller *also* exposes an
-extended capability numbered 206 (for unknown purposes), but of
-course doesn't have the Intel-specific registers that the tunnelling
-code is trying to access. Fun follows.
-
-The core of the problems is that the tunnelling code blindly uses
-vendor-specific capabilities without any check (the Intel-provided
-documentation I have at hand indicates that 192-255 are indeed
-vendor-specific).
-
-Restrict the detection code to Intel HW for real, preventing any
-further explosion on my (non-Intel) HW.
-
-Cc: stable <stable@kernel.org>
-Fixes: 948ce83fbb7df ("xhci: Add USB4 tunnel detection for USB3 devices on Intel hosts")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250227194529.2288718-1-maz@kernel.org
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/c211a2702f1f411e86bd7420d7eebc03@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-hub.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/pci/hda/patch_realtek.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index 9693464c0520..69c278b64084 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -12,6 +12,7 @@
- #include <linux/slab.h>
- #include <linux/unaligned.h>
- #include <linux/bitfield.h>
-+#include <linux/pci.h>
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4915,6 +4915,16 @@ static void alc269_fixup_hp_line1_mic1_l
+ 	}
+ }
  
- #include "xhci.h"
- #include "xhci-trace.h"
-@@ -770,9 +771,16 @@ static int xhci_exit_test_mode(struct xhci_hcd *xhci)
- enum usb_link_tunnel_mode xhci_port_is_tunneled(struct xhci_hcd *xhci,
- 						struct xhci_port *port)
- {
-+	struct usb_hcd *hcd;
- 	void __iomem *base;
- 	u32 offset;
- 
-+	/* Don't try and probe this capability for non-Intel hosts */
-+	hcd = xhci_to_hcd(xhci);
-+	if (!dev_is_pci(hcd->self.controller) ||
-+	    to_pci_dev(hcd->self.controller)->vendor != PCI_VENDOR_ID_INTEL)
-+		return USB_LINK_UNKNOWN;
++static void alc233_fixup_lenovo_low_en_micmute_led(struct hda_codec *codec,
++				const struct hda_fixup *fix, int action)
++{
++	struct alc_spec *spec = codec->spec;
 +
- 	base = &xhci->cap_regs->hc_capbase;
- 	offset = xhci_find_next_ext_cap(base, 0, XHCI_EXT_CAPS_INTEL_SPR_SHADOW);
- 
--- 
-2.48.1
-
++	if (action == HDA_FIXUP_ACT_PRE_PROBE)
++		spec->micmute_led_polarity = 1;
++	alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
++}
++
+ static void alc_hp_mute_disable(struct hda_codec *codec, unsigned int delay)
+ {
+ 	if (delay <= 0)
+@@ -7220,6 +7230,7 @@ enum {
+ 	ALC275_FIXUP_DELL_XPS,
+ 	ALC293_FIXUP_LENOVO_SPK_NOISE,
+ 	ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY,
++	ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED,
+ 	ALC255_FIXUP_DELL_SPK_NOISE,
+ 	ALC225_FIXUP_DISABLE_MIC_VREF,
+ 	ALC225_FIXUP_DELL1_MIC_NO_PRESENCE,
+@@ -8180,6 +8191,10 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc233_fixup_lenovo_line2_mic_hotkey,
+ 	},
++	[ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc233_fixup_lenovo_low_en_micmute_led,
++	},
+ 	[ALC233_FIXUP_INTEL_NUC8_DMIC] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc_fixup_inv_dmic,
+@@ -10170,6 +10185,9 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x3178, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
+ 	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
++	SND_PCI_QUIRK(0x17aa, 0x3384, "ThinkCentre M90a PRO", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
++	SND_PCI_QUIRK(0x17aa, 0x3386, "ThinkCentre M90a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
++	SND_PCI_QUIRK(0x17aa, 0x3387, "ThinkCentre M70a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
+ 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
 
 
 
