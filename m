@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DC7A59D08
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A187A59E29
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A86316F58A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62D417A5597
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAA3230BED;
-	Mon, 10 Mar 2025 17:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FED222D786;
+	Mon, 10 Mar 2025 17:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIg6/UGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x00ii5PU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B0C17CA12;
-	Mon, 10 Mar 2025 17:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B87A22FF40;
+	Mon, 10 Mar 2025 17:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627015; cv=none; b=LVRQ4gewJ62VXEIwrrWJjFSfz67rBPzRa+cOpmS77F7yl2QhECnkdcxVZnWenVDVRC9twhIXmTtEWn/AJ3/ItLMWSDS6D1Y+0Tt957OMlUC29WXILIKiSxJLnrClh1g1v7ldZHKhC7Dan4HJi191CxKXuqHcv6HFdhUNDikuITA=
+	t=1741627706; cv=none; b=i5Uke7nBwuHKN8y6aQupKbeE3YF3A9MYM/STxl9t9JWPmLvW/wbiFt33rC6alEvYvCwwHkRLGdtRras0TU0m7D+hgokjviU+R0nL/b/9x12YCzQH1JQQ4Z3g2+3GI0HCFtZpjFkCs8c8JQ0d5QxvqoBvhBr63inmfKSQtleCeK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627015; c=relaxed/simple;
-	bh=D9vzuX7ExAeorCoOp2sZUwqSp+HeA/9eQCU9/+dZwco=;
+	s=arc-20240116; t=1741627706; c=relaxed/simple;
+	bh=z5PrInUGLfASbmlLzdE14Mmlh4G+uoJmRhpV8Tpw0Pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EQC7YNTd+LOujp0W1xQ1h3gP/iUo4fyFdBQF0/LYXhevFAr4FrhXqWgO9IxgnjGrznrtfXcq9YYiena9ug/VcjdqD1+y+24aK4gHdOGBY1o//pSj+EkmPxayGA0NYv/HfO3ZKpiUV8lk+z79iYCSM5wWWX8KDpkI500PPk/5mH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIg6/UGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8719C4CEE5;
-	Mon, 10 Mar 2025 17:16:54 +0000 (UTC)
+	 MIME-Version; b=r9ep6hQx0uWQvIxY6xvjf8w86HF3RRIYCOqt4NG6sF60nBtScaYQOgXDuFNNiVZnMgJiBvyZSWXU4EzjVuJ1VvYbi8M4UArbDfLKoEbMPmXgR4wcDlCxU0bwZF80/fpDXeQXuA8NkG6GJgUlvq87XPZC46ermoSw2ypksFDEFMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x00ii5PU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9563C4CEE5;
+	Mon, 10 Mar 2025 17:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627015;
-	bh=D9vzuX7ExAeorCoOp2sZUwqSp+HeA/9eQCU9/+dZwco=;
+	s=korg; t=1741627706;
+	bh=z5PrInUGLfASbmlLzdE14Mmlh4G+uoJmRhpV8Tpw0Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nIg6/UGx7zMUwYL1E5c3QLLWMR9nzSFfAvsOiqQKaykLkXO/N/2LMkbxDPEOXQUFW
-	 pkhXyT29uC3srkaRmszbWEFK4pPbd0j6vvUl3vdnlAfi1oy7p2vDM0+z6Wdh/QlZij
-	 GZkXOmyzVPoaBICQWfJNHwire5Sbk3SqPoArg8mI=
+	b=x00ii5PUrjOvcyHweh8VFhmIB8D1bmjYeBSUO7sK0UUqNBQoqKIDoviRF38Mf5cYx
+	 1j79WY97o8YTHqhGNICbLxTeFX2RF1JgYbNcl0XUaJcuczx5GU9KXxJn7i3OCdjo1d
+	 xXbBJ7+NIU4zyLQQao0OyO8BBGiYRa41LvxsIJcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.13 174/207] KVM: SVM: Drop DEBUGCTL[5:2] from guests effective value
+	stable <stable@kernel.org>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.12 214/269] usb: gadget: u_ether: Set is_suspend flag if remote wakeup fails
 Date: Mon, 10 Mar 2025 18:06:07 +0100
-Message-ID: <20250310170454.707578918@linuxfoundation.org>
+Message-ID: <20250310170506.218744614@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
 
-commit ee89e8013383d50a27ea9bf3c8a69eed6799856f upstream.
+commit 17c2c87c37862c3e95b55f660681cc6e8d66660e upstream.
 
-Drop bits 5:2 from the guest's effective DEBUGCTL value, as AMD changed
-the architectural behavior of the bits and broke backwards compatibility.
-On CPUs without BusLockTrap (or at least, in APMs from before ~2023),
-bits 5:2 controlled the behavior of external pins:
+Currently while UDC suspends, u_ether attempts to remote wakeup
+the host if there are any pending transfers. However, if remote
+wakeup fails, the UDC remains suspended but the is_suspend flag
+is not set. And since is_suspend flag isn't set, the subsequent
+eth_start_xmit() would queue USB requests to suspended UDC.
 
-  Performance-Monitoring/Breakpoint Pin-Control (PBi)—Bits 5:2, read/write.
-  Software uses thesebits to control the type of information reported by
-  the four external performance-monitoring/breakpoint pins on the
-  processor. When a PBi bit is cleared to 0, the corresponding external pin
-  (BPi) reports performance-monitor information. When a PBi bit is set to
-  1, the corresponding external pin (BPi) reports breakpoint information.
+To fix this, bail out from gether_suspend() only if remote wakeup
+operation is successful.
 
-With the introduction of BusLockTrap, presumably to be compatible with
-Intel CPUs, AMD redefined bit 2 to be BLCKDB:
-
-  Bus Lock #DB Trap (BLCKDB)—Bit 2, read/write. Software sets this bit to
-  enable generation of a #DB trap following successful execution of a bus
-  lock when CPL is > 0.
-
-and redefined bits 5:3 (and bit 6) as "6:3 Reserved MBZ".
-
-Ideally, KVM would treat bits 5:2 as reserved.  Defer that change to a
-feature cleanup to avoid breaking existing guest in LTS kernels.  For now,
-drop the bits to retain backwards compatibility (of a sort).
-
-Note, dropping bits 5:2 is still a guest-visible change, e.g. if the guest
-is enabling LBRs *and* the legacy PBi bits, then the state of the PBi bits
-is visible to the guest, whereas now the guest will always see '0'.
-
-Reported-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250227222411.3490595-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable <stable@kernel.org>
+Fixes: 0a1af6dfa077 ("usb: gadget: f_ecm: Add suspend/resume and remote wakeup support")
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250212100840.3812153-1-prashanth.k@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   12 ++++++++++++
- arch/x86/kvm/svm/svm.h |    2 +-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_ether.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3169,6 +3169,18 @@ static int svm_set_msr(struct kvm_vcpu *
- 			kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
- 			break;
- 		}
-+
-+		/*
-+		 * AMD changed the architectural behavior of bits 5:2.  On CPUs
-+		 * without BusLockTrap, bits 5:2 control "external pins", but
-+		 * on CPUs that support BusLockDetect, bit 2 enables BusLockTrap
-+		 * and bits 5:3 are reserved-to-zero.  Sadly, old KVM allowed
-+		 * the guest to set bits 5:2 despite not actually virtualizing
-+		 * Performance-Monitoring/Breakpoint external pins.  Drop bits
-+		 * 5:2 for backwards compatibility.
-+		 */
-+		data &= ~GENMASK(5, 2);
-+
- 		if (data & DEBUGCTL_RESERVED_BITS)
- 			return 1;
- 
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -591,7 +591,7 @@ static inline bool is_vnmi_enabled(struc
- /* svm.c */
- #define MSR_INVALID				0xffffffffU
- 
--#define DEBUGCTL_RESERVED_BITS (~(0x3fULL))
-+#define DEBUGCTL_RESERVED_BITS (~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR))
- 
- extern bool dump_invalid_vmcb;
- 
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1052,8 +1052,8 @@ void gether_suspend(struct gether *link)
+ 		 * There is a transfer in progress. So we trigger a remote
+ 		 * wakeup to inform the host.
+ 		 */
+-		ether_wakeup_host(dev->port_usb);
+-		return;
++		if (!ether_wakeup_host(dev->port_usb))
++			return;
+ 	}
+ 	spin_lock_irqsave(&dev->lock, flags);
+ 	link->is_suspend = true;
 
 
 
