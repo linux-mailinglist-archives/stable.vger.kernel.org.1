@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-122142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F4FA59E14
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DE0A5A24B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD74188F19F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5920C7A6E72
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD19231A24;
-	Mon, 10 Mar 2025 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C60F1C5F1B;
+	Mon, 10 Mar 2025 18:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2Gs8aWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cwjf24Jt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABE822D799;
-	Mon, 10 Mar 2025 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384381BBBFD;
+	Mon, 10 Mar 2025 18:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627648; cv=none; b=gkuc7+1zv7xUKviEl/63o3NG+CuOWlm/O+gThX1UglT19WgMaoCUdY7/CO0ijfiBYe7ZUDeQMU9mNmHwQcqa48/wPwX/9bIt+iDRojilG1LR7dzHcPOcM+zVs/gg5LsE5/oNcQtY1baMCPULcbmQblOyiHIfiaVXxQeTzq1PswY=
+	t=1741630711; cv=none; b=fWNSkl0914VVOmfWGdOPMjrVnAInZspX03Mka3Yo3Hnl4iJQb+hhd7hB2UJdUDuc3MUzrXydbOJl+MSPRze13Ciu87iKcgwZFQq0bUak34V9FVPoZk1AMWU2hrglG+I0H7EgL9xd1P+5b4FeLDgu+engUtiXfbDQMrLBaWWeYCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627648; c=relaxed/simple;
-	bh=4l5RAmx2eXP9e/PrZaf2LJzux+mXvSORevZZSpIY8c8=;
+	s=arc-20240116; t=1741630711; c=relaxed/simple;
+	bh=q4sMQjdAQyi4+NJ6HtpZhyKadFZxu1R5CkKHQM6LSdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MoxUh/UUfQPNQGBt3VdRqtiiB2omeeWtSjMmLm5qfxZwpaSxycoW4dL8zu3kM+g8XyOLexuWtNwG/PXhJ13QYc44hRDUpK5qiE2Y2HSSgHSmGbp5YOPt7VGJHp0Wu37ITu5mhiOv+uzEghNRFQjlNnW42A+E43t6UZFR1VRc30M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2Gs8aWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F26C4CEE5;
-	Mon, 10 Mar 2025 17:27:27 +0000 (UTC)
+	 MIME-Version; b=m7Dw26g5Go5FMtt/fo1S7Fd5v7b08NLictrspZ03IDJclzciJ3wc4X0zioDPvtnBE5SMWt7GIOAuXyllDY08rGpIz/k+Vio/pKZs7ybAaEeWni8HbY5+Djttj9vxya5G35nLwK+MymdBRTgtUVO2iymruq27Jhy87KGWThETyUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cwjf24Jt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2425C4CEED;
+	Mon, 10 Mar 2025 18:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627648;
-	bh=4l5RAmx2eXP9e/PrZaf2LJzux+mXvSORevZZSpIY8c8=;
+	s=korg; t=1741630711;
+	bh=q4sMQjdAQyi4+NJ6HtpZhyKadFZxu1R5CkKHQM6LSdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2Gs8aWnXci4gdoaWsbDGHmmX3cflP8wtSMs7mL8dJ4XM0nDNZujkk7/+pVVJ0UeN
-	 GXs0HQkRyewJ8phBlBPPRK5EKPT8SJjMhl3EJpksK00oWRvnNAjmcrzMDqobTDvFnf
-	 mjPKewZCK/DXP3WpcmzcICwAynW24W0sfbWXlaNw=
+	b=Cwjf24Jt+IYSNnBpFRmhpk0URvEEsd+jYgmahGVD4qu4zqutNea5rkrutDWK1xaYb
+	 pO4LlaXdZyDDBwZ5qF2lqfQap5cvIlY+DUpkwIhIFUdFD/EijQDgFmxtSqugGoxkWV
+	 n4UbL+D3UPjTe2nPkekzzcn5u9/zLgCDOQVQiPU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 201/269] net: dsa: mt7530: Fix traffic flooding for MMIO devices
+Subject: [PATCH 5.15 508/620] include: net: add static inline dst_dev_overhead() to dst.h
 Date: Mon, 10 Mar 2025 18:05:54 +0100
-Message-ID: <20250310170505.707775599@linuxfoundation.org>
+Message-ID: <20250310170605.610947999@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit ccc2f5a436fbb0ae1fb598932a9b8e48423c1959 ]
+[ Upstream commit 0600cf40e9b36fe17f9c9f04d4f9cef249eaa5e7 ]
 
-On MMIO devices (e.g. MT7988 or EN7581) unicast traffic received on lanX
-port is flooded on all other user ports if the DSA switch is configured
-without VLAN support since PORT_MATRIX in PCR regs contains all user
-ports. Similar to MDIO devices (e.g. MT7530 and MT7531) fix the issue
-defining default VLAN-ID 0 for MT7530 MMIO devices.
+Add static inline dst_dev_overhead() function to include/net/dst.h. This
+helper function is used by ioam6_iptunnel, rpl_iptunnel and
+seg6_iptunnel to get the dev's overhead based on a cache entry
+(dst_entry). If the cache is empty, the default and generic value
+skb->mac_len is returned. Otherwise, LL_RESERVED_SPACE() over dst's dev
+is returned.
 
-Fixes: 110c18bfed414 ("net: dsa: mt7530: introduce driver for MT7988 built-in switch")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Link: https://patch.msgid.link/20250304-mt7988-flooding-fix-v1-1-905523ae83e9@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: c64a0727f9b1 ("net: ipv6: fix dst ref loop on input in seg6 lwt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ include/net/dst.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index d84ee1b419a61..abc979fbb45d1 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2590,7 +2590,8 @@ mt7531_setup_common(struct dsa_switch *ds)
- 	if (ret < 0)
- 		return ret;
- 
--	return 0;
-+	/* Setup VLAN ID 0 for VLAN-unaware bridges */
-+	return mt7530_setup_vlan0(priv);
+diff --git a/include/net/dst.h b/include/net/dst.h
+index 827f99d577331..bf0a9b0cc269c 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -433,6 +433,15 @@ static inline void dst_set_expires(struct dst_entry *dst, int timeout)
+ 		dst->expires = expires;
  }
  
- static int
-@@ -2686,11 +2687,6 @@ mt7531_setup(struct dsa_switch *ds)
- 	if (ret)
- 		return ret;
- 
--	/* Setup VLAN ID 0 for VLAN-unaware bridges */
--	ret = mt7530_setup_vlan0(priv);
--	if (ret)
--		return ret;
--
- 	ds->assisted_learning_on_cpu_port = true;
- 	ds->mtu_enforcement_ingress = true;
- 
++static inline unsigned int dst_dev_overhead(struct dst_entry *dst,
++					    struct sk_buff *skb)
++{
++	if (likely(dst))
++		return LL_RESERVED_SPACE(dst->dev);
++
++	return skb->mac_len;
++}
++
+ INDIRECT_CALLABLE_DECLARE(int ip6_output(struct net *, struct sock *,
+ 					 struct sk_buff *));
+ INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
 -- 
 2.39.5
 
