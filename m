@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5E5A5A21A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE1AA59E9F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5A3E7A6C13
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 612E2165CB0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC11235C14;
-	Mon, 10 Mar 2025 18:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EA7230BED;
+	Mon, 10 Mar 2025 17:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0Fvzo7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7Q/9W/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CF0230D0F;
-	Mon, 10 Mar 2025 18:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55722253FE;
+	Mon, 10 Mar 2025 17:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630571; cv=none; b=dwEJiDOHzrtBRMI7YMEQNhGwpZcl8Bb8lNR+UF7KNiALSrkKX75kJl7z3XlXgAjARGiR4zp3S+GrfVVNrRvpv7z9XYdgZAqhrwCT8aZfmsoK/Tb2/scQcU/obzgPAH5OESz+Qff5QrZqj3jgElk3zZz3UDhDAnOJu7Evy5maLVc=
+	t=1741627940; cv=none; b=tJ1oZL8sQguD5BV+wfH4SSpDULQUx8O8PqxiuEXm65qoJXkHjoiLHh8WLPbpdk/9Dw4Wm1nGbR8C58WJQcs/Jf/nZ+4Hglg6uxOGNDmBkP0FVYfP5XFso4I+eOJmmmFJvzjfpkvsrNq/AXgMLPxQNClzvSrkYLYVZ/XRwSxjHik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630571; c=relaxed/simple;
-	bh=EadjGIqx4CeyK/7WD4JJKQhS7mKagXA8Q7MFkDczCLM=;
+	s=arc-20240116; t=1741627940; c=relaxed/simple;
+	bh=s4Lln56EgzLsOJIu/W6FLD7L7mQp7xNQHoEn3pYh+eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwovViipWhtlSe5Wepem6ily7ICXoCuGJbnIu5zDF+vb7MI6i1UYmhJtljBOLtmdNOJhqw4Ijt2WDeGg2mFbv6CM/XtHdNqRsFZDhqQxPZ4cVS32SCAE+VLmPlLL9fZuFV4RcL+ya9iKSWdcDIaWUPVd8RI7ANUC62oWWtLiVVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0Fvzo7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D145C4CEE5;
-	Mon, 10 Mar 2025 18:16:10 +0000 (UTC)
+	 MIME-Version; b=aFm2lyqY41c7jMedrc08iMQ2KAwpBtA6YSmpIFRECNkey8Bdq8U3OOPOZ3WjcdaQCaI7gGwvTQviYfF3iMY83kW3t0g05taBTBW1CN6MO0BR0cIljKf8u85bg0VbDLV5kD95kbN2D+W/KocyuHbvnrqPc2pGWu9mbiv8JJwXSXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7Q/9W/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D549C4CEE5;
+	Mon, 10 Mar 2025 17:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630571;
-	bh=EadjGIqx4CeyK/7WD4JJKQhS7mKagXA8Q7MFkDczCLM=;
+	s=korg; t=1741627939;
+	bh=s4Lln56EgzLsOJIu/W6FLD7L7mQp7xNQHoEn3pYh+eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0Fvzo7qGPsUkw4b2MKal+na4fY45gLXkZXGpZoh8UO56qCgybF/yYAzDeN59tWE3
-	 DPBGJbck4FAFoUW7VZccGbY0Wu1qwmC9L/f05oUoHebfiHRWaCEAGJ+HjFHdSL0Rea
-	 32iS7NF2d+/nTnphBNi1q0A95hx7IRjtPlapR/es=
+	b=p7Q/9W/Zq/TcP+NEvqMAf3ODP40tZGGb3BcQoxx/EZcM78A11JYLsMh0kSjvCYVW0
+	 WCe4+cnbCT5X2IiX0xFfX9wbpiIPtquo7Bgg6+GiYhnD6raYtJ6iFRXl4KkoXkX8/8
+	 UStxmeDyMxZy4IxiTE1NvkqIg0WC4yl/yFEZph/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Horst Reiterer <horst.reiterer@fabasoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 453/620] media: uvcvideo: Set error_idx during ctrl_commit errors
-Date: Mon, 10 Mar 2025 18:04:59 +0100
-Message-ID: <20250310170603.470146239@linuxfoundation.org>
+Subject: [PATCH 6.6 006/145] smb: client: fix chmod(2) regression with ATTR_READONLY
+Date: Mon, 10 Mar 2025 18:05:00 +0100
+Message-ID: <20250310170434.997615091@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,155 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 6350d6a4ed487d16a3a021f76a7edcb9cb60fdbf ]
+[ Upstream commit 654292a0b264e9b8c51b98394146218a21612aa1 ]
 
-If we have an error setting a control, return the affected control in
-the error_idx field.
+When the user sets a file or directory as read-only (e.g. ~S_IWUGO),
+the client will set the ATTR_READONLY attribute by sending an
+SMB2_SET_INFO request to the server in cifs_setattr_{,nounix}(), but
+cifsInodeInfo::cifsAttrs will be left unchanged as the client will
+only update the new file attributes in the next call to
+{smb311_posix,cifs}_get_inode_info() with the new metadata filled in
+@data parameter.
 
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: d9fecd096f67 ("media: uvcvideo: Only save async fh if success")
+Commit a18280e7fdea ("smb: cilent: set reparse mount points as
+automounts") mistakenly removed the @data NULL check when calling
+is_inode_cache_good(), which broke the above case as the new
+ATTR_READONLY attribute would end up not being updated on files with a
+read lease.
+
+Fix this by updating the inode whenever we have cached metadata in
+@data parameter.
+
+Reported-by: Horst Reiterer <horst.reiterer@fabasoft.com>
+Closes: https://lore.kernel.org/r/85a16504e09147a195ac0aac1c801280@fabasoft.com
+Fixes: a18280e7fdea ("smb: cilent: set reparse mount points as automounts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 42 ++++++++++++++++++++++++++------
- drivers/media/usb/uvc/uvc_v4l2.c |  2 +-
- drivers/media/usb/uvc/uvcvideo.h | 10 +++-----
- 3 files changed, 40 insertions(+), 14 deletions(-)
+ fs/smb/client/inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 88ab80d71e7f8..7adc2776754a1 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1645,7 +1645,7 @@ int uvc_ctrl_begin(struct uvc_video_chain *chain)
- }
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index b3e59a7c71205..dbb407d5e6dab 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1320,7 +1320,7 @@ int cifs_get_inode_info(struct inode **inode,
+ 	struct cifs_fattr fattr = {};
+ 	int rc;
  
- static int uvc_ctrl_commit_entity(struct uvc_device *dev,
--	struct uvc_entity *entity, int rollback)
-+	struct uvc_entity *entity, int rollback, struct uvc_control **err_ctrl)
- {
- 	struct uvc_control *ctrl;
- 	unsigned int i;
-@@ -1687,31 +1687,59 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 
- 		ctrl->dirty = 0;
- 
--		if (ret < 0)
-+		if (ret < 0) {
-+			if (err_ctrl)
-+				*err_ctrl = ctrl;
- 			return ret;
-+		}
+-	if (is_inode_cache_good(*inode)) {
++	if (!data && is_inode_cache_good(*inode)) {
+ 		cifs_dbg(FYI, "No need to revalidate cached inode sizes\n");
+ 		return 0;
  	}
+@@ -1419,7 +1419,7 @@ int smb311_posix_get_inode_info(struct inode **inode,
+ 	struct cifs_fattr fattr = {};
+ 	int rc;
  
- 	return 0;
- }
- 
-+static int uvc_ctrl_find_ctrl_idx(struct uvc_entity *entity,
-+				  struct v4l2_ext_controls *ctrls,
-+				  struct uvc_control *uvc_control)
-+{
-+	struct uvc_control_mapping *mapping;
-+	struct uvc_control *ctrl_found;
-+	unsigned int i;
-+
-+	if (!entity)
-+		return ctrls->count;
-+
-+	for (i = 0; i < ctrls->count; i++) {
-+		__uvc_find_control(entity, ctrls->controls[i].id, &mapping,
-+				   &ctrl_found, 0);
-+		if (uvc_control == ctrl_found)
-+			return i;
-+	}
-+
-+	return ctrls->count;
-+}
-+
- int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
--		      const struct v4l2_ext_control *xctrls,
--		      unsigned int xctrls_count)
-+		      struct v4l2_ext_controls *ctrls)
- {
- 	struct uvc_video_chain *chain = handle->chain;
-+	struct uvc_control *err_ctrl;
- 	struct uvc_entity *entity;
- 	int ret = 0;
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
--		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback);
-+		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
-+					     &err_ctrl);
- 		if (ret < 0)
- 			goto done;
+-	if (is_inode_cache_good(*inode)) {
++	if (!data && is_inode_cache_good(*inode)) {
+ 		cifs_dbg(FYI, "No need to revalidate cached inode sizes\n");
+ 		return 0;
  	}
- 
- 	if (!rollback)
--		uvc_ctrl_send_events(handle, xctrls, xctrls_count);
-+		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
- done:
-+	if (ret < 0 && ctrls)
-+		ctrls->error_idx = uvc_ctrl_find_ctrl_idx(entity, ctrls,
-+							  err_ctrl);
- 	mutex_unlock(&chain->ctrl_mutex);
- 	return ret;
- }
-@@ -2165,7 +2193,7 @@ int uvc_ctrl_restore_values(struct uvc_device *dev)
- 			ctrl->dirty = 1;
- 		}
- 
--		ret = uvc_ctrl_commit_entity(dev, entity, 0);
-+		ret = uvc_ctrl_commit_entity(dev, entity, 0, NULL);
- 		if (ret < 0)
- 			return ret;
- 	}
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index ab535e5501583..7b26be98a17fd 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -1102,7 +1102,7 @@ static int uvc_ioctl_s_try_ext_ctrls(struct uvc_fh *handle,
- 	ctrls->error_idx = 0;
- 
- 	if (ioctl == VIDIOC_S_EXT_CTRLS)
--		return uvc_ctrl_commit(handle, ctrls->controls, ctrls->count);
-+		return uvc_ctrl_commit(handle, ctrls);
- 	else
- 		return uvc_ctrl_rollback(handle);
- }
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 1aa2cc98502d1..d22f586a44268 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -886,17 +886,15 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 
- int uvc_ctrl_begin(struct uvc_video_chain *chain);
- int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
--		      const struct v4l2_ext_control *xctrls,
--		      unsigned int xctrls_count);
-+		      struct v4l2_ext_controls *ctrls);
- static inline int uvc_ctrl_commit(struct uvc_fh *handle,
--				  const struct v4l2_ext_control *xctrls,
--				  unsigned int xctrls_count)
-+				  struct v4l2_ext_controls *ctrls)
- {
--	return __uvc_ctrl_commit(handle, 0, xctrls, xctrls_count);
-+	return __uvc_ctrl_commit(handle, 0, ctrls);
- }
- static inline int uvc_ctrl_rollback(struct uvc_fh *handle)
- {
--	return __uvc_ctrl_commit(handle, 1, NULL, 0);
-+	return __uvc_ctrl_commit(handle, 1, NULL);
- }
- 
- int uvc_ctrl_get(struct uvc_video_chain *chain, struct v4l2_ext_control *xctrl);
 -- 
 2.39.5
 
