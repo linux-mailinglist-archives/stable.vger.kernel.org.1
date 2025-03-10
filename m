@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C7EA59E2C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2754FA59F62
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4984188917C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41AF164FA8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DCE23099F;
-	Mon, 10 Mar 2025 17:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B22918DB24;
+	Mon, 10 Mar 2025 17:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMJyEfoU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1/dOQ/2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6351B22B8BD;
-	Mon, 10 Mar 2025 17:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A0622D7A6;
+	Mon, 10 Mar 2025 17:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627740; cv=none; b=ZMBDdhzMEtX1NEOkZNSDe8mtqO5DzeDgYSq8uT/YwbTfk+GST+Pfy734u9qn8BVEu/XWG/rnTESGPhVKlEdFCPBpWNQ7sfsm6kgQeMySgVk3M2FBJHIdMmuDLYDJKpdmS47/HwGp3Vfxj2nJn/jol0ngJmuT838bW34r9Ndd4+Y=
+	t=1741628392; cv=none; b=ZBFk6yYElTH+0BQWX+lMuaWtI5K1kEzGQuZSnqDhusRwQHuCNTQNGZ1UDMNxIbDbqWVK6+1DuLEvzS3BT1qvI0RsIgjBNRfYubnW1/UoxiNBFt5xOcqoWOKLpsjqjYTwyiOYKFQpN9MZ4ZweuHqQt781Z5dAbhQ3uVzKj2EYZtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627740; c=relaxed/simple;
-	bh=NkKRCbP8txvE1xMo4hgwyVtFsfdZhth0eurr7dNc+Ag=;
+	s=arc-20240116; t=1741628392; c=relaxed/simple;
+	bh=Pm8usQuwaxp0UIuwk/7VvznT4mKrgiuc/thYfOVudSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMJYSWKSvbdKhrSOK8zRqOrHfwxZE86zOjGZye/8XUy1G+3/WF+uBIb5i/sbB74xOYMMaJ866AtwJbSkvOKLf/U1k9t0I49TfsNYOeuC4ADeFSSYXhA9SJq5oe3io8DPlLXIuUF4wTFWUv0fE/ql6IHdcWDFe/Th0bYAr54IBA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMJyEfoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2373C4CEEC;
-	Mon, 10 Mar 2025 17:28:59 +0000 (UTC)
+	 MIME-Version; b=A49sbH9xNgjpbGH8ihlq/4juWgmsrlhuDKodNK38jRp1BeoJ5stDtfGG6Fhye3h4/Fht1ISpoo3x6QEoVZLWVKf6IdxQNcEydAvD0zCuRK8RTz/rLnnDTUki4CnC8e42Gm92MdbT2nERXVWBE1XI2ICuBSkFN+84g2ekHlbaKrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1/dOQ/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA557C4CEE5;
+	Mon, 10 Mar 2025 17:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627740;
-	bh=NkKRCbP8txvE1xMo4hgwyVtFsfdZhth0eurr7dNc+Ag=;
+	s=korg; t=1741628392;
+	bh=Pm8usQuwaxp0UIuwk/7VvznT4mKrgiuc/thYfOVudSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KMJyEfoUN3q2aZ0M6wDYh4KYmTpEki9L6ZjdSt/HVOPv3Lam1NOgxLt5qs0Ix4nH6
-	 cuVcehku/zE2hFkGt9KfvprS3QPYDbXO13vFpXsHA3HqpH59+BFBfOF03p4/hUecX9
-	 zfQfkJIqs0w4cLUDY7V0LzmOIAqYNPgAoiE89NeU=
+	b=U1/dOQ/27ZZTMZ8/pPYzCkSiV7qFFaKNisQIyWr3lg29R1XawXofQse1uANLLLWQN
+	 KZk4WIDKi/EmnewWJduFOxVvgEc/xrvKedICCxnP49Pkqz7MW/wRUtb5jVcEbfJ+Vz
+	 c9aqWfWdltnEgVP3Nt4ojQIHigCe8gCnam1mDIbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>
-Subject: [PATCH 6.12 233/269] KVM: x86: Snapshot the hosts DEBUGCTL in common x86
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 042/109] net: gso: fix ownership in __udp_gso_segment
 Date: Mon, 10 Mar 2025 18:06:26 +0100
-Message-ID: <20250310170506.971498440@linuxfoundation.org>
+Message-ID: <20250310170429.232215441@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit fb71c795935652fa20eaf9517ca9547f5af99a76 upstream.
+[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
 
-Move KVM's snapshot of DEBUGCTL to kvm_vcpu_arch and take the snapshot in
-common x86, so that SVM can also use the snapshot.
+In __udp_gso_segment the skb destructor is removed before segmenting the
+skb but the socket reference is kept as-is. This is an issue if the
+original skb is later orphaned as we can hit the following bug:
 
-Opportunistically change the field to a u64.  While bits 63:32 are reserved
-on AMD, not mentioned at all in Intel's SDM, and managed as an "unsigned
-long" by the kernel, DEBUGCTL is an MSR and therefore a 64-bit value.
+  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
+  RIP: 0010:ip_rcv_core+0x8b2/0xca0
+  Call Trace:
+   ip_rcv+0xab/0x6e0
+   __netif_receive_skb_one_core+0x168/0x1b0
+   process_backlog+0x384/0x1100
+   __napi_poll.constprop.0+0xa1/0x370
+   net_rx_action+0x925/0xe50
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250227222411.3490595-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The above can happen following a sequence of events when using
+OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
+OVS_ACTION_ATTR_OUTPUT action:
+
+1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
+   goes through queue_gso_packets and then __udp_gso_segment, where its
+   destructor is removed.
+2. The segments' data are copied and sent to userspace.
+3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
+   same original skb is sent to its path.
+4. If it later hits skb_orphan, we hit the bug.
+
+Fix this by also removing the reference to the socket in
+__udp_gso_segment.
+
+Fixes: ad405857b174 ("udp: better wmem accounting on gso")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |    1 +
- arch/x86/kvm/vmx/vmx.c          |    8 ++------
- arch/x86/kvm/vmx/vmx.h          |    2 --
- arch/x86/kvm/x86.c              |    1 +
- 4 files changed, 4 insertions(+), 8 deletions(-)
+ net/ipv4/udp_offload.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -761,6 +761,7 @@ struct kvm_vcpu_arch {
- 	u32 pkru;
- 	u32 hflags;
- 	u64 efer;
-+	u64 host_debugctl;
- 	u64 apic_base;
- 	struct kvm_lapic *apic;    /* kernel irqchip context */
- 	bool load_eoi_exitmap_pending;
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1515,16 +1515,12 @@ void vmx_vcpu_load_vmcs(struct kvm_vcpu
-  */
- void vmx_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- {
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--
- 	if (vcpu->scheduled_out && !kvm_pause_in_guest(vcpu->kvm))
- 		shrink_ple_window(vcpu);
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 1456c8c2b8dbd..2f1f038b0dc1b 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -314,13 +314,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
  
- 	vmx_vcpu_load_vmcs(vcpu, cpu, NULL);
+ 	/* clear destructor to avoid skb_segment assigning it to tail */
+ 	copy_dtor = gso_skb->destructor == sock_wfree;
+-	if (copy_dtor)
++	if (copy_dtor) {
+ 		gso_skb->destructor = NULL;
++		gso_skb->sk = NULL;
++	}
  
- 	vmx_vcpu_pi_load(vcpu, cpu);
--
--	vmx->host_debugctlmsr = get_debugctlmsr();
- }
- 
- void vmx_vcpu_put(struct kvm_vcpu *vcpu)
-@@ -7454,8 +7450,8 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu
+ 	segs = skb_segment(gso_skb, features);
+ 	if (IS_ERR_OR_NULL(segs)) {
+-		if (copy_dtor)
++		if (copy_dtor) {
+ 			gso_skb->destructor = sock_wfree;
++			gso_skb->sk = sk;
++		}
+ 		return segs;
  	}
  
- 	/* MSR_IA32_DEBUGCTLMSR is zeroed on vmexit. Restore it if needed */
--	if (vmx->host_debugctlmsr)
--		update_debugctlmsr(vmx->host_debugctlmsr);
-+	if (vcpu->arch.host_debugctl)
-+		update_debugctlmsr(vcpu->arch.host_debugctl);
- 
- #ifndef CONFIG_X86_64
- 	/*
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -339,8 +339,6 @@ struct vcpu_vmx {
- 	/* apic deadline value in host tsc */
- 	u64 hv_deadline_tsc;
- 
--	unsigned long host_debugctlmsr;
--
- 	/*
- 	 * Only bits masked by msr_ia32_feature_control_valid_bits can be set in
- 	 * msr_ia32_feature_control. FEAT_CTL_LOCKED is always included
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4993,6 +4993,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu
- 
- 	/* Save host pkru register if supported */
- 	vcpu->arch.host_pkru = read_pkru();
-+	vcpu->arch.host_debugctl = get_debugctlmsr();
- 
- 	/* Apply any externally detected TSC adjustments (due to suspend) */
- 	if (unlikely(vcpu->arch.tsc_offset_adjustment)) {
+-- 
+2.39.5
+
 
 
 
