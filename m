@@ -1,106 +1,73 @@
-Return-Path: <stable+bounces-121665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF33A58C82
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 08:11:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E58A58D55
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 08:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0383A74DB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 07:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8309F188DA83
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 07:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467781D63E6;
-	Mon, 10 Mar 2025 07:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Tf1nj7fF";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="xnnbCFnO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F57E2222A1;
+	Mon, 10 Mar 2025 07:54:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F791D5AD9
-	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 07:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A032221F3B
+	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 07:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741590672; cv=fail; b=GiZeUZu14H9KH7IsarJwaCGK3wUK102wNBy3amicguY2iYRUu3CXFiNXfhVY3b1DKnsLjqL7/xjxbem0OJEwHGGyie2k2xjp8fH7RkrQh9SUymNVzuofAaNbVtOYrATC3d2WZgeqBksGK631qtRCEF3ysWtrrdrz0wGWjUHDTag=
+	t=1741593281; cv=fail; b=rohywmNv2q5eEGGMOXommo/wdlBNWDbg59nE2dLAerDgReQXjR0BbcsEM+psnXgq7bFGNISepUPwE7TGf0aJDTwhhbJ903cmZ/Fo4da9QKT7bsaYOqRcsO7sgBzqhdNOlAHB/qj8jz53Frnz1HebyzGg+G8ySPVqfNCedSszmZ4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741590672; c=relaxed/simple;
-	bh=IgUwAKXewMpQpuNEoVhEf0URwdQ5qxu+dnZSm3WpaQs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lQg9vP/ams8vmRUG57WAeoNMr6AsVlBXj5yTDcWv4ZQ26RQXAEfKTWkT2I/J1Y3L5Z3V5a1HR0cYt/rGOBjikSUV2qScTEsS5JM+SLWmfVnu0dwAplI3sUesNiDlIHlLfOHPC+wTxMMnXcP9Zm6EETmFEz6FrwTPX7e0CZVLbiA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Tf1nj7fF; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=xnnbCFnO; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52A6fhl3031347;
-	Mon, 10 Mar 2025 07:11:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=GKjW/LIU/uOCCgmwwgDkHRvlkH78ZzCwTTa6sZx812w=; b=
-	Tf1nj7fF44bdHlIc6VQqt7WV+3N0RI77fD59YgQTi7Xz+0gpZ7Er2oeRw+nLWm8v
-	83afRcfUEiBQXdpzXwYHdH7X/cvece6foExwrukOi4CMDJm06R6JBDx+u+VHGteE
-	i5ROznquDvVHW4LJQaJajWJPvmkZHaXkFNgjadntDELoqc/RkLlJV+j53+jiZHYv
-	vVaIlVY06mZp/c+iHPLDwOdfwrHlRWH9oD6gpjNeizUYX71CHWORyQpPNv45ip8v
-	CitmG0JTJpiUdbpgHne0iZcUWSXPv+Bjicme4uqS3wTH+ZFYkbE7E1JEfVwwUEt9
-	16ahatbvQ0KA7YVS9jh5DA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 458dgt1vjg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Mar 2025 07:11:00 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 52A60He6026274;
-	Mon, 10 Mar 2025 07:10:59 GMT
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2045.outbound.protection.outlook.com [104.47.51.45])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 458cb76ntj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Mar 2025 07:10:59 +0000
+	s=arc-20240116; t=1741593281; c=relaxed/simple;
+	bh=u1c3+ujak0Vurpf0749d97PwzHAeM+fDQlTDTTLE+Ak=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Wt8d9Ur0NMapCqrdijeLXPGOAsT2xLCohi1Dn+LsdFMVA4KetS21hnc9VkT7li5rnKHMtpv5g17fQ05E2YPoNI4IMdBVDOHAloNrnxQdkJpuWHHBf/QJIYaLuaowpUAS+tu+/yNTO/mRMeDVxYSo3a9n8VSMkdLjbYVSXIXoao4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52A7j2Dv019962;
+	Mon, 10 Mar 2025 00:54:27 -0700
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 458p9qhd76-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Mar 2025 00:54:26 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SBKCqUCsc+ofRwdIVbBONnKvtS4Iy8aVMyBqpzSI2n99JpOIBSIZA2mc+2YvXro2tqHlMEhi7HJzuw+Yaf3tJxQqaC2UQa78wFfFqH/aw4VjC3D4DzJjBIQlP32zF5Tt7jpcUeo1urSEp3n5+0QKoVaHFamD17bcOlGr4MRruSLcz1OjI3BMQgOQ9M/pqtTycVKCyy0jojnGqDz9vFnxfESmLige6hYNFuB1G9Oji3wSZ6BWMDu8C5+l509SubGjcM9L4j/QVEJqistli/Bp5JXqfcKGuMc/EkKRukXKBDCS4qxP85622a77IXPiB3T/ywGJmVeNZVtwzWW7pkyQ7A==
+ b=OwhA7EBm9/2TKBPg+wmGhDpHJ+01JnGUFSJmKUv5kupGzBjehpiaufxCFba03QO42tm2Fly6WO4ZKaiswxcEwbQ4Y0Gqo1vddZ0RZ1OK7MJAF5IZhlTGVp1GhehKs58ygXyBIrh/wlFPXRan+m7hENe/WuTT8V9cdApeY65+Jj1wWqaBy4UwyXGeOiZZFC+/aM6fujO0qGXqwoRIg39y/fS/3RklS8+jD2cL/9Obl5383eZqkiKweIu7mjaLsmFAQQ0cZayu2PMYQ6aYLNR/P37ubW+27GjF0qrGtIsDs/QaEwhm//UpRzQn/BCeEMbUznioXTYnVgb8PbQA4mkqwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GKjW/LIU/uOCCgmwwgDkHRvlkH78ZzCwTTa6sZx812w=;
- b=QBdgw6XpPfXObyLXigDec8fUq9HLnU94HGI7OQzN0ac7Rk6rV5pdS2uDIfcIEaih4P1tY3TXIpEH40BXhoDIv9XPPUCdzDLOknp5oFz0BknXjllgJJxIdozBd/dHQ5SZuZ19nudJfsXApPj5eACb4lol7SWxjmxgkXOkjkce20fBlrqd/zAtkI3JAQsyR66N8mhlXu6bEuWo470iOnYYkSBky+LMKJWosYQSFvODC899bVnvAgWlynmikvhT2lzisD6dL2+lCce7gdfPiQ60sh/XGjarI8VxGIQBXHkHryFJbTNOCY7+nkLwIccjQIPOsW/vZkJR6BZsTsqGSVeKUA==
+ bh=0IH1eXT117hUULv9tOXVVp0Tg9joA+w9+HF/+N3i6YM=;
+ b=EzAON1a5BrPhiL040d3ioGRM22l3PtuTsjQ6f2rZCtDWZVz3tCfqccsLM0WOe4ohuG+vz7gqLjzapMnefMZtubXqtQ6uCX6L3C+OHQFcx6lQvQVMA80YEUTJ884KQjwXYK18Oe2by4wEIPwlSL2zZJ0ASY+VWA+6NpI+VaM6IqbObPNpRcG5xIGV0zSPWyEc9CDMQpD5bhen+mwjtW0e4Ih3Fetw2eLl99Ci0ZLN/jJY3tjk8VPeHaxtu2u4TKSOqNX8ovsPzn5+FwDwNbBzG9bLQmcKGsRfhtUNbeUNcoIClDCf0bzHytkpCjisLOeL0JAe6Q+G5QmcUGw/NboCkA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GKjW/LIU/uOCCgmwwgDkHRvlkH78ZzCwTTa6sZx812w=;
- b=xnnbCFnOfkVco2kkX5Pnr0YVx0aYRUxf+FwmQlwRZ9JMZ2+GtTM+mcxsnoCnIjIEde0bwRi2H/iSaJ/VUy1rp9w5MnBSd+tTvykhhg1oKwru1Fs6bJamzFeQNntQq/BkPIlEZnNUeh2P20Iy4w1eKTlztCXkP+xmb0L/+Rk2yic=
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com (2603:10b6:8:102::10)
- by IA3PR10MB8417.namprd10.prod.outlook.com (2603:10b6:208:573::22) with
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
+ by PH7PR11MB7595.namprd11.prod.outlook.com (2603:10b6:510:27a::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.18; Mon, 10 Mar
- 2025 07:10:57 +0000
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38]) by DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38%6]) with mapi id 15.20.8511.025; Mon, 10 Mar 2025
- 07:10:57 +0000
-Message-ID: <f03b7bbd-20b1-494f-a35f-657ea04eac30@oracle.com>
-Date: Mon, 10 Mar 2025 12:40:49 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15] sched: sch_cake: add bounds checks to host bulk flow
- fairness counts
-Content-Language: en-US
-To: Hagar Hemdan <hagarhem@amazon.com>
-Cc: stable@vger.kernel.org,
-        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
- <toke@redhat.com>,
-        syzbot+f63600d288bfb7057424@syzkaller.appspotmail.com,
-        Dave Taht <dave.taht@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
-        Vegard Nossum <vegard.nossum@oracle.com>
-References: <20250305110334.31305-1-hagarhem@amazon.com>
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20250305110334.31305-1-hagarhem@amazon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.26; Mon, 10 Mar
+ 2025 07:54:24 +0000
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0%2]) with mapi id 15.20.8511.025; Mon, 10 Mar 2025
+ 07:54:24 +0000
+From: bin.lan.cn@windriver.com
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com,
+        Bin Lan <bin.lan.cn@windriver.com>, He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1.y] fs/ntfs3: Add rough attr alloc_size check
+Date: Mon, 10 Mar 2025 15:53:43 +0800
+Message-Id: <20250310075343.659244-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR04CA0017.apcprd04.prod.outlook.com
- (2603:1096:4:197::15) To DM4PR10MB6886.namprd10.prod.outlook.com
- (2603:10b6:8:102::10)
+Content-Type: text/plain
+X-ClientProxiedBy: TYAPR01CA0034.jpnprd01.prod.outlook.com
+ (2603:1096:404:28::22) To CH3PR11MB8701.namprd11.prod.outlook.com
+ (2603:10b6:610:1c8::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,384 +75,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB6886:EE_|IA3PR10MB8417:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29bb764e-65e8-4761-6781-08dd5fa2b410
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|PH7PR11MB7595:EE_
+X-MS-Office365-Filtering-Correlation-Id: 74c43459-25df-406d-3c11-08dd5fa8c643
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|52116014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bHlYckFnZGRscGs0cDdZc3lYMFM0bWdPV1pxZXRleUkyb3hoNU1XMGlJVlhs?=
- =?utf-8?B?RWFhZEVvVzFnNEZNWUhObFB1NkZiMjBOZC9Pc1JqU0lSVEJuejBhOHdaQmV3?=
- =?utf-8?B?QTE4R3RpdlpEY1JHOHpyd1dtcm5VTThBUjkvVGEwTTZDWk0xWXBNaTRIREZJ?=
- =?utf-8?B?YjhJcDRGWnM1VTB4eVkvRlFrcjM5YlZXQXYxSVhmaFdLUTNyVWl5T05Wc1ps?=
- =?utf-8?B?TGJPeTdiYmxSSHR5NnNtaFpJQlNUR1NMVTlBdDVITElMRnF1UlQxWnZKTEE4?=
- =?utf-8?B?MkN1ZlZMRlBsNmNpUERMcUlSTDYySWJZVjVlLzNDVWh0SVZUcEdSMElCUnEx?=
- =?utf-8?B?L0N0VXZCSDVnT2syV3h2dlF2Sk9ieEFkUEt6a0Z2S1E4TkYvNUpaejE1dFE2?=
- =?utf-8?B?RmxPWktmNm01OVhvVms2Q0gwWkRwSWRJWXNpbXUwYkF1ZFR3SGRiaDhYaHNr?=
- =?utf-8?B?WTdZQzF6R1ovVjE4RE1ZWjQ3TThWZ3pxL1NEcFgySGExc2ZhckpESWtxNkl4?=
- =?utf-8?B?bEY0aVI4TmVmRjZGS2FVQnJRU1NLOU5IbHNQbmF4OW1hRlo1dUVCd29TNjdn?=
- =?utf-8?B?UFRnQ3NuUEdWczdBaEtSWTdOWHIwQ090bUVKZVpsOFhxYWNVSVRORjYvY2Np?=
- =?utf-8?B?WWF2S25lY3JFNE5pbDg1Y0d3MVBJY3BNOHFZUVR0ZTRQREU0aFY1Y0x3dmYz?=
- =?utf-8?B?cFZKMUt5R05JYzdLWThFNUpJSXk5STNxTUh2Y242S2VFdjE4MG5mSWdYbXVC?=
- =?utf-8?B?YS81dldEQkswYW5DOXRWcldBM0dqZkFMa0N0U1BrY2IwTlZwbWs0TmVOaEdC?=
- =?utf-8?B?MHN0bmhuYmwyTGZVS0dpK2xnNUx3d2xoTVJ3akt4L1RSTzJHcU9Nd0FJM3R6?=
- =?utf-8?B?Y1RzVnJuQVkydUZTNktCcGFld2gwMExELzY1N29jdzFlWHpNS0VFeDhWWUNm?=
- =?utf-8?B?NkZPcDRVSXlPRGt5V0tiNWIzVWRFK1hLM20wVkJzSEdsQjlHdEhQd215elJO?=
- =?utf-8?B?VGpiYWhPQTNkZGxxWTRXQll0dlAvRGdXbkJyb0ZvMnozWnJlSkJCVkw3ZnBp?=
- =?utf-8?B?YWhNY1N6YjRIaFhYa1RCMngzellOM1M0WVc3NmpJN2EvMW1jQStRdkl6Z3lr?=
- =?utf-8?B?RDhiN1RsQTFqYWFVckZkdGljT0RQb2lpd0h2YkpwcVBrNEVadXJ1bEhqckgr?=
- =?utf-8?B?bGJVQWFXbkxGWlpZZHQ0MjZ4UGwraDhFK3YvbFYwSU1mbGNrMzdEOW9oZnFo?=
- =?utf-8?B?NEhFeWI1UUw0d2ZxL3h5L1JPc2Q3b2p4dW13QWEyakI1aWNtU2txUkhqMmtU?=
- =?utf-8?B?Mk5XUTU1c3RCNlYrdkNNNkFvdzNFMmV3OFhmQXpIZVlHaS9qaGhXa3EyMlU2?=
- =?utf-8?B?UlhpYW1OanRwUzQxUHVHcjBaQU1EWnBLWTlabHp0bk82aG4wOEphYktSTGxH?=
- =?utf-8?B?VGhROFdLUGxRL0dsOXZ1OVptbVQzY3N1akhGYVRSc1EzQit0ckY5elhuZ08z?=
- =?utf-8?B?TkZNQkJRNWpTeTgrYUFtWjlNdzBWNXpseWE2MnlrbXgvQ1BEdUUxa3VGNFdm?=
- =?utf-8?B?cHRCVFpGbUdjVW5PMm9SOGFxRlU1NDREV0llQWFtZEswdXZxVnAydnV4dDBq?=
- =?utf-8?B?ekh2b3F3aUoyWUFNenMweEpBYWpTZWk4OFc4aWFPZEw5U0RoMDg1ZWkwZ0R2?=
- =?utf-8?B?K1FrVlBiSzZmeUliZExTcGY5cmNUUVEySER6RGJyaGhxQWJBcE5oZ28rNUJC?=
- =?utf-8?B?Zm02YzhDSzB6Tnp3ZmZ5dHdPT2dqUnZHR05WUU1aSFlFQnI0dThKUXlrbXFY?=
- =?utf-8?B?WUoybHBQUmZjaXh5QklmZz09?=
+	=?us-ascii?Q?lPRYAeq1PdSbJMtoM1XOd6u7Tzpy0QZSOh9D0BYgOh5nbq266QcAX1xexSZh?=
+ =?us-ascii?Q?UIQiM9glXDzdeNcKW1mhGuaZbDYuDTx8dmW7TQWQ8gcMDtWvz05yHNOK1omm?=
+ =?us-ascii?Q?0o7njfo4G/7d6vBDcNV0n1DZxNEmdJDsdzs5uQ67YsObmSWtON2E6IUenlrM?=
+ =?us-ascii?Q?s2c4kK1i/r4o/g48MQGRXT6vXvA8V/guVPUvB5RkXoy5+1kS5PWnqqLjx8iZ?=
+ =?us-ascii?Q?chilcq7BLgYQD68or9knvnhtGzHfIRDj4zDKsolL/Y3dzzkD1gVf7pFh+10+?=
+ =?us-ascii?Q?ef1/M9Ajj7ni3goRZDuxBz/v1JPulhxEkFz9OvlCGERpz81S3BR11zz87fr1?=
+ =?us-ascii?Q?xnROKAnCxA2lDwJ+Pbs/CGrHHSy5uVekITwD6XcBd5sSh6dOwWEnZjzFpgC0?=
+ =?us-ascii?Q?5uBhnHOWVQ7Qh4FXEgA7z48vP0sm+BmbbIfAQxHNs1Iy0O4cfkDqdQlJCn/v?=
+ =?us-ascii?Q?MmfJPgNZ3/3izJAsRprhwn1p/t1KJNMHTeT682aCy8w/qTVYSt39sV8wvndZ?=
+ =?us-ascii?Q?JfmSRPjkQe7tc3CNsCpMveZLmERIVdKPRwD3OQLlNyUEY7p2BVmNGMz/eX2g?=
+ =?us-ascii?Q?o/oTWrux7jwxyECGUnVZkRwF9G6DCMtr0SYGsLDm4RbRcjc2/N5KQMN2y+uc?=
+ =?us-ascii?Q?Qw0lvQGpb82Bt8m7TvVf5FkXilUFtedStpf12IUUPR2R00Sa/nbk/LgqMqMu?=
+ =?us-ascii?Q?4Osd+qwUt3uj6s9E86JhY3zJe3cEBs6I/Mzynj+Mb/V7TSEfbt73V2PXvEpF?=
+ =?us-ascii?Q?uAz6bNUkyyctv5T1kYCdE7ixlAtjeQA/zjkip6/Qpv2uFO6J/YMwFZgHO781?=
+ =?us-ascii?Q?GOAv8PkFhZvSrmGNqpjpIGhUP9t0izG15DgK9x22c1QbkqywKmdAhanzljrS?=
+ =?us-ascii?Q?635DDm+1BDeGMS64PfrMvWERiMYPSUCIM2IWMZuiGWuNJsIKWrRq6iAgxwds?=
+ =?us-ascii?Q?ss9o+bOErPauQzup5xdXOjnEW3Kytgwr858PlhV344oYdTmvehslCKgdsYE9?=
+ =?us-ascii?Q?Ike2N5K+3MY9z/jHSu8Fm53Pg7pukdY+bEAhwWGwOc4agFFZ+4A2oyLZlv0W?=
+ =?us-ascii?Q?rpEMPcKetKz9dLes+WhPcAVwv3vDRHxi0mLXLtQs/9Tq4dIkwN8OAYQdxiOf?=
+ =?us-ascii?Q?RsLhmk3k4B2ya/ZsxfFf4k1n58tgJnKkB0weippS02EJ+l3wwntP6+eM+VHf?=
+ =?us-ascii?Q?myoLZOiy8ZObR0sj9htRD4SCgHtbCvMEFFC4fyu7H9nKoT+8DBPPJh31a01O?=
+ =?us-ascii?Q?UeOCQ2ADdWhq39RJOFwIjzIXPiJbsZEe9J3W6xk7og9vlJPSb+zFj3AT0R+7?=
+ =?us-ascii?Q?revy+xqclaov7xFrEUIBPkOr2XU3UpGguXaGOgZQE7eMomNVCqXbyVV85FzN?=
+ =?us-ascii?Q?Pf0nZo3C+uoYAjuOwaHxe7XnS6RlgYTxagnxCr3pQEwFLLKHw8MaBpYcRVug?=
+ =?us-ascii?Q?fnjTlJRGkCZzR+XR2aNtk+HJRaPvzGrq?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB6886.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S256UEtDd3dqYW9abnhSRC9kS3ZwRVVmN3VKd0N0djNyYVppYVR1SGVtZTll?=
- =?utf-8?B?Z2c5TStublJ5VHhRM1RZdVlvVVdud3RvV0lzeVNUTCt5aSs1ZmtuQndLVmEr?=
- =?utf-8?B?Wk5JWXRQTFZpa05hTVRGZGpVTW0wSXlYYzYvWFpoM0hDeXhGQXNpQURIQUFB?=
- =?utf-8?B?MnpsYlFubFU5S2xudUxTK1JTWW1saWZSbDVXK0puRXRUcElqKzREWHpkT3RN?=
- =?utf-8?B?Q2ltNW00eE92OSt5amdUSXFJU3QzWEFIMTNadFRuNXNRbDhTY21RYzlLVmg3?=
- =?utf-8?B?SmdzZnJxQUZydUNDMDZxYUtJQ1Zwakk0K0xBKzB2cTlrU1l3WFFzWWdybmpB?=
- =?utf-8?B?b0ZLQ0s0ZVZpTnBQVDFpa3piSzMvK05RUXlVS0kyeEFOUFRhdEpQN0V3MjFk?=
- =?utf-8?B?VTlHQVFSS3djVFYvckQrTGtlSlVXcDJaRXg1VnpDVlpVSUJPSUFLYm9wcWJa?=
- =?utf-8?B?bEMwVGJTd3R3OWtxbGFWY1RLVjVjYWlkbDBIY1Z4aHo4MVZ6V0ZRaHMzclN6?=
- =?utf-8?B?RG5aTG5JaWNLUkE1QzJpdFdCUU52amFuMlNKdEZQUktqUlFBaW84QkVlazFu?=
- =?utf-8?B?cndRMEZ0MWNOTFhZUjFLSEhMdlZlaEo4VUJwTDdBdzUwTUt3UHZtYS8zaU44?=
- =?utf-8?B?NnVXVSsrZkcrYjAzbnRZZ2o1WVhYOEwyQ1l6Rmx6UkI3MFl5d08zNStZbzFY?=
- =?utf-8?B?dTNoMkVKejhzS0dEMlFCRU1xWjAwb0srMDhJV2c3SURlamRTVkJEaU1ha0ZX?=
- =?utf-8?B?UnZ1MVZRQi9tY3pzVXF6V2NpL0greXp1S3ZUbjFSYXluQTN1aFFwSjRVS1BP?=
- =?utf-8?B?bmlOb1RBZnlxSUxpeXNJVGdsRitPeXVLZmVEQUhja05xU2UyMmhFUS9weFhz?=
- =?utf-8?B?VkxLTW43RGxmVENVNk9VMUQ0L2pHNDQ1NjZRY1I0QU1jRkxpNWxQWVFBS0Vl?=
- =?utf-8?B?bENPMU5NV1hXK003NW85OGJ2anRzeW1Ha2ZVNFZqa0o0VktWWkgzanhxelNT?=
- =?utf-8?B?U3RyL2VMQ29kN204SUtldzFRWlFxdE5PZWdqeHIzNHBsaUIxWnMvUnQ0cGkr?=
- =?utf-8?B?TENXYTlpek5zZmVoYkd5Y2FreTAwTXhKaHNoNnpyc29sL0JnUnFIWU13cTdL?=
- =?utf-8?B?YjFGZmpmUkprdzNoT09aMmpsN3NrdTJmUlRJTkR1RlhWUThBSmdiM0IrY2ZM?=
- =?utf-8?B?SEFmRitXa1I5YXo3ZE51bkdpZi84QUZ4TngyZU1jcU8rUTh1YytOV2RubTNY?=
- =?utf-8?B?d3RERzE2Q2NPQUZGaEJFeTZVWlVQRVc0VlhTYjZQNlIxZThHRmZGbG4zY3p2?=
- =?utf-8?B?Yk1OZXlWOFFsSGlmUUtCTkxRaUpvMzg0YzVYejZGWjhua3d5M0I3OGlOZmp2?=
- =?utf-8?B?OUVQVlpzK244RS9RSHFGOEx1b3BPSzBYbjFOL3gwSE93S0haUHdRNlRnT2Jz?=
- =?utf-8?B?YW9zRHg3ZEVGaDhnektMemZIZHFLSVNOcFRNRGpyU29pdXROSDZ5akh1OURi?=
- =?utf-8?B?dzdFbjNVSVd0cGltNmFNS3lWdGE0NWI4NW1pZE5oMDgyZHA3MEQwb092b1Bn?=
- =?utf-8?B?eEFkczlXMEZsY3RJbkw4ZmNkQzRTOXBWdklHbzNqVjg0UWNsUXlYOGRPWEM5?=
- =?utf-8?B?NExFNzRmMzhqamR5RnBVK20yOHM5b1JzTkdOSmEyaytFWk5lNEJKMjhaOC9q?=
- =?utf-8?B?VUpLZ08yQ3ptSkxseCtYNXhOVTgxQk9jNVdWdXExWnZacGlEemsyNEF4RVZK?=
- =?utf-8?B?RmpxRXp1dkVkQXpPaXdOTkExMTN1T0YxeHE5Vzdrc2tOc0hyVnpJcHAwd3lh?=
- =?utf-8?B?OU9OMVVDU3FrWjhVbzlnR3ZFT2xkUjNWdldJWnlhRWlXc2lodVAzazgvQmQy?=
- =?utf-8?B?djNIcnpIMW05NHMzd0t2VnlPb0NuajQvZjJtTXNST2Njekg0WFVvV3pyYk1o?=
- =?utf-8?B?MFpxSUtqT3U2dFpaS1RMK0p3dTkxRlNLdGMyZ3ZVT2FZbnM3SHZmS0gyL3hu?=
- =?utf-8?B?Z2NkVnYwZVRiZVloYllXbklKVVdadWRjY3FUN3JEcWZzMG1waFFTdUVXU3F0?=
- =?utf-8?B?Tm8xSloyRE9JRnhwcWdXMnJMV1lJa1VhTXRDLzc5bVJNQW9QNHVtQTV2UUV5?=
- =?utf-8?B?ZC9HOFN2d0xtajdFZmhmN2tTUGU5NnV4NTI2VXJNcThWY2RBeVJCN2l1b2pI?=
- =?utf-8?Q?zb40Bcoga21rSXGwWUxNWSo=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	l650TjLdv3+s+tCvJk7PiDhBEdx1VZ6WocsSospr81i98r6o2bWEnMNzMraYccdgRPXPwFq+qNCUhCAVIB9Y/RYHyjqtsfO790s6Pnm8byn2Elx99oP1H0P/+zfB6uW9inRn4at25NrStZMTPh+ghIrGOsMbx82tIy7UyDEmuZQ5IBmw4T93XmxDfccGnG+6k1VVCHn8rlJeedrIJgrUXeLOcim0KXxfCF6mICkAmJefq5FgHgPHER6tIUY9DZjS5cnuVPx7IM9LFCa6jFwx65y99OzD3t3dEl53erqOQpwBWYewvoEYTxpCO5jIWOpxSUaih1yXhBdY5EPcRkKhEp8G2cwWgQC/mdO4R1ISDG5mo6La0zREdTUx2toxPu5QHfpBECl48oyLTJSfyRuQ1tvjJIVhBOwZGiZnrqULGUZOeE5ab+U21+u1Km4qiUXhSFuc6hN24zOkfQ5Y7pgSYrlIY71SyMYSM3EeZxJtXJpuMj2zujCbgVV+ZZitenBW6KMSZQZ0psJLf+i2P2tu5KzDyIM6pqfAkq1zvUzZZHfu8XV0huRbPQvCStzjzy1JRudIluVPQk3GYfV5J8Ib6fwROYoWZpPzuyaz+DZSfRo=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29bb764e-65e8-4761-6781-08dd5fa2b410
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB6886.namprd10.prod.outlook.com
+	=?us-ascii?Q?BNwTpHE+ddT3bOZM78kqqcDF+nScXn6mYRn6IRHFKXEgtDylo3XXxPixtzGq?=
+ =?us-ascii?Q?Xgq9f8mBwg6gj6xF211RunSDoo7RFVcY+UgafeK0J/VGoVwXK+EfAUHISknK?=
+ =?us-ascii?Q?P1Cg5jIXoeTZ4ceN3mJroNsr6DyvvUfgh/j1AtNLsh45j0pOP7jWp/p0HcEO?=
+ =?us-ascii?Q?/MivmR9ItVOKMeseDdLdkJYnnb5NhnpdwGinO0Ekg0VB/n59nB9xKMNDRrwc?=
+ =?us-ascii?Q?KXJSpMbScB6PuVpUbyJsX+yU+jhlcnj11NaTNfseD3FKlcA9gQZwCmG6QuO8?=
+ =?us-ascii?Q?ceKQoPSmUuDIY+6Ku+venrz6y86+PBFxEQ94mYoH3fdl7Wyenc/MR2bD4L6a?=
+ =?us-ascii?Q?Ps/OwBiTaPr0Theut0FIIvJvcX1LFkIEoJASM4AUHp45mpUex/QoST7l8MQG?=
+ =?us-ascii?Q?Sv6wU/RANCfojc22jnsSVHE39yn8YP6RrPsRBVmlTkjLrAjqLPF6Z899HCmr?=
+ =?us-ascii?Q?f8sGINJ8I0sTZ9RJzNYpEoca5Pya4ATvYKmCV0ysBunYvr+jlQD+b+Ahcp0n?=
+ =?us-ascii?Q?ry6WEMfxGT5wUwhPqHp4P/KhWEBjaGGVU7IjY3YikZY7v+sR7Hef6jvgL6Xt?=
+ =?us-ascii?Q?Hbd39voNbWwThqJHHgxSBovPHE4EnyZ17KavqlS1swii7vmxQZe7cMztHY+R?=
+ =?us-ascii?Q?belB2P/OkAeUHlmY6zKykizzQrU9M4+ZymWNqd+tMmIcQ109hvZvdtyYK/P6?=
+ =?us-ascii?Q?C14thEhkvNZ8N1q2XVSrur8oJdRiTHFQtlyuHTgCbn1L8bEN7Um6VhKZtb/g?=
+ =?us-ascii?Q?2GUS1Y7YVNBxxsrp64lGkB5dZm7B783fgEiFyXXpIxLdeF7j0J8p2OgOQa82?=
+ =?us-ascii?Q?VAuXIN+BQ+Y/cZbbpALh27+sRoes3HCFDahKFagnk+tXmMN2PzzJ1cVxBw+f?=
+ =?us-ascii?Q?uAjM6vg6eN/Hg8TwE0ZmuLj7HkdwB5U3rYpHa/6LyONPBtOIF0lafg4/ZzlT?=
+ =?us-ascii?Q?Ce+/kqcuKYTgNN7MIE00W0WLmCP/L1tu1Caw8UuQ1RdscqHie/EPHK/VZ5Lz?=
+ =?us-ascii?Q?6CRn/wfKPfRfmR+4ll6dNQWPu7XqlYD5+mqdJ8SXp6uv5A+8yIPc7IDOTGLb?=
+ =?us-ascii?Q?RsYL8wxyoqQHYfmMyZ/9C3T9nrCnVTDp4RX/QnfkHhUBDBDl8fq0o/VxNwz3?=
+ =?us-ascii?Q?jgZocm7/CjccX6YAZR2pqDPqwVHQlChH8MovGa/9lcC3wvDqUds2XENrjOjN?=
+ =?us-ascii?Q?8UT28qjkelW709B5pKK30d27dKPO1zvD2mEm38q/trduHUeSdEVtsSALBwSN?=
+ =?us-ascii?Q?cgZlJ97v+ZUnncLryyFat0PoVbw2o4bRnGJZR/y10/nY9A+9gd+AJVrVWg/Y?=
+ =?us-ascii?Q?so4ASy3ro5BUBvVsnZjbYu9XF48thI+cSquZoaeLSionptdpdyf/qJDLAPkh?=
+ =?us-ascii?Q?SFKd40tlXJenTVeS991wB+cALJ8N7EbtB8OZ++tRn2pTXVSEKPkZtepBOwWi?=
+ =?us-ascii?Q?ARNQnEKkLcu4jnR7nu94oN80RsRZ306hXTTv97m2zqLEtdK58mantWg6Gvte?=
+ =?us-ascii?Q?lW+4FK3OIP/2XU9/tCLTSd4i6Fi3QZwUsXlyHOcdbf/VEoZbde7zZSphDJjK?=
+ =?us-ascii?Q?fu8YwZUTj3lzgodIvkkVAGJeMBzXhBYf63WxHkYoitmElWiL2UlyD2u4l8t5?=
+ =?us-ascii?Q?YQ=3D=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74c43459-25df-406d-3c11-08dd5fa8c643
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2025 07:10:56.9935
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2025 07:54:24.5247
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YLvCtUV3TBFWavDl7uERSuexXdrKMYrI/VV/yGWDkMXtREb418uMhElQibZQsdFBNJlwpcNzZn+pAx3iKS/4PXaCF7w4ZvQ3y5kxMTH3KdYGTUkEQqZ4xWpvv4x/n6X5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8417
+X-MS-Exchange-CrossTenant-UserPrincipalName: xPqpiih08tvX6EvXXzEoWpiPEAREOX0VRlvXQNfP7VCOUUTF0AzuOIQHi+77up2QrYbjPU5GH6VsD4P/Qs8xATTJKFtHLtXnkIgG19+kKX8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7595
+X-Authority-Analysis: v=2.4 cv=QNySRhLL c=1 sm=1 tr=0 ts=67ce9ab2 cx=c_pps a=DnJuoDeutjy/DnsrngHDCQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=Vs1iUdzkB0EA:10
+ a=GFCt93a2AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8 a=J4P2wOEuqLA4JKkjWb0A:9 a=0UNspqPZPZo5crgNHNjb:22 a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: D8JkChKit-aG0063vCMD_X3KAaReZjpu
+X-Proofpoint-ORIG-GUID: D8JkChKit-aG0063vCMD_X3KAaReZjpu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-10_02,2025-03-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 spamscore=0
- adultscore=0 phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
- definitions=main-2503100055
-X-Proofpoint-GUID: 1MgtafBT_qDYe-dYaZKXQWGX7wflbCts
-X-Proofpoint-ORIG-GUID: 1MgtafBT_qDYe-dYaZKXQWGX7wflbCts
+ definitions=2025-03-10_03,2025-03-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 spamscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
+ clxscore=1011 adultscore=0 mlxlogscore=964 suspectscore=0 bulkscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2502100000
+ definitions=main-2503100061
 
-Hi Hagar,
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-On 05/03/25 16:33, Hagar Hemdan wrote:
-> From: Toke Høiland-Jørgensen <toke@redhat.com>
-> 
-> [ Upstream commit 737d4d91d35b5f7fa5bb442651472277318b0bfd ]
-> 
-...
-> Fixes: 546ea84d07e3 ("sched: sch_cake: fix bulk flow accounting logic for host fairness")
-> Reported-by: syzbot+f63600d288bfb7057424@syzkaller.appspotmail.com
-> Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> Acked-by: Dave Taht <dave.taht@gmail.com>
-> Link: https://patch.msgid.link/20250107120105.70685-1-toke@redhat.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> [Hagar: needed contextual fixes due to missing commit 7e3cf0843fe5]
+[ Upstream commit c4a8ba334262e9a5c158d618a4820e1b9c12495c ]
 
- From a backporting point of view: (for 5.15.y , 5.10.y and 5.4.y backports)
+Reported-by: syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test.
+---
+ fs/ntfs3/record.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Looks good to me.
-
-Notes: Used (prandom_u32() >> 16)) instead of get_random_u16() in 
-cake_get_flow_quantum().
-
-Reviewed-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-
-Thanks,
-Harshit
-
-
-> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-> ---
->   net/sched/sch_cake.c | 140 +++++++++++++++++++++++--------------------
->   1 file changed, 75 insertions(+), 65 deletions(-)
-> 
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index 8d9c0b98a747..d9535129f4e9 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-> @@ -643,6 +643,63 @@ static bool cake_ddst(int flow_mode)
->   	return (flow_mode & CAKE_FLOW_DUAL_DST) == CAKE_FLOW_DUAL_DST;
->   }
->   
-> +static void cake_dec_srchost_bulk_flow_count(struct cake_tin_data *q,
-> +					     struct cake_flow *flow,
-> +					     int flow_mode)
-> +{
-> +	if (likely(cake_dsrc(flow_mode) &&
-> +		   q->hosts[flow->srchost].srchost_bulk_flow_count))
-> +		q->hosts[flow->srchost].srchost_bulk_flow_count--;
-> +}
-> +
-> +static void cake_inc_srchost_bulk_flow_count(struct cake_tin_data *q,
-> +					     struct cake_flow *flow,
-> +					     int flow_mode)
-> +{
-> +	if (likely(cake_dsrc(flow_mode) &&
-> +		   q->hosts[flow->srchost].srchost_bulk_flow_count < CAKE_QUEUES))
-> +		q->hosts[flow->srchost].srchost_bulk_flow_count++;
-> +}
-> +
-> +static void cake_dec_dsthost_bulk_flow_count(struct cake_tin_data *q,
-> +					     struct cake_flow *flow,
-> +					     int flow_mode)
-> +{
-> +	if (likely(cake_ddst(flow_mode) &&
-> +		   q->hosts[flow->dsthost].dsthost_bulk_flow_count))
-> +		q->hosts[flow->dsthost].dsthost_bulk_flow_count--;
-> +}
-> +
-> +static void cake_inc_dsthost_bulk_flow_count(struct cake_tin_data *q,
-> +					     struct cake_flow *flow,
-> +					     int flow_mode)
-> +{
-> +	if (likely(cake_ddst(flow_mode) &&
-> +		   q->hosts[flow->dsthost].dsthost_bulk_flow_count < CAKE_QUEUES))
-> +		q->hosts[flow->dsthost].dsthost_bulk_flow_count++;
-> +}
-> +
-> +static u16 cake_get_flow_quantum(struct cake_tin_data *q,
-> +				 struct cake_flow *flow,
-> +				 int flow_mode)
-> +{
-> +	u16 host_load = 1;
-> +
-> +	if (cake_dsrc(flow_mode))
-> +		host_load = max(host_load,
-> +				q->hosts[flow->srchost].srchost_bulk_flow_count);
-> +
-> +	if (cake_ddst(flow_mode))
-> +		host_load = max(host_load,
-> +				q->hosts[flow->dsthost].dsthost_bulk_flow_count);
-> +
-> +	/* The shifted prandom_u32() is a way to apply dithering to avoid
-> +	 * accumulating roundoff errors
-> +	 */
-> +	return (q->flow_quantum * quantum_div[host_load] +
-> +		(prandom_u32() >> 16)) >> 16;
-> +}
-> +
->   static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
->   		     int flow_mode, u16 flow_override, u16 host_override)
->   {
-> @@ -789,10 +846,8 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
->   		allocate_dst = cake_ddst(flow_mode);
->   
->   		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
-> -			if (allocate_src)
-> -				q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
-> -			if (allocate_dst)
-> -				q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
-> +			cake_dec_srchost_bulk_flow_count(q, &q->flows[outer_hash + k], flow_mode);
-> +			cake_dec_dsthost_bulk_flow_count(q, &q->flows[outer_hash + k], flow_mode);
->   		}
->   found:
->   		/* reserve queue for future packets in same flow */
-> @@ -817,9 +872,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
->   			q->hosts[outer_hash + k].srchost_tag = srchost_hash;
->   found_src:
->   			srchost_idx = outer_hash + k;
-> -			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
-> -				q->hosts[srchost_idx].srchost_bulk_flow_count++;
->   			q->flows[reduced_hash].srchost = srchost_idx;
-> +
-> +			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
-> +				cake_inc_srchost_bulk_flow_count(q, &q->flows[reduced_hash], flow_mode);
->   		}
->   
->   		if (allocate_dst) {
-> @@ -840,9 +896,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
->   			q->hosts[outer_hash + k].dsthost_tag = dsthost_hash;
->   found_dst:
->   			dsthost_idx = outer_hash + k;
-> -			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
-> -				q->hosts[dsthost_idx].dsthost_bulk_flow_count++;
->   			q->flows[reduced_hash].dsthost = dsthost_idx;
-> +
-> +			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
-> +				cake_inc_dsthost_bulk_flow_count(q, &q->flows[reduced_hash], flow_mode);
->   		}
->   	}
->   
-> @@ -1855,10 +1912,6 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->   
->   	/* flowchain */
->   	if (!flow->set || flow->set == CAKE_SET_DECAYING) {
-> -		struct cake_host *srchost = &b->hosts[flow->srchost];
-> -		struct cake_host *dsthost = &b->hosts[flow->dsthost];
-> -		u16 host_load = 1;
-> -
->   		if (!flow->set) {
->   			list_add_tail(&flow->flowchain, &b->new_flows);
->   		} else {
-> @@ -1868,18 +1921,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->   		flow->set = CAKE_SET_SPARSE;
->   		b->sparse_flow_count++;
->   
-> -		if (cake_dsrc(q->flow_mode))
-> -			host_load = max(host_load, srchost->srchost_bulk_flow_count);
-> -
-> -		if (cake_ddst(q->flow_mode))
-> -			host_load = max(host_load, dsthost->dsthost_bulk_flow_count);
-> -
-> -		flow->deficit = (b->flow_quantum *
-> -				 quantum_div[host_load]) >> 16;
-> +		flow->deficit = cake_get_flow_quantum(b, flow, q->flow_mode);
->   	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
-> -		struct cake_host *srchost = &b->hosts[flow->srchost];
-> -		struct cake_host *dsthost = &b->hosts[flow->dsthost];
-> -
->   		/* this flow was empty, accounted as a sparse flow, but actually
->   		 * in the bulk rotation.
->   		 */
-> @@ -1887,12 +1930,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->   		b->sparse_flow_count--;
->   		b->bulk_flow_count++;
->   
-> -		if (cake_dsrc(q->flow_mode))
-> -			srchost->srchost_bulk_flow_count++;
-> -
-> -		if (cake_ddst(q->flow_mode))
-> -			dsthost->dsthost_bulk_flow_count++;
-> -
-> +		cake_inc_srchost_bulk_flow_count(b, flow, q->flow_mode);
-> +		cake_inc_dsthost_bulk_flow_count(b, flow, q->flow_mode);
->   	}
->   
->   	if (q->buffer_used > q->buffer_max_used)
-> @@ -1949,13 +1988,11 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
->   {
->   	struct cake_sched_data *q = qdisc_priv(sch);
->   	struct cake_tin_data *b = &q->tins[q->cur_tin];
-> -	struct cake_host *srchost, *dsthost;
->   	ktime_t now = ktime_get();
->   	struct cake_flow *flow;
->   	struct list_head *head;
->   	bool first_flow = true;
->   	struct sk_buff *skb;
-> -	u16 host_load;
->   	u64 delay;
->   	u32 len;
->   
-> @@ -2055,11 +2092,6 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
->   	q->cur_flow = flow - b->flows;
->   	first_flow = false;
->   
-> -	/* triple isolation (modified DRR++) */
-> -	srchost = &b->hosts[flow->srchost];
-> -	dsthost = &b->hosts[flow->dsthost];
-> -	host_load = 1;
-> -
->   	/* flow isolation (DRR++) */
->   	if (flow->deficit <= 0) {
->   		/* Keep all flows with deficits out of the sparse and decaying
-> @@ -2071,11 +2103,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
->   				b->sparse_flow_count--;
->   				b->bulk_flow_count++;
->   
-> -				if (cake_dsrc(q->flow_mode))
-> -					srchost->srchost_bulk_flow_count++;
-> -
-> -				if (cake_ddst(q->flow_mode))
-> -					dsthost->dsthost_bulk_flow_count++;
-> +				cake_inc_srchost_bulk_flow_count(b, flow, q->flow_mode);
-> +				cake_inc_dsthost_bulk_flow_count(b, flow, q->flow_mode);
->   
->   				flow->set = CAKE_SET_BULK;
->   			} else {
-> @@ -2087,19 +2116,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
->   			}
->   		}
->   
-> -		if (cake_dsrc(q->flow_mode))
-> -			host_load = max(host_load, srchost->srchost_bulk_flow_count);
-> -
-> -		if (cake_ddst(q->flow_mode))
-> -			host_load = max(host_load, dsthost->dsthost_bulk_flow_count);
-> -
-> -		WARN_ON(host_load > CAKE_QUEUES);
-> -
-> -		/* The shifted prandom_u32() is a way to apply dithering to
-> -		 * avoid accumulating roundoff errors
-> -		 */
-> -		flow->deficit += (b->flow_quantum * quantum_div[host_load] +
-> -				  (prandom_u32() >> 16)) >> 16;
-> +		flow->deficit += cake_get_flow_quantum(b, flow, q->flow_mode);
->   		list_move_tail(&flow->flowchain, &b->old_flows);
->   
->   		goto retry;
-> @@ -2123,11 +2140,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
->   				if (flow->set == CAKE_SET_BULK) {
->   					b->bulk_flow_count--;
->   
-> -					if (cake_dsrc(q->flow_mode))
-> -						srchost->srchost_bulk_flow_count--;
-> -
-> -					if (cake_ddst(q->flow_mode))
-> -						dsthost->dsthost_bulk_flow_count--;
-> +					cake_dec_srchost_bulk_flow_count(b, flow, q->flow_mode);
-> +					cake_dec_dsthost_bulk_flow_count(b, flow, q->flow_mode);
->   
->   					b->decaying_flow_count++;
->   				} else if (flow->set == CAKE_SET_SPARSE ||
-> @@ -2145,12 +2159,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
->   				else if (flow->set == CAKE_SET_BULK) {
->   					b->bulk_flow_count--;
->   
-> -					if (cake_dsrc(q->flow_mode))
-> -						srchost->srchost_bulk_flow_count--;
-> -
-> -					if (cake_ddst(q->flow_mode))
-> -						dsthost->dsthost_bulk_flow_count--;
-> -
-> +					cake_dec_srchost_bulk_flow_count(b, flow, q->flow_mode);
-> +					cake_dec_dsthost_bulk_flow_count(b, flow, q->flow_mode);
->   				} else
->   					b->decaying_flow_count--;
->   
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index b2b98631a000..bfb1f4c2f271 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -325,6 +325,9 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 	} else {
+ 		if (attr->nres.c_unit)
+ 			return NULL;
++
++		if (alloc_size > mi->sbi->volume.size)
++			return NULL;
+ 	}
+ 
+ 	return attr;
+-- 
+2.34.1
 
 
