@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D514A5A163
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F4AA59C1C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 564973ADAFF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BEBA7A4693
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10676227EA0;
-	Mon, 10 Mar 2025 18:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251FF23372A;
+	Mon, 10 Mar 2025 17:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igpRsaVL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4ONvEHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C123617A2E8;
-	Mon, 10 Mar 2025 18:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44FB233703;
+	Mon, 10 Mar 2025 17:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629620; cv=none; b=hmlzhKxALONJ79NYAzqC6jsogaNZ2+5a0sdpOTUHkeycCll3lcPOR/AbtnPoUEtf7Gki1mzQzfQ0qtuNOHiWNGc9uCg71ZRK8HO6FOAmx4BLARxR1PXwuWHX+69PUWy/vXIriOahe9NHY7VQnDokcBCWVeM4TYKup/3IPx01kKU=
+	t=1741626520; cv=none; b=c5Ga/8rOiWUi/plyxslgovJ9Yp+SJ2STwH/8T+7Y8MeeJL9hU8hX6B+GsUnmBg5dPbf2DsoYE1bkS1S9i9n4Hk4H/b3iLbi6Czgs4mTzcVBMANbVGZv/VJEp1KAY6+ZYg8lxpFVkquiTl4ePw6nQ9KFjgG7qo4csx16/0Gd6Ojc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629620; c=relaxed/simple;
-	bh=8220W9wNebeLPclVCZx/aNZk4Om0MS3pDA7Bv9hr23c=;
+	s=arc-20240116; t=1741626520; c=relaxed/simple;
+	bh=/l5F9d47GNBuZ20+mpZ7R1k86vd13J3UQXYjGfIozxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=imsiFPy+hi5vi80+gjp2Ltd8ShoDAq+97gTAFFxu0Eqgrc4bAPWEZPCiAKHMIdr+4t5SsLnRCpECa2ljFGo27iLW+BCQSo9NI/KgRrlIgGAQ1JrDrI7v+aktq4hi59KH0o380eSN7ce4T6GVnBiSP62hqHm8iqHm1xY8fH+NoUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igpRsaVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F556C4CEE5;
-	Mon, 10 Mar 2025 18:00:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PTJx5eA3NMt4ublp599eAND+2e1YRPtYrM3gmYo+2FrZDNzWsBrwFoZUvGkcWXvT/DYEXP1baifUimrlFR1Zb76V+cNQk5j50vhh2L5tL3230s0MZ3ce1Zs5Zqripx3Z6F7QE68c8NBRYzi0wTlXY6vSYFRZW0gKqrMDbImJ+pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4ONvEHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3E6C4CEE5;
+	Mon, 10 Mar 2025 17:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629620;
-	bh=8220W9wNebeLPclVCZx/aNZk4Om0MS3pDA7Bv9hr23c=;
+	s=korg; t=1741626520;
+	bh=/l5F9d47GNBuZ20+mpZ7R1k86vd13J3UQXYjGfIozxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igpRsaVLkh9QmhliKnIGc42ckHjdmOHAuDe53LERZQ5RdNXy6qEvW4bkgUVXXYfKo
-	 Qjj01dXSgT8Ff+AgOuV4Y6FcFlmpfGFZPQoU0v5bWNM5e48kD7ZJheSYrhCnnfeAdJ
-	 jzFVdGJY5bEK6AKLqHz1CScK0KzcmybN4/9jYQmM=
+	b=M4ONvEHeMJkxf+xFBE5ao4GWN+Uq7HzMFb67Wno3TCcmisuDft4TztrdC8loWMNZk
+	 ly/qq+ERnVGgjvLeDjG8SrMi695sdVlHoU5XW0mFq4Pa9JR2efxIl5aLX21LDePLUy
+	 UP8pTnpjuxnQWK+4l+EyQ1bJ+dFsLDOhL7NaSl1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 350/620] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
+Subject: [PATCH 6.13 003/207] cifs: Remove symlink member from cifs_open_info_data union
 Date: Mon, 10 Mar 2025 18:03:16 +0100
-Message-ID: <20250310170559.425549105@linuxfoundation.org>
+Message-ID: <20250310170447.887763596@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
+[ Upstream commit 65c49767dd4fc058673f9259fda1772fd398eaa7 ]
 
-Apparently the Raptor Lake-P reference firmware configures the PIO log size
-correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
-Zenbook UX3402VA_UX3402VA, do not.
+Member 'symlink' is part of the union in struct cifs_open_info_data. Its
+value is assigned on few places, but is always read through another union
+member 'reparse_point'. So to make code more readable, always use only
+'reparse_point' member and drop whole union structure. No function change.
 
-Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
-
-  DPC: RP PIO log size 0 is invalid
-
-and also enables the DPC driver to dump the RP PIO Log registers when DPC
-is triggered.
-
-Note that the bug report also mentions 8086:a76e, which has been already
-added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
-Root Ports").
-
-Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 9df23801c83d ("smb311: failure to open files of length 1040 when mounting with SMB3.1.1 POSIX extensions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/cifsglob.h | 5 +----
+ fs/smb/client/inode.c    | 2 +-
+ fs/smb/client/smb1ops.c  | 4 ++--
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 24fde99c11a70..a1f85120f97e6 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6005,6 +6005,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
- #endif
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 1e6085f2f78ee..3877b861529ea 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -215,10 +215,7 @@ struct cifs_cred {
+ 
+ struct cifs_open_info_data {
+ 	bool adjust_tz;
+-	union {
+-		bool reparse_point;
+-		bool symlink;
+-	};
++	bool reparse_point;
+ 	struct {
+ 		/* ioctl response buffer */
+ 		struct {
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 0d149b315a832..4d8effe78be57 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -990,7 +990,7 @@ cifs_get_file_info(struct file *filp)
+ 		/* TODO: add support to query reparse tag */
+ 		data.adjust_tz = false;
+ 		if (data.symlink_target) {
+-			data.symlink = true;
++			data.reparse_point = true;
+ 			data.reparse.tag = IO_REPARSE_TAG_SYMLINK;
+ 		}
+ 		path = build_path_from_dentry(dentry, page);
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index c70f4961c4eb7..bd791aa54681f 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -551,7 +551,7 @@ static int cifs_query_path_info(const unsigned int xid,
+ 	int rc;
+ 	FILE_ALL_INFO fi = {};
+ 
+-	data->symlink = false;
++	data->reparse_point = false;
+ 	data->adjust_tz = false;
+ 
+ 	/* could do find first instead but this returns more info */
+@@ -592,7 +592,7 @@ static int cifs_query_path_info(const unsigned int xid,
+ 		/* Need to check if this is a symbolic link or not */
+ 		tmprc = CIFS_open(xid, &oparms, &oplock, NULL);
+ 		if (tmprc == -EOPNOTSUPP)
+-			data->symlink = true;
++			data->reparse_point = true;
+ 		else if (tmprc == 0)
+ 			CIFSSMBClose(xid, tcon, fid.netfid);
+ 	}
 -- 
 2.39.5
 
