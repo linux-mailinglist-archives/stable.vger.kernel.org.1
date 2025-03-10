@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7495A59EEC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060F5A59F2B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64AEF7A71C2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B3EE3AA272
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7EB231A51;
-	Mon, 10 Mar 2025 17:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A84230BF8;
+	Mon, 10 Mar 2025 17:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUlIDIJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rt/HvsE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BABB22ACDC;
-	Mon, 10 Mar 2025 17:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DA8230D2B;
+	Mon, 10 Mar 2025 17:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628138; cv=none; b=F3ONw0cttOT3QCmkp1FtT1isaEowodXcGb54r6Wr/I5Va6SoxCE2VV8WnfRtGpLpWP4BaSrKzqsfUj8Fw6RIjcXn8ydcC86WZkZ+UAZ/eCL5DcdzW4FPo9gTcKNOjRyjnDihKOIVbj0tpT5yUkGcaLY/Aj5QeUTpmbScWncLBLA=
+	t=1741627677; cv=none; b=gizjiZGB7JxiOYOWhL8oV6bQYWXth/mQfqC/KYsz6Fq3gwbdTJTsA7KxJ25uHVM1opm5zhjzMs62Cxx740nSMCuPVhGwIpgrGBWn7cYkrH5nxnp83Bel+fhpsElVQfNPWa6Y9EeXIYL1g6wLm720nqAgB+pO4I1IIwH6KuMn7Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628138; c=relaxed/simple;
-	bh=Zp3CN3YZhLqgDAUH0AuwChnrRs1xfff9afHLpsPWn8c=;
+	s=arc-20240116; t=1741627677; c=relaxed/simple;
+	bh=5Y7b+AMURS1855lEy+21FDKBN1q/kA4ri/D+vMwT1y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kpDM3w1Wg3VPJrKAGKcLWP4BlcCkHMxik1d6l13+XIaVN1YGRFg2Ycwk7StXLHVqYuysoEl/zSjL+cKR0QrbVaDdNNL2vETkV4AEm8+R7bbaLbr7MW8kPYt5a/TVQFxqahUivb0JB9z3nr89ASeFWjuvyVvdnlfQJt5BNhvEDs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUlIDIJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F711C4CEE5;
-	Mon, 10 Mar 2025 17:35:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TExvB6XrljfoOEC9xdkAFrIcYAlzPYsCiVf6OOc3fbKlejoFzdN6pXeaz9IZbXPnn0gEbFM4eP2CI0Z1CAMC5rhaWX5dBcSwk1bGcJGzqNypSH1/HzwKXG4mC8ye1UDm+armqi51yiLR7ebMLbtPWn4M+8rHbKL5/JjNmWZBqPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rt/HvsE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4CBC4CEE5;
+	Mon, 10 Mar 2025 17:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628138;
-	bh=Zp3CN3YZhLqgDAUH0AuwChnrRs1xfff9afHLpsPWn8c=;
+	s=korg; t=1741627677;
+	bh=5Y7b+AMURS1855lEy+21FDKBN1q/kA4ri/D+vMwT1y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUlIDIJ8laLQKPq80fyCmzCMAVgmLeWkAqCXxWyiy1HToDkW2y3lola6v3jH2l94r
-	 gST7IQRhIEUrojthw4EQjPN9QqvLTOSCZe8VrT4vM2pPwyPTEWeAKapk6H3oEDzQY4
-	 uZy6KOSdHd0ly/NqKJDyMfiVUOL9yiDiVWSqDYqs=
+	b=rt/HvsE8bYCUQ7tJdO1XjFQArXcoiza84k0CVSaX5msHjhmztpBNhLkTii/BjKYo+
+	 vIzIYxrO/Tn9yvv3elPz+2Ga3aIcV0rr9dPxmIfnMaXFQvv6LqMGs+OOjmHhNzBOtr
+	 d4dLmirCHY3t2ATIMK+5UnpcBxkkoZMWnecO41iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/145] hwmon: (ntc_thermistor) Fix the ncpXXxh103 sensor table
-Date: Mon, 10 Mar 2025 18:06:02 +0100
-Message-ID: <20250310170437.494531647@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.12 210/269] usb: hub: lack of clearing xHC resources
+Date: Mon, 10 Mar 2025 18:06:03 +0100
+Message-ID: <20250310170506.064168299@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit 1c7932d5ae0f5c22fa52ac811b4c427bbca5aff5 ]
+commit 2b66ef84d0d2a0ea955b40bd306f5e3abbc5cf9c upstream.
 
-I could not find a single table that has the values currently present in
-the table, change it to the actual values that can be found in [1]/[2]
-and [3] (page 15 column 2)
+The xHC resources allocated for USB devices are not released in correct
+order after resuming in case when while suspend device was reconnected.
 
-[1]: https://www.murata.com/products/productdetail?partno=NCP15XH103F03RC
-[2]: https://www.murata.com/products/productdata/8796836626462/NTHCG83.txt?1437969843000
-[3]: https://nl.mouser.com/datasheet/2/281/r44e-522712.pdf
+This issue has been detected during the fallowing scenario:
+- connect hub HS to root port
+- connect LS/FS device to hub port
+- wait for enumeration to finish
+- force host to suspend
+- reconnect hub attached to root port
+- wake host
 
-Fixes: 54ce3a0d8011 ("hwmon: (ntc_thermistor) Add support for ncpXXxh103")
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Link: https://lore.kernel.org/r/20250227-ntc_thermistor_fixes-v1-3-70fa73200b52@gocontroll.com
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For this scenario during enumeration of USB LS/FS device the Cadence xHC
+reports completion error code for xHC commands because the xHC resources
+used for devices has not been properly released.
+XHCI specification doesn't mention that device can be reset in any order
+so, we should not treat this issue as Cadence xHC controller bug.
+Similar as during disconnecting in this case the device resources should
+be cleared starting form the last usb device in tree toward the root hub.
+To fix this issue usbcore driver should call hcd->driver->reset_device
+for all USB devices connected to hub which was reconnected while
+suspending.
+
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/PH7PR07MB953841E38C088678ACDCF6EEDDCC2@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ntc_thermistor.c | 66 +++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ drivers/usb/core/hub.c |   33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
-index b5352900463fb..0d29c8f97ba7c 100644
---- a/drivers/hwmon/ntc_thermistor.c
-+++ b/drivers/hwmon/ntc_thermistor.c
-@@ -181,40 +181,40 @@ static const struct ntc_compensation ncpXXwf104[] = {
- };
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -6066,6 +6066,36 @@ void usb_hub_cleanup(void)
+ } /* usb_hub_cleanup() */
  
- static const struct ntc_compensation ncpXXxh103[] = {
--	{ .temp_c	= -40, .ohm	= 247565 },
--	{ .temp_c	= -35, .ohm	= 181742 },
--	{ .temp_c	= -30, .ohm	= 135128 },
--	{ .temp_c	= -25, .ohm	= 101678 },
--	{ .temp_c	= -20, .ohm	= 77373 },
--	{ .temp_c	= -15, .ohm	= 59504 },
--	{ .temp_c	= -10, .ohm	= 46222 },
--	{ .temp_c	= -5, .ohm	= 36244 },
--	{ .temp_c	= 0, .ohm	= 28674 },
--	{ .temp_c	= 5, .ohm	= 22878 },
--	{ .temp_c	= 10, .ohm	= 18399 },
--	{ .temp_c	= 15, .ohm	= 14910 },
--	{ .temp_c	= 20, .ohm	= 12169 },
-+	{ .temp_c	= -40, .ohm	= 195652 },
-+	{ .temp_c	= -35, .ohm	= 148171 },
-+	{ .temp_c	= -30, .ohm	= 113347 },
-+	{ .temp_c	= -25, .ohm	= 87559 },
-+	{ .temp_c	= -20, .ohm	= 68237 },
-+	{ .temp_c	= -15, .ohm	= 53650 },
-+	{ .temp_c	= -10, .ohm	= 42506 },
-+	{ .temp_c	= -5, .ohm	= 33892 },
-+	{ .temp_c	= 0, .ohm	= 27219 },
-+	{ .temp_c	= 5, .ohm	= 22021 },
-+	{ .temp_c	= 10, .ohm	= 17926 },
-+	{ .temp_c	= 15, .ohm	= 14674 },
-+	{ .temp_c	= 20, .ohm	= 12081 },
- 	{ .temp_c	= 25, .ohm	= 10000 },
--	{ .temp_c	= 30, .ohm	= 8271 },
--	{ .temp_c	= 35, .ohm	= 6883 },
--	{ .temp_c	= 40, .ohm	= 5762 },
--	{ .temp_c	= 45, .ohm	= 4851 },
--	{ .temp_c	= 50, .ohm	= 4105 },
--	{ .temp_c	= 55, .ohm	= 3492 },
--	{ .temp_c	= 60, .ohm	= 2985 },
--	{ .temp_c	= 65, .ohm	= 2563 },
--	{ .temp_c	= 70, .ohm	= 2211 },
--	{ .temp_c	= 75, .ohm	= 1915 },
--	{ .temp_c	= 80, .ohm	= 1666 },
--	{ .temp_c	= 85, .ohm	= 1454 },
--	{ .temp_c	= 90, .ohm	= 1275 },
--	{ .temp_c	= 95, .ohm	= 1121 },
--	{ .temp_c	= 100, .ohm	= 990 },
--	{ .temp_c	= 105, .ohm	= 876 },
--	{ .temp_c	= 110, .ohm	= 779 },
--	{ .temp_c	= 115, .ohm	= 694 },
--	{ .temp_c	= 120, .ohm	= 620 },
--	{ .temp_c	= 125, .ohm	= 556 },
-+	{ .temp_c	= 30, .ohm	= 8315 },
-+	{ .temp_c	= 35, .ohm	= 6948 },
-+	{ .temp_c	= 40, .ohm	= 5834 },
-+	{ .temp_c	= 45, .ohm	= 4917 },
-+	{ .temp_c	= 50, .ohm	= 4161 },
-+	{ .temp_c	= 55, .ohm	= 3535 },
-+	{ .temp_c	= 60, .ohm	= 3014 },
-+	{ .temp_c	= 65, .ohm	= 2586 },
-+	{ .temp_c	= 70, .ohm	= 2228 },
-+	{ .temp_c	= 75, .ohm	= 1925 },
-+	{ .temp_c	= 80, .ohm	= 1669 },
-+	{ .temp_c	= 85, .ohm	= 1452 },
-+	{ .temp_c	= 90, .ohm	= 1268 },
-+	{ .temp_c	= 95, .ohm	= 1110 },
-+	{ .temp_c	= 100, .ohm	= 974 },
-+	{ .temp_c	= 105, .ohm	= 858 },
-+	{ .temp_c	= 110, .ohm	= 758 },
-+	{ .temp_c	= 115, .ohm	= 672 },
-+	{ .temp_c	= 120, .ohm	= 596 },
-+	{ .temp_c	= 125, .ohm	= 531 },
- };
+ /**
++ * hub_hc_release_resources - clear resources used by host controller
++ * @udev: pointer to device being released
++ *
++ * Context: task context, might sleep
++ *
++ * Function releases the host controller resources in correct order before
++ * making any operation on resuming usb device. The host controller resources
++ * allocated for devices in tree should be released starting from the last
++ * usb device in tree toward the root hub. This function is used only during
++ * resuming device when usb device require reinitialization – that is, when
++ * flag udev->reset_resume is set.
++ *
++ * This call is synchronous, and may not be used in an interrupt context.
++ */
++static void hub_hc_release_resources(struct usb_device *udev)
++{
++	struct usb_hub *hub = usb_hub_to_struct_hub(udev);
++	struct usb_hcd *hcd = bus_to_hcd(udev->bus);
++	int i;
++
++	/* Release up resources for all children before this device */
++	for (i = 0; i < udev->maxchild; i++)
++		if (hub->ports[i]->child)
++			hub_hc_release_resources(hub->ports[i]->child);
++
++	if (hcd->driver->reset_device)
++		hcd->driver->reset_device(hcd, udev);
++}
++
++/**
+  * usb_reset_and_verify_device - perform a USB port reset to reinitialize a device
+  * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)
+  *
+@@ -6129,6 +6159,9 @@ static int usb_reset_and_verify_device(s
+ 	bos = udev->bos;
+ 	udev->bos = NULL;
  
- /*
--- 
-2.39.5
-
++	if (udev->reset_resume)
++		hub_hc_release_resources(udev);
++
+ 	mutex_lock(hcd->address0_mutex);
+ 
+ 	for (i = 0; i < PORT_INIT_TRIES; ++i) {
 
 
 
