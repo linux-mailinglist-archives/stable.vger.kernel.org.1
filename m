@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-122925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391DCA5A208
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D6CA59CB7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D31817A9256
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F7133AA566
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE81236447;
-	Mon, 10 Mar 2025 18:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF379233723;
+	Mon, 10 Mar 2025 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on4goGSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n31VhrQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3D12356CF;
-	Mon, 10 Mar 2025 18:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAFD2327A7;
+	Mon, 10 Mar 2025 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630537; cv=none; b=gj8PKm9HkOTMGdq8yNo6OtNU9EjDih4fxkBKZQmEL0GO+V2efy6Ly73udro3bvCrwb4yU2II+is1UnumqcuD4k3V5DnZSsXamd3dvg/5sp0MXmC7LEtjMOr1EBlp32yM1ka5C4uesZXzjAJSDP1mK04dIJkH+LWsrjk+SK9iFcw=
+	t=1741626764; cv=none; b=UV54k8fzPnYXfDQOtgmD2paD3eiJr01F1lcTd2+2sn8nH6dGJYlSTpJ3uiIbzfsE/HUM613LiPFAXiQZZpXkzwoRuC/sJxgsT7XgvsUoPhUkUibmOtFGMy7X/7zwwoDLIESb9qjwYTwSB5lTn4DYRdHq8PMJ3LyS0lg61tYhpzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630537; c=relaxed/simple;
-	bh=oD/dROy/s6Z/POlOtP0izcIqJMHRNkXBG0WzNCeMNeo=;
+	s=arc-20240116; t=1741626764; c=relaxed/simple;
+	bh=GhpgmitjOSuLqOUaVlVpNwbg3VQOwdbcCa7MSJYwncs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJVsPAQdof5jjQ4dM0FRy88CH4zSJRggkBK+m1bhXRZBdcSGcUBUgBFNgOCD5ipmtSF75ExaukqETpoXmSEhgQfXDlNhbL7pWLeE+kv8PKC9lu3YTi1Xk/SZ/PJpfSmc++AnNgVoWiJd/iodtDDMcWwBU9ndUgdl9MZkxmDCNEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on4goGSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92384C4CEE5;
-	Mon, 10 Mar 2025 18:15:36 +0000 (UTC)
+	 MIME-Version; b=qvNYBELiEfRLkiIb8yNw1rPDMvF1L9IcoY09wuJH+2ZEV9wxdCAdktKm6vvY7lPUHJrRNTabaC/16KhObmQoBuKBmDXjSpZL4JoU08kot7dyVj3ixspCt7PDwoppLGzLS7ZK6/i1Dc03vMaXDtL3rbDJrhol81zoqGoOUtY1Vx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n31VhrQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D55C4CEE5;
+	Mon, 10 Mar 2025 17:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630537;
-	bh=oD/dROy/s6Z/POlOtP0izcIqJMHRNkXBG0WzNCeMNeo=;
+	s=korg; t=1741626764;
+	bh=GhpgmitjOSuLqOUaVlVpNwbg3VQOwdbcCa7MSJYwncs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=on4goGSMhQ0gAvtZ7L3XI5Wz8UVz22+pzmPH87yjajwsZvqFo9/QLLCS/oydj8PkW
-	 f1XOV3B43NgbkzxTDSw4X5iuE1eADB3etHVafTQB7f0VFkAv1+IcztoJTdcXD5wPJE
-	 wo8sfcrwgbEFCVbnFZysV5q+hcTbOOWOye6GmNzA=
+	b=n31VhrQ2s0L0Zq4uMIqXi56qemUbULWXIyFItQeOna/FzeDb1kNIcgrxLbgXgf2DJ
+	 uIiS6fGaigAutxSe18+pckhfcE92ER4dDJ+7Eb8axX4jBqZEOy16YxX3J3bB2m/0GB
+	 EXckHLma537nZPs9EowMd1n/nqe6p9Y+XJDgBPrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 5.15 421/620] parport_pc: add support for ASIX AX99100
+	syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com,
+	Hao Zhang <zhanghao1@kylinos.cn>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 074/207] mm/page_alloc: fix uninitialized variable
 Date: Mon, 10 Mar 2025 18:04:27 +0100
-Message-ID: <20250310170602.206688030@linuxfoundation.org>
+Message-ID: <20250310170450.704736340@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Hao Zhang <zhanghao1@kylinos.cn>
 
-commit 16aae4c64600a6319a6f10dbff833fa198bf9599 upstream.
+commit 8fe9ed44dc29fba0786b7e956d2e87179e407582 upstream.
 
-The PCI function 2 on ASIX AX99100 PCIe to Multi I/O Controller can be
-configured as a single-port parallel port controller. The subvendor id
-is 0x2000 when configured as parallel port. It supports IEEE-1284 EPP /
-ECP with its ECR on BAR1.
+The variable "compact_result" is not initialized in function
+__alloc_pages_slowpath().  It causes should_compact_retry() to use an
+uninitialized value.
 
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/20230724083933.3173513-5-jiaqing.zhao@linux.intel.com
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+Initialize variable "compact_result" with the value COMPACT_SKIPPED.
+
+BUG: KMSAN: uninit-value in __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
+ __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
+ __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
+ alloc_pages_mpol+0x4cd/0x890 mm/mempolicy.c:2270
+ alloc_frozen_pages_noprof mm/mempolicy.c:2341 [inline]
+ alloc_pages_noprof mm/mempolicy.c:2361 [inline]
+ folio_alloc_noprof+0x1dc/0x350 mm/mempolicy.c:2371
+ filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1019
+ __filemap_get_folio+0xb9a/0x1840 mm/filemap.c:1970
+ grow_dev_folio fs/buffer.c:1039 [inline]
+ grow_buffers fs/buffer.c:1105 [inline]
+ __getblk_slow fs/buffer.c:1131 [inline]
+ bdev_getblk+0x2c9/0xab0 fs/buffer.c:1431
+ getblk_unmovable include/linux/buffer_head.h:369 [inline]
+ ext4_getblk+0x3b7/0xe50 fs/ext4/inode.c:864
+ ext4_bread_batch+0x9f/0x7d0 fs/ext4/inode.c:933
+ __ext4_find_entry+0x1ebb/0x36c0 fs/ext4/namei.c:1627
+ ext4_lookup_entry fs/ext4/namei.c:1729 [inline]
+ ext4_lookup+0x189/0xb40 fs/ext4/namei.c:1797
+ __lookup_slow+0x538/0x710 fs/namei.c:1793
+ lookup_slow+0x6a/0xd0 fs/namei.c:1810
+ walk_component fs/namei.c:2114 [inline]
+ link_path_walk+0xf29/0x1420 fs/namei.c:2479
+ path_openat+0x30f/0x6250 fs/namei.c:3985
+ do_filp_open+0x268/0x600 fs/namei.c:4016
+ do_sys_openat2+0x1bf/0x2f0 fs/open.c:1428
+ do_sys_open fs/open.c:1443 [inline]
+ __do_sys_openat fs/open.c:1459 [inline]
+ __se_sys_openat fs/open.c:1454 [inline]
+ __x64_sys_openat+0x2a1/0x310 fs/open.c:1454
+ x64_sys_call+0x36f5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:258
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Local variable compact_result created at:
+ __alloc_pages_slowpath+0x66/0x16c0 mm/page_alloc.c:4218
+ __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
+
+Link: https://lkml.kernel.org/r/tencent_ED1032321D6510B145CDBA8CBA0093178E09@qq.com
+Reported-by: syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0cfd5e38e96a5596f2b6
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/parport_pc.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ mm/page_alloc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/parport/parport_pc.c
-+++ b/drivers/parport/parport_pc.c
-@@ -2611,6 +2611,7 @@ enum parport_pc_pci_cards {
- 	netmos_9815,
- 	netmos_9901,
- 	netmos_9865,
-+	asix_ax99100,
- 	quatech_sppxp100,
- 	wch_ch382l,
- 	brainboxes_uc146,
-@@ -2676,6 +2677,7 @@ static struct parport_pc_pci {
- 	/* netmos_9815 */		{ 2, { { 0, 1 }, { 2, 3 }, } },
- 	/* netmos_9901 */               { 1, { { 0, -1 }, } },
- 	/* netmos_9865 */               { 1, { { 0, -1 }, } },
-+	/* asix_ax99100 */		{ 1, { { 0, 1 }, } },
- 	/* quatech_sppxp100 */		{ 1, { { 0, 1 }, } },
- 	/* wch_ch382l */		{ 1, { { 2, -1 }, } },
- 	/* brainboxes_uc146 */	{ 1, { { 3, -1 }, } },
-@@ -2766,6 +2768,9 @@ static const struct pci_device_id parpor
- 	  0xA000, 0x1000, 0, 0, netmos_9865 },
- 	{ PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9865,
- 	  0xA000, 0x2000, 0, 0, netmos_9865 },
-+	/* ASIX AX99100 PCIe to Multi I/O Controller */
-+	{ PCI_VENDOR_ID_ASIX, PCI_DEVICE_ID_ASIX_AX99100,
-+	  0xA000, 0x2000, 0, 0, asix_ax99100 },
- 	/* Quatech SPPXP-100 Parallel port PCI ExpressCard */
- 	{ PCI_VENDOR_ID_QUATECH, PCI_DEVICE_ID_QUATECH_SPPXP_100,
- 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, quatech_sppxp100 },
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4243,6 +4243,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
+ restart:
+ 	compaction_retries = 0;
+ 	no_progress_loops = 0;
++	compact_result = COMPACT_SKIPPED;
+ 	compact_priority = DEF_COMPACT_PRIORITY;
+ 	cpuset_mems_cookie = read_mems_allowed_begin();
+ 	zonelist_iter_cookie = zonelist_iter_begin();
 
 
 
