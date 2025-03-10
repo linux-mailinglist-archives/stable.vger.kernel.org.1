@@ -1,145 +1,180 @@
-Return-Path: <stable+bounces-123070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6C2A5A2B6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F775A5A2C7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5072B3AED3F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1492F1744B0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4EF234966;
-	Mon, 10 Mar 2025 18:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D80A231A24;
+	Mon, 10 Mar 2025 18:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=ceggers@gmx.de header.b="ArICW5M5"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="aDQAMiwK"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DDD1B395F;
-	Mon, 10 Mar 2025 18:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4253C2309BD;
+	Mon, 10 Mar 2025 18:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630958; cv=none; b=N1trypSJdL1T2uyY77HDgh5FHqYnkP34gyn0jFN/8qbd0JShDWbPWd0tc8n+qwNTgBx3k6GSTv3pUr9d9cwrW+p7PhEFDvWERNAG60BdcJd/72X8h9iYauhyKy+nmn+lHhTcOlWDxOC5WEm4zuLWnfmR1jiTjMR1DcQ35vVQ/Lg=
+	t=1741631025; cv=none; b=BGo19Vh0bwA76kkjIYsS23ANPec1pNhDuOLcScGZlXeYhZRAZ5zIGkanVrRw04o2LotDk8KMfBdqZAy6Ql1jZuefufnsMWfJVo6exGkh8nA0pBzNRP0GyRouIoeWrGvgIk/5t1BNJvPC4HRp53AaaeT9Mz+CDtDupTLRMC6bxdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630958; c=relaxed/simple;
-	bh=Zx2HmYMc3XVimy/gJooeQF2i7I8bjdI1jLPVeuMiqYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FQ6pf/4kXk48Ol+Rz8uOca+k5yfnHJLtFwtVnCOCPSdLyTnpFnD/OmHM4JUgeDF1FLWfLfbUbzHE9CyAZ/R3yOMv+svj9p8YY7VHi23fFgqBjg4bdUlOJNW0ZPScFHpklrM/htTE1dyFJzcUpe873K2d3trI9XD31VSkM1JsFXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=ceggers@gmx.de header.b=ArICW5M5; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1741630946; x=1742235746; i=ceggers@gmx.de;
-	bh=Whq6S+7iGQAr3A+cExD85fkuRzBWgcHyyOaCGKz8V8I=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ArICW5M5BtIGquAGu89S/TyhTdq5d+D57/lI11xpK+75s5/lshSB5IvJzfYAzIfE
-	 NK2O6wyoRUL5pcZE40gT95uXeABti1/OCxWllS3vXSttTx8CK2nYCDqidTtmIRUsf
-	 xd3r2pPln42ca4vaqJcKlbYBalkNHb5LmloqAj9OOyZkSe9z5fPOrKUKQnQO9Bjbj
-	 /kQ8TPtq7tfE8uv87OVi4TxL3z8ZdXX+rqBHMYiIfj1C3Nn6ODbwhMgdL6b0CI/Hc
-	 IGZO5ukCkIMUfEFCnTT/Y/Q/U8qG9SGQKvVdL62CGUDuwbINs7N13p+2DLP4So8jZ
-	 FQq8wao7ccIqyR3AEw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from zbook-studio-g3.localnet ([95.114.251.201]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MhU5b-1tMElu3OU7-00it1J; Mon, 10 Mar 2025 19:22:25 +0100
-From: Christian Eggers <ceggers@gmx.de>
-To: Christian Eggers <ceggers@arri.de>, Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
- Douglas Anderson <dianders@chromium.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject:
- Re: [PATCH 2/2] regulator: assert that dummy regulator has been probed before
- using it
-Date: Mon, 10 Mar 2025 19:22:24 +0100
-Message-ID: <4945392.OV4Wx5bFTl@zbook-studio-g3>
-In-Reply-To: <3d195bf7-de99-4fe9-87b0-291e156f083c@sirena.org.uk>
-References:
- <20250310163302.15276-1-ceggers@arri.de>
- <20250310163302.15276-2-ceggers@arri.de>
- <3d195bf7-de99-4fe9-87b0-291e156f083c@sirena.org.uk>
+	s=arc-20240116; t=1741631025; c=relaxed/simple;
+	bh=8h/uiU16If6NruzF8ynG/tGThQGk0I+HF/byzjcy1pc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tnGFd4MuGl29s76ex7t/bUfZ2fES89X/qK1M0u6wt2GaQF1AJTdFr/7IeDCNHCmQgElqlEsTFOZYSh/OwcMhPWqxqVYjq8L+6VjD5NzOx0xAqvJ9P7gSUQ2Z90EtNo6+nQFj59J1w5FohApwwoPq/tt66nfaou9GtwCoOpGeC88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=aDQAMiwK; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [10.10.165.14])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 6D5F140CE18B;
+	Mon, 10 Mar 2025 18:23:32 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6D5F140CE18B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1741631012;
+	bh=J9WgnNk8hsJqucJXyV7OVTWvviSo1PzyLdaWKwbmS6M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aDQAMiwKnUsInpKrImOsgUADu1a87Mys1J5sBBz/s9yCHBo5sX+KP2t2K5NH2zzB2
+	 /etkaY7/rdkKB5LfEDmDk35MoABlNOzSRqfwSokrrq7wCplaB3wMEQV7VnzlZcb2er
+	 WardCxs7Xv7IvNb/G1zhCdGQwviVFEbBGtIltczo=
+Date: Mon, 10 Mar 2025 21:23:32 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Peter Chen <peter.chen@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>, 
+	Sebastian Reichel <sre@kernel.org>, Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>, 
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] usb: chipidea: ci_hdrc_imx: disable regulator on
+ error path in probe
+Message-ID: <lbsj2h2zut3eafu5vy6ysuv4y7xjuqtemovqtg3lzuyhp6fjbl@4xwikb3bxl7k>
+References: <20250309175805.661684-1-pchelkin@ispras.ru>
+ <20250309175805.661684-3-pchelkin@ispras.ru>
+ <Z8781hzSKJ5P0gBe@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Provags-ID: V03:K1:mSecFvwDdmDDHNBkAxGC/N1fqI4dr2nlOihHZQSA/JKRstn18gK
- swYL9oHmWu1vgrqc/fGVbciCZKNwvi9//8+hH3K2Rt9wt97Wm6xxsOJ2Q8kuATnKIW0LWBm
- PKDj4iP0we+NLPkiiajwZonm8W5XBQweBrj+wXDs90ekJQ+pnl+d8u7fdyLBcrBUYfRz6Xv
- wh+HRTA3nsbMIt+i7FHtw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:RrMt41El9TA=;w5qik2fQinE+qvz+FqZmhH4srQS
- k/v/gW3aXQudlgjpYkkFuPN8hDh86fbAhDfO9zFlSQi4QG5X7xlQebArd5wU9R1MLjVXaZCEk
- cSDFGyXS6Fzw+ueGAnIkFJP/3amTb3seXVqeNmzedZEbPIqH3imPVwH0yLtfFibntvtJEGJtM
- +1U511DZbe3NgIsGnljeQBLjQk0zP80w4HWzpEdGpWd7EOuus/+OAUaD9qJynqWAFvUFaBRS3
- f8SB7lKiIzOG7pFnbmKMQp565x6tui2YZ8rKRXhkSXTJjCqBgzHOxNfVeti5HLDYQWy1LvkhE
- q/WvgdGTNdPOQX1Y6zJNOM5pAu5YzUjTamukCXtV1d35V9BQCVDFA4Kj+v99gzwpAj/CcTNle
- C0ijsg0HHmoxs5gfLSvTBEiUNp0NYYWcOCuAWxO2johmpKJAejCcHxp+/H8R0o0hCwQlCJfKj
- BzIrN4QAr+HEfHNIyutpJ6OzIgCr47t5srUDXBebLiWAXsaMW07npTtwTmj7pW0yUikhjfIG6
- xuTBVjOaTx6LorvJq7hRherwqCGIKcsZLPP+Cw4VNomAkir46ql54r/rB5WtkK3QNkwPc2Q9o
- rvpbY0pm/CvJbSKwjdHQUKTc/W299DCUN9K5ARHYPwIz7oqCTrqht8mdmrCaoweVxFvrl+Mnt
- PDuKC7PYJS7Bet9LpwQd22fjtQMXS5JK11+ut35kV2YBDNSSSDEWG1ylnbIneGPrER2/0CINe
- orO7tEchaQbhwUscr+Bllob3DMXZsv0ymHzcuV+sRW11OCPkx6BvYXXvrFM97I6htXSKMH4bV
- K+atjtWzrxcbQCixC/dYQPdSlbIIVRJCdaz1Fbb8uSPhCyT9e48df37nyxRNJ8HZ73b1+npbu
- dMj2bBl0j7xfYPwCE9jxHOlBQ7HypzXL6sIZ7kl+cF8tRcvDJlrGS+3zNfZOaOGDTEeHe5K+N
- A2a1jOh4iD5iVSxz0SnFylkzSWIJ9jZZp0VUYSKk0A8rP9NnM+yW+V7lTr/Xzz7L2ZcygsSBe
- rAD8zcu2IfxOVEUulR6Dq81TTaUynxNf30VQ+Z8usH1chy5N8ET4u9Yo+efznUs3JcDEJ69U1
- 29z9KkOxRCgHQxaZGJeLlPw/DhgA+uYnUG6xMNhYPuUcjT5mXKGHDl770tv0+nPPn4xqK2qm8
- h646cPiZXLOWNM8X9im9H9hkxzA+dWf4Tc3OP8TT0W1jRtLcPPdNbusuGReOHh4VS99Iehu1Y
- 7RLmvv0GzNvS/NMlRwxkoO+6WhLTs/SNzbQMuVoy4mlwmERWPbjcVbpzWBjlHQLo4hTt1IfEN
- j6mRTtqFDlmJEsKuhK/FQ0UeabTrZVNXzI3RHEcZVglItrcy37UlzrW/o+vqACdUNixObhhjo
- OIFpWF5dxb0Nx6duOSeH3aMeSs8M6zgLNGVko2kqe2c4+wdQ5Bfz6as8JAq7VTb8DfrrqJP8Z
- IPtqH7Q==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z8781hzSKJ5P0gBe@lizhi-Precision-Tower-5810>
 
-Am Montag, 10. M=E4rz 2025, 18:23:02 CET schrieb Mark Brown:
-> On Mon, Mar 10, 2025 at 05:33:02PM +0100, Christian Eggers wrote:
-> > Due to asynchronous driver probing there is a chance that the dummy
-> > regulator hasn't already been probed when first accessing it.
-> >=20
-> >  		if (have_full_constraints()) {
-> >  	=09
-> >  			r =3D dummy_regulator_rdev;
-> >=20
-> > +			BUG_ON(!r);
-> >=20
-> >  			get_device(&r->dev);
-> >  	=09
-> >  		} else {
-> >  	=09
-> >  			dev_err(dev, "Failed to resolve %s-supply for=20
-%s\n",
-> >=20
-> > @@ -2086,6 +2087,7 @@ static int regulator_resolve_supply(struct
-> > regulator_dev *rdev)>=20
-> >  			goto out;
-> >  	=09
+On Mon, 10. Mar 10:53, Frank Li wrote:
+> On Sun, Mar 09, 2025 at 08:57:58PM +0300, Fedor Pchelkin wrote:
+> > Upon encountering errors during the HSIC pinctrl handling section the
+> > regulator should be disabled.
+> >
+> > After the above-stated changes it is possible to jump onto
+> > "disable_hsic_regulator" label without having added the CPU latency QoS
+> > request previously. This would result in cpu_latency_qos_remove_request()
+> > yielding a WARNING.
+> >
+> > So rearrange the error handling path to follow the reverse order of
+> > different probing phases.
+> 
+> Suggest use devm_add_action() to simple whole error handle code.
+
+I'll try with that in v2 then, thanks for suggestion.
+
+> 
+> >
+> > Found by Linux Verification Center (linuxtesting.org).
+> 
+> I think this sentense have not provide valuable informaiton for reader.
+
+Well, that's a line which the organization rules specify to put into
+every bugfix patch found on its behalf. I must follow these rules.
+
+Btw, you can find this in the changelogs of many other commits existing
+in the main kernel tree:
+
+$ git shortlog --grep="linuxtesting.org" --group=format:""
+ (859):
+      kernel/range.c: fix clean_sort_range() for the case of full array
+      Staging: pohmelfs/dir.c: Remove unneeded mutex_unlock() from pohmelfs_rename()
+      USB: usb-gadget: unlock data->lock mutex on error path in ep_read()
+      ...
+
+> 
+> Frank
+> 
+> >
+> > Fixes: 4d6141288c33 ("usb: chipidea: imx: pinctrl for HSIC is optional")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> > ---
+> >  drivers/usb/chipidea/ci_hdrc_imx.c | 15 ++++++++-------
+> >  1 file changed, 8 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > index 619779eef333..3f11ae071c7f 100644
+> > --- a/drivers/usb/chipidea/ci_hdrc_imx.c
+> > +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > @@ -407,13 +407,13 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> >  				"pinctrl_hsic_idle lookup failed, err=%ld\n",
+> >  					PTR_ERR(pinctrl_hsic_idle));
+> >  			ret = PTR_ERR(pinctrl_hsic_idle);
+> > -			goto err_put;
+> > +			goto disable_hsic_regulator;
 > >  		}
-> >  		r =3D dummy_regulator_rdev;
-> >=20
-> > +		BUG_ON(!r);
->=20
-> This doesn't actually help anything
-My idea was to help identifying the problem (if it is reintroduced again=20
-later).
-
-> I'd expect this to trigger probe deferral.
-I can check for this tomorrow.  But is it worth to use deferred probing
-for a shared "NOP" driver which doesn't access any hardware?  Or would this=
-=20
-only introduce overhead for nothing?
-
-regards,
-Christian
-
-
-
-
+> >
+> >  		ret = pinctrl_select_state(data->pinctrl, pinctrl_hsic_idle);
+> >  		if (ret) {
+> >  			dev_err(dev, "hsic_idle select failed, err=%d\n", ret);
+> > -			goto err_put;
+> > +			goto disable_hsic_regulator;
+> >  		}
+> >
+> >  		data->pinctrl_hsic_active = pinctrl_lookup_state(data->pinctrl,
+> > @@ -423,7 +423,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> >  				"pinctrl_hsic_active lookup failed, err=%ld\n",
+> >  					PTR_ERR(data->pinctrl_hsic_active));
+> >  			ret = PTR_ERR(data->pinctrl_hsic_active);
+> > -			goto err_put;
+> > +			goto disable_hsic_regulator;
+> >  		}
+> >  	}
+> >
+> > @@ -432,11 +432,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> >
+> >  	ret = imx_get_clks(dev);
+> >  	if (ret)
+> > -		goto disable_hsic_regulator;
+> > +		goto qos_remove_request;
+> >
+> >  	ret = imx_prepare_enable_clks(dev);
+> >  	if (ret)
+> > -		goto disable_hsic_regulator;
+> > +		goto qos_remove_request;
+> >
+> >  	ret = clk_prepare_enable(data->clk_wakeup);
+> >  	if (ret)
+> > @@ -526,12 +526,13 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> >  	clk_disable_unprepare(data->clk_wakeup);
+> >  err_wakeup_clk:
+> >  	imx_disable_unprepare_clks(dev);
+> > +qos_remove_request:
+> > +	if (pdata.flags & CI_HDRC_PMQOS)
+> > +		cpu_latency_qos_remove_request(&data->pm_qos_req);
+> >  disable_hsic_regulator:
+> >  	if (data->hsic_pad_regulator)
+> >  		/* don't overwrite original ret (cf. EPROBE_DEFER) */
+> >  		regulator_disable(data->hsic_pad_regulator);
+> > -	if (pdata.flags & CI_HDRC_PMQOS)
+> > -		cpu_latency_qos_remove_request(&data->pm_qos_req);
+> >  	data->ci_pdev = NULL;
+> >  err_put:
+> >  	if (data->usbmisc_data)
+> > --
+> > 2.48.1
+> >
 
