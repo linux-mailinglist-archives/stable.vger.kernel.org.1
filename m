@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D77A59C5D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A6BA59DA9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 891A83A71CB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878B7188F211
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03603233D99;
-	Mon, 10 Mar 2025 17:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D791C5F1B;
+	Mon, 10 Mar 2025 17:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV6fQdkk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6GD8Y9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64B9233D89;
-	Mon, 10 Mar 2025 17:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4166230BED;
+	Mon, 10 Mar 2025 17:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626590; cv=none; b=fZ0TknNwICwTeOG0Cn3a8e52ELOnRXPzsBuhkJ4a4iVk7VkYUG4dcb+mlX3CweRTG5L9g2SouMU4purL37cbwp9GE24DG9GO22UI+MGyreSw9uaq4K0Br1zqWi02tQOTk15E+YX+Gb185Rgm7hYD2sbk1k1RNx3ltLtJ6yCEMEU=
+	t=1741627399; cv=none; b=N++Dv1QAtyUNupRpMdh1iO0cbXxVDRDNdlaIidrwVyqqBFknHvUripM/s6Y3zTTRDUTPaGbgJx8YqTSI2R/t+TEZivxtWNy2muCpRnHwRBG4yQdQEowN7JhNDJj/UXar/aUz1fYePcfKLo/T3WIqauTnwlpeTJNYiW65cZuYTAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626590; c=relaxed/simple;
-	bh=Nlq03bjq53vs0OL7DCzheApyoIkjooQREIVfxMFegEs=;
+	s=arc-20240116; t=1741627399; c=relaxed/simple;
+	bh=Ksyxk25XOLuB6+zVzHqKesxoUBqhVMYr8CSa19SNwNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5pdzscE0m1iXfwrxNc+Lw0zpAEUp5baucElO6GMCsT+MaW+v0ugV5yxg0WgjR3IseCn0FmDkqvPIrjNn2FYLLiLIJ1TiLt9mRHkgfTnQUESFuGKIzdZlu+HSESAr5RFy/NoTW010e1+r+47mdA/FIycu/14Amu6EJGI8miWKRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV6fQdkk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB7C4CEED;
-	Mon, 10 Mar 2025 17:09:49 +0000 (UTC)
+	 MIME-Version; b=VMFDymDYEa/unzOepBFsMgXO0gypNlG8EHbP2/0CZpENiU09+ezERW+7DXWy28YgmUpGT8q8KpOOIbf0IbFX4H5LXclxdDIKiqexcWIx6v2BdzcnXiOOfB0zzYB8wP9WoqL4M7MasJtMKu9/B3EWLnPLKriQcC5r8ODlLuTVGkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6GD8Y9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41AEC4CEE5;
+	Mon, 10 Mar 2025 17:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626590;
-	bh=Nlq03bjq53vs0OL7DCzheApyoIkjooQREIVfxMFegEs=;
+	s=korg; t=1741627399;
+	bh=Ksyxk25XOLuB6+zVzHqKesxoUBqhVMYr8CSa19SNwNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UV6fQdkkguD3+ECYrlT7nL+5ekfUXg3bIg59kLtUYwfm0fLKoRuW5GM9/ZLmNiqQQ
-	 ddHe/gRfaf76xx50smfecCxNkXFxaNw6huaKKSX0YJg8vIkFR8twfnWi7Jyf0i8BQH
-	 8/XPyOPmAGwiNeAdjV1iMWoeUdgtIgPmqu+RkEgc=
+	b=d6GD8Y9oqZMo4R9nWi74yHYbEm3m8sRbB3GB+qHyyfcTjEenuzwHjv23ppHcGg03s
+	 OZM7cEBdFZuAFnoA8tnfznE/XxaXgY8EeMsi8asoJpXISpUtQdspPu2LnXzEWpKp90
+	 ASf/YxWrog/f89U3j1RqMHXRGHUusGaLAj9qTPzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.13 045/207] x86/cacheinfo: Validate CPUID leaf 0x2 EDX output
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 085/269] ksmbd: fix use-after-free in smb2_lock
 Date: Mon, 10 Mar 2025 18:03:58 +0100
-Message-ID: <20250310170449.558482153@linuxfoundation.org>
+Message-ID: <20250310170501.106482037@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 8177c6bedb7013cf736137da586cf783922309dd upstream.
+commit 84d2d1641b71dec326e8736a749b7ee76a9599fc upstream.
 
-CPUID leaf 0x2 emits one-byte descriptors in its four output registers
-EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
-significant bit (MSB) of each register must be clear.
+If smb_lock->zero_len has value, ->llist of smb_lock is not delete and
+flock is old one. It will cause use-after-free on error handling
+routine.
 
-The historical Git commit:
-
-  019361a20f016 ("- pre6: Intel: start to add Pentium IV specific stuff (128-byte cacheline etc)...")
-
-introduced leaf 0x2 output parsing.  It only validated the MSBs of EAX,
-EBX, and ECX, but left EDX unchecked.
-
-Validate EDX's most-significant bit.
-
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: stable@vger.kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-2-darwi@linutronix.de
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/cacheinfo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/cacheinfo.c
-+++ b/arch/x86/kernel/cpu/cacheinfo.c
-@@ -808,7 +808,7 @@ void init_intel_cacheinfo(struct cpuinfo
- 			cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7441,13 +7441,13 @@ out_check_cl:
+ 		}
  
- 			/* If bit 31 is set, this is an unknown format */
--			for (j = 0 ; j < 3 ; j++)
-+			for (j = 0 ; j < 4 ; j++)
- 				if (regs[j] & (1 << 31))
- 					regs[j] = 0;
- 
+ no_check_cl:
++		flock = smb_lock->fl;
++		list_del(&smb_lock->llist);
++
+ 		if (smb_lock->zero_len) {
+ 			err = 0;
+ 			goto skip;
+ 		}
+-
+-		flock = smb_lock->fl;
+-		list_del(&smb_lock->llist);
+ retry:
+ 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
+ skip:
 
 
 
