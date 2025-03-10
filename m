@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399D9A59EB8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E93AA59DF0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 031AB3A02CE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7AC18847B8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6B7233727;
-	Mon, 10 Mar 2025 17:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E25233706;
+	Mon, 10 Mar 2025 17:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sJyy/py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBhnIBjs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C158233716;
-	Mon, 10 Mar 2025 17:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05BF230BC8;
+	Mon, 10 Mar 2025 17:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627922; cv=none; b=eVlFwPPlchYF2EF6PssWPmbmYxpd5bl8RBvcHQ9H83gXbq5+8PYKnxU5sDV2EgEJ7oRX5pbGqMtJfEyZIVH7UvLDXnC8Xy2j3emLGPcM3Z/lKCtlt53kGGS25c6Kg6EhhzbFuellefVe0pgOg7b3bA0nN8O+zjIu3zIuKxt2DVE=
+	t=1741627549; cv=none; b=i5UG3pwzjIfrDf3adm//Ve+3atsbwMtF1RXQb1p4RLjOGaakqXZbZBBE+GArZ0+O7VSl9SWVl7niORrer7W2i2HBfGlrle4sYL3Pk8fiTjnLpfNsBW6EnezQiap+CdtrI15Vu9N16V4lv30F7l9e6cKqs7X3war9omltuYY6G5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627922; c=relaxed/simple;
-	bh=8rqbmhdA16jeLud7fwaukdu4HFmTm51OCf2jijtfnDo=;
+	s=arc-20240116; t=1741627549; c=relaxed/simple;
+	bh=63dMqJLdCKQejNRXclrFCmV+VTAc4Yt85et9tjK1fAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2mMgpwAz1S+XFa1CRKn2JQWWxW70nc9nbldWAjYy76C09gpo+7eHkWr4KbCj5vZlSeUAQgK27ifGclZX5iYwC4u8i5t+Y9nRRrtXODqpYqLE3l84YW2XV0An6Yil0WSAM8uu1t9U3/SR0pWMQqG0/Ut6/iUECHjoFfxYdso7Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sJyy/py; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7788C4CEE5;
-	Mon, 10 Mar 2025 17:32:01 +0000 (UTC)
+	 MIME-Version; b=FMfdhAWb5hd4fgx9JrJa0CtbsCnGCVdm7Mam/MJVV9H+6FI9jgPc89B568WLbkCrgGNjSET/MULuNPxeSJPb+MY6/Wntv7M1v4kQHdTH9JiuldkEl9Xln8PbB2EHDAF108A+5xoOFIqBW7MKnA6fE0f4v/Q9oZ9qukNZUmHY7Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBhnIBjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2596CC4CEE5;
+	Mon, 10 Mar 2025 17:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627922;
-	bh=8rqbmhdA16jeLud7fwaukdu4HFmTm51OCf2jijtfnDo=;
+	s=korg; t=1741627549;
+	bh=63dMqJLdCKQejNRXclrFCmV+VTAc4Yt85et9tjK1fAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sJyy/pyclEyoBVIV6roQTZDaPb1kZgRR3ZRrX938ciyK9JtTFrYNt6OMdSN/mo2s
-	 0AU4tqL5N60t3P+KgVEK0KWMdDlMCmx1DXxtxu4NZbj/fdGWgREJH/dFp3E9fOP2zO
-	 H3mFfDadRGkq6znwXV/NyW7qnh2EPNqgm6XjZFyA=
+	b=uBhnIBjsuc7P4EO/nsf4iAlVfLVX0L8Tyh/aX6pAHiYovJyZHMenr1k2ES0wk2oZ0
+	 UJ0uOfaCgNFUS+uZDm6YT7Mhjg9BiaVNBeWs4IpXd2IQCS7jstnnBBX8azso/1BTcp
+	 sKE3CAFzzJZqqzjwp7CTfV8g3lIJ6nVzzZ8CmvIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erpeng Xu <xuerpeng@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 026/145] LoongArch: Use polling play_dead() when resuming from hibernation
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 167/269] net: gso: fix ownership in __udp_gso_segment
 Date: Mon, 10 Mar 2025 18:05:20 +0100
-Message-ID: <20250310170435.793116925@linuxfoundation.org>
+Message-ID: <20250310170504.372102523@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit c9117434c8f7523f0b77db4c5766f5011cc94677 upstream.
+[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
 
-When CONFIG_RANDOM_KMALLOC_CACHES or other randomization infrastructrue
-enabled, the idle_task's stack may different between the booting kernel
-and target kernel. So when resuming from hibernation, an ACTION_BOOT_CPU
-IPI wakeup the idle instruction in arch_cpu_idle_dead() and jump to the
-interrupt handler. But since the stack pointer is changed, the interrupt
-handler cannot restore correct context.
+In __udp_gso_segment the skb destructor is removed before segmenting the
+skb but the socket reference is kept as-is. This is an issue if the
+original skb is later orphaned as we can hit the following bug:
 
-So rename the current arch_cpu_idle_dead() to idle_play_dead(), make it
-as the default version of play_dead(), and the new arch_cpu_idle_dead()
-call play_dead() directly. For hibernation, implement an arch-specific
-hibernate_resume_nonboot_cpu_disable() to use the polling version (idle
-instruction is replace by nop, and irq is disabled) of play_dead(), i.e.
-poll_play_dead(), to avoid IPI handler corrupting the idle_task's stack
-when resuming from hibernation.
+  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
+  RIP: 0010:ip_rcv_core+0x8b2/0xca0
+  Call Trace:
+   ip_rcv+0xab/0x6e0
+   __netif_receive_skb_one_core+0x168/0x1b0
+   process_backlog+0x384/0x1100
+   __napi_poll.constprop.0+0xa1/0x370
+   net_rx_action+0x925/0xe50
 
-This solution is a little similar to commit 406f992e4a372dafbe3c ("x86 /
-hibernate: Use hlt_play_dead() when resuming from hibernation").
+The above can happen following a sequence of events when using
+OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
+OVS_ACTION_ATTR_OUTPUT action:
 
-Cc: stable@vger.kernel.org
-Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
-Tested-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
+   goes through queue_gso_packets and then __udp_gso_segment, where its
+   destructor is removed.
+2. The segments' data are copied and sent to userspace.
+3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
+   same original skb is sent to its path.
+4. If it later hits skb_orphan, we hit the bug.
+
+Fix this by also removing the reference to the socket in
+__udp_gso_segment.
+
+Fixes: ad405857b174 ("udp: better wmem accounting on gso")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/smp.c |   47 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ net/ipv4/udp_offload.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -18,6 +18,7 @@
- #include <linux/smp.h>
- #include <linux/threads.h>
- #include <linux/export.h>
-+#include <linux/suspend.h>
- #include <linux/syscore_ops.h>
- #include <linux/time.h>
- #include <linux/tracepoint.h>
-@@ -388,7 +389,7 @@ void loongson_cpu_die(unsigned int cpu)
- 	mb();
- }
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index a5be6e4ed326f..ecfca59f31f13 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -321,13 +321,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
  
--void __noreturn arch_cpu_idle_dead(void)
-+static void __noreturn idle_play_dead(void)
- {
- 	register uint64_t addr;
- 	register void (*init_fn)(void);
-@@ -412,6 +413,50 @@ void __noreturn arch_cpu_idle_dead(void)
- 	BUG();
- }
+ 	/* clear destructor to avoid skb_segment assigning it to tail */
+ 	copy_dtor = gso_skb->destructor == sock_wfree;
+-	if (copy_dtor)
++	if (copy_dtor) {
+ 		gso_skb->destructor = NULL;
++		gso_skb->sk = NULL;
++	}
  
-+#ifdef CONFIG_HIBERNATION
-+static void __noreturn poll_play_dead(void)
-+{
-+	register uint64_t addr;
-+	register void (*init_fn)(void);
-+
-+	idle_task_exit();
-+	__this_cpu_write(cpu_state, CPU_DEAD);
-+
-+	__smp_mb();
-+	do {
-+		__asm__ __volatile__("nop\n\t");
-+		addr = iocsr_read64(LOONGARCH_IOCSR_MBUF0);
-+	} while (addr == 0);
-+
-+	init_fn = (void *)TO_CACHE(addr);
-+	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
-+
-+	init_fn();
-+	BUG();
-+}
-+#endif
-+
-+static void (*play_dead)(void) = idle_play_dead;
-+
-+void __noreturn arch_cpu_idle_dead(void)
-+{
-+	play_dead();
-+	BUG(); /* play_dead() doesn't return */
-+}
-+
-+#ifdef CONFIG_HIBERNATION
-+int hibernate_resume_nonboot_cpu_disable(void)
-+{
-+	int ret;
-+
-+	play_dead = poll_play_dead;
-+	ret = suspend_disable_secondary_cpus();
-+	play_dead = idle_play_dead;
-+
-+	return ret;
-+}
-+#endif
-+
- #endif
+ 	segs = skb_segment(gso_skb, features);
+ 	if (IS_ERR_OR_NULL(segs)) {
+-		if (copy_dtor)
++		if (copy_dtor) {
+ 			gso_skb->destructor = sock_wfree;
++			gso_skb->sk = sk;
++		}
+ 		return segs;
+ 	}
  
- /*
+-- 
+2.39.5
+
 
 
 
