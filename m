@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-122222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78710A59E80
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF9FA59E26
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91FD188F932
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B67523A6441
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431D1235354;
-	Mon, 10 Mar 2025 17:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D2E23236F;
+	Mon, 10 Mar 2025 17:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="js5LiMF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA6Q3fqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014E222E407;
-	Mon, 10 Mar 2025 17:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136B322D799;
+	Mon, 10 Mar 2025 17:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627876; cv=none; b=Z75sZkOrNUXwtvYGxiF2bM0JE1LGcuLox1xu5adU3QlPayNpq7y9bY7Hrt67Z9vrKK++J35B7dhqCOzLj8qqRrsSn1HNw8jRQ7oKn12XVt1cQROtRkiBNaoKN/3dLJnuxzkpQbD5hSTzlkIc551W54VsgWz9qYUkoirDHcrZs1Q=
+	t=1741627599; cv=none; b=t7uuszDKAwqa72i61gg2waShnG41f4N4TuIkm+3Jxf3LpLT1hyyh5+W6INjiJD7nzON6WuamT6xPsG2n9FaHUr5HBH1ZnGlNy7x5w8IYY2YS6dHDTuJZjC9P1n/OhZVkJ0oL74Ci8g8WbmpoRRg4a4q1wpEuajtanwtJL7X9Acw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627876; c=relaxed/simple;
-	bh=XCYGV5tYrZ164r3UIhSODmRJ2e68K1cI2VlWhH64CBI=;
+	s=arc-20240116; t=1741627599; c=relaxed/simple;
+	bh=xfavAObudxEKkVmuB6LRaCJSYrQpb1rBWsmkF7xcwhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSc340T1YoreuLqzQ4kZeeookVq9GWe8ZGrLFT8q/L8gftIitx6FgRdTgHvcp+eBabbDG7yBs4YoIPAX9ivtNiY9xLYHI46scQmYeT4lFw21dNh4P2C6jZRllFyqogL8edefpsFbXtv2amZiUahBlIoMXAUUisfVwNP2MgV7GFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=js5LiMF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C0BC4CEEC;
-	Mon, 10 Mar 2025 17:31:15 +0000 (UTC)
+	 MIME-Version; b=EEyb9N/Kheln1kSwIVJUaT5MUOghjpwY9WvLYJE0R2R0egYUbXTjtvcVIxizpcA359st6B0Fx0DxNReL+aX4fvC+kfybS6D3J9gCaUm0iP0pVn8Y4+DSMuHXmpyBTMKaLONw6hCPFSopg2nRNWIv/q4qHTFWcWbrPJWCorE2qa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA6Q3fqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B23EC4CEE5;
+	Mon, 10 Mar 2025 17:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627875;
-	bh=XCYGV5tYrZ164r3UIhSODmRJ2e68K1cI2VlWhH64CBI=;
+	s=korg; t=1741627598;
+	bh=xfavAObudxEKkVmuB6LRaCJSYrQpb1rBWsmkF7xcwhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=js5LiMF9dPGSSsOCC/98tBeIAMaFjTNWyAwX+BlX4p9k4feAqytjRKowlWieXQ7T2
-	 rfFNkV2TzoDSXtZRAflmu0xmLz6x/HkNmqxp0ZhpK24C9RThD6yL0dPVOEYJwYrKlT
-	 XPXudCmfxvdo799snlCHu0ihAYozpJgy2HeGkgII=
+	b=RA6Q3fqkghBW/E+iJAWoslgkY4IRGu4EyLS+I/o1NbYFFBniuiSLbTFNlA8O9Mosa
+	 9hRipyGlfmg144KMnXKfqfUe2ODVGG6W3HbR73JUH71nMuXyuFM+391vg7V5KcuNM0
+	 m9vl6MS3pBF5aF56ysZnA1/b62C1m08hjV9iI1KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/145] net: enetc: Remove setting of RX software timestamp
+Subject: [PATCH 6.12 152/269] nvme-ioctl: fix leaked requests on mapping error
 Date: Mon, 10 Mar 2025 18:05:05 +0100
-Message-ID: <20250310170435.198284905@linuxfoundation.org>
+Message-ID: <20250310170503.780475467@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 3dd261ca7f84c65af40f37825bf1cbb0cf3d5583 ]
+[ Upstream commit 00817f0f1c45b007965f5676b9a2013bb39c7228 ]
 
-The responsibility for reporting of RX software timestamp has moved to
-the core layer (see __ethtool_get_ts_info()), remove usage from the
-device drivers.
+All the callers assume nvme_map_user_request() frees the request on a
+failure. This wasn't happening on invalid metadata or io_uring command
+flags, so we've been leaking those requests.
 
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20240901112803.212753-13-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a562d0c4a893 ("net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC")
+Fixes: 23fd22e55b767b ("nvme: wire up fixed buffer support for nvme passthrough")
+Fixes: 7c2fd76048e95d ("nvme: fix metadata handling in nvme-passthrough")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/nvme/host/ioctl.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index e993ed04ab572..aa7d427e654ff 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -846,17 +846,13 @@ static int enetc_get_ts_info(struct net_device *ndev,
- 	if (phc_idx) {
- 		info->phc_index = *phc_idx;
- 		symbol_put(enetc_phc_index);
--	} else {
--		info->phc_index = -1;
- 	}
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index d4b80938de09c..e4daac9c24401 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -128,8 +128,10 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 	if (!nvme_ctrl_sgl_supported(ctrl))
+ 		dev_warn_once(ctrl->device, "using unchecked data buffer\n");
+ 	if (has_metadata) {
+-		if (!supports_metadata)
+-			return -EINVAL;
++		if (!supports_metadata) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 		if (!nvme_ctrl_meta_sgl_supported(ctrl))
+ 			dev_warn_once(ctrl->device,
+ 				      "using unchecked metadata buffer\n");
+@@ -139,8 +141,10 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 		struct iov_iter iter;
  
- #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
- 	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
- 				SOF_TIMESTAMPING_RX_HARDWARE |
- 				SOF_TIMESTAMPING_RAW_HARDWARE |
--				SOF_TIMESTAMPING_TX_SOFTWARE |
--				SOF_TIMESTAMPING_RX_SOFTWARE |
--				SOF_TIMESTAMPING_SOFTWARE;
-+				SOF_TIMESTAMPING_TX_SOFTWARE;
- 
- 	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
- 			 (1 << HWTSTAMP_TX_ON) |
-@@ -864,9 +860,7 @@ static int enetc_get_ts_info(struct net_device *ndev,
- 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
- 			   (1 << HWTSTAMP_FILTER_ALL);
- #else
--	info->so_timestamping = SOF_TIMESTAMPING_RX_SOFTWARE |
--				SOF_TIMESTAMPING_TX_SOFTWARE |
--				SOF_TIMESTAMPING_SOFTWARE;
-+	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
- #endif
- 	return 0;
- }
+ 		/* fixedbufs is only for non-vectored io */
+-		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC))
+-			return -EINVAL;
++		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC)) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 		ret = io_uring_cmd_import_fixed(ubuffer, bufflen,
+ 				rq_data_dir(req), &iter, ioucmd);
+ 		if (ret < 0)
 -- 
 2.39.5
 
