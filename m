@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-122972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80E6A5A238
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FA4A59E15
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 133EF175111
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93B337A3CB6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D5922CBE9;
-	Mon, 10 Mar 2025 18:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FBE235C0E;
+	Mon, 10 Mar 2025 17:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZU6uf0d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSfKDgoY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017811C3C1C;
-	Mon, 10 Mar 2025 18:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD12C235BF1;
+	Mon, 10 Mar 2025 17:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630673; cv=none; b=N9o4rUpUwJZti2xeIT7HuTG/XRvlfaqR/XjHdhHujD/lltQiD5fImCHAO6p+iFo47jPVzbQuW9JJtgUqGVi21XXViA3th09mYPr5rKiyzLCT5hekUEQ9GwifG5n5lWHfXKdzTOqwg8d0OEQXJ7B/Sj3dYHYum7B/QXoD1SPNlI0=
+	t=1741627610; cv=none; b=jGQt6rtKskervky31JyUIbiMZOtMlDS7eDbWicRRyrZy5eSUuwPQ/f0bXhhYQd0PTHZP+YF0HASfcxtKVs0v2LCXjH2Nrpxbpp+z3VE5nTFNIntYof7c+KvC2Amfjk2GzaM5AnjukKvLjngBpE7O5vyzUfRMD9IefT6mZXzPp8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630673; c=relaxed/simple;
-	bh=hFr+J1IEvVqynG0dW4IxGMqIRE9kpM6wTHA5Z0exePI=;
+	s=arc-20240116; t=1741627610; c=relaxed/simple;
+	bh=vh6NjXrse7Dsln3fLReakfTz0518rP7uY5NKFn+wwDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUdJ+VQiEMlyP33jHWKu49TU3aHpWLiJqZz0kvIyAnAIeJa1u6tPzqByB8lwkbe+2EYyhM32aKvtHz9Sms/0WKZAlBjS6GlActyd8ImY1fw917izLZ9D46gsIQeuFgVd4/sQN8s1pzpl7jRBnsMcERQ3Yt6dQc1NwqWyXNzjlqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZU6uf0d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBF0C4CEE5;
-	Mon, 10 Mar 2025 18:17:52 +0000 (UTC)
+	 MIME-Version; b=Dts0uEHE+tISpVpSHi2qFdXIdi6FYamrGSJz/WpZEPLxZYNlgMEcHkOk67Ddp5IRjb23GU4M3wG2e+EsikqPSiPNBcA6RUubIHtNG6Co5ChlR3W4sZWt7SRA166U6fJ5gZFt9xGVY1GVqlt6yQrHDoaYFJYjzJY8sltg8Uxeb+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSfKDgoY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A21C4CEE5;
+	Mon, 10 Mar 2025 17:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630672;
-	bh=hFr+J1IEvVqynG0dW4IxGMqIRE9kpM6wTHA5Z0exePI=;
+	s=korg; t=1741627610;
+	bh=vh6NjXrse7Dsln3fLReakfTz0518rP7uY5NKFn+wwDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ZU6uf0dWQeXBR34Htb53n+oH++M1QidRCRfY8oCNRTxr1HrPlqVOqf7oKaSzKHe7
-	 58+7yDlUkww+W8SOwPKLqbuqdqwWJhqo3qrL9qhu03y54EsktNpc4C+5ZN0UR0YG/n
-	 RDQOOmeW/fEpMtEt29bcS/6GxseWs8caxSOPVk3Y=
+	b=aSfKDgoYrHI71dkbT3j3+fhR4gMmkkbA6f8uZuEa61T383QSWoMa5fuC0De4yvVCp
+	 KeRJJbSpP4dTee4aY1xW0s4yYwjxG6NuidMxvgbEPwGHD29sHwrfQFlkVv6Iy8WPdh
+	 qYfwb97jvxxtX8F/jWQs0AXrLcoKdRqdsoSYvNCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 496/620] afs: remove variable nr_servers
+Subject: [PATCH 6.12 189/269] ethtool: linkstate: migrate linkstate functions to support multi-PHY setups
 Date: Mon, 10 Mar 2025 18:05:42 +0100
-Message-ID: <20250310170605.149565609@linuxfoundation.org>
+Message-ID: <20250310170505.239377537@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 318b83b71242998814a570c3420c042ee6165fca ]
+[ Upstream commit fe55b1d401c697c2ef126fe3ebbcaa6885fced5a ]
 
-Variable nr_servers is no longer being used, the last reference
-to it was removed in commit 45df8462730d ("afs: Fix server list handling")
-so clean up the code by removing it.
+Adapt linkstate_get_sqi() and linkstate_get_sqi_max() to take a
+phy_device argument directly, enabling support for setups with
+multiple PHYs. The previous assumption of a single PHY attached to
+a net_device no longer holds.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20221020173923.21342-1-colin.i.king@gmail.com/
-Stable-dep-of: add117e48df4 ("afs: Fix the server_list to unuse a displaced server rather than putting it")
+Use ethnl_req_get_phydev() to identify the appropriate PHY device
+for the operation. Update linkstate_prepare_data() and related
+logic to accommodate this change, ensuring compatibility with
+multi-PHY configurations.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 637399bf7e77 ("net: ethtool: netlink: Allow NULL nlattrs when getting a phy_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/volume.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/ethtool/linkstate.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/fs/afs/volume.c b/fs/afs/volume.c
-index 3d39ce5a23f22..f904ef5ea7141 100644
---- a/fs/afs/volume.c
-+++ b/fs/afs/volume.c
-@@ -77,11 +77,7 @@ static struct afs_volume *afs_alloc_volume(struct afs_fs_context *params,
- {
- 	struct afs_server_list *slist;
- 	struct afs_volume *volume;
--	int ret = -ENOMEM, nr_servers = 0, i;
--
--	for (i = 0; i < vldb->nr_servers; i++)
--		if (vldb->fs_mask[i] & type_mask)
--			nr_servers++;
-+	int ret = -ENOMEM;
+diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+index 34d76e87847d0..459cfea7652d4 100644
+--- a/net/ethtool/linkstate.c
++++ b/net/ethtool/linkstate.c
+@@ -26,9 +26,8 @@ const struct nla_policy ethnl_linkstate_get_policy[] = {
+ 		NLA_POLICY_NESTED(ethnl_header_policy_stats),
+ };
  
- 	volume = kzalloc(sizeof(struct afs_volume), GFP_KERNEL);
- 	if (!volume)
+-static int linkstate_get_sqi(struct net_device *dev)
++static int linkstate_get_sqi(struct phy_device *phydev)
+ {
+-	struct phy_device *phydev = dev->phydev;
+ 	int ret;
+ 
+ 	if (!phydev)
+@@ -46,9 +45,8 @@ static int linkstate_get_sqi(struct net_device *dev)
+ 	return ret;
+ }
+ 
+-static int linkstate_get_sqi_max(struct net_device *dev)
++static int linkstate_get_sqi_max(struct phy_device *phydev)
+ {
+-	struct phy_device *phydev = dev->phydev;
+ 	int ret;
+ 
+ 	if (!phydev)
+@@ -100,19 +98,28 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ {
+ 	struct linkstate_reply_data *data = LINKSTATE_REPDATA(reply_base);
+ 	struct net_device *dev = reply_base->dev;
++	struct nlattr **tb = info->attrs;
++	struct phy_device *phydev;
+ 	int ret;
+ 
++	phydev = ethnl_req_get_phydev(req_base, tb[ETHTOOL_A_LINKSTATE_HEADER],
++				      info->extack);
++	if (IS_ERR(phydev)) {
++		ret = PTR_ERR(phydev);
++		goto out;
++	}
++
+ 	ret = ethnl_ops_begin(dev);
+ 	if (ret < 0)
+ 		return ret;
+ 	data->link = __ethtool_get_link(dev);
+ 
+-	ret = linkstate_get_sqi(dev);
++	ret = linkstate_get_sqi(phydev);
+ 	if (linkstate_sqi_critical_error(ret))
+ 		goto out;
+ 	data->sqi = ret;
+ 
+-	ret = linkstate_get_sqi_max(dev);
++	ret = linkstate_get_sqi_max(phydev);
+ 	if (linkstate_sqi_critical_error(ret))
+ 		goto out;
+ 	data->sqi_max = ret;
+@@ -127,9 +134,9 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ 			   sizeof(data->link_stats) / 8);
+ 
+ 	if (req_base->flags & ETHTOOL_FLAG_STATS) {
+-		if (dev->phydev)
++		if (phydev)
+ 			data->link_stats.link_down_events =
+-				READ_ONCE(dev->phydev->link_down_events);
++				READ_ONCE(phydev->link_down_events);
+ 
+ 		if (dev->ethtool_ops->get_link_ext_stats)
+ 			dev->ethtool_ops->get_link_ext_stats(dev,
 -- 
 2.39.5
 
