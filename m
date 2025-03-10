@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD694A59C35
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2104CA59D75
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 826293A8943
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB8D73A4677
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF65230BE7;
-	Mon, 10 Mar 2025 17:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B9E2309B0;
+	Mon, 10 Mar 2025 17:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1XkPTTf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXHK6182"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CC622F17C;
-	Mon, 10 Mar 2025 17:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D8C22154C;
+	Mon, 10 Mar 2025 17:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626529; cv=none; b=SwfZR2rlb08AFgaemRVULkV/9IyIBWJNge4UW+tmERuDs4+hqSRVtM8iiAZB0bF/C5ks7r+TeC534978A7gtIOF5Od3upfVp//7cQOcayyfxui/wgJdqlrQy0DKS/l7mhTBBrbM3cpl/NeZtd2AwTOOlr/kDKWpgESjeGSP9Vlc=
+	t=1741627249; cv=none; b=C+dSaL+DoAelkNzKqodhTRj8afrevcd21DwzqRFFKewEv8/aDnUmXQZRUo7dzsYaCvgqCHdBVKmyv3wqY6kZ7hfFClYAb2oLHz0eBAIXh/Ke7QEhj+qixfw2arLe587RvQB9dqA+VZH8Y3EPL50l4Swyjf0mexwOjoz/T6PqoQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626529; c=relaxed/simple;
-	bh=J7jDXwcO3c3U4iCFx1DKK2ZzjKXt13zdU83F+IPS+B8=;
+	s=arc-20240116; t=1741627249; c=relaxed/simple;
+	bh=FNMe60scxyNNdl+KMpWpy794ZtLZgcxWrSIH8vUw5hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qB1eafzRzywEqBC3ozTbshqUUTPmxmqtg+iugjTMvpfoDWwMg+SZN7VFUqb98Wb6ZUt7AiSmN2OLNZgPXQHwAytdu7I/JfKF8I4Oi9TSei5PzawMgRS4xxAEFOrEyiX3fZLILxpYvWXbnwBKDLO6I09KYR+2cPXR1Ovs8lX6CRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1XkPTTf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A05C4CEE5;
-	Mon, 10 Mar 2025 17:08:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cYY2E3le0HePikhx5k3cWQU+BTH6UxTjcEf2A9Vuhw81ombIwEjnRM9FDxQDVKsJrKbjB27bYDi/776gySbxX47318SlSC3vjWQ+k2gH4sEkJmfE625cr0fM5bWLrs5OD/TgYB4jwKvoeV8uYrph/XO1sctS2eqeQ9ScTrLDZrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXHK6182; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94247C4CEE5;
+	Mon, 10 Mar 2025 17:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626529;
-	bh=J7jDXwcO3c3U4iCFx1DKK2ZzjKXt13zdU83F+IPS+B8=;
+	s=korg; t=1741627249;
+	bh=FNMe60scxyNNdl+KMpWpy794ZtLZgcxWrSIH8vUw5hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1XkPTTfupudqDy9keE/K2IsU7PrNJpM/dDpAlcYmkdQQ8fNzyQveLmVGRTqCyzCH
-	 TrCmljPkqawcgPWxkWPXsxRaN3uZc+P10nwAT/iq9kVrRufWsZ4ha/cgEbcaxmKFEA
-	 5EWotuxGqd8qI9YDjBCyN/BqYnmf8dg6B17X2w7M=
+	b=XXHK6182Nfa65t692idTvW24xd0YqkdSrUvLbXHzsC+NlbrPkq5He71qD8uhUJrXB
+	 g27D7GPaWV6135xGvZfpblj28rrsaVtFiQkOwg4afEUTqVR2GdrDPtjsUN6vY8bQui
+	 ineu1K5sa8MVlWQntEuEFZTHKSyJwXy242Y2L7oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 023/207] ksmbd: fix bug on trap in smb2_lock
-Date: Mon, 10 Mar 2025 18:03:36 +0100
-Message-ID: <20250310170448.693716178@linuxfoundation.org>
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 6.12 064/269] drm/panic: correctly indent continuation of line in list item
+Date: Mon, 10 Mar 2025 18:03:37 +0100
+Message-ID: <20250310170500.281467014@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Thomas Böhler <witcher@wiredspace.de>
 
-commit e26e2d2e15daf1ab33e0135caf2304a0cfa2744b upstream.
+commit 5bb698e6fc514ddd9e23b6649b29a0934d8d8586 upstream.
 
-If lock count is greater than 1, flags could be old value.
-It should be checked with flags of smb_lock, not flags.
-It will cause bug-on trap from locks_free_lock in error handling
-routine.
+It is common practice in Rust to indent the next line the same amount of
+space as the previous one if both belong to the same list item. Clippy
+checks for this with the lint `doc_lazy_continuation`.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+    error: doc list item without indentation
+    --> drivers/gpu/drm/drm_panic_qr.rs:979:5
+        |
+    979 | /// conversion to numeric segments.
+        |     ^
+        |
+        = help: if this is supposed to be its own paragraph, add a blank line
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#doc_lazy_continuation
+        = note: `-D clippy::doc-lazy-continuation` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(clippy::doc_lazy_continuation)]`
+    help: indent this line
+        |
+    979 | ///   conversion to numeric segments.
+        |     ++
+
+Indent the offending line by 2 more spaces to remove this Clippy error.
+
+Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1123
+Signed-off-by: Thomas Böhler <witcher@wiredspace.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20241019084048.22336-6-witcher@wiredspace.de
+[ Reworded to indent Clippy's message. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    2 +-
+ drivers/gpu/drm/drm_panic_qr.rs |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7467,7 +7467,7 @@ no_check_cl:
- retry:
- 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
- skip:
--		if (flags & SMB2_LOCKFLAG_UNLOCK) {
-+		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
- 			if (!rc) {
- 				ksmbd_debug(SMB, "File unlocked\n");
- 			} else if (rc == -ENOENT) {
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -975,7 +975,7 @@ pub unsafe extern "C" fn drm_panic_qr_ge
+ /// * `url_len`: Length of the URL.
+ ///
+ /// * If `url_len` > 0, remove the 2 segments header/length and also count the
+-/// conversion to numeric segments.
++///   conversion to numeric segments.
+ /// * If `url_len` = 0, only removes 3 bytes for 1 binary segment.
+ #[no_mangle]
+ pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize) -> usize {
 
 
 
