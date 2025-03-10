@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F3EA5A242
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AC6A59CA9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777513AAF7E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3939A7A8EC3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B632343C9;
-	Mon, 10 Mar 2025 18:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9464F230D0F;
+	Mon, 10 Mar 2025 17:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER7Fx8Ju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjoTNmEo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754451C3C1C;
-	Mon, 10 Mar 2025 18:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D45422FE18;
+	Mon, 10 Mar 2025 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630661; cv=none; b=J+8OEwjbrn02LT6e37H4l44JAVbTs4L+vEwCHOy/DDzvbrdnzInlq/ho/QnssFhhQS3gT6QfnpRICr6vtefAbKs37rOV9CFnyifbASYYrV/Q9R8oYgavtOVVQvqqqP0NPWgdLvlGXT5DgclOwOwdLhKGqv+UJaoKftWxdVuOd2s=
+	t=1741626788; cv=none; b=btxGOBLpV8deDeR13MLjb8nvQ4wIf4zhCh74O/M+v5uepbmxRLkX67mmZ2p3O2epzTKjOzzwTNJURzbaa9in5/H/OSVqNoaMdB8FTG2l1C244SPMjh0EmdlivvqLG6RE9MD6jcNQ1w8XxGO3fx3wTXc7ApjNA8ipaHYCaRuwCfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630661; c=relaxed/simple;
-	bh=LPzKftO9CKTP/DQ8R+7jmPAtimGazgXGmW3rJT362eU=;
+	s=arc-20240116; t=1741626788; c=relaxed/simple;
+	bh=V/4i8PTmmRCspvU63NDAjWKw0JG5/9LX5BHsUsNfY0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPPQsIGGqokB1A/ZiT6ltrfR3me5wxce9YtVxXfAfbmh+BPiOAK/2Vh6Jvta5HubPuSLbsBSfCwiSCasfzC/yx8JF+uWR6Eacps2IIJID8dx/AE3QLQjMUBgtvcQz0uBpUYIxhNIi/3x3gmEDWbeK2nhnG6MUeRY5icVW3+cYtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER7Fx8Ju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88435C4CEE5;
-	Mon, 10 Mar 2025 18:17:40 +0000 (UTC)
+	 MIME-Version; b=ZIwCDkcNhsumSus7F7/7t2DhQo8Inc1JtvL4Dth/QBK5827u5aapsWFGeHO8s40nOsnmlMDBCMInedtYFGGJkUpOfd+IUDy7tRJyunGa/H9MtClwg69x2XiZdS4OpWAEGE/b/5s5kAUfmV5EFgyfCdpIpOZ+0dK5WDbBeHqfrjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjoTNmEo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D74C4CEE5;
+	Mon, 10 Mar 2025 17:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630660;
-	bh=LPzKftO9CKTP/DQ8R+7jmPAtimGazgXGmW3rJT362eU=;
+	s=korg; t=1741626787;
+	bh=V/4i8PTmmRCspvU63NDAjWKw0JG5/9LX5BHsUsNfY0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER7Fx8JuXB2TIauhEdzrDA3VqQ0iONtWOzAoRKZYy+nSupKHFpM5uq9xKNfjOP5Lm
-	 X2F8JleiQS87dJGQtUXbVeaSCSMSE0nO+e7Phyw1YhO2JI9acSk7HeeylYhtF8s2Cw
-	 9mD7HVO+65YLUAt2gI348wmHE13XURHZGCfDl5YQ=
+	b=fjoTNmEoS4SexA5XKz2p7tiA+mmird6IWD3//d0d3e8F3hvMRHtfnnywjrC4S1h5W
+	 5lF2odWNohMFt5MmcY0Hj4xe1e6LmT8zide60qqtd7jidm9IHHWK5j6OuNwE7UEe3F
+	 +m6iJjQ/8JzkXQGCdks1R0v+TY3M3nK1N3AAEd7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jill Donahue <jilliandonahue58@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 460/620] USB: gadget: f_midi: f_midi_complete to call queue_work
+Subject: [PATCH 6.13 113/207] perf/core: Fix pmus_lock vs. pmus_srcu ordering
 Date: Mon, 10 Mar 2025 18:05:06 +0100
-Message-ID: <20250310170603.739615674@linuxfoundation.org>
+Message-ID: <20250310170452.306963355@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jill Donahue <jilliandonahue58@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 4ab37fcb42832cdd3e9d5e50653285ca84d6686f ]
+[ Upstream commit 2565e42539b120b81a68a58da961ce5d1e34eac8 ]
 
-When using USB MIDI, a lock is attempted to be acquired twice through a
-re-entrant call to f_midi_transmit, causing a deadlock.
+Commit a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
+placed pmus_lock inside pmus_srcu, this makes perf_pmu_unregister()
+trip lockdep.
 
-Fix it by using queue_work() to schedule the inner f_midi_transmit() via
-a high priority work queue from the completion handler.
+Move the locking about such that only pmu_idr and pmus (list) are
+modified while holding pmus_lock. This avoids doing synchronize_srcu()
+while holding pmus_lock and all is well again.
 
-Link: https://lore.kernel.org/all/CAArt=LjxU0fUZOj06X+5tkeGT+6RbXzpWg1h4t4Fwa_KGVAX6g@mail.gmail.com/
-Fixes: d5daf49b58661 ("USB: gadget: midi: add midi function driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jill Donahue <jilliandonahue58@gmail.com>
-Link: https://lore.kernel.org/r/20250211174805.1369265-1-jdonahue@fender.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20241104135517.679556858@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
-index 01c5736d381ef..3e8ea1bbe429a 100644
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -282,7 +282,7 @@ f_midi_complete(struct usb_ep *ep, struct usb_request *req)
- 			/* Our transmit completed. See if there's more to go.
- 			 * f_midi_transmit eats req, don't queue it again. */
- 			req->length = 0;
--			f_midi_transmit(midi);
-+			queue_work(system_highpri_wq, &midi->work);
- 			return;
- 		}
- 		break;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 0e6e16eb2d106..43a44a6e243b1 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11896,6 +11896,8 @@ void perf_pmu_unregister(struct pmu *pmu)
+ {
+ 	mutex_lock(&pmus_lock);
+ 	list_del_rcu(&pmu->entry);
++	idr_remove(&pmu_idr, pmu->type);
++	mutex_unlock(&pmus_lock);
+ 
+ 	/*
+ 	 * We dereference the pmu list under both SRCU and regular RCU, so
+@@ -11905,7 +11907,6 @@ void perf_pmu_unregister(struct pmu *pmu)
+ 	synchronize_rcu();
+ 
+ 	free_percpu(pmu->pmu_disable_count);
+-	idr_remove(&pmu_idr, pmu->type);
+ 	if (pmu_bus_running && pmu->dev && pmu->dev != PMU_NULL_DEV) {
+ 		if (pmu->nr_addr_filters)
+ 			device_remove_file(pmu->dev, &dev_attr_nr_addr_filters);
+@@ -11913,7 +11914,6 @@ void perf_pmu_unregister(struct pmu *pmu)
+ 		put_device(pmu->dev);
+ 	}
+ 	free_pmu_context(pmu);
+-	mutex_unlock(&pmus_lock);
+ }
+ EXPORT_SYMBOL_GPL(perf_pmu_unregister);
+ 
 -- 
 2.39.5
 
