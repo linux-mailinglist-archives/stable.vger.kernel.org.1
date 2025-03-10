@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2FFA59C74
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E008FA59DC7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E972016E869
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52DE07A6CED
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD9D231A2A;
-	Mon, 10 Mar 2025 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF570232792;
+	Mon, 10 Mar 2025 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnndaZmA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDpHp4Vs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA0322D4D0;
-	Mon, 10 Mar 2025 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960DC233136;
+	Mon, 10 Mar 2025 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626709; cv=none; b=MQeJVCwAzpFHB2oNzmNrydKTmVweMhtIYhlkXRQAmCpCX10IKoTrI4QmRQSoGmS9fPkf3VOuJuI6PBopgaHT2U6zgpNROScdMEM0UO9X7jD+qAIyyhsPuo59kDG3ssOK8lKMPAvtDoQwv5bh4h9PyQNRzP0XI1v70HHjOYoUvfY=
+	t=1741627425; cv=none; b=bLKN551pd3F3idnGk1jwoF0MpuOk/RJMFdEm9dalYZYiGRmTLxUkytjBU35ny6KkqCTKDThiJTWPb9HnL0JOyND8p+0bxEvtm34gfZf9Qw4Yls7pwjyRJn4/W1X6JzaGAvrvMEtWBlLxrNlZr+IE2VoacA5UYfbIVI2Zc8w145s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626709; c=relaxed/simple;
-	bh=Uaky2OeujrR2+EYSttA4yBYcsXqoHJmmtU/dFpACItg=;
+	s=arc-20240116; t=1741627425; c=relaxed/simple;
+	bh=qFvTlWBTth0Ja3TyDzgukrwKT4kWlRkyzSNPElwXtV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DK5s0iiQvmGf2W63BBzRHjAIiSQK+hbGCbES81HRxSHNYbGZgDlqluKjy/ciJY+MLbvpQnabyMJUp1fzRNwwH1Xi5078tg3/Q8kzz/AiTz9TLcJACy/ipe0v0Yij196wFYjqonPUg10p8nzobTAp8LKJamwtjBxiPofNEbKWMwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnndaZmA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6136C4CEED;
-	Mon, 10 Mar 2025 17:11:48 +0000 (UTC)
+	 MIME-Version; b=RfFRZvsGll/566SEUA9TBDryLrkXvYpRTHKwhoH6NLH9GG+ju90xoqBWtb9ab/opgWgOpZ3KX7pyxJKH2LH5Uz6aT/o8YSxrIT/3B8DkcxsKekkD7nQwWRYDuEfwjGhDsobN9LvMUFzKU6SADRhMFQax5nHQkye/Lt3WNh5c5Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDpHp4Vs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15029C4CEE5;
+	Mon, 10 Mar 2025 17:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626709;
-	bh=Uaky2OeujrR2+EYSttA4yBYcsXqoHJmmtU/dFpACItg=;
+	s=korg; t=1741627425;
+	bh=qFvTlWBTth0Ja3TyDzgukrwKT4kWlRkyzSNPElwXtV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnndaZmAq8DZXgks2/fO0+RoiaUlWo+teIFQQ6s+30k3xke0j8rMR9zFWtD3e7PGd
-	 tIw+/4xkcmO2JI9S6gKBf2Ssav1xhG8oXQSNQ595KrDI5gbTLqgo+P/xWkEdufENPE
-	 +lJ0b+CsaqGnByvXpHnHHSPDN3u8RJ58LGRy/4s8=
+	b=CDpHp4Vsv4fnCR9x7Zhw1jzzoDwVfHtcLvzHJOmA1I1ofpcTUFOsaltgHBRgeQBFX
+	 nXcLaXin4/OgetxBRk4cPVJ7azHV7n+/7LxvtFKyZZXXFsD3tblwAQ+zk8hU3hXVJH
+	 a5B8U5wYhM0JYnXLyWNr/+QIPqGZkErRrMpB0ku4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 086/207] wifi: iwlwifi: limit printed string from FW file
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 126/269] selftests/damon/damon_nr_regions: sort collected regiosn before checking with min/max boundaries
 Date: Mon, 10 Mar 2025 18:04:39 +0100
-Message-ID: <20250310170451.181414482@linuxfoundation.org>
+Message-ID: <20250310170502.745969271@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
+commit 582ccf78f6090d88b1c7066b1e90b3d9ec952d08 upstream.
 
-There's no guarantee here that the file is always with a
-NUL-termination, so reading the string may read beyond the
-end of the TLV. If that's the last TLV in the file, it can
-perhaps even read beyond the end of the file buffer.
+damon_nr_regions.py starts DAMON, periodically collect number of regions
+in snapshots, and see if it is in the requested range.  The check code
+assumes the numbers are sorted on the collection list, but there is no
+such guarantee.  Hence this can result in false positive test success.
+Sort the list before doing the check.
 
-Fix that by limiting the print format to the size of the
-buffer we have.
-
-Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250225222333.505646-4-sj@kernel.org
+Fixes: 781497347d1b ("selftests/damon: implement test for min/max_nr_regions")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/damon/damon_nr_regions.py |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index c620911a11933..754e01688900d 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1197,7 +1197,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
+--- a/tools/testing/selftests/damon/damon_nr_regions.py
++++ b/tools/testing/selftests/damon/damon_nr_regions.py
+@@ -65,6 +65,7 @@ def test_nr_regions(real_nr_regions, min
  
- 			if (tlv_len != sizeof(*fseq_ver))
- 				goto invalid_tlv_len;
--			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
-+			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
- 				 fseq_ver->version);
- 			}
- 			break;
--- 
-2.39.5
-
+     test_name = 'nr_regions test with %d/%d/%d real/min/max nr_regions' % (
+             real_nr_regions, min_nr_regions, max_nr_regions)
++    collected_nr_regions.sort()
+     if (collected_nr_regions[0] < min_nr_regions or
+         collected_nr_regions[-1] > max_nr_regions):
+         print('fail %s' % test_name)
 
 
 
