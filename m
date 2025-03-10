@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F706A59DAB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7B4A5A17E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA8EC7A314A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E9A37A74CD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D8522B8D0;
-	Mon, 10 Mar 2025 17:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0246D22D4FD;
+	Mon, 10 Mar 2025 18:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFDOIdZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1+nawHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580AF1B3927;
-	Mon, 10 Mar 2025 17:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B556817A2E8;
+	Mon, 10 Mar 2025 18:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627402; cv=none; b=Su6TbhWlT6GTnCwnj43OAW006VIHclpHCOZZmSHHMknklkZUek8I9VDoFOREY/ZZVfBwC0sO6MzcboHnsaEJAWlgzea43zHwjOy6afPtereCMMQzKouFxiXv58ViJERtfk6sbquJsqXUFJSJxgrPIXWxUo9aq1nK1lPyxW+ov7c=
+	t=1741629698; cv=none; b=hq1SCenxvKGHzCU1Ogh060E6Zmb2IHWTRDfGieBu5XMKIoLbWRcW66KyfWHRS8q4HXggjDbvd1rlt0cM3jc2UTOY0zqwfPH37WiXGMgcziJ6PugcHEh7C4hH66kgQZCf4OE+ziPevrKCPalCiirAjehfXN434LwGJhnLuq7ri4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627402; c=relaxed/simple;
-	bh=HHFfo8i7HGEgyW3G5loPfchSWK3X+oHpEBHpwaIU4HU=;
+	s=arc-20240116; t=1741629698; c=relaxed/simple;
+	bh=bO/47MeOZdm8ONalWVCnSKBhK/d2IdkwhMLz74/Ysjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qy3gIMuECdNE4GWwcpw8jy/d0dssEKLekCH3eDylVSdzJNX4Jbsjur1KNGn6t7LTFNLE0M7H8IrRJNHOpguBg+uJ7LIKJnsrTpvPc1n3f2cS4BLoP6rOkne2iMPHfqEk6//DoDncPjsaVHwVhyF1rlkbwF36w/iGFF905xyXvRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFDOIdZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE51AC4CEEE;
-	Mon, 10 Mar 2025 17:23:21 +0000 (UTC)
+	 MIME-Version; b=e1ytz4/r6RyOQraUK0DyUxmhy+p0ybjpRlTiNao+jmuPPWlUQ5mLsCDdQaxxxBGWB/aI2QQMCrAROxgetzl2GKNbtCMO97l0JjAr8o4uNcuDBeY0pAqVL97SChV7Zw6L5CZg5U2CAJA5hJTXkp2stGhu+KO6Xrn+OkLpi1PzX+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1+nawHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7E5C4CEE5;
+	Mon, 10 Mar 2025 18:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627402;
-	bh=HHFfo8i7HGEgyW3G5loPfchSWK3X+oHpEBHpwaIU4HU=;
+	s=korg; t=1741629698;
+	bh=bO/47MeOZdm8ONalWVCnSKBhK/d2IdkwhMLz74/Ysjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HFDOIdZC+X0V1NNYGsk9I9L+6xGYyGhyda2oYMahujWePHzg9Qar9biuY/jU2UDB1
-	 nG+BEt5uVMBsOA41l1XWDK/UB4EkXNa4MHb4CZDB10fVX9XiCjen7UA4lzop93YiNk
-	 sKqqMKeikb+MkGjA5LmP/sssIJleM+DPnV+zOhXY=
+	b=t1+nawHD8KhqHJkeyhnkGM0hx6UG2fENzeBPrI9XzsqpBnJLih7y7rbx/ZC5j7aAx
+	 EHOF4DXhLE1BDjQct2/iuMzxEja2HHMxeKCe6mXbPcVbnGKRUzAvwQ7CB4eaIPFH3i
+	 1ZJi6yVlFf719n0CdAwQpAMNXV83maKr9p4WmncY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 076/269] LoongArch: Convert unreachable() to BUG()
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.15 383/620] gpio: stmpe: Check return value of stmpe_reg_read in stmpe_gpio_irq_sync_unlock
 Date: Mon, 10 Mar 2025 18:03:49 +0100
-Message-ID: <20250310170500.754841866@linuxfoundation.org>
+Message-ID: <20250310170600.710695512@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit da64a2359092ceec4f9dea5b329d0aef20104217 upstream.
+commit b9644fbfbcab13da7f8b37bef7c51e5b8407d031 upstream.
 
-When compiling on LoongArch, there exists the following objtool warning
-in arch/loongarch/kernel/machine_kexec.o:
+The stmpe_reg_read function can fail, but its return value is not checked
+in stmpe_gpio_irq_sync_unlock. This can lead to silent failures and
+incorrect behavior if the hardware access fails.
 
-  kexec_reboot() falls through to next function crash_shutdown_secondary()
+This patch adds checks for the return value of stmpe_reg_read. If the
+function fails, an error message is logged and the function returns
+early to avoid further issues.
 
-Avoid using unreachable() as it can (and will in the absence of UBSAN)
-generate fall-through code. Use BUG() so we get a "break BRK_BUG" trap
-(with unreachable annotation).
-
-Cc: stable@vger.kernel.org  # 6.12+
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: b888fb6f2a27 ("gpio: stmpe: i2c transfer are forbiden in atomic context")
+Cc: stable@vger.kernel.org # 4.16+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250212021849.275-1-vulab@iscas.ac.cn
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/machine_kexec.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-stmpe.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/kernel/machine_kexec.c
-+++ b/arch/loongarch/kernel/machine_kexec.c
-@@ -126,14 +126,14 @@ void kexec_reboot(void)
- 	/* All secondary cpus go to kexec_smp_wait */
- 	if (smp_processor_id() > 0) {
- 		relocated_kexec_smp_wait(NULL);
--		unreachable();
-+		BUG();
+--- a/drivers/gpio/gpio-stmpe.c
++++ b/drivers/gpio/gpio-stmpe.c
+@@ -191,7 +191,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		[REG_IE][CSB] = STMPE_IDX_IEGPIOR_CSB,
+ 		[REG_IE][MSB] = STMPE_IDX_IEGPIOR_MSB,
+ 	};
+-	int i, j;
++	int ret, i, j;
+ 
+ 	/*
+ 	 * STMPE1600: to be able to get IRQ from pins,
+@@ -199,8 +199,16 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 	 * GPSR or GPCR registers
+ 	 */
+ 	if (stmpe->partnum == STMPE1600) {
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_LSB: %d\n", ret);
++			goto err;
++		}
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_CSB: %d\n", ret);
++			goto err;
++		}
  	}
- #endif
  
- 	do_kexec = (void *)reboot_code_buffer;
- 	do_kexec(efi_boot, cmdline_ptr, systable_ptr, start_addr, first_ind_entry);
+ 	for (i = 0; i < CACHE_NR_REGS; i++) {
+@@ -222,6 +230,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		}
+ 	}
  
--	unreachable();
-+	BUG();
++err:
+ 	mutex_unlock(&stmpe_gpio->irq_lock);
  }
- 
  
 
 
