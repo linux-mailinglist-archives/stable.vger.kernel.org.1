@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5641A59D0F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39278A59F5A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B88383A538C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C15901883E53
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2BF232787;
-	Mon, 10 Mar 2025 17:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608D618DB24;
+	Mon, 10 Mar 2025 17:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLCx5TSr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWbEST92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF73D1A315A;
-	Mon, 10 Mar 2025 17:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB352253FE;
+	Mon, 10 Mar 2025 17:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626954; cv=none; b=MI0GcI/BQKPpAnURYOG2TYbMC4CNaanULLBFDjKs2PpOAdY+Z8WkBQVBPMr0qLmQHNgEGtFwEOZtHKEK4xgeOiBEiYGuQljPADsChDz7jTkckzd1pHCSSErdz2c9G5v2GpUSSAKnbfBZaW1wuR9Y/fDsI6gfcOaiAnTs4YhAcBM=
+	t=1741628372; cv=none; b=BkMtbW30TTYXYNBu14PuIQasoE3VWMT/WSCRxcag9cmclEDs3ccH/GnRV5c6cMkUbd19pjtH+x7UG+ypWYTXmUnPG8IGiVUepkaAH6/OUvzQwkvaXsD451bmQ50++9rhlPBknvZEXbgezCIubeeOqTOvylP1YbhMjZlpKiQnFPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626954; c=relaxed/simple;
-	bh=LaD7bg2VwSGTYa+Xf7/7LomptH3TYrx8RyW0y0fMXFw=;
+	s=arc-20240116; t=1741628372; c=relaxed/simple;
+	bh=VOYjjzaJ+6mYeZNcwSeS1j2E68YF1YReJqCLOoggVGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1mpoZpA4a7MEcChpwg6toE5Fv45rIxM+c4p1btT6YYy+tL4ZO5nyXoS7cwoDq6V1OgZ7GtumDpqxWk1tKjXvLxYSl1S+GlObuY/EeJVT7OO+x/o2xGtmlDD+iVyM3Hp9ZboX9VbM/B6Vo3Lk0xcweZiBhP2IHwUYXiF73JdrCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLCx5TSr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB9BC4CEE5;
-	Mon, 10 Mar 2025 17:15:54 +0000 (UTC)
+	 MIME-Version; b=By2KsMCAU589HObfe9nAseo9yIt+VZyTCsIhCOoIjgbBGpMwFwjOy5Hx4D4EWSKe+YuxY4Bv6tfxN3vYJ9tzbTZ+3Tzl3nouPJ+KI73KZOfTyEGh8eDZA6qoY9nZWSigghPi5GdMgmVjiuA/oxq8s9BAbG5/M+L/zlTstpSGVvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWbEST92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907B0C4CEE5;
+	Mon, 10 Mar 2025 17:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626954;
-	bh=LaD7bg2VwSGTYa+Xf7/7LomptH3TYrx8RyW0y0fMXFw=;
+	s=korg; t=1741628371;
+	bh=VOYjjzaJ+6mYeZNcwSeS1j2E68YF1YReJqCLOoggVGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLCx5TSrsspO1u/zev7IHUDMl9EingfBmIuLqMkhtb43vptg0VzHm8m4iCzCK4Rt8
-	 ulNSvNvUnehPvoFZZJ6JGyRYf97KZaRHAjaQaW1anUQGfP9UPsOtx5A4qY/vQbyWFg
-	 7T4hgxICCcV+o2GLiHJqyD5Oq1Xd5+9P3Hsy94wk=
+	b=LWbEST92pp5WJ1DLRhrsxzLe2AZ2BhiL8wTSfyafzP+zysVvk4U0nubNdXBwMc9WV
+	 xg36JaKs/NkHRyKxnlw17ppjHiNLHmQB7fiUZHPVqH7oMvEFHXj6bBeZTbOtvkxt+5
+	 xGmqtaqy56moj1h5dEl4h4WzjQiFNyTkRLj2i970=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.13 169/207] usb: gadget: Check bmAttributes only if configuration is valid
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 018/109] ALSA: hda/realtek: update ALC222 depop optimize
 Date: Mon, 10 Mar 2025 18:06:02 +0100
-Message-ID: <20250310170454.504999828@linuxfoundation.org>
+Message-ID: <20250310170428.274975696@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 8e812e9355a6f14dffd54a33d951ca403b9732f5 upstream.
+commit ca0dedaff92307591f66c9206933fbdfe87add10 upstream.
 
-If the USB configuration is not valid, then avoid checking for
-bmAttributes to prevent null pointer deference.
+Add ALC222 its own depop functions for alc_init and alc_shutup.
 
-Cc: stable <stable@kernel.org>
-Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250224085604.417327-1-prashanth.k@oss.qualcomm.com
+[note: this fixes pop noise issues on the models with two headphone
+ jacks -- tiwai ]
+
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |   76 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1051,7 +1051,7 @@ static int set_config(struct usb_composi
- 		usb_gadget_set_remote_wakeup(gadget, 0);
- done:
- 	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
--	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
-+	    (c && !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER)))
- 		usb_gadget_clear_selfpowered(gadget);
- 	else
- 		usb_gadget_set_selfpowered(gadget);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3831,6 +3831,79 @@ static void alc225_shutup(struct hda_cod
+ 	}
+ }
+ 
++static void alc222_init(struct hda_codec *codec)
++{
++	struct alc_spec *spec = codec->spec;
++	hda_nid_t hp_pin = alc_get_hp_pin(spec);
++	bool hp1_pin_sense, hp2_pin_sense;
++
++	if (!hp_pin)
++		return;
++
++	msleep(30);
++
++	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
++	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
++
++	if (hp1_pin_sense || hp2_pin_sense) {
++		msleep(2);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++
++		msleep(75);
++	}
++}
++
++static void alc222_shutup(struct hda_codec *codec)
++{
++	struct alc_spec *spec = codec->spec;
++	hda_nid_t hp_pin = alc_get_hp_pin(spec);
++	bool hp1_pin_sense, hp2_pin_sense;
++
++	if (!hp_pin)
++		hp_pin = 0x21;
++
++	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
++	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
++
++	if (hp1_pin_sense || hp2_pin_sense) {
++		msleep(2);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++	}
++	alc_auto_setup_eapd(codec, false);
++	alc_shutup_pins(codec);
++}
++
+ static void alc_default_init(struct hda_codec *codec)
+ {
+ 	struct alc_spec *spec = codec->spec;
+@@ -11111,8 +11184,11 @@ static int patch_alc269(struct hda_codec
+ 		spec->codec_variant = ALC269_TYPE_ALC300;
+ 		spec->gen.mixer_nid = 0; /* no loopback on ALC300 */
+ 		break;
++	case 0x10ec0222:
+ 	case 0x10ec0623:
+ 		spec->codec_variant = ALC269_TYPE_ALC623;
++		spec->shutup = alc222_shutup;
++		spec->init_hook = alc222_init;
+ 		break;
+ 	case 0x10ec0700:
+ 	case 0x10ec0701:
 
 
 
