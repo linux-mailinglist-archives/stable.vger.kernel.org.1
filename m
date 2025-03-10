@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-121897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE65A59CE6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0C1A59E1D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DF5F16F49F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5619A188B55C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C078A232363;
-	Mon, 10 Mar 2025 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A08723371B;
+	Mon, 10 Mar 2025 17:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaihwpzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txKb5qfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4BC230BF6;
-	Mon, 10 Mar 2025 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADC022CBED;
+	Mon, 10 Mar 2025 17:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626946; cv=none; b=ACTtIXib2j9QVurijASLm65w0q1WJhVA1CgLvuVNhykz8/9M8udyxxaWLs93gkWna1JPff61EwGeJ7ETj8WLSH3hWySY1fei/3xEi+OBy5+eppv0B0mJZHs/0AIPLmsN2aNHbgcWp8xI9KJ2VEAtIE3Njsi6Va4RIW7do2uMvLM=
+	t=1741627666; cv=none; b=tXx/AsVTk/aSk1guyLg84T3nxSFHECs5SEqTCeMVgc2GZgkBRILQHEDR7AEHDhZkm900QRToMgxNNvplEXAo3Hk2IkqxD3LkenZ4Fk9r9iG+1Vb7Q6cK1O+sYVLI2MUvijGUd1EnLPFXECb4pkse/nKXQIrwVYBJfVw5/n4qx6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626946; c=relaxed/simple;
-	bh=BsGxyUjsmFkx+xw3sFPSMOuAcgtSjTXrYa5HupjcIME=;
+	s=arc-20240116; t=1741627666; c=relaxed/simple;
+	bh=EqyBuRRlK/33dz9YPIrOP48IuTUm5jN88bk2iO3Cv8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnKaO038pvvQxvHhPvc4JBTPq43jn46qKvfx5oEZnGgR9TPWWRg1OAHuTxZGjT/txvsnFQWnqim4W1K3waYMv5rBZjzvLgl4ybXfpwK6KIPAT17ulW0AcQ2Uohx/77Hjcic27QSyExdojrqnoEqH7JcNX6dzF0EBKUHgpO6+TSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaihwpzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A672EC4CEED;
-	Mon, 10 Mar 2025 17:15:45 +0000 (UTC)
+	 MIME-Version; b=ZjHNPiJGVfvuM1bGvW1M0JWqBvftWmoZYc8hll+DzYTciWqPUYdsVE/uuqOAJ+h6OhUDAXpYlgt5A2Rdl3IZNODnh39GaWuL5BKBQZv6A82DQqiIKtQdVaKfKQlXxwUKapxW+K54OBhHE31GkrYdMeysLU82oJEfqpDz6RxHeWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txKb5qfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F738C4CEE5;
+	Mon, 10 Mar 2025 17:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626946;
-	bh=BsGxyUjsmFkx+xw3sFPSMOuAcgtSjTXrYa5HupjcIME=;
+	s=korg; t=1741627665;
+	bh=EqyBuRRlK/33dz9YPIrOP48IuTUm5jN88bk2iO3Cv8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uaihwpzWSuNf8FQvYDzKLnq1SMpXENdLMD572y1duQdEg+QZkE4A1qLKkQjHFHIVZ
-	 qjBwg1bb+zTcu3Nx2ppkDdin7MKlNd0GdBu78tXpRDPAiZW7lBdbN6iv+vFcb6ni8C
-	 EpyUrhMqngct6YIHW2nVpnmpFYmOQd9JlIotwxlA=
+	b=txKb5qfOoPCx1TcR1LhZgA3CzBBn4dELeGhcJFqG5jsaSpH4XlDYLqM4IxQAokRuT
+	 0aL3f3eAHwcp4OYgSFGnp62ZPJIwZB2ZH005R3YIOR9CFnzNaciK3jAnmC3FyQauwa
+	 3ppA1bbBwVMXZtZoyVPJIZLuHFtMiVRBavICmrqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.13 167/207] usb: gadget: Set self-powered based on MaxPower and bmAttributes
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.12 207/269] usb: renesas_usbhs: Call clk_put()
 Date: Mon, 10 Mar 2025 18:06:00 +0100
-Message-ID: <20250310170454.425346520@linuxfoundation.org>
+Message-ID: <20250310170505.948442329@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 40e89ff5750fca2c1d6da93f98a2038716bba86c upstream.
+commit b5ea08aa883da05106fcc683d12489a4292d1122 upstream.
 
-Currently the USB gadget will be set as bus-powered based solely
-on whether its bMaxPower is greater than 100mA, but this may miss
-devices that may legitimately draw less than 100mA but still want
-to report as bus-powered. Similarly during suspend & resume, USB
-gadget is incorrectly marked as bus/self powered without checking
-the bmAttributes field. Fix these by configuring the USB gadget
-as self or bus powered based on bmAttributes, and explicitly set
-it as bus-powered if it draws more than 100mA.
+Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
+clk_put() on priv->clks[0] on error path.
 
+Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
 Cc: stable <stable@kernel.org>
-Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250217120328.2446639-1-prashanth.k@oss.qualcomm.com
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1050,10 +1050,11 @@ static int set_config(struct usb_composi
- 	else
- 		usb_gadget_set_remote_wakeup(gadget, 0);
- done:
--	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
--		usb_gadget_set_selfpowered(gadget);
--	else
-+	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 		usb_gadget_clear_selfpowered(gadget);
-+	else
-+		usb_gadget_set_selfpowered(gadget);
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device
+ 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
+ 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
+ 		priv->clks[1] = NULL;
+-	else if (IS_ERR(priv->clks[1]))
++	else if (IS_ERR(priv->clks[1])) {
++		clk_put(priv->clks[0]);
+ 		return PTR_ERR(priv->clks[1]);
++	}
  
- 	usb_gadget_vbus_draw(gadget, power);
- 	if (result >= 0 && cdev->delayed_status)
-@@ -2615,7 +2616,9 @@ void composite_suspend(struct usb_gadget
- 
- 	cdev->suspended = 1;
- 
--	usb_gadget_set_selfpowered(gadget);
-+	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+		usb_gadget_set_selfpowered(gadget);
-+
- 	usb_gadget_vbus_draw(gadget, 2);
+ 	return 0;
  }
- 
-@@ -2649,8 +2652,11 @@ void composite_resume(struct usb_gadget
- 		else
- 			maxpower = min(maxpower, 900U);
- 
--		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW)
-+		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 			usb_gadget_clear_selfpowered(gadget);
-+		else
-+			usb_gadget_set_selfpowered(gadget);
- 
- 		usb_gadget_vbus_draw(gadget, maxpower);
- 	} else {
 
 
 
