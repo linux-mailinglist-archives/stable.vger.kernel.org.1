@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-121761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D6CA59C3B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280F7A59D78
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF4F83A6449
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 665AA16F4BA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3968230BDA;
-	Mon, 10 Mar 2025 17:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC864230BF0;
+	Mon, 10 Mar 2025 17:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxbN+1b3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gclCOwE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F53422D786;
-	Mon, 10 Mar 2025 17:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BC3230BD5;
+	Mon, 10 Mar 2025 17:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626552; cv=none; b=lqOMiiTLfykUG4wr35KEiH9gQrPbbkqh72jGIm7GG1AdWLbCgx/SQeNbDPtZabMBquU70A7zm2ZgOP8+WFrYMrSpHGrHATzADt2IX0ixMKbvipCMfPvrHmx0THeS/sj6J7eqXiLgV6abS/gROogqmWZLwTLXiWU+cndsXUPYna4=
+	t=1741627269; cv=none; b=PjxRMVV2MY3KU4CYt7VNOJeYBXx9nD+PWlCXRcw6rdZaVVrTi5Ze8hTmpZ8Eg9ovM0NtAjARwuLoP57Z9VglIUxM6gQmARCXiNsbgo1O+NPgXfRtY3nN4AkWroOwxpWBuZOQW9NCxUROPynROP2gXvy7Da1dWM7Kj16kqtA3XrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626552; c=relaxed/simple;
-	bh=GpfBPjqPUa+gY4qYBcq7tvky5tWRYyG0n6vPDD4pe9g=;
+	s=arc-20240116; t=1741627269; c=relaxed/simple;
+	bh=wU34VqXVSoarVmIkaPsPi5Razvjzu6zdHfByTKeWnF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikvN/a8SCVwdHpjgovccFMqcTOryEvYYNyz2SzQU+dPHmn2rd2k9FQA3V8iJuM19VONvl0GuXY438dkp7As+7RZ2NnjAbFcg63VvpfqhB8SeCSsDDuc/YBdl6C2LXIJhw1jUuW6dZXE5zof/AvMyz9icGPx5OnLO9sL6iJ7he6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxbN+1b3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60FFC4CEE5;
-	Mon, 10 Mar 2025 17:09:11 +0000 (UTC)
+	 MIME-Version; b=U/O0kuYqt46u5QjSA+WVibUPZz4nO5kreEvw7wW6HysBtRnGxUh0e3AGgRUZBdnYu++Pvbzt00BJghjPPUyPTmuzLKNtVv4xAg10L7PiUWRhCcdH075P5FF6Bdr7M1kaCOA33wJmy7En9jO8kzkWV+5xXj+XRHtQF2PK85FTXY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gclCOwE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB933C4CEE5;
+	Mon, 10 Mar 2025 17:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626552;
-	bh=GpfBPjqPUa+gY4qYBcq7tvky5tWRYyG0n6vPDD4pe9g=;
+	s=korg; t=1741627269;
+	bh=wU34VqXVSoarVmIkaPsPi5Razvjzu6zdHfByTKeWnF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxbN+1b3lp/2cyJ6pj5gocTsPrwwONuHaPFAEZIrVKgPLDPQM6xWgh2lRfrFKpgSf
-	 spGywlmbQx9XqTCWYcbuMzukHk2/4GO0OeBCC21yPrnfmUHYsXEfGCcDO9hq7LWLP1
-	 DyTy+EVH56/XwJ1udZS5WlgJbPPLtxtz/lFPnKw0=
+	b=gclCOwE7VZo+IDgB8NdaoEHJoiWxvpMk8fr65gpa7hCepeSbFm48faiDERFWF4px7
+	 TJPZwqPtQ79pgWlTxW3DNECidVEjgzF6v+m0poySCVmRI1CivDWc7s9KjqjzoAzXsr
+	 MfQqY4GpVcybmE+KfL+LEmUkPL+L4W9uxt++IIdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleh Nykyforchyn <oleh.nyk@gmail.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 004/207] smb311: failure to open files of length 1040 when mounting with SMB3.1.1 POSIX extensions
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 044/269] rust: alloc: add `Box` to prelude
 Date: Mon, 10 Mar 2025 18:03:17 +0100
-Message-ID: <20250310170447.926613061@linuxfoundation.org>
+Message-ID: <20250310170459.479412731@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 9df23801c83d3e12b4c09be39d37d2be385e52f9 ]
+commit e1044c2238f54ae5bd902cac6d12e48835df418b upstream.
 
-If a file size has bits 0x410 = ATTR_DIRECTORY | ATTR_REPARSE set
-then during queryinfo (stat) the file is regarded as a directory
-and subsequent opens can fail. A simple test example is trying
-to open any file 1040 bytes long when mounting with "posix"
-(SMB3.1.1 POSIX/Linux Extensions).
+Now that we removed `BoxExt` and the corresponding includes in
+prelude.rs, add the new kernel `Box` type instead.
 
-The cause of this bug is that Attributes field in smb2_file_all_info
-struct occupies the same place that EndOfFile field in
-smb311_posix_qinfo, and sometimes the latter struct is incorrectly
-processed as if it was the first one.
-
-Reported-by: Oleh Nykyforchyn <oleh.nyk@gmail.com>
-Tested-by: Oleh Nykyforchyn <oleh.nyk@gmail.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-15-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h  |  1 +
- fs/smb/client/reparse.h   | 28 ++++++++++++++++++++++------
- fs/smb/client/smb2inode.c |  4 ++++
- fs/smb/client/smb2ops.c   |  3 ++-
- 4 files changed, 29 insertions(+), 7 deletions(-)
+ rust/kernel/prelude.rs |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 3877b861529ea..37b7d84e26913 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -216,6 +216,7 @@ struct cifs_cred {
- struct cifs_open_info_data {
- 	bool adjust_tz;
- 	bool reparse_point;
-+	bool contains_posix_file_info;
- 	struct {
- 		/* ioctl response buffer */
- 		struct {
-diff --git a/fs/smb/client/reparse.h b/fs/smb/client/reparse.h
-index ff05b0e75c928..f080f92cb1e74 100644
---- a/fs/smb/client/reparse.h
-+++ b/fs/smb/client/reparse.h
-@@ -97,14 +97,30 @@ static inline bool reparse_inode_match(struct inode *inode,
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -14,7 +14,7 @@
+ #[doc(no_inline)]
+ pub use core::pin::Pin;
  
- static inline bool cifs_open_data_reparse(struct cifs_open_info_data *data)
- {
--	struct smb2_file_all_info *fi = &data->fi;
--	u32 attrs = le32_to_cpu(fi->Attributes);
-+	u32 attrs;
- 	bool ret;
+-pub use crate::alloc::{flags::*, vec_ext::VecExt, KBox, KVBox, VBox};
++pub use crate::alloc::{flags::*, vec_ext::VecExt, Box, KBox, KVBox, VBox};
  
--	ret = data->reparse_point || (attrs & ATTR_REPARSE);
--	if (ret)
--		attrs |= ATTR_REPARSE;
--	fi->Attributes = cpu_to_le32(attrs);
-+	if (data->contains_posix_file_info) {
-+		struct smb311_posix_qinfo *fi = &data->posix_fi;
-+
-+		attrs = le32_to_cpu(fi->DosAttributes);
-+		if (data->reparse_point) {
-+			attrs |= ATTR_REPARSE;
-+			fi->DosAttributes = cpu_to_le32(attrs);
-+		}
-+
-+	} else {
-+		struct smb2_file_all_info *fi = &data->fi;
-+
-+		attrs = le32_to_cpu(fi->Attributes);
-+		if (data->reparse_point) {
-+			attrs |= ATTR_REPARSE;
-+			fi->Attributes = cpu_to_le32(attrs);
-+		}
-+	}
-+
-+	ret = attrs & ATTR_REPARSE;
-+
- 	return ret;
- }
- 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 7dfd3eb3847b3..6048b3fed3e78 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -648,6 +648,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 		switch (cmds[i]) {
- 		case SMB2_OP_QUERY_INFO:
- 			idata = in_iov[i].iov_base;
-+			idata->contains_posix_file_info = false;
- 			if (rc == 0 && cfile && cfile->symlink_target) {
- 				idata->symlink_target = kstrdup(cfile->symlink_target, GFP_KERNEL);
- 				if (!idata->symlink_target)
-@@ -671,6 +672,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 			break;
- 		case SMB2_OP_POSIX_QUERY_INFO:
- 			idata = in_iov[i].iov_base;
-+			idata->contains_posix_file_info = true;
- 			if (rc == 0 && cfile && cfile->symlink_target) {
- 				idata->symlink_target = kstrdup(cfile->symlink_target, GFP_KERNEL);
- 				if (!idata->symlink_target)
-@@ -768,6 +770,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 				idata = in_iov[i].iov_base;
- 				idata->reparse.io.iov = *iov;
- 				idata->reparse.io.buftype = resp_buftype[i + 1];
-+				idata->contains_posix_file_info = false; /* BB VERIFY */
- 				rbuf = reparse_buf_ptr(iov);
- 				if (IS_ERR(rbuf)) {
- 					rc = PTR_ERR(rbuf);
-@@ -789,6 +792,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 		case SMB2_OP_QUERY_WSL_EA:
- 			if (!rc) {
- 				idata = in_iov[i].iov_base;
-+				idata->contains_posix_file_info = false;
- 				qi_rsp = rsp_iov[i + 1].iov_base;
- 				data[0] = (u8 *)qi_rsp + le16_to_cpu(qi_rsp->OutputBufferOffset);
- 				size[0] = le32_to_cpu(qi_rsp->OutputBufferLength);
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 793e9b2b79d6f..17c3063a9ca5b 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -1001,6 +1001,7 @@ static int smb2_query_file_info(const unsigned int xid, struct cifs_tcon *tcon,
- 		if (!data->symlink_target)
- 			return -ENOMEM;
- 	}
-+	data->contains_posix_file_info = false;
- 	return SMB2_query_info(xid, tcon, fid->persistent_fid, fid->volatile_fid, &data->fi);
- }
- 
-@@ -5150,7 +5151,7 @@ int __cifs_sfu_make_node(unsigned int xid, struct inode *inode,
- 			     FILE_CREATE, CREATE_NOT_DIR |
- 			     CREATE_OPTION_SPECIAL, ACL_NO_MODE);
- 	oparms.fid = &fid;
--
-+	idata.contains_posix_file_info = false;
- 	rc = server->ops->open(xid, &oparms, &oplock, &idata);
- 	if (rc)
- 		goto out;
--- 
-2.39.5
-
+ #[doc(no_inline)]
+ pub use alloc::vec::Vec;
 
 
 
