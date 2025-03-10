@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-121776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04ACAA59C41
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B81BBA5A187
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A446A18847BE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 649601893C6C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9282F234966;
-	Mon, 10 Mar 2025 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0187E22DFB1;
+	Mon, 10 Mar 2025 18:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0DJ2gYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhgRGeMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE07233738;
-	Mon, 10 Mar 2025 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22DF17A2E8;
+	Mon, 10 Mar 2025 18:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626596; cv=none; b=DPqpw9u2blrbDuveNQndAWhR3jQYlWopNSVsJmvNpob7g2Ovn1MD2vZMm4Jl8Ss9/X6/vEdAJo6HhKvxJoG/8iasMCGyjQgAn3U104gQoCcAuPidjuiiBUvtgi81S9uLrWCcxJXn5q3L5/P2Qa3CTkBp/YVww3YyGfGS1FRechw=
+	t=1741629724; cv=none; b=a/vkZOwm4+TlRZLf7kqbhHjvvGlR/QVv/b4c2wvy1Uq3PqOPgjgO89D99EkNwWevdK0bwLFCL31GkHzsQ3lSkRP89OOn9niUzulSkDSMV9GXOCG65KArupQ+lGCejTCGGW/BRZVE3AfoKIccedoQ+kEXMV2rkIdXlMmG9aNvqqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626596; c=relaxed/simple;
-	bh=m7LF5H1MOtIFA1Drof4t3+oYLkzZvQrJDw644Tra7b0=;
+	s=arc-20240116; t=1741629724; c=relaxed/simple;
+	bh=quL3eU30GturEgR8mp4HseT40csaM3+NZo12626fabc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wl+/4ok9cbZslet8SEu+fo5DL4tnF4sQvaxuO1ScTN20aF/VKJTqer6aGSuXvshBhD920J/Mo0zmCxVRRo0C9kApQyJ9TRf1cEXkdpPRDjBrU/Md8d6wZVD3KgQFR3My77STCSaUv+kGspPnIHWYYXHNlD2a6a60WqYQFYvFRao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0DJ2gYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EC7C4CEE5;
-	Mon, 10 Mar 2025 17:09:55 +0000 (UTC)
+	 MIME-Version; b=IITG2AI7Z4Y/28vPXHJmy2gKv5T6Yws2svLsArrC1Vlr66wtvu+oNU8JOh1d9wnHa7FXkJk1hJp/JDHZJy7byFl1RK9Yd9NTkt4oYgxyCRpqheLVTX9/39yA2TS81rnjBfyMTUyo/tg1Cj4aQSamXD86Cv5m/J7dN2v66Kv/if4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhgRGeMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39393C4CEE5;
+	Mon, 10 Mar 2025 18:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626596;
-	bh=m7LF5H1MOtIFA1Drof4t3+oYLkzZvQrJDw644Tra7b0=;
+	s=korg; t=1741629724;
+	bh=quL3eU30GturEgR8mp4HseT40csaM3+NZo12626fabc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N0DJ2gYQfBw/HASf6ANuNHti4dMP8fHDWuz4dcU4B4UYjUqQRhdlBtqLG8PfDsR5Y
-	 1mpf3a23xiISTz35hIuOT8iNGdqj9UCwXv4m9ZVWIBAlWtTr6y8eduQ2B8vaR7yo61
-	 TYr1CUqTs5Af9H4QGJY7yFmvhbkfVKf1uTsJYFC4=
+	b=RhgRGeMuF8AIdsMm7B1szG+rI2y7oW2ddk4voThTtlxpugGUxWK4z+Dq7L/jDNJ82
+	 Gzp7jyAr7ZXz/yPNIodr7GnM3i+iA/Zle6URdUEOCSWC2EVS1ila0c+RGda3gPPQur
+	 njh2NgJVBwxqsPZyXU7xvJexg1tP/0l2fWZs8T/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.13 047/207] x86/cpu: Properly parse CPUID leaf 0x2 TLB descriptor 0x63
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 394/620] net: add dev_net_rcu() helper
 Date: Mon, 10 Mar 2025 18:04:00 +0100
-Message-ID: <20250310170449.635971204@linuxfoundation.org>
+Message-ID: <20250310170601.145276440@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f6bdaab79ee4228a143ee1b4cb80416d6ffc0c63 upstream.
+[ Upstream commit 482ad2a4ace2740ca0ff1cbc8f3c7f862f3ab507 ]
 
-CPUID leaf 0x2's one-byte TLB descriptors report the number of entries
-for specific TLB types, among other properties.
+dev->nd_net can change, readers should either
+use rcu_read_lock() or RTNL.
 
-Typically, each emitted descriptor implies the same number of entries
-for its respective TLB type(s).  An emitted 0x63 descriptor is an
-exception: it implies 4 data TLB entries for 1GB pages and 32 data TLB
-entries for 2MB or 4MB pages.
+We currently use a generic helper, dev_net() with
+no debugging support. We probably have many hidden bugs.
 
-For the TLB descriptors parsing code, the entry count for 1GB pages is
-encoded at the intel_tlb_table[] mapping, but the 2MB/4MB entry count is
-totally ignored.
+Add dev_net_rcu() helper for callers using rcu_read_lock()
+protection.
 
-Update leaf 0x2's parsing logic 0x2 to account for 32 data TLB entries
-for 2MB/4MB pages implied by the 0x63 descriptor.
-
-Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-4-darwi@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: dd205fcc33d9 ("ipv4: use RCU protection in rt_is_expired()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/intel.c |   60 ++++++++++++++++++++++++++++----------------
- 1 file changed, 39 insertions(+), 21 deletions(-)
+ include/linux/netdevice.h   | 6 ++++++
+ include/net/net_namespace.h | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -640,26 +640,37 @@ static unsigned int intel_size_cache(str
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 829ebde5d50d5..79b528c128c14 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2454,6 +2454,12 @@ struct net *dev_net(const struct net_device *dev)
+ 	return read_pnet(&dev->nd_net);
  }
+ 
++static inline
++struct net *dev_net_rcu(const struct net_device *dev)
++{
++	return read_pnet_rcu(&dev->nd_net);
++}
++
+ static inline
+ void dev_net_set(struct net_device *dev, struct net *net)
+ {
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 0b6bea456fce6..ff9ecc76d622b 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -336,7 +336,7 @@ static inline struct net *read_pnet(const possible_net_t *pnet)
  #endif
+ }
  
--#define TLB_INST_4K	0x01
--#define TLB_INST_4M	0x02
--#define TLB_INST_2M_4M	0x03
--
--#define TLB_INST_ALL	0x05
--#define TLB_INST_1G	0x06
--
--#define TLB_DATA_4K	0x11
--#define TLB_DATA_4M	0x12
--#define TLB_DATA_2M_4M	0x13
--#define TLB_DATA_4K_4M	0x14
--
--#define TLB_DATA_1G	0x16
--
--#define TLB_DATA0_4K	0x21
--#define TLB_DATA0_4M	0x22
--#define TLB_DATA0_2M_4M	0x23
--
--#define STLB_4K		0x41
--#define STLB_4K_2M	0x42
-+#define TLB_INST_4K		0x01
-+#define TLB_INST_4M		0x02
-+#define TLB_INST_2M_4M		0x03
-+
-+#define TLB_INST_ALL		0x05
-+#define TLB_INST_1G		0x06
-+
-+#define TLB_DATA_4K		0x11
-+#define TLB_DATA_4M		0x12
-+#define TLB_DATA_2M_4M		0x13
-+#define TLB_DATA_4K_4M		0x14
-+
-+#define TLB_DATA_1G		0x16
-+#define TLB_DATA_1G_2M_4M	0x17
-+
-+#define TLB_DATA0_4K		0x21
-+#define TLB_DATA0_4M		0x22
-+#define TLB_DATA0_2M_4M		0x23
-+
-+#define STLB_4K			0x41
-+#define STLB_4K_2M		0x42
-+
-+/*
-+ * All of leaf 0x2's one-byte TLB descriptors implies the same number of
-+ * entries for their respective TLB types.  The 0x63 descriptor is an
-+ * exception: it implies 4 dTLB entries for 1GB pages 32 dTLB entries
-+ * for 2MB or 4MB pages.  Encode descriptor 0x63 dTLB entry count for
-+ * 2MB/4MB pages here, as its count for dTLB 1GB pages is already at the
-+ * intel_tlb_table[] mapping.
-+ */
-+#define TLB_0x63_2M_4M_ENTRIES	32
- 
- static const struct _tlb_table intel_tlb_table[] = {
- 	{ 0x01, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages, 4-way set associative" },
-@@ -681,7 +692,8 @@ static const struct _tlb_table intel_tlb
- 	{ 0x5c, TLB_DATA_4K_4M,		128,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x5d, TLB_DATA_4K_4M,		256,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x61, TLB_INST_4K,		48,	" TLB_INST 4 KByte pages, full associative" },
--	{ 0x63, TLB_DATA_1G,		4,	" TLB_DATA 1 GByte pages, 4-way set associative" },
-+	{ 0x63, TLB_DATA_1G_2M_4M,	4,	" TLB_DATA 1 GByte pages, 4-way set associative"
-+						" (plus 32 entries TLB_DATA 2 MByte or 4 MByte pages, not encoded here)" },
- 	{ 0x6b, TLB_DATA_4K,		256,	" TLB_DATA 4 KByte pages, 8-way associative" },
- 	{ 0x6c, TLB_DATA_2M_4M,		128,	" TLB_DATA 2 MByte or 4 MByte pages, 8-way associative" },
- 	{ 0x6d, TLB_DATA_1G,		16,	" TLB_DATA 1 GByte pages, fully associative" },
-@@ -781,6 +793,12 @@ static void intel_tlb_lookup(const unsig
- 		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
- 		break;
-+	case TLB_DATA_1G_2M_4M:
-+		if (tlb_lld_2m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_2m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		if (tlb_lld_4m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_4m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		fallthrough;
- 	case TLB_DATA_1G:
- 		if (tlb_lld_1g[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_1g[ENTRIES] = intel_tlb_table[k].entries;
+-static inline struct net *read_pnet_rcu(possible_net_t *pnet)
++static inline struct net *read_pnet_rcu(const possible_net_t *pnet)
+ {
+ #ifdef CONFIG_NET_NS
+ 	return rcu_dereference(pnet->net);
+-- 
+2.39.5
+
 
 
 
