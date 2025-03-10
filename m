@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A6BA59DA9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D36BAA5A18F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878B7188F211
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:23:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1403B173E5A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D791C5F1B;
-	Mon, 10 Mar 2025 17:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FEB22B8A5;
+	Mon, 10 Mar 2025 18:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6GD8Y9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFGj4E4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4166230BED;
-	Mon, 10 Mar 2025 17:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FEE2309B0;
+	Mon, 10 Mar 2025 18:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627399; cv=none; b=N++Dv1QAtyUNupRpMdh1iO0cbXxVDRDNdlaIidrwVyqqBFknHvUripM/s6Y3zTTRDUTPaGbgJx8YqTSI2R/t+TEZivxtWNy2muCpRnHwRBG4yQdQEowN7JhNDJj/UXar/aUz1fYePcfKLo/T3WIqauTnwlpeTJNYiW65cZuYTAg=
+	t=1741629749; cv=none; b=uZCCgjZttV5bi/NA+v2h7AacFTLvt9E+B2HYmsLonw5KTC5Eujd6NcXOKuyjJgfQOQguFnYFLw7NQl/XssCoVvr0taiEcpMSLsAF/zNgSZ7igTljEY0T3FLPDmJ0kgJ7PWuVnBgJgRN993MYCJIixu5oaJ+NHEGvSRz1u0J15AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627399; c=relaxed/simple;
-	bh=Ksyxk25XOLuB6+zVzHqKesxoUBqhVMYr8CSa19SNwNA=;
+	s=arc-20240116; t=1741629749; c=relaxed/simple;
+	bh=Gf2FFqi+wRlR2dDrrR9jdwhgJr/C0HMSpLYxh+JvhbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMFDymDYEa/unzOepBFsMgXO0gypNlG8EHbP2/0CZpENiU09+ezERW+7DXWy28YgmUpGT8q8KpOOIbf0IbFX4H5LXclxdDIKiqexcWIx6v2BdzcnXiOOfB0zzYB8wP9WoqL4M7MasJtMKu9/B3EWLnPLKriQcC5r8ODlLuTVGkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6GD8Y9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41AEC4CEE5;
-	Mon, 10 Mar 2025 17:23:18 +0000 (UTC)
+	 MIME-Version; b=jV0RhyhhwM9Aiw3QOBZtekKrYZlvDBoDhMRv5GZo5Lf+KXQualA6X78LdRbIqbiddt8iFdOgW1d/uQVeRPc0om8C3ZdWGo9y0oHMCoxfVDtg+tnRmvtMgsc8cBNcjPmSIVv8JZSOF69nfZKvsETQJRAQ70CKXGLv1o0vEiAGZYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFGj4E4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40036C4CEEC;
+	Mon, 10 Mar 2025 18:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627399;
-	bh=Ksyxk25XOLuB6+zVzHqKesxoUBqhVMYr8CSa19SNwNA=;
+	s=korg; t=1741629747;
+	bh=Gf2FFqi+wRlR2dDrrR9jdwhgJr/C0HMSpLYxh+JvhbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6GD8Y9oqZMo4R9nWi74yHYbEm3m8sRbB3GB+qHyyfcTjEenuzwHjv23ppHcGg03s
-	 OZM7cEBdFZuAFnoA8tnfznE/XxaXgY8EeMsi8asoJpXISpUtQdspPu2LnXzEWpKp90
-	 ASf/YxWrog/f89U3j1RqMHXRGHUusGaLAj9qTPzo=
+	b=oFGj4E4QfwBUhPKguvpk2biHIP2GyeEv+LsU+RLYwF6T9XONx1pfE7N2Ua1m4+tsi
+	 kKUC2i/QfJCGAKZliyE8JmiqhjYOjdHls56wrjEqON6A5tV7IlQC3Yaea698HzUkzY
+	 NVQGVQ4IhpUrxnK1tGHvYsQqr+jcSyLVdwVMGY2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 085/269] ksmbd: fix use-after-free in smb2_lock
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 392/620] ipv4: add RCU protection to ip4_dst_hoplimit()
 Date: Mon, 10 Mar 2025 18:03:58 +0100
-Message-ID: <20250310170501.106482037@linuxfoundation.org>
+Message-ID: <20250310170601.068023039@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 84d2d1641b71dec326e8736a749b7ee76a9599fc upstream.
+[ Upstream commit 469308552ca4560176cfc100e7ca84add1bebd7c ]
 
-If smb_lock->zero_len has value, ->llist of smb_lock is not delete and
-flock is old one. It will cause use-after-free on error handling
-routine.
+ip4_dst_hoplimit() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fa50d974d104 ("ipv4: Namespaceify ip_default_ttl sysctl knob")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/route.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7441,13 +7441,13 @@ out_check_cl:
- 		}
+diff --git a/include/net/route.h b/include/net/route.h
+index 30610101ea14f..036e3ee3b856b 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -357,10 +357,15 @@ static inline int inet_iif(const struct sk_buff *skb)
+ static inline int ip4_dst_hoplimit(const struct dst_entry *dst)
+ {
+ 	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
+-	struct net *net = dev_net(dst->dev);
  
- no_check_cl:
-+		flock = smb_lock->fl;
-+		list_del(&smb_lock->llist);
+-	if (hoplimit == 0)
++	if (hoplimit == 0) {
++		const struct net *net;
 +
- 		if (smb_lock->zero_len) {
- 			err = 0;
- 			goto skip;
- 		}
--
--		flock = smb_lock->fl;
--		list_del(&smb_lock->llist);
- retry:
- 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
- skip:
++		rcu_read_lock();
++		net = dev_net_rcu(dst->dev);
+ 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
++		rcu_read_unlock();
++	}
+ 	return hoplimit;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
