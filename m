@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707C2A59FB5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F24A5A2BF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEAF11710DC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E273B06C8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B3F230BD4;
-	Mon, 10 Mar 2025 17:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AB22356CF;
+	Mon, 10 Mar 2025 18:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyMDlSAl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1bA2Msg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFB222D4C3;
-	Mon, 10 Mar 2025 17:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F952309BD;
+	Mon, 10 Mar 2025 18:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628561; cv=none; b=GKaCX758j7CDzxdbeU+xo+x0tr2F6qKO8jBt+E6Jy8kXE6fXCG//5TtX+KBaV5n1XEpgbbfjUhXGRCR+un6bTzZrOJJwN5B01TtifF+2oSqPHlDw06m7l4WNQd/2IpeYQ2+yzv+GrphW7gziWOqhwl/f6PL8PVaS8yfcA0CGGKk=
+	t=1741630973; cv=none; b=gaANGthW7UhUYA73Uq66CV4TTIEladkBFBtIHWFw0wHlVzXBsyWxHnhvXp7omnUuiTFfFmptj034WRSGAEWQaBDNyKmko8FDBwQo6iHhzncadzBhVbXgLp+p6cwsFHZ44kbe6ftEScHz1XHcmwVQza/D43a+BbaXKEGMlkCek4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628561; c=relaxed/simple;
-	bh=jr1eb4A9dFrvoC2F7DEWC+Qn3iWPyTnwf2r9aSizjHA=;
+	s=arc-20240116; t=1741630973; c=relaxed/simple;
+	bh=ypxQHDDJNucihLED4dQ5zBuF6WQIG2cTFDhThzDzBpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYWZfRbEXoKRqxp45rtOYZEL3VxmFz3AcubB4aZq1sSNpcpmqpV2OuXPYApNi/jQLiaPQejR2mHxKOE8/qp0xq9oHHjCyuoWMlLeYHPFC/KCfMw+O8FZssfHYOxxita9sR3eykMqT4lc/5TbCpUTDDVJpodb/I7tVhygHBW2ssA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyMDlSAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6773C4CEE5;
-	Mon, 10 Mar 2025 17:42:40 +0000 (UTC)
+	 MIME-Version; b=JzOPWxozO7ORcD6jRAF6NC6Lan1CkH3q7H5adYswpZ30/wXHfvjk31V7UPC7b1UJx9Gc1MHwt3srXevAQ/UtLxsrZV2EHZ2pYvjACTCQDMATKpNvKROm3v5VGyVlTPiyS8A0aLJauho7mzRNcL6rt8ERI8Epy6ytZpQ9RcsvZXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1bA2Msg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB3DC4CEE5;
+	Mon, 10 Mar 2025 18:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628561;
-	bh=jr1eb4A9dFrvoC2F7DEWC+Qn3iWPyTnwf2r9aSizjHA=;
+	s=korg; t=1741630973;
+	bh=ypxQHDDJNucihLED4dQ5zBuF6WQIG2cTFDhThzDzBpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyMDlSAl4YK5S/BukoFC5/Pr/IpG55Oagg9IDbyjSR/cctlr5hWX/GhbZMBkL9M2/
-	 4vV022lJZ9LvwVZpXRolxN8FAbhkEyDf0kIp5AX7s2jbhqXd7HnN0ZdrvL1qgV60+F
-	 LcSp+Sgn1e06XtZjzHsbYRd+ehDt8ZuXn8N0IR7A=
+	b=E1bA2Msg2YEsWlcH/Y6FLHBJeKBvNUzHVH6e/hCoNFyJJY+CxDPLjPExg1YC7wdCu
+	 Ta0LPZltUGAOyuJ/RKjpKrB7y7GyPtQzPRk3PUqD1eEAl4HLacQsxa06mdF2No5pEN
+	 MAQRTac7Pzig2Ld1DmvZ7cwjWACcm9QT81TF2u7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 101/109] nilfs2: eliminate staggered calls to kunmap in nilfs_rename
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.15 599/620] intel_th: pci: Add Panther Lake-H support
 Date: Mon, 10 Mar 2025 18:07:25 +0100
-Message-ID: <20250310170431.577551426@linuxfoundation.org>
+Message-ID: <20250310170609.178855787@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit 8cf57c6df818f58fdad16a909506be213623a88e upstream.
+commit a70034d6c0d5f3cdee40bb00a578e17fd2ebe426 upstream.
 
-In nilfs_rename(), calls to nilfs_put_page() to release pages obtained
-with nilfs_find_entry() or nilfs_dotdot() are alternated in the normal
-path.
+Add support for the Trace Hub in Panther Lake-H.
 
-When replacing the kernel memory mapping method from kmap to
-kmap_local_{page,folio}, this violates the constraint on the calling order
-of kunmap_local().
-
-Swap the order of nilfs_put_page calls where the kmap sections of multiple
-pages overlap so that they are nested, allowing direct replacement of
-nilfs_put_page() -> unmap_and_put_page().
-
-Without this reordering, that replacement will cause a kernel WARNING in
-kunmap_local_indexed() on architectures with high memory mapping.
-
-Link: https://lkml.kernel.org/r/20231127143036.2425-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20250211185017.1759193-5-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/namei.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -431,13 +431,14 @@ static int nilfs_rename(struct user_name
- 	old_inode->i_ctime = current_time(old_inode);
- 
- 	nilfs_delete_entry(old_de, old_page);
--	nilfs_put_page(old_page);
- 
- 	if (dir_de) {
- 		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
- 		nilfs_put_page(dir_page);
- 		drop_nlink(old_dir);
- 	}
-+	nilfs_put_page(old_page);
-+
- 	nilfs_mark_inode_dirty(old_dir);
- 	nilfs_mark_inode_dirty(old_inode);
- 
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -335,6 +335,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Panther Lake-H */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xe324),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
