@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC039A5A174
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0C6A59C39
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9D6F173B10
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 926E23A8A59
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4629D22DFB1;
-	Mon, 10 Mar 2025 18:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB25230BED;
+	Mon, 10 Mar 2025 17:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zt2KqWpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSMv7faG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0116C17A2E8;
-	Mon, 10 Mar 2025 18:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC3F2309B6;
+	Mon, 10 Mar 2025 17:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629673; cv=none; b=a2+EBvS54swyjYU2NpvOtkPmxbEf2NbZWKZoJ3NFW/UuAepDZqeBFzRxCu7e2Dt6roC4wkjfwcs00j4+jJE6ZVOTHQdgGSFvKqHR5Z6xCY5u9HLFxGr9AW0EHA/RfyoOcpZhmsLXWEJhWUR+eta2ZLq4QfHHk1pwjojYgoo3LkE=
+	t=1741626547; cv=none; b=QoQ93Gbfl0pEsfyAjeCUjMiMhj8JhszEkd+Mt8LAsNSan/FAlHV4UOVAmkTFRtJ8fcHbY7mGN2DnEFNSxg1+aryKXLq5xl7H2uW9zD0E0kVXEra7QiJKJdENFUmYWWrukxp+sc2WVXOsPoOn86S7XO7H88yrEH4Qzcou0ceB7Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629673; c=relaxed/simple;
-	bh=S0PQgpNEJj39cUCbPag7YvUc4gXFPtc2W6xU3x8FKXI=;
+	s=arc-20240116; t=1741626547; c=relaxed/simple;
+	bh=+KqfaAwSLXdizpGFb8Zelyh1Mvt4EOk9dzBLdt3rnVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=It9XAKlHlyEEfyrUJXxtBute8MDYhijMYULjb0/gbMGIn+/qhHHqafELP7QQGDe3dWcLbdlHnqebwdH04yD80On0k7gUSW0i9XA0gYi5PtDcsjOHffPbmwhpyUlDcDGYiwOGRkD5zdAss05xdXzV2v25DO+2tcnkGxYwe9oReDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zt2KqWpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1EEC4CEE5;
-	Mon, 10 Mar 2025 18:01:12 +0000 (UTC)
+	 MIME-Version; b=hk4+Ukx1aOrHeRGEbioZr18R2mUGHlvG1SoCCrDlv+3IDBtkXfOyoN8CR24WQAO0OF+R4txv/iP1R/RWmq9KyF80yR6ZrNEU/NvAhcuaVISDnEOhF9R+baq+uC1PlpDCvtHEobqQmRD80Mn8gVjJDZHtRF04MoG/aHXmDbKSpEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSMv7faG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D9BC4CEE5;
+	Mon, 10 Mar 2025 17:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629672;
-	bh=S0PQgpNEJj39cUCbPag7YvUc4gXFPtc2W6xU3x8FKXI=;
+	s=korg; t=1741626546;
+	bh=+KqfaAwSLXdizpGFb8Zelyh1Mvt4EOk9dzBLdt3rnVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zt2KqWpVs8107Z0UPQapR/g+1Hmh1v5y87gyn0Aj96xSslDIMIw/vvfhrug+BL4EN
-	 Z1eRQ9YX/QM5r6rpM6wXUQjT/e2bhguEGyYCEjm5axD4PtJmR5GRW2DqaTjWbQBhV4
-	 43xKtJRKSOPPuYvaBud+GxXfQp7RJGUz1yC+eTv4=
+	b=FSMv7faGi0cxPzBtRIseVH04hLPq0RqmF8GmyomToYb4pkPZXpU0hIODvGSVyEfUa
+	 n18RzLBIxPGlaf/tRGCWLVfzJIWjgW763n3iW0Xt0Gje0bn80ZL/jGmaRkdVeV7nVR
+	 +txdOzTQzRXlKnfngp1Tmn2LUhxko1DdDvTThxCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 375/620] USB: serial: option: drop MeiG Smart defines
-Date: Mon, 10 Mar 2025 18:03:41 +0100
-Message-ID: <20250310170600.401501308@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 029/207] ALSA: hda/realtek: update ALC222 depop optimize
+Date: Mon, 10 Mar 2025 18:03:42 +0100
+Message-ID: <20250310170448.931420768@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 6aa8a63c471eb6756aabd03f880feffe6a7af6c9 upstream.
+commit ca0dedaff92307591f66c9206933fbdfe87add10 upstream.
 
-Several MeiG Smart modems apparently use the same product id, making the
-defines even less useful.
+Add ALC222 its own depop functions for alc_init and alc_shutup.
 
-Drop them in favour of using comments consistently to make the id table
-slightly less unwieldy.
+[note: this fixes pop noise issues on the models with two headphone
+ jacks -- tiwai ]
 
-Cc: stable@vger.kernel.org
-Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |   28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+ sound/pci/hda/patch_realtek.c |   76 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -619,18 +619,6 @@ static void option_instat_callback(struc
- /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
- #define LUAT_PRODUCT_AIR720U			0x4e00
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3845,6 +3845,79 @@ static void alc225_shutup(struct hda_cod
+ 	}
+ }
  
--/* MeiG Smart Technology products */
--#define MEIGSMART_VENDOR_ID			0x2dee
--/*
-- * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
-- * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
-- */
--#define MEIGSMART_PRODUCT_SRM825L		0x4d22
--/* MeiG Smart SLM320 based on UNISOC UIS8910 */
--#define MEIGSMART_PRODUCT_SLM320		0x4d41
--/* MeiG Smart SLM770A based on ASR1803 */
--#define MEIGSMART_PRODUCT_SLM770A		0x4d57
--
- /* Device flags */
- 
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2366,6 +2354,14 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
-@@ -2422,14 +2418,6 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
- 	  .driver_info = NCTRL(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
++static void alc222_init(struct hda_codec *codec)
++{
++	struct alc_spec *spec = codec->spec;
++	hda_nid_t hp_pin = alc_get_hp_pin(spec);
++	bool hp1_pin_sense, hp2_pin_sense;
++
++	if (!hp_pin)
++		return;
++
++	msleep(30);
++
++	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
++	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
++
++	if (hp1_pin_sense || hp2_pin_sense) {
++		msleep(2);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++
++		msleep(75);
++	}
++}
++
++static void alc222_shutup(struct hda_codec *codec)
++{
++	struct alc_spec *spec = codec->spec;
++	hda_nid_t hp_pin = alc_get_hp_pin(spec);
++	bool hp1_pin_sense, hp2_pin_sense;
++
++	if (!hp_pin)
++		hp_pin = 0x21;
++
++	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
++	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
++
++	if (hp1_pin_sense || hp2_pin_sense) {
++		msleep(2);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++	}
++	alc_auto_setup_eapd(codec, false);
++	alc_shutup_pins(codec);
++}
++
+ static void alc_default_init(struct hda_codec *codec)
+ {
+ 	struct alc_spec *spec = codec->spec;
+@@ -11888,8 +11961,11 @@ static int patch_alc269(struct hda_codec
+ 		spec->codec_variant = ALC269_TYPE_ALC300;
+ 		spec->gen.mixer_nid = 0; /* no loopback on ALC300 */
+ 		break;
++	case 0x10ec0222:
+ 	case 0x10ec0623:
+ 		spec->codec_variant = ALC269_TYPE_ALC623;
++		spec->shutup = alc222_shutup;
++		spec->init_hook = alc222_init;
+ 		break;
+ 	case 0x10ec0700:
+ 	case 0x10ec0701:
 
 
 
