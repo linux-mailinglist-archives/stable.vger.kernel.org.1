@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6028AA59F89
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CD9A59E7B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4A5616E027
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7D83AA2F4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F0522D7A6;
-	Mon, 10 Mar 2025 17:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F88C233716;
+	Mon, 10 Mar 2025 17:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2p8yyQ8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyLsd/N3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF8618DB24;
-	Mon, 10 Mar 2025 17:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0B123237B;
+	Mon, 10 Mar 2025 17:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628462; cv=none; b=e/lAiPZD0f5z0o1XP8Lc6mJcjEF+VeorBAx45rliwXoFLKmAGyy/uyTdfiYkFWIP/q9gywJOPshCUKtjbzGpm50jbVuLooKOWypS1BBz1fJ7Ehm6kLf72eiWS0VB3KvRT3AFTIMBBPW4dFL0g1Q9rU5pd3FWnsTBiSxPZ1yO3YU=
+	t=1741627809; cv=none; b=vBRM6g7rNjWH7BNmQbXbkLA1GuS6v3MfooxJ7CnI6ve9IzwFWFZorurRAnWRjAZy+P144tlnkeLH5oNkXKqxiWqeNNYL978QG/ID5XrJu+bkDYQq0S9XQjiWlkcfpOWLKEZLn/RQcraXN2KpRHkGVbCywpqN47ZFSJVMZdcIed0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628462; c=relaxed/simple;
-	bh=fhrpq1IWht6thd5YMuAQho0iZO+vEj+m+CQO9tPrvJM=;
+	s=arc-20240116; t=1741627809; c=relaxed/simple;
+	bh=Lvk2fZdBptajIl8ZQ/212GVphBd8KB/4kzNxlrYIkRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXRoNwVdCSxsTADNJSxCbe7FEkJin87b6rjCOijNYX/HJvSabNwhCe0KKpHVRD19KSom+LjeA4EN3jCxGLDv+qoWW4mK+aZFJl+Dox3DfU7nIedbNQ+l2G9wyqvu8+5MkLVJK5KtMY6pLf5sRsWcUu+cw5/7+/4b9DkrM5H36OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2p8yyQ8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDE1C4CEE5;
-	Mon, 10 Mar 2025 17:41:01 +0000 (UTC)
+	 MIME-Version; b=ODwr54vKkK4XnHEGLO9gSV0yJo49c9/gryVQfGCRR0CHsAK9DosVCf9hm9BeVCqkt5gXhUYqVoFp/4QzLWD9CCrVVmCTZQwjbJmPd3oauIZcvigB2AV6Glji6Yf1aBoqVy8xBQukJ1WhXgR/TRasPMuK3LHvSPgPj+ptKDB2Abk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyLsd/N3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437AEC4CEE5;
+	Mon, 10 Mar 2025 17:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628462;
-	bh=fhrpq1IWht6thd5YMuAQho0iZO+vEj+m+CQO9tPrvJM=;
+	s=korg; t=1741627809;
+	bh=Lvk2fZdBptajIl8ZQ/212GVphBd8KB/4kzNxlrYIkRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2p8yyQ8+PyJ1MDJ7MTZE3p2z3WI/9FSNRXPcbPLpFbZF1lJLGyDsC7wwSXQ+X3yPj
-	 tKUhftskMVZw6Jg3uiqSnuLmB6Zz68xxlexYQYJmuq44c8cO+wZzEMft96Ji7Xh7wd
-	 krlXkQUViQbI6OxO72kCXK9xWXUEkUaw2dkk+A8Q=
+	b=NyLsd/N303BoeB8M+Jjnu3ViEygD0L9j7GQlBL6R7loQsmwcrMMfjvM/OCO03VHfW
+	 Y15Du0GBYm7Ole3arONqT+j8WoLJ7MI0AFuQHZGs/t2jR2GYZnOeDUR1BjiBfBmlvG
+	 8Ha+9hts6w1Y6e40xV3QlsTInvpVljAbVTZ31ek4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Li <limiao@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 067/109] usb: quirks: Add DELAY_INIT and NO_LPM for Prolific Mass Storage Card Reader
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 258/269] kbuild: hdrcheck: fix cross build with clang
 Date: Mon, 10 Mar 2025 18:06:51 +0100
-Message-ID: <20250310170430.231389741@linuxfoundation.org>
+Message-ID: <20250310170508.075008581@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit ff712188daa3fe3ce7e11e530b4dca3826dae14a upstream.
+[ Upstream commit 02e9a22ceef0227175e391902d8760425fa072c6 ]
 
-When used on Huawei hisi platforms, Prolific Mass Storage Card Reader
-which the VID:PID is in 067b:2731 might fail to enumerate at boot time
-and doesn't work well with LPM enabled, combination quirks:
-	USB_QUIRK_DELAY_INIT + USB_QUIRK_NO_LPM
-fixed the problems.
+The headercheck tries to call clang with a mix of compiler arguments
+that don't include the target architecture. When building e.g. x86
+headers on arm64, this produces a warning like
 
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250304070757.139473-1-limiao870622@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   clang: warning: unknown platform, assuming -mfloat-abi=soft
+
+Add in the KBUILD_CPPFLAGS, which contain the target, in order to make it
+build properly.
+
+See also 1b71c2fb04e7 ("kbuild: userprogs: fix bitsize and target
+detection on clang").
+
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ usr/include/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -341,6 +341,10 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0638, 0x0a13), .driver_info =
- 	  USB_QUIRK_STRING_FETCH_255 },
+diff --git a/usr/include/Makefile b/usr/include/Makefile
+index 771e32872b2ab..58173cfe5ff17 100644
+--- a/usr/include/Makefile
++++ b/usr/include/Makefile
+@@ -10,7 +10,7 @@ UAPI_CFLAGS := -std=c90 -Wall -Werror=implicit-function-declaration
  
-+	/* Prolific Single-LUN Mass Storage Card Reader */
-+	{ USB_DEVICE(0x067b, 0x2731), .driver_info = USB_QUIRK_DELAY_INIT |
-+	  USB_QUIRK_NO_LPM },
-+
- 	/* Saitek Cyborg Gold Joystick */
- 	{ USB_DEVICE(0x06a3, 0x0006), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+ # In theory, we do not care -m32 or -m64 for header compile tests.
+ # It is here just because CONFIG_CC_CAN_LINK is tested with -m32 or -m64.
+-UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
++UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+ 
+ # USERCFLAGS might contain sysroot location for CC.
+ UAPI_CFLAGS += $(USERCFLAGS)
+-- 
+2.39.5
+
 
 
 
