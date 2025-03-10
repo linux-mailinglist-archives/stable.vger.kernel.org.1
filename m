@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A3FA59C9D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADD7A59E07
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349CC1886AA8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BEE53AA091
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D0F230BE6;
-	Mon, 10 Mar 2025 17:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DA3233716;
+	Mon, 10 Mar 2025 17:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjKUJKQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1hnTlfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E32322B8D0;
-	Mon, 10 Mar 2025 17:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535CA233700;
+	Mon, 10 Mar 2025 17:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626836; cv=none; b=FR2F80MUlYBJycvO0OaTzp5opskOXXF8UDbLsD/rAtU448N8+/anaHcVVp9PBi+uA5cMk95JvmYcsabPKNVCXbicrGujhuPilOltLY0MYc0S7jpToCN+iPwrESpwRmhUhUKYSRYJYWLDmELq5QhwNR8Jcoeof3BhShD1RqGLQ4c=
+	t=1741627555; cv=none; b=W56ZuKaChAnt8lyhtXFstViPEVuOsyQpoGL7TdEI7slbDtfzm5xrpHDkjpmXyXULNRNtnw9AXf23f6rFrrDQJK2eSSk1RTZ3alIeEOgUVcdAt3S1o+DwbOUWyb7q6CPxylqHqPSlLTL+BiEmRmlFqqS4NlGV7RingXWt3mTLs/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626836; c=relaxed/simple;
-	bh=xt0ZVZ1kjwR66raahd7fS5Mq0HTdaikm/tCj56G1Eho=;
+	s=arc-20240116; t=1741627555; c=relaxed/simple;
+	bh=s5Ty1FrENfhxl/CL0WM7pDOSp+DMG4YASZlo/sOKuto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQZa+S0I7TTmzaJRLlU+vd5sVdrfF66hwDDy7H0szh9A1KFhqMhtSTLgR/3H6u2+j5lv+PC9uwE6RTVOMFXlN1Hxa3suiiB/QH79biSv35i9toMnb7v0xRvFmHoe2K7aLaBHiHLkeoX7j92k3KrrygzVN0rkADCI2Mt636HqAEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjKUJKQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE384C4CEE5;
-	Mon, 10 Mar 2025 17:13:55 +0000 (UTC)
+	 MIME-Version; b=YAGHnBT5FTj/rNrXBQmHhVXUBIItlIVhOc2fpsIGYyYVCDZDJz3jQTufaMu+4fFnP2zVYwb9xXI56heXoI151ssO/+ZNvRnWliti/8tfFGdh5Q9LBPngf4mLEv0QAHBlFzsqWN00yr4tmXCx+ddAnbkUEbecp6GUyfWkaUnPksc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1hnTlfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCCAC4CEE5;
+	Mon, 10 Mar 2025 17:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626836;
-	bh=xt0ZVZ1kjwR66raahd7fS5Mq0HTdaikm/tCj56G1Eho=;
+	s=korg; t=1741627555;
+	bh=s5Ty1FrENfhxl/CL0WM7pDOSp+DMG4YASZlo/sOKuto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjKUJKQwx3oY1f1AnJUsvFwNnsegc5fywpXlrqIZ8ywMK4eMDkOo8xlkrjgp2EbUG
-	 6g18PygcaxALKfqafNlyGLdO598hAh1z+FyLTNQzkvWED+Dd1ZEPIOa8Ccredaf/ub
-	 u2/SNCl3sDSl4A26JmbIqueH7mbog8ecOgFftKpo=
+	b=N1hnTlfmk4FEZ/eI1HSssEAnD+AGZ3iAnLIcRfyULoZlmtMIRm4NgtB57Yz1970Em
+	 fY3gof0vMdrtQULQf+Zbsg3FxttuzGQCtdCd/z+noDUGSQfwrNKbcKXPHkcfPOGq0Q
+	 e82qons+Ip/XBACS8iYqUNiuK5A6aFUWQQIhMJ8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Alex Elder <elder@riscstar.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 129/207] net: ipa: Fix v4.7 resource group names
+Subject: [PATCH 6.12 169/269] perf/core: Fix pmus_lock vs. pmus_srcu ordering
 Date: Mon, 10 Mar 2025 18:05:22 +0100
-Message-ID: <20250310170452.932132152@linuxfoundation.org>
+Message-ID: <20250310170504.455428815@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 5eb3dc1396aa7e315486b24df80df782912334b7 ]
+[ Upstream commit 2565e42539b120b81a68a58da961ce5d1e34eac8 ]
 
-In the downstream IPA driver there's only one group defined for source
-and destination, and the destination group doesn't have a _DPL suffix.
+Commit a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
+placed pmus_lock inside pmus_srcu, this makes perf_pmu_unregister()
+trip lockdep.
 
-Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Alex Elder <elder@riscstar.com>
-Link: https://patch.msgid.link/20250227-ipa-v4-7-fixes-v1-1-a88dd8249d8a@fairphone.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Move the locking about such that only pmu_idr and pmus (list) are
+modified while holding pmus_lock. This avoids doing synchronize_srcu()
+while holding pmus_lock and all is well again.
+
+Fixes: a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20241104135517.679556858@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/data/ipa_data-v4.7.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ kernel/events/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
-index c8c23d9be961b..7e315779e6648 100644
---- a/drivers/net/ipa/data/ipa_data-v4.7.c
-+++ b/drivers/net/ipa/data/ipa_data-v4.7.c
-@@ -28,12 +28,10 @@ enum ipa_resource_type {
- enum ipa_rsrc_group_id {
- 	/* Source resource group identifiers */
- 	IPA_RSRC_GROUP_SRC_UL_DL			= 0,
--	IPA_RSRC_GROUP_SRC_UC_RX_Q,
- 	IPA_RSRC_GROUP_SRC_COUNT,	/* Last in set; not a source group */
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index a0e1d2124727e..5fff74c736063 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11846,6 +11846,8 @@ void perf_pmu_unregister(struct pmu *pmu)
+ {
+ 	mutex_lock(&pmus_lock);
+ 	list_del_rcu(&pmu->entry);
++	idr_remove(&pmu_idr, pmu->type);
++	mutex_unlock(&pmus_lock);
  
- 	/* Destination resource group identifiers */
--	IPA_RSRC_GROUP_DST_UL_DL_DPL			= 0,
--	IPA_RSRC_GROUP_DST_UNUSED_1,
-+	IPA_RSRC_GROUP_DST_UL_DL			= 0,
- 	IPA_RSRC_GROUP_DST_COUNT,	/* Last; not a destination group */
- };
+ 	/*
+ 	 * We dereference the pmu list under both SRCU and regular RCU, so
+@@ -11855,7 +11857,6 @@ void perf_pmu_unregister(struct pmu *pmu)
+ 	synchronize_rcu();
  
-@@ -81,7 +79,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
- 		},
- 		.endpoint = {
- 			.config = {
--				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
-+				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
- 				.aggregation	= true,
- 				.status_enable	= true,
- 				.rx = {
-@@ -128,7 +126,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
- 		},
- 		.endpoint = {
- 			.config = {
--				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
-+				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
- 				.qmap		= true,
- 				.aggregation	= true,
- 				.rx = {
-@@ -197,12 +195,12 @@ static const struct ipa_resource ipa_resource_src[] = {
- /* Destination resource configuration data for an SoC having IPA v4.7 */
- static const struct ipa_resource ipa_resource_dst[] = {
- 	[IPA_RESOURCE_TYPE_DST_DATA_SECTORS] = {
--		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
-+		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
- 			.min = 7,	.max = 7,
- 		},
- 	},
- 	[IPA_RESOURCE_TYPE_DST_DPS_DMARS] = {
--		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
-+		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
- 			.min = 2,	.max = 2,
- 		},
- 	},
+ 	free_percpu(pmu->pmu_disable_count);
+-	idr_remove(&pmu_idr, pmu->type);
+ 	if (pmu_bus_running && pmu->dev && pmu->dev != PMU_NULL_DEV) {
+ 		if (pmu->nr_addr_filters)
+ 			device_remove_file(pmu->dev, &dev_attr_nr_addr_filters);
+@@ -11863,7 +11864,6 @@ void perf_pmu_unregister(struct pmu *pmu)
+ 		put_device(pmu->dev);
+ 	}
+ 	free_pmu_context(pmu);
+-	mutex_unlock(&pmus_lock);
+ }
+ EXPORT_SYMBOL_GPL(perf_pmu_unregister);
+ 
 -- 
 2.39.5
 
