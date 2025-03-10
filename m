@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0D2A59E68
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D761A59F82
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5945C3ABBA5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724FF3A916A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0171A233731;
-	Mon, 10 Mar 2025 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0EC23026D;
+	Mon, 10 Mar 2025 17:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ar6YnfNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnyRAcgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18CC23372B;
-	Mon, 10 Mar 2025 17:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7AB2253FE;
+	Mon, 10 Mar 2025 17:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627752; cv=none; b=F9XKb0l47pbZcVA+gJR6XJbnL+ydVL8D94ABvLyroxG1XHJ1BNwh5nwF3seSjwrMQUF2D7sWM18J02LQHZCfSR2ieAwl7hLqjcK4xeJKMYtmtnvApkyjwyusEkFo40W8ZK44jiRWsxdhHI/GscBPVFKnssYmWTojnSCfy8G2dtY=
+	t=1741628406; cv=none; b=VY/wRvT2O1NTSzLIsY2MAEE+irXkx/0XFhOhVCM40ktVjswVXLbyAeouREVjyJ4AruYdMn5RljI4rZlE2xRNUntDYgW0tkknwVlZ3NPwTC0bbOQU8aW7gMNXfRJ4w/Y/wrohdOVyNfldwRUZpo4OjbY6Hkr4wEx+0uzEB6VGl40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627752; c=relaxed/simple;
-	bh=zQIig8y4PsNpB79LSA9qqS8FSPZIc6uGI70w9EFAgMA=;
+	s=arc-20240116; t=1741628406; c=relaxed/simple;
+	bh=x5E/7FViincD7Icb3re6PuZbXR227b7eHl5lw/KNldo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpkXzfFBVl4xyN3mVOG4nvm8r2pnmo7tqDunLvgqFtx5q15UDZudokysP3xeVAUvbE1OLY+jpEp4vLMack38NTQRJV7Bnrb7ZNKSbaEGsvu1r5AVFF5liG3ucJ+6uXX7dZN1JEOTlJ9pbSrJU7SK33GkPq8NXu+r2wVYAt1VgQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ar6YnfNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B1CC4CEED;
-	Mon, 10 Mar 2025 17:29:11 +0000 (UTC)
+	 MIME-Version; b=CeaqprCbebj52ZDw/quunbdlPClBxfUS7Lel3+6LwNF7T8AUprMyZF/xDG7o6Msz/GMk2g7ZfjxNgAMgQW2TSbapfYAlNIDVsDUcT+HE/BC9aeSSdjhbfNalKqWm0HF58e79hnCG44Aqo/FJOqz1xo5eR2JiU9Jdq/sQB+UIyts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnyRAcgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32600C4CEE5;
+	Mon, 10 Mar 2025 17:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627752;
-	bh=zQIig8y4PsNpB79LSA9qqS8FSPZIc6uGI70w9EFAgMA=;
+	s=korg; t=1741628406;
+	bh=x5E/7FViincD7Icb3re6PuZbXR227b7eHl5lw/KNldo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ar6YnfNytIHrZdAmpb1VqzYjg88xvuC4meW8yvRl93me9pysXmbqkSbtE6bjxm1OF
-	 8TWq5jmd1bOz9U6NUZJVJwOG8kQdrkICzHUaHo1jQiThvlf4QGGBUae4d4tHPpUkVP
-	 gU6P+VtWgBRuqJJL/vzNkGyfH73ZzYoaZy81/y2A=
+	b=MnyRAcgxuauhFVYRM26Zap7ESoAdt3f48bEox2kVqCmew2My7gfDduGSx6bxA0TX6
+	 fRpfYF2wrjmvZHpmBOjZQ65Zftc2P53bdG5B9YvpG2NW+IH3coSQjFu3PPvQGhJWls
+	 Te+0xrnhjnZoaaKFaWU7K2yYPi+a2/wR8J8tKAuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Qiu-ji Chen <chenqiuji666@gmail.com>
-Subject: [PATCH 6.12 237/269] cdx: Fix possible UAF error in driver_override_show()
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 046/109] hwmon: (ad7314) Validate leading zero bits and return error
 Date: Mon, 10 Mar 2025 18:06:30 +0100
-Message-ID: <20250310170507.130186508@linuxfoundation.org>
+Message-ID: <20250310170429.397487108@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-commit 91d44c1afc61a2fec37a9c7a3485368309391e0b upstream.
+[ Upstream commit e278d5e8aef4c0a1d9a9fa8b8910d713a89aa800 ]
 
-Fixed a possible UAF problem in driver_override_show() in drivers/cdx/cdx.c
+Leading zero bits are sent on the bus before the temperature value is
+transmitted. If any of these bits are high, the connection might be
+unstable or there could be no AD7314 / ADT730x (or compatible) at all.
+Return -EIO in that case.
 
-This function driver_override_show() is part of DEVICE_ATTR_RW, which
-includes both driver_override_show() and driver_override_store().
-These functions can be executed concurrently in sysfs.
-
-The driver_override_store() function uses driver_set_override() to
-update the driver_override value, and driver_set_override() internally
-locks the device (device_lock(dev)). If driver_override_show() reads
-cdx_dev->driver_override without locking, it could potentially access
-a freed pointer if driver_override_store() frees the string
-concurrently. This could lead to printing a kernel address, which is a
-security risk since DEVICE_ATTR can be read by all users.
-
-Additionally, a similar pattern is used in drivers/amba/bus.c, as well
-as many other bus drivers, where device_lock() is taken in the show
-function, and it has been working without issues.
-
-This potential bug was detected by our experimental static analysis
-tool, which analyzes locking APIs and paired functions to identify
-data races and atomicity violations.
-
-Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Link: https://lore.kernel.org/r/20250118070833.27201-1-chenqiuji666@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Fixes: 4f3a659581cab ("hwmon: AD7314 driver (ported from IIO)")
+Link: https://lore.kernel.org/r/24a50c2981a318580aca8f50d23be7987b69ea00.camel@iris-sensing.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cdx/cdx.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hwmon/ad7314.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/cdx/cdx.c
-+++ b/drivers/cdx/cdx.c
-@@ -470,8 +470,12 @@ static ssize_t driver_override_show(stru
- 				    struct device_attribute *attr, char *buf)
- {
- 	struct cdx_device *cdx_dev = to_cdx_device(dev);
-+	ssize_t len;
+diff --git a/drivers/hwmon/ad7314.c b/drivers/hwmon/ad7314.c
+index 7802bbf5f9587..59424103f6348 100644
+--- a/drivers/hwmon/ad7314.c
++++ b/drivers/hwmon/ad7314.c
+@@ -22,11 +22,13 @@
+  */
+ #define AD7314_TEMP_MASK		0x7FE0
+ #define AD7314_TEMP_SHIFT		5
++#define AD7314_LEADING_ZEROS_MASK	BIT(15)
  
--	return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
+ /*
+  * ADT7301 and ADT7302 temperature masks
+  */
+ #define ADT7301_TEMP_MASK		0x3FFF
++#define ADT7301_LEADING_ZEROS_MASK	(BIT(15) | BIT(14))
  
+ enum ad7314_variant {
+ 	adt7301,
+@@ -65,12 +67,20 @@ static ssize_t ad7314_temperature_show(struct device *dev,
+ 		return ret;
+ 	switch (spi_get_device_id(chip->spi_dev)->driver_data) {
+ 	case ad7314:
++		if (ret & AD7314_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		data = (ret & AD7314_TEMP_MASK) >> AD7314_TEMP_SHIFT;
+ 		data = sign_extend32(data, 9);
+ 
+ 		return sprintf(buf, "%d\n", 250 * data);
+ 	case adt7301:
+ 	case adt7302:
++		if (ret & ADT7301_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		/*
+ 		 * Documented as a 13 bit twos complement register
+ 		 * with a sign bit - which is a 14 bit 2's complement
+-- 
+2.39.5
+
 
 
 
