@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B956A59FC8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3A1A5A2C9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96563A79A0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791953B0BEE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E09223702;
-	Mon, 10 Mar 2025 17:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44189235BF5;
+	Mon, 10 Mar 2025 18:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSm2HJQK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfOmZAPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F27222172E;
-	Mon, 10 Mar 2025 17:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016D4235BF0;
+	Mon, 10 Mar 2025 18:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628564; cv=none; b=mjDkhI6UBwU6GmXwMIry8YRCE5vC2hGA2M/D8HEvhcm/QXQltCAZWf7KmTk4A74xhl4mVTZg+ICALH1/IF3iLfczOFb54ZtZtVZcjRqnZYNgm6TtL78sFDXB2lAi3vZpi0hs4Ub3RmJZxphLw402FjpUoKS12Rd/Uxfk3z4cQL8=
+	t=1741630980; cv=none; b=jLI1inz80CWXUXbIGQ4S6gAaSNgwwa08yM+q/1AQ02/6lBtYgsAGuAGLQAhIb3Ow0a+S5Qu/jikXlkaV+aDm/zhQvxiPoimBdGEbSxV9VR70CRXloVa60Astuj+gPxNBAgGG45qaOq8ujMlGN7CWVTKOAiShbec33JkG/mlMfsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628564; c=relaxed/simple;
-	bh=jNIyuZFGI9RgvLf51aKaPwMfQV8KUZHdQl7DIcfeeLA=;
+	s=arc-20240116; t=1741630980; c=relaxed/simple;
+	bh=bOlqvrSHISM8I+sjq+a68epRZMZsD0wmjvDN7wVSIII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmk2mZ8xni3kt048ppDyTdTmn5PiHIl/sNrHNA+ZR4uVBBlCoyCKizkZTfkCbvzHW6Cq4quWvpmqhiEMFAemJqvv83JEzFjqRu2Q3P3DQsPMQjkhWKq4c0H8ImJ+ym4yoJw4ntIC7gjeL4ff9vrA/bVVkHA1pqX9qGM23+NFlvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSm2HJQK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908DEC4CEE5;
-	Mon, 10 Mar 2025 17:42:43 +0000 (UTC)
+	 MIME-Version; b=mLA/Mdk4VMLhdHiKs6r93OrjxIzljvIek7GrHGxpJd0s+lFdC764lZK82EXIBwKFYcsEV72SGFEU12/+J2F9fyz55jKvcVg8GKrJ1dCIvZyZxLmRvp6Xp6Bqlgo7hkQ+Kc616d8S40tGwYXaYlLnC/+gi/Hjs/AKevJYnTu2B8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfOmZAPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD88C4CEEC;
+	Mon, 10 Mar 2025 18:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628563;
-	bh=jNIyuZFGI9RgvLf51aKaPwMfQV8KUZHdQl7DIcfeeLA=;
+	s=korg; t=1741630979;
+	bh=bOlqvrSHISM8I+sjq+a68epRZMZsD0wmjvDN7wVSIII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSm2HJQKOU7wC8gEuIWKXeIUG7gou86gk+ZJr8hFCUh2+BfHO7ajJEVuLG8PGSO9W
-	 HYwOi/XZGVD5sqi6RnRXMOVZa+Poqoa3XeB8/wx48iV93xXdGImyu+XaiZMpnuzsnZ
-	 vXVGSbG+HdLqaPJ6vPkAfwa70aJAAHxSNVzXx7+M=
+	b=TfOmZAPASaUPocEhQZHH5+N1mThU4ClpakZg4xIndREmVQhMZ3TRlwdehvWFV4ywn
+	 ZgMZlB/tB+KKmtc1OD/eKipf5bIpVxTydcYKcctHOA3NPZZ1+8/IastVGHi6J33984
+	 yqgA24lToVj0+tDS+TIff1sg6ThMwtKzgdUlf03c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com,
-	syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 102/109] nilfs2: handle errors that nilfs_prepare_chunk() may return
-Date: Mon, 10 Mar 2025 18:07:26 +0100
-Message-ID: <20250310170431.616890777@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Visweswara Tanuku <quic_vtanuku@quicinc.com>
+Subject: [PATCH 5.15 601/620] slimbus: messaging: Free transaction ID in delayed interrupt scenario
+Date: Mon, 10 Mar 2025 18:07:27 +0100
+Message-ID: <20250310170609.256049698@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Visweswara Tanuku <quic_vtanuku@quicinc.com>
 
-commit ee70999a988b8abc3490609142f50ebaa8344432 upstream.
+commit dcb0d43ba8eb9517e70b1a0e4b0ae0ab657a0e5a upstream.
 
-Patch series "nilfs2: fix issues with rename operations".
+In case of interrupt delay for any reason, slim_do_transfer()
+returns timeout error but the transaction ID (TID) is not freed.
+This results into invalid memory access inside
+qcom_slim_ngd_rx_msgq_cb() due to invalid TID.
 
-This series fixes BUG_ON check failures reported by syzbot around rename
-operations, and a minor behavioral issue where the mtime of a child
-directory changes when it is renamed instead of moved.
+Fix the issue by freeing the TID in slim_do_transfer() before
+returning timeout error to avoid invalid memory access.
 
+Call trace:
+__memcpy_fromio+0x20/0x190
+qcom_slim_ngd_rx_msgq_cb+0x130/0x290 [slim_qcom_ngd_ctrl]
+vchan_complete+0x2a0/0x4a0
+tasklet_action_common+0x274/0x700
+tasklet_action+0x28/0x3c
+_stext+0x188/0x620
+run_ksoftirqd+0x34/0x74
+smpboot_thread_fn+0x1d8/0x464
+kthread+0x178/0x238
+ret_from_fork+0x10/0x20
+Code: aa0003e8 91000429 f100044a 3940002b (3800150b)
+---[ end trace 0fe00bec2b975c99 ]---
+Kernel panic - not syncing: Oops: Fatal exception in interrupt.
 
-This patch (of 2):
-
-The directory manipulation routines nilfs_set_link() and
-nilfs_delete_entry() rewrite the directory entry in the folio/page
-previously read by nilfs_find_entry(), so error handling is omitted on the
-assumption that nilfs_prepare_chunk(), which prepares the buffer for
-rewriting, will always succeed for these.  And if an error is returned, it
-triggers the legacy BUG_ON() checks in each routine.
-
-This assumption is wrong, as proven by syzbot: the buffer layer called by
-nilfs_prepare_chunk() may call nilfs_get_block() if necessary, which may
-fail due to metadata corruption or other reasons.  This has been there all
-along, but improved sanity checks and error handling may have made it more
-reproducible in fuzzing tests.
-
-Fix this issue by adding missing error paths in nilfs_set_link(),
-nilfs_delete_entry(), and their caller nilfs_rename().
-
-Link: https://lkml.kernel.org/r/20250111143518.7901-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250111143518.7901-2-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=32c3706ebf5d95046ea1
-Reported-by: syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1097e95f134f37d9395c
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: afbdcc7c384b ("slimbus: Add messaging APIs to slimbus framework")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Visweswara Tanuku <quic_vtanuku@quicinc.com>
+Link: https://lore.kernel.org/r/20250124125740.16897-1-quic_vtanuku@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c   |   13 ++++++++++---
- fs/nilfs2/namei.c |   29 +++++++++++++++--------------
- fs/nilfs2/nilfs.h |    4 ++--
- 3 files changed, 27 insertions(+), 19 deletions(-)
+ drivers/slimbus/messaging.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -444,7 +444,7 @@ int nilfs_inode_by_name(struct inode *di
- 	return 0;
- }
- 
--void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
- 		    struct page *page, struct inode *inode)
- {
- 	unsigned int from = (char *)de - (char *)page_address(page);
-@@ -454,11 +454,15 @@ void nilfs_set_link(struct inode *dir, s
- 
- 	lock_page(page);
- 	err = nilfs_prepare_chunk(page, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		unlock_page(page);
-+		return err;
-+	}
- 	de->inode = cpu_to_le64(inode->i_ino);
- 	nilfs_set_de_type(de, inode);
- 	nilfs_commit_chunk(page, mapping, from, to);
- 	dir->i_mtime = dir->i_ctime = current_time(dir);
-+	return 0;
- }
- 
- /*
-@@ -590,7 +594,10 @@ int nilfs_delete_entry(struct nilfs_dir_
- 		from = (char *)pde - (char *)page_address(page);
- 	lock_page(page);
- 	err = nilfs_prepare_chunk(page, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		unlock_page(page);
-+		goto out;
-+	}
- 	if (pde)
- 		pde->rec_len = nilfs_rec_len_to_disk(to - from);
- 	dir->inode = 0;
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -406,8 +406,10 @@ static int nilfs_rename(struct user_name
- 			err = PTR_ERR(new_de);
- 			goto out_dir;
- 		}
--		nilfs_set_link(new_dir, new_de, new_page, old_inode);
-+		err = nilfs_set_link(new_dir, new_de, new_page, old_inode);
- 		nilfs_put_page(new_page);
-+		if (unlikely(err))
-+			goto out_dir;
- 		nilfs_mark_inode_dirty(new_dir);
- 		new_inode->i_ctime = current_time(new_inode);
- 		if (dir_de)
-@@ -430,28 +432,27 @@ static int nilfs_rename(struct user_name
- 	 */
- 	old_inode->i_ctime = current_time(old_inode);
- 
--	nilfs_delete_entry(old_de, old_page);
--
--	if (dir_de) {
--		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
--		nilfs_put_page(dir_page);
--		drop_nlink(old_dir);
-+	err = nilfs_delete_entry(old_de, old_page);
-+	if (likely(!err)) {
-+		if (dir_de) {
-+			err = nilfs_set_link(old_inode, dir_de, dir_page,
-+					     new_dir);
-+			drop_nlink(old_dir);
-+		}
-+		nilfs_mark_inode_dirty(old_dir);
+--- a/drivers/slimbus/messaging.c
++++ b/drivers/slimbus/messaging.c
+@@ -147,8 +147,9 @@ int slim_do_transfer(struct slim_control
  	}
--	nilfs_put_page(old_page);
+ 
+ 	ret = ctrl->xfer_msg(ctrl, txn);
 -
--	nilfs_mark_inode_dirty(old_dir);
- 	nilfs_mark_inode_dirty(old_inode);
+-	if (!ret && need_tid && !txn->msg->comp) {
++	if (ret == -ETIMEDOUT) {
++		slim_free_txn_tid(ctrl, txn);
++	} else if (!ret && need_tid && !txn->msg->comp) {
+ 		unsigned long ms = txn->rl + HZ;
  
--	err = nilfs_transaction_commit(old_dir->i_sb);
--	return err;
--
- out_dir:
- 	if (dir_de)
- 		nilfs_put_page(dir_page);
- out_old:
- 	nilfs_put_page(old_page);
- out:
--	nilfs_transaction_abort(old_dir->i_sb);
-+	if (likely(!err))
-+		err = nilfs_transaction_commit(old_dir->i_sb);
-+	else
-+		nilfs_transaction_abort(old_dir->i_sb);
- 	return err;
- }
- 
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -240,8 +240,8 @@ nilfs_find_entry(struct inode *, const s
- extern int nilfs_delete_entry(struct nilfs_dir_entry *, struct page *);
- extern int nilfs_empty_dir(struct inode *);
- extern struct nilfs_dir_entry *nilfs_dotdot(struct inode *, struct page **);
--extern void nilfs_set_link(struct inode *, struct nilfs_dir_entry *,
--			   struct page *, struct inode *);
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+		   struct page *page, struct inode *inode);
- 
- static inline void nilfs_put_page(struct page *page)
- {
+ 		timeout = wait_for_completion_timeout(txn->comp,
 
 
 
