@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-122589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815BAA5A05D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85506A5A034
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5FE1890E88
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:48:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5696E1891733
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4863617CA12;
-	Mon, 10 Mar 2025 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD87230BFA;
+	Mon, 10 Mar 2025 17:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSdm6fUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRfgAtSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B06230BF9;
-	Mon, 10 Mar 2025 17:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A461C3F34;
+	Mon, 10 Mar 2025 17:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628928; cv=none; b=Dw9Zu5IjZOdmdsTAk+q8HdegEzl9uKF6cNdwAG7+XsTBifqRR2tI0DFHpbcMO+40M8Sq1WXMqDCcGpffZ0z4+RpftKKYr1ulCHHhIm47/mGFUZReNWu4o/4Sk5md+XfTfgD6BK/cQ5kVomR9QyddzdfQkayYfiIoIjZ3k66dZ2A=
+	t=1741628833; cv=none; b=srTR4ra4xgDuB2fB9IxmKsRhghKcFcC2LIoX/tyfoktR2lIoBcaTg6JU+Y8Qbe3J7OG2R0UnDtC37Vl/KmXTAiwboUthG9f0YHFoKcoXDV/Gh4EhZsff6TMKgNjmpIbK9yR1g8IJwfkmI3aIzPXpYzAxt5EIz/VJK59uWU7WEZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628928; c=relaxed/simple;
-	bh=PuB0hZDH/bA16TpHl7k/P33bFPNhJl5yuWYejE+j1JU=;
+	s=arc-20240116; t=1741628833; c=relaxed/simple;
+	bh=Zv7XqXC4YxQhi/pe8CbC53IyyRwi0eqNzFB0VM4pxuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfEjOxZz9SH5dvEfOsERQMwOkn/g8TWFep86kriykxz+zz04eFy89BZUDmqQsQ1yr+TVP41A1Jkkb4EGAeQ9oJ6wAzrT5CeA7omqgqtds5GbkrWD/LX0nV+3mX9kvrdTVPfGJHC0yt12Obwc1RQYz2CdCFh03GPxgipUwhyF6oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSdm6fUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B015C4CEE5;
-	Mon, 10 Mar 2025 17:48:47 +0000 (UTC)
+	 MIME-Version; b=lunncOUJkgz8hxbWdvT8i92/GqQbhAkkOolDtwd2SgE3/h/WvwXb82U5tgxEZYm76m5WZRhyQmmvWiseXNaLkSoc4gZC2SfFtfT6hIt+eCaLXUkIOJFI9r9NhORI0bKDDb85wMIWMtTjd8hWKQRVOQZnk0fyaoKQ4r8ReI/iRvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRfgAtSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A44C4CEE5;
+	Mon, 10 Mar 2025 17:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628927;
-	bh=PuB0hZDH/bA16TpHl7k/P33bFPNhJl5yuWYejE+j1JU=;
+	s=korg; t=1741628832;
+	bh=Zv7XqXC4YxQhi/pe8CbC53IyyRwi0eqNzFB0VM4pxuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSdm6fUiaqyn+7352pj2o7kVe9KqxJupRsOcKUB7o2eEo1SRmdOyO72GEbFZocO5h
-	 uwuFyVJz3F05yKG1RNv5W9tlq3PrUlNly7VkxgKM1iL074BPIlyX0pI7qFBov/K1HK
-	 4tOutKTk/g45bbcR6dXXgeciZyyUnQtpKHe1FIbg=
+	b=PRfgAtSOkEpf5m9qViZDiFXiwgxCV5LSxUADSI9KxB6CGI9K6VYyTipEGnypILFit
+	 vR62WQZs3gZLOGln4IBUw6HrAvmhcPsxgOHaQNjrhNhYoL6p0sJpkDaRj5CjBBmbgJ
+	 JpHTm8MKpe/18SB21Oh+TXvX4ORyBaEv86JYgsMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marco Leogrande <leogrande@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/620] net/rose: prevent integer overflows in rose_setsockopt()
-Date: Mon, 10 Mar 2025 17:58:42 +0100
-Message-ID: <20250310170548.585273209@linuxfoundation.org>
+Subject: [PATCH 5.15 077/620] tools/testing/selftests/bpf/test_tc_tunnel.sh: Fix wait for server bind
+Date: Mon, 10 Mar 2025 17:58:43 +0100
+Message-ID: <20250310170548.623309419@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,88 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Marco Leogrande <leogrande@google.com>
 
-[ Upstream commit d640627663bfe7d8963c7615316d7d4ef60f3b0b ]
+[ Upstream commit e2f0791124a1b6ca8d570110cbd487969d9d41ef ]
 
-In case of possible unpredictably large arguments passed to
-rose_setsockopt() and multiplied by extra values on top of that,
-integer overflows may occur.
+Commit f803bcf9208a ("selftests/bpf: Prevent client connect before
+server bind in test_tc_tunnel.sh") added code that waits for the
+netcat server to start before the netcat client attempts to connect to
+it. However, not all calls to 'server_listen' were guarded.
 
-Do the safest minimum and fix these issues by checking the
-contents of 'opt' and returning -EINVAL if they are too large. Also,
-switch to unsigned int and remove useless check for negative 'opt'
-in ROSE_IDLE case.
+This patch adds the existing 'wait_for_port' guard after the remaining
+call to 'server_listen'.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250115164220.19954-1-n.zhandarovich@fintech.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f803bcf9208a ("selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh")
+Signed-off-by: Marco Leogrande <leogrande@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/r/20241202204530.1143448-1-leogrande@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/af_rose.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tools/testing/selftests/bpf/test_tc_tunnel.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 1d95ff34b13c9..65fd5b99f9dea 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -396,15 +396,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
- {
- 	struct sock *sk = sock->sk;
- 	struct rose_sock *rose = rose_sk(sk);
--	int opt;
-+	unsigned int opt;
+diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+index 38c6e9f16f41e..88488779792ff 100755
+--- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
++++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+@@ -295,6 +295,7 @@ else
+ 	client_connect
+ 	verify_data
+ 	server_listen
++	wait_for_port ${port} ${netcat_opt}
+ fi
  
- 	if (level != SOL_ROSE)
- 		return -ENOPROTOOPT;
- 
--	if (optlen < sizeof(int))
-+	if (optlen < sizeof(unsigned int))
- 		return -EINVAL;
- 
--	if (copy_from_sockptr(&opt, optval, sizeof(int)))
-+	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
- 		return -EFAULT;
- 
- 	switch (optname) {
-@@ -413,31 +413,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
- 		return 0;
- 
- 	case ROSE_T1:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t1 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_T2:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t2 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_T3:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t3 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_HOLDBACK:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->hb = opt * HZ;
- 		return 0;
- 
- 	case ROSE_IDLE:
--		if (opt < 0)
-+		if (opt > UINT_MAX / (60 * HZ))
- 			return -EINVAL;
- 		rose->idle = opt * 60 * HZ;
- 		return 0;
+ # bpf_skb_net_shrink does not take tunnel flags yet, cannot update L3.
 -- 
 2.39.5
 
