@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-121976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B518EA59D48
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010DEA5A156
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C7C188CE54
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D5717252E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF07230BFC;
-	Mon, 10 Mar 2025 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656F6230BD4;
+	Mon, 10 Mar 2025 17:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFNzjw3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pu39aOwy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9F518DB24;
-	Mon, 10 Mar 2025 17:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F6A227EA0;
+	Mon, 10 Mar 2025 17:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627173; cv=none; b=P5Y7sovuY3SIy5BCrDkHKH055pvISyKkJ3cgBKSSf77AA1mF2OGqR19NvZq97BiMZC5NlhqIxaYmA7gmN/ITRYbqrFePRGEel6Zc6JXkIXou06vh28SwyUV4EyZ+uOo3/IRPUhOnUZz5xUh9r53sF4apRXUXUGFmC2BBZ6rMVbs=
+	t=1741629583; cv=none; b=W6z6mtgL9GwQh/zvQnSBHM0TN6JnkuIIgqsBcbPUKBrGY7VuQBhCaKNuM6ygEoHfJnPduhAIHPnwn8P/7fcvDgbdG2rDnMTkzR5SP4Fx8+K9NQfmSspCDATlWgrQHEu7tUF7tDjTai5nYemLTi+iEy2cEL/hg+vzG2u1+9HaKpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627173; c=relaxed/simple;
-	bh=nN8JNFtlDE3lheQhPQUelGBhTCDE42KiMurAnIiRIiE=;
+	s=arc-20240116; t=1741629583; c=relaxed/simple;
+	bh=deopAUv+XEOj+YBdHxoGlgs+q+1TYXWtUqwQ/yFgQ6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5xg/VinC+0Agit+fd4LX3Of2QkHyZP5DxdbpUTPoEQZuEize6OkXg0iIPGUuBzVSziRPKicIAWlKBD6DT8SB1a7fSPKJ/dEbzX/H4rsz5Ne5HRsceTcUR4xpEL4NO1tZG1kB5ji+Ch2Q1JsA/kNDsU8FRuZqBztYEoViTd5ySw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFNzjw3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DC0C4CEE5;
-	Mon, 10 Mar 2025 17:19:33 +0000 (UTC)
+	 MIME-Version; b=fY/pTbfRL61joM4+qGlGx2lGVFmp3Va32pTIvP4fEO0A1zxVthzWEGAM0Z9NZqYKtGN1pNl0iAX+NRVTy0f9BduGecFbV0oCh9Z45ICR83PabQIs8Fg13gHhp2E1OxUhzS14PiZx6hatWE3DbOkJNpW8AH162qR0ofRmsxVhtrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pu39aOwy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAB0C4CEE5;
+	Mon, 10 Mar 2025 17:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627173;
-	bh=nN8JNFtlDE3lheQhPQUelGBhTCDE42KiMurAnIiRIiE=;
+	s=korg; t=1741629583;
+	bh=deopAUv+XEOj+YBdHxoGlgs+q+1TYXWtUqwQ/yFgQ6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFNzjw3QLq0BqduHMgjKtpemuUwUUje8U9SRNrysk2o+Chx4b/ZEVQ853ZvThYQJr
-	 pvgAA1v/6+0788/Bl+Kv4DAs6r9rZ+7d52L8PkcU0Gb9FWWKHmu2dwtN6skdWiwlGM
-	 T632xkS5qlYUs9B1dOx5qet/hT9U13ULvekEcjRY=
+	b=Pu39aOwy7c+plhJt2xOj3OTZId01RpMAhHBKWLNRk5mP9xQJmBbgwFqgpz5VEk/8v
+	 GFkZzfEp1FU/kUHBSys25sCrKzDt3Gsc99rkzBQvAP91UovgQbMc27d85ryz/MIXsB
+	 dtlgh8z2aXxG5VfQECGHumUBNobg3gli0z0kGiAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 037/269] rust: alloc: add module `allocator_test`
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 344/620] gpio: bcm-kona: Make sure GPIO bits are unlocked when requesting IRQ
 Date: Mon, 10 Mar 2025 18:03:10 +0100
-Message-ID: <20250310170459.198285127@linuxfoundation.org>
+Message-ID: <20250310170559.191271348@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +65,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-commit 5a888c28e3b4ff6f54a53fca33951537d135e7f1 upstream.
+[ Upstream commit 57f5db77a915cc29461a679a6bcae7097967be1a ]
 
-`Allocator`s, such as `Kmalloc`, will be used by e.g. `Box` and `Vec` in
-subsequent patches, and hence this dependency propagates throughout the
-whole kernel.
+The settings for all GPIOs are locked by default in bcm_kona_gpio_reset.
+The settings for a GPIO are unlocked when requesting it as a GPIO, but
+not when requesting it as an interrupt, causing the IRQ settings to not
+get applied.
 
-Add the `allocator_test` module that provides an empty implementation
-for all `Allocator`s in the kernel, such that we don't break the
-`rusttest` make target in subsequent patches.
+Fix this by making sure to unlock the right bits when an IRQ is requested.
+To avoid a situation where an IRQ being released causes a lock despite
+the same GPIO being used by a GPIO request or vice versa, add an unlock
+counter and only lock if it reaches 0.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-8-dakr@kernel.org
-[ Added missing `_old_layout` parameter as discussed. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 757651e3d60e ("gpio: bcm281xx: Add GPIO driver")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Markus Mayer <mmayer@broadcom.com>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-2-409135eab780@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/alloc.rs                |    9 +++++++--
- rust/kernel/alloc/allocator_test.rs |   20 ++++++++++++++++++++
- 2 files changed, 27 insertions(+), 2 deletions(-)
- create mode 100644 rust/kernel/alloc/allocator_test.rs
+ drivers/gpio/gpio-bcm-kona.c | 67 +++++++++++++++++++++++++++++-------
+ 1 file changed, 55 insertions(+), 12 deletions(-)
 
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -2,12 +2,17 @@
+diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
+index c83968384904e..4734749b90860 100644
+--- a/drivers/gpio/gpio-bcm-kona.c
++++ b/drivers/gpio/gpio-bcm-kona.c
+@@ -76,6 +76,22 @@ struct bcm_kona_gpio {
+ struct bcm_kona_gpio_bank {
+ 	int id;
+ 	int irq;
++	/*
++	 * Used to keep track of lock/unlock operations for each GPIO in the
++	 * bank.
++	 *
++	 * All GPIOs are locked by default (see bcm_kona_gpio_reset), and the
++	 * unlock count for all GPIOs is 0 by default. Each unlock increments
++	 * the counter, and each lock decrements the counter.
++	 *
++	 * The lock function only locks the GPIO once its unlock counter is
++	 * down to 0. This is necessary because the GPIO is unlocked in two
++	 * places in this driver: once for requested GPIOs, and once for
++	 * requested IRQs. Since it is possible for a GPIO to be requested
++	 * as both a GPIO and an IRQ, we need to ensure that we don't lock it
++	 * too early.
++	 */
++	u8 gpio_unlock_count[GPIO_PER_BANK];
+ 	/* Used in the interrupt handler */
+ 	struct bcm_kona_gpio *kona_gpio;
+ };
+@@ -94,14 +110,23 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
+ 	int bit = GPIO_BIT(gpio);
++	struct bcm_kona_gpio_bank *bank = &kona_gpio->banks[bank_id];
  
- //! Extensions to the [`alloc`] crate.
+-	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
++	if (bank->gpio_unlock_count[bit] == 0) {
++		dev_err(kona_gpio->gpio_chip.parent,
++			"Unbalanced locks for GPIO %u\n", gpio);
++		return;
++	}
  
--#[cfg(not(test))]
--#[cfg(not(testlib))]
-+#[cfg(not(any(test, testlib)))]
- pub mod allocator;
- pub mod box_ext;
- pub mod vec_ext;
+-	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val |= BIT(bit);
+-	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
++	if (--bank->gpio_unlock_count[bit] == 0) {
++		raw_spin_lock_irqsave(&kona_gpio->lock, flags);
  
-+#[cfg(any(test, testlib))]
-+pub mod allocator_test;
+-	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++		val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
++		val |= BIT(bit);
++		bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
 +
-+#[cfg(any(test, testlib))]
-+pub use self::allocator_test as allocator;
++		raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++	}
+ }
+ 
+ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
+@@ -111,14 +136,19 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
+ 	int bit = GPIO_BIT(gpio);
++	struct bcm_kona_gpio_bank *bank = &kona_gpio->banks[bank_id];
+ 
+-	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
++	if (bank->gpio_unlock_count[bit] == 0) {
++		raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+-	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val &= ~BIT(bit);
+-	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
++		val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
++		val &= ~BIT(bit);
++		bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
+ 
+-	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++		raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++	}
 +
- /// Indicates an allocation error.
- #[derive(Copy, Clone, PartialEq, Eq, Debug)]
- pub struct AllocError;
---- /dev/null
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -0,0 +1,20 @@
-+// SPDX-License-Identifier: GPL-2.0
++	++bank->gpio_unlock_count[bit];
+ }
+ 
+ static int bcm_kona_gpio_get_dir(struct gpio_chip *chip, unsigned gpio)
+@@ -369,6 +399,7 @@ static void bcm_kona_gpio_irq_mask(struct irq_data *d)
+ 
+ 	kona_gpio = irq_data_get_irq_chip_data(d);
+ 	reg_base = kona_gpio->reg_base;
 +
-+#![allow(missing_docs)]
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+ 	val = readl(reg_base + GPIO_INT_MASK(bank_id));
+@@ -391,6 +422,7 @@ static void bcm_kona_gpio_irq_unmask(struct irq_data *d)
+ 
+ 	kona_gpio = irq_data_get_irq_chip_data(d);
+ 	reg_base = kona_gpio->reg_base;
 +
-+use super::{AllocError, Allocator, Flags};
-+use core::alloc::Layout;
-+use core::ptr::NonNull;
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+ 	val = readl(reg_base + GPIO_INT_MSKCLR(bank_id));
+@@ -486,15 +518,26 @@ static void bcm_kona_gpio_irq_handler(struct irq_desc *desc)
+ static int bcm_kona_gpio_irq_reqres(struct irq_data *d)
+ {
+ 	struct bcm_kona_gpio *kona_gpio = irq_data_get_irq_chip_data(d);
++	unsigned int gpio = d->hwirq;
 +
-+pub struct Kmalloc;
++	/*
++	 * We need to unlock the GPIO before any other operations are performed
++	 * on the relevant GPIO configuration registers
++	 */
++	bcm_kona_gpio_unlock_gpio(kona_gpio, gpio);
+ 
+-	return gpiochip_reqres_irq(&kona_gpio->gpio_chip, d->hwirq);
++	return gpiochip_reqres_irq(&kona_gpio->gpio_chip, gpio);
+ }
+ 
+ static void bcm_kona_gpio_irq_relres(struct irq_data *d)
+ {
+ 	struct bcm_kona_gpio *kona_gpio = irq_data_get_irq_chip_data(d);
++	unsigned int gpio = d->hwirq;
 +
-+unsafe impl Allocator for Kmalloc {
-+    unsafe fn realloc(
-+        _ptr: Option<NonNull<u8>>,
-+        _layout: Layout,
-+        _old_layout: Layout,
-+        _flags: Flags,
-+    ) -> Result<NonNull<[u8]>, AllocError> {
-+        panic!();
-+    }
-+}
++	/* Once we no longer use it, lock the GPIO again */
++	bcm_kona_gpio_lock_gpio(kona_gpio, gpio);
+ 
+-	gpiochip_relres_irq(&kona_gpio->gpio_chip, d->hwirq);
++	gpiochip_relres_irq(&kona_gpio->gpio_chip, gpio);
+ }
+ 
+ static struct irq_chip bcm_gpio_irq_chip = {
+-- 
+2.39.5
+
 
 
 
