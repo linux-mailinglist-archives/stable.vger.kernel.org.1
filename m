@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD63BA5A103
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:56:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17741A5A109
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4109D7A43F7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:55:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C903AD03D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD07A231A2A;
-	Mon, 10 Mar 2025 17:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DD5232369;
+	Mon, 10 Mar 2025 17:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ3sNpcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8dsv+Pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0982D023;
-	Mon, 10 Mar 2025 17:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C9617CA12;
+	Mon, 10 Mar 2025 17:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629389; cv=none; b=MEf5yFW/Sq1Q2sl9pfVattH2amSgs5j6h03A+gfh4t8TbvGtM3SUE1mN7PBvvoZoOe9lrkLAOpw+qeyvy28mf15LccY6dMnbijEulz3lIRrju3uKotxPdGSKxEZ9WeIPFc/MdTa2zCx/88e2ZBs6nGP9Wv593qpEBhnjH5LvXn8=
+	t=1741629403; cv=none; b=hip7oFAoIfSqwAVs0fqkFQMxoNv48/J7uzBrbSwn/6XqyFFCSr+5oIA9GM8fWbFcdTd3UlyQlhAavg2vZV9gcQhzlXFdxKObw765j2R60KjhRKYQTZHU5VgymTjt1lHTIl3W3HwN4itIBMYvxj8KdaUfJxY9Qw9XgGYMeBLAY3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629389; c=relaxed/simple;
-	bh=N4CvQvDRZWfi1iPA9PsRt311EZpU2+cr3Ib8Noj9HXg=;
+	s=arc-20240116; t=1741629403; c=relaxed/simple;
+	bh=upKSDtxOMJ/G7bswqtCQnw18MxgpXnuiuK3E/Un1GSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sbg+fptoHuGCoeTf7tz2p2RHBNMY3dQxWjK+Qw/QaTbRg/e7OmJTYmLd/6YQ34THwHrRKJKD2GOaxvDKXBB3z4NtsySl530Pqa+o0b3B/J7HMHB//flLaMhu4AyUYXMF7wcdrvDEBrQ4Vo64wMSxRXlh6mohUW4aJV75rwm0xqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ3sNpcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AEFC4CEE5;
-	Mon, 10 Mar 2025 17:56:28 +0000 (UTC)
+	 MIME-Version; b=iSM+og6dlWPBAh5cTZRen8TS1Rzrtx7kmoun0as4AlK/qCZEdTaqF6jLaayOJijiLTABmVgx5yF9hnxmXArdsqp3RRJxuWknOQgtnqpg1hpB5s4bIGcSYs9W+hY53q4UIlnbERc68/5ku4hIUx86hltAuwR+T2d15axTU6ZT6qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8dsv+Pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF56C4CEE5;
+	Mon, 10 Mar 2025 17:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629389;
-	bh=N4CvQvDRZWfi1iPA9PsRt311EZpU2+cr3Ib8Noj9HXg=;
+	s=korg; t=1741629403;
+	bh=upKSDtxOMJ/G7bswqtCQnw18MxgpXnuiuK3E/Un1GSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQ3sNpcrmVELH8HF+UlVZUf8w5hBlfQ0E4LT6EIZvtHLa//RVgMuWyBNnIV8SD/hX
-	 a7RxtEPkdpCg30ZFUJ1AESk3j6F1MBvsMFgsd85vXn3Pj8jHf3NKnTppzy3W3EeIhJ
-	 Xw027It6I0JNqz58RGBCWJV7iLF5kchAUZazWJnE=
+	b=A8dsv+Plhs08I/2Lnu7bbxx78Mc2ZiHDK0G7+cCR3da4blRtQbts4wYpfWPlU1F2J
+	 KPltKEEzYtSiEQSKxfYzLr/+U+r5cGIHtQp6MFfvUG4m2LMXC74t3Bp7LFJNhab2xv
+	 FZejazAQJcy6Ix4Mr6zymX3UcSShvxu/be2Pr3Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Ottens <martin.ottens@fau.de>,
-	Mingi Cho <mincho@theori.io>,
-	Cong Wang <cong.wang@bytedance.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Stas Sergeev <stsp2@yandex.ru>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 250/620] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
-Date: Mon, 10 Mar 2025 18:01:36 +0100
-Message-ID: <20250310170555.493617174@linuxfoundation.org>
+Subject: [PATCH 5.15 251/620] tun: revert fix group permission check
+Date: Mon, 10 Mar 2025 18:01:37 +0100
+Message-ID: <20250310170555.533274473@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,42 +68,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
+[ Upstream commit a70c7b3cbc0688016810bb2e0b9b8a0d6a530045 ]
 
-qdisc_tree_reduce_backlog() notifies parent qdisc only if child
-qdisc becomes empty, therefore we need to reduce the backlog of the
-child qdisc before calling it. Otherwise it would miss the opportunity
-to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
-since DRR uses ->qlen_notify() to maintain its active list.
+This reverts commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3.
 
-Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
-Cc: Martin Ottens <martin.ottens@fau.de>
-Reported-by: Mingi Cho <mincho@theori.io>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
+The blamed commit caused a regression when neither tun->owner nor
+tun->group is set. This is intended to be allowed, but now requires
+CAP_NET_ADMIN.
+
+Discussion in the referenced thread pointed out that the original
+issue that prompted this patch can be resolved in userspace.
+
+The relaxed access control may also make a device accessible when it
+previously wasn't, while existing users may depend on it to not be.
+
+This is a clean pure git revert, except for fixing the indentation on
+the gid_valid line that checkpatch correctly flagged.
+
+Fixes: 3ca459eaba1b ("tun: fix group permission check")
+Link: https://lore.kernel.org/netdev/CAFqZXNtkCBT4f+PwyVRmQGoT3p1eVa01fCG_aNtpt6dakXncUg@mail.gmail.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Stas Sergeev <stsp2@yandex.ru>
+Link: https://patch.msgid.link/20250204161015.739430-1-willemdebruijn.kernel@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/tun.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index f459e34684ad3..22f5d9421f6a6 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -739,9 +739,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
- 				if (err != NET_XMIT_SUCCESS) {
- 					if (net_xmit_drop_count(err))
- 						qdisc_qstats_drop(sch);
--					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 					sch->qstats.backlog -= pkt_len;
- 					sch->q.qlen--;
-+					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 				}
- 				goto tfifo_dequeue;
- 			}
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index a85f743aa1573..5c9e7d0beffa2 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -575,18 +575,14 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	return ret;
+ }
+ 
+-static inline bool tun_capable(struct tun_struct *tun)
++static inline bool tun_not_capable(struct tun_struct *tun)
+ {
+ 	const struct cred *cred = current_cred();
+ 	struct net *net = dev_net(tun->dev);
+ 
+-	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
+-		return 1;
+-	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
+-		return 1;
+-	if (gid_valid(tun->group) && in_egroup_p(tun->group))
+-		return 1;
+-	return 0;
++	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
++		(gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
++		!ns_capable(net->user_ns, CAP_NET_ADMIN);
+ }
+ 
+ static void tun_set_real_num_queues(struct tun_struct *tun)
+@@ -2722,7 +2718,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		    !!(tun->flags & IFF_MULTI_QUEUE))
+ 			return -EINVAL;
+ 
+-		if (!tun_capable(tun))
++		if (tun_not_capable(tun))
+ 			return -EPERM;
+ 		err = security_tun_dev_open(tun->security);
+ 		if (err < 0)
 -- 
 2.39.5
 
