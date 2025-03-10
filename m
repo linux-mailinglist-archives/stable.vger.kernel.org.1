@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1916AA59F6E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79883A59D0D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 939401883DFC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:40:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0274616F9C1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EC323026D;
-	Mon, 10 Mar 2025 17:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2739722D7A6;
+	Mon, 10 Mar 2025 17:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDXSwJug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KAcf0w+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EEB2253FE;
-	Mon, 10 Mar 2025 17:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A4A18DB24;
+	Mon, 10 Mar 2025 17:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628415; cv=none; b=QS29QTR85tMNxb+KUeNgtD9T4+b5DABIXYqNXvOc3/56SOU+OpnzUZPLm9fh3lg8rknllZ4tCjpoXmG+wrwzaHy8kBohkrBjiH10MBXnVO0o/Vxg49LUYzFifjK/z+Y2HnKDOChUm5hpikMpS+bwLMqsc4uAgtmdaadp3D+GowQ=
+	t=1741627040; cv=none; b=i1EfWqlQoPfA0sfwk885mAleqZm3dQqgs2OtsmS4vXtL+2esIvooyDRoq3TAYjZCpRNkOKM3/rfHOmw7edxHUUMiIwkUc63M8acO+I6tuDgUpfsGBTvF9avwq7c43nDCHt86U4NBOhxTcbSyO39Eccsi2QvEbYEdtFY+5xSderg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628415; c=relaxed/simple;
-	bh=+atGtYdIhw/LanobS44BRRUknjmt0ZEDeEaBP1TGJb8=;
+	s=arc-20240116; t=1741627040; c=relaxed/simple;
+	bh=AiozW++0Z8C7zBMfxtvEGAth/zd/dzykyYKk8jvv7n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMiUPklUBOlkngkGvBvMeFTn2vyPva3SpTiCeFUhUZKPA9jyDUdj0WBt5ELD2ll2DlCEos6GOQeIPGKXkSIn+76cq2KbAxJ6ETRFpLKZC4Uo40SY96n/9DoRXJ4Ee0iL/hpxPpgCRzkokuHs0OvX30krKiSxOjV6ec+QPg2Dvs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDXSwJug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4CEC4CEE5;
-	Mon, 10 Mar 2025 17:40:14 +0000 (UTC)
+	 MIME-Version; b=syv8AadaKx89Oqnbgj76tWyAVfb0RCQ7HxxehJAhV9VE2oZSwB78jnq829vBsC88YKQz7L1m36loo0LwxvrGVGbsVnyFjl0/0dinifdEBuiaH6fjcu4P8QMaWWYp6kkfd7X0voZ+uACjDRw2TfgRTtikWTYs+01EpFtB/KylKE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KAcf0w+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A59C4CEE5;
+	Mon, 10 Mar 2025 17:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628415;
-	bh=+atGtYdIhw/LanobS44BRRUknjmt0ZEDeEaBP1TGJb8=;
+	s=korg; t=1741627040;
+	bh=AiozW++0Z8C7zBMfxtvEGAth/zd/dzykyYKk8jvv7n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDXSwJugdk7rsg231T7Kl17783pC1VD5QM6VKCRnXhcDNT2Fg7Um2OGwkysLLsPqU
-	 RbxDqADxridcj3q+GnMuAbXUMSwTMZbsN1Tjk9/8kiWwEgyhG/+CE4Q18AD2Zlv8y/
-	 ihbAhCl8sTTJ7csfUE1X076zb/g+vJJcDJGY1ICw=
+	b=0KAcf0w+HluzHsgcaUWXjW80kEd0EAXZrPCuJPC56PkZNW7NlksaV7XKQQu78s/pL
+	 JKk1k94rGrWFNO47Sdv8xR7KJmahm6PLQy8T7DIth+JNNwgbnRMNONs60RHNfSDf44
+	 kKbRRptu96+JwvOp+Uqb6v1HrZyb8fAjsWOdK6mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinghuo Chen <xinghuo.chen@foxmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/109] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
+Subject: [PATCH 6.13 200/207] dt-bindings: iio: dac: adi-axi-adc: fix ad7606 pwm-names
 Date: Mon, 10 Mar 2025 18:06:33 +0100
-Message-ID: <20250310170429.517280442@linuxfoundation.org>
+Message-ID: <20250310170455.733600193@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinghuo Chen <xinghuo.chen@foxmail.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
+[ Upstream commit 02ccd7e5d81af4ae20852fc1ad67e7d943fa5778 ]
 
-The devm_memremap() function returns error pointers on error,
-it doesn't return NULL.
+Fix make dt_binding_check warning:
 
-Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
-Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+DTC [C] Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dtb
+.../adc/adi,axi-adc.example.dtb: adc@0: pwm-names: ['convst1'] is too short
+    from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
+
+Add "minItems" to pwm-names, it allows to use one single pwm when
+connected to both adc conversion inputs.
+
+Fixes: 7c2357b10490 ("dt-bindings: iio: adc: ad7606: Add iio backend bindings")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20250129-wip-bl-ad7606_add_backend_sw_mode-v3-1-c3aec77c0ab7@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 78d9f52e2a719..207084d55044a 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -712,7 +712,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
- 			goto out;
- 		}
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+index ab5881d0d017f..52d3f1ce33678 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+@@ -146,6 +146,7 @@ properties:
+     maxItems: 2
  
--		if (!ctx->pcc_comm_addr) {
-+		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
- 			dev_err(&pdev->dev,
- 				"Failed to ioremap PCC comm region\n");
- 			rc = -ENOMEM;
+   pwm-names:
++    minItems: 1
+     items:
+       - const: convst1
+       - const: convst2
 -- 
 2.39.5
 
