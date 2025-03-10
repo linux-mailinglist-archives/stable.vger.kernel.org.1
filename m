@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33929A5A23C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA98A59F67
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE3C9189490A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76FC43ABB04
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4349722576A;
-	Mon, 10 Mar 2025 18:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3A423314B;
+	Mon, 10 Mar 2025 17:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bFn2qJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNPsIY2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001892F28;
-	Mon, 10 Mar 2025 18:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7CD1B3927;
+	Mon, 10 Mar 2025 17:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630685; cv=none; b=k2sx2T6W2sMNvkZ4CDq5EG/nCqnONILuWPWf3CUNDsGxvD3qVYOFK2pNG+t7pAoOnPHNp4OI52QMEL/MhEN1GD9wHEMEcsPd6ukeWy6a71/olOb88dvtbeYYn4AitCc5EuODmTg7ntfSFQkLobg2hNjPeIvXzF1N+yTMkNlGUTY=
+	t=1741628314; cv=none; b=uGEalQ1//hC+IqvDnx4+6a9BKXwoX5irIKWG3Fs7bPMzsxK1g8PbCNV0VieRBm1iugI2eRoqtks6Nx2SaxdRqAegWJH5DEP69jSWmLb0UwPyvP9gCpTU4B7kVJFoyZvxt4rlsGceAVOJid2KbOL34CzJmHQ9dJZIUTVIGzTPoXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630685; c=relaxed/simple;
-	bh=Ws5qZVj+T2wdtOKgLuTG56RvZ1lLZ3izZTm+GHsAnUU=;
+	s=arc-20240116; t=1741628314; c=relaxed/simple;
+	bh=LWs2Ee9wnXDfAPAR0otQ7zAd7+jORXDdXmGUURgcX/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVH34wdSBVkgtOICEcIsZIxtnMBxr8oVorkGmPV9SMWIww0eyg6MLY+jZaKqcrvRicpIDqTd2A2zgFIm7Q4Qxp12U4StLO3ckD/DHtOcVCSYvjpnM+nB43rw2AWf/L3bHc+s9c7cmF8eqNVL50ZSA+zxoZrJ482FCAWZb7L8nSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bFn2qJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B43BC4CEE5;
-	Mon, 10 Mar 2025 18:18:03 +0000 (UTC)
+	 MIME-Version; b=J37M7IPymU0EHHe76AN0IXn9lReev7J8X66mXymqDqRQ76nz9q6JXJypEOH15U8EYgKArWJSvSiamRODURhFGkYTGxb27z0w/HQ0wLE9p/VT1BqWctgtNTTx8tPjo2CEVYKy+3Wu9+bDBBgg0R+SVOpWL9kYO5Rjy/s4CvKj8cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNPsIY2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E2DC4CEE5;
+	Mon, 10 Mar 2025 17:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630684;
-	bh=Ws5qZVj+T2wdtOKgLuTG56RvZ1lLZ3izZTm+GHsAnUU=;
+	s=korg; t=1741628314;
+	bh=LWs2Ee9wnXDfAPAR0otQ7zAd7+jORXDdXmGUURgcX/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bFn2qJn8uGBgwArCfwu+bXl8w39EnUELduOHtUFetYRNMumyqq9NZ9zhm8eWfeen
-	 nyOza3w5ZChp8g5BVpWUTxjXjNt7GQc88OLRIos2SLJll1gs+pELpHwD0cJOkzuOR8
-	 eJwCFZPEj5bf2pIs7IB64ioEoWJpqud9ZYGzLe6Q=
+	b=TNPsIY2IyTjQIC/QkinvnkH4+yfS1xD0PYcCDDfKekJH4K88C/EcKFi9girAoIfNg
+	 yQIOSr2dCgJv5KcO3ylC+uXWPwqdD6SLBWWdu/o6Mzmv5vSJWCx/uWEnfuNICkTf6g
+	 Zy3h4Tvnj/wB27gfbJiuvFaj/VS3ESHXM+UxWouA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 500/620] net: cadence: macb: Synchronize stats calculations
+Subject: [PATCH 6.1 002/109] ibmvnic: Inspect header requirements before using scrq direct
 Date: Mon, 10 Mar 2025 18:05:46 +0100
-Message-ID: <20250310170605.304033611@linuxfoundation.org>
+Message-ID: <20250310170427.638809866@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Nick Child <nnac123@linux.ibm.com>
 
-[ Upstream commit fa52f15c745ce55261b92873676f64f7348cfe82 ]
+[ Upstream commit de390657b5d6f7deb9d1d36aaf45f02ba51ec9dc ]
 
-Stats calculations involve a RMW to add the stat update to the existing
-value. This is currently not protected by any synchronization mechanism,
-so data races are possible. Add a spinlock to protect the update. The
-reader side could be protected using u64_stats, but we would still need
-a spinlock for the update side anyway. And we always do an update
-immediately before reading the stats anyway.
+Previously, the TX header requirement for standard frames was ignored.
+This requirement is a bitstring sent from the VIOS which maps to the
+type of header information needed during TX. If no header information,
+is needed then send subcrq direct can be used (which can be more
+performant).
 
-Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250220162950.95941-1-sean.anderson@linux.dev
+This bitstring was previously ignored for standard packets (AKA non LSO,
+non CSO) due to the belief that the bitstring was over-cautionary. It
+turns out that there are some configurations where the backing device
+does need header information for transmission of standard packets. If
+the information is not supplied then this causes continuous "Adapter
+error" transport events. Therefore, this bitstring should be respected
+and observed before considering the use of send subcrq direct.
+
+Fixes: 74839f7a8268 ("ibmvnic: Introduce send sub-crq direct")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241001163200.1802522-2-nnac123@linux.ibm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb.h      |  2 ++
- drivers/net/ethernet/cadence/macb_main.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index d8d87213697cd..d3d1b9237d594 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -1258,6 +1258,8 @@ struct macb {
- 	struct clk		*rx_clk;
- 	struct clk		*tsu_clk;
- 	struct net_device	*dev;
-+	/* Protects hw_stats and ethtool_stats */
-+	spinlock_t		stats_lock;
- 	union {
- 		struct macb_stats	macb;
- 		struct gem_stats	gem;
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 4e7359657941d..275baaaea0e12 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1892,10 +1892,12 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
- 
- 		if (status & MACB_BIT(ISR_ROVR)) {
- 			/* We missed at least one packet */
-+			spin_lock(&bp->stats_lock);
- 			if (macb_is_gem(bp))
- 				bp->hw_stats.gem.rx_overruns++;
- 			else
- 				bp->hw_stats.macb.rx_overruns++;
-+			spin_unlock(&bp->stats_lock);
- 
- 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 				queue_writel(queue, ISR, MACB_BIT(ISR_ROVR));
-@@ -2939,6 +2941,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	if (!netif_running(bp->dev))
- 		return nstat;
- 
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 
- 	nstat->rx_errors = (hwstat->rx_frame_check_sequence_errors +
-@@ -2968,6 +2971,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	nstat->tx_aborted_errors = hwstat->tx_excessive_collisions;
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_sense_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underrun;
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
- }
-@@ -2975,12 +2979,13 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- static void gem_get_ethtool_stats(struct net_device *dev,
- 				  struct ethtool_stats *stats, u64 *data)
- {
--	struct macb *bp;
-+	struct macb *bp = netdev_priv(dev);
- 
--	bp = netdev_priv(dev);
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
- 			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+	spin_unlock_irq(&bp->stats_lock);
- }
- 
- static int gem_get_sset_count(struct net_device *dev, int sset)
-@@ -3030,6 +3035,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 		return gem_get_stats(bp);
- 
- 	/* read stats from hardware */
-+	spin_lock_irq(&bp->stats_lock);
- 	macb_update_stats(bp);
- 
- 	/* Convert HW stats into netdevice stats */
-@@ -3063,6 +3069,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underruns;
- 	/* Don't know about heartbeat or window errors... */
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
- }
-@@ -4802,6 +4809,7 @@ static int macb_probe(struct platform_device *pdev)
- 	bp->usrio = macb_config->usrio;
- 
- 	spin_lock_init(&bp->lock);
-+	spin_lock_init(&bp->stats_lock);
- 
- 	/* setup capabilities */
- 	macb_configure_caps(bp, macb_config);
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 578b9b5460108..071dca86fc883 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2300,9 +2300,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	/* if we are going to send_subcrq_direct this then we need to
+ 	 * update the checksum before copying the data into ltb. Essentially
+ 	 * these packets force disable CSO so that we can guarantee that
+-	 * FW does not need header info and we can send direct.
++	 * FW does not need header info and we can send direct. Also, vnic
++	 * server must be able to xmit standard packets without header data
+ 	 */
+-	if (!skb_is_gso(skb) && !ind_bufp->index && !netdev_xmit_more()) {
++	if (*hdrs == 0 && !skb_is_gso(skb) &&
++	    !ind_bufp->index && !netdev_xmit_more()) {
+ 		use_scrq_send_direct = true;
+ 		if (skb->ip_summed == CHECKSUM_PARTIAL &&
+ 		    skb_checksum_help(skb))
 -- 
 2.39.5
 
