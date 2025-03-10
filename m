@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-122922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95613A5A1FD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C86A59C85
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0B5C7A104C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F017F188D3F3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74A3233D98;
-	Mon, 10 Mar 2025 18:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84397231A3B;
+	Mon, 10 Mar 2025 17:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdFd8zAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="at8eCpg9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E681C5F1B;
-	Mon, 10 Mar 2025 18:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3B1230BEC;
+	Mon, 10 Mar 2025 17:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630528; cv=none; b=HBdXOo5csH73AJ1cUiZxIza4D6/LjPbYitew8zHACX27tgUlV8DiPCETVLpcBE7vsKvEgkKFl1jYOlYAoxKJEWTuWtSwO8+4dWe6u1BgK10896YkfmtA3f/4C+VEelMmXbZ3sNc7Jfv4seA1nl905QJgZ5LAAYzIqSOD2YVcGHo=
+	t=1741626747; cv=none; b=GrfakFQsGvE2SmIHsSy3s4BhRV48wt8K08mnC6ACjqOD4/0XKp/+8YmidjxC4D85xF4bmQn2iB+SW1Pv6ix5LgELgbcyC/UErMflXJGSwCqYSy4OHtoni8GXa0f/OAjPOg+xbB7nSHc/F9s8nVTCXiLUXZhDYmYSk1owzu1GewY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630528; c=relaxed/simple;
-	bh=zaAwm2+1YKjgrNmpitARvizpzYjN1m/x/UW5LmMAuZ8=;
+	s=arc-20240116; t=1741626747; c=relaxed/simple;
+	bh=8PsKFMh0CGH7CL9XEQNQon48Cr3ODQ86y+OvaEM5tjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5zrJqU9jAD3MjiA7lqTlI4vmtTNd0A455UKKGkLFYfOlINbQvPLBTnwLOUJHbzRtK/PX6CBCHorMyqARcqfbCHH1g/6njedDhjC1y7zp6pXUbRF8bLDBKjHSzcW/M9XTDe6BAvgRAvMbShCFnNup0eCpObkJMSl6mb26gyBhVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdFd8zAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1897C4CEE5;
-	Mon, 10 Mar 2025 18:15:27 +0000 (UTC)
+	 MIME-Version; b=iFfFCWGT14sRsHn16kBSld/afjrd8Tl05KAde9PCY7Off2gLYf2luoa6FidMmzs1mbeHqvwW/TXoh90ZvjLEJP+tEVc28oTSiTG1jH7LVdsIuvcWVta7lR30O27E8GF60Irvbf+eITyqQ9AedhM5/XpNOs+LnOoA48/D5habN2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=at8eCpg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F033C4CEE5;
+	Mon, 10 Mar 2025 17:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630528;
-	bh=zaAwm2+1YKjgrNmpitARvizpzYjN1m/x/UW5LmMAuZ8=;
+	s=korg; t=1741626747;
+	bh=8PsKFMh0CGH7CL9XEQNQon48Cr3ODQ86y+OvaEM5tjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zdFd8zAe+LcLRMJIAcNkPIuV05t1pr79H3Xjma2E4FTaiHDAz2nR2V9GnVIBhaU0Z
-	 LF7nxFxb0koTUNd8jIFFDxfz2Eg9t9E+bzZOZJdHGtryPPbl6c7b0mm1+4A62uYh0v
-	 CDsLdXKJuzG+SX4Pm4dWZeAwCZc+GSuEruDmI4KI=
+	b=at8eCpg9zi3JJDPpCDn6WFJrozrWeIW6qsOtLlc/wGDiFQuKuZiBfB8YH8xmFb8M+
+	 GTY9Pi6iA7DviTsRfJMxP9PpVaeEfGvHmbUHrHrMBHMf7oZk0jIEDZYJtEu3oFGpEl
+	 tCoKcx33MSVdyYBAakclEbiaAEzxZKdSubEN3l2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Andy Liang <andy.liang@hpe.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	bpf <bpf@vger.kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Florent Revest <revest@chromium.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 445/620] tpm: Change to kvalloc() in eventlog/acpi.c
+Subject: [PATCH 6.13 098/207] fprobe: Use ftrace_regs in fprobe entry handler
 Date: Mon, 10 Mar 2025 18:04:51 +0100
-Message-ID: <20250310170603.159280746@linuxfoundation.org>
+Message-ID: <20250310170451.653563263@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +70,209 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit a3a860bc0fd6c07332e4911cf9a238d20de90173 ]
+[ Upstream commit 46bc082388560a95e3649b698a4675e5ea3262e6 ]
 
-The following failure was reported on HPE ProLiant D320:
+This allows fprobes to be available with CONFIG_DYNAMIC_FTRACE_WITH_ARGS
+instead of CONFIG_DYNAMIC_FTRACE_WITH_REGS, then we can enable fprobe
+on arm64.
 
-[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
-[   10.848132][    T1] ------------[ cut here ]------------
-[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
-[   10.862827][    T1] Modules linked in:
-[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
-[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
-[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
-[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
-
-The above transcript shows that ACPI pointed a 16 MiB buffer for the log
-events because RSI maps to the 'order' parameter of __alloc_pages_noprof().
-Address the bug by moving from devm_kmalloc() to devm_add_action() and
-kvmalloc() and devm_add_action().
-
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org # v2.6.16+
-Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-Reported-by: Andy Liang <andy.liang@hpe.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Tested-by: Andy Liang <andy.liang@hpe.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Alan Maguire <alan.maguire@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/173518994037.391279.2786805566359674586.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: db5e228611b1 ("tracing: fprobe-events: Log error for exceeding the number of entry args")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/eventlog/acpi.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/linux/fprobe.h          |  2 +-
+ kernel/trace/Kconfig            |  3 ++-
+ kernel/trace/bpf_trace.c        | 10 +++++++---
+ kernel/trace/fprobe.c           |  3 ++-
+ kernel/trace/trace_fprobe.c     | 11 ++++++++---
+ lib/test_fprobe.c               |  4 ++--
+ samples/fprobe/fprobe_example.c |  2 +-
+ 7 files changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
-index bd757d836c5cf..1a5644051d310 100644
---- a/drivers/char/tpm/eventlog/acpi.c
-+++ b/drivers/char/tpm/eventlog/acpi.c
-@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
- 	return n == 0;
- }
+diff --git a/include/linux/fprobe.h b/include/linux/fprobe.h
+index f398695881175..ca64ee5e45d2c 100644
+--- a/include/linux/fprobe.h
++++ b/include/linux/fprobe.h
+@@ -10,7 +10,7 @@
+ struct fprobe;
  
-+static void tpm_bios_log_free(void *data)
-+{
-+	kvfree(data);
-+}
-+
- /* read binary bios log */
- int tpm_read_log_acpi(struct tpm_chip *chip)
+ typedef int (*fprobe_entry_cb)(struct fprobe *fp, unsigned long entry_ip,
+-			       unsigned long ret_ip, struct pt_regs *regs,
++			       unsigned long ret_ip, struct ftrace_regs *regs,
+ 			       void *entry_data);
+ 
+ typedef void (*fprobe_exit_cb)(struct fprobe *fp, unsigned long entry_ip,
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index c5ab2a561272d..f10ca86fbfad2 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -297,7 +297,7 @@ config DYNAMIC_FTRACE_WITH_ARGS
+ config FPROBE
+ 	bool "Kernel Function Probe (fprobe)"
+ 	depends on FUNCTION_TRACER
+-	depends on DYNAMIC_FTRACE_WITH_REGS
++	depends on DYNAMIC_FTRACE_WITH_REGS || DYNAMIC_FTRACE_WITH_ARGS
+ 	depends on HAVE_RETHOOK
+ 	select RETHOOK
+ 	default n
+@@ -682,6 +682,7 @@ config FPROBE_EVENTS
+ 	select TRACING
+ 	select PROBE_EVENTS
+ 	select DYNAMIC_EVENTS
++	depends on DYNAMIC_FTRACE_WITH_REGS
+ 	default y
+ 	help
+ 	  This allows user to add tracing events on the function entry and
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 2c2205e91fee9..6b58e84995e46 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2562,7 +2562,7 @@ struct bpf_session_run_ctx {
+ 	void *data;
+ };
+ 
+-#ifdef CONFIG_FPROBE
++#if defined(CONFIG_FPROBE) && defined(CONFIG_DYNAMIC_FTRACE_WITH_REGS)
+ struct bpf_kprobe_multi_link {
+ 	struct bpf_link link;
+ 	struct fprobe fp;
+@@ -2814,12 +2814,16 @@ kprobe_multi_link_prog_run(struct bpf_kprobe_multi_link *link,
+ 
+ static int
+ kprobe_multi_link_handler(struct fprobe *fp, unsigned long fentry_ip,
+-			  unsigned long ret_ip, struct pt_regs *regs,
++			  unsigned long ret_ip, struct ftrace_regs *fregs,
+ 			  void *data)
  {
-@@ -136,7 +141,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 	}
++	struct pt_regs *regs = ftrace_get_regs(fregs);
+ 	struct bpf_kprobe_multi_link *link;
+ 	int err;
  
- 	/* malloc EventLog space */
--	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
-+	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
- 	if (!log->bios_event_log)
- 		return -ENOMEM;
- 
-@@ -162,10 +167,16 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 		goto err;
- 	}
- 
-+	ret = devm_add_action(&chip->dev, tpm_bios_log_free, log->bios_event_log);
-+	if (ret) {
-+		log->bios_event_log = NULL;
-+		goto err;
-+	}
++	if (!regs)
++		return 0;
 +
- 	return format;
- 
- err:
--	devm_kfree(&chip->dev, log->bios_event_log);
-+	tpm_bios_log_free(log->bios_event_log);
- 	log->bios_event_log = NULL;
- 	return ret;
+ 	link = container_of(fp, struct bpf_kprobe_multi_link, fp);
+ 	err = kprobe_multi_link_prog_run(link, get_entry_ip(fentry_ip), regs, false, data);
+ 	return is_kprobe_session(link->link.prog) ? err : 0;
+@@ -3094,7 +3098,7 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	kvfree(cookies);
+ 	return err;
  }
+-#else /* !CONFIG_FPROBE */
++#else /* !CONFIG_FPROBE || !CONFIG_DYNAMIC_FTRACE_WITH_REGS */
+ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *prog)
+ {
+ 	return -EOPNOTSUPP;
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index 9ff0182458408..3d37892838739 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -46,7 +46,7 @@ static inline void __fprobe_handler(unsigned long ip, unsigned long parent_ip,
+ 	}
+ 
+ 	if (fp->entry_handler)
+-		ret = fp->entry_handler(fp, ip, parent_ip, ftrace_get_regs(fregs), entry_data);
++		ret = fp->entry_handler(fp, ip, parent_ip, fregs, entry_data);
+ 
+ 	/* If entry_handler returns !0, nmissed is not counted. */
+ 	if (rh) {
+@@ -182,6 +182,7 @@ static void fprobe_init(struct fprobe *fp)
+ 		fp->ops.func = fprobe_kprobe_handler;
+ 	else
+ 		fp->ops.func = fprobe_handler;
++
+ 	fp->ops.flags |= FTRACE_OPS_FL_SAVE_REGS;
+ }
+ 
+diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+index 99048c3303822..c1eef70212b25 100644
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -217,12 +217,13 @@ NOKPROBE_SYMBOL(fentry_trace_func);
+ 
+ /* function exit handler */
+ static int trace_fprobe_entry_handler(struct fprobe *fp, unsigned long entry_ip,
+-				unsigned long ret_ip, struct pt_regs *regs,
++				unsigned long ret_ip, struct ftrace_regs *fregs,
+ 				void *entry_data)
+ {
+ 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
++	struct pt_regs *regs = ftrace_get_regs(fregs);
+ 
+-	if (tf->tp.entry_arg)
++	if (regs && tf->tp.entry_arg)
+ 		store_trace_entry_data(entry_data, &tf->tp, regs);
+ 
+ 	return 0;
+@@ -339,12 +340,16 @@ NOKPROBE_SYMBOL(fexit_perf_func);
+ #endif	/* CONFIG_PERF_EVENTS */
+ 
+ static int fentry_dispatcher(struct fprobe *fp, unsigned long entry_ip,
+-			     unsigned long ret_ip, struct pt_regs *regs,
++			     unsigned long ret_ip, struct ftrace_regs *fregs,
+ 			     void *entry_data)
+ {
+ 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
++	struct pt_regs *regs = ftrace_get_regs(fregs);
+ 	int ret = 0;
+ 
++	if (!regs)
++		return 0;
++
+ 	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
+ 		fentry_trace_func(tf, entry_ip, regs);
+ #ifdef CONFIG_PERF_EVENTS
+diff --git a/lib/test_fprobe.c b/lib/test_fprobe.c
+index 24de0e5ff8599..ff607babba189 100644
+--- a/lib/test_fprobe.c
++++ b/lib/test_fprobe.c
+@@ -40,7 +40,7 @@ static noinline u32 fprobe_selftest_nest_target(u32 value, u32 (*nest)(u32))
+ 
+ static notrace int fp_entry_handler(struct fprobe *fp, unsigned long ip,
+ 				    unsigned long ret_ip,
+-				    struct pt_regs *regs, void *data)
++				    struct ftrace_regs *fregs, void *data)
+ {
+ 	KUNIT_EXPECT_FALSE(current_test, preemptible());
+ 	/* This can be called on the fprobe_selftest_target and the fprobe_selftest_target2 */
+@@ -81,7 +81,7 @@ static notrace void fp_exit_handler(struct fprobe *fp, unsigned long ip,
+ 
+ static notrace int nest_entry_handler(struct fprobe *fp, unsigned long ip,
+ 				      unsigned long ret_ip,
+-				      struct pt_regs *regs, void *data)
++				      struct ftrace_regs *fregs, void *data)
+ {
+ 	KUNIT_EXPECT_FALSE(current_test, preemptible());
+ 	return 0;
+diff --git a/samples/fprobe/fprobe_example.c b/samples/fprobe/fprobe_example.c
+index 0a50b05add969..c234afae52d6f 100644
+--- a/samples/fprobe/fprobe_example.c
++++ b/samples/fprobe/fprobe_example.c
+@@ -50,7 +50,7 @@ static void show_backtrace(void)
+ 
+ static int sample_entry_handler(struct fprobe *fp, unsigned long ip,
+ 				unsigned long ret_ip,
+-				struct pt_regs *regs, void *data)
++				struct ftrace_regs *fregs, void *data)
+ {
+ 	if (use_trace)
+ 		/*
 -- 
 2.39.5
 
