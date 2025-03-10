@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BD3A59D74
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402E1A5A170
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84DA83A031F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF881893907
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857F4230BC8;
-	Mon, 10 Mar 2025 17:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B7E22D4FD;
+	Mon, 10 Mar 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRtRrtAY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLUW3Xhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FFC226D0B;
-	Mon, 10 Mar 2025 17:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3310117A2E8;
+	Mon, 10 Mar 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627243; cv=none; b=STGq6yTIVuUyEg0jYETNzxv1Q9xISuFDOjFSoDnI08Cnuk1UvC4Q7h8RRobj6Yin9nu/ssJOhfB5gVxbmz7R+wS1nGRC6o+HjRhJvsHZnGL39lMx7jjDFhgTkX0dNML1NpU3a8WH51T+l/RZ8gJM9qO9yYtp1wz1iwkG4IwrQ4o=
+	t=1741629658; cv=none; b=Af+BGS5TN7/HQALicTq1Is41DB5sj/ODUaNIYOhUCOAkqsmP5vSpzTX28AWclicszhGYk6V0Ttze+5Xn9bO40bP4b31rVCpdEh6uZlF/CCmZFp55jHX/vhUUMqMbiaXMJBJHhn/sqDUta6P1BCZvfEgCWIntmBiQcn0w2fmMLxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627243; c=relaxed/simple;
-	bh=vLURNjiyCLtxcV/XrfP/ruGIYNmRiE9D2of8WBb2KNM=;
+	s=arc-20240116; t=1741629658; c=relaxed/simple;
+	bh=t0be2u4hB7CxQRFPZLuRaCFGy0Ml7TKT2MMXqWo4t8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PrKrx+YzkRV2TkRDFbO/5OzeTqHCwM4Wj6aH6BO239rR+L7xDZ8YExLBDzzBTiX50hSBzvfUDwn1kGotW8E+/+51AzzjPY2xVfqtrIOgyHjLMjjGfAneie6enO1jbr/Ow2rl7U0mAWv7JexXLv59nhMZbvkMW/zs1LU5exQw2Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRtRrtAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C275EC4CEE5;
-	Mon, 10 Mar 2025 17:20:42 +0000 (UTC)
+	 MIME-Version; b=UD9Pioc3pQdOg5659SxfyxkkhAu7B8MJseWTi2iaQqa7L+twA0uq6wG6sYeaoe5qUb8iWDF2q6CIXwjnBqo2U0TMiSmfGlksuYr4WWezSALaGQVsiMhIW9/T5NLVVx3nctwcMaFJgqNHufrrpfCf4eblbTmTO2vDS5zB/4FQKIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLUW3Xhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8C9C4CEE5;
+	Mon, 10 Mar 2025 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627243;
-	bh=vLURNjiyCLtxcV/XrfP/ruGIYNmRiE9D2of8WBb2KNM=;
+	s=korg; t=1741629658;
+	bh=t0be2u4hB7CxQRFPZLuRaCFGy0Ml7TKT2MMXqWo4t8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRtRrtAYX65B2C7887ryZx8Yv6LO2iU8GLoz3zSId3+ugSXiTU+AmZoJoYsts12WX
-	 9yW2Dmts+CatpIdIetISY0gF6g7XJbVXuQdvQOsCmYtcAIxgw/kG0CGTmNygQhjQHN
-	 vVOxzc7is1NNc5J/yG3Nk12xRcKMepw9ys3ih5Vs=
+	b=YLUW3Xhng6ayxDwpjPMzBahklK0oyPWfeKI7YW31jvVKGi3c2R+vnmCex4E/OBeqw
+	 UYDJ+seRZDv7bYkjR3lIe2uB1A+/MnWXpP1GOv/fBs33n2ip7n0vGmu9kKX6ezUHXb
+	 +MSVI1Rc9Qq5NFchHuL+fqKQilcduKA+dgjiwDs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH 6.12 062/269] drm/panic: prefer eliding lifetimes
-Date: Mon, 10 Mar 2025 18:03:35 +0100
-Message-ID: <20250310170500.200378177@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 5.15 370/620] usb: cdc-acm: Check control transfer buffer size before access
+Date: Mon, 10 Mar 2025 18:03:36 +0100
+Message-ID: <20250310170600.207416657@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Böhler <witcher@wiredspace.de>
+From: Jann Horn <jannh@google.com>
 
-commit ae75c40117b53ae3d91dfc9d0bf06984a079f044 upstream.
+commit e563b01208f4d1f609bcab13333b6c0e24ce6a01 upstream.
 
-Eliding lifetimes when possible instead of specifying them directly is
-both shorter and easier to read. Clippy notes this in the
-`needless_lifetimes` lint:
+If the first fragment is shorter than struct usb_cdc_notification, we can't
+calculate an expected_size. Log an error and discard the notification
+instead of reading lengths from memory outside the received data, which can
+lead to memory corruption when the expected_size decreases between
+fragments, causing `expected_size - acm->nb_index` to wrap.
 
-    error: the following explicit lifetimes could be elided: 'b
-       --> drivers/gpu/drm/drm_panic_qr.rs:479:16
-        |
-    479 |     fn new<'a, 'b>(segments: &[&Segment<'b>], data: &'a mut [u8]) -> Option<EncodedMsg<'a>> {
-        |                ^^                       ^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
-        = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
-    help: elide the lifetimes
-        |
-    479 -     fn new<'a, 'b>(segments: &[&Segment<'b>], data: &'a mut [u8]) -> Option<EncodedMsg<'a>> {
-    479 +     fn new<'a>(segments: &[&Segment<'_>], data: &'a mut [u8]) -> Option<EncodedMsg<'a>> {
-        |
+This issue has been present since the beginning of git history; however,
+it only leads to memory corruption since commit ea2583529cd1
+("cdc-acm: reassemble fragmented notifications").
 
-Remove the explicit lifetime annotation in favour of an elided lifetime.
+A mitigating factor is that acm_ctrl_irq() can only execute after userspace
+has opened /dev/ttyACM*; but if ModemManager is running, ModemManager will
+do that automatically depending on the USB device's vendor/product IDs and
+its other interfaces.
 
-Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1123
-Signed-off-by: Thomas Böhler <witcher@wiredspace.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://lore.kernel.org/r/20241019084048.22336-4-witcher@wiredspace.de
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panic_qr.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/cdc-acm.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -476,7 +476,7 @@ struct EncodedMsg<'a> {
- /// Data to be put in the QR code, with correct segment encoding, padding, and
- /// Error Code Correction.
- impl EncodedMsg<'_> {
--    fn new<'a, 'b>(segments: &[&Segment<'b>], data: &'a mut [u8]) -> Option<EncodedMsg<'a>> {
-+    fn new<'a>(segments: &[&Segment<'_>], data: &'a mut [u8]) -> Option<EncodedMsg<'a>> {
-         let version = Version::from_segments(segments)?;
-         let ec_size = version.ec_size();
-         let g1_blocks = version.g1_blocks();
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -360,7 +360,7 @@ static void acm_process_notification(str
+ static void acm_ctrl_irq(struct urb *urb)
+ {
+ 	struct acm *acm = urb->context;
+-	struct usb_cdc_notification *dr = urb->transfer_buffer;
++	struct usb_cdc_notification *dr;
+ 	unsigned int current_size = urb->actual_length;
+ 	unsigned int expected_size, copy_size, alloc_size;
+ 	int retval;
+@@ -387,9 +387,20 @@ static void acm_ctrl_irq(struct urb *urb
+ 
+ 	usb_mark_last_busy(acm->dev);
+ 
+-	if (acm->nb_index)
++	if (acm->nb_index == 0) {
++		/*
++		 * The first chunk of a message must contain at least the
++		 * notification header with the length field, otherwise we
++		 * can't get an expected_size.
++		 */
++		if (current_size < sizeof(struct usb_cdc_notification)) {
++			dev_dbg(&acm->control->dev, "urb too short\n");
++			goto exit;
++		}
++		dr = urb->transfer_buffer;
++	} else {
+ 		dr = (struct usb_cdc_notification *)acm->notification_buffer;
+-
++	}
+ 	/* size = notification-header + (optional) data */
+ 	expected_size = sizeof(struct usb_cdc_notification) +
+ 					le16_to_cpu(dr->wLength);
 
 
 
