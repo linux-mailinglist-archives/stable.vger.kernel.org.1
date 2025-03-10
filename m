@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED552A59E6A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D470A59F18
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3403A8AB5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ADCD3AAF76
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB722309A6;
-	Mon, 10 Mar 2025 17:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13180230BD4;
+	Mon, 10 Mar 2025 17:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIfQFtEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTleCsf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378F622B8BD;
-	Mon, 10 Mar 2025 17:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51C81DE89C;
+	Mon, 10 Mar 2025 17:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627755; cv=none; b=em3Sh2yVR5M+uPmLWD8mJhIFw2KFfRdxBK52vA95Pozmbl/mqT9PFkOjKhKbqVFVQ8ASZBgBHGAYcwyR+Ltq68wh7UR2noErYU3+cVH/gNHrp2RAIzpst2/lu0tBmdZS1wUdukXWSQHKK8mw1D+Lw1madQSUdID8gfsfX926VNQ=
+	t=1741628132; cv=none; b=cQ5LwzSr+dJOQeKJi5tt3OKQ5X5hKDWelATCrvwouz7b85LZqirwBxBkbv3SBqFjXosz2QqOSAbcVvoGaqqAIqWKijxjoG16znGT9xmGPC20CjmIbYiJawVC083EPa1AWhjIhUnf6gGD71IzcBGELew357AYsqlbiWwWdz4YGgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627755; c=relaxed/simple;
-	bh=z3v8a3vJZXXP6ZS0LJ+koUZVeU/Sp5f3X3dQcr9BDeI=;
+	s=arc-20240116; t=1741628132; c=relaxed/simple;
+	bh=dLb9hrYl3mhOOIA5ITWLDWQA7s+8RW+fsvSSi9QI3mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMdxEvx8i70TVSdsg1oQn98k5XMxELfSkpvbrRsC1UByvscmshZCb4XtPZXx3xTxEtAj7Xl1JpQSJlZwiwg7TnVJ3FGbs+nRHCGlTHurjATsloUmgpNgg9Tba0VYziyxW8a0BitoVCxKxKLHlteRiEsFWn+3Tpwo9vxZm4Mm6ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIfQFtEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE65C4CEE5;
-	Mon, 10 Mar 2025 17:29:14 +0000 (UTC)
+	 MIME-Version; b=E9U9VkT79l0DvD9CDNP6O/UwJbNyc/Uw+RriKGF5hg8bnL6K97NAGnehXM3QJlJv+sHEmf9fQf/cSHP6lf9cvQWKWksoZkmErAexnnWb1KcIWg8a0U4aPNdo8HudBWBErwZIaCmU+fgQFNzcSsFJJdAJRHcQpHmqeRqA+OHJmhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTleCsf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52785C4CEE5;
+	Mon, 10 Mar 2025 17:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627755;
-	bh=z3v8a3vJZXXP6ZS0LJ+koUZVeU/Sp5f3X3dQcr9BDeI=;
+	s=korg; t=1741628132;
+	bh=dLb9hrYl3mhOOIA5ITWLDWQA7s+8RW+fsvSSi9QI3mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIfQFtEcE1L7EE4LERY3ImpratvsSLtk8fwMHgDinhlZloaDDsrTJu41Yh8RHTZ9Y
-	 +oZRdfOv7a4M4x7UT9K40GtAo+0j9Q33MKD/C7AzB7X/2BgNsRZFtqkUbXqVq1mkeL
-	 BI1v24T4BcmkH8cdFKgfPPR9BxKAeKDZWUJ+vtqM=
+	b=wTleCsf9FI2obNhng7lhZBXsMvaeFQXVEwP1Nny4XGPlvXdDnKgS/T8NcIMJ6yttB
+	 UfNU3w8goDHe5A26orUDupaUwH5VAq29C9NC9M0E3fNR1em/lVOQVCpeW5XHfbzdqi
+	 fKACuQbbm9V2jLCxsyzlX+8gyvQHYzVAEsMzx8lQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 6.12 238/269] mei: me: add panther lake P DID
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 097/145] usb: typec: ucsi: Fix NULL pointer access
 Date: Mon, 10 Mar 2025 18:06:31 +0100
-Message-ID: <20250310170507.170147445@linuxfoundation.org>
+Message-ID: <20250310170438.670744703@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit a8e8ffcc3afce2ee5fb70162aeaef3f03573ee1e upstream.
+commit b13abcb7ddd8d38de769486db5bd917537b32ab1 upstream.
 
-Add Panther Lake P device id.
+Resources should be released only after all threads that utilize them
+have been destroyed.
+This commit ensures that resources are not released prematurely by waiting
+for the associated workqueue to complete before deallocating them.
 
 Cc: stable <stable@kernel.org>
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://lore.kernel.org/r/20250209110550.1582982-1-alexander.usyskin@intel.com
+Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250305111739.1489003-2-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/usb/typec/ucsi/ucsi.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -117,6 +117,8 @@
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1465,11 +1465,11 @@ static int ucsi_init(struct ucsi *ucsi)
  
- #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ err_unregister:
+ 	for (con = connector; con->port; con++) {
++		if (con->wq)
++			destroy_workqueue(con->wq);
+ 		ucsi_unregister_partner(con);
+ 		ucsi_unregister_altmodes(con, UCSI_RECIPIENT_CON);
+ 		ucsi_unregister_port_psy(con);
+-		if (con->wq)
+-			destroy_workqueue(con->wq);
  
-+#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+ 		usb_power_delivery_unregister_capabilities(con->port_sink_caps);
+ 		con->port_sink_caps = NULL;
+@@ -1651,10 +1651,6 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 
+ 	for (i = 0; i < ucsi->cap.num_connectors; i++) {
+ 		cancel_work_sync(&ucsi->connector[i].work);
+-		ucsi_unregister_partner(&ucsi->connector[i]);
+-		ucsi_unregister_altmodes(&ucsi->connector[i],
+-					 UCSI_RECIPIENT_CON);
+-		ucsi_unregister_port_psy(&ucsi->connector[i]);
+ 
+ 		if (ucsi->connector[i].wq) {
+ 			struct ucsi_work *uwork;
+@@ -1670,6 +1666,11 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 			destroy_workqueue(ucsi->connector[i].wq);
+ 		}
+ 
++		ucsi_unregister_partner(&ucsi->connector[i]);
++		ucsi_unregister_altmodes(&ucsi->connector[i],
++					 UCSI_RECIPIENT_CON);
++		ucsi_unregister_port_psy(&ucsi->connector[i]);
 +
- /*
-  * MEI HW Section
-  */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -124,6 +124,8 @@ static const struct pci_device_id mei_me
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
- 
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
-+
- 	/* required last entry */
- 	{0, }
- };
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_sink_caps);
+ 		ucsi->connector[i].port_sink_caps = NULL;
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_source_caps);
 
 
 
