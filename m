@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE5AA59F1E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6368DA59FA4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAB2C170654
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E9FA171132
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2475322D799;
-	Mon, 10 Mar 2025 17:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC97233714;
+	Mon, 10 Mar 2025 17:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bivCL5qC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVFAdT1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54DF18DB24;
-	Mon, 10 Mar 2025 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C9C230BC5;
+	Mon, 10 Mar 2025 17:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628227; cv=none; b=KzF1eLHPE8BMskz0i4ONMJwnFEykZOEXf6iVcw5ECaHGufLsraOfFLpGm2Is755bozqi3HZja5xrT20Na0OA7SsTysHtSFhevMmo1WPlhYuEGO6qnuusKgP0COT3M0NaPwohBlrsW7xqazHEoU8E3xqGhf4HznODbT/HMQFdauc=
+	t=1741628506; cv=none; b=Gj80vpUeaA2px6DhxUnl6haBsegy3QVkgO0GipDq7bU1eRtJ0TgID5qCHxIx7elaYbMiwtymY8sK6gI0hnikGpMKJ+S0ntcOdKhmkU2PlWCEtnfTf+gc/QK2g00lltsuhO6lBEiI4t/afkjiuHRNRS3KtvKaUARtYFqpPOQfbQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628227; c=relaxed/simple;
-	bh=z2OwOhvMreIMK1159BZVtr4gqpVc7upS1+RlpR4POgk=;
+	s=arc-20240116; t=1741628506; c=relaxed/simple;
+	bh=/vXNJF1k6bgN77WLxqvzttKGVCAqs0o2UyVyo6pn0cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxqWXrtKjTwcHmpd9zRtnhCWeYx4a4N24WlprANFlvKYx/4Y4xPNAwszsn//4MzFozSTDDWK7jW6yWoBI7KakCm+Hv9hbU+rUPfhai7ndCINeCGrYPI0tynWhzIyoDPBomedTbao6NRNm63nxhweP+Fy5MbqC/zoY1VfRF3DFJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bivCL5qC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B729C4CEE5;
-	Mon, 10 Mar 2025 17:37:07 +0000 (UTC)
+	 MIME-Version; b=TO6QQqz6WQMbJCpVr08FEYyhP1AumJLRxzXU6a+ieXlQzEexb1QUmcdheycscIPSUPH5BGdOhpUq1PTs4dGeakdpzKR+woDtAlA5DYSxDbD7yr3iz5WVZpqgwjbA7TxWAk7mZUMJSytGLLOuN7iWpNBQY4WDqcaIODYV5MVWgZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVFAdT1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805AFC4CEE5;
+	Mon, 10 Mar 2025 17:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628227;
-	bh=z2OwOhvMreIMK1159BZVtr4gqpVc7upS1+RlpR4POgk=;
+	s=korg; t=1741628505;
+	bh=/vXNJF1k6bgN77WLxqvzttKGVCAqs0o2UyVyo6pn0cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bivCL5qCkyp4iwo/30P0Om/hC7zCj/lBZG10F86clPwco2DHqZadLOA6ldLEP/VPo
-	 RuTlrZ0EO7eEssTX4i+3aH3X1adAZAPSr0EArAUE9aAYVpFlB3pU4CMG2MQ4coPpsk
-	 29d/bDhdNI6GZ+3AwRvxEkUkcIZdAjFu9QvOZQUE=
+	b=TVFAdT1fhP/Rv4oq94pmokNCpHeml6JZQjYJ91lYvpcIHPKoo/JP3GVLYGjMEyB8L
+	 V1e8+4y7JAd6XHqPA7KpCXPMa8oot3rI+hP3w4pfPuxdDUx00dtmjCGLC9/3twpvnH
+	 SqjDcEUkMf+YlONVaTRn/NzGOoPZsVtolWegdtLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 130/145] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.1 080/109] mei: me: add panther lake P DID
 Date: Mon, 10 Mar 2025 18:07:04 +0100
-Message-ID: <20250310170440.012879200@linuxfoundation.org>
+Message-ID: <20250310170430.746997601@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
+commit a8e8ffcc3afce2ee5fb70162aeaef3f03573ee1e upstream.
 
-The alternative path leads to a build error after a recent change:
+Add Panther Lake P device id.
 
-sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
-include/linux/stddef.h:9:14: error: called object is not a function or function pointer
-    9 | #define NULL ((void *)0)
-      |              ^
-sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
- 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
-      |                                                 ^~~~
-sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
- 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
-
-Using IS_REACHABLE() is somewhat questionable here anyway since it
-leads to the input code not working when the HDA driver is builtin
-but input is in a loadable module. Replace this with a hard compile-time
-dependency on CONFIG_INPUT. In practice this won't chance much
-other than solve the compiler error because it is rare to require
-sound output but no input support.
-
-Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250209110550.1582982-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/Kconfig         |    1 +
- sound/pci/hda/patch_realtek.c |    5 -----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -183,6 +183,7 @@ comment "Set to Y if you want auto-loadi
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,8 @@
  
- config SND_HDA_CODEC_REALTEK
- 	tristate "Build Realtek HD-audio codec support"
-+	depends on INPUT
- 	select SND_HDA_GENERIC
- 	select SND_HDA_GENERIC_LEDS
- 	help
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4865,7 +4865,6 @@ static void alc298_fixup_samsung_amp(str
- 	}
- }
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
  
--#if IS_REACHABLE(CONFIG_INPUT)
- static void gpio2_mic_hotkey_event(struct hda_codec *codec,
- 				   struct hda_jack_callback *event)
- {
-@@ -4974,10 +4973,6 @@ static void alc233_fixup_lenovo_line2_mi
- 		spec->kb_dev = NULL;
- 	}
- }
--#else /* INPUT */
--#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
--#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
--#endif /* INPUT */
++#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,8 @@ static const struct pci_device_id mei_me
  
- static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
