@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-121793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EF4A59C7A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06753A59D9E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB2E3A968F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B33188F02C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EA1233126;
-	Mon, 10 Mar 2025 17:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D96322B8D0;
+	Mon, 10 Mar 2025 17:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eh+B8KOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osJqaJdD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65524230D3D;
-	Mon, 10 Mar 2025 17:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C80F1B3927;
+	Mon, 10 Mar 2025 17:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626645; cv=none; b=tIs2Xa6yr6+mPVuxFN1+768twAkwFkBmsPAQBg08twJS8o+3RUXqPuOyyH6HDhga+GyQQ6AmqbN8DfsvmtPDdsQX+aN/vAkH3fmUkebW9hWC9urFnUPB3RjLBpxug6tvIVAsCJhJwa7uCDez+e55ZcVfUMWRHjOAs78aU1UqWuc=
+	t=1741627365; cv=none; b=SXAKwdLE5LcQ7fpL1CprQWjj5MksbRN4Za/qcRf3K/mHcfsBliciCzMjgenjDhu3MaK/sGuhgQqtRsSxonMff1zERsF1vnwepSCUlaB2yqi9ubSzlyRDR1sA34PQQza7AMls7T4xFwfwSYDpiuKs99k7LnsCveDVaiEPGKxbHcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626645; c=relaxed/simple;
-	bh=b5BfELRwBLkRzV6ctZeIt0LilPZ8GVTLUAE/9OfjhUM=;
+	s=arc-20240116; t=1741627365; c=relaxed/simple;
+	bh=CW8irCflxJrT+Yxhx0AslNDwiuec+rP4f79aISKi7ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/5pXfqKAT+YlfiHAY+nBf8byhYhHUmHkvWbk5kxvPmxEqvAxInFJAXCmZd/IdhGN6gXU7dAomm9MEGlcroUjZL5Ixg3DiYSJps4b2JHlIwdoh7SeeYf3JyaxYnOWU5ckZWz6OlUKSsjQ83FEqC9yEUjg3VDwYhUNnDYwOjeAUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh+B8KOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F27C4CEE5;
-	Mon, 10 Mar 2025 17:10:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IUzDmAkbq9cqEc3n6zJxdMOMJ5O5bj8T4EGT5S2VWww0YmIymFdUVOsAiuc57KIliqV7EIb5vU1OF4wodcPsbIBStFxwfmHzk8nNfAwA+evbH58KsFWTQyeczRIOL9Hwc/TM5975DC1xYe+sCD7y1CiHS1T0Jlt2dfW7dsCndQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osJqaJdD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316DEC4CEE5;
+	Mon, 10 Mar 2025 17:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626645;
-	bh=b5BfELRwBLkRzV6ctZeIt0LilPZ8GVTLUAE/9OfjhUM=;
+	s=korg; t=1741627364;
+	bh=CW8irCflxJrT+Yxhx0AslNDwiuec+rP4f79aISKi7ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eh+B8KOUgMj/2ir+D5kPRIxJbWcwdZGPQHDcp5tXrb1/Uh0tpDpIEI7v5zr9Jziiv
-	 tHT23r4zKlupw7c1qJx4CaU4/hMzV3+v52I4vSoSyZWzAmsJVItUSX0bnfPkl2Cdr4
-	 xzn/RY3z0GVQceFQBvEFKKfG8U/oXOsRTZyYQ7OU=
+	b=osJqaJdDVKPIDkUOoM67+8FA7hqv1gWBbOd1Kw3JFvmQtJQJ3/Jtej7jkqjz9DZVW
+	 ADoIPYoBhmht2Esjcz+X2gi4+SZlTfzW4Z+92HMOes3odVDt+jlKu0pbhl9YPqNuLq
+	 oAZQQm4bCLS5OfMdaliwFdaNGf1SlERsuycNALqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 063/207] selftests/damon/damos_quota: make real expectation of quota exceeds
-Date: Mon, 10 Mar 2025 18:04:16 +0100
-Message-ID: <20250310170450.273677649@linuxfoundation.org>
+	Fan Yang <804284660@qq.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 104/269] platform/x86: thinkpad_acpi: Add battery quirk for ThinkPad X131e
+Date: Mon, 10 Mar 2025 18:04:17 +0100
+Message-ID: <20250310170501.858112032@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-commit 1c684d77dfbcf926e0dd28f6d260e8fdd8a58e85 upstream.
+commit d0d10eaedcb53740883d7e5d53c5e15c879b48fb upstream.
 
-Patch series "selftests/damon: three fixes for false results".
+Based on the dmesg messages from the original reporter:
 
-Fix three DAMON selftest bugs that cause two and one false positive
-failures and successes.
+[    4.964073] ACPI: \_SB_.PCI0.LPCB.EC__.HKEY: BCTG evaluated but flagged as error
+[    4.964083] thinkpad_acpi: Error probing battery 2
 
+Lenovo ThinkPad X131e also needs this battery quirk.
 
-This patch (of 3):
-
-damos_quota.py assumes the quota will always exceeded.  But whether quota
-will be exceeded or not depend on the monitoring results.  Actually the
-monitored workload has chaning access pattern and hence sometimes the
-quota may not really be exceeded.  As a result, false positive test
-failures happen.  Expect how much time the quota will be exceeded by
-checking the monitoring results, and use it instead of the naive
-assumption.
-
-Link: https://lkml.kernel.org/r/20250225222333.505646-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20250225222333.505646-2-sj@kernel.org
-Fixes: 51f58c9da14b ("selftests/damon: add a test for DAMOS quota")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Fan Yang <804284660@qq.com>
+Tested-by: Fan Yang <804284660@qq.com>
+Co-developed-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250221164825.77315-1-jeffbai@aosc.io
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/damon/damos_quota.py |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/damon/damos_quota.py
-+++ b/tools/testing/selftests/damon/damos_quota.py
-@@ -51,16 +51,19 @@ def main():
-         nr_quota_exceeds = scheme.stats.qt_exceeds
- 
-     wss_collected.sort()
-+    nr_expected_quota_exceeds = 0
-     for wss in wss_collected:
-         if wss > sz_quota:
-             print('quota is not kept: %s > %s' % (wss, sz_quota))
-             print('collected samples are as below')
-             print('\n'.join(['%d' % wss for wss in wss_collected]))
-             exit(1)
-+        if wss == sz_quota:
-+            nr_expected_quota_exceeds += 1
- 
--    if nr_quota_exceeds < len(wss_collected):
--        print('quota is not always exceeded: %d > %d' %
--              (len(wss_collected), nr_quota_exceeds))
-+    if nr_quota_exceeds < nr_expected_quota_exceeds:
-+        print('quota is exceeded less than expected: %d < %d' %
-+              (nr_quota_exceeds, nr_expected_quota_exceeds))
-         exit(1)
- 
- if __name__ == '__main__':
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -9958,6 +9958,7 @@ static const struct tpacpi_quirk battery
+ 	 * Individual addressing is broken on models that expose the
+ 	 * primary battery as BAT1.
+ 	 */
++	TPACPI_Q_LNV('G', '8', true),       /* ThinkPad X131e */
+ 	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
+ 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
+ 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
 
 
 
