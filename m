@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FF81A5A286
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD030A59E4D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EFC91756E5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F51188D818
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB51822FF4E;
-	Mon, 10 Mar 2025 18:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CC819004A;
+	Mon, 10 Mar 2025 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFIIP07i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htQze18d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BD11C57B2;
-	Mon, 10 Mar 2025 18:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CCA22E00A;
+	Mon, 10 Mar 2025 17:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630859; cv=none; b=hcESLAjmQeARnV/zZj3YRN9HaqF4DD8l39Kjf4fCQ/JUf/KF072uDmaQZPxLoSVhHHV38uL8cq9JX+npJ9erE9vUTEC/N5QLth97dpZpI7LkJ+hAnq+VzTxal+xmsQYz0U/UZSsg9NbTUDZ015r/FAkPeRENE9UCqGNqRhrRWFU=
+	t=1741627798; cv=none; b=bkrCNQz7rSLPGRLAYLr+1ZDvA9XhHmmjk3ayJIs4aX5GPZoJN12dSAvn7Y/aRySVmfXpzjGi5In/lsZrQGUx8tyAKixXYc8f+0QVEQJQ4GiiXRHUpGdinn/CAywuamX0v0nLRD1U2Y1laHntPfbksNdXRKF3bOIWnehrVzTSmXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630859; c=relaxed/simple;
-	bh=fRBqh0P5+v5EPnPJv0o09RvivcpBbf87DsmQstL+Uwc=;
+	s=arc-20240116; t=1741627798; c=relaxed/simple;
+	bh=5K6cb7gVRzdm/9oLDgrVxZDcaZTB09FgmHaiOjDI4Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsJGUeLq3zZ2mMIaO78ug5/9TIy2eOT0G8zxYnmjMcxsGZpWXPeQ/20vaTAAZSlUVxx8J4XGhR1MUwvmL3cSeiG62wOXPOLjyXrPfmmPxvj4HIULYCK/fjx7iCFhOzK/FOoW3TPHK3UgCbl8bW0howOnIpDPPLUT4g8PnzjGXJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFIIP07i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A169C4CEE5;
-	Mon, 10 Mar 2025 18:20:58 +0000 (UTC)
+	 MIME-Version; b=bhSMtW9zgcUhcQQ70fNpDQkLi4dL1FFwKRMluwmPRBhoQ1tcxWrpf7RYREDNInCKXNTQfViq50WcAkYYlXHzYKl+hRb5F3bMkhnVxqSPKXS5cXxZfItpkIEkBGhHZ7mcVF6+9IJFezq19yr2etq4zgxy06wVqxGMkx0vmx56QLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htQze18d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39D6C4CEE5;
+	Mon, 10 Mar 2025 17:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630859;
-	bh=fRBqh0P5+v5EPnPJv0o09RvivcpBbf87DsmQstL+Uwc=;
+	s=korg; t=1741627798;
+	bh=5K6cb7gVRzdm/9oLDgrVxZDcaZTB09FgmHaiOjDI4Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFIIP07if7ysY3eZqlNN607hZL0m/Arr+7eO+DNtv86IuK2gEAMAukIcLuHH69RgM
-	 cdHVHwWFTuw2TIbEVaNTi99Kf8JFj2LRgCpbgAneeyB4Ar7JPBRr5HBO9Hyh3x0URn
-	 CFGKuDiT4jEyncUaNT9QZr/VVH9RhNPGhjPgRqpc=
+	b=htQze18dTsEDEQXAUL6TL4IE7zQPlcos+YIeMhcTIGDBY3cUxZGn37x1N1BgBZnkj
+	 WJVTzMoNKMCRoUGb7aXpqxSWguEUq1YBCNFCwR7gdXt9QLDisxlvBRr847qaA93ace
+	 KGo43kiR0zIYV6UKDV/lbV6SAvnvrHHWHiP9VWSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fab Stz <fabstz-it@yahoo.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 528/620] intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly
+	stable <stable@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 6.12 221/269] usb: gadget: Fix setting self-powered state on suspend
 Date: Mon, 10 Mar 2025 18:06:14 +0100
-Message-ID: <20250310170606.388698626@linuxfoundation.org>
+Message-ID: <20250310170506.491210814@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit c157d351460bcf202970e97e611cb6b54a3dd4a4 upstream.
+commit c783e1258f29c5caac9eea0aea6b172870f1baf8 upstream.
 
-The Intel idle driver is preferred over the ACPI processor idle driver,
-but fails to implement the work around for Core2 generation CPUs, where
-the TSC stops in C2 and deeper C-states. This causes stalls and boot
-delays, when the clocksource watchdog does not catch the unstable TSC
-before the CPU goes deep idle for the first time.
+cdev->config might be NULL, so check it before dereferencing.
 
-The ACPI driver marks the TSC unstable when it detects that the CPU
-supports C2 or deeper and the CPU does not have a non-stop TSC.
-
-Add the equivivalent work around to the Intel idle driver to cure that.
-
-Fixes: 18734958e9bf ("intel_idle: Use ACPI _CST for processor models without C-state tables")
-Reported-by: Fab Stz <fabstz-it@yahoo.fr>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Fab Stz <fabstz-it@yahoo.fr>
-Cc: All applicable <stable@vger.kernel.org>
-Closes: https://lore.kernel.org/all/10cf96aa-1276-4bd4-8966-c890377030c3@yahoo.fr
-Link: https://patch.msgid.link/87bjupfy7f.ffs@tglx
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+CC: stable <stable@kernel.org>
+Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/idle/intel_idle.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/composite.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -56,6 +56,7 @@
- #include <asm/nospec-branch.h>
- #include <asm/mwait.h>
- #include <asm/msr.h>
-+#include <asm/tsc.h>
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2616,7 +2616,8 @@ void composite_suspend(struct usb_gadget
  
- #define INTEL_IDLE_VERSION "0.5.1"
+ 	cdev->suspended = 1;
  
-@@ -1335,6 +1336,9 @@ static void __init intel_idle_init_cstat
- 		if (intel_idle_state_needs_timer_stop(state))
- 			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+-	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
++	if (cdev->config &&
++	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
+ 		usb_gadget_set_selfpowered(gadget);
  
-+		if (cx->type > ACPI_STATE_C1 && !boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
-+			mark_tsc_unstable("TSC halts in idle");
-+
- 		state->enter = intel_idle;
- 		state->enter_s2idle = intel_idle_s2idle;
- 	}
+ 	usb_gadget_vbus_draw(gadget, 2);
 
 
 
