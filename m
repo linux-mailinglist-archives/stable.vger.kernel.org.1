@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5600FA59FB7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25291A5A2A1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC8313A6299
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D3FC3AFBC8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B8D2253FE;
-	Mon, 10 Mar 2025 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA8B233D9D;
+	Mon, 10 Mar 2025 18:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPcz/PjZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRPYLeSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9C623236D;
-	Mon, 10 Mar 2025 17:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB68233735;
+	Mon, 10 Mar 2025 18:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628515; cv=none; b=nqkSaAeavB3dfLUDagBHccwBZNpXi/5QRntjY3z4teeM2cbna6YTtHXpkHXLPOaFzqYAutf3x21XyU9v0MhGGyWDGpTSZSGgCzaUvzD82vgVx2fh0Mj3XAcT7aCZMCiVWgwpZl/Wxs8KS9i6qp0kI0V67Aj05E3kAuDfNlvJb5Q=
+	t=1741630927; cv=none; b=r1oBJaa4IHh3N0Xem6QtiRCUFVsAvqt6vXcMq4BjoHcM62kNC4ENcCU33aEsZrXK89uUIZSP6W/GfivZAib15kCIKh9t0T9qc66CvjwTpKwcJBu2IJAECKFTNWZQlYE9Mes+U2+M/JHr4Bx/jiiNfPLh7Vc7PWaQNCNbrgmNg+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628515; c=relaxed/simple;
-	bh=m9dzySiwtRx1q6D105e0jPrDRNAtuk5o0JoMiI+LSys=;
+	s=arc-20240116; t=1741630927; c=relaxed/simple;
+	bh=umFPZy9Ps6u++MSNQ77FiULbDRApknsHVPaezloeZjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ggyp/Te64waiQ6T0BLLvOGkPEuAVsiP+FQytuZb7+QIInlGYvPUPFlM4J8TRiyAs9dZj/FyAJixC0442Kq4nL2Wu+UkI8fTbyt1EO9tFpY8dFTsPdbC+lm4m/zEYeQ2MwfbUx8UNb1FN78UCwJ/uYt6uA3j2Oy6fs+pDC2VRJOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPcz/PjZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAE3C4CEE5;
-	Mon, 10 Mar 2025 17:41:53 +0000 (UTC)
+	 MIME-Version; b=qCWzPwvZ1/ALPCmJtKR/adkBTyQJ3a378er7dmMotw1kAhXRCdWBhngUm5OaXYDVMaB3WnLWTFi8BXlGg3ByVX8Fj3t6kmKWpjyrPqXjTywgzNrJqHaK7nGH5Eq8CSXGzYFRgNmWVwjwBmIgUKzTPohZxBWdnB82dpIj/N5wlXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRPYLeSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834EFC4CEED;
+	Mon, 10 Mar 2025 18:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628514;
-	bh=m9dzySiwtRx1q6D105e0jPrDRNAtuk5o0JoMiI+LSys=;
+	s=korg; t=1741630926;
+	bh=umFPZy9Ps6u++MSNQ77FiULbDRApknsHVPaezloeZjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPcz/PjZKLi+Uvuosxel4i/H2IbfY9YobJOQEpD8OGy5ihRcHK3qDH7QnnH+PB7NX
-	 voICSUWpTV+rLJj2md84eVuiqeQF3siJ89aKSK8B/RJ0GMa8ogpcdcZ2JI6clQDc8D
-	 /6W7NNkxEtrfNBNKOET9Vml4DnYoegT6/P24zkW4=
+	b=vRPYLeSWMuQuUhhBCflMvqlk3gTBva4FMd6EWULf0lsvjVVEi3V0zTUPvolKMvXlZ
+	 g6miro1U/HhxppO3zfDl/8eQG7IlFgurOVnlk55VI4ZaLd7D+znEtb9WHJbbJ4Vndc
+	 D8G0TvjmHySl6YFOoGCzqTUNIc6klrVnRpEHipzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 083/109] intel_th: pci: Add Panther Lake-P/U support
-Date: Mon, 10 Mar 2025 18:07:07 +0100
-Message-ID: <20250310170430.865100697@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.15 582/620] usb: renesas_usbhs: Use devm_usb_get_phy()
+Date: Mon, 10 Mar 2025 18:07:08 +0100
+Message-ID: <20250310170608.508410843@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 49114ff05770264ae233f50023fc64a719a9dcf9 upstream.
+commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
 
-Add support for the Trace Hub in Panther Lake-P/U.
+The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
+never released. Use devm_usb_get_phy() to handle this scenario.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20250211185017.1759193-6-alexander.shishkin@linux.intel.com
+This issue was identified through code investigation. No issue was found
+without this change.
+
+Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -340,6 +340,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Panther Lake-P/U */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xe424),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/drivers/usb/renesas_usbhs/mod_gadget.c
++++ b/drivers/usb/renesas_usbhs/mod_gadget.c
+@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
+ 		goto usbhs_mod_gadget_probe_err_gpriv;
+ 	}
+ 
+-	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
++	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
+ 	dev_info(dev, "%stransceiver found\n",
+ 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
+ 
 
 
 
