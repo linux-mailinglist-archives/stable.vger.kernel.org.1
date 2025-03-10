@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B631EA59DFA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9689AA59CC2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34EB716FEF6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3712E3AAD70
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18227233141;
-	Mon, 10 Mar 2025 17:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCA9232367;
+	Mon, 10 Mar 2025 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wglevev0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2wRWzUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8012230BFC;
-	Mon, 10 Mar 2025 17:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A870223236F;
+	Mon, 10 Mar 2025 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627529; cv=none; b=W4Zg9VO8zMt7mW30NMrybxPhn0WqyKfeFSRjOD91HhttLH3oBMTQUOMPebe/5mDgCMavIrHaRGy5R6g0HYin1AETaaYyx/JkQW7Bbyg/nhHbydntBfZ/i2phJHkt+3Y5UFFNFTwrngTLFkzg/iPi+VxN309vMXUg7/RtkyvLAKg=
+	t=1741626810; cv=none; b=KrgL5Jyg5pYj9dsB94+CA+qPl01E2JOYr5/ZEHp+GKnU/axM5wBT3IBTRMjRtdwwAGFID8I20XjJWBJNWNKSy8ZMBfdQcDNDtc7I3MtIsE310PSXCl5eD/3cw5qI1BjRkkfUcYwkbftXqSX1mxW1aD7EtrnUFPJr24ZtUKfs9FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627529; c=relaxed/simple;
-	bh=Y0fmzxdXKhiVLjW+wFMbgvRDEUM4yinum5kMxhvsxfU=;
+	s=arc-20240116; t=1741626810; c=relaxed/simple;
+	bh=fmp2LyLZBwD1s7zKTXtDw1G8sExS9Y4oImT3dMGaWJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gM32MSv/8LuLJpeBI99Y0cjV+beDgAEsiuOAireA2WTCogGI7tj6T3QJo1OeoKiehAKG/SbzkPnhvfIxkYYBozDQg1ZJlethDnNUDBcHVvoMFNWIR9s/PghHUnZeIod7NZ6vTVz8/1U+XRaHzRqCWkyaO4p9pp0FJ15nftXmTUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wglevev0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D9EC4CEE5;
-	Mon, 10 Mar 2025 17:25:28 +0000 (UTC)
+	 MIME-Version; b=s3af+QXnEY5Sr5uqgOKdX5vqYcqD7C9Depycy0AnwUzyr7o2AFcUaM6tTSeI5Pagc8cIZ01wVMymML+kVq8RsJvvrgAHHxauEv58lCSR7jfcmfWhMUiKhB0Ml5qNiqTW+K4Xb7vMrtAsU0/9itGwwKXK9IPX6pB26N8aywrtk00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2wRWzUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C76C4CEE5;
+	Mon, 10 Mar 2025 17:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627529;
-	bh=Y0fmzxdXKhiVLjW+wFMbgvRDEUM4yinum5kMxhvsxfU=;
+	s=korg; t=1741626810;
+	bh=fmp2LyLZBwD1s7zKTXtDw1G8sExS9Y4oImT3dMGaWJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wglevev0G3L2yYx3xYDSMgSobm0Xsw+mw0y+G+jNqLGwbziYqhyxXniEf0ui3o8EG
-	 XNbbv4CdD0zlt+cbjNnJ+YLOKK457TUWMesFRFvd+Ca2i3QRsCKi3j/CAe034G6l4d
-	 HN3L6ceDQfqJ7q3kn405qER8NlR1Sz2o5mXjkZ/4=
+	b=R2wRWzUb/aR5xa4pBeRv0F5884EROUV1Ig1QVY/8sTDxKNkY7Y7u7zEUA24tXYhXx
+	 qtyXLMSdkyq9aJYl+a+ny7/wRLib0JghVNdVrbCtjy/4uUMCPMUB3vn3kktRgznYWR
+	 S/Gud3FYYpGkxXpMjT+sPdl5OHzoKW+dV6Bkfpck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/269] drm/nouveau: select FW caching
+Subject: [PATCH 6.13 121/207] ALSA: usx2y: validate nrpacks module parameter on probe
 Date: Mon, 10 Mar 2025 18:05:14 +0100
-Message-ID: <20250310170504.137569382@linuxfoundation.org>
+Message-ID: <20250310170452.618122833@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 6b481ab0e6855fb30e2923c51f62f1662d1cda7e ]
+[ Upstream commit 172a0f509723fe4741d4b8e9190cf434b18320d8 ]
 
-nouveau tries to load some firmware during suspend that it loaded
-earlier, but with fw caching disabled it hangs suspend, so just rely on
-FW cache enabling instead of working around it in the driver.
+The module parameter defines number of iso packets per one URB. User is
+allowed to set any value to the parameter of type int, which can lead to
+various kinds of weird and incorrect behavior like integer overflows,
+truncations, etc. Number of packets should be a small non-negative number.
 
-Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250207012531.621369-1-airlied@gmail.com
+Since this parameter is read-only, its value can be validated on driver
+probe.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250303100413.835-1-m.masimov@mt-integration.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/usx2y/usbusx2y.c      | 11 +++++++++++
+ sound/usb/usx2y/usbusx2y.h      | 26 ++++++++++++++++++++++++++
+ sound/usb/usx2y/usbusx2yaudio.c | 27 ---------------------------
+ 3 files changed, 37 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/Kconfig b/drivers/gpu/drm/nouveau/Kconfig
-index ce840300578d8..1050a4617fc15 100644
---- a/drivers/gpu/drm/nouveau/Kconfig
-+++ b/drivers/gpu/drm/nouveau/Kconfig
-@@ -4,6 +4,7 @@ config DRM_NOUVEAU
- 	depends on DRM && PCI && MMU
- 	select IOMMU_API
- 	select FW_LOADER
-+	select FW_CACHE if PM_SLEEP
- 	select DRM_CLIENT_SELECTION
- 	select DRM_DISPLAY_DP_HELPER
- 	select DRM_DISPLAY_HDMI_HELPER
+diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
+index 5f81c68fd42b6..5756ff3528a2d 100644
+--- a/sound/usb/usx2y/usbusx2y.c
++++ b/sound/usb/usx2y/usbusx2y.c
+@@ -151,6 +151,12 @@ static int snd_usx2y_card_used[SNDRV_CARDS];
+ static void snd_usx2y_card_private_free(struct snd_card *card);
+ static void usx2y_unlinkseq(struct snd_usx2y_async_seq *s);
+ 
++#ifdef USX2Y_NRPACKS_VARIABLE
++int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
++module_param(nrpacks, int, 0444);
++MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
++#endif
++
+ /*
+  * pipe 4 is used for switching the lamps, setting samplerate, volumes ....
+  */
+@@ -432,6 +438,11 @@ static int snd_usx2y_probe(struct usb_interface *intf,
+ 	struct snd_card *card;
+ 	int err;
+ 
++#ifdef USX2Y_NRPACKS_VARIABLE
++	if (nrpacks < 0 || nrpacks > USX2Y_NRPACKS_MAX)
++		return -EINVAL;
++#endif
++
+ 	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
+ 	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
+ 	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
+diff --git a/sound/usb/usx2y/usbusx2y.h b/sound/usb/usx2y/usbusx2y.h
+index 391fd7b4ed5ef..6a76d04bf1c7d 100644
+--- a/sound/usb/usx2y/usbusx2y.h
++++ b/sound/usb/usx2y/usbusx2y.h
+@@ -7,6 +7,32 @@
+ 
+ #define NRURBS	        2
+ 
++/* Default value used for nr of packs per urb.
++ * 1 to 4 have been tested ok on uhci.
++ * To use 3 on ohci, you'd need a patch:
++ * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
++ * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
++ *
++ * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
++ * Bigger is safer operation, smaller gives lower latencies.
++ */
++#define USX2Y_NRPACKS 4
++
++#define USX2Y_NRPACKS_MAX 1024
++
++/* If your system works ok with this module's parameter
++ * nrpacks set to 1, you might as well comment
++ * this define out, and thereby produce smaller, faster code.
++ * You'd also set USX2Y_NRPACKS to 1 then.
++ */
++#define USX2Y_NRPACKS_VARIABLE 1
++
++#ifdef USX2Y_NRPACKS_VARIABLE
++extern int nrpacks;
++#define nr_of_packs() nrpacks
++#else
++#define nr_of_packs() USX2Y_NRPACKS
++#endif
+ 
+ #define URBS_ASYNC_SEQ 10
+ #define URB_DATA_LEN_ASYNC_SEQ 32
+diff --git a/sound/usb/usx2y/usbusx2yaudio.c b/sound/usb/usx2y/usbusx2yaudio.c
+index f540f46a0b143..acca8bead82e5 100644
+--- a/sound/usb/usx2y/usbusx2yaudio.c
++++ b/sound/usb/usx2y/usbusx2yaudio.c
+@@ -28,33 +28,6 @@
+ #include "usx2y.h"
+ #include "usbusx2y.h"
+ 
+-/* Default value used for nr of packs per urb.
+- * 1 to 4 have been tested ok on uhci.
+- * To use 3 on ohci, you'd need a patch:
+- * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
+- * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
+- *
+- * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
+- * Bigger is safer operation, smaller gives lower latencies.
+- */
+-#define USX2Y_NRPACKS 4
+-
+-/* If your system works ok with this module's parameter
+- * nrpacks set to 1, you might as well comment
+- * this define out, and thereby produce smaller, faster code.
+- * You'd also set USX2Y_NRPACKS to 1 then.
+- */
+-#define USX2Y_NRPACKS_VARIABLE 1
+-
+-#ifdef USX2Y_NRPACKS_VARIABLE
+-static int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
+-#define  nr_of_packs() nrpacks
+-module_param(nrpacks, int, 0444);
+-MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
+-#else
+-#define nr_of_packs() USX2Y_NRPACKS
+-#endif
+-
+ static int usx2y_urb_capt_retire(struct snd_usx2y_substream *subs)
+ {
+ 	struct urb	*urb = subs->completed_urb;
 -- 
 2.39.5
 
