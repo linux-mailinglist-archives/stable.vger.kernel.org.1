@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD2EA59F6D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B7AA59E50
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D4B87A238C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E881687C8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6C422D4C3;
-	Mon, 10 Mar 2025 17:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF17230BFC;
+	Mon, 10 Mar 2025 17:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwn1a5SE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvufOCN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E6F22D799;
-	Mon, 10 Mar 2025 17:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3874822CBED;
+	Mon, 10 Mar 2025 17:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628412; cv=none; b=WadPZKJASXTf4FlD1brJLVh5B/hoEV6WK+sG9HGE+3rc7WPSoXNnJNK3Rg4YCo7T+6oFeOeygXYmyfAQwvTppnauLQQ9H2vGK6TolmFiD7W1iHSmIuek3OGvW2dZuxKRjkysVxzELVovzdWxOwecAlo7vrTZOHIcdHWGYAAX1UQ=
+	t=1741627758; cv=none; b=Mv6gQ954lewKxaIQrcmyneIDAQFWw0muj++ceG3oT9YgafHPoPtF9SvxDMktW2d8q1lHNoNW4ovlWGTx70aSgTJElGim0Vus5oQ25OEbNOhXh4pBT4H+7heTG6uJWInE+QNBq+Jga6kotpPgWoDJN1MkeXjTXK28WoEkfmU7elg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628412; c=relaxed/simple;
-	bh=93v5H7O5Hofg/VABPAZNst+gm2fLy1+PGK94uHt46zs=;
+	s=arc-20240116; t=1741627758; c=relaxed/simple;
+	bh=M4ZnvdaR1hpiaVx9uWd7oBPASmZ166K6y75XaWw1DDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkFqO6/CuTxZimJ4jIfl1OJbL0yRkmnlET8Db47aDnh+VSoAG/tBciyvrvBqqp0JNc16UIAv9bGL9t8SbRqDNxQ72cjC0iEFOefPVmStgVrOL1kL0p6Z7aP2f0JoaZusihFVrg85/3iLrlYrxxFW/rpZe5rqxG1tsHbb00MGiHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwn1a5SE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD96C4CEE5;
-	Mon, 10 Mar 2025 17:40:11 +0000 (UTC)
+	 MIME-Version; b=jaMY6zFOYlc5ERNNaEJa1R5QJp4rSqZivfQ+cskN4EE+d1tNJG76JND81XepEmtYg80jEsRG2iDDFBMMiJUL6a1iWflBEuuJBOxZgHHqIKikHVNLRYvZvgvdx0x/bgHaSa64G8T6VM/YME5k9eUNQkx0YZvjyu76BUR1HUa1EgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvufOCN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4DEC4CEE5;
+	Mon, 10 Mar 2025 17:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628412;
-	bh=93v5H7O5Hofg/VABPAZNst+gm2fLy1+PGK94uHt46zs=;
+	s=korg; t=1741627758;
+	bh=M4ZnvdaR1hpiaVx9uWd7oBPASmZ166K6y75XaWw1DDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwn1a5SEBUlW6uRJHrBEQf7X3gbeplHPvV/mvPrCEDbuocru0ZOPb41wE07pe0A2i
-	 z3Kf0zSa7FUu8wxJSPXpZV98kTMHo7AOSnjVRACbt721xjxla6AisOaDk/g4cOsuyq
-	 Hf27rwvAvakz70yt67nNkHnY6Fyyv2PsX2hBqhmE=
+	b=qvufOCN1VuXvf3Q1XJk48+Ggowjh2n71cSh0wiQOu65jUfXOzMfo/cthEPGbMWknS
+	 BpMdgJBlLyV84wV2A78HbowJCYAF127hmT2NkZphsAlt0eVG20ss48VtgsTlmGgYhs
+	 yb3FrvE5zH8/z5urf+YRmC1QvDxkRUGs/8G0D4f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/109] llc: do not use skb_get() before dev_queue_xmit()
+	Hans de Goede <hdegoede@redhat.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 239/269] mei: vsc: Use "wakeuphostint" when getting the host wakeup GPIO
 Date: Mon, 10 Mar 2025 18:06:32 +0100
-Message-ID: <20250310170429.477578352@linuxfoundation.org>
+Message-ID: <20250310170507.324072044@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,171 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 64e6a754d33d31aa844b3ee66fb93ac84ca1565e ]
+commit fdb1ada57cf8b8752cdf54f08709d76d74999544 upstream.
 
-syzbot is able to crash hosts [1], using llc and devices
-not supporting IFF_TX_SKB_SHARING.
+The _CRS ACPI resources table has 2 entries for the host wakeup GPIO,
+the first one being a regular GpioIo () resource while the second one
+is a GpioInt () resource for the same pin.
 
-In this case, e1000 driver calls eth_skb_pad(), while
-the skb is shared.
+The acpi_gpio_mapping table used by vsc-tp.c maps the first Gpio ()
+resource to "wakeuphost-gpios" where as the second GpioInt () entry
+is mapped to "wakeuphostint-gpios".
 
-Simply replace skb_get() by skb_clone() in net/llc/llc_s_ac.c
+Using "wakeuphost" to request the GPIO as was done until now, means
+that the gpiolib-acpi code does not know that the GPIO is active-low
+as that info is only available in the GpioInt () entry.
 
-Note that e1000 driver might have an issue with pktgen,
-because it does not clear IFF_TX_SKB_SHARING, this is an
-orthogonal change.
+Things were still working before due to the following happening:
 
-We need to audit other skb_get() uses in net/llc.
+1. Since the 2 entries point to the same pin they share a struct gpio_desc
+2. The SPI core creates the SPI device vsc-tp.c binds to and calls
+   acpi_dev_gpio_irq_get(). This does use the second entry and sets
+   FLAG_ACTIVE_LOW in gpio_desc.flags .
+3. vsc_tp_probe() requests the "wakeuphost" GPIO and inherits the
+   active-low flag set by acpi_dev_gpio_irq_get()
 
-[1]
+But there is a possible scenario where things do not work:
 
-kernel BUG at net/core/skbuff.c:2178 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 16371 Comm: syz.2.2764 Not tainted 6.14.0-rc4-syzkaller-00052-gac9c34d1e45a #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:pskb_expand_head+0x6ce/0x1240 net/core/skbuff.c:2178
-Call Trace:
- <TASK>
-  __skb_pad+0x18a/0x610 net/core/skbuff.c:2466
-  __skb_put_padto include/linux/skbuff.h:3843 [inline]
-  skb_put_padto include/linux/skbuff.h:3862 [inline]
-  eth_skb_pad include/linux/etherdevice.h:656 [inline]
-  e1000_xmit_frame+0x2d99/0x5800 drivers/net/ethernet/intel/e1000/e1000_main.c:3128
-  __netdev_start_xmit include/linux/netdevice.h:5151 [inline]
-  netdev_start_xmit include/linux/netdevice.h:5160 [inline]
-  xmit_one net/core/dev.c:3806 [inline]
-  dev_hard_start_xmit+0x9a/0x7b0 net/core/dev.c:3822
-  sch_direct_xmit+0x1ae/0xc30 net/sched/sch_generic.c:343
-  __dev_xmit_skb net/core/dev.c:4045 [inline]
-  __dev_queue_xmit+0x13d4/0x43e0 net/core/dev.c:4621
-  dev_queue_xmit include/linux/netdevice.h:3313 [inline]
-  llc_sap_action_send_test_c+0x268/0x320 net/llc/llc_s_ac.c:144
-  llc_exec_sap_trans_actions net/llc/llc_sap.c:153 [inline]
-  llc_sap_next_state net/llc/llc_sap.c:182 [inline]
-  llc_sap_state_process+0x239/0x510 net/llc/llc_sap.c:209
-  llc_ui_sendmsg+0xd0d/0x14e0 net/llc/af_llc.c:993
-  sock_sendmsg_nosec net/socket.c:718 [inline]
+1. - 3. happen as above
+4. After requesting the "wakeuphost" GPIO, the "resetfw" GPIO is requested
+   next, but its USB GPIO controller is not available yet, so this call
+   returns -EPROBE_DEFER.
+5. The gpio_desc for "wakeuphost" is put() and during this the active-low
+   flag is cleared from gpio_desc.flags .
+6. Later on vsc_tp_probe() requests the "wakeuphost" GPIO again, but now it
+   is not marked active-low.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67c020c0.050a0220.222324.0011.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The difference can also be seen in /sys/kernel/debug/gpio, which contains
+the following line for this GPIO:
+
+ gpio-535 (                    |wakeuphost          ) in  hi IRQ ACTIVE LOW
+
+If the second scenario is hit the "ACTIVE LOW" at the end disappears and
+things do not work.
+
+Fix this by requesting the GPIO through the "wakeuphostint" mapping instead
+which provides active-low info without relying on acpi_dev_gpio_irq_get()
+pre-populating this info in the gpio_desc.
+
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2316918
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250214212425.84021-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/llc/llc_s_ac.c | 49 +++++++++++++++++++++++++---------------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ drivers/misc/mei/vsc-tp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/llc/llc_s_ac.c b/net/llc/llc_s_ac.c
-index 06fb8e6944b06..7a0cae9a81114 100644
---- a/net/llc/llc_s_ac.c
-+++ b/net/llc/llc_s_ac.c
-@@ -24,7 +24,7 @@
- #include <net/llc_s_ac.h>
- #include <net/llc_s_ev.h>
- #include <net/llc_sap.h>
--
-+#include <net/sock.h>
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -504,7 +504,7 @@ static int vsc_tp_probe(struct spi_devic
+ 	if (ret)
+ 		return ret;
  
- /**
-  *	llc_sap_action_unitdata_ind - forward UI PDU to network layer
-@@ -40,6 +40,26 @@ int llc_sap_action_unitdata_ind(struct llc_sap *sap, struct sk_buff *skb)
- 	return 0;
- }
+-	tp->wakeuphost = devm_gpiod_get(dev, "wakeuphost", GPIOD_IN);
++	tp->wakeuphost = devm_gpiod_get(dev, "wakeuphostint", GPIOD_IN);
+ 	if (IS_ERR(tp->wakeuphost))
+ 		return PTR_ERR(tp->wakeuphost);
  
-+static int llc_prepare_and_xmit(struct sk_buff *skb)
-+{
-+	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
-+	struct sk_buff *nskb;
-+	int rc;
-+
-+	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
-+	if (rc)
-+		return rc;
-+
-+	nskb = skb_clone(skb, GFP_ATOMIC);
-+	if (!nskb)
-+		return -ENOMEM;
-+
-+	if (skb->sk)
-+		skb_set_owner_w(nskb, skb->sk);
-+
-+	return dev_queue_xmit(nskb);
-+}
-+
- /**
-  *	llc_sap_action_send_ui - sends UI PDU resp to UNITDATA REQ to MAC layer
-  *	@sap: SAP
-@@ -52,17 +72,12 @@ int llc_sap_action_unitdata_ind(struct llc_sap *sap, struct sk_buff *skb)
- int llc_sap_action_send_ui(struct llc_sap *sap, struct sk_buff *skb)
- {
- 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
--	int rc;
- 
- 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U, ev->saddr.lsap,
- 			    ev->daddr.lsap, LLC_PDU_CMD);
- 	llc_pdu_init_as_ui_cmd(skb);
--	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
--	if (likely(!rc)) {
--		skb_get(skb);
--		rc = dev_queue_xmit(skb);
--	}
--	return rc;
-+
-+	return llc_prepare_and_xmit(skb);
- }
- 
- /**
-@@ -77,17 +92,12 @@ int llc_sap_action_send_ui(struct llc_sap *sap, struct sk_buff *skb)
- int llc_sap_action_send_xid_c(struct llc_sap *sap, struct sk_buff *skb)
- {
- 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
--	int rc;
- 
- 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U_XID, ev->saddr.lsap,
- 			    ev->daddr.lsap, LLC_PDU_CMD);
- 	llc_pdu_init_as_xid_cmd(skb, LLC_XID_NULL_CLASS_2, 0);
--	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
--	if (likely(!rc)) {
--		skb_get(skb);
--		rc = dev_queue_xmit(skb);
--	}
--	return rc;
-+
-+	return llc_prepare_and_xmit(skb);
- }
- 
- /**
-@@ -133,17 +143,12 @@ int llc_sap_action_send_xid_r(struct llc_sap *sap, struct sk_buff *skb)
- int llc_sap_action_send_test_c(struct llc_sap *sap, struct sk_buff *skb)
- {
- 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
--	int rc;
- 
- 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U, ev->saddr.lsap,
- 			    ev->daddr.lsap, LLC_PDU_CMD);
- 	llc_pdu_init_as_test_cmd(skb);
--	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
--	if (likely(!rc)) {
--		skb_get(skb);
--		rc = dev_queue_xmit(skb);
--	}
--	return rc;
-+
-+	return llc_prepare_and_xmit(skb);
- }
- 
- int llc_sap_action_send_test_r(struct llc_sap *sap, struct sk_buff *skb)
--- 
-2.39.5
-
 
 
 
