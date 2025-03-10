@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B24A59F32
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACE3A59F9C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB3603A8D48
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F9416DE19
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF2E1B3927;
-	Mon, 10 Mar 2025 17:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316D223535F;
+	Mon, 10 Mar 2025 17:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn1Yl3Td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G62M0Mdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5E222F164;
-	Mon, 10 Mar 2025 17:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4E8234978;
+	Mon, 10 Mar 2025 17:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628199; cv=none; b=DtLLN8XVJstmA95ga/KzxKOqmUm79e1NvtdDyPw+zsrN+1H1dfDjfhJm+q3aeN+jBfaL8R+vCk90SBy3ZVsY+j+Rfl4Hh7BEvaEJcgIhMGz4v1ddMinkQMkqw0tjLgLG67zsbmJ6LdisQW3gFjNjlWIEXJMba9qV++XqdcBErAM=
+	t=1741628477; cv=none; b=ZRmS+9rdSRfT2SRE8nk2xJDI6kTWxOQjF2/ZgkobHlbPVdte5ZnD8oK7M+abPGZGq3lLgxoMmnL7A0gYXuPVQmRtQ2QB7e1i8m6OrXvUuX4HeEQg6q4RbPn3X/tlE3P/YsHfluwjldsG1J/T8gXDBLa9Fyq8JwLWO1f7d9PNQOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628199; c=relaxed/simple;
-	bh=iK1mpza4dN83YUaPm3BcCxKd4dBaCkcBVP4Y5LfLAZU=;
+	s=arc-20240116; t=1741628477; c=relaxed/simple;
+	bh=aJ+NDj6rKUblYqjSy/hL1UtAELJpiHt04P7YCLlhLZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYGSckCgys5I52pqd7NfEBrdV7VXKPfUxZjf7BzEHld9TvNoqx5RRry0nQoU+SPXFEwltBGtU1FwG4UE6GQkRLsPU3tmPItZBK//OWSg2wXyMwy34Btwiotq/0CJ2QOeFNVrRGcsbzQXmVX25AFCTKObuXwbJ8DEv4PR95UmgI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn1Yl3Td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99737C4CEE5;
-	Mon, 10 Mar 2025 17:36:38 +0000 (UTC)
+	 MIME-Version; b=Xfi2kGfgwGqqRKut2zgGx+0hccfFUNRM74FscgasFiEJocmjsw//zK+7hsr9fxD1Ar0iKJceglFkaEyVcOO0BAocPsNl/DsizciR9uzdWyL9LDaSHyRqMzJEmx09IycQqSRiMk/4Ah8e6hbhQ/t94R9uOn5WK96i8guIV4EiV3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G62M0Mdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6527CC4CEED;
+	Mon, 10 Mar 2025 17:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628199;
-	bh=iK1mpza4dN83YUaPm3BcCxKd4dBaCkcBVP4Y5LfLAZU=;
+	s=korg; t=1741628476;
+	bh=aJ+NDj6rKUblYqjSy/hL1UtAELJpiHt04P7YCLlhLZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn1Yl3Tdxa2Mk2QXbnXae/vWWggsW+Y5OwM8jS8B8irH+Ug6cwbvmFPNqq9mqZzTY
-	 MpwXJPvrBEOht/4g/dp9BFd1TIpS8cnWXQan2S3ZvHpHjybBs4NzCnfYhcfKaAlpk5
-	 r/JJFHyPR7HpCPDAJ0xWNutCgNd5srsZzaA7CMMg=
+	b=G62M0MdjrLM1Cn5BVKlO4uuXe0ha0+sWlt7b5z+8WlUkb61rWjQnAc2ilFwzsmeDp
+	 lD5+j+7NSpc1vzsBOD6v5JyqVb2ZM6cuiGC2w2TYf4yrcswiByBRz9Dkds6rvyNnwf
+	 xgKQP55g7kElPM2nepBNm5pIPf0RN9zVfOTnlXQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 121/145] bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.1 071/109] usb: dwc3: gadget: Prevent irq storm when TH re-executes
 Date: Mon, 10 Mar 2025 18:06:55 +0100
-Message-ID: <20250310170439.653874095@linuxfoundation.org>
+Message-ID: <20250310170430.386278805@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit a321d163de3d8aa38a6449ab2becf4b1581aed96 upstream.
+commit 69c58deec19628c8a686030102176484eb94fed4 upstream.
 
-There are multiple places from where the recovery work gets scheduled
-asynchronously. Also, there are multiple places where the caller waits
-synchronously for the recovery to be completed. One such place is during
-the PM shutdown() callback.
+While commit d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in
+event cache") makes sure that top half(TH) does not end up overwriting the
+cached events before processing them when the TH gets invoked more than one
+time, returning IRQ_HANDLED results in occasional irq storm where the TH
+hogs the CPU. The irq storm can be prevented by the flag before event
+handler busy is cleared. Default enable interrupt moderation in all
+versions which support them.
 
-If the device is not alive during recovery_work, it will try to reset the
-device using pci_reset_function(). This function internally will take the
-device_lock() first before resetting the device. By this time, if the lock
-has already been acquired, then recovery_work will get stalled while
-waiting for the lock. And if the lock was already acquired by the caller
-which waits for the recovery_work to be completed, it will lead to
-deadlock.
+ftrace event stub during dwc3 irq storm:
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000866: irq_handler_exit: irq=14 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000872: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000874: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000881: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000883: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000889: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000892: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000898: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000901: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000907: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000909: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000915: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000918: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000924: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000927: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000933: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000935: irq_handler_exit: irq=504 ret=handled
+    ....
 
-This is what happened on the X1E80100 CRD device when the device died
-before shutdown() callback. Driver core calls the driver's shutdown()
-callback while holding the device_lock() leading to deadlock.
-
-And this deadlock scenario can occur on other paths as well, like during
-the PM suspend() callback, where the driver core would hold the
-device_lock() before calling driver's suspend() callback. And if the
-recovery_work was already started, it could lead to deadlock. This is also
-observed on the X1E80100 CRD.
-
-So to fix both issues, use pci_try_reset_function() in recovery_work. This
-function first checks for the availability of the device_lock() before
-trying to reset the device. If the lock is available, it will acquire it
-and reset the device. Otherwise, it will return -EAGAIN. If that happens,
-recovery_work will fail with the error message "Recovery failed" as not
-much could be done.
-
-Cc: stable@vger.kernel.org # 5.12
-Reported-by: Johan Hovold <johan@kernel.org>
-Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
-Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Analyzed-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Link: https://lore.kernel.org/r/20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable <stable@kernel.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Fixes: d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in event cache")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250216223003.3568039-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/core.c   |   16 ++++++----------
+ drivers/usb/dwc3/gadget.c |   10 +++++++---
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -892,8 +892,9 @@ static void mhi_pci_recovery_work(struct
- err_unprepare:
- 	mhi_unprepare_after_power_down(mhi_cntrl);
- err_try_reset:
--	if (pci_reset_function(pdev))
--		dev_err(&pdev->dev, "Recovery failed\n");
-+	err = pci_try_reset_function(pdev);
-+	if (err)
-+		dev_err(&pdev->dev, "Recovery failed: %d\n", err);
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1692,8 +1692,6 @@ static void dwc3_get_properties(struct d
+ 	dwc->tx_thr_num_pkt_prd = tx_thr_num_pkt_prd;
+ 	dwc->tx_max_burst_prd = tx_max_burst_prd;
+ 
+-	dwc->imod_interval = 0;
+-
+ 	dwc->tx_fifo_resize_max_num = tx_fifo_resize_max_num;
  }
  
- static void health_check(struct timer_list *t)
+@@ -1711,21 +1709,19 @@ static void dwc3_check_params(struct dwc
+ 	unsigned int hwparam_gen =
+ 		DWC3_GHWPARAMS3_SSPHY_IFC(dwc->hwparams.hwparams3);
+ 
+-	/* Check for proper value of imod_interval */
+-	if (dwc->imod_interval && !dwc3_has_imod(dwc)) {
+-		dev_warn(dwc->dev, "Interrupt moderation not supported\n");
+-		dwc->imod_interval = 0;
+-	}
+-
+ 	/*
++	 * Enable IMOD for all supporting controllers.
++	 *
++	 * Particularly, DWC_usb3 v3.00a must enable this feature for
++	 * the following reason:
++	 *
+ 	 * Workaround for STAR 9000961433 which affects only version
+ 	 * 3.00a of the DWC_usb3 core. This prevents the controller
+ 	 * interrupt from being masked while handling events. IMOD
+ 	 * allows us to work around this issue. Enable it for the
+ 	 * affected version.
+ 	 */
+-	if (!dwc->imod_interval &&
+-	    DWC3_VER_IS(DWC3, 300A))
++	if (dwc3_has_imod((dwc)))
+ 		dwc->imod_interval = 1;
+ 
+ 	/* Check the maximum_speed parameter */
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4346,14 +4346,18 @@ static irqreturn_t dwc3_process_event_bu
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0),
+ 		    DWC3_GEVNTSIZ_SIZE(evt->length));
+ 
++	evt->flags &= ~DWC3_EVENT_PENDING;
++	/*
++	 * Add an explicit write memory barrier to make sure that the update of
++	 * clearing DWC3_EVENT_PENDING is observed in dwc3_check_event_buf()
++	 */
++	wmb();
++
+ 	if (dwc->imod_interval) {
+ 		dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), DWC3_GEVNTCOUNT_EHB);
+ 		dwc3_writel(dwc->regs, DWC3_DEV_IMOD(0), dwc->imod_interval);
+ 	}
+ 
+-	/* Keep the clearing of DWC3_EVENT_PENDING at the end */
+-	evt->flags &= ~DWC3_EVENT_PENDING;
+-
+ 	return ret;
+ }
+ 
 
 
 
