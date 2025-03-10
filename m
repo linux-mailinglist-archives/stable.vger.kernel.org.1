@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-123027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFEAA5A278
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A431A59F1F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4DEC3AF7A7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36C1618900CB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4C01C5D6F;
-	Mon, 10 Mar 2025 18:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7051B3927;
+	Mon, 10 Mar 2025 17:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZ4dXXbR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSLDOf4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A950374EA;
-	Mon, 10 Mar 2025 18:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9F518DB24;
+	Mon, 10 Mar 2025 17:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630833; cv=none; b=aRdCFluKsaCI7yRBg63qjdyWjF15vDqcRuUw0RR0y+tjrdAB9NUz066Zbhx/h3/lMX8pWnRRD0soS1lLwo3iGqDf8HSW8DFFSarWdaCrY7gFkYYUo1VRpOdA4xZhgZHQg2Xk4nSsVjDlVFlgV4SJ2znjIBBjiTaTPKWzXJ7xwSo=
+	t=1741628233; cv=none; b=NTgFyaQRsazC25zaCpfpucOm+ZjVs1WJyNOGvO3KNmX/D2cHHnRa4tCbtugz+9alaPRAw2NBMSg9eBPgMNX+bskK1sE8/7QBfF6IM73guUP8sYf/rjWm4PYUtQz6AOOpG/MeZb66sLQRptuWSxw+Qidjyzt1dEI3xLRssDubU3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630833; c=relaxed/simple;
-	bh=F6wYRzJ6gE00A6rAcLNhcSH5HjA6GJgnD4Qq9PJp3bA=;
+	s=arc-20240116; t=1741628233; c=relaxed/simple;
+	bh=bRtJ1WAntY8pH81YN6yxCy3rHl4IP0Cw7FtSzs/oCEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9A3eQqZtPnDUXP10xUXDHEyz4KQZVl0tezBwnrGrmhRFh4eHNhPL59NvNkgcmf7K2B7EbFFvYUMbn9DByze1GNZKnnnlaRfV5PPcnLAHu0CKdeM+va92ZFF2RbWl36m9zrE6HSUnUKt8WtW2lx6+HpbDix4yemaj4bYKxitk4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZ4dXXbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4481C4CEE5;
-	Mon, 10 Mar 2025 18:20:32 +0000 (UTC)
+	 MIME-Version; b=CMXoSpK27Q6g1bhp8rN0umU+DREh8k4k+CqovkriOWYKf5mnZlDTA0sleUldS/td2ImsjDZFgognZqjSHtbPCUY8iqkcmxZbvIvqsLTTO1bTFJaN7WfZRyFkFGoA/7F1z55LH6ovmqCCrKF7RDDr4kOgUqJoVeupduIKsUOxmWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSLDOf4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE681C4CEE5;
+	Mon, 10 Mar 2025 17:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630833;
-	bh=F6wYRzJ6gE00A6rAcLNhcSH5HjA6GJgnD4Qq9PJp3bA=;
+	s=korg; t=1741628233;
+	bh=bRtJ1WAntY8pH81YN6yxCy3rHl4IP0Cw7FtSzs/oCEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZ4dXXbRKCDW5pByp6ceZro6pl7G7xvGKy53bZo2sv5S6RFByTqs+mdXFUxZ93bWt
-	 3EdyUh7hVC62f5butJ2HCkn81hYvpD82r4Fh2q5+6zbxJSNpveuCXDDHGvoJbnvDm0
-	 5p31YRsE6Ak8VPOocFKunISxoztWyOIiQFB4XKBU=
+	b=RSLDOf4Ja2eY9CAiU7EBRicVgRP9rfL7a7NEnX7NAuX9tC2rBePi0tO1jJNMfKT+R
+	 5b4WTsjiQKSFrVuog1Xxih2gBCWBqD7tjrFGGD0jiSdiGQEcWOaXBQEc3XwpeZ5USJ
+	 /DTK3VJsaxpNXNP6A1kJ0abg4ge1im7RpRAv/bZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com,
-	Hao Zhang <zhanghao1@kylinos.cn>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 550/620] mm/page_alloc: fix uninitialized variable
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.6 102/145] usb: dwc3: gadget: Prevent irq storm when TH re-executes
 Date: Mon, 10 Mar 2025 18:06:36 +0100
-Message-ID: <20250310170607.252955153@linuxfoundation.org>
+Message-ID: <20250310170438.881511520@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit 8fe9ed44dc29fba0786b7e956d2e87179e407582 upstream.
+commit 69c58deec19628c8a686030102176484eb94fed4 upstream.
 
-The variable "compact_result" is not initialized in function
-__alloc_pages_slowpath().  It causes should_compact_retry() to use an
-uninitialized value.
+While commit d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in
+event cache") makes sure that top half(TH) does not end up overwriting the
+cached events before processing them when the TH gets invoked more than one
+time, returning IRQ_HANDLED results in occasional irq storm where the TH
+hogs the CPU. The irq storm can be prevented by the flag before event
+handler busy is cleared. Default enable interrupt moderation in all
+versions which support them.
 
-Initialize variable "compact_result" with the value COMPACT_SKIPPED.
+ftrace event stub during dwc3 irq storm:
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000866: irq_handler_exit: irq=14 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000872: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000874: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000881: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000883: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000889: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000892: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000898: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000901: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000907: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000909: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000915: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000918: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000924: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000927: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000933: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000935: irq_handler_exit: irq=504 ret=handled
+    ....
 
-BUG: KMSAN: uninit-value in __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
- alloc_pages_mpol+0x4cd/0x890 mm/mempolicy.c:2270
- alloc_frozen_pages_noprof mm/mempolicy.c:2341 [inline]
- alloc_pages_noprof mm/mempolicy.c:2361 [inline]
- folio_alloc_noprof+0x1dc/0x350 mm/mempolicy.c:2371
- filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1019
- __filemap_get_folio+0xb9a/0x1840 mm/filemap.c:1970
- grow_dev_folio fs/buffer.c:1039 [inline]
- grow_buffers fs/buffer.c:1105 [inline]
- __getblk_slow fs/buffer.c:1131 [inline]
- bdev_getblk+0x2c9/0xab0 fs/buffer.c:1431
- getblk_unmovable include/linux/buffer_head.h:369 [inline]
- ext4_getblk+0x3b7/0xe50 fs/ext4/inode.c:864
- ext4_bread_batch+0x9f/0x7d0 fs/ext4/inode.c:933
- __ext4_find_entry+0x1ebb/0x36c0 fs/ext4/namei.c:1627
- ext4_lookup_entry fs/ext4/namei.c:1729 [inline]
- ext4_lookup+0x189/0xb40 fs/ext4/namei.c:1797
- __lookup_slow+0x538/0x710 fs/namei.c:1793
- lookup_slow+0x6a/0xd0 fs/namei.c:1810
- walk_component fs/namei.c:2114 [inline]
- link_path_walk+0xf29/0x1420 fs/namei.c:2479
- path_openat+0x30f/0x6250 fs/namei.c:3985
- do_filp_open+0x268/0x600 fs/namei.c:4016
- do_sys_openat2+0x1bf/0x2f0 fs/open.c:1428
- do_sys_open fs/open.c:1443 [inline]
- __do_sys_openat fs/open.c:1459 [inline]
- __se_sys_openat fs/open.c:1454 [inline]
- __x64_sys_openat+0x2a1/0x310 fs/open.c:1454
- x64_sys_call+0x36f5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable compact_result created at:
- __alloc_pages_slowpath+0x66/0x16c0 mm/page_alloc.c:4218
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
-
-Link: https://lkml.kernel.org/r/tencent_ED1032321D6510B145CDBA8CBA0093178E09@qq.com
-Reported-by: syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0cfd5e38e96a5596f2b6
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable <stable@kernel.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Fixes: d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in event cache")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250216223003.3568039-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/core.c   |   16 ++++++----------
+ drivers/usb/dwc3/gadget.c |   10 +++++++---
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4967,6 +4967,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
- restart:
- 	compaction_retries = 0;
- 	no_progress_loops = 0;
-+	compact_result = COMPACT_SKIPPED;
- 	compact_priority = DEF_COMPACT_PRIORITY;
- 	cpuset_mems_cookie = read_mems_allowed_begin();
- 	zonelist_iter_cookie = zonelist_iter_begin();
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1671,8 +1671,6 @@ static void dwc3_get_properties(struct d
+ 	dwc->tx_thr_num_pkt_prd = tx_thr_num_pkt_prd;
+ 	dwc->tx_max_burst_prd = tx_max_burst_prd;
+ 
+-	dwc->imod_interval = 0;
+-
+ 	dwc->tx_fifo_resize_max_num = tx_fifo_resize_max_num;
+ }
+ 
+@@ -1690,21 +1688,19 @@ static void dwc3_check_params(struct dwc
+ 	unsigned int hwparam_gen =
+ 		DWC3_GHWPARAMS3_SSPHY_IFC(dwc->hwparams.hwparams3);
+ 
+-	/* Check for proper value of imod_interval */
+-	if (dwc->imod_interval && !dwc3_has_imod(dwc)) {
+-		dev_warn(dwc->dev, "Interrupt moderation not supported\n");
+-		dwc->imod_interval = 0;
+-	}
+-
+ 	/*
++	 * Enable IMOD for all supporting controllers.
++	 *
++	 * Particularly, DWC_usb3 v3.00a must enable this feature for
++	 * the following reason:
++	 *
+ 	 * Workaround for STAR 9000961433 which affects only version
+ 	 * 3.00a of the DWC_usb3 core. This prevents the controller
+ 	 * interrupt from being masked while handling events. IMOD
+ 	 * allows us to work around this issue. Enable it for the
+ 	 * affected version.
+ 	 */
+-	if (!dwc->imod_interval &&
+-	    DWC3_VER_IS(DWC3, 300A))
++	if (dwc3_has_imod((dwc)))
+ 		dwc->imod_interval = 1;
+ 
+ 	/* Check the maximum_speed parameter */
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4507,14 +4507,18 @@ static irqreturn_t dwc3_process_event_bu
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0),
+ 		    DWC3_GEVNTSIZ_SIZE(evt->length));
+ 
++	evt->flags &= ~DWC3_EVENT_PENDING;
++	/*
++	 * Add an explicit write memory barrier to make sure that the update of
++	 * clearing DWC3_EVENT_PENDING is observed in dwc3_check_event_buf()
++	 */
++	wmb();
++
+ 	if (dwc->imod_interval) {
+ 		dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), DWC3_GEVNTCOUNT_EHB);
+ 		dwc3_writel(dwc->regs, DWC3_DEV_IMOD(0), dwc->imod_interval);
+ 	}
+ 
+-	/* Keep the clearing of DWC3_EVENT_PENDING at the end */
+-	evt->flags &= ~DWC3_EVENT_PENDING;
+-
+ 	return ret;
+ }
+ 
 
 
 
