@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-122239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F910A59E99
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A3FA59C9D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 518931659FA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349CC1886AA8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66485233716;
-	Mon, 10 Mar 2025 17:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D0F230BE6;
+	Mon, 10 Mar 2025 17:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mm9VMiPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjKUJKQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232FD232786;
-	Mon, 10 Mar 2025 17:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E32322B8D0;
+	Mon, 10 Mar 2025 17:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627925; cv=none; b=nIjM6tqhlrSiwDvmQSqVnyFWM0ySTxK27kjEAgv9mRKlQz2kGPWCDelJ3y+kMa3P5n9BzeaMA62y0gak9hHN+7e4LwJ7Lb1wfVAVOH6sDl7IG2dxAqPIcBG4KjJv+rSqt+FCsbvunINW1VW8wTh7k5DjE8D3dQia21JJcXkrs1E=
+	t=1741626836; cv=none; b=FR2F80MUlYBJycvO0OaTzp5opskOXXF8UDbLsD/rAtU448N8+/anaHcVVp9PBi+uA5cMk95JvmYcsabPKNVCXbicrGujhuPilOltLY0MYc0S7jpToCN+iPwrESpwRmhUhUKYSRYJYWLDmELq5QhwNR8Jcoeof3BhShD1RqGLQ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627925; c=relaxed/simple;
-	bh=FuYoNzOTqsOMaxo4FrreZBI3oXly7uiq82r/q9zLTaA=;
+	s=arc-20240116; t=1741626836; c=relaxed/simple;
+	bh=xt0ZVZ1kjwR66raahd7fS5Mq0HTdaikm/tCj56G1Eho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQWoVtLTIIUblwyhc15GDDwK0UqflYTE2smxEpHXqG/dFLQHqJNUwUL2LOVbWxNA804utN6rq/26NSXQj75/PDjSLR/1EIszc8/NS/urLu9qjA2VP5YRAtbGQBNQlb+4RPdwzSr/PkvVTObetcigXK7JUrxkDTKBewndHNW7jPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mm9VMiPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5EEC4CEE5;
-	Mon, 10 Mar 2025 17:32:04 +0000 (UTC)
+	 MIME-Version; b=NQZa+S0I7TTmzaJRLlU+vd5sVdrfF66hwDDy7H0szh9A1KFhqMhtSTLgR/3H6u2+j5lv+PC9uwE6RTVOMFXlN1Hxa3suiiB/QH79biSv35i9toMnb7v0xRvFmHoe2K7aLaBHiHLkeoX7j92k3KrrygzVN0rkADCI2Mt636HqAEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjKUJKQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE384C4CEE5;
+	Mon, 10 Mar 2025 17:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627925;
-	bh=FuYoNzOTqsOMaxo4FrreZBI3oXly7uiq82r/q9zLTaA=;
+	s=korg; t=1741626836;
+	bh=xt0ZVZ1kjwR66raahd7fS5Mq0HTdaikm/tCj56G1Eho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mm9VMiPxuUuETbn6xadeaF/Y82fIW1gU5Yd7Vj3yIND0FAZZhXGHnpHYsuLo3ytuk
-	 MkH/qOf1tSByFsQsd2BwXD27INQEJvoMNC/42ro/Fbi1mj39XS6I7R3j6BuwwV0jG7
-	 9ocrqP3ira6GQiJxzTNVLiB2ddb3NG0XeBOo/8Tw=
+	b=rjKUJKQwx3oY1f1AnJUsvFwNnsegc5fywpXlrqIZ8ywMK4eMDkOo8xlkrjgp2EbUG
+	 6g18PygcaxALKfqafNlyGLdO598hAh1z+FyLTNQzkvWED+Dd1ZEPIOa8Ccredaf/ub
+	 u2/SNCl3sDSl4A26JmbIqueH7mbog8ecOgFftKpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 027/145] LoongArch: Set max_pfn with the PFN of the last page
-Date: Mon, 10 Mar 2025 18:05:21 +0100
-Message-ID: <20250310170435.833493470@linuxfoundation.org>
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Alex Elder <elder@riscstar.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 129/207] net: ipa: Fix v4.7 resource group names
+Date: Mon, 10 Mar 2025 18:05:22 +0100
+Message-ID: <20250310170452.932132152@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit c8477bb0a8e7f6b2e47952b403c5cb67a6929e55 upstream.
+[ Upstream commit 5eb3dc1396aa7e315486b24df80df782912334b7 ]
 
-The current max_pfn equals to zero. In this case, it causes user cannot
-get some page information through /proc filesystem such as kpagecount.
-The following message is displayed by stress-ng test suite with command
-"stress-ng --verbose --physpage 1 -t 1".
+In the downstream IPA driver there's only one group defined for source
+and destination, and the destination group doesn't have a _DPL suffix.
 
- # stress-ng --verbose --physpage 1 -t 1
- stress-ng: error: [1691] physpage: cannot read page count for address 0x134ac000 in /proc/kpagecount, errno=22 (Invalid argument)
- stress-ng: error: [1691] physpage: cannot read page count for address 0x7ffff207c3a8 in /proc/kpagecount, errno=22 (Invalid argument)
- stress-ng: error: [1691] physpage: cannot read page count for address 0x134b0000 in /proc/kpagecount, errno=22 (Invalid argument)
- ...
-
-After applying this patch, the kernel can pass the test.
-
- # stress-ng --verbose --physpage 1 -t 1
- stress-ng: debug: [1701] physpage: [1701] started (instance 0 on CPU 3)
- stress-ng: debug: [1701] physpage: [1701] exited (instance 0 on CPU 3)
- stress-ng: debug: [1700] physpage: [1701] terminated (success)
-
-Cc: stable@vger.kernel.org  # 6.8+
-Fixes: ff6c3d81f2e8 ("NUMA: optimize detection of memory with no node id assigned by firmware")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Link: https://patch.msgid.link/20250227-ipa-v4-7-fixes-v1-1-a88dd8249d8a@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/setup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ipa/data/ipa_data-v4.7.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -400,6 +400,9 @@ static void __init check_kernel_sections
-  */
- static void __init arch_mem_init(char **cmdline_p)
- {
-+	/* Recalculate max_low_pfn for "mem=xxx" */
-+	max_pfn = max_low_pfn = PHYS_PFN(memblock_end_of_DRAM());
-+
- 	if (usermem)
- 		pr_info("User-defined physical RAM map overwrite\n");
+diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
+index c8c23d9be961b..7e315779e6648 100644
+--- a/drivers/net/ipa/data/ipa_data-v4.7.c
++++ b/drivers/net/ipa/data/ipa_data-v4.7.c
+@@ -28,12 +28,10 @@ enum ipa_resource_type {
+ enum ipa_rsrc_group_id {
+ 	/* Source resource group identifiers */
+ 	IPA_RSRC_GROUP_SRC_UL_DL			= 0,
+-	IPA_RSRC_GROUP_SRC_UC_RX_Q,
+ 	IPA_RSRC_GROUP_SRC_COUNT,	/* Last in set; not a source group */
  
+ 	/* Destination resource group identifiers */
+-	IPA_RSRC_GROUP_DST_UL_DL_DPL			= 0,
+-	IPA_RSRC_GROUP_DST_UNUSED_1,
++	IPA_RSRC_GROUP_DST_UL_DL			= 0,
+ 	IPA_RSRC_GROUP_DST_COUNT,	/* Last; not a destination group */
+ };
+ 
+@@ -81,7 +79,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
+ 		},
+ 		.endpoint = {
+ 			.config = {
+-				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
++				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
+ 				.aggregation	= true,
+ 				.status_enable	= true,
+ 				.rx = {
+@@ -128,7 +126,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
+ 		},
+ 		.endpoint = {
+ 			.config = {
+-				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
++				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
+ 				.qmap		= true,
+ 				.aggregation	= true,
+ 				.rx = {
+@@ -197,12 +195,12 @@ static const struct ipa_resource ipa_resource_src[] = {
+ /* Destination resource configuration data for an SoC having IPA v4.7 */
+ static const struct ipa_resource ipa_resource_dst[] = {
+ 	[IPA_RESOURCE_TYPE_DST_DATA_SECTORS] = {
+-		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
++		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
+ 			.min = 7,	.max = 7,
+ 		},
+ 	},
+ 	[IPA_RESOURCE_TYPE_DST_DPS_DMARS] = {
+-		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
++		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
+ 			.min = 2,	.max = 2,
+ 		},
+ 	},
+-- 
+2.39.5
+
 
 
 
