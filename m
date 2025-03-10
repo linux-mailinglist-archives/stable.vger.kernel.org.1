@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C39A59D18
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF81A5A286
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F293188E4F4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EFC91756E5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14BD22D7A6;
-	Mon, 10 Mar 2025 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB51822FF4E;
+	Mon, 10 Mar 2025 18:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP87s0/s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFIIP07i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8BE21E087;
-	Mon, 10 Mar 2025 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BD11C57B2;
+	Mon, 10 Mar 2025 18:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627078; cv=none; b=Z2Ok4Yz6U8ibaXCrTPeireRRRlFVpE+g/p6znQ2LPUd/RaKzacqeMI/n2JnByynoo62QYIn0ZrzOHMx/IhD8uF5FQM3LnZAs+NOpJmfdj6kxDXCRye0JrCZM4h8IWDqBcQFzJRJfhPrynpTroNBbKuMQD5Ecjnd03Zmko8OH0TU=
+	t=1741630859; cv=none; b=hcESLAjmQeARnV/zZj3YRN9HaqF4DD8l39Kjf4fCQ/JUf/KF072uDmaQZPxLoSVhHHV38uL8cq9JX+npJ9erE9vUTEC/N5QLth97dpZpI7LkJ+hAnq+VzTxal+xmsQYz0U/UZSsg9NbTUDZ015r/FAkPeRENE9UCqGNqRhrRWFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627078; c=relaxed/simple;
-	bh=TC37pz90bmuSeR0zMVVd7H7h1N3M4gXRR4KerhxSHbo=;
+	s=arc-20240116; t=1741630859; c=relaxed/simple;
+	bh=fRBqh0P5+v5EPnPJv0o09RvivcpBbf87DsmQstL+Uwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X99PssV+09sGNS2TgS+Pml7An2APSva2mGgPJhUJ9TyDoa0cWo0/6A09YFmimUDZy2G3hMIvrnPpfxuxO+yiSGE1g1s9PXjxTMkgwAPuqtZKnSFvdzlLc4vM+LjQ10SNiT41PaGo/ifd87IBYkYn5qGJ2zjPvA09HuE/GyKSgFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP87s0/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087D3C4CEE5;
-	Mon, 10 Mar 2025 17:17:57 +0000 (UTC)
+	 MIME-Version; b=nsJGUeLq3zZ2mMIaO78ug5/9TIy2eOT0G8zxYnmjMcxsGZpWXPeQ/20vaTAAZSlUVxx8J4XGhR1MUwvmL3cSeiG62wOXPOLjyXrPfmmPxvj4HIULYCK/fjx7iCFhOzK/FOoW3TPHK3UgCbl8bW0howOnIpDPPLUT4g8PnzjGXJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFIIP07i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A169C4CEE5;
+	Mon, 10 Mar 2025 18:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627078;
-	bh=TC37pz90bmuSeR0zMVVd7H7h1N3M4gXRR4KerhxSHbo=;
+	s=korg; t=1741630859;
+	bh=fRBqh0P5+v5EPnPJv0o09RvivcpBbf87DsmQstL+Uwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aP87s0/srwU6Vbu5JF+Enu+okiwzaLZTVeng54Oscg5vbA0tOjOvL2bKLoHOxVv8H
-	 UfMuARfOVbdTSOeneQsr9nkNg7SeX0LqEIDfrw0RIu4/QXcEpu6uYLC6BOYyAnv26+
-	 optguKpEG7CgKrhR1XxC8gtb/0R1y9vf9aSwAe+Q=
+	b=SFIIP07if7ysY3eZqlNN607hZL0m/Arr+7eO+DNtv86IuK2gEAMAukIcLuHH69RgM
+	 cdHVHwWFTuw2TIbEVaNTi99Kf8JFj2LRgCpbgAneeyB4Ar7JPBRr5HBO9Hyh3x0URn
+	 CFGKuDiT4jEyncUaNT9QZr/VVH9RhNPGhjPgRqpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 6.13 181/207] mei: me: add panther lake P DID
+	Fab Stz <fabstz-it@yahoo.fr>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 528/620] intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly
 Date: Mon, 10 Mar 2025 18:06:14 +0100
-Message-ID: <20250310170454.983157769@linuxfoundation.org>
+Message-ID: <20250310170606.388698626@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit a8e8ffcc3afce2ee5fb70162aeaef3f03573ee1e upstream.
+commit c157d351460bcf202970e97e611cb6b54a3dd4a4 upstream.
 
-Add Panther Lake P device id.
+The Intel idle driver is preferred over the ACPI processor idle driver,
+but fails to implement the work around for Core2 generation CPUs, where
+the TSC stops in C2 and deeper C-states. This causes stalls and boot
+delays, when the clocksource watchdog does not catch the unstable TSC
+before the CPU goes deep idle for the first time.
 
-Cc: stable <stable@kernel.org>
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://lore.kernel.org/r/20250209110550.1582982-1-alexander.usyskin@intel.com
+The ACPI driver marks the TSC unstable when it detects that the CPU
+supports C2 or deeper and the CPU does not have a non-stop TSC.
+
+Add the equivivalent work around to the Intel idle driver to cure that.
+
+Fixes: 18734958e9bf ("intel_idle: Use ACPI _CST for processor models without C-state tables")
+Reported-by: Fab Stz <fabstz-it@yahoo.fr>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Fab Stz <fabstz-it@yahoo.fr>
+Cc: All applicable <stable@vger.kernel.org>
+Closes: https://lore.kernel.org/all/10cf96aa-1276-4bd4-8966-c890377030c3@yahoo.fr
+Link: https://patch.msgid.link/87bjupfy7f.ffs@tglx
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/idle/intel_idle.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -117,6 +117,8 @@
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -56,6 +56,7 @@
+ #include <asm/nospec-branch.h>
+ #include <asm/mwait.h>
+ #include <asm/msr.h>
++#include <asm/tsc.h>
  
- #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ #define INTEL_IDLE_VERSION "0.5.1"
  
-+#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+@@ -1335,6 +1336,9 @@ static void __init intel_idle_init_cstat
+ 		if (intel_idle_state_needs_timer_stop(state))
+ 			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+ 
++		if (cx->type > ACPI_STATE_C1 && !boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
++			mark_tsc_unstable("TSC halts in idle");
 +
- /*
-  * MEI HW Section
-  */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -124,6 +124,8 @@ static const struct pci_device_id mei_me
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
- 
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
-+
- 	/* required last entry */
- 	{0, }
- };
+ 		state->enter = intel_idle;
+ 		state->enter_s2idle = intel_idle_s2idle;
+ 	}
 
 
 
