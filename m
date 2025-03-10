@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-122167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B74A59E3E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C99A59F5C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB4D4170102
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 991971889078
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DE822FF40;
-	Mon, 10 Mar 2025 17:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BC6230BD4;
+	Mon, 10 Mar 2025 17:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miaVoX/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlJtFX9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8E622C336;
-	Mon, 10 Mar 2025 17:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E816822D4C3;
+	Mon, 10 Mar 2025 17:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627720; cv=none; b=p+tUs2aamuvPBnMLKjIBty4CEVlozNwZHmOg0imLn+F4FVgqhWNZZX6TNtK6x+rS8iNQFy+FFhsEXmoy5pgJD3tyJwUdBEFGdxa6KhcBI3mxXxP5JvbnBfC1eICs1dJkGE2rfO1LYHjfriBIddP2MYaStkMFrCscIgOfOIKdtt4=
+	t=1741628375; cv=none; b=SC7R21B7Rs66lIIB5vV0NPfX00PZt9SK+PUHU4yXe2qG2TUahh8dpKp6UhfjBV3s6Fms/jGcearLTEgNEt5j9mhhlSCdacLahFngujFdQWSKtNZXj0TXaaSf7uiaeSeWyhhlz9gXciEZt/3Y1qE2zPfi8YJox9cZFMmwKvu2LB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627720; c=relaxed/simple;
-	bh=pPIZSrHmvyFAiUvY44+FwY/lS0eOKDw+9mutS2YByQE=;
+	s=arc-20240116; t=1741628375; c=relaxed/simple;
+	bh=p8c8sJHtVv8Px0dBfisAy9141SheAXmp018t0pXLryY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCmQDLaGpqpAMn/IygEQYAxo0N2CtcwcujszdBtld7f9XR/blzYkfTKpqj/gPoQXElFEs7j7LZ79ZOPGdIFnzxVNM26CA3sM5T2MEQIp0F1kiOov6cz2YIgmCCakf61YIKE2OzUHHAT2dWlZCcHalM3KbqQPVxdwjmFE11g6hHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miaVoX/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B92C4CEE5;
-	Mon, 10 Mar 2025 17:28:39 +0000 (UTC)
+	 MIME-Version; b=KqftxLKwLgwOgunM1u5+6ordACGTAxE9UXEFXpC3csLDD6HsgBDobrXhpp1fulNUbnKkLeUgwfL/iqhKsfvPXcrz1IFeV5ROZFVxN9pAPHFGpOGc5c3kN3dBLWrBcQsIOkmqqnG3PZXAs9fkH+Dtgzr85ZO2nteoUYShcvKnLOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlJtFX9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF0AC4CEE5;
+	Mon, 10 Mar 2025 17:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627720;
-	bh=pPIZSrHmvyFAiUvY44+FwY/lS0eOKDw+9mutS2YByQE=;
+	s=korg; t=1741628374;
+	bh=p8c8sJHtVv8Px0dBfisAy9141SheAXmp018t0pXLryY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=miaVoX/mPbKOVpnmZ20PyB39JowhFWfJmrIU2GZWHxNd6MeuhMemqO46Qs2v3/s4z
-	 4oER0mQvPtgw29R3XWx5Jk1wEC8Q93DO266mYsRCmCHLwuKehbJJkidbuJVO+KIhL+
-	 KVWbtJv4oTB3FnRCQL2ciilyanSYbQG8reUkaoCI=
+	b=jlJtFX9W3WJdlwhMOv3hEyXpLYcWzbkwUnPBSywFlMu2wHs1f/cWW2y/N0LxZiC7+
+	 SOjt5KoXFFSYuhI68/J4/o0kc6oPV+QAKeye/Umkwh1NjzTuqKTASQXaT0coZEqV4D
+	 7JY2LO9RdFkJ/bOPN4p2l/GF4EB1TinB2C+mSo+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.12 227/269] xhci: pci: Fix indentation in the PCI device ID definitions
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christop Hellwig <hch@infradead.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 036/109] mm: dont skip arch_sync_kernel_mappings() in error paths
 Date: Mon, 10 Mar 2025 18:06:20 +0100
-Message-ID: <20250310170506.736012896@linuxfoundation.org>
+Message-ID: <20250310170428.997682758@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit 0309ed83791c079f239c13e0c605210425cd1a61 upstream.
+commit 3685024edd270f7c791f993157d65d3c928f3d6e upstream.
 
-Some of the definitions are missing the one TAB, add it to them.
+Fix callers that previously skipped calling arch_sync_kernel_mappings() if
+an error occurred during a pgtable update.  The call is still required to
+sync any pgtable updates that may have occurred prior to hitting the error
+condition.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-23-mathias.nyman@linux.intel.com
+These are theoretical bugs discovered during code review.
+
+Link: https://lkml.kernel.org/r/20250226121610.2401743-1-ryan.roberts@arm.com
+Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
+Fixes: 0c95cba49255 ("mm: apply_to_pte_range warn and fail if a large pte is encountered")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christop Hellwig <hch@infradead.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/memory.c  |    6 ++++--
+ mm/vmalloc.c |    4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -28,8 +28,8 @@
- #define SPARSE_CNTL_ENABLE	0xC12C
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2802,8 +2802,10 @@ static int __apply_to_page_range(struct
+ 		next = pgd_addr_end(addr, end);
+ 		if (pgd_none(*pgd) && !create)
+ 			continue;
+-		if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+-			return -EINVAL;
++		if (WARN_ON_ONCE(pgd_leaf(*pgd))) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (!pgd_none(*pgd) && WARN_ON_ONCE(pgd_bad(*pgd))) {
+ 			if (!create)
+ 				continue;
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -566,13 +566,13 @@ static int vmap_small_pages_range_noflus
+ 			mask |= PGTBL_PGD_MODIFIED;
+ 		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+ 		if (err)
+-			return err;
++			break;
+ 	} while (pgd++, addr = next, addr != end);
  
- /* Device for a quirk */
--#define PCI_VENDOR_ID_FRESCO_LOGIC	0x1b73
--#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK	0x1000
-+#define PCI_VENDOR_ID_FRESCO_LOGIC		0x1b73
-+#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK		0x1000
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1009	0x1009
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1100	0x1100
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1400	0x1400
-@@ -38,8 +38,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
+ 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+ 		arch_sync_kernel_mappings(start, end);
  
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
- #define PCI_DEVICE_ID_INTEL_CHERRYVIEW_XHCI		0x22b5
- #define PCI_DEVICE_ID_INTEL_SUNRISEPOINT_H_XHCI		0xa12f
+-	return 0;
++	return err;
+ }
+ 
+ /*
 
 
 
