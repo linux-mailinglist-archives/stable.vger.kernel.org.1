@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-122488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD8EA59FDB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:44:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D5EA59FE7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A481712FB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:44:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAB427A5C9C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EDE233706;
-	Mon, 10 Mar 2025 17:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41C02309B3;
+	Mon, 10 Mar 2025 17:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sj/IuT9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvRBu+ZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BFE2309B6;
-	Mon, 10 Mar 2025 17:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D05170A11;
+	Mon, 10 Mar 2025 17:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628636; cv=none; b=DF9Mzley+pZEUoNOEHl+t9mNnDJ0WMP68hYxgQ9Dn58QPrpfWZpQzb/GaXwyIfiF+mxnLAoVCNfXWfXWFgBCbEmF3ZUdZm4lWVXbBJfTcXsG+FEk6W6LK1o/1uKNlxrEgeKYHGJFDiw0xBvZ9Cfa53hWlj8i/SPdA9spriCJM8g=
+	t=1741628668; cv=none; b=NmUbEgV+w6SXaag+IkIy+vLtAyVqfsJM5QWoc3KtkYEctpZ5SJB/8rfXyVJajEBi1mHWBpOvkBPTgEEeXQfTXl5gDowAETDjXf4py9J63+Zxl6nos8hF7eqso5t80ep6RXINsLavT8juzsIMB6oJgWbnh5fUUVJUTmJ1grUbwjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628636; c=relaxed/simple;
-	bh=5E65Nr0z/IsZk4rERTI70VXgRH2EWDTd90pWDd7+MMM=;
+	s=arc-20240116; t=1741628668; c=relaxed/simple;
+	bh=eDpI/Bu3TiGNehMtfW5O+V2OKZ+SoOgYfmApgclsJds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZDtquFMxGyORHXCGDz10qESFwGHwrf8Cu9PhrgAoaWxLx4j9dkws+NztS5/hGZSuOyL0ZrSUuoZBhM9J0aHPH0qveQNDCHs0/jVpRpVZ+bQE94LmVAaX154wNm4Do51me4dO+LP1PtwZmL3LPYRk4IvRJXu6+f3qrsWhQV73/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sj/IuT9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03485C4CEE5;
-	Mon, 10 Mar 2025 17:43:55 +0000 (UTC)
+	 MIME-Version; b=GDTUerEYnizNOUBqI1pla3/39NwjAgJTqXSSFK8+QGMU6BeQsFnFtIAZhOL5rP1kncP/MRgx/JotAuAUiBWAPGXTebGNaxCCksYE5J69ridyLyu1Fckn+3lYfhZyCzC+pkaYpiILFVLQzTyFj6jS98WoDPpcochZ6Xd/s4ZoJ2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvRBu+ZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079B7C4CEE5;
+	Mon, 10 Mar 2025 17:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628636;
-	bh=5E65Nr0z/IsZk4rERTI70VXgRH2EWDTd90pWDd7+MMM=;
+	s=korg; t=1741628668;
+	bh=eDpI/Bu3TiGNehMtfW5O+V2OKZ+SoOgYfmApgclsJds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sj/IuT9Lb3tlUPAOWzIki9J+sJpLrIq8m7gWxPk9TPHwdexKJA0ZdJ9dN5Xp9mTS3
-	 BcmeQqlrNVlgAQnx5BL5ESUrPzDzBggsb2IL1tn1oFu03UDCw1BtzvzrTJOV6kgxks
-	 VqApSewf9gujBBTEvdI6GLAcLxi1FcwFvZ0+HLIE=
+	b=vvRBu+ZNzqyUopgEAPmK25wXK4CBb40Q45Q3bd+6VeSKAs/enol29uRvYzcrQfjlJ
+	 Vh8WCu8IxomGWM4EtOTjugtzc8KEUy+NYenPJ+9Q0e/AlhQvTJjy5XeJDtllC9b8CR
+	 0CwVwOQb9HcuvPTp/eZvFJraCl2fVU0umgHOC6Rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christoph Hellwig <hch@lst.de>,
+	Yang Erkun <yangerkun@huawei.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/620] block: deprecate autoloading based on dev_t
-Date: Mon, 10 Mar 2025 17:57:35 +0100
-Message-ID: <20250310170545.942632928@linuxfoundation.org>
+Subject: [PATCH 5.15 010/620] block: retry call probe after request_module in blk_request_module
+Date: Mon, 10 Mar 2025 17:57:36 +0100
+Message-ID: <20250310170545.982295338@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,111 +67,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit fbdee71bb5d8d054e1bdb5af4c540f2cb86fe296 ]
+[ Upstream commit 457ef47c08d2979f3e59ce66267485c3faed70c8 ]
 
-Make the legacy dev_t based autoloading optional and add a deprecation
-warning.  This kind of autoloading has ceased to be useful about 20 years
-ago.
+Set kernel config:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20220104071647.164918-1-hch@lst.de
+ CONFIG_BLK_DEV_LOOP=m
+ CONFIG_BLK_DEV_LOOP_MIN_COUNT=0
+
+Do latter:
+
+ mknod loop0 b 7 0
+ exec 4<> loop0
+
+Before commit e418de3abcda ("block: switch gendisk lookup to a simple
+xarray"), lookup_gendisk will first use base_probe to load module loop,
+and then the retry will call loop_probe to prepare the loop disk. Finally
+open for this disk will success. However, after this commit, we lose the
+retry logic, and open will fail with ENXIO. Block device autoloading is
+deprecated and will be removed soon, but maybe we should keep open success
+until we really remove it. So, give a retry to fix it.
+
+Fixes: e418de3abcda ("block: switch gendisk lookup to a simple xarray")
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241209110435.3670985-1-yangerkun@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 457ef47c08d2 ("block: retry call probe after request_module in blk_request_module")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/Kconfig | 12 ++++++++++++
- block/bdev.c  |  9 ++++++---
- block/genhd.c |  6 ++++++
- 3 files changed, 24 insertions(+), 3 deletions(-)
+ block/genhd.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/block/Kconfig b/block/Kconfig
-index 8e28ae7718bd2..0d415226e3daa 100644
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -26,6 +26,18 @@ menuconfig BLOCK
- 
- if BLOCK
- 
-+config BLOCK_LEGACY_AUTOLOAD
-+	bool "Legacy autoloading support"
-+	help
-+	  Enable loading modules and creating block device instances based on
-+	  accesses through their device special file.  This is a historic Linux
-+	  feature and makes no sense in a udev world where device files are
-+	  created on demand.
-+
-+	  Say N here unless booting or other functionality broke without it, in
-+	  which case you should also send a report to your distribution and
-+	  linux-block@vger.kernel.org.
-+
- config BLK_RQ_ALLOC_TIME
- 	bool
- 
-diff --git a/block/bdev.c b/block/bdev.c
-index b8599a4088843..85c090ef3bf2c 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -736,12 +736,15 @@ struct block_device *blkdev_get_no_open(dev_t dev)
- 	struct inode *inode;
- 
- 	inode = ilookup(blockdev_superblock, dev);
--	if (!inode) {
-+	if (!inode && IS_ENABLED(CONFIG_BLOCK_LEGACY_AUTOLOAD)) {
- 		blk_request_module(dev);
- 		inode = ilookup(blockdev_superblock, dev);
--		if (!inode)
--			return NULL;
-+		if (inode)
-+			pr_warn_ratelimited(
-+"block device autoloading is deprecated. It will be removed in Linux 5.19\n");
- 	}
-+	if (!inode)
-+		return NULL;
- 
- 	/* switch from the inode reference to a device mode one: */
- 	bdev = &BDEV_I(inode)->bdev;
 diff --git a/block/genhd.c b/block/genhd.c
-index 88d1a6385a242..2f66745de5d5a 100644
+index 2f66745de5d5a..421e02794614e 100644
 --- a/block/genhd.c
 +++ b/block/genhd.c
-@@ -182,7 +182,9 @@ static struct blk_major_name {
- 	struct blk_major_name *next;
- 	int major;
- 	char name[16];
-+#ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
- 	void (*probe)(dev_t devt);
-+#endif
- } *major_names[BLKDEV_MAJOR_HASH_SIZE];
- static DEFINE_MUTEX(major_names_lock);
- static DEFINE_SPINLOCK(major_names_spinlock);
-@@ -269,7 +271,9 @@ int __register_blkdev(unsigned int major, const char *name,
- 	}
- 
- 	p->major = major;
-+#ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
- 	p->probe = probe;
-+#endif
- 	strlcpy(p->name, name, sizeof(p->name));
- 	p->next = NULL;
- 	index = major_to_index(major);
-@@ -669,6 +673,7 @@ static ssize_t disk_badblocks_store(struct device *dev,
- 	return badblocks_store(disk->bb, page, len, 0);
+@@ -674,7 +674,7 @@ static ssize_t disk_badblocks_store(struct device *dev,
  }
  
-+#ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
- void blk_request_module(dev_t devt)
+ #ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
+-void blk_request_module(dev_t devt)
++static bool blk_probe_dev(dev_t devt)
  {
  	unsigned int major = MAJOR(devt);
-@@ -688,6 +693,7 @@ void blk_request_module(dev_t devt)
- 		/* Make old-style 2.4 aliases work */
- 		request_module("block-major-%d", MAJOR(devt));
- }
-+#endif /* CONFIG_BLOCK_LEGACY_AUTOLOAD */
+ 	struct blk_major_name **n;
+@@ -684,14 +684,26 @@ void blk_request_module(dev_t devt)
+ 		if ((*n)->major == major && (*n)->probe) {
+ 			(*n)->probe(devt);
+ 			mutex_unlock(&major_names_lock);
+-			return;
++			return true;
+ 		}
+ 	}
+ 	mutex_unlock(&major_names_lock);
++	return false;
++}
++
++void blk_request_module(dev_t devt)
++{
++	int error;
++
++	if (blk_probe_dev(devt))
++		return;
  
- /*
-  * print a full list of all partitions - intended for places where the root
+-	if (request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt)) > 0)
+-		/* Make old-style 2.4 aliases work */
+-		request_module("block-major-%d", MAJOR(devt));
++	error = request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt));
++	/* Make old-style 2.4 aliases work */
++	if (error > 0)
++		error = request_module("block-major-%d", MAJOR(devt));
++	if (!error)
++		blk_probe_dev(devt);
+ }
+ #endif /* CONFIG_BLOCK_LEGACY_AUTOLOAD */
+ 
 -- 
 2.39.5
 
