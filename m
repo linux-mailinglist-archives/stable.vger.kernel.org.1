@@ -1,152 +1,101 @@
-Return-Path: <stable+bounces-121676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA42A58F2F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 10:13:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E57A58F3D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 10:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F4F3A6387
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 09:13:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E971418878E7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 09:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57888224896;
-	Mon, 10 Mar 2025 09:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B073221F13;
+	Mon, 10 Mar 2025 09:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pU+pR6Uj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OTGW3UN2"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801202248B9;
-	Mon, 10 Mar 2025 09:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D2A1361
+	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 09:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741598035; cv=none; b=k68HUI4dAF4rSl4xdhB50oDBl0acBdgKf1o7I+G3SU70N8Y0P3RSzswXFLGOAraUVJqC98dnk+6lkQx8kl5L93PS76YIc0uYP/m0djA08NmRQtPaLXpcXSak5DyQPIadwrbTYz9m5w++PwaLZ8XjoS+T9etP8szcqbVtmUhOm+U=
+	t=1741598188; cv=none; b=gOXyMyYGgCr/FY+2DUcfmJyp54vExv+bMyXOBth42WDqP1sZDOEsAinjvi51osogzd734+aWKiZPO1f1tHO0TJUWpHXvtKK3fOlH5bpCCG1oZbfaWJm6/aHsiiFnCDFL/i5HCuzg82JN4y0ilgycCzuYfmLOK1BmEOI5OjqdgX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741598035; c=relaxed/simple;
-	bh=XfqVA1eLFQTZsxMmkkRxeF2YhLjvx7FSu87mBznz5Ag=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MFfBRgO0yqRCSnBAfg8io6CT9fsPL/cysNVb6p5VfFLk8h2Bc8kAF/H/Yo/KlFg6VQjeWF9fpX4NgZvJSTc8o2vhWM+Kr8K2TFXP0Mgdzecf8WOe+jT4t/3dJtiRspCTR79hQh4fT8BFrxxdRq+lRIk9PjSaupsyQqn1TMlFCKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pU+pR6Uj; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	s=arc-20240116; t=1741598188; c=relaxed/simple;
+	bh=j/2Hy4clFrckMjtEZF1Tq32bqKe4GusaZ8+plIUuhdQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IZ1iyZDU5nxRjmIxrBigRx6WX8QnJstlPUuLwdYt0nN0ja9vTCFEIyDCgVl4i2CfywMOI+9NRBUd963Fq/z10h/10sCL05DCCA5hnGtQuLLhqWr1Y8mMwYFSCbZQgiyah6BvLa1amOp1bj122Fzzo79yfs2Knu158BOANF/AZZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OTGW3UN2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741598185;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iqH5sQhQgNCBmrsNGoSMQgNgdnc53Pyacipz5oblkxI=;
+	b=OTGW3UN2apvqmAsNAmHwF6/f2dZpkh/NjicmDxaCXnv4yiRX9ttSrL1bD7Yt5pV4vyb65Z
+	5gsKIi9nppqmaRSfn2HwkK1+sQtYbkTtpHA0LzhO/56m/eeSPzWram2zDpkvMvjPaghc0F
+	mszVdoBAyTvCyurw0fV7CctOy0t3lVs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-FShKbrLpOaKJdXm6nMCKsw-1; Mon,
+ 10 Mar 2025 05:16:21 -0400
+X-MC-Unique: FShKbrLpOaKJdXm6nMCKsw-1
+X-Mimecast-MFC-AGG-ID: FShKbrLpOaKJdXm6nMCKsw_1741598181
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4ZBB5n5gXhz9t46;
-	Mon, 10 Mar 2025 10:13:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1741598029; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6Grk/iMdx6as89Jp6GRGx4aLkNUjRWKj6c7iYN0UxCY=;
-	b=pU+pR6UjepIeZZq7nEwQHkLB02W7DIxPYvc6ntffoINVR5buiVl557Gs0nMMbetP5DWfGU
-	slR+horO11JKIoPN4Vgl9lhSgwVRRqYY6AutHfY5TRucS5TVbM8syy2rnxa+wc3UNFvCzA
-	EGkF8ZB/khkvekfup2JlY6uUr46EnYcZ9MXFSnwH5R5Xr0URhToa3r3XYTgYQW6wmGh/MQ
-	bgnxugKBxsKM2XVcw0hLQMnmnu6dRXC8Wm+Cg1BHnnkM0TaSiPVSCG9WxTcfLTHpmiKCW8
-	oyTNXY0uuIbBgD/pDfWiSkJBWPovONk+41PTvx3sYMCXlFtTg7X5Q1F/d5hDiA==
-Message-ID: <a5f389b1c08847fb658f4120b205521e4a8ea0c1.camel@mailbox.org>
-Subject: Re: [PATCH V3] drm/sched: Fix fence reference count leak
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Qianyi Liu <liuqianyi125@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
-  Matthew Brost <matthew.brost@intel.com>, Philipp Stanner
- <phasta@kernel.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <ckoenig.leichtzumerken@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C90191954216;
+	Mon, 10 Mar 2025 09:16:20 +0000 (UTC)
+Received: from localhost (unknown [10.72.120.24])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 421B61956095;
+	Mon, 10 Mar 2025 09:16:18 +0000 (UTC)
+From: Ming Lei <ming.lei@redhat.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org
+Cc: dm-devel@lists.linux.dev,
+	Ming Lei <ming.lei@redhat.com>,
 	stable@vger.kernel.org
-Date: Mon, 10 Mar 2025 10:13:45 +0100
-In-Reply-To: <20250226090521.473360-1-liuqianyi125@gmail.com>
-References: <20250226090521.473360-1-liuqianyi125@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH] block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone
+Date: Mon, 10 Mar 2025 17:16:10 +0800
+Message-ID: <20250310091610.2010623-1-ming.lei@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 686061f9bf9bbaf9224
-X-MBO-RS-META: w4wqa8qnina3nwo1udsi9otp7yx1mt1u
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Sorry for the delay
+Make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone(),
+otherwise zero ->nr_integrity_segments will be observed in
+sg_alloc_table_chained(), in which BUG() is hit.
 
-On Wed, 2025-02-26 at 17:05 +0800, Qianyi Liu wrote:
-> From: qianyi liu <liuqianyi125@gmail.com>
->=20
-> The last_scheduled fence leaked when an entity was being killed and
-> adding its callback failed.
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+---
+ block/blk-mq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-s/leaked/leaks
-
-s/was being/is being
-
-s/its callback/the cleanup callback
-
-s/failed/fails
-
-
->=20
-> Decrement the reference count of prev when dma_fence_add_callback()
-> fails, ensuring proper balance.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and
-> fini")
-> Signed-off-by: qianyi liu <liuqianyi125@gmail.com>
-> ---
-> v2 -> v3: Rework commit message (Markus)
-> v1 -> v2: Added 'Fixes:' tag and clarified commit message (Philipp
-> and Matthew)
-> ---
-> =C2=A0drivers/gpu/drm/scheduler/sched_entity.c | 7 +++++--
-> =C2=A01 file changed, 5 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c
-> b/drivers/gpu/drm/scheduler/sched_entity.c
-> index 69bcf0e99d57..1c0c14bcf726 100644
-> --- a/drivers/gpu/drm/scheduler/sched_entity.c
-> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
-> @@ -259,9 +259,12 @@ static void drm_sched_entity_kill(struct
-> drm_sched_entity *entity)
-> =C2=A0		struct drm_sched_fence *s_fence =3D job->s_fence;
-> =C2=A0
-> =C2=A0		dma_fence_get(&s_fence->finished);
-> -		if (!prev || dma_fence_add_callback(prev, &job-
-> >finish_cb,
-> -					=C2=A0=C2=A0
-> drm_sched_entity_kill_jobs_cb))
-> +		if (!prev ||
-> +		=C2=A0=C2=A0=C2=A0 dma_fence_add_callback(prev, &job->finish_cb,
-> +					=C2=A0=C2=A0
-> drm_sched_entity_kill_jobs_cb)) {
-> +			dma_fence_put(prev);
-
-Please add a little comment about the dma_fence_put()'s purpose. Sth
-like "Adding callback above failed. dma_fence_put() checks for NULL."
-
-Then we should be good I think
-
-Thx
-
-> =C2=A0			drm_sched_entity_kill_jobs_cb(NULL, &job-
-> >finish_cb);
-> +		}
-
-
-
-}
-
-
-> =C2=A0
-> =C2=A0		prev =3D &s_fence->finished;
-> =C2=A0	}
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 40490ac88045..005c520d3498 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3314,6 +3314,7 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
+ 		rq->special_vec = rq_src->special_vec;
+ 	}
+ 	rq->nr_phys_segments = rq_src->nr_phys_segments;
++	rq->nr_integrity_segments = rq_src->nr_integrity_segments;
+ 
+ 	if (rq->bio && blk_crypto_rq_bio_prep(rq, rq->bio, gfp_mask) < 0)
+ 		goto free_and_out;
+-- 
+2.47.0
 
 
