@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AEFA59E12
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14889A5A241
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9304516AE2A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE20A3A9127
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892F22356A3;
-	Mon, 10 Mar 2025 17:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C93C2F28;
+	Mon, 10 Mar 2025 18:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfBwz+ee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LU9JRnWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44690234971;
-	Mon, 10 Mar 2025 17:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC13230D0F;
+	Mon, 10 Mar 2025 18:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627593; cv=none; b=SFhrJmnp2DnjKqAhXeRsW/QFvWanCSbxEdf0nbh+QCZR8RDj0f1qiWMZPQyZxEMZyms/4PHP7qOu6qJqaDDz4e7xTswqUJuIqZp+kFfHaqQU3aJnXZpXbiBsksm9bgKIAujFJgF9wueXKEns8+TJU+bdJunwXNFd824mYnMV/eI=
+	t=1741630652; cv=none; b=M0qdFu+YQSSy2ta6gDk2PgCn3lk10SLl3tjuKYFmNgu9wX7KOIVvLm9XRbms14yZ4yoFEhE2VQ+W9Te+4/xqcquACfqQXwCIUx+Je4ftKXsumrZ7OBKKZbcvoseUwuuLvvGtCJvineS/6FEIV+x8qLfbOULMKWToAc2C9K3PG0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627593; c=relaxed/simple;
-	bh=TnIxreXr0PUFSjY3x/dCG9Rd9omGLebuLoIhxas2SSY=;
+	s=arc-20240116; t=1741630652; c=relaxed/simple;
+	bh=TreB9+7qcoUh+2l+C1GCl9efZ8QyKmbpJ9pcBzhQiZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eau8kGTdu+2fOvRWIXttgGGB2cDS426IH2PpxKXOGWvEExt8XtSXhBJSB6I01PVWQeqmt392h3f3phRmxxuRZ3LxCqSkLxhhlpwHGNeEhGSUzkYm13DqT7+EyByR9DIsBAW8Dz12w/PCdWOCqkVVqKAEFTMfGwVmwwKZVLEqmK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfBwz+ee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE99C4CEE5;
-	Mon, 10 Mar 2025 17:26:32 +0000 (UTC)
+	 MIME-Version; b=od3AX7nQQf8a7dCcjyQ6Zt/6vaoEMha4AERW2ccI/OKkmBZAGDipcVzCZlS+mZIiA02MLRmzh+GBlm9exS2MxSfj/Zc+whnDwVrN4+Iljotj+sy2Qnag+KfCRN0Z1UWi3iPacA2Ny6G16oKj8oAkLEcwjPinrUo/2N2qv7bmLao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LU9JRnWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B95C4CEE5;
+	Mon, 10 Mar 2025 18:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627593;
-	bh=TnIxreXr0PUFSjY3x/dCG9Rd9omGLebuLoIhxas2SSY=;
+	s=korg; t=1741630652;
+	bh=TreB9+7qcoUh+2l+C1GCl9efZ8QyKmbpJ9pcBzhQiZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfBwz+eehUm3PZ5+qUXxALag1CDtH06vtlo6cTiHNvlW/GAMljvGVNg5F/XeY0rdw
-	 qZ6S7CaQY8vAH1EyKBWWmdCIb8MHtUp6bvrPZecSXqSCKYGewlpLHWt3IxwZsAFUIj
-	 5qLQ65g5HF+rit4RQdOedwUleZpcCPGV14WR4lC8=
+	b=LU9JRnWpYmgErC1l9jfGeU3UG9EUcy0dx8K5qXk7t2zO2+h+YFEIzBzXII8/ygf4i
+	 lBkj1fDDpZQAfoJjV6xNVM5I0rr+eQbOmBieH+kFqyy5F6QoGNsy890XsFSmMejLUp
+	 w/nGRXDIdXjylLS0qVQZzMYXWASJOyeWptNlqXgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 150/269] nvme-pci: add support for sgl metadata
+Subject: [PATCH 5.15 457/620] batman-adv: Drop unmanaged ELP metric worker
 Date: Mon, 10 Mar 2025 18:05:03 +0100
-Message-ID: <20250310170503.696150381@linuxfoundation.org>
+Message-ID: <20250310170603.622226998@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,341 +62,265 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 979c6342f9c0a48696a6420f14f9dd409591657f ]
+[ Upstream commit 8c8ecc98f5c65947b0070a24bac11e12e47cc65d ]
 
-Supporting this mode allows creating and merging multi-segment metadata
-requests that wouldn't be possible otherwise. It also allows directly
-using user space requests that straddle physically discontiguous pages.
+The ELP worker needs to calculate new metric values for all neighbors
+"reachable" over an interface. Some of the used metric sources require
+locks which might need to sleep. This sleep is incompatible with the RCU
+list iterator used for the recorded neighbors. The initial approach to work
+around of this problem was to queue another work item per neighbor and then
+run this in a new context.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: 00817f0f1c45 ("nvme-ioctl: fix leaked requests on mapping error")
+Even when this solved the RCU vs might_sleep() conflict, it has a major
+problems: Nothing was stopping the work item in case it is not needed
+anymore - for example because one of the related interfaces was removed or
+the batman-adv module was unloaded - resulting in potential invalid memory
+accesses.
+
+Directly canceling the metric worker also has various problems:
+
+* cancel_work_sync for a to-be-deactivated interface is called with
+  rtnl_lock held. But the code in the ELP metric worker also tries to use
+  rtnl_lock() - which will never return in this case. This also means that
+  cancel_work_sync would never return because it is waiting for the worker
+  to finish.
+* iterating over the neighbor list for the to-be-deactivated interface is
+  currently done using the RCU specific methods. Which means that it is
+  possible to miss items when iterating over it without the associated
+  spinlock - a behaviour which is acceptable for a periodic metric check
+  but not for a cleanup routine (which must "stop" all still running
+  workers)
+
+The better approch is to get rid of the per interface neighbor metric
+worker and handle everything in the interface worker. The original problems
+are solved by:
+
+* creating a list of neighbors which require new metric information inside
+  the RCU protected context, gathering the metric according to the new list
+  outside the RCU protected context
+* only use rcu_trylock inside metric gathering code to avoid a deadlock
+  when the cancel_delayed_work_sync is called in the interface removal code
+  (which is called with the rtnl_lock held)
+
+Cc: stable@vger.kernel.org
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/nvme.h |   7 ++
- drivers/nvme/host/pci.c  | 144 +++++++++++++++++++++++++++++++++++----
- include/linux/nvme.h     |   1 +
- 3 files changed, 137 insertions(+), 15 deletions(-)
+ net/batman-adv/bat_v.c     |  2 --
+ net/batman-adv/bat_v_elp.c | 71 ++++++++++++++++++++++++++------------
+ net/batman-adv/bat_v_elp.h |  2 --
+ net/batman-adv/types.h     |  3 --
+ 4 files changed, 48 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 61bba5513de05..dcdce7d12e441 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -1130,6 +1130,13 @@ static inline bool nvme_ctrl_sgl_supported(struct nvme_ctrl *ctrl)
- 	return ctrl->sgls & ((1 << 0) | (1 << 1));
+diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
+index 54e41fc709c37..651e01b86141e 100644
+--- a/net/batman-adv/bat_v.c
++++ b/net/batman-adv/bat_v.c
+@@ -113,8 +113,6 @@ static void
+ batadv_v_hardif_neigh_init(struct batadv_hardif_neigh_node *hardif_neigh)
+ {
+ 	ewma_throughput_init(&hardif_neigh->bat_v.throughput);
+-	INIT_WORK(&hardif_neigh->bat_v.metric_work,
+-		  batadv_v_elp_throughput_metric_update);
  }
  
-+static inline bool nvme_ctrl_meta_sgl_supported(struct nvme_ctrl *ctrl)
-+{
-+	if (ctrl->ops->flags & NVME_F_FABRICS)
-+		return true;
-+	return ctrl->sgls & NVME_CTRL_SGLS_MSDS;
-+}
+ /**
+diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
+index 9af40bbf45da9..e077440d0ec57 100644
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -18,6 +18,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/kref.h>
++#include <linux/list.h>
+ #include <linux/minmax.h>
+ #include <linux/netdevice.h>
+ #include <linux/nl80211.h>
+@@ -27,6 +28,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/skbuff.h>
++#include <linux/slab.h>
+ #include <linux/stddef.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
+@@ -42,6 +44,18 @@
+ #include "routing.h"
+ #include "send.h"
+ 
++/**
++ * struct batadv_v_metric_queue_entry - list of hardif neighbors which require
++ *  and metric update
++ */
++struct batadv_v_metric_queue_entry {
++	/** @hardif_neigh: hardif neighbor scheduled for metric update */
++	struct batadv_hardif_neigh_node *hardif_neigh;
 +
- #ifdef CONFIG_NVME_HOST_AUTH
- int __init nvme_init_auth(void);
- void __exit nvme_exit_auth(void);
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index cc74682dc0d4e..58bdd0da6b658 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -43,6 +43,7 @@
-  */
- #define NVME_MAX_KB_SZ	8192
- #define NVME_MAX_SEGS	128
-+#define NVME_MAX_META_SEGS 15
- #define NVME_MAX_NR_ALLOCATIONS	5
++	/** @list: list node for metric_queue */
++	struct list_head list;
++};
++
+ /**
+  * batadv_v_elp_start_timer() - restart timer for ELP periodic work
+  * @hard_iface: the interface for which the timer has to be reset
+@@ -138,10 +152,17 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
+ 		goto default_throughput;
+ 	}
  
- static int use_threaded_interrupts;
-@@ -143,6 +144,7 @@ struct nvme_dev {
- 	bool hmb;
- 
- 	mempool_t *iod_mempool;
-+	mempool_t *iod_meta_mempool;
- 
- 	/* shadow doorbell buffer support: */
- 	__le32 *dbbuf_dbs;
-@@ -238,6 +240,8 @@ struct nvme_iod {
- 	dma_addr_t first_dma;
- 	dma_addr_t meta_dma;
- 	struct sg_table sgt;
-+	struct sg_table meta_sgt;
-+	union nvme_descriptor meta_list;
- 	union nvme_descriptor list[NVME_MAX_NR_ALLOCATIONS];
- };
- 
-@@ -505,6 +509,14 @@ static void nvme_commit_rqs(struct blk_mq_hw_ctx *hctx)
- 	spin_unlock(&nvmeq->sq_lock);
- }
- 
-+static inline bool nvme_pci_metadata_use_sgls(struct nvme_dev *dev,
-+					      struct request *req)
-+{
-+	if (!nvme_ctrl_meta_sgl_supported(&dev->ctrl))
++	/* only use rtnl_trylock because the elp worker will be cancelled while
++	 * the rntl_lock is held. the cancel_delayed_work_sync() would otherwise
++	 * wait forever when the elp work_item was started and it is then also
++	 * trying to rtnl_lock
++	 */
++	if (!rtnl_trylock())
 +		return false;
-+	return req->nr_integrity_segments > 1;
-+}
 +
- static inline bool nvme_pci_use_sgls(struct nvme_dev *dev, struct request *req,
- 				     int nseg)
+ 	/* if not a wifi interface, check if this device provides data via
+ 	 * ethtool (e.g. an Ethernet adapter)
+ 	 */
+-	rtnl_lock();
+ 	ret = __ethtool_get_link_ksettings(hard_iface->net_dev, &link_settings);
+ 	rtnl_unlock();
+ 	if (ret == 0) {
+@@ -176,31 +197,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
+ /**
+  * batadv_v_elp_throughput_metric_update() - worker updating the throughput
+  *  metric of a single hop neighbour
+- * @work: the work queue item
++ * @neigh: the neighbour to probe
+  */
+-void batadv_v_elp_throughput_metric_update(struct work_struct *work)
++static void
++batadv_v_elp_throughput_metric_update(struct batadv_hardif_neigh_node *neigh)
  {
-@@ -517,6 +529,8 @@ static inline bool nvme_pci_use_sgls(struct nvme_dev *dev, struct request *req,
- 		return false;
- 	if (!nvmeq->qid)
- 		return false;
-+	if (nvme_pci_metadata_use_sgls(dev, req))
-+		return true;
- 	if (!sgl_threshold || avg_seg_size < sgl_threshold)
- 		return false;
- 	return true;
-@@ -779,7 +793,8 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
- 		struct bio_vec bv = req_bvec(req);
+-	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
+-	struct batadv_hardif_neigh_node *neigh;
+ 	u32 throughput;
+ 	bool valid;
  
- 		if (!is_pci_p2pdma_page(bv.bv_page)) {
--			if ((bv.bv_offset & (NVME_CTRL_PAGE_SIZE - 1)) +
-+			if (!nvme_pci_metadata_use_sgls(dev, req) &&
-+			    (bv.bv_offset & (NVME_CTRL_PAGE_SIZE - 1)) +
- 			     bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
- 				return nvme_setup_prp_simple(dev, req,
- 							     &cmnd->rw, &bv);
-@@ -823,11 +838,69 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
- 	return ret;
- }
- 
--static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
--		struct nvme_command *cmnd)
-+static blk_status_t nvme_pci_setup_meta_sgls(struct nvme_dev *dev,
-+					     struct request *req)
-+{
-+	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
-+	struct nvme_rw_command *cmnd = &iod->cmd.rw;
-+	struct nvme_sgl_desc *sg_list;
-+	struct scatterlist *sgl, *sg;
-+	unsigned int entries;
-+	dma_addr_t sgl_dma;
-+	int rc, i;
-+
-+	iod->meta_sgt.sgl = mempool_alloc(dev->iod_meta_mempool, GFP_ATOMIC);
-+	if (!iod->meta_sgt.sgl)
-+		return BLK_STS_RESOURCE;
-+
-+	sg_init_table(iod->meta_sgt.sgl, req->nr_integrity_segments);
-+	iod->meta_sgt.orig_nents = blk_rq_map_integrity_sg(req,
-+							   iod->meta_sgt.sgl);
-+	if (!iod->meta_sgt.orig_nents)
-+		goto out_free_sg;
-+
-+	rc = dma_map_sgtable(dev->dev, &iod->meta_sgt, rq_dma_dir(req),
-+			     DMA_ATTR_NO_WARN);
-+	if (rc)
-+		goto out_free_sg;
-+
-+	sg_list = dma_pool_alloc(dev->prp_small_pool, GFP_ATOMIC, &sgl_dma);
-+	if (!sg_list)
-+		goto out_unmap_sg;
-+
-+	entries = iod->meta_sgt.nents;
-+	iod->meta_list.sg_list = sg_list;
-+	iod->meta_dma = sgl_dma;
-+
-+	cmnd->flags = NVME_CMD_SGL_METASEG;
-+	cmnd->metadata = cpu_to_le64(sgl_dma);
-+
-+	sgl = iod->meta_sgt.sgl;
-+	if (entries == 1) {
-+		nvme_pci_sgl_set_data(sg_list, sgl);
-+		return BLK_STS_OK;
-+	}
-+
-+	sgl_dma += sizeof(*sg_list);
-+	nvme_pci_sgl_set_seg(sg_list, sgl_dma, entries);
-+	for_each_sg(sgl, sg, entries, i)
-+		nvme_pci_sgl_set_data(&sg_list[i + 1], sg);
-+
-+	return BLK_STS_OK;
-+
-+out_unmap_sg:
-+	dma_unmap_sgtable(dev->dev, &iod->meta_sgt, rq_dma_dir(req), 0);
-+out_free_sg:
-+	mempool_free(iod->meta_sgt.sgl, dev->iod_meta_mempool);
-+	return BLK_STS_RESOURCE;
-+}
-+
-+static blk_status_t nvme_pci_setup_meta_mptr(struct nvme_dev *dev,
-+					     struct request *req)
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 	struct bio_vec bv = rq_integrity_vec(req);
-+	struct nvme_command *cmnd = &iod->cmd;
- 
- 	iod->meta_dma = dma_map_bvec(dev->dev, &bv, rq_dma_dir(req), 0);
- 	if (dma_mapping_error(dev->dev, iod->meta_dma))
-@@ -836,6 +909,13 @@ static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
- 	return BLK_STS_OK;
- }
- 
-+static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req)
-+{
-+	if (nvme_pci_metadata_use_sgls(dev, req))
-+		return nvme_pci_setup_meta_sgls(dev, req);
-+	return nvme_pci_setup_meta_mptr(dev, req);
-+}
-+
- static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
-@@ -844,6 +924,7 @@ static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
- 	iod->aborted = false;
- 	iod->nr_allocations = -1;
- 	iod->sgt.nents = 0;
-+	iod->meta_sgt.nents = 0;
- 
- 	ret = nvme_setup_cmd(req->q->queuedata, req);
- 	if (ret)
-@@ -856,7 +937,7 @@ static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
- 	}
- 
- 	if (blk_integrity_rq(req)) {
--		ret = nvme_map_metadata(dev, req, &iod->cmd);
-+		ret = nvme_map_metadata(dev, req);
- 		if (ret)
- 			goto out_unmap_data;
- 	}
-@@ -955,17 +1036,31 @@ static void nvme_queue_rqs(struct request **rqlist)
- 	*rqlist = requeue_list;
- }
- 
-+static __always_inline void nvme_unmap_metadata(struct nvme_dev *dev,
-+						struct request *req)
-+{
-+	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
-+
-+	if (!iod->meta_sgt.nents) {
-+		dma_unmap_page(dev->dev, iod->meta_dma,
-+			       rq_integrity_vec(req).bv_len,
-+			       rq_dma_dir(req));
+-	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
+-				   metric_work);
+-	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
+-			     bat_v);
+-
+ 	valid = batadv_v_elp_get_throughput(neigh, &throughput);
+ 	if (!valid)
+-		goto put_neigh;
 +		return;
-+	}
-+
-+	dma_pool_free(dev->prp_small_pool, iod->meta_list.sg_list,
-+		      iod->meta_dma);
-+	dma_unmap_sgtable(dev->dev, &iod->meta_sgt, rq_dma_dir(req), 0);
-+	mempool_free(iod->meta_sgt.sgl, dev->iod_meta_mempool);
-+}
-+
- static __always_inline void nvme_pci_unmap_rq(struct request *req)
- {
- 	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
- 	struct nvme_dev *dev = nvmeq->dev;
  
--	if (blk_integrity_rq(req)) {
--	        struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
+ 	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
 -
--		dma_unmap_page(dev->dev, iod->meta_dma,
--			       rq_integrity_vec(req).bv_len, rq_dma_dir(req));
--	}
-+	if (blk_integrity_rq(req))
-+		nvme_unmap_metadata(dev, req);
- 
- 	if (blk_rq_nr_phys_segments(req))
- 		nvme_unmap_data(dev, req);
-@@ -2719,6 +2814,7 @@ static void nvme_release_prp_pools(struct nvme_dev *dev)
- 
- static int nvme_pci_alloc_iod_mempool(struct nvme_dev *dev)
- {
-+	size_t meta_size = sizeof(struct scatterlist) * (NVME_MAX_META_SEGS + 1);
- 	size_t alloc_size = sizeof(struct scatterlist) * NVME_MAX_SEGS;
- 
- 	dev->iod_mempool = mempool_create_node(1,
-@@ -2727,7 +2823,18 @@ static int nvme_pci_alloc_iod_mempool(struct nvme_dev *dev)
- 			dev_to_node(dev->dev));
- 	if (!dev->iod_mempool)
- 		return -ENOMEM;
-+
-+	dev->iod_meta_mempool = mempool_create_node(1,
-+			mempool_kmalloc, mempool_kfree,
-+			(void *)meta_size, GFP_KERNEL,
-+			dev_to_node(dev->dev));
-+	if (!dev->iod_meta_mempool)
-+		goto free;
-+
- 	return 0;
-+free:
-+	mempool_destroy(dev->iod_mempool);
-+	return -ENOMEM;
+-put_neigh:
+-	/* decrement refcounter to balance increment performed before scheduling
+-	 * this task
+-	 */
+-	batadv_hardif_neigh_put(neigh);
  }
  
- static void nvme_free_tagset(struct nvme_dev *dev)
-@@ -2792,6 +2899,11 @@ static void nvme_reset_work(struct work_struct *work)
- 	if (result)
- 		goto out;
+ /**
+@@ -274,14 +283,16 @@ batadv_v_elp_wifi_neigh_probe(struct batadv_hardif_neigh_node *neigh)
+  */
+ static void batadv_v_elp_periodic_work(struct work_struct *work)
+ {
++	struct batadv_v_metric_queue_entry *metric_entry;
++	struct batadv_v_metric_queue_entry *metric_safe;
+ 	struct batadv_hardif_neigh_node *hardif_neigh;
+ 	struct batadv_hard_iface *hard_iface;
+ 	struct batadv_hard_iface_bat_v *bat_v;
+ 	struct batadv_elp_packet *elp_packet;
++	struct list_head metric_queue;
+ 	struct batadv_priv *bat_priv;
+ 	struct sk_buff *skb;
+ 	u32 elp_interval;
+-	bool ret;
  
-+	if (nvme_ctrl_meta_sgl_supported(&dev->ctrl))
-+		dev->ctrl.max_integrity_segments = NVME_MAX_META_SEGS;
-+	else
-+		dev->ctrl.max_integrity_segments = 1;
+ 	bat_v = container_of(work, struct batadv_hard_iface_bat_v, elp_wq.work);
+ 	hard_iface = container_of(bat_v, struct batadv_hard_iface, bat_v);
+@@ -317,6 +328,8 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
+ 
+ 	atomic_inc(&hard_iface->bat_v.elp_seqno);
+ 
++	INIT_LIST_HEAD(&metric_queue);
 +
- 	nvme_dbbuf_dma_alloc(dev);
+ 	/* The throughput metric is updated on each sent packet. This way, if a
+ 	 * node is dead and no longer sends packets, batman-adv is still able to
+ 	 * react timely to its death.
+@@ -341,16 +354,28 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
  
- 	result = nvme_setup_host_mem(dev);
-@@ -3061,11 +3173,6 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
- 	dev->ctrl.max_hw_sectors = min_t(u32,
- 		NVME_MAX_KB_SZ << 1, dma_opt_mapping_size(&pdev->dev) >> 9);
- 	dev->ctrl.max_segments = NVME_MAX_SEGS;
+ 		/* Reading the estimated throughput from cfg80211 is a task that
+ 		 * may sleep and that is not allowed in an rcu protected
+-		 * context. Therefore schedule a task for that.
++		 * context. Therefore add it to metric_queue and process it
++		 * outside rcu protected context.
+ 		 */
+-		ret = queue_work(batadv_event_workqueue,
+-				 &hardif_neigh->bat_v.metric_work);
 -
--	/*
--	 * There is no support for SGLs for metadata (yet), so we are limited to
--	 * a single integrity segment for the separate metadata pointer.
--	 */
- 	dev->ctrl.max_integrity_segments = 1;
- 	return dev;
- 
-@@ -3128,6 +3235,11 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (result)
- 		goto out_disable;
- 
-+	if (nvme_ctrl_meta_sgl_supported(&dev->ctrl))
-+		dev->ctrl.max_integrity_segments = NVME_MAX_META_SEGS;
-+	else
-+		dev->ctrl.max_integrity_segments = 1;
+-		if (!ret)
++		metric_entry = kzalloc(sizeof(*metric_entry), GFP_ATOMIC);
++		if (!metric_entry) {
+ 			batadv_hardif_neigh_put(hardif_neigh);
++			continue;
++		}
 +
- 	nvme_dbbuf_dma_alloc(dev);
++		metric_entry->hardif_neigh = hardif_neigh;
++		list_add(&metric_entry->list, &metric_queue);
+ 	}
+ 	rcu_read_unlock();
  
- 	result = nvme_setup_host_mem(dev);
-@@ -3170,6 +3282,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	nvme_free_queues(dev, 0);
- out_release_iod_mempool:
- 	mempool_destroy(dev->iod_mempool);
-+	mempool_destroy(dev->iod_meta_mempool);
- out_release_prp_pools:
- 	nvme_release_prp_pools(dev);
- out_dev_unmap:
-@@ -3235,6 +3348,7 @@ static void nvme_remove(struct pci_dev *pdev)
- 	nvme_dbbuf_dma_free(dev);
- 	nvme_free_queues(dev, 0);
- 	mempool_destroy(dev->iod_mempool);
-+	mempool_destroy(dev->iod_meta_mempool);
- 	nvme_release_prp_pools(dev);
- 	nvme_dev_unmap(dev);
- 	nvme_uninit_ctrl(&dev->ctrl);
-diff --git a/include/linux/nvme.h b/include/linux/nvme.h
-index b58d9405d65e0..1c101f6fad2f3 100644
---- a/include/linux/nvme.h
-+++ b/include/linux/nvme.h
-@@ -388,6 +388,7 @@ enum {
- 	NVME_CTRL_CTRATT_PREDICTABLE_LAT	= 1 << 5,
- 	NVME_CTRL_CTRATT_NAMESPACE_GRANULARITY	= 1 << 7,
- 	NVME_CTRL_CTRATT_UUID_LIST		= 1 << 9,
-+	NVME_CTRL_SGLS_MSDS                     = 1 << 19,
++	list_for_each_entry_safe(metric_entry, metric_safe, &metric_queue, list) {
++		batadv_v_elp_throughput_metric_update(metric_entry->hardif_neigh);
++
++		batadv_hardif_neigh_put(metric_entry->hardif_neigh);
++		list_del(&metric_entry->list);
++		kfree(metric_entry);
++	}
++
+ restart_timer:
+ 	batadv_v_elp_start_timer(hard_iface);
+ out:
+diff --git a/net/batman-adv/bat_v_elp.h b/net/batman-adv/bat_v_elp.h
+index 9e2740195fa2d..c9cb0a3071004 100644
+--- a/net/batman-adv/bat_v_elp.h
++++ b/net/batman-adv/bat_v_elp.h
+@@ -10,7 +10,6 @@
+ #include "main.h"
+ 
+ #include <linux/skbuff.h>
+-#include <linux/workqueue.h>
+ 
+ int batadv_v_elp_iface_enable(struct batadv_hard_iface *hard_iface);
+ void batadv_v_elp_iface_disable(struct batadv_hard_iface *hard_iface);
+@@ -19,6 +18,5 @@ void batadv_v_elp_iface_activate(struct batadv_hard_iface *primary_iface,
+ void batadv_v_elp_primary_iface_set(struct batadv_hard_iface *primary_iface);
+ int batadv_v_elp_packet_recv(struct sk_buff *skb,
+ 			     struct batadv_hard_iface *if_incoming);
+-void batadv_v_elp_throughput_metric_update(struct work_struct *work);
+ 
+ #endif /* _NET_BATMAN_ADV_BAT_V_ELP_H_ */
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 2635763bbd67a..e659623b7a331 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -596,9 +596,6 @@ struct batadv_hardif_neigh_node_bat_v {
+ 	 *  neighbor
+ 	 */
+ 	unsigned long last_unicast_tx;
+-
+-	/** @metric_work: work queue callback item for metric update */
+-	struct work_struct metric_work;
  };
  
- struct nvme_lbaf {
+ /**
 -- 
 2.39.5
 
