@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-122903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDB6A5A1E4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5BEA59C99
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D713AEB7E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F3477A8966
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A8C2356C4;
-	Mon, 10 Mar 2025 18:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA95231C8D;
+	Mon, 10 Mar 2025 17:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0NAcMYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzTQNW6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDAB2356AB;
-	Mon, 10 Mar 2025 18:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1624231A42;
+	Mon, 10 Mar 2025 17:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630473; cv=none; b=b+CgiSQyjO6uC0Tnr2vGoo4b+pEwpAKa55U7C94U8ZOCqt6pd1fjtzBZD/eB2sUEtWNr2cBwGrEjpZv8j7T75El7ngH8/ruLehsOAC1ThLcw91XGW702Dmy9I9pIDk8Qvj6T69qvxf7/k3IRTGIUSFrCnDILNHasQ0mkuvahVLU=
+	t=1741626753; cv=none; b=cO3vr47zRCuWQ2SlBxXqbCh0zNwSfo1RoaYHKGggxLrIjIbBiTHm/bBrvQBSs3rMincdjpGOgDg3jQ84O3jyfYH21HcY6BD0YLRtSvyqgSEFQZDbZUVj0xrTKiR3eIBTwBz0ai5Wh1CMqCIJOm7ccKOqMFDeP5FuXhU5b9pXQVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630473; c=relaxed/simple;
-	bh=R5qy/53bbF/5MX3H4JzvC+WFlzByXk8DLK/Vtpv19s0=;
+	s=arc-20240116; t=1741626753; c=relaxed/simple;
+	bh=r4KVN0nr5nuNTcjhTjsUC5wTrNaQNbjBiL31CqRxB5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJUZUjzWihZPBLlr4/yHxE1fIFSBZo7csv1VsASGTrgLDe5zNNrWOZSVaN3iiE3ioG8/Nc8xlCNhQlUORuht6YSBfYAfz9q8vtLRp8XoUOrj4EiGN8bgb1NmqfCsAvrpy7jBQQIO5vJeJvAetxnpmF4JTMesr5Oe4azybmbVqFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0NAcMYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBE9C4CEE5;
-	Mon, 10 Mar 2025 18:14:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ny90jFCsggNJZ1s339zCPU+RPlCduDKDZbtmPzJ79o+JvmdJCCx5JDQu8by2UXYEB8hJHdwu37d0dGWQAzf2Na3yvmz78M6jvjmyGMcS49VIN7BmY/1pHXVuuQ54pGACIMUiOtVCXW66YRfZk02Rcy9o7BG2RRUHdnc0MVar/tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzTQNW6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69694C4CEE5;
+	Mon, 10 Mar 2025 17:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630473;
-	bh=R5qy/53bbF/5MX3H4JzvC+WFlzByXk8DLK/Vtpv19s0=;
+	s=korg; t=1741626752;
+	bh=r4KVN0nr5nuNTcjhTjsUC5wTrNaQNbjBiL31CqRxB5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0NAcMYclREHy02aj3blJON7lIEG9b56hqKKPl4e/9ffWrIQDecABV7DlgR4SgxQE
-	 OpB6znffiIDowSHNGPxjSGUgMW9e60cwH9sYUs0AOmNJt0JNip24XQwQKtqw4EWVEC
-	 GopCbwLW0sY6OceydjeHVtRRJS0Nl62XCW4N7L9M=
+	b=pzTQNW6TRJIw0nO36cEOdJXUFxhFyGGJofagclDL7X4WTHHodH+HYhafBcppoG+4o
+	 2KSmgSZsR+OieqBbvM/97AwiddALGiEW57eA438/UpGQxvltmGdosKDoCPbj67wUOX
+	 Odxgdw3aHe1FCY2d2yWQo3ugEM4vrFHR88JcKUnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 5.15 419/620] can: ems_pci: move ASIX AX99100 ids to pci_ids.h
-Date: Mon, 10 Mar 2025 18:04:25 +0100
-Message-ID: <20250310170602.127076655@linuxfoundation.org>
+	Mulhern <amulhern@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Olivier Gayot <olivier.gayot@canonical.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.13 073/207] block: fix conversion of GPT partition name to 7-bit
+Date: Mon, 10 Mar 2025 18:04:26 +0100
+Message-ID: <20250310170450.665666607@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Olivier Gayot <olivier.gayot@canonical.com>
 
-commit 3029ad91335353a70feb42acd24d580d70ab258b upstream.
+commit e06472bab2a5393430cc2fbc3211cd3602422c1e upstream.
 
-Move PCI Vendor and Device ID of ASIX AX99100 PCIe to Multi I/O
-Controller to pci_ids.h for its serial and parallel port driver
-support in subsequent patches.
+The utf16_le_to_7bit function claims to, naively, convert a UTF-16
+string to a 7-bit ASCII string. By naively, we mean that it:
+ * drops the first byte of every character in the original UTF-16 string
+ * checks if all characters are printable, and otherwise replaces them
+   by exclamation mark "!".
 
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://lore.kernel.org/r/20230724083933.3173513-3-jiaqing.zhao@linux.intel.com
-[Moeko: Drop changes in drivers/net/can/sja1000/ems_pci.c]
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+This means that theoretically, all characters outside the 7-bit ASCII
+range should be replaced by another character. Examples:
+
+ * lower-case alpha (ɒ) 0x0252 becomes 0x52 (R)
+ * ligature OE (œ) 0x0153 becomes 0x53 (S)
+ * hangul letter pieup (ㅂ) 0x3142 becomes 0x42 (B)
+ * upper-case gamma (Ɣ) 0x0194 becomes 0x94 (not printable) so gets
+   replaced by "!"
+
+The result of this conversion for the GPT partition name is passed to
+user-space as PARTNAME via udev, which is confusing and feels questionable.
+
+However, there is a flaw in the conversion function itself. By dropping
+one byte of each character and using isprint() to check if the remaining
+byte corresponds to a printable character, we do not actually guarantee
+that the resulting character is 7-bit ASCII.
+
+This happens because we pass 8-bit characters to isprint(), which
+in the kernel returns 1 for many values > 0x7f - as defined in ctype.c.
+
+This results in many values which should be replaced by "!" to be kept
+as-is, despite not being valid 7-bit ASCII. Examples:
+
+ * e with acute accent (é) 0x00E9 becomes 0xE9 - kept as-is because
+   isprint(0xE9) returns 1.
+ * euro sign (€) 0x20AC becomes 0xAC - kept as-is because isprint(0xAC)
+   returns 1.
+
+This way has broken pyudev utility[1], fixes it by using a mask of 7 bits
+instead of 8 bits before calling isprint.
+
+Link: https://github.com/pyudev/pyudev/issues/490#issuecomment-2685794648 [1]
+Link: https://lore.kernel.org/linux-block/4cac90c2-e414-4ebb-ae62-2a4589d9dc6e@canonical.com/
+Cc: Mulhern <amulhern@redhat.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Olivier Gayot <olivier.gayot@canonical.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250305022154.3903128-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pci_ids.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ block/partitions/efi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -1743,6 +1743,10 @@
- #define PCI_SUBDEVICE_ID_AT_2700FX	0x2701
- #define PCI_SUBDEVICE_ID_AT_2701FX	0x2703
+--- a/block/partitions/efi.c
++++ b/block/partitions/efi.c
+@@ -682,7 +682,7 @@ static void utf16_le_to_7bit(const __le1
+ 	out[size] = 0;
  
-+#define PCI_VENDOR_ID_ASIX		0x125b
-+#define PCI_DEVICE_ID_ASIX_AX99100	0x9100
-+#define PCI_DEVICE_ID_ASIX_AX99100_LB	0x9110
-+
- #define PCI_VENDOR_ID_ESS		0x125d
- #define PCI_DEVICE_ID_ESS_ESS1968	0x1968
- #define PCI_DEVICE_ID_ESS_ESS1978	0x1978
+ 	while (i < size) {
+-		u8 c = le16_to_cpu(in[i]) & 0xff;
++		u8 c = le16_to_cpu(in[i]) & 0x7f;
+ 
+ 		if (c && !isprint(c))
+ 			c = '!';
 
 
 
