@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9DFA5A25E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5642EA59CF8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D86189212D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F3A216F425
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D371C3F34;
-	Mon, 10 Mar 2025 18:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E975622B8D0;
+	Mon, 10 Mar 2025 17:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epeBObHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/S9yTEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D341DE89C;
-	Mon, 10 Mar 2025 18:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D8F2309B0;
+	Mon, 10 Mar 2025 17:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630764; cv=none; b=IvIhrq1gCCmECmMiK9jWwYlmvz6+6+r6zFtl3dyvM77tcsd7AJwaIA5nWYKTpqX0CHm8nN94KpyxpZt/fNxK/8QeAw5J/bhUNyWxXo8MFF2JdGwEJzKbmnYItiaFTCN65D7qo1/kzE91uiNZ0ctKP97d+XYE63nv13GWnmEq2zo=
+	t=1741626977; cv=none; b=aPgUNlBsSoN1wvVqkN4Au1O1Tu0ralbt2v3+ztkHssjY/RYenBBzcqAiuSlVix5Tw7ARR/WW1G+196GVEoNEqcR5uTP77U863oNxMGqtLA1/IgFGEUB2Sa85Eggu00w/5rTJ5cv480yxjI9SS0kA4c7BWfPR7NAOsjNj6nG8zHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630764; c=relaxed/simple;
-	bh=tNO4ecaQZUd97GUOabi62i5gjc8e3wS1TlmmFzkR5CI=;
+	s=arc-20240116; t=1741626977; c=relaxed/simple;
+	bh=dcKqITZSswVY4xtZKaNruNqFhvmPi2oxGo3uXsggFuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GYmPPIyAYETb5dqI/Me/U3wWwT+ajZJk3uYlXVNNmQBmcABlBPrEXogmAu0ugsA8Lh+Q4t4+CtPxy8EohtFsjBTu9Czq602Rq2NHq/6mZ2hmtEyCtoNXK1liiFiyQM3UxQom8lJNUC0/vQ7OrZEStQ1uSJSiyGmbUYsStL6id24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epeBObHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50555C4CEE5;
-	Mon, 10 Mar 2025 18:19:23 +0000 (UTC)
+	 MIME-Version; b=T0/4r0EKY+KDFQ8doV9eawmk8P2k7x7W18ewXzIrc8VXff61wpyvfnS09HYA18FULCfC042BIzkhR+anNVh7ZNR/IhRwWpItELwihzdAOcEIbcZrhCGSuvLEz7zXVWcnJkSzJSiHrBkNJowZqmKwn+9xriw1zxf7hoxxHzoZ624=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/S9yTEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB4CC4CEE5;
+	Mon, 10 Mar 2025 17:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630763;
-	bh=tNO4ecaQZUd97GUOabi62i5gjc8e3wS1TlmmFzkR5CI=;
+	s=korg; t=1741626977;
+	bh=dcKqITZSswVY4xtZKaNruNqFhvmPi2oxGo3uXsggFuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epeBObHnT8CNea2PLhb3kuXCkLR2kDIncXFTFc5joFpwxSTKnMFGpO94NWcaD/gGs
-	 nBwy3c/Ex3sOfRGO4Meb6z159OPyfppbJub1bvZa4SRwMuXT9w6TLIFS3GxRa4q0xM
-	 O7hEc5JWW2DtkqiMNt/UczYrpv1H5fwOBvfsdNXs=
+	b=V/S9yTEta88w+hqfqHYQ9PyGJMYUWbMGSBOf/EfJk4ONJ7JBwkUXKe8gB/97Ynhn0
+	 5VNXiEueXgq/LsbCgaqLsKUbsVXH+qwxrduEXi9FSp43m+wbxWyV7OxA3vhDCFEDeZ
+	 dhoIaTfdSFoMN0e6JNJ+LKZ2a7HpebgbhTywAufA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>
-Subject: [PATCH 5.15 494/620] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 147/207] mctp i3c: handle NULL header address
 Date: Mon, 10 Mar 2025 18:05:40 +0100
-Message-ID: <20250310170605.070020512@linuxfoundation.org>
+Message-ID: <20250310170453.639472748@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
+[ Upstream commit cf7ee25e70c6edfac4553d6b671e8b19db1d9573 ]
 
-We fixed the UAF issue in USB MIDI code by canceling the pending work
-at closing each MIDI output device in the commit below.  However, this
-assumed that it's the only one that is tied with the endpoint, and it
-resulted in unexpected data truncations when multiple devices are
-assigned to a single endpoint and opened simultaneously.
+daddr can be NULL if there is no neighbour table entry present,
+in that case the tx packet should be dropped.
 
-For addressing the unexpected MIDI message drops, simply replace
-cancel_work_sync() with flush_work().  The drain callback should have
-been already invoked before the close callback, hence the port->active
-flag must be already cleared.  So this just assures that the pending
-work is finished before freeing the resources.
+saddr will usually be set by MCTP core, but check for NULL in case a
+packet is transmitted by a different protocol.
 
-Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
-Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
-Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
-Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Fixes: c8755b29b58e ("mctp i3c: MCTP I3C driver")
+Link: https://patch.msgid.link/20250304-mctp-i3c-null-v1-1-4416bbd56540@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/mctp/mctp-i3c.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-index 9a361b202a09d..a56c1a69b422a 100644
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1145,7 +1145,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
+diff --git a/drivers/net/mctp/mctp-i3c.c b/drivers/net/mctp/mctp-i3c.c
+index d247fe483c588..c1e72253063b5 100644
+--- a/drivers/net/mctp/mctp-i3c.c
++++ b/drivers/net/mctp/mctp-i3c.c
+@@ -507,6 +507,9 @@ static int mctp_i3c_header_create(struct sk_buff *skb, struct net_device *dev,
  {
- 	struct usbmidi_out_port *port = substream->runtime->private_data;
+ 	struct mctp_i3c_internal_hdr *ihdr;
  
--	cancel_work_sync(&port->ep->work);
-+	flush_work(&port->ep->work);
- 	return substream_open(substream, 0, 0);
- }
- 
++	if (!daddr || !saddr)
++		return -EINVAL;
++
+ 	skb_push(skb, sizeof(struct mctp_i3c_internal_hdr));
+ 	skb_reset_mac_header(skb);
+ 	ihdr = (void *)skb_mac_header(skb);
 -- 
 2.39.5
 
