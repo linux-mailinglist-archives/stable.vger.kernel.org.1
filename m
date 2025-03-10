@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-122783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEB6A5A12C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6864A5A13A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC5191739F6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C6E3AD662
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD7622DFF3;
-	Mon, 10 Mar 2025 17:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477DE231A2A;
+	Mon, 10 Mar 2025 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR1Tspw8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFMbpR7e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CD71C4A24;
-	Mon, 10 Mar 2025 17:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C341C4A24;
+	Mon, 10 Mar 2025 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629487; cv=none; b=rd+pBRpJmF2LoId/yVZJeImD8UoPh1BcLBDRkBJVVVVp3VQPHXy3YFQKivHHJbVmqcTe58Kd3oQ2zmNMkSzwT7KYMgeawskkZE5Aey1jJEYr2EV+ZTCRss0bNGkWr1hJKLJIvQoG/++NccoacdT7yKzTPNu6JLUomfsC7sNlFmM=
+	t=1741629502; cv=none; b=uVXEu2qi2k4BN1ZnJ0Sb1ZhUQwKC9ELPmW1d1U6RDjk6t3uvFepggjUZ8kse7n/9C4vJiM2csPhjTmyO3HGUyHT/qGIVAOLbjX8GO+6sGz1AsqW8v7xVg15cVXLMDaGV+GxBxDQGdLOMPtpSo2Ym8QL2gmj2TWDVcPPOhDKjsic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629487; c=relaxed/simple;
-	bh=QgITL5UApmGFYgsRFq73XVBpivUfmkvjHbPHF2I5n8M=;
+	s=arc-20240116; t=1741629502; c=relaxed/simple;
+	bh=ldBmYbMefBRI6uxC6Lb6BogFJlDIjBVJJDrP1RVK44c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvVH2HTJR7KzXaEZdS+vi7TnEAwRpGinsute9DwknFWVysu8rsG9D06JJRAJ7PYHi+zWfpUXJrus8qWrDe7WQK3fARxcDamksPYjSyjvWB0yu5Lx24UCwuuPnGoR1M8uolTNYXShO1zPPYOaTp0A5ZxrjPg47ydW1lq76aKxGlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR1Tspw8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257A2C4CEE5;
-	Mon, 10 Mar 2025 17:58:06 +0000 (UTC)
+	 MIME-Version; b=KeazZk8OVgCsWVtXxcYtemHxx4v5303Wn6JGyNTt8jZPWeGg2Y9/1dYao7ihfxamOBNSf2Bl91Y4pjUPb5m2oqvoweaje4YpNMkQq74N76+6i65d+8A6J07X+DHVQ/fFBP3dH1bsKqBWvzMAIqXAjw9ZnSvMi3vbm9Ryx8RG05s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFMbpR7e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8028FC4CEEE;
+	Mon, 10 Mar 2025 17:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629487;
-	bh=QgITL5UApmGFYgsRFq73XVBpivUfmkvjHbPHF2I5n8M=;
+	s=korg; t=1741629501;
+	bh=ldBmYbMefBRI6uxC6Lb6BogFJlDIjBVJJDrP1RVK44c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iR1Tspw8DWFCLOFEyFEw60C3S2I4X3+h0UffKfWC2m1WzRbJWOWd1wyNdTO+P37BE
-	 xrfr05L1prqhfgkqpS8mQrgPG77YCM+IaK3Gydy8nmhulHcMLrkfgRkOJN/dxCnTCT
-	 xGPer0VVNEuo5oGzJaK4QEVCLYETPm1T/z2SLbdY=
+	b=vFMbpR7evplb9ab1vgayhmjFMil7KZMWvETnPBXOsjz8RjSadmYDZsJdixmb50U3F
+	 /xxHfR3W58yIcQ8vNfF79fYdr7eerA4fTqjWDn/m12JUzwUEiz+1imrGflDNpod+zY
+	 gPtaQ+YLPpB19nDr6ljgeqyGRCtKLlSCVnQJmQ2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 284/620] soc: qcom: socinfo: Avoid out of bounds read of serial number
-Date: Mon, 10 Mar 2025 18:02:10 +0100
-Message-ID: <20250310170556.824901319@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.15 285/620] serial: sh-sci: Drop __initdata macro for port_cfg
+Date: Mon, 10 Mar 2025 18:02:11 +0100
+Message-ID: <20250310170556.864145411@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,50 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
+commit eaeee4225dba30bef4d424bdf134a07b7f423e8b upstream.
 
-On MSM8916 devices, the serial number exposed in sysfs is constant and does
-not change across individual devices. It's always:
+The port_cfg object is used by serial_console_write(), which serves as
+the write function for the earlycon device. Marking port_cfg as __initdata
+causes it to be freed after kernel initialization, resulting in earlycon
+becoming unavailable thereafter. Remove the __initdata macro from port_cfg
+to resolve this issue.
 
-  db410c:/sys/devices/soc0$ cat serial_number
-  2644893864
-
-The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
-have support for the serial_num field in the socinfo struct. There is an
-existing check to avoid exposing the serial number in that case, but it's
-not correct: When checking the item_size returned by SMEM, we need to make
-sure the *end* of the serial_num is within bounds, instead of comparing
-with the *start* offset. The serial_number currently exposed on MSM8916
-devices is just an out of bounds read of whatever comes after the socinfo
-struct in SMEM.
-
-Fix this by changing offsetof() to offsetofend(), so that the size of the
-field is also taken into account.
-
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
 Cc: stable@vger.kernel.org
-Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 0b0cced19ab15c9e ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Link: https://lore.kernel.org/r/20250116182249.3828577-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
+ drivers/tty/serial/sh-sci.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -617,7 +617,7 @@ static int qcom_socinfo_probe(struct pla
- 	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3431,7 +3431,7 @@ sh_early_platform_init_buffer("earlyprin
+ 			   early_serial_buf, ARRAY_SIZE(early_serial_buf));
+ #endif
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+-static struct plat_sci_port port_cfg __initdata;
++static struct plat_sci_port port_cfg;
  
--	if (offsetof(struct socinfo, serial_num) <= item_size) {
-+	if (offsetofend(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
 
 
 
