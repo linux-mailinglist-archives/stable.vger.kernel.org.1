@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-122349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00020A59F24
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C055AA59FAA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EE631708E1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35C3D171299
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5C322DF80;
-	Mon, 10 Mar 2025 17:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908D622FAF8;
+	Mon, 10 Mar 2025 17:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIbPFA72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aO3MzHnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5A21B3927;
-	Mon, 10 Mar 2025 17:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4939F2236FB;
+	Mon, 10 Mar 2025 17:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628245; cv=none; b=Sdst7061eVFSSZ9IytFb4VEvGokPxD0Fv1dVi3TwNvXQTLPuk8LpyU5MflRbxClj1qOGvQLHXRzE6qsgAx875wxdlyViMI7Mm2QgPLBPT8YLHEpAuu2TSeXAjCDvqjnKFjSnWgl5grG2MBuPE0iJ9jsEHImbnVhJ2uc1AKIQ91U=
+	t=1741628526; cv=none; b=XJJ/oAwarPTM3BdptoZ/2TjjURGohd8qx6XI/1EMUWFZfJ69vEbZWRksqcU9kkzI1WtxWynthdHkxiF6dBw/A7ojEtIqKKwT+aKoPaXlC6r9BEgATq8W1dv6VsQt4G4anaPTeQTEc365EbG4aS1BapgxGFjjs5tW+caJz6LBRfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628245; c=relaxed/simple;
-	bh=/XA6DY7HdSz2KfG509VuOh+oW6LcOEOU0Ozb0bpr34I=;
+	s=arc-20240116; t=1741628526; c=relaxed/simple;
+	bh=8Ev+4ma5r/QpxI7VSVkYwgj8lOteCLHUIYGCNXqJhlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFZPQjoFgl91gX93pM7oVJ1G4pXb8dQzLzmFwdVkZnWfQK3sCuo9VHtrm5++5C2MMiRXLcnEdChrns2j6BYpQFqSqp489+bqes314eH6Wlq+CDJMpnractgaVzmk7z8S9+vrgWwiAfG2Gt9AaTJU679TeOEqEprPA0vH5tSIPIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIbPFA72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A90C4CEE5;
-	Mon, 10 Mar 2025 17:37:24 +0000 (UTC)
+	 MIME-Version; b=N+D79qcVeXmkapp9sTe2TvHHzQicEd+bN+PnMt3ljlgGPfuboxXQAYX5z205LKAI+AJFNIbvPcrsESvDwEMf6tZGb+5n3EyDwM/0MI8oUIuKU+XbYouUF1YRqmCMxdZa1GmOkMZt8Qmq1RcPx8TuWKhCRh/nFrDtSFvIq88irVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aO3MzHnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4292C4CEE5;
+	Mon, 10 Mar 2025 17:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628244;
-	bh=/XA6DY7HdSz2KfG509VuOh+oW6LcOEOU0Ozb0bpr34I=;
+	s=korg; t=1741628526;
+	bh=8Ev+4ma5r/QpxI7VSVkYwgj8lOteCLHUIYGCNXqJhlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIbPFA72/EeAWlHjgt5zkCV1s/Uc/Cvfz8ZSZrusfKYL8lYyoK1/GoKrVE3rjYpvg
-	 Zh7PvJ9vBTq6ZjuYlCS1i/Ghm2Bf1UVNUGLt8Dll5a3scWJn4HoD2mArBItktJtD/W
-	 PJH/8hJuoiCiCg/Tq2pqKvZv5sgFKzY56KS5BuI4=
+	b=aO3MzHnJxJ3QOyX78LaAFGOn0cykxxO+Pp1WHLTEb8se1BrwrckHzwlkee2wcMx3X
+	 ucIi/2o0msbT1gxbUJl3GHpRMsOXLYdskZt44/+F3eYl5PHJujppbknS97Xx5lF4hr
+	 0sPOMzF3JpB7942U2tN7fWbIv8DB0xs8Fwf/Amh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.6 106/145] usb: gadget: Fix setting self-powered state on suspend
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Kun Hu <huk23@m.fudan.edu.cn>
+Subject: [PATCH 6.1 056/109] exfat: fix soft lockup in exfat_clear_bitmap
 Date: Mon, 10 Mar 2025 18:06:40 +0100
-Message-ID: <20250310170439.041196173@linuxfoundation.org>
+Message-ID: <20250310170429.799911159@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit c783e1258f29c5caac9eea0aea6b172870f1baf8 upstream.
+[ Upstream commit 9da33619e0ca53627641bc97d1b93ec741299111 ]
 
-cdev->config might be NULL, so check it before dereferencing.
+bitmap clear loop will take long time in __exfat_free_cluster()
+if data size of file/dir enty is invalid.
+If cluster bit in bitmap is already clear, stop clearing bitmap go to
+out of loop.
 
-CC: stable <stable@kernel.org>
-Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 31023864e67a ("exfat: add fat entry operations")
+Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/exfat/balloc.c   | 10 ++++++++--
+ fs/exfat/exfat_fs.h |  2 +-
+ fs/exfat/fatent.c   | 11 +++++++----
+ 3 files changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2616,7 +2616,8 @@ void composite_suspend(struct usb_gadget
+diff --git a/fs/exfat/balloc.c b/fs/exfat/balloc.c
+index 5b547a5963808..32209acd51be4 100644
+--- a/fs/exfat/balloc.c
++++ b/fs/exfat/balloc.c
+@@ -160,7 +160,7 @@ int exfat_set_bitmap(struct inode *inode, unsigned int clu, bool sync)
+ 	return 0;
+ }
  
- 	cdev->suspended = 1;
+-void exfat_clear_bitmap(struct inode *inode, unsigned int clu, bool sync)
++int exfat_clear_bitmap(struct inode *inode, unsigned int clu, bool sync)
+ {
+ 	int i, b;
+ 	unsigned int ent_idx;
+@@ -169,13 +169,17 @@ void exfat_clear_bitmap(struct inode *inode, unsigned int clu, bool sync)
+ 	struct exfat_mount_options *opts = &sbi->options;
  
--	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+	if (cdev->config &&
-+	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
- 		usb_gadget_set_selfpowered(gadget);
+ 	if (!is_valid_cluster(sbi, clu))
+-		return;
++		return -EIO;
  
- 	usb_gadget_vbus_draw(gadget, 2);
+ 	ent_idx = CLUSTER_TO_BITMAP_ENT(clu);
+ 	i = BITMAP_OFFSET_SECTOR_INDEX(sb, ent_idx);
+ 	b = BITMAP_OFFSET_BIT_IN_SECTOR(sb, ent_idx);
+ 
++	if (!test_bit_le(b, sbi->vol_amap[i]->b_data))
++		return -EIO;
++
+ 	clear_bit_le(b, sbi->vol_amap[i]->b_data);
++
+ 	exfat_update_bh(sbi->vol_amap[i], sync);
+ 
+ 	if (opts->discard) {
+@@ -190,6 +194,8 @@ void exfat_clear_bitmap(struct inode *inode, unsigned int clu, bool sync)
+ 			opts->discard = 0;
+ 		}
+ 	}
++
++	return 0;
+ }
+ 
+ /*
+diff --git a/fs/exfat/exfat_fs.h b/fs/exfat/exfat_fs.h
+index c79c78bf265ba..5a1251207ab22 100644
+--- a/fs/exfat/exfat_fs.h
++++ b/fs/exfat/exfat_fs.h
+@@ -419,7 +419,7 @@ int exfat_count_num_clusters(struct super_block *sb,
+ int exfat_load_bitmap(struct super_block *sb);
+ void exfat_free_bitmap(struct exfat_sb_info *sbi);
+ int exfat_set_bitmap(struct inode *inode, unsigned int clu, bool sync);
+-void exfat_clear_bitmap(struct inode *inode, unsigned int clu, bool sync);
++int exfat_clear_bitmap(struct inode *inode, unsigned int clu, bool sync);
+ unsigned int exfat_find_free_bitmap(struct super_block *sb, unsigned int clu);
+ int exfat_count_used_clusters(struct super_block *sb, unsigned int *ret_count);
+ int exfat_trim_fs(struct inode *inode, struct fstrim_range *range);
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index fe007ae2f23c8..220ab671a8156 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -175,6 +175,7 @@ static int __exfat_free_cluster(struct inode *inode, struct exfat_chain *p_chain
+ 		BITMAP_OFFSET_SECTOR_INDEX(sb, CLUSTER_TO_BITMAP_ENT(clu));
+ 
+ 	if (p_chain->flags == ALLOC_NO_FAT_CHAIN) {
++		int err;
+ 		unsigned int last_cluster = p_chain->dir + p_chain->size - 1;
+ 		do {
+ 			bool sync = false;
+@@ -189,7 +190,9 @@ static int __exfat_free_cluster(struct inode *inode, struct exfat_chain *p_chain
+ 				cur_cmap_i = next_cmap_i;
+ 			}
+ 
+-			exfat_clear_bitmap(inode, clu, (sync && IS_DIRSYNC(inode)));
++			err = exfat_clear_bitmap(inode, clu, (sync && IS_DIRSYNC(inode)));
++			if (err)
++				break;
+ 			clu++;
+ 			num_clusters++;
+ 		} while (num_clusters < p_chain->size);
+@@ -210,12 +213,13 @@ static int __exfat_free_cluster(struct inode *inode, struct exfat_chain *p_chain
+ 				cur_cmap_i = next_cmap_i;
+ 			}
+ 
+-			exfat_clear_bitmap(inode, clu, (sync && IS_DIRSYNC(inode)));
++			if (exfat_clear_bitmap(inode, clu, (sync && IS_DIRSYNC(inode))))
++				break;
+ 			clu = n_clu;
+ 			num_clusters++;
+ 
+ 			if (err)
+-				goto dec_used_clus;
++				break;
+ 
+ 			if (num_clusters >= sbi->num_clusters - EXFAT_FIRST_CLUSTER) {
+ 				/*
+@@ -229,7 +233,6 @@ static int __exfat_free_cluster(struct inode *inode, struct exfat_chain *p_chain
+ 		} while (clu != EXFAT_EOF_CLUSTER);
+ 	}
+ 
+-dec_used_clus:
+ 	sbi->used_clusters -= num_clusters;
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
