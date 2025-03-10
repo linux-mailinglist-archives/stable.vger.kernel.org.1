@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 577DFA59ECE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1FEA59D16
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 008D37A6515
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1048188E0F7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4C0231A51;
-	Mon, 10 Mar 2025 17:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7871A315A;
+	Mon, 10 Mar 2025 17:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Af5kVhp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWfbGbNv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A62A230BED;
-	Mon, 10 Mar 2025 17:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE282F28;
+	Mon, 10 Mar 2025 17:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628072; cv=none; b=G43qVBB0P7NfBjJ8O0LbsrP8HMR75/N2sL7agaLvOpdnFLkuSleK9uYYQIvJFJN002nPOKuhkgT7ozS4fcCx02tphA+tmTiZ3owHu/TcI1tLp/FDO/m+FvUx8rsykPG+r13zrPM6ZGUbJAie2zw2/PZKUFp7jx0fuwtSzxFXJEU=
+	t=1741627072; cv=none; b=R78RYYMPpAMQi+aZOYrI/gsyRi6FNiTnMr4DrmfYofKN6xYMbxNX3VNJbbS9nsJfZgScau0zoKX5l/QGUvWU3O7WEwQvTCEKIg8Ks2KArt+HK9yjll3M2Kojxwa/ZH2UnhD/XF1ahOdtKpSpyxGWO4Hc20GFFzUcBLcBS4H3gwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628072; c=relaxed/simple;
-	bh=/t/lWVgBEuaprf2jP6FZvGcHhOBaeBmLjXPBOtQwIuU=;
+	s=arc-20240116; t=1741627072; c=relaxed/simple;
+	bh=XqxBMi1bpAH5Qo42dDNiLc5BscLFwrEoqEbeBC84D0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WicYV0rJLfIRfZWTzC8I5sGThqj8SdCOXoNNCU7nxjFiYDXZQeIbnyMbZmHevK9BI3w5hrGfoSTbD0U6o4/pIl9Yg0cc1mrVXMsE6FyqGkNoBjwYOi6aR89DLsnmnLZvtrU4Mz/ZiO/ssf+6QXb0stPeq9cyGy3pMxh9ciBdavI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Af5kVhp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BD4C4CEEC;
-	Mon, 10 Mar 2025 17:34:31 +0000 (UTC)
+	 MIME-Version; b=ZFRnjGdC0hAiXpyyVYC5QOJYtIt/6ryFgdsDOP+B/3UGO9llJsH6ILBh8iDa6SiUCIpZ+BQbHH/e6Zzye/RP5mN+5zcbbZorqYTNIpuX27/Rl3Xhl4mim6CARfcobACZoR/aUyvn83x1gcgdRH8+SBWHhwmMe1wzhOyuJTf++I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWfbGbNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B877C4CEE5;
+	Mon, 10 Mar 2025 17:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628071;
-	bh=/t/lWVgBEuaprf2jP6FZvGcHhOBaeBmLjXPBOtQwIuU=;
+	s=korg; t=1741627072;
+	bh=XqxBMi1bpAH5Qo42dDNiLc5BscLFwrEoqEbeBC84D0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Af5kVhp+2j1J5wsMYIQF4gE211c3+r/jgJT2JCtPhO/P8G/vWcOB85w04wfhf50Qx
-	 JYAii4O3+iG1d5o+nVSW5hcWaLE+JBimSrNcHqV4hMrEKnUy+bikE/m7ydsnuwJkqz
-	 fVtZLlqZKEwWGsOiKt253svcuq9rP8KJlnhaQPv0=
+	b=wWfbGbNvFFWdFSt59CqyDbeDa2bgsj2PTUe/mZ+yu817PrVmsNZLJoyyKohNA2kjc
+	 JmpvRQwlNnxNTUa+rv4AVk+lXfdsJbhRguy6U50l8mkLrv9++Pb8+KLqay70FT8H5y
+	 m3T/32XdgVFVmDSY2IGu8YIhx2vpCAOEc7EtNYJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Alex Elder <elder@riscstar.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/145] net: ipa: Fix v4.7 resource group names
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.13 179/207] KVM: x86: Explicitly zero EAX and EBX when PERFMON_V2 isnt supported by KVM
 Date: Mon, 10 Mar 2025 18:06:12 +0100
-Message-ID: <20250310170437.900869302@linuxfoundation.org>
+Message-ID: <20250310170454.905903776@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-[ Upstream commit 5eb3dc1396aa7e315486b24df80df782912334b7 ]
+commit f9dc8fb3afc968042bdaf4b6e445a9272071c9f3 upstream.
 
-In the downstream IPA driver there's only one group defined for source
-and destination, and the destination group doesn't have a _DPL suffix.
+Fix a goof where KVM sets CPUID.0x80000022.EAX to CPUID.0x80000022.EBX
+instead of zeroing both when PERFMON_V2 isn't supported by KVM.  In
+practice, barring a buggy CPU (or vCPU model when running nested) only the
+!enable_pmu case is affected, as KVM always supports PERFMON_V2 if it's
+available in hardware, i.e. CPUID.0x80000022.EBX will be '0' if PERFMON_V2
+is unsupported.
 
-Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Alex Elder <elder@riscstar.com>
-Link: https://patch.msgid.link/20250227-ipa-v4-7-fixes-v1-1-a88dd8249d8a@fairphone.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For the !enable_pmu case, the bug is relatively benign as KVM will refuse
+to enable PMU capabilities, but a VMM that reflects KVM's supported CPUID
+into the guest could inadvertently induce #GPs in the guest due to
+advertising support for MSRs that KVM refuses to emulate.
+
+Fixes: 94cdeebd8211 ("KVM: x86/cpuid: Add AMD CPUID ExtPerfMonAndDbg leaf 0x80000022")
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250304082314.472202-3-xiaoyao.li@intel.com
+[sean: massage shortlog and changelog, tag for stable]
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipa/data/ipa_data-v4.7.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/x86/kvm/cpuid.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
-index b83390c486158..f8e64b9025820 100644
---- a/drivers/net/ipa/data/ipa_data-v4.7.c
-+++ b/drivers/net/ipa/data/ipa_data-v4.7.c
-@@ -27,12 +27,10 @@ enum ipa_resource_type {
- enum ipa_rsrc_group_id {
- 	/* Source resource group identifiers */
- 	IPA_RSRC_GROUP_SRC_UL_DL			= 0,
--	IPA_RSRC_GROUP_SRC_UC_RX_Q,
- 	IPA_RSRC_GROUP_SRC_COUNT,	/* Last in set; not a source group */
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1393,7 +1393,7 @@ static inline int __do_cpuid_func(struct
  
- 	/* Destination resource group identifiers */
--	IPA_RSRC_GROUP_DST_UL_DL_DPL			= 0,
--	IPA_RSRC_GROUP_DST_UNUSED_1,
-+	IPA_RSRC_GROUP_DST_UL_DL			= 0,
- 	IPA_RSRC_GROUP_DST_COUNT,	/* Last; not a destination group */
- };
+ 		entry->ecx = entry->edx = 0;
+ 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
+-			entry->eax = entry->ebx;
++			entry->eax = entry->ebx = 0;
+ 			break;
+ 		}
  
-@@ -80,7 +78,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
- 		},
- 		.endpoint = {
- 			.config = {
--				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
-+				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
- 				.aggregation	= true,
- 				.status_enable	= true,
- 				.rx = {
-@@ -127,7 +125,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
- 		},
- 		.endpoint = {
- 			.config = {
--				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
-+				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
- 				.qmap		= true,
- 				.aggregation	= true,
- 				.rx = {
-@@ -196,12 +194,12 @@ static const struct ipa_resource ipa_resource_src[] = {
- /* Destination resource configuration data for an SoC having IPA v4.7 */
- static const struct ipa_resource ipa_resource_dst[] = {
- 	[IPA_RESOURCE_TYPE_DST_DATA_SECTORS] = {
--		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
-+		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
- 			.min = 7,	.max = 7,
- 		},
- 	},
- 	[IPA_RESOURCE_TYPE_DST_DPS_DMARS] = {
--		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
-+		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
- 			.min = 2,	.max = 2,
- 		},
- 	},
--- 
-2.39.5
-
 
 
 
