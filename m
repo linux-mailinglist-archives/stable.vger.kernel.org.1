@@ -1,115 +1,114 @@
-Return-Path: <stable+bounces-123119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884BBA5A3E2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 20:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FEBA5A3E9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 20:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41E7818923F1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CB3B188ED0C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E3023643B;
-	Mon, 10 Mar 2025 19:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C468E23643F;
+	Mon, 10 Mar 2025 19:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxYY+LDe"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0572356CC;
-	Mon, 10 Mar 2025 19:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B929236433;
+	Mon, 10 Mar 2025 19:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741635464; cv=none; b=f09Z+QxytirLFmSe4+cCwWXKpQ47PoOBR3aKG833jwyWFeyl9IKb2uIhG7sn3Ullq0tycS9gIvv9NVqoYRoM5aDd+sjsp3ZYUQ6017W+5xcojctji9kucHQLfJiz525TmZs2dX5FXxfYq4CAZKhIRpxlJmUz6hGXZpwnFopHV8Y=
+	t=1741635551; cv=none; b=OPO6utNzdS8NtUr7JNI7LC9szaM/+4YZoQkPV76kys6yOPQ9jLSKU9KOg2CqFWqd+363wGLNGv3FBtOI50EPs4UccrXI9O1qIgnk8MB/rjd1Lp1VSvhhlOxeQKiOFtrDxZcmtgiHzYOTGrXEfPX7SucvM80phvWLSXx97pTvuis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741635464; c=relaxed/simple;
-	bh=c1iYrSO8Kd/12THIxsVRKDsAM0Bj4Yao50BlyA3CgBM=;
+	s=arc-20240116; t=1741635551; c=relaxed/simple;
+	bh=ZAXsVGjflRieIiHtobTSpyzODtXUi+v/WwiVglPS54o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mr6wJ87uhj6dXvwYVxAM8dKmaUlUMmmqt6xllOd0gjQETRNLzzOj8MZkNznn+LBEISL6tcHrXzVIKgyLv0PinomdJA+fsVhBrez7pET/bZ7G7L74cFCyoyg+x6yV/GPaZ1uw5oQeBufRBqSSCa7OLsigDztwGBpcSAa4tARd1QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8194A152B;
-	Mon, 10 Mar 2025 12:37:52 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B96A83F694;
-	Mon, 10 Mar 2025 12:37:38 -0700 (PDT)
-Date: Mon, 10 Mar 2025 19:37:32 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Kees Cook <kees@kernel.org>, Peter Collingbourne <pcc@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] string: Disable read_word_at_a_time() optimizations if
- kernel MTE is enabled
-Message-ID: <Z88_fFgr23_EtHMf@J2N7QTR9R3>
-References: <20250308023314.3981455-1-pcc@google.com>
- <202503071927.1A795821A@keescook>
- <Z88jbhobIz2yWBbJ@arm.com>
- <Z88r5qFLOSo0itaq@J2N7QTR9R3.cambridge.arm.com>
- <Z88yC7Oaj9DGaswc@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gBd5gBkfZ22f9AshpkapX/i5HBcfYvQtaHF+upMmRpz6UPk3mNX4sXq3WGdvYm4MW8R3fP2jctOAE8fGVJy80hIutAoTQ2Df5/vQKo62elT9SfEgqz8+0THMelPiZrPG5DgtyNtnW2TniuMDTzZ9434PYGsFq2LvoI2F+XOFZQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxYY+LDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE5CC4CEEC;
+	Mon, 10 Mar 2025 19:39:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741635551;
+	bh=ZAXsVGjflRieIiHtobTSpyzODtXUi+v/WwiVglPS54o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oxYY+LDe+K++vrFDykz+xjMU/+f4bTWtpkqS/5ZeCAYAf3NXG42mHiCXTMBOkAsli
+	 FmIs93i4TIPpTI75XfYzuZXtI013tYwjYENHYXzYNxEn/DXL2O1OwqEniC9oXa2Zt/
+	 nY1VCgxUDNcZNucwYTqTcMdvZ2toRX8zqQkQ19Kgw/SfYrERlGvp+r+K5zOvc8qpg/
+	 xSDiUHw3Ywb1auNRDY7K3TF9Ds+d/w0/9zPAbIpoJcmAbJHLlov+vVzMCoWNfD4too
+	 uaZ6zGMX4bECCHVVystD6NkPtr3q+4z0SHQase1WeH/i+6UHRrlJGuCcPOiBZ0xrF7
+	 DM6zm8bpSilJw==
+Date: Mon, 10 Mar 2025 19:39:06 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Christian Eggers <ceggers@gmx.de>
+Cc: Christian Eggers <ceggers@arri.de>, Liam Girdwood <lgirdwood@gmail.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] regulator: assert that dummy regulator has been
+ probed before using it
+Message-ID: <1a64b191-b043-49f7-969c-f807b6a174a3@sirena.org.uk>
+References: <20250310163302.15276-1-ceggers@arri.de>
+ <20250310163302.15276-2-ceggers@arri.de>
+ <3d195bf7-de99-4fe9-87b0-291e156f083c@sirena.org.uk>
+ <4945392.OV4Wx5bFTl@zbook-studio-g3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zyPwCjo8UryL+xtv"
 Content-Disposition: inline
-In-Reply-To: <Z88yC7Oaj9DGaswc@arm.com>
+In-Reply-To: <4945392.OV4Wx5bFTl@zbook-studio-g3>
+X-Cookie: Dieters live life in the fasting lane.
 
-On Mon, Mar 10, 2025 at 06:40:11PM +0000, Catalin Marinas wrote:
-> On Mon, Mar 10, 2025 at 06:13:58PM +0000, Mark Rutland wrote:
-> > On Mon, Mar 10, 2025 at 05:37:50PM +0000, Catalin Marinas wrote:
-> > > On Fri, Mar 07, 2025 at 07:36:31PM -0800, Kees Cook wrote:
-> > > > On Fri, Mar 07, 2025 at 06:33:13PM -0800, Peter Collingbourne wrote:
-> > > > > The optimized strscpy() and dentry_string_cmp() routines will read 8
-> > > > > unaligned bytes at a time via the function read_word_at_a_time(), but
-> > > > > this is incompatible with MTE which will fault on a partially invalid
-> > > > > read. The attributes on read_word_at_a_time() that disable KASAN are
-> > > > > invisible to the CPU so they have no effect on MTE. Let's fix the
-> > > > > bug for now by disabling the optimizations if the kernel is built
-> > > > > with HW tag-based KASAN and consider improvements for followup changes.
-> > > > 
-> > > > Why is faulting on a partially invalid read a problem? It's still
-> > > > invalid, so ... it should fault, yes? What am I missing?
-> > > 
-> > > read_word_at_a_time() is used to read 8 bytes, potentially unaligned and
-> > > beyond the end of string. The has_zero() function is then used to check
-> > > where the string ends. For this uses, I think we can go with
-> > > load_unaligned_zeropad() which handles a potential fault and pads the
-> > > rest with zeroes.
-> > 
-> > If we only care about synchronous and asymmetric modes, that should be
-> > possible, but that won't work in asynchronous mode. In asynchronous mode
-> > the fault will accumulate into TFSR and will be detected later
-> > asynchronously where it cannot be related to its source and fixed up.
-> > 
-> > That means that both read_word_at_a_time() and load_unaligned_zeropad()
-> > are dodgy in async mode.
-> 
-> load_unaligned_zeropad() has a __mte_enable_tco_async() call to set
-> PSTATE.TCO if in async mode, so that's covered. read_word_at_a_time() is
-> indeed busted and I've had Vincezo's patches for a couple of years
-> already, they just never made it to the list.
 
-Sorry, I missed the __mte_{enable,disable}_tco_async() calls. So long as
-we're happy to omit the check in that case, that's fine.
+--zyPwCjo8UryL+xtv
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I was worried that ex_handler_load_unaligned_zeropad() might not do the
-right thing in response to a tag check fault (e.g. access the wrong 8
-bytes), but it looks as though that's ok due to the way it generates the
-offset and the aligned pointer.
+On Mon, Mar 10, 2025 at 07:22:24PM +0100, Christian Eggers wrote:
+> Am Montag, 10. M=E4rz 2025, 18:23:02 CET schrieb Mark Brown:
 
-If load_unaligned_zeropad() is handed a string that starts with an
-unexpected tag (and even if that starts off aligned),
-ex_handler_load_unaligned_zeropad() will access that and cause another
-tag check fault, which will be reported.
+> > > +		BUG_ON(!r);
 
-Mark.
+> > This doesn't actually help anything
+
+> My idea was to help identifying the problem (if it is reintroduced again=
+=20
+> later).
+
+> > I'd expect this to trigger probe deferral.
+
+> I can check for this tomorrow.  But is it worth to use deferred probing
+> for a shared "NOP" driver which doesn't access any hardware?  Or would th=
+is=20
+> only introduce overhead for nothing?
+
+My concern is that if something goes wrong in production then we've just
+escallated the problem, given that there's a clear error handling
+mechanism we could use we should take advantage of that rather than
+doing something destructive.
+
+--zyPwCjo8UryL+xtv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfPP9kACgkQJNaLcl1U
+h9Bfugf+O+xcX4eHN8PG3mEb3/U6tFbZGlgv44Rr4MUXX6M7H//FjwBsGrgKhMzG
+53Nyu8r1g4W/qk7TiDbCU1khBX7lb9zAF3QvctVY8EoTrNma79C6mjxHe2SxQQrk
+pTI0dZZZMhGDqd0lBcBJuDHcJ9NyxigirH3Vw7cze05EedonJcpo/RzYF2pR/nUe
+RyZbKGBQhay7qk99HWS0FaOh5Uk6+uH8WHXF1e8QOsAnykdwMV3At224RXaXkIuC
+spynkbO7Nz/4RaLRwPVdwYjF62p//XB7Yd0B6O6bIHrIFkJsNcMChF4KyLYg6bSb
+/fy2DBwlaO3jBWdQaix3EcvtFOUMyw==
+=XyiZ
+-----END PGP SIGNATURE-----
+
+--zyPwCjo8UryL+xtv--
 
