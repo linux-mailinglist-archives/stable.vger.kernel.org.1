@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-122357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A19A59F2F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA6DA59FB8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56830170D02
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBB693AA4E2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937FB22FE18;
-	Mon, 10 Mar 2025 17:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9153233703;
+	Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIkE6U8a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7dmDvsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7E518DB24;
-	Mon, 10 Mar 2025 17:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95332232378;
+	Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628268; cv=none; b=Ats0xHvRfVrydRZzAC9WXY1xKsAnLnA65YOOt7L+M9v7GLscUuQNrbouhDRVCKuwCaIcgUbyXzkbVpZG/7Zd2mccVVwvRul1GAW4oyzlX7mk2pTUosh7DwzFqWNPfsnU8Mbec/MHMATISKn0AFKsmx0jNf94XhKEkHbSiu3Yz/E=
+	t=1741628517; cv=none; b=EWU4wTPH8kuLM/IGbQp3QAgRl+wA5CJSlNc7P7PAnhFzCr22ehVuUnE0yfTUAxD4Q0hh4+tGn/lghslmynveQgD0LI925rOPJ/VV9SUw1/KCrTXH3/NYP6W4AUwwda5dveSq4FYveo4ibs3ukEzgWBNgAaCfkEZEDQ7QKCnVASo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628268; c=relaxed/simple;
-	bh=t3K9/WTSgo3gYvTbjKNJImJ++vR9VXnNnWNjPcLQ4FE=;
+	s=arc-20240116; t=1741628517; c=relaxed/simple;
+	bh=+xCaLLgbiUOkCen/jHx4c4EptJftgK4Z2SiG7sVDCbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRX8Izhdto9DIDRpqbkMDpnVQEQCmhRd16eVjhPUn26XbfRNb33tZIL2k1zi1w2pQiP3FxRTINbk8APTqeq31t/RSeNGU+Wy6GizVkc4jCrzTXrtBfW2UnFw3EjvKesQk4oPbleXYsYqyoSP5pChfj2fakgOJ3qzOCY8NB+mQro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIkE6U8a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EC2C4CEEC;
-	Mon, 10 Mar 2025 17:37:47 +0000 (UTC)
+	 MIME-Version; b=qsHNOCfLRcvit/37bjv868YVEpnBCxJeoQmWUSaRWqBML/PVaSOrbMLDSUs+zAoUq1v5HPfOgoE7s8nxA2tMw6A0L0m46fuc3dgPw+dtwgWBZDOlW/fboejKcK6ijzUraOwzEDycEDHLuV0XX0za/ncVHxQe1LLQCDW3GZZcRw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7dmDvsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E0CC4CEE5;
+	Mon, 10 Mar 2025 17:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628268;
-	bh=t3K9/WTSgo3gYvTbjKNJImJ++vR9VXnNnWNjPcLQ4FE=;
+	s=korg; t=1741628517;
+	bh=+xCaLLgbiUOkCen/jHx4c4EptJftgK4Z2SiG7sVDCbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIkE6U8aAPOjBv1os/5uOMHfhFfl/PihO3vUOaIGRgNnb7Se6W1CW2Wq3XoAQqKSp
-	 f455TZjVT9VVH6cTRHReNtgTI7Kr3iCOA0JD40uCX6MraYj00wQvHgjSMwbmY1EGhJ
-	 0grDw+P4gIaG21fbYyApnYNl1nsS6zgruArznyHs=
+	b=q7dmDvsFI49nB4viNRef758XvQFyjO+CuGBOO4O0+mA9lcn+FqWL7QqLO47PqScAG
+	 WOv5+PiBsA3ESU0s8Yl3lc3K80yUkf1K0Rot0Ya2gGtv5mM+e+7lZy4mB/TRiclbph
+	 T0TV9iRznt+5YY4Lw9pjauDW6oKuhbB8uvDBbRSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 134/145] Revert "KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults"
+	Saravana Kannan <saravanak@google.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 6.1 084/109] drivers: core: fix device leak in __fw_devlink_relax_cycles()
 Date: Mon, 10 Mar 2025 18:07:08 +0100
-Message-ID: <20250310170440.167680294@linuxfoundation.org>
+Message-ID: <20250310170430.905508462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-This reverts commit ba3cf83f4a5063edb6ee150633e641954ce30478 which is
-commit 419cfb983ca93e75e905794521afefcfa07988bb upstream.
+commit 78eb41f518f414378643ab022241df2a9dcd008b upstream.
 
-It should not have been applied.
+Commit bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize
+cycle detection logic") introduced a new struct device *con_dev and a
+get_dev_from_fwnode() call to get it, but without adding a corresponding
+put_device().
 
-Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
-Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Closes: https://lore.kernel.org/all/20241204124826.2e055091@booty/
+Fixes: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
+Cc: stable@vger.kernel.org
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20250213-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-8cd3b03e6a3f@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/base/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -322,7 +322,6 @@ static inline int kvmppc_e500_shadow_map
- {
- 	struct kvm_memory_slot *slot;
- 	unsigned long pfn = 0; /* silence GCC warning */
--	struct page *page = NULL;
- 	unsigned long hva;
- 	int pfnmap = 0;
- 	int tsize = BOOK3E_PAGESZ_4K;
-@@ -444,7 +443,7 @@ static inline int kvmppc_e500_shadow_map
- 
- 	if (likely(!pfnmap)) {
- 		tsize_pages = 1UL << (tsize + 10 - PAGE_SHIFT);
--		pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
-+		pfn = gfn_to_pfn_memslot(slot, gfn);
- 		if (is_error_noslot_pfn(pfn)) {
- 			if (printk_ratelimit())
- 				pr_err("%s: real page not found for gfn %lx\n",
-@@ -489,6 +488,8 @@ static inline int kvmppc_e500_shadow_map
- 		}
- 	}
- 	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+	if (writable)
-+		kvm_set_pfn_dirty(pfn);
- 
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
-@@ -497,7 +498,8 @@ static inline int kvmppc_e500_shadow_map
- 	kvmppc_mmu_flush_icache(pfn);
- 
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2023,6 +2023,7 @@ static bool __fw_devlink_relax_cycles(st
  out:
--	kvm_release_faultin_page(kvm, page, !!ret, writable);
-+	/* Drop refcount on page, so that mmu notifiers can clear it */
-+	kvm_release_pfn_clean(pfn);
- 	spin_unlock(&kvm->mmu_lock);
+ 	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
+ 	put_device(sup_dev);
++	put_device(con_dev);
+ 	put_device(par_dev);
  	return ret;
  }
 
