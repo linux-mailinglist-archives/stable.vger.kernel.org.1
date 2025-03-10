@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936CCA5A211
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD0BA59EC1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D7EA7A9496
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E97463A840E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD37A235BFF;
-	Mon, 10 Mar 2025 18:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20587230BF6;
+	Mon, 10 Mar 2025 17:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6lODSxd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRfMtWRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B55E1B395F;
-	Mon, 10 Mar 2025 18:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCB0230BED;
+	Mon, 10 Mar 2025 17:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630548; cv=none; b=eOZ4VishOYda5INDg0vkqVOU7wWgqKok+ydLoLS87Whfr52LFE/vqyiFug261ksT5H7Zo9tK+Q8LuSPFLLu5kBcSCQ5LIWBMjQKHHgxmB4Quc1XZb4xTJlOw1FgwzWnLWEEs1hVgR9kvuoiaIa4kmzgTnaA1doIzl0CkZpUbg84=
+	t=1741627933; cv=none; b=O8K+IA2d8B3MaLKGriDET6fpHZLsNy1BMCZ6mLYWkhXWyDVHQu0qoh1i1FSYuKKDaDHZzzU+G+Fk5MTswCjIsHmpkg/HC92eQQEU565CKoFeEC5XOfGfruTFUFRnN+L+1ksfk1aybNwsg5/h5X1WeZqxwgEN7Py6wfEOeRj3Tgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630548; c=relaxed/simple;
-	bh=R9ydNzQz7gndgdRH5TRTH6jaW3ekFff6+G68y3pZwvU=;
+	s=arc-20240116; t=1741627933; c=relaxed/simple;
+	bh=A4WYIwcvvBHBe7PxNtbZvOJdwDU1c50pjz5cOlRTV2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aTAbjEBSuGUnCEGtV0pmVJkw1dTom1zwb/VtG08nyX4x1FVMLs/LGNUthoXx2BKCdPbnRM4WmciiJZn0JVR3uY112tiBXGcK/4RfB1g4xObz3uU0v0AR0IMDBWhidShHZ7AXFn1KL5f3gEXg1XqkQpWHltLYdyNQS0c8UfwDWR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6lODSxd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A79AC4CEE5;
-	Mon, 10 Mar 2025 18:15:47 +0000 (UTC)
+	 MIME-Version; b=Lqlsm7gj0fvRK/geciSFCA2Tny3wGemplIwQCEvHq4kwJ3VOdXbK7gxNhGhVwdcKTUm9Adwm1LYPy4PsHtH3gKaUXvVpn9asfPxZzQj63B9xZ8xYcpcAieNwaDugunFCeQ8ite2LLqaELVxHxVlR+1sw/OrUk/YyUqJKZnalBPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRfMtWRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BD9C4CEE5;
+	Mon, 10 Mar 2025 17:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630548;
-	bh=R9ydNzQz7gndgdRH5TRTH6jaW3ekFff6+G68y3pZwvU=;
+	s=korg; t=1741627933;
+	bh=A4WYIwcvvBHBe7PxNtbZvOJdwDU1c50pjz5cOlRTV2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6lODSxd9UpPS/6f+dy3i857LeDe8v0gL5t1p0sCNyVo6AccMwgcfbaZxClBUvdkR
-	 xFDw5/mgBlpI+GuXex3kwX0dopYDpHTocyR2PKZx43qCMOyib27uXbF5HoQBPfugr3
-	 or+TEB2mySLFs6NhdbCntaHHGPDTK+v9cZez0dpY=
+	b=vRfMtWRcn8LK5UMdgdio3pbGoAeciNVLLBNtWAQZZuIuRrGUjQh32rUa45wk1Dns1
+	 9FN3BBUKOqmvaNZgxVtNW7C4BuBiKN1yC+0NBTDAp+GJK8MGhhdlkfS5bIcfoko6DH
+	 GNlg+jHsKM8IpZbmWLlGUoyxSqe57mildDPg+lxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 451/620] soc/mediatek: mtk-devapc: Convert to platform remove callback returning void
-Date: Mon, 10 Mar 2025 18:04:57 +0100
-Message-ID: <20250310170603.393582044@linuxfoundation.org>
+Subject: [PATCH 6.6 004/145] drm/i915/ddi: Fix HDMI port width programming in DDI_BUF_CTL
+Date: Mon, 10 Mar 2025 18:04:58 +0100
+Message-ID: <20250310170434.918297991@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit a129ac3555c0dca6f04ae404dc0f0790656587fb ]
+[ Upstream commit 166ce267ae3f96e439d8ccc838e8ec4d8b4dab73 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Fix the port width programming in the DDI_BUF_CTL register on MTLP+,
+where this had an off-by-one error.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230925095532.1984344-15-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Stable-dep-of: c9c0036c1990 ("soc: mediatek: mtk-devapc: Fix leaking IO map on driver remove")
+Cc: <stable@vger.kernel.org> # v6.5+
+Fixes: b66a8abaa48a ("drm/i915/display/mtl: Fill port width in DDI_BUF_/TRANS_DDI_FUNC_/PORT_BUF_CTL for HDMI")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214142001.552916-3-imre.deak@intel.com
+(cherry picked from commit b2ecdabe46d23db275f94cd7c46ca414a144818b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_ddi.c | 2 +-
+ drivers/gpu/drm/i915/i915_reg.h          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-devapc.c b/drivers/soc/mediatek/mtk-devapc.c
-index 552726456fa2f..da075918424d3 100644
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -285,18 +285,16 @@ static int mtk_devapc_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
+index 9ac9df70e713c..893ecee3949ac 100644
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -3242,7 +3242,7 @@ static void intel_enable_ddi_hdmi(struct intel_atomic_state *state,
+ 		intel_de_rmw(dev_priv, XELPDP_PORT_BUF_CTL1(port),
+ 			     XELPDP_PORT_WIDTH_MASK | XELPDP_PORT_REVERSAL, port_buf);
  
--static int mtk_devapc_remove(struct platform_device *pdev)
-+static void mtk_devapc_remove(struct platform_device *pdev)
- {
- 	struct mtk_devapc_context *ctx = platform_get_drvdata(pdev);
+-		buf_ctl |= DDI_PORT_WIDTH(lane_count);
++		buf_ctl |= DDI_PORT_WIDTH(crtc_state->lane_count);
  
- 	stop_devapc(ctx);
--
--	return 0;
- }
- 
- static struct platform_driver mtk_devapc_driver = {
- 	.probe = mtk_devapc_probe,
--	.remove = mtk_devapc_remove,
-+	.remove_new = mtk_devapc_remove,
- 	.driver = {
- 		.name = "mtk-devapc",
- 		.of_match_table = mtk_devapc_dt_match,
+ 		if (DISPLAY_VER(dev_priv) >= 20)
+ 			buf_ctl |= XE2LPD_DDI_BUF_D2D_LINK_ENABLE;
+diff --git a/drivers/gpu/drm/i915/i915_reg.h b/drivers/gpu/drm/i915/i915_reg.h
+index 4e588fd1c82ed..589a10253d898 100644
+--- a/drivers/gpu/drm/i915/i915_reg.h
++++ b/drivers/gpu/drm/i915/i915_reg.h
+@@ -5737,7 +5737,7 @@ enum skl_power_gate {
+ #define  DDI_BUF_IS_IDLE			(1 << 7)
+ #define  DDI_BUF_CTL_TC_PHY_OWNERSHIP		REG_BIT(6)
+ #define  DDI_A_4_LANES				(1 << 4)
+-#define  DDI_PORT_WIDTH(width)			(((width) - 1) << 1)
++#define  DDI_PORT_WIDTH(width)			(((width) == 3 ? 4 : ((width) - 1)) << 1)
+ #define  DDI_PORT_WIDTH_MASK			(7 << 1)
+ #define  DDI_PORT_WIDTH_SHIFT			1
+ #define  DDI_INIT_DISPLAY_DETECTED		(1 << 0)
 -- 
 2.39.5
 
