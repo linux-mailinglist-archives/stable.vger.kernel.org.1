@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470CCA5A17C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B912A59C22
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90A0E7A7434
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E34216DC4E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58E322DFB1;
-	Mon, 10 Mar 2025 18:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CE8230D0F;
+	Mon, 10 Mar 2025 17:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lp4C+W8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcZQDvas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840C017A2E8;
-	Mon, 10 Mar 2025 18:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E501DE89C;
+	Mon, 10 Mar 2025 17:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629690; cv=none; b=nF1nSDoZXx+j0GeX2eqEzvCjxfFiD+TUIRkgdH7aGYNSCj3V2KvLROzzbmOi2FBTc5QIoHe8LT1Nbf7AO3JU614KChmj/n11F8oW7t/JvfE7VYZT416RMyaRn7LWQk3afrzDf4UmCBWVcBU81UJ/Za9uG3mcOpx/UZDnZ2nbqXM=
+	t=1741626562; cv=none; b=uTAQ+/7h3xoRBlpOmRDU/sz0LQ3s5Vt0m2sHWIwQqK5eIvixRGwGapjlwf/dEW54efaZ56E64UVqJBkDlqKkMDpiDt/TzCdBbQyapP9b24t2l3gwYAznqiV2eQ3tyAToLAK+2DYtS2VyFPiyAjWxjQPERoht5bxowJJQBcY8kDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629690; c=relaxed/simple;
-	bh=uzMkZrCKJ0jdDLPkq9PKM1e5diS/uK1oym2Ebg3wEvk=;
+	s=arc-20240116; t=1741626562; c=relaxed/simple;
+	bh=pmTh4VtTZAQ8hOnvtr0DY8ud9bIiVKN+JLL5xPe+ob4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B2sqmcEoWZCQoLOpZXQb4IuKmVCFeEX+xxeAlWGSYJvQRksLST2fyJUMCauCpTYB3jPXiYtycDjlTFLMh34Sglf/+vDNBUtRODllRRCDUiCSc6OIiab95LcUBtvSogLmHWMBYn0GpkHzSG9g9DCpwdO3KqThqha9Zm9GkcBmo/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lp4C+W8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A200BC4CEE5;
-	Mon, 10 Mar 2025 18:01:29 +0000 (UTC)
+	 MIME-Version; b=PjBX4VonM0xYnzOWeZ0BDprbuW+YM+uLcvcmpZiMPq+AAYrRCWOq96H8RljXPxR01wWqbNFsilowXKEEOPuO1gSRvbBafRsYTbbfSZWoP7FZJMXApHR7SiJJv8JojNE7jMZzcvJgKH+dbUvvnjIwzbL1zeM4mVXgBl8qCn3O0xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcZQDvas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BFCC4CEE5;
+	Mon, 10 Mar 2025 17:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629690;
-	bh=uzMkZrCKJ0jdDLPkq9PKM1e5diS/uK1oym2Ebg3wEvk=;
+	s=korg; t=1741626561;
+	bh=pmTh4VtTZAQ8hOnvtr0DY8ud9bIiVKN+JLL5xPe+ob4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lp4C+W8b7/WwyyzADnXp6kGqhPlSiz0O2CuZO8tgfFYjn5kX2TAPhAG9mZpWhUm+W
-	 yH/rWSciTKYGxf1AmMdGazlI0kqokGuAyJsdfbqwQJkbE8RKFsiUJpCpYiUgptUxHP
-	 eZHFYNwMSLlZykcF9D/jsBG6onXQVh4ws5MRnSUE=
+	b=jcZQDvasdFWiVFz/DgsbNVlua3/fS9ueBL70P+qXL2XD05P10hkDsq/IMiVsYFZBB
+	 Qaw4hBmSvleCoE3dnuI3Hb6NEE8RvP04gqyAzIvb9fpZQ166FoBVVbCXS86v+al5GU
+	 KxU9FbKZtIvq1yzsNpquMGgM3bT7B1MZ2YwoC8Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: [PATCH 5.15 380/620] cgroup: fix race between fork and cgroup.kill
+	Paul Fertser <fercerpav@gmail.com>,
+	Iwona Winiarska <iwona.winiarska@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.13 033/207] hwmon: (peci/dimmtemp) Do not provide fake thresholds data
 Date: Mon, 10 Mar 2025 18:03:46 +0100
-Message-ID: <20250310170600.593265455@linuxfoundation.org>
+Message-ID: <20250310170449.093293466@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,170 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Paul Fertser <fercerpav@gmail.com>
 
-commit b69bb476dee99d564d65d418e9a20acca6f32c3f upstream.
+commit 5797c04400ee117bfe459ff1e468d0ea38054ab4 upstream.
 
-Tejun reported the following race between fork() and cgroup.kill at [1].
+When an Icelake or Sapphire Rapids CPU isn't providing the maximum and
+critical thresholds for particular DIMM the driver should return an
+error to the userspace instead of giving it stale (best case) or wrong
+(the structure contains all zeros after kzalloc() call) data.
 
-Tejun:
-  I was looking at cgroup.kill implementation and wondering whether there
-  could be a race window. So, __cgroup_kill() does the following:
+The issue can be reproduced by binding the peci driver while the host is
+fully booted and idle, this makes PECI interaction unreliable enough.
 
-   k1. Set CGRP_KILL.
-   k2. Iterate tasks and deliver SIGKILL.
-   k3. Clear CGRP_KILL.
-
-  The copy_process() does the following:
-
-   c1. Copy a bunch of stuff.
-   c2. Grab siglock.
-   c3. Check fatal_signal_pending().
-   c4. Commit to forking.
-   c5. Release siglock.
-   c6. Call cgroup_post_fork() which puts the task on the css_set and tests
-       CGRP_KILL.
-
-  The intention seems to be that either a forking task gets SIGKILL and
-  terminates on c3 or it sees CGRP_KILL on c6 and kills the child. However, I
-  don't see what guarantees that k3 can't happen before c6. ie. After a
-  forking task passes c5, k2 can take place and then before the forking task
-  reaches c6, k3 can happen. Then, nobody would send SIGKILL to the child.
-  What am I missing?
-
-This is indeed a race. One way to fix this race is by taking
-cgroup_threadgroup_rwsem in write mode in __cgroup_kill() as the fork()
-side takes cgroup_threadgroup_rwsem in read mode from cgroup_can_fork()
-to cgroup_post_fork(). However that would be heavy handed as this adds
-one more potential stall scenario for cgroup.kill which is usually
-called under extreme situation like memory pressure.
-
-To fix this race, let's maintain a sequence number per cgroup which gets
-incremented on __cgroup_kill() call. On the fork() side, the
-cgroup_can_fork() will cache the sequence number locally and recheck it
-against the cgroup's sequence number at cgroup_post_fork() site. If the
-sequence numbers mismatch, it means __cgroup_kill() can been called and
-we should send SIGKILL to the newly created task.
-
-Reported-by: Tejun Heo <tj@kernel.org>
-Closes: https://lore.kernel.org/all/Z5QHE2Qn-QZ6M-KW@slm.duckdns.org/ [1]
-Fixes: 661ee6280931 ("cgroup: introduce cgroup.kill")
-Cc: stable@vger.kernel.org # v5.14+
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 73bc1b885dae ("hwmon: peci: Add dimmtemp driver")
+Fixes: 621995b6d795 ("hwmon: (peci/dimmtemp) Add Sapphire Rapids support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Reviewed-by: Iwona Winiarska <iwona.winiarska@intel.com>
+Link: https://lore.kernel.org/r/20250123122003.6010-1-fercerpav@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cgroup-defs.h |    6 +++---
- include/linux/sched/task.h  |    1 +
- kernel/cgroup/cgroup.c      |   20 ++++++++++++--------
- 3 files changed, 16 insertions(+), 11 deletions(-)
+ drivers/hwmon/peci/dimmtemp.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -71,9 +71,6 @@ enum {
+--- a/drivers/hwmon/peci/dimmtemp.c
++++ b/drivers/hwmon/peci/dimmtemp.c
+@@ -127,8 +127,6 @@ static int update_thresholds(struct peci
+ 		return 0;
  
- 	/* Cgroup is frozen. */
- 	CGRP_FROZEN,
--
--	/* Control group has to be killed. */
--	CGRP_KILL,
- };
+ 	ret = priv->gen_info->read_thresholds(priv, dimm_order, chan_rank, &data);
+-	if (ret == -ENODATA) /* Use default or previous value */
+-		return 0;
+ 	if (ret)
+ 		return ret;
  
- /* cgroup_root->flags */
-@@ -407,6 +404,9 @@ struct cgroup {
+@@ -509,11 +507,11 @@ read_thresholds_icx(struct peci_dimmtemp
  
- 	int nr_threaded_children;	/* # of live threaded child cgroups */
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd4, &reg_val);
+ 	if (ret || !(reg_val & BIT(31)))
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
  
-+	/* sequence number for cgroup.kill, serialized by css_set_lock. */
-+	unsigned int kill_seq;
-+
- 	struct kernfs_node *kn;		/* cgroup kernfs entry */
- 	struct cgroup_file procs_file;	/* handle for "cgroup.procs" */
- 	struct cgroup_file events_file;	/* handle for "cgroup.events" */
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -34,6 +34,7 @@ struct kernel_clone_args {
- 	int io_thread;
- 	struct cgroup *cgrp;
- 	struct css_set *cset;
-+	unsigned int kill_seq;
- };
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd0, &reg_val);
+ 	if (ret)
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
  
- /*
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -3818,7 +3818,7 @@ static void __cgroup_kill(struct cgroup
- 	lockdep_assert_held(&cgroup_mutex);
+ 	/*
+ 	 * Device 26, Offset 224e0: IMC 0 channel 0 -> rank 0
+@@ -546,11 +544,11 @@ read_thresholds_spr(struct peci_dimmtemp
  
- 	spin_lock_irq(&css_set_lock);
--	set_bit(CGRP_KILL, &cgrp->flags);
-+	cgrp->kill_seq++;
- 	spin_unlock_irq(&css_set_lock);
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd4, &reg_val);
+ 	if (ret || !(reg_val & BIT(31)))
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
  
- 	css_task_iter_start(&cgrp->self, CSS_TASK_ITER_PROCS | CSS_TASK_ITER_THREADED, &it);
-@@ -3834,10 +3834,6 @@ static void __cgroup_kill(struct cgroup
- 		send_sig(SIGKILL, task, 0);
- 	}
- 	css_task_iter_end(&it);
--
--	spin_lock_irq(&css_set_lock);
--	clear_bit(CGRP_KILL, &cgrp->flags);
--	spin_unlock_irq(&css_set_lock);
- }
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd0, &reg_val);
+ 	if (ret)
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
  
- static void cgroup_kill(struct cgroup *cgrp)
-@@ -6202,6 +6198,10 @@ static int cgroup_css_set_fork(struct ke
- 	spin_lock_irq(&css_set_lock);
- 	cset = task_css_set(current);
- 	get_css_set(cset);
-+	if (kargs->cgrp)
-+		kargs->kill_seq = kargs->cgrp->kill_seq;
-+	else
-+		kargs->kill_seq = cset->dfl_cgrp->kill_seq;
- 	spin_unlock_irq(&css_set_lock);
- 
- 	if (!(kargs->flags & CLONE_INTO_CGROUP)) {
-@@ -6369,6 +6369,7 @@ void cgroup_post_fork(struct task_struct
- 		      struct kernel_clone_args *kargs)
- 	__releases(&cgroup_threadgroup_rwsem) __releases(&cgroup_mutex)
- {
-+	unsigned int cgrp_kill_seq = 0;
- 	unsigned long cgrp_flags = 0;
- 	bool kill = false;
- 	struct cgroup_subsys *ss;
-@@ -6382,10 +6383,13 @@ void cgroup_post_fork(struct task_struct
- 
- 	/* init tasks are special, only link regular threads */
- 	if (likely(child->pid)) {
--		if (kargs->cgrp)
-+		if (kargs->cgrp) {
- 			cgrp_flags = kargs->cgrp->flags;
--		else
-+			cgrp_kill_seq = kargs->cgrp->kill_seq;
-+		} else {
- 			cgrp_flags = cset->dfl_cgrp->flags;
-+			cgrp_kill_seq = cset->dfl_cgrp->kill_seq;
-+		}
- 
- 		WARN_ON_ONCE(!list_empty(&child->cg_list));
- 		cset->nr_tasks++;
-@@ -6420,7 +6424,7 @@ void cgroup_post_fork(struct task_struct
- 		 * child down right after we finished preparing it for
- 		 * userspace.
- 		 */
--		kill = test_bit(CGRP_KILL, &cgrp_flags);
-+		kill = kargs->kill_seq != cgrp_kill_seq;
- 	}
- 
- 	spin_unlock_irq(&css_set_lock);
+ 	/*
+ 	 * Device 26, Offset 219a8: IMC 0 channel 0 -> rank 0
 
 
 
