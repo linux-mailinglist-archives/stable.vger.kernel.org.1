@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E92A59D3A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813C2A5A14D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBE2188ECD3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 602FF189204B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBC72309A6;
-	Mon, 10 Mar 2025 17:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B02232787;
+	Mon, 10 Mar 2025 17:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBd0p4RL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0E9hp1VU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD1E17C225;
-	Mon, 10 Mar 2025 17:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112A522ACDC;
+	Mon, 10 Mar 2025 17:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627136; cv=none; b=uLUKBuzHLZHn4L3xvnegiD4cp24u4fseBCqlbgit0BkC/AoHpm9WeV8DdrK3KFkdATI2fl3acsHWCduoBjT1DsgbR0CMYpXh2cIq0+3nALlV7eDWNFIIhUx4wpdYanoLIGP99aHCy2doaslg23KwIHO+lammnUrvw40LFqJ1vuo=
+	t=1741629548; cv=none; b=ISYEuMyW/Hx6zMkS14/ziMZB1nIa1ygMJNYGnEgJIlKEqqDRCjdDMjJDZKBWt3fac16UvG5YAZNnRtzt8Q6Q3+kEvkISnq+8cHaLz7IKplQQPuLZ+StTWa8aDSchW2MHRqOlYrTUtCUs/1rmSkHFyZnyUMEkTMfmzLPvqfiuyr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627136; c=relaxed/simple;
-	bh=3iNAaUYmsVTdJEjn2UJFYBot5mSeFlU4iAzpuvK1IM4=;
+	s=arc-20240116; t=1741629548; c=relaxed/simple;
+	bh=c3YWLBaqSK4gr5Jr8PPR3ARtXe2Jin8ybETAKqp+ycs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOjkX7RFRE6MAxHlSX4udfCNPq6LfDirBUwPcmbgJZnD8Evm61wNppD0arax9NyCNuW/+xHdwToADi/SUQYB7fxCs75dMPOueHJhscslxfLqestinf4MREdK+0o4TU0DTmM7O4n7yxfB5NA2j9QaQvFE2TkQqWztx+q/hulH7O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBd0p4RL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3802C4CEE5;
-	Mon, 10 Mar 2025 17:18:55 +0000 (UTC)
+	 MIME-Version; b=qoqQ4CGhg50CoQ//EVAyW9Rvnw30sFkfIXruy/bBPK9MCd4ToMvDMiF7XlPQZoPaOZtJYbIxkbyJoNnsqnX3iD0BfPlwEr9Xt87SgAyKAeWvuQeIbCRqtJ4vt9LDZKxpG+rjxGLx5XO0BvOFrXeSzWnOyL4Y5EPmjkCxqieVOC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0E9hp1VU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B854C4CEE5;
+	Mon, 10 Mar 2025 17:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627136;
-	bh=3iNAaUYmsVTdJEjn2UJFYBot5mSeFlU4iAzpuvK1IM4=;
+	s=korg; t=1741629547;
+	bh=c3YWLBaqSK4gr5Jr8PPR3ARtXe2Jin8ybETAKqp+ycs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QBd0p4RL5cyeiLtDkwVigfkVlYqbt5OCrx4uLhYRX16jpXUVxMZoBGPIcpA0u0WLH
-	 a0Tr6iGWL/PSLev2GdY7Dylcj38qbk6EuiJ8Qeu+l/ryVkzuqRVuxd92bGdGVY6Osj
-	 njGcPtNuIX4RgG83tnxsMUuozNwxUF5MqxIhV0NM=
+	b=0E9hp1VUuo6/WNOvJEU9uTau6nRwci/wCE74j9b3YD704W26dGpkDIc1mKEIvpmRs
+	 /fSMoPVR9yX5tGmkcqB1VEZP8Bgdnnbax0Y4Ew3MEwEumfX45J5IZ5AY/2YU9taGPK
+	 4WEu4nCyaJMFEX09e1UMigRlH1oRIt6hczIh7MeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Gross <tmgross@umich.edu>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 026/269] Documentation: rust: add coding guidelines on lints
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 333/620] mptcp: prevent excessive coalescing on receive
 Date: Mon, 10 Mar 2025 18:02:59 +0100
-Message-ID: <20250310170458.755854861@linuxfoundation.org>
+Message-ID: <20250310170558.753323591@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 139d396572ec4ba6e8cc5c02f5c8d5d1139be4b7 upstream.
+commit 56b824eb49d6258aa0bad09a406ceac3f643cdae upstream.
 
-In the C side, disabling diagnostics locally, i.e. within the source code,
-is rare (at least in the kernel). Sometimes warnings are manipulated
-via the flags at the translation unit level, but that is about it.
+Currently the skb size after coalescing is only limited by the skb
+layout (the skb must not carry frag_list). A single coalesced skb
+covering several MSS can potentially fill completely the receive
+buffer. In such a case, the snd win will zero until the receive buffer
+will be empty again, affecting tput badly.
 
-In Rust, it is easier to change locally the "level" of lints
-(e.g. allowing them locally). In turn, this means it is easier to
-globally enable more lints that may trigger a few false positives here
-and there that need to be allowed locally, but that generally can spot
-issues or bugs.
-
-Thus document this.
-
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240904204347.168520-17-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 8268ed4c9d19 ("mptcp: introduce and use mptcp_try_coalesce()")
+Cc: stable@vger.kernel.org # please delay 2 weeks after 6.13-final release
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-3-8608af434ceb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/rust/coding-guidelines.rst |   38 +++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ net/mptcp/protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Documentation/rust/coding-guidelines.rst
-+++ b/Documentation/rust/coding-guidelines.rst
-@@ -227,3 +227,41 @@ The equivalent in Rust may look like (ig
- That is, the equivalent of ``GPIO_LINE_DIRECTION_IN`` would be referred to as
- ``gpio::LineDirection::In``. In particular, it should not be named
- ``gpio::gpio_line_direction::GPIO_LINE_DIRECTION_IN``.
-+
-+
-+Lints
-+-----
-+
-+In Rust, it is possible to ``allow`` particular warnings (diagnostics, lints)
-+locally, making the compiler ignore instances of a given warning within a given
-+function, module, block, etc.
-+
-+It is similar to ``#pragma GCC diagnostic push`` + ``ignored`` + ``pop`` in C
-+[#]_:
-+
-+.. code-block:: c
-+
-+	#pragma GCC diagnostic push
-+	#pragma GCC diagnostic ignored "-Wunused-function"
-+	static void f(void) {}
-+	#pragma GCC diagnostic pop
-+
-+.. [#] In this particular case, the kernel's ``__{always,maybe}_unused``
-+       attributes (C23's ``[[maybe_unused]]``) may be used; however, the example
-+       is meant to reflect the equivalent lint in Rust discussed afterwards.
-+
-+But way less verbose:
-+
-+.. code-block:: rust
-+
-+	#[allow(dead_code)]
-+	fn f() {}
-+
-+By that virtue, it makes it possible to comfortably enable more diagnostics by
-+default (i.e. outside ``W=`` levels). In particular, those that may have some
-+false positives but that are otherwise quite useful to keep enabled to catch
-+potential mistakes.
-+
-+For more information about diagnostics in Rust, please see:
-+
-+	https://doc.rust-lang.org/stable/reference/attributes/diagnostics.html
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -133,6 +133,7 @@ static bool mptcp_try_coalesce(struct so
+ 	int delta;
+ 
+ 	if (MPTCP_SKB_CB(from)->offset ||
++	    ((to->len + from->len) > (sk->sk_rcvbuf >> 3)) ||
+ 	    !skb_try_coalesce(to, from, &fragstolen, &delta))
+ 		return false;
+ 
 
 
 
