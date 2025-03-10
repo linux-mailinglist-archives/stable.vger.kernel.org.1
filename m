@@ -1,101 +1,74 @@
-Return-Path: <stable+bounces-122178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0883A59E63
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07758A59F3F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775B33A88BA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A0221890397
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C0422CBED;
-	Mon, 10 Mar 2025 17:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E359A233D98;
+	Mon, 10 Mar 2025 17:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="Qg4kWn/h"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E8922FF40;
-	Mon, 10 Mar 2025 17:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F05A1DE89C;
+	Mon, 10 Mar 2025 17:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627750; cv=none; b=ofPRqBPekRDHvP1u6fL/jfetTQDnqAqsPRY0cOp6Go6ozLRFpGW0Pn3runetuBaHmyMpayW2dxuNQK4yOAPaPNd+TKN3GarVmUe/kub0b4PKSFEWr6Wc33PnEbdELa25w4Hc8+BSPrjBGyTXduRcDJMPAnM0nNNLQq+Z/DDQWaI=
+	t=1741628282; cv=none; b=CRx39y22lyYVkbd+tXAqJHFnQ/wf+SkH/CGrC9Dfz7QyOUg0PBeOlJI46BgYGR+mvPekzVA2E2Ar2bGCcWHjuzHQ10gCW7sWCNiWQq9iJkntHY7Im5C60U+T5YXAGcdFnRF09aByc0FGyNTgjM6NVxuG62tgmHSyIITLZ60q+wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627750; c=relaxed/simple;
-	bh=5xnuI1TveaclJB5R/6loAt6lIQ6vPPgbqwh7vS1MAhU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aXXg/GPhcsN94ixGi079Fu3dPsIHjOI8WmTFyM3AKQbwWRh16aWsKrRJ2oD+sqmDhOfa2FLAzxZXGVOwSSJnrSpvbRiubDXJeSekN5/qKg9JABGeC6D0iMimIyLhnMHx80BSQwG3uDCaxwb0pBCQXanSULAUh2+q3CUf3vjj3Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61A4C4CEE5;
-	Mon, 10 Mar 2025 17:29:07 +0000 (UTC)
-Date: Mon, 10 Mar 2025 17:29:05 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Peter Collingbourne <pcc@google.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] string: Disable read_word_at_a_time() optimizations if
- kernel MTE is enabled
-Message-ID: <Z88hYdTAe6ok4_WT@arm.com>
-References: <20250308023314.3981455-1-pcc@google.com>
+	s=arc-20240116; t=1741628282; c=relaxed/simple;
+	bh=1vkGvBEOz6Q/B2bFqUA31HdG1T1e00TEWKWPHwa9jl0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZGGdwa3L5COBYaRyam49gQZfCJcXkIDfgQeV2YcgZgEOxVhtHsF61spToHSE8ABfWvIIio81Nl6ILGuwQhfwlMhuFXPr5UhawJ8BZ1U1sX8RrbttzxsnJwF9NLHC7ug4CibrksfLRyk01eNnbCDdry5cJP8f6c8E3jvzyXvfz4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=Qg4kWn/h; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Andrey Kalachev <kalachev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1741628270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=S7X1uYzLr5dyGvOKwCnpRfnCW5TB3lrvdrQD/ki4R34=;
+	b=Qg4kWn/h6cREYrRIP2Rvhozt27vq72lEDldtwoO5gbhsMO1Nb5eLw0HOOZtrg0OWPWuRQr
+	jZKTere4m+Y3cHnE4SD5RzhPKCG4puidDnUIKCc7QLIjJ5ikytrBudzjfUwr9Se5/9dnvG
+	68aWCyM4Gq3EpXChGL2w5UAshB7Uwsw=
+To: stable@vger.kernel.org
+Cc: rananta@google.com,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kalachev@swemel.ru,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 6.1.y] KVM: selftests: Fix build error due to assert in dirty_log_test
+Date: Mon, 10 Mar 2025 20:37:48 +0300
+Message-Id: <20250310173749.11260-1-kalachev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250308023314.3981455-1-pcc@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 07, 2025 at 06:33:13PM -0800, Peter Collingbourne wrote:
-> The optimized strscpy() and dentry_string_cmp() routines will read 8
-> unaligned bytes at a time via the function read_word_at_a_time(), but
-> this is incompatible with MTE which will fault on a partially invalid
-> read. The attributes on read_word_at_a_time() that disable KASAN are
-> invisible to the CPU so they have no effect on MTE. Let's fix the
-> bug for now by disabling the optimizations if the kernel is built
-> with HW tag-based KASAN and consider improvements for followup changes.
-> 
-> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-> Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
-> Cc: stable@vger.kernel.org
+Hi all.
 
-Some time ago Vincenzo had an attempt at fixing this but neither of us
-got around to posting it. It's on top of 6.2 and not sure how cleanly it
-would rebase:
+Please apply that forgotten patch to fix v6.1 KVM selftests broken build.  
 
-git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux devel/mte-strscpy
+Origin of the patch can be founded here [1]
 
-Feel free to cherry-pick patches from above, rewrite them etc.
+Regards,
+AK
 
-> diff --git a/lib/string.c b/lib/string.c
-> index eb4486ed40d25..9a43a3824d0d7 100644
-> --- a/lib/string.c
-> +++ b/lib/string.c
-> @@ -119,7 +119,8 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
->  	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
->  		return -E2BIG;
->  
-> -#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-> +#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && \
-> +	!defined(CONFIG_KASAN_HW_TAGS)
-
-Assuming that no-one wants to ever use KASAN_HW_TAGS=y in production,
-this patch would do. Otherwise I'd rather use TCO around the access as
-per the last patch from Vincenzo above.
-
-Yet another option - use load_unaligned_zeropad() instead of
-read_word_at_a_time(), not sure how it changes the semantics of
-strscpy() in any way. This can be done in the arch code
+[1] https://lore.kernel.org/stable/20240403164230.1722018-1-rananta@google.com/
 
 -- 
-Catalin
+2.30.2
+
 
