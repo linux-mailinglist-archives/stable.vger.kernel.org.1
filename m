@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-122794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B10A5A13B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009F2A5A11A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7036172444
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A19B1189314D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD2D23237F;
-	Mon, 10 Mar 2025 17:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D4A1C4A24;
+	Mon, 10 Mar 2025 17:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFF5jqIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsf1FhJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0B61C4A24;
-	Mon, 10 Mar 2025 17:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE23231A3B;
+	Mon, 10 Mar 2025 17:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629516; cv=none; b=Hyok7Wftsa60Ri/KZE8modq8dMS9lKjN0dZl1ot4TRu+boGtsmnZBDEShXJugegiaxD5sAr4UF0/CfPyNAGQLatgeZUKW/mtxDIaptDf1sDiGYbg9jvYH6MvQxw6eqo1kh78pl37NQKShxiQHqrPGoB4+cRZYnJ+gYXIo5KwrO4=
+	t=1741629426; cv=none; b=q5gPGNoV7VyvaGaj3tLfgRO91XEQy35Zne43idpNzM/j0Z5eNX3DJ7LVcS/s7y+KxbnQyHEOGaFlBExT4Z7E9LItPmPoHPaqzK/daOy3pulDP3Y7mXmGl7mU3CUHcvFtaDul8jONHXMpm66L906NF5VD+VER4Y5tNTwxPaeUPAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629516; c=relaxed/simple;
-	bh=V7d54BTjqfJ+dlJRFg6WaAFkhccH8bF4oj7r9ZLyNSs=;
+	s=arc-20240116; t=1741629426; c=relaxed/simple;
+	bh=A+bFUrocG+p8EMkad3FHLF5TqI2srIKpJto5cCa9/C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p76nGoOJqT/BeuZOOu3Xq+bR+tN6GzRo6QGGPi1C1IHMEXbFxZT6ScMlGCEMuz5X4AjzxbVmXO94QtsBUprLmjJZZFGaZTMl/w0szUIf8eFRo9HdrvjGmv7iuuiYYy8jIGfIS1DylNwZkaGKBbrLemTFPQffrg5W2gZa0JtLw2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFF5jqIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3D6C4CEE5;
-	Mon, 10 Mar 2025 17:58:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QkMC/95uxtmxmQVuC74HdnBuCRCEV5DZcYRA0/5FsyekVchDXccrJyyJZZH9TnhL5bfEY8bajvizpwKKBMQYtqg13d6FmNg35oKlvyBcbZcQBJM8xS9DBrAqNbePuMRGXOcixENuUm7VSmAaR7C45cvuX70stxG1jHVAQg9kdRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsf1FhJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29A4C4CEE5;
+	Mon, 10 Mar 2025 17:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629516;
-	bh=V7d54BTjqfJ+dlJRFg6WaAFkhccH8bF4oj7r9ZLyNSs=;
+	s=korg; t=1741629426;
+	bh=A+bFUrocG+p8EMkad3FHLF5TqI2srIKpJto5cCa9/C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFF5jqISyRa5sHwIcZkO69guY/ao2JQ1ACmXWauDpgYBNf4j45xjkOzz2egOjiE9N
-	 z8jjUQphgu0oClPtJobODTJEzVLXqawlo5avQtOpSQ0wVuOWjljzQ/7ZBMiOjaWxRI
-	 BPJ5QNYv5rGWjH37LXfLkG4WR6x3I+guQ6rAFhXw=
+	b=nsf1FhJrcVwHVaq5xVKq3FDco25yp/RaW3hEngaae8YfsWWKEaUqSFeEJNFPRrDRh
+	 okoh60dtQbtN6eUsHuw5G6K/Y+vDKhGUuRDDb8LTZdlQ3tJCZ/pD3FZvUepZ7YCepf
+	 CM5KmxATweQnxoxEApHfEBa0XMqDzEbEqc4g1BHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 290/620] dm-crypt: track tag_offset in convert_context
-Date: Mon, 10 Mar 2025 18:02:16 +0100
-Message-ID: <20250310170557.067548052@linuxfoundation.org>
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Dengcheng Zhu <dzhu@wavecomp.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Ming Wang <wangming01@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: [PATCH 5.15 291/620] mips/math-emu: fix emulation of the prefx instruction
+Date: Mon, 10 Mar 2025 18:02:17 +0100
+Message-ID: <20250310170557.107276170@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -59,103 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-commit 8b8f8037765757861f899ed3a2bfb34525b5c065 upstream.
+commit 42a39e4aa59a10aa4afdc14194f3ee63d2db94e1 upstream.
 
-dm-crypt uses tag_offset to index the integrity metadata for each crypt
-sector. When the initial crypt_convert() returns BLK_STS_DEV_RESOURCE,
-dm-crypt will try to continue the crypt/decrypt procedure in a kworker.
-However, it resets tag_offset as zero instead of using the tag_offset
-related with current sector. It may return unexpected data when using
-random IV or return unexpected integrity related error.
+Currently, installation of Debian 12.8 for mipsel fails on machines
+without an FPU [1]. This is caused by the fact that zstd (which is used
+for initramfs compression) executes the prefx instruction, which is not
+emulated properly by the kernel.
 
-Fix the problem by tracking tag_offset in per-IO convert_context.
-Therefore, when the crypt/decrypt procedure continues in a kworker, it
-could use the next tag_offset saved in convert_context.
+The prefx (Prefetch Indexed) instruction fetches data from memory into
+the cache without any side effects. Though functionally unrelated, it
+requires an FPU [2].
 
-Fixes: 8abec36d1274 ("dm crypt: do not wait for backlogged crypto request completion in softirq")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Bytecode format of this instruction ends on "001111" binary:
+
+	(prefx instruction format) & 0x0000003f = 0x0000000f
+
+The code in fpux_emu() runs like so:
+
+	#define MIPSInst(x) x
+	#define MIPSInst_FMA_FFMT(x) (MIPSInst(x) & 0x00000007)
+	#define MIPSInst_FUNC(x) (MIPSInst(x) & 0x0000003f)
+	enum cop1x_func { ..., pfetch_op = 0x0f, ... };
+
+	...
+
+	switch (MIPSInst_FMA_FFMT(ir)) {
+	...
+
+	case 0x3:
+		if (MIPSInst_FUNC(ir) != pfetch_op)
+			return SIGILL;
+
+		/* ignore prefx operation */
+		break;
+
+	default:
+		return SIGILL;
+	}
+
+That snippet above contains a logic error and the
+	if (MIPSInst_FUNC(ir) != pfetch_op)
+comparison always fires.
+
+When MIPSInst_FUNC(ir) is equal to pfetch_op, ir must end on 001111
+binary. In this case, MIPSInst_FMA_FFMT(ir) must be equal to 0x7, which
+does not match that case label.
+
+This causes emulation failure for the prefx instruction. Fix it.
+
+This has been broken by
+commit 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
+which modified the MIPSInst_FMA_FFMT macro without updating the users.
+
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Cc: stable@vger.kernel.org # after 3 weeks
+Cc: Dengcheng Zhu <dzhu@wavecomp.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Ming Wang <wangming01@loongson.cn>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+Fixes: 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/md/dm-crypt.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/md/dm-crypt.c
-+++ b/drivers/md/dm-crypt.c
-@@ -53,6 +53,7 @@ struct convert_context {
- 	struct bio *bio_out;
- 	struct bvec_iter iter_out;
- 	atomic_t cc_pending;
-+	unsigned int tag_offset;
- 	u64 cc_sector;
- 	union {
- 		struct skcipher_request *req;
-@@ -1217,6 +1218,7 @@ static void crypt_convert_init(struct cr
- 	if (bio_out)
- 		ctx->iter_out = bio_out->bi_iter;
- 	ctx->cc_sector = sector + cc->iv_offset;
-+	ctx->tag_offset = 0;
- 	init_completion(&ctx->restart);
- }
+[1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1091858
+[2] MIPS Architecture For Programmers Volume II-A: The MIPS32 Instruction Set
+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
+ arch/mips/math-emu/cp1emu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 265bc57819df..c89e70df43d8 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -1660,7 +1660,7 @@ static int fpux_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 		break;
+ 	}
  
-@@ -1542,7 +1544,6 @@ static void crypt_free_req(struct crypt_
- static blk_status_t crypt_convert(struct crypt_config *cc,
- 			 struct convert_context *ctx, bool atomic, bool reset_pending)
- {
--	unsigned int tag_offset = 0;
- 	unsigned int sector_step = cc->sector_size >> SECTOR_SHIFT;
- 	int r;
+-	case 0x3:
++	case 0x7:
+ 		if (MIPSInst_FUNC(ir) != pfetch_op)
+ 			return SIGILL;
  
-@@ -1565,9 +1566,9 @@ static blk_status_t crypt_convert(struct
- 		atomic_inc(&ctx->cc_pending);
- 
- 		if (crypt_integrity_aead(cc))
--			r = crypt_convert_block_aead(cc, ctx, ctx->r.req_aead, tag_offset);
-+			r = crypt_convert_block_aead(cc, ctx, ctx->r.req_aead, ctx->tag_offset);
- 		else
--			r = crypt_convert_block_skcipher(cc, ctx, ctx->r.req, tag_offset);
-+			r = crypt_convert_block_skcipher(cc, ctx, ctx->r.req, ctx->tag_offset);
- 
- 		switch (r) {
- 		/*
-@@ -1587,8 +1588,8 @@ static blk_status_t crypt_convert(struct
- 					 * exit and continue processing in a workqueue
- 					 */
- 					ctx->r.req = NULL;
-+					ctx->tag_offset++;
- 					ctx->cc_sector += sector_step;
--					tag_offset++;
- 					return BLK_STS_DEV_RESOURCE;
- 				}
- 			} else {
-@@ -1602,8 +1603,8 @@ static blk_status_t crypt_convert(struct
- 		 */
- 		case -EINPROGRESS:
- 			ctx->r.req = NULL;
-+			ctx->tag_offset++;
- 			ctx->cc_sector += sector_step;
--			tag_offset++;
- 			continue;
- 		/*
- 		 * The request was already processed (synchronously).
-@@ -1611,7 +1612,7 @@ static blk_status_t crypt_convert(struct
- 		case 0:
- 			atomic_dec(&ctx->cc_pending);
- 			ctx->cc_sector += sector_step;
--			tag_offset++;
-+			ctx->tag_offset++;
- 			if (!atomic)
- 				cond_resched();
- 			continue;
+-- 
+2.48.1
+
 
 
 
