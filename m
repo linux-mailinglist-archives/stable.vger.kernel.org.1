@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC545A59E8D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73591A59E90
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AEA13AB0F4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 808633AB1EF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FD223370F;
-	Mon, 10 Mar 2025 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8F423371B;
+	Mon, 10 Mar 2025 17:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/MheJFA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCeySBmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3407234966;
-	Mon, 10 Mar 2025 17:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70481A7264;
+	Mon, 10 Mar 2025 17:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627836; cv=none; b=AH5mHRzW3OZ+Ly0o1XvdpDdv42kjoQVDGG0T1yqe4ukbf7PTzuh5VX4nPlXzVkI8UlYqkhQFPGLbpvvvc8FY9B2Jx3f/aVMKeEtmZOjXH2aDNHQc/osCV5mS9SVFigeyAitiPDS1hAwusNpgaHVgmPf2hWha89/CoCsD10FQzi8=
+	t=1741627841; cv=none; b=rWSu9bhueFyYc43TeJLV2LQbGg7H0m5G2DQI/9pgGymEQ+EnXsxQlMyjjXfx7UxM4sEQJVI857f4Gse6OqBi4/bdyqdACnG3vdYFOx6Tjrb7yg4MshY2KI0/rU4bolApgx7JsJvqkRPfY4wG9GVZ6+E1XMdcBV7/q9lGwOFppag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627836; c=relaxed/simple;
-	bh=V4AaUB8yqdXLrldnDxx3VOnKdQHz/ohMvHym3UaEJ+M=;
+	s=arc-20240116; t=1741627841; c=relaxed/simple;
+	bh=WCimsoKnksEH8UlJFwiM6EBXQgJo/QSAbfqnxiy/ySo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1jWRQfR1HuYKyggm+U+32FawHQBLGEY4BPrpJCpgxinCa58bJC6ntXo5SBMPX/9DxrsVFdRc02lz7yLzxO7SID45PWqXbIMNxmvrS/vuM1xgYxY6ltlyf5kgGT1JQfETpZSiJJwql8e/ewsBSD52fMpz03tqRyLHP9JmrO3fLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/MheJFA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3316AC4CEEE;
-	Mon, 10 Mar 2025 17:30:35 +0000 (UTC)
+	 MIME-Version; b=K6Hdq0xbJnwL0d1mOKt93o4pBP22nbnK4eLwIPPy2V5Wn7g7TSVtSXuo+NSv5BdOfx6WgSahO4dPVZxQrYW2l+SubFQbemcOpNzHTYdzlWdD/x+cZKHm7KlaYu2/N5x9Tf6iLiB4mJSqbuzRg80FZVLLx5IeOsxZu2D++uQqsZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCeySBmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE35C4CEE5;
+	Mon, 10 Mar 2025 17:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627835;
-	bh=V4AaUB8yqdXLrldnDxx3VOnKdQHz/ohMvHym3UaEJ+M=;
+	s=korg; t=1741627841;
+	bh=WCimsoKnksEH8UlJFwiM6EBXQgJo/QSAbfqnxiy/ySo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/MheJFA+VGWzu7kVlhA4grsBRDPKBjTUAyIXMrYuylbPMsZcqlG5z+eDb5xCXPhV
-	 aPzZaLprefCx+JlpnASstdFCFEw3TwRg8pliO0Gtq5LLcsk7i9VSoh5qY//ZnGEn3g
-	 y5/t/GRytlunOMv3DCWRUvuXj3CpxNfZUTn8oz5E=
+	b=LCeySBmPaJdlTVwY4MHrfM4aAtO9lsKqaTgLDssdZig35v8C9cd8EcLLlMz5z2H2N
+	 tfKM6NuRwBwANw8EHAKdmx7uMKEFCrEgmIy/qqpkjF7QImvSSAT/K3qbVtJOJdtj6g
+	 dy2dFfstklRGiV5d3i7Etto42Idu5L5UAK3Ngte0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Makarov <maxpain@linux.com>,
 	Jiri Olsa <jolsa@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Christian Simon <simon@swine.de>
-Subject: [PATCH 6.12 267/269] uprobes: Fix race in uprobe_free_utask
-Date: Mon, 10 Mar 2025 18:07:00 +0100
-Message-ID: <20250310170508.427914573@linuxfoundation.org>
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Colm Harrington <colm.harrington@oracle.com>,
+	Alan Maguire <alan.maguire@oracle.com>
+Subject: [PATCH 6.12 268/269] selftests/bpf: Clean up open-coded gettid syscall invocations
+Date: Mon, 10 Mar 2025 18:07:01 +0100
+Message-ID: <20250310170508.467223185@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
 References: <20250310170457.700086763@linuxfoundation.org>
@@ -69,86 +68,263 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-commit b583ef82b671c9a752fbe3e95bd4c1c51eab764d upstream.
+commit 0e2fb011a0ba8e2258ce776fdf89fbd589c2a3a6 upstream.
 
-Max Makarov reported kernel panic [1] in perf user callchain code.
+Availability of the gettid definition across glibc versions supported by
+BPF selftests is not certain. Currently, all users in the tree open-code
+syscall to gettid. Convert them to a common macro definition.
 
-The reason for that is the race between uprobe_free_utask and bpf
-profiler code doing the perf user stack unwind and is triggered
-within uprobe_free_utask function:
-  - after current->utask is freed and
-  - before current->utask is set to NULL
-
- general protection fault, probably for non-canonical address 0x9e759c37ee555c76: 0000 [#1] SMP PTI
- RIP: 0010:is_uprobe_at_func_entry+0x28/0x80
- ...
-  ? die_addr+0x36/0x90
-  ? exc_general_protection+0x217/0x420
-  ? asm_exc_general_protection+0x26/0x30
-  ? is_uprobe_at_func_entry+0x28/0x80
-  perf_callchain_user+0x20a/0x360
-  get_perf_callchain+0x147/0x1d0
-  bpf_get_stackid+0x60/0x90
-  bpf_prog_9aac297fb833e2f5_do_perf_event+0x434/0x53b
-  ? __smp_call_single_queue+0xad/0x120
-  bpf_overflow_handler+0x75/0x110
-  ...
-  asm_sysvec_apic_timer_interrupt+0x1a/0x20
- RIP: 0010:__kmem_cache_free+0x1cb/0x350
- ...
-  ? uprobe_free_utask+0x62/0x80
-  ? acct_collect+0x4c/0x220
-  uprobe_free_utask+0x62/0x80
-  mm_release+0x12/0xb0
-  do_exit+0x26b/0xaa0
-  __x64_sys_exit+0x1b/0x20
-  do_syscall_64+0x5a/0x80
-
-It can be easily reproduced by running following commands in
-separate terminals:
-
-  # while :; do bpftrace -e 'uprobe:/bin/ls:_start  { printf("hit\n"); }' -c ls; done
-  # bpftrace -e 'profile:hz:100000 { @[ustack()] = count(); }'
-
-Fixing this by making sure current->utask pointer is set to NULL
-before we start to release the utask object.
-
-[1] https://github.com/grafana/pyroscope/issues/3673
-
-Fixes: cfa7f3d2c526 ("perf,x86: avoid missing caller address in stack traces captured in uprobe")
-Reported-by: Max Makarov <maxpain@linux.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20250109141440.2692173-1-jolsa@kernel.org
-[Christian Simon: Rebased for 6.12.y, due to mainline change https://lore.kernel.org/all/20240929144239.GA9475@redhat.com/]
-Signed-off-by: Christian Simon <simon@swine.de>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241104171959.2938862-3-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Colm Harrington <colm.harrington@oracle.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
 ---
- kernel/events/uprobes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/benchs/bench_trigger.c           |    3 ++-
+ tools/testing/selftests/bpf/bpf_util.h                       |    9 +++++++++
+ tools/testing/selftests/bpf/map_tests/task_storage_map.c     |    3 ++-
+ tools/testing/selftests/bpf/prog_tests/bpf_cookie.c          |    2 +-
+ tools/testing/selftests/bpf/prog_tests/bpf_iter.c            |    6 +++---
+ tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c  |   10 +++++-----
+ tools/testing/selftests/bpf/prog_tests/core_reloc.c          |    2 +-
+ tools/testing/selftests/bpf/prog_tests/linked_funcs.c        |    2 +-
+ tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c |    2 +-
+ tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c       |    4 ++--
+ tools/testing/selftests/bpf/prog_tests/task_local_storage.c  |    8 ++++----
+ tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c   |    2 +-
+ 12 files changed, 32 insertions(+), 21 deletions(-)
 
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1775,6 +1775,7 @@ void uprobe_free_utask(struct task_struc
- 	if (!utask)
+--- a/tools/testing/selftests/bpf/benchs/bench_trigger.c
++++ b/tools/testing/selftests/bpf/benchs/bench_trigger.c
+@@ -4,6 +4,7 @@
+ #include <argp.h>
+ #include <unistd.h>
+ #include <stdint.h>
++#include "bpf_util.h"
+ #include "bench.h"
+ #include "trigger_bench.skel.h"
+ #include "trace_helpers.h"
+@@ -72,7 +73,7 @@ static __always_inline void inc_counter(
+ 	unsigned slot;
+ 
+ 	if (unlikely(tid == 0))
+-		tid = syscall(SYS_gettid);
++		tid = sys_gettid();
+ 
+ 	/* multiplicative hashing, it's fast */
+ 	slot = 2654435769U * tid;
+--- a/tools/testing/selftests/bpf/bpf_util.h
++++ b/tools/testing/selftests/bpf/bpf_util.h
+@@ -6,6 +6,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <errno.h>
++#include <syscall.h>
+ #include <bpf/libbpf.h> /* libbpf_num_possible_cpus */
+ 
+ static inline unsigned int bpf_num_possible_cpus(void)
+@@ -59,4 +60,12 @@ static inline void bpf_strlcpy(char *dst
+ 	(offsetof(TYPE, MEMBER)	+ sizeof_field(TYPE, MEMBER))
+ #endif
+ 
++/* Availability of gettid across glibc versions is hit-and-miss, therefore
++ * fallback to syscall in this macro and use it everywhere.
++ */
++#ifndef sys_gettid
++#define sys_gettid() syscall(SYS_gettid)
++#endif
++
++
+ #endif /* __BPF_UTIL__ */
+--- a/tools/testing/selftests/bpf/map_tests/task_storage_map.c
++++ b/tools/testing/selftests/bpf/map_tests/task_storage_map.c
+@@ -12,6 +12,7 @@
+ #include <bpf/bpf.h>
+ #include <bpf/libbpf.h>
+ 
++#include "bpf_util.h"
+ #include "test_maps.h"
+ #include "task_local_storage_helpers.h"
+ #include "read_bpf_task_storage_busy.skel.h"
+@@ -115,7 +116,7 @@ void test_task_storage_map_stress_lookup
+ 	CHECK(err, "attach", "error %d\n", err);
+ 
+ 	/* Trigger program */
+-	syscall(SYS_gettid);
++	sys_gettid();
+ 	skel->bss->pid = 0;
+ 
+ 	CHECK(skel->bss->busy != 0, "bad bpf_task_storage_busy", "got %d\n", skel->bss->busy);
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
+@@ -690,7 +690,7 @@ void test_bpf_cookie(void)
+ 	if (!ASSERT_OK_PTR(skel, "skel_open"))
  		return;
  
-+	t->utask = NULL;
- 	if (utask->active_uprobe)
- 		put_uprobe(utask->active_uprobe);
+-	skel->bss->my_tid = syscall(SYS_gettid);
++	skel->bss->my_tid = sys_gettid();
  
-@@ -1784,7 +1785,6 @@ void uprobe_free_utask(struct task_struc
+ 	if (test__start_subtest("kprobe"))
+ 		kprobe_subtest(skel);
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+@@ -226,7 +226,7 @@ static void test_task_common_nocheck(str
+ 	ASSERT_OK(pthread_create(&thread_id, NULL, &do_nothing_wait, NULL),
+ 		  "pthread_create");
  
- 	xol_free_insn_slot(t);
- 	kfree(utask);
--	t->utask = NULL;
- }
+-	skel->bss->tid = syscall(SYS_gettid);
++	skel->bss->tid = sys_gettid();
  
- /*
+ 	do_dummy_read_opts(skel->progs.dump_task, opts);
+ 
+@@ -255,10 +255,10 @@ static void *run_test_task_tid(void *arg
+ 	union bpf_iter_link_info linfo;
+ 	int num_unknown_tid, num_known_tid;
+ 
+-	ASSERT_NEQ(getpid(), syscall(SYS_gettid), "check_new_thread_id");
++	ASSERT_NEQ(getpid(), sys_gettid(), "check_new_thread_id");
+ 
+ 	memset(&linfo, 0, sizeof(linfo));
+-	linfo.task.tid = syscall(SYS_gettid);
++	linfo.task.tid = sys_gettid();
+ 	opts.link_info = &linfo;
+ 	opts.link_info_len = sizeof(linfo);
+ 	test_task_common(&opts, 0, 1);
+--- a/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c
++++ b/tools/testing/selftests/bpf/prog_tests/cgrp_local_storage.c
+@@ -63,14 +63,14 @@ static void test_tp_btf(int cgroup_fd)
+ 	if (!ASSERT_OK(err, "map_delete_elem"))
+ 		goto out;
+ 
+-	skel->bss->target_pid = syscall(SYS_gettid);
++	skel->bss->target_pid = sys_gettid();
+ 
+ 	err = cgrp_ls_tp_btf__attach(skel);
+ 	if (!ASSERT_OK(err, "skel_attach"))
+ 		goto out;
+ 
+-	syscall(SYS_gettid);
+-	syscall(SYS_gettid);
++	sys_gettid();
++	sys_gettid();
+ 
+ 	skel->bss->target_pid = 0;
+ 
+@@ -154,7 +154,7 @@ static void test_recursion(int cgroup_fd
+ 		goto out;
+ 
+ 	/* trigger sys_enter, make sure it does not cause deadlock */
+-	syscall(SYS_gettid);
++	sys_gettid();
+ 
+ out:
+ 	cgrp_ls_recursion__destroy(skel);
+@@ -224,7 +224,7 @@ static void test_yes_rcu_lock(__u64 cgro
+ 		return;
+ 
+ 	CGROUP_MODE_SET(skel);
+-	skel->bss->target_pid = syscall(SYS_gettid);
++	skel->bss->target_pid = sys_gettid();
+ 
+ 	bpf_program__set_autoload(skel->progs.yes_rcu_lock, true);
+ 	err = cgrp_ls_sleepable__load(skel);
+--- a/tools/testing/selftests/bpf/prog_tests/core_reloc.c
++++ b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
+@@ -1010,7 +1010,7 @@ static void run_core_reloc_tests(bool us
+ 	struct data *data;
+ 	void *mmap_data = NULL;
+ 
+-	my_pid_tgid = getpid() | ((uint64_t)syscall(SYS_gettid) << 32);
++	my_pid_tgid = getpid() | ((uint64_t)sys_gettid() << 32);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(test_cases); i++) {
+ 		char btf_file[] = "/tmp/core_reloc.btf.XXXXXX";
+--- a/tools/testing/selftests/bpf/prog_tests/linked_funcs.c
++++ b/tools/testing/selftests/bpf/prog_tests/linked_funcs.c
+@@ -20,7 +20,7 @@ void test_linked_funcs(void)
+ 	bpf_program__set_autoload(skel->progs.handler1, true);
+ 	bpf_program__set_autoload(skel->progs.handler2, true);
+ 
+-	skel->rodata->my_tid = syscall(SYS_gettid);
++	skel->rodata->my_tid = sys_gettid();
+ 	skel->bss->syscall_id = SYS_getpgid;
+ 
+ 	err = linked_funcs__load(skel);
+--- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
++++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+@@ -23,7 +23,7 @@ static int get_pid_tgid(pid_t *pid, pid_
+ 	struct stat st;
+ 	int err;
+ 
+-	*pid = syscall(SYS_gettid);
++	*pid = sys_gettid();
+ 	*tgid = getpid();
+ 
+ 	err = stat("/proc/self/ns/pid", &st);
+--- a/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c
++++ b/tools/testing/selftests/bpf/prog_tests/rcu_read_lock.c
+@@ -21,7 +21,7 @@ static void test_success(void)
+ 	if (!ASSERT_OK_PTR(skel, "skel_open"))
+ 		return;
+ 
+-	skel->bss->target_pid = syscall(SYS_gettid);
++	skel->bss->target_pid = sys_gettid();
+ 
+ 	bpf_program__set_autoload(skel->progs.get_cgroup_id, true);
+ 	bpf_program__set_autoload(skel->progs.task_succ, true);
+@@ -58,7 +58,7 @@ static void test_rcuptr_acquire(void)
+ 	if (!ASSERT_OK_PTR(skel, "skel_open"))
+ 		return;
+ 
+-	skel->bss->target_pid = syscall(SYS_gettid);
++	skel->bss->target_pid = sys_gettid();
+ 
+ 	bpf_program__set_autoload(skel->progs.task_acquire, true);
+ 	err = rcu_read_lock__load(skel);
+--- a/tools/testing/selftests/bpf/prog_tests/task_local_storage.c
++++ b/tools/testing/selftests/bpf/prog_tests/task_local_storage.c
+@@ -23,14 +23,14 @@ static void test_sys_enter_exit(void)
+ 	if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
+ 		return;
+ 
+-	skel->bss->target_pid = syscall(SYS_gettid);
++	skel->bss->target_pid = sys_gettid();
+ 
+ 	err = task_local_storage__attach(skel);
+ 	if (!ASSERT_OK(err, "skel_attach"))
+ 		goto out;
+ 
+-	syscall(SYS_gettid);
+-	syscall(SYS_gettid);
++	sys_gettid();
++	sys_gettid();
+ 
+ 	/* 3x syscalls: 1x attach and 2x gettid */
+ 	ASSERT_EQ(skel->bss->enter_cnt, 3, "enter_cnt");
+@@ -99,7 +99,7 @@ static void test_recursion(void)
+ 
+ 	/* trigger sys_enter, make sure it does not cause deadlock */
+ 	skel->bss->test_pid = getpid();
+-	syscall(SYS_gettid);
++	sys_gettid();
+ 	skel->bss->test_pid = 0;
+ 	task_ls_recursion__detach(skel);
+ 
+--- a/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
++++ b/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
+@@ -125,7 +125,7 @@ static void *child_thread(void *ctx)
+ 	struct child *child = ctx;
+ 	int c = 0, err;
+ 
+-	child->tid = syscall(SYS_gettid);
++	child->tid = sys_gettid();
+ 
+ 	/* let parent know we are ready */
+ 	err = write(child->c2p[1], &c, 1);
 
 
 
