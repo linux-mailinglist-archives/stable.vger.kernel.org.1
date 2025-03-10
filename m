@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995EDA5A1DB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC006A59C50
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C93217423B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3323188B6E4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB66622FACA;
-	Mon, 10 Mar 2025 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF66233145;
+	Mon, 10 Mar 2025 17:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVyxZNMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7/8BXC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8253233710;
-	Mon, 10 Mar 2025 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD86231A3F;
+	Mon, 10 Mar 2025 17:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630453; cv=none; b=UzEFn43Gyyaz3oW51OviXa1rJ3fcziP+kfGwpmFvXwhOWcefI+TN027aosk/p5wT69nfOgVQ8IC8vJWheG3iFR9fC2ZRSagyjsSxHqhiO9eg0Fiq72LeMOtohOGI6Q6PxILE0Ky74sivAHpCeMm6B4LuPJeN0s4N4M8JvgLLP84=
+	t=1741626648; cv=none; b=DIGmULN+2sfLXDqKzDafjzRsONuLrL/wRZKna4KB6VyWiNBDfR+2Y5zU4z+wBhIKce5/qlWGqhVpt1vzL88/dh6jGzFqb1GD6kifBWuPvbHuJiYhNlu/3aWssY95FJSVVIuCqUA1wGTzcwSGNnM0vcUGjBTAuQSMJwnDC36v4Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630453; c=relaxed/simple;
-	bh=0ZzCJnoAWQ9KeqLw6/LNXTnKqUsQEGApkeZ8eIR/8Xc=;
+	s=arc-20240116; t=1741626648; c=relaxed/simple;
+	bh=hGZs9yY4I/5KCRq7flYvLT8K69CYKirLwecGoaIZhKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0J70VjHt9pjfjwZGrdiK2RC57bh80H/MmUGehRqGQ/TYoqXKyphsuBf9rFiS38tjva87MXHClL+PNoOwDdM5H/FuzOo63rISgcxF3i4uQNB5h7YK3R5urHAKU5roaiBVidfv6/J77/5K8dKUJO1y6mshd6JdYEqc70f+rM4kBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVyxZNMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF653C4CEE5;
-	Mon, 10 Mar 2025 18:14:12 +0000 (UTC)
+	 MIME-Version; b=RlSg2TRqfX62e4a63iXnZVTY7kYqbW9pGLIhEvxMguODMfrpLDpbKPRAZzLpyIcYBuv8y59D1nomXRxXyNfcGc8a15obY7R9Dt9LFLEcpu04miEnm2UZ9EThXiT/PV8HmWfzJtS3IsKTWf9yzQA7XzuNSD3+Kyg8gpZhMcrETuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7/8BXC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4872C4CEE5;
+	Mon, 10 Mar 2025 17:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630453;
-	bh=0ZzCJnoAWQ9KeqLw6/LNXTnKqUsQEGApkeZ8eIR/8Xc=;
+	s=korg; t=1741626648;
+	bh=hGZs9yY4I/5KCRq7flYvLT8K69CYKirLwecGoaIZhKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVyxZNMpg066T71UER2rt4Vj4vX/1EXP+zGpP2ZlPSw7pb521l8ubL8gACLFbGSPQ
-	 0hKZTRVUWzxCyLsq4P3QkGR+mtDiGblJAEA3fnpG0D4GXE3CwffMN++qgszCWpfj28
-	 shV9xkpUNeGdLp/xIzxebT6DGFfAyZSYSltSsKB0=
+	b=C7/8BXC8MPAOvlx/uYF7u3f13LqKnL2wCe8h1CgZnydWvUccf7mNBHjQngC7PE1x6
+	 PDg1oPVwbh4RiC5lPigtezAEwVPEVku2v7KjqPQuuDwEyOXqQcVPo/fOLlTbJ45b+c
+	 2xfkIAAtRicTtxKXpItfjGwHUZ7iZLofJxkADC7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 5.15 411/620] drm/tidss: Clear the interrupt status for interrupts being disabled
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 064/207] selftests/damon/damon_nr_regions: set ops update for merge results check to 100ms
 Date: Mon, 10 Mar 2025 18:04:17 +0100
-Message-ID: <20250310170601.813515390@linuxfoundation.org>
+Message-ID: <20250310170450.312885482@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devarsh Thakkar <devarsht@ti.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 361a2ebb5cad211732ec3c5d962de49b21895590 upstream.
+commit 695469c07a65547acb6e229b3fdf6aaa881817e3 upstream.
 
-The driver does not touch the irqstatus register when it is disabling
-interrupts.  This might cause an interrupt to trigger for an interrupt
-that was just disabled.
+damon_nr_regions.py updates max_nr_regions to a number smaller than
+expected number of real regions and confirms DAMON respect the harsh
+limit.  To give time for DAMON to make changes for the regions, 3
+aggregation intervals (300 milliseconds) are given.
 
-To fix the issue, clear the irqstatus registers right after disabling
-the interrupts.
+The internal mechanism works with not only the max_nr_regions, but also
+sz_limit, though.  It avoids merging region if that casn make region of
+size larger than sz_limit.  In the test, sz_limit is set too small to
+achive the new max_nr_regions, unless it is updated for the new
+min_nr_regions.  But the update is done only once per operations set
+update interval, which is one second by default.
 
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Reported-by: Jonathan Cormier <jcormier@criticallink.com>
-Closes: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1394222/am625-issue-about-tidss-rcu_preempt-self-detected-stall-on-cpu/5424479#5424479
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-[Tomi: mostly rewrote the patch]
-Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-5-82ddaec94e4a@ideasonboard.com
+Hence, the test randomly incurs false positive failures.  Fix it by
+setting the ops interval same to aggregation interval, to make sure
+sz_limit is updated by the time of the check.
+
+Link: https://lkml.kernel.org/r/20250225222333.505646-3-sj@kernel.org
+Fixes: 8bf890c81612 ("selftests/damon/damon_nr_regions: test online-tuned max_nr_regions")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tools/testing/selftests/damon/damon_nr_regions.py |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -596,7 +596,7 @@ void dispc_k2g_set_irqenable(struct disp
- {
- 	dispc_irq_t old_mask = dispc_k2g_read_irqenable(dispc);
- 
--	/* clear the irqstatus for newly enabled irqs */
-+	/* clear the irqstatus for irqs that will be enabled */
- 	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & mask);
- 
- 	dispc_k2g_vp_set_irqenable(dispc, 0, mask);
-@@ -604,6 +604,9 @@ void dispc_k2g_set_irqenable(struct disp
- 
- 	dispc_write(dispc, DISPC_IRQENABLE_SET, (1 << 0) | (1 << 7));
- 
-+	/* clear the irqstatus for irqs that were disabled */
-+	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & old_mask);
-+
- 	/* flush posted write */
- 	dispc_k2g_read_irqenable(dispc);
- }
-@@ -735,7 +738,7 @@ static void dispc_k3_set_irqenable(struc
- 
- 	old_mask = dispc_k3_read_irqenable(dispc);
- 
--	/* clear the irqstatus for newly enabled irqs */
-+	/* clear the irqstatus for irqs that will be enabled */
- 	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & mask);
- 
- 	for (i = 0; i < dispc->feat->num_vps; ++i) {
-@@ -760,6 +763,9 @@ static void dispc_k3_set_irqenable(struc
- 	if (main_disable)
- 		dispc_write(dispc, DISPC_IRQENABLE_CLR, main_disable);
- 
-+	/* clear the irqstatus for irqs that were disabled */
-+	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & old_mask);
-+
- 	/* Flush posted writes */
- 	dispc_read(dispc, DISPC_IRQENABLE_SET);
- }
+--- a/tools/testing/selftests/damon/damon_nr_regions.py
++++ b/tools/testing/selftests/damon/damon_nr_regions.py
+@@ -109,6 +109,7 @@ def main():
+     attrs = kdamonds.kdamonds[0].contexts[0].monitoring_attrs
+     attrs.min_nr_regions = 3
+     attrs.max_nr_regions = 7
++    attrs.update_us = 100000
+     err = kdamonds.kdamonds[0].commit()
+     if err is not None:
+         proc.terminate()
 
 
 
