@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1814A59EE9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BA6A59E38
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F5CA189002E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E13A57A5932
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5207723372F;
-	Mon, 10 Mar 2025 17:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E4323099F;
+	Mon, 10 Mar 2025 17:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2b1v+zf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBByCuCX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD01233722;
-	Mon, 10 Mar 2025 17:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D3222B8BD;
+	Mon, 10 Mar 2025 17:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628124; cv=none; b=ihOaEnjLj8l8GeMkQmGjW9A6tkLlCvy80ZNoPlK4wEIZAOIHzOuN/1iyBtbBaRWVwONrPqxH+2MjI9rR42wUPGvk684vNJVaIlOEcxiB2mTGkidnBKc2agMPHn8pWYbtkGX4sO6CAP/lfJCCx/IsNpQqW9LSoJa5T6Q8J57N0Sg=
+	t=1741627746; cv=none; b=qqhFeYnt0sc9QzrG37H+Fd5VT6m9elSF0Dj19y51HkV2txk5QGyOlxCexItwBgo5xaBbasNfUGHL1nSJMQu+wFl7rzS+aC9cMTuLHHbpXzCPDPBjfBF4QFVGCLBiBplKIgy8KkvvAXKjcnz3/BMRehaVTjvJhL3MZX+k25CidjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628124; c=relaxed/simple;
-	bh=w0yWN8aTDP0weo6oTQoCifaQx0A2W9Qye8ndHc74TWU=;
+	s=arc-20240116; t=1741627746; c=relaxed/simple;
+	bh=P8w0EUESsupqAXa9REAYQF3tOOxAkklGFrNSjv1vcVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ep/Kr953CUFic3asFgQVFarYFU7k1ZGrgaCKJReH8J89RZheHkCnW+j4la+9UImpi3TtM9ouP6keusOh27UMScccbgFMWLhrfwgPmBNpIIpviMIcnK4ni2dOcKj7CvGEmUNjwy4nIvuwf7WTnWPrPRH0bTZF+u3NplUv6Ve0Ysw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2b1v+zf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE4DC4CEE5;
-	Mon, 10 Mar 2025 17:35:23 +0000 (UTC)
+	 MIME-Version; b=pM43aWHA2PHgD4d6zF7QF3i8UIlGFa2erWN4EkOS/x/OwrsEqBkerK/p6tEjWS1FoeK1ra3/0RGPivgnatVSzijWPSvwV2bTj/IqmC/dUxG7bazGKtfLU3L4qDzOLBD0EMXAEfeMYeaerGYPrvcfqP4ySfdmIfUMVGNAJX/9aUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBByCuCX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F49C4CEE5;
+	Mon, 10 Mar 2025 17:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628123;
-	bh=w0yWN8aTDP0weo6oTQoCifaQx0A2W9Qye8ndHc74TWU=;
+	s=korg; t=1741627746;
+	bh=P8w0EUESsupqAXa9REAYQF3tOOxAkklGFrNSjv1vcVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2b1v+zffdvCyUm2UANzrdO6M+6LlOJn22OVt3iMTZ1mRKdyPke26TNjV153lY2RJ
-	 TcD1Val6vS2Vj+zwa5Lg5scTpT/PM26+HmNcjSmgnvEzWltak3Wg05NerBhOTM9MvC
-	 3MqnhdkRER5k7H0WDc9VOkYl0aNKOA/RLHkk6V3k=
+	b=jBByCuCXbTH1KVOn+DODVuYOHmC4kEYit03eS3IubOkLdKqeBsGoOZCpSvbrd5dWs
+	 WpMvE1IE5h1rx8tTIAo/M4drK3EGPzh+IiR/Db/9K3tYy+4CzDyrm+r8DyNLa9j8Cz
+	 htvjdhZdXT9r3B5DnGN/W/yxH6sqPC2JLRDINzgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.6 094/145] usb: renesas_usbhs: Use devm_usb_get_phy()
+	Sean Christopherson <seanjc@google.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>
+Subject: [PATCH 6.12 235/269] KVM: x86: Snapshot the hosts DEBUGCTL after disabling IRQs
 Date: Mon, 10 Mar 2025 18:06:28 +0100
-Message-ID: <20250310170438.550090374@linuxfoundation.org>
+Message-ID: <20250310170507.052998604@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
+commit 189ecdb3e112da703ac0699f4ec76aa78122f911 upstream.
 
-The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
-never released. Use devm_usb_get_phy() to handle this scenario.
+Snapshot the host's DEBUGCTL after disabling IRQs, as perf can toggle
+debugctl bits from IRQ context, e.g. when enabling/disabling events via
+smp_call_function_single().  Taking the snapshot (long) before IRQs are
+disabled could result in KVM effectively clobbering DEBUGCTL due to using
+a stale snapshot.
 
-This issue was identified through code investigation. No issue was found
-without this change.
-
-Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
+Cc: stable@vger.kernel.org
+Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250227222411.3490595-6-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/renesas_usbhs/mod_gadget.c
-+++ b/drivers/usb/renesas_usbhs/mod_gadget.c
-@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
- 		goto usbhs_mod_gadget_probe_err_gpriv;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4993,7 +4993,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu
+ 
+ 	/* Save host pkru register if supported */
+ 	vcpu->arch.host_pkru = read_pkru();
+-	vcpu->arch.host_debugctl = get_debugctlmsr();
+ 
+ 	/* Apply any externally detected TSC adjustments (due to suspend) */
+ 	if (unlikely(vcpu->arch.tsc_offset_adjustment)) {
+@@ -10965,6 +10964,8 @@ static int vcpu_enter_guest(struct kvm_v
+ 		set_debugreg(0, 7);
  	}
  
--	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
-+	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
- 	dev_info(dev, "%stransceiver found\n",
- 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
++	vcpu->arch.host_debugctl = get_debugctlmsr();
++
+ 	guest_timing_enter_irqoff();
  
+ 	for (;;) {
 
 
 
