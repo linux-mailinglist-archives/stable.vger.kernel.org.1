@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-122498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161D9A59FF3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:45:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A73A59FE9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E614189104C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:44:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E80816C6DD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41C32309B6;
-	Mon, 10 Mar 2025 17:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8FB23237F;
+	Mon, 10 Mar 2025 17:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHH2zT8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmB1XWkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09C8223702;
-	Mon, 10 Mar 2025 17:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A931231CB0;
+	Mon, 10 Mar 2025 17:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628665; cv=none; b=uGWSPmBkZqhZTizU2PtWKXqrWNG+pAmi7L3SVSZoFlLZvwWJZZhkVGnoHh+oodDnXZfvWiuQthRCtfw0/rvcWDNHAXIb1ZDtKug3ByrVgTalrpIjHsS45y+ocVixgwbNneP+qbVtlUuhz+rraG+SotcZxwXiKPThlLcgCtdQJEI=
+	t=1741628671; cv=none; b=glC39A4PiVg1tdYwNzgLtPKyx9PFOa5G85j2QtTDhJp/gtSyIdxs2PqvX92r6FOD0N3gSuzaPxCM+k4gs+jNuNSxZMCKliTbvbwUvJUH6S+KJtW9l6wDdHLGCY9HfDwlfNgedlA1VScb6anonsd/ymzapv1CXD1LD8sqWmvMpcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628665; c=relaxed/simple;
-	bh=T5TBNB2KnCy7gIWQPZT0kcfVMtWV+Op0OMXgv394VfE=;
+	s=arc-20240116; t=1741628671; c=relaxed/simple;
+	bh=gLPw1HAPUgotsOidiv+Y/56wKZg4CljjR6xtPZWUUMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4H+lasgUwnGgbAYto73OR1uM2RZcA3xUTTrYBsMZfFxbmmKsEaIZvFwVuRVNeRplRWxSnWPkbatJpKRhBtrGE8IWsD/2wYsmfY3kT6jUFPLdSD1XgP1DP5KpKJZkHFYZcQ0ZTfrco3Y7ZyYHJvtCWpmEWKruHk1oEoT1RfE6So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHH2zT8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7FFC4CEF0;
-	Mon, 10 Mar 2025 17:44:24 +0000 (UTC)
+	 MIME-Version; b=tA2OSjqbTxYAif7BBEjxp8j+F33jCXBxksnY27lxygqm3X9nk6/6/bP0UkIooHZ7XOeauBHmoWAlTR0RiL1k5AQ3p0vYSsvykRXxS+MQ2LteLD1xKPZTHxIQXL7OI4k+cM5vVbaYNipkmUhSNkp0qAXEOYVPnsrmm5EMzJEYufU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmB1XWkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95BBC4CEE5;
+	Mon, 10 Mar 2025 17:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628665;
-	bh=T5TBNB2KnCy7gIWQPZT0kcfVMtWV+Op0OMXgv394VfE=;
+	s=korg; t=1741628671;
+	bh=gLPw1HAPUgotsOidiv+Y/56wKZg4CljjR6xtPZWUUMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHH2zT8Ux2k8NQbwPUV0RgydzOOntNPQgBaKJ5wOwmEGuRjUl3Uwc0B/m66Vlq3Lq
-	 ss2Uy+tsQcD7vpfcGoIF2aWjSSJYX5Opa2T+HN4M9DhT9NUHegsHrvvr8JhyXYUUdY
-	 xaIMzzkOjCDsET2UCnLNPL0W1LdwOmJhoq6KlIxs=
+	b=dmB1XWkXu9QnCNGrMBmMopPLigOvJnY4obFXd9FXNINSBmGJMizcdbaFRjzNESd9o
+	 1mROYx9gvrcRdn1xBPP02IZWXN/KnRmTJo8NVmUH1ALB3k6/1oTo8vXSM7/BskS3Uq
+	 ZFx16sPC44wDO7iiryQo7LM2Y7mdN+8KbS2OzVfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/620] wifi: rtlwifi: fix init_sw_vars leak when probe fails
-Date: Mon, 10 Mar 2025 17:57:53 +0100
-Message-ID: <20250310170546.646248038@linuxfoundation.org>
+Subject: [PATCH 5.15 028/620] wifi: rtlwifi: usb: fix workqueue leak when probe fails
+Date: Mon, 10 Mar 2025 17:57:54 +0100
+Message-ID: <20250310170546.690962074@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,33 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 00260350aed80c002df270c805ca443ec9a719a6 ]
+[ Upstream commit f79bc5c67867c19ce2762e7934c20dbb835ed82c ]
 
-If ieee80211_register_hw fails, the memory allocated for the firmware will
-not be released. Call deinit_sw_vars as the function that undoes the
-allocationes done by init_sw_vars.
+rtl_init_core creates a workqueue that is then assigned to rtl_wq.
+rtl_deinit_core does not destroy it. It is left to rtl_usb_deinit, which
+must be called in the probe error path.
 
-Fixes: cefe3dfdb9f5 ("rtl8192cu: Call ieee80211_register_hw from rtl_usb_probe")
+Fixes: 2ca20f79e0d8 ("rtlwifi: Add usb driver")
+Fixes: 851639fdaeac ("rtlwifi: Modify some USB de-initialize code.")
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-5-cascardo@igalia.com
+Link: https://patch.msgid.link/20241107133322.855112-6-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 038d9bb652b64..1753eccbefdd9 100644
+index 1753eccbefdd9..04590d16874c4 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1082,6 +1082,7 @@ int rtl_usb_probe(struct usb_interface *intf,
- 
- error_init_vars:
+@@ -1084,6 +1084,7 @@ int rtl_usb_probe(struct usb_interface *intf,
  	wait_for_completion(&rtlpriv->firmware_loading_complete);
-+	rtlpriv->cfg->ops->deinit_sw_vars(hw);
+ 	rtlpriv->cfg->ops->deinit_sw_vars(hw);
  error_out:
++	rtl_usb_deinit(hw);
  	rtl_deinit_core(hw);
  error_out2:
+ 	_rtl_usb_io_handler_release(hw);
 -- 
 2.39.5
 
