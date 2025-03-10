@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E008FA59DC7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD79FA5A1F0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52DE07A6CED
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:24:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096651889762
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF570232792;
-	Mon, 10 Mar 2025 17:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75570233D89;
+	Mon, 10 Mar 2025 18:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDpHp4Vs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dT8Leg9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960DC233136;
-	Mon, 10 Mar 2025 17:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326B323236F;
+	Mon, 10 Mar 2025 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627425; cv=none; b=bLKN551pd3F3idnGk1jwoF0MpuOk/RJMFdEm9dalYZYiGRmTLxUkytjBU35ny6KkqCTKDThiJTWPb9HnL0JOyND8p+0bxEvtm34gfZf9Qw4Yls7pwjyRJn4/W1X6JzaGAvrvMEtWBlLxrNlZr+IE2VoacA5UYfbIVI2Zc8w145s=
+	t=1741630491; cv=none; b=gRU0tRPn1hZEaBSFX2HJOC52VgFeQe5pYRrzwiQdAVHbfQ3aQXyEKzqI72EsTbUnkqjLBLZkKEvh+IMrkhjJ7LZS/kf4K+P/4bjMtmzKUFjofWAozevVl8aKKKeNVZZ0pHr5ohQtmFi6p0/sY8DbFqb7UZspH+GhzsEm90lUo9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627425; c=relaxed/simple;
-	bh=qFvTlWBTth0Ja3TyDzgukrwKT4kWlRkyzSNPElwXtV0=;
+	s=arc-20240116; t=1741630491; c=relaxed/simple;
+	bh=R5PWXUU36Qan8LYfT0G9WUVXZ1tAyWb9oNqIuu+etRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfFRZvsGll/566SEUA9TBDryLrkXvYpRTHKwhoH6NLH9GG+ju90xoqBWtb9ab/opgWgOpZ3KX7pyxJKH2LH5Uz6aT/o8YSxrIT/3B8DkcxsKekkD7nQwWRYDuEfwjGhDsobN9LvMUFzKU6SADRhMFQax5nHQkye/Lt3WNh5c5Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDpHp4Vs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15029C4CEE5;
-	Mon, 10 Mar 2025 17:23:44 +0000 (UTC)
+	 MIME-Version; b=RCue5WKmfMjMGmQISRQ/PRjOyzSAUvQVihqwx1Fq6pt0mSA8VPQE4CxDRGvXXfy+IkOII3LM79aIM8zFkDc77pXWTE87NsNfD8eC9H8+VAylwcxl8WHPM9W5L8ME+QHvgyrwd6xSXi27VnRt2mlw1jtTX3qn3Z+ENp0Wx66eoO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dT8Leg9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D38C4CEE5;
+	Mon, 10 Mar 2025 18:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627425;
-	bh=qFvTlWBTth0Ja3TyDzgukrwKT4kWlRkyzSNPElwXtV0=;
+	s=korg; t=1741630490;
+	bh=R5PWXUU36Qan8LYfT0G9WUVXZ1tAyWb9oNqIuu+etRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CDpHp4Vsv4fnCR9x7Zhw1jzzoDwVfHtcLvzHJOmA1I1ofpcTUFOsaltgHBRgeQBFX
-	 nXcLaXin4/OgetxBRk4cPVJ7azHV7n+/7LxvtFKyZZXXFsD3tblwAQ+zk8hU3hXVJH
-	 a5B8U5wYhM0JYnXLyWNr/+QIPqGZkErRrMpB0ku4=
+	b=dT8Leg9yLBJPytuce5MhPpHHlKIxuhm0/K+zZHBS0+xBs9UJmX4lsX7RpNbIbozFN
+	 Hp6uKd5FoX1mpK9pbNI9j4AdPPmq84aVQvqubaI3yNMGEqFaMuoNmkO13+RMQuscaL
+	 SBofLMO04dTsXUqnn3Fb0H9e1IzsoVCyT5J1lPgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 126/269] selftests/damon/damon_nr_regions: sort collected regiosn before checking with min/max boundaries
+	lei he <helei.sig11@bytedance.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 433/620] crypto: testmgr - fix version number of RSA tests
 Date: Mon, 10 Mar 2025 18:04:39 +0100
-Message-ID: <20250310170502.745969271@linuxfoundation.org>
+Message-ID: <20250310170602.690239936@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: lei he <helei.sig11@bytedance.com>
 
-commit 582ccf78f6090d88b1c7066b1e90b3d9ec952d08 upstream.
+[ Upstream commit 0bb8f125253843c445b70fc6ef4fb21aa7b25625 ]
 
-damon_nr_regions.py starts DAMON, periodically collect number of regions
-in snapshots, and see if it is in the requested range.  The check code
-assumes the numbers are sorted on the collection list, but there is no
-such guarantee.  Hence this can result in false positive test success.
-Sort the list before doing the check.
+According to PKCS#1 standard, the 'otherPrimeInfos' field contains
+the information for the additional primes r_3, ..., r_u, in order.
+It shall be omitted if the version is 0 and shall contain at least
+one instance of OtherPrimeInfo if the version is 1, see:
+	https://www.rfc-editor.org/rfc/rfc3447#page-44
 
-Link: https://lkml.kernel.org/r/20250225222333.505646-4-sj@kernel.org
-Fixes: 781497347d1b ("selftests/damon: implement test for min/max_nr_regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace the version number '1' with 0, otherwise, some drivers may
+not pass the run-time tests.
+
+Signed-off-by: lei he <helei.sig11@bytedance.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/damon/damon_nr_regions.py |    1 +
- 1 file changed, 1 insertion(+)
+ crypto/testmgr.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/damon/damon_nr_regions.py
-+++ b/tools/testing/selftests/damon/damon_nr_regions.py
-@@ -65,6 +65,7 @@ def test_nr_regions(real_nr_regions, min
- 
-     test_name = 'nr_regions test with %d/%d/%d real/min/max nr_regions' % (
-             real_nr_regions, min_nr_regions, max_nr_regions)
-+    collected_nr_regions.sort()
-     if (collected_nr_regions[0] < min_nr_regions or
-         collected_nr_regions[-1] > max_nr_regions):
-         print('fail %s' % test_name)
+diff --git a/crypto/testmgr.h b/crypto/testmgr.h
+index c2bad3ee89085..a0ea68e92e69b 100644
+--- a/crypto/testmgr.h
++++ b/crypto/testmgr.h
+@@ -184,7 +184,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ #ifndef CONFIG_CRYPTO_FIPS
+ 	.key =
+ 	"\x30\x81\x9A" /* sequence of 154 bytes */
+-	"\x02\x01\x01" /* version - integer of 1 byte */
++	"\x02\x01\x00" /* version - integer of 1 byte */
+ 	"\x02\x41" /* modulus - integer of 65 bytes */
+ 	"\x00\xAA\x36\xAB\xCE\x88\xAC\xFD\xFF\x55\x52\x3C\x7F\xC4\x52\x3F"
+ 	"\x90\xEF\xA0\x0D\xF3\x77\x4A\x25\x9F\x2E\x62\xB4\xC5\xD9\x9C\xB5"
+@@ -214,7 +214,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ 	}, {
+ 	.key =
+ 	"\x30\x82\x01\x1D" /* sequence of 285 bytes */
+-	"\x02\x01\x01" /* version - integer of 1 byte */
++	"\x02\x01\x00" /* version - integer of 1 byte */
+ 	"\x02\x81\x81" /* modulus - integer of 129 bytes */
+ 	"\x00\xBB\xF8\x2F\x09\x06\x82\xCE\x9C\x23\x38\xAC\x2B\x9D\xA8\x71"
+ 	"\xF7\x36\x8D\x07\xEE\xD4\x10\x43\xA4\x40\xD6\xB6\xF0\x74\x54\xF5"
+@@ -258,7 +258,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ #endif
+ 	.key =
+ 	"\x30\x82\x02\x20" /* sequence of 544 bytes */
+-	"\x02\x01\x01" /* version - integer of 1 byte */
++	"\x02\x01\x00" /* version - integer of 1 byte */
+ 	"\x02\x82\x01\x01\x00" /* modulus - integer of 256 bytes */
+ 	"\xDB\x10\x1A\xC2\xA3\xF1\xDC\xFF\x13\x6B\xED\x44\xDF\xF0\x02\x6D"
+ 	"\x13\xC7\x88\xDA\x70\x6B\x54\xF1\xE8\x27\xDC\xC3\x0F\x99\x6A\xFA"
+-- 
+2.39.5
+
 
 
 
