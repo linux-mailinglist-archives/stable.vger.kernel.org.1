@@ -1,109 +1,136 @@
-Return-Path: <stable+bounces-121703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCD8A59323
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 12:55:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 380DCA593EA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 13:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE59188F611
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 11:55:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1970D3A9A08
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 12:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0670222759B;
-	Mon, 10 Mar 2025 11:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441EB22ACDB;
+	Mon, 10 Mar 2025 12:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JH3G4PqZ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Uc2kSMaJ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FE9226556
-	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 11:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3DC22A7E0;
+	Mon, 10 Mar 2025 12:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741607707; cv=none; b=IcjW+6lONhpoJ7N0X4jF7tXACQql91p082/lPzgLvw+7rs24VSgMUNXd7A3oHq6CU7pOj+T4vameiPl8Iga/NiKG7bR+ls80RPZKO0q/cnZL2v9VM5Y/ScxC/np1YXQQDCo+VRUIkw+JjVLGBvpYHRnh0socWKyoxCiZN/vr7CE=
+	t=1741608697; cv=none; b=FBMkM1xrxk1cEX3oGM67Hm0i6leNRaPbmm3rymIoNqKYEjJ31Zgpug1FlXqqqFJG2sBlZvEe7SOdPx7lFMHDoq4fHFbZCgFwDRE/oQVIdw3owBoaqW5YcIy+6VdrSOWBDht0EZ0nTNf3ZnGF205HFype8DZLDcU9XthaPy0SaGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741607707; c=relaxed/simple;
-	bh=NxoMUgLmNNeeRjTpNBtNJBiiicL+10edgldQBT+XY9M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IPjdsavrtDImFQPshWsfZXBLsxm22OfT42ZSJNG6MGxs1crZiH8IUIwqqnH++osWeW+YOovR17rfpDNy/Owiftqlb8UOjsfDk+r8lmLRX9FOlNvF5t7f1JbNpZXHfGBHYTQKVOuj3ziE19fxN4ND54FIfeLC3VvbFm90AEfBLVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JH3G4PqZ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741607704;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fT9w2XOzXjF2SoHSgAKOvBGlL/Ocqnje7zh5NOuAOsk=;
-	b=JH3G4PqZmPln/J/J6dJ07SJA4APvUd4hKTkntnawjvYe/jQLDxDrSKKRSkkF+Z7SPI5Je0
-	BSHECzeqnhzs8NIJPcwdM2oAAqTpE5eMVLLnFsJr5Gwvz1FpI7JU1+b3f5DNiM6wWo5+S4
-	pP8A3xSJXgxGIlgvdgBh4DYBCD7O5CI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-_mAOt4IYOJK34Z7sz70pLA-1; Mon,
- 10 Mar 2025 07:55:01 -0400
-X-MC-Unique: _mAOt4IYOJK34Z7sz70pLA-1
-X-Mimecast-MFC-AGG-ID: _mAOt4IYOJK34Z7sz70pLA_1741607700
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 52A181955D66;
-	Mon, 10 Mar 2025 11:55:00 +0000 (UTC)
-Received: from localhost (unknown [10.72.120.24])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AFB1B195608F;
-	Mon, 10 Mar 2025 11:54:58 +0000 (UTC)
-From: Ming Lei <ming.lei@redhat.com>
-To: Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org
-Cc: dm-devel@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	stable@vger.kernel.org,
-	Christoph Hellwig <hch@infradead.org>
-Subject: [PATCH V2] block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone
-Date: Mon, 10 Mar 2025 19:54:53 +0800
-Message-ID: <20250310115453.2271109-1-ming.lei@redhat.com>
+	s=arc-20240116; t=1741608697; c=relaxed/simple;
+	bh=B/Zi8tRRc/t7099IxweCQ9wmr8LBRpEjxc54n0VCEzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EHt6UeBru2JrCUHnZyT3FNnyt3RobX7MyTLgCnGeqvuzb47VIq6YmqDNJ4S/rFfw2f7Gyg2SENTXCHJDrMGoZ8zxMeIg6BLutB6arQkbYEunhlk45VB3YABLh8+Cppg0PO5Vwe3LZLpVQjGMlGhK5ogtIf5JGBRCvgAKf3bKIeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Uc2kSMaJ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id BAD8B2111421; Mon, 10 Mar 2025 05:11:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BAD8B2111421
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741608694;
+	bh=wGlVDMVI7jB0uTeQswp0J7PSuFA8+H1jZy79IJtAwJA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Uc2kSMaJZ2d9mRqMGI9uVePTC1T6zyoq47PuXm1KAkLHEGlSFLadmxyf4t7EhXYgc
+	 qJPXVqjZQYPIo2xrAnGCsPXWyKYE9mxrGdN9iUPi4kEpIJvw3IuVpiQ2eLOYX89j/w
+	 NaqXKPle32JCMKpmqeqjhSGIpPlBxgMUGEnOafQU=
+Date: Mon, 10 Mar 2025 05:11:34 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	"stephen@networkplumber.org" <stephen@networkplumber.org>,
+	KY Srinivasan <kys@microsoft.com>,
+	Paul Rosswurm <paulros@microsoft.com>,
+	"olaf@aepfle.de" <olaf@aepfle.de>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"leon@kernel.org" <leon@kernel.org>, Long Li <longli@microsoft.com>,
+	"ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"ast@kernel.org" <ast@kernel.org>,
+	"hawk@kernel.org" <hawk@kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [EXTERNAL] Re: [PATCH net] net: mana: Support holes in device
+ list reply msg
+Message-ID: <20250310121134.GA12177@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1741211181-6990-1-git-send-email-haiyangz@microsoft.com>
+ <20250307195029.1dc74f8e@kernel.org>
+ <MN0PR21MB3437F80F3AD98C82870A9173CAD72@MN0PR21MB3437.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN0PR21MB3437F80F3AD98C82870A9173CAD72@MN0PR21MB3437.namprd21.prod.outlook.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone(),
-otherwise requests cloned by device-mapper multipath will not have the
-proper nr_integrity_segments values set, then BUG() is hit from
-sg_alloc_table_chained().
-
-Fixes: b0fd271d5fba ("block: add request clone interface (v2)")
-Cc: stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
----
-V2:
-	- rewords commit log(Christoph)
-	- add fixes tag(Christoph)
-
- block/blk-mq.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 40490ac88045..005c520d3498 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3314,6 +3314,7 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
- 		rq->special_vec = rq_src->special_vec;
- 	}
- 	rq->nr_phys_segments = rq_src->nr_phys_segments;
-+	rq->nr_integrity_segments = rq_src->nr_integrity_segments;
- 
- 	if (rq->bio && blk_crypto_rq_bio_prep(rq, rq->bio, gfp_mask) < 0)
- 		goto free_and_out;
--- 
-2.47.0
-
+On Sun, Mar 09, 2025 at 10:01:33PM +0000, Haiyang Zhang wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Jakub Kicinski <kuba@kernel.org>
+> > Sent: Friday, March 7, 2025 10:50 PM
+> > To: Haiyang Zhang <haiyangz@microsoft.com>
+> > Cc: linux-hyperv@vger.kernel.org; netdev@vger.kernel.org; Dexuan Cui
+> > <decui@microsoft.com>; stephen@networkplumber.org; KY Srinivasan
+> > <kys@microsoft.com>; Paul Rosswurm <paulros@microsoft.com>;
+> > olaf@aepfle.de; vkuznets@redhat.com; davem@davemloft.net;
+> > wei.liu@kernel.org; edumazet@google.com; pabeni@redhat.com;
+> > leon@kernel.org; Long Li <longli@microsoft.com>;
+> > ssengar@linux.microsoft.com; linux-rdma@vger.kernel.org;
+> > daniel@iogearbox.net; john.fastabend@gmail.com; bpf@vger.kernel.org;
+> > ast@kernel.org; hawk@kernel.org; tglx@linutronix.de;
+> > shradhagupta@linux.microsoft.com; linux-kernel@vger.kernel.org;
+> > stable@vger.kernel.org
+> > Subject: [EXTERNAL] Re: [PATCH net] net: mana: Support holes in device
+> > list reply msg
+> > 
+> > On Wed,  5 Mar 2025 13:46:21 -0800 Haiyang Zhang wrote:
+> > > -	for (i = 0; i < max_num_devs; i++) {
+> > > +	for (i = 0; i < GDMA_DEV_LIST_SIZE &&
+> > > +		found_dev < resp.num_of_devs; i++) {
+> > 
+> > unfortunate mis-indent here, it blend with the code.
+> > checkpatch is right that it should be aligned with opening bracket
+> Will fix it.
+> 
+> > 
+> > >  		dev = resp.devs[i];
+> > >  		dev_type = dev.type;
+> > >
+> > > +		/* Skip empty devices */
+> > > +		if (dev.as_uint32 == 0)
+> > > +			continue;
+> > > +
+> > > +		found_dev++;
+> > > +		dev_info(gc->dev, "Got devidx:%u, type:%u, instance:%u\n", i,
+> > > +			 dev.type, dev.instance);
+> > 
+> > Are you sure you want to print this info message for each device,
+> > each time it's probed? Seems pretty noisy. We generally recommend
+> > printing about _unusual_ things.
+> Ok. I can remove it.
+How about a dev_dbg instead?
+> 
+> Thanks,
+> - Haiyang
 
