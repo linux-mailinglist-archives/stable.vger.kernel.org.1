@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE12A59D0C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFE5A59F6B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FD3516F994
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 824F87A20C1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7515F22FACA;
-	Mon, 10 Mar 2025 17:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F622253FE;
+	Mon, 10 Mar 2025 17:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM+TpcaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNsua/w+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3113C1A315A;
-	Mon, 10 Mar 2025 17:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C6922D4C3;
+	Mon, 10 Mar 2025 17:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627035; cv=none; b=hNMyOfN8Hr8rVSyuxP10NDsoG2UBnQEGaWeRC6fNDGV7ohPXVPVc3C53KDWUM4CzB8ulHcp77vCAfx5SlhoahPTLK0ae7wGeB407j8b71ZeK0CYwb39rBHM6I+/7JcH0nRI9wEWDG42g4m8AwGA0zW8hk7FLk2arTdIlB7z0hwo=
+	t=1741628409; cv=none; b=ftXACL+f9eAQWRtnufleLns4kCw9aBniCp3wRFsvEF1cKVCtVio3RJwtt4UGJclaw4PvJJnf/kyW9YnV/EysFdfMtqBvAszv2i4FY9C7VUXlH4+FoI+6jB3n5MM/LceSuZDgu0Okw7QaSH6Jo6XcS+Q69MYFIZFvA7oUnnUXlYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627035; c=relaxed/simple;
-	bh=Bx5wD8aoApJbSs3isqDCuzcqhd4kg2QC5tqBfg3s6tI=;
+	s=arc-20240116; t=1741628409; c=relaxed/simple;
+	bh=4NlWcc3GQHV3PTbXMswiX3ygcqhb/O/DauxM3TMMWIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUJnzXt7gRwk9maYjobsP5Eo4dEwd1s9hKm7uEv5TaGNydevq28jIq8zfYCyTzXhTA7EO11AK7bohHk92eYsOwDfeYgasNTXDrxFw2bA7VJGCWzF6QYA8h5gyEv+zK9SvbazibpnqU1yfmff6UVJNjfbHAl3LHtYtKlJxnrcuLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM+TpcaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC70DC4CEE5;
-	Mon, 10 Mar 2025 17:17:14 +0000 (UTC)
+	 MIME-Version; b=bLGcCNaVKAoAsOocpwZvfhTGTnnKIs4RmVeQAxSwm+hTCt4WQluO4Bde69atyO44cUqySlQoIta2ZGK1AlkWA6M4SaopwPcbN6MXXc9u9VZT1B5wNsRIdYEf6uKd8nlR61I/EL6fNE4e/kP5J2D/K5PnEfnCDq23iwsANXQYmAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNsua/w+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACE6C4CEE5;
+	Mon, 10 Mar 2025 17:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627035;
-	bh=Bx5wD8aoApJbSs3isqDCuzcqhd4kg2QC5tqBfg3s6tI=;
+	s=korg; t=1741628409;
+	bh=4NlWcc3GQHV3PTbXMswiX3ygcqhb/O/DauxM3TMMWIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RM+TpcaC0W1L+s1tKDZ3/czCV6tILgCn4UiMv2R0kbsT1UKm1KvuN0ncMosT6wEM6
-	 ZM6ET7+lhKX67fWuQzrcp9J2EqoowZvkflAhhljHQ3fNDmhys4GIVcMkh/MlXnb8dt
-	 myR4NqP+jZAE4qIh/j0U65YGZ8Vqg4GH0/2SbMnM=
+	b=QNsua/w+z3vYB0PYj1lVXJcJRht518FVAIlvc+PmONnMZlqnxjno23zGX+aK/Ydia
+	 zblFCGk2b6HVj/RCC1p5NkAuOqFCsrYwoqhqhgIJHJVv7CE3ou8EbhNSQaVawgmL1E
+	 mXPupqPunr0GVl162JS8JB9kb16ziwPjOCA8Y/nQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.13 198/207] arm64: hugetlb: Fix huge_ptep_get_and_clear() for non-present ptes
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/109] ALSA: usx2y: validate nrpacks module parameter on probe
 Date: Mon, 10 Mar 2025 18:06:31 +0100
-Message-ID: <20250310170455.654615251@linuxfoundation.org>
+Message-ID: <20250310170429.437231847@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 49c87f7677746f3c5bd16c81b23700bb6b88bfd4 upstream.
+[ Upstream commit 172a0f509723fe4741d4b8e9190cf434b18320d8 ]
 
-arm64 supports multiple huge_pte sizes. Some of the sizes are covered by
-a single pte entry at a particular level (PMD_SIZE, PUD_SIZE), and some
-are covered by multiple ptes at a particular level (CONT_PTE_SIZE,
-CONT_PMD_SIZE). So the function has to figure out the size from the
-huge_pte pointer. This was previously done by walking the pgtable to
-determine the level and by using the PTE_CONT bit to determine the
-number of ptes at the level.
+The module parameter defines number of iso packets per one URB. User is
+allowed to set any value to the parameter of type int, which can lead to
+various kinds of weird and incorrect behavior like integer overflows,
+truncations, etc. Number of packets should be a small non-negative number.
 
-But the PTE_CONT bit is only valid when the pte is present. For
-non-present pte values (e.g. markers, migration entries), the previous
-implementation was therefore erroneously determining the size. There is
-at least one known caller in core-mm, move_huge_pte(), which may call
-huge_ptep_get_and_clear() for a non-present pte. So we must be robust to
-this case. Additionally the "regular" ptep_get_and_clear() is robust to
-being called for non-present ptes so it makes sense to follow the
-behavior.
+Since this parameter is read-only, its value can be validated on driver
+probe.
 
-Fix this by using the new sz parameter which is now provided to the
-function. Additionally when clearing each pte in a contig range, don't
-gather the access and dirty bits if the pte is not present.
-
-An alternative approach that would not require API changes would be to
-store the PTE_CONT bit in a spare bit in the swap entry pte for the
-non-present case. But it felt cleaner to follow other APIs' lead and
-just pass in the size.
-
-As an aside, PTE_CONT is bit 52, which corresponds to bit 40 in the swap
-entry offset field (layout of non-present pte). Since hugetlb is never
-swapped to disk, this field will only be populated for markers, which
-always set this bit to 0 and hwpoison swap entries, which set the offset
-field to a PFN; So it would only ever be 1 for a 52-bit PVA system where
-memory in that high half was poisoned (I think!). So in practice, this
-bit would almost always be zero for non-present ptes and we would only
-clear the first entry if it was actually a contiguous block. That's
-probably a less severe symptom than if it was always interpreted as 1
-and cleared out potentially-present neighboring PTEs.
-
-Cc: stable@vger.kernel.org
-Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250226120656.2400136-3-ryan.roberts@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250303100413.835-1-m.masimov@mt-integration.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/hugetlbpage.c |   51 ++++++++++++++++----------------------------
- 1 file changed, 19 insertions(+), 32 deletions(-)
+ sound/usb/usx2y/usbusx2y.c      | 11 +++++++++++
+ sound/usb/usx2y/usbusx2y.h      | 26 ++++++++++++++++++++++++++
+ sound/usb/usx2y/usbusx2yaudio.c | 27 ---------------------------
+ 3 files changed, 37 insertions(+), 27 deletions(-)
 
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -100,20 +100,11 @@ static int find_num_contig(struct mm_str
+diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
+index 4c4ce0319d624..0fe989a633769 100644
+--- a/sound/usb/usx2y/usbusx2y.c
++++ b/sound/usb/usx2y/usbusx2y.c
+@@ -151,6 +151,12 @@ static int snd_usx2y_card_used[SNDRV_CARDS];
+ static void snd_usx2y_card_private_free(struct snd_card *card);
+ static void usx2y_unlinkseq(struct snd_usx2y_async_seq *s);
  
- static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
- {
--	int contig_ptes = 0;
-+	int contig_ptes = 1;
++#ifdef USX2Y_NRPACKS_VARIABLE
++int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
++module_param(nrpacks, int, 0444);
++MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
++#endif
++
+ /*
+  * pipe 4 is used for switching the lamps, setting samplerate, volumes ....
+  */
+@@ -433,6 +439,11 @@ static int snd_usx2y_probe(struct usb_interface *intf,
+ 	struct snd_card *card;
+ 	int err;
  
- 	*pgsize = size;
++#ifdef USX2Y_NRPACKS_VARIABLE
++	if (nrpacks < 0 || nrpacks > USX2Y_NRPACKS_MAX)
++		return -EINVAL;
++#endif
++
+ 	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
+ 	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
+ 	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
+diff --git a/sound/usb/usx2y/usbusx2y.h b/sound/usb/usx2y/usbusx2y.h
+index 8d82f5cc2fe1c..0538c457921e6 100644
+--- a/sound/usb/usx2y/usbusx2y.h
++++ b/sound/usb/usx2y/usbusx2y.h
+@@ -7,6 +7,32 @@
  
- 	switch (size) {
--#ifndef __PAGETABLE_PMD_FOLDED
--	case PUD_SIZE:
--		if (pud_sect_supported())
--			contig_ptes = 1;
--		break;
+ #define NRURBS	        2
+ 
++/* Default value used for nr of packs per urb.
++ * 1 to 4 have been tested ok on uhci.
++ * To use 3 on ohci, you'd need a patch:
++ * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
++ * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
++ *
++ * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
++ * Bigger is safer operation, smaller gives lower latencies.
++ */
++#define USX2Y_NRPACKS 4
++
++#define USX2Y_NRPACKS_MAX 1024
++
++/* If your system works ok with this module's parameter
++ * nrpacks set to 1, you might as well comment
++ * this define out, and thereby produce smaller, faster code.
++ * You'd also set USX2Y_NRPACKS to 1 then.
++ */
++#define USX2Y_NRPACKS_VARIABLE 1
++
++#ifdef USX2Y_NRPACKS_VARIABLE
++extern int nrpacks;
++#define nr_of_packs() nrpacks
++#else
++#define nr_of_packs() USX2Y_NRPACKS
++#endif
+ 
+ #define URBS_ASYNC_SEQ 10
+ #define URB_DATA_LEN_ASYNC_SEQ 32
+diff --git a/sound/usb/usx2y/usbusx2yaudio.c b/sound/usb/usx2y/usbusx2yaudio.c
+index 5197599e7aa61..98d0e8edc9832 100644
+--- a/sound/usb/usx2y/usbusx2yaudio.c
++++ b/sound/usb/usx2y/usbusx2yaudio.c
+@@ -28,33 +28,6 @@
+ #include "usx2y.h"
+ #include "usbusx2y.h"
+ 
+-/* Default value used for nr of packs per urb.
+- * 1 to 4 have been tested ok on uhci.
+- * To use 3 on ohci, you'd need a patch:
+- * look for "0000425-linux-2.6.9-rc4-mm1_ohci-hcd.patch.gz" on
+- * "https://bugtrack.alsa-project.org/alsa-bug/bug_view_page.php?bug_id=0000425"
+- *
+- * 1, 2 and 4 work out of the box on ohci, if I recall correctly.
+- * Bigger is safer operation, smaller gives lower latencies.
+- */
+-#define USX2Y_NRPACKS 4
+-
+-/* If your system works ok with this module's parameter
+- * nrpacks set to 1, you might as well comment
+- * this define out, and thereby produce smaller, faster code.
+- * You'd also set USX2Y_NRPACKS to 1 then.
+- */
+-#define USX2Y_NRPACKS_VARIABLE 1
+-
+-#ifdef USX2Y_NRPACKS_VARIABLE
+-static int nrpacks = USX2Y_NRPACKS; /* number of packets per urb */
+-#define  nr_of_packs() nrpacks
+-module_param(nrpacks, int, 0444);
+-MODULE_PARM_DESC(nrpacks, "Number of packets per URB.");
+-#else
+-#define nr_of_packs() USX2Y_NRPACKS
 -#endif
--	case PMD_SIZE:
--		contig_ptes = 1;
--		break;
- 	case CONT_PMD_SIZE:
- 		*pgsize = PMD_SIZE;
- 		contig_ptes = CONT_PMDS;
-@@ -122,6 +113,8 @@ static inline int num_contig_ptes(unsign
- 		*pgsize = PAGE_SIZE;
- 		contig_ptes = CONT_PTES;
- 		break;
-+	default:
-+		WARN_ON(!__hugetlb_valid_size(size));
- 	}
- 
- 	return contig_ptes;
-@@ -163,24 +156,23 @@ static pte_t get_clear_contig(struct mm_
- 			     unsigned long pgsize,
- 			     unsigned long ncontig)
+-
+ static int usx2y_urb_capt_retire(struct snd_usx2y_substream *subs)
  {
--	pte_t orig_pte = __ptep_get(ptep);
--	unsigned long i;
-+	pte_t pte, tmp_pte;
-+	bool present;
- 
--	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
--		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
--
--		/*
--		 * If HW_AFDBM is enabled, then the HW could turn on
--		 * the dirty or accessed bit for any page in the set,
--		 * so check them all.
--		 */
--		if (pte_dirty(pte))
--			orig_pte = pte_mkdirty(orig_pte);
--
--		if (pte_young(pte))
--			orig_pte = pte_mkyoung(orig_pte);
-+	pte = __ptep_get_and_clear(mm, addr, ptep);
-+	present = pte_present(pte);
-+	while (--ncontig) {
-+		ptep++;
-+		addr += pgsize;
-+		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
-+		if (present) {
-+			if (pte_dirty(tmp_pte))
-+				pte = pte_mkdirty(pte);
-+			if (pte_young(tmp_pte))
-+				pte = pte_mkyoung(pte);
-+		}
- 	}
--	return orig_pte;
-+	return pte;
- }
- 
- static pte_t get_clear_contig_flush(struct mm_struct *mm,
-@@ -401,13 +393,8 @@ pte_t huge_ptep_get_and_clear(struct mm_
- {
- 	int ncontig;
- 	size_t pgsize;
--	pte_t orig_pte = __ptep_get(ptep);
--
--	if (!pte_cont(orig_pte))
--		return __ptep_get_and_clear(mm, addr, ptep);
--
--	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
- 
-+	ncontig = num_contig_ptes(sz, &pgsize);
- 	return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
- }
- 
+ 	struct urb	*urb = subs->completed_urb;
+-- 
+2.39.5
+
 
 
 
