@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-121878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F14EA59CC4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DF5A59EAB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0DC188860D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39F381657FC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AD117CA12;
-	Mon, 10 Mar 2025 17:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B28231A51;
+	Mon, 10 Mar 2025 17:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukXMNiW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrbA2MXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3642F230BE3;
-	Mon, 10 Mar 2025 17:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8804B1A7264;
+	Mon, 10 Mar 2025 17:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626891; cv=none; b=YwhrJtq0oxJbDTOM88QJMbG7vHxp0ZSlCsZSOU3QXtvNPPDStwHik9jbM4plJ6Za65DLNZoRvSTL+KfHrAdWcoZIaQU6+nISetHwlZI1RZAmOCPSCLo0S1f8OlLQyBM+ehdEaJ5pfD/Io/CXJnvboXlsZX862p4/+g+yKDijwQo=
+	t=1741627984; cv=none; b=bCo4X4cHk1d+03ssbxwzeakbSgz4Jo7HQ/UREoZ57smSiMGu9bsBn49HRCN4oe997ZdyYVp8/3wr8QJbW8YC/04u7SGBmrtpNxLrILalzSdVIvTyJkgiRZS8uJQfrld/2X18wfGcIEbRgBLJRLZyBuvqgV7Gfdsju8FbW7SqSRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626891; c=relaxed/simple;
-	bh=N87DRX63Opy6Ag09OgvysO5lNcxMwSi8f7QzeigOUoo=;
+	s=arc-20240116; t=1741627984; c=relaxed/simple;
+	bh=tPMeJnm1F4GHXdfx8QdsJb6qRw7BKE6xLXYnQcjJbr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkkCGaSJP77OmqtYKd3qhB90rQ0qeKg0qChBfWiW+9sWEhh1JmFLIhfeJptd7o6b4wDLvIAPv1bdPJrg1/15d1+poBCAF8f0GYE+m0J9iEaf1j0dnmKVSZSid/OyN4IoqZBZm8CYovjma3iuYWptaMDnqHyN2L9f+99t17SbI+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukXMNiW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4A8C4CEE5;
-	Mon, 10 Mar 2025 17:14:50 +0000 (UTC)
+	 MIME-Version; b=GLtD7X8Cbh8sslZLG4iGS65MmYzAvjdtMf+47NKYttMOaVSIROUjECDjWbJdjHXdv03Hk7St/glpUsaRiQmr5A3//bUZW1Z80dM1+uSnKa+ZfBbQsZsEqE2/MdJQBwDsCTutguwqfRG9jMGkmBiomQyU+ptAjB5ky+RaT9i3uM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrbA2MXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13368C4CEE5;
+	Mon, 10 Mar 2025 17:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626891;
-	bh=N87DRX63Opy6Ag09OgvysO5lNcxMwSi8f7QzeigOUoo=;
+	s=korg; t=1741627984;
+	bh=tPMeJnm1F4GHXdfx8QdsJb6qRw7BKE6xLXYnQcjJbr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukXMNiW0BMtr9+U8pb1YLpNywTfQQXSyS1q+mr4lzz5ZUaW8BhbhN3aDJJubVmf+G
-	 29c+u61b2hlODFSfUv91vZQCYH9aMXFdlauwUt1i9d+ps1DHxJUpBgbk3v22Idi0o0
-	 ue6ELUjHtSTHUVtaQNfi4W4k55LMeTLntgwKlARg=
+	b=vrbA2MXmhUW955QoVzVIBT8PxhIymLdy03y3o3E3FHvX7ncdgGevRbMxETnhRtr6f
+	 lofXRbVbUQYNLjD9wyn761CqpVCaS7flSVJY7vdw/T5CAyPMjpDx95YHC3NM+vjKB0
+	 ONy7oQeFH2ffjjvSFWWe3sgCq0d88dcZ47JJT8DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Herbert <tom@herbertland.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 149/207] net: ipv6: fix missing dst ref drop in ila lwtunnel
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 048/145] Bluetooth: Add check for mgmt_alloc_skb() in mgmt_device_connected()
 Date: Mon, 10 Mar 2025 18:05:42 +0100
-Message-ID: <20250310170453.720346828@linuxfoundation.org>
+Message-ID: <20250310170436.676970369@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 5da15a9c11c1c47ef573e6805b60a7d8a1687a2a ]
+commit d8df010f72b8a32aaea393e36121738bb53ed905 upstream.
 
-Add missing skb_dst_drop() to drop reference to the old dst before
-adding the new dst to the skb.
+Add check for the return value of mgmt_alloc_skb() in
+mgmt_device_connected() to prevent null pointer dereference.
 
-Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
-Cc: Tom Herbert <tom@herbertland.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250305081655.19032-1-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e96741437ef0 ("Bluetooth: mgmt: Make use of mgmt_send_event_skb in MGMT_EV_DEVICE_CONNECTED")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ila/ila_lwt.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/mgmt.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index ac4bcc623603a..7d574f5132e2f 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -96,6 +96,7 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		}
- 	}
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -9679,6 +9679,9 @@ void mgmt_device_connected(struct hci_de
+ 				     sizeof(*ev) + (name ? eir_precalc_len(name_len) : 0) +
+ 				     eir_precalc_len(sizeof(conn->dev_class)));
  
-+	skb_dst_drop(skb);
- 	skb_dst_set(skb, dst);
- 	return dst_output(net, sk, skb);
- 
--- 
-2.39.5
-
++	if (!skb)
++		return;
++
+ 	ev = skb_put(skb, sizeof(*ev));
+ 	bacpy(&ev->addr.bdaddr, &conn->dst);
+ 	ev->addr.type = link_to_bdaddr(conn->type, conn->dst_type);
 
 
 
