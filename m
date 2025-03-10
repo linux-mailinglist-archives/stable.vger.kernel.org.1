@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-122011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F903A59D7A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F465A5A17A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ECFF16F45D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1761A1893A51
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF7C2309B0;
-	Mon, 10 Mar 2025 17:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9B422D4FD;
+	Mon, 10 Mar 2025 18:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5ZTPix7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmgzH2Re"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3C222D799;
-	Mon, 10 Mar 2025 17:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE7417A2E8;
+	Mon, 10 Mar 2025 18:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627272; cv=none; b=eQrdp7kgs9Xp1NAvSL0ug5qEu9Msy3Mrpja7ArgHbZyGfzhTsls7Pin3k29dTKuqLYAHVXYlCDMdcNl3z1oExfq5fssXBl/AgFoDhpnhPDPwuSRINpii/DEhLyyoTl8P9yWf0BlUvZmy0ZjmXUOEjkyBAPRXr8FENXn/5zT/shY=
+	t=1741629687; cv=none; b=DhExOWEuzaoip20ZoHUtuTTRfJyPgvInxa2YYLQ4uq6FJjpPph3d4C05aTMgKux4Zd7+3dGUT+V2BG/5brvyNi2YzOnikhWFCB9M9KFNlSUPLh1+Pu4bFgKvUdo8dn94IFWqlZuZ9MFnYtJMc+s4x+yXPH5FXgtNfCmln6PY63Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627272; c=relaxed/simple;
-	bh=8fsXcnz0IrFQreGsAWF7yVwcbpUzoeM/6l5+3e4ejpM=;
+	s=arc-20240116; t=1741629687; c=relaxed/simple;
+	bh=MnA5bXLNTIQd+XqIHFO7KlBZIKjEXQcSovokQANi9/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hfu3Vk8XH+JH2IxNXAhyH6Q6TqHw1PpSoksHVE1PaljpYYfxZSQzNINMkzS8IClkcZ7DDyaFGZsMP2C0xJ89beJPKSpYKS14ok0nAjZNuc9mfHH1e4H4nRlUTBcHmmROktVwht5R9M0VEQQ24oqJu50Q3yKP6rTXxxXz3xuZ5fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5ZTPix7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DE6C4CEE5;
-	Mon, 10 Mar 2025 17:21:11 +0000 (UTC)
+	 MIME-Version; b=jt3hkqyDZ9wgPkSY1U/gT8fsW0UgJ06pboMGFwR1oenAxV85JRmOWGfmJPLFEi416hdCIDzXXHn5ZfATj8TCa0+UlFb9bNBoZnldQCdW1g0cVpdVjwydvZ4KUQchG6Bt+Kyc4gPcqA8er4blD5X3wkiQen196tb+OPQk4rG9C8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmgzH2Re; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B7FC4CEE5;
+	Mon, 10 Mar 2025 18:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627272;
-	bh=8fsXcnz0IrFQreGsAWF7yVwcbpUzoeM/6l5+3e4ejpM=;
+	s=korg; t=1741629687;
+	bh=MnA5bXLNTIQd+XqIHFO7KlBZIKjEXQcSovokQANi9/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5ZTPix7bvjYbNlPbES47anGFTBuBytpol6vW3ZAs1xKXq//ELH6LIycjLOer8A1t
-	 cUwCUD/7wyp1bQCOVogooycP0wbaXt/aNLMm9rclAEPVU6rpGe/n9yPs5re4Y7ylio
-	 iIUmjACxouc2KsiwK0TZn49iyj02AGfUZortEpm8=
+	b=nmgzH2RejUslPJlaEvFt/xXBtVyKI8hNHL/4NDN2kSoCr/fzqJgJmzvnwIuo8kzIL
+	 FzmOwEi8qV7Aa8l0uCPxwUS+7tpNVR+I95eLKXOGjNPrDwvz4xjcOOnV/e0mfL/Y1H
+	 h+NinN7oEbTnoJ54QJFwLqHRdrl346ATyOz/5/hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Asahi Lina <lina@asahilina.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neal Gompa <neal@gompa.dev>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 071/269] rust: alloc: Fix `ArrayLayout` allocations
-Date: Mon, 10 Mar 2025 18:03:44 +0100
-Message-ID: <20250310170500.560529012@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.15 379/620] efi: Avoid cold plugged memory for placing the kernel
+Date: Mon, 10 Mar 2025 18:03:45 +0100
+Message-ID: <20250310170600.554538101@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +60,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asahi Lina <lina@asahilina.net>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit b7ed2b6f4e8d7f64649795e76ee9db67300de8eb upstream.
+commit ba69e0750b0362870294adab09339a0c39c3beaf upstream.
 
-We were accidentally allocating a layout for the *square* of the object
-size due to a variable shadowing mishap.
+UEFI 2.11 introduced EFI_MEMORY_HOT_PLUGGABLE to annotate system memory
+regions that are 'cold plugged' at boot, i.e., hot pluggable memory that
+is available from early boot, and described as system RAM by the
+firmware.
 
-Fixes memory bloat and page allocation failures in drm/asahi.
+Existing loaders and EFI applications running in the boot context will
+happily use this memory for allocating data structures that cannot be
+freed or moved at runtime, and this prevents the memory from being
+unplugged. Going forward, the new EFI_MEMORY_HOT_PLUGGABLE attribute
+should be tested, and memory annotated as such should be avoided for
+such allocations.
 
-Reported-by: Janne Grunau <j@jannau.net>
-Fixes: 9e7bbfa18276 ("rust: alloc: introduce `ArrayLayout`")
-Signed-off-by: Asahi Lina <lina@asahilina.net>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Link: https://lore.kernel.org/r/20241123-rust-fix-arraylayout-v1-1-197e64c95bd4@asahilina.net
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+In the EFI stub, there are a couple of occurrences where, instead of the
+high-level AllocatePages() UEFI boot service, a low-level code sequence
+is used that traverses the EFI memory map and carves out the requested
+number of pages from a free region. This is needed, e.g., for allocating
+as low as possible, or for allocating pages at random.
+
+While AllocatePages() should presumably avoid special purpose memory and
+cold plugged regions, this manual approach needs to incorporate this
+logic itself, in order to prevent the kernel itself from ending up in a
+hot unpluggable region, preventing it from being unplugged.
+
+So add the EFI_MEMORY_HOTPLUGGABLE macro definition, and check for it
+where appropriate.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc/layout.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/efi/efi.c                 |    6 ++++--
+ drivers/firmware/efi/libstub/randomalloc.c |    3 +++
+ drivers/firmware/efi/libstub/relocate.c    |    3 +++
+ include/linux/efi.h                        |    1 +
+ 4 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/alloc/layout.rs
-+++ b/rust/kernel/alloc/layout.rs
-@@ -45,7 +45,7 @@ impl<T> ArrayLayout<T> {
-     /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
-     pub const fn new(len: usize) -> Result<Self, LayoutError> {
-         match len.checked_mul(core::mem::size_of::<T>()) {
--            Some(len) if len <= ISIZE_MAX => {
-+            Some(size) if size <= ISIZE_MAX => {
-                 // INVARIANT: We checked above that `len * size_of::<T>() <= isize::MAX`.
-                 Ok(Self {
-                     len,
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -774,13 +774,15 @@ char * __init efi_md_typeattr_format(cha
+ 		     EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
+ 		     EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
+ 		     EFI_MEMORY_NV | EFI_MEMORY_SP | EFI_MEMORY_CPU_CRYPTO |
+-		     EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
++		     EFI_MEMORY_MORE_RELIABLE | EFI_MEMORY_HOT_PLUGGABLE |
++		     EFI_MEMORY_RUNTIME))
+ 		snprintf(pos, size, "|attr=0x%016llx]",
+ 			 (unsigned long long)attr);
+ 	else
+ 		snprintf(pos, size,
+-			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
++			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
+ 			 attr & EFI_MEMORY_RUNTIME		? "RUN" : "",
++			 attr & EFI_MEMORY_HOT_PLUGGABLE	? "HP"  : "",
+ 			 attr & EFI_MEMORY_MORE_RELIABLE	? "MR"  : "",
+ 			 attr & EFI_MEMORY_CPU_CRYPTO   	? "CC"  : "",
+ 			 attr & EFI_MEMORY_SP			? "SP"  : "",
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -24,6 +24,9 @@ static unsigned long get_entry_num_slots
+ 	if (md->type != EFI_CONVENTIONAL_MEMORY)
+ 		return 0;
+ 
++	if (md->attribute & EFI_MEMORY_HOT_PLUGGABLE)
++		return 0;
++
+ 	if (efi_soft_reserve_enabled() &&
+ 	    (md->attribute & EFI_MEMORY_SP))
+ 		return 0;
+--- a/drivers/firmware/efi/libstub/relocate.c
++++ b/drivers/firmware/efi/libstub/relocate.c
+@@ -62,6 +62,9 @@ efi_status_t efi_low_alloc_above(unsigne
+ 		if (desc->type != EFI_CONVENTIONAL_MEMORY)
+ 			continue;
+ 
++		if (desc->attribute & EFI_MEMORY_HOT_PLUGGABLE)
++			continue;
++
+ 		if (efi_soft_reserve_enabled() &&
+ 		    (desc->attribute & EFI_MEMORY_SP))
+ 			continue;
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -125,6 +125,7 @@ typedef	struct {
+ #define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
+ #define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* soft reserved */
+ #define EFI_MEMORY_CPU_CRYPTO	((u64)0x0000000000080000ULL)	/* supports encryption */
++#define EFI_MEMORY_HOT_PLUGGABLE	BIT_ULL(20)	/* supports unplugging at runtime */
+ #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
+ #define EFI_MEMORY_DESCRIPTOR_VERSION	1
+ 
 
 
 
