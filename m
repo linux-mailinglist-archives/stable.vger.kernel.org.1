@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94035A59FBF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB96A5A2B1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D18C1668CD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F553ADA56
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4D422B8A9;
-	Mon, 10 Mar 2025 17:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FA72309B0;
+	Mon, 10 Mar 2025 18:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfXS604T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRXWh4It"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAE51DE89C;
-	Mon, 10 Mar 2025 17:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D362E22F3BD;
+	Mon, 10 Mar 2025 18:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628595; cv=none; b=bdqCt7jaheQWEIzbhaquRTrfIktwmleiivAMHfrSjhL89dmJQzN1638yFKV3qrJDfQgqNvaxCgHkseJYujsAcZnd4vW8MplOodwuswv5jsjbpMSZV06Q32UeiQ4dl+LfkfQKsYYYZC6Gz70Jk1JkJpa5GZIFEVp7EElAJxX+rSI=
+	t=1741630947; cv=none; b=e2PFAiNXteFSCDgsTTwmG91OGaTf1qu4Su8hjR4BTNqvstqMOOlwemmtEWLAGFkww+mG1EoETkpx3gxpVPgvSGnbxazRkZ8slelXh6kPk5zFNx3Ja1t5+fBH61RpekKriRZX0nMYfsS5ar065y3hqskbgcqZQlYE5Wi6m3FghX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628595; c=relaxed/simple;
-	bh=kMPrw9clAIdvgg+edJjpI8euTXmoiwkjYfZQwArK2iI=;
+	s=arc-20240116; t=1741630947; c=relaxed/simple;
+	bh=77YyvaKIfmsmWUPv9rLOqWYM/NZKYGtAbOajXh5ZBPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oz4gk6VPF3CAtS+8njyYt17UwJo9Erc95Q/eMLBqfd61mz+8r0G5iIAhanhe0lk/2sm6H2099yC3utt9k4tKaJGbb6jG7bq1ES2YZygmawCjQH8V6VRbc1YmE6X2W3ep8bn9UnpypNwLLN8SLvWO2lHAtaDyvx/Yy9iu00F+ars=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfXS604T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB28C4CEE5;
-	Mon, 10 Mar 2025 17:43:15 +0000 (UTC)
+	 MIME-Version; b=u3L/HvXX6MFeKr0R0z5036CloszfpfBlWV1xu3Sjn/bmDX8vTBS9GeU/euaYNEKdqMPjc3W+Vt521CfRN0OC7NMEZ1m4a+czhOPVuo0G9pJISej28TRE+YSZdehlTxoC9z2xeMJvTutMf/ivMh8cnzjDAog2PpcanSk8YrDtWhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRXWh4It; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3413C4CEE5;
+	Mon, 10 Mar 2025 18:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628595;
-	bh=kMPrw9clAIdvgg+edJjpI8euTXmoiwkjYfZQwArK2iI=;
+	s=korg; t=1741630947;
+	bh=77YyvaKIfmsmWUPv9rLOqWYM/NZKYGtAbOajXh5ZBPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfXS604TuTE7OcDr5zC4e+z5EblsDZwFj9ySXIUibPF+P3lUwOJ2lgoRHVZcnDU+X
-	 mcqeOGck9JRg+ZZEFv9zles8zkUZoPonX5JADanM2mrrYK5Fj6l+mqImZqg63w16CE
-	 ZPUZqszR5rfSE58a85WEfwRj9Qc4jm/Et+4WHuLE=
+	b=QRXWh4ItHETCpVWwBY51QwCxHoamgXbw9W3cWkgTwFKGCY2bucygPXOFqQvTrnIAy
+	 IdeUXRpK3URaKHeKt190zd1vL05TAbql0vDTK2xBm4tFnGEuj0tLnPTWKe+Tn85BKm
+	 N6WPN+qoS1FEX7aqpmxYeC9xpo6GPef8MKwwT/e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 090/109] iio: dac: ad3552r: clear reset status flag
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 5.15 588/620] usb: dwc3: gadget: Prevent irq storm when TH re-executes
 Date: Mon, 10 Mar 2025 18:07:14 +0100
-Message-ID: <20250310170431.144732184@linuxfoundation.org>
+Message-ID: <20250310170608.740927151@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit e17b9f20da7d2bc1f48878ab2230523b2512d965 upstream.
+commit 69c58deec19628c8a686030102176484eb94fed4 upstream.
 
-Clear reset status flag, to keep error status register clean after reset
-(ad3552r manual, rev B table 38).
+While commit d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in
+event cache") makes sure that top half(TH) does not end up overwriting the
+cached events before processing them when the TH gets invoked more than one
+time, returning IRQ_HANDLED results in occasional irq storm where the TH
+hogs the CPU. The irq storm can be prevented by the flag before event
+handler busy is cleared. Default enable interrupt moderation in all
+versions which support them.
 
-Reset error flag was left to 1, so debugging registers, the "Error
-Status Register" was dirty (0x01). It is important to clear this bit, so
-if there is any reset event over normal working mode, it is possible to
-detect it.
+ftrace event stub during dwc3 irq storm:
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000866: irq_handler_exit: irq=14 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000872: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000874: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000881: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000883: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000889: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000892: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000898: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000901: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000907: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000909: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000915: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000918: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000924: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000927: irq_handler_exit: irq=504 ret=handled
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000933: irq_handler_entry: irq=504 name=dwc3
+    irq/504_dwc3-1111  ( 1111) [000] .... 70.000935: irq_handler_exit: irq=504 ret=handled
+    ....
 
-Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250125-wip-bl-ad3552r-clear-reset-v2-1-aa3a27f3ff8c@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable <stable@kernel.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Fixes: d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in event cache")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250216223003.3568039-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad3552r.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/dwc3/core.c   |   16 ++++++----------
+ drivers/usb/dwc3/gadget.c |   10 +++++++---
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -703,6 +703,12 @@ static int ad3552r_reset(struct ad3552r_
- 		return ret;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1456,8 +1456,6 @@ static void dwc3_get_properties(struct d
+ 	dwc->tx_thr_num_pkt_prd = tx_thr_num_pkt_prd;
+ 	dwc->tx_max_burst_prd = tx_max_burst_prd;
+ 
+-	dwc->imod_interval = 0;
+-
+ 	dwc->tx_fifo_resize_max_num = tx_fifo_resize_max_num;
+ }
+ 
+@@ -1475,21 +1473,19 @@ static void dwc3_check_params(struct dwc
+ 	unsigned int hwparam_gen =
+ 		DWC3_GHWPARAMS3_SSPHY_IFC(dwc->hwparams.hwparams3);
+ 
+-	/* Check for proper value of imod_interval */
+-	if (dwc->imod_interval && !dwc3_has_imod(dwc)) {
+-		dev_warn(dwc->dev, "Interrupt moderation not supported\n");
+-		dwc->imod_interval = 0;
+-	}
+-
+ 	/*
++	 * Enable IMOD for all supporting controllers.
++	 *
++	 * Particularly, DWC_usb3 v3.00a must enable this feature for
++	 * the following reason:
++	 *
+ 	 * Workaround for STAR 9000961433 which affects only version
+ 	 * 3.00a of the DWC_usb3 core. This prevents the controller
+ 	 * interrupt from being masked while handling events. IMOD
+ 	 * allows us to work around this issue. Enable it for the
+ 	 * affected version.
+ 	 */
+-	if (!dwc->imod_interval &&
+-	    DWC3_VER_IS(DWC3, 300A))
++	if (dwc3_has_imod((dwc)))
+ 		dwc->imod_interval = 1;
+ 
+ 	/* Check the maximum_speed parameter */
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4297,14 +4297,18 @@ static irqreturn_t dwc3_process_event_bu
+ 	reg &= ~DWC3_GEVNTSIZ_INTMASK;
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0), reg);
+ 
++	evt->flags &= ~DWC3_EVENT_PENDING;
++	/*
++	 * Add an explicit write memory barrier to make sure that the update of
++	 * clearing DWC3_EVENT_PENDING is observed in dwc3_check_event_buf()
++	 */
++	wmb();
++
+ 	if (dwc->imod_interval) {
+ 		dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), DWC3_GEVNTCOUNT_EHB);
+ 		dwc3_writel(dwc->regs, DWC3_DEV_IMOD(0), dwc->imod_interval);
  	}
  
-+	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
-+	ret = ad3552r_write_reg(dac, AD3552R_REG_ADDR_ERR_STATUS,
-+				AD3552R_MASK_RESET_STATUS);
-+	if (ret)
-+		return ret;
-+
- 	return ad3552r_update_reg_field(dac,
- 					addr_mask_map[AD3552R_ADDR_ASCENSION][0],
- 					addr_mask_map[AD3552R_ADDR_ASCENSION][1],
+-	/* Keep the clearing of DWC3_EVENT_PENDING at the end */
+-	evt->flags &= ~DWC3_EVENT_PENDING;
+-
+ 	return ret;
+ }
+ 
 
 
 
