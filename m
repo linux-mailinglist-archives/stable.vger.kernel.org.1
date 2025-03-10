@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25D2A59E9E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936CCA5A211
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3451B1652CC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D7EA7A9496
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE22233707;
-	Mon, 10 Mar 2025 17:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD37A235BFF;
+	Mon, 10 Mar 2025 18:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/xXwJlq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6lODSxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E9F233730;
-	Mon, 10 Mar 2025 17:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B55E1B395F;
+	Mon, 10 Mar 2025 18:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627931; cv=none; b=dVAFYK71XXAYTOQyQvyYMTjYG8S0Af8/hxp3iHc/ZKUa23qaPSAOVfZsWcfChhc1H6P/huajWDQin4gNVtkbrYqCAUJwSvwGnlQi2QLdZLR8OGAxw4i+qTko9OY6RoEC77Oy/gz/NpeJ7fq1xxjPUwQNDCd48Msg+FouG2H0808=
+	t=1741630548; cv=none; b=eOZ4VishOYda5INDg0vkqVOU7wWgqKok+ydLoLS87Whfr52LFE/vqyiFug261ksT5H7Zo9tK+Q8LuSPFLLu5kBcSCQ5LIWBMjQKHHgxmB4Quc1XZb4xTJlOw1FgwzWnLWEEs1hVgR9kvuoiaIa4kmzgTnaA1doIzl0CkZpUbg84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627931; c=relaxed/simple;
-	bh=sOMgDt7kNmnFpbyuxFpohABtBhGusot73WtvIjS/pSw=;
+	s=arc-20240116; t=1741630548; c=relaxed/simple;
+	bh=R9ydNzQz7gndgdRH5TRTH6jaW3ekFff6+G68y3pZwvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6clYW3YOKHSsVRbdaq61hhPVch+WTDSiZgO4Ky37DA17h7EMn3JmWq4gTJcDAKePszvIlozn4Ee0Gr3SstGZLfANwbva/ohmPues3HGIiECOCH04tdTOajV7Zk8SR5vLknWL77IX4X+NFHIdm8CYe92nA8czrcsz7cP6pz7KNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/xXwJlq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E27C4CEE5;
-	Mon, 10 Mar 2025 17:32:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aTAbjEBSuGUnCEGtV0pmVJkw1dTom1zwb/VtG08nyX4x1FVMLs/LGNUthoXx2BKCdPbnRM4WmciiJZn0JVR3uY112tiBXGcK/4RfB1g4xObz3uU0v0AR0IMDBWhidShHZ7AXFn1KL5f3gEXg1XqkQpWHltLYdyNQS0c8UfwDWR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6lODSxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A79AC4CEE5;
+	Mon, 10 Mar 2025 18:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627930;
-	bh=sOMgDt7kNmnFpbyuxFpohABtBhGusot73WtvIjS/pSw=;
+	s=korg; t=1741630548;
+	bh=R9ydNzQz7gndgdRH5TRTH6jaW3ekFff6+G68y3pZwvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/xXwJlq9seoBWw4lkzLx5K4k2Yi5OoC97vMokWNegoHhqe9C8FVTEClLqTBs4MlO
-	 z7Wi0HU8ZO49KfkP5emnxPovKNXyHnKo/K30RvRYrkrVOjfWZ9/gmyJqGa36f/Zj/p
-	 kW/Jv60SfEXIOs10FZx+pPqb+d0qUeeLGUGHQhZ8=
+	b=X6lODSxd9UpPS/6f+dy3i857LeDe8v0gL5t1p0sCNyVo6AccMwgcfbaZxClBUvdkR
+	 xFDw5/mgBlpI+GuXex3kwX0dopYDpHTocyR2PKZx43qCMOyib27uXbF5HoQBPfugr3
+	 or+TEB2mySLFs6NhdbCntaHHGPDTK+v9cZez0dpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/145] drm/i915/xe2lpd: Move D2D enable/disable
+Subject: [PATCH 5.15 451/620] soc/mediatek: mtk-devapc: Convert to platform remove callback returning void
 Date: Mon, 10 Mar 2025 18:04:57 +0100
-Message-ID: <20250310170434.878043455@linuxfoundation.org>
+Message-ID: <20250310170603.393582044@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,133 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit d5c7854b50e634097da5dd6d221997ecf31ec8c1 ]
+[ Upstream commit a129ac3555c0dca6f04ae404dc0f0790656587fb ]
 
-Bits to enable/disable and check state for D2D moved from
-XELPDP_PORT_BUF_CTL1 to DDI_BUF_CTL (now named DDI_CTL_DE in the spec).
-Make the functions mtl_ddi_disable_d2d() and mtl_ddi_enable_d2d generic
-to work with multiple reg location and bitfield layout.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new() which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-v2: Set/Clear XE2LPD_DDI_BUF_D2D_LINK_ENABLE in saved_port_bits when
-    enabling/disabling D2D so DDI_BUF_CTL is correctly programmed in
-    other places without overriding these bits (Clint)
-v3: Leave saved_port_bits alone as those bits are not meant to be
-    modified outside of the port initialization. Rather propagate the
-    additional bit in DDI_BUF_CTL to be set when that register is
-    written again after D2D is enabled.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240126224638.4132016-2-lucas.demarchi@intel.com
-Stable-dep-of: 166ce267ae3f ("drm/i915/ddi: Fix HDMI port width programming in DDI_BUF_CTL")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230925095532.1984344-15-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Stable-dep-of: c9c0036c1990 ("soc: mediatek: mtk-devapc: Fix leaking IO map on driver remove")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_ddi.c | 44 ++++++++++++++++++------
- drivers/gpu/drm/i915/i915_reg.h          |  2 ++
- 2 files changed, 36 insertions(+), 10 deletions(-)
+ drivers/soc/mediatek/mtk-devapc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index b347f90623494..9ac9df70e713c 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -2357,13 +2357,22 @@ mtl_ddi_enable_d2d(struct intel_encoder *encoder)
- {
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 	enum port port = encoder->port;
-+	i915_reg_t reg;
-+	u32 set_bits, wait_bits;
- 
--	intel_de_rmw(dev_priv, XELPDP_PORT_BUF_CTL1(port), 0,
--		     XELPDP_PORT_BUF_D2D_LINK_ENABLE);
-+	if (DISPLAY_VER(dev_priv) >= 20) {
-+		reg = DDI_BUF_CTL(port);
-+		set_bits = XE2LPD_DDI_BUF_D2D_LINK_ENABLE;
-+		wait_bits = XE2LPD_DDI_BUF_D2D_LINK_STATE;
-+	} else {
-+		reg = XELPDP_PORT_BUF_CTL1(port);
-+		set_bits = XELPDP_PORT_BUF_D2D_LINK_ENABLE;
-+		wait_bits = XELPDP_PORT_BUF_D2D_LINK_STATE;
-+	}
- 
--	if (wait_for_us((intel_de_read(dev_priv, XELPDP_PORT_BUF_CTL1(port)) &
--			 XELPDP_PORT_BUF_D2D_LINK_STATE), 100)) {
--		drm_err(&dev_priv->drm, "Timeout waiting for D2D Link enable for PORT_BUF_CTL %c\n",
-+	intel_de_rmw(dev_priv, reg, 0, set_bits);
-+	if (wait_for_us(intel_de_read(dev_priv, reg) & wait_bits, 100)) {
-+		drm_err(&dev_priv->drm, "Timeout waiting for D2D Link enable for DDI/PORT_BUF_CTL %c\n",
- 			port_name(port));
- 	}
- }
-@@ -2810,13 +2819,22 @@ mtl_ddi_disable_d2d_link(struct intel_encoder *encoder)
- {
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 	enum port port = encoder->port;
-+	i915_reg_t reg;
-+	u32 clr_bits, wait_bits;
- 
--	intel_de_rmw(dev_priv, XELPDP_PORT_BUF_CTL1(port),
--		     XELPDP_PORT_BUF_D2D_LINK_ENABLE, 0);
-+	if (DISPLAY_VER(dev_priv) >= 20) {
-+		reg = DDI_BUF_CTL(port);
-+		clr_bits = XE2LPD_DDI_BUF_D2D_LINK_ENABLE;
-+		wait_bits = XE2LPD_DDI_BUF_D2D_LINK_STATE;
-+	} else {
-+		reg = XELPDP_PORT_BUF_CTL1(port);
-+		clr_bits = XELPDP_PORT_BUF_D2D_LINK_ENABLE;
-+		wait_bits = XELPDP_PORT_BUF_D2D_LINK_STATE;
-+	}
- 
--	if (wait_for_us(!(intel_de_read(dev_priv, XELPDP_PORT_BUF_CTL1(port)) &
--			  XELPDP_PORT_BUF_D2D_LINK_STATE), 100))
--		drm_err(&dev_priv->drm, "Timeout waiting for D2D Link disable for PORT_BUF_CTL %c\n",
-+	intel_de_rmw(dev_priv, reg, clr_bits, 0);
-+	if (wait_for_us(!(intel_de_read(dev_priv, reg) & wait_bits), 100))
-+		drm_err(&dev_priv->drm, "Timeout waiting for D2D Link disable for DDI/PORT_BUF_CTL %c\n",
- 			port_name(port));
+diff --git a/drivers/soc/mediatek/mtk-devapc.c b/drivers/soc/mediatek/mtk-devapc.c
+index 552726456fa2f..da075918424d3 100644
+--- a/drivers/soc/mediatek/mtk-devapc.c
++++ b/drivers/soc/mediatek/mtk-devapc.c
+@@ -285,18 +285,16 @@ static int mtk_devapc_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
-@@ -3225,6 +3243,9 @@ static void intel_enable_ddi_hdmi(struct intel_atomic_state *state,
- 			     XELPDP_PORT_WIDTH_MASK | XELPDP_PORT_REVERSAL, port_buf);
+-static int mtk_devapc_remove(struct platform_device *pdev)
++static void mtk_devapc_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_devapc_context *ctx = platform_get_drvdata(pdev);
  
- 		buf_ctl |= DDI_PORT_WIDTH(lane_count);
-+
-+		if (DISPLAY_VER(dev_priv) >= 20)
-+			buf_ctl |= XE2LPD_DDI_BUF_D2D_LINK_ENABLE;
- 	} else if (IS_ALDERLAKE_P(dev_priv) && intel_phy_is_tc(dev_priv, phy)) {
- 		drm_WARN_ON(&dev_priv->drm, !intel_tc_port_in_legacy_mode(dig_port));
- 		buf_ctl |= DDI_BUF_CTL_TC_PHY_OWNERSHIP;
-@@ -3449,6 +3470,9 @@ static void mtl_ddi_prepare_link_retrain(struct intel_dp *intel_dp,
+ 	stop_devapc(ctx);
+-
+-	return 0;
+ }
  
- 	/* 6.i Configure and enable DDI_CTL_DE to start sending valid data to port slice */
- 	intel_dp->DP |= DDI_BUF_CTL_ENABLE;
-+	if (DISPLAY_VER(dev_priv) >= 20)
-+		intel_dp->DP |= XE2LPD_DDI_BUF_D2D_LINK_ENABLE;
-+
- 	intel_de_write(dev_priv, DDI_BUF_CTL(port), intel_dp->DP);
- 	intel_de_posting_read(dev_priv, DDI_BUF_CTL(port));
- 
-diff --git a/drivers/gpu/drm/i915/i915_reg.h b/drivers/gpu/drm/i915/i915_reg.h
-index aefad14ab27a4..4e588fd1c82ed 100644
---- a/drivers/gpu/drm/i915/i915_reg.h
-+++ b/drivers/gpu/drm/i915/i915_reg.h
-@@ -5724,6 +5724,8 @@ enum skl_power_gate {
- /* Known as DDI_CTL_DE in MTL+ */
- #define DDI_BUF_CTL(port) _MMIO_PORT(port, _DDI_BUF_CTL_A, _DDI_BUF_CTL_B)
- #define  DDI_BUF_CTL_ENABLE			(1 << 31)
-+#define  XE2LPD_DDI_BUF_D2D_LINK_ENABLE		REG_BIT(29)
-+#define  XE2LPD_DDI_BUF_D2D_LINK_STATE		REG_BIT(28)
- #define  DDI_BUF_TRANS_SELECT(n)	((n) << 24)
- #define  DDI_BUF_EMP_MASK			(0xf << 24)
- #define  DDI_BUF_PHY_LINK_RATE(r)		((r) << 20)
+ static struct platform_driver mtk_devapc_driver = {
+ 	.probe = mtk_devapc_probe,
+-	.remove = mtk_devapc_remove,
++	.remove_new = mtk_devapc_remove,
+ 	.driver = {
+ 		.name = "mtk-devapc",
+ 		.of_match_table = mtk_devapc_dt_match,
 -- 
 2.39.5
 
