@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-122833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2E6A5A166
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8D9A59D5D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 376753ADBB2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7CE16F542
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B285322DFB1;
-	Mon, 10 Mar 2025 18:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5BD230BC8;
+	Mon, 10 Mar 2025 17:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1B1EG5zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yxk57lcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDDD17A2E8;
-	Mon, 10 Mar 2025 18:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD3E22D799;
+	Mon, 10 Mar 2025 17:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629629; cv=none; b=akXCUE0XJ88xCa54/t3G6Vy0grDP4XGP7wtaGyFoc5RqbjKDxA5ODceUFczjZqmj9KcnyKB1pZGHG+hs3mamTr2LwWCeQrUcUUjhaWiGBDYHe25fcwqUIuadXU+GPWsVeHsiNX0pbqJdYBhW6jCzNe53FFzf/Krn1ZawGlGbQ7E=
+	t=1741627219; cv=none; b=ekF49CFbiouvtgBPIyLSzx365f+cRUh9dRQ/zKe9Lb7eE/t4IUu2hOr56j6lHXsl+Ey+zeFmh0DiA6CjK+JfmKHSiyzbM9bf8Myb/PjP/dNZPhZmVosHRTNT3lXCUU9ZvF9VRjP2c3f8TwWJsQJXBsUhkxvbiKtSmiwiwo4kFug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629629; c=relaxed/simple;
-	bh=of7iNaOIDExX/hkqEo6z21W1mim+FP6WdnksGsJd6G4=;
+	s=arc-20240116; t=1741627219; c=relaxed/simple;
+	bh=Az+FMyBW7t3jKDAdsXA1zkCjUAOaonFd2qyLRo//7Ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyRhpqcl//NkR+r0cmSd4FhD7dYXk546QP9LJJw5wNKVsPrWbcutH9WFg9TixBR/XYbvC3Exb3oeS/QYEWFoGAcGVTO0qlE6JTtimVNIWSkWIEUweQ3GG5uy4d1/4/CkWvtBw70CFaPqrvOEt9o5Jucf21aHwEKk4mXGGldyIrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1B1EG5zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E755FC4CEE5;
-	Mon, 10 Mar 2025 18:00:28 +0000 (UTC)
+	 MIME-Version; b=Itu35Bdtdtgoa6M1ukbF5RuT7CBdf/ApV2QideojHuue6Ln876z7rX8kBZ5sxSw55jK7VQhBJu5WRykf9HNniNXZgAO6meqDP4sOOYu0prR7ZC3IGZzxQHlauTDs9ADx2YlOueEvGHkk7erbPFd5RuR4UyJtss1hvfkEf0yWEHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yxk57lcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EEAC4CEED;
+	Mon, 10 Mar 2025 17:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629629;
-	bh=of7iNaOIDExX/hkqEo6z21W1mim+FP6WdnksGsJd6G4=;
+	s=korg; t=1741627219;
+	bh=Az+FMyBW7t3jKDAdsXA1zkCjUAOaonFd2qyLRo//7Ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1B1EG5zcLjNee9UmFlXA5mOww9lgrF+bJ/jYvDEbkw5tWjTnJ13cwaHRggv3zqDnf
-	 33qkjcgg/YuPFHq/0wzNg3AHHUjeqW8KKCTP31Y0t87DwkQMQtIiVwOAbmc0xFVreK
-	 ajsuV1yBGDyBnW3s44ffvAKSLieJ/v8ajT1edKP8=
+	b=Yxk57lcEhhO6J8YuWEE2j+4rS94sdWz66raKjXgnbZ7jVJ0CIcex5+/0dOftXCd4y
+	 I8oZE9bFH2wQvZrZRM4mcWGjWRfJDuYtp1VdX7k9rwAVkIdzKnONilEdUKEDGY/a+h
+	 qrN+R3nvMqEAG9zAgyzzvU/ZCMrKlIZNiGeumj6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Guo Ren <guoren@linux.alibaba.com>
-Subject: [PATCH 5.15 361/620] usb: gadget: udc: renesas_usb3: Fix compiler warning
-Date: Mon, 10 Mar 2025 18:03:27 +0100
-Message-ID: <20250310170559.858940212@linuxfoundation.org>
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 055/269] rust: alloc: implement `Cmalloc` in module allocator_test
+Date: Mon, 10 Mar 2025 18:03:28 +0100
+Message-ID: <20250310170459.920061927@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit 335a1fc1193481f8027f176649c72868172f6f8b upstream.
+commit dd09538fb4093176a818fcecd45114430cc5840f upstream.
 
-drivers/usb/gadget/udc/renesas_usb3.c: In function 'renesas_usb3_probe':
-drivers/usb/gadget/udc/renesas_usb3.c:2638:73: warning: '%d'
-directive output may be truncated writing between 1 and 11 bytes into a
-region of size 6 [-Wformat-truncation=]
-2638 |   snprintf(usb3_ep->ep_name, sizeof(usb3_ep->ep_name), "ep%d", i);
-                                    ^~~~~~~~~~~~~~~~~~~~~~~~     ^~   ^
+So far the kernel's `Box` and `Vec` types can't be used by userspace
+test cases, since all users of those types (e.g. `CString`) use kernel
+allocators for instantiation.
 
-Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas USB3.0 peripheral controller")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201409.BIQPtkeB-lkp@intel.com/
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250122081231.47594-1-guoren@kernel.org
+In order to allow userspace test cases to make use of such types as
+well, implement the `Cmalloc` allocator within the allocator_test module
+and type alias all kernel allocators to `Cmalloc`. The `Cmalloc`
+allocator uses libc's `realloc()` function as allocator backend.
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-26-dakr@kernel.org
+[ Removed the temporary `allow(dead_code)` as discussed in the list and
+  fixed typo, added backticks. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/alloc.rs                |    1 
+ rust/kernel/alloc/allocator_test.rs |   89 ++++++++++++++++++++++++++++++++----
+ 2 files changed, 81 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -306,7 +306,7 @@ struct renesas_usb3_request {
- 	struct list_head	queue;
- };
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -215,7 +215,6 @@ pub unsafe trait Allocator {
+     }
+ }
  
--#define USB3_EP_NAME_SIZE	8
-+#define USB3_EP_NAME_SIZE	16
- struct renesas_usb3_ep {
- 	struct usb_ep ep;
- 	struct renesas_usb3 *usb3;
+-#[allow(dead_code)]
+ /// Returns a properly aligned dangling pointer from the given `layout`.
+ pub(crate) fn dangling_from_layout(layout: Layout) -> NonNull<u8> {
+     let ptr = layout.align() as *mut u8;
+--- a/rust/kernel/alloc/allocator_test.rs
++++ b/rust/kernel/alloc/allocator_test.rs
+@@ -1,22 +1,95 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
++//! So far the kernel's `Box` and `Vec` types can't be used by userspace test cases, since all users
++//! of those types (e.g. `CString`) use kernel allocators for instantiation.
++//!
++//! In order to allow userspace test cases to make use of such types as well, implement the
++//! `Cmalloc` allocator within the allocator_test module and type alias all kernel allocators to
++//! `Cmalloc`. The `Cmalloc` allocator uses libc's `realloc()` function as allocator backend.
++
+ #![allow(missing_docs)]
+ 
+-use super::{AllocError, Allocator, Flags};
++use super::{flags::*, AllocError, Allocator, Flags};
+ use core::alloc::Layout;
++use core::cmp;
++use core::ptr;
+ use core::ptr::NonNull;
+ 
+-pub struct Kmalloc;
++/// The userspace allocator based on libc.
++pub struct Cmalloc;
++
++pub type Kmalloc = Cmalloc;
+ pub type Vmalloc = Kmalloc;
+ pub type KVmalloc = Kmalloc;
+ 
+-unsafe impl Allocator for Kmalloc {
++extern "C" {
++    #[link_name = "aligned_alloc"]
++    fn libc_aligned_alloc(align: usize, size: usize) -> *mut core::ffi::c_void;
++
++    #[link_name = "free"]
++    fn libc_free(ptr: *mut core::ffi::c_void);
++}
++
++// SAFETY:
++// - memory remains valid until it is explicitly freed,
++// - passing a pointer to a valid memory allocation created by this `Allocator` is always OK,
++// - `realloc` provides the guarantees as provided in the `# Guarantees` section.
++unsafe impl Allocator for Cmalloc {
+     unsafe fn realloc(
+-        _ptr: Option<NonNull<u8>>,
+-        _layout: Layout,
+-        _old_layout: Layout,
+-        _flags: Flags,
++        ptr: Option<NonNull<u8>>,
++        layout: Layout,
++        old_layout: Layout,
++        flags: Flags,
+     ) -> Result<NonNull<[u8]>, AllocError> {
+-        panic!();
++        let src = match ptr {
++            Some(src) => {
++                if old_layout.size() == 0 {
++                    ptr::null_mut()
++                } else {
++                    src.as_ptr()
++                }
++            }
++            None => ptr::null_mut(),
++        };
++
++        if layout.size() == 0 {
++            // SAFETY: `src` is either NULL or was previously allocated with this `Allocator`
++            unsafe { libc_free(src.cast()) };
++
++            return Ok(NonNull::slice_from_raw_parts(
++                crate::alloc::dangling_from_layout(layout),
++                0,
++            ));
++        }
++
++        // SAFETY: Returns either NULL or a pointer to a memory allocation that satisfies or
++        // exceeds the given size and alignment requirements.
++        let dst = unsafe { libc_aligned_alloc(layout.align(), layout.size()) } as *mut u8;
++        let dst = NonNull::new(dst).ok_or(AllocError)?;
++
++        if flags.contains(__GFP_ZERO) {
++            // SAFETY: The preceding calls to `libc_aligned_alloc` and `NonNull::new`
++            // guarantee that `dst` points to memory of at least `layout.size()` bytes.
++            unsafe { dst.as_ptr().write_bytes(0, layout.size()) };
++        }
++
++        if !src.is_null() {
++            // SAFETY:
++            // - `src` has previously been allocated with this `Allocator`; `dst` has just been
++            //   newly allocated, hence the memory regions do not overlap.
++            // - both` src` and `dst` are properly aligned and valid for reads and writes
++            unsafe {
++                ptr::copy_nonoverlapping(
++                    src,
++                    dst.as_ptr(),
++                    cmp::min(layout.size(), old_layout.size()),
++                )
++            };
++        }
++
++        // SAFETY: `src` is either NULL or was previously allocated with this `Allocator`
++        unsafe { libc_free(src.cast()) };
++
++        Ok(NonNull::slice_from_raw_parts(dst, layout.size()))
+     }
+ }
 
 
 
