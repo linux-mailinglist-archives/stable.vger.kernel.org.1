@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-122456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B58EA59FC0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA21A5A2D0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EB4E3A6020
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC0FF167648
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF183233159;
-	Mon, 10 Mar 2025 17:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32269233D91;
+	Mon, 10 Mar 2025 18:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojc+mI1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiKlhRI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA58D22DFB1;
-	Mon, 10 Mar 2025 17:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CAD22FF57;
+	Mon, 10 Mar 2025 18:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628543; cv=none; b=AKKb6CnWLZVK52vP2FXZgcT7QRsaHbl6AyEsGLnona06eQp+fm5Jo8TDWV0ByrSdid7d0O5vsCTLk808ceBO3iVZTBUSdD26D/ZjtvJwui8NeSjrp9S41lwESLSiNOS132ts6aFY6ahwFKNfQRPcx1lxBHR7/AvVmdLdqtefp9w=
+	t=1741631046; cv=none; b=pmsf8O6S86hnFoCwcJAXVkwG+4HhdBM29AmZfx0u+rCKT+JvsFxKBQkl7lO9i4JvaABib5rgzxmTIexw+LnCueZ3kdkojHr3cbc9/evvLmwahvaIoU38neFCgVtE/eL+nzQj/8mHl33XexkW/LhaAQS/Z5j8U/ghWMHXrtky6V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628543; c=relaxed/simple;
-	bh=8TmOCwUd+xcOuj7U3/oHpM+97ScokATSwkhRX3Uwop8=;
+	s=arc-20240116; t=1741631046; c=relaxed/simple;
+	bh=imqqZ7d6CVFqf5c0gfG+OHTgeo2IIHFGExwgrgT5DRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIZumsK26GiwKFCAcF4DBOftSu0liEvBkXss1/7AgJaD7UbuLnQixjN4o5HeVz5TmSsJznrTyM+2qhdI0nnkXMoPas3rOY3LB1ZPamjLQ4B/KQNFWpkt5w2I0veOFz1zGAqT0WgZcIJ3XeBW6Jch8PM/J0RZZh4Cz0fpJ47ZEtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojc+mI1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2730AC4CEE5;
-	Mon, 10 Mar 2025 17:42:22 +0000 (UTC)
+	 MIME-Version; b=MCCcelRc2OqUGz75xA0zomH7xV3ni4Fc0gwMHeaj6r+r757zHRJQw6apDLiPTWllC0FkdkkplCSiIJ4w88+IO2X1o1TXKzOfUDiEzDjwQ2rKD3bOSGK9dtHROKDLKq+lZJyZA1fUIaD6SB4z0/WXbMAakGH5ZsMpbe8QtVM46CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiKlhRI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AC1C4CEEC;
+	Mon, 10 Mar 2025 18:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628543;
-	bh=8TmOCwUd+xcOuj7U3/oHpM+97ScokATSwkhRX3Uwop8=;
+	s=korg; t=1741631045;
+	bh=imqqZ7d6CVFqf5c0gfG+OHTgeo2IIHFGExwgrgT5DRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojc+mI1M52YrHyaQH+Li6EUANvIb8GAn3r0bK1Q7oFQf24jB3MGh4pGC+0M/LEOLB
-	 sVkASrh32EX1FFcJc5FpmcGA/7Th/vTr8O26iD+ifQjCUTlMjHgJAgswm0t485+OEB
-	 1svS98gPjmoKeJjz26Cg2M4fXgtpuTHAFd7p3juo=
+	b=yiKlhRI1Nuwy8cM5iU70qHDi3M1gCm+SLD/O+eiW02WqgVwnAdN4jp9FqY48OO5AX
+	 Bz/hGbYPFdNaN6QfeSySyWtMlLttTvWXprZv6phe4vnwT33lECxjZdSw4S32arBgXI
+	 Q5AiL/ttx2YHQAJ8FvdFOP/8FtMqVMmPPL8vWRto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 095/109] Revert "KVM: PPC: e500: Mark "struct page" pfn accessed before dropping mmu_lock"
+	stable <stable@kernel.org>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 5.15 593/620] usb: gadget: Check bmAttributes only if configuration is valid
 Date: Mon, 10 Mar 2025 18:07:19 +0100
-Message-ID: <20250310170431.340561159@linuxfoundation.org>
+Message-ID: <20250310170608.941771608@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
 
-This reverts commit d2004572fc3014cae43a0d6374ffabbbab1644d4 which is
-commit 84cf78dcd9d65c45ab73998d4ad50f433d53fb93 upstream.
+commit 8e812e9355a6f14dffd54a33d951ca403b9732f5 upstream.
 
-It should not have been applied.
+If the USB configuration is not valid, then avoid checking for
+bmAttributes to prevent null pointer deference.
 
-Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
-Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: stable <stable@kernel.org>
+Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250224085604.417327-1-prashanth.k@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/composite.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -498,9 +498,11 @@ static inline int kvmppc_e500_shadow_map
- 	kvmppc_mmu_flush_icache(pfn);
- 
- out:
-+	spin_unlock(&kvm->mmu_lock);
-+
- 	/* Drop refcount on page, so that mmu notifiers can clear it */
- 	kvm_release_pfn_clean(pfn);
--	spin_unlock(&kvm->mmu_lock);
-+
- 	return ret;
- }
- 
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1005,7 +1005,7 @@ static int set_config(struct usb_composi
+ 		usb_gadget_set_remote_wakeup(gadget, 0);
+ done:
+ 	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
+-	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
++	    (c && !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER)))
+ 		usb_gadget_clear_selfpowered(gadget);
+ 	else
+ 		usb_gadget_set_selfpowered(gadget);
 
 
 
