@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADEDA59F80
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D73EA59E2D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CC3E3A4B5C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0BEC1888228
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD36922D7A6;
-	Mon, 10 Mar 2025 17:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA15230987;
+	Mon, 10 Mar 2025 17:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3rsPES2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UY/gwsoM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B22A2253FE;
-	Mon, 10 Mar 2025 17:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4818922B8BD;
+	Mon, 10 Mar 2025 17:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628395; cv=none; b=RKqx0DlKL24JjvAb06ofDeHhAdfQWy3eCraIXp662aEHwIPSsqF7Q7oMVFbD0OhOkPoxj714pMswmbtuWeoZ3geqUPP+eUB+uNvAAmJNJoKNMZspBDnE1/1i33LkoQ/yhxiJgqlciaz6xMcSlgl7rOwKlvSTlYqZCk5YjIvN7Yg=
+	t=1741627743; cv=none; b=CY4A4DgCr0IITHUXG1+aokP1Y9mqC5nlqfzNpjjhZ262rKSE1Txu57BaPEuoV5M7vJuW1nisSNCBkm4sHuHc9UJqmhzoGgeyWYtSbIMKPw0EUmS1pJvX306k3Ut89NTPL8JSUEy22WdO1Ny7O2S+58ButTFTdNuxxZ25u02qLPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628395; c=relaxed/simple;
-	bh=etNTLrtl0VAfpbvDzYO9miSkQNzDePbGjNR0pAOsWJI=;
+	s=arc-20240116; t=1741627743; c=relaxed/simple;
+	bh=ei0cjpbRc+d3hvFdnr9k+9p0mmG7gnFAI2pLLYOecGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQX6uSN/VXhwFgwpAB/Ua2lABIlYWd5wwmfbvyAkj0w4cmWlWh4uXXrg/JyBgvWExbAx+H2KnQ6xz0XDHE0665ByJ2x7V8Aw6RMgDZMCKhLuxSyUdKZudJQjVbwQUeTa7ZqWw0dnjfB0i/LPXZTuKnwEhut0pjzZdGDq5UACJco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3rsPES2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EDFC4CEE5;
-	Mon, 10 Mar 2025 17:39:54 +0000 (UTC)
+	 MIME-Version; b=BDlv9hgT9GwTGvkd1adGqE4OCLI+edyAAx6J+ibZmnKeEdd9rA0DAmC4cx5lCv/wk6lxteY158zk/tFiOlAtlWSkIwxJWfIdrGYbNVL30qqhskQ1NwtVZAAYp7Nd0IHWUqLGvHQBp/uUA8prQsMdkM7lkR7sTug7VprgytnJ128=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UY/gwsoM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3694C4CEE5;
+	Mon, 10 Mar 2025 17:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628395;
-	bh=etNTLrtl0VAfpbvDzYO9miSkQNzDePbGjNR0pAOsWJI=;
+	s=korg; t=1741627743;
+	bh=ei0cjpbRc+d3hvFdnr9k+9p0mmG7gnFAI2pLLYOecGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3rsPES2cjESQm5X6Uh+AjvqRTm3amfUNoJ43SZI2J0RQpaobvMD4kYDq/11CyvAt
-	 HKGFA8qm0CaAw7XImpGcwnxfokt4fBFhdRHaIA15MXbIpidoL9k/LVb5zYwdyo58HJ
-	 5C8qJSNXZ49VuA9DPD+8JvygOpcQ7FxnpdKj57T8=
+	b=UY/gwsoM8F+bzHriqbk/e3M8d/VQBH3/EtzQW1D8+6IZ5FluJC2EhHMQpXFwZLSgG
+	 r0lpGsSWRyckd7dtTLvykerblr6yhOIWWMhfDK05lWp3D7Kvr8ftKIygyloM6KPzPf
+	 my5prFK0EwtzThaIqolyTKkkUxTD/N3ul3p02lu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/109] caif_virtio: fix wrong pointer check in cfv_probe()
+	rangemachine@gmail.com,
+	whanos@sergal.fun,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 234/269] KVM: SVM: Manually context switch DEBUGCTL if LBR virtualization is disabled
 Date: Mon, 10 Mar 2025 18:06:27 +0100
-Message-ID: <20250310170429.275702567@linuxfoundation.org>
+Message-ID: <20250310170507.011348557@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit a466fd7e9fafd975949e5945e2f70c33a94b1a70 ]
+commit 433265870ab3455b418885bff48fa5fd02f7e448 upstream.
 
-del_vqs() frees virtqueues, therefore cfv->vq_tx pointer should be checked
-for NULL before calling it, not cfv->vdev. Also the current implementation
-is redundant because the pointer cfv->vdev is dereferenced before it is
-checked for NULL.
+Manually load the guest's DEBUGCTL prior to VMRUN (and restore the host's
+value on #VMEXIT) if it diverges from the host's value and LBR
+virtualization is disabled, as hardware only context switches DEBUGCTL if
+LBR virtualization is fully enabled.  Running the guest with the host's
+value has likely been mildly problematic for quite some time, e.g. it will
+result in undesirable behavior if BTF diverges (with the caveat that KVM
+now suppresses guest BTF due to lack of support).
 
-Fix this by checking cfv->vq_tx for NULL instead of cfv->vdev before
-calling del_vqs().
+But the bug became fatal with the introduction of Bus Lock Trap ("Detect"
+in kernel paralance) support for AMD (commit 408eb7417a92
+("x86/bus_lock: Add support for AMD")), as a bus lock in the guest will
+trigger an unexpected #DB.
 
-Fixes: 0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Link: https://patch.msgid.link/20250227184716.4715-1-v.shevtsov@mt-integration.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note, suppressing the bus lock #DB, i.e. simply resuming the guest without
+injecting a #DB, is not an option.  It wouldn't address the general issue
+with DEBUGCTL, e.g. for things like BTF, and there are other guest-visible
+side effects if BusLockTrap is left enabled.
+
+If BusLockTrap is disabled, then DR6.BLD is reserved-to-1; any attempts to
+clear it by software are ignored.  But if BusLockTrap is enabled, software
+can clear DR6.BLD:
+
+  Software enables bus lock trap by setting DebugCtl MSR[BLCKDB] (bit 2)
+  to 1.  When bus lock trap is enabled, ... The processor indicates that
+  this #DB was caused by a bus lock by clearing DR6[BLD] (bit 11).  DR6[11]
+  previously had been defined to be always 1.
+
+and clearing DR6.BLD is "sticky" in that it's not set (i.e. lowered) by
+other #DBs:
+
+  All other #DB exceptions leave DR6[BLD] unmodified
+
+E.g. leaving BusLockTrap enable can confuse a legacy guest that writes '0'
+to reset DR6.
+
+Reported-by: rangemachine@gmail.com
+Reported-by: whanos@sergal.fun
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219787
+Closes: https://lore.kernel.org/all/bug-219787-28872@https.bugzilla.kernel.org%2F
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250227222411.3490595-5-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/caif/caif_virtio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/caif/caif_virtio.c b/drivers/net/caif/caif_virtio.c
-index 0b0f234b0b508..a8b9ada7526c7 100644
---- a/drivers/net/caif/caif_virtio.c
-+++ b/drivers/net/caif/caif_virtio.c
-@@ -745,7 +745,7 @@ static int cfv_probe(struct virtio_device *vdev)
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4275,6 +4275,16 @@ static __no_kcsan fastpath_t svm_vcpu_ru
+ 	clgi();
+ 	kvm_load_guest_xsave_state(vcpu);
  
- 	if (cfv->vr_rx)
- 		vdev->vringh_config->del_vrhs(cfv->vdev);
--	if (cfv->vdev)
-+	if (cfv->vq_tx)
- 		vdev->config->del_vqs(cfv->vdev);
- 	free_netdev(netdev);
- 	return err;
--- 
-2.39.5
-
++	/*
++	 * Hardware only context switches DEBUGCTL if LBR virtualization is
++	 * enabled.  Manually load DEBUGCTL if necessary (and restore it after
++	 * VM-Exit), as running with the host's DEBUGCTL can negatively affect
++	 * guest state and can even be fatal, e.g. due to Bus Lock Detect.
++	 */
++	if (!(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK) &&
++	    vcpu->arch.host_debugctl != svm->vmcb->save.dbgctl)
++		update_debugctlmsr(svm->vmcb->save.dbgctl);
++
+ 	kvm_wait_lapic_expire(vcpu);
+ 
+ 	/*
+@@ -4302,6 +4312,10 @@ static __no_kcsan fastpath_t svm_vcpu_ru
+ 	if (unlikely(svm->vmcb->control.exit_code == SVM_EXIT_NMI))
+ 		kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
+ 
++	if (!(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK) &&
++	    vcpu->arch.host_debugctl != svm->vmcb->save.dbgctl)
++		update_debugctlmsr(vcpu->arch.host_debugctl);
++
+ 	kvm_load_host_xsave_state(vcpu);
+ 	stgi();
+ 
 
 
 
