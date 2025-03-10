@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5C3A5A182
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E35CAA59C2B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5621893BFD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C239E16DFCE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD3522DFF3;
-	Mon, 10 Mar 2025 18:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5188A23370B;
+	Mon, 10 Mar 2025 17:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjXSFtbB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESWPuCrF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6968917A2E8;
-	Mon, 10 Mar 2025 18:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03043233707;
+	Mon, 10 Mar 2025 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629710; cv=none; b=kFVDey+rm5u/AOsdfPeuVHOFd810TJXKPCscI33xS0YDIqsyn2BmAUmlZW0nNSQar+HR0Z27QB+R2jz6u8E08995LFjPl/vr3uYqqAyDHWmkgMidr5Sshw9IU7qdAoYdSl6Ie88KJK10WbDwl8T2izzkrFPKSqzJHAdmAaSCM04=
+	t=1741626579; cv=none; b=mF63VN2Ixq4eqAhxMjZ8jjOOBb4kgUHrF1WoWBiphxCeNhLolZqy33R6OowCj66vdpieD1gi/TEke4njmVM9E+Fz8VA1HE8YguOQoLsfpfZQc/RY9WkeQco7apDkHbIXqA9eHaqCwxwsyme40ACgyQXk5Iaqa3ytV73rj29owas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629710; c=relaxed/simple;
-	bh=RoDPwrl7zfSjQh12UR91i54wOc/tKpQbTLG6Kj7Yefw=;
+	s=arc-20240116; t=1741626579; c=relaxed/simple;
+	bh=MVMqa4vKWN/5TKy+GpscO2UK1Ogn0lA6mjzn1Cj51SI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkE62It7xDMKaQj7tAbWCK9/wcQJ/8PaGnVLdgIxjJfval1UcrKD/XqYFQqYuKisOnVgYht0GOUlO1wLlIS84SeaG+Iussy9jLTajafJIfaXhgan0Ka0JNdTlDcOxgorXx4ZIAIMqiM0PXKWXozQ6y+ybtp8QRgrgOgS7gwDxks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjXSFtbB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C4BC4CEE5;
-	Mon, 10 Mar 2025 18:01:49 +0000 (UTC)
+	 MIME-Version; b=CIXYSJEzie0Q2JXl3BeQWNySXZC4SGEOkciNESi/rz9PgYs2WcV/t84Xg6YeGJAV/Imt+2KB7hrPZK7mFv7JhtjRIMJq0eRbeouFYrzayAw+JH7ZuBqqQwC6T84wmXXtoENAh2+ywWTM0UtkXc9ShRRjKGCBsyGX2Kr9OE+0l9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESWPuCrF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A98EC4CEE5;
+	Mon, 10 Mar 2025 17:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629710;
-	bh=RoDPwrl7zfSjQh12UR91i54wOc/tKpQbTLG6Kj7Yefw=;
+	s=korg; t=1741626578;
+	bh=MVMqa4vKWN/5TKy+GpscO2UK1Ogn0lA6mjzn1Cj51SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjXSFtbBsbwDBILG/n7i6CxX3KMlrpPYBFirF+sRhvCviaf9mfV7GMH5478/IQWGq
-	 RvfaIMGE146rxp5arbV9Bp3Bdt56AvBRrhpl4Nxs9dI4k5fGYTjXO6kDwbahbrJcAa
-	 hB74HhQOagdTV7SYOh3Ha/3dSN0EqB2jO25GpI9U=
+	b=ESWPuCrF2lb3JaHUjrvQB7SPU8di2UedfWJAzfxSHwaKcG8RANmGWKyTAddBmyR/C
+	 l2cBRUCRUQGsuQ2jEpOQmQH3pzj8w+qnjNrDS8xf+EUMyELRQ0N0aTx6xXHdQoecBa
+	 ZW+pxTxrWoyZNKUX3QJ5XYvkMaj5GG7/fL6yjkuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Strohman <andrew@andrewstrohman.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.15 356/620] batman-adv: fix panic during interface removal
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 009/207] tracing: tprobe-events: Reject invalid tracepoint name
 Date: Mon, 10 Mar 2025 18:03:22 +0100
-Message-ID: <20250310170559.659831602@linuxfoundation.org>
+Message-ID: <20250310170448.135844629@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Strohman <andrew@andrewstrohman.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit ccb7276a6d26d6f8416e315b43b45e15ee7f29e2 upstream.
+commit d0453655b6ddc685a4837f3cc0776ae8eef62d01 upstream.
 
-Reference counting is used to ensure that
-batadv_hardif_neigh_node and batadv_hard_iface
-are not freed before/during
-batadv_v_elp_throughput_metric_update work is
-finished.
+Commit 57a7e6de9e30 ("tracing/fprobe: Support raw tracepoints on
+future loaded modules") allows user to set a tprobe on non-exist
+tracepoint but it does not check the tracepoint name is acceptable.
+So it leads tprobe has a wrong character for events (e.g. with
+subsystem prefix). In this case, the event is not shown in the
+events directory.
 
-But there isn't a guarantee that the hard if will
-remain associated with a soft interface up until
-the work is finished.
+Reject such invalid tracepoint name.
 
-This fixes a crash triggered by reboot that looks
-like this:
+The tracepoint name must consist of alphabet or digit or '_'.
 
-Call trace:
- batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
- batadv_v_elp_throughput_metric_update+0x1c/0xa4
- process_one_work+0x178/0x398
- worker_thread+0x2e8/0x4d0
- kthread+0xd8/0xdc
- ret_from_fork+0x10/0x20
+Link: https://lore.kernel.org/all/174055073461.4079315.15875502830565214255.stgit@mhiramat.tok.corp.google.com/
 
-(the batadv_v_mesh_free call is misleading,
-and does not actually happen)
-
-I was able to make the issue happen more reliably
-by changing hardif_neigh->bat_v.metric_work work
-to be delayed work. This allowed me to track down
-and confirm the fix.
-
+Fixes: 57a7e6de9e30 ("tracing/fprobe: Support raw tracepoints on future loaded modules")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Cc: stable@vger.kernel.org
-Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
-Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
-[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
- soft_iface]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v_elp.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/trace/trace_fprobe.c |   13 +++++++++++++
+ kernel/trace/trace_probe.h  |    1 +
+ 2 files changed, 14 insertions(+)
 
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -67,12 +67,19 @@ static void batadv_v_elp_start_timer(str
- static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
- {
- 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
-+	struct net_device *soft_iface = hard_iface->soft_iface;
- 	struct ethtool_link_ksettings link_settings;
- 	struct net_device *real_netdev;
- 	struct station_info sinfo;
- 	u32 throughput;
- 	int ret;
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -1018,6 +1018,19 @@ static int parse_symbol_and_return(int a
+ 	if (*is_return)
+ 		return 0;
  
-+	/* don't query throughput when no longer associated with any
-+	 * batman-adv interface
-+	 */
-+	if (!soft_iface)
-+		return BATADV_THROUGHPUT_DEFAULT_VALUE;
++	if (is_tracepoint) {
++		tmp = *symbol;
++		while (*tmp && (isalnum(*tmp) || *tmp == '_'))
++			tmp++;
++		if (*tmp) {
++			/* find a wrong character. */
++			trace_probe_log_err(tmp - *symbol, BAD_TP_NAME);
++			kfree(*symbol);
++			*symbol = NULL;
++			return -EINVAL;
++		}
++	}
 +
- 	/* if the user specified a customised value for this interface, then
- 	 * return it directly
- 	 */
-@@ -143,7 +150,7 @@ static u32 batadv_v_elp_get_throughput(s
- 
- default_throughput:
- 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
--		batadv_info(hard_iface->soft_iface,
-+		batadv_info(soft_iface,
- 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
- 			    hard_iface->net_dev->name,
- 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
+ 	/* If there is $retval, this should be a return fprobe. */
+ 	for (i = 2; i < argc; i++) {
+ 		tmp = strstr(argv[i], "$retval");
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -481,6 +481,7 @@ extern int traceprobe_define_arg_fields(
+ 	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
+ 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
+ 	C(NO_TRACEPOINT,	"Tracepoint is not found"),		\
++	C(BAD_TP_NAME,		"Invalid character in tracepoint name"),\
+ 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
+ 	C(NO_GROUP_NAME,	"Group name is not specified"),		\
+ 	C(GROUP_TOO_LONG,	"Group name is too long"),		\
 
 
 
