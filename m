@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-121845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0D2A59C90
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7249A59E8A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 699CC188DD82
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C3B37A5C14
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEC8230D1E;
-	Mon, 10 Mar 2025 17:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFC22356AA;
+	Mon, 10 Mar 2025 17:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18xSOkGB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGsDYU9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE672236FB;
-	Mon, 10 Mar 2025 17:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F85233D85;
+	Mon, 10 Mar 2025 17:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626796; cv=none; b=uT5TI1cOSnsfx83/wSIM0HA0VCdHkNTG1agpzJpayg3EzdZQ9BAf/+4exrXuQvZTZCjTb1MQIPyfLLG4o65hyQaPsuTsx4zvEAM5zpnABkmjP7j1EcpZAJgdIPDHEJr8Qf8o3aQdMT3/FvLkKGe3ttqajqCtZhYVnBwCpl12yV0=
+	t=1741627890; cv=none; b=a8E5wzao7Cu3UIPIznZeyLG7bLcTOIgjxJc0DMPSv4e7V3YtQTsdI8XWKMfBA0jREiK2My+lAvT3mC/3JfmjnBQrQIKIpgQrSQ2t72PaP3a6xCCYDQdnPr94PuUBEosfNpVTmOEypkmTG/DhkFduzY88DvB3GzhRS/aVqaJyAxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626796; c=relaxed/simple;
-	bh=Zd1ccEZIeNh+cwZFH9UGS7mFt0cUG7wY4WCHSO5sIEw=;
+	s=arc-20240116; t=1741627890; c=relaxed/simple;
+	bh=Jddu0E8ynzszGz3JIxl+5RDYsiJHc/S1hqXoYfbfbQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ka0reNuUsw0mqFeRPQL6z423sdqE+Lgm8ph2aSMg8m7AFQqHoSM9DTKZXbdkIzird9REU067VwvVW/I7uMrRzs5e45CRX/otwBpjQst8XjyC8fEMw2LNAB1CTFM4bjxxTEqpGHUbPmEbnPi8m2r0TXN6IhfXV13FSIWve4St3lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18xSOkGB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AB2C4CEE5;
-	Mon, 10 Mar 2025 17:13:15 +0000 (UTC)
+	 MIME-Version; b=Z2/SJ+qOhv6Y9p6+SFYPdmCdBNd0IzRwq7NjfTTJ5prOkr6pkhudVNB+RGoya2mrwagkW3qLP5p95GvWVU1IWs1qYB91jzlLEmDeszt4KHOoUa9EQYeUVbbQ4Jo1lXfRvbpQ2csnzW+Ik6EzUdvxbE1vg+LaC2cLC0Ke+OSk/wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGsDYU9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E23C4CEE5;
+	Mon, 10 Mar 2025 17:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626796;
-	bh=Zd1ccEZIeNh+cwZFH9UGS7mFt0cUG7wY4WCHSO5sIEw=;
+	s=korg; t=1741627890;
+	bh=Jddu0E8ynzszGz3JIxl+5RDYsiJHc/S1hqXoYfbfbQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18xSOkGBrdMSV6YL6PDP43YVTD6ECQ0q81Wnb74t2HmdWfItOFEA3ZfKlTNQnpPV4
-	 R45If/uLtpEbfF8as6nzwUC5xHdQlO5ptNoqz+HNmGlCZJVotywEOCKniJqDdBIg5H
-	 WTN+LyMOosgT+0Jngoq0KkpjabFr6wKlKTduxo7Q=
+	b=AGsDYU9VIBQtLqTHnOV17sZYJFMEHF9BqQDg84OxYr5kvXYJ5GOT+PRFCeUxDqbt4
+	 ztEYdFLvcFcM9hrYwvWM4C1fX0v8PGJFHmxI60xIkSy0NibnIcCx1aeewDigDOWdlY
+	 OuvoEebqbFIbckeqbfVwG4vd50GCPyUzrjx1FgJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Titus Rwantare <titusr@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 116/207] hwmon: (pmbus) Initialise page count in pmbus_identify()
-Date: Mon, 10 Mar 2025 18:05:09 +0100
-Message-ID: <20250310170452.422938114@linuxfoundation.org>
+Subject: [PATCH 6.6 016/145] riscv: cacheinfo: remove the useless input parameter (node) of ci_leaf_init()
+Date: Mon, 10 Mar 2025 18:05:10 +0100
+Message-ID: <20250310170435.400275611@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Titus Rwantare <titusr@google.com>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-[ Upstream commit 6b6e2e8fd0de3fa7c6f4f8fe6841b01770b2e7bc ]
+[ Upstream commit ee3fab10cb1566562aa683f319066eaeecccf918 ]
 
-The `pmbus_identify()` function fails to correctly determine the number
-of supported pages on PMBus devices. This occurs because `info->pages`
-is implicitly zero-initialised, and `pmbus_set_page()` does not perform
-writes to the page register if `info->pages` is not yet initialised.
-Without this patch, `info->pages` is always set to the maximum after
-scanning.
+ci_leaf_init() is a declared static function. The implementation of the
+function body and the caller do not use the parameter (struct device_node
+*node) input parameter, so remove it.
 
-This patch initialises `info->pages` to `PMBUS_PAGES` before the probing
-loop, enabling `pmbus_set_page()` writes to make it out onto the bus
-correctly identifying the number of pages. `PMBUS_PAGES` seemed like a
-reasonable non-zero number because that's the current result of the
-identification process.
-
-Testing was done with a PMBus device in QEMU.
-
-Signed-off-by: Titus Rwantare <titusr@google.com>
-Fixes: 442aba78728e7 ("hwmon: PMBus device driver")
-Link: https://lore.kernel.org/r/20250227222455.2583468-1-titusr@google.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 6a24915145c9 ("Revert "riscv: Set more data to cacheinfo"")
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20240617131425.7526-1-cuiyunhui@bytedance.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: fb8179ce2996 ("riscv: cacheinfo: Use of_property_present() for non-boolean properties")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/kernel/cacheinfo.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.c b/drivers/hwmon/pmbus/pmbus.c
-index 77cf268e7d2d6..920cd5408141a 100644
---- a/drivers/hwmon/pmbus/pmbus.c
-+++ b/drivers/hwmon/pmbus/pmbus.c
-@@ -103,6 +103,8 @@ static int pmbus_identify(struct i2c_client *client,
- 		if (pmbus_check_byte_register(client, 0, PMBUS_PAGE)) {
- 			int page;
+diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+index 09e9b88110d15..30a6878287ad4 100644
+--- a/arch/riscv/kernel/cacheinfo.c
++++ b/arch/riscv/kernel/cacheinfo.c
+@@ -64,7 +64,6 @@ uintptr_t get_cache_geometry(u32 level, enum cache_type type)
+ }
  
-+			info->pages = PMBUS_PAGES;
-+
- 			for (page = 1; page < PMBUS_PAGES; page++) {
- 				if (pmbus_set_page(client, page, 0xff) < 0)
- 					break;
+ static void ci_leaf_init(struct cacheinfo *this_leaf,
+-			 struct device_node *node,
+ 			 enum cache_type type, unsigned int level)
+ {
+ 	this_leaf->level = level;
+@@ -80,11 +79,11 @@ int populate_cache_leaves(unsigned int cpu)
+ 	int levels = 1, level = 1;
+ 
+ 	if (of_property_read_bool(np, "cache-size"))
+-		ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
++		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+ 	if (of_property_read_bool(np, "i-cache-size"))
+-		ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
++		ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+ 	if (of_property_read_bool(np, "d-cache-size"))
+-		ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
++		ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+ 
+ 	prev = np;
+ 	while ((np = of_find_next_cache_node(np))) {
+@@ -97,11 +96,11 @@ int populate_cache_leaves(unsigned int cpu)
+ 		if (level <= levels)
+ 			break;
+ 		if (of_property_read_bool(np, "cache-size"))
+-			ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
++			ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+ 		if (of_property_read_bool(np, "i-cache-size"))
+-			ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
++			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+ 		if (of_property_read_bool(np, "d-cache-size"))
+-			ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
++			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+ 		levels = level;
+ 	}
+ 	of_node_put(np);
 -- 
 2.39.5
 
