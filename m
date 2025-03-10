@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-122788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A30A5A138
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D14FA5A162
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BDA3AD644
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE8A18936D9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627A122DFF3;
-	Mon, 10 Mar 2025 17:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEDB22D4FD;
+	Mon, 10 Mar 2025 18:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJ49pPBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwO472Im"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F077227EA0;
-	Mon, 10 Mar 2025 17:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BC917A2E8;
+	Mon, 10 Mar 2025 18:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629499; cv=none; b=hRpQ77+OuZt+TJ824tfA4ckryZd3+JUvjHgNU9nmFVqpmREzEtAGKpLh4P04+p3ugsWMRFDmuA+qaMqI71akBWmupHl+ANnV0V0/Gl29CZtvDelcV7sx6OfX8CB1IiuHyt86sIYYqtpIPENJDbgWzo30ZEmPdkBcjcZ/YKUHHLw=
+	t=1741629618; cv=none; b=DymSPkGwwkd6WbQR7BhNZBymbfWR1+DwPbuE6D6/tnycT343tgBUtglfVvWL3XGkm3YEqzijepyodD53GvigF4Zk2S7H9FvaYejrym4N3acY8SJnqSVtDiGgCqCe7KmoDijJFbc49zo4RG6dP6PQPInRt+efSvO+FHImjyOmxDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629499; c=relaxed/simple;
-	bh=gBbbQBZR8DBFYNzAmFLpO48E9x3C5vBvBuW8ku23BHQ=;
+	s=arc-20240116; t=1741629618; c=relaxed/simple;
+	bh=hjRlXyuNlQlqqoWWAVyPQ3ombHhTQ2e8xqJgtfYB3Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+Olr/mfRBetfj9+PlvpxTn762WXiM3Su8sMcKiNbUdOzjf4X2N37DCcdAj6u0S8d3I3xsfaoQMtPhW122cxnU56B88KcCGAHW+io3GmlMMDI/5/O7u7SD01asyInpckvU+Vul1w8heq3z3i1MZKXHnzk2UNc+oNokFJfB7sbFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJ49pPBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB87C4CEE5;
-	Mon, 10 Mar 2025 17:58:18 +0000 (UTC)
+	 MIME-Version; b=hDeGFPSKhI5jd1YKA4dF9lZmv3zgYI1FOGpNUvwvfq48k3lJ/hhDg0pBhN9tEyOtnnrhyO8cQuPI+hRmJZsbi2Dovx9VSlhGepRnt0T3yD0iRojiEPPGOW36W7M2I2ne41wfwMSfkZFyGDU23FGmZsnz5oq3rTDjCXZWJsvsw10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwO472Im; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEBEC4CEE5;
+	Mon, 10 Mar 2025 18:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629499;
-	bh=gBbbQBZR8DBFYNzAmFLpO48E9x3C5vBvBuW8ku23BHQ=;
+	s=korg; t=1741629617;
+	bh=hjRlXyuNlQlqqoWWAVyPQ3ombHhTQ2e8xqJgtfYB3Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJ49pPBP/rpEembFzpkhZbaYRDUbg0NBISXVy/UwSbsOmfKohHsrUR2Fs5Hbwt0pJ
-	 V+3LvE2Dn8WKvKomdzTHPQhW/eB0hXPiPrJSyYt1Ozxtn7aLqvm5OXbLYr4HYz3/vJ
-	 7aA2Z9JqCjGHTDNu76CjSBXSYPd2C3PANR9Rhe94=
+	b=KwO472ImV3/NAv+4ot5FK04Rx6z2A7lrjTnL6xXA4oI3kgdnQ3TxVH6dq+N3MjmzP
+	 00JkvMjPgE2egb4rMIP5WoNat61VCCClf7rCNkRt2JgeogsXnHc8YNBjs7QA17OObl
+	 eRo9UPlfHtw2U5H1+GrIYVcsVFpd2r81D7by87/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 314/620] crypto: qce - unregister previously registered algos in error path
-Date: Mon, 10 Mar 2025 18:02:40 +0100
-Message-ID: <20250310170558.011817295@linuxfoundation.org>
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.15 315/620] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
+Date: Mon, 10 Mar 2025 18:02:41 +0100
+Message-ID: <20250310170558.049930933@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,53 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit e80cf84b608725303113d6fe98bb727bf7b7a40d upstream.
+commit e88f516ea417c71bb3702603ac6af9e95338cfa6 upstream.
 
-If we encounter an error when registering alorithms with the crypto
-framework, we just bail out and don't unregister the ones we
-successfully registered in prior iterations of the loop.
+Let the nvmem core know what size the SDAM is, most notably this fixes
+the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+user space work with that file.
 
-Add code that goes back over the algos and unregisters them before
-returning an error from qce_register_algs().
+  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+  *
+  00000080
 
+Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
 Cc: stable@vger.kernel.org
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-6-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qce/core.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/nvmem/qcom-spmi-sdam.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/crypto/qce/core.c
-+++ b/drivers/crypto/qce/core.c
-@@ -48,16 +48,19 @@ static void qce_unregister_algs(struct q
- static int qce_register_algs(struct qce_device *qce)
- {
- 	const struct qce_algo_ops *ops;
--	int i, ret = -ENODEV;
-+	int i, j, ret = -ENODEV;
- 
- 	for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
- 		ops = qce_ops[i];
- 		ret = ops->register_algs(qce);
--		if (ret)
--			break;
-+		if (ret) {
-+			for (j = i - 1; j >= 0; j--)
-+				ops->unregister_algs(qce);
-+			return ret;
-+		}
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- static int qce_handle_request(struct crypto_async_request *async_req)
+--- a/drivers/nvmem/qcom-spmi-sdam.c
++++ b/drivers/nvmem/qcom-spmi-sdam.c
+@@ -143,6 +143,7 @@ static int sdam_probe(struct platform_de
+ 	sdam->sdam_config.id = NVMEM_DEVID_AUTO;
+ 	sdam->sdam_config.owner = THIS_MODULE;
+ 	sdam->sdam_config.stride = 1;
++	sdam->sdam_config.size = sdam->size;
+ 	sdam->sdam_config.word_size = 1;
+ 	sdam->sdam_config.reg_read = sdam_read;
+ 	sdam->sdam_config.reg_write = sdam_write;
 
 
 
