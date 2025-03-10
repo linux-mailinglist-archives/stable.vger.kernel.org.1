@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-123042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA535A5A28C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 343D9A59E54
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3573F175782
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3380188D7E1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AF322F3BD;
-	Mon, 10 Mar 2025 18:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5C0230BF0;
+	Mon, 10 Mar 2025 17:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLssurKN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtilBSGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3361E1C5D6F;
-	Mon, 10 Mar 2025 18:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA4F2253FE;
+	Mon, 10 Mar 2025 17:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630877; cv=none; b=AF3QgI4TppCtrL6gPB/a6HNaptDx6SGWA9ukd4zF9yu6E5lZzIByF2MdkGsrI4ExNXEKezjehNwti9LBB5WFLSx2v2GIxHIzq330fDp2Jb/Qjihl4q7yKZYPh1gBPONCIojQqDbq8m6kVkt3lB8vcqQz0+bOPGTcRYAuEbNrJRs=
+	t=1741627813; cv=none; b=Sbt/I2YtVTkzalipEksiMdvztMEQl3JojZWPiL2Sf1ArtR+b96uDE7S4lCYic/VrAn25GK7ooeU5LpvDDc5qXA3VgOWH3mpQAxbwh8PX0hg4kGKGXdnfUvjUNYU02I/sN8zdEwuUi4JgseqwbHg4QSb2SLVFpE9suFF4Pd5adtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630877; c=relaxed/simple;
-	bh=xLdrU3T+ACpK4QvkMFYt3pUxpxdr5bRnZhaoeaJxDjU=;
+	s=arc-20240116; t=1741627813; c=relaxed/simple;
+	bh=zy6TLv4fCa0/HqRGiRmEJDCON+Bm3LxFmrX7Jcw0mJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OYBH0SAqS5vIvLqcdOOxA7oXe32zXk+zH0UWti21VPBvO79e54jx5JjqJ/cEcY1SbrB/iL1QBM8Z6xag3fnJNvK+wibJqXd0kNWOiqo8bFCasjsCS+Duy65K5Oa171qfSKBpj3Qh13OQ6biqqYAGKHopo/fp0V4x5+PyQgwrvhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLssurKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF06EC4CEE5;
-	Mon, 10 Mar 2025 18:21:16 +0000 (UTC)
+	 MIME-Version; b=PMeCbiZw+Bxz4JgdjcCxyyfgecCsifCu/8xyv85cF9cVV+uolfla6YHxRhzruFG+9o5NgOTHClR4ENP3IJs5qNsk4KW5WcXuKpvyGiUdD8cZQKbUMomRujRNMoIKrnE29ny6cUdm9VOXJTrWOZU1O5NuBMtYsFzsdi64MXs+/MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtilBSGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CD3C4CEE5;
+	Mon, 10 Mar 2025 17:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630877;
-	bh=xLdrU3T+ACpK4QvkMFYt3pUxpxdr5bRnZhaoeaJxDjU=;
+	s=korg; t=1741627812;
+	bh=zy6TLv4fCa0/HqRGiRmEJDCON+Bm3LxFmrX7Jcw0mJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLssurKNSIJThKouXhV4UMZ0kKpu0WF9WEyokPFNvU4WPt5q9rP+UTZGrj714iJsM
-	 MaPQs553A0KbsjKhJ9yCVWWWHfeG44z1nlvv0FOSGCj6ALg0MlO0hhM/fwCnZM2+wh
-	 uZwNUeQgYliP3uHSuX07A0ZIzMvuoVLW8Azeo7Zw=
+	b=jtilBSGAGHHC79XVUn6uGE35aEd1+pMZwsnN1h5v28jaiZYDFmaxT9WhMwqZVQiuI
+	 iwtynw5yeWJB+aXVHFtjhS5hDS24H1VkiHvbh8mQy/Ywd2j9zExUGj+t1LDRdpyDmi
+	 z8j0xV1YND6oY1eofVJXp9n9uA7CfkleHr4cYSsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 566/620] net: hns3: make sure ptp clock is unregister and freed if hclge_ptp_get_cycle returns an error
+	Arnd Bergmann <arnd@arndb.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 259/269] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
 Date: Mon, 10 Mar 2025 18:06:52 +0100
-Message-ID: <20250310170607.888670236@linuxfoundation.org>
+Message-ID: <20250310170508.114092105@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b7365eab39831487a84e63a9638209b68dc54008 ]
+commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
 
-During the initialization of ptp, hclge_ptp_get_cycle might return an error
-and returned directly without unregister clock and free it. To avoid that,
-call hclge_ptp_destroy_clock to unregist and free clock if
-hclge_ptp_get_cycle failed.
+The alternative path leads to a build error after a recent change:
 
-Fixes: 8373cd38a888 ("net: hns3: change the method of obtaining default ptp cycle")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250228105258.1243461-1-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
+include/linux/stddef.h:9:14: error: called object is not a function or function pointer
+    9 | #define NULL ((void *)0)
+      |              ^
+sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
+ 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
+      |                                                 ^~~~
+sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
+ 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
+
+Using IS_REACHABLE() is somewhat questionable here anyway since it
+leads to the input code not working when the HDA driver is builtin
+but input is in a loadable module. Replace this with a hard compile-time
+dependency on CONFIG_INPUT. In practice this won't chance much
+other than solve the compiler error because it is rare to require
+sound output but no input support.
+
+Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/Kconfig         |    1 +
+ sound/pci/hda/patch_realtek.c |    5 -----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-index 0f06f95b09bc2..4d4cea1f50157 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-@@ -496,7 +496,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -208,6 +208,7 @@ comment "Set to Y if you want auto-loadi
  
- 		ret = hclge_ptp_get_cycle(hdev);
- 		if (ret)
--			return ret;
-+			goto out;
+ config SND_HDA_CODEC_REALTEK
+ 	tristate "Build Realtek HD-audio codec support"
++	depends on INPUT
+ 	select SND_HDA_GENERIC
+ 	select SND_HDA_GENERIC_LEDS
+ 	select SND_HDA_SCODEC_COMPONENT
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -5002,7 +5002,6 @@ static void alc298_fixup_samsung_amp_v2_
+ 		alc298_samsung_v2_init_amps(codec, 4);
+ }
+ 
+-#if IS_REACHABLE(CONFIG_INPUT)
+ static void gpio2_mic_hotkey_event(struct hda_codec *codec,
+ 				   struct hda_jack_callback *event)
+ {
+@@ -5111,10 +5110,6 @@ static void alc233_fixup_lenovo_line2_mi
+ 		spec->kb_dev = NULL;
  	}
+ }
+-#else /* INPUT */
+-#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
+-#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
+-#endif /* INPUT */
  
- 	ret = hclge_ptp_int_en(hdev, true);
--- 
-2.39.5
-
+ static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
 
 
 
