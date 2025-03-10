@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-121982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E9FA59D53
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1A8A5A15D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27AA5188DDC7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B829172A47
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6FD230BED;
-	Mon, 10 Mar 2025 17:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1A9233D7C;
+	Mon, 10 Mar 2025 18:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHsfBEgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5kKc7KJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F4422D799;
-	Mon, 10 Mar 2025 17:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AF23372D;
+	Mon, 10 Mar 2025 18:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627191; cv=none; b=Xu/h/gUthExklVrTj+V+dkwDqnvbTKDRPaa5TsJXXHfVpL232UtEi6bNFIcVzQbMcpCU61Uoi7sAL154bpx9VVD8bL07PqVtizOxSf00ofFNSGQViJo3HrtxogqjEbC2INnWgRiIS5HkJNdqos/PQptbv/cjEKh4y78udpBTyFI=
+	t=1741629603; cv=none; b=lx7rMMUlCY/2vG5wjKzihOnIuVf36CfPzhhpDI+WI1a3OgnREyBUasRmgB/jRCFkLiFSJz4IpCAG0Ztxfqggi/plOul37UmHPHtm4aVVAAlS5sfYeVv1FD9rCI9v8NdlNtnm3uLDr+m0Nrg7FtaWmm9wKgMRYzvx2+TaDk4Obj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627191; c=relaxed/simple;
-	bh=qOV7px6G1ISugbHd1R5zc10Jc+n3SrY2zrzPDmV21Bc=;
+	s=arc-20240116; t=1741629603; c=relaxed/simple;
+	bh=1PWX5uVlAytZ37cvlQZg2TCjQy2eDILMHYJctCSw7EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h428C6dRN2lDT+BHmzJvQw6dqvW19+RlRJgdGzDJJHxhG+Xdb5E3ZCmfK/KWyPKkZcoqaLMsjH6K6EiJPjfBi3Y/EqaY39lmCiEGDu3nZL3YgNwy3O2mZrWVBL0Tikzb7AsSqAl7jLwqb0BJZYfguW/WrWfLPJSH/HEwOi0w/BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHsfBEgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DD7C4CEE5;
-	Mon, 10 Mar 2025 17:19:50 +0000 (UTC)
+	 MIME-Version; b=kybtzoQr1/9bCJ3l2nkz3d2SMritzaNpsFaR5pZK2h/dxHEP3j+E20194+e4dy3XNsiLTJOCBPSALPxGyDrzOF0pUwHatQS3/SS/+WlpOKY3iSClEyntGEc6gYt3vr2v2eIQZaN6JVNUeWfmPW8JtKmuE4JomFnY7WiwJpozq1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5kKc7KJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E51C4CEE5;
+	Mon, 10 Mar 2025 18:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627191;
-	bh=qOV7px6G1ISugbHd1R5zc10Jc+n3SrY2zrzPDmV21Bc=;
+	s=korg; t=1741629603;
+	bh=1PWX5uVlAytZ37cvlQZg2TCjQy2eDILMHYJctCSw7EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHsfBEgL073ZQftcB5IsyFc1LgRfopeZlVLAQe9ifglbGshFBsJql7oyxiQX+vY4Z
-	 r9xzZ0b/FSOQzIgh5Bflfd+G8uwYe/yAFJ48nqqAu6bokRhLP7X7nrpvLPk2aaLXTJ
-	 gECbVN7Ax5UZbmvK6y011enhbf5Ly+Kr5A1er/Vg=
+	b=w5kKc7KJKaYA7mvdsKVJBqaXJJ0SG2z1+W3o33H94PuRvAqBAa50PDN1vCRfw3Kjk
+	 GozmCoQZk7vIqXykpqnZH+eGISHR8tlW9DId/NNAvrZKCO3ud8Fezioz9rYABraZMs
+	 QPxHETHTZ2nA+AaT1Ocmoiqz5gdtZK8b88VhPw4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Gross <tmgross@umich.edu>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 013/269] rust: sort global Rust flags
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 320/620] ocfs2: handle a symlink read error correctly
 Date: Mon, 10 Mar 2025 18:02:46 +0100
-Message-ID: <20250310170458.234035307@linuxfoundation.org>
+Message-ID: <20250310170558.242036839@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +68,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit a135aa3d30d28f26eb28a0ff5d48b387b0e0755f upstream.
+commit 2b4c2094da6d84e69b843dd3317902e977bf64bd upstream.
 
-Sort the global Rust flags so that it is easier to follow along when we
-have more, like this patch series does.
+Patch series "Convert ocfs2 to use folios".
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240904204347.168520-3-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Mark did a conversion of ocfs2 to use folios and sent it to me as a
+giant patch for review ;-)
+
+So I've redone it as individual patches, and credited Mark for the patches
+where his code is substantially the same.  It's not a bad way to do it;
+his patch had some bugs and my patches had some bugs.  Hopefully all our
+bugs were different from each other.  And hopefully Mark likes all the
+changes I made to his code!
+
+
+This patch (of 23):
+
+If we can't read the buffer, be sure to unlock the page before returning.
+
+Link: https://lkml.kernel.org/r/20241205171653.3179945-1-willy@infradead.org
+Link: https://lkml.kernel.org/r/20241205171653.3179945-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Mark Tinguely <mark.tinguely@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ocfs2/symlink.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -446,19 +446,19 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
- export rust_common_flags := --edition=2021 \
- 			    -Zbinary_dep_depinfo=y \
- 			    -Astable_features \
--			    -Dunsafe_op_in_unsafe_fn \
- 			    -Dnon_ascii_idents \
-+			    -Dunsafe_op_in_unsafe_fn \
-+			    -Wmissing_docs \
- 			    -Wrust_2018_idioms \
- 			    -Wunreachable_pub \
--			    -Wmissing_docs \
--			    -Wrustdoc::missing_crate_level_docs \
- 			    -Wclippy::all \
-+			    -Wclippy::dbg_macro \
- 			    -Wclippy::mut_mut \
- 			    -Wclippy::needless_bitwise_bool \
- 			    -Wclippy::needless_continue \
- 			    -Aclippy::needless_lifetimes \
- 			    -Wclippy::no_mangle_with_rust_abi \
--			    -Wclippy::dbg_macro
-+			    -Wrustdoc::missing_crate_level_docs
+--- a/fs/ocfs2/symlink.c
++++ b/fs/ocfs2/symlink.c
+@@ -64,7 +64,7 @@ static int ocfs2_fast_symlink_readpage(s
  
- KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) \
- 		       $(HOSTCFLAGS) -I $(srctree)/scripts/include
+ 	if (status < 0) {
+ 		mlog_errno(status);
+-		return status;
++		goto out;
+ 	}
+ 
+ 	fe = (struct ocfs2_dinode *) bh->b_data;
+@@ -75,9 +75,10 @@ static int ocfs2_fast_symlink_readpage(s
+ 	memcpy(kaddr, link, len + 1);
+ 	kunmap_atomic(kaddr);
+ 	SetPageUptodate(page);
++out:
+ 	unlock_page(page);
+ 	brelse(bh);
+-	return 0;
++	return status;
+ }
+ 
+ const struct address_space_operations ocfs2_fast_symlink_aops = {
 
 
 
