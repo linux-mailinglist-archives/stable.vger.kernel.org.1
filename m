@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-122797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D667A5A13E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB69A59D2E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C085F3AA0A2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C4516E3EE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BF522D7A6;
-	Mon, 10 Mar 2025 17:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FC9230D0F;
+	Mon, 10 Mar 2025 17:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqgk2CqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1j1GuICf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056FB227EA0;
-	Mon, 10 Mar 2025 17:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C4C22D4D0;
+	Mon, 10 Mar 2025 17:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629525; cv=none; b=AYTUQln4/8r4NrhXfzrVJmEJa3UMnN6OaalWZOdtERikZhIQGXPTbl8kVtccJQdltJ8wcLh1QxdBMIHwLF4ji7SxxUO4aVwU75gPP6nv0bOAxo34emj+LYn/u3x5r7AdI1Tou9+MkgvITKCZsM72McHsVogCxwubS5nsBAauYZs=
+	t=1741627116; cv=none; b=QYFYZwH6+pQ50ZhR/tNWgr4HBuaLhtgi7JZ+psVsQJydqDbT+jT6J0+RdSkJBR3ZWvBBznAfrWaIchfJ6WDorAL+R0fatpikeT8CLIIEo1SkWXWZuRDYrHmKkCFAu2daaHxhvqHol4uHBejXUz7MCXjJ6lHq33fvWUnYb0Orc2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629525; c=relaxed/simple;
-	bh=AP5az0qgiQytymeP04DCIiwsresSZBByl8lknPeYjI8=;
+	s=arc-20240116; t=1741627116; c=relaxed/simple;
+	bh=y6Xiyx2xRHl9jbjl4WsEaYEPZzDJ34r2KQfeAUBYQDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaINko+d8ZqV/OqVUTKVe8fwPDwt/qqoENYxL0cLpIUSyMbxOJKBWNVXSvoNs8LyywH+c+/yy0vM+5QO5kzXHZ+p6r8d+mA4YZNDWmte+CPGrhENvkP0jpggcl9GQqAikbilkJI92/xQBpx+tZ1ewGcW6Kjb33mXDX/OiakUZvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqgk2CqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800ECC4CEE5;
-	Mon, 10 Mar 2025 17:58:44 +0000 (UTC)
+	 MIME-Version; b=PGjeROE1NubLCiikXOXiVdnwDHqa6x9cOaOhlECaT5TgVie6AWy9E+tXPtum4/fWwJXOJgROPtuka2/eqTsUzn9r2reWc2O7+HVlfD9FCEMR33OCV3jU1KkXQKPHFYn4OInEt6tiI4I/73PW4f0PIY9zjy6DX6M0E3a2jzqihfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1j1GuICf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7E4C4CEE5;
+	Mon, 10 Mar 2025 17:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629524;
-	bh=AP5az0qgiQytymeP04DCIiwsresSZBByl8lknPeYjI8=;
+	s=korg; t=1741627116;
+	bh=y6Xiyx2xRHl9jbjl4WsEaYEPZzDJ34r2KQfeAUBYQDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqgk2CqK9lbgXRA76lsV/bAC72e2Ir3JcSCD90iEWgtHWPF6PhOP/Hhsgvm+YaO/4
-	 kOuzCOClXGKEUMyMYHFVtFEv0I1PPVnvKOHgqqdXxateXegmTGtQ0f4qHeQJwt/5x7
-	 GDYtB27fPhONIXCoWAR2GDc2UpNO7xJvuNcu2YFU=
+	b=1j1GuICfCjMONVPed9XfqhpfQj9WZ3N1BYNYLLJzypl3Cp+ziN18PYbTbWXS2MkDy
+	 lnWyNPFTXjY+6o9vDvv6QGGN9iDv9yIkFp5COy76IT2gsWP+C7gz2juphouQwDf2kW
+	 5UVTPWfVs/jViMegVnMMGqLiKO/8ePdm/fN0Q6KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 325/620] net/ncsi: wait for the last response to Deselect Package before configuring channel
-Date: Mon, 10 Mar 2025 18:02:51 +0100
-Message-ID: <20250310170558.435370665@linuxfoundation.org>
+	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 019/269] rust: enable `rustdoc::unescaped_backticks` lint
+Date: Mon, 10 Mar 2025 18:02:52 +0100
+Message-ID: <20250310170458.475126315@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 6bb194d036c6e1b329dcdff459338cdd9a54802a upstream.
+commit bef83245f5ed434932aaf07f890142b576dc5d85 upstream.
 
-The NCSI state machine as it's currently implemented assumes that
-transition to the next logical state is performed either explicitly by
-calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
-after processing the predefined (ndp->pending_req_num) number of
-replies. Thus to avoid the configuration FSM from advancing prematurely
-and getting out of sync with the process it's essential to not skip
-waiting for a reply.
+In Rust 1.71.0, `rustdoc` added the `unescaped_backticks` lint, which
+detects what are typically typos in Markdown formatting regarding inline
+code [1], e.g. from the Rust standard library:
 
-This patch makes the code wait for reception of the Deselect Package
-response for the last package probed before proceeding to channel
-configuration.
+    /// ... to `deref`/`deref_mut`` must ...
 
-Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
-testing.
+    /// ... use [`from_mut`]`. Specifically, ...
 
-Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Link: https://patch.msgid.link/20250116152900.8656-1-fercerpav@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+It does not seem to have almost any false positives, from the experience
+of enabling it in the Rust standard library [2], which will be checked
+starting with Rust 1.82.0. The maintainers also confirmed it is ready
+to be used.
+
+Thus enable it.
+
+Link: https://doc.rust-lang.org/rustdoc/lints.html#unescaped_backticks [1]
+Link: https://github.com/rust-lang/rust/pull/128307 [2]
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20240904204347.168520-9-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-manage.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ Makefile      |    3 ++-
+ rust/Makefile |    5 ++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1385,6 +1385,12 @@ static void ncsi_probe_channel(struct nc
- 		nd->state = ncsi_dev_state_probe_package;
- 		break;
- 	case ncsi_dev_state_probe_package:
-+		if (ndp->package_probe_id >= 8) {
-+			/* Last package probed, finishing */
-+			ndp->flags |= NCSI_DEV_PROBED;
-+			break;
-+		}
-+
- 		ndp->pending_req_num = 1;
+--- a/Makefile
++++ b/Makefile
+@@ -462,7 +462,8 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::undocumented_unsafe_blocks \
+ 			    -Wclippy::unnecessary_safety_comment \
+ 			    -Wclippy::unnecessary_safety_doc \
+-			    -Wrustdoc::missing_crate_level_docs
++			    -Wrustdoc::missing_crate_level_docs \
++			    -Wrustdoc::unescaped_backticks
  
- 		nca.type = NCSI_PKT_CMD_SP;
-@@ -1501,13 +1507,8 @@ static void ncsi_probe_channel(struct nc
- 		if (ret)
- 			goto error;
+ KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) \
+ 		       $(HOSTCFLAGS) -I $(srctree)/scripts/include
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -61,7 +61,7 @@ alloc-cfgs = \
+ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+       cmd_rustdoc = \
+ 	OBJTREE=$(abspath $(objtree)) \
+-	$(RUSTDOC) $(if $(rustdoc_host),$(rust_common_flags),$(rust_flags)) \
++	$(RUSTDOC) $(filter-out $(skip_flags),$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
+ 		$(rustc_target_flags) -L$(objtree)/$(obj) \
+ 		-Zunstable-options --generate-link-to-definition \
+ 		--output $(rustdoc_output) \
+@@ -98,6 +98,9 @@ rustdoc-macros: private rustc_target_fla
+ rustdoc-macros: $(src)/macros/lib.rs FORCE
+ 	+$(call if_changed,rustdoc)
  
--		/* Probe next package */
-+		/* Probe next package after receiving response */
- 		ndp->package_probe_id++;
--		if (ndp->package_probe_id >= 8) {
--			/* Probe finished */
--			ndp->flags |= NCSI_DEV_PROBED;
--			break;
--		}
- 		nd->state = ncsi_dev_state_probe_package;
- 		ndp->active_package = NULL;
- 		break;
++# Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` should
++# not be needed -- see https://github.com/rust-lang/rust/pull/128307.
++rustdoc-core: private skip_flags = -Wrustdoc::unescaped_backticks
+ rustdoc-core: private rustc_target_flags = $(core-cfgs)
+ rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
+ 	+$(call if_changed,rustdoc)
 
 
 
