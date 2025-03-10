@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-122079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0E6A59DD6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95613A5A1FD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C19877A783A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0B5C7A104C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8AE233D98;
-	Mon, 10 Mar 2025 17:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74A3233D98;
+	Mon, 10 Mar 2025 18:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9BYWWCA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdFd8zAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBC9234977;
-	Mon, 10 Mar 2025 17:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E681C5F1B;
+	Mon, 10 Mar 2025 18:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627467; cv=none; b=qAzY9uiWsVLrti7iZALszasyM3u5nAMeiyFNzwY6uGSdTOnghX+OvSRjRK/NdoEM1LijBdrFQOPbKC7o1M1t/FLvAjSPuVxadKUVs/rmajGp20SX5SsQFh7/rIB6bZVQFbxzZJeXv+CEVUJvYVRDVwhXyjgLLe/r3qLgjt91R6U=
+	t=1741630528; cv=none; b=HBdXOo5csH73AJ1cUiZxIza4D6/LjPbYitew8zHACX27tgUlV8DiPCETVLpcBE7vsKvEgkKFl1jYOlYAoxKJEWTuWtSwO8+4dWe6u1BgK10896YkfmtA3f/4C+VEelMmXbZ3sNc7Jfv4seA1nl905QJgZ5LAAYzIqSOD2YVcGHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627467; c=relaxed/simple;
-	bh=SqagjyT6tbaAXNj6sgBvyLb4oMO/8/bjlsesdsm1l08=;
+	s=arc-20240116; t=1741630528; c=relaxed/simple;
+	bh=zaAwm2+1YKjgrNmpitARvizpzYjN1m/x/UW5LmMAuZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bua7iV18nf4oswda1dgR2pClaQgWwg4HJ2GGhIOxdGrffM923lszOKrPYSkeitWMazrkyyIDK9ij1nhowEu6K7WroZd718Uz+kH2Hrsj9u8VyGnjYGTzL1aTSunoEE+DOvH+aLaPBhFNzp6brFFL1KRf0tI9jG95yGoY2gFuHBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9BYWWCA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B1CC4CEE5;
-	Mon, 10 Mar 2025 17:24:25 +0000 (UTC)
+	 MIME-Version; b=A5zrJqU9jAD3MjiA7lqTlI4vmtTNd0A455UKKGkLFYfOlINbQvPLBTnwLOUJHbzRtK/PX6CBCHorMyqARcqfbCHH1g/6njedDhjC1y7zp6pXUbRF8bLDBKjHSzcW/M9XTDe6BAvgRAvMbShCFnNup0eCpObkJMSl6mb26gyBhVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdFd8zAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1897C4CEE5;
+	Mon, 10 Mar 2025 18:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627466;
-	bh=SqagjyT6tbaAXNj6sgBvyLb4oMO/8/bjlsesdsm1l08=;
+	s=korg; t=1741630528;
+	bh=zaAwm2+1YKjgrNmpitARvizpzYjN1m/x/UW5LmMAuZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9BYWWCAu01SUDFVmJhi0DMAGNhVs/veGo/xQbU7GZjhPM15bemsOEssZoxiY57ov
-	 jxzmB8uYJBlcU3iY/IvePhPMI5KzV/kgqE368dIy5mMNWkGfNoZ93ebgcOLSCHXH5v
-	 ZSEqc/05t9fzf7EPjetSmlP//oUfbssKUtd1A7GA=
+	b=zdFd8zAe+LcLRMJIAcNkPIuV05t1pr79H3Xjma2E4FTaiHDAz2nR2V9GnVIBhaU0Z
+	 LF7nxFxb0koTUNd8jIFFDxfz2Eg9t9E+bzZOZJdHGtryPPbl6c7b0mm1+4A62uYh0v
+	 CDsLdXKJuzG+SX4Pm4dWZeAwCZc+GSuEruDmI4KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Geffon <bgeffon@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Marek Maslanka <mmaslanka@google.com>,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 138/269] mm: fix finish_fault() handling for large folios
+	Ard Biesheuvel <ardb@kernel.org>,
+	Andy Liang <andy.liang@hpe.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 445/620] tpm: Change to kvalloc() in eventlog/acpi.c
 Date: Mon, 10 Mar 2025 18:04:51 +0100
-Message-ID: <20250310170503.224222411@linuxfoundation.org>
+Message-ID: <20250310170603.159280746@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Geffon <bgeffon@google.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit 34b82f33cf3f03bc39e9a205a913d790e1520ade upstream.
+[ Upstream commit a3a860bc0fd6c07332e4911cf9a238d20de90173 ]
 
-When handling faults for anon shmem finish_fault() will attempt to install
-ptes for the entire folio.  Unfortunately if it encounters a single
-non-pte_none entry in that range it will bail, even if the pte that
-triggered the fault is still pte_none.  When this situation happens the
-fault will be retried endlessly never making forward progress.
+The following failure was reported on HPE ProLiant D320:
 
-This patch fixes this behavior and if it detects that a pte in the range
-is not pte_none it will fall back to setting a single pte.
+[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
+[   10.848132][    T1] ------------[ cut here ]------------
+[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
+[   10.862827][    T1] Modules linked in:
+[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
+[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
+[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
+[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
+[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
 
-[bgeffon@google.com: tweak whitespace]
-  Link: https://lkml.kernel.org/r/20250227133236.1296853-1-bgeffon@google.com
-Link: https://lkml.kernel.org/r/20250226162341.915535-1-bgeffon@google.com
-Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Marek Maslanka <mmaslanka@google.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickens <hughd@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The above transcript shows that ACPI pointed a 16 MiB buffer for the log
+events because RSI maps to the 'order' parameter of __alloc_pages_noprof().
+Address the bug by moving from devm_kmalloc() to devm_add_action() and
+kvmalloc() and devm_add_action().
+
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org # v2.6.16+
+Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+Reported-by: Andy Liang <andy.liang@hpe.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Tested-by: Andy Liang <andy.liang@hpe.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/char/tpm/eventlog/acpi.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5079,7 +5079,11 @@ vm_fault_t finish_fault(struct vm_fault
- 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
- 		      !(vma->vm_flags & VM_SHARED);
- 	int type, nr_pages;
--	unsigned long addr = vmf->address;
-+	unsigned long addr;
-+	bool needs_fallback = false;
-+
-+fallback:
-+	addr = vmf->address;
+diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
+index bd757d836c5cf..1a5644051d310 100644
+--- a/drivers/char/tpm/eventlog/acpi.c
++++ b/drivers/char/tpm/eventlog/acpi.c
+@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
+ 	return n == 0;
+ }
  
- 	/* Did we COW the page? */
- 	if (is_cow)
-@@ -5118,7 +5122,8 @@ vm_fault_t finish_fault(struct vm_fault
- 	 * approach also applies to non-anonymous-shmem faults to avoid
- 	 * inflating the RSS of the process.
- 	 */
--	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma))) {
-+	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
-+	    unlikely(needs_fallback)) {
- 		nr_pages = 1;
- 	} else if (nr_pages > 1) {
- 		pgoff_t idx = folio_page_idx(folio, page);
-@@ -5154,9 +5159,9 @@ vm_fault_t finish_fault(struct vm_fault
- 		ret = VM_FAULT_NOPAGE;
- 		goto unlock;
- 	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
--		update_mmu_tlb_range(vma, addr, vmf->pte, nr_pages);
--		ret = VM_FAULT_NOPAGE;
--		goto unlock;
-+		needs_fallback = true;
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		goto fallback;
++static void tpm_bios_log_free(void *data)
++{
++	kvfree(data);
++}
++
+ /* read binary bios log */
+ int tpm_read_log_acpi(struct tpm_chip *chip)
+ {
+@@ -136,7 +141,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
  	}
  
- 	folio_ref_add(folio, nr_pages - 1);
+ 	/* malloc EventLog space */
+-	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
++	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
+ 
+@@ -162,10 +167,16 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 		goto err;
+ 	}
+ 
++	ret = devm_add_action(&chip->dev, tpm_bios_log_free, log->bios_event_log);
++	if (ret) {
++		log->bios_event_log = NULL;
++		goto err;
++	}
++
+ 	return format;
+ 
+ err:
+-	devm_kfree(&chip->dev, log->bios_event_log);
++	tpm_bios_log_free(log->bios_event_log);
+ 	log->bios_event_log = NULL;
+ 	return ret;
+ }
+-- 
+2.39.5
+
 
 
 
