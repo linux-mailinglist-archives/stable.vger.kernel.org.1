@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB99A59E74
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8A2A5A284
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52A803A982F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C960D3AF91D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9412230BC3;
-	Mon, 10 Mar 2025 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB63423372C;
+	Mon, 10 Mar 2025 18:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4TmR/kv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwt08kIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861B422CBF1;
-	Mon, 10 Mar 2025 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA05022576A;
+	Mon, 10 Mar 2025 18:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627792; cv=none; b=CfMaAQBCVbJzQ7Duk/USuAyQgDVUVUqxqgZUCpSIzpx8NcxcSTw2nrKuYAxcqW3NDmJj0WwYvhNGZBsgGWS4VgMo6o5HOBS/ltq7SBm2xDAOXvsf7k5/SE5pTiHgQE3vfuTFDyllV0QVEqop91ctS87syZ+6X/8hxqjCxwZ/YuI=
+	t=1741630853; cv=none; b=Icgpfx+8oOXOVMKUTSnhuSTk6zu/W8tP969bkg8JIt+lUvI36wD3E/4qo0A2vFzZr4hcV6yK4JU9NCOt0XYyZj2lXhZ+HTP05ltUvwQWyttbX83cZYiRU94dY+buTlIN+jzCgnBy85q9pNqlZD8vs78gi3gt8kdYnVKM/yv5OP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627792; c=relaxed/simple;
-	bh=vywqVpTdYBLwqzcJ5Kdb1iwzB9syyFF2lksXYxnIlXw=;
+	s=arc-20240116; t=1741630853; c=relaxed/simple;
+	bh=SDAMIOE1OE0CEMgVs4HIQVmp4cxdRgfYUQixjDhbCHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTLIUOw9N3isBtTsgGUbZidL838FF3+YYi8nRXav/2EtyMgnJ1/JgLaHpjm9QhmXa/VjdQAc5M6w+0okFqlVFRceFr5DnLm+EPZKk0EEgH80xkVbVTSfEq4DGxJ7dPeXFLEQfrgC1efeZebRxYeaSDfa6qlydBBzxRTFME2NNb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4TmR/kv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A108C4CEE5;
-	Mon, 10 Mar 2025 17:29:51 +0000 (UTC)
+	 MIME-Version; b=SPSL58dOXwoeziaS/YU4BrOdjUcahf2lwC/+uWP80twOI0a1QO8BYsdkEoFJGLwLcZW8Qq67OI2MEQLGWMcuVyVdIk93ICajw+OIKmzGcoJWVYdXXR1YF2b7tGcTEbpuGcPNfbHE981InRw0eAkAZB8hc/hhk+LKV/39LcRLRCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwt08kIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE2AC4CEE5;
+	Mon, 10 Mar 2025 18:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627792;
-	bh=vywqVpTdYBLwqzcJ5Kdb1iwzB9syyFF2lksXYxnIlXw=;
+	s=korg; t=1741630853;
+	bh=SDAMIOE1OE0CEMgVs4HIQVmp4cxdRgfYUQixjDhbCHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4TmR/kvCSsl7SERf0Dc7BYVUHC8rSF0CgGLu0k1wmsSPm2tnN+i3eWAGToXYHh/A
-	 VUNv9AoOApl/20+fUU+Owy+po+0zxk2O1e9sOmHfxC4iNOjtxMiOXFL/BCDkTZ425x
-	 oF+Mn3tim6G5fqmfFUMBF8F6MMYgxcBMYFAZGxIg=
+	b=cwt08kIts28yXdOnPr7KjlGiboCGNxrnB8AQLcCkSSAEVZkkjRUvrgi4am0UHG+qU
+	 P7sJ1FYjNsEZsv8/Vd+7M2ywrHXo5E5UHhn+zPLLK63JQ8lLX0eHkp1iKtVJwGBjcw
+	 aYRRUh4jJanM6v25Kv6WowKy6sXhirctl8KKiy3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.12 219/269] usb: typec: tcpci_rt1711h: Unmask alert interrupts to fix functionality
+	Ard Biesheuvel <ardb@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 5.15 526/620] vmlinux.lds: Ensure that const vars with relocations are mapped R/O
 Date: Mon, 10 Mar 2025 18:06:12 +0100
-Message-ID: <20250310170506.413617354@linuxfoundation.org>
+Message-ID: <20250310170606.311044508@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit d6b82dafd17db0658f089b9cdec573982ca82bc5 upstream.
+commit 68f3ea7ee199ef77551e090dfef5a49046ea8443 upstream.
 
-During probe, the TCPC alert interrupts are getting masked to
-avoid unwanted interrupts during chip setup: this is ok to do
-but there is no unmasking happening at any later time, which
-means that the chip will not raise any interrupt, essentially
-making it not functional as, while internally it does perform
-all of the intended functions, it won't signal anything to the
-outside.
+In the kernel, there are architectures (x86, arm64) that perform
+boot-time relocation (for KASLR) without relying on PIE codegen. In this
+case, all const global objects are emitted into .rodata, including const
+objects with fields that will be fixed up by the boot-time relocation
+code.  This implies that .rodata (and .text in some cases) need to be
+writable at boot, but they will usually be mapped read-only as soon as
+the boot completes.
 
-Unmask the alert interrupts to fix functionality.
+When using PIE codegen, the compiler will emit const global objects into
+.data.rel.ro rather than .rodata if the object contains fields that need
+such fixups at boot-time. This permits the linker to annotate such
+regions as requiring read-write access only at load time, but not at
+execution time (in user space), while keeping .rodata truly const (in
+user space, this is important for reducing the CoW footprint of dynamic
+executables).
 
-Fixes: ce08eaeb6388 ("staging: typec: rt1711h typec chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250219114700.41700-1-angelogioacchino.delregno@collabora.com
+This distinction does not matter for the kernel, but it does imply that
+const data will end up in writable memory if the .data.rel.ro sections
+are not treated in a special way, as they will end up in the writable
+.data segment by default.
+
+So emit .data.rel.ro into the .rodata segment.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250221135704.431269-5-ardb+git@google.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci_rt1711h.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/asm-generic/vmlinux.lds.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-+++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-@@ -334,6 +334,11 @@ static int rt1711h_probe(struct i2c_clie
- {
- 	int ret;
- 	struct rt1711h_chip *chip;
-+	const u16 alert_mask = TCPC_ALERT_TX_SUCCESS | TCPC_ALERT_TX_DISCARDED |
-+			       TCPC_ALERT_TX_FAILED | TCPC_ALERT_RX_HARD_RST |
-+			       TCPC_ALERT_RX_STATUS | TCPC_ALERT_POWER_STATUS |
-+			       TCPC_ALERT_CC_STATUS | TCPC_ALERT_RX_BUF_OVF |
-+			       TCPC_ALERT_FAULT;
- 
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
-@@ -382,6 +387,12 @@ static int rt1711h_probe(struct i2c_clie
- 					dev_name(chip->dev), chip);
- 	if (ret < 0)
- 		return ret;
-+
-+	/* Enable alert interrupts */
-+	ret = rt1711h_write16(chip, TCPC_ALERT_MASK, alert_mask);
-+	if (ret < 0)
-+		return ret;
-+
- 	enable_irq_wake(client->irq);
- 
- 	return 0;
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -429,7 +429,7 @@
+ 	. = ALIGN((align));						\
+ 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
+ 		__start_rodata = .;					\
+-		*(.rodata) *(.rodata.*)					\
++		*(.rodata) *(.rodata.*) *(.data.rel.ro*)		\
+ 		SCHED_DATA						\
+ 		RO_AFTER_INIT_DATA	/* Read only after init */	\
+ 		. = ALIGN(8);						\
 
 
 
