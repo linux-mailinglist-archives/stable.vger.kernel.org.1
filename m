@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-122352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45EB9A59F2A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5600FA59FB7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF96E188FE99
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC8313A6299
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE5A18DB24;
-	Mon, 10 Mar 2025 17:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B8D2253FE;
+	Mon, 10 Mar 2025 17:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxkklIQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPcz/PjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7CB1B3927;
-	Mon, 10 Mar 2025 17:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9C623236D;
+	Mon, 10 Mar 2025 17:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628253; cv=none; b=TkRUMNQt/WrtZl80o80DQk4mxlrAbSn/AkIoF29zYjXeC7g7wnR+IWOvI0MMqbmo2lrw4eVTuwnQTYyQAD7Qpvv4IyojjlGPQEjfPErkuf0iBd7G1cfrBD0IYOoCjeHHom5I8kGsfpdyeqm+JD82R8I0YNn35Bf9XNBTjFYG3UE=
+	t=1741628515; cv=none; b=nqkSaAeavB3dfLUDagBHccwBZNpXi/5QRntjY3z4teeM2cbna6YTtHXpkHXLPOaFzqYAutf3x21XyU9v0MhGGyWDGpTSZSGgCzaUvzD82vgVx2fh0Mj3XAcT7aCZMCiVWgwpZl/Wxs8KS9i6qp0kI0V67Aj05E3kAuDfNlvJb5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628253; c=relaxed/simple;
-	bh=Y/gHGP/cpJOCeXGKdmpmpzlht57NTNhChzP59BHOn4U=;
+	s=arc-20240116; t=1741628515; c=relaxed/simple;
+	bh=m9dzySiwtRx1q6D105e0jPrDRNAtuk5o0JoMiI+LSys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1Lb+vZcqCS/p4yREJ43jLu8iGzl9BAD2AlEW6xmlFpCaB4Rab5/Viz361PNhe1LbaHQy/eLZA3OlDnU0SYfmwviIfx+Yiy7h9xndCflvsGfZbxtd/HrcHOzYocREaZIR8tBJIf64iS6adKaJIzqaBI1X/EcW7ghnHnHx/dQfl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxkklIQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4582DC4CEE5;
-	Mon, 10 Mar 2025 17:37:33 +0000 (UTC)
+	 MIME-Version; b=Ggyp/Te64waiQ6T0BLLvOGkPEuAVsiP+FQytuZb7+QIInlGYvPUPFlM4J8TRiyAs9dZj/FyAJixC0442Kq4nL2Wu+UkI8fTbyt1EO9tFpY8dFTsPdbC+lm4m/zEYeQ2MwfbUx8UNb1FN78UCwJ/uYt6uA3j2Oy6fs+pDC2VRJOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPcz/PjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAE3C4CEE5;
+	Mon, 10 Mar 2025 17:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628253;
-	bh=Y/gHGP/cpJOCeXGKdmpmpzlht57NTNhChzP59BHOn4U=;
+	s=korg; t=1741628514;
+	bh=m9dzySiwtRx1q6D105e0jPrDRNAtuk5o0JoMiI+LSys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxkklIQ1YS+5RrIVWiEIIuBE1Q9SCQXMUxZP1FDu63qnGR/ntXXmQbH1AJEUhEk5+
-	 AmmLjM1aJ3EPEfN3U+ZjHvnudNf3duqDLEn/nAr4Y87piSq6Okzzf/wYqCddNe/A3R
-	 FqJb8P0jhs0QqmAIHdkTQ9V59OHxHudgOnwmn2aE=
+	b=xPcz/PjZKLi+Uvuosxel4i/H2IbfY9YobJOQEpD8OGy5ihRcHK3qDH7QnnH+PB7NX
+	 voICSUWpTV+rLJj2md84eVuiqeQF3siJ89aKSK8B/RJ0GMa8ogpcdcZ2JI6clQDc8D
+	 /6W7NNkxEtrfNBNKOET9Vml4DnYoegT6/P24zkW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 133/145] Revert "KVM: e500: always restore irqs"
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 083/109] intel_th: pci: Add Panther Lake-P/U support
 Date: Mon, 10 Mar 2025 18:07:07 +0100
-Message-ID: <20250310170440.128564740@linuxfoundation.org>
+Message-ID: <20250310170430.865100697@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-This reverts commit b9d93eda1214985d1b3d00a0f9d4306282a5b189 which is
-commit 87ecfdbc699cc95fac73291b52650283ddcf929d upstream.
+commit 49114ff05770264ae233f50023fc64a719a9dcf9 upstream.
 
-It should not have been applied.
+Add support for the Trace Hub in Panther Lake-P/U.
 
-Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
-Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20250211185017.1759193-6-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -479,6 +479,7 @@ static inline int kvmppc_e500_shadow_map
- 		if (pte_present(pte)) {
- 			wimg = (pte_val(pte) >> PTE_WIMGE_SHIFT) &
- 				MAS2_WIMGE_MASK;
-+			local_irq_restore(flags);
- 		} else {
- 			local_irq_restore(flags);
- 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
-@@ -487,9 +488,8 @@ static inline int kvmppc_e500_shadow_map
- 			goto out;
- 		}
- 	}
--	local_irq_restore(flags);
--
- 	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
- 
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -340,6 +340,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Panther Lake-P/U */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xe424),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
