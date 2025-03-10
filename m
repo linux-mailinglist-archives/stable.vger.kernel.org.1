@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-121807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8377DA59C62
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91865A5A17D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E8F71885017
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF9AF173C1D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62F6230BED;
-	Mon, 10 Mar 2025 17:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F5122D4FD;
+	Mon, 10 Mar 2025 18:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XM7tNLte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdKV3kOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BAB23099F;
-	Mon, 10 Mar 2025 17:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D947C17A2E8;
+	Mon, 10 Mar 2025 18:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626685; cv=none; b=teD/3o+7Q9jP+468WBzAGCtcKkFcYi5TrPh43pOCjyxqfPtXvNvwp0Hrg56Z+kYJq3Wjp9gilDqB0de5IlyqMOg8qKDL5gGO50HkqsKIE4obwZv5zYouqy/mP0DUDGMy7TXYlLwVCPfN/plZ36ali/Yx6Aj5g/+NkJXh+lG8cB4=
+	t=1741629695; cv=none; b=ZfS6zvfFGFaiPONGJkiB1/dgwNCD1BUBiNidaW3HkILVTwLYSsNIPlCVuIMHXfvimL+94906MOAAP/BxM/KmzcfeFS6q77JVjytoNaJeT8FS91DAsECiM2KfIToi+Z7Efgrb+etieiR9Pssae49tygpRACacZvcmR3buPP/669Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626685; c=relaxed/simple;
-	bh=Q7BhjS3uAYwKNvKsj4tRrBzZX5km9knTeNXVggbhCrc=;
+	s=arc-20240116; t=1741629695; c=relaxed/simple;
+	bh=RReYE5rHDT6GxeVVqovL/J9q/2fXpTImkdJjU9a0+HQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMz9LV0CtA6nok5DCMBNZVQxaWfAY7CBTh33dOaoJxpYhFBrA2t8NjP7pbET0leGgh5T8TpGnVNc33Mk72cqzrrJO4/ai8YQV7pZJtDkRFkYWL1bxmG0ZGe5R1yI5r2rQmyYfHIhVG/BjN7zLze1a1ZeMMdGsMPUYYbqNuBZiFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XM7tNLte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3FFC4CEE5;
-	Mon, 10 Mar 2025 17:11:24 +0000 (UTC)
+	 MIME-Version; b=C4fUyz3stnpx/2NWdHe47zBq0csLZJU232jNJvZ1Kl1o9dF5cTrCYgi6MxSc30sLvc5VBqwlT+b2m+88Rgw/KdQmVbmXxFCZvp9jGaLau5CwN77/XQs4XeeCaLCh4WgVgUlaEVIt5P6C3xfnqXRXjXeYFrp8o9Jq1bSASVQsTUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdKV3kOM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F271C4CEE5;
+	Mon, 10 Mar 2025 18:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626685;
-	bh=Q7BhjS3uAYwKNvKsj4tRrBzZX5km9knTeNXVggbhCrc=;
+	s=korg; t=1741629695;
+	bh=RReYE5rHDT6GxeVVqovL/J9q/2fXpTImkdJjU9a0+HQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XM7tNLten2l6QXEygXL/DocF+wrZKHPQTjLr+x4oDLkFnzDEGa1t989njBTiONqPy
-	 G2rSOnfAmRXocMO6cyY+tF8TvpqhXvBQxHU6IxSusFqr2YInpBFxBxVAm+rJC1ESzJ
-	 kIs78n5lsf/YQrrDRMz2Wree2+A0qCCnAGhD8/NY=
+	b=QdKV3kOM8Wk92sUUGpAcPwWF9lgw7VrC6Vjyegii4CW9oye3O6P4fhhaVxtN9gPZT
+	 2F0SOMO0CkKQpDeQFPUX4Q7wKdycKVtxhvY1aD/dQmJ3wpGQt01McipH2GaTWgNt72
+	 SskiZCdREvF/kS+M/pt1B1UyclXMjaRw0PUx0uTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Martin <Andrew.Martin@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 035/207] drm/amdkfd: Fix NULL Pointer Dereference in KFD queue
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 5.15 382/620] alpha: align stack for page fault and user unaligned trap handlers
 Date: Mon, 10 Mar 2025 18:03:48 +0100
-Message-ID: <20250310170449.169210378@linuxfoundation.org>
+Message-ID: <20250310170600.672674323@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Martin <Andrew.Martin@amd.com>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-commit fd617ea3b79d2116d53f76cdb5a3601c0ba6e42f upstream.
+commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
 
-Through KFD IOCTL Fuzzing we encountered a NULL pointer derefrence
-when calling kfd_queue_acquire_buffers.
+do_page_fault() and do_entUna() are special because they use
+non-standard stack frame layout. Fix them manually.
 
-Fixes: 629568d25fea ("drm/amdkfd: Validate queue cwsr area and eop buffer size")
-Signed-off-by: Andrew Martin <Andrew.Martin@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Andrew Martin <Andrew.Martin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 049e5bf3c8406f87c3d8e1958e0a16804fa1d530)
 Cc: stable@vger.kernel.org
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/alpha/kernel/entry.S |   20 ++++++++++----------
+ arch/alpha/kernel/traps.c |    2 +-
+ arch/alpha/mm/fault.c     |    4 ++--
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-@@ -266,8 +266,8 @@ int kfd_queue_acquire_buffers(struct kfd
- 	/* EOP buffer is not required for all ASICs */
- 	if (properties->eop_ring_buffer_address) {
- 		if (properties->eop_ring_buffer_size != topo_dev->node_props.eop_buffer_size) {
--			pr_debug("queue eop bo size 0x%lx not equal to node eop buf size 0x%x\n",
--				properties->eop_buf_bo->tbo.base.size,
-+			pr_debug("queue eop bo size 0x%x not equal to node eop buf size 0x%x\n",
-+				properties->eop_ring_buffer_size,
- 				topo_dev->node_props.eop_buffer_size);
- 			err = -EINVAL;
- 			goto out_err_unreserve;
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
+ CFI_START_OSF_FRAME entMM
+ 	SAVE_ALL
+ /* save $9 - $15 so the inline exception code can manipulate them.  */
+-	subq	$sp, 56, $sp
+-	.cfi_adjust_cfa_offset	56
++	subq	$sp, 64, $sp
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_rel_offset	$13, 32
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ /* handle the fault */
+ 	lda	$8, 0x3fff
+ 	bic	$sp, $8, $8
+@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	addq	$sp, 56, $sp
++	addq	$sp, 64, $sp
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ /* finish up the syscall as normal.  */
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entMM
+@@ -383,8 +383,8 @@ entUnaUser:
+ 	.cfi_restore	$0
+ 	.cfi_adjust_cfa_offset	-256
+ 	SAVE_ALL		/* setup normal kernel stack */
+-	lda	$sp, -56($sp)
+-	.cfi_adjust_cfa_offset	56
++	lda	$sp, -64($sp)
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -400,7 +400,7 @@ entUnaUser:
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+ 	lda	$8, 0x3fff
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ 	bic	$sp, $8, $8
+ 	jsr	$26, do_entUnaUser
+ 	ldq	$9, 0($sp)
+@@ -410,7 +410,7 @@ entUnaUser:
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	lda	$sp, 56($sp)
++	lda	$sp, 64($sp)
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -418,7 +418,7 @@ entUnaUser:
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entUna
+ 
+--- a/arch/alpha/kernel/traps.c
++++ b/arch/alpha/kernel/traps.c
+@@ -709,7 +709,7 @@ s_reg_to_mem (unsigned long s_reg)
+ static int unauser_reg_offsets[32] = {
+ 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
+ 	/* r9 ... r15 are stored in front of regs.  */
+-	-56, -48, -40, -32, -24, -16, -8,
++	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
+ 	R(r16), R(r17), R(r18),
+ 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
+ 	R(r27), R(r28), R(gp),
+--- a/arch/alpha/mm/fault.c
++++ b/arch/alpha/mm/fault.c
+@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *
+ 
+ /* Macro for exception fixup code to access integer registers.  */
+ #define dpf_reg(r)							\
+-	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
+-				 (r) <= 18 ? (r)+10 : (r)-10])
++	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
++				 (r) <= 18 ? (r)+11 : (r)-10])
+ 
+ asmlinkage void
+ do_page_fault(unsigned long address, unsigned long mmcsr,
 
 
 
