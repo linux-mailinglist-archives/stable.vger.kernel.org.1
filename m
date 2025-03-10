@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-122895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB189A5A1E1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B05A59D9D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85F0188A6FB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B8633A6E89
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9B8235371;
-	Mon, 10 Mar 2025 18:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1670C22D799;
+	Mon, 10 Mar 2025 17:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnTFNJuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgJM/eZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6915A235364;
-	Mon, 10 Mar 2025 18:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DEB1C5F1B;
+	Mon, 10 Mar 2025 17:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630450; cv=none; b=L0c3uDpZ++Bbnd9fCHzuuAFWDcjLlp3pOK8qjVF0L0+3ULRfKHPIyVzM3McrIq55VlWj09FbK/t6BiWeADnpmd3nq1DekShuO+cHYAPhBwBx9rgONsk3em6+gkhMuIJPYy5fE1WrLzwxcn3wd/+cwaKd10fta/qCHR1JHrWw/+g=
+	t=1741627361; cv=none; b=k5zZWem4xciQLqsssj1NOsivULvZI9Onxb1vZOSvNpgpSMuL+AUbc44F3mbgKMdwYXsAOA2CW1+CWVFbZm8vnmWkDkNcTveQkrUMWaJ6mDTs7zStAhUWfAyFXoaxiNcLRM1S48hqaDisxoV7KDFDl4bPNQ7O6nw6jNLvuy4Jjwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630450; c=relaxed/simple;
-	bh=TypCR2x4edrBUnX1Pdv1Pu2rg36bDeDD8OAGwsoBWGA=;
+	s=arc-20240116; t=1741627361; c=relaxed/simple;
+	bh=+N6IfDjNS+q/MxW2xbdNc7FQTLXKvks/skSWpnum5so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtVF52f225MBIDwzAscOmvKhS3awSckCwYcdXSluPXVzwAHLzMrB4ChozvkMlNGlysjjSalx21C1aZtS1GgdNcdj/fFidssgGihz/RaUQ3BL+egu6zQ5bo7G5Av1QHg4xJkOOc5GwRfMEWrBm3sRIyyTTUjZPv1BanfILkHryog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnTFNJuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B42AC4CEEC;
-	Mon, 10 Mar 2025 18:14:09 +0000 (UTC)
+	 MIME-Version; b=g/JPqT0KdC46ZZyeESlfv+CJtisXPNsSNNVNbkxm3uv45wIFg4EEILnvPlUGneXIst4aca0zym0jy/GoSgJnRL3F6lJ/RW9c6VkZnL/z88e3S6hNUkPMzD7CCuG6j+f66Gm57cQY3kV83e2fDUkmW/2UzFOdv628Uc8ZD7wcA/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgJM/eZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE3CC4CEE5;
+	Mon, 10 Mar 2025 17:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630449;
-	bh=TypCR2x4edrBUnX1Pdv1Pu2rg36bDeDD8OAGwsoBWGA=;
+	s=korg; t=1741627361;
+	bh=+N6IfDjNS+q/MxW2xbdNc7FQTLXKvks/skSWpnum5so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnTFNJuwOCUSVUgogeFkoKkHh/dM+KsEi3p+egL0TT92Dumgi9s0I9gZiSx+VEqAe
-	 a6wMc3YJzhErWo69iz9JhmXEBIfdLV8GqDBXVtsjdSuxRyU+dGLDAe37oX+3uNl+uW
-	 7+jVxEWlnljG6QqX7oVB756Q+NNubG18O1F9Dfcs=
+	b=hgJM/eZrjmXZ0krViVBFgdIgMJInspBjsW9lFFnnhVnp2A8J8SN2TarkN+cqahpA6
+	 TLfwcaQAqz1t92MmkiMnR821ChGd4m9JneFuY4KoVHr0YX6J9gN6WY6NSmer/k3jxA
+	 bpkpTbEeYPxHlzL15G7I3G/QYfZsxeJPILL4Ss/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 5.15 410/620] drm/tidss: Fix issue in irq handling causing irq-flood issue
+	John Hubbard <jhubbard@nvidia.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Li Wang <liwang@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Peter Xu <peterx@redhat.com>,
+	Rich Felker <dalias@libc.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 103/269] Revert "selftests/mm: remove local __NR_* definitions"
 Date: Mon, 10 Mar 2025 18:04:16 +0100
-Message-ID: <20250310170601.773379975@linuxfoundation.org>
+Message-ID: <20250310170501.817894326@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +75,305 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-commit 44b6730ab53ef04944fbaf6da0e77397531517b7 upstream.
+commit 0a7565ee6ec31eb16c0476adbfc1af3f2271cb6b upstream.
 
-It has been observed that sometimes DSS will trigger an interrupt and
-the top level interrupt (DISPC_IRQSTATUS) is not zero, but the VP and
-VID level interrupt-statuses are zero.
+This reverts commit a5c6bc590094a1a73cf6fa3f505e1945d2bf2461.
 
-As the top level irqstatus is supposed to tell whether we have VP/VID
-interrupts, the thinking of the driver authors was that this particular
-case could never happen. Thus the driver only clears the DISPC_IRQSTATUS
-bits which has corresponding interrupts in VP/VID status. So when this
-issue happens, the driver will not clear DISPC_IRQSTATUS, and we get an
-interrupt flood.
+The general approach described in commit e076eaca5906 ("selftests: break
+the dependency upon local header files") was taken one step too far here:
+it should not have been extended to include the syscall numbers.  This is
+because doing so would require per-arch support in tools/include/uapi, and
+no such support exists.
 
-It is unclear why the issue happens. It could be a race issue in the
-driver, but no such race has been found. It could also be an issue with
-the HW. However a similar case can be easily triggered by manually
-writing to DISPC_IRQSTATUS_RAW. This will forcibly set a bit in the
-DISPC_IRQSTATUS and trigger an interrupt, and as the driver never clears
-the bit, we get an interrupt flood.
+This revert fixes two separate reports of test failures, from Dave
+Hansen[1], and Li Wang[2].  An excerpt of Dave's report:
 
-To fix the issue, always clear DISPC_IRQSTATUS. The concern with this
-solution is that if the top level irqstatus is the one that triggers the
-interrupt, always clearing DISPC_IRQSTATUS might leave some interrupts
-unhandled if VP/VID interrupt statuses have bits set. However, testing
-shows that if any of the irqstatuses is set (i.e. even if
-DISPC_IRQSTATUS == 0, but a VID irqstatus has a bit set), we will get an
-interrupt.
+Before this commit (a5c6bc590094a1a73cf6fa3f505e1945d2bf2461) things are
+fine.  But after, I get:
 
-Co-developed-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Co-developed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-1-82ddaec94e4a@ideasonboard.com
+	running PKEY tests for unsupported CPU/OS
+
+An excerpt of Li's report:
+
+    I just found that mlock2_() return a wrong value in mlock2-test
+
+[1] https://lore.kernel.org/dc585017-6740-4cab-a536-b12b37a7582d@intel.com
+[2] https://lore.kernel.org/CAEemH2eW=UMu9+turT2jRie7+6ewUazXmA6kL+VBo3cGDGU6RA@mail.gmail.com
+
+Link: https://lkml.kernel.org/r/20250214033850.235171-1-jhubbard@nvidia.com
+Fixes: a5c6bc590094 ("selftests/mm: remove local __NR_* definitions")
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Li Wang <liwang@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jeff Xu <jeffxu@chromium.org>
+Cc: Andrei Vagin <avagin@google.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ tools/testing/selftests/mm/hugepage-mremap.c      |    2 +-
+ tools/testing/selftests/mm/ksm_functional_tests.c |    8 +++++++-
+ tools/testing/selftests/mm/memfd_secret.c         |   14 +++++++++++++-
+ tools/testing/selftests/mm/mkdirty.c              |    8 +++++++-
+ tools/testing/selftests/mm/mlock2.h               |    1 -
+ tools/testing/selftests/mm/protection_keys.c      |    2 +-
+ tools/testing/selftests/mm/uffd-common.c          |    4 ++++
+ tools/testing/selftests/mm/uffd-stress.c          |   15 ++++++++++++++-
+ tools/testing/selftests/mm/uffd-unit-tests.c      |   14 +++++++++++++-
+ 9 files changed, 60 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -676,24 +676,20 @@ static
- void dispc_k3_clear_irqstatus(struct dispc_device *dispc, dispc_irq_t clearmask)
+--- a/tools/testing/selftests/mm/hugepage-mremap.c
++++ b/tools/testing/selftests/mm/hugepage-mremap.c
+@@ -15,7 +15,7 @@
+ #define _GNU_SOURCE
+ #include <stdlib.h>
+ #include <stdio.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <sys/mman.h>
+ #include <errno.h>
+ #include <fcntl.h> /* Definition of O_* constants */
+--- a/tools/testing/selftests/mm/ksm_functional_tests.c
++++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+@@ -11,7 +11,7 @@
+ #include <string.h>
+ #include <stdbool.h>
+ #include <stdint.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <sys/mman.h>
+@@ -369,6 +369,7 @@ unmap:
+ 	munmap(map, size);
+ }
+ 
++#ifdef __NR_userfaultfd
+ static void test_unmerge_uffd_wp(void)
  {
- 	unsigned int i;
--	u32 top_clear = 0;
+ 	struct uffdio_writeprotect uffd_writeprotect;
+@@ -429,6 +430,7 @@ close_uffd:
+ unmap:
+ 	munmap(map, size);
+ }
++#endif
  
- 	for (i = 0; i < dispc->feat->num_vps; ++i) {
--		if (clearmask & DSS_IRQ_VP_MASK(i)) {
-+		if (clearmask & DSS_IRQ_VP_MASK(i))
- 			dispc_k3_vp_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(i);
--		}
+ /* Verify that KSM can be enabled / queried with prctl. */
+ static void test_prctl(void)
+@@ -684,7 +686,9 @@ int main(int argc, char **argv)
+ 		exit(test_child_ksm());
  	}
- 	for (i = 0; i < dispc->feat->num_planes; ++i) {
--		if (clearmask & DSS_IRQ_PLANE_MASK(i)) {
-+		if (clearmask & DSS_IRQ_PLANE_MASK(i))
- 			dispc_k3_vid_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(4 + i);
--		}
+ 
++#ifdef __NR_userfaultfd
+ 	tests++;
++#endif
+ 
+ 	ksft_print_header();
+ 	ksft_set_plan(tests);
+@@ -696,7 +700,9 @@ int main(int argc, char **argv)
+ 	test_unmerge();
+ 	test_unmerge_zero_pages();
+ 	test_unmerge_discarded();
++#ifdef __NR_userfaultfd
+ 	test_unmerge_uffd_wp();
++#endif
+ 
+ 	test_prot_none();
+ 
+--- a/tools/testing/selftests/mm/memfd_secret.c
++++ b/tools/testing/selftests/mm/memfd_secret.c
+@@ -17,7 +17,7 @@
+ 
+ #include <stdlib.h>
+ #include <string.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <fcntl.h>
+@@ -28,6 +28,8 @@
+ #define pass(fmt, ...) ksft_test_result_pass(fmt, ##__VA_ARGS__)
+ #define skip(fmt, ...) ksft_test_result_skip(fmt, ##__VA_ARGS__)
+ 
++#ifdef __NR_memfd_secret
++
+ #define PATTERN	0x55
+ 
+ static const int prot = PROT_READ | PROT_WRITE;
+@@ -332,3 +334,13 @@ int main(int argc, char *argv[])
+ 
+ 	ksft_finished();
+ }
++
++#else /* __NR_memfd_secret */
++
++int main(int argc, char *argv[])
++{
++	printf("skip: skipping memfd_secret test (missing __NR_memfd_secret)\n");
++	return KSFT_SKIP;
++}
++
++#endif /* __NR_memfd_secret */
+--- a/tools/testing/selftests/mm/mkdirty.c
++++ b/tools/testing/selftests/mm/mkdirty.c
+@@ -9,7 +9,7 @@
+  */
+ #include <fcntl.h>
+ #include <signal.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <string.h>
+ #include <errno.h>
+ #include <stdlib.h>
+@@ -265,6 +265,7 @@ munmap:
+ 	munmap(mmap_mem, mmap_size);
+ }
+ 
++#ifdef __NR_userfaultfd
+ static void test_uffdio_copy(void)
+ {
+ 	struct uffdio_register uffdio_register;
+@@ -321,6 +322,7 @@ munmap:
+ 	munmap(dst, pagesize);
+ 	free(src);
+ }
++#endif /* __NR_userfaultfd */
+ 
+ int main(void)
+ {
+@@ -333,7 +335,9 @@ int main(void)
+ 			       thpsize / 1024);
+ 		tests += 3;
  	}
- 	if (dispc->feat->subrev == DISPC_K2G)
- 		return;
++#ifdef __NR_userfaultfd
+ 	tests += 1;
++#endif /* __NR_userfaultfd */
  
--	dispc_write(dispc, DISPC_IRQSTATUS, top_clear);
-+	/* always clear the top level irqstatus */
-+	dispc_write(dispc, DISPC_IRQSTATUS, dispc_read(dispc, DISPC_IRQSTATUS));
+ 	ksft_print_header();
+ 	ksft_set_plan(tests);
+@@ -363,7 +367,9 @@ int main(void)
+ 	if (thpsize)
+ 		test_pte_mapped_thp();
+ 	/* Placing a fresh page via userfaultfd may set the PTE dirty. */
++#ifdef __NR_userfaultfd
+ 	test_uffdio_copy();
++#endif /* __NR_userfaultfd */
  
- 	/* Flush posted writes */
- 	dispc_read(dispc, DISPC_IRQSTATUS);
+ 	err = ksft_get_fail_cnt();
+ 	if (err)
+--- a/tools/testing/selftests/mm/mlock2.h
++++ b/tools/testing/selftests/mm/mlock2.h
+@@ -3,7 +3,6 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <asm-generic/unistd.h>
+ 
+ static int mlock2_(void *start, size_t len, int flags)
+ {
+--- a/tools/testing/selftests/mm/protection_keys.c
++++ b/tools/testing/selftests/mm/protection_keys.c
+@@ -42,7 +42,7 @@
+ #include <sys/wait.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <sys/ptrace.h>
+ #include <setjmp.h>
+ 
+--- a/tools/testing/selftests/mm/uffd-common.c
++++ b/tools/testing/selftests/mm/uffd-common.c
+@@ -673,7 +673,11 @@ int uffd_open_dev(unsigned int flags)
+ 
+ int uffd_open_sys(unsigned int flags)
+ {
++#ifdef __NR_userfaultfd
+ 	return syscall(__NR_userfaultfd, flags);
++#else
++	return -1;
++#endif
+ }
+ 
+ int uffd_open(unsigned int flags)
+--- a/tools/testing/selftests/mm/uffd-stress.c
++++ b/tools/testing/selftests/mm/uffd-stress.c
+@@ -33,10 +33,11 @@
+  * pthread_mutex_lock will also verify the atomicity of the memory
+  * transfer (UFFDIO_COPY).
+  */
+-#include <asm-generic/unistd.h>
++
+ #include "uffd-common.h"
+ 
+ uint64_t features;
++#ifdef __NR_userfaultfd
+ 
+ #define BOUNCE_RANDOM		(1<<0)
+ #define BOUNCE_RACINGFAULTS	(1<<1)
+@@ -471,3 +472,15 @@ int main(int argc, char **argv)
+ 	       nr_pages, nr_pages_per_cpu);
+ 	return userfaultfd_stress();
+ }
++
++#else /* __NR_userfaultfd */
++
++#warning "missing __NR_userfaultfd definition"
++
++int main(void)
++{
++	printf("skip: Skipping userfaultfd test (missing __NR_userfaultfd)\n");
++	return KSFT_SKIP;
++}
++
++#endif /* __NR_userfaultfd */
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -5,11 +5,12 @@
+  *  Copyright (C) 2015-2023  Red Hat, Inc.
+  */
+ 
+-#include <asm-generic/unistd.h>
+ #include "uffd-common.h"
+ 
+ #include "../../../../mm/gup_test.h"
+ 
++#ifdef __NR_userfaultfd
++
+ /* The unit test doesn't need a large or random size, make it 32MB for now */
+ #define  UFFD_TEST_MEM_SIZE               (32UL << 20)
+ 
+@@ -1558,3 +1559,14 @@ int main(int argc, char *argv[])
+ 	return ksft_get_fail_cnt() ? KSFT_FAIL : KSFT_PASS;
+ }
+ 
++#else /* __NR_userfaultfd */
++
++#warning "missing __NR_userfaultfd definition"
++
++int main(void)
++{
++	printf("Skipping %s (missing __NR_userfaultfd)\n", __file__);
++	return KSFT_SKIP;
++}
++
++#endif /* __NR_userfaultfd */
 
 
 
