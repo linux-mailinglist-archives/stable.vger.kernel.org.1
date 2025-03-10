@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-121960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E655A59D33
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36E5A5A146
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76C3A16E2B9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64CC67A4150
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0349422154C;
-	Mon, 10 Mar 2025 17:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95B4233735;
+	Mon, 10 Mar 2025 17:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ztl63uqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWxHuKv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B486717CA12;
-	Mon, 10 Mar 2025 17:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7658D233737;
+	Mon, 10 Mar 2025 17:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627127; cv=none; b=ZyT11q2nR+8QYwp7QOfV8QRn10BYA2fbkTDQj883/ZRj7QcM+kASCt2RhxWjsUEq5HQhC2R07njNL81YuAvVq7hRzwgFZQUOvvOzWXJjkPIVzptfPd9OVvdtuTG2Ov4oaJe52tyf5FMMAV11CHSFrPueWgQPP/mv5j3XxrARDyA=
+	t=1741629539; cv=none; b=hUmNbidkV8R87RR0ftW+U2Y27QshoRTu8x4tKnLNaQJh6/hc8SF+art0eL4bc3BF5H438qFmDkpUOoq8LJMoh8ymHcj9BJPaYDNq7hdeKJQao/vUJdcp0GRYqlWAWbYj8F5+NM5kN5ly6AZFLg71t3oX1IZiPDKdJ9zI7eaQgvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627127; c=relaxed/simple;
-	bh=jps000z7eNbOZkao7cGtZfQw9kTRL9GaITwL5qq3X7M=;
+	s=arc-20240116; t=1741629539; c=relaxed/simple;
+	bh=wsh+U3oBNRUiPBecAOLjz8IHxx7308Nxi0ME1YlJ7is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqfCpxhtpY5SyOVEGyUoUWyS8mxjkccKL2XSF0VMtq8WSocQambK93Hc0URre6Uf4L0F16inTPM0PTBd7euAAmJk8rZi5MzdXjXV2HJ8cNAsCwC3zJUVObn2SjFI56t8CEAfz5zbaXfUUgZYIW1OtIacg5xHzNj1SJjJoxtGmMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ztl63uqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6E7C4CEE5;
-	Mon, 10 Mar 2025 17:18:47 +0000 (UTC)
+	 MIME-Version; b=PSAX3YQt/1fLwJXPFfYSSc4fbNrKxvhppxzbhWRxJD0T8YJWCFbGGJD+wl5+hcA+bz5Wx0lP/49L/KJEQzXxqjWW9Xx6IiJD+fSDOhy9aXNU8UXmeU30XCvGudiJSkyntkAqkxQb5iRUGfmQybLtM36Xg0B6VGsgSmShqkfy6Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWxHuKv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020D8C4CEEC;
+	Mon, 10 Mar 2025 17:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627127;
-	bh=jps000z7eNbOZkao7cGtZfQw9kTRL9GaITwL5qq3X7M=;
+	s=korg; t=1741629539;
+	bh=wsh+U3oBNRUiPBecAOLjz8IHxx7308Nxi0ME1YlJ7is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ztl63uqQZYSFE2Qf+MrsIVKGneYW4Sc7uytiz0SAF2Lsu1tJBZ4GcVwqIJusm+fmQ
-	 4U77swBEeYL38BcNF04xbnufLtTEIBfrgSusZvsb/4J5XRjizDJ8/XFTYtC+0l9niW
-	 Ki/UYzZa2OlyZToEbSajK+bdxjC/i4l1K4XaitQY=
+	b=TWxHuKv4y7nnToHa1XF0yI/aL1oEgOj8FYKLIlWzzEDb34F11GGD6Mp7UDcGuF9cs
+	 ci2fQWIugKMjlq7wTlxV3q75/IuK6RxAWmzrnS4n+gg+RWCdKXH2pu1xKL3fn84m9F
+	 mpEWtPrmXYZFC8mkmgpktVIFGtMzb1+c6NzWK8RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 023/269] rust: replace `clippy::dbg_macro` with `disallowed_macros`
+	kernel test robot <lkp@intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 5.15 330/620] gpio: xilinx: remove excess kernel doc
 Date: Mon, 10 Mar 2025 18:02:56 +0100
-Message-ID: <20250310170458.635933069@linuxfoundation.org>
+Message-ID: <20250310170558.629962494@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,135 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 8577c9dca799bd74377f7c30015d8cdc53a53ca2 upstream.
+commit 4c7fcbf5077532b80bc233c83d56e09a6bfa16b0 upstream.
 
-Back when we used Rust 1.60.0 (before Rust was merged in the kernel),
-we added `-Wclippy::dbg_macro` to the compilation flags. This worked
-great with our custom `dbg!` macro (vendored from `std`, but slightly
-modified to use the kernel printing facilities).
+The irqchip field has been removed from struct xgpio_instance so remove
+the doc as well.
 
-However, in the very next version, 1.61.0, it stopped working [1] since
-the lint started to use a Rust diagnostic item rather than a path to find
-the `dbg!` macro [1]. This behavior remains until the current nightly
-(1.83.0).
-
-Therefore, currently, the `dbg_macro` is not doing anything, which
-explains why we can invoke `dbg!` in samples/rust/rust_print.rs`, as well
-as why changing the `#[allow()]`s to `#[expect()]`s in `std_vendor.rs`
-doctests does not work since they are not fulfilled.
-
-One possible workaround is using `rustc_attrs` like the standard library
-does. However, this is intended to be internal, and we just started
-supporting several Rust compiler versions, so it is best to avoid it.
-
-Therefore, instead, use `disallowed_macros`. It is a stable lint and
-is more flexible (in that we can provide different macros), although
-its diagnostic message(s) are not as nice as the specialized one (yet),
-and does not allow to set different lint levels per macro/path [2].
-
-In turn, this requires allowing the (intentional) `dbg!` use in the
-sample, as one would have expected.
-
-Finally, in a single case, the `allow` is fixed to be an inner attribute,
-since otherwise it was not being applied.
-
-Link: https://github.com/rust-lang/rust-clippy/issues/11303 [1]
-Link: https://github.com/rust-lang/rust-clippy/issues/11307 [2]
-Tested-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240904204347.168520-13-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: b4510f8fd5d0 ("gpio: xilinx: Convert to immutable irq_chip")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312150239.IyuTVvrL-lkp@intel.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .clippy.toml               |    6 ++++++
- Makefile                   |    1 -
- rust/kernel/std_vendor.rs  |   10 +++++-----
- samples/rust/rust_print.rs |    1 +
- 4 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio-xilinx.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/.clippy.toml
-+++ b/.clippy.toml
-@@ -1 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
-+
-+disallowed-macros = [
-+    # The `clippy::dbg_macro` lint only works with `std::dbg!`, thus we simulate
-+    # it here, see: https://github.com/rust-lang/rust-clippy/issues/11303.
-+    { path = "kernel::dbg", reason = "the `dbg!` macro is intended as a debugging tool" },
-+]
---- a/Makefile
-+++ b/Makefile
-@@ -452,7 +452,6 @@ export rust_common_flags := --edition=20
- 			    -Wrust_2018_idioms \
- 			    -Wunreachable_pub \
- 			    -Wclippy::all \
--			    -Wclippy::dbg_macro \
- 			    -Wclippy::ignored_unit_patterns \
- 			    -Wclippy::mut_mut \
- 			    -Wclippy::needless_bitwise_bool \
---- a/rust/kernel/std_vendor.rs
-+++ b/rust/kernel/std_vendor.rs
-@@ -14,7 +14,7 @@
- ///
- /// ```rust
- /// let a = 2;
--/// # #[allow(clippy::dbg_macro)]
-+/// # #[allow(clippy::disallowed_macros)]
- /// let b = dbg!(a * 2) + 1;
- /// //      ^-- prints: [src/main.rs:2] a * 2 = 4
- /// assert_eq!(b, 5);
-@@ -52,7 +52,7 @@
- /// With a method call:
- ///
- /// ```rust
--/// # #[allow(clippy::dbg_macro)]
-+/// # #[allow(clippy::disallowed_macros)]
- /// fn foo(n: usize) {
- ///     if dbg!(n.checked_sub(4)).is_some() {
- ///         // ...
-@@ -71,7 +71,7 @@
- /// Naive factorial implementation:
- ///
- /// ```rust
--/// # #[allow(clippy::dbg_macro)]
-+/// # #[allow(clippy::disallowed_macros)]
- /// # {
- /// fn factorial(n: u32) -> u32 {
- ///     if dbg!(n <= 1) {
-@@ -118,7 +118,7 @@
- /// a tuple (and return it, too):
- ///
- /// ```
--/// # #[allow(clippy::dbg_macro)]
-+/// # #![allow(clippy::disallowed_macros)]
- /// assert_eq!(dbg!(1usize, 2u32), (1, 2));
- /// ```
- ///
-@@ -127,7 +127,7 @@
- /// invocations. You can use a 1-tuple directly if you need one:
- ///
- /// ```
--/// # #[allow(clippy::dbg_macro)]
-+/// # #[allow(clippy::disallowed_macros)]
- /// # {
- /// assert_eq!(1, dbg!(1u32,)); // trailing comma ignored
- /// assert_eq!((1,), dbg!((1u32,))); // 1-tuple
---- a/samples/rust/rust_print.rs
-+++ b/samples/rust/rust_print.rs
-@@ -15,6 +15,7 @@ module! {
- 
- struct RustPrint;
- 
-+#[allow(clippy::disallowed_macros)]
- fn arc_print() -> Result {
-     use kernel::sync::*;
- 
+--- a/drivers/gpio/gpio-xilinx.c
++++ b/drivers/gpio/gpio-xilinx.c
+@@ -52,7 +52,6 @@
+  * @dir: GPIO direction shadow register
+  * @gpio_lock: Lock used for synchronization
+  * @irq: IRQ used by GPIO device
+- * @irqchip: IRQ chip
+  * @enable: GPIO IRQ enable/disable bitfield
+  * @rising_edge: GPIO IRQ rising edge enable/disable bitfield
+  * @falling_edge: GPIO IRQ falling edge enable/disable bitfield
 
 
 
