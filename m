@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-121838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608F4A59C8F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF34A59DDE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81190167CE0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37E4B7A7847
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B66A2327A7;
-	Mon, 10 Mar 2025 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685D923372A;
+	Mon, 10 Mar 2025 17:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMfOve/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfjKdpnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290A3230BF8;
-	Mon, 10 Mar 2025 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E2F22DFAA;
+	Mon, 10 Mar 2025 17:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626776; cv=none; b=aNgdOj9fenbdkVI0NzZAkGuwnUQHU4V240aCWYs4pK6aMFdhtEnLyEH/9LKgxr5iWIDv4W7FPcJc1Zu9yC1U0tybh4QXFxi2/NiGia6zo1hq3fnpZ2Jvs8zHYir140tzHXurLQlNNPsCzGCmcQVWHK3je03tyC/8rUBpkYXoZZM=
+	t=1741627498; cv=none; b=MOv9vWtYR5osdZ7TRYHqWoCm3tUrCAnMybbOG/v4/4g6wf7kZk3wRHrLe5gxOXKQ3Wmc03sHCOftp7eLUEeujIMhu3e6Ejo0eNPXENRwtSxgKXn3yAMSJhYz62Fv/bZzsZ2fo48OcLpc/b9K9Ti1SPMvfhPPw7rif+SiEU7ECxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626776; c=relaxed/simple;
-	bh=rLWC6aO0WODhemIbF8LiFkiEEbxzlvB1NmonCUziJ2A=;
+	s=arc-20240116; t=1741627498; c=relaxed/simple;
+	bh=X9ZJLPkFlbB7yMTsLNROVRI9ovFzM/cCKQzFkdYxj3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYlAHfttk48prwqTSgGFB9UKYlkSdoh3QR3u7vwuwTl3GEVUMUZAhpNU9T36qia7RkX+pzbEWwfmEUcfZYZgnrz0QJuJZqVnX0FEVpJ8/3Ig2da0y/uzeDAq+L5+Qa3uI8Vp4qEO1QwxNL94SST+nky4H4gYUSaiNrhxpgwKcz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMfOve/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78180C4CEE5;
-	Mon, 10 Mar 2025 17:12:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GXNAHgkRTTeCVyCZ7sDUjkDMPbxisT5be2uHtSvWY08bdAAmMt1T6D9zKkJhTGmvYZ4SrTkQdrP48gXbj+1V/nULP0T7uWkFdWSdmHLlTjjBbuoorm/NatYzo3qOR+L+Xm8cZPz+a3AJXRrjc1lpxo8poYXX3ZVOFV4Ufov/3g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfjKdpnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E819C4CEE5;
+	Mon, 10 Mar 2025 17:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626776;
-	bh=rLWC6aO0WODhemIbF8LiFkiEEbxzlvB1NmonCUziJ2A=;
+	s=korg; t=1741627498;
+	bh=X9ZJLPkFlbB7yMTsLNROVRI9ovFzM/cCKQzFkdYxj3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMfOve/JPRhHz3o54Hbh0Awb2zzAevt7pnU4C2bhfYI8F06U2YZEl8Tx71UDavTRr
-	 jui7HwALdGDBHxxdzpjL4BkYNNm13voFx26Z2XhKm9smWJoMq7vbjrrTQGskcgbcV1
-	 vSm17x3/mhqmK//+1+6sTJt2N2ZGUGAnvSTHeEKw=
+	b=MfjKdpnRebz5he0LjK6j2jnP97OgeQIlys+tZqUQ0Ox65AHlK31Sit9MZod1WQpLh
+	 jxzdzoTtzfgEoj5Rcisthp75FteN4Ns/xvRYVzbyCd4DvbCh6C/4zLKcyn3Ev7G1N5
+	 azete54d4sCwVg3rwE7QyjiRMV229YVoBrT6gFfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Geffon <bgeffon@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Marek Maslanka <mmaslanka@google.com>,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 078/207] mm: fix finish_fault() handling for large folios
+	Oak Zeng <oak.zeng@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12 118/269] drm/xe/userptr: Unmap userptrs in the mmu notifier
 Date: Mon, 10 Mar 2025 18:04:31 +0100
-Message-ID: <20250310170450.864833270@linuxfoundation.org>
+Message-ID: <20250310170502.424345493@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +62,179 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Geffon <bgeffon@google.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit 34b82f33cf3f03bc39e9a205a913d790e1520ade upstream.
+commit 333b8906336174478efbbfc1e24a89e3397ffe65 upstream.
 
-When handling faults for anon shmem finish_fault() will attempt to install
-ptes for the entire folio.  Unfortunately if it encounters a single
-non-pte_none entry in that range it will bail, even if the pte that
-triggered the fault is still pte_none.  When this situation happens the
-fault will be retried endlessly never making forward progress.
+If userptr pages are freed after a call to the xe mmu notifier,
+the device will not be blocked out from theoretically accessing
+these pages unless they are also unmapped from the iommu, and
+this violates some aspects of the iommu-imposed security.
 
-This patch fixes this behavior and if it detects that a pte in the range
-is not pte_none it will fall back to setting a single pte.
+Ensure that userptrs are unmapped in the mmu notifier to
+mitigate this. A naive attempt would try to free the sg table, but
+the sg table itself may be accessed by a concurrent bind
+operation, so settle for only unmapping.
 
-[bgeffon@google.com: tweak whitespace]
-  Link: https://lkml.kernel.org/r/20250227133236.1296853-1-bgeffon@google.com
-Link: https://lkml.kernel.org/r/20250226162341.915535-1-bgeffon@google.com
-Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Marek Maslanka <mmaslanka@google.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickens <hughd@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+v3:
+- Update lockdep asserts.
+- Fix a typo (Matthew Auld)
+
+Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
+Cc: Oak Zeng <oak.zeng@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250304173342.22009-4-thomas.hellstrom@linux.intel.com
+(cherry picked from commit ba767b9d01a2c552d76cf6f46b125d50ec4147a6)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_hmm.c      |   51 ++++++++++++++++++++++++++++++++-------
+ drivers/gpu/drm/xe/xe_hmm.h      |    2 +
+ drivers/gpu/drm/xe/xe_vm.c       |    4 +++
+ drivers/gpu/drm/xe/xe_vm_types.h |    4 +++
+ 4 files changed, 52 insertions(+), 9 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5104,7 +5104,11 @@ vm_fault_t finish_fault(struct vm_fault
- 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
- 		      !(vma->vm_flags & VM_SHARED);
- 	int type, nr_pages;
--	unsigned long addr = vmf->address;
-+	unsigned long addr;
-+	bool needs_fallback = false;
+--- a/drivers/gpu/drm/xe/xe_hmm.c
++++ b/drivers/gpu/drm/xe/xe_hmm.c
+@@ -150,6 +150,45 @@ static int xe_build_sg(struct xe_device
+ 			       DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
+ }
+ 
++static void xe_hmm_userptr_set_mapped(struct xe_userptr_vma *uvma)
++{
++	struct xe_userptr *userptr = &uvma->userptr;
++	struct xe_vm *vm = xe_vma_vm(&uvma->vma);
 +
-+fallback:
-+	addr = vmf->address;
++	lockdep_assert_held_write(&vm->lock);
++	lockdep_assert_held(&vm->userptr.notifier_lock);
++
++	mutex_lock(&userptr->unmap_mutex);
++	xe_assert(vm->xe, !userptr->mapped);
++	userptr->mapped = true;
++	mutex_unlock(&userptr->unmap_mutex);
++}
++
++void xe_hmm_userptr_unmap(struct xe_userptr_vma *uvma)
++{
++	struct xe_userptr *userptr = &uvma->userptr;
++	struct xe_vma *vma = &uvma->vma;
++	bool write = !xe_vma_read_only(vma);
++	struct xe_vm *vm = xe_vma_vm(vma);
++	struct xe_device *xe = vm->xe;
++
++	if (!lockdep_is_held_type(&vm->userptr.notifier_lock, 0) &&
++	    !lockdep_is_held_type(&vm->lock, 0) &&
++	    !(vma->gpuva.flags & XE_VMA_DESTROYED)) {
++		/* Don't unmap in exec critical section. */
++		xe_vm_assert_held(vm);
++		/* Don't unmap while mapping the sg. */
++		lockdep_assert_held(&vm->lock);
++	}
++
++	mutex_lock(&userptr->unmap_mutex);
++	if (userptr->sg && userptr->mapped)
++		dma_unmap_sgtable(xe->drm.dev, userptr->sg,
++				  write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE, 0);
++	userptr->mapped = false;
++	mutex_unlock(&userptr->unmap_mutex);
++}
++
+ /**
+  * xe_hmm_userptr_free_sg() - Free the scatter gather table of userptr
+  * @uvma: the userptr vma which hold the scatter gather table
+@@ -161,16 +200,9 @@ static int xe_build_sg(struct xe_device
+ void xe_hmm_userptr_free_sg(struct xe_userptr_vma *uvma)
+ {
+ 	struct xe_userptr *userptr = &uvma->userptr;
+-	struct xe_vma *vma = &uvma->vma;
+-	bool write = !xe_vma_read_only(vma);
+-	struct xe_vm *vm = xe_vma_vm(vma);
+-	struct xe_device *xe = vm->xe;
+-	struct device *dev = xe->drm.dev;
+-
+-	xe_assert(xe, userptr->sg);
+-	dma_unmap_sgtable(dev, userptr->sg,
+-			  write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE, 0);
  
- 	/* Did we COW the page? */
- 	if (is_cow)
-@@ -5143,7 +5147,8 @@ vm_fault_t finish_fault(struct vm_fault
- 	 * approach also applies to non-anonymous-shmem faults to avoid
- 	 * inflating the RSS of the process.
- 	 */
--	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma))) {
-+	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
-+	    unlikely(needs_fallback)) {
- 		nr_pages = 1;
- 	} else if (nr_pages > 1) {
- 		pgoff_t idx = folio_page_idx(folio, page);
-@@ -5179,9 +5184,9 @@ vm_fault_t finish_fault(struct vm_fault
- 		ret = VM_FAULT_NOPAGE;
- 		goto unlock;
- 	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
--		update_mmu_tlb_range(vma, addr, vmf->pte, nr_pages);
--		ret = VM_FAULT_NOPAGE;
--		goto unlock;
-+		needs_fallback = true;
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		goto fallback;
++	xe_assert(xe_vma_vm(&uvma->vma)->xe, userptr->sg);
++	xe_hmm_userptr_unmap(uvma);
+ 	sg_free_table(userptr->sg);
+ 	userptr->sg = NULL;
+ }
+@@ -297,6 +329,7 @@ int xe_hmm_userptr_populate_range(struct
+ 
+ 	xe_mark_range_accessed(&hmm_range, write);
+ 	userptr->sg = &userptr->sgt;
++	xe_hmm_userptr_set_mapped(uvma);
+ 	userptr->notifier_seq = hmm_range.notifier_seq;
+ 	up_read(&vm->userptr.notifier_lock);
+ 	kvfree(pfns);
+--- a/drivers/gpu/drm/xe/xe_hmm.h
++++ b/drivers/gpu/drm/xe/xe_hmm.h
+@@ -13,4 +13,6 @@ struct xe_userptr_vma;
+ int xe_hmm_userptr_populate_range(struct xe_userptr_vma *uvma, bool is_mm_mmap_locked);
+ 
+ void xe_hmm_userptr_free_sg(struct xe_userptr_vma *uvma);
++
++void xe_hmm_userptr_unmap(struct xe_userptr_vma *uvma);
+ #endif
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -621,6 +621,8 @@ static void __vma_userptr_invalidate(str
+ 		err = xe_vm_invalidate_vma(vma);
+ 		XE_WARN_ON(err);
  	}
++
++	xe_hmm_userptr_unmap(uvma);
+ }
  
- 	folio_ref_add(folio, nr_pages - 1);
+ static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+@@ -1039,6 +1041,7 @@ static struct xe_vma *xe_vma_create(stru
+ 			INIT_LIST_HEAD(&userptr->invalidate_link);
+ 			INIT_LIST_HEAD(&userptr->repin_link);
+ 			vma->gpuva.gem.offset = bo_offset_or_userptr;
++			mutex_init(&userptr->unmap_mutex);
+ 
+ 			err = mmu_interval_notifier_insert(&userptr->notifier,
+ 							   current->mm,
+@@ -1080,6 +1083,7 @@ static void xe_vma_destroy_late(struct x
+ 		 * them anymore
+ 		 */
+ 		mmu_interval_notifier_remove(&userptr->notifier);
++		mutex_destroy(&userptr->unmap_mutex);
+ 		xe_vm_put(vm);
+ 	} else if (xe_vma_is_null(vma)) {
+ 		xe_vm_put(vm);
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -59,12 +59,16 @@ struct xe_userptr {
+ 	struct sg_table *sg;
+ 	/** @notifier_seq: notifier sequence number */
+ 	unsigned long notifier_seq;
++	/** @unmap_mutex: Mutex protecting dma-unmapping */
++	struct mutex unmap_mutex;
+ 	/**
+ 	 * @initial_bind: user pointer has been bound at least once.
+ 	 * write: vm->userptr.notifier_lock in read mode and vm->resv held.
+ 	 * read: vm->userptr.notifier_lock in write mode or vm->resv held.
+ 	 */
+ 	bool initial_bind;
++	/** @mapped: Whether the @sgt sg-table is dma-mapped. Protected by @unmap_mutex. */
++	bool mapped;
+ #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
+ 	u32 divisor;
+ #endif
 
 
 
