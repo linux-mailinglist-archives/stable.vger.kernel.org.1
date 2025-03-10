@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-122679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187E2A5A0BB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DBBA5A0BF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:53:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56AE3172E6E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE89A16520D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A715E232369;
-	Mon, 10 Mar 2025 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185BE22FAF8;
+	Mon, 10 Mar 2025 17:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOsmwMnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrzbNNG1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639CE22AE7C;
-	Mon, 10 Mar 2025 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFC817CA12;
+	Mon, 10 Mar 2025 17:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629187; cv=none; b=nSr+RDpCs/+GnVeNFDZsEGVop+BhAVosfPPEDOjNzlhn+Xw13T8Y9aJNM4+nLELf8bxhDXK5qWJnLmj7PdzqoAgMCwZNy8bm3H+ZS+cX8QYPGgZFG6PgoIlRmdCo7PRnpINOq9Tq+MJkUZlI8To6hItUY/UvR0c07cq32tNMemE=
+	t=1741629192; cv=none; b=DekfVQs48FWaL3iWLZKTnM6y+X8BSYKgkTKJtp3buMltAmY9Nfk1OTFoUke8HHLvKe2Bv5l076inr7Ud9FoKCJTaJ/BsMPtaT6mpIzfo4I6f2lj31qF2D5ZCFiLt32Ie3ASZKopXfUGJwtx49HTdLT//ycvr3lcCT3x2GQSRSN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629187; c=relaxed/simple;
-	bh=sa9EIE04LEBfTX6RvKjzgHk4Dm9SwO0xb0TMifbJsI0=;
+	s=arc-20240116; t=1741629192; c=relaxed/simple;
+	bh=CJlvlBV1JpmqbjhGuM2+YK0rq6Vcx4W9RIwZG1wigNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1m477J8RLMukt9/Vuw8mIlkOyi+mMB76YrJX1zhDeeH3loFa80gJYpIjOPkbbTKjm/bUAswadwDPZIti7z6/u17UTZ3UzDOekHVGd8UmY9koboItLYuH7lSTawuRr0uEiKVciDcro0jtgjfCEQ10b9v1ZUgnNiVqmE5KY3C6L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOsmwMnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CE7C4CEEC;
-	Mon, 10 Mar 2025 17:53:06 +0000 (UTC)
+	 MIME-Version; b=CXhpQc2/lRN0tLhPq2tWgQV/LeVwK1jAyhhkrrYjMfIcMlyVVxnnJY1MlihtWIvGzX3msAA9pztisbffCFZQDjax72XwiQjENUP2eeQVRSoFPYOAtC1XKLRhdfwTvK1u3rKaMxZaoF0uOkJUji2zHBiqjt0QKL45jCD/LROY2sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrzbNNG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53293C4CEE5;
+	Mon, 10 Mar 2025 17:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629186;
-	bh=sa9EIE04LEBfTX6RvKjzgHk4Dm9SwO0xb0TMifbJsI0=;
+	s=korg; t=1741629192;
+	bh=CJlvlBV1JpmqbjhGuM2+YK0rq6Vcx4W9RIwZG1wigNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOsmwMnBycLk6SzmZcp785UZdlU3IJKh2xZQfrEL0gpjeBPmZ7eI6sSi0kaRuDbp2
-	 vB0s20kw9A/2DcqPkiBYEzGvoJpf3AiI4qP3wrQ04mo7UO0Ofo+tiZ38Z03uBJ0bcN
-	 lKuNlY08o7dnytDtGORDXGwnzpBKLbyObX/6qbPc=
+	b=xrzbNNG1pdVvEKSWd6CH0OpFWAca8oWKkRUU+8EhTyFzRVPL6pIozU01HRNYzJF8w
+	 Pa0Q3tKRVF+5SRcgYPkHdLjIB5iqLJL9GlHZRhG+B1IcrJROaq5QyutPfdbLh4aStb
+	 4uH0r6gnQUdkRc5i0QSz+wXC2zAazD05pLeKLjyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
+	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/620] printk: Fix signed integer overflow when defining LOG_BUF_LEN_MAX
-Date: Mon, 10 Mar 2025 18:00:53 +0100
-Message-ID: <20250310170553.797863918@linuxfoundation.org>
+Subject: [PATCH 5.15 208/620] safesetid: check size of policy writes
+Date: Mon, 10 Mar 2025 18:00:54 +0100
+Message-ID: <20250310170553.837098289@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,39 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Leo Stone <leocstone@gmail.com>
 
-[ Upstream commit 3d6f83df8ff2d5de84b50377e4f0d45e25311c7a ]
+[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
 
-Shifting 1 << 31 on a 32-bit int causes signed integer overflow, which
-leads to undefined behavior. To prevent this, cast 1 to u32 before
-performing the shift, ensuring well-defined behavior.
+syzbot attempts to write a buffer with a large size to a sysfs entry
+with writes handled by handle_policy_update(), triggering a warning
+in kmalloc.
 
-This change explicitly avoids any potential overflow by ensuring that
-the shift occurs on an unsigned 32-bit integer.
+Check the size specified for write buffers before allocating.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Acked-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240928113608.1438087-1-visitorckw@gmail.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+[PM: subject tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/safesetid/securityfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 5e81d2a79d5cc..113990f38436e 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -403,7 +403,7 @@ static struct latched_seq clear_seq = {
- /* record buffer */
- #define LOG_ALIGN __alignof__(unsigned long)
- #define __LOG_BUF_LEN (1 << CONFIG_LOG_BUF_SHIFT)
--#define LOG_BUF_LEN_MAX (u32)(1 << 31)
-+#define LOG_BUF_LEN_MAX ((u32)1 << 31)
- static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN);
- static char *log_buf = __log_buf;
- static u32 log_buf_len = __LOG_BUF_LEN;
+diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
+index 25310468bcddf..8e1ffd70b18ab 100644
+--- a/security/safesetid/securityfs.c
++++ b/security/safesetid/securityfs.c
+@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
+ 	char *buf, *p, *end;
+ 	int err;
+ 
++	if (len >= KMALLOC_MAX_SIZE)
++		return -EINVAL;
++
+ 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
+ 	if (!pol)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
