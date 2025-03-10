@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAB2A59CEF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F38A59EA5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49AF6188548B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43047188FBD6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFA2233149;
-	Mon, 10 Mar 2025 17:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9836C22E407;
+	Mon, 10 Mar 2025 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdDfcFrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7+Se5/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5B722FACA;
-	Mon, 10 Mar 2025 17:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5654C1A7264;
+	Mon, 10 Mar 2025 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626963; cv=none; b=I/ibAJNHk3EnB1ZdxAfBR7u7ye/pgk83hn4VvjR1vUiAbagfk7a6niIbvHigr1rzBwfUNrvtYZnLNCoBLd2kgb/nhDv9LT1a4noaQ9DrrXpfEeZtPJMN+Z1X/1nVstXc3O77vkxARri84yb3rxkAlvCY9vHo/ZEZXJdVhcRUsbw=
+	t=1741627964; cv=none; b=irsE2X+8PkRMMGTCnBSUaTHTv2uvg8lWXlnSzR7E0EM+uBhc/iFx48dJ4SDbFtFFGCSxGzLqBWohMyLL8ZWgUgEnFyIUTzgcdRA9Qdg9e8PC1sB0GwWVkcL1C3V/ElpvmMtMX7VzBHtfu11sXY5teeX9vMr/lChNJJZnIcflWgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626963; c=relaxed/simple;
-	bh=0FJ0QdwVhLm6E5QBu/Wf6lY4KIxmZUxYPnXZQTzEx2k=;
+	s=arc-20240116; t=1741627964; c=relaxed/simple;
+	bh=QSJqXEUJXVeqai6DUnTNFCuXfFavGtIiYc48KkmXvtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uk7nctMCb5dBWcA4jX+9eIRxoFNBZp5OFb3AyY8AF5cHBFfvMejXnNhs4fU5tCOqExnEJgoYLZ/F8i52HwrlQ9jfdUuw44KMysm1xy6XIYwxebOSxeknbXWsPUoAwAsLd5ODVCa+X75H87JnKdtFJtmQ4YgWmciWyxkbf3Qty+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdDfcFrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB958C4CEE5;
-	Mon, 10 Mar 2025 17:16:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bIkgGY/JVEHsrbe/hJD1wdL+8dFq9Jp+qFyVB+iCYL88S5Xu5aVSx8ClRRpmzV0UHS+akwTPf6nwUuVZSi7j+sApXq/yAgKFRk6haVtq629Vc/xX/JU03+K7rzjKYiHPL+lm7HDJ8IQmmeFTsXw4ZIt41s2/80ics47HOogs9c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7+Se5/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0580C4CEE5;
+	Mon, 10 Mar 2025 17:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626963;
-	bh=0FJ0QdwVhLm6E5QBu/Wf6lY4KIxmZUxYPnXZQTzEx2k=;
+	s=korg; t=1741627964;
+	bh=QSJqXEUJXVeqai6DUnTNFCuXfFavGtIiYc48KkmXvtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SdDfcFrADtHIP+ffHNoqDD2uwbB23MNiDW8Vr1Jb0jlBvVrZFCiC/FuLfD8THU/H4
-	 PZzdKAuZ6ad+AgH7mFHInpUu8bXBeRxhKDKkZOcqLkKm9/KrBojRq410wnAJCU1PkG
-	 N5ZxYR7WfG0mozj5sh6UAbUPfIf9myp6XyO+1Hp4=
+	b=m7+Se5/q0cFhl4JBWFdrHU4/+8FjLLV2jMW6gpYGJ9Q1KAe/uQ/5bGM6NtzMYDeHC
+	 4S9Otbw7IjWM0nm2PIWpmXSEO8HLHlGufmFkbyGAAqaYeg7zj/U6Dp8MV/+A6LaL/f
+	 2eD/TxF5gzK7eRSeY2pOSjQ2qEaN4PHTn1t3sKr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 142/207] ublk: set_params: properly check if parameters can be applied
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
+	Richard Thier <u9vata@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 041/145] drm/radeon: Fix rs400_gpu_init for ATI mobility radeon Xpress 200M
 Date: Mon, 10 Mar 2025 18:05:35 +0100
-Message-ID: <20250310170453.445751980@linuxfoundation.org>
+Message-ID: <20250310170436.395542603@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Richard Thier <u9vata@gmail.com>
 
-[ Upstream commit 5ac60242b0173be83709603ebaf27a473f16c4e4 ]
+commit 29ffeb73b216ce3eff10229eb077cf9b7812119d upstream.
 
-The parameters set by the set_params call are only applied to the block
-device in the start_dev call. So if a device has already been started, a
-subsequently issued set_params on that device will not have the desired
-effect, and should return an error. There is an existing check for this
-- set_params fails on devices in the LIVE state. But this check is not
-sufficient to cover the recovery case. In this case, the device will be
-in the QUIESCED or FAIL_IO states, so set_params will succeed. But this
-success is misleading, because the parameters will not be applied, since
-the device has already been started (by a previous ublk server). The bit
-UB_STATE_USED is set on completion of the start_dev; use it to detect
-and fail set_params commands which arrive too late to be applied (after
-start_dev).
+num_gb_pipes was set to a wrong value using r420_pipe_config
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Fixes: 0aa73170eba5 ("ublk_drv: add SET_PARAMS/GET_PARAMS control command")
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250304-set_params-v1-1-17b5e0887606@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This have lead to HyperZ glitches on fast Z clearing.
+
+Closes: https://bugs.freedesktop.org/show_bug.cgi?id=110897
+Reviewed-by: Marek Olšák <marek.olsak@amd.com>
+Signed-off-by: Richard Thier <u9vata@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 044e59a85c4d84e3c8d004c486e5c479640563a6)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/ublk_drv.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/radeon/r300.c        |    3 ++-
+ drivers/gpu/drm/radeon/radeon_asic.h |    1 +
+ drivers/gpu/drm/radeon/rs400.c       |   18 ++++++++++++++++--
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 934ab9332c80a..d9e8bf9f5e5a8 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -2716,9 +2716,12 @@ static int ublk_ctrl_set_params(struct ublk_device *ub,
- 	if (ph.len > sizeof(struct ublk_params))
- 		ph.len = sizeof(struct ublk_params);
+--- a/drivers/gpu/drm/radeon/r300.c
++++ b/drivers/gpu/drm/radeon/r300.c
+@@ -358,7 +358,8 @@ int r300_mc_wait_for_idle(struct radeon_
+ 	return -1;
+ }
  
--	/* parameters can only be changed when device isn't live */
- 	mutex_lock(&ub->mutex);
--	if (ub->dev_info.state == UBLK_S_DEV_LIVE) {
-+	if (test_bit(UB_STATE_USED, &ub->state)) {
-+		/*
-+		 * Parameters can only be changed when device hasn't
-+		 * been started yet
-+		 */
- 		ret = -EACCES;
- 	} else if (copy_from_user(&ub->params, argp, ph.len)) {
- 		ret = -EFAULT;
--- 
-2.39.5
-
+-static void r300_gpu_init(struct radeon_device *rdev)
++/* rs400_gpu_init also calls this! */
++void r300_gpu_init(struct radeon_device *rdev)
+ {
+ 	uint32_t gb_tile_config, tmp;
+ 
+--- a/drivers/gpu/drm/radeon/radeon_asic.h
++++ b/drivers/gpu/drm/radeon/radeon_asic.h
+@@ -165,6 +165,7 @@ void r200_set_safe_registers(struct rade
+  */
+ extern int r300_init(struct radeon_device *rdev);
+ extern void r300_fini(struct radeon_device *rdev);
++extern void r300_gpu_init(struct radeon_device *rdev);
+ extern int r300_suspend(struct radeon_device *rdev);
+ extern int r300_resume(struct radeon_device *rdev);
+ extern int r300_asic_reset(struct radeon_device *rdev, bool hard);
+--- a/drivers/gpu/drm/radeon/rs400.c
++++ b/drivers/gpu/drm/radeon/rs400.c
+@@ -255,8 +255,22 @@ int rs400_mc_wait_for_idle(struct radeon
+ 
+ static void rs400_gpu_init(struct radeon_device *rdev)
+ {
+-	/* FIXME: is this correct ? */
+-	r420_pipes_init(rdev);
++	/* Earlier code was calling r420_pipes_init and then
++	 * rs400_mc_wait_for_idle(rdev). The problem is that
++	 * at least on my Mobility Radeon Xpress 200M RC410 card
++	 * that ends up in this code path ends up num_gb_pipes == 3
++	 * while the card seems to have only one pipe. With the
++	 * r420 pipe initialization method.
++	 *
++	 * Problems shown up as HyperZ glitches, see:
++	 * https://bugs.freedesktop.org/show_bug.cgi?id=110897
++	 *
++	 * Delegating initialization to r300 code seems to work
++	 * and results in proper pipe numbers. The rs400 cards
++	 * are said to be not r400, but r300 kind of cards.
++	 */
++	r300_gpu_init(rdev);
++
+ 	if (rs400_mc_wait_for_idle(rdev)) {
+ 		pr_warn("rs400: Failed to wait MC idle while programming pipes. Bad things might happen. %08x\n",
+ 			RREG32(RADEON_MC_STATUS));
 
 
 
