@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-122270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52D8A59EBB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FCCA59EBD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5B49188350A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFBB1647DD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FA2230BD4;
-	Mon, 10 Mar 2025 17:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0EC23026D;
+	Mon, 10 Mar 2025 17:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTP3Mh8E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7UUtSYo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C921822E407;
-	Mon, 10 Mar 2025 17:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC47230BED;
+	Mon, 10 Mar 2025 17:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628016; cv=none; b=GhMs+fqzT3AwXbp6xCABIiaGyB8GZPyIOSW1h3lyfHKgEu7ro/j6svqwo7cfEOIvn5zKXxG0rzZa23GzGzJhHqJlArGQYqyMxUgulCkvQwAnHIUz1whtKV+kUYOXjyi4vOOQH0Wytb3PfjUX8Jq7Sd8zlwDZ+2i6Z71Rs9x+SJc=
+	t=1741628022; cv=none; b=LEUryDxNA+BHQqlCuTpXb2n7xgMUFhGBTLbsDxUTzZr+M4XsnLRQRIsFS4Xym+MJnyBhdJs7MJPErzLBzkrDOwkwUEtMps1aYMEp9w5iywAYOWSHEs8LeRS9x/mbhh8GPOg7JOHHz87nB+0st/SfKhFhc8EQ7OssmFy0EimCK0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628016; c=relaxed/simple;
-	bh=oC79xdEh/EHrBoJeUy2kMAsOrWg5HPuYp80+xNfdBxI=;
+	s=arc-20240116; t=1741628022; c=relaxed/simple;
+	bh=QqGkch5w4x199tVWu4Sju9C2w+vEocE7OF67GKO6NVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPxbHowQWJ1fxrBKUqZ+SrPPMYO3ziqzHq+M7iQzMiOx6OyjEsZcArl2QqOQ9FAo5JwQkAtj7F3CReEkwfn0sl5xtgcGBdo7GwOFcn2c7o1b6rjbXqSyVXKbOG15AUTAhYupSsUmq9YJDPQ/9PW9rEKE023DemT7vguSmX6Zo1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTP3Mh8E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FA5C4CEE5;
-	Mon, 10 Mar 2025 17:33:35 +0000 (UTC)
+	 MIME-Version; b=oFi5pntWgnR18A3J1vxyodDm6Bt/O+PVgJdVXqY10sEoep7MJ1wzQIjfCMEd2wEP73Clye08UMwxwJhW+BZ05dHDX+Ls9JrNH9Srbgp8odxS0s368J7oP6Iv8k8CIFVHtni6AL0knZ05Wszp0bN5/yvgZ+dEqfCvRVxwQuzd/28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7UUtSYo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B584CC4CEE5;
+	Mon, 10 Mar 2025 17:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628016;
-	bh=oC79xdEh/EHrBoJeUy2kMAsOrWg5HPuYp80+xNfdBxI=;
+	s=korg; t=1741628022;
+	bh=QqGkch5w4x199tVWu4Sju9C2w+vEocE7OF67GKO6NVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTP3Mh8EBu9kd3pKLcNVAD1nucbmlzwJ7dx4qjexSSV8dGFOq3XiEB5AP3mu19lI7
-	 tQQhjDN5ihVvHrHo/T7B4fG8EQlFVF7ZL/w7p2eDVovPJxXNw/E2k43piIUEvD5D60
-	 S42zSjwW2mRbreu66+UQJ/yvyYpX/Ji8sZnSYKRM=
+	b=J7UUtSYoRsx5sHazAryDCOQns4P7CXWAwwEZMoRggHxAEmcgnmv4iGlAnAJR+9zzb
+	 xxp2IAZYB6pD3GLwoFFUbltyPyYgW8ZNStBhvrZlO6SSxbCjSW+TKu6WS/Q8jlIsaF
+	 laYsfMdxnPokqWvLS6MaZ9W3A9BhX+o9w+dayhtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christop Hellwig <hch@infradead.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 058/145] mm: dont skip arch_sync_kernel_mappings() in error paths
-Date: Mon, 10 Mar 2025 18:05:52 +0100
-Message-ID: <20250310170437.088124502@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 059/145] wifi: iwlwifi: limit printed string from FW file
+Date: Mon, 10 Mar 2025 18:05:53 +0100
+Message-ID: <20250310170437.127784982@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
 References: <20250310170434.733307314@linuxfoundation.org>
@@ -69,66 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 3685024edd270f7c791f993157d65d3c928f3d6e upstream.
+[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
 
-Fix callers that previously skipped calling arch_sync_kernel_mappings() if
-an error occurred during a pgtable update.  The call is still required to
-sync any pgtable updates that may have occurred prior to hitting the error
-condition.
+There's no guarantee here that the file is always with a
+NUL-termination, so reading the string may read beyond the
+end of the TLV. If that's the last TLV in the file, it can
+perhaps even read beyond the end of the file buffer.
 
-These are theoretical bugs discovered during code review.
+Fix that by limiting the print format to the size of the
+buffer we have.
 
-Link: https://lkml.kernel.org/r/20250226121610.2401743-1-ryan.roberts@arm.com
-Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
-Fixes: 0c95cba49255 ("mm: apply_to_pte_range warn and fail if a large pte is encountered")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christop Hellwig <hch@infradead.org>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c  |    6 ++++--
- mm/vmalloc.c |    4 ++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2746,8 +2746,10 @@ static int __apply_to_page_range(struct
- 		next = pgd_addr_end(addr, end);
- 		if (pgd_none(*pgd) && !create)
- 			continue;
--		if (WARN_ON_ONCE(pgd_leaf(*pgd)))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(pgd_leaf(*pgd))) {
-+			err = -EINVAL;
-+			break;
-+		}
- 		if (!pgd_none(*pgd) && WARN_ON_ONCE(pgd_bad(*pgd))) {
- 			if (!create)
- 				continue;
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -558,13 +558,13 @@ static int vmap_small_pages_range_noflus
- 			mask |= PGTBL_PGD_MODIFIED;
- 		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
- 		if (err)
--			return err;
-+			break;
- 	} while (pgd++, addr = next, addr != end);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 47bea1855e8c8..42f7f95dac225 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1200,7 +1200,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
  
- 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
- 		arch_sync_kernel_mappings(start, end);
- 
--	return 0;
-+	return err;
- }
- 
- /*
+ 			if (tlv_len != sizeof(*fseq_ver))
+ 				goto invalid_tlv_len;
+-			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
++			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
+ 				 fseq_ver->version);
+ 			}
+ 			break;
+-- 
+2.39.5
+
 
 
 
