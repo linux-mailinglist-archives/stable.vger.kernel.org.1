@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-121825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F38EA59CA3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA705A59DD1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9C443A3DC1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3182F1886952
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15D2230BF0;
-	Mon, 10 Mar 2025 17:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234B323536A;
+	Mon, 10 Mar 2025 17:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fy4gBuyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tR/1XbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E836230BEC;
-	Mon, 10 Mar 2025 17:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42F823535D;
+	Mon, 10 Mar 2025 17:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626740; cv=none; b=n0iZV7IfZF7MeVIMOD3MDRRuyQxBZj3cI488755dOIqBoKbpUmq7y+AxtlthwN1njr4gk0VowRk14+nuAl2qLgdPwp5pui/YsFSWkKMivB7Jv5dEV+CPtTHj3pm6wx9sbijrB67pqXPPrUq32ykIYkubHc4gu1GuosT4TdSuUzQ=
+	t=1741627457; cv=none; b=BXdFteDClDZfFiTUbnGBvN04wN+qofubEpQPW1Ia2b7koqCVAIvRPuJNRqqxLjdatyX6zG/KjMoi8AQ6W2EGA/ISXU16Ethe0LtpASxQZPM5Zbs+lRAOjVMSj40ykqe8xftzh+CBc7wlatbbWYRFgCrI3/GqZ7HAEZtvFst6WC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626740; c=relaxed/simple;
-	bh=LJgUj8HnH2paSgwKGP+AVPL54F0sm8TMX1YVy+wLpSs=;
+	s=arc-20240116; t=1741627457; c=relaxed/simple;
+	bh=qnPoaHYBjJFT0K37o3ZjO1fhKJ3x+ISxMziszAKb5h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQ3VFtfhsTmXQuvJDmfmULR+2boTF1KI7n70cMO++VE8K4QflMZVtqLVF9/jzPRsPlhhmgj6bvYSKEQVhz3ezCorNCR3Fw5p+Xq5BUp9IqsVi10tzYdDxDEgrA2WNCT5dwJNQcSKQwpkq3oAcXRhrJyNjFcOcLLjX6wGzc7qG/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fy4gBuyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89DDC4CEE5;
-	Mon, 10 Mar 2025 17:12:17 +0000 (UTC)
+	 MIME-Version; b=p+K0afZqCWSZAXlB3Y41DEHnh1463YVDfceC45DgXn7k77sCOj71NyyIQoOXJBSTM1ixTLqS+UQ0x5ZWgm/MQV1e3IiYUhtlAYpOtzf4CeDbO5kCs9eFWfmvGD+WIMswUkcXvTwK5vWWNpvpsFZeW4SqcmcODFqsNayhgT0Xw+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tR/1XbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5037CC4CEED;
+	Mon, 10 Mar 2025 17:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626738;
-	bh=LJgUj8HnH2paSgwKGP+AVPL54F0sm8TMX1YVy+wLpSs=;
+	s=korg; t=1741627457;
+	bh=qnPoaHYBjJFT0K37o3ZjO1fhKJ3x+ISxMziszAKb5h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fy4gBuylLCmd6ABr3XPCxUQmvZM4/Nyy4ubdfniFab6YhJNzfzGebADPoNOHl3Agq
-	 bLCvmm4dKzW9u9mH20lzwrQ7qDmndXJP4QP0N+3g7Xw61Q89HUgnBife01F2J5vKUi
-	 giF9Fl8kIZy+AcCi8ERb6o36KwUMWDbBbDeLHZm4=
+	b=1tR/1XbS4n1vIqfJAdSsBDNz1Bc/W5Jgl3gxH5qkwUaAoSyx3nP5ZqthgfTcbifd0
+	 scgTSwdW9A/Sj3f6UK7mj87QO1vSoaeFQVVei7EpP5c8XVOLZ0skek6CxhABqJslW4
+	 2vSGcqg2X4/nL2QvgYXdVbvLzoA2qG2a+DtUVm/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 095/207] wifi: mac80211: fix MLE non-inheritance parsing
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Brad Spengler <brad.spengler@opensrcsec.com>,
+	syzbot+46423ed8fa1f1148c6e4@syzkaller.appspotmail.com,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 135/269] mm: abort vma_modify() on merge out of memory failure
 Date: Mon, 10 Mar 2025 18:04:48 +0100
-Message-ID: <20250310170451.533639470@linuxfoundation.org>
+Message-ID: <20250310170503.103827261@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,270 +66,289 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit 99ca2c28e6b68084a0fb65585df09b9e28c3ec16 ]
+commit 47b16d0462a460000b8f05dfb1292377ac48f3ca upstream.
 
-The code is erroneously applying the non-inheritance element
-to the inner elements rather than the outer, which is clearly
-completely wrong. Fix it by finding the MLE basic element at
-the beginning, and then applying the non-inheritance for the
-outer parsing.
+The remainder of vma_modify() relies upon the vmg state remaining pristine
+after a merge attempt.
 
-While at it, do some general cleanups such as not allowing
-callers to try looking for a specific non-transmitted BSS
-and link at the same time.
+Usually this is the case, however in the one edge case scenario of a merge
+attempt failing not due to the specified range being unmergeable, but
+rather due to an out of memory error arising when attempting to commit the
+merge, this assumption becomes untrue.
 
-Fixes: 45ebac4f059b ("wifi: mac80211: Parse station profile from association response")
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250221112451.b46d42f45b66.If5b95dc3c80208e0c62d8895fb6152aa54b6620b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This results in vmg->start, end being modified, and thus the proceeding
+attempts to split the VMA will be done with invalid start/end values.
+
+Thankfully, it is likely practically impossible for us to hit this in
+reality, as it would require a maple tree node pre-allocation failure that
+would likely never happen due to it being 'too small to fail', i.e.  the
+kernel would simply keep retrying reclaim until it succeeded.
+
+However, this scenario remains theoretically possible, and what we are
+doing here is wrong so we must correct it.
+
+The safest option is, when this scenario occurs, to simply give up the
+operation.  If we cannot allocate memory to merge, then we cannot allocate
+memory to split either (perhaps moreso!).
+
+Any scenario where this would be happening would be under very extreme
+(likely fatal) memory pressure, so it's best we give up early.
+
+So there is no doubt it is appropriate to simply bail out in this
+scenario.
+
+However, in general we must if at all possible never assume VMG state is
+stable after a merge attempt, since merge operations update VMG fields.
+As a result, additionally also make this clear by storing start, end in
+local variables.
+
+The issue was reported originally by syzkaller, and by Brad Spengler (via
+an off-list discussion), and in both instances it manifested as a
+triggering of the assert:
+
+	VM_WARN_ON_VMG(start >= end, vmg);
+
+In vma_merge_existing_range().
+
+It seems at least one scenario in which this is occurring is one in which
+the merge being attempted is due to an madvise() across multiple VMAs
+which looks like this:
+
+        start     end
+          |<------>|
+     |----------|------|
+     |   vma    | next |
+     |----------|------|
+
+When madvise_walk_vmas() is invoked, we first find vma in the above
+(determining prev to be equal to vma as we are offset into vma), and then
+enter the loop.
+
+We determine the end of vma that forms part of the range we are
+madvise()'ing by setting 'tmp' to this value:
+
+		/* Here vma->vm_start <= start < (end|vma->vm_end) */
+		tmp = vma->vm_end;
+
+We then invoke the madvise() operation via visit(), letting prev get
+updated to point to vma as part of the operation:
+
+		/* Here vma->vm_start <= start < tmp <= (end|vma->vm_end). */
+		error = visit(vma, &prev, start, tmp, arg);
+
+Where the visit() function pointer in this instance is
+madvise_vma_behavior().
+
+As observed in syzkaller reports, it is ultimately madvise_update_vma()
+that is invoked, calling vma_modify_flags_name() and vma_modify() in turn.
+
+Then, in vma_modify(), we attempt the merge:
+
+	merged = vma_merge_existing_range(vmg);
+	if (merged)
+		return merged;
+
+We invoke this with vmg->start, end set to start, tmp as such:
+
+        start  tmp
+          |<--->|
+     |----------|------|
+     |   vma    | next |
+     |----------|------|
+
+We find ourselves in the merge right scenario, but the one in which we
+cannot remove the middle (we are offset into vma).
+
+Here we have a special case where vmg->start, end get set to perhaps
+unintuitive values - we intended to shrink the middle VMA and expand the
+next.
+
+This means vmg->start, end are set to...  vma->vm_start, start.
+
+Now the commit_merge() fails, and vmg->start, end are left like this.
+This means we return to the rest of vma_modify() with vmg->start, end
+(here denoted as start', end') set as:
+
+  start' end'
+     |<-->|
+     |----------|------|
+     |   vma    | next |
+     |----------|------|
+
+So we now erroneously try to split accordingly.  This is where the
+unfortunate stuff begins.
+
+We start with:
+
+	/* Split any preceding portion of the VMA. */
+	if (vma->vm_start < vmg->start) {
+		...
+	}
+
+This doesn't trigger as we are no longer offset into vma at the start.
+
+But then we invoke:
+
+	/* Split any trailing portion of the VMA. */
+	if (vma->vm_end > vmg->end) {
+		...
+	}
+
+Which does get invoked. This leaves us with:
+
+  start' end'
+     |<-->|
+     |----|-----|------|
+     | vma| new | next |
+     |----|-----|------|
+
+We then return ultimately to madvise_walk_vmas().  Here 'new' is unknown,
+and putting back the values known in this function we are faced with:
+
+        start tmp end
+          |     |  |
+     |----|-----|------|
+     | vma| new | next |
+     |----|-----|------|
+      prev
+
+Then:
+
+		start = tmp;
+
+So:
+
+             start end
+                |  |
+     |----|-----|------|
+     | vma| new | next |
+     |----|-----|------|
+      prev
+
+The following code does not cause anything to happen:
+
+		if (prev && start < prev->vm_end)
+			start = prev->vm_end;
+		if (start >= end)
+			break;
+
+And then we invoke:
+
+		if (prev)
+			vma = find_vma(mm, prev->vm_end);
+
+Which is where a problem occurs - we don't know about 'new' so we
+essentially look for the vma after prev, which is new, whereas we actually
+intended to discover next!
+
+So we end up with:
+
+             start end
+                |  |
+     |----|-----|------|
+     |prev| vma | next |
+     |----|-----|------|
+
+And we have successfully bypassed all of the checks madvise_walk_vmas()
+has to ensure early exit should we end up moving out of range.
+
+We loop around, and hit:
+
+		/* Here vma->vm_start <= start < (end|vma->vm_end) */
+		tmp = vma->vm_end;
+
+Oh dear. Now we have:
+
+              tmp
+             start end
+                |  |
+     |----|-----|------|
+     |prev| vma | next |
+     |----|-----|------|
+
+We then invoke:
+
+		/* Here vma->vm_start <= start < tmp <= (end|vma->vm_end). */
+		error = visit(vma, &prev, start, tmp, arg);
+
+Where start == tmp. That is, a zero range. This is not good.
+
+We invoke visit() which is madvise_vma_behavior() which does not check the
+range (for good reason, it assumes all checks have been done before it was
+called), which in turn finally calls madvise_update_vma().
+
+The madvise_update_vma() function calls vma_modify_flags_name() in turn,
+which ultimately invokes vma_modify() with...  start == end.
+
+vma_modify() calls vma_merge_existing_range() and finally we hit:
+
+	VM_WARN_ON_VMG(start >= end, vmg);
+
+Which triggers, as start == end.
+
+While it might be useful to add some CONFIG_DEBUG_VM asserts in these
+instances to catch this kind of error, since we have just eliminated any
+possibility of that happening, we will add such asserts separately as to
+reduce churn and aid backporting.
+
+Link: https://lkml.kernel.org/r/20250222161952.41957-1-lorenzo.stoakes@oracle.com
+Fixes: 2f1c6611b0a8 ("mm: introduce vma_merge_struct and abstract vma_merge(),vma_modify()")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Tested-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Reported-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Reported-by: syzbot+46423ed8fa1f1148c6e4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/6774c98f.050a0220.25abdd.0991.GAE@google.com/
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mlme.c  |   1 +
- net/mac80211/parse.c | 127 ++++++++++++++++++++++++++++---------------
- 2 files changed, 83 insertions(+), 45 deletions(-)
+ mm/vma.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 61c318f5239fa..0e3db0c2920bc 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4825,6 +4825,7 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
- 		parse_params.start = bss_ies->data;
- 		parse_params.len = bss_ies->len;
- 		parse_params.bss = cbss;
-+		parse_params.link_id = -1;
- 		bss_elems = ieee802_11_parse_elems_full(&parse_params);
- 		if (!bss_elems) {
- 			ret = false;
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index cd318c1c67bec..3d5d6658fe8d5 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -47,6 +47,8 @@ struct ieee80211_elems_parse {
- 	/* The EPCS Multi-Link element in the original elements */
- 	const struct element *ml_epcs_elem;
- 
-+	bool multi_link_inner;
-+
- 	/*
- 	 * scratch buffer that can be used for various element parsing related
- 	 * tasks, e.g., element de-fragmentation etc.
-@@ -152,12 +154,11 @@ ieee80211_parse_extension_element(u32 *crc,
- 			switch (le16_get_bits(mle->control,
- 					      IEEE80211_ML_CONTROL_TYPE)) {
- 			case IEEE80211_ML_CONTROL_TYPE_BASIC:
--				if (elems_parse->ml_basic_elem) {
-+				if (elems_parse->multi_link_inner) {
- 					elems->parse_error |=
- 						IEEE80211_PARSE_ERR_DUP_NEST_ML_BASIC;
- 					break;
- 				}
--				elems_parse->ml_basic_elem = elem;
- 				break;
- 			case IEEE80211_ML_CONTROL_TYPE_RECONF:
- 				elems_parse->ml_reconf_elem = elem;
-@@ -866,21 +867,36 @@ ieee80211_mle_get_sta_prof(struct ieee80211_elems_parse *elems_parse,
- 	}
- }
- 
--static void ieee80211_mle_parse_link(struct ieee80211_elems_parse *elems_parse,
--				     struct ieee80211_elems_parse_params *params)
-+static const struct element *
-+ieee80211_prep_mle_link_parse(struct ieee80211_elems_parse *elems_parse,
-+			      struct ieee80211_elems_parse_params *params,
-+			      struct ieee80211_elems_parse_params *sub)
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -1417,24 +1417,28 @@ int do_vmi_munmap(struct vma_iterator *v
+ static struct vm_area_struct *vma_modify(struct vma_merge_struct *vmg)
  {
- 	struct ieee802_11_elems *elems = &elems_parse->elems;
- 	struct ieee80211_mle_per_sta_profile *prof;
--	struct ieee80211_elems_parse_params sub = {
--		.mode = params->mode,
--		.action = params->action,
--		.from_ap = params->from_ap,
--		.link_id = -1,
--	};
--	ssize_t ml_len = elems->ml_basic_len;
--	const struct element *non_inherit = NULL;
-+	const struct element *tmp;
-+	ssize_t ml_len;
- 	const u8 *end;
+ 	struct vm_area_struct *vma = vmg->vma;
++	unsigned long start = vmg->start;
++	unsigned long end = vmg->end;
+ 	struct vm_area_struct *merged;
  
-+	if (params->mode < IEEE80211_CONN_MODE_EHT)
-+		return NULL;
-+
-+	for_each_element_extid(tmp, WLAN_EID_EXT_EHT_MULTI_LINK,
-+			       elems->ie_start, elems->total_len) {
-+		const struct ieee80211_multi_link_elem *mle =
-+			(void *)tmp->data + 1;
-+
-+		if (!ieee80211_mle_size_ok(tmp->data + 1, tmp->datalen - 1))
-+			continue;
-+
-+		if (le16_get_bits(mle->control, IEEE80211_ML_CONTROL_TYPE) !=
-+		    IEEE80211_ML_CONTROL_TYPE_BASIC)
-+			continue;
-+
-+		elems_parse->ml_basic_elem = tmp;
-+		break;
-+	}
-+
- 	ml_len = cfg80211_defragment_element(elems_parse->ml_basic_elem,
- 					     elems->ie_start,
- 					     elems->total_len,
-@@ -891,26 +907,26 @@ static void ieee80211_mle_parse_link(struct ieee80211_elems_parse *elems_parse,
- 					     WLAN_EID_FRAGMENT);
+ 	/* First, try to merge. */
+ 	merged = vma_merge_existing_range(vmg);
+ 	if (merged)
+ 		return merged;
++	if (vmg_nomem(vmg))
++		return ERR_PTR(-ENOMEM);
  
- 	if (ml_len < 0)
--		return;
-+		return NULL;
+ 	/* Split any preceding portion of the VMA. */
+-	if (vma->vm_start < vmg->start) {
+-		int err = split_vma(vmg->vmi, vma, vmg->start, 1);
++	if (vma->vm_start < start) {
++		int err = split_vma(vmg->vmi, vma, start, 1);
  
- 	elems->ml_basic = (const void *)elems_parse->scratch_pos;
- 	elems->ml_basic_len = ml_len;
- 	elems_parse->scratch_pos += ml_len;
- 
- 	if (params->link_id == -1)
--		return;
-+		return NULL;
- 
- 	ieee80211_mle_get_sta_prof(elems_parse, params->link_id);
- 	prof = elems->prof;
- 
- 	if (!prof)
--		return;
-+		return NULL;
- 
- 	/* check if we have the 4 bytes for the fixed part in assoc response */
- 	if (elems->sta_prof_len < sizeof(*prof) + prof->sta_info_len - 1 + 4) {
- 		elems->prof = NULL;
- 		elems->sta_prof_len = 0;
--		return;
-+		return NULL;
+ 		if (err)
+ 			return ERR_PTR(err);
  	}
  
- 	/*
-@@ -919,13 +935,17 @@ static void ieee80211_mle_parse_link(struct ieee80211_elems_parse *elems_parse,
- 	 * the -1 is because the 'sta_info_len' is accounted to as part of the
- 	 * per-STA profile, but not part of the 'u8 variable[]' portion.
- 	 */
--	sub.start = prof->variable + prof->sta_info_len - 1 + 4;
-+	sub->start = prof->variable + prof->sta_info_len - 1 + 4;
- 	end = (const u8 *)prof + elems->sta_prof_len;
--	sub.len = end - sub.start;
-+	sub->len = end - sub->start;
+ 	/* Split any trailing portion of the VMA. */
+-	if (vma->vm_end > vmg->end) {
+-		int err = split_vma(vmg->vmi, vma, vmg->end, 0);
++	if (vma->vm_end > end) {
++		int err = split_vma(vmg->vmi, vma, end, 0);
  
--	non_inherit = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
--					     sub.start, sub.len);
--	_ieee802_11_parse_elems_full(&sub, elems_parse, non_inherit);
-+	sub->mode = params->mode;
-+	sub->action = params->action;
-+	sub->from_ap = params->from_ap;
-+	sub->link_id = -1;
-+
-+	return cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
-+				      sub->start, sub->len);
- }
- 
- static void
-@@ -973,15 +993,19 @@ ieee80211_mle_defrag_epcs(struct ieee80211_elems_parse *elems_parse)
- struct ieee802_11_elems *
- ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
- {
-+	struct ieee80211_elems_parse_params sub = {};
- 	struct ieee80211_elems_parse *elems_parse;
--	struct ieee802_11_elems *elems;
- 	const struct element *non_inherit = NULL;
--	u8 *nontransmitted_profile;
--	int nontransmitted_profile_len = 0;
-+	struct ieee802_11_elems *elems;
- 	size_t scratch_len = 3 * params->len;
-+	bool multi_link_inner = false;
- 
- 	BUILD_BUG_ON(offsetof(typeof(*elems_parse), elems) != 0);
- 
-+	/* cannot parse for both a specific link and non-transmitted BSS */
-+	if (WARN_ON(params->link_id >= 0 && params->bss))
-+		return NULL;
-+
- 	elems_parse = kzalloc(struct_size(elems_parse, scratch, scratch_len),
- 			      GFP_ATOMIC);
- 	if (!elems_parse)
-@@ -998,34 +1022,47 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
- 	ieee80211_clear_tpe(&elems->tpe);
- 	ieee80211_clear_tpe(&elems->csa_tpe);
- 
--	nontransmitted_profile = elems_parse->scratch_pos;
--	nontransmitted_profile_len =
--		ieee802_11_find_bssid_profile(params->start, params->len,
--					      elems, params->bss,
--					      nontransmitted_profile);
--	elems_parse->scratch_pos += nontransmitted_profile_len;
--	non_inherit = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
--					     nontransmitted_profile,
--					     nontransmitted_profile_len);
-+	/*
-+	 * If we're looking for a non-transmitted BSS then we cannot at
-+	 * the same time be looking for a second link as the two can only
-+	 * appear in the same frame carrying info for different BSSes.
-+	 *
-+	 * In any case, we only look for one at a time, as encoded by
-+	 * the WARN_ON above.
-+	 */
-+	if (params->bss) {
-+		int nontx_len =
-+			ieee802_11_find_bssid_profile(params->start,
-+						      params->len,
-+						      elems, params->bss,
-+						      elems_parse->scratch_pos);
-+		sub.start = elems_parse->scratch_pos;
-+		sub.mode = params->mode;
-+		sub.len = nontx_len;
-+		sub.action = params->action;
-+		sub.link_id = params->link_id;
-+
-+		/* consume the space used for non-transmitted profile */
-+		elems_parse->scratch_pos += nontx_len;
-+
-+		non_inherit = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
-+						     sub.start, nontx_len);
-+	} else {
-+		/* must always parse to get elems_parse->ml_basic_elem */
-+		non_inherit = ieee80211_prep_mle_link_parse(elems_parse, params,
-+							    &sub);
-+		multi_link_inner = true;
-+	}
- 
- 	elems->crc = _ieee802_11_parse_elems_full(params, elems_parse,
- 						  non_inherit);
- 
--	/* Override with nontransmitted profile, if found */
--	if (nontransmitted_profile_len) {
--		struct ieee80211_elems_parse_params sub = {
--			.mode = params->mode,
--			.start = nontransmitted_profile,
--			.len = nontransmitted_profile_len,
--			.action = params->action,
--			.link_id = params->link_id,
--		};
--
-+	/* Override with nontransmitted/per-STA profile if found */
-+	if (sub.len) {
-+		elems_parse->multi_link_inner = multi_link_inner;
- 		_ieee802_11_parse_elems_full(&sub, elems_parse, NULL);
- 	}
- 
--	ieee80211_mle_parse_link(elems_parse, params);
--
- 	ieee80211_mle_defrag_reconf(elems_parse);
- 
- 	ieee80211_mle_defrag_epcs(elems_parse);
--- 
-2.39.5
-
+ 		if (err)
+ 			return ERR_PTR(err);
 
 
 
