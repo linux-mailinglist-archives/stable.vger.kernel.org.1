@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-122477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FAEA59FC2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81783A59F49
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6C031890B51
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3233A59DE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F044233719;
-	Mon, 10 Mar 2025 17:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7D52253FE;
+	Mon, 10 Mar 2025 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbNJEDe5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xObdGj2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF4B22D4C3;
-	Mon, 10 Mar 2025 17:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B83D18DB24;
+	Mon, 10 Mar 2025 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628604; cv=none; b=pVCUJwTvR+eZAzZyEkAbUhIGbVoCI0sxlPYZF8ghj6Y8iRQq2YeQyWuU5oSmaVQdTm1Vw43o+P2zWQYkxzFwRinlWKuIByGoweIPOVlTbLYAthsPjaYcBegPhC/XycwzOaNPhlXOkLO2lktbe3teAS8Zl8lc1brb2H5nzkxPmYM=
+	t=1741628259; cv=none; b=kMNYQuaym1ztGzGLleTrGg1ksjjZNhRV1+ks4Hb5xYMOzxOnMrVVeYoUle7tHn/13VVqxISP+PUhnUjjwnIwHA5H9NH+bHEcQKLPLSCMLWBtEaygo9yf+j8uz8k6cdfwJWVhsfDGFfvhfWCp3e69awkbXn9IErmys2N8X2Ax5DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628604; c=relaxed/simple;
-	bh=HbCgw1W2YJyKozWZg0yJrp7PrLEti144EFNpO6n+ES4=;
+	s=arc-20240116; t=1741628259; c=relaxed/simple;
+	bh=xxktpmcwi7fR87RPx3kZT2ZVe3iyhIdF3b43TOGBrL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ku3CZwrUsQfULJSnMpPRGnlABIVGfXSstFymLyB+L1y5cCn66XWED+d1rX5jsAibuxpA7uBB1jZaqQOO94dDwXqylQXuHG1JlH7s6ZKCTk6GyG6NtB8cEnVu48tY54CnQE/a7xUKguKkdcfO57Vn0kpDg2nXlE/15MlxwnmVeaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbNJEDe5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2329C4CEE5;
-	Mon, 10 Mar 2025 17:43:23 +0000 (UTC)
+	 MIME-Version; b=fB3ZCKL8ckHW1/S9S8lPi2sqtYHsSVgYehiYmg4W3O6l5TYLrlyHEisUui3xaq1SEfij/OGVeWiP8MTLEJ4uCe7gMHdJI/BKV7PRRwCoN6c0zg7PQJKN1mmeZQc78nyJg+ICTIVv8Us72Q0BLsC9ERT2yiNkxGcDtCC+ke6t+p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xObdGj2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1437BC4CEE5;
+	Mon, 10 Mar 2025 17:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628604;
-	bh=HbCgw1W2YJyKozWZg0yJrp7PrLEti144EFNpO6n+ES4=;
+	s=korg; t=1741628259;
+	bh=xxktpmcwi7fR87RPx3kZT2ZVe3iyhIdF3b43TOGBrL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbNJEDe5zO5k9ZfugV8g+RMEM/daLrZ4Q3UOq5OqYdYnoyxL98csxL6EtBfrySo3B
-	 PDqm9VhUjn3QD6LXaKAvj6zfKR9hO7VGCZbzpUIn0peYT65cRYcellb4FCbENoh7D8
-	 WZhnQKL96AxM3+Caci7l6nJXMnmoTmsz5fVfR+rk=
+	b=xObdGj2fkJtQ3nHC2XU4lcw9t4m2NBNhgceJWghEtebs+hwtgaVIZU2i1psCE7u64
+	 IRDCE84zwU+NFB3bfww3MSPaxEgi63NR438GIrJjzYMcQQsirp2txgfHc/poMKwLwW
+	 rZ84Yj3YTzgQzv6StXDS0atrcN3pM3q5jG58cFj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 093/109] Revert "KVM: e500: always restore irqs"
+	Ralf Schlatterbeck <rsc@runtux.com>,
+	Mark Brown <broonie@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 6.6 143/145] spi-mxs: Fix chipselect glitch
 Date: Mon, 10 Mar 2025 18:07:17 +0100
-Message-ID: <20250310170431.261157300@linuxfoundation.org>
+Message-ID: <20250310170440.528783076@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ralf Schlatterbeck <rsc@runtux.com>
 
-This reverts commit bce6adebc9c5c4d49ea6b4fcaa56ec590b9516a6 which is
-commit 87ecfdbc699cc95fac73291b52650283ddcf929d upstream.
+commit 269e31aecdd0b70f53a05def79480f15cbcc0fd6 upstream.
 
-It should not have been applied.
+There was a change in the mxs-dma engine that uses a new custom flag.
+The change was not applied to the mxs spi driver.
+This results in chipselect being deasserted too early.
+This fixes the chipselect problem by using the new flag in the mxs-spi
+driver.
 
-Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
-Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: ceeeb99cd821 ("dmaengine: mxs: rename custom flag")
+Signed-off-by: Ralf Schlatterbeck <rsc@runtux.com>
+Link: https://msgid.link/r/20240202115330.wxkbfmvd76sy3a6a@runtux.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Stefan Wahren <wahrenst@gmx.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mxs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -479,6 +479,7 @@ static inline int kvmppc_e500_shadow_map
- 		if (pte_present(pte)) {
- 			wimg = (pte_val(pte) >> PTE_WIMGE_SHIFT) &
- 				MAS2_WIMGE_MASK;
-+			local_irq_restore(flags);
- 		} else {
- 			local_irq_restore(flags);
- 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
-@@ -487,9 +488,8 @@ static inline int kvmppc_e500_shadow_map
- 			goto out;
- 		}
- 	}
--	local_irq_restore(flags);
--
- 	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -39,6 +39,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/mxs-spi.h>
+ #include <trace/events/spi.h>
++#include <linux/dma/mxs-dma.h>
  
+ #define DRIVER_NAME		"mxs-spi"
+ 
+@@ -252,7 +253,7 @@ static int mxs_spi_txrx_dma(struct mxs_s
+ 		desc = dmaengine_prep_slave_sg(ssp->dmach,
+ 				&dma_xfer[sg_count].sg, 1,
+ 				(flags & TXRX_WRITE) ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
+-				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++				DMA_PREP_INTERRUPT | MXS_DMA_CTRL_WAIT4END);
+ 
+ 		if (!desc) {
+ 			dev_err(ssp->dev,
 
 
 
