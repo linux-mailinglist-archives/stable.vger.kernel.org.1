@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E99BA59C47
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2607A5A1D7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36ED61884428
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6EF1887AF0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B32B231A30;
-	Mon, 10 Mar 2025 17:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0A0233D98;
+	Mon, 10 Mar 2025 18:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJE3CvLi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pUD8RVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC906230D0F;
-	Mon, 10 Mar 2025 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B50A233D86;
+	Mon, 10 Mar 2025 18:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626617; cv=none; b=enfN03JygH7UIdTODiBOmfOB2sejzxhrgwM1DSeKPOKeLISWa8evewZqjvDgogdB48Qxe+7pzNPAuHgn12tMXwnOdqVRz3hsfQTjFZuMZawyR6aYTvmaX7gVm8SBIm5Y0jveaicEBV0C/+TvADIwuwspKk91zIW7HGP3Xlcj/Yo=
+	t=1741630424; cv=none; b=cj8PpkPAzII139+ca+CHFWIpKzmNXN34FmvwPj8N8q5s53zha2HAyg6kjwiz9W/EvvWlhUUB8bs8qhP8UAvN413WGiXJ0nlwqAuzOKg8/N2XBYBir0On28xlIOjBdDqtBKx4jwGhww5Qm50XTP0yrbl5IeAoVBrS3a09kBfMaJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626617; c=relaxed/simple;
-	bh=al4eda13LG3mbk5VjsMItC0iNSf0OYsFWz5QdV6sWhQ=;
+	s=arc-20240116; t=1741630424; c=relaxed/simple;
+	bh=zpayB7jgpI1oNYvn/tks9gVIHuFivmpkJkesvyg/FfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdE96YADwCxdGMjw2HlzAN4ko9DuU4M0eg4bHwgYiAiEjRDTeC5g8iB+TZxCDA/N275ervbJ5mM04vCUuc29gM58p0w0Rlddc/GZbVZMqzl+g0273+Xp6bOfLHV0uKO2qizCorkR2qKUvt/QBC20v2qVae/OonpZGtm4Fy3T2s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJE3CvLi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F5BC4CEE5;
-	Mon, 10 Mar 2025 17:10:15 +0000 (UTC)
+	 MIME-Version; b=HTAAM7u/2vwU/uSzIH0F1gJV3sdAOkiXWrlNpVEWkyD9zTIiHvcABSRc9a0ICyY+Xoub3mMk0iZG/9FRBztqf0skz8wg5I9KM40kX+21DVkHMS6OoK1fOEq9/q6V+8OqPti11oaZxYwcMk0WwtUiSK9O3x+x8TPqiMJLtejpDWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pUD8RVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201D7C4CEE5;
+	Mon, 10 Mar 2025 18:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626616;
-	bh=al4eda13LG3mbk5VjsMItC0iNSf0OYsFWz5QdV6sWhQ=;
+	s=korg; t=1741630423;
+	bh=zpayB7jgpI1oNYvn/tks9gVIHuFivmpkJkesvyg/FfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJE3CvLieo5US05ZZuGYxuLB6QTmXNUGrnBp3oeB1c5QPEzIH9JLk48iv3Pbn9+Xr
-	 /Cs9WtoiSN3iExKbR3QArFMXCut6pfkJ5+cfoECZvCk8WUPLhYh7VxdcB+vhAISu3g
-	 cOnf991H0+019osTx5QdhE3RR078P+NLoCmFZoNA=
+	b=0pUD8RVqHvOvi9wf0jZhQ18X0xQLpHW7XduM4m8T2HjjcYtZK3qYSf2oKSb1kkLHD
+	 1T917N37Csf1ejTwONGUbyNquWjMiuwQz++T9Tpt30LfMmA7WlnoogIpA6C/FOBO4n
+	 EyVheUAJQUitY3TjqHZhTd6a9Y025y0NG4HcJ+eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 054/207] drm/xe: Fix GT "for each engine" workarounds
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 401/620] ipv4: use RCU protection in __ip_rt_update_pmtu()
 Date: Mon, 10 Mar 2025 18:04:07 +0100
-Message-ID: <20250310170449.918445540@linuxfoundation.org>
+Message-ID: <20250310170601.421198863@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 54f94dc7f6b4db45dbc23b4db3d20c7194e2c54f upstream.
+[ Upstream commit 139512191bd06f1b496117c76372b2ce372c9a41 ]
 
-Any rules using engine matching are currently broken due RTP processing
-happening too in early init, before the list of hardware engines has been
-initialised.
+__ip_rt_update_pmtu() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-Fix this by moving workaround processing to later in the driver probe
-sequence, to just before the processed list is used for the first time.
-
-Looking at the debugfs gt0/workarounds on ADL-P we notice 14011060649
-should be present while we see, before:
-
- GT Workarounds
-     14011059788
-     14015795083
-
-And with the patch:
-
- GT Workarounds
-     14011060649
-     14011059788
-     14015795083
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: stable@vger.kernel.org # v6.11+
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250227101304.46660-2-tvrtko.ursulin@igalia.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 25d434cef791e03cf40680f5441b576c639bfa84)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2fbc6e89b2f1 ("ipv4: Update exception handling for multipath routes via same device")
+Fixes: 1de6b15a434c ("Namespaceify min_pmtu sysctl")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/route.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -380,9 +380,7 @@ int xe_gt_init_early(struct xe_gt *gt)
- 	if (err)
- 		return err;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 2ae9d2855efab..a4884d434038e 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1023,9 +1023,9 @@ out:	kfree_skb(skb);
+ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ {
+ 	struct dst_entry *dst = &rt->dst;
+-	struct net *net = dev_net(dst->dev);
+ 	struct fib_result res;
+ 	bool lock = false;
++	struct net *net;
+ 	u32 old_mtu;
  
--	xe_wa_process_gt(gt);
- 	xe_wa_process_oob(gt);
--	xe_tuning_process_gt(gt);
+ 	if (ip_mtu_locked(dst))
+@@ -1035,6 +1035,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 	if (old_mtu < mtu)
+ 		return;
  
- 	xe_force_wake_init_gt(gt, gt_to_fw(gt));
- 	spin_lock_init(&gt->global_invl_lock);
-@@ -474,6 +472,8 @@ static int all_fw_domain_init(struct xe_
++	rcu_read_lock();
++	net = dev_net_rcu(dst->dev);
+ 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+ 		lock = true;
+ 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
+@@ -1042,9 +1044,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 
+ 	if (rt->rt_pmtu == mtu && !lock &&
+ 	    time_before(jiffies, dst->expires - net->ipv4.ip_rt_mtu_expires / 2))
+-		return;
++		goto out;
+ 
+-	rcu_read_lock();
+ 	if (fib_lookup(net, fl4, &res, 0) == 0) {
+ 		struct fib_nh_common *nhc;
+ 
+@@ -1058,14 +1059,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 						      jiffies + net->ipv4.ip_rt_mtu_expires);
+ 			}
+-			rcu_read_unlock();
+-			return;
++			goto out;
+ 		}
+ #endif /* CONFIG_IP_ROUTE_MULTIPATH */
+ 		nhc = FIB_RES_NHC(res);
+ 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 				      jiffies + net->ipv4.ip_rt_mtu_expires);
  	}
++out:
+ 	rcu_read_unlock();
+ }
  
- 	xe_gt_mcr_set_implicit_defaults(gt);
-+	xe_wa_process_gt(gt);
-+	xe_tuning_process_gt(gt);
- 	xe_reg_sr_apply_mmio(&gt->reg_sr, gt);
- 
- 	err = xe_gt_clock_init(gt);
+-- 
+2.39.5
+
 
 
 
