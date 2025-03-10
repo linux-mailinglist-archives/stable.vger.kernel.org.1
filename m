@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB388A59ECF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A9FA59F57
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B281D1890019
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 138B218909A9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FD223372C;
-	Mon, 10 Mar 2025 17:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ABF2309B0;
+	Mon, 10 Mar 2025 17:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ed0LYzbh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="io7er+uE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23ED223371E;
-	Mon, 10 Mar 2025 17:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358C118DB24;
+	Mon, 10 Mar 2025 17:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628069; cv=none; b=Qlv318AuDh/4az/U7udlB9SaTa9B1VuQBBXWb4P4FAZxKHDSb1Gk845FUO5QNhoJq7/SewwRifEl2zWmWS92TI4cEIE3n4wGwMQmBi7jLVdmxj6nxBkxQ6RtLOpnVG4l4Vv2OCgwxrRvyCyPDsL/86/kPq24Y92SVSFaX82JEds=
+	t=1741628349; cv=none; b=eKB7vxTSIRiH57aQbUOWyR0TZ16VTegT8qMvBz7z44/pxxxGifIpcidHZ1AoLHw4mPcCwyHYi/+jsuXjsvdtIzRKGVILKh9KYRLtIR9fmHfRJr7SkUBVedmd3xXxRKmsHezAoN424cl2eILOunoFgvl8FwQLXRBGEqlWR30UVW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628069; c=relaxed/simple;
-	bh=AnEMON0aJ+eiS0qb//hfmpo01J1g/XZMEVGamDkCBfU=;
+	s=arc-20240116; t=1741628349; c=relaxed/simple;
+	bh=IVkuLn2MFh+JSL9nD6H8EsPgKkY+79JwWju0G4098Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q07Tm/DFUXedbv1sCnkTIYC2QQDkBRcw/XOMQoWsrCMeAdf2sXkyuu7IUPvRtPDLZEn5QRJYqDHFUyHzN58VzKB1zloqt9jcu3S4ypwRmAOiBVpIutLDOVJw/gBEUpRLnKijDvIXgEoWQ7KuwfqW5Fn5U9p49zuPMXBQNcz32TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ed0LYzbh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7880DC4CEED;
-	Mon, 10 Mar 2025 17:34:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XTyFMjE5Xlz26t7D4iluXwZ+wrfbfL2TitKzYlRyY8CuWkR9AJ6DwXd+3NOMY+SHDuW1Id/afqcc9zfqzQd3smL94uLgpI9CYUieNfQCy/KRU3IAAGQM/2Fa2o37vNazNn+fxS1d/g9culKK7ZNSTOTErCgrthgrfSo9I5KyLS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=io7er+uE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C3AC4CEE5;
+	Mon, 10 Mar 2025 17:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628069;
-	bh=AnEMON0aJ+eiS0qb//hfmpo01J1g/XZMEVGamDkCBfU=;
+	s=korg; t=1741628349;
+	bh=IVkuLn2MFh+JSL9nD6H8EsPgKkY+79JwWju0G4098Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ed0LYzbhTSooJ5yjNucH1UK9SqWG7+vksY6/+UL+C+4qa4u7DDfVRaZisnkxI4xAW
-	 Rb1zzDfkHSbv2jwSJcMm604XUaR70CTtPrSTzYJ5v4K3CkNVwRdgoAHGH10C37ayhr
-	 Cdqvg2Bof3UO6NY5GxUZOD9cW74pPL26VCji5+8w=
+	b=io7er+uEHReYcIE6OCKLpzoKnmXsjyek0t972kIyZpiniNy27yDZhFlzccwRcw2t2
+	 wiZT71jSnOfQkMJEdz/V7fLF1l9T9UecnQzNPsD5kH1j86Xf5HzCQPO/2gWeKAvb0K
+	 KP8NcjA2JRXTOk2J8f3Tx29vpFPAIi8fbN64MMnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/145] HID: hid-steam: Fix use-after-free when detaching device
-Date: Mon, 10 Mar 2025 18:06:11 +0100
-Message-ID: <20250310170437.860874994@linuxfoundation.org>
+	syzbot+e10709ac3c44f3d4e800@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 028/109] wifi: cfg80211: regulatory: improve invalid hints checking
+Date: Mon, 10 Mar 2025 18:06:12 +0100
+Message-ID: <20250310170428.671841744@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit e53fc232a65f7488ab75d03a5b95f06aaada7262 ]
+commit 59b348be7597c4a9903cb003c69e37df20c04a30 upstream.
 
-When a hid-steam device is removed it must clean up the client_hdev used for
-intercepting hidraw access. This can lead to scheduling deferred work to
-reattach the input device. Though the cleanup cancels the deferred work, this
-was done before the client_hdev itself is cleaned up, so it gets rescheduled.
-This patch fixes the ordering to make sure the deferred work is properly
-canceled.
+Syzbot keeps reporting an issue [1] that occurs when erroneous symbols
+sent from userspace get through into user_alpha2[] via
+regulatory_hint_user() call. Such invalid regulatory hints should be
+rejected.
 
-Reported-by: syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com
-Fixes: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While a sanity check from commit 47caf685a685 ("cfg80211: regulatory:
+reject invalid hints") looks to be enough to deter these very cases,
+there is a way to get around it due to 2 reasons.
+
+1) The way isalpha() works, symbols other than latin lower and
+upper letters may be used to determine a country/domain.
+For instance, greek letters will also be considered upper/lower
+letters and for such characters isalpha() will return true as well.
+However, ISO-3166-1 alpha2 codes should only hold latin
+characters.
+
+2) While processing a user regulatory request, between
+reg_process_hint_user() and regulatory_hint_user() there happens to
+be a call to queue_regulatory_request() which modifies letters in
+request->alpha2[] with toupper(). This works fine for latin symbols,
+less so for weird letter characters from the second part of _ctype[].
+
+Syzbot triggers a warning in is_user_regdom_saved() by first sending
+over an unexpected non-latin letter that gets malformed by toupper()
+into a character that ends up failing isalpha() check.
+
+Prevent this by enhancing is_an_alpha2() to ensure that incoming
+symbols are latin letters and nothing else.
+
+[1] Syzbot report:
+------------[ cut here ]------------
+Unexpected user alpha2: A�
+WARNING: CPU: 1 PID: 964 at net/wireless/reg.c:442 is_user_regdom_saved net/wireless/reg.c:440 [inline]
+WARNING: CPU: 1 PID: 964 at net/wireless/reg.c:442 restore_alpha2 net/wireless/reg.c:3424 [inline]
+WARNING: CPU: 1 PID: 964 at net/wireless/reg.c:442 restore_regulatory_settings+0x3c0/0x1e50 net/wireless/reg.c:3516
+Modules linked in:
+CPU: 1 UID: 0 PID: 964 Comm: kworker/1:2 Not tainted 6.12.0-rc5-syzkaller-00044-gc1e939a21eb1 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events_power_efficient crda_timeout_work
+RIP: 0010:is_user_regdom_saved net/wireless/reg.c:440 [inline]
+RIP: 0010:restore_alpha2 net/wireless/reg.c:3424 [inline]
+RIP: 0010:restore_regulatory_settings+0x3c0/0x1e50 net/wireless/reg.c:3516
+...
+Call Trace:
+ <TASK>
+ crda_timeout_work+0x27/0x50 net/wireless/reg.c:542
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa65/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f2/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+Reported-by: syzbot+e10709ac3c44f3d4e800@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e10709ac3c44f3d4e800
+Fixes: 09d989d179d0 ("cfg80211: add regulatory hint disconnect support")
+Cc: stable@kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250228134659.1577656-1-n.zhandarovich@fintech.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-steam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/reg.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 49c067133975f..29ff4eb5194b7 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -1325,11 +1325,11 @@ static void steam_remove(struct hid_device *hdev)
- 		return;
- 	}
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -405,7 +405,8 @@ static bool is_an_alpha2(const char *alp
+ {
+ 	if (!alpha2)
+ 		return false;
+-	return isalpha(alpha2[0]) && isalpha(alpha2[1]);
++	return isascii(alpha2[0]) && isalpha(alpha2[0]) &&
++	       isascii(alpha2[1]) && isalpha(alpha2[1]);
+ }
  
-+	hid_destroy_device(steam->client_hdev);
- 	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->work_connect);
- 	cancel_work_sync(&steam->rumble_work);
- 	cancel_work_sync(&steam->unregister_work);
--	hid_destroy_device(steam->client_hdev);
- 	steam->client_hdev = NULL;
- 	steam->client_opened = false;
- 	if (steam->quirks & STEAM_QUIRK_WIRELESS) {
--- 
-2.39.5
-
+ static bool alpha2_equal(const char *alpha2_x, const char *alpha2_y)
 
 
 
