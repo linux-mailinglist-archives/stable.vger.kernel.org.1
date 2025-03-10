@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-122434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC108A59F9E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23501A59E61
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A79D9188ABC7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 521E5163E17
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB5D2356A3;
-	Mon, 10 Mar 2025 17:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7469822FF40;
+	Mon, 10 Mar 2025 17:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYCyIlnO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEDBOXwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD4A232378;
-	Mon, 10 Mar 2025 17:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3195481E;
+	Mon, 10 Mar 2025 17:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628479; cv=none; b=UeEdMk1XKhCBVCIv0Z1C466IodCWRMQRVGn2+JRIoaAE9p7AvMH2ic9pHPJYPYzmRvVcbPf4N1Dwc7P517EeGh1dDp4aYJaghhRv2hsKPaleGoIUTRBDk1pT5QcLYnqeU2u+kzRsyKdJbWTuL2wp3q+i1ey1O0FdsOHU2z+rebc=
+	t=1741627824; cv=none; b=flmVO1yJQbOZ5kTjil5PW8eQOStAy86FJ69rnr0UoULpEnpTFW7HkK/hM2MSOlwlY2o0n1wiv988n84WHxhT3VgR6dnvMmhXkbGqbZc/IW9ek2K13KYMSgHH6LQpVq4kaS2kEZpqZb0bL9EXLlzNOWvRzuozevgmY/QD9/n6pNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628479; c=relaxed/simple;
-	bh=l7cw/3VmVm3QRoAhndnqiypNPXG4bzxcDj5RSI6A84k=;
+	s=arc-20240116; t=1741627824; c=relaxed/simple;
+	bh=RDbBa8zBYxXe8hbHimvZVhAzXB7WgMfqHYjsjM1dmcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKj4FCJLBuHLCcfJoNsYvh2ZelBK7gjRaPnxnft8z9pUuOFStgk1D3RTRC0HYmnOelSXxSpouIDc3au0Vap03VHX0GjxQdv9bbreKbN4hRJMAkXeFBuWSopsyg1mpB44doTRa5osXD8522SoRrkhvOSw8yPBZjImaUg8F0rCnLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYCyIlnO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AC5C4CEE5;
-	Mon, 10 Mar 2025 17:41:19 +0000 (UTC)
+	 MIME-Version; b=UYLSMrnpMfr3j3rt1PFWaPBpG1DKuITgxYjXIK3cua0/70IOOthJ7LmlxD5RMvWniGlfujdEqqHkbIXdlfAY1RkcSeqPJs6sDJsTcPmbHXjZhwJ5pqAoWZo6FSuSPaq7BUJD2ZMp3g9uqIleiZaG6DK/g5lNe6J4/K/QgyKDTN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEDBOXwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC5DC4CEE5;
+	Mon, 10 Mar 2025 17:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628479;
-	bh=l7cw/3VmVm3QRoAhndnqiypNPXG4bzxcDj5RSI6A84k=;
+	s=korg; t=1741627824;
+	bh=RDbBa8zBYxXe8hbHimvZVhAzXB7WgMfqHYjsjM1dmcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYCyIlnOzZ0dtHRfXHKxQmE3cwcx4tWcu+tq2v/lLVaQHu+yfiFUABQ30qCnvIoVU
-	 canKZ/uTZbSHRKvGQA+uJupRqBPKAENIYXglGUw31ZmU2LvN4urPiP26OUe/oW6jpa
-	 Tbvf+8QmFxVdum+fqNPbNahp2yaTr6Yl6hp9e6ks=
+	b=qEDBOXwd7hcqXlmUHjWPhdXSfo/ZmtJzXpl7fbigPM797WZTFv8nhwfCIame/jH8j
+	 m/XBgCzo1HWHh+OhPxYVJV4QUfaUg4efAzeYQiNKRqtEJdaVtw0YwMLZNlx/C413ed
+	 Osa3PBxNlKsGLxqTD3tebJDkSF/K6nrNTZACqlDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <boddah8794@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 072/109] usb: typec: ucsi: increase timeout for PPM reset operations
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 263/269] Revert "KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults"
 Date: Mon, 10 Mar 2025 18:06:56 +0100
-Message-ID: <20250310170430.425232380@linuxfoundation.org>
+Message-ID: <20250310170508.271128973@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <boddah8794@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit bf4f9ae1cb08ccaafbe6874be6c46f59b83ae778 upstream.
+This reverts commit 833f69be62ac366b5c23b4a6434389e470dd5c7f which is
+commit 419cfb983ca93e75e905794521afefcfa07988bb upstream.
 
-It is observed that on some systems an initial PPM reset during the boot
-phase can trigger a timeout:
+It should not have been applied.
 
-[    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
-[    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
-
-Still, increasing the timeout value, albeit being the most straightforward
-solution, eliminates the problem: the initial PPM reset may take up to
-~8000-10000ms on some Lenovo laptops. When it is reset after the above
-period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
-works as expected.
-
-Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
-system has booted, reading the CCI values and resetting the PPM works
-perfectly, without any timeout. Thus it's only a boot-time issue.
-
-The reason for this behavior is not clear but it may be the consequence
-of some tricks that the firmware performs or be an actual firmware bug.
-As a workaround, increase the timeout to avoid failing the UCSI
-initialization prematurely.
-
-Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion timeout value")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250217105442.113486-3-boddah8794@gmail.com
+Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/e500_mmu_host.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -25,7 +25,7 @@
-  * difficult to estimate the time it takes for the system to process the command
-  * before it is actually passed to the PPM.
-  */
--#define UCSI_TIMEOUT_MS		5000
-+#define UCSI_TIMEOUT_MS		10000
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -322,7 +322,6 @@ static inline int kvmppc_e500_shadow_map
+ {
+ 	struct kvm_memory_slot *slot;
+ 	unsigned long pfn = 0; /* silence GCC warning */
+-	struct page *page = NULL;
+ 	unsigned long hva;
+ 	int pfnmap = 0;
+ 	int tsize = BOOK3E_PAGESZ_4K;
+@@ -444,7 +443,7 @@ static inline int kvmppc_e500_shadow_map
  
- /*
-  * UCSI_SWAP_TIMEOUT_MS - Timeout for role swap requests
+ 	if (likely(!pfnmap)) {
+ 		tsize_pages = 1UL << (tsize + 10 - PAGE_SHIFT);
+-		pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
++		pfn = gfn_to_pfn_memslot(slot, gfn);
+ 		if (is_error_noslot_pfn(pfn)) {
+ 			if (printk_ratelimit())
+ 				pr_err("%s: real page not found for gfn %lx\n",
+@@ -489,6 +488,8 @@ static inline int kvmppc_e500_shadow_map
+ 		}
+ 	}
+ 	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
++	if (writable)
++		kvm_set_pfn_dirty(pfn);
+ 
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
+@@ -497,7 +498,8 @@ static inline int kvmppc_e500_shadow_map
+ 	kvmppc_mmu_flush_icache(pfn);
+ 
+ out:
+-	kvm_release_faultin_page(kvm, page, !!ret, writable);
++	/* Drop refcount on page, so that mmu notifiers can clear it */
++	kvm_release_pfn_clean(pfn);
+ 	spin_unlock(&kvm->mmu_lock);
+ 	return ret;
+ }
 
 
 
