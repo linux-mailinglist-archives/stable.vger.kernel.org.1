@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B78A59F70
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777B9A5A254
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B67DC3AC493
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0F718917EC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1905233719;
-	Mon, 10 Mar 2025 17:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B86022576A;
+	Mon, 10 Mar 2025 18:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4So/pT2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUAdZbsy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BF2233155;
-	Mon, 10 Mar 2025 17:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086121C3F34;
+	Mon, 10 Mar 2025 18:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628340; cv=none; b=HNKh93SCY/JWFNALVWHAQ7gDjwSBAo742BoIcSYvAg9QnrTLjQfvitrp0dF32+fZpYs0pF3aKxpAwcSj+0vyAqrqgnjX7U3IgVcz2yR6VDnBp/MouzXBY1XqW9pddbVijNyjwLxLpxgjo9g86ggMwnXcEJ1qEaYoY3DQKOaWZwg=
+	t=1741630732; cv=none; b=NsFPSuJEjrdSzonkWuXvqHNU1JHaOEAcSyzufh2dIMjBpTln2K17j/JYV34fFgV9H7Nn6m7qBJHHTYfBGC5PmvmxglYq7ZjPuJoj71EkulCYrr/ctkXVmBGF/rR0ZVuCQPLaVUahkDNqdFItQ0bWP4dVzCEbxIUE7uzw0gN8bFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628340; c=relaxed/simple;
-	bh=6tycHJHE/hD7TEe5aaDTTSuUUGZ6UUu9JTlOT4KAvXk=;
+	s=arc-20240116; t=1741630732; c=relaxed/simple;
+	bh=JKD2xUJzO9Vwk6eYujsieFSxF0s33oBgSiqGoJ/K3+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTegxZrEXbdspmjwPNsk6ey51x8CwqOSSXZf2Keicl7mL2AyQXyV7zai237CzJxZHsrU70kJFLikla5PTLefY7MFUyTl8qP3cHbHt+Y2FedpC/N8i7xUQGXG8i1qMoTO7HAoiykbMnFtg1tDEhvaOjFKiwx9mMbtMAjgIaulDiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4So/pT2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E021C4CEE5;
-	Mon, 10 Mar 2025 17:39:00 +0000 (UTC)
+	 MIME-Version; b=jwZAIioZU4b9ioOYotksFhNQyJaNgDKft1mTafEfQCzk0lEKRny57u+evdAZC+inyLiZ+tahzKBgGIB7RK5LGX0a1z0rXGn7+t+iuGklXBc6N57+/fYaLxX7/ZLUz5ytiKxbpirMONxvxP6yDjpuOF4+IW8yKByrYNzV4jXTDw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUAdZbsy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2FFC4CEE5;
+	Mon, 10 Mar 2025 18:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628340;
-	bh=6tycHJHE/hD7TEe5aaDTTSuUUGZ6UUu9JTlOT4KAvXk=;
+	s=korg; t=1741630731;
+	bh=JKD2xUJzO9Vwk6eYujsieFSxF0s33oBgSiqGoJ/K3+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4So/pT2HCSRfdh3ts5PC7GUKV8dQryUem/YZsTqYX1lLqcgZpc6lwpgZcA2QXIPv
-	 4BqaLYNZPkoymI+JjeIOPt27bgpaUL9C0tAKitMw9EFgrLjnckMtenUAKxuxTg5c9l
-	 BDPssfJ87/0eH1Cbu03awwcr24Sij7PTA+CIJZeI=
+	b=BUAdZbsyaAQu9vl7j378yE6TNJCiowUb9Rjbk2SA+AGMlLzjqv5YscoRTxtDisy6B
+	 i/Sa3uFt8mPktzuLG/Cr78wtZdk1shcdNRVmZR2rAcWUXQvA00zyRcbkTLI0qQBjYA
+	 azByS21TPsqwfV2G2mJGySoW/uA1bW6Htq5Weff0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
+	Dmitry Panchenko <dmitry@d-systems.ee>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 017/109] ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform
+Subject: [PATCH 5.15 515/620] ALSA: usb-audio: Re-add sample rate quirk for Pioneer DJM-900NXS2
 Date: Mon, 10 Mar 2025 18:06:01 +0100
-Message-ID: <20250310170428.236588688@linuxfoundation.org>
+Message-ID: <20250310170605.886144727@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Dmitry Panchenko <dmitry@d-systems.ee>
 
-commit f603b159231b0c58f0c27ab39348534063d38223 upstream.
+commit 9af3b4f2d879da01192d6168e6c651e7fb5b652d upstream.
 
-Support Mic Mute LED for ThinkCentre M series.
+Re-add the sample-rate quirk for the Pioneer DJM-900NXS2. This
+device does not work without setting sample-rate.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
+Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/c211a2702f1f411e86bd7420d7eebc03@realtek.com
+Link: https://patch.msgid.link/20250220161540.3624660-1-dmitry@d-systems.ee
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ sound/usb/quirks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4915,6 +4915,16 @@ static void alc269_fixup_hp_line1_mic1_l
- 	}
- }
- 
-+static void alc233_fixup_lenovo_low_en_micmute_led(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE)
-+		spec->micmute_led_polarity = 1;
-+	alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
-+}
-+
- static void alc_hp_mute_disable(struct hda_codec *codec, unsigned int delay)
- {
- 	if (delay <= 0)
-@@ -7220,6 +7230,7 @@ enum {
- 	ALC275_FIXUP_DELL_XPS,
- 	ALC293_FIXUP_LENOVO_SPK_NOISE,
- 	ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY,
-+	ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED,
- 	ALC255_FIXUP_DELL_SPK_NOISE,
- 	ALC225_FIXUP_DISABLE_MIC_VREF,
- 	ALC225_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -8180,6 +8191,10 @@ static const struct hda_fixup alc269_fix
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc233_fixup_lenovo_line2_mic_hotkey,
- 	},
-+	[ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc233_fixup_lenovo_low_en_micmute_led,
-+	},
- 	[ALC233_FIXUP_INTEL_NUC8_DMIC] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc_fixup_inv_dmic,
-@@ -10170,6 +10185,9 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3178, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
- 	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x17aa, 0x3384, "ThinkCentre M90a PRO", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
-+	SND_PCI_QUIRK(0x17aa, 0x3386, "ThinkCentre M90a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
-+	SND_PCI_QUIRK(0x17aa, 0x3387, "ThinkCentre M70a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
- 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1502,6 +1502,7 @@ void snd_usb_set_format_quirk(struct snd
+ 	case USB_ID(0x534d, 0x2109): /* MacroSilicon MS2109 */
+ 		subs->stream_offset_adj = 2;
+ 		break;
++	case USB_ID(0x2b73, 0x000a): /* Pioneer DJM-900NXS2 */
+ 	case USB_ID(0x2b73, 0x0013): /* Pioneer DJM-450 */
+ 		pioneer_djm_set_format_quirk(subs, 0x0082);
+ 		break;
 
 
 
