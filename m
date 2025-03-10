@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-122126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F82A59E1A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42BBA59E82
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93DEF16D02F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38066188F9B4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410CF2356CB;
-	Mon, 10 Mar 2025 17:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275F422E407;
+	Mon, 10 Mar 2025 17:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/ajClyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k13iMEwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F238A22D799;
-	Mon, 10 Mar 2025 17:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D721022FF40;
+	Mon, 10 Mar 2025 17:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627602; cv=none; b=LrStvhNBhZmmngaNJS3UNv6+n4FrbjEZ9+F+FENktCc8TzW72JY5YGyAMkE8o4spRHH6uADOYq6H+LbVMN5uCfxoni6nbB4QydjM9yvNeGZfG3++QDzN3DC13SZ2LPlZ0eT1vuOldzqYYg8W9Du54E8qWmu++vR6oS9WzRdCvsY=
+	t=1741627878; cv=none; b=YNQqzdguh4dh6VMbG2KPTUyKY0wDicDXkiOiRSA7RV4Hbx9iOvhZHsRTeDpisAv896tNvpNX+gsCHlmnM9i5h0QMfZBncRZOrJvzLGtOqjiojaFqp4yRugySuNWmQEJ6UMrlish28gVo3EaVfusGZZ9DykKz/ubfe9F/s/57/rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627602; c=relaxed/simple;
-	bh=zvyjyCSLDPQ1rkZSg79nr/sQD90zCiBFlEZVQJPZlCM=;
+	s=arc-20240116; t=1741627878; c=relaxed/simple;
+	bh=iUWnYLr5h4XeDEVOWPYDFMZIuWDG0ZB1J8peLMx4Ukc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHGqmxgWN2woH2J+W9NAR/XIL68n0PcZqpfJ2eylGhe+jg7zIEN2nXCs1UgaCcd0t0HrIMHPh6L7ez7dTBknaMuaOov431cf01SqoTr+gKYbD3ngmuvxto10y1/NNxsLGEpnljiXa63RqLtSqYNr7qjm5U2Cj1ARu1KccIoMo8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/ajClyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F16C4CEE5;
-	Mon, 10 Mar 2025 17:26:41 +0000 (UTC)
+	 MIME-Version; b=omidq7gl7OAFhWR3sukwFqxSsN5SL+GMIodK2IV9hH6s9bGbT6zFT7nIdZnBFfqqoG2PzBdbUTPSg7ESjA3sGjOcDFhm3FK71gk/G+tzzVcbYyDQuN64VfQzCS6TxAdwYufSq+dHZY6WnkvHhaBbcnOwVWlTLIDnWr0P4Mp+kNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k13iMEwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF9AC4CEEC;
+	Mon, 10 Mar 2025 17:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627601;
-	bh=zvyjyCSLDPQ1rkZSg79nr/sQD90zCiBFlEZVQJPZlCM=;
+	s=korg; t=1741627878;
+	bh=iUWnYLr5h4XeDEVOWPYDFMZIuWDG0ZB1J8peLMx4Ukc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/ajClyCUhfNVUdSwQ0xTWavg5E6y15625qQDJ2CQH7pYeg9YxN0ZWpVGEIXQpiCi
-	 718gR97uYX6k4vEMlbEtCbuTlS3PrgWJIuDNHgR4PB6i7ERxBaZpaKezNiBLFs3UVq
-	 tOQGhrQi8cdnJdjzOmuTsaFozUsZ8/PvAhmfjvJM=
+	b=k13iMEwgo4Wt6YCL+19I2yle53iPs8RPQGCGobVgSADRfPN6v5yornjuRMng0YhRT
+	 f179d6dKbvLrfVqIF25gZpz237WYBZhlIzZOOe23jM1vDvJFsJBMPmLHB5sZcM9kaK
+	 nC54DFvJFls3tUHs8RxT2kzMY8YTSVVhfmjhKwsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/269] wifi: mac80211: Support parsing EPCS ML element
+Subject: [PATCH 6.6 012/145] net: enetc: Replace ifdef with IS_ENABLED
 Date: Mon, 10 Mar 2025 18:05:06 +0100
-Message-ID: <20250310170503.822690710@linuxfoundation.org>
+Message-ID: <20250310170435.238512982@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +64,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Martyn Welch <martyn.welch@collabora.com>
 
-[ Upstream commit 24711d60f8492a30622e419cee643d59264ea939 ]
+[ Upstream commit 9c699a8f3b273c62f7b364ff999e873501a1e834 ]
 
-Add support for parsing an ML element of type EPCS priority
-access, which can optionally be included in EHT protected action
-frames used to configure EPCS.
+The enetc driver uses ifdefs when checking whether
+CONFIG_FSL_ENETC_PTP_CLOCK is enabled in a number of places. This works
+if the driver is built-in but fails if the driver is available as a
+kernel module. Replace the instances of ifdef with use of the IS_ENABLED
+macro, that will evaluate as true when this feature is built as a kernel
+module and follows the kernel's coding style.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250102161730.5afdf65cff46.I0ffa30b40fbad47bc5b608b5fd46047a8c44e904@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 99ca2c28e6b6 ("wifi: mac80211: fix MLE non-inheritance parsing")
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Martyn Welch <martyn.welch@collabora.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240912173742.484549-1-martyn.welch@collabora.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a562d0c4a893 ("net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ieee80211_i.h |  2 ++
- net/mac80211/parse.c       | 29 +++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 22 ++++++++-----------
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  9 +++-----
+ .../ethernet/freescale/enetc/enetc_ethtool.c  | 12 ++++++----
+ 3 files changed, 20 insertions(+), 23 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 7a0242e937d36..bfe0514efca37 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1751,6 +1751,7 @@ struct ieee802_11_elems {
- 	const struct ieee80211_eht_operation *eht_operation;
- 	const struct ieee80211_multi_link_elem *ml_basic;
- 	const struct ieee80211_multi_link_elem *ml_reconf;
-+	const struct ieee80211_multi_link_elem *ml_epcs;
- 	const struct ieee80211_bandwidth_indication *bandwidth_indication;
- 	const struct ieee80211_ttlm_elem *ttlm[IEEE80211_TTLM_MAX_CNT];
- 
-@@ -1781,6 +1782,7 @@ struct ieee802_11_elems {
- 	/* mult-link element can be de-fragmented and thus u8 is not sufficient */
- 	size_t ml_basic_len;
- 	size_t ml_reconf_len;
-+	size_t ml_epcs_len;
- 
- 	u8 ttlm_num;
- 
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 279c5143b3356..cd318c1c67bec 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -44,6 +44,9 @@ struct ieee80211_elems_parse {
- 	/* The reconfiguration Multi-Link element in the original elements */
- 	const struct element *ml_reconf_elem;
- 
-+	/* The EPCS Multi-Link element in the original elements */
-+	const struct element *ml_epcs_elem;
-+
- 	/*
- 	 * scratch buffer that can be used for various element parsing related
- 	 * tasks, e.g., element de-fragmentation etc.
-@@ -159,6 +162,9 @@ ieee80211_parse_extension_element(u32 *crc,
- 			case IEEE80211_ML_CONTROL_TYPE_RECONF:
- 				elems_parse->ml_reconf_elem = elem;
- 				break;
-+			case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
-+				elems_parse->ml_epcs_elem = elem;
-+				break;
- 			default:
- 				break;
- 			}
-@@ -943,6 +949,27 @@ ieee80211_mle_defrag_reconf(struct ieee80211_elems_parse *elems_parse)
- 	elems_parse->scratch_pos += ml_len;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 9aa57134f460c..30653830981d1 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1023,7 +1023,6 @@ static int enetc_refill_rx_ring(struct enetc_bdr *rx_ring, const int buff_cnt)
+ 	return j;
  }
  
-+static void
-+ieee80211_mle_defrag_epcs(struct ieee80211_elems_parse *elems_parse)
-+{
-+	struct ieee802_11_elems *elems = &elems_parse->elems;
-+	ssize_t ml_len;
-+
-+	ml_len = cfg80211_defragment_element(elems_parse->ml_epcs_elem,
-+					     elems->ie_start,
-+					     elems->total_len,
-+					     elems_parse->scratch_pos,
-+					     elems_parse->scratch +
-+						elems_parse->scratch_len -
-+						elems_parse->scratch_pos,
-+					     WLAN_EID_FRAGMENT);
-+	if (ml_len < 0)
-+		return;
-+	elems->ml_epcs = (void *)elems_parse->scratch_pos;
-+	elems->ml_epcs_len = ml_len;
-+	elems_parse->scratch_pos += ml_len;
-+}
-+
- struct ieee802_11_elems *
- ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+-#ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+ static void enetc_get_rx_tstamp(struct net_device *ndev,
+ 				union enetc_rx_bd *rxbd,
+ 				struct sk_buff *skb)
+@@ -1047,7 +1046,6 @@ static void enetc_get_rx_tstamp(struct net_device *ndev,
+ 		shhwtstamps->hwtstamp = ns_to_ktime(tstamp);
+ 	}
+ }
+-#endif
+ 
+ static void enetc_get_offloads(struct enetc_bdr *rx_ring,
+ 			       union enetc_rx_bd *rxbd, struct sk_buff *skb)
+@@ -1087,10 +1085,9 @@ static void enetc_get_offloads(struct enetc_bdr *rx_ring,
+ 		__vlan_hwaccel_put_tag(skb, tpid, le16_to_cpu(rxbd->r.vlan_opt));
+ 	}
+ 
+-#ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+-	if (priv->active_offloads & ENETC_F_RX_TSTAMP)
++	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) &&
++	    (priv->active_offloads & ENETC_F_RX_TSTAMP))
+ 		enetc_get_rx_tstamp(rx_ring->ndev, rxbd, skb);
+-#endif
+ }
+ 
+ /* This gets called during the non-XDP NAPI poll cycle as well as on XDP_PASS,
+@@ -2956,7 +2953,6 @@ void enetc_set_features(struct net_device *ndev, netdev_features_t features)
+ }
+ EXPORT_SYMBOL_GPL(enetc_set_features);
+ 
+-#ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+ static int enetc_hwtstamp_set(struct net_device *ndev, struct ifreq *ifr)
  {
-@@ -1001,6 +1028,8 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+@@ -3025,17 +3021,17 @@ static int enetc_hwtstamp_get(struct net_device *ndev, struct ifreq *ifr)
+ 	return copy_to_user(ifr->ifr_data, &config, sizeof(config)) ?
+ 	       -EFAULT : 0;
+ }
+-#endif
  
- 	ieee80211_mle_defrag_reconf(elems_parse);
- 
-+	ieee80211_mle_defrag_epcs(elems_parse);
+ int enetc_ioctl(struct net_device *ndev, struct ifreq *rq, int cmd)
+ {
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+-#ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+-	if (cmd == SIOCSHWTSTAMP)
+-		return enetc_hwtstamp_set(ndev, rq);
+-	if (cmd == SIOCGHWTSTAMP)
+-		return enetc_hwtstamp_get(ndev, rq);
+-#endif
 +
- 	if (elems->tim && !elems->parse_error) {
- 		const struct ieee80211_tim_ie *tim_ie = elems->tim;
++	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK)) {
++		if (cmd == SIOCSHWTSTAMP)
++			return enetc_hwtstamp_set(ndev, rq);
++		if (cmd == SIOCGHWTSTAMP)
++			return enetc_hwtstamp_get(ndev, rq);
++	}
+ 
+ 	if (!priv->phylink)
+ 		return -EOPNOTSUPP;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index fcadb0848d254..860ecee302f1a 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -184,10 +184,9 @@ static inline union enetc_rx_bd *enetc_rxbd(struct enetc_bdr *rx_ring, int i)
+ {
+ 	int hw_idx = i;
+ 
+-#ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+-	if (rx_ring->ext_en)
++	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) && rx_ring->ext_en)
+ 		hw_idx = 2 * i;
+-#endif
++
+ 	return &(((union enetc_rx_bd *)rx_ring->bd_base)[hw_idx]);
+ }
+ 
+@@ -199,10 +198,8 @@ static inline void enetc_rxbd_next(struct enetc_bdr *rx_ring,
+ 
+ 	new_rxbd++;
+ 
+-#ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+-	if (rx_ring->ext_en)
++	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) && rx_ring->ext_en)
+ 		new_rxbd++;
+-#endif
+ 
+ 	if (unlikely(++new_index == rx_ring->bd_count)) {
+ 		new_rxbd = rx_ring->bd_base;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+index aa7d427e654ff..39fbc465746f7 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+@@ -848,7 +848,12 @@ static int enetc_get_ts_info(struct net_device *ndev,
+ 		symbol_put(enetc_phc_index);
+ 	}
+ 
+-#ifdef CONFIG_FSL_ENETC_PTP_CLOCK
++	if (!IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK)) {
++		info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
++
++		return 0;
++	}
++
+ 	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
+ 				SOF_TIMESTAMPING_RX_HARDWARE |
+ 				SOF_TIMESTAMPING_RAW_HARDWARE |
+@@ -857,11 +862,10 @@ static int enetc_get_ts_info(struct net_device *ndev,
+ 	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
+ 			 (1 << HWTSTAMP_TX_ON) |
+ 			 (1 << HWTSTAMP_TX_ONESTEP_SYNC);
++
+ 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
+ 			   (1 << HWTSTAMP_FILTER_ALL);
+-#else
+-	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
+-#endif
++
+ 	return 0;
+ }
  
 -- 
 2.39.5
