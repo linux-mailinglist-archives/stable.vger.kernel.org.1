@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-121788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A00A59C4A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F92A5A1CF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F23816E257
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E21307A6F99
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F269A23236F;
-	Mon, 10 Mar 2025 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2732206BD;
+	Mon, 10 Mar 2025 18:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7kciFzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSYhkuRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00782309B6;
-	Mon, 10 Mar 2025 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB85E233716;
+	Mon, 10 Mar 2025 18:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626630; cv=none; b=i5H0OW2bYomFlTJFa+Y4hTOx65EB7jAFi7BHmZBBCjSUTwUKDQG4KU9vdp6/XWr/TEPu/+Fh8QfCvwNRImw4vjV0+U9/HDOASx92GE/IsuTwLH2mLtyhwY+WojxpwcMEw5ZtuustfMFoOekQf1bUDpgYxIVUYLA6fTVx8okL7jk=
+	t=1741630436; cv=none; b=lPFz1Bq7ozNw38L1oUcF0Gdpi23MO6PfhiOpoCROweNEylwNrj45ExmJTiNKjqIXr0CVxxVDBWYRgQcYlVF6iwhAbrAldUkYOxO17LtumzPwAklgHq9TN6P9JQP4j+QdZCWVp80Qd/WCClsWgPGVBAXH1wMMabUS/qvP/uR+WFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626630; c=relaxed/simple;
-	bh=weIp/do5TdKy7Tbd3Urtio7zdPqjfL5Gc6Iq3OLxmg8=;
+	s=arc-20240116; t=1741630436; c=relaxed/simple;
+	bh=xTUXnM2AEWjY9bWB2FxgfkzZD1TcufuLysSVVbN/57A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQ/DFK/KEuJDksNhKjsgQXr4E2Kk8UyBppxgJ6fu63mY3OaEMUuykRqHV69SSzjHuf6MV86Md1d0v7Axy1jr2omy6Jkc8J2Y7gvLKohk57PYXmOIFuoWKUvrG1/kntGOlaHssrwLMo7lEAJEXsKFavCiK0sjI+xXtig+dk+o41Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7kciFzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D7AC4CEE5;
-	Mon, 10 Mar 2025 17:10:30 +0000 (UTC)
+	 MIME-Version; b=MHQCRDUWROx7XXANfnBuJviqA0hWcsbB8HnTVKJEMJO5KY44uAw+e/Q5IUlub+epJGFwlNIAfLblmgml6x+2oKqlGMvvPZ0s3fXW0pLeXmULhlTnmgvArLCj/IIEMvNFA2hELw1SXeKKzLmS0I1DEszwqAnvslnHV6zE9+9DHOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSYhkuRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1E4C4CEE5;
+	Mon, 10 Mar 2025 18:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626630;
-	bh=weIp/do5TdKy7Tbd3Urtio7zdPqjfL5Gc6Iq3OLxmg8=;
+	s=korg; t=1741630435;
+	bh=xTUXnM2AEWjY9bWB2FxgfkzZD1TcufuLysSVVbN/57A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7kciFzFOsv9cUZW5RO9Z6qAiFria00jHzttsNlzEHxhZ9UnjPlbtF3Jpm3S91vFZ
-	 SV+w39J8nuLmvcklaSWl6+2nFBar2GtT5yGHIm+AA0mhyJ3EVRzRlt+YFvNyB5kmW9
-	 HUq4P27cnMLMu8wfYZKbbrgzEmL/g59lVeR5h4v8=
+	b=ZSYhkuRvEMOD1n+l7mGfHJYiRMtOhXoYHSonctNUNiSmaDb13+Vr1v3wd+WYrVU/c
+	 8uTOr+oVxia/AOu4hePrVaAN8C4Bds/IVCueydr3S1Al9VrxgVve8DVuj6k5akJIX3
+	 lKho8/ynikgaD4mWG7gqnhWQ4Yqe6rvunnNMLpPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.13 058/207] Bluetooth: Add check for mgmt_alloc_skb() in mgmt_remote_name()
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 405/620] neighbour: use RCU protection in __neigh_notify()
 Date: Mon, 10 Mar 2025 18:04:11 +0100
-Message-ID: <20250310170450.079683803@linuxfoundation.org>
+Message-ID: <20250310170601.577886142@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f2176a07e7b19f73e05c805cf3d130a2999154cb upstream.
+[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
 
-Add check for the return value of mgmt_alloc_skb() in
-mgmt_remote_name() to prevent null pointer dereference.
+__neigh_notify() can be called without RTNL or RCU protection.
 
-Fixes: ba17bb62ce41 ("Bluetooth: Fix skb allocation in mgmt_remote_name() & mgmt_device_connected()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use RCU protection to avoid potential UAF.
+
+Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/core/neighbour.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -10544,6 +10544,8 @@ void mgmt_remote_name(struct hci_dev *hd
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 7fffbe0424342..9549738b81842 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3369,10 +3369,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
+ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid)
+ {
+-	struct net *net = dev_net(n->dev);
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
++	struct net *net;
  
- 	skb = mgmt_alloc_skb(hdev, MGMT_EV_DEVICE_FOUND,
- 			     sizeof(*ev) + (name ? eir_precalc_len(name_len) : 0));
-+	if (!skb)
-+		return;
++	rcu_read_lock();
++	net = dev_net_rcu(n->dev);
+ 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
+ 	if (skb == NULL)
+ 		goto errout;
+@@ -3385,9 +3387,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 		goto errout;
+ 	}
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+-	return;
++	goto out;
+ errout:
+ 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++out:
++	rcu_read_unlock();
+ }
  
- 	ev = skb_put(skb, sizeof(*ev));
- 	bacpy(&ev->addr.bdaddr, bdaddr);
+ void neigh_app_ns(struct neighbour *n)
+-- 
+2.39.5
+
 
 
 
