@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8A2A5A284
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 577DFA59ECE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C960D3AF91D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 008D37A6515
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB63423372C;
-	Mon, 10 Mar 2025 18:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4C0231A51;
+	Mon, 10 Mar 2025 17:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwt08kIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Af5kVhp+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA05022576A;
-	Mon, 10 Mar 2025 18:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A62A230BED;
+	Mon, 10 Mar 2025 17:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630853; cv=none; b=Icgpfx+8oOXOVMKUTSnhuSTk6zu/W8tP969bkg8JIt+lUvI36wD3E/4qo0A2vFzZr4hcV6yK4JU9NCOt0XYyZj2lXhZ+HTP05ltUvwQWyttbX83cZYiRU94dY+buTlIN+jzCgnBy85q9pNqlZD8vs78gi3gt8kdYnVKM/yv5OP0=
+	t=1741628072; cv=none; b=G43qVBB0P7NfBjJ8O0LbsrP8HMR75/N2sL7agaLvOpdnFLkuSleK9uYYQIvJFJN002nPOKuhkgT7ozS4fcCx02tphA+tmTiZ3owHu/TcI1tLp/FDO/m+FvUx8rsykPG+r13zrPM6ZGUbJAie2zw2/PZKUFp7jx0fuwtSzxFXJEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630853; c=relaxed/simple;
-	bh=SDAMIOE1OE0CEMgVs4HIQVmp4cxdRgfYUQixjDhbCHc=;
+	s=arc-20240116; t=1741628072; c=relaxed/simple;
+	bh=/t/lWVgBEuaprf2jP6FZvGcHhOBaeBmLjXPBOtQwIuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPSL58dOXwoeziaS/YU4BrOdjUcahf2lwC/+uWP80twOI0a1QO8BYsdkEoFJGLwLcZW8Qq67OI2MEQLGWMcuVyVdIk93ICajw+OIKmzGcoJWVYdXXR1YF2b7tGcTEbpuGcPNfbHE981InRw0eAkAZB8hc/hhk+LKV/39LcRLRCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwt08kIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE2AC4CEE5;
-	Mon, 10 Mar 2025 18:20:53 +0000 (UTC)
+	 MIME-Version; b=WicYV0rJLfIRfZWTzC8I5sGThqj8SdCOXoNNCU7nxjFiYDXZQeIbnyMbZmHevK9BI3w5hrGfoSTbD0U6o4/pIl9Yg0cc1mrVXMsE6FyqGkNoBjwYOi6aR89DLsnmnLZvtrU4Mz/ZiO/ssf+6QXb0stPeq9cyGy3pMxh9ciBdavI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Af5kVhp+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BD4C4CEEC;
+	Mon, 10 Mar 2025 17:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630853;
-	bh=SDAMIOE1OE0CEMgVs4HIQVmp4cxdRgfYUQixjDhbCHc=;
+	s=korg; t=1741628071;
+	bh=/t/lWVgBEuaprf2jP6FZvGcHhOBaeBmLjXPBOtQwIuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwt08kIts28yXdOnPr7KjlGiboCGNxrnB8AQLcCkSSAEVZkkjRUvrgi4am0UHG+qU
-	 P7sJ1FYjNsEZsv8/Vd+7M2ywrHXo5E5UHhn+zPLLK63JQ8lLX0eHkp1iKtVJwGBjcw
-	 aYRRUh4jJanM6v25Kv6WowKy6sXhirctl8KKiy3Q=
+	b=Af5kVhp+2j1J5wsMYIQF4gE211c3+r/jgJT2JCtPhO/P8G/vWcOB85w04wfhf50Qx
+	 JYAii4O3+iG1d5o+nVSW5hcWaLE+JBimSrNcHqV4hMrEKnUy+bikE/m7ydsnuwJkqz
+	 fVtZLlqZKEwWGsOiKt253svcuq9rP8KJlnhaQPv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.15 526/620] vmlinux.lds: Ensure that const vars with relocations are mapped R/O
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Alex Elder <elder@riscstar.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 078/145] net: ipa: Fix v4.7 resource group names
 Date: Mon, 10 Mar 2025 18:06:12 +0100
-Message-ID: <20250310170606.311044508@linuxfoundation.org>
+Message-ID: <20250310170437.900869302@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit 68f3ea7ee199ef77551e090dfef5a49046ea8443 upstream.
+[ Upstream commit 5eb3dc1396aa7e315486b24df80df782912334b7 ]
 
-In the kernel, there are architectures (x86, arm64) that perform
-boot-time relocation (for KASLR) without relying on PIE codegen. In this
-case, all const global objects are emitted into .rodata, including const
-objects with fields that will be fixed up by the boot-time relocation
-code.  This implies that .rodata (and .text in some cases) need to be
-writable at boot, but they will usually be mapped read-only as soon as
-the boot completes.
+In the downstream IPA driver there's only one group defined for source
+and destination, and the destination group doesn't have a _DPL suffix.
 
-When using PIE codegen, the compiler will emit const global objects into
-.data.rel.ro rather than .rodata if the object contains fields that need
-such fixups at boot-time. This permits the linker to annotate such
-regions as requiring read-write access only at load time, but not at
-execution time (in user space), while keeping .rodata truly const (in
-user space, this is important for reducing the CoW footprint of dynamic
-executables).
-
-This distinction does not matter for the kernel, but it does imply that
-const data will end up in writable memory if the .data.rel.ro sections
-are not treated in a special way, as they will end up in the writable
-.data segment by default.
-
-So emit .data.rel.ro into the .rodata segment.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20250221135704.431269-5-ardb+git@google.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Link: https://patch.msgid.link/20250227-ipa-v4-7-fixes-v1-1-a88dd8249d8a@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/vmlinux.lds.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ipa/data/ipa_data-v4.7.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -429,7 +429,7 @@
- 	. = ALIGN((align));						\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
- 		__start_rodata = .;					\
--		*(.rodata) *(.rodata.*)					\
-+		*(.rodata) *(.rodata.*) *(.data.rel.ro*)		\
- 		SCHED_DATA						\
- 		RO_AFTER_INIT_DATA	/* Read only after init */	\
- 		. = ALIGN(8);						\
+diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
+index b83390c486158..f8e64b9025820 100644
+--- a/drivers/net/ipa/data/ipa_data-v4.7.c
++++ b/drivers/net/ipa/data/ipa_data-v4.7.c
+@@ -27,12 +27,10 @@ enum ipa_resource_type {
+ enum ipa_rsrc_group_id {
+ 	/* Source resource group identifiers */
+ 	IPA_RSRC_GROUP_SRC_UL_DL			= 0,
+-	IPA_RSRC_GROUP_SRC_UC_RX_Q,
+ 	IPA_RSRC_GROUP_SRC_COUNT,	/* Last in set; not a source group */
+ 
+ 	/* Destination resource group identifiers */
+-	IPA_RSRC_GROUP_DST_UL_DL_DPL			= 0,
+-	IPA_RSRC_GROUP_DST_UNUSED_1,
++	IPA_RSRC_GROUP_DST_UL_DL			= 0,
+ 	IPA_RSRC_GROUP_DST_COUNT,	/* Last; not a destination group */
+ };
+ 
+@@ -80,7 +78,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
+ 		},
+ 		.endpoint = {
+ 			.config = {
+-				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
++				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
+ 				.aggregation	= true,
+ 				.status_enable	= true,
+ 				.rx = {
+@@ -127,7 +125,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
+ 		},
+ 		.endpoint = {
+ 			.config = {
+-				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
++				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
+ 				.qmap		= true,
+ 				.aggregation	= true,
+ 				.rx = {
+@@ -196,12 +194,12 @@ static const struct ipa_resource ipa_resource_src[] = {
+ /* Destination resource configuration data for an SoC having IPA v4.7 */
+ static const struct ipa_resource ipa_resource_dst[] = {
+ 	[IPA_RESOURCE_TYPE_DST_DATA_SECTORS] = {
+-		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
++		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
+ 			.min = 7,	.max = 7,
+ 		},
+ 	},
+ 	[IPA_RESOURCE_TYPE_DST_DPS_DMARS] = {
+-		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
++		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
+ 			.min = 2,	.max = 2,
+ 		},
+ 	},
+-- 
+2.39.5
+
 
 
 
