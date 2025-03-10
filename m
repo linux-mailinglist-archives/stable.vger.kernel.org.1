@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-121942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D1AA59D37
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE6AA59F74
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3726D3A4E80
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 172923A7D1E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A7B1A315A;
-	Mon, 10 Mar 2025 17:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A08A232378;
+	Mon, 10 Mar 2025 17:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lh9NLLiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tr7z/fEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29CE2F28;
-	Mon, 10 Mar 2025 17:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DA022D4C3;
+	Mon, 10 Mar 2025 17:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627075; cv=none; b=Jevqdl5oFDRc5lMV8D80s0RYPaa0XZUvl7COyMEhYhPhuXW8ham4yrTGVzvGoJCbTmI0WS0bGXN+ZfdXFG3KMU0U4AJQ4RSd23FKozpRpVcT2/yfj0Bg0sVfnZkkdbJc/7Ogy3kbHj7Hs0pXi+yOdDw0MkA3mODSAzP2vXmCFp4=
+	t=1741628352; cv=none; b=WfbRh1hgbULlYxKiDdBk+Agldmq0WDEgNTrigySkrM3ADLMsieBWZMDYQrrZ0iZdMtVGFYb2QPJnijVgQ6pS+VrsKK7nDI4HX20uBRVnDXf8PNqCXVkRJ82aVH2eZNgGISaRXAgVIo1KtOreudjO10/0SJtsYCVqYnmstm3MwwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627075; c=relaxed/simple;
-	bh=9av+5EhlNUGW5djx3BveweTsufEw+Mqxuki0XVFR//8=;
+	s=arc-20240116; t=1741628352; c=relaxed/simple;
+	bh=iGQiihMkQOQy3tyUlKQEnNP5YmUCrHKsU8dKEoZs0+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmnU7wENFObMIEYFGx0OvwebOdjkk1Rtf4SBC97dQ3/itu8Z9eWV1qPq/yXYGfp7fU4fua8fGtxPE+A20PQtGaW1lRVLSyspQFgwaZUrotXspAgGSnUpKmd7UWnadDQijc5/94k2OY/cVHL6Pc87zsy3eEhdcyG30IhpfYF5vjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lh9NLLiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6E2C4CEE5;
-	Mon, 10 Mar 2025 17:17:55 +0000 (UTC)
+	 MIME-Version; b=Y5937qsWOW9Qr/yNCK5i75SJgX7S63qAlQ7a/Z01UWki4sAlm8cJKcQli1BexWChA1EhszSSJasL9Nh8uJN11hHnkbjE1DNDkgPW66yUMGpPX4EI2RHIeNh8w1W7wxx2qUOghE7wbnoDUi7vm9yk1m7N/zAVnIiibtmSuY2D3uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tr7z/fEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91931C4CEE5;
+	Mon, 10 Mar 2025 17:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627075;
-	bh=9av+5EhlNUGW5djx3BveweTsufEw+Mqxuki0XVFR//8=;
+	s=korg; t=1741628352;
+	bh=iGQiihMkQOQy3tyUlKQEnNP5YmUCrHKsU8dKEoZs0+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lh9NLLiHmeBJwcG8PZdQ39zMHd0H/yDZv3h3G6ZQ8cQB8uNoQvVOUYFC2hYKeVBTH
-	 MsmRPjptfzEq8cszYAhxqRHUST7nFUirG1m47snIQ1FE3FLSIbAipBfsHNYACFItLL
-	 SYIZX3i3BhtllVjguKXeZRz8HF7aMtHA+zCgJf9U=
+	b=Tr7z/fEFEKczjMSyhjc6gI0eQdd8hZC8mUh9usrwKIV/lD2tSCy0JoGD+g7GfB2gf
+	 sEiUCYjfr1+k3FoT00h55EmIQqOblJGr9Cl7prYrhhSVzsAeNMUZbcO0AcZbpQOCR7
+	 sOZYdhL+78wmq2H84TkZOnr0QzeK7fWccIRcwXm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Qiu-ji Chen <chenqiuji666@gmail.com>
-Subject: [PATCH 6.13 180/207] cdx: Fix possible UAF error in driver_override_show()
+	syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 029/109] wifi: nl80211: reject cooked mode if it is set along with other flags
 Date: Mon, 10 Mar 2025 18:06:13 +0100
-Message-ID: <20250310170454.945161679@linuxfoundation.org>
+Message-ID: <20250310170428.710853099@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-commit 91d44c1afc61a2fec37a9c7a3485368309391e0b upstream.
+commit 49f27f29446a5bfe633dd2cc0cfebd48a1a5e77f upstream.
 
-Fixed a possible UAF problem in driver_override_show() in drivers/cdx/cdx.c
+It is possible to set both MONITOR_FLAG_COOK_FRAMES and MONITOR_FLAG_ACTIVE
+flags simultaneously on the same monitor interface from the userspace. This
+causes a sub-interface to be created with no IEEE80211_SDATA_IN_DRIVER bit
+set because the monitor interface is in the cooked state and it takes
+precedence over all other states. When the interface is then being deleted
+the kernel calls WARN_ONCE() from check_sdata_in_driver() because of missing
+that bit.
 
-This function driver_override_show() is part of DEVICE_ATTR_RW, which
-includes both driver_override_show() and driver_override_store().
-These functions can be executed concurrently in sysfs.
+Fix this by rejecting MONITOR_FLAG_COOK_FRAMES if it is set along with
+other flags.
 
-The driver_override_store() function uses driver_set_override() to
-update the driver_override value, and driver_set_override() internally
-locks the device (device_lock(dev)). If driver_override_show() reads
-cdx_dev->driver_override without locking, it could potentially access
-a freed pointer if driver_override_store() frees the string
-concurrently. This could lead to printing a kernel address, which is a
-security risk since DEVICE_ATTR can be read by all users.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Additionally, a similar pattern is used in drivers/amba/bus.c, as well
-as many other bus drivers, where device_lock() is taken in the show
-function, and it has been working without issues.
-
-This potential bug was detected by our experimental static analysis
-tool, which analyzes locking APIs and paired functions to identify
-data races and atomicity violations.
-
-Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Link: https://lore.kernel.org/r/20250118070833.27201-1-chenqiuji666@gmail.com
+Fixes: 66f7ac50ed7c ("nl80211: Add monitor interface configuration flags")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Link: https://patch.msgid.link/20250131152657.5606-1-v.shevtsov@mt-integration.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cdx/cdx.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/cdx/cdx.c
-+++ b/drivers/cdx/cdx.c
-@@ -470,8 +470,12 @@ static ssize_t driver_override_show(stru
- 				    struct device_attribute *attr, char *buf)
- {
- 	struct cdx_device *cdx_dev = to_cdx_device(dev);
-+	ssize_t len;
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4050,6 +4050,11 @@ static int parse_monitor_flags(struct nl
+ 		if (flags[flag])
+ 			*mntrflags |= (1<<flag);
  
--	return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
++	/* cooked monitor mode is incompatible with other modes */
++	if (*mntrflags & MONITOR_FLAG_COOK_FRAMES &&
++	    *mntrflags != MONITOR_FLAG_COOK_FRAMES)
++		return -EOPNOTSUPP;
++
+ 	*mntrflags |= MONITOR_FLAG_CHANGED;
  
+ 	return 0;
 
 
 
