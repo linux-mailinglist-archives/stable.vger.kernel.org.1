@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2754FA59F62
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB524A59D00
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41AF164FA8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51C67188DFCA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B22918DB24;
-	Mon, 10 Mar 2025 17:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AFC231A3F;
+	Mon, 10 Mar 2025 17:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1/dOQ/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMHRdDM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A0622D7A6;
-	Mon, 10 Mar 2025 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E3917CA12;
+	Mon, 10 Mar 2025 17:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628392; cv=none; b=ZBFk6yYElTH+0BQWX+lMuaWtI5K1kEzGQuZSnqDhusRwQHuCNTQNGZ1UDMNxIbDbqWVK6+1DuLEvzS3BT1qvI0RsIgjBNRfYubnW1/UoxiNBFt5xOcqoWOKLpsjqjYTwyiOYKFQpN9MZ4ZweuHqQt781Z5dAbhQ3uVzKj2EYZtQ=
+	t=1741627021; cv=none; b=Lwqng6Mz4OB/8MHC0kQi6z5w7WwteT1NbNrr5db2ix7zDJ15qyBZ+prXdfrjpiXVIxxD235/QH61x/Y7KY4qyIJUuMNE81uT2nBZ0RQvb88lfytiT7M2PcSD3Tjw3f9323f0vt2c7BTiBJoXutF29zU2j0efMCdeYEWQ1Z1V1PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628392; c=relaxed/simple;
-	bh=Pm8usQuwaxp0UIuwk/7VvznT4mKrgiuc/thYfOVudSI=;
+	s=arc-20240116; t=1741627021; c=relaxed/simple;
+	bh=QshtwsELMhizDpbE72k0/82ViF3W0zon5X6sCHtbN4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A49sbH9xNgjpbGH8ihlq/4juWgmsrlhuDKodNK38jRp1BeoJ5stDtfGG6Fhye3h4/Fht1ISpoo3x6QEoVZLWVKf6IdxQNcEydAvD0zCuRK8RTz/rLnnDTUki4CnC8e42Gm92MdbT2nERXVWBE1XI2ICuBSkFN+84g2ekHlbaKrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1/dOQ/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA557C4CEE5;
-	Mon, 10 Mar 2025 17:39:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WMBX4ty/R/0K7l68S8wAo1VBAhRDyykaISFHf3XxLISBbE6rFov0tlNU9B/BIHMHEG/aYP8G1FpBzqPJtbuNa2Q5YdDorKcsVngyrGN2CIf5f36kUZAmSfOsQgZ4VtDy/5zBqjky8pELBHVqN3LwiNwLmojn0xZGmHW1G2z55Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMHRdDM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E752C4CEE5;
+	Mon, 10 Mar 2025 17:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628392;
-	bh=Pm8usQuwaxp0UIuwk/7VvznT4mKrgiuc/thYfOVudSI=;
+	s=korg; t=1741627020;
+	bh=QshtwsELMhizDpbE72k0/82ViF3W0zon5X6sCHtbN4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1/dOQ/27ZZTMZ8/pPYzCkSiV7qFFaKNisQIyWr3lg29R1XawXofQse1uANLLLWQN
-	 KZk4WIDKi/EmnewWJduFOxVvgEc/xrvKedICCxnP49Pkqz7MW/wRUtb5jVcEbfJ+Vz
-	 c9aqWfWdltnEgVP3Nt4ojQIHigCe8gCnam1mDIbw=
+	b=LMHRdDM/d1hglO8cdBGQb5bjOe5F+UpxxFHkEf+1jO6mY0l4Pd1+uS4g1oWEHycvI
+	 1dgV9rGGEeKnvzP9tfMaMTBFd46vvaYTNh6zeXZUZCpH1yyTqjQo8W7Qx3syXKsuNb
+	 IcE7HckMIVXcS4MxZL17LlJ0dPKIbjL1trRZ/weM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/109] net: gso: fix ownership in __udp_gso_segment
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	subhajit.ghosh@tweaklogic.com,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.13 193/207] iio: light: apds9306: fix max_scale_nano values
 Date: Mon, 10 Mar 2025 18:06:26 +0100
-Message-ID: <20250310170429.232215441@linuxfoundation.org>
+Message-ID: <20250310170455.453844799@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
+commit a96d3e2beca0e51c8444d0a3b6b3ec484c4c5a8f upstream.
 
-In __udp_gso_segment the skb destructor is removed before segmenting the
-skb but the socket reference is kept as-is. This is an issue if the
-original skb is later orphaned as we can hit the following bug:
+The two provided max_scale_nano values must be multiplied by 100 and 10
+respectively to achieve nano units. According to the comments:
 
-  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
-  RIP: 0010:ip_rcv_core+0x8b2/0xca0
-  Call Trace:
-   ip_rcv+0xab/0x6e0
-   __netif_receive_skb_one_core+0x168/0x1b0
-   process_backlog+0x384/0x1100
-   __napi_poll.constprop.0+0xa1/0x370
-   net_rx_action+0x925/0xe50
+Max scale for apds0306 is 16.326432 → the fractional part is 0.326432,
+which is 326432000 in NANO. The current value is 3264320.
 
-The above can happen following a sequence of events when using
-OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
-OVS_ACTION_ATTR_OUTPUT action:
+Max scale for apds0306-065 is 14.09721 → the fractional part is 0.09712,
+which is 97120000 in NANO. The current value is 9712000.
 
-1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
-   goes through queue_gso_packets and then __udp_gso_segment, where its
-   destructor is removed.
-2. The segments' data are copied and sent to userspace.
-3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
-   same original skb is sent to its path.
-4. If it later hits skb_orphan, we hit the bug.
+Update max_scale_nano initialization to use the right NANO fractional
+parts.
 
-Fix this by also removing the reference to the socket in
-__udp_gso_segment.
-
-Fixes: ad405857b174 ("udp: better wmem accounting on gso")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 620d1e6c7a3f ("iio: light: Add support for APDS9306 Light Sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Tested-by: subhajit.ghosh@tweaklogic.com
+Link: https://patch.msgid.link/20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/iio/light/apds9306.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 1456c8c2b8dbd..2f1f038b0dc1b 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -314,13 +314,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+--- a/drivers/iio/light/apds9306.c
++++ b/drivers/iio/light/apds9306.c
+@@ -108,11 +108,11 @@ static const struct part_id_gts_multipli
+ 	{
+ 		.part_id = 0xB1,
+ 		.max_scale_int = 16,
+-		.max_scale_nano = 3264320,
++		.max_scale_nano = 326432000,
+ 	}, {
+ 		.part_id = 0xB3,
+ 		.max_scale_int = 14,
+-		.max_scale_nano = 9712000,
++		.max_scale_nano = 97120000,
+ 	},
+ };
  
- 	/* clear destructor to avoid skb_segment assigning it to tail */
- 	copy_dtor = gso_skb->destructor == sock_wfree;
--	if (copy_dtor)
-+	if (copy_dtor) {
- 		gso_skb->destructor = NULL;
-+		gso_skb->sk = NULL;
-+	}
- 
- 	segs = skb_segment(gso_skb, features);
- 	if (IS_ERR_OR_NULL(segs)) {
--		if (copy_dtor)
-+		if (copy_dtor) {
- 			gso_skb->destructor = sock_wfree;
-+			gso_skb->sk = sk;
-+		}
- 		return segs;
- 	}
- 
--- 
-2.39.5
-
 
 
 
