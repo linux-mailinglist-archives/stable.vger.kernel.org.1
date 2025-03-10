@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99427A59E4C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D1AA59D37
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29F537A8882
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3726D3A4E80
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC39D230BF0;
-	Mon, 10 Mar 2025 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A7B1A315A;
+	Mon, 10 Mar 2025 17:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NN0KXGBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lh9NLLiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645271B4F0F;
-	Mon, 10 Mar 2025 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29CE2F28;
+	Mon, 10 Mar 2025 17:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627795; cv=none; b=FiomvoeKSLJrijlqhTM6PdfC4deKj1LNB4V5AVB7seA4NUAMw0XvDtIYab+4Xu16hk2kyxuYp9/GY/LZBGwhRREDJ8sdcJQhAUCvJ1J00O/0lq0aqcmveYCJfPQvWqqd06Twu5IAZzBaqyC1w8leaLFKc65H2rB5DZCNUaKAJa8=
+	t=1741627075; cv=none; b=Jevqdl5oFDRc5lMV8D80s0RYPaa0XZUvl7COyMEhYhPhuXW8ham4yrTGVzvGoJCbTmI0WS0bGXN+ZfdXFG3KMU0U4AJQ4RSd23FKozpRpVcT2/yfj0Bg0sVfnZkkdbJc/7Ogy3kbHj7Hs0pXi+yOdDw0MkA3mODSAzP2vXmCFp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627795; c=relaxed/simple;
-	bh=42PiivzYQa/Bytc9oT1indm+yCu+WI3nKE9qgLyo7e4=;
+	s=arc-20240116; t=1741627075; c=relaxed/simple;
+	bh=9av+5EhlNUGW5djx3BveweTsufEw+Mqxuki0XVFR//8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZEBA47F6WAt+5iMGioK9lahe0r0VA2r8+HzQtgPsi9U5zaBUJCiFOKsADF4bCO7wlOURVsc5yPrCEt84OicwWew4XAD5QI+jj07WFDOJTHxtJdf8oykaxkTha+2c2OKles7OpRqiL4q/AaVEzpUTchUzpE+hUN4aRT99bHstj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NN0KXGBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7B8C4CEE5;
-	Mon, 10 Mar 2025 17:29:54 +0000 (UTC)
+	 MIME-Version; b=cmnU7wENFObMIEYFGx0OvwebOdjkk1Rtf4SBC97dQ3/itu8Z9eWV1qPq/yXYGfp7fU4fua8fGtxPE+A20PQtGaW1lRVLSyspQFgwaZUrotXspAgGSnUpKmd7UWnadDQijc5/94k2OY/cVHL6Pc87zsy3eEhdcyG30IhpfYF5vjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lh9NLLiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6E2C4CEE5;
+	Mon, 10 Mar 2025 17:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627795;
-	bh=42PiivzYQa/Bytc9oT1indm+yCu+WI3nKE9qgLyo7e4=;
+	s=korg; t=1741627075;
+	bh=9av+5EhlNUGW5djx3BveweTsufEw+Mqxuki0XVFR//8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NN0KXGBqKqkXM416i2Ys1RaN2ZxBoDdAAYFv6qiMkClAwxtYR2CTUVHq6L8e18hfH
-	 hFtFSM+79SRT8RrLG70X+/LX5dDRL1EBAzo1qkHQLKsKkshMPAaN5NdmaWVxZwNDrk
-	 tzMD95jBScmfULPYxKwJGD2uApnKE4KoTHe54QU8=
+	b=lh9NLLiHmeBJwcG8PZdQ39zMHd0H/yDZv3h3G6ZQ8cQB8uNoQvVOUYFC2hYKeVBTH
+	 MsmRPjptfzEq8cszYAhxqRHUST7nFUirG1m47snIQ1FE3FLSIbAipBfsHNYACFItLL
+	 SYIZX3i3BhtllVjguKXeZRz8HF7aMtHA+zCgJf9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.12 220/269] usb: gadget: Set self-powered based on MaxPower and bmAttributes
+	Qiu-ji Chen <chenqiuji666@gmail.com>
+Subject: [PATCH 6.13 180/207] cdx: Fix possible UAF error in driver_override_show()
 Date: Mon, 10 Mar 2025 18:06:13 +0100
-Message-ID: <20250310170506.452904956@linuxfoundation.org>
+Message-ID: <20250310170454.945161679@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 40e89ff5750fca2c1d6da93f98a2038716bba86c upstream.
+commit 91d44c1afc61a2fec37a9c7a3485368309391e0b upstream.
 
-Currently the USB gadget will be set as bus-powered based solely
-on whether its bMaxPower is greater than 100mA, but this may miss
-devices that may legitimately draw less than 100mA but still want
-to report as bus-powered. Similarly during suspend & resume, USB
-gadget is incorrectly marked as bus/self powered without checking
-the bmAttributes field. Fix these by configuring the USB gadget
-as self or bus powered based on bmAttributes, and explicitly set
-it as bus-powered if it draws more than 100mA.
+Fixed a possible UAF problem in driver_override_show() in drivers/cdx/cdx.c
 
+This function driver_override_show() is part of DEVICE_ATTR_RW, which
+includes both driver_override_show() and driver_override_store().
+These functions can be executed concurrently in sysfs.
+
+The driver_override_store() function uses driver_set_override() to
+update the driver_override value, and driver_set_override() internally
+locks the device (device_lock(dev)). If driver_override_show() reads
+cdx_dev->driver_override without locking, it could potentially access
+a freed pointer if driver_override_store() frees the string
+concurrently. This could lead to printing a kernel address, which is a
+security risk since DEVICE_ATTR can be read by all users.
+
+Additionally, a similar pattern is used in drivers/amba/bus.c, as well
+as many other bus drivers, where device_lock() is taken in the show
+function, and it has been working without issues.
+
+This potential bug was detected by our experimental static analysis
+tool, which analyzes locking APIs and paired functions to identify
+data races and atomicity violations.
+
+Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
 Cc: stable <stable@kernel.org>
-Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250217120328.2446639-1-prashanth.k@oss.qualcomm.com
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Link: https://lore.kernel.org/r/20250118070833.27201-1-chenqiuji666@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/cdx/cdx.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1050,10 +1050,11 @@ static int set_config(struct usb_composi
- 	else
- 		usb_gadget_set_remote_wakeup(gadget, 0);
- done:
--	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
--		usb_gadget_set_selfpowered(gadget);
--	else
-+	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 		usb_gadget_clear_selfpowered(gadget);
-+	else
-+		usb_gadget_set_selfpowered(gadget);
+--- a/drivers/cdx/cdx.c
++++ b/drivers/cdx/cdx.c
+@@ -470,8 +470,12 @@ static ssize_t driver_override_show(stru
+ 				    struct device_attribute *attr, char *buf)
+ {
+ 	struct cdx_device *cdx_dev = to_cdx_device(dev);
++	ssize_t len;
  
- 	usb_gadget_vbus_draw(gadget, power);
- 	if (result >= 0 && cdev->delayed_status)
-@@ -2615,7 +2616,9 @@ void composite_suspend(struct usb_gadget
- 
- 	cdev->suspended = 1;
- 
--	usb_gadget_set_selfpowered(gadget);
-+	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+		usb_gadget_set_selfpowered(gadget);
-+
- 	usb_gadget_vbus_draw(gadget, 2);
+-	return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
++	device_unlock(dev);
++	return len;
  }
+ static DEVICE_ATTR_RW(driver_override);
  
-@@ -2649,8 +2652,11 @@ void composite_resume(struct usb_gadget
- 		else
- 			maxpower = min(maxpower, 900U);
- 
--		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW)
-+		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 			usb_gadget_clear_selfpowered(gadget);
-+		else
-+			usb_gadget_set_selfpowered(gadget);
- 
- 		usb_gadget_vbus_draw(gadget, maxpower);
- 	} else {
 
 
 
