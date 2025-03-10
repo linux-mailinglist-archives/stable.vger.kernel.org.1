@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288ECA5A1D9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B77F5A59D98
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADB6118897FE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74BF23A5A32
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE29223237F;
-	Mon, 10 Mar 2025 18:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E2822D799;
+	Mon, 10 Mar 2025 17:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oL3QSDhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqJDbeqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E232206BD;
-	Mon, 10 Mar 2025 18:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC88226D0B;
+	Mon, 10 Mar 2025 17:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630432; cv=none; b=UwiAEtieKGIWcDLOKR9VHKlhAETIWDLv3oGu7xbkDCM2RA3tk7OFfWEjE3XheT0ykMC0mA8VSSLv2t+iYBiYkPv/X37fKUz3Eesb835VZR7HdTV2ZassIPgfKZV7THqA197bL2P3eZegwYmsnJE82t+zZsTcw8/PqntJKIeTSNs=
+	t=1741627344; cv=none; b=rxtVG09ZsIx7u8WfVFZgKSWu9iSjKMcndhAnBx2Y6Qz2ym8YkZO8YxJJ8nzyTa0hVMZ1smvhUtx3/ikQ7JcB7PkS2oHqMS44gIGWZ9N+GQro76NoXy6GZMcOISOIUfQ3hjXVinK4j/LIcqsNckolI68u96UBzb1EhStgECMecLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630432; c=relaxed/simple;
-	bh=ZgA4kHqqJVMGJhUT6P3VfVs6iMWIM/OM+ieLoXF01dY=;
+	s=arc-20240116; t=1741627344; c=relaxed/simple;
+	bh=4y3Avk8pqJQqMO4MAwjPq5p7/xSqgJfyUrGEn0WhHbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=No6gPumPiMZokjHrAx9YI3qjPpSvBMSihlqwXJ5tEdYJUJFmMuniqsK2x2RmcHoiYSh+1FgH2hOIfoBJk5zCXj8G2f2xlKWo5ng1hidlu97oE2RY9bnbSbAjAkW3waS+UVWJ+Z00FYFH89yOe8b9aprg1BfKZ21N3MgSIbDvL68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oL3QSDhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D909C4CEE5;
-	Mon, 10 Mar 2025 18:13:52 +0000 (UTC)
+	 MIME-Version; b=PVrS2aNu7SMD1iWEJdFzh+YSO05Jzy6cQ2/1r9A+dDxwsPmYXWQ/c6F2bx1xzAYpb/h4mhx6qK1vqnxhGWISF09kpAbix6SMD8X8qNou3NcLvJfY90QkKtCUs7y/E/RlE4b80RVa58200/mh1ZHLROhUsM26stzJxJN5yuvAV54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqJDbeqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33F9C4CEE5;
+	Mon, 10 Mar 2025 17:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630432;
-	bh=ZgA4kHqqJVMGJhUT6P3VfVs6iMWIM/OM+ieLoXF01dY=;
+	s=korg; t=1741627344;
+	bh=4y3Avk8pqJQqMO4MAwjPq5p7/xSqgJfyUrGEn0WhHbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oL3QSDhNFocaYsXzI9K/l8v6AtJrXWOmevBTNb3JUhNNvyd3lQBV9KIK3eOsQYsl9
-	 pi78+t8fYrnNrV/2GWkEP8Qm9NygvuBEdqaO0BsVcYL464eEQbq4xeEJO9za4pd4uA
-	 ISdTfvMCLxYQwCL1y6z1ISFav18QVCrzXdmrzpUQ=
+	b=DqJDbeqNLh/T/CkGoKia0dNvfDZGFbwngElf0VRohMnteZEXM0o0aG6FGr27Cqpxn
+	 Eigu37rKxUxxKdscfbSckBPwqDv6iv49gSSJ1rlSlXQCpNthRhEuqBCMHZ2Tj7O8qj
+	 gVI+nQ4kUVZ6u9O7dJf/TWVkW3G9fdNrwYgjdc2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zetao <lizetao1@huawei.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 404/620] neighbour: delete redundant judgment statements
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 097/269] drm/amd/pm: always allow ih interrupt from fw
 Date: Mon, 10 Mar 2025 18:04:10 +0100
-Message-ID: <20250310170601.538889738@linuxfoundation.org>
+Message-ID: <20250310170501.578274509@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-[ Upstream commit c25bdd2ac8cf7da70a226f1a66cdce7af15ff86f ]
+commit da552bda987420e877500fdd90bd0172e3bf412b upstream.
 
-The initial value of err is -ENOBUFS, and err is guaranteed to be
-less than 0 before all goto errout. Therefore, on the error path
-of errout, there is no need to repeatedly judge that err is less than 0,
-and delete redundant judgments to make the code more concise.
+always allow ih interrupt from fw on smu v14 based on
+the interface requirement
 
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: becbd5850c03 ("neighbour: use RCU protection in __neigh_notify()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a3199eba46c54324193607d9114a1e321292d7a1)
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c |   12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 6f3bd1a4ec8ca..7fffbe0424342 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3387,8 +3387,7 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
- 	return;
- errout:
--	if (err < 0)
--		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-+	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
+@@ -1883,16 +1883,6 @@ static int smu_v14_0_allow_ih_interrupt(
+ 				    NULL);
  }
  
- void neigh_app_ns(struct neighbour *n)
--- 
-2.39.5
-
+-static int smu_v14_0_process_pending_interrupt(struct smu_context *smu)
+-{
+-	int ret = 0;
+-
+-	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_ACDC_BIT))
+-		ret = smu_v14_0_allow_ih_interrupt(smu);
+-
+-	return ret;
+-}
+-
+ int smu_v14_0_enable_thermal_alert(struct smu_context *smu)
+ {
+ 	int ret = 0;
+@@ -1904,7 +1894,7 @@ int smu_v14_0_enable_thermal_alert(struc
+ 	if (ret)
+ 		return ret;
+ 
+-	return smu_v14_0_process_pending_interrupt(smu);
++	return smu_v14_0_allow_ih_interrupt(smu);
+ }
+ 
+ int smu_v14_0_disable_thermal_alert(struct smu_context *smu)
 
 
 
