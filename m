@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-123086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FCDA5A2CE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F91A5A2D8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FC013A40CB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2631894588
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E157233D99;
-	Mon, 10 Mar 2025 18:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76444233729;
+	Mon, 10 Mar 2025 18:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeEUb7Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfWTP2Zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F010E23372C;
-	Mon, 10 Mar 2025 18:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD8E22576A;
+	Mon, 10 Mar 2025 18:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741631003; cv=none; b=BIZQ+RnRr5okiifUwqsvtDduNmCRSvet/5nCn/OZUrp2NnRp7PUCm+aeGGlg0xcmGkIbob6BN1F9flkKKJTM6paRpo5NpUIYXUWTA42TAtArrWtb/x9FLmuVclu3zCNLUWfmhr4/HvkfL1a4ZRYHF2byr5fDE285oWOmEqpCAd4=
+	t=1741631035; cv=none; b=Il4Ugn9RsqKlRfOL1HLCuFs21iUsSJOXgyYvWv9b0RP2z0VoSGpItacgGRIIq3jblwe6Ec5Xtvu3kPWLtcDl/xkx7Vi74ibyG7JknFGurpgb/HYnYGi4cfk4gW6EXayYH2GaoC2I+HOYPmJV2AoV0heu4m4bDjojN7ysjUD4WDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741631003; c=relaxed/simple;
-	bh=6ZgjavyLKTDwi0lncptbW8mEenyWZ+GLhvMOJI0ZoMo=;
+	s=arc-20240116; t=1741631035; c=relaxed/simple;
+	bh=gRYv8h5x0PQVtcEXtrHWHE5TdwK1vDyaaIeM1DkUpdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgcIunF6uu2Ktyed/oRbgDRprmz/ay5BhnS4dHzH1YTtOE80XNMhbdPZ+7Dzd8xECpx3d+5DfyEniOda6a5Ucabw67Fy8rM1ce2p86rPwbSiHJJ7calT96P4pS+1ojHcFfNpA1miAXld9XKjDtRSrNFpaBnfTLd0OPJadt89jXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeEUb7Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149D5C4CEE5;
-	Mon, 10 Mar 2025 18:23:21 +0000 (UTC)
+	 MIME-Version; b=VE7D99bUQGz4IIz/1pvbqQ3JDbu5G618IKgaD4JS75VPWr3P2iEJslTEykdEpKlG4xOllCE+1pmAgEvX58JXNRgb7hAJ+Tl6dXsCypLjUetzPsMbbINjZyUq4UU+/qMFK6skzOu1ljfdt4iEhu1SUP+DCW37sSDJ13X856E9iTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfWTP2Zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BD8C4CEE5;
+	Mon, 10 Mar 2025 18:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741631002;
-	bh=6ZgjavyLKTDwi0lncptbW8mEenyWZ+GLhvMOJI0ZoMo=;
+	s=korg; t=1741631035;
+	bh=gRYv8h5x0PQVtcEXtrHWHE5TdwK1vDyaaIeM1DkUpdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZeEUb7LodZ+wwxiF+FmWUkZXWLOgDJd7L+iyG7nZfybcilZUyXsEBiOorH7oKrXNH
-	 3Sj4yfAKRdx6Dm5p7sxUNEVuHQw5FdhvFZt8T/UMjHtY2Sg5AZy28o/3SDqVCRwkMA
-	 SqzCxltdFZjarPDwnefaReNly4xh96z0tdCqE7Hg=
+	b=lfWTP2Zr27W+V/FxONDMN+NF4+IbMt/LY/pex1Zr0SiP0LhAKWi6xJ3eIJhXU4nax
+	 4PO44Q3bECC5nt+tuVZFUeCg/Ny7b71KCRaxg4RCrwOz8PaldXt+GcOBIREfIllDfa
+	 6hnGR/CyQH/kkSZ5mAz9R/W9NUC7slVr1RmBYO2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 5.15 591/620] usb: gadget: Set self-powered based on MaxPower and bmAttributes
-Date: Mon, 10 Mar 2025 18:07:17 +0100
-Message-ID: <20250310170608.859028054@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 5.15 592/620] usb: gadget: Fix setting self-powered state on suspend
+Date: Mon, 10 Mar 2025 18:07:18 +0100
+Message-ID: <20250310170608.900724689@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -65,69 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit 40e89ff5750fca2c1d6da93f98a2038716bba86c upstream.
+commit c783e1258f29c5caac9eea0aea6b172870f1baf8 upstream.
 
-Currently the USB gadget will be set as bus-powered based solely
-on whether its bMaxPower is greater than 100mA, but this may miss
-devices that may legitimately draw less than 100mA but still want
-to report as bus-powered. Similarly during suspend & resume, USB
-gadget is incorrectly marked as bus/self powered without checking
-the bmAttributes field. Fix these by configuring the USB gadget
-as self or bus powered based on bmAttributes, and explicitly set
-it as bus-powered if it draws more than 100mA.
+cdev->config might be NULL, so check it before dereferencing.
 
-Cc: stable <stable@kernel.org>
-Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250217120328.2446639-1-prashanth.k@oss.qualcomm.com
+CC: stable <stable@kernel.org>
+Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/composite.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 --- a/drivers/usb/gadget/composite.c
 +++ b/drivers/usb/gadget/composite.c
-@@ -1004,10 +1004,11 @@ static int set_config(struct usb_composi
- 	else
- 		usb_gadget_set_remote_wakeup(gadget, 0);
- done:
--	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
--		usb_gadget_set_selfpowered(gadget);
--	else
-+	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 		usb_gadget_clear_selfpowered(gadget);
-+	else
-+		usb_gadget_set_selfpowered(gadget);
- 
- 	usb_gadget_vbus_draw(gadget, power);
- 	if (result >= 0 && cdev->delayed_status)
-@@ -2475,7 +2476,9 @@ void composite_suspend(struct usb_gadget
+@@ -2476,7 +2476,8 @@ void composite_suspend(struct usb_gadget
  
  	cdev->suspended = 1;
  
--	usb_gadget_set_selfpowered(gadget);
-+	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+		usb_gadget_set_selfpowered(gadget);
-+
+-	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
++	if (cdev->config &&
++	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
+ 		usb_gadget_set_selfpowered(gadget);
+ 
  	usb_gadget_vbus_draw(gadget, 2);
- }
- 
-@@ -2504,8 +2507,11 @@ void composite_resume(struct usb_gadget
- 		else
- 			maxpower = min(maxpower, 900U);
- 
--		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW)
-+		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 			usb_gadget_clear_selfpowered(gadget);
-+		else
-+			usb_gadget_set_selfpowered(gadget);
- 
- 		usb_gadget_vbus_draw(gadget, maxpower);
- 	}
 
 
 
