@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106A7A5A188
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7577A59D90
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 941477A7737
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8AFA3A5D46
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF65F22D4FD;
-	Mon, 10 Mar 2025 18:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62AA230BFC;
+	Mon, 10 Mar 2025 17:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVYY1fYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl7dVIkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E06717A2E8;
-	Mon, 10 Mar 2025 18:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3A3230BF5;
+	Mon, 10 Mar 2025 17:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629727; cv=none; b=f2b9txJImez5BDiILH810T56oqBYqfp7HGzvqzQIILrLC60zm/w3xwT16KZQHYck6APwsjBl1NNLNAINw4jEtwCMUrL4/K9hYycC/iQb5zXOAzzBjSaKLXTshbYtXTqlQZHNcj6LhDNDOucxhGbS2N+SlU1tbFlhtWpHjDScUoE=
+	t=1741627318; cv=none; b=PAyeVyPf/sGgRaFIBuLRqPvWBj1WrqyfhKk+RQcZbYXiNORMQ5xo9rhMzS+/9wqiTYf4ISGMyMXsXKRifnbO9A0TOqwCcUcYhAHIQMM+IQW8WvuOKy+SHDEWFEFp/x4dzHDQScD/05xed51rOkWnygG4XyC6EbiPEb732UralFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629727; c=relaxed/simple;
-	bh=V+mKPAjzViWrgkOicHikaFK8/NTfYV4aMGOqAe4QGLM=;
+	s=arc-20240116; t=1741627318; c=relaxed/simple;
+	bh=+gWd/+sUPGzJQuPi+7kT646sj9j/xNrcwDsXY6NmFvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9GnVC4+bxecJzh2P3VzJk/OMo+MSyubCfjPXqGWDjP+AjRea70ELMxP9y0S9yVnJn+TlCqIFis/0Wb6IFabj6y3YMdO0OszxZ9Fdtnlid6NfzX/+WrwR8G8pcFcxKjyEjXBoffhTH5DAiEKm3MZtG6Z+r/7VWc6sGc65eIuk+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVYY1fYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1795EC4CEE5;
-	Mon, 10 Mar 2025 18:02:06 +0000 (UTC)
+	 MIME-Version; b=CB6jm5itue/oQnfrz43KFssCJ1F8BVqOG539NnNbG7cupb+Gkg5t4pcvgAfnx6YPjMHDHmYXdcOc8Os7nJdyUrRgbHtqHRykHpCKMuyIFiwMEEKEWDgPS0F8HFZ1TxqJtesqJ9NjOFBgw1l+xS8yIRJ66/F5H9YBNt4ld8HJd3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl7dVIkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BE1C4CEEC;
+	Mon, 10 Mar 2025 17:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629727;
-	bh=V+mKPAjzViWrgkOicHikaFK8/NTfYV4aMGOqAe4QGLM=;
+	s=korg; t=1741627318;
+	bh=+gWd/+sUPGzJQuPi+7kT646sj9j/xNrcwDsXY6NmFvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVYY1fYJT9GA5j3II6uZLHL8+ldFvUYBaen6m/4e7xnb0KZY7GdUiaaAOsBLRRBF/
-	 DkCYHsNSJ/Uv2HMqFbGdHXK/nYBKY397xKugnKpNKxCbVEDvkNjsaJjXS9aYPpmW90
-	 Qw+E3sd3IgtAqPkNYTdlnuSAoVCPZN9vB32nbnUg=
+	b=bl7dVIkQIc2JHcj0sLiHAQOLvv8Gb5SmX0Vpz56IOsBjjlzq2J9B2auknB8gKNt6r
+	 5tzaoD85k6ZTkNZ59NceVuWs0Zr3BVMGiFA3Ixb1kz+MetOGDazhqII7AEDSE6gU4m
+	 NFo455W+JBjU/LVnDa3e+hR9Lx8JDtFxNq2bg29g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 395/620] ipv4: use RCU protection in rt_is_expired()
-Date: Mon, 10 Mar 2025 18:04:01 +0100
-Message-ID: <20250310170601.183464959@linuxfoundation.org>
+	syzbot+4cb9fad083898f54c517@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 089/269] ALSA: seq: Avoid module auto-load handling at event delivery
+Date: Mon, 10 Mar 2025 18:04:02 +0100
+Message-ID: <20250310170501.262997120@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit dd205fcc33d92d54eee4d7f21bb073af9bd5ce2b ]
+commit c9ce148ea753bef66686460fa3cec6641cdfbb9f upstream.
 
-rt_is_expired() must use RCU protection to make
-sure the net structure it reads does not disappear.
+snd_seq_client_use_ptr() is supposed to return the snd_seq_client
+object for the given client ID, and it tries to handle the module
+auto-loading when no matching object is found.  Although the module
+handling is performed only conditionally with "!in_interrupt()", this
+condition may be fragile, e.g. when the code is called from the ALSA
+timer callback where the spinlock is temporarily disabled while the
+irq is disabled.  Then his doesn't fit well and spews the error about
+sleep from invalid context, as complained recently by syzbot.
 
-Fixes: e84f84f27647 ("netns: place rt_genid into struct net")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also, in general, handling the module-loading at each time if no
+matching object is found is really an overkill.  It can be still
+useful when performed at the top-level ioctl or proc reads, but it
+shouldn't be done at event delivery at all.
+
+For addressing the issues above, this patch disables the module
+handling in snd_seq_client_use_ptr() in normal cases like event
+deliveries, but allow only in limited and safe situations.
+A new function client_load_and_use_ptr() is used for the cases where
+the module loading can be done safely, instead.
+
+Reported-by: syzbot+4cb9fad083898f54c517@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/67c272e5.050a0220.dc10f.0159.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250301114530.8975-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/core/seq/seq_clientmgr.c |   46 ++++++++++++++++++++++++++---------------
+ 1 file changed, 30 insertions(+), 16 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 3522801885787..3ad78bbd6261b 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -400,7 +400,13 @@ static inline int ip_rt_proc_init(void)
- 
- static inline bool rt_is_expired(const struct rtable *rth)
- {
--	return rth->rt_genid != rt_genid_ipv4(dev_net(rth->dst.dev));
-+	bool res;
-+
-+	rcu_read_lock();
-+	res = rth->rt_genid != rt_genid_ipv4(dev_net_rcu(rth->dst.dev));
-+	rcu_read_unlock();
-+
-+	return res;
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -106,7 +106,7 @@ static struct snd_seq_client *clientptr(
+ 	return clienttab[clientid];
  }
  
- void rt_cache_flush(struct net *net)
--- 
-2.39.5
-
+-struct snd_seq_client *snd_seq_client_use_ptr(int clientid)
++static struct snd_seq_client *client_use_ptr(int clientid, bool load_module)
+ {
+ 	unsigned long flags;
+ 	struct snd_seq_client *client;
+@@ -126,7 +126,7 @@ struct snd_seq_client *snd_seq_client_us
+ 	}
+ 	spin_unlock_irqrestore(&clients_lock, flags);
+ #ifdef CONFIG_MODULES
+-	if (!in_interrupt()) {
++	if (load_module) {
+ 		static DECLARE_BITMAP(client_requested, SNDRV_SEQ_GLOBAL_CLIENTS);
+ 		static DECLARE_BITMAP(card_requested, SNDRV_CARDS);
+ 
+@@ -168,6 +168,20 @@ struct snd_seq_client *snd_seq_client_us
+ 	return client;
+ }
+ 
++/* get snd_seq_client object for the given id quickly */
++struct snd_seq_client *snd_seq_client_use_ptr(int clientid)
++{
++	return client_use_ptr(clientid, false);
++}
++
++/* get snd_seq_client object for the given id;
++ * if not found, retry after loading the modules
++ */
++static struct snd_seq_client *client_load_and_use_ptr(int clientid)
++{
++	return client_use_ptr(clientid, IS_ENABLED(CONFIG_MODULES));
++}
++
+ /* Take refcount and perform ioctl_mutex lock on the given client;
+  * used only for OSS sequencer
+  * Unlock via snd_seq_client_ioctl_unlock() below
+@@ -176,7 +190,7 @@ bool snd_seq_client_ioctl_lock(int clien
+ {
+ 	struct snd_seq_client *client;
+ 
+-	client = snd_seq_client_use_ptr(clientid);
++	client = client_load_and_use_ptr(clientid);
+ 	if (!client)
+ 		return false;
+ 	mutex_lock(&client->ioctl_mutex);
+@@ -1195,7 +1209,7 @@ static int snd_seq_ioctl_running_mode(st
+ 	int err = 0;
+ 
+ 	/* requested client number */
+-	cptr = snd_seq_client_use_ptr(info->client);
++	cptr = client_load_and_use_ptr(info->client);
+ 	if (cptr == NULL)
+ 		return -ENOENT;		/* don't change !!! */
+ 
+@@ -1257,7 +1271,7 @@ static int snd_seq_ioctl_get_client_info
+ 	struct snd_seq_client *cptr;
+ 
+ 	/* requested client number */
+-	cptr = snd_seq_client_use_ptr(client_info->client);
++	cptr = client_load_and_use_ptr(client_info->client);
+ 	if (cptr == NULL)
+ 		return -ENOENT;		/* don't change !!! */
+ 
+@@ -1392,7 +1406,7 @@ static int snd_seq_ioctl_get_port_info(s
+ 	struct snd_seq_client *cptr;
+ 	struct snd_seq_client_port *port;
+ 
+-	cptr = snd_seq_client_use_ptr(info->addr.client);
++	cptr = client_load_and_use_ptr(info->addr.client);
+ 	if (cptr == NULL)
+ 		return -ENXIO;
+ 
+@@ -1496,10 +1510,10 @@ static int snd_seq_ioctl_subscribe_port(
+ 	struct snd_seq_client *receiver = NULL, *sender = NULL;
+ 	struct snd_seq_client_port *sport = NULL, *dport = NULL;
+ 
+-	receiver = snd_seq_client_use_ptr(subs->dest.client);
++	receiver = client_load_and_use_ptr(subs->dest.client);
+ 	if (!receiver)
+ 		goto __end;
+-	sender = snd_seq_client_use_ptr(subs->sender.client);
++	sender = client_load_and_use_ptr(subs->sender.client);
+ 	if (!sender)
+ 		goto __end;
+ 	sport = snd_seq_port_use_ptr(sender, subs->sender.port);
+@@ -1864,7 +1878,7 @@ static int snd_seq_ioctl_get_client_pool
+ 	struct snd_seq_client_pool *info = arg;
+ 	struct snd_seq_client *cptr;
+ 
+-	cptr = snd_seq_client_use_ptr(info->client);
++	cptr = client_load_and_use_ptr(info->client);
+ 	if (cptr == NULL)
+ 		return -ENOENT;
+ 	memset(info, 0, sizeof(*info));
+@@ -1968,7 +1982,7 @@ static int snd_seq_ioctl_get_subscriptio
+ 	struct snd_seq_client_port *sport = NULL;
+ 
+ 	result = -EINVAL;
+-	sender = snd_seq_client_use_ptr(subs->sender.client);
++	sender = client_load_and_use_ptr(subs->sender.client);
+ 	if (!sender)
+ 		goto __end;
+ 	sport = snd_seq_port_use_ptr(sender, subs->sender.port);
+@@ -1999,7 +2013,7 @@ static int snd_seq_ioctl_query_subs(stru
+ 	struct list_head *p;
+ 	int i;
+ 
+-	cptr = snd_seq_client_use_ptr(subs->root.client);
++	cptr = client_load_and_use_ptr(subs->root.client);
+ 	if (!cptr)
+ 		goto __end;
+ 	port = snd_seq_port_use_ptr(cptr, subs->root.port);
+@@ -2066,7 +2080,7 @@ static int snd_seq_ioctl_query_next_clie
+ 	if (info->client < 0)
+ 		info->client = 0;
+ 	for (; info->client < SNDRV_SEQ_MAX_CLIENTS; info->client++) {
+-		cptr = snd_seq_client_use_ptr(info->client);
++		cptr = client_load_and_use_ptr(info->client);
+ 		if (cptr)
+ 			break; /* found */
+ 	}
+@@ -2089,7 +2103,7 @@ static int snd_seq_ioctl_query_next_port
+ 	struct snd_seq_client *cptr;
+ 	struct snd_seq_client_port *port = NULL;
+ 
+-	cptr = snd_seq_client_use_ptr(info->addr.client);
++	cptr = client_load_and_use_ptr(info->addr.client);
+ 	if (cptr == NULL)
+ 		return -ENXIO;
+ 
+@@ -2186,7 +2200,7 @@ static int snd_seq_ioctl_client_ump_info
+ 		size = sizeof(struct snd_ump_endpoint_info);
+ 	else
+ 		size = sizeof(struct snd_ump_block_info);
+-	cptr = snd_seq_client_use_ptr(client);
++	cptr = client_load_and_use_ptr(client);
+ 	if (!cptr)
+ 		return -ENOENT;
+ 
+@@ -2458,7 +2472,7 @@ int snd_seq_kernel_client_enqueue(int cl
+ 	if (check_event_type_and_length(ev))
+ 		return -EINVAL;
+ 
+-	cptr = snd_seq_client_use_ptr(client);
++	cptr = client_load_and_use_ptr(client);
+ 	if (cptr == NULL)
+ 		return -EINVAL;
+ 	
+@@ -2690,7 +2704,7 @@ void snd_seq_info_clients_read(struct sn
+ 
+ 	/* list the client table */
+ 	for (c = 0; c < SNDRV_SEQ_MAX_CLIENTS; c++) {
+-		client = snd_seq_client_use_ptr(c);
++		client = client_load_and_use_ptr(c);
+ 		if (client == NULL)
+ 			continue;
+ 		if (client->type == NO_CLIENT) {
 
 
 
