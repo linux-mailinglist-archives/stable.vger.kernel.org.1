@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416C7A59E72
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7936CA59D1A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 085FD3A972C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03B3B7A132D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B351622FF40;
-	Mon, 10 Mar 2025 17:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F07F22154C;
+	Mon, 10 Mar 2025 17:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQYOR8lZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5Z43X6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7046422CBF1;
-	Mon, 10 Mar 2025 17:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E48017C225;
+	Mon, 10 Mar 2025 17:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627784; cv=none; b=Fkh+Rqcq6S2SUTb0vbltSpAW7j4YDU9m3HloJb5MwJLnBAr5u+gu/Ct29jcFpET3DISbJ+eQo8a1FUPcKyuHvl6l9s7KkPQWYBrR7S5xPqEflLape/eqDmStuLAnlwXOHp9siX5j0/v6rsSgULT80Dl7sLd88ARAtFZ8J3vxdeI=
+	t=1741627084; cv=none; b=O0ONj7LLZwn7PQdg1XSbr0WZ/dF6Ch3cqwfaJPsIvc8ebnKL0dMcwl8DtpOUlaK1v20dCCfhV4C3gEP6udgvYfW6/PQaSoBb3/HPXriAntioYsjtenkp8vwc4ngOAHIYY/pt1+u8BAEKOUwkyt1d/S3MX4wgfOWSpnP02mqUjLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627784; c=relaxed/simple;
-	bh=FDLDK0uBwFq/fPU0CVaRpf+wFmubTUbyWqrXCDOGJeA=;
+	s=arc-20240116; t=1741627084; c=relaxed/simple;
+	bh=J2RWL60gbpUklli1LjNU+hTbjMuSTGXqCevg+ZLv/1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpMp9yDC9g33xZM9lA1UvN0tb6bndZiRCZ5ewxt+Q94gIjT0M33bFsqT3PkKE1S8NSNAvpFxoGWl7bfDUp2liBtQ2Yyp9d+zWBDMzJwEmyFOvX5+dXZVI90EMaCqYDy/HI816g6Rq7gPttkGhy2TiDChYxN6AQy9GWvHVxHhnf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQYOR8lZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC02C4CEF0;
-	Mon, 10 Mar 2025 17:29:43 +0000 (UTC)
+	 MIME-Version; b=cfRPs/U5zFCU7KRzHHLnRYmNMlyMw8k9Hspea0jiVfFEoQDO0tJMQrpsJu4zjto+xjQh3O7L74a/DxjxK52ug3TQVoAjAl+iNvNd9HaUxgXyN/Z6OisEN1PIUAOrJbZXtnjEnI5nS/qFZ57D8Cz0izom6zryLRrPakyPiLk5SFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5Z43X6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4BBC4CEED;
+	Mon, 10 Mar 2025 17:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627783;
-	bh=FDLDK0uBwFq/fPU0CVaRpf+wFmubTUbyWqrXCDOGJeA=;
+	s=korg; t=1741627083;
+	bh=J2RWL60gbpUklli1LjNU+hTbjMuSTGXqCevg+ZLv/1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQYOR8lZXBk7bvN8OV2bC35WsQRJD8ZAhZbCm1kOFnMiFP/CZSjsdfZjHp95Nv77D
-	 oKyjjavrZ46eS7er4l/pm1P7S4j6M0/xMElmcSxTNowC3frrC4ULLDV6mhRDvujbU2
-	 Yc1YRFW/8jeWq3y1C8+ffZKOPXUt7FgKWMLhG5yA=
+	b=z5Z43X6RuchOjIr6RT6xauO2QslRP1kOYiYaIUJEWgWkSfiUW9U/ULW+49zeY9um4
+	 ti2itzuFdLMW/qa/oyfgHiFhK6I9vkpK/vO56WaKxiZpjd/V/+d3GOh9gcFV7PlNl1
+	 zioA+h5dnBlwV8dWlue0kf6oaZ3mI3oJ4Prs8mRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.12 247/269] eeprom: digsy_mtc: Make GPIO lookup table match the device
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.13 207/207] nvme-tcp: Fix a C2HTermReq error message
 Date: Mon, 10 Mar 2025 18:06:40 +0100
-Message-ID: <20250310170507.640243017@linuxfoundation.org>
+Message-ID: <20250310170456.004222276@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit 038ef0754aae76f79b147b8867f9250e6a976872 upstream.
+commit afb41b08c44e5386f2f52fa859010ac4afd2b66f upstream.
 
-The dev_id value in the GPIO lookup table must match to
-the device instance name, which in this case is combined
-of name and platform device ID, i.e. "spi_gpio.1". But
-the table assumed that there was no platform device ID
-defined, which is wrong. Fix the dev_id value accordingly.
+In H2CTermReq, a FES with value 0x05 means "R2T Limit Exceeded"; but
+in C2HTermReq the same value has a different meaning (Data Transfer Limit
+Exceeded).
 
-Fixes: 9b00bc7b901f ("spi: spi-gpio: Rewrite to use GPIO descriptors")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206220311.1554075-1-andriy.shevchenko@linux.intel.com
+Fixes: 84e009042d0f ("nvme-tcp: add basic support for the C2HTermReq PDU")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/eeprom/digsy_mtc_eeprom.c |    2 +-
+ drivers/nvme/host/tcp.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/eeprom/digsy_mtc_eeprom.c
-+++ b/drivers/misc/eeprom/digsy_mtc_eeprom.c
-@@ -50,7 +50,7 @@ static struct platform_device digsy_mtc_
- };
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -788,7 +788,7 @@ static void nvme_tcp_handle_c2h_term(str
+ 		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
+ 		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
+ 		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
+-		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
++		[NVME_TCP_FES_DATA_LIMIT_EXCEEDED] = "Data Transfer Limit Exceeded",
+ 		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
+ 	};
  
- static struct gpiod_lookup_table eeprom_spi_gpiod_table = {
--	.dev_id         = "spi_gpio",
-+	.dev_id         = "spi_gpio.1",
- 	.table          = {
- 		GPIO_LOOKUP("gpio@b00", GPIO_EEPROM_CLK,
- 			    "sck", GPIO_ACTIVE_HIGH),
 
 
 
