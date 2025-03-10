@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-121916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5D7A59D04
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75B0A59ED7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C372016F8D1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 491021886F84
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B90B22D786;
-	Mon, 10 Mar 2025 17:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C597B23026D;
+	Mon, 10 Mar 2025 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJ7UJiO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMHDdeSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD93B21E087;
-	Mon, 10 Mar 2025 17:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820CC2253FE;
+	Mon, 10 Mar 2025 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627000; cv=none; b=k7HYNU+3Zk3xmfbGLFIvah92i1g3OUjWaNFfT6efZ7n79xqljRDNHm/KQzf9jFaXT7CgJUTAK6x19OdLXFgqw+88yN+2oj3uYy7s9s+R/VsittqiRxsLxDffS75jx/ieriviI1wk9dMNKm2W5ZIl6FuSbJsjm2EMnPNQmAOaC/0=
+	t=1741628098; cv=none; b=VFSLymuUzoEoI6Wh7QxtPCTmiWnO2YtnCqrYOlqddkEI1dvon2t7GHo4lWmb9QzvgHRTVEzJdFU8zj9K6zSvwyZhcnW3sm7j8J5vhUgW2JJjIkjbmXXSYTo9C/Yysz1mAcKRh/wKE8bWL9+kvjF59D0cVcFgP84nxgAjLPM4ZpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627000; c=relaxed/simple;
-	bh=xGia79jGQqqBFnJIvjrMymqc5aCuJTIvJAQ6G8/8AqY=;
+	s=arc-20240116; t=1741628098; c=relaxed/simple;
+	bh=BTxQj10hPQB8mBmTh2usX7MPAR9PiD8GKviL1sPOsJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lD8JqfFAHlu3ROVKh3nSEiM3tHzKjrSZMel4Ht/U0427g2GyYwaJkS3TNw1/ObiqHlRR8LdKdR3lus9r+blOFGIf4ptJ34MDFAcPx1ctvSEmyvwGkDHKm/BlLfmk12w5nT5xxoj4Kv7ijFxhphlpkYEALegDu+ycCANC44r/wOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJ7UJiO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462F2C4CEE5;
-	Mon, 10 Mar 2025 17:16:40 +0000 (UTC)
+	 MIME-Version; b=Ac8jS4p7JiXD/8Ngj98jJtnuilc4sKmWG+3T8sYet9EL7EW4rdsrlUVLE6OEzjxzA+9FmuzpRxF5BYMhTAokzloSvY5WdyDllI+XmKbB14pk1+LZ8vveRalDZLNcAi30kVqdKy+d/ZgKl11rGMeWE91oIVSFa2qgvcoU7bT1Bd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMHDdeSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044A3C4CEE5;
+	Mon, 10 Mar 2025 17:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627000;
-	bh=xGia79jGQqqBFnJIvjrMymqc5aCuJTIvJAQ6G8/8AqY=;
+	s=korg; t=1741628098;
+	bh=BTxQj10hPQB8mBmTh2usX7MPAR9PiD8GKviL1sPOsJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJ7UJiO908FsBuj+eagJPtGvQ/wFdQIPznDy9e0TIe8xnjdQQT2AUMXKDQ2a17hYY
-	 m6ttQo5kcLpe5qz5VL1Jk34lO8QGgrmctO8VIW3l8J2D4BA13xcQQBg3jTl9REdpPM
-	 LeX4hvqlG0Tfxpin9nQ+5mXTajDrXxwJb1USPJjc=
+	b=HMHDdeSfH/5vwmWC6KcSYQSARFMFKvsJa9O9lAB/Fxv81dj0IOVJb5JrchPYubdLc
+	 bdFY3f4UqjWDMffKn2TRyoJIVGHUZGZJyfJofwFb0KhE/0U2uck1DaJFxuwxk5B3BX
+	 ZKQNXTReFNdlJ1LAjJmSv4oMYPATg0ILBvs5xoVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.13 187/207] drivers: core: fix device leak in __fw_devlink_relax_cycles()
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/145] ublk: set_params: properly check if parameters can be applied
 Date: Mon, 10 Mar 2025 18:06:20 +0100
-Message-ID: <20250310170455.217006123@linuxfoundation.org>
+Message-ID: <20250310170438.230518380@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-commit 78eb41f518f414378643ab022241df2a9dcd008b upstream.
+[ Upstream commit 5ac60242b0173be83709603ebaf27a473f16c4e4 ]
 
-Commit bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize
-cycle detection logic") introduced a new struct device *con_dev and a
-get_dev_from_fwnode() call to get it, but without adding a corresponding
-put_device().
+The parameters set by the set_params call are only applied to the block
+device in the start_dev call. So if a device has already been started, a
+subsequently issued set_params on that device will not have the desired
+effect, and should return an error. There is an existing check for this
+- set_params fails on devices in the LIVE state. But this check is not
+sufficient to cover the recovery case. In this case, the device will be
+in the QUIESCED or FAIL_IO states, so set_params will succeed. But this
+success is misleading, because the parameters will not be applied, since
+the device has already been started (by a previous ublk server). The bit
+UB_STATE_USED is set on completion of the start_dev; use it to detect
+and fail set_params commands which arrive too late to be applied (after
+start_dev).
 
-Closes: https://lore.kernel.org/all/20241204124826.2e055091@booty/
-Fixes: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
-Cc: stable@vger.kernel.org
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://lore.kernel.org/r/20250213-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-8cd3b03e6a3f@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Fixes: 0aa73170eba5 ("ublk_drv: add SET_PARAMS/GET_PARAMS control command")
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250304-set_params-v1-1-17b5e0887606@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/ublk_drv.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2079,6 +2079,7 @@ static bool __fw_devlink_relax_cycles(st
- out:
- 	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
- 	put_device(sup_dev);
-+	put_device(con_dev);
- 	put_device(par_dev);
- 	return ret;
- }
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 1105e8adf7f96..95095500f93af 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -2599,9 +2599,12 @@ static int ublk_ctrl_set_params(struct ublk_device *ub,
+ 	if (ph.len > sizeof(struct ublk_params))
+ 		ph.len = sizeof(struct ublk_params);
+ 
+-	/* parameters can only be changed when device isn't live */
+ 	mutex_lock(&ub->mutex);
+-	if (ub->dev_info.state == UBLK_S_DEV_LIVE) {
++	if (test_bit(UB_STATE_USED, &ub->state)) {
++		/*
++		 * Parameters can only be changed when device hasn't
++		 * been started yet
++		 */
+ 		ret = -EACCES;
+ 	} else if (copy_from_user(&ub->params, argp, ph.len)) {
+ 		ret = -EFAULT;
+-- 
+2.39.5
+
 
 
 
