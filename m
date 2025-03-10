@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E45DA59E51
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD915A5A25C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2496E3AAFFB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0B3D18921F2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9D922D4C3;
-	Mon, 10 Mar 2025 17:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0DD22576A;
+	Mon, 10 Mar 2025 18:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKEGaJDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jt54MJDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB932F28;
-	Mon, 10 Mar 2025 17:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE411BBBFD;
+	Mon, 10 Mar 2025 18:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627689; cv=none; b=skYYZmw6pwQE8XMHAH/3lnHs/7eUYJnDbUWBxKqeFIsh02bJQi9pt1mv4rManfUCMo0dHs6Cs30dY/K0zMe64Y/AlABuuah85v4dfaSYv5SJuvX01rAnoC/9teFU9dPMg8i7jGhVxuvQgsS3jjtu/iu+T0O6mSFtzaua95GRzWo=
+	t=1741630755; cv=none; b=jGuJc+EqDYueGHv8DPty17KwuykFU1EYeo5DaMjR7+6wEcjS+MVQQTZaX5scgitBhhmlqlVX55p5IqNwLF605v2Q1NONZoUkWFD/2cI1SyORmGosh8QrRAENy8Iz1s3JU7wLfyOENUT5TnTPDouPQbMQGSVuJbxLTjW/aZRHnXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627689; c=relaxed/simple;
-	bh=yQtIqnj5fwGkfxPLG7PvdOltm8eN3whRD8k2VP0cneE=;
+	s=arc-20240116; t=1741630755; c=relaxed/simple;
+	bh=7hwlGyBUt2DNgHJIjO1UbUfqNDh7WjrsDe6CwBqnVnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcAQFcgN6axp1Rh6wE4g+kYO6CqjWUzwztHxoYhWXQ97m14u1FHPPtGNLvaXUUimfsup65kSlVRMQjJ8i8GahhsKwGuTN0ENXPIy/uO2TPalwTBo4bsg9gFsXCVZc7hWRemG3CmLQ28XaHg5VFV5mmP/PGWEDDN2SxbpiSyq9yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKEGaJDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51412C4CEE5;
-	Mon, 10 Mar 2025 17:28:08 +0000 (UTC)
+	 MIME-Version; b=JwX9+OOPRrFnipo+k2n5LCj0OUyEXltlQQW/r52oHRDVYUZZaGhfcB13ia/+H0eMtQ7ZV1nZkVUN4PrGO7eFpqMxLlKUvtfq//DmuQzaCbORARMqrZsdcNsMpdA9ojN3dUu99L3BWCoRLPZUrlZkaIwt2Ii8EPBlv3QYgNDS1NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jt54MJDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D42C4CEEC;
+	Mon, 10 Mar 2025 18:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627688;
-	bh=yQtIqnj5fwGkfxPLG7PvdOltm8eN3whRD8k2VP0cneE=;
+	s=korg; t=1741630755;
+	bh=7hwlGyBUt2DNgHJIjO1UbUfqNDh7WjrsDe6CwBqnVnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKEGaJDr0Y+/cJX2FVvIOAcPkw0eEWgKxLRUJx7r6X9vucnzOpBu53VBkYXLq67yh
-	 o7Ry482yHFD5ah0hek8m8cjK+mhUUWIex3mUUew9kohkPLDzTgSc2kNAitWZHbri3o
-	 tJX2hbjYZxucI38holcR4DC1+g2Sz3SZ39NG1AIE=
+	b=jt54MJDsp4bWdJEn0RoxPao6fN6HKeEGJ+JpusO2nQcs7DOXmvKpeRbq8n6HVgMvM
+	 I8EOBRG52qutzZH66ZPywrpOX8MWMUcz3qHnK500+N3As1J6oJ/Vw6kgGoqYuXAotk
+	 eRkO6r03i7FELzascOwl48KGNuewXV/Z4fA9AHvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/269] HID: hid-steam: Fix use-after-free when detaching device
+Subject: [PATCH 5.15 491/620] scsi: core: Clear driver private data when retrying request
 Date: Mon, 10 Mar 2025 18:05:37 +0100
-Message-ID: <20250310170505.042220051@linuxfoundation.org>
+Message-ID: <20250310170604.952192298@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit e53fc232a65f7488ab75d03a5b95f06aaada7262 ]
+[ Upstream commit dce5c4afd035e8090a26e5d776b1682c0e649683 ]
 
-When a hid-steam device is removed it must clean up the client_hdev used for
-intercepting hidraw access. This can lead to scheduling deferred work to
-reattach the input device. Though the cleanup cancels the deferred work, this
-was done before the client_hdev itself is cleaned up, so it gets rescheduled.
-This patch fixes the ordering to make sure the deferred work is properly
-canceled.
+After commit 1bad6c4a57ef ("scsi: zero per-cmd private driver data for each
+MQ I/O"), the xen-scsifront/virtio_scsi/snic drivers all removed code that
+explicitly zeroed driver-private command data.
 
-Reported-by: syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com
-Fixes: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+In combination with commit 464a00c9e0ad ("scsi: core: Kill DRIVER_SENSE"),
+after virtio_scsi performs a capacity expansion, the first request will
+return a unit attention to indicate that the capacity has changed. And then
+the original command is retried. As driver-private command data was not
+cleared, the request would return UA again and eventually time out and fail.
+
+Zero driver-private command data when a request is retried.
+
+Fixes: f7de50da1479 ("scsi: xen-scsifront: Remove code that zeroes driver-private command data")
+Fixes: c2bb87318baa ("scsi: virtio_scsi: Remove code that zeroes driver-private command data")
+Fixes: c3006a926468 ("scsi: snic: Remove code that zeroes driver-private command data")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250217021628.2929248-1-yebin@huaweicloud.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-steam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/scsi_lib.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 7b35966898785..19b7bb0c3d7f9 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -1327,11 +1327,11 @@ static void steam_remove(struct hid_device *hdev)
- 		return;
- 	}
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index ddaffaea2c32c..c8be41d8eb247 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1532,13 +1532,6 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
+ 	if (in_flight)
+ 		__set_bit(SCMD_STATE_INFLIGHT, &cmd->state);
  
-+	hid_destroy_device(steam->client_hdev);
- 	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->work_connect);
- 	cancel_work_sync(&steam->rumble_work);
- 	cancel_work_sync(&steam->unregister_work);
--	hid_destroy_device(steam->client_hdev);
- 	steam->client_hdev = NULL;
- 	steam->client_opened = 0;
- 	if (steam->quirks & STEAM_QUIRK_WIRELESS) {
+-	/*
+-	 * Only clear the driver-private command data if the LLD does not supply
+-	 * a function to initialize that data.
+-	 */
+-	if (!shost->hostt->init_cmd_priv)
+-		memset(cmd + 1, 0, shost->hostt->cmd_size);
+-
+ 	cmd->prot_op = SCSI_PROT_NORMAL;
+ 	if (blk_rq_bytes(req))
+ 		cmd->sc_data_direction = rq_dma_dir(req);
+@@ -1675,6 +1668,13 @@ static blk_status_t scsi_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	if (!scsi_host_queue_ready(q, shost, sdev, cmd))
+ 		goto out_dec_target_busy;
+ 
++	/*
++	 * Only clear the driver-private command data if the LLD does not supply
++	 * a function to initialize that data.
++	 */
++	if (shost->hostt->cmd_size && !shost->hostt->init_cmd_priv)
++		memset(cmd + 1, 0, shost->hostt->cmd_size);
++
+ 	if (!(req->rq_flags & RQF_DONTPREP)) {
+ 		ret = scsi_prepare_cmd(req);
+ 		if (ret != BLK_STS_OK)
 -- 
 2.39.5
 
