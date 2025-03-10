@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-121822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BD0A59CA1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186EBA59DDB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B49253A5582
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9137D3A8535
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A5A23373C;
-	Mon, 10 Mar 2025 17:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44D0233D7B;
+	Mon, 10 Mar 2025 17:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NagLaJ7w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aT+1vjH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C63233737;
-	Mon, 10 Mar 2025 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901E5233703;
+	Mon, 10 Mar 2025 17:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626729; cv=none; b=biRobMzMYY84Jg3E/a+mqZS/mGqx3e+h9rEaIMHLUI7CbHuF5mvLG4y4Ewz+pvo45P87i9Mm0CGsat1tS9sO0C91Edapc/3rJVOSW2wh5EJyGc5kbuxgYHno4xxScAnWhRRES9kIK7uEMPzuXsLiU5x/DmU/ABxl95V63JrFGpE=
+	t=1741627449; cv=none; b=Ad+W8j3L0tni29CQuW/gifR0i0gsC8QV24QL6RoM2d/1YuvpRASVEfvF2DHeaDkRbrgeno1w2Z/m+cTR+eX6ILbB6BVS7XRvugNCOaoyIkfnT7IDoWs1EF3P6qjk3Btr/ANIlYYA5TUvj0pYmkBfR/iaVkivxIJ2b6cOhfo45IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626729; c=relaxed/simple;
-	bh=K/Z8CFzkjX5E5KrljE/lBKAHnPI9xsrgBa/i/hTpVyw=;
+	s=arc-20240116; t=1741627449; c=relaxed/simple;
+	bh=TE+B16w/JHhzVa2u4j2BAkL954vKgTZYLdBgvza3r18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izUXd1uq8/KCtBXLk0UfiC/NZJrqyqwFskLv2xOyEpqB5qxHLfjcZLk6HEb0Z23eQMND/yPoe2v2wjDvFw1SDwNsCOw4sskmjDZP8v0WvwIgcb9R7M9CkGSGygwdBXipjo8kUCbfVtO27bQ15zP+7PbIy7oa7GOvD+83ukYW66E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NagLaJ7w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1256C4CEED;
-	Mon, 10 Mar 2025 17:12:08 +0000 (UTC)
+	 MIME-Version; b=PTiiO0UDqx3IDa7DXQ7xyBWHFHCPmgMmR503OoTxA9DqOCMcMjLLEMY8m1KYDxbGAG+Rmccy23tvgMDFH6q8Nzr87xWGoFlkRo6Ncp9bAc7ttzltGXdMlzGSpUz+pBqS0L79SAo2E4W7nj1SRPFs2jg+8XlQbpsfa5qrhtaHs2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aT+1vjH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011C1C4CEF0;
+	Mon, 10 Mar 2025 17:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626729;
-	bh=K/Z8CFzkjX5E5KrljE/lBKAHnPI9xsrgBa/i/hTpVyw=;
+	s=korg; t=1741627449;
+	bh=TE+B16w/JHhzVa2u4j2BAkL954vKgTZYLdBgvza3r18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NagLaJ7wIkR3eJRxF26Zkq4B+dmlNqCTsaSuhA4TlJ8eY2wE7PpHggWTysiMJl/UX
-	 SLH0Ej0BfBn4hGrJEs1Lnoiv4g0isFvlfehWsMX9KZtOkcvm/WnpD1d6blZpIp3NIB
-	 whlGsJHSDSrP4cXdsyLh9HmMmYxHx4gG9K0/6SDQ=
+	b=aT+1vjH95oBUGul9Gp5pY/pCYL2aRK9DrbQfRLXHQRhbJRO39egPdCd3EKvJ18OnO
+	 DOO5O+Ev0GLrCZPzNtHGbYidPMkJIwZtQurjIF94YobbguHszGxuNJGh6at2xYcHT9
+	 Xoq1feHuPN0rV++QR/TWeJKaRGzm/LZOP53jRcBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Stapelberg <michael@stapelberg.ch>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 092/207] coredump: Only sort VMAs when core_sort_vma sysctl is set
+	Suren Baghdasaryan <surenb@google.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Barry Song <21cnbao@gmail.com>,
+	Barry Song <v-songbaohua@oppo.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Jann Horn <jannh@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 132/269] userfaultfd: do not block on locking a large folio with raised refcount
 Date: Mon, 10 Mar 2025 18:04:45 +0100
-Message-ID: <20250310170451.418624345@linuxfoundation.org>
+Message-ID: <20250310170502.985226760@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +73,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
 
-[ Upstream commit 39ec9eaaa165d297d008d1fa385748430bd18e4d ]
+commit 37b338eed10581784e854d4262da05c8d960c748 upstream.
 
-The sorting of VMAs by size in commit 7d442a33bfe8 ("binfmt_elf: Dump
-smaller VMAs first in ELF cores") breaks elfutils[1]. Instead, sort
-based on the setting of the new sysctl, core_sort_vma, which defaults
-to 0, no sorting.
+Lokesh recently raised an issue about UFFDIO_MOVE getting into a deadlock
+state when it goes into split_folio() with raised folio refcount.
+split_folio() expects the reference count to be exactly mapcount +
+num_pages_in_folio + 1 (see can_split_folio()) and fails with EAGAIN
+otherwise.
 
-Reported-by: Michael Stapelberg <michael@stapelberg.ch>
-Closes: https://lore.kernel.org/all/20250218085407.61126-1-michael@stapelberg.de/ [1]
-Fixes: 7d442a33bfe8 ("binfmt_elf: Dump smaller VMAs first in ELF cores")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If multiple processes are trying to move the same large folio, they raise
+the refcount (all tasks succeed in that) then one of them succeeds in
+locking the folio, while others will block in folio_lock() while keeping
+the refcount raised.  The winner of this race will proceed with calling
+split_folio() and will fail returning EAGAIN to the caller and unlocking
+the folio.  The next competing process will get the folio locked and will
+go through the same flow.  In the meantime the original winner will be
+retried and will block in folio_lock(), getting into the queue of waiting
+processes only to repeat the same path.  All this results in a livelock.
+
+An easy fix would be to avoid waiting for the folio lock while holding
+folio refcount, similar to madvise_free_huge_pmd() where folio lock is
+acquired before raising the folio refcount.  Since we lock and take a
+refcount of the folio while holding the PTE lock, changing the order of
+these operations should not break anything.
+
+Modify move_pages_pte() to try locking the folio first and if that fails
+and the folio is large then return EAGAIN without touching the folio
+refcount.  If the folio is single-page then split_folio() is not called,
+so we don't have this issue.  Lokesh has a reproducer [1] and I verified
+that this change fixes the issue.
+
+[1] https://github.com/lokeshgidra/uffd_move_ioctl_deadlock
+
+[akpm@linux-foundation.org: reflow comment to 80 cols, s/end/end up/]
+Link: https://lkml.kernel.org/r/20250226185510.2732648-2-surenb@google.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: Lokesh Gidra <lokeshgidra@google.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Barry Song <v-songbaohua@oppo.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/sysctl/kernel.rst | 11 +++++++++++
- fs/coredump.c                               | 15 +++++++++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ mm/userfaultfd.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
-index b2b36d0c3094d..7a85b6eb884ea 100644
---- a/Documentation/admin-guide/sysctl/kernel.rst
-+++ b/Documentation/admin-guide/sysctl/kernel.rst
-@@ -212,6 +212,17 @@ pid>/``).
- This value defaults to 0.
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1215,6 +1215,7 @@ retry:
+ 		 */
+ 		if (!src_folio) {
+ 			struct folio *folio;
++			bool locked;
  
+ 			/*
+ 			 * Pin the page while holding the lock to be sure the
+@@ -1234,12 +1235,26 @@ retry:
+ 				goto out;
+ 			}
  
-+core_sort_vma
-+=============
++			locked = folio_trylock(folio);
++			/*
++			 * We avoid waiting for folio lock with a raised
++			 * refcount for large folios because extra refcounts
++			 * will result in split_folio() failing later and
++			 * retrying.  If multiple tasks are trying to move a
++			 * large folio we can end up livelocking.
++			 */
++			if (!locked && folio_test_large(folio)) {
++				spin_unlock(src_ptl);
++				err = -EAGAIN;
++				goto out;
++			}
 +
-+The default coredump writes VMAs in address order. By setting
-+``core_sort_vma`` to 1, VMAs will be written from smallest size
-+to largest size. This is known to break at least elfutils, but
-+can be handy when dealing with very large (and truncated)
-+coredumps where the more useful debugging details are included
-+in the smaller VMAs.
-+
-+
- core_uses_pid
- =============
+ 			folio_get(folio);
+ 			src_folio = folio;
+ 			src_folio_pte = orig_src_pte;
+ 			spin_unlock(src_ptl);
  
-diff --git a/fs/coredump.c b/fs/coredump.c
-index d48edb37bc35c..c6f4c745e1bd8 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -63,6 +63,7 @@ static void free_vma_snapshot(struct coredump_params *cprm);
- 
- static int core_uses_pid;
- static unsigned int core_pipe_limit;
-+static unsigned int core_sort_vma;
- static char core_pattern[CORENAME_MAX_SIZE] = "core";
- static int core_name_size = CORENAME_MAX_SIZE;
- unsigned int core_file_note_size_limit = CORE_FILE_NOTE_SIZE_DEFAULT;
-@@ -1026,6 +1027,15 @@ static struct ctl_table coredump_sysctls[] = {
- 		.extra1		= (unsigned int *)&core_file_note_size_min,
- 		.extra2		= (unsigned int *)&core_file_note_size_max,
- 	},
-+	{
-+		.procname	= "core_sort_vma",
-+		.data		= &core_sort_vma,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_douintvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_ONE,
-+	},
- };
- 
- static int __init init_fs_coredump_sysctls(void)
-@@ -1256,8 +1266,9 @@ static bool dump_vma_snapshot(struct coredump_params *cprm)
- 		cprm->vma_data_size += m->dump_size;
- 	}
- 
--	sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
--		cmp_vma_size, NULL);
-+	if (core_sort_vma)
-+		sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
-+		     cmp_vma_size, NULL);
- 
- 	return true;
- }
--- 
-2.39.5
-
+-			if (!folio_trylock(src_folio)) {
++			if (!locked) {
+ 				pte_unmap(&orig_src_pte);
+ 				pte_unmap(&orig_dst_pte);
+ 				src_pte = dst_pte = NULL;
 
 
 
