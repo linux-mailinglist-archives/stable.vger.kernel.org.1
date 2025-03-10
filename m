@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-121856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B824FA59CC6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B6A59DFF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D01243A4433
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6669816FE31
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17250230D1E;
-	Mon, 10 Mar 2025 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13142232395;
+	Mon, 10 Mar 2025 17:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4m4ovLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK6za9hp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A2322B8D0;
-	Mon, 10 Mar 2025 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1F42309B6;
+	Mon, 10 Mar 2025 17:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626827; cv=none; b=DZ4WP5MM0AuLg/9pNkcmb4dmarDOR/M5ykeoUJBQCHlX6V4EzPppGLAthk9OH4YlBmJyoRUF7ZlMYrdP2N6qo2JPp5q6TKE+TWNohT5mc8C47FfQMRNXcrvnpZnEDtrihLoJNCMAIfjVdmUe/koM9aU5V2jcpXyGTboPnhhiRp8=
+	t=1741627546; cv=none; b=RFDmYpdBzG2sMi94B1QVCh632I5f/gjyQz65fJu5+mVq0FtiTP5yOfmBSSUDQJIiVZzHY+dPe1GWVJcySL0JHulR3/p36wvSFhG4tbDqPw1wXaBEqDNHqDH9DYuPVUVPYHpi/slKJ2MnIRbHNXgewQ5v113nPu2beeHPp4NywBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626827; c=relaxed/simple;
-	bh=3HSskLKaCss0320X0mPegXaLY6wGRIMjdGsid41yxxs=;
+	s=arc-20240116; t=1741627546; c=relaxed/simple;
+	bh=qBpjzcuRzyvFz2XK5RtbTmTemVMQ3EqiDQ4XVz9nxMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPDcShxegZVjtRqshgoLsla1erOm+Qk+rsDokbj6RGtjVPQ8LoYm3arcLXBer5W1xWzES0/bAVDJOvMx7+VYki2FGjB7f8fQ8J4YrSWM7+SUgse32N27s59uH2Z2eGzRI9UB5NUcKwWTdLA2DuGTo8pecuge5kosub+ucWLR8/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4m4ovLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5734FC4CEE5;
-	Mon, 10 Mar 2025 17:13:47 +0000 (UTC)
+	 MIME-Version; b=YOCC+Gzx/j5J0GU5FUxfub4DAca38vJESlUR8HQxuz54PHyc5BT3Rsg6k6fwBnvpZcgOOKv0XyQ3PwmxGTap0s72HuePjDIhhaShRJsA+Ut88ZrZCAuALMagVGQ7Qx4ybwadO2YjljzSD0goNBhSreQ6mveslnwIdLg75e3HFW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK6za9hp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C06C4CEE5;
+	Mon, 10 Mar 2025 17:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626827;
-	bh=3HSskLKaCss0320X0mPegXaLY6wGRIMjdGsid41yxxs=;
+	s=korg; t=1741627546;
+	bh=qBpjzcuRzyvFz2XK5RtbTmTemVMQ3EqiDQ4XVz9nxMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4m4ovLHUnBN9rGBiqpn/7h6x48GVUGgGnLVyIvTY0L03OVkY+63pNsIl90YXypA8
-	 e7p/1KgH99M4bDKvw/OrSI8BzQWKhhgwfZfm1EiyJ9iZibUL+1rko/F35KJ2UWUKTh
-	 Qn7yLuMnGVwTfuCSi7BE+DGbIsDfLdXuX1y2Ry3o=
+	b=LK6za9hp9IHxw+LTSH810AxQKU0R7DDXY2cPBI+D8phjm/r5+Rk0H26IepuacyLmc
+	 PGpHshF4kSvUzcYjHhzLefhaWYcmsq6oySdYNzNzu4nQIIa8SQ31G50wzZC54fra2w
+	 3D6bicJ2nd/jUWj5pElGx/A8m9CY2CZDOcEkZ010=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 126/207] net: hns3: make sure ptp clock is unregister and freed if hclge_ptp_get_cycle returns an error
+Subject: [PATCH 6.12 166/269] ALSA: hda/realtek: Remove (revert) duplicate Ally X config
 Date: Mon, 10 Mar 2025 18:05:19 +0100
-Message-ID: <20250310170452.814131916@linuxfoundation.org>
+Message-ID: <20250310170504.333199237@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit b7365eab39831487a84e63a9638209b68dc54008 ]
+[ Upstream commit 3414cda9d41f41703832d0abd01063dd8de82b89 ]
 
-During the initialization of ptp, hclge_ptp_get_cycle might return an error
-and returned directly without unregister clock and free it. To avoid that,
-call hclge_ptp_destroy_clock to unregist and free clock if
-hclge_ptp_get_cycle failed.
+In commit 1e9c708dc3ae ("ALSA: hda/tas2781: Add new quirk for Lenovo,
+ASUS, Dell projects") Baojun adds a bunch of projects to the file,
+including for the Ally X. Turns out the initial Ally X was not sorted
+properly, so the kernel had 2 quirks for it.
 
-Fixes: 8373cd38a888 ("net: hns3: change the method of obtaining default ptp cycle")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250228105258.1243461-1-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The previous quirk overrode the new one due to being earlier and they
+are different. When AB testing, the normal pin fixup seems to work ok
+but causes a bit of a minor popping. Given the other config is more
+complicated and may cause undefined behavior, revert it.
+
+Fixes: 1e9c708dc3ae ("ALSA: hda/tas2781: Add new quirk for Lenovo, ASUS, Dell projects")
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://patch.msgid.link/20250227175107.33432-2-lkml@antheas.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-index bab16c2191b2f..181af419b878d 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-@@ -483,7 +483,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 
- 		ret = hclge_ptp_get_cycle(hdev);
- 		if (ret)
--			return ret;
-+			goto out;
- 	}
- 
- 	ret = hclge_ptp_int_en(hdev, true);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 9997bf0150576..d3a81d3638872 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7741,7 +7741,6 @@ enum {
+ 	ALC285_FIXUP_THINKPAD_X1_GEN7,
+ 	ALC285_FIXUP_THINKPAD_HEADSET_JACK,
+ 	ALC294_FIXUP_ASUS_ALLY,
+-	ALC294_FIXUP_ASUS_ALLY_X,
+ 	ALC294_FIXUP_ASUS_ALLY_PINS,
+ 	ALC294_FIXUP_ASUS_ALLY_VERBS,
+ 	ALC294_FIXUP_ASUS_ALLY_SPEAKER,
+@@ -9184,12 +9183,6 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC294_FIXUP_ASUS_ALLY_PINS
+ 	},
+-	[ALC294_FIXUP_ASUS_ALLY_X] = {
+-		.type = HDA_FIXUP_FUNC,
+-		.v.func = tas2781_fixup_i2c,
+-		.chained = true,
+-		.chain_id = ALC294_FIXUP_ASUS_ALLY_PINS
+-	},
+ 	[ALC294_FIXUP_ASUS_ALLY_PINS] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -10674,7 +10667,6 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1740, "ASUS UX430UA", ALC295_FIXUP_ASUS_DACS),
+ 	SND_PCI_QUIRK(0x1043, 0x17d1, "ASUS UX431FL", ALC294_FIXUP_ASUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x17f3, "ROG Ally NR2301L/X", ALC294_FIXUP_ASUS_ALLY),
+-	SND_PCI_QUIRK(0x1043, 0x1eb3, "ROG Ally X RC72LA", ALC294_FIXUP_ASUS_ALLY_X),
+ 	SND_PCI_QUIRK(0x1043, 0x1863, "ASUS UX6404VI/VV", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1881, "ASUS Zephyrus S/M", ALC294_FIXUP_ASUS_GX502_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x18b1, "Asus MJ401TA", ALC256_FIXUP_ASUS_HEADSET_MIC),
 -- 
 2.39.5
 
