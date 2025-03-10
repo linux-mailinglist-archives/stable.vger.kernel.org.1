@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1EEA59DA5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3936A5A18B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5AD17A2953
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BF047A7692
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD152309A6;
-	Mon, 10 Mar 2025 17:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A551422B8A5;
+	Mon, 10 Mar 2025 18:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1FykEMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wg8adPyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02A41B3927;
-	Mon, 10 Mar 2025 17:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DDC17A2E8;
+	Mon, 10 Mar 2025 18:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627385; cv=none; b=clqs+liwqk/He9mcb84oREwyiPqQoQ9E1TdykJrpANFCG6n+QWaIDtq7WvZBS12ViAoZ+fbtctSB4HezIqPVEr5/gho+y3BieW9ii1WJN4XcUzzUjXCdW+aScocwyIgi4oycnX2qndtIJt2KaYvT04FUEuccfFhYPMr+Tq1lKd8=
+	t=1741629733; cv=none; b=b8PcJWEpgTBqNm6EFeZJlQZVjaLn/dyz2UgMe79k3Pxwb3zAhKFXku/vahuXixVNKRcv8FK2ufw/1/gHBWMOLxbieVy+H/eJG5ZxBGQKSyLNc04GxEzPLsMDQP+fZp/bnfhf4xJVKv7QVK+YYcxV9z5K1sSlTFQyAT1/4LlBit0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627385; c=relaxed/simple;
-	bh=D7tB8EvONLaYhmOJAJo4hzBaGkCofz4Ypy204H5qb04=;
+	s=arc-20240116; t=1741629733; c=relaxed/simple;
+	bh=cOUd+e41ZntMxbs++QHBYdrcssJfWn4R9NB3QFLe89Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qz4gputshIDrz8gz1DpSdn/ukiTp9hwiiIx7dGKukUlf7Ys7Kyy/qgQ5PRmAd7SA+yEsK76z6hMCvCWBZmSr0W82BdHqf+aJq6xy0gyeUfJ5r+yTdpTkgIHCOaGCT8ZZiFk2ikJ7YI1xMpmYjD3L+m4numzx9MfjF65NxUr07BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1FykEMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4D6C4CEE5;
-	Mon, 10 Mar 2025 17:23:04 +0000 (UTC)
+	 MIME-Version; b=gTDUfRt96pUSRqEyB9TjxJDKoCK+cGH/416UT85FI5SnpYiFf9ZIgcdioyB7DtiuzzUTxJ5/z/PLK33A9UQd/MhTchGvnLwdGEcv0SXE/izgsxdj8e8x14yeu1JAy2QCuZGibrF5rNPxJVf9a4g6+OdrWDBC1AgotRcx9RdLcDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wg8adPyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48C6C4CEE5;
+	Mon, 10 Mar 2025 18:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627384;
-	bh=D7tB8EvONLaYhmOJAJo4hzBaGkCofz4Ypy204H5qb04=;
+	s=korg; t=1741629733;
+	bh=cOUd+e41ZntMxbs++QHBYdrcssJfWn4R9NB3QFLe89Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1FykEMzHDaUB9guheGb4WvDeUCBwbMo2gcG4i8uGwKCpoEf9Bp7dM6Qv/y+2z888
-	 8njtQwwpt/FRx6FsfsQoq+BqNSDpEgQtIFtwycZDHgSfjiDc0DWW50kLmQR6JGdBnR
-	 xdnF44Xjj26wPEM2cRR81p0iIkYYVTRYRL1ERrHI=
+	b=wg8adPyISJe4Nw4kdE9v485sYi+m6erLr5/if7s4/Z8PogfN2OailqXSgUGmoXymp
+	 vgCDX8l5qTnRCchjg//s74kX6jyBr8uNKTtHZ3sb8P+SXQ0rzd+maB4VbOZMILAN+O
+	 SX1ZVLsiQD7wPXdnu07dIQxCfxQWtjC5dBQlGItk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 080/269] LoongArch: KVM: Reload guest CSR registers after sleep
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 387/620] mlxsw: Add return value check for mlxsw_sp_port_get_stats_raw()
 Date: Mon, 10 Mar 2025 18:03:53 +0100
-Message-ID: <20250310170500.913983411@linuxfoundation.org>
+Message-ID: <20250310170600.870214482@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 78d7bc5a02e1468df53896df354fa80727f35b7d upstream.
+commit fee5d688940690cc845937459e340e4e02598e90 upstream.
 
-On host, the HW guest CSR registers are lost after suspend and resume
-operation. Since last_vcpu of boot CPU still records latest vCPU pointer
-so that the guest CSR register skips to reload when boot CPU resumes and
-vCPU is scheduled.
+Add a check for the return value of mlxsw_sp_port_get_stats_raw()
+in __mlxsw_sp_port_get_stats(). If mlxsw_sp_port_get_stats_raw()
+returns an error, exit the function to prevent further processing
+with potentially invalid data.
 
-Here last_vcpu is cleared so that guest CSR registers will reload from
-scheduled vCPU context after suspend and resume.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 614d509aa1e7 ("mlxsw: Move ethtool_ops to spectrum_ethtool.c")
+Cc: stable@vger.kernel.org # 5.9+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/20250212152311.1332-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/main.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -297,6 +297,13 @@ int kvm_arch_enable_virtualization_cpu(v
- 	kvm_debug("GCFG:%lx GSTAT:%lx GINTC:%lx GTLBC:%lx",
- 		  read_csr_gcfg(), read_csr_gstat(), read_csr_gintc(), read_csr_gtlbc());
- 
-+	/*
-+	 * HW Guest CSR registers are lost after CPU suspend and resume.
-+	 * Clear last_vcpu so that Guest CSR registers forced to reload
-+	 * from vCPU SW state.
-+	 */
-+	this_cpu_ptr(vmcs)->last_vcpu = NULL;
-+
- 	return 0;
- }
- 
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
+@@ -761,7 +761,9 @@ static void __mlxsw_sp_port_get_stats(st
+ 	err = mlxsw_sp_get_hw_stats_by_group(&hw_stats, &len, grp);
+ 	if (err)
+ 		return;
+-	mlxsw_sp_port_get_stats_raw(dev, grp, prio, ppcnt_pl);
++	err = mlxsw_sp_port_get_stats_raw(dev, grp, prio, ppcnt_pl);
++	if (err)
++		return;
+ 	for (i = 0; i < len; i++) {
+ 		data[data_index + i] = hw_stats[i].getter(ppcnt_pl);
+ 		if (!hw_stats[i].cells_bytes)
 
 
 
