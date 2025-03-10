@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48443A59FD3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA801A5A2BE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC3CA3A9465
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7865A175DAA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CADB22DFB1;
-	Mon, 10 Mar 2025 17:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80621C5D6F;
+	Mon, 10 Mar 2025 18:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6H9duFS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ty5OKpem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A48B223702;
-	Mon, 10 Mar 2025 17:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63472309B0;
+	Mon, 10 Mar 2025 18:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628587; cv=none; b=jWMXosBWZH7X2Zxor9qsOmHs5+0R3UfD+huytTAfqGmumkwNSVieSam2FvUFoIMmPJbINyV+GuRtElM6FUhOr/zgo8QKQbeCFJH58i+SFQq5CXSjljryweNqiqiUy+E1bCxo5sE1wTQyYjDNczExA+TZUbyaLqsXxhMH86KOsns=
+	t=1741630999; cv=none; b=O4ffjbpjt5+SDvUTTslFlJkrpkecIm24O7LkY+4DA0O+ef6QCaIZlLvt0x6kCJKWFnbeimT23+zi2z03zeSPhdKspySQH14JaRgkdQ9eWrHGK/r/bsmtynbJT2QW12JLfHgrGVBa1AJH5zmtNjl6Bb+fXzlq3G9Xgn1BwhzLbSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628587; c=relaxed/simple;
-	bh=D3hRvTJHLpzD0qcxp8KQa4hh2uj5Igug4alj80IJ+fE=;
+	s=arc-20240116; t=1741630999; c=relaxed/simple;
+	bh=8G6CWdWBASiZfj32eYMKas5ENan6TKcDWfaU2inrC6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zbo4LTTlP4DMDoMoaTwfu04RNc9Y2VYL3BH9Dd11sHlOPtAsxiCIDjjRQCTd+DtlqZjykizxtiOjqNVOIHDXcnxnoTUbWcgfqSH4eaWXAsSx1GkxBtC2CqWwnM8Y+dGzMZYVqyyHNzRCI4/QdYdkUvRYbDkwN1FBlHYfXeJFwSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6H9duFS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A5BC4CEE5;
-	Mon, 10 Mar 2025 17:43:06 +0000 (UTC)
+	 MIME-Version; b=kdbLwZzPJqx1n9f2YO3bT200PhkEJFJerSebemn+eCqEcKi8p0bJo87ahKcu5rmK25FKgO9fcqOZSk7dRAc/fH057gu3Ar0qUfGl4nM8/TmlEnOvl30bafA4EJppvR4RMZg24CBdgkYG+LMEdxlJYSeYhQkr6S223nAbC2LEtCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ty5OKpem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF22C4CEE5;
+	Mon, 10 Mar 2025 18:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628586;
-	bh=D3hRvTJHLpzD0qcxp8KQa4hh2uj5Igug4alj80IJ+fE=;
+	s=korg; t=1741630999;
+	bh=8G6CWdWBASiZfj32eYMKas5ENan6TKcDWfaU2inrC6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6H9duFS8ppGVy/JKvDxMm4pDYfZSKmlKO7vRW8meXzXgSsldt3dTrKiBpOXN1kjU
-	 XhWV4aLZU1Btu3AfH4ERdTg4+SVDEJ1GnhkwCxpe9Cqf/NBrP6bIpcEK+1/VhP/S+p
-	 3EDw8J5kBhJMq5w1te6VLFOF5fW86ooPQMLsQRhM=
+	b=Ty5OKpemikTPWp0oLhO4S09jBlrfprrC4Ukymw+tqJhj9s2Bn3WnGbLOZxKQwhHvb
+	 CIamKTaRgrT+2VO6fL9DAIokFktJDB3B0D4dzt8K1iULRrx6YfTO9P4RmdmlYml+ys
+	 Ke4+qZsKEt0Hi7JaoXBvjjzhqjpOt0bWWp5egPEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.1 109/109] kbuild: userprogs: use correct lld when linking through clang
-Date: Mon, 10 Mar 2025 18:07:33 +0100
-Message-ID: <20250310170431.892320782@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 608/620] mtd: rawnand: cadence: fix unchecked dereference
+Date: Mon, 10 Mar 2025 18:07:34 +0100
+Message-ID: <20250310170609.535436947@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Thomas Weiﬂschuh" <thomas.weissschuh@linutronix.de>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-commit dfc1b168a8c4b376fa222b27b97c2c4ad4b786e1 upstream.
+commit 60255f3704fde70ed3c4d62f919aa4b46f841f70 upstream.
 
-The userprog infrastructure links objects files through $(CC).
-Either explicitly by manually calling $(CC) on multiple object files or
-implicitly by directly compiling a source file to an executable.
-The documentation at Documentation/kbuild/llvm.rst indicates that ld.lld
-would be used for linking if LLVM=1 is specified.
-However clang instead will use either a globally installed cross linker
-from $PATH called ${target}-ld or fall back to the system linker, which
-probably does not support crosslinking.
-For the normal kernel build this is not an issue because the linker is
-always executed directly, without the compiler being involved.
+Add NULL check before variable dereference to fix static checker warning.
 
-Explicitly pass --ld-path to clang so $(LD) is respected.
-As clang 13.0.1 is required to build the kernel, this option is available.
-
-Fixes: 7f3a59db274c ("kbuild: add infrastructure to build userspace programs")
-Cc: stable@vger.kernel.org # needs wrapping in $(cc-option) for < 6.9
-Signed-off-by: Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-[nathan: use cc-option for 6.6 and older, as those trees support back to
-         clang-11]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/e448a22c-bada-448d-9167-7af71305130d@stanley.mountain/
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1127,6 +1127,11 @@ endif
- KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
- KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
- 
-+# userspace programs are linked via the compiler, use the correct linker
-+ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
-+KBUILD_USERLDFLAGS += $(call cc-option, --ld-path=$(LD))
-+endif
-+
- # make the checker run with the right architecture
- CHECKFLAGS += --arch=$(ARCH)
- 
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -2934,8 +2934,10 @@ free_buf_desc:
+ static void cadence_nand_remove(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	cadence_nand_chips_cleanup(cdns_ctrl);
+-	dma_unmap_resource(cdns_ctrl->dmac->device->dev, cdns_ctrl->io.iova_dma,
+-			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
++	if (cdns_ctrl->dmac)
++		dma_unmap_resource(cdns_ctrl->dmac->device->dev,
++				   cdns_ctrl->io.iova_dma, cdns_ctrl->io.size,
++				   DMA_BIDIRECTIONAL, 0);
+ 	cadence_nand_irq_cleanup(cdns_ctrl->irq, cdns_ctrl);
+ 	kfree(cdns_ctrl->buf);
+ 	dma_free_coherent(cdns_ctrl->dev, sizeof(struct cadence_nand_cdma_desc),
 
 
 
