@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1449A59C54
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FA7A5A1DE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7BA16E194
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 753583A83D7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A085233140;
-	Mon, 10 Mar 2025 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57568233716;
+	Mon, 10 Mar 2025 18:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1V6+hpc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF0JTMOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EDE231A3F;
-	Mon, 10 Mar 2025 17:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161B023370B;
+	Mon, 10 Mar 2025 18:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626653; cv=none; b=N8GN+WOLu6NEJqxCij1fDuzQKGVMpS8WCjDYP0yTcP/OQYSdCYoF2h0ZNajGVOrXyzPskS1tv3V/cY2q3QSpA1QXzu3OFzb8qYhqoVdctH6hUqtGEpcF24gLsRB7yYihBR3Ocen0SEXMTlyanjW3zi8px11B9TqmfnYlv7gLWdc=
+	t=1741630456; cv=none; b=paoQb1O2TqlygxRLNScB/UiVLCbpNfJqPIcgnD2RaeBdBpNUaGSpRefWCGYMCJqHV/GOczCqqrvv00thFsuurmVYLLVMu86zL00s2wzo2UTroxDzjnYP1xa7vkz58UV1cfHxY4hf/zRS+7jrMOd2PopEQos67QRPAp6cEgaCGtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626653; c=relaxed/simple;
-	bh=QSIo9U1gm/4n9WUO1Ey4S0RmZEfEwsvW1hF2GLUd4hQ=;
+	s=arc-20240116; t=1741630456; c=relaxed/simple;
+	bh=sHBVU/5ZX4+e0RyaoBpQ3dHLwExWtkk36SZVr2r9Dho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0MQC3hVtq+k56ufXM7vtULXfITiEpK9yhkYN1dLyexAp9oZuHLTpSHYsjt5tek/KF8LMyVzumO3Lc7R1a5FMkXaaz3XdyMppo9El1YoW4fad+YAUMExj2ZeJjgpnYw/w3f5UrGOsaN14QoGiG+DVEgeqkERMH605iSlBUAoKVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1V6+hpc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6291DC4CEE5;
-	Mon, 10 Mar 2025 17:10:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p9YRDtm5ztQ+5Fw8ZlAIS15Lo3KjCVuvpLebcS2Dd6OhNQwu61kA5LlXiYzlTHiNI4wFDrjkSpQp/xBhJXUepXsDoWQjC51PrNWivOmsK1HnKMAPyLTi/dF/U81mZI/Xgi9chRwR8pynGDwe1F69wyeLLvQ9WK75tHfgbWofMuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF0JTMOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962E9C4CEE5;
+	Mon, 10 Mar 2025 18:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626653;
-	bh=QSIo9U1gm/4n9WUO1Ey4S0RmZEfEwsvW1hF2GLUd4hQ=;
+	s=korg; t=1741630456;
+	bh=sHBVU/5ZX4+e0RyaoBpQ3dHLwExWtkk36SZVr2r9Dho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1V6+hpc8/QtTDxBHW+UoMBcMhj2FUpSYCppIeIutjH6KDUWwOfbcCRGTfC5mFm2K
-	 NWGPKW+vjbjmJWhwHe3vaVhvwOGy4LMFFrX6idsLs+tOT19sKnVOw4CWkWTvjFUGKz
-	 i6BKrLrYFzN+EOzMCgQtdi7TH2EcDDMrFj6HtXj4=
+	b=pF0JTMOQ6DoBvZI4RIXVBVh3BXdozwfMGh1HXTP8exeyuzwib67trih2yJRdC4wEa
+	 Dml625jprmXyipTEMRIDYBROfU1UCS5nrZt8IRq1Z9Wuvh7uK9x8kN1nhLNhRB09vG
+	 c09MoApGcahW69fSpjGT9BBsCxk+PzwZCm3DfHyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 065/207] selftests/damon/damon_nr_regions: sort collected regiosn before checking with min/max boundaries
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 5.15 412/620] drm/v3d: Stop active perfmon if it is being destroyed
 Date: Mon, 10 Mar 2025 18:04:18 +0100
-Message-ID: <20250310170450.352776310@linuxfoundation.org>
+Message-ID: <20250310170601.851842968@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-commit 582ccf78f6090d88b1c7066b1e90b3d9ec952d08 upstream.
+commit 21f1435b1e6b012a07c42f36b206d2b66fc8f13b upstream.
 
-damon_nr_regions.py starts DAMON, periodically collect number of regions
-in snapshots, and see if it is in the requested range.  The check code
-assumes the numbers are sorted on the collection list, but there is no
-such guarantee.  Hence this can result in false positive test success.
-Sort the list before doing the check.
+If the active performance monitor (`v3d->active_perfmon`) is being
+destroyed, stop it first. Currently, the active perfmon is not
+stopped during destruction, leaving the `v3d->active_perfmon` pointer
+stale. This can lead to undefined behavior and instability.
 
-Link: https://lkml.kernel.org/r/20250225222333.505646-4-sj@kernel.org
-Fixes: 781497347d1b ("selftests/damon: implement test for min/max_nr_regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This patch ensures that the active perfmon is stopped before being
+destroyed, aligning with the behavior introduced in commit
+7d1fd3638ee3 ("drm/v3d: Stop the active perfmon before being destroyed").
+
+Cc: stable@vger.kernel.org # v5.15+
+Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241118221948.1758130-1-christian.gmeiner@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/damon/damon_nr_regions.py |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/v3d/v3d_perfmon.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/tools/testing/selftests/damon/damon_nr_regions.py
-+++ b/tools/testing/selftests/damon/damon_nr_regions.py
-@@ -65,6 +65,7 @@ def test_nr_regions(real_nr_regions, min
+--- a/drivers/gpu/drm/v3d/v3d_perfmon.c
++++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
+@@ -175,6 +175,7 @@ int v3d_perfmon_destroy_ioctl(struct drm
+ {
+ 	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
+ 	struct drm_v3d_perfmon_destroy *req = data;
++	struct v3d_dev *v3d = v3d_priv->v3d;
+ 	struct v3d_perfmon *perfmon;
  
-     test_name = 'nr_regions test with %d/%d/%d real/min/max nr_regions' % (
-             real_nr_regions, min_nr_regions, max_nr_regions)
-+    collected_nr_regions.sort()
-     if (collected_nr_regions[0] < min_nr_regions or
-         collected_nr_regions[-1] > max_nr_regions):
-         print('fail %s' % test_name)
+ 	mutex_lock(&v3d_priv->perfmon.lock);
+@@ -184,6 +185,10 @@ int v3d_perfmon_destroy_ioctl(struct drm
+ 	if (!perfmon)
+ 		return -EINVAL;
+ 
++	/* If the active perfmon is being destroyed, stop it first */
++	if (perfmon == v3d->active_perfmon)
++		v3d_perfmon_stop(v3d, perfmon, false);
++
+ 	v3d_perfmon_put(perfmon);
+ 
+ 	return 0;
 
 
 
