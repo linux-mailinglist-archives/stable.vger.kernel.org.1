@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-122771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1D8A5A121
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:57:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BADA5A122
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:57:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91CD47A2739
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:56:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7461C17387C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D8E2327AE;
-	Mon, 10 Mar 2025 17:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5309231A3B;
+	Mon, 10 Mar 2025 17:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwP3yXND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRdFnkVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0642232787;
-	Mon, 10 Mar 2025 17:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835E91C4A24;
+	Mon, 10 Mar 2025 17:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629452; cv=none; b=NxIb1oXegWeMQI+lmzGvoPSs9sNUgcYZThTlQiGLwW0yBcVzTm4Uk0mV2QK20p3gO+c4ZQLLdwIlZYVGK7L/V9TdNj/mEC1pNieX+OzPFz/sRPhuPV5DWtuZyFA4Or7/9JE6Mzvz48zqjKqZBuWBvWoC1gxMM1KCE+zNvZCOqOY=
+	t=1741629459; cv=none; b=XMzIiL6Dzso1zk4NtZfR14IWHk5C72hCYM7GaE4eANdRSBNkof8BzzIS7JiMsO5YMp2/xVGwglZSPmGbfwSqh7tb3lJGYgRGD/PiUMn8EbGcgmW9L+1Mbz03yNjSJVG15oQcaL/+KbZUnWs65jMQNQI3iqVyiH7uk9U0081PJKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629452; c=relaxed/simple;
-	bh=hxG7GDy2EjkCRB/bbBj2zVgHEvRRKyHevn4v2X3VOX0=;
+	s=arc-20240116; t=1741629459; c=relaxed/simple;
+	bh=xSSvJLVZdBs4lC8SLNt53HsgTRXw4ttr/4hXYJkFPoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SW4UkYDBNeHsX+Lvc1vdUG+t0QxydVvi1sATFcbF8QfvmN7nx0ILkfYnfnThi3rCpoHsPPH2AH7ja5zK9xSHC4NCLECNsc412Lim9Yn9dcAoF/aoIsirVf9mPwSJuxSNX2zr8+Yn98WBVu45rROnwP/m5fe2YfwxjRz/hfuf5m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwP3yXND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4C7C4CEE5;
-	Mon, 10 Mar 2025 17:57:31 +0000 (UTC)
+	 MIME-Version; b=LKySIRxuH0NZwtIlge9GeXpK2FwM0mTmoXfjtX3jVvMVG8f7Vwh11FwEMUn//dBKSmc0f44+Cg95w25uRGQGEA4O1cnTngEmvR+x5IZF0nJFQ0f1/Ygim6ochaygaleh9v18dcOL5FMG0fH6ZoAR1eKSjC/mYmjy2dqGTedFpNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRdFnkVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFF4C4CEE5;
+	Mon, 10 Mar 2025 17:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629452;
-	bh=hxG7GDy2EjkCRB/bbBj2zVgHEvRRKyHevn4v2X3VOX0=;
+	s=korg; t=1741629458;
+	bh=xSSvJLVZdBs4lC8SLNt53HsgTRXw4ttr/4hXYJkFPoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwP3yXNDYUY4LDQMAnmhGeI4oJYJd5ynhDhhL6GiGHE1rjtYeBVCF/Nrr3ie24Mgi
-	 HOX1TzkJXJ9m6IzZLFQkBjbOe5G9Zorqn5F1KFCNgoibnqr++jk5eGqw/v6h9fud/w
-	 aXouS7zXRSxId0fQuRwp7XHoZEakPX4a3WAPbPGE=
+	b=HRdFnkVfy0TK66aBPrMF7mbRNChI+6MJ2dW1KOYRCorAtp+ZlRGjSCs1CiieBqIFv
+	 ZVEfCWpw+wei0kpmRGDV36qfrKxQXkfn3HTCYUiIbBm4dRBtQivlZ1sxGrJA2qcBDA
+	 +2uoGV+iSzlfYYMGRmT4uWrfnVMhDQc40O1VDP3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
-	Jakub Jelinek <jakub@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 5.15 300/620] x86/boot: Use -std=gnu11 to fix build with GCC 15
-Date: Mon, 10 Mar 2025 18:02:26 +0100
-Message-ID: <20250310170557.465484941@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 301/620] arm64: dts: qcom: sm8350: Fix MPSS memory length
+Date: Mon, 10 Mar 2025 18:02:27 +0100
+Message-ID: <20250310170557.504745853@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -62,57 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit ee2ab467bddfb2d7f68d996dbab94d7b88f8eaf7 upstream.
+commit da1937dec9cd986e685b6a429b528a4cbc7b1603 upstream.
 
-GCC 15 changed the default C standard version to C23, which should not
-have impacted the kernel because it requests the gnu11 standard via
-'-std=' in the main Makefile. However, the x86 compressed boot Makefile
-uses its own set of KBUILD_CFLAGS without a '-std=' value (i.e., using
-the default), resulting in errors from the kernel's definitions of bool,
-true, and false in stddef.h, which are reserved keywords under C23.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+copied from older DTS, but it grew since then.
 
-  ./include/linux/stddef.h:11:9: error: expected identifier before ‘false’
-     11 |         false   = 0,
-  ./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
-     35 | typedef _Bool                   bool;
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-Set '-std=gnu11' in the x86 compressed boot Makefile to resolve the
-error and consistently use the same C standard version for the entire
-kernel.
-
-Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
-Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
-Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
-Reported-by: Jakub Jelinek <jakub@redhat.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250121-x86-use-std-consistently-gcc-15-v1-1-8ab0acf645cb%40kernel.org
+Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-3-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -33,6 +33,7 @@ targets := vmlinux vmlinux.bin vmlinux.b
- # avoid errors with '-march=i386', and future flags may depend on the target to
- # be valid.
- KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
-+KBUILD_CFLAGS += -std=gnu11
- KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
- KBUILD_CFLAGS += -Wundef
- KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -754,7 +754,7 @@
+ 
+ 		mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sm8350-mpss-pas";
+-			reg = <0x0 0x04080000 0x0 0x4040>;
++			reg = <0x0 0x04080000 0x0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
