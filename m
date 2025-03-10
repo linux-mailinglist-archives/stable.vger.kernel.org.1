@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67FDFA59DFC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0BAA59C98
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C17616EFF7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB7DA163D9D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2BB233157;
-	Mon, 10 Mar 2025 17:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AE1230BEC;
+	Mon, 10 Mar 2025 17:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO6mJrg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfD3jCQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459A1230D3A;
-	Mon, 10 Mar 2025 17:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FCA22B8D0;
+	Mon, 10 Mar 2025 17:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627535; cv=none; b=VODG3fHgDzGH11t+2L9A10bWZbteQTHmX0QBuoCrPTbojHPQPEfshs0G+cppJ+HZbgTbePi1BxMdzINCYU9IL4SXmOKYZzJEO0SyLXPUblkkKIEznwzHgoxzq+Bn6lnBFADWHO85Q6Wme502MicP8YThqyX71Wk5M9mW3qjbbSg=
+	t=1741626822; cv=none; b=lG7FCUWu3kIBlJavQnp2X8uX/5gwRbzhw7fdVfzBlqr2cT9P1CApBxrz88TNpBL6YGWS2ImvgT4I876AmFc7BLYvRRpDj5P4GXR/FChqJSpZKH2Zkne2rdMK02ly4GgeDrxmWwHgX6ko1sugnNoTDa4Vsqxa/YuDuF84p/iUUZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627535; c=relaxed/simple;
-	bh=LJKCKaTkYHUYn23MS2Yuc3iRwAB4h2VSo42gTaxZIjo=;
+	s=arc-20240116; t=1741626822; c=relaxed/simple;
+	bh=n/G8vfEsd0TaKXUJWmksRPPggpxZJKmsHa5izp4ISwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VC4526nA6Nc+HVFI8Ntu/Rp+5HiM1X+eXSRXUsb2tUkLyVD+F2GLZ6IWTCFtqEayHYtYIzi8XInoQp8UHDGVTc7TkNpT7gS1Oz29EAz++zIRf3/ndHkI2PC5M/DGXCUr+ODDjOxD9d9nw6Znef8I5xB5DH6YKrcUBdL2tg6sk6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO6mJrg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03FAC4CEE5;
-	Mon, 10 Mar 2025 17:25:34 +0000 (UTC)
+	 MIME-Version; b=ccwH36KrMZyNXBY9kJLvf5MYgd30wnp1GrefvbW8/BBFRIxZtXI5iLFrasxLfn4jFieohEpbbyearuLoaGbMJoEbhv5YaLRteERzhrHoLQDcaf6W8ein2VWSfJ93gx8eMfcaw2CLDN3qKfCeJPhanVSTikjA2q5kEmENUmDYDLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfD3jCQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C712C4CEE5;
+	Mon, 10 Mar 2025 17:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627535;
-	bh=LJKCKaTkYHUYn23MS2Yuc3iRwAB4h2VSo42gTaxZIjo=;
+	s=korg; t=1741626821;
+	bh=n/G8vfEsd0TaKXUJWmksRPPggpxZJKmsHa5izp4ISwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SO6mJrg+yCBPNK+mF4ctW8KMhhZ32e0D2nUxr6Jia7a75TZ17Fi38tgH9FqLIbMCh
-	 2pwlVmy4bL6NMOsZ4gjH1c8z7+avTHpDgxYAaMQS7AiRBOi0cqRSXfrBTMgMy2XD7K
-	 OGRDC6x1d7+5FMkbk2xuW05Q6//J+XQg9VEmcdts=
+	b=xfD3jCQaaR7drai2BheZaWGGyFkiQxvuQb92F3SQtN/D4qIBZZkgMI/8sHVJ0P8a5
+	 CQswa7aaTtyzNtoek6DxWKfo49MWmxp0Yf49WxYcxy6VO+Ss5wXUuAjTKkZAbtjRKy
+	 h1wKUGlfszHy92DZN3TPRLyrYaBpkB0iQIITwvw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 163/269] nvme-tcp: add basic support for the C2HTermReq PDU
-Date: Mon, 10 Mar 2025 18:05:16 +0100
-Message-ID: <20250310170504.214831645@linuxfoundation.org>
+Subject: [PATCH 6.13 124/207] drm/sched: Fix preprocessor guard
+Date: Mon, 10 Mar 2025 18:05:17 +0100
+Message-ID: <20250310170452.734080152@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-[ Upstream commit 84e009042d0f3dfe91bec60bcd208ee3f866cbcd ]
+[ Upstream commit 23e0832d6d7be2d3c713f9390c060b6f1c48bf36 ]
 
-Previously, the NVMe/TCP host driver did not handle the C2HTermReq PDU,
-instead printing "unsupported pdu type (3)" when received. This patch adds
-support for processing the C2HTermReq PDU, allowing the driver
-to print the Fatal Error Status field.
+When writing the header guard for gpu_scheduler_trace.h, a typo,
+apparently, occurred.
 
-Example of output:
-nvme nvme4: Received C2HTermReq (FES = Invalid PDU Header Field)
+Fix the typo and document the scope of the guard.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: ad95bab0cd28 ("nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu()")
+Fixes: 353da3c520b4 ("drm/amdgpu: add tracepoint for scheduler (v2)")
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218124149.118002-2-phasta@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c  | 43 ++++++++++++++++++++++++++++++++++++++++
- include/linux/nvme-tcp.h |  2 ++
- 2 files changed, 45 insertions(+)
+ drivers/gpu/drm/scheduler/gpu_scheduler_trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 840ae475074d0..749d464bef9f7 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -763,6 +763,40 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+index c75302ca3427c..f56e77e7f6d02 100644
+--- a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
++++ b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+@@ -21,7 +21,7 @@
+  *
+  */
  
-+static void nvme_tcp_handle_c2h_term(struct nvme_tcp_queue *queue,
-+		struct nvme_tcp_term_pdu *pdu)
-+{
-+	u16 fes;
-+	const char *msg;
-+	u32 plen = le32_to_cpu(pdu->hdr.plen);
-+
-+	static const char * const msg_table[] = {
-+		[NVME_TCP_FES_INVALID_PDU_HDR] = "Invalid PDU Header Field",
-+		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
-+		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
-+		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
-+		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
-+		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
-+	};
-+
-+	if (plen < NVME_TCP_MIN_C2HTERM_PLEN ||
-+	    plen > NVME_TCP_MAX_C2HTERM_PLEN) {
-+		dev_err(queue->ctrl->ctrl.device,
-+			"Received a malformed C2HTermReq PDU (plen = %u)\n",
-+			plen);
-+		return;
-+	}
-+
-+	fes = le16_to_cpu(pdu->fes);
-+	if (fes && fes < ARRAY_SIZE(msg_table))
-+		msg = msg_table[fes];
-+	else
-+		msg = "Unknown";
-+
-+	dev_err(queue->ctrl->ctrl.device,
-+		"Received C2HTermReq (FES = %s)\n", msg);
-+}
-+
- static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		unsigned int *offset, size_t *len)
- {
-@@ -784,6 +818,15 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		return 0;
+-#if !defined(_GPU_SCHED_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#if !defined(_GPU_SCHED_TRACE_H_) || defined(TRACE_HEADER_MULTI_READ)
+ #define _GPU_SCHED_TRACE_H_
  
- 	hdr = queue->pdu;
-+	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
-+		/*
-+		 * C2HTermReq never includes Header or Data digests.
-+		 * Skip the checks.
-+		 */
-+		nvme_tcp_handle_c2h_term(queue, (void *)queue->pdu);
-+		return -EINVAL;
-+	}
-+
- 	if (queue->hdr_digest) {
- 		ret = nvme_tcp_verify_hdgst(queue, queue->pdu, hdr->hlen);
- 		if (unlikely(ret))
-diff --git a/include/linux/nvme-tcp.h b/include/linux/nvme-tcp.h
-index e07e8978d691b..e435250fcb4d0 100644
---- a/include/linux/nvme-tcp.h
-+++ b/include/linux/nvme-tcp.h
-@@ -13,6 +13,8 @@
- #define NVME_TCP_ADMIN_CCSZ	SZ_8K
- #define NVME_TCP_DIGEST_LENGTH	4
- #define NVME_TCP_MIN_MAXH2CDATA 4096
-+#define NVME_TCP_MIN_C2HTERM_PLEN	24
-+#define NVME_TCP_MAX_C2HTERM_PLEN	152
+ #include <linux/stringify.h>
+@@ -106,7 +106,7 @@ TRACE_EVENT(drm_sched_job_wait_dep,
+ 		      __entry->seqno)
+ );
  
- enum nvme_tcp_pfv {
- 	NVME_TCP_PFV_1_0 = 0x0,
+-#endif
++#endif /* _GPU_SCHED_TRACE_H_ */
+ 
+ /* This part must be outside protection */
+ #undef TRACE_INCLUDE_PATH
 -- 
 2.39.5
 
