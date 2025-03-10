@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-122284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F01A59EF9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1D3A59F87
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CC6C3A9198
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAE6C3A4E7F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F96922DF80;
-	Mon, 10 Mar 2025 17:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5F82253FE;
+	Mon, 10 Mar 2025 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBVl/9w3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hidddK2O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B5C1DE89C;
-	Mon, 10 Mar 2025 17:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17E722D799;
+	Mon, 10 Mar 2025 17:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628056; cv=none; b=f3xUFKj59XYa1xXJhseOS95clVeY0h34YWaUQcilUJ1WIZFiny4p1QId3rUAeSCpIEQE1ItWjNpC4dHzLsPuUN6LyCl6sfG51e/Qsu0pWFkb92bNANzvRcdU9OIK5Fl8KcA55VSxBUz6ZpAOcQo/PemmbXHk9WeL3kcAIPnKa/s=
+	t=1741628427; cv=none; b=JJF35yfdDdXw3y8OZSGogWMkynWJ+Kyh4eDWu2tjxtvpncyA2sMX5ghum3JbZxDtpfg/vkXFpR7yykzA3aH7ZZPBQzvN+T9iClWZTOO2IoZc81nNi9cJJUrCn8/RJMAm5O8PdM7juwZd8yuCPH1U8yu1IH1g8twSKaWtFSpKhRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628056; c=relaxed/simple;
-	bh=zTCWSVYy1P4omgywWK9I0fGnvXCzE1kRXdP6gFXSaw4=;
+	s=arc-20240116; t=1741628427; c=relaxed/simple;
+	bh=uVtbkal8FKMFA3Lc+UFmVV+cWdbvm72/9x48WJx9EPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJYSlWxJDq1SI50jvzhrf3OGWVr3Me/nwN1yidL9u3bhsur6V4MC+ouqjBC7lBsqJS9fKD2Hjgys2BGionsNDKstDeHCPckB1AtK3lAgaLzi9Lh1kfWidi1S2UtyqMU+9wcSSmxW8h4hLn/osdwcmTNvingL4hb4LyEXvcBQO1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBVl/9w3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B20EC4CEE5;
-	Mon, 10 Mar 2025 17:34:16 +0000 (UTC)
+	 MIME-Version; b=tnWhLVhHWEtIv/dGipBWRt1uT12IhIyzIXfPyPL1p7ys/rRLIFCE7IgLGqep4yIJD0NG6ueAeA+eyNvTqP392bsbVnOeyRAMXcGEmiG4K+5mB1iIvKEE7OvcrBBOLtYyvq6EMEA9HGIiWeIQ5dUbSnhIylrK02GgN55yhj+aY14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hidddK2O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696E0C4CEE5;
+	Mon, 10 Mar 2025 17:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628056;
-	bh=zTCWSVYy1P4omgywWK9I0fGnvXCzE1kRXdP6gFXSaw4=;
+	s=korg; t=1741628426;
+	bh=uVtbkal8FKMFA3Lc+UFmVV+cWdbvm72/9x48WJx9EPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBVl/9w3HqYgxcbeeBXNzj9LfgrUkgGNhMOeclCve0//A9f8mf56hc0piROa3Mi8N
-	 maSwCStmXBjeMz1vW8kL/loaMieAs984kxpbT5r1D+bHw8kEaEZLSX59FuzjIiNA43
-	 Hu5yFKfZcz+Tgl9e52Q87JsBqqYgIuFiPqwymYBU=
+	b=hidddK2O0tfiT82B1h6Nqoj8ivZlKKRxHBuiayrWXP/LAIKSi8an3aAg4qrXD8Gzd
+	 Qmxv9U3n7E42/GOqlUgGJaBF7Zsqk0pIRVWe//lL60dZyQqTGLjm5pr9Xhl3aTdSAJ
+	 hTol60FU/03Ab3u43ASNc/HT9canNqnTzrNC72Aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinghuo Chen <xinghuo.chen@foxmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/145] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 023/109] x86/cpu: Validate CPUID leaf 0x2 EDX output
 Date: Mon, 10 Mar 2025 18:06:07 +0100
-Message-ID: <20250310170437.699239954@linuxfoundation.org>
+Message-ID: <20250310170428.471552718@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinghuo Chen <xinghuo.chen@foxmail.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
+commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
 
-The devm_memremap() function returns error pointers on error,
-it doesn't return NULL.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
-Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
+ECX, but left EDX unchecked.
+
+Validate EDX's most-significant bit as well.
+
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
+ arch/x86/kernel/cpu/intel.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 78d9f52e2a719..207084d55044a 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -712,7 +712,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
- 			goto out;
- 		}
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -948,7 +948,7 @@ static void intel_detect_tlb(struct cpui
+ 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
  
--		if (!ctx->pcc_comm_addr) {
-+		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
- 			dev_err(&pdev->dev,
- 				"Failed to ioremap PCC comm region\n");
- 			rc = -ENOMEM;
--- 
-2.39.5
-
+ 		/* If bit 31 is set, this is an unknown format */
+-		for (j = 0 ; j < 3 ; j++)
++		for (j = 0 ; j < 4 ; j++)
+ 			if (regs[j] & (1 << 31))
+ 				regs[j] = 0;
+ 
 
 
 
