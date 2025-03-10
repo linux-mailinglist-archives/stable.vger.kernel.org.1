@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-121940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB3EA59D15
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB388A59ECF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B598C7A1395
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B281D1890019
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269811AF0BB;
-	Mon, 10 Mar 2025 17:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FD223372C;
+	Mon, 10 Mar 2025 17:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQcROO8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ed0LYzbh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93302F28;
-	Mon, 10 Mar 2025 17:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23ED223371E;
+	Mon, 10 Mar 2025 17:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627069; cv=none; b=Jcyu2vQLNKBh9mLMQZZoGFcihxNJS6CDxbhCVTBXNbl2lDRV9x8Slqd9oL+/lel9feRMu2JTivHPln3u0prkj64a0GpcMCRUef+mzA+iV5cJruyhtbrOr9VIv54G3+X6VKmCkLI63wCHgYnUyWzMtJUFYss/iM/MIiEZZ7c9d3A=
+	t=1741628069; cv=none; b=Qlv318AuDh/4az/U7udlB9SaTa9B1VuQBBXWb4P4FAZxKHDSb1Gk845FUO5QNhoJq7/SewwRifEl2zWmWS92TI4cEIE3n4wGwMQmBi7jLVdmxj6nxBkxQ6RtLOpnVG4l4Vv2OCgwxrRvyCyPDsL/86/kPq24Y92SVSFaX82JEds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627069; c=relaxed/simple;
-	bh=QmrS8jk5qbpb3vu5J6QFNSoCOmr6zGz54TaMG4fusIc=;
+	s=arc-20240116; t=1741628069; c=relaxed/simple;
+	bh=AnEMON0aJ+eiS0qb//hfmpo01J1g/XZMEVGamDkCBfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxNHeZYBNPZCIDtyqZ8Xcq8K8XYzrNj+JfflLpvO4tAunUK0c9DCB2+Rda1EXNM/+xhZMPW/XSGJO9dhULMauBlHC5l3MqqSJpwdyT+tcRueOztDv4/y9IBVVgKJwEpoRft3qRjK7dF1Xqth0nQ8cFxkCMr86StTRCdkSThslIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQcROO8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63462C4CEE5;
-	Mon, 10 Mar 2025 17:17:49 +0000 (UTC)
+	 MIME-Version; b=q07Tm/DFUXedbv1sCnkTIYC2QQDkBRcw/XOMQoWsrCMeAdf2sXkyuu7IUPvRtPDLZEn5QRJYqDHFUyHzN58VzKB1zloqt9jcu3S4ypwRmAOiBVpIutLDOVJw/gBEUpRLnKijDvIXgEoWQ7KuwfqW5Fn5U9p49zuPMXBQNcz32TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ed0LYzbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7880DC4CEED;
+	Mon, 10 Mar 2025 17:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627069;
-	bh=QmrS8jk5qbpb3vu5J6QFNSoCOmr6zGz54TaMG4fusIc=;
+	s=korg; t=1741628069;
+	bh=AnEMON0aJ+eiS0qb//hfmpo01J1g/XZMEVGamDkCBfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQcROO8BWYQ9IL8fquKTIaC0VZhRzM7uhcl0+fk+Yum15qvvfWopV5LsPIjPzPja2
-	 oixbZfPIzr4b1KLH9gGNaYQ51wc9dCe1FywTeqTSa+NahXJN3ApMyTnLeY6sYKOt1A
-	 JgMgP8XoJDeXA1e5cyeOQDCSQ73ODFWOu0yzrw60=
+	b=Ed0LYzbhTSooJ5yjNucH1UK9SqWG7+vksY6/+UL+C+4qa4u7DDfVRaZisnkxI4xAW
+	 Rb1zzDfkHSbv2jwSJcMm604XUaR70CTtPrSTzYJ5v4K3CkNVwRdgoAHGH10C37ayhr
+	 Cdqvg2Bof3UO6NY5GxUZOD9cW74pPL26VCji5+8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>
-Subject: [PATCH 6.13 178/207] KVM: x86: Snapshot the hosts DEBUGCTL after disabling IRQs
+	syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com,
+	Vicki Pfau <vi@endrift.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 077/145] HID: hid-steam: Fix use-after-free when detaching device
 Date: Mon, 10 Mar 2025 18:06:11 +0100
-Message-ID: <20250310170454.864976884@linuxfoundation.org>
+Message-ID: <20250310170437.860874994@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Vicki Pfau <vi@endrift.com>
 
-commit 189ecdb3e112da703ac0699f4ec76aa78122f911 upstream.
+[ Upstream commit e53fc232a65f7488ab75d03a5b95f06aaada7262 ]
 
-Snapshot the host's DEBUGCTL after disabling IRQs, as perf can toggle
-debugctl bits from IRQ context, e.g. when enabling/disabling events via
-smp_call_function_single().  Taking the snapshot (long) before IRQs are
-disabled could result in KVM effectively clobbering DEBUGCTL due to using
-a stale snapshot.
+When a hid-steam device is removed it must clean up the client_hdev used for
+intercepting hidraw access. This can lead to scheduling deferred work to
+reattach the input device. Though the cleanup cancels the deferred work, this
+was done before the client_hdev itself is cleaned up, so it gets rescheduled.
+This patch fixes the ordering to make sure the deferred work is properly
+canceled.
 
-Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250227222411.3490595-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com
+Fixes: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-steam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4976,7 +4976,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu
- 
- 	/* Save host pkru register if supported */
- 	vcpu->arch.host_pkru = read_pkru();
--	vcpu->arch.host_debugctl = get_debugctlmsr();
- 
- 	/* Apply any externally detected TSC adjustments (due to suspend) */
- 	if (unlikely(vcpu->arch.tsc_offset_adjustment)) {
-@@ -10961,6 +10960,8 @@ static int vcpu_enter_guest(struct kvm_v
- 		set_debugreg(0, 7);
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index 49c067133975f..29ff4eb5194b7 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -1325,11 +1325,11 @@ static void steam_remove(struct hid_device *hdev)
+ 		return;
  	}
  
-+	vcpu->arch.host_debugctl = get_debugctlmsr();
-+
- 	guest_timing_enter_irqoff();
- 
- 	for (;;) {
++	hid_destroy_device(steam->client_hdev);
+ 	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->work_connect);
+ 	cancel_work_sync(&steam->rumble_work);
+ 	cancel_work_sync(&steam->unregister_work);
+-	hid_destroy_device(steam->client_hdev);
+ 	steam->client_hdev = NULL;
+ 	steam->client_opened = false;
+ 	if (steam->quirks & STEAM_QUIRK_WIRELESS) {
+-- 
+2.39.5
+
 
 
 
