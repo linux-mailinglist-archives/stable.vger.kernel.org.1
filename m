@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397A3A59FC1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE10A5A2B0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9513D16F5C5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92B74175D15
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B602923236D;
-	Mon, 10 Mar 2025 17:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE83233158;
+	Mon, 10 Mar 2025 18:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VumSGfZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4zYg7Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BF222FF40;
-	Mon, 10 Mar 2025 17:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADA72309BD;
+	Mon, 10 Mar 2025 18:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628601; cv=none; b=WByVmLhqNHFjE9jSls9O9zR7f2NbtJSEYfF+EKnoEHmQ5m9k6mmEQyq0BxOpUPMGYQcLaYKUJDaUPCuNP7QbfJ7eAvwgXjCtZMOFlyBEbKtWjpPGuwZ9hCJnv2j2p0NRK20OVhET7w3lAJ7WxA4+5hVuDNr9j4/UhuT9F8SNqYQ=
+	t=1741630971; cv=none; b=n+7TIfNvmRgNprPfdXv8JHi3AxAvKNTPuZe0g/PzGAt74UoLoZrDBp9+CToALaKd7b3Qu09c5ZHwEj3W0q4FkBO2iU7p2kkEECQ48I1GsAcuYbV2R/fxpUIJtdXxu5eo0fo040jlB/HHryobMCEKQQFG47tntJRDzDGesXfyimc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628601; c=relaxed/simple;
-	bh=VkXw9i1Oxch3DMMVpY40N6rSnjP3QGwmI1VntL/o1cc=;
+	s=arc-20240116; t=1741630971; c=relaxed/simple;
+	bh=p193ceglwIh2ROrvNCEtELyK8yoONfb5ZqaQr9s45cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPuzWUkiziIZOz9VH0WHDS7dbGbjvICwOSVu/0AIKN/yrZenY7rJMI8NaTs8cWNruR8L2MnCQTI7uDvo+Yi2Y3E8PTF7sOEVfQusX/d0witKTSCzw0OWCC4PumrK9T4ZjK0q56QNQ9Lkr4luI0DtyNKYJH1sCEEMMsH/p0Ql810=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VumSGfZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13C5C4CEEC;
-	Mon, 10 Mar 2025 17:43:20 +0000 (UTC)
+	 MIME-Version; b=slDHJAlfzOunHW7h3qugq80N38o+xxEuQADcWKavX2Ggf2l7L/Ns5Rb1qGzT23efp0z2Ag2WfYkz2eQfYzVeSjPBX5yiMQbLM0H7Mk0HtBF6oO2qes5k6+URM0aPNdU8hv0RNaeJgYJhlbFWhEFy/M7glm/xT+5o/cKJtbnIH4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4zYg7Dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E54C4CEE5;
+	Mon, 10 Mar 2025 18:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628601;
-	bh=VkXw9i1Oxch3DMMVpY40N6rSnjP3QGwmI1VntL/o1cc=;
+	s=korg; t=1741630970;
+	bh=p193ceglwIh2ROrvNCEtELyK8yoONfb5ZqaQr9s45cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VumSGfZOQy2BSUY+r070mAN6oqD+FTln/nmaJttUZ4oJ6aXdJA37J8TPG/bfEK2+f
-	 nwh7F4gYi7JTXfNzX1wQA9P85cmAkVW8KmS4YkCqnYfHa9htAGmzGCohSazK/e88+f
-	 Nls2uEKdT/vCUo1M3Qiuw4BWaZGpiOj6w2urZ/GY=
+	b=A4zYg7DywnvI2nKMo4ENQBhbHTm97inX6MLYX4w+dFLr1p1xVixw3OADm/HQ9RsT5
+	 2kXQvPIX6ZzZjO/jSP/ZDGHnU9nAjpDHolychcKUPHTId6KKe1tnSkML+sdW1Ub2R+
+	 Od5vM4OCuxtCMZv02arwT6ssKI4fUaXabsnqI2Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 092/109] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
+	stable <stable@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.15 590/620] usb: typec: tcpci_rt1711h: Unmask alert interrupts to fix functionality
 Date: Mon, 10 Mar 2025 18:07:16 +0100
-Message-ID: <20250310170431.221928897@linuxfoundation.org>
+Message-ID: <20250310170608.817931274@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
+commit d6b82dafd17db0658f089b9cdec573982ca82bc5 upstream.
 
-The alternative path leads to a build error after a recent change:
+During probe, the TCPC alert interrupts are getting masked to
+avoid unwanted interrupts during chip setup: this is ok to do
+but there is no unmasking happening at any later time, which
+means that the chip will not raise any interrupt, essentially
+making it not functional as, while internally it does perform
+all of the intended functions, it won't signal anything to the
+outside.
 
-sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
-include/linux/stddef.h:9:14: error: called object is not a function or function pointer
-    9 | #define NULL ((void *)0)
-      |              ^
-sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
- 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
-      |                                                 ^~~~
-sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
- 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
+Unmask the alert interrupts to fix functionality.
 
-Using IS_REACHABLE() is somewhat questionable here anyway since it
-leads to the input code not working when the HDA driver is builtin
-but input is in a loadable module. Replace this with a hard compile-time
-dependency on CONFIG_INPUT. In practice this won't chance much
-other than solve the compiler error because it is rare to require
-sound output but no input support.
-
-Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ce08eaeb6388 ("staging: typec: rt1711h typec chip driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250219114700.41700-1-angelogioacchino.delregno@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/Kconfig         |    1 +
- sound/pci/hda/patch_realtek.c |    5 -----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/usb/typec/tcpm/tcpci_rt1711h.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -132,6 +132,7 @@ comment "Set to Y if you want auto-loadi
- 
- config SND_HDA_CODEC_REALTEK
- 	tristate "Build Realtek HD-audio codec support"
-+	depends on INPUT
- 	select SND_HDA_GENERIC
- 	select SND_HDA_GENERIC_LEDS
- 	help
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4862,7 +4862,6 @@ static void alc298_fixup_samsung_amp(str
- 	}
- }
- 
--#if IS_REACHABLE(CONFIG_INPUT)
- static void gpio2_mic_hotkey_event(struct hda_codec *codec,
- 				   struct hda_jack_callback *event)
+--- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
++++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
+@@ -217,6 +217,11 @@ static int rt1711h_probe(struct i2c_clie
  {
-@@ -4971,10 +4970,6 @@ static void alc233_fixup_lenovo_line2_mi
- 		spec->kb_dev = NULL;
- 	}
- }
--#else /* INPUT */
--#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
--#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
--#endif /* INPUT */
+ 	int ret;
+ 	struct rt1711h_chip *chip;
++	const u16 alert_mask = TCPC_ALERT_TX_SUCCESS | TCPC_ALERT_TX_DISCARDED |
++			       TCPC_ALERT_TX_FAILED | TCPC_ALERT_RX_HARD_RST |
++			       TCPC_ALERT_RX_STATUS | TCPC_ALERT_POWER_STATUS |
++			       TCPC_ALERT_CC_STATUS | TCPC_ALERT_RX_BUF_OVF |
++			       TCPC_ALERT_FAULT;
  
- static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
+ 	ret = rt1711h_check_revision(client);
+ 	if (ret < 0) {
+@@ -258,6 +263,12 @@ static int rt1711h_probe(struct i2c_clie
+ 					dev_name(chip->dev), chip);
+ 	if (ret < 0)
+ 		return ret;
++
++	/* Enable alert interrupts */
++	ret = rt1711h_write16(chip, TCPC_ALERT_MASK, alert_mask);
++	if (ret < 0)
++		return ret;
++
+ 	enable_irq_wake(client->irq);
+ 
+ 	return 0;
 
 
 
