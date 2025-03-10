@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43A2A5A2B2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78560A59E69
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BBE3ADD40
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBFCB7A2435
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A495A22E418;
-	Mon, 10 Mar 2025 18:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DB5233724;
+	Mon, 10 Mar 2025 17:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfAZGjB3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1nBvElP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A9522F3BD;
-	Mon, 10 Mar 2025 18:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618412253FE;
+	Mon, 10 Mar 2025 17:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630950; cv=none; b=jKFUvWYsUSGv5MwtyEZ4kvzKVtcpgMwlXGEWU3He9V88WZjVpP2vbgpnHyGN7ck+V/cbf5A6sgFPSFta5Eex2cxmLJqyS34lv3vgLWSgexcHdNGkhLPuNzBlt8AXTubA82Bq5AW3i0gWEbSy/86Q/f0dqLr//E3Pw6m766Gvh2U=
+	t=1741627850; cv=none; b=WAuJTX07x3h6Pd3klh7zmG7JD+7+8UjjAh4RriqUw7ldFkpV2NCyiGfY+AiHnQKgC6g9VatRRpZ5BwYcTlSPuuQsl0WuswOcjuXc9P2NAv7tKqurd4DdFECWijHtFV8YPKY7LWmpT5iYOdxBGgVpKQ/JMOeWGkbMWJRTua8h19k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630950; c=relaxed/simple;
-	bh=dDS1EiXZN4AvM9Wb42w0ajQ66poVcE7e6UOKXqWz9Ng=;
+	s=arc-20240116; t=1741627850; c=relaxed/simple;
+	bh=qCv9ySk0Xeg3zVanPCdtUqEwPzmGpOVAIu+vMLUtkfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Az71na8mdr7Iz88xabZ0b3OyQdFV4LNnrpc534cUFUVgt0huqgCJUwUdKUxIOwxa9OY1Dvr8t0RBKA5WuEqwe1ziXnJZaJ3RSWURSBXfTPVV8p/Lpy6G1jW0UG2c+GKizVy39Rt7CXcyKFaVfZ2Y/1/2V+O5cviIU2OEYrsKr6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfAZGjB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC701C4CEEC;
-	Mon, 10 Mar 2025 18:22:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oQ1UNHHumIWcYunLz/7JNVFnbnPQRYThr+mms+Q8CHSk1rZBTy1xGdyO8f8mwPMchm4IjgKdg8bpOExbciWtrXK9xP/ZiTciEYtNMJvAYcHeJm3AkR2tjvZB6bOF0hT8iMPeOTULaD7gwQN6uV3OyYZkdfkEWXdhkHfzl061otU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1nBvElP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D942BC4CEE5;
+	Mon, 10 Mar 2025 17:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630950;
-	bh=dDS1EiXZN4AvM9Wb42w0ajQ66poVcE7e6UOKXqWz9Ng=;
+	s=korg; t=1741627850;
+	bh=qCv9ySk0Xeg3zVanPCdtUqEwPzmGpOVAIu+vMLUtkfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfAZGjB3PZWlu2AmDH7KZrt8mkh4muTyh3pIkOesOEOUSVVLryfegTxFondot4ORc
-	 wnBGExxEYyZrtSUW1NTN0pzCkGrf7kPNYB62x2M5Fmx4sTDVD4Wf/F1aseWTA0+IBR
-	 681zp0T2hYcnr2ZAXHS10OC2ND4qzr8smbNyQxKc=
+	b=H1nBvElPXaBspmZJsnq4R9+u8EShjjj1kVGs+JijulekQtwqBxqj18runHUMZRKL7
+	 ePJaokyE5PMZsHhdULIxFm7WHftbqOzjPlI81qVIVfNyJZZ/HEo/g+VxrxAwT/kGBL
+	 moR+CMVLkOxe9ag+jeMNNyv/4+7aWvW1DGp8CTwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 559/620] hwmon: (ntc_thermistor) Fix the ncpXXxh103 sensor table
+	Markus Burri <markus.burri@mt.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 252/269] iio: adc: ad7192: fix channel select
 Date: Mon, 10 Mar 2025 18:06:45 +0100
-Message-ID: <20250310170607.609031528@linuxfoundation.org>
+Message-ID: <20250310170507.840808819@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+From: Markus Burri <markus.burri@mt.com>
 
-[ Upstream commit 1c7932d5ae0f5c22fa52ac811b4c427bbca5aff5 ]
+commit 21d7241faf406e8aee3ce348451cc362d5db6a02 upstream.
 
-I could not find a single table that has the values currently present in
-the table, change it to the actual values that can be found in [1]/[2]
-and [3] (page 15 column 2)
+Channel configuration doesn't work as expected.
+For FIELD_PREP the bit mask is needed and not the bit number.
 
-[1]: https://www.murata.com/products/productdetail?partno=NCP15XH103F03RC
-[2]: https://www.murata.com/products/productdata/8796836626462/NTHCG83.txt?1437969843000
-[3]: https://nl.mouser.com/datasheet/2/281/r44e-522712.pdf
-
-Fixes: 54ce3a0d8011 ("hwmon: (ntc_thermistor) Add support for ncpXXxh103")
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Link: https://lore.kernel.org/r/20250227-ntc_thermistor_fixes-v1-3-70fa73200b52@gocontroll.com
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 874bbd1219c7 ("iio: adc: ad7192: Use bitfield access macros")
+Signed-off-by: Markus Burri <markus.burri@mt.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250124150703.97848-1-markus.burri@mt.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ntc_thermistor.c | 66 +++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ drivers/iio/adc/ad7192.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
-index 4414c6b313238..fe2f95aa97a6e 100644
---- a/drivers/hwmon/ntc_thermistor.c
-+++ b/drivers/hwmon/ntc_thermistor.c
-@@ -174,40 +174,40 @@ static const struct ntc_compensation ncpXXwf104[] = {
- };
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -1082,7 +1082,7 @@ static int ad7192_update_scan_mode(struc
  
- static const struct ntc_compensation ncpXXxh103[] = {
--	{ .temp_c	= -40, .ohm	= 247565 },
--	{ .temp_c	= -35, .ohm	= 181742 },
--	{ .temp_c	= -30, .ohm	= 135128 },
--	{ .temp_c	= -25, .ohm	= 101678 },
--	{ .temp_c	= -20, .ohm	= 77373 },
--	{ .temp_c	= -15, .ohm	= 59504 },
--	{ .temp_c	= -10, .ohm	= 46222 },
--	{ .temp_c	= -5, .ohm	= 36244 },
--	{ .temp_c	= 0, .ohm	= 28674 },
--	{ .temp_c	= 5, .ohm	= 22878 },
--	{ .temp_c	= 10, .ohm	= 18399 },
--	{ .temp_c	= 15, .ohm	= 14910 },
--	{ .temp_c	= 20, .ohm	= 12169 },
-+	{ .temp_c	= -40, .ohm	= 195652 },
-+	{ .temp_c	= -35, .ohm	= 148171 },
-+	{ .temp_c	= -30, .ohm	= 113347 },
-+	{ .temp_c	= -25, .ohm	= 87559 },
-+	{ .temp_c	= -20, .ohm	= 68237 },
-+	{ .temp_c	= -15, .ohm	= 53650 },
-+	{ .temp_c	= -10, .ohm	= 42506 },
-+	{ .temp_c	= -5, .ohm	= 33892 },
-+	{ .temp_c	= 0, .ohm	= 27219 },
-+	{ .temp_c	= 5, .ohm	= 22021 },
-+	{ .temp_c	= 10, .ohm	= 17926 },
-+	{ .temp_c	= 15, .ohm	= 14674 },
-+	{ .temp_c	= 20, .ohm	= 12081 },
- 	{ .temp_c	= 25, .ohm	= 10000 },
--	{ .temp_c	= 30, .ohm	= 8271 },
--	{ .temp_c	= 35, .ohm	= 6883 },
--	{ .temp_c	= 40, .ohm	= 5762 },
--	{ .temp_c	= 45, .ohm	= 4851 },
--	{ .temp_c	= 50, .ohm	= 4105 },
--	{ .temp_c	= 55, .ohm	= 3492 },
--	{ .temp_c	= 60, .ohm	= 2985 },
--	{ .temp_c	= 65, .ohm	= 2563 },
--	{ .temp_c	= 70, .ohm	= 2211 },
--	{ .temp_c	= 75, .ohm	= 1915 },
--	{ .temp_c	= 80, .ohm	= 1666 },
--	{ .temp_c	= 85, .ohm	= 1454 },
--	{ .temp_c	= 90, .ohm	= 1275 },
--	{ .temp_c	= 95, .ohm	= 1121 },
--	{ .temp_c	= 100, .ohm	= 990 },
--	{ .temp_c	= 105, .ohm	= 876 },
--	{ .temp_c	= 110, .ohm	= 779 },
--	{ .temp_c	= 115, .ohm	= 694 },
--	{ .temp_c	= 120, .ohm	= 620 },
--	{ .temp_c	= 125, .ohm	= 556 },
-+	{ .temp_c	= 30, .ohm	= 8315 },
-+	{ .temp_c	= 35, .ohm	= 6948 },
-+	{ .temp_c	= 40, .ohm	= 5834 },
-+	{ .temp_c	= 45, .ohm	= 4917 },
-+	{ .temp_c	= 50, .ohm	= 4161 },
-+	{ .temp_c	= 55, .ohm	= 3535 },
-+	{ .temp_c	= 60, .ohm	= 3014 },
-+	{ .temp_c	= 65, .ohm	= 2586 },
-+	{ .temp_c	= 70, .ohm	= 2228 },
-+	{ .temp_c	= 75, .ohm	= 1925 },
-+	{ .temp_c	= 80, .ohm	= 1669 },
-+	{ .temp_c	= 85, .ohm	= 1452 },
-+	{ .temp_c	= 90, .ohm	= 1268 },
-+	{ .temp_c	= 95, .ohm	= 1110 },
-+	{ .temp_c	= 100, .ohm	= 974 },
-+	{ .temp_c	= 105, .ohm	= 858 },
-+	{ .temp_c	= 110, .ohm	= 758 },
-+	{ .temp_c	= 115, .ohm	= 672 },
-+	{ .temp_c	= 120, .ohm	= 596 },
-+	{ .temp_c	= 125, .ohm	= 531 },
- };
+ 	conf &= ~AD7192_CONF_CHAN_MASK;
+ 	for_each_set_bit(i, scan_mask, 8)
+-		conf |= FIELD_PREP(AD7192_CONF_CHAN_MASK, i);
++		conf |= FIELD_PREP(AD7192_CONF_CHAN_MASK, BIT(i));
  
- /*
--- 
-2.39.5
-
+ 	ret = ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, conf);
+ 	if (ret < 0)
 
 
 
