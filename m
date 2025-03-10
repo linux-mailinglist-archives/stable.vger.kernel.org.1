@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-121769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F06A59C31
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5C3A5A182
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5702A188DE58
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5621893BFD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C75523236F;
-	Mon, 10 Mar 2025 17:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD3522DFF3;
+	Mon, 10 Mar 2025 18:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNnT0/8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjXSFtbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135F4233157;
-	Mon, 10 Mar 2025 17:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6968917A2E8;
+	Mon, 10 Mar 2025 18:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626576; cv=none; b=irv4S33vjt4ZFtarSzjEn7mKnlJvNj1gWdzt6WH88KMYynTSSRZA+KK1PjIB59FsmKWM4z1OeaIu7JGy9iZq5e6U8nTGFDqYzZJDoKzFExgmKHp+lEc3rmpVwTmoIucAH8oLdBoheWWJn26Zaz8rIaSnpVHRez3Zj1oSfpExoFk=
+	t=1741629710; cv=none; b=kFVDey+rm5u/AOsdfPeuVHOFd810TJXKPCscI33xS0YDIqsyn2BmAUmlZW0nNSQar+HR0Z27QB+R2jz6u8E08995LFjPl/vr3uYqqAyDHWmkgMidr5Sshw9IU7qdAoYdSl6Ie88KJK10WbDwl8T2izzkrFPKSqzJHAdmAaSCM04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626576; c=relaxed/simple;
-	bh=a813Kl5bDiRXPCnCOFC3o4BMrq/LJSnZ7aE26uC/kqM=;
+	s=arc-20240116; t=1741629710; c=relaxed/simple;
+	bh=RoDPwrl7zfSjQh12UR91i54wOc/tKpQbTLG6Kj7Yefw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZF22NkXcLgw2zT4fVLf/iVdN7PHQg8CtygjX+juebQhmASkxTTgTzmxcJ60axVlVRO0RV/FpKNd5/vwtFpkmTr80gq5Gfw/IEwBBClX6sM5lomYQ1T9tqc4EqYLW7jUo8kdqYkyxMMpfpXBPBNjReS7/IeDup9IBbiH3DRt//Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNnT0/8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90056C4CEE5;
-	Mon, 10 Mar 2025 17:09:35 +0000 (UTC)
+	 MIME-Version; b=OkE62It7xDMKaQj7tAbWCK9/wcQJ/8PaGnVLdgIxjJfval1UcrKD/XqYFQqYuKisOnVgYht0GOUlO1wLlIS84SeaG+Iussy9jLTajafJIfaXhgan0Ka0JNdTlDcOxgorXx4ZIAIMqiM0PXKWXozQ6y+ybtp8QRgrgOgS7gwDxks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjXSFtbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C4BC4CEE5;
+	Mon, 10 Mar 2025 18:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626576;
-	bh=a813Kl5bDiRXPCnCOFC3o4BMrq/LJSnZ7aE26uC/kqM=;
+	s=korg; t=1741629710;
+	bh=RoDPwrl7zfSjQh12UR91i54wOc/tKpQbTLG6Kj7Yefw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNnT0/8/whqLnuIkIQY/ioHa9QtGrKYARDTQWZAtRBClst8BIbl3T0ks09hN9Jiyh
-	 xhHkfZ8J1HJRjfuO9uVU2QGVEyD9Hs4bygjieT7r/YOXDprthlCoUhG0cNNLz4cPar
-	 p1kqXA/i8Kroyi0l5ls2P28S6B8N8mxZevcj8m64=
+	b=zjXSFtbBsbwDBILG/n7i6CxX3KMlrpPYBFirF+sRhvCviaf9mfV7GMH5478/IQWGq
+	 RvfaIMGE146rxp5arbV9Bp3Bdt56AvBRrhpl4Nxs9dI4k5fGYTjXO6kDwbahbrJcAa
+	 hB74HhQOagdTV7SYOh3Ha/3dSN0EqB2jO25GpI9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.13 008/207] tracing: tprobe-events: Fix a memory leak when tprobe with $retval
-Date: Mon, 10 Mar 2025 18:03:21 +0100
-Message-ID: <20250310170448.086009816@linuxfoundation.org>
+	Andy Strohman <andrew@andrewstrohman.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.15 356/620] batman-adv: fix panic during interface removal
+Date: Mon, 10 Mar 2025 18:03:22 +0100
+Message-ID: <20250310170559.659831602@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Andy Strohman <andrew@andrewstrohman.com>
 
-commit ac965d7d88fc36fb42e3d50225c0a44dd8326da4 upstream.
+commit ccb7276a6d26d6f8416e315b43b45e15ee7f29e2 upstream.
 
-Fix a memory leak when a tprobe is defined with $retval. This
-combination is not allowed, but the parse_symbol_and_return() does
-not free the *symbol which should not be used if it returns the error.
-Thus, it leaks the *symbol memory in that error path.
+Reference counting is used to ensure that
+batadv_hardif_neigh_node and batadv_hard_iface
+are not freed before/during
+batadv_v_elp_throughput_metric_update work is
+finished.
 
-Link: https://lore.kernel.org/all/174055072650.4079315.3063014346697447838.stgit@mhiramat.tok.corp.google.com/
+But there isn't a guarantee that the hard if will
+remain associated with a soft interface up until
+the work is finished.
 
-Fixes: ce51e6153f77 ("tracing: fprobe-event: Fix to check tracepoint event and return")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+This fixes a crash triggered by reboot that looks
+like this:
+
+Call trace:
+ batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
+ batadv_v_elp_throughput_metric_update+0x1c/0xa4
+ process_one_work+0x178/0x398
+ worker_thread+0x2e8/0x4d0
+ kthread+0xd8/0xdc
+ ret_from_fork+0x10/0x20
+
+(the batadv_v_mesh_free call is misleading,
+and does not actually happen)
+
+I was able to make the issue happen more reliably
+by changing hardif_neigh->bat_v.metric_work work
+to be delayed work. This allowed me to track down
+and confirm the fix.
+
 Cc: stable@vger.kernel.org
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
+[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
+ soft_iface]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_fprobe.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/bat_v_elp.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -1025,6 +1025,8 @@ static int parse_symbol_and_return(int a
- 			if (is_tracepoint) {
- 				trace_probe_log_set_index(i);
- 				trace_probe_log_err(tmp - argv[i], RETVAL_ON_PROBE);
-+				kfree(*symbol);
-+				*symbol = NULL;
- 				return -EINVAL;
- 			}
- 			*is_return = true;
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -67,12 +67,19 @@ static void batadv_v_elp_start_timer(str
+ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ {
+ 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
++	struct net_device *soft_iface = hard_iface->soft_iface;
+ 	struct ethtool_link_ksettings link_settings;
+ 	struct net_device *real_netdev;
+ 	struct station_info sinfo;
+ 	u32 throughput;
+ 	int ret;
+ 
++	/* don't query throughput when no longer associated with any
++	 * batman-adv interface
++	 */
++	if (!soft_iface)
++		return BATADV_THROUGHPUT_DEFAULT_VALUE;
++
+ 	/* if the user specified a customised value for this interface, then
+ 	 * return it directly
+ 	 */
+@@ -143,7 +150,7 @@ static u32 batadv_v_elp_get_throughput(s
+ 
+ default_throughput:
+ 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
+-		batadv_info(hard_iface->soft_iface,
++		batadv_info(soft_iface,
+ 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
+ 			    hard_iface->net_dev->name,
+ 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
 
 
 
