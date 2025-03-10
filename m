@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B41A59C3E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396F8A5A17B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53AC43A740B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF751893AF4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E992C230BE3;
-	Mon, 10 Mar 2025 17:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4006522D4FD;
+	Mon, 10 Mar 2025 18:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGrIZn6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmx1/RPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73A91DE89C;
-	Mon, 10 Mar 2025 17:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AAF17A2E8;
+	Mon, 10 Mar 2025 18:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626564; cv=none; b=Tsuu2w7irb+EQSiAaqRHsBsYZD71mIDxwcczVGbmZNWVO5LRwQq0HALB74c9ZUvfT0iampwxI2rThlxUa60N+Dx23epXcHCLY3RK7YgwwpKRTk0HtN0ptGaK7KVrErxdPmhkd7a8S7GANyoSUBgkOO0yl3dpBInWp6gCnglUCjY=
+	t=1741629693; cv=none; b=guT+tIYQ/Fg43/4C2jaarzGoqgS3PzDcmzayd3ToJPTIBqC91/Vv6WwaIw1OjidKT9K7/j8za3YyDBi5qBJInblhs73Rh1OmAIf2S35h7q7PeSakn9PzehBqwIgMyT4rEsNH8rGH+BkGPN3AbS+BkbAIZeamCfSpXvoZW6osdtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626564; c=relaxed/simple;
-	bh=OPcjNHLrqulAk3rYpGpbL7X8+36cCXHW5l54ungb0PU=;
+	s=arc-20240116; t=1741629693; c=relaxed/simple;
+	bh=ON3Bxv7Hc4HmeXtZamy6RvmmKPNjGSq9obHHFYnE+T4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4uU8Sg/zjbDRd7p3rY8ao/6p7/aMZUr1nXudVo/Ugjf29y6LtE2slOmiZ0uaxyb0U3HHvPrV68kU1HITglBi6D64NhAGNFLr6+OYe+2EdWSM/xvMsVWOpR9k5yDtcqLde6TIpjs+cmQJdaoqc/GWtZxsmeACGvOWno44UrG+8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGrIZn6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D863C4CEE5;
-	Mon, 10 Mar 2025 17:09:23 +0000 (UTC)
+	 MIME-Version; b=E7XgtNtFMj/P3ZHFSkf93pTYYFOSKHPDk3+9fKMExfn4WjYjXPex1Bjumlx6cOcI1E79YbzI7a2NF2/wyyneAawWb/xKqwbjpSWFd+zkrF9AkrjNyEBuGDuW072GjIbjBN0gEnoyc8lFVD+IzP5rGDeF3ktFrvDhf9XEnnXQHrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmx1/RPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C47FC4CEE5;
+	Mon, 10 Mar 2025 18:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626564;
-	bh=OPcjNHLrqulAk3rYpGpbL7X8+36cCXHW5l54ungb0PU=;
+	s=korg; t=1741629692;
+	bh=ON3Bxv7Hc4HmeXtZamy6RvmmKPNjGSq9obHHFYnE+T4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGrIZn6dFBgAYviC2g46p3L03y7R8Uk7W9KmR4My+OH66UV2iUz9r7W4ZPBDZo4Vy
-	 /0+al7Mylz/Dejy7D6KLaRJLOXMRh0EqKQABV70qdFJZ1IIgjwqNCOupbA/r0+Fmf0
-	 xloL9ghaGkCmzYf9gp8uUWVZaF6V1Xb8EF84Ffe8=
+	b=qmx1/RPo3j3SmeW437dIIu92OfaYpoWeFuJPlS6ihKj33yqKRZquYE/enGp0UJKML
+	 1JYUwVb95BhSlZ2ny4pguhxbCWqqQkuj+tNfs+lg8mcbrrUhMEcIe7GDQHsS7PrQwz
+	 IhwrlBxExFeZcyFw4vZMGM9AwOPAMtAFmcf5mVJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Ma Ke <make24@iscas.ac.cn>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 034/207] drm/amd/display: Fix null check for pipe_ctx->plane_state in resource_build_scaling_params
+	stable <stable@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 5.15 381/620] serial: 8250: Fix fifo underflow on flush
 Date: Mon, 10 Mar 2025 18:03:47 +0100
-Message-ID: <20250310170449.131087208@linuxfoundation.org>
+Message-ID: <20250310170600.634212816@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-commit 374c9faac5a763a05bc3f68ad9f73dab3c6aec90 upstream.
+commit 9e512eaaf8f4008c44ede3dfc0fbc9d9c5118583 upstream.
 
-Null pointer dereference issue could occur when pipe_ctx->plane_state
-is null. The fix adds a check to ensure 'pipe_ctx->plane_state' is not
-null before accessing. This prevents a null pointer dereference.
+When flushing the serial port's buffer, uart_flush_buffer() calls
+kfifo_reset() but if there is an outstanding DMA transfer then the
+completion function will consume data from the kfifo via
+uart_xmit_advance(), underflowing and leading to ongoing DMA as the
+driver tries to transmit another 2^32 bytes.
 
-Found by code review.
+This is readily reproduced with serial-generic and amidi sending even
+short messages as closing the device on exit will wait for the fifo to
+drain and in the underflow case amidi hangs for 30 seconds on exit in
+tty_wait_until_sent().  A trace of that gives:
 
-Fixes: 3be5262e353b ("drm/amd/display: Rename more dc_surface stuff to plane_state")
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 63e6a77ccf239337baa9b1e7787cde9fa0462092)
-Cc: stable@vger.kernel.org
+     kworker/1:1-84    [001]    51.769423: bprint:               serial8250_tx_dma: tx_size=3 fifo_len=3
+           amidi-763   [001]    51.769460: bprint:               uart_flush_buffer: resetting fifo
+ irq/21-fe530000-76    [000]    51.769474: bprint:               __dma_tx_complete: tx_size=3
+ irq/21-fe530000-76    [000]    51.769479: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294967293
+ irq/21-fe530000-76    [000]    51.781295: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.781301: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294963197
+ irq/21-fe530000-76    [000]    51.793131: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.793135: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294959101
+ irq/21-fe530000-76    [000]    51.804949: bprint:               __dma_tx_complete: tx_size=4096
+
+Since the port lock is held in when the kfifo is reset in
+uart_flush_buffer() and in __dma_tx_complete(), adding a flush_buffer
+hook to adjust the outstanding DMA byte count is sufficient to avoid the
+kfifo underflow.
+
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
+Cc: stable <stable@kernel.org>
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://lore.kernel.org/r/20250208124148.1189191-1-jkeeping@inmusicbrands.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250.h      |    2 ++
+ drivers/tty/serial/8250/8250_dma.c  |   16 ++++++++++++++++
+ drivers/tty/serial/8250/8250_port.c |    9 +++++++++
+ 3 files changed, 27 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1455,7 +1455,8 @@ bool resource_build_scaling_params(struc
- 	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -328,6 +328,7 @@ static inline int is_omap1510_8250(struc
  
- 	/* Invalid input */
--	if (!plane_state->dst_rect.width ||
-+	if (!plane_state ||
-+			!plane_state->dst_rect.width ||
- 			!plane_state->dst_rect.height ||
- 			!plane_state->src_rect.width ||
- 			!plane_state->src_rect.height) {
+ #ifdef CONFIG_SERIAL_8250_DMA
+ extern int serial8250_tx_dma(struct uart_8250_port *);
++extern void serial8250_tx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_rx_dma(struct uart_8250_port *);
+ extern void serial8250_rx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_request_dma(struct uart_8250_port *);
+@@ -360,6 +361,7 @@ static inline int serial8250_tx_dma(stru
+ {
+ 	return -1;
+ }
++static inline void serial8250_tx_dma_flush(struct uart_8250_port *p) { }
+ static inline int serial8250_rx_dma(struct uart_8250_port *p)
+ {
+ 	return -1;
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -137,6 +137,22 @@ err:
+ 	return ret;
+ }
+ 
++void serial8250_tx_dma_flush(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	if (!dma->tx_running)
++		return;
++
++	/*
++	 * kfifo_reset() has been called by the serial core, avoid
++	 * advancing and underflowing in __dma_tx_complete().
++	 */
++	dma->tx_size = 0;
++
++	dmaengine_terminate_async(dma->rxchan);
++}
++
+ int serial8250_rx_dma(struct uart_8250_port *p)
+ {
+ 	struct uart_8250_dma		*dma = p->dma;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2512,6 +2512,14 @@ static unsigned int npcm_get_divisor(str
+ 	return DIV_ROUND_CLOSEST(port->uartclk, 16 * baud + 2) - 2;
+ }
+ 
++static void serial8250_flush_buffer(struct uart_port *port)
++{
++	struct uart_8250_port *up = up_to_u8250p(port);
++
++	if (up->dma)
++		serial8250_tx_dma_flush(up);
++}
++
+ static unsigned int serial8250_do_get_divisor(struct uart_port *port,
+ 					      unsigned int baud,
+ 					      unsigned int *frac)
+@@ -3238,6 +3246,7 @@ static const struct uart_ops serial8250_
+ 	.break_ctl	= serial8250_break_ctl,
+ 	.startup	= serial8250_startup,
+ 	.shutdown	= serial8250_shutdown,
++	.flush_buffer	= serial8250_flush_buffer,
+ 	.set_termios	= serial8250_set_termios,
+ 	.set_ldisc	= serial8250_set_ldisc,
+ 	.pm		= serial8250_pm,
 
 
 
