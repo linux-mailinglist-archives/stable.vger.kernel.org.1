@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC2DA59F44
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C440A59FD6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C761890712
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4806F3AA67F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498B8233153;
-	Mon, 10 Mar 2025 17:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA1322D7A6;
+	Mon, 10 Mar 2025 17:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjV0BVr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="js3u14Us"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033651DE89C;
-	Mon, 10 Mar 2025 17:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8E11DE89C;
+	Mon, 10 Mar 2025 17:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628289; cv=none; b=k1UamlhxxgiC3nSb/8yWeBIPb0FiiTY0JiqDwAJvZSX8S0q8daDFJ2T9NN2bNXmrhFy6iaO4Kkc+LueHuxM3Wp0flK4cf9MkdjgE3ufGCWHweoIlRtC367nt5o8Avy/oiaNyqkk+b/fXJRR/VlJ9fokdm0V1Hbhc2y4aV7b+r/U=
+	t=1741628598; cv=none; b=Krfu+7GDURRx+tSCPNThM5e7NlQbwuT+a+/a7WpdxlacnGzs5yahq1yKZuExFwNmDxXFHbML/rHqh+SvYwjqNbjlZa7mVePPNkt7N4qlowJALVlKKjGc2kOEnsBOS4ewnus4ImiOrDZSRc3gVYhSBzcQclsrvogaq2s1sjhRoTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628289; c=relaxed/simple;
-	bh=u6Gl1avNaLO6v3el150MjzPT+QsazA05BvWqmv/PqWc=;
+	s=arc-20240116; t=1741628598; c=relaxed/simple;
+	bh=AX2lYH7PSgGSQraSZ0fUW5jlzs2QPQx8fFcMMEZ1qSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajMogPn/aADXRlsIKPtv9J69FjEeNDaTiQaPj6f30yYVbsNV4Z8jLwOjjl9xRzPO/mnwKcmxDum3JJUjf0Ktb04zuRLOWpuDN5iBNduN0gDr0D2Xu/wwgGBQZv6iYK4rhFNvrajyoeNb+ddLqQv3jGXNc+91yInTXWB3okonz2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CjV0BVr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5164EC4CEE5;
-	Mon, 10 Mar 2025 17:38:08 +0000 (UTC)
+	 MIME-Version; b=KAUP/1SFEAxKe6i1t3/kPB9OcAJLlwr+FheLcU8uUNZp3i9bxRK5lp7+GEhSl1UJ9LwelYYATV3+5GdnUNoOB3Qe5M0R/BUnyxXjG4Xi3MinGvMCgcpr58kCpeJa3Lmg5esAQmRrf2kOnnzqZoVOsu2lG/IH6xUrWOCAlwe65YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=js3u14Us; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223CBC4CEE5;
+	Mon, 10 Mar 2025 17:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628288;
-	bh=u6Gl1avNaLO6v3el150MjzPT+QsazA05BvWqmv/PqWc=;
+	s=korg; t=1741628598;
+	bh=AX2lYH7PSgGSQraSZ0fUW5jlzs2QPQx8fFcMMEZ1qSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CjV0BVr8P5pLlSbcZNssU9qJeISxowZY3N+n7WCDWCo6hq/VDGOGnX54vZIFmVVSE
-	 SN7W2WbckOD/80OpE3jSBMYaqo48BlV68Ia7Mb9xVFjA7hszFPm7B3rY15SWjc8NhD
-	 PNoSaABmLFeYRFJnh7zE4Wo/V41gX+feqaFaO3qc=
+	b=js3u14UseVYaVAG7uMBFjeyhivU15jpE+u6I9dIHwwoU8UkVXRp8LBGkz1FhAy6Th
+	 7/vqJ34dbp3OvW6lrgezsHor9e50dyXRAUutRV0M/Chmv/XFdTgJEtLnKm9X8g03NX
+	 qpQFkvjxqbqRWhg6LFzWvsTs9C/5GQC63Lv8qiig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.6 141/145] x86/boot: Rename conflicting boot_params pointer to boot_params_ptr
+	Nayab Sayed <nayabbasha.sayed@microchip.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 091/109] iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
 Date: Mon, 10 Mar 2025 18:07:15 +0100
-Message-ID: <20250310170440.449896143@linuxfoundation.org>
+Message-ID: <20250310170431.183079152@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,422 +62,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Nayab Sayed <nayabbasha.sayed@microchip.com>
 
-commit d55d5bc5d937743aa8ebb7ca3af25111053b5d8c upstream.
+commit aa5119c36d19639397d29ef305aa53a5ecd72b27 upstream.
 
-The x86 decompressor is built and linked as a separate executable, but
-it shares components with the kernel proper, which are either #include'd
-as C files, or linked into the decompresor as a static library (e.g, the
-EFI stub)
+The number of valid bits in SAMA7G5 ADC channel data register are 16.
+Hence changing the realbits value to 16
 
-Both the kernel itself and the decompressor define a global symbol
-'boot_params' to refer to the boot_params struct, but in the former
-case, it refers to the struct directly, whereas in the decompressor, it
-refers to a global pointer variable referring to the struct boot_params
-passed by the bootloader or constructed from scratch.
-
-This ambiguity is unfortunate, and makes it impossible to assign this
-decompressor variable from the x86 EFI stub, given that declaring it as
-extern results in a clash. So rename the decompressor version (whose
-scope is limited) to boot_params_ptr.
-
-[ mingo: Renamed 'boot_params_p' to 'boot_params_ptr' for clarity ]
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-[ardb: include references to boot_params in x86-stub.[ch]]
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 840bf6cb983f ("iio: adc: at91-sama5d2_adc: add support for sama7g5 device")
+Signed-off-by: Nayab Sayed <nayabbasha.sayed@microchip.com>
+Link: https://patch.msgid.link/20250115-fix-sama7g5-adc-realbits-v2-1-58a6e4087584@microchip.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/acpi.c         |   14 +++++++-------
- arch/x86/boot/compressed/cmdline.c      |    4 ++--
- arch/x86/boot/compressed/ident_map_64.c |    7 ++++---
- arch/x86/boot/compressed/kaslr.c        |   26 +++++++++++++-------------
- arch/x86/boot/compressed/mem.c          |    6 +++---
- arch/x86/boot/compressed/misc.c         |   26 +++++++++++++-------------
- arch/x86/boot/compressed/misc.h         |    1 -
- arch/x86/boot/compressed/pgtable_64.c   |    9 ++++-----
- arch/x86/boot/compressed/sev.c          |    2 +-
- arch/x86/include/asm/boot.h             |    2 ++
- drivers/firmware/efi/libstub/x86-stub.c |    2 +-
- drivers/firmware/efi/libstub/x86-stub.h |    2 --
- 12 files changed, 50 insertions(+), 51 deletions(-)
+ drivers/iio/adc/at91-sama5d2_adc.c |   68 +++++++++++++++++++++----------------
+ 1 file changed, 40 insertions(+), 28 deletions(-)
 
---- a/arch/x86/boot/compressed/acpi.c
-+++ b/arch/x86/boot/compressed/acpi.c
-@@ -30,13 +30,13 @@ __efi_get_rsdp_addr(unsigned long cfg_tb
- 	 * Search EFI system tables for RSDP. Preferred is ACPI_20_TABLE_GUID to
- 	 * ACPI_TABLE_GUID because it has more features.
- 	 */
--	rsdp_addr = efi_find_vendor_table(boot_params, cfg_tbl_pa, cfg_tbl_len,
-+	rsdp_addr = efi_find_vendor_table(boot_params_ptr, cfg_tbl_pa, cfg_tbl_len,
- 					  ACPI_20_TABLE_GUID);
- 	if (rsdp_addr)
- 		return (acpi_physical_address)rsdp_addr;
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -329,7 +329,7 @@ static const struct at91_adc_reg_layout
+ #define AT91_HWFIFO_MAX_SIZE_STR	"128"
+ #define AT91_HWFIFO_MAX_SIZE		128
  
- 	/* No ACPI_20_TABLE_GUID found, fallback to ACPI_TABLE_GUID. */
--	rsdp_addr = efi_find_vendor_table(boot_params, cfg_tbl_pa, cfg_tbl_len,
-+	rsdp_addr = efi_find_vendor_table(boot_params_ptr, cfg_tbl_pa, cfg_tbl_len,
- 					  ACPI_TABLE_GUID);
- 	if (rsdp_addr)
- 		return (acpi_physical_address)rsdp_addr;
-@@ -56,15 +56,15 @@ static acpi_physical_address efi_get_rsd
- 	enum efi_type et;
- 	int ret;
- 
--	et = efi_get_type(boot_params);
-+	et = efi_get_type(boot_params_ptr);
- 	if (et == EFI_TYPE_NONE)
- 		return 0;
- 
--	systab_pa = efi_get_system_table(boot_params);
-+	systab_pa = efi_get_system_table(boot_params_ptr);
- 	if (!systab_pa)
- 		error("EFI support advertised, but unable to locate system table.");
- 
--	ret = efi_get_conf_table(boot_params, &cfg_tbl_pa, &cfg_tbl_len);
-+	ret = efi_get_conf_table(boot_params_ptr, &cfg_tbl_pa, &cfg_tbl_len);
- 	if (ret || !cfg_tbl_pa)
- 		error("EFI config table not found.");
- 
-@@ -156,7 +156,7 @@ acpi_physical_address get_rsdp_addr(void
- {
- 	acpi_physical_address pa;
- 
--	pa = boot_params->acpi_rsdp_addr;
-+	pa = boot_params_ptr->acpi_rsdp_addr;
- 
- 	if (!pa)
- 		pa = efi_get_rsdp_addr();
-@@ -210,7 +210,7 @@ static unsigned long get_acpi_srat_table
- 	rsdp = (struct acpi_table_rsdp *)get_cmdline_acpi_rsdp();
- 	if (!rsdp)
- 		rsdp = (struct acpi_table_rsdp *)(long)
--			boot_params->acpi_rsdp_addr;
-+			boot_params_ptr->acpi_rsdp_addr;
- 
- 	if (!rsdp)
- 		return 0;
---- a/arch/x86/boot/compressed/cmdline.c
-+++ b/arch/x86/boot/compressed/cmdline.c
-@@ -14,9 +14,9 @@ static inline char rdfs8(addr_t addr)
- #include "../cmdline.c"
- unsigned long get_cmd_line_ptr(void)
- {
--	unsigned long cmd_line_ptr = boot_params->hdr.cmd_line_ptr;
-+	unsigned long cmd_line_ptr = boot_params_ptr->hdr.cmd_line_ptr;
- 
--	cmd_line_ptr |= (u64)boot_params->ext_cmd_line_ptr << 32;
-+	cmd_line_ptr |= (u64)boot_params_ptr->ext_cmd_line_ptr << 32;
- 
- 	return cmd_line_ptr;
- }
---- a/arch/x86/boot/compressed/ident_map_64.c
-+++ b/arch/x86/boot/compressed/ident_map_64.c
-@@ -159,8 +159,9 @@ void initialize_identity_maps(void *rmod
- 	 * or does not touch all the pages covering them.
- 	 */
- 	kernel_add_identity_map((unsigned long)_head, (unsigned long)_end);
--	boot_params = rmode;
--	kernel_add_identity_map((unsigned long)boot_params, (unsigned long)(boot_params + 1));
-+	boot_params_ptr = rmode;
-+	kernel_add_identity_map((unsigned long)boot_params_ptr,
-+				(unsigned long)(boot_params_ptr + 1));
- 	cmdline = get_cmd_line_ptr();
- 	kernel_add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
- 
-@@ -168,7 +169,7 @@ void initialize_identity_maps(void *rmod
- 	 * Also map the setup_data entries passed via boot_params in case they
- 	 * need to be accessed by uncompressed kernel via the identity mapping.
- 	 */
--	sd = (struct setup_data *)boot_params->hdr.setup_data;
-+	sd = (struct setup_data *)boot_params_ptr->hdr.setup_data;
- 	while (sd) {
- 		unsigned long sd_addr = (unsigned long)sd;
- 
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -63,7 +63,7 @@ static unsigned long get_boot_seed(void)
- 	unsigned long hash = 0;
- 
- 	hash = rotate_xor(hash, build_str, sizeof(build_str));
--	hash = rotate_xor(hash, boot_params, sizeof(*boot_params));
-+	hash = rotate_xor(hash, boot_params_ptr, sizeof(*boot_params_ptr));
- 
- 	return hash;
- }
-@@ -383,7 +383,7 @@ static void handle_mem_options(void)
- static void mem_avoid_init(unsigned long input, unsigned long input_size,
- 			   unsigned long output)
- {
--	unsigned long init_size = boot_params->hdr.init_size;
-+	unsigned long init_size = boot_params_ptr->hdr.init_size;
- 	u64 initrd_start, initrd_size;
- 	unsigned long cmd_line, cmd_line_size;
- 
-@@ -395,10 +395,10 @@ static void mem_avoid_init(unsigned long
- 	mem_avoid[MEM_AVOID_ZO_RANGE].size = (output + init_size) - input;
- 
- 	/* Avoid initrd. */
--	initrd_start  = (u64)boot_params->ext_ramdisk_image << 32;
--	initrd_start |= boot_params->hdr.ramdisk_image;
--	initrd_size  = (u64)boot_params->ext_ramdisk_size << 32;
--	initrd_size |= boot_params->hdr.ramdisk_size;
-+	initrd_start  = (u64)boot_params_ptr->ext_ramdisk_image << 32;
-+	initrd_start |= boot_params_ptr->hdr.ramdisk_image;
-+	initrd_size  = (u64)boot_params_ptr->ext_ramdisk_size << 32;
-+	initrd_size |= boot_params_ptr->hdr.ramdisk_size;
- 	mem_avoid[MEM_AVOID_INITRD].start = initrd_start;
- 	mem_avoid[MEM_AVOID_INITRD].size = initrd_size;
- 	/* No need to set mapping for initrd, it will be handled in VO. */
-@@ -413,8 +413,8 @@ static void mem_avoid_init(unsigned long
+-#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
++#define AT91_SAMA_CHAN_SINGLE(index, num, addr, rbits)			\
+ 	{								\
+ 		.type = IIO_VOLTAGE,					\
+ 		.channel = num,						\
+@@ -337,7 +337,7 @@ static const struct at91_adc_reg_layout
+ 		.scan_index = index,					\
+ 		.scan_type = {						\
+ 			.sign = 'u',					\
+-			.realbits = 14,					\
++			.realbits = rbits,				\
+ 			.storagebits = 16,				\
+ 		},							\
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+@@ -350,7 +350,13 @@ static const struct at91_adc_reg_layout
+ 		.indexed = 1,						\
  	}
  
- 	/* Avoid boot parameters. */
--	mem_avoid[MEM_AVOID_BOOTPARAMS].start = (unsigned long)boot_params;
--	mem_avoid[MEM_AVOID_BOOTPARAMS].size = sizeof(*boot_params);
-+	mem_avoid[MEM_AVOID_BOOTPARAMS].start = (unsigned long)boot_params_ptr;
-+	mem_avoid[MEM_AVOID_BOOTPARAMS].size = sizeof(*boot_params_ptr);
- 
- 	/* We don't need to set a mapping for setup_data. */
- 
-@@ -447,7 +447,7 @@ static bool mem_avoid_overlap(struct mem
- 	}
- 
- 	/* Avoid all entries in the setup_data linked list. */
--	ptr = (struct setup_data *)(unsigned long)boot_params->hdr.setup_data;
-+	ptr = (struct setup_data *)(unsigned long)boot_params_ptr->hdr.setup_data;
- 	while (ptr) {
- 		struct mem_vector avoid;
- 
-@@ -706,7 +706,7 @@ static inline bool memory_type_is_free(e
- static bool
- process_efi_entries(unsigned long minimum, unsigned long image_size)
- {
--	struct efi_info *e = &boot_params->efi_info;
-+	struct efi_info *e = &boot_params_ptr->efi_info;
- 	bool efi_mirror_found = false;
- 	struct mem_vector region;
- 	efi_memory_desc_t *md;
-@@ -777,8 +777,8 @@ static void process_e820_entries(unsigne
- 	struct boot_e820_entry *entry;
- 
- 	/* Verify potential e820 positions, appending to slots list. */
--	for (i = 0; i < boot_params->e820_entries; i++) {
--		entry = &boot_params->e820_table[i];
-+	for (i = 0; i < boot_params_ptr->e820_entries; i++) {
-+		entry = &boot_params_ptr->e820_table[i];
- 		/* Skip non-RAM entries. */
- 		if (entry->type != E820_TYPE_RAM)
- 			continue;
-@@ -852,7 +852,7 @@ void choose_random_location(unsigned lon
- 		return;
- 	}
- 
--	boot_params->hdr.loadflags |= KASLR_FLAG;
-+	boot_params_ptr->hdr.loadflags |= KASLR_FLAG;
- 
- 	if (IS_ENABLED(CONFIG_X86_32))
- 		mem_limit = KERNEL_IMAGE_SIZE;
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -54,17 +54,17 @@ bool init_unaccepted_memory(void)
- 	enum efi_type et;
- 	int ret;
- 
--	et = efi_get_type(boot_params);
-+	et = efi_get_type(boot_params_ptr);
- 	if (et == EFI_TYPE_NONE)
- 		return false;
- 
--	ret = efi_get_conf_table(boot_params, &cfg_table_pa, &cfg_table_len);
-+	ret = efi_get_conf_table(boot_params_ptr, &cfg_table_pa, &cfg_table_len);
- 	if (ret) {
- 		warn("EFI config table not found.");
- 		return false;
- 	}
- 
--	table = (void *)efi_find_vendor_table(boot_params, cfg_table_pa,
-+	table = (void *)efi_find_vendor_table(boot_params_ptr, cfg_table_pa,
- 					      cfg_table_len, guid);
- 	if (!table)
- 		return false;
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -46,7 +46,7 @@ void *memmove(void *dest, const void *sr
- /*
-  * This is set up by the setup-routine at boot-time
-  */
--struct boot_params *boot_params;
-+struct boot_params *boot_params_ptr;
- 
- struct port_io_ops pio_ops;
- 
-@@ -132,8 +132,8 @@ void __putstr(const char *s)
- 	if (lines == 0 || cols == 0)
- 		return;
- 
--	x = boot_params->screen_info.orig_x;
--	y = boot_params->screen_info.orig_y;
-+	x = boot_params_ptr->screen_info.orig_x;
-+	y = boot_params_ptr->screen_info.orig_y;
- 
- 	while ((c = *s++) != '\0') {
- 		if (c == '\n') {
-@@ -154,8 +154,8 @@ void __putstr(const char *s)
- 		}
- 	}
- 
--	boot_params->screen_info.orig_x = x;
--	boot_params->screen_info.orig_y = y;
-+	boot_params_ptr->screen_info.orig_x = x;
-+	boot_params_ptr->screen_info.orig_y = y;
- 
- 	pos = (x + cols * y) * 2;	/* Update cursor position */
- 	outb(14, vidport);
-@@ -396,16 +396,16 @@ asmlinkage __visible void *extract_kerne
- 	size_t entry_offset;
- 
- 	/* Retain x86 boot parameters pointer passed from startup_32/64. */
--	boot_params = rmode;
-+	boot_params_ptr = rmode;
- 
- 	/* Clear flags intended for solely in-kernel use. */
--	boot_params->hdr.loadflags &= ~KASLR_FLAG;
-+	boot_params_ptr->hdr.loadflags &= ~KASLR_FLAG;
- 
--	parse_mem_encrypt(&boot_params->hdr);
-+	parse_mem_encrypt(&boot_params_ptr->hdr);
- 
--	sanitize_boot_params(boot_params);
-+	sanitize_boot_params(boot_params_ptr);
- 
--	if (boot_params->screen_info.orig_video_mode == 7) {
-+	if (boot_params_ptr->screen_info.orig_video_mode == 7) {
- 		vidmem = (char *) 0xb0000;
- 		vidport = 0x3b4;
- 	} else {
-@@ -413,8 +413,8 @@ asmlinkage __visible void *extract_kerne
- 		vidport = 0x3d4;
- 	}
- 
--	lines = boot_params->screen_info.orig_video_lines;
--	cols = boot_params->screen_info.orig_video_cols;
-+	lines = boot_params_ptr->screen_info.orig_video_lines;
-+	cols = boot_params_ptr->screen_info.orig_video_cols;
- 
- 	init_default_io_ops();
- 
-@@ -433,7 +433,7 @@ asmlinkage __visible void *extract_kerne
- 	 * so that early debugging output from the RSDP parsing code can be
- 	 * collected.
- 	 */
--	boot_params->acpi_rsdp_addr = get_rsdp_addr();
-+	boot_params_ptr->acpi_rsdp_addr = get_rsdp_addr();
- 
- 	debug_putstr("early console in extract_kernel\n");
- 
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -61,7 +61,6 @@ extern memptr free_mem_ptr;
- extern memptr free_mem_end_ptr;
- void *malloc(int size);
- void free(void *where);
--extern struct boot_params *boot_params;
- void __putstr(const char *s);
- void __puthex(unsigned long value);
- #define error_putstr(__x)  __putstr(__x)
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -28,7 +28,6 @@ static char trampoline_save[TRAMPOLINE_3
-  */
- unsigned long *trampoline_32bit __section(".data");
- 
--extern struct boot_params *boot_params;
- int cmdline_find_option_bool(const char *option);
- 
- static unsigned long find_trampoline_placement(void)
-@@ -49,7 +48,7 @@ static unsigned long find_trampoline_pla
- 	 *
- 	 * Only look for values in the legacy ROM for non-EFI system.
- 	 */
--	signature = (char *)&boot_params->efi_info.efi_loader_signature;
-+	signature = (char *)&boot_params_ptr->efi_info.efi_loader_signature;
- 	if (strncmp(signature, EFI32_LOADER_SIGNATURE, 4) &&
- 	    strncmp(signature, EFI64_LOADER_SIGNATURE, 4)) {
- 		ebda_start = *(unsigned short *)0x40e << 4;
-@@ -65,10 +64,10 @@ static unsigned long find_trampoline_pla
- 	bios_start = round_down(bios_start, PAGE_SIZE);
- 
- 	/* Find the first usable memory region under bios_start. */
--	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
-+	for (i = boot_params_ptr->e820_entries - 1; i >= 0; i--) {
- 		unsigned long new = bios_start;
- 
--		entry = &boot_params->e820_table[i];
-+		entry = &boot_params_ptr->e820_table[i];
- 
- 		/* Skip all entries above bios_start. */
- 		if (bios_start <= entry->addr)
-@@ -107,7 +106,7 @@ asmlinkage void configure_5level_paging(
- 	bool l5_required = false;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
--	boot_params = bp;
-+	boot_params_ptr = bp;
- 
- 	/*
- 	 * Check if LA57 is desired and supported.
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -618,7 +618,7 @@ void sev_prep_identity_maps(unsigned lon
- 	 * accessed after switchover.
- 	 */
- 	if (sev_snp_enabled()) {
--		unsigned long cc_info_pa = boot_params->cc_blob_address;
-+		unsigned long cc_info_pa = boot_params_ptr->cc_blob_address;
- 		struct cc_blob_sev_info *cc_info;
- 
- 		kernel_add_identity_map(cc_info_pa, cc_info_pa + sizeof(*cc_info));
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -86,6 +86,8 @@ extern const unsigned long kernel_total_
- 
- unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
- 				void (*error)(char *x));
+-#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
++#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
++	AT91_SAMA_CHAN_SINGLE(index, num, addr, 14)
 +
-+extern struct boot_params *boot_params_ptr;
- #endif
++#define AT91_SAMA7G5_CHAN_SINGLE(index, num, addr)			\
++	AT91_SAMA_CHAN_SINGLE(index, num, addr, 16)
++
++#define AT91_SAMA_CHAN_DIFF(index, num, num2, addr, rbits)		\
+ 	{								\
+ 		.type = IIO_VOLTAGE,					\
+ 		.differential = 1,					\
+@@ -360,7 +366,7 @@ static const struct at91_adc_reg_layout
+ 		.scan_index = index,					\
+ 		.scan_type = {						\
+ 			.sign = 's',					\
+-			.realbits = 14,					\
++			.realbits = rbits,				\
+ 			.storagebits = 16,				\
+ 		},							\
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+@@ -373,6 +379,12 @@ static const struct at91_adc_reg_layout
+ 		.indexed = 1,						\
+ 	}
  
- #endif /* _ASM_X86_BOOT_H */
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -883,7 +883,7 @@ void __noreturn efi_stub_entry(efi_handl
- 	unsigned long kernel_entry;
- 	efi_status_t status;
++#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
++	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 14)
++
++#define AT91_SAMA7G5_CHAN_DIFF(index, num, num2, addr)			\
++	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 16)
++
+ #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
+ 	{								\
+ 		.type = IIO_POSITIONRELATIVE,				\
+@@ -666,30 +678,30 @@ static const struct iio_chan_spec at91_s
+ };
  
--	boot_params_pointer = boot_params;
-+	boot_params_ptr = boot_params;
- 
- 	efi_system_table = sys_table_arg;
- 	/* Check if we were booted by the EFI firmware */
---- a/drivers/firmware/efi/libstub/x86-stub.h
-+++ b/drivers/firmware/efi/libstub/x86-stub.h
-@@ -2,8 +2,6 @@
- 
- #include <linux/efi.h>
- 
--extern struct boot_params *boot_params_pointer asm("boot_params");
--
- extern void trampoline_32bit_src(void *, bool);
- extern const u16 trampoline_ljmp_imm_offset;
- 
+ static const struct iio_chan_spec at91_sama7g5_adc_channels[] = {
+-	AT91_SAMA5D2_CHAN_SINGLE(0, 0, 0x60),
+-	AT91_SAMA5D2_CHAN_SINGLE(1, 1, 0x64),
+-	AT91_SAMA5D2_CHAN_SINGLE(2, 2, 0x68),
+-	AT91_SAMA5D2_CHAN_SINGLE(3, 3, 0x6c),
+-	AT91_SAMA5D2_CHAN_SINGLE(4, 4, 0x70),
+-	AT91_SAMA5D2_CHAN_SINGLE(5, 5, 0x74),
+-	AT91_SAMA5D2_CHAN_SINGLE(6, 6, 0x78),
+-	AT91_SAMA5D2_CHAN_SINGLE(7, 7, 0x7c),
+-	AT91_SAMA5D2_CHAN_SINGLE(8, 8, 0x80),
+-	AT91_SAMA5D2_CHAN_SINGLE(9, 9, 0x84),
+-	AT91_SAMA5D2_CHAN_SINGLE(10, 10, 0x88),
+-	AT91_SAMA5D2_CHAN_SINGLE(11, 11, 0x8c),
+-	AT91_SAMA5D2_CHAN_SINGLE(12, 12, 0x90),
+-	AT91_SAMA5D2_CHAN_SINGLE(13, 13, 0x94),
+-	AT91_SAMA5D2_CHAN_SINGLE(14, 14, 0x98),
+-	AT91_SAMA5D2_CHAN_SINGLE(15, 15, 0x9c),
+-	AT91_SAMA5D2_CHAN_DIFF(16, 0, 1, 0x60),
+-	AT91_SAMA5D2_CHAN_DIFF(17, 2, 3, 0x68),
+-	AT91_SAMA5D2_CHAN_DIFF(18, 4, 5, 0x70),
+-	AT91_SAMA5D2_CHAN_DIFF(19, 6, 7, 0x78),
+-	AT91_SAMA5D2_CHAN_DIFF(20, 8, 9, 0x80),
+-	AT91_SAMA5D2_CHAN_DIFF(21, 10, 11, 0x88),
+-	AT91_SAMA5D2_CHAN_DIFF(22, 12, 13, 0x90),
+-	AT91_SAMA5D2_CHAN_DIFF(23, 14, 15, 0x98),
++	AT91_SAMA7G5_CHAN_SINGLE(0, 0, 0x60),
++	AT91_SAMA7G5_CHAN_SINGLE(1, 1, 0x64),
++	AT91_SAMA7G5_CHAN_SINGLE(2, 2, 0x68),
++	AT91_SAMA7G5_CHAN_SINGLE(3, 3, 0x6c),
++	AT91_SAMA7G5_CHAN_SINGLE(4, 4, 0x70),
++	AT91_SAMA7G5_CHAN_SINGLE(5, 5, 0x74),
++	AT91_SAMA7G5_CHAN_SINGLE(6, 6, 0x78),
++	AT91_SAMA7G5_CHAN_SINGLE(7, 7, 0x7c),
++	AT91_SAMA7G5_CHAN_SINGLE(8, 8, 0x80),
++	AT91_SAMA7G5_CHAN_SINGLE(9, 9, 0x84),
++	AT91_SAMA7G5_CHAN_SINGLE(10, 10, 0x88),
++	AT91_SAMA7G5_CHAN_SINGLE(11, 11, 0x8c),
++	AT91_SAMA7G5_CHAN_SINGLE(12, 12, 0x90),
++	AT91_SAMA7G5_CHAN_SINGLE(13, 13, 0x94),
++	AT91_SAMA7G5_CHAN_SINGLE(14, 14, 0x98),
++	AT91_SAMA7G5_CHAN_SINGLE(15, 15, 0x9c),
++	AT91_SAMA7G5_CHAN_DIFF(16, 0, 1, 0x60),
++	AT91_SAMA7G5_CHAN_DIFF(17, 2, 3, 0x68),
++	AT91_SAMA7G5_CHAN_DIFF(18, 4, 5, 0x70),
++	AT91_SAMA7G5_CHAN_DIFF(19, 6, 7, 0x78),
++	AT91_SAMA7G5_CHAN_DIFF(20, 8, 9, 0x80),
++	AT91_SAMA7G5_CHAN_DIFF(21, 10, 11, 0x88),
++	AT91_SAMA7G5_CHAN_DIFF(22, 12, 13, 0x90),
++	AT91_SAMA7G5_CHAN_DIFF(23, 14, 15, 0x98),
+ 	IIO_CHAN_SOFT_TIMESTAMP(24),
+ 	AT91_SAMA5D2_CHAN_TEMP(AT91_SAMA7G5_ADC_TEMP_CHANNEL, "temp", 0xdc),
+ };
 
 
 
