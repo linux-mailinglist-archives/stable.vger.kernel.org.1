@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-121778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D53A59C66
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56BD4A5A1C7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA0F33A93DB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA423A6290
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F67F2309A1;
-	Mon, 10 Mar 2025 17:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2CD23372D;
+	Mon, 10 Mar 2025 18:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBPxTyKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeyU2zGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B85922D4D0;
-	Mon, 10 Mar 2025 17:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E801233155;
+	Mon, 10 Mar 2025 18:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626602; cv=none; b=ZDmeu3oMqkkSa/ZeIXMQ4WMtuRdA+e1y2wMc+JXvxVcODTxRFKtwNbCb/lAUOYlHc5T0Rfxi9W1zB8TgfXLaprjxXEZTEzVgT9h4bRd29slg/QirugYAwidEFqyUNTc8B8UixIWXDTUJJZGlzxZovay+WwbcZJh7HlU6H/Pe2Tc=
+	t=1741630411; cv=none; b=gH7UWM91ppsx/MA9UbVK+zyGUoJ2ltQHHpuB+NkldkczSV0HVqb7XBt4cZAPsSqjem/cBiv67lIVTjMVYDIH7u6pXGP2gmo88iNxvOtjtKB/0tJarGYy6pDT7ZmwXQ9kc1bHkxkBa5PxuHm/AUSh4mEjfJr67G4iJz4DCP456ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626602; c=relaxed/simple;
-	bh=bU71j/lPEQk2gwMCFgzQyZG7iplb3qVtwVmmUummAeg=;
+	s=arc-20240116; t=1741630411; c=relaxed/simple;
+	bh=FX6VferWbLnvrAfD3h2NW+gGcp50MznKPcKkb/OPaF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZFaZ3grFNxBOhH2u+4Nli8WRKd1Q+QZNzUyjHJEqoE8vWhGgRQJskjeBmjCqvh+acEoOIb1i/N+E4D/Q+cIJw2tDHFii00SYnpdLfY2p/72VHhpjf0ov4wZCyu/WBL6VnZP5ANVsbglXuTsla2oLTnb8CJyj2AOq8dytevQ9Em8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBPxTyKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF81C4CEE5;
-	Mon, 10 Mar 2025 17:10:01 +0000 (UTC)
+	 MIME-Version; b=iT3VrCCvtHK1iVn4TDKCe3jQMlOdRxgtuKG+6Ht56Y6+C8rLCG6CpVqEPt6dftm4KFKRwXfDmBZjlraoEpvTySSFQ2ezFwlQ7ip4Kc3f1i+gq88IA2s4pXSguzkEqSuTR+mgdetFtnj2YJ9Xw5MFfTKLwG1bMrSijMQHg9Nk9tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeyU2zGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2F9C4CEE5;
+	Mon, 10 Mar 2025 18:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626601;
-	bh=bU71j/lPEQk2gwMCFgzQyZG7iplb3qVtwVmmUummAeg=;
+	s=korg; t=1741630410;
+	bh=FX6VferWbLnvrAfD3h2NW+gGcp50MznKPcKkb/OPaF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBPxTyKOMuOfgyGBIeYmpeP+K3/+BShRQGqh+G9dZjk5JbVpcprdW0VSccYJCH9fF
-	 ePpiJb2klIgmt6QNjh41fxokXTUolBq871G2iO7hcOFsmLFbsfjYJHEzbGzXMvqNIL
-	 U/SAu/ncQtnnVQRH9Isbii1chR6eGLOqn8LX98DM=
+	b=MeyU2zGT5r964fwK7EKBgF1+LFR5so6HR8UCaY69cIxmeMkap5vQJrXF6MUR5FU0C
+	 f59WVD5iQRIjJk7TkPSSjr6yNe/+686Dv7m3VUUmFbWnWrftwIY0VJrxc2oqpm66aM
+	 AL8g/iE/tl8y6ZFvaCU5/P60D5FIsLTNdC/WUxtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oak Zeng <oak.zeng@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Matthew Brost <MatthewBrostmatthew.brost@intel.com>
-Subject: [PATCH 6.13 049/207] drm/xe/hmm: Style- and include fixes
-Date: Mon, 10 Mar 2025 18:04:02 +0100
-Message-ID: <20250310170449.717722438@linuxfoundation.org>
+	xu xin <xu.xin16@zte.com.cn>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 397/620] Namespaceify min_pmtu sysctl
+Date: Mon, 10 Mar 2025 18:04:03 +0100
+Message-ID: <20250310170601.263370773@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +60,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: xu xin <xu.xin16@zte.com.cn>
 
-commit e3e2e7fc4cd8414c9a966ef1b344db543f8614f4 upstream.
+[ Upstream commit 1de6b15a434c0068253fea5d719f71143e7e3a79 ]
 
-Add proper #ifndef around the xe_hmm.h header, proper spacing
-and since the documentation mostly follows kerneldoc format,
-make it kerneldoc. Also prepare for upcoming -stable fixes.
+This patch enables the sysctl min_pmtu to be configured per net
+namespace.
 
-Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
-Cc: Oak Zeng <oak.zeng@intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Acked-by: Matthew Brost <Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250304173342.22009-2-thomas.hellstrom@linux.intel.com
-(cherry picked from commit bbe2b06b55bc061c8fcec034ed26e88287f39143)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 139512191bd0 ("ipv4: use RCU protection in __ip_rt_update_pmtu()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_hmm.c |    9 +++------
- drivers/gpu/drm/xe/xe_hmm.h |    5 +++++
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ include/net/netns/ipv4.h |  2 ++
+ net/ipv4/route.c         | 53 ++++++++++++++++++++++++++++------------
+ 2 files changed, 39 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_hmm.c
-+++ b/drivers/gpu/drm/xe/xe_hmm.c
-@@ -19,11 +19,10 @@ static u64 xe_npages_in_range(unsigned l
- 	return (end - start) >> PAGE_SHIFT;
- }
+diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
+index d60a10cfc3823..16515c04a46a7 100644
+--- a/include/net/netns/ipv4.h
++++ b/include/net/netns/ipv4.h
+@@ -84,6 +84,8 @@ struct netns_ipv4 {
+ 	int sysctl_icmp_ratelimit;
+ 	int sysctl_icmp_ratemask;
  
--/*
-+/**
-  * xe_mark_range_accessed() - mark a range is accessed, so core mm
-  * have such information for memory eviction or write back to
-  * hard disk
-- *
-  * @range: the range to mark
-  * @write: if write to this range, we mark pages in this range
-  * as dirty
-@@ -43,11 +42,10 @@ static void xe_mark_range_accessed(struc
++	u32 ip_rt_min_pmtu;
++
+ 	struct local_ports ip_local_ports;
+ 
+ 	u8 sysctl_tcp_ecn;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 3ad78bbd6261b..9a837cd2b925a 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -118,6 +118,8 @@
+ 
+ #define RT_GC_TIMEOUT (300*HZ)
+ 
++#define DEFAULT_MIN_PMTU (512 + 20 + 20)
++
+ static int ip_rt_max_size;
+ static int ip_rt_redirect_number __read_mostly	= 9;
+ static int ip_rt_redirect_load __read_mostly	= HZ / 50;
+@@ -125,7 +127,6 @@ static int ip_rt_redirect_silence __read_mostly	= ((HZ / 50) << (9 + 1));
+ static int ip_rt_error_cost __read_mostly	= HZ;
+ static int ip_rt_error_burst __read_mostly	= 5 * HZ;
+ static int ip_rt_mtu_expires __read_mostly	= 10 * 60 * HZ;
+-static u32 ip_rt_min_pmtu __read_mostly		= 512 + 20 + 20;
+ static int ip_rt_min_advmss __read_mostly	= 256;
+ 
+ static int ip_rt_gc_timeout __read_mostly	= RT_GC_TIMEOUT;
+@@ -1034,9 +1035,9 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 	if (old_mtu < mtu)
+ 		return;
+ 
+-	if (mtu < ip_rt_min_pmtu) {
++	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+ 		lock = true;
+-		mtu = min(old_mtu, ip_rt_min_pmtu);
++		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
  	}
+ 
+ 	if (rt->rt_pmtu == mtu && !lock &&
+@@ -3578,14 +3579,6 @@ static struct ctl_table ipv4_route_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_jiffies,
+ 	},
+-	{
+-		.procname	= "min_pmtu",
+-		.data		= &ip_rt_min_pmtu,
+-		.maxlen		= sizeof(int),
+-		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_minmax,
+-		.extra1		= &ip_min_valid_pmtu,
+-	},
+ 	{
+ 		.procname	= "min_adv_mss",
+ 		.data		= &ip_rt_min_advmss,
+@@ -3598,13 +3591,21 @@ static struct ctl_table ipv4_route_table[] = {
+ 
+ static const char ipv4_route_flush_procname[] = "flush";
+ 
+-static struct ctl_table ipv4_route_flush_table[] = {
++static struct ctl_table ipv4_route_netns_table[] = {
+ 	{
+ 		.procname	= ipv4_route_flush_procname,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0200,
+ 		.proc_handler	= ipv4_sysctl_rtcache_flush,
+ 	},
++	{
++		.procname       = "min_pmtu",
++		.data           = &init_net.ipv4.ip_rt_min_pmtu,
++		.maxlen         = sizeof(int),
++		.mode           = 0644,
++		.proc_handler   = proc_dointvec_minmax,
++		.extra1         = &ip_min_valid_pmtu,
++	},
+ 	{ },
+ };
+ 
+@@ -3612,9 +3613,11 @@ static __net_init int sysctl_route_net_init(struct net *net)
+ {
+ 	struct ctl_table *tbl;
+ 
+-	tbl = ipv4_route_flush_table;
++	tbl = ipv4_route_netns_table;
+ 	if (!net_eq(net, &init_net)) {
+-		tbl = kmemdup(tbl, sizeof(ipv4_route_flush_table), GFP_KERNEL);
++		int i;
++
++		tbl = kmemdup(tbl, sizeof(ipv4_route_netns_table), GFP_KERNEL);
+ 		if (!tbl)
+ 			goto err_dup;
+ 
+@@ -3623,6 +3626,12 @@ static __net_init int sysctl_route_net_init(struct net *net)
+ 			if (tbl[0].procname != ipv4_route_flush_procname)
+ 				tbl[0].procname = NULL;
+ 		}
++
++		/* Update the variables to point into the current struct net
++		 * except for the first element flush
++		 */
++		for (i = 1; i < ARRAY_SIZE(ipv4_route_netns_table) - 1; i++)
++			tbl[i].data += (void *)net - (void *)&init_net;
+ 	}
+ 	tbl[0].extra1 = net;
+ 
+@@ -3632,7 +3641,7 @@ static __net_init int sysctl_route_net_init(struct net *net)
+ 	return 0;
+ 
+ err_reg:
+-	if (tbl != ipv4_route_flush_table)
++	if (tbl != ipv4_route_netns_table)
+ 		kfree(tbl);
+ err_dup:
+ 	return -ENOMEM;
+@@ -3644,7 +3653,7 @@ static __net_exit void sysctl_route_net_exit(struct net *net)
+ 
+ 	tbl = net->ipv4.route_hdr->ctl_table_arg;
+ 	unregister_net_sysctl_table(net->ipv4.route_hdr);
+-	BUG_ON(tbl == ipv4_route_flush_table);
++	BUG_ON(tbl == ipv4_route_netns_table);
+ 	kfree(tbl);
  }
  
--/*
-+/**
-  * xe_build_sg() - build a scatter gather table for all the physical pages/pfn
-  * in a hmm_range. dma-map pages if necessary. dma-address is save in sg table
-  * and will be used to program GPU page table later.
-- *
-  * @xe: the xe device who will access the dma-address in sg table
-  * @range: the hmm range that we build the sg table from. range->hmm_pfns[]
-  * has the pfn numbers of pages that back up this hmm address range.
-@@ -112,9 +110,8 @@ free_pages:
- 	return ret;
- }
+@@ -3654,6 +3663,17 @@ static __net_initdata struct pernet_operations sysctl_route_ops = {
+ };
+ #endif
  
--/*
-+/**
-  * xe_hmm_userptr_free_sg() - Free the scatter gather table of userptr
-- *
-  * @uvma: the userptr vma which hold the scatter gather table
-  *
-  * With function xe_userptr_populate_range, we allocate storage of
---- a/drivers/gpu/drm/xe/xe_hmm.h
-+++ b/drivers/gpu/drm/xe/xe_hmm.h
-@@ -3,9 +3,14 @@
-  * Copyright © 2024 Intel Corporation
-  */
- 
-+#ifndef _XE_HMM_H_
-+#define _XE_HMM_H_
++static __net_init int netns_ip_rt_init(struct net *net)
++{
++	/* Set default value for namespaceified sysctls */
++	net->ipv4.ip_rt_min_pmtu = DEFAULT_MIN_PMTU;
++	return 0;
++}
 +
- #include <linux/types.h>
- 
- struct xe_userptr_vma;
- 
- int xe_hmm_userptr_populate_range(struct xe_userptr_vma *uvma, bool is_mm_mmap_locked);
++static struct pernet_operations __net_initdata ip_rt_ops = {
++	.init = netns_ip_rt_init,
++};
 +
- void xe_hmm_userptr_free_sg(struct xe_userptr_vma *uvma);
-+#endif
+ static __net_init int rt_genid_init(struct net *net)
+ {
+ 	atomic_set(&net->ipv4.rt_genid, 0);
+@@ -3759,6 +3779,7 @@ int __init ip_rt_init(void)
+ #ifdef CONFIG_SYSCTL
+ 	register_pernet_subsys(&sysctl_route_ops);
+ #endif
++	register_pernet_subsys(&ip_rt_ops);
+ 	register_pernet_subsys(&rt_genid_ops);
+ 	register_pernet_subsys(&ipv4_inetpeer_ops);
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
