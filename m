@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D761A59F82
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED552A59E6A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724FF3A916A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3403A8AB5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0EC23026D;
-	Mon, 10 Mar 2025 17:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB722309A6;
+	Mon, 10 Mar 2025 17:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnyRAcgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIfQFtEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7AB2253FE;
-	Mon, 10 Mar 2025 17:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378F622B8BD;
+	Mon, 10 Mar 2025 17:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628406; cv=none; b=VY/wRvT2O1NTSzLIsY2MAEE+irXkx/0XFhOhVCM40ktVjswVXLbyAeouREVjyJ4AruYdMn5RljI4rZlE2xRNUntDYgW0tkknwVlZ3NPwTC0bbOQU8aW7gMNXfRJ4w/Y/wrohdOVyNfldwRUZpo4OjbY6Hkr4wEx+0uzEB6VGl40=
+	t=1741627755; cv=none; b=em3Sh2yVR5M+uPmLWD8mJhIFw2KFfRdxBK52vA95Pozmbl/mqT9PFkOjKhKbqVFVQ8ASZBgBHGAYcwyR+Ltq68wh7UR2noErYU3+cVH/gNHrp2RAIzpst2/lu0tBmdZS1wUdukXWSQHKK8mw1D+Lw1madQSUdID8gfsfX926VNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628406; c=relaxed/simple;
-	bh=x5E/7FViincD7Icb3re6PuZbXR227b7eHl5lw/KNldo=;
+	s=arc-20240116; t=1741627755; c=relaxed/simple;
+	bh=z3v8a3vJZXXP6ZS0LJ+koUZVeU/Sp5f3X3dQcr9BDeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeaqprCbebj52ZDw/quunbdlPClBxfUS7Lel3+6LwNF7T8AUprMyZF/xDG7o6Msz/GMk2g7ZfjxNgAMgQW2TSbapfYAlNIDVsDUcT+HE/BC9aeSSdjhbfNalKqWm0HF58e79hnCG44Aqo/FJOqz1xo5eR2JiU9Jdq/sQB+UIyts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnyRAcgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32600C4CEE5;
-	Mon, 10 Mar 2025 17:40:06 +0000 (UTC)
+	 MIME-Version; b=IMdxEvx8i70TVSdsg1oQn98k5XMxELfSkpvbrRsC1UByvscmshZCb4XtPZXx3xTxEtAj7Xl1JpQSJlZwiwg7TnVJ3FGbs+nRHCGlTHurjATsloUmgpNgg9Tba0VYziyxW8a0BitoVCxKxKLHlteRiEsFWn+3Tpwo9vxZm4Mm6ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIfQFtEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE65C4CEE5;
+	Mon, 10 Mar 2025 17:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628406;
-	bh=x5E/7FViincD7Icb3re6PuZbXR227b7eHl5lw/KNldo=;
+	s=korg; t=1741627755;
+	bh=z3v8a3vJZXXP6ZS0LJ+koUZVeU/Sp5f3X3dQcr9BDeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnyRAcgxuauhFVYRM26Zap7ESoAdt3f48bEox2kVqCmew2My7gfDduGSx6bxA0TX6
-	 fRpfYF2wrjmvZHpmBOjZQ65Zftc2P53bdG5B9YvpG2NW+IH3coSQjFu3PPvQGhJWls
-	 Te+0xrnhjnZoaaKFaWU7K2yYPi+a2/wR8J8tKAuo=
+	b=yIfQFtEcE1L7EE4LERY3ImpratvsSLtk8fwMHgDinhlZloaDDsrTJu41Yh8RHTZ9Y
+	 +oZRdfOv7a4M4x7UT9K40GtAo+0j9Q33MKD/C7AzB7X/2BgNsRZFtqkUbXqVq1mkeL
+	 BI1v24T4BcmkH8cdFKgfPPR9BxKAeKDZWUJ+vtqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Schumacher <erik.schumacher@iris-sensing.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/109] hwmon: (ad7314) Validate leading zero bits and return error
-Date: Mon, 10 Mar 2025 18:06:30 +0100
-Message-ID: <20250310170429.397487108@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.12 238/269] mei: me: add panther lake P DID
+Date: Mon, 10 Mar 2025 18:06:31 +0100
+Message-ID: <20250310170507.170147445@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Schumacher <erik.schumacher@iris-sensing.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit e278d5e8aef4c0a1d9a9fa8b8910d713a89aa800 ]
+commit a8e8ffcc3afce2ee5fb70162aeaef3f03573ee1e upstream.
 
-Leading zero bits are sent on the bus before the temperature value is
-transmitted. If any of these bits are high, the connection might be
-unstable or there could be no AD7314 / ADT730x (or compatible) at all.
-Return -EIO in that case.
+Add Panther Lake P device id.
 
-Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
-Fixes: 4f3a659581cab ("hwmon: AD7314 driver (ported from IIO)")
-Link: https://lore.kernel.org/r/24a50c2981a318580aca8f50d23be7987b69ea00.camel@iris-sensing.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250209110550.1582982-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ad7314.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/hwmon/ad7314.c b/drivers/hwmon/ad7314.c
-index 7802bbf5f9587..59424103f6348 100644
---- a/drivers/hwmon/ad7314.c
-+++ b/drivers/hwmon/ad7314.c
-@@ -22,11 +22,13 @@
-  */
- #define AD7314_TEMP_MASK		0x7FE0
- #define AD7314_TEMP_SHIFT		5
-+#define AD7314_LEADING_ZEROS_MASK	BIT(15)
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,8 @@
  
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ 
++#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
++
  /*
-  * ADT7301 and ADT7302 temperature masks
+  * MEI HW Section
   */
- #define ADT7301_TEMP_MASK		0x3FFF
-+#define ADT7301_LEADING_ZEROS_MASK	(BIT(15) | BIT(14))
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,8 @@ static const struct pci_device_id mei_me
  
- enum ad7314_variant {
- 	adt7301,
-@@ -65,12 +67,20 @@ static ssize_t ad7314_temperature_show(struct device *dev,
- 		return ret;
- 	switch (spi_get_device_id(chip->spi_dev)->driver_data) {
- 	case ad7314:
-+		if (ret & AD7314_LEADING_ZEROS_MASK) {
-+			/* Invalid read-out, leading zero part is missing */
-+			return -EIO;
-+		}
- 		data = (ret & AD7314_TEMP_MASK) >> AD7314_TEMP_SHIFT;
- 		data = sign_extend32(data, 9);
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
  
- 		return sprintf(buf, "%d\n", 250 * data);
- 	case adt7301:
- 	case adt7302:
-+		if (ret & ADT7301_LEADING_ZEROS_MASK) {
-+			/* Invalid read-out, leading zero part is missing */
-+			return -EIO;
-+		}
- 		/*
- 		 * Documented as a 13 bit twos complement register
- 		 * with a sign bit - which is a 14 bit 2's complement
--- 
-2.39.5
-
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
