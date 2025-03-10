@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DEEA5A229
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F30A59EC7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E364C18945DB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1BB5167290
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67DD1C57B2;
-	Mon, 10 Mar 2025 18:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11729230BF6;
+	Mon, 10 Mar 2025 17:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3vy3MYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+RZT1O9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731B61B395F;
-	Mon, 10 Mar 2025 18:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163022B8A9;
+	Mon, 10 Mar 2025 17:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630641; cv=none; b=CrmOBb9JkcHQzNiiDG30JLsJHGtzksZrjoKp8nm8oVqOLIOFEAbfMMdGHbSG3borRodJ1vLvz0ntXX7B/DwWfF2Cs4zU3ouY7VxAwG1Q1jtZMGPCBKAr/GWi8uRJvJup+AMzlwc9Jx4qJxh11OfGKUFw9039CwRIu1i5QNjRMNw=
+	t=1741628039; cv=none; b=BbTmVrmeKHzMHswd3Si5hCoHXuayhvSH674vKu4RYV2DGVLcUfZLERVOnRQPM8+iJjna5wiLlE6QmTTGazgd7GsrNM1Mh11cwnNHQh31Y2ENEFsk0ZIdKBZlu8ndcbY0dLAcLcGMU75Ir7DqmEi+p3uYI/6lAqqzPVmLjeKe1kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630641; c=relaxed/simple;
-	bh=6lucfIsumZ6POxy16tkVXzCmFx6JZ1hu+aPHpThjjXc=;
+	s=arc-20240116; t=1741628039; c=relaxed/simple;
+	bh=KCeSxgxvuQ8CLnyJX2nY5pduwUrOKpjxnNf2+raU7J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAHrsCgvdYSME9m43RMREOdiAltwvqMqPl8arHSLQQCSC1Ae/zn6o8SBuvrzen6PvOgtUVzSr+y2v5rDEQR9O+XjIXoSGljTBgMovnwaGaSfoYLaNiSqNuuWnSmXU8M+zcvB53/7e22pgpQrfDSAr+g5N3AGrQnxBW4id+ZPDlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3vy3MYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2F3C4CEE5;
-	Mon, 10 Mar 2025 18:17:20 +0000 (UTC)
+	 MIME-Version; b=nB58RS4512vcnRETeHUCLDF0VnUTuU9AM1m7VSZ9s4aIiECVK6zDFXbCx5KkE4JBoGm4P8flLtn+e75e/YAkTg/NxucnO6uByUQVqOTe2KtLlU7/iDLS6o5nBUhuCZHdL1VeNSZTl2Z4RK29bCeTIwab1CxwIX9/rCUFs9vyj4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+RZT1O9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6582C4CEEC;
+	Mon, 10 Mar 2025 17:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630640;
-	bh=6lucfIsumZ6POxy16tkVXzCmFx6JZ1hu+aPHpThjjXc=;
+	s=korg; t=1741628039;
+	bh=KCeSxgxvuQ8CLnyJX2nY5pduwUrOKpjxnNf2+raU7J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3vy3MYfjjZ8LHYQuNr5rEQf4Y0n5iwSWiJkUp/WtPevOehDyLI3WRbkugvzZtC4O
-	 I4Elh8HQlQRUa29XcXxX5AUP1QBFo8G+U8nCF8tnoPi2FCE0eKDVlbmJ3zNxKGzSda
-	 ZSb9WO24ywDh0G2nw+GR2gWTXsDqDeKoXWG2JP8o=
+	b=H+RZT1O9ixwWGNsX0zUpdJ+EBezL4auIOf8h6rs4WqxIcUWbwLtld3Ldb1i6QWxuL
+	 nYV2HKiG6anflOt6EXAXPICPHWxyLjussuaD+AsDBBq644/YA4jRY2Sh1Dxor3xrsj
+	 2mec8nrbR5nYPtd7UNAtggUtOBZ+prm2d7P1eBJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 483/620] mtd: rawnand: cadence: use dma_map_resource for sdma address
+	syzbot+4cb9fad083898f54c517@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 035/145] ALSA: seq: Avoid module auto-load handling at event delivery
 Date: Mon, 10 Mar 2025 18:05:29 +0100
-Message-ID: <20250310170604.635970671@linuxfoundation.org>
+Message-ID: <20250310170436.149220990@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +61,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit d76d22b5096c5b05208fd982b153b3f182350b19 upstream.
+commit c9ce148ea753bef66686460fa3cec6641cdfbb9f upstream.
 
-Remap the slave DMA I/O resources to enhance driver portability.
-Using a physical address causes DMA translation failure when the
-ARM SMMU is enabled.
+snd_seq_client_use_ptr() is supposed to return the snd_seq_client
+object for the given client ID, and it tries to handle the module
+auto-loading when no matching object is found.  Although the module
+handling is performed only conditionally with "!in_interrupt()", this
+condition may be fragile, e.g. when the code is called from the ALSA
+timer callback where the spinlock is temporarily disabled while the
+irq is disabled.  Then his doesn't fit well and spews the error about
+sleep from invalid context, as complained recently by syzbot.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Also, in general, handling the module-loading at each time if no
+matching object is found is really an overkill.  It can be still
+useful when performed at the top-level ioctl or proc reads, but it
+shouldn't be done at event delivery at all.
+
+For addressing the issues above, this patch disables the module
+handling in snd_seq_client_use_ptr() in normal cases like event
+deliveries, but allow only in limited and safe situations.
+A new function client_load_and_use_ptr() is used for the cases where
+the module loading can be done safely, instead.
+
+Reported-by: syzbot+4cb9fad083898f54c517@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/67c272e5.050a0220.dc10f.0159.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250301114530.8975-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |   29 +++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ sound/core/seq/seq_clientmgr.c |   46 ++++++++++++++++++++++++++---------------
+ 1 file changed, 30 insertions(+), 16 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -469,6 +469,8 @@ struct cdns_nand_ctrl {
- 	struct {
- 		void __iomem *virt;
- 		dma_addr_t dma;
-+		dma_addr_t iova_dma;
-+		u32 size;
- 	} io;
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -106,7 +106,7 @@ static struct snd_seq_client *clientptr(
+ 	return clienttab[clientid];
+ }
  
- 	int irq;
-@@ -1830,11 +1832,11 @@ static int cadence_nand_slave_dma_transf
- 	}
- 
- 	if (dir == DMA_FROM_DEVICE) {
--		src_dma = cdns_ctrl->io.dma;
-+		src_dma = cdns_ctrl->io.iova_dma;
- 		dst_dma = buf_dma;
- 	} else {
- 		src_dma = buf_dma;
--		dst_dma = cdns_ctrl->io.dma;
-+		dst_dma = cdns_ctrl->io.iova_dma;
- 	}
- 
- 	tx = dmaengine_prep_dma_memcpy(cdns_ctrl->dmac, dst_dma, src_dma, len,
-@@ -2831,6 +2833,7 @@ cadence_nand_irq_cleanup(int irqnum, str
- static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
+-struct snd_seq_client *snd_seq_client_use_ptr(int clientid)
++static struct snd_seq_client *client_use_ptr(int clientid, bool load_module)
  {
- 	dma_cap_mask_t mask;
-+	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
- 	int ret;
- 
- 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
-@@ -2874,6 +2877,16 @@ static int cadence_nand_init(struct cdns
- 		}
+ 	unsigned long flags;
+ 	struct snd_seq_client *client;
+@@ -126,7 +126,7 @@ struct snd_seq_client *snd_seq_client_us
  	}
+ 	spin_unlock_irqrestore(&clients_lock, flags);
+ #ifdef CONFIG_MODULES
+-	if (!in_interrupt()) {
++	if (load_module) {
+ 		static DECLARE_BITMAP(client_requested, SNDRV_SEQ_GLOBAL_CLIENTS);
+ 		static DECLARE_BITMAP(card_requested, SNDRV_CARDS);
  
-+	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
-+						  cdns_ctrl->io.size,
-+						  DMA_BIDIRECTIONAL, 0);
+@@ -168,6 +168,20 @@ struct snd_seq_client *snd_seq_client_us
+ 	return client;
+ }
+ 
++/* get snd_seq_client object for the given id quickly */
++struct snd_seq_client *snd_seq_client_use_ptr(int clientid)
++{
++	return client_use_ptr(clientid, false);
++}
 +
-+	ret = dma_mapping_error(dma_dev->dev, cdns_ctrl->io.iova_dma);
-+	if (ret) {
-+		dev_err(cdns_ctrl->dev, "Failed to map I/O resource to DMA\n");
-+		goto dma_release_chnl;
-+	}
++/* get snd_seq_client object for the given id;
++ * if not found, retry after loading the modules
++ */
++static struct snd_seq_client *client_load_and_use_ptr(int clientid)
++{
++	return client_use_ptr(clientid, IS_ENABLED(CONFIG_MODULES));
++}
 +
- 	nand_controller_init(&cdns_ctrl->controller);
- 	INIT_LIST_HEAD(&cdns_ctrl->chips);
- 
-@@ -2884,18 +2897,22 @@ static int cadence_nand_init(struct cdns
- 	if (ret) {
- 		dev_err(cdns_ctrl->dev, "Failed to register MTD: %d\n",
- 			ret);
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
- 
- 	kfree(cdns_ctrl->buf);
- 	cdns_ctrl->buf = kzalloc(cdns_ctrl->buf_size, GFP_KERNEL);
- 	if (!cdns_ctrl->buf) {
- 		ret = -ENOMEM;
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
- 
- 	return 0;
- 
-+unmap_dma_resource:
-+	dma_unmap_resource(dma_dev->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
-+
- dma_release_chnl:
- 	if (cdns_ctrl->dmac)
- 		dma_release_channel(cdns_ctrl->dmac);
-@@ -2917,6 +2934,8 @@ free_buf_desc:
- static void cadence_nand_remove(struct cdns_nand_ctrl *cdns_ctrl)
+ /* Take refcount and perform ioctl_mutex lock on the given client;
+  * used only for OSS sequencer
+  * Unlock via snd_seq_client_ioctl_unlock() below
+@@ -176,7 +190,7 @@ bool snd_seq_client_ioctl_lock(int clien
  {
- 	cadence_nand_chips_cleanup(cdns_ctrl);
-+	dma_unmap_resource(cdns_ctrl->dmac->device->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
- 	cadence_nand_irq_cleanup(cdns_ctrl->irq, cdns_ctrl);
- 	kfree(cdns_ctrl->buf);
- 	dma_free_coherent(cdns_ctrl->dev, sizeof(struct cadence_nand_cdma_desc),
-@@ -2985,7 +3004,9 @@ static int cadence_nand_dt_probe(struct
- 	cdns_ctrl->io.virt = devm_platform_get_and_ioremap_resource(ofdev, 1, &res);
- 	if (IS_ERR(cdns_ctrl->io.virt))
- 		return PTR_ERR(cdns_ctrl->io.virt);
-+
- 	cdns_ctrl->io.dma = res->start;
-+	cdns_ctrl->io.size = resource_size(res);
+ 	struct snd_seq_client *client;
  
- 	dt->clk = devm_clk_get(cdns_ctrl->dev, "nf_clk");
- 	if (IS_ERR(dt->clk))
+-	client = snd_seq_client_use_ptr(clientid);
++	client = client_load_and_use_ptr(clientid);
+ 	if (!client)
+ 		return false;
+ 	mutex_lock(&client->ioctl_mutex);
+@@ -1200,7 +1214,7 @@ static int snd_seq_ioctl_running_mode(st
+ 	int err = 0;
+ 
+ 	/* requested client number */
+-	cptr = snd_seq_client_use_ptr(info->client);
++	cptr = client_load_and_use_ptr(info->client);
+ 	if (cptr == NULL)
+ 		return -ENOENT;		/* don't change !!! */
+ 
+@@ -1262,7 +1276,7 @@ static int snd_seq_ioctl_get_client_info
+ 	struct snd_seq_client *cptr;
+ 
+ 	/* requested client number */
+-	cptr = snd_seq_client_use_ptr(client_info->client);
++	cptr = client_load_and_use_ptr(client_info->client);
+ 	if (cptr == NULL)
+ 		return -ENOENT;		/* don't change !!! */
+ 
+@@ -1397,7 +1411,7 @@ static int snd_seq_ioctl_get_port_info(s
+ 	struct snd_seq_client *cptr;
+ 	struct snd_seq_client_port *port;
+ 
+-	cptr = snd_seq_client_use_ptr(info->addr.client);
++	cptr = client_load_and_use_ptr(info->addr.client);
+ 	if (cptr == NULL)
+ 		return -ENXIO;
+ 
+@@ -1501,10 +1515,10 @@ static int snd_seq_ioctl_subscribe_port(
+ 	struct snd_seq_client *receiver = NULL, *sender = NULL;
+ 	struct snd_seq_client_port *sport = NULL, *dport = NULL;
+ 
+-	receiver = snd_seq_client_use_ptr(subs->dest.client);
++	receiver = client_load_and_use_ptr(subs->dest.client);
+ 	if (!receiver)
+ 		goto __end;
+-	sender = snd_seq_client_use_ptr(subs->sender.client);
++	sender = client_load_and_use_ptr(subs->sender.client);
+ 	if (!sender)
+ 		goto __end;
+ 	sport = snd_seq_port_use_ptr(sender, subs->sender.port);
+@@ -1865,7 +1879,7 @@ static int snd_seq_ioctl_get_client_pool
+ 	struct snd_seq_client_pool *info = arg;
+ 	struct snd_seq_client *cptr;
+ 
+-	cptr = snd_seq_client_use_ptr(info->client);
++	cptr = client_load_and_use_ptr(info->client);
+ 	if (cptr == NULL)
+ 		return -ENOENT;
+ 	memset(info, 0, sizeof(*info));
+@@ -1969,7 +1983,7 @@ static int snd_seq_ioctl_get_subscriptio
+ 	struct snd_seq_client_port *sport = NULL;
+ 
+ 	result = -EINVAL;
+-	sender = snd_seq_client_use_ptr(subs->sender.client);
++	sender = client_load_and_use_ptr(subs->sender.client);
+ 	if (!sender)
+ 		goto __end;
+ 	sport = snd_seq_port_use_ptr(sender, subs->sender.port);
+@@ -2000,7 +2014,7 @@ static int snd_seq_ioctl_query_subs(stru
+ 	struct list_head *p;
+ 	int i;
+ 
+-	cptr = snd_seq_client_use_ptr(subs->root.client);
++	cptr = client_load_and_use_ptr(subs->root.client);
+ 	if (!cptr)
+ 		goto __end;
+ 	port = snd_seq_port_use_ptr(cptr, subs->root.port);
+@@ -2067,7 +2081,7 @@ static int snd_seq_ioctl_query_next_clie
+ 	if (info->client < 0)
+ 		info->client = 0;
+ 	for (; info->client < SNDRV_SEQ_MAX_CLIENTS; info->client++) {
+-		cptr = snd_seq_client_use_ptr(info->client);
++		cptr = client_load_and_use_ptr(info->client);
+ 		if (cptr)
+ 			break; /* found */
+ 	}
+@@ -2090,7 +2104,7 @@ static int snd_seq_ioctl_query_next_port
+ 	struct snd_seq_client *cptr;
+ 	struct snd_seq_client_port *port = NULL;
+ 
+-	cptr = snd_seq_client_use_ptr(info->addr.client);
++	cptr = client_load_and_use_ptr(info->addr.client);
+ 	if (cptr == NULL)
+ 		return -ENXIO;
+ 
+@@ -2187,7 +2201,7 @@ static int snd_seq_ioctl_client_ump_info
+ 		size = sizeof(struct snd_ump_endpoint_info);
+ 	else
+ 		size = sizeof(struct snd_ump_block_info);
+-	cptr = snd_seq_client_use_ptr(client);
++	cptr = client_load_and_use_ptr(client);
+ 	if (!cptr)
+ 		return -ENOENT;
+ 
+@@ -2459,7 +2473,7 @@ int snd_seq_kernel_client_enqueue(int cl
+ 	if (check_event_type_and_length(ev))
+ 		return -EINVAL;
+ 
+-	cptr = snd_seq_client_use_ptr(client);
++	cptr = client_load_and_use_ptr(client);
+ 	if (cptr == NULL)
+ 		return -EINVAL;
+ 	
+@@ -2686,7 +2700,7 @@ void snd_seq_info_clients_read(struct sn
+ 
+ 	/* list the client table */
+ 	for (c = 0; c < SNDRV_SEQ_MAX_CLIENTS; c++) {
+-		client = snd_seq_client_use_ptr(c);
++		client = client_load_and_use_ptr(c);
+ 		if (client == NULL)
+ 			continue;
+ 		if (client->type == NO_CLIENT) {
 
 
 
