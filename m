@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C226A5A1EB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2FFA59C74
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B67FF3ADC2C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E972016E869
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8347A235368;
-	Mon, 10 Mar 2025 18:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD9D231A2A;
+	Mon, 10 Mar 2025 17:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhmlOapP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnndaZmA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F456233D89;
-	Mon, 10 Mar 2025 18:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA0322D4D0;
+	Mon, 10 Mar 2025 17:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630488; cv=none; b=UZkZWjEvIVrKhywsGOhJJ5wEbtx3ksHbLXI+bQ8s3R+mOeuqaQQvYfnLv4QjQe2FHkckrUnjePxtvSBLgTPUBm+sDJAE5PDLlHe9HTOkGt7bQOK0aux+z2gWqW9P8UWdKtshO/Vh7xWEtJVubPR5sUS1wukQ8XQcwnuHWB+oqSI=
+	t=1741626709; cv=none; b=MQeJVCwAzpFHB2oNzmNrydKTmVweMhtIYhlkXRQAmCpCX10IKoTrI4QmRQSoGmS9fPkf3VOuJuI6PBopgaHT2U6zgpNROScdMEM0UO9X7jD+qAIyyhsPuo59kDG3ssOK8lKMPAvtDoQwv5bh4h9PyQNRzP0XI1v70HHjOYoUvfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630488; c=relaxed/simple;
-	bh=oxox2jv9ISOPeA26ccutausva/NjzYgoEL0BW8NlCdk=;
+	s=arc-20240116; t=1741626709; c=relaxed/simple;
+	bh=Uaky2OeujrR2+EYSttA4yBYcsXqoHJmmtU/dFpACItg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjfoigG5tE68XQNo/atlA4ZbjFgME/83Ru0EPBqfifdw2smGxX+PAwI/WLAwP+tLZ6Ivdl/nlqf7jaIVW2FC8HMqfk+DVrI/Nv80QH7M5ZqhT6H6bxdOdJM4nqSri4o0tOwN1r3BoOXWZvoV84vdhEihKEksI8/Mez1VThfRYm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhmlOapP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588D0C4CEE5;
-	Mon, 10 Mar 2025 18:14:47 +0000 (UTC)
+	 MIME-Version; b=DK5s0iiQvmGf2W63BBzRHjAIiSQK+hbGCbES81HRxSHNYbGZgDlqluKjy/ciJY+MLbvpQnabyMJUp1fzRNwwH1Xi5078tg3/Q8kzz/AiTz9TLcJACy/ipe0v0Yij196wFYjqonPUg10p8nzobTAp8LKJamwtjBxiPofNEbKWMwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnndaZmA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6136C4CEED;
+	Mon, 10 Mar 2025 17:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630487;
-	bh=oxox2jv9ISOPeA26ccutausva/NjzYgoEL0BW8NlCdk=;
+	s=korg; t=1741626709;
+	bh=Uaky2OeujrR2+EYSttA4yBYcsXqoHJmmtU/dFpACItg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhmlOapPFfYIBhyFtSGwRvrkPSD1m4Wad1erD0z2uV/Kzy/Zz4ryHBnKUvTesncOO
-	 ge+GOxozebGnY2HqDp1Buj94LthcOkhiEGkzH2+NwZJSqOr1j/m+oTvwggQsxKUskZ
-	 tAgH/l1s4xVzG6S81p7UcDwTYM9XLiI0hBt9a3b4=
+	b=NnndaZmAq8DZXgks2/fO0+RoiaUlWo+teIFQQ6s+30k3xke0j8rMR9zFWtD3e7PGd
+	 tIw+/4xkcmO2JI9S6gKBf2Ssav1xhG8oXQSNQ595KrDI5gbTLqgo+P/xWkEdufENPE
+	 +lJ0b+CsaqGnByvXpHnHHSPDN3u8RJ58LGRy/4s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei He <helei.sig11@bytedance.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 432/620] crypto: testmgr - Fix wrong test case of RSA
-Date: Mon, 10 Mar 2025 18:04:38 +0100
-Message-ID: <20250310170602.650899275@linuxfoundation.org>
+Subject: [PATCH 6.13 086/207] wifi: iwlwifi: limit printed string from FW file
+Date: Mon, 10 Mar 2025 18:04:39 +0100
+Message-ID: <20250310170451.181414482@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei He <helei.sig11@bytedance.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a9887010ed2da3fddaff83ceec80e2b71be8a966 ]
+[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
 
-According to the BER encoding rules, integer value should be encoded
-as two's complement, and if the highest bit of a positive integer
-is 1, should add a leading zero-octet.
+There's no guarantee here that the file is always with a
+NUL-termination, so reading the string may read beyond the
+end of the TLV. If that's the last TLV in the file, it can
+perhaps even read beyond the end of the file buffer.
 
-The kernel's built-in RSA algorithm cannot recognize negative numbers
-when parsing keys, so it can pass this test case.
+Fix that by limiting the print format to the size of the
+buffer we have.
 
-Export the key to file and run the following command to verify the
-fix result:
-
-  openssl asn1parse -inform DER -in /path/to/key/file
-
-Signed-off-by: Lei He <helei.sig11@bytedance.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/testmgr.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index d94d02cb30d4e..c2bad3ee89085 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -257,9 +257,9 @@ static const struct akcipher_testvec rsa_tv_template[] = {
- 	}, {
- #endif
- 	.key =
--	"\x30\x82\x02\x1F" /* sequence of 543 bytes */
-+	"\x30\x82\x02\x20" /* sequence of 544 bytes */
- 	"\x02\x01\x01" /* version - integer of 1 byte */
--	"\x02\x82\x01\x00" /* modulus - integer of 256 bytes */
-+	"\x02\x82\x01\x01\x00" /* modulus - integer of 256 bytes */
- 	"\xDB\x10\x1A\xC2\xA3\xF1\xDC\xFF\x13\x6B\xED\x44\xDF\xF0\x02\x6D"
- 	"\x13\xC7\x88\xDA\x70\x6B\x54\xF1\xE8\x27\xDC\xC3\x0F\x99\x6A\xFA"
- 	"\xC6\x67\xFF\x1D\x1E\x3C\x1D\xC1\xB5\x5F\x6C\xC0\xB2\x07\x3A\x6D"
-@@ -299,7 +299,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
- 	"\x02\x01\x00" /* exponent1 - integer of 1 byte */
- 	"\x02\x01\x00" /* exponent2 - integer of 1 byte */
- 	"\x02\x01\x00", /* coefficient - integer of 1 byte */
--	.key_len = 547,
-+	.key_len = 548,
- 	.m = "\x54\x85\x9b\x34\x2c\x49\xea\x2a",
- 	.c =
- 	"\xb2\x97\x76\xb4\xae\x3e\x38\x3c\x7e\x64\x1f\xcc\xa2\x7f\xf6\xbe"
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index c620911a11933..754e01688900d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1197,7 +1197,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
+ 
+ 			if (tlv_len != sizeof(*fseq_ver))
+ 				goto invalid_tlv_len;
+-			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
++			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
+ 				 fseq_ver->version);
+ 			}
+ 			break;
 -- 
 2.39.5
 
