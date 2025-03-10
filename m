@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC090A59C38
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC039A5A174
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D6763A8A64
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9D6F173B10
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD98230BE6;
-	Mon, 10 Mar 2025 17:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4629D22DFB1;
+	Mon, 10 Mar 2025 18:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZa77407"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zt2KqWpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6661622FE18;
-	Mon, 10 Mar 2025 17:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0116C17A2E8;
+	Mon, 10 Mar 2025 18:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626544; cv=none; b=iqLwljLNP0zfgar+uTqFExZFLRjZtoUZIPUNOI1k9ALbkul/f+8FkYVz0pzYrU2BTvas7K4Fz7Wn7NdsY2ValFCEOTxE8JSwYEz5P2mWsTH+c+4Mq0yLFWP/hnk1JUac3XI66Ucw2gqdzwY5TWYNVBnCgVO5knxsxBFGHxw9jwU=
+	t=1741629673; cv=none; b=a2+EBvS54swyjYU2NpvOtkPmxbEf2NbZWKZoJ3NFW/UuAepDZqeBFzRxCu7e2Dt6roC4wkjfwcs00j4+jJE6ZVOTHQdgGSFvKqHR5Z6xCY5u9HLFxGr9AW0EHA/RfyoOcpZhmsLXWEJhWUR+eta2ZLq4QfHHk1pwjojYgoo3LkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626544; c=relaxed/simple;
-	bh=faZVF0ErPYy9Zdj0XgJH7mCZ/XCb/T0CiWEXN+DPNQI=;
+	s=arc-20240116; t=1741629673; c=relaxed/simple;
+	bh=S0PQgpNEJj39cUCbPag7YvUc4gXFPtc2W6xU3x8FKXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTKTMGMcqDw2nDbLUagMFn4DrBmH2ivK7LNgBsDm0SKcEKimrN+bqwgoTO6F4R0FK90HYMrQmkzl6RqvOdX2EVVm8/3+B69UNcQnWqA6y3w4PR5O5YdP5liLZShX6Nj67AnN0ZqENxb41lgV6XtGlvsM5KGzkB34jUQoj3oqGKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZa77407; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E38C4CEE5;
-	Mon, 10 Mar 2025 17:09:03 +0000 (UTC)
+	 MIME-Version; b=It9XAKlHlyEEfyrUJXxtBute8MDYhijMYULjb0/gbMGIn+/qhHHqafELP7QQGDe3dWcLbdlHnqebwdH04yD80On0k7gUSW0i9XA0gYi5PtDcsjOHffPbmwhpyUlDcDGYiwOGRkD5zdAss05xdXzV2v25DO+2tcnkGxYwe9oReDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zt2KqWpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1EEC4CEE5;
+	Mon, 10 Mar 2025 18:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626543;
-	bh=faZVF0ErPYy9Zdj0XgJH7mCZ/XCb/T0CiWEXN+DPNQI=;
+	s=korg; t=1741629672;
+	bh=S0PQgpNEJj39cUCbPag7YvUc4gXFPtc2W6xU3x8FKXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZa77407ZXNlZTlWupNA0qjo+XSkitCsTDeo6rUo/lnqDHcGvK/45aV6tDT3n3M1e
-	 OcP+1XItVxm4cT3G0ZFTyKxZTPLSd03lHz9I8+0V4IbszhavK3Nlkbr3bEfNZMqgp1
-	 fgetMiZwhwg0rT0dvYclBHJIFkPFSV6eSkeVJ8LM=
+	b=Zt2KqWpVs8107Z0UPQapR/g+1Hmh1v5y87gyn0Aj96xSslDIMIw/vvfhrug+BL4EN
+	 Z1eRQ9YX/QM5r6rpM6wXUQjT/e2bhguEGyYCEjm5axD4PtJmR5GRW2DqaTjWbQBhV4
+	 43xKtJRKSOPPuYvaBud+GxXfQp7RJGUz1yC+eTv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.13 028/207] ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 375/620] USB: serial: option: drop MeiG Smart defines
 Date: Mon, 10 Mar 2025 18:03:41 +0100
-Message-ID: <20250310170448.891916148@linuxfoundation.org>
+Message-ID: <20250310170600.401501308@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit f603b159231b0c58f0c27ab39348534063d38223 upstream.
+commit 6aa8a63c471eb6756aabd03f880feffe6a7af6c9 upstream.
 
-Support Mic Mute LED for ThinkCentre M series.
+Several MeiG Smart modems apparently use the same product id, making the
+defines even less useful.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/c211a2702f1f411e86bd7420d7eebc03@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Drop them in favour of using comments consistently to make the id table
+slightly less unwieldy.
+
+Cc: stable@vger.kernel.org
+Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/usb/serial/option.c |   28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -5055,6 +5055,16 @@ static void alc269_fixup_hp_line1_mic1_l
- 	}
- }
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -619,18 +619,6 @@ static void option_instat_callback(struc
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
  
-+static void alc233_fixup_lenovo_low_en_micmute_led(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE)
-+		spec->micmute_led_polarity = 1;
-+	alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
-+}
-+
- static void alc_hp_mute_disable(struct hda_codec *codec, unsigned int delay)
- {
- 	if (delay <= 0)
-@@ -7608,6 +7618,7 @@ enum {
- 	ALC275_FIXUP_DELL_XPS,
- 	ALC293_FIXUP_LENOVO_SPK_NOISE,
- 	ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY,
-+	ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED,
- 	ALC255_FIXUP_DELL_SPK_NOISE,
- 	ALC225_FIXUP_DISABLE_MIC_VREF,
- 	ALC225_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -8596,6 +8607,10 @@ static const struct hda_fixup alc269_fix
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc233_fixup_lenovo_line2_mic_hotkey,
- 	},
-+	[ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc233_fixup_lenovo_low_en_micmute_led,
-+	},
- 	[ALC233_FIXUP_INTEL_NUC8_DMIC] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc_fixup_inv_dmic,
-@@ -10884,6 +10899,9 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x17aa, 0x3178, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
- 	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x17aa, 0x3384, "ThinkCentre M90a PRO", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
-+	SND_PCI_QUIRK(0x17aa, 0x3386, "ThinkCentre M90a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
-+	SND_PCI_QUIRK(0x17aa, 0x3387, "ThinkCentre M70a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
- 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	HDA_CODEC_QUIRK(0x17aa, 0x3802, "DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8", ALC287_FIXUP_TAS2781_I2C),
+-/* MeiG Smart Technology products */
+-#define MEIGSMART_VENDOR_ID			0x2dee
+-/*
+- * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
+- * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
+- */
+-#define MEIGSMART_PRODUCT_SRM825L		0x4d22
+-/* MeiG Smart SLM320 based on UNISOC UIS8910 */
+-#define MEIGSMART_PRODUCT_SLM320		0x4d41
+-/* MeiG Smart SLM770A based on ASR1803 */
+-#define MEIGSMART_PRODUCT_SLM770A		0x4d57
+-
+ /* Device flags */
+ 
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2366,6 +2354,14 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+@@ -2422,14 +2418,6 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+ 	  .driver_info = NCTRL(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
 
 
 
