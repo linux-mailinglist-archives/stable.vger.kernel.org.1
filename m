@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-122900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3691CA5A1DF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F7AA59C80
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 121CE172F37
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 215A43A97B8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2608234972;
-	Mon, 10 Mar 2025 18:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C733C2309B0;
+	Mon, 10 Mar 2025 17:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xr9dokYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf+FH+2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED402343C9;
-	Mon, 10 Mar 2025 18:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843B11E519;
+	Mon, 10 Mar 2025 17:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630464; cv=none; b=VVk9ymussN/Gx9DqOasXTCFvRw4KC12j6k990yTBPbySHHPHRruQZsQj2nhymVaFuufWzcMgdDMKbC8DGcOQ4QuINo+1874MsieNsc0iYpz/BYYzPpE6FCfkZa7R5CjMbLrdIagmzMfbYBBmHBinpP08QpAmtjJtzWYP/TpLtHA=
+	t=1741626662; cv=none; b=G89WP9k3OomOl8aw+OdGpAJE+5a//TGaDs4/hnx2B80TbbaPrrRogxSqZUkKnhgLdcrsLXa/pYiiVacsdZH7zjDrZ+R2LvWOeKPeUxfwbCzg1/2Tz5o6JlQuwVPcKg/JKLSkllDpcXNKSq/fUvkHgmEvM3mbMEITSBSLrY6yxZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630464; c=relaxed/simple;
-	bh=NBO5IEtLp/cfeo2/W3WGUps65FhG/ojETMW9plyonBc=;
+	s=arc-20240116; t=1741626662; c=relaxed/simple;
+	bh=7bXBFraa22KQ/Ri5ud0wQ36mHEBxYc+8HvNgKUXfUbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQw5zq08WYBek5DMkK/6HMayB6eS9zWFU5XqyMdN7qbxr9WysnENpljqsI1/IgH7uKT5xw2CnkTT+VoKv+8sgG6OvGTK5Eey8exK7cxsX01z6vXhoRM1U70WCmAkmthNmb/iU0QOv2l8mzateFM8rW9L1mzDt+mrcJlBLxTgvOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xr9dokYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DEBC4CEEC;
-	Mon, 10 Mar 2025 18:14:23 +0000 (UTC)
+	 MIME-Version; b=unVBoXzlXZMX4/+8+LDq4RayHBiIDL/skO6dB97JBdEjlc3b+iShCHMhEsBfy63LS28F9WDeuRUz+oyQXlRj/ClkorW6HFZVI6H4LB6eTMYYZCtTS9z8I6U5oYqxVjhIspja3ZppGQhkVm2Mo8YafiNa9ogOkekgpXyOCZZgktc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf+FH+2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEDAC4CEE5;
+	Mon, 10 Mar 2025 17:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630464;
-	bh=NBO5IEtLp/cfeo2/W3WGUps65FhG/ojETMW9plyonBc=;
+	s=korg; t=1741626662;
+	bh=7bXBFraa22KQ/Ri5ud0wQ36mHEBxYc+8HvNgKUXfUbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xr9dokYaxJ2bE8oA46bFV4ItpRCcFuHP2ZCJMwlpmQE2Cex8M73A6wUbg21ctzueU
-	 VEoBhRhuEJMvgUxMYY1eSh6vWgGvDpbg+3MOIL+MrbpYYFhGt43OF4/Ok24YW7vmmi
-	 nKoe2va/rKsYqLVkNHx6tKKZMXI0z6QV9Ux3qafo=
+	b=Qf+FH+2z+MmqCzJEFgNEyKxe3eJsuy/Khdf9SUZFyZ5Sxqsn1Nf9cz0AR92C2KOHA
+	 MtnV+AP5i3HwUEDAIDMyYPiNBoqfP8NoSpeaRWQI3tP3Pw3b9acDkOWsIBT7VhR/wt
+	 hnKMqiE4eduup921iPuCiJi3M/0Ajw/rJUGkcLkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 5.15 415/620] alpha: replace hardcoded stack offsets with autogenerated ones
+	kernel test robot <lkp@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Macro Elver <elver@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 068/207] dma: kmsan: export kmsan_handle_dma() for modules
 Date: Mon, 10 Mar 2025 18:04:21 +0100
-Message-ID: <20250310170601.970158578@linuxfoundation.org>
+Message-ID: <20250310170450.469817702@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +67,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 77b823fa619f97d16409ca37ad4f7936e28c5f83 upstream.
+commit 19fac3c93991502a22c5132824c40b6a2e64b136 upstream.
 
-This allows the assembly in entry.S to automatically keep in sync with
-changes in the stack layout (struct pt_regs and struct switch_stack).
+kmsan_handle_dma() is used by virtio_ring() which can be built as a
+module.  kmsan_handle_dma() needs to be exported otherwise building the
+virtio_ring fails.
 
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
+Export kmsan_handle_dma for modules.
+
+Link: https://lkml.kernel.org/r/20250218091411.MMS3wBN9@linutronix.de
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502150634.qjxwSeJR-lkp@intel.com/
+Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Macro Elver <elver@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/alpha/kernel/asm-offsets.c |    2 ++
- arch/alpha/kernel/entry.S       |    4 ----
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ mm/kmsan/hooks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/alpha/kernel/asm-offsets.c
-+++ b/arch/alpha/kernel/asm-offsets.c
-@@ -32,7 +32,9 @@ void foo(void)
-         DEFINE(CRED_EGID, offsetof(struct cred, egid));
-         BLANK();
+--- a/mm/kmsan/hooks.c
++++ b/mm/kmsan/hooks.c
+@@ -357,6 +357,7 @@ void kmsan_handle_dma(struct page *page,
+ 		size -= to_go;
+ 	}
+ }
++EXPORT_SYMBOL_GPL(kmsan_handle_dma);
  
-+	DEFINE(SP_OFF, offsetof(struct pt_regs, ps));
- 	DEFINE(SIZEOF_PT_REGS, sizeof(struct pt_regs));
-+	DEFINE(SWITCH_STACK_SIZE, sizeof(struct switch_stack));
- 	DEFINE(PT_PTRACED, PT_PTRACED);
- 	DEFINE(CLONE_VM, CLONE_VM);
- 	DEFINE(CLONE_UNTRACED, CLONE_UNTRACED);
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -15,10 +15,6 @@
- 	.set noat
- 	.cfi_sections	.debug_frame
- 
--/* Stack offsets.  */
--#define SP_OFF			184
--#define SWITCH_STACK_SIZE	320
--
- .macro	CFI_START_OSF_FRAME	func
- 	.align	4
- 	.globl	\func
+ void kmsan_handle_dma_sg(struct scatterlist *sg, int nents,
+ 			 enum dma_data_direction dir)
 
 
 
