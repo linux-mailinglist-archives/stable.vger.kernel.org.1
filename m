@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEBEA59F5B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E608DA59CFC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F4BF7A12BC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE85188AA72
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AE618DB24;
-	Mon, 10 Mar 2025 17:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89F5230BFC;
+	Mon, 10 Mar 2025 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMGxeA2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fr4x2skZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF552253FE;
-	Mon, 10 Mar 2025 17:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AC6230BD5;
+	Mon, 10 Mar 2025 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628381; cv=none; b=FlI+QZSFuJoZ8TKJ4ku8iyOZ79SYufevH7OLq2nLRhvI9eX4zNrg+UIZyGZmzTwAuxyyWWwAU8fGEly9MO/k2rC0HvFlwZx1MINWIjh0FYd2u94efF6Vo6nSchy8zisQh96S+vBQM1Q7rBk6Mz1QRLmftsjn6V3FAm84GNp1yvk=
+	t=1741627006; cv=none; b=Gu6iVux1OmrEOsVS17ms/L8k3L30ijBWUjnPlMouSRgGHA6Z/sXhWy2eSoMMJIxRcYichsEgAAe2NGoXxWir9MSHFL9A891Di4+dd7s8B0REgOxpa5ikmH3j7eEmq1+i/q6Ev4v5ti6yIck+O7ThXIlaNFTHtl2YgrEVF1HUPvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628381; c=relaxed/simple;
-	bh=RKReGMJJ+W6/5Go+KGSwbyZG7ruSJ8Bx5fYuC8UJZ9s=;
+	s=arc-20240116; t=1741627006; c=relaxed/simple;
+	bh=MVivb8QrK47IkIkD23voUlBA9daI8DHAhatksiM6TsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A67A5OkXQ8wAFPvw7rAtHzTv0uDhvSjI4zu1bYD9g4PTeE4R7v1SwY8ZtlAtE5faixJi8eNb0xfJ8GP+/WrEaNqQ1mArsPlKPc86iwR9umxqgdnZoa0o5MoeMua6JnX3oT6ISQzuk0TZhqsdbF+9ZUiuYAw1ysYT7G9oQeI6o50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMGxeA2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572EBC4CEE5;
-	Mon, 10 Mar 2025 17:39:40 +0000 (UTC)
+	 MIME-Version; b=cFhnww3D3GUDws+6zR0yN8zYXc0wIlB+pd8dzo/QufMSVkxvVY/f2gEo8peQm0GMuj+fCeplBeTfVFFtbRsREifCZ5/TIvsqmPQxc4fSJDnRxGgDQPa0Of5ps5H0AEKZTIYWlpFCsu99L28ROXCQcy2vBiv6qt5gv7dLyeykHzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fr4x2skZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF1EC4CEE5;
+	Mon, 10 Mar 2025 17:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628380;
-	bh=RKReGMJJ+W6/5Go+KGSwbyZG7ruSJ8Bx5fYuC8UJZ9s=;
+	s=korg; t=1741627006;
+	bh=MVivb8QrK47IkIkD23voUlBA9daI8DHAhatksiM6TsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMGxeA2yYndNbHxW1VJqmQt4grUip2lm621/m0TQGBbT5bBYcVsRnLzcZPM1AskIE
-	 iWT8DPY9Hlp2+n9w5ki09QVrD4TDwiXqoK/aCzVy44WgpUdSCs6Ni+vRCtZkIUqa1n
-	 I+uAzUex1yYOmD9Riwiw+JBbW5fA8X3PGkV/KY68=
+	b=Fr4x2skZgfjlhVVSDNXJmhPA72Bb+aZYwN9M7GixePWMPoRIXXVwVvnyopNZyfTPY
+	 9/0VMiw9PCxcG+S8rmtEdlfy4D68LIdUA4CgydWAMJPomZRyhRY4pmE3OeWy9MNOJI
+	 llJkgeQ6f8anLHuiBznnFTCg20JwbMtGbXSQC+qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/109] HID: google: fix unused variable warning under !CONFIG_ACPI
+	Johan Hovold <johan@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.13 189/207] bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
 Date: Mon, 10 Mar 2025 18:06:22 +0100
-Message-ID: <20250310170429.076312033@linuxfoundation.org>
+Message-ID: <20250310170455.295500039@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
+commit a321d163de3d8aa38a6449ab2becf4b1581aed96 upstream.
 
-As reported by the kernel test robot, the following warning occurs:
+There are multiple places from where the recovery work gets scheduled
+asynchronously. Also, there are multiple places where the caller waits
+synchronously for the recovery to be completed. One such place is during
+the PM shutdown() callback.
 
->> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
-     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
-         |                                    ^~~~~~~~~~~~~~~~
+If the device is not alive during recovery_work, it will try to reset the
+device using pci_reset_function(). This function internally will take the
+device_lock() first before resetting the device. By this time, if the lock
+has already been acquired, then recovery_work will get stalled while
+waiting for the lock. And if the lock was already acquired by the caller
+which waits for the recovery_work to be completed, it will lead to
+deadlock.
 
-The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
-Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
-prevents a compiler warning when ACPI is disabled.
+This is what happened on the X1E80100 CRD device when the device died
+before shutdown() callback. Driver core calls the driver's shutdown()
+callback while holding the device_lock() leading to deadlock.
 
-Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And this deadlock scenario can occur on other paths as well, like during
+the PM suspend() callback, where the driver core would hold the
+device_lock() before calling driver's suspend() callback. And if the
+recovery_work was already started, it could lead to deadlock. This is also
+observed on the X1E80100 CRD.
+
+So to fix both issues, use pci_try_reset_function() in recovery_work. This
+function first checks for the availability of the device_lock() before
+trying to reset the device. If the lock is available, it will acquire it
+and reset the device. Otherwise, it will return -EAGAIN. If that happens,
+recovery_work will fail with the error message "Recovery failed" as not
+much could be done.
+
+Cc: stable@vger.kernel.org # 5.12
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
+Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Analyzed-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Link: https://lore.kernel.org/r/20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-google-hammer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bus/mhi/host/pci_generic.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
-index c6bdb9c4ef3e0..d25291ed900d0 100644
---- a/drivers/hid/hid-google-hammer.c
-+++ b/drivers/hid/hid-google-hammer.c
-@@ -269,11 +269,13 @@ static int cbas_ec_remove(struct platform_device *pdev)
- 	return 0;
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -1040,8 +1040,9 @@ static void mhi_pci_recovery_work(struct
+ err_unprepare:
+ 	mhi_unprepare_after_power_down(mhi_cntrl);
+ err_try_reset:
+-	if (pci_reset_function(pdev))
+-		dev_err(&pdev->dev, "Recovery failed\n");
++	err = pci_try_reset_function(pdev);
++	if (err)
++		dev_err(&pdev->dev, "Recovery failed: %d\n", err);
  }
  
-+#ifdef CONFIG_ACPI
- static const struct acpi_device_id cbas_ec_acpi_ids[] = {
- 	{ "GOOG000B", 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
-+#endif
- 
- #ifdef CONFIG_OF
- static const struct of_device_id cbas_ec_of_match[] = {
--- 
-2.39.5
-
+ static void health_check(struct timer_list *t)
 
 
 
