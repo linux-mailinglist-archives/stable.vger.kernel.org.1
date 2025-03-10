@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-122737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADF0A5A0F7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:55:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D00A5A0F9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA06B1732DB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:55:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AC313ACDCA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30ABB22D7A6;
-	Mon, 10 Mar 2025 17:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8B3231A3B;
+	Mon, 10 Mar 2025 17:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WS0+/4H1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdTemmoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BA82D023;
-	Mon, 10 Mar 2025 17:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBCC2D023;
+	Mon, 10 Mar 2025 17:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629354; cv=none; b=ZBKnh+IWxBHNOzaEAX0VJzCOic93Gw7kBS5bM4AJpabNCrabpO9hGKnFjdLfhHsytnV3KpbMzRw1MrRGRzj+1wri52c0I96I0tHNroCsMYenjZktf+etD34uWJfgEcYebhiXxU5dijnbGOR3vPJw+OgcdNpdIG4oDG1nwmE0Kgc=
+	t=1741629359; cv=none; b=EnfhJtVDPyWjwuE1MnIWv4Gn7xt5tkDxXHfgh4tcB2TjB0E53JSti2qAOSXYurmyyVwQOdh/KSqztuNVqzvoIFyziWOj6sRWZGiXOPQNDlvIALgWIf+qwxjJ2fmQnBa1QHjQkPQk8hZCtv6p6nPHi9meRuIhRBCwFRa/Jh99AiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629354; c=relaxed/simple;
-	bh=373GdzFGZlHal6/fajY+XrWsynupyTQ4402mI1KxC00=;
+	s=arc-20240116; t=1741629359; c=relaxed/simple;
+	bh=vAR1swvrbUqiUCMAVIdhIzu/w6xg8rVHJbDL58ozrCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAhAvjL6jHwnBLmNTKX0SwUHjnhoL2tBnUWRM40tuYkWLuFXqNtbrxEFxPR/1s0hKQ3XGe2d0rK5Z212j5FgWLI9ZEX44FxBwyPGOq4o52w1b1AyL5gclXnCZi5si96io0k/KIXPCZecy2qWC9LueHXEd9eeRR/jQQ6B1utTqsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WS0+/4H1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4A5C4CEE5;
-	Mon, 10 Mar 2025 17:55:53 +0000 (UTC)
+	 MIME-Version; b=lEkCXkmbIJswPvcx4mJqGtg6juBiUTesgHv5t98SCJX/plhgQxbUEmS2zmpvY9LJ2S2VFqan02WI2OEDdOCKdbkkfpZjwAkR2TieWnYCiXb+EwIAZf4dR+WRcoaGtTn+nf7SY/3zw8n40kbmau0Ne5BZPuLMVDiRrQ+T3ijWsBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdTemmoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4409BC4CEE5;
+	Mon, 10 Mar 2025 17:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629353;
-	bh=373GdzFGZlHal6/fajY+XrWsynupyTQ4402mI1KxC00=;
+	s=korg; t=1741629359;
+	bh=vAR1swvrbUqiUCMAVIdhIzu/w6xg8rVHJbDL58ozrCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WS0+/4H189pZN08/bMLttlXAerObE4OkY59UZCotGsIgfLL/LImU4w02NJff5WnIm
-	 k5l/QCalxPpRY8R5nPNDiL1u81KxfuEDxz+hS9PI8n3484VYk9YuOFTAQUECKyRArb
-	 hhtHqa5wUQEcBoa24NOx3g4cjsZ4uMXvKg8TJVOk=
+	b=WdTemmoPBs0YA/3LZM0dwTVOQSJ4N+UdvlqkWYccHmTFq0Qn/OUD13KXUFvJ/Xaah
+	 Dzp1yeOskvMTiuBCkstAL7cbFxKAcOTDQcp+Sy9zeKB8QdOWKpWy3v38CaqFqRSwFb
+	 yif+G6/T6T8X1arR0wO9aK2Oqt3cQ+xhkyDb7NjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cody Eksal <masterr3c0rd@epochal.quest>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>
-Subject: [PATCH 5.15 266/620] clk: sunxi-ng: a100: enable MMC clock reparenting
-Date: Mon, 10 Mar 2025 18:01:52 +0100
-Message-ID: <20250310170556.123332638@linuxfoundation.org>
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 267/620] clk: qcom: clk-alpha-pll: fix alpha mode configuration
+Date: Mon, 10 Mar 2025 18:01:53 +0100
+Message-ID: <20250310170556.161504347@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,60 +66,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cody Eksal <masterr3c0rd@epochal.quest>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 16414720045de30945b8d14b7907e0cbf81a4b49 upstream.
+commit 33f1722eb86e45320a3dd7b3d42f6593a1d595c2 upstream.
 
-While testing the MMC nodes proposed in [1], it was noted that mmc0/1
-would fail to initialize, with "mmc: fatal err update clk timeout" in
-the kernel logs. A closer look at the clock definitions showed that the MMC
-MPs had the "CLK_SET_RATE_NO_REPARENT" flag set. No reason was given for
-adding this flag in the first place, and its original purpose is unknown,
-but it doesn't seem to make sense and results in severe limitations to MMC
-speeds. Thus, remove this flag from the 3 MMC MPs.
+Commit c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
+added support for configuring alpha mode, but it seems that the feature
+was never working in practice.
 
-[1] https://msgid.link/20241024170540.2721307-10-masterr3c0rd@epochal.quest
+The value of the alpha_{en,mode}_mask members of the configuration gets
+added to the value parameter passed to the regmap_update_bits() function,
+however the same values are not getting applied to the bitmask. As the
+result, the respective bits in the USER_CTL register are never modifed
+which leads to improper configuration of several PLLs.
 
-Fixes: fb038ce4db55 ("clk: sunxi-ng: add support for the Allwinner A100 CCU")
+The following table shows the PLL configurations where the 'alpha_en_mask'
+member is set and which are passed as a parameter for the
+clk_alpha_pll_configure() function. In the table the 'expected rate' column
+shows the rate the PLL should run at with the given configuration, and
+the 'real rate' column shows the rate the PLL runs at actually. The real
+rates has been verified on hardwareOn IPQ* platforms, on other platforms,
+those are computed values only.
+
+      file                 pll         expected rate   real rate
+  dispcc-qcm2290.c     disp_cc_pll0      768.0 MHz     768.0 MHz
+  dispcc-sm6115.c      disp_cc_pll0      768.0 MHz     768.0 MHz
+  gcc-ipq5018.c        ubi32_pll        1000.0 MHz !=  984.0 MHz
+  gcc-ipq6018.c        nss_crypto_pll   1200.0 MHz    1200.0 MHz
+  gcc-ipq6018.c        ubi32_pll        1497.6 MHz != 1488.0 MHz
+  gcc-ipq8074.c        nss_crypto_pll   1200.0 MHz != 1190.4 MHz
+  gcc-qcm2290.c        gpll11            532.0 MHz !=  518.4 MHz
+  gcc-qcm2290.c        gpll8             533.2 MHz !=  518.4 MHz
+  gcc-qcs404.c         gpll3             921.6 MHz     921.6 MHz
+  gcc-sm6115.c         gpll11            600.0 MHz !=  595.2 MHz
+  gcc-sm6115.c         gpll8             800.0 MHz !=  787.2 MHz
+  gpucc-sdm660.c       gpu_cc_pll0       800.0 MHz !=  787.2 MHz
+  gpucc-sdm660.c       gpu_cc_pll1       740.0 MHz !=  729.6 MHz
+  gpucc-sm6115.c       gpu_cc_pll0      1200.0 MHz != 1190.4 MHz
+  gpucc-sm6115.c       gpu_cc_pll1       640.0 MHz !=  633.6 MHz
+  gpucc-sm6125.c       gpu_pll0         1020.0 MHz != 1017.6 MHz
+  gpucc-sm6125.c       gpu_pll1          930.0 MHz !=  921.6 MHz
+  mmcc-sdm660.c        mmpll8            930.0 MHz !=  921.6 MHz
+  mmcc-sdm660.c        mmpll5            825.0 MHz !=  806.4 MHz
+
+As it can be seen from the above, there are several PLLs which are
+configured incorrectly.
+
+Change the code to apply both 'alpha_en_mask' and 'alpha_mode_mask'
+values to the bitmask in order to configure the alpha mode correctly.
+
+Applying the 'alpha_en_mask' fixes the initial rate of the PLLs showed
+in the table above. Since the 'alpha_mode_mask' is not used by any driver
+currently, that part of the change causes no functional changes.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Cody Eksal <masterr3c0rd@epochal.quest>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Link: https://patch.msgid.link/20241109003739.3440904-1-masterr3c0rd@epochal.quest
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/r/20241021-fix-alpha-mode-config-v1-1-f32c254e02bc@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-a100.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
-@@ -437,7 +437,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
- 					  24, 2,	/* mux */
- 					  BIT(31),	/* gate */
- 					  2,		/* post-div */
--					  CLK_SET_RATE_NO_REPARENT);
-+					  0);
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -284,6 +284,8 @@ void clk_alpha_pll_configure(struct clk_
+ 	mask |= config->pre_div_mask;
+ 	mask |= config->post_div_mask;
+ 	mask |= config->vco_mask;
++	mask |= config->alpha_en_mask;
++	mask |= config->alpha_mode_mask;
  
- static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1", mmc_parents, 0x834,
- 					  0, 4,		/* M */
-@@ -445,7 +445,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
- 					  24, 2,	/* mux */
- 					  BIT(31),	/* gate */
- 					  2,		/* post-div */
--					  CLK_SET_RATE_NO_REPARENT);
-+					  0);
+ 	regmap_update_bits(regmap, PLL_USER_CTL(pll), mask, val);
  
- static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc_parents, 0x838,
- 					  0, 4,		/* M */
-@@ -453,7 +453,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
- 					  24, 2,	/* mux */
- 					  BIT(31),	/* gate */
- 					  2,		/* post-div */
--					  CLK_SET_RATE_NO_REPARENT);
-+					  0);
- 
- static SUNXI_CCU_GATE(bus_mmc0_clk, "bus-mmc0", "ahb3", 0x84c, BIT(0), 0);
- static SUNXI_CCU_GATE(bus_mmc1_clk, "bus-mmc1", "ahb3", 0x84c, BIT(1), 0);
 
 
 
