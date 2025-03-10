@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12719A59DF9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9563FA59E88
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9E5170486
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DD667A56C2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEA1236454;
-	Mon, 10 Mar 2025 17:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C413623536F;
+	Mon, 10 Mar 2025 17:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VN+WSFkB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ixFoMe4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68488236445;
-	Mon, 10 Mar 2025 17:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F2A23535B;
+	Mon, 10 Mar 2025 17:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627512; cv=none; b=DWedW0HTwb+Ak02joZt1fjhBiHUjNJ8IwsJAFYRq9aRz56lgNghONFNNK2pEXn5pO6sJqprDwgb+YYIG7o7Dxaob2CkjUrHdqUTIQq0cjLnIYvfp+rADGrTPUGpYWIVzSZ6T7YCq2eT3wzA4hixDJKKMqrzGYyOhQ7ugdU6vG+4=
+	t=1741627887; cv=none; b=O+mhyNKwyqnpyboSY5ea/8MLoHa/9expN4s6ApvY+3BRmSnVJhFsyGMlx1HvXhv7FoVhZUpKws1RzKs3qsSK8IIGGec822dGLg1au908eH7pux0gibfCEcPrminhDTforjXUyIpNbCA2AzmFjLZYqkiYb3bFpgOHHehQdyLvQdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627512; c=relaxed/simple;
-	bh=pWRsnoIOT8cJ9Gt+IeCeq7rW1E1gu5WrqxyoO/3bOl0=;
+	s=arc-20240116; t=1741627887; c=relaxed/simple;
+	bh=/Z8UVRcukBjLcV7CDp+vMFN3Dfcj5hDCWqfDime4alw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKWpPMOPdFUCqPg8wtn/IqG1qHHHpFW3+rYhuNz5uCraDyBlD1KF0fhxVlaGRupW8CdEk7LPR1EJj+G7k1ZVPtQDVyq64Rp4mzQHT9Zra9PrMPeKTcWtADioahCB3PtbDC5KRtCsaZWcbxGpLPaSChEIt2WmOCWueaDwUcR9yXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VN+WSFkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B63C4CEE5;
-	Mon, 10 Mar 2025 17:25:11 +0000 (UTC)
+	 MIME-Version; b=Ex9ECR3cE3tu50qKEi1l6x+NV0HJuwLqWKNmLkx64H4Kq+KhuuekAdsNfLKENQlFZ/va9gHXrtIROn2zE6dc7iflPsABlGZO8UJFMXEhI5IT2QuPB6Eu5SvXgQn5v6QckRKBTQmlGKiQLlcdSRtYbkvuxLOLIdRWzwAaHj+7ChM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ixFoMe4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D7FC4CEED;
+	Mon, 10 Mar 2025 17:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627512;
-	bh=pWRsnoIOT8cJ9Gt+IeCeq7rW1E1gu5WrqxyoO/3bOl0=;
+	s=korg; t=1741627887;
+	bh=/Z8UVRcukBjLcV7CDp+vMFN3Dfcj5hDCWqfDime4alw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VN+WSFkB4/BCUE+fc+lw6+ObnXU3hJ1MhEYQaJzSHOLgGoJQklDnLEcZjOcKpmrwH
-	 nRe3WeW2xwA1W0PP2dZg/qn9pc6uo8vCHNnu9RDFl2w2oiSov7SbmmE1aq0a1X31tl
-	 sYd63PJxBjbcvwC+U3tARTXYaofFlnxA1jyCsarc=
+	b=1ixFoMe4ubSQKgZ+sw6WgxBReiTUdAsnCc9Vfks/F4OZMCCt8CEtgucs9wQcGZajJ
+	 /fcSeH6IBX7eQV97y5Lwo/PQ76OiibSH6Npf/660//mIF0IkDYG8aUYkxD5aiRTWUu
+	 94fo9rYpvy9hMeiyPi/h98Mpv+OPyiKjVrdopEXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/269] wifi: mac80211: fix vendor-specific inheritance
-Date: Mon, 10 Mar 2025 18:05:08 +0100
-Message-ID: <20250310170503.901504232@linuxfoundation.org>
+Subject: [PATCH 6.6 015/145] NFS: O_DIRECT writes must check and adjust the file length
+Date: Mon, 10 Mar 2025 18:05:09 +0100
+Message-ID: <20250310170435.361092917@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 130067e9c13bdc4820748ef16076a6972364745f ]
+[ Upstream commit fcf857ee1958e9247298251f7615d0c76f1e9b38 ]
 
-If there's any vendor-specific element in the subelements
-then the outer element parsing must not parse any vendor
-element at all. This isn't implemented correctly now due
-to parsing into the pointers and then overriding them, so
-explicitly skip vendor elements if any exist in the sub-
-elements (non-transmitted profile or per-STA profile).
+While it is uncommon for delegations to be held while O_DIRECT writes
+are in progress, it is possible. The xfstests generic/647 and
+generic/729 both end up triggering that state, and end up failing due to
+the fact that the file size is not adjusted.
 
-Fixes: 671042a4fb77 ("mac80211: support non-inheritance element")
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250221112451.fd71e5268840.I9db3e6a3367e6ff38d052d07dc07005f0dd3bd5c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219738
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/parse.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/nfs/direct.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 3d5d6658fe8d5..6da39c864f45b 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -48,6 +48,7 @@ struct ieee80211_elems_parse {
- 	const struct element *ml_epcs_elem;
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 258521d5125ed..a1ff4a4f5380e 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -130,6 +130,20 @@ static void nfs_direct_truncate_request(struct nfs_direct_req *dreq,
+ 		dreq->count = req_start;
+ }
  
- 	bool multi_link_inner;
-+	bool skip_vendor;
- 
- 	/*
- 	 * scratch buffer that can be used for various element parsing related
-@@ -400,6 +401,9 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
- 					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
- 			break;
- 		case WLAN_EID_VENDOR_SPECIFIC:
-+			if (elems_parse->skip_vendor)
-+				break;
++static void nfs_direct_file_adjust_size_locked(struct inode *inode,
++					       loff_t offset, size_t count)
++{
++	loff_t newsize = offset + (loff_t)count;
++	loff_t oldsize = i_size_read(inode);
 +
- 			if (elen >= 4 && pos[0] == 0x00 && pos[1] == 0x50 &&
- 			    pos[2] == 0xf2) {
- 				/* Microsoft OUI (00:50:F2) */
-@@ -1054,12 +1058,16 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
- 		multi_link_inner = true;
++	if (newsize > oldsize) {
++		i_size_write(inode, newsize);
++		NFS_I(inode)->cache_validity &= ~NFS_INO_INVALID_SIZE;
++		trace_nfs_size_grow(inode, newsize);
++		nfs_inc_stats(inode, NFSIOS_EXTENDWRITE);
++	}
++}
++
+ /**
+  * nfs_swap_rw - NFS address space operation for swap I/O
+  * @iocb: target I/O control block
+@@ -728,6 +742,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ 	struct nfs_direct_req *dreq = hdr->dreq;
+ 	struct nfs_commit_info cinfo;
+ 	struct nfs_page *req = nfs_list_entry(hdr->pages.next);
++	struct inode *inode = dreq->inode;
+ 	int flags = NFS_ODIRECT_DONE;
+ 
+ 	trace_nfs_direct_write_completion(dreq);
+@@ -749,6 +764,10 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
  	}
+ 	spin_unlock(&dreq->lock);
  
-+	elems_parse->skip_vendor =
-+		cfg80211_find_elem(WLAN_EID_VENDOR_SPECIFIC,
-+				   sub.start, sub.len);
- 	elems->crc = _ieee802_11_parse_elems_full(params, elems_parse,
- 						  non_inherit);
++	spin_lock(&inode->i_lock);
++	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
++	spin_unlock(&inode->i_lock);
++
+ 	while (!list_empty(&hdr->pages)) {
  
- 	/* Override with nontransmitted/per-STA profile if found */
- 	if (sub.len) {
- 		elems_parse->multi_link_inner = multi_link_inner;
-+		elems_parse->skip_vendor = false;
- 		_ieee802_11_parse_elems_full(&sub, elems_parse, NULL);
- 	}
- 
+ 		req = nfs_list_entry(hdr->pages.next);
 -- 
 2.39.5
 
