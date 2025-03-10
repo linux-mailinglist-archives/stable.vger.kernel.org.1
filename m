@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D4DA59FD2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C99A5A2BC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 282DF3A8E85
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C8A1895EDE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64EB22172E;
-	Mon, 10 Mar 2025 17:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E12D233731;
+	Mon, 10 Mar 2025 18:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaOKScSv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+WVNf83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9550E22D4C3;
-	Mon, 10 Mar 2025 17:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6A41C5D6F;
+	Mon, 10 Mar 2025 18:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628584; cv=none; b=LupUFpuHoRG6nTa1U46b9Uu4gFIgAuzkRQV+l2RHz4FR3BpqU1nnS0Tl9kURe2vUCJ9kZ2JYGNh4rkWRzlpugwA+VtCAfeqV7p/EijG1ukRw6cpq88WjEI/Z1p/cfF5zpS90yKJGdQsRMcKNzOW6rOknhxYIIIB4jf2pbCEYiLk=
+	t=1741630994; cv=none; b=fFxrlKASiq/wAy6yZaEQ7a7kV1xig7sWMBi1xE5OdAEZDZR+HRUDFAsg/X8+GGvisLjuFqZ76SjoNZldN1W09NX6w2f4tnXIdrRSTQZ5qUtQqbYzYY46sFmggmeLB0v+jEfdVlhv9ZzM3aJWa0SMXqW8hAIy5MilQEyvf7zJphY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628584; c=relaxed/simple;
-	bh=t9uevZa3IOQcHDA/o4wDsT9t9uOTFXErlj8EhNFD1AU=;
+	s=arc-20240116; t=1741630994; c=relaxed/simple;
+	bh=tNKtYXtSdMtJdmMDtUbxuax6R7dyCCW1SSYgt3jwPrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OD+halp2BPE1bu78PSjuS6OYJPnpBBG5VrHidJ5yo03xGj/0d+AlpfaerBu0QujPuBzVKMXhICnnTM3eSY9dYqn+9ADs7DkrMCdCWLpS9m2EOKAnHDrpffP2hu6QDxO36Sd6fK7RRzYUOLMlUe/CJUQbDLtOuTKq3vuiuhByUqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaOKScSv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7FFC4CEE5;
-	Mon, 10 Mar 2025 17:43:03 +0000 (UTC)
+	 MIME-Version; b=maNlYqodOzdFhpPWxdT2nZZo3tcMcRTBwc56+4iqFzPraYD/j/IbXvg20XtUEwp3j6QkVymdnxSYmdzwsjVDW3entYnxXChQyXGrvlTXVAvDWetbwjXGXwfiPCd16/RfTFO5bOZv480saUjt7907H+lFUAgsMxKnZOanm9WaOkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+WVNf83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65155C4CEE5;
+	Mon, 10 Mar 2025 18:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628584;
-	bh=t9uevZa3IOQcHDA/o4wDsT9t9uOTFXErlj8EhNFD1AU=;
+	s=korg; t=1741630993;
+	bh=tNKtYXtSdMtJdmMDtUbxuax6R7dyCCW1SSYgt3jwPrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EaOKScSv4Q8MDVdhFX5SK0G+BMHek94bPBVWdOkBx2U+cm4GlBXNGZ5wRqidePA0W
-	 FRQw4u9sC5krseqnpywlstkiWcPA6Yc/PG9sHH9UT/XQbx4zsw8JpXc8ow/yHfKXlM
-	 tnMAhkc1/6BogW9ofsmiHUvWhAdHEy25c2M62hGk=
+	b=K+WVNf83/5G0OYCooz5OvAl1Q7BwOfN2GKlVhntcUVzIArg4xcDTWSnr6x95N9Wvy
+	 /tJNU3naBvVTcEPP29HoOYO7ATBZwjRuK2IWQTYMpCFDlnXNTniot62aEW/3f5t5vQ
+	 bJWzVbApzIapvCCJyASWSOfDTVsDNuaFh06eQvG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 108/109] vsock: Orphan socket after transport release
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.15 606/620] media: uvcvideo: Avoid returning invalid controls
 Date: Mon, 10 Mar 2025 18:07:32 +0100
-Message-ID: <20250310170431.853504926@linuxfoundation.org>
+Message-ID: <20250310170609.452527554@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 78dafe1cf3afa02ed71084b350713b07e72a18fb upstream.
+commit 414d3b49d9fd4a0bb16a13d929027847fd094f3f upstream.
 
-During socket release, sock_orphan() is called without considering that it
-sets sk->sk_wq to NULL. Later, if SO_LINGER is enabled, this leads to a
-null pointer dereferenced in virtio_transport_wait_close().
+If the memory where ctrl_found is placed has the value of uvc_ctrl and
+__uvc_find_control does not find the control we will return an invalid
+index.
 
-Orphan the socket only after transport release.
-
-Partially reverts the 'Fixes:' commit.
-
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
- lock_acquire+0x19e/0x500
- _raw_spin_lock_irqsave+0x47/0x70
- add_wait_queue+0x46/0x230
- virtio_transport_release+0x4e7/0x7f0
- __vsock_release+0xfd/0x490
- vsock_release+0x90/0x120
- __sock_release+0xa3/0x250
- sock_close+0x14/0x20
- __fput+0x35e/0xa90
- __x64_sys_close+0x78/0xd0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Reported-by: syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9d55b199192a4be7d02c
-Fixes: fcdd2242c023 ("vsock: Keep the binding until socket destruction")
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250210-vsock-linger-nullderef-v3-1-ef6244d02b54@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+Fixes: 6350d6a4ed487 ("media: uvcvideo: Set error_idx during ctrl_commit errors")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -821,13 +821,19 @@ static void __vsock_release(struct sock
- 	 */
- 	lock_sock_nested(sk, level);
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1709,7 +1709,7 @@ static int uvc_ctrl_find_ctrl_idx(struct
+ 				  struct uvc_control *uvc_control)
+ {
+ 	struct uvc_control_mapping *mapping = NULL;
+-	struct uvc_control *ctrl_found;
++	struct uvc_control *ctrl_found = NULL;
+ 	unsigned int i;
  
--	sock_orphan(sk);
-+	/* Indicate to vsock_remove_sock() that the socket is being released and
-+	 * can be removed from the bound_table. Unlike transport reassignment
-+	 * case, where the socket must remain bound despite vsock_remove_sock()
-+	 * being called from the transport release() callback.
-+	 */
-+	sock_set_flag(sk, SOCK_DEAD);
- 
- 	if (vsk->transport)
- 		vsk->transport->release(vsk);
- 	else if (sock_type_connectible(sk->sk_type))
- 		vsock_remove_sock(vsk);
- 
-+	sock_orphan(sk);
- 	sk->sk_shutdown = SHUTDOWN_MASK;
- 
- 	skb_queue_purge(&sk->sk_receive_queue);
+ 	if (!entity)
 
 
 
