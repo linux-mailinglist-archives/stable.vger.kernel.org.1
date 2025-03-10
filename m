@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691F0A59E30
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB6AA59EE7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 201FD1888461
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC74A16FAD3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFFA230BC3;
-	Mon, 10 Mar 2025 17:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4A32253FE;
+	Mon, 10 Mar 2025 17:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftk7XHOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXG7uqQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAE822CBED;
-	Mon, 10 Mar 2025 17:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0745F230BF6;
+	Mon, 10 Mar 2025 17:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627749; cv=none; b=fvYTUJEGVXVLTc61T2LUftR0bjMa+6N62EFiljfCDwPMqW4ama32bF7kR8252zGf3fpvf3bVV0UrNmPnDmGNepW3+Ge6XyL0uUAZPkv0vJpl3Y3H4iFf2VbT2wMgRAS88ktq59VLkMcKxLU3FL6ezwRJ1Z4scuGx4PiS6lZHeZI=
+	t=1741628127; cv=none; b=meiN1UQNu3/5RUBHnQrl2IaC2CfyuQcZ8xBViK0w1HKmWo6IC7xCvUQSNEyfwQ6HbCb14/3SDLFP9h9q9YSyMmGDARuPe5bFKmvR6L+/ngqkHTcta7nlNOIYRw+zTFAO3xeifvsoeKY1qWtyp2OY9ySRx8CLWc3XBGu/n+sAwDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627749; c=relaxed/simple;
-	bh=zu2gyNj41OxDBYfOxWjy/KYHIC5AKcoNBBn5+RVH/JA=;
+	s=arc-20240116; t=1741628127; c=relaxed/simple;
+	bh=AMjv3HaLmWxcyToHDzLsprP9mcjciZv6RH92Z5rIWZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0Asds7upO9S0mChDS2KgO3G6+HwJNsfqY5E3QBCjiBKTYwv9JEMQsWEbMrC0NenyMNN5653vYhUyOQBsbaMNLHwR1MzQBrB4uznIz6HGM2AoPs85ny1nNawww07/t3bJ4hEP/Aymss0EYk0Nba9dYPWZN+7DjZc/J05a7EAKQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftk7XHOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDABC4CEEC;
-	Mon, 10 Mar 2025 17:29:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D+rvTJmK029kRP+PF9BmSud08QDfmiu5XXPLiQjyj20f0eE/ZgzknKmm0/uj/RgBksT+Y/12sYVBKExWZrnWDPIQiep4xnJFN12DfiiKn+YZlUmEodZFMRe3lQcFMz8GUaq0kFO6Ur/blzECGNFXZ/ilpduwr007durqoUiHKL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXG7uqQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78104C4CEE5;
+	Mon, 10 Mar 2025 17:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627749;
-	bh=zu2gyNj41OxDBYfOxWjy/KYHIC5AKcoNBBn5+RVH/JA=;
+	s=korg; t=1741628126;
+	bh=AMjv3HaLmWxcyToHDzLsprP9mcjciZv6RH92Z5rIWZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftk7XHOSTXvGgjSgDcvTcFv2GCDj9sX0JO/7g3nBL+hs2Z5O74WpfKBEOha28U+xV
-	 egSAVDaTcXjS/G2C7wjPWzLaGmdEau1n7odw7dTadZoC6vIkk4X02HcQpB1xyMi4cm
-	 xzfwZuwi2j+CGUI7NB0cV9o4RI9qctktPAE0yFlI=
+	b=DXG7uqQy0m4LVO7b6M1mGB2X0EQ8d8PMgbArXwkJZQh4QDNEjbgBFPGW7Gj2gGbqq
+	 OTOWjcgAt4bHB04Iv0cfrE8gEHK2E5snreKdlws04psbPsmVTY77i3SjYECBNO1a+K
+	 xzO6OO2EtBV06wAffS+6KTRWWMfYvrCl8eVD83aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 236/269] KVM: x86: Explicitly zero EAX and EBX when PERFMON_V2 isnt supported by KVM
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.6 095/145] usb: hub: lack of clearing xHC resources
 Date: Mon, 10 Mar 2025 18:06:29 +0100
-Message-ID: <20250310170507.091497322@linuxfoundation.org>
+Message-ID: <20250310170438.589268877@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit f9dc8fb3afc968042bdaf4b6e445a9272071c9f3 upstream.
+commit 2b66ef84d0d2a0ea955b40bd306f5e3abbc5cf9c upstream.
 
-Fix a goof where KVM sets CPUID.0x80000022.EAX to CPUID.0x80000022.EBX
-instead of zeroing both when PERFMON_V2 isn't supported by KVM.  In
-practice, barring a buggy CPU (or vCPU model when running nested) only the
-!enable_pmu case is affected, as KVM always supports PERFMON_V2 if it's
-available in hardware, i.e. CPUID.0x80000022.EBX will be '0' if PERFMON_V2
-is unsupported.
+The xHC resources allocated for USB devices are not released in correct
+order after resuming in case when while suspend device was reconnected.
 
-For the !enable_pmu case, the bug is relatively benign as KVM will refuse
-to enable PMU capabilities, but a VMM that reflects KVM's supported CPUID
-into the guest could inadvertently induce #GPs in the guest due to
-advertising support for MSRs that KVM refuses to emulate.
+This issue has been detected during the fallowing scenario:
+- connect hub HS to root port
+- connect LS/FS device to hub port
+- wait for enumeration to finish
+- force host to suspend
+- reconnect hub attached to root port
+- wake host
 
-Fixes: 94cdeebd8211 ("KVM: x86/cpuid: Add AMD CPUID ExtPerfMonAndDbg leaf 0x80000022")
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250304082314.472202-3-xiaoyao.li@intel.com
-[sean: massage shortlog and changelog, tag for stable]
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+For this scenario during enumeration of USB LS/FS device the Cadence xHC
+reports completion error code for xHC commands because the xHC resources
+used for devices has not been properly released.
+XHCI specification doesn't mention that device can be reset in any order
+so, we should not treat this issue as Cadence xHC controller bug.
+Similar as during disconnecting in this case the device resources should
+be cleared starting form the last usb device in tree toward the root hub.
+To fix this issue usbcore driver should call hcd->driver->reset_device
+for all USB devices connected to hub which was reconnected while
+suspending.
+
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/PH7PR07MB953841E38C088678ACDCF6EEDDCC2@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/hub.c |   33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1387,7 +1387,7 @@ static inline int __do_cpuid_func(struct
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -6034,6 +6034,36 @@ void usb_hub_cleanup(void)
+ } /* usb_hub_cleanup() */
  
- 		entry->ecx = entry->edx = 0;
- 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
--			entry->eax = entry->ebx;
-+			entry->eax = entry->ebx = 0;
- 			break;
- 		}
+ /**
++ * hub_hc_release_resources - clear resources used by host controller
++ * @udev: pointer to device being released
++ *
++ * Context: task context, might sleep
++ *
++ * Function releases the host controller resources in correct order before
++ * making any operation on resuming usb device. The host controller resources
++ * allocated for devices in tree should be released starting from the last
++ * usb device in tree toward the root hub. This function is used only during
++ * resuming device when usb device require reinitialization – that is, when
++ * flag udev->reset_resume is set.
++ *
++ * This call is synchronous, and may not be used in an interrupt context.
++ */
++static void hub_hc_release_resources(struct usb_device *udev)
++{
++	struct usb_hub *hub = usb_hub_to_struct_hub(udev);
++	struct usb_hcd *hcd = bus_to_hcd(udev->bus);
++	int i;
++
++	/* Release up resources for all children before this device */
++	for (i = 0; i < udev->maxchild; i++)
++		if (hub->ports[i]->child)
++			hub_hc_release_resources(hub->ports[i]->child);
++
++	if (hcd->driver->reset_device)
++		hcd->driver->reset_device(hcd, udev);
++}
++
++/**
+  * usb_reset_and_verify_device - perform a USB port reset to reinitialize a device
+  * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)
+  *
+@@ -6097,6 +6127,9 @@ static int usb_reset_and_verify_device(s
+ 	bos = udev->bos;
+ 	udev->bos = NULL;
  
++	if (udev->reset_resume)
++		hub_hc_release_resources(udev);
++
+ 	mutex_lock(hcd->address0_mutex);
+ 
+ 	for (i = 0; i < PORT_INIT_TRIES; ++i) {
 
 
 
