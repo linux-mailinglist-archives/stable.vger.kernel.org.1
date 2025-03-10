@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-121944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7A2A59D19
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF8BA5A25B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B5D4188E4F7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E27918936F0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9882F18DB24;
-	Mon, 10 Mar 2025 17:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A093022A808;
+	Mon, 10 Mar 2025 18:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUA7WyQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZavMkCZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565F42F28;
-	Mon, 10 Mar 2025 17:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB5F1BBBFD;
+	Mon, 10 Mar 2025 18:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627081; cv=none; b=DY5g1bUHaMtbij4J3cR4FaP/SomrVMX32T49GPbbHYs8eCfvj3Ln3H89U+oOeOLJXi9eLPuf2Ko4M7O3uSO6jo4o48AgC6ha/Z//nRNcUHC7BDASIzwNTAdUzcRCmdRygTuHHFgttfOPAsn0g5i+aIAHjd97CMScJk0c6IGceMU=
+	t=1741630749; cv=none; b=u+xFY24KLnwRh0e4yt9Q4YYpzI1zxp91MxF7R3Xpjq2hzBpPxUv4p7Y8TlCUlukuJBY68kPcTNwIGBAWuna5R7CX7hfTyMI2IpmrAWlCEkRHKTaXu4BCH2JUuBPvbgBrz2ncd9hBpzrCO8r/ry8qzBC5szPJ0LNhFw9xLE1HVe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627081; c=relaxed/simple;
-	bh=FG/weuy0ZVcywxxYaSPnQUxDkSy3q67wUdVhD1zpls8=;
+	s=arc-20240116; t=1741630749; c=relaxed/simple;
+	bh=9jDKiDlmmWRWWON+cxdG54kcMlQOF3ErFpj5Ik53EQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zv0htwNe05yKiUbCaYkm80TFWe6jPkVnLEXSuGh346pyfzIeWXNdV1xYpiMzgLvv3prrgP32mMwhxyZnWf1yOiWv0aP3o99a+OXJjKc+8Vo8KFscf0tCKn4LbY5VrR12JP0f295VM/Ca+MxOxpfNbwsd3tdJyZrmjvBUsQLox5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUA7WyQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA772C4CEE5;
-	Mon, 10 Mar 2025 17:18:00 +0000 (UTC)
+	 MIME-Version; b=Kc9So1x2jImhSPZ6H14g7gTVd0Uy+y9KEjhw5iVgNrNHzCAqDUinb2jsv0UGB+/hWGT0dkDEqeV8SuxODBi7l/Oxbkdr4BtPd32Mbvr8j2yHtNNwDCgxo/HHhD0v71DfROjxtVrAQMtstEds5NGQbLN8Wnmf+dSwgeKUPU7dpVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZavMkCZ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AE8C4CEE5;
+	Mon, 10 Mar 2025 18:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627081;
-	bh=FG/weuy0ZVcywxxYaSPnQUxDkSy3q67wUdVhD1zpls8=;
+	s=korg; t=1741630749;
+	bh=9jDKiDlmmWRWWON+cxdG54kcMlQOF3ErFpj5Ik53EQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUA7WyQ6aB+7yw1n4GwEU6pegxoR6xjjPIyVAxGAr1V1knH7VG2GwD/hQeuQao1ti
-	 ZEzPWJSJ8qL0BHHWa/pmyMrCkv4rDqNHRVCtrSqj91Ba3VIvWTYunKlFQ/t/kqouO7
-	 ZDFL3fPzdDi2ArrynBOI2+bo7GoFcir7mlUPS1Lw=
+	b=ZavMkCZ+6KGpXctsi6VUIaxM8TcHbkpG9ehzrq71izWMRSK8sqn/oyaKJ8uCBppij
+	 FSEPA6cN+5I4V6P0jUDNX+MdlkAC7Hw8+teWhU0HJJUZmLPfukF4ZkdscBmZtQRUDU
+	 /EJoCWGWnVWd+ts3i7zXGfRtITnKkcfH8UgynEGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Covelli <doug.covelli@broadcom.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.13 172/207] KVM: SVM: Set RFLAGS.IF=1 in C code, to get VMRUN out of the STI shadow
-Date: Mon, 10 Mar 2025 18:06:05 +0100
-Message-ID: <20250310170454.626751498@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 520/620] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+Date: Mon, 10 Mar 2025 18:06:06 +0100
+Message-ID: <20250310170606.080213518@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit be45bc4eff33d9a7dae84a2150f242a91a617402 upstream.
+commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
 
-Enable/disable local IRQs, i.e. set/clear RFLAGS.IF, in the common
-svm_vcpu_enter_exit() just after/before guest_state_{enter,exit}_irqoff()
-so that VMRUN is not executed in an STI shadow.  AMD CPUs have a quirk
-(some would say "bug"), where the STI shadow bleeds into the guest's
-intr_state field if a #VMEXIT occurs during injection of an event, i.e. if
-the VMRUN doesn't complete before the subsequent #VMEXIT.
+When a DMA mapping error occurs while processing skb frags, it will free
+one more tx_swbd than expected, so fix this off-by-one issue.
 
-The spurious "interrupts masked" state is relatively benign, as it only
-occurs during event injection and is transient.  Because KVM is already
-injecting an event, the guest can't be in HLT, and if KVM is querying IRQ
-blocking for injection, then KVM would need to force an immediate exit
-anyways since injecting multiple events is impossible.
-
-However, because KVM copies int_state verbatim from vmcb02 to vmcb12, the
-spurious STI shadow is visible to L1 when running a nested VM, which can
-trip sanity checks, e.g. in VMware's VMM.
-
-Hoist the STI+CLI all the way to C code, as the aforementioned calls to
-guest_state_{enter,exit}_irqoff() already inform lockdep that IRQs are
-enabled/disabled, and taking a fault on VMRUN with RFLAGS.IF=1 is already
-possible.  I.e. if there's kernel code that is confused by running with
-RFLAGS.IF=1, then it's already a problem.  In practice, since GIF=0 also
-blocks NMIs, the only change in exposure to non-KVM code (relative to
-surrounding VMRUN with STI+CLI) is exception handling code, and except for
-the kvm_rebooting=1 case, all exception in the core VM-Enter/VM-Exit path
-are fatal.
-
-Use the "raw" variants to enable/disable IRQs to avoid tracing in the
-"no instrumentation" code; the guest state helpers also take care of
-tracing IRQ state.
-
-Oppurtunstically document why KVM needs to do STI in the first place.
-
-Reported-by: Doug Covelli <doug.covelli@broadcom.com>
-Closes: https://lore.kernel.org/all/CADH9ctBs1YPmE4aCfGPNBwA10cA8RuAk2gO7542DjMZgs4uzJQ@mail.gmail.com
-Fixes: f14eec0a3203 ("KVM: SVM: move more vmentry code to assembly")
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250224165442.2338294-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c     |   14 ++++++++++++++
- arch/x86/kvm/svm/vmenter.S |   10 +---------
- 2 files changed, 15 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4178,6 +4178,18 @@ static noinstr void svm_vcpu_enter_exit(
- 
- 	guest_state_enter_irqoff();
- 
-+	/*
-+	 * Set RFLAGS.IF prior to VMRUN, as the host's RFLAGS.IF at the time of
-+	 * VMRUN controls whether or not physical IRQs are masked (KVM always
-+	 * runs with V_INTR_MASKING_MASK).  Toggle RFLAGS.IF here to avoid the
-+	 * temptation to do STI+VMRUN+CLI, as AMD CPUs bleed the STI shadow
-+	 * into guest state if delivery of an event during VMRUN triggers a
-+	 * #VMEXIT, and the guest_state transitions already tell lockdep that
-+	 * IRQs are being enabled/disabled.  Note!  GIF=0 for the entirety of
-+	 * this path, so IRQs aren't actually unmasked while running host code.
-+	 */
-+	raw_local_irq_enable();
-+
- 	amd_clear_divider();
- 
- 	if (sev_es_guest(vcpu->kvm))
-@@ -4186,6 +4198,8 @@ static noinstr void svm_vcpu_enter_exit(
- 	else
- 		__svm_vcpu_run(svm, spec_ctrl_intercepted);
- 
-+	raw_local_irq_disable();
-+
- 	guest_state_exit_irqoff();
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -121,6 +121,24 @@ static int enetc_ptp_parse(struct sk_buf
+ 	return 0;
  }
  
---- a/arch/x86/kvm/svm/vmenter.S
-+++ b/arch/x86/kvm/svm/vmenter.S
-@@ -170,12 +170,8 @@ SYM_FUNC_START(__svm_vcpu_run)
- 	mov VCPU_RDI(%_ASM_DI), %_ASM_DI
++/**
++ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
++ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
++ * @count: Number of Tx buffer descriptors which need to be unmapped
++ * @i: Index of the last successfully mapped Tx buffer descriptor
++ */
++static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
++{
++	while (count--) {
++		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
++
++		enetc_free_tx_frame(tx_ring, tx_swbd);
++		if (i == 0)
++			i = tx_ring->bd_count;
++		i--;
++	}
++}
++
+ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ {
+ 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
+@@ -303,13 +321,7 @@ static int enetc_map_tx_buffs(struct ene
+ dma_err:
+ 	dev_err(tx_ring->dev, "DMA map error");
  
- 	/* Enter guest mode */
--	sti
--
- 3:	vmrun %_ASM_AX
- 4:
--	cli
--
- 	/* Pop @svm to RAX while it's the only available register. */
- 	pop %_ASM_AX
+-	do {
+-		tx_swbd = &tx_ring->tx_swbd[i];
+-		enetc_free_tx_frame(tx_ring, tx_swbd);
+-		if (i == 0)
+-			i = tx_ring->bd_count;
+-		i--;
+-	} while (count--);
++	enetc_unwind_tx_frame(tx_ring, count, i);
  
-@@ -340,12 +336,8 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
- 	mov KVM_VMCB_pa(%rax), %rax
- 
- 	/* Enter guest mode */
--	sti
--
- 1:	vmrun %rax
--
--2:	cli
--
-+2:
- 	/* IMPORTANT: Stuff the RSB immediately after VM-Exit, before RET! */
- 	FILL_RETURN_BUFFER %rax, RSB_CLEAR_LOOPS, X86_FEATURE_RSB_VMEXIT
- 
+ 	return 0;
+ }
 
 
 
