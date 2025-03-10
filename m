@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E608DA59CFC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4197A59E5F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE85188AA72
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C5113A56A3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89F5230BFC;
-	Mon, 10 Mar 2025 17:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861AF230BF6;
+	Mon, 10 Mar 2025 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fr4x2skZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgzvU5Dg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AC6230BD5;
-	Mon, 10 Mar 2025 17:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4158D22C336;
+	Mon, 10 Mar 2025 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627006; cv=none; b=Gu6iVux1OmrEOsVS17ms/L8k3L30ijBWUjnPlMouSRgGHA6Z/sXhWy2eSoMMJIxRcYichsEgAAe2NGoXxWir9MSHFL9A891Di4+dd7s8B0REgOxpa5ikmH3j7eEmq1+i/q6Ev4v5ti6yIck+O7ThXIlaNFTHtl2YgrEVF1HUPvA=
+	t=1741627726; cv=none; b=DjMWDcVICno6+C1cYZigd/WrNQKb+qlKj5sNT7BJjTlRkhLjskQvICJ654KXiwtR5w4BrkhbWIgk+U9jT2XHJdUhKifT2rrUNwLo8m/rNBBO57rvSLnamyX1mlb6NwtFi6Di0q1iTvFVbh5rX57j+f7bsp0PU/JiZsjTo95SqnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627006; c=relaxed/simple;
-	bh=MVivb8QrK47IkIkD23voUlBA9daI8DHAhatksiM6TsY=;
+	s=arc-20240116; t=1741627726; c=relaxed/simple;
+	bh=55uR/OHcS2e1gWz9Fa8kacf/fll5Jc1q4E3cycfTZxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFhnww3D3GUDws+6zR0yN8zYXc0wIlB+pd8dzo/QufMSVkxvVY/f2gEo8peQm0GMuj+fCeplBeTfVFFtbRsREifCZ5/TIvsqmPQxc4fSJDnRxGgDQPa0Of5ps5H0AEKZTIYWlpFCsu99L28ROXCQcy2vBiv6qt5gv7dLyeykHzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fr4x2skZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF1EC4CEE5;
-	Mon, 10 Mar 2025 17:16:45 +0000 (UTC)
+	 MIME-Version; b=cKs1HC5W7DGd6kddLZlehsBDIpBIslhnwP/D7aGi0jm1Mvjqmg5A3TlKC3r9ZCo0sdkSKUBlwKPzPcjZATn9K+rmrIEOYZ4leY7MS0SoQfZwNLjt+nPVfXuYT01Zq+acrP3BndFQbsLKF3LN/WWqCFAXsXoZyI50k5NHhzmWWwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgzvU5Dg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28E8C4CEE5;
+	Mon, 10 Mar 2025 17:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627006;
-	bh=MVivb8QrK47IkIkD23voUlBA9daI8DHAhatksiM6TsY=;
+	s=korg; t=1741627726;
+	bh=55uR/OHcS2e1gWz9Fa8kacf/fll5Jc1q4E3cycfTZxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fr4x2skZgfjlhVVSDNXJmhPA72Bb+aZYwN9M7GixePWMPoRIXXVwVvnyopNZyfTPY
-	 9/0VMiw9PCxcG+S8rmtEdlfy4D68LIdUA4CgydWAMJPomZRyhRY4pmE3OeWy9MNOJI
-	 llJkgeQ6f8anLHuiBznnFTCg20JwbMtGbXSQC+qw=
+	b=SgzvU5DgBp7aVb1eL5oY0NytlzT3EnJS7BTalbkM1FgurGRHb/lLseH5zpKnwSzD7
+	 OWGqvjwZYxxeArb46SbvTuzG+6t0R2QRTMYCUDiDaPb0X7ZYbjyBKO7V9FJl7FzaCM
+	 bm84GlpdT6KRB4uBTTshVbpaQUNlC9rX+PYDnPQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.13 189/207] bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
+	Doug Covelli <doug.covelli@broadcom.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 229/269] KVM: SVM: Set RFLAGS.IF=1 in C code, to get VMRUN out of the STI shadow
 Date: Mon, 10 Mar 2025 18:06:22 +0100
-Message-ID: <20250310170455.295500039@linuxfoundation.org>
+Message-ID: <20250310170506.816341678@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit a321d163de3d8aa38a6449ab2becf4b1581aed96 upstream.
+commit be45bc4eff33d9a7dae84a2150f242a91a617402 upstream.
 
-There are multiple places from where the recovery work gets scheduled
-asynchronously. Also, there are multiple places where the caller waits
-synchronously for the recovery to be completed. One such place is during
-the PM shutdown() callback.
+Enable/disable local IRQs, i.e. set/clear RFLAGS.IF, in the common
+svm_vcpu_enter_exit() just after/before guest_state_{enter,exit}_irqoff()
+so that VMRUN is not executed in an STI shadow.  AMD CPUs have a quirk
+(some would say "bug"), where the STI shadow bleeds into the guest's
+intr_state field if a #VMEXIT occurs during injection of an event, i.e. if
+the VMRUN doesn't complete before the subsequent #VMEXIT.
 
-If the device is not alive during recovery_work, it will try to reset the
-device using pci_reset_function(). This function internally will take the
-device_lock() first before resetting the device. By this time, if the lock
-has already been acquired, then recovery_work will get stalled while
-waiting for the lock. And if the lock was already acquired by the caller
-which waits for the recovery_work to be completed, it will lead to
-deadlock.
+The spurious "interrupts masked" state is relatively benign, as it only
+occurs during event injection and is transient.  Because KVM is already
+injecting an event, the guest can't be in HLT, and if KVM is querying IRQ
+blocking for injection, then KVM would need to force an immediate exit
+anyways since injecting multiple events is impossible.
 
-This is what happened on the X1E80100 CRD device when the device died
-before shutdown() callback. Driver core calls the driver's shutdown()
-callback while holding the device_lock() leading to deadlock.
+However, because KVM copies int_state verbatim from vmcb02 to vmcb12, the
+spurious STI shadow is visible to L1 when running a nested VM, which can
+trip sanity checks, e.g. in VMware's VMM.
 
-And this deadlock scenario can occur on other paths as well, like during
-the PM suspend() callback, where the driver core would hold the
-device_lock() before calling driver's suspend() callback. And if the
-recovery_work was already started, it could lead to deadlock. This is also
-observed on the X1E80100 CRD.
+Hoist the STI+CLI all the way to C code, as the aforementioned calls to
+guest_state_{enter,exit}_irqoff() already inform lockdep that IRQs are
+enabled/disabled, and taking a fault on VMRUN with RFLAGS.IF=1 is already
+possible.  I.e. if there's kernel code that is confused by running with
+RFLAGS.IF=1, then it's already a problem.  In practice, since GIF=0 also
+blocks NMIs, the only change in exposure to non-KVM code (relative to
+surrounding VMRUN with STI+CLI) is exception handling code, and except for
+the kvm_rebooting=1 case, all exception in the core VM-Enter/VM-Exit path
+are fatal.
 
-So to fix both issues, use pci_try_reset_function() in recovery_work. This
-function first checks for the availability of the device_lock() before
-trying to reset the device. If the lock is available, it will acquire it
-and reset the device. Otherwise, it will return -EAGAIN. If that happens,
-recovery_work will fail with the error message "Recovery failed" as not
-much could be done.
+Use the "raw" variants to enable/disable IRQs to avoid tracing in the
+"no instrumentation" code; the guest state helpers also take care of
+tracing IRQ state.
 
-Cc: stable@vger.kernel.org # 5.12
-Reported-by: Johan Hovold <johan@kernel.org>
-Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
-Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Analyzed-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Link: https://lore.kernel.org/r/20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Oppurtunstically document why KVM needs to do STI in the first place.
+
+Reported-by: Doug Covelli <doug.covelli@broadcom.com>
+Closes: https://lore.kernel.org/all/CADH9ctBs1YPmE4aCfGPNBwA10cA8RuAk2gO7542DjMZgs4uzJQ@mail.gmail.com
+Fixes: f14eec0a3203 ("KVM: SVM: move more vmentry code to assembly")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20250224165442.2338294-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/svm.c     |   14 ++++++++++++++
+ arch/x86/kvm/svm/vmenter.S |   10 +---------
+ 2 files changed, 15 insertions(+), 9 deletions(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -1040,8 +1040,9 @@ static void mhi_pci_recovery_work(struct
- err_unprepare:
- 	mhi_unprepare_after_power_down(mhi_cntrl);
- err_try_reset:
--	if (pci_reset_function(pdev))
--		dev_err(&pdev->dev, "Recovery failed\n");
-+	err = pci_try_reset_function(pdev);
-+	if (err)
-+		dev_err(&pdev->dev, "Recovery failed: %d\n", err);
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4176,6 +4176,18 @@ static noinstr void svm_vcpu_enter_exit(
+ 
+ 	guest_state_enter_irqoff();
+ 
++	/*
++	 * Set RFLAGS.IF prior to VMRUN, as the host's RFLAGS.IF at the time of
++	 * VMRUN controls whether or not physical IRQs are masked (KVM always
++	 * runs with V_INTR_MASKING_MASK).  Toggle RFLAGS.IF here to avoid the
++	 * temptation to do STI+VMRUN+CLI, as AMD CPUs bleed the STI shadow
++	 * into guest state if delivery of an event during VMRUN triggers a
++	 * #VMEXIT, and the guest_state transitions already tell lockdep that
++	 * IRQs are being enabled/disabled.  Note!  GIF=0 for the entirety of
++	 * this path, so IRQs aren't actually unmasked while running host code.
++	 */
++	raw_local_irq_enable();
++
+ 	amd_clear_divider();
+ 
+ 	if (sev_es_guest(vcpu->kvm))
+@@ -4184,6 +4196,8 @@ static noinstr void svm_vcpu_enter_exit(
+ 	else
+ 		__svm_vcpu_run(svm, spec_ctrl_intercepted);
+ 
++	raw_local_irq_disable();
++
+ 	guest_state_exit_irqoff();
  }
  
- static void health_check(struct timer_list *t)
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -170,12 +170,8 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	mov VCPU_RDI(%_ASM_DI), %_ASM_DI
+ 
+ 	/* Enter guest mode */
+-	sti
+-
+ 3:	vmrun %_ASM_AX
+ 4:
+-	cli
+-
+ 	/* Pop @svm to RAX while it's the only available register. */
+ 	pop %_ASM_AX
+ 
+@@ -340,12 +336,8 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 	mov KVM_VMCB_pa(%rax), %rax
+ 
+ 	/* Enter guest mode */
+-	sti
+-
+ 1:	vmrun %rax
+-
+-2:	cli
+-
++2:
+ 	/* IMPORTANT: Stuff the RSB immediately after VM-Exit, before RET! */
+ 	FILL_RETURN_BUFFER %rax, RSB_CLEAR_LOOPS, X86_FEATURE_RSB_VMEXIT
+ 
 
 
 
