@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-121852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540A3A59C97
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A2BA59CD4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFF1167C54
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 644983A680A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF31230BFC;
-	Mon, 10 Mar 2025 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171B4232395;
+	Mon, 10 Mar 2025 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nk7yvKRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WF0TncyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD7522B8D0;
-	Mon, 10 Mar 2025 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80B4232376;
+	Mon, 10 Mar 2025 17:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626816; cv=none; b=W7tFjATqMOzm4zSADTc4a/vPVdkkL5h+7On4hR8BElUzyrx3mpkJ6TUevNIdnRtIWjjxsxlwN2adwL1F85W5NBuc/hIsycQ6kLr3wr3d8pcmD/uicJVhKwFscxjv5ozefb+l7q5XMOTjJ/o5dEkQtqBtz31wc2+yL6YE8ifTX7o=
+	t=1741626847; cv=none; b=q8hT0Ve75L/rI1vQgVvaESyTBTQzxKGpn/J2X4xmTpg1UMe5VL0hU3fXkXVjlKt4rSeryrq7Cu/I/pbE4V5aUnW0T3h9BWEIIZ3InKbkpILo4B0LbARsZLJq/H3QaS+d2Vw8yPickwN2HUjgLWOYlLVCL2/lM/t0Qiwrws3NOig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626816; c=relaxed/simple;
-	bh=7u/nJhZJwxRq4jdt1yAbHVpHrf/73bFwSsq3b9Tfrms=;
+	s=arc-20240116; t=1741626847; c=relaxed/simple;
+	bh=6goeNrC2/8QyLQ11H+Vkt0w/SbWxbqGLMZybWw/DO8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYkbOxpxZrEpm62HjKTOW3vRVfU+82ya6lKhwDIiOyT+LIWAz4dZqXGKO4pE7548a2L658Vqn6eBtXO44VLGps8PIdUGWULHLUKgsbUdgV1xox/yonWzDO21PxaCJFhqozlG7d5lTWnLaRALyUYW/jJ/oKK5feM61YsbdzP/Lqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nk7yvKRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE089C4CEE5;
-	Mon, 10 Mar 2025 17:13:35 +0000 (UTC)
+	 MIME-Version; b=EkPP+fOC+qr1sfFQ8TQEzHjl9wGLiJYhGNFOv0nOx2v70VkUKAAFPZUH8CpO0cEHXhtqVUdK4vfXUht/E6Ky46f/Y0b5FOjPidXWATvc8y1GwOXyU48/9Qg6TrUObUDjCn+cZeuviFAanmu8fSx7KYyirqt8sVH2IZCA3gsv+sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WF0TncyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545E5C4CEED;
+	Mon, 10 Mar 2025 17:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626816;
-	bh=7u/nJhZJwxRq4jdt1yAbHVpHrf/73bFwSsq3b9Tfrms=;
+	s=korg; t=1741626847;
+	bh=6goeNrC2/8QyLQ11H+Vkt0w/SbWxbqGLMZybWw/DO8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nk7yvKRhkRACRFY9XCgUsmnNkrGBG4ummm+rPHBB5HXKUkT2yNFJS3hGFVBYAoC96
-	 zo27d5TKzHwgHv8CV5W5rPNZVNA3j1+2I9Kc7/QRbozp39BT9stmodTklOe2+LpGnD
-	 qVTSy/FjLhCC+IfnaKopAPwWJPJVrnirUIAXjHtI=
+	b=WF0TncyIJduh12ScMrDlRIAkkVXi7c8aCd+3PRGjOpmtjWFKzD2Xm3EwBsCr1+gzi
+	 6em9C7meH2QwVfPVVOKma7FFayQZ8LDjUjzmSpRm2wdmWW5dXWjUoAIlC9+6dYpnJH
+	 f2A+0ITM3PQ2mPnqy34zlX6vEe2m8RgWsFc5HpvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 105/207] bluetooth: btusb: Initialize .owner field of force_poll_sync_fops
-Date: Mon, 10 Mar 2025 18:04:58 +0100
-Message-ID: <20250310170451.937102572@linuxfoundation.org>
+Subject: [PATCH 6.13 106/207] nvmet: remove old function prototype
+Date: Mon, 10 Mar 2025 18:04:59 +0100
+Message-ID: <20250310170451.974941904@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
 References: <20250310170447.729440535@linuxfoundation.org>
@@ -66,33 +66,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit cbf85b9cb80bec6345ffe0368dfff98386f4714f ]
+[ Upstream commit 0979ff3676b1b4e6a20970bc265491d23c2da42b ]
 
-Initialize .owner field of force_poll_sync_fops to THIS_MODULE in order to
-prevent btusb from being unloaded while its operations are in use.
+nvmet_subsys_nsid_exists() doesn't exist anymore
 
-Fixes: 800fe5ec302e ("Bluetooth: btusb: Add support for queuing during polling interval")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 74d16965d7ac ("nvmet-loop: avoid using mutex in IO hotpath")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/target/nvmet.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 72e85673b7095..75dbe07e07e21 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3652,6 +3652,7 @@ static ssize_t force_poll_sync_write(struct file *file,
- }
+diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
+index 7233549f7c8a0..016a5c2505464 100644
+--- a/drivers/nvme/target/nvmet.h
++++ b/drivers/nvme/target/nvmet.h
+@@ -607,7 +607,6 @@ void nvmet_subsys_disc_changed(struct nvmet_subsys *subsys,
+ 		struct nvmet_host *host);
+ void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
+ 		u8 event_info, u8 log_page);
+-bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid);
  
- static const struct file_operations force_poll_sync_fops = {
-+	.owner		= THIS_MODULE,
- 	.open		= simple_open,
- 	.read		= force_poll_sync_read,
- 	.write		= force_poll_sync_write,
+ #define NVMET_MIN_QUEUE_SIZE	16
+ #define NVMET_MAX_QUEUE_SIZE	1024
 -- 
 2.39.5
 
