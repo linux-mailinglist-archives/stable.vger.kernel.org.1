@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-122206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770D7A59E64
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0461A59FA1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5142163A56
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21DE2170EAE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C60623373C;
-	Mon, 10 Mar 2025 17:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07668233727;
+	Mon, 10 Mar 2025 17:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgNyazFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCXt9Eyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE8223372F;
-	Mon, 10 Mar 2025 17:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA16723237F;
+	Mon, 10 Mar 2025 17:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627830; cv=none; b=BsZTzRE9hmK2aG+H4ArMRGPo3DfWM88EjC1dkY2lHwqECOIotvfmAMw7Zy3wWicvvJexaC7QAlIfx/gzxx8lqYdqBKJEGirU1E2AfvZOq7f6QejpOe4R5ZR1Wws9wuOVQSvePzgFv4ltmuNk2FGN1JyjpZ/CppiRxN8nG0WSecE=
+	t=1741628485; cv=none; b=T8GbEKdxUvHaXYRmrt8/j/1BIeOR+M/IRobwQX0xER1MZyy+Ztw8Q4TBF/pk2rCPj+ovXhIfkRcnVUQgcg6bnpbIFcVhC2+oOUUeP3IM+9fQQwosGBy0pmqCkhF9Jz2nuULZhlFwzNiY040rUOzEU9Qbpl/+zlWoqKJX0jcfpgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627830; c=relaxed/simple;
-	bh=z3eLuin3BQ22mugZidU3HprZjOtFcDDek/DgSPRJ2Hk=;
+	s=arc-20240116; t=1741628485; c=relaxed/simple;
+	bh=+W3kRukJE6Qy90DVqgj2G2OXVvU/HAYzhqhexBkMDNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAdnjovcoDORfCekCeJRxX3ZXxfgNDkYjAUEqt8EKARnF1BUkM/TQRJ1y9HQ256RIqRWEbOEJNN21RA6Ot1ZZfOCJnpIHBP8kQb8PTIWsbhbrqvOTgMbzAtJHnWOEbJG2kriWtj1qI52HdZ/kq8t4WLpxyq53Ko8r2bvL/8C4PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgNyazFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67387C4CEE5;
-	Mon, 10 Mar 2025 17:30:29 +0000 (UTC)
+	 MIME-Version; b=ggPMzdoXeW3BCQo7CkPy6VUzMoikybCO7lwOZmNpXpjJtCKxOdH28IKLgZF63EFr6UM5hhOkd58hMGEr++oi41TMQkALWwImF2evFcSPVW0QF8G1IG0xqoFk8twAF6A0FBKH+N0aQXO35xNfjdiLqXYDulz8Vi4432HmVrgbves=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCXt9Eyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F978C4CEE5;
+	Mon, 10 Mar 2025 17:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627829;
-	bh=z3eLuin3BQ22mugZidU3HprZjOtFcDDek/DgSPRJ2Hk=;
+	s=korg; t=1741628485;
+	bh=+W3kRukJE6Qy90DVqgj2G2OXVvU/HAYzhqhexBkMDNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgNyazFFhyuRqj+xMun5/Qb7aQGFkZqTmjy2Cy1xDTCUmAS/0/1787aF7n1yubSVR
-	 XHOhSJ2pDkwBsDogLFh1XRb/fR+iFkUlBO/Zl+ZnQeMhsdRmBnYmVEjFJp8C7zU8Ce
-	 9RGtREm9yHi/fset0ilaEOxpKtHgsUGcQAQh9KqY=
+	b=sCXt9Eyog7Oozlisk5wo/npBCTc1k1eMNSbf/0O7peVllE5Fytx/uBOh+b9rw4uwZ
+	 6UBDdkxMthFnl0/kYIGDZGKGXIujgpz2RzDlnuGxieZg5BsLBFrMS4ZS7V0ExkLXeD
+	 Rfhr061oWJpoCU/GOl70T0LWKiXXzYbvI/h4nQlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 265/269] Revert "KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()"
+	stable <stable@kernel.org>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.1 074/109] usb: gadget: Set self-powered based on MaxPower and bmAttributes
 Date: Mon, 10 Mar 2025 18:06:58 +0100
-Message-ID: <20250310170508.351495005@linuxfoundation.org>
+Message-ID: <20250310170430.504220762@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
 
-This reverts commit dec857329fb9a66a5bce4f9db14c97ef64725a32 which is
-commit c9be85dabb376299504e0d391d15662c0edf8273 upstream.
+commit 40e89ff5750fca2c1d6da93f98a2038716bba86c upstream.
 
-It should not have been applied.
+Currently the USB gadget will be set as bus-powered based solely
+on whether its bMaxPower is greater than 100mA, but this may miss
+devices that may legitimately draw less than 100mA but still want
+to report as bus-powered. Similarly during suspend & resume, USB
+gadget is incorrectly marked as bus/self powered without checking
+the bmAttributes field. Fix these by configuring the USB gadget
+as self or bus powered based on bmAttributes, and explicitly set
+it as bus-powered if it draws more than 100mA.
 
-Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
-Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: stable <stable@kernel.org>
+Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250217120328.2446639-1-prashanth.k@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/composite.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -242,7 +242,7 @@ static inline int tlbe_is_writable(struc
- 	return tlbe->mas7_3 & (MAS3_SW|MAS3_UW);
- }
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1018,10 +1018,11 @@ static int set_config(struct usb_composi
+ 	else
+ 		usb_gadget_set_remote_wakeup(gadget, 0);
+ done:
+-	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
+-		usb_gadget_set_selfpowered(gadget);
+-	else
++	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
++	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
+ 		usb_gadget_clear_selfpowered(gadget);
++	else
++		usb_gadget_set_selfpowered(gadget);
  
--static inline bool kvmppc_e500_ref_setup(struct tlbe_ref *ref,
-+static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
- 					 struct kvm_book3e_206_tlb_entry *gtlbe,
- 					 kvm_pfn_t pfn, unsigned int wimg)
- {
-@@ -252,7 +252,11 @@ static inline bool kvmppc_e500_ref_setup
- 	/* Use guest supplied MAS2_G and MAS2_E */
- 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
+ 	usb_gadget_vbus_draw(gadget, power);
+ 	if (result >= 0 && cdev->delayed_status)
+@@ -2490,7 +2491,9 @@ void composite_suspend(struct usb_gadget
  
--	return tlbe_is_writable(gtlbe);
-+	/* Mark the page accessed */
-+	kvm_set_pfn_accessed(pfn);
+ 	cdev->suspended = 1;
+ 
+-	usb_gadget_set_selfpowered(gadget);
++	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
++		usb_gadget_set_selfpowered(gadget);
 +
-+	if (tlbe_is_writable(gtlbe))
-+		kvm_set_pfn_dirty(pfn);
+ 	usb_gadget_vbus_draw(gadget, 2);
  }
  
- static inline void kvmppc_e500_ref_release(struct tlbe_ref *ref)
-@@ -333,7 +337,6 @@ static inline int kvmppc_e500_shadow_map
- 	unsigned int wimg = 0;
- 	pgd_t *pgdir;
- 	unsigned long flags;
--	bool writable = false;
+@@ -2519,8 +2522,11 @@ void composite_resume(struct usb_gadget
+ 		else
+ 			maxpower = min(maxpower, 900U);
  
- 	/* used to check for invalidations in progress */
- 	mmu_seq = kvm->mmu_invalidate_seq;
-@@ -487,9 +490,7 @@ static inline int kvmppc_e500_shadow_map
- 			goto out;
- 		}
+-		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW)
++		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
++		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
+ 			usb_gadget_clear_selfpowered(gadget);
++		else
++			usb_gadget_set_selfpowered(gadget);
+ 
+ 		usb_gadget_vbus_draw(gadget, maxpower);
  	}
--	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
--	if (writable)
--		kvm_set_pfn_dirty(pfn);
-+	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
- 
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
 
 
 
