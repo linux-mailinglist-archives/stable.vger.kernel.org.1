@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE7BA59D93
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E242A5A1CD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE03016F73E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0E7D7A6F8F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2E822D799;
-	Mon, 10 Mar 2025 17:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2DB233725;
+	Mon, 10 Mar 2025 18:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSZHnoPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijv6SwOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCC422154C;
-	Mon, 10 Mar 2025 17:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DB423370B;
+	Mon, 10 Mar 2025 18:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627332; cv=none; b=GfXPswlx3uylf4Omt3qVdDV23gjdVHSQhVrxfGbb3SIW7CvcsGAB8g9RHvfa/QFTirGL60cB1bVey+Ts5/bHR7Ff7ttBHGINgtpCeRkKcymlAahyeFpzk9FhFPKphRQ2suq5wj9EOx+KK0Iad/M801FLbH1WsoOCakuHzPwIjbw=
+	t=1741630427; cv=none; b=uSEej5rpc66EXUnnMzVjOo6muaQ05QWRKQN/zOOogE13H5Q8DxXlj7JrmEfyY7BaMtynA1MtxiuZAK9YZ9MtygrMbVxt+/1WZOHj2j8dlRAdPvLmOXiD23at0t1rYsL9T5DKi3Kpmjd4YkigzmzRveiQ04p4yK76RbvFQ5vI1Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627332; c=relaxed/simple;
-	bh=gSbG8uCcllxKbVIa+rRvv4NBWSYZa4oPOK1DxVySQAs=;
+	s=arc-20240116; t=1741630427; c=relaxed/simple;
+	bh=biOioQ75eMYZ9TurSPcCWRWVHeTF/yq6jgvDmGnSGpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2mmBP5i/qIv1LaOC8R26itEjsrVBxAj53IzjXJz8aidVdTk+L0keldU9yXMjJZs/vlBGAm+1+7KR1ZpHM79tJST9+hDtqMBARmKvtdOw6Ldd+4khlXkustAdbiR40LpPX+Pvgkj5HfEL6ATtZDep871fk8EgoMe/VodUN9GDrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSZHnoPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1BDC4CEE5;
-	Mon, 10 Mar 2025 17:22:11 +0000 (UTC)
+	 MIME-Version; b=Rqz38Zb1EvmTyebSetsKa2jvwKT8UXu9Qax/lUbs1kYZgKoexAcOF+K0Bf9pJTU2hcvD7KxCFajZOdTAbu9sPIMTGyf0ezPufcgenzIPdhlkrtdyyH8WfMQG+IOA8ANh0svMXc1TmpCCqdSGT3dYRRK0RF4CbgoIxigciYtjhTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijv6SwOV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366B4C4CEE5;
+	Mon, 10 Mar 2025 18:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627332;
-	bh=gSbG8uCcllxKbVIa+rRvv4NBWSYZa4oPOK1DxVySQAs=;
+	s=korg; t=1741630426;
+	bh=biOioQ75eMYZ9TurSPcCWRWVHeTF/yq6jgvDmGnSGpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSZHnoPS9Yaid37CwU4mHPvwdWpi8sSKBOq3qamG4R5ZfLiHLjzRH1R0mWSA66e4v
-	 dWJbJ2KhgIrRPzh41isT8oCBfrpinQE7F56BtuUbvw+2+pFhpMJGpithVSD1EiD3yT
-	 JWVC9C4ZuSXIBTWNP+crcxiKxOK9oDCz5XgglbBA=
+	b=ijv6SwOVXB0uRtdvrQ24uaiywSdsnDLjsj9gmSZdipMGaXu8Tl7EDhUlAAy7s+Pdi
+	 9eHxrGmpO+xsWBc0VxscTQzLbfLFsUvsY3Sg/3v55Agnc+OsuuJ0ymVgadifRLPvus
+	 m96KqDve1XxWKLYBA62Hjxk+q4FpSU1D819usZUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	Iwona Winiarska <iwona.winiarska@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 094/269] hwmon: (peci/dimmtemp) Do not provide fake thresholds data
-Date: Mon, 10 Mar 2025 18:04:07 +0100
-Message-ID: <20250310170501.457779521@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 402/620] ipv6: use RCU protection in ip6_default_advmss()
+Date: Mon, 10 Mar 2025 18:04:08 +0100
+Message-ID: <20250310170601.460275736@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5797c04400ee117bfe459ff1e468d0ea38054ab4 upstream.
+[ Upstream commit 3c8ffcd248da34fc41e52a46e51505900115fc2a ]
 
-When an Icelake or Sapphire Rapids CPU isn't providing the maximum and
-critical thresholds for particular DIMM the driver should return an
-error to the userspace instead of giving it stale (best case) or wrong
-(the structure contains all zeros after kzalloc() call) data.
+ip6_default_advmss() needs rcu protection to make
+sure the net structure it reads does not disappear.
 
-The issue can be reproduced by binding the peci driver while the host is
-fully booted and idle, this makes PECI interaction unreliable enough.
-
-Fixes: 73bc1b885dae ("hwmon: peci: Add dimmtemp driver")
-Fixes: 621995b6d795 ("hwmon: (peci/dimmtemp) Add Sapphire Rapids support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Reviewed-by: Iwona Winiarska <iwona.winiarska@intel.com>
-Link: https://lore.kernel.org/r/20250123122003.6010-1-fercerpav@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5578689a4e3c ("[NETNS][IPV6] route6 - make route6 per namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-11-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/peci/dimmtemp.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/ipv6/route.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/peci/dimmtemp.c
-+++ b/drivers/hwmon/peci/dimmtemp.c
-@@ -127,8 +127,6 @@ static int update_thresholds(struct peci
- 		return 0;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index b7f494cca3e5c..94526436b91e8 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3184,13 +3184,18 @@ static unsigned int ip6_default_advmss(const struct dst_entry *dst)
+ {
+ 	struct net_device *dev = dst->dev;
+ 	unsigned int mtu = dst_mtu(dst);
+-	struct net *net = dev_net(dev);
++	struct net *net;
  
- 	ret = priv->gen_info->read_thresholds(priv, dimm_order, chan_rank, &data);
--	if (ret == -ENODATA) /* Use default or previous value */
--		return 0;
- 	if (ret)
- 		return ret;
+ 	mtu -= sizeof(struct ipv6hdr) + sizeof(struct tcphdr);
  
-@@ -509,11 +507,11 @@ read_thresholds_icx(struct peci_dimmtemp
++	rcu_read_lock();
++
++	net = dev_net_rcu(dev);
+ 	if (mtu < net->ipv6.sysctl.ip6_rt_min_advmss)
+ 		mtu = net->ipv6.sysctl.ip6_rt_min_advmss;
  
- 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd4, &reg_val);
- 	if (ret || !(reg_val & BIT(31)))
--		return -ENODATA; /* Use default or previous value */
-+		return -ENODATA;
- 
- 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd0, &reg_val);
- 	if (ret)
--		return -ENODATA; /* Use default or previous value */
-+		return -ENODATA;
- 
++	rcu_read_unlock();
++
  	/*
- 	 * Device 26, Offset 224e0: IMC 0 channel 0 -> rank 0
-@@ -546,11 +544,11 @@ read_thresholds_spr(struct peci_dimmtemp
- 
- 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd4, &reg_val);
- 	if (ret || !(reg_val & BIT(31)))
--		return -ENODATA; /* Use default or previous value */
-+		return -ENODATA;
- 
- 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd0, &reg_val);
- 	if (ret)
--		return -ENODATA; /* Use default or previous value */
-+		return -ENODATA;
- 
- 	/*
- 	 * Device 26, Offset 219a8: IMC 0 channel 0 -> rank 0
+ 	 * Maximal non-jumbo IPv6 payload is IPV6_MAXPLEN and
+ 	 * corresponding MSS is IPV6_MAXPLEN - tcp_header_size.
+-- 
+2.39.5
+
 
 
 
