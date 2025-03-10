@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-122548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B604A5A028
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:47:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815BAA5A05D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C031171D67
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:47:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5FE1890E88
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D607F233157;
-	Mon, 10 Mar 2025 17:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4863617CA12;
+	Mon, 10 Mar 2025 17:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldf4FuVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSdm6fUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875E3232369;
-	Mon, 10 Mar 2025 17:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B06230BF9;
+	Mon, 10 Mar 2025 17:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628809; cv=none; b=pg6iqhtYT40/w79GiZrLBkZv5keidN2hrLxnS5bF6HuSxcRxboU9in7G7IGe9dScqmWk4by07qwjpCPF8/Rnf+nrdrHdszNT4VjTNAfFjDsgNpMX2apyXSFNrhWynk6LAsNIet3vi+vVMw5YU1t7VJQBRYXr9kOLPLbRZl/kmtA=
+	t=1741628928; cv=none; b=Dw9Zu5IjZOdmdsTAk+q8HdegEzl9uKF6cNdwAG7+XsTBifqRR2tI0DFHpbcMO+40M8Sq1WXMqDCcGpffZ0z4+RpftKKYr1ulCHHhIm47/mGFUZReNWu4o/4Sk5md+XfTfgD6BK/cQ5kVomR9QyddzdfQkayYfiIoIjZ3k66dZ2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628809; c=relaxed/simple;
-	bh=R7BfXnaFzIli1X5dMOtZIulCNeFd3q39Np1NHpSCqp0=;
+	s=arc-20240116; t=1741628928; c=relaxed/simple;
+	bh=PuB0hZDH/bA16TpHl7k/P33bFPNhJl5yuWYejE+j1JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfvI6IT3wgTEFL6iHIwCiQM45Mdzxbakw/IRXzoMoia2SKZPwEA9PRgrDu6n/IOxmRHQ35yaPiCg+cSjnhgdh0DrJqCxzQr68U7Z868b1BFd72xHYMl9BCPSxS5bZxCAg+RHmlsX/NVko0lT8sFEUW7J4S0xHrd8uGBk9hohweg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldf4FuVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F88BC4CEE5;
-	Mon, 10 Mar 2025 17:46:48 +0000 (UTC)
+	 MIME-Version; b=MfEjOxZz9SH5dvEfOsERQMwOkn/g8TWFep86kriykxz+zz04eFy89BZUDmqQsQ1yr+TVP41A1Jkkb4EGAeQ9oJ6wAzrT5CeA7omqgqtds5GbkrWD/LX0nV+3mX9kvrdTVPfGJHC0yt12Obwc1RQYz2CdCFh03GPxgipUwhyF6oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSdm6fUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B015C4CEE5;
+	Mon, 10 Mar 2025 17:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628809;
-	bh=R7BfXnaFzIli1X5dMOtZIulCNeFd3q39Np1NHpSCqp0=;
+	s=korg; t=1741628927;
+	bh=PuB0hZDH/bA16TpHl7k/P33bFPNhJl5yuWYejE+j1JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldf4FuVGN2qo6Ybn7sSFeoZ+uB9BMy6y46ZZgWpwjN9ZjveEo+ZQ2tvZveKlAejXS
-	 R2uqz4n9diJgbfjS3EoC8sAnv/s/CMLGBpq4asG0gQVpPzy7r2xlws1bKYLRYa7jSS
-	 UNJ1DEytyAdw4cW38qAEgXItbmUyNiBhFj0SOUQ8=
+	b=TSdm6fUiaqyn+7352pj2o7kVe9KqxJupRsOcKUB7o2eEo1SRmdOyO72GEbFZocO5h
+	 uwuFyVJz3F05yKG1RNv5W9tlq3PrUlNly7VkxgKM1iL074BPIlyX0pI7qFBov/K1HK
+	 4tOutKTk/g45bbcR6dXXgeciZyyUnQtpKHe1FIbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahdi Arghavani <ma.arghavani@yahoo.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Haibo Zhang <haibo.zhang@otago.ac.nz>,
-	David Eyers <david.eyers@otago.ac.nz>,
-	Abbas Arghavani <abbas.arghavani@mdu.se>,
-	"David S. Miller" <davem@davemloft.net>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/620] tcp_cubic: fix incorrect HyStart round start detection
-Date: Mon, 10 Mar 2025 17:58:41 +0100
-Message-ID: <20250310170548.543496344@linuxfoundation.org>
+Subject: [PATCH 5.15 076/620] net/rose: prevent integer overflows in rose_setsockopt()
+Date: Mon, 10 Mar 2025 17:58:42 +0100
+Message-ID: <20250310170548.585273209@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -72,81 +66,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mahdi Arghavani <ma.arghavani@yahoo.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 25c1a9ca53db5780757e7f53e688b8f916821baa ]
+[ Upstream commit d640627663bfe7d8963c7615316d7d4ef60f3b0b ]
 
-I noticed that HyStart incorrectly marks the start of rounds,
-leading to inaccurate measurements of ACK train lengths and
-resetting the `ca->sample_cnt` variable. This inaccuracy can impact
-HyStart's functionality in terminating exponential cwnd growth during
-Slow-Start, potentially degrading TCP performance.
+In case of possible unpredictably large arguments passed to
+rose_setsockopt() and multiplied by extra values on top of that,
+integer overflows may occur.
 
-The issue arises because the changes introduced in commit 4e1fddc98d25
-("tcp_cubic: fix spurious Hystart ACK train detections for not-cwnd-limited flows")
-moved the caller of the `bictcp_hystart_reset` function inside the `hystart_update` function.
-This modification added an additional condition for triggering the caller,
-requiring that (tcp_snd_cwnd(tp) >= hystart_low_window) must also
-be satisfied before invoking `bictcp_hystart_reset`.
+Do the safest minimum and fix these issues by checking the
+contents of 'opt' and returning -EINVAL if they are too large. Also,
+switch to unsigned int and remove useless check for negative 'opt'
+in ROSE_IDLE case.
 
-This fix ensures that `bictcp_hystart_reset` is correctly called
-at the start of a new round, regardless of the congestion window size.
-This is achieved by moving the condition
-(tcp_snd_cwnd(tp) >= hystart_low_window)
-from before calling `bictcp_hystart_reset` to after it.
-
-I tested with a client and a server connected through two Linux software routers.
-In this setup, the minimum RTT was 150 ms, the bottleneck bandwidth was 50 Mbps,
-and the bottleneck buffer size was 1 BDP, calculated as (50M / 1514 / 8) * 0.150 = 619 packets.
-I conducted the test twice, transferring data from the server to the client for 1.5 seconds.
-Before the patch was applied, HYSTART-DELAY stopped the exponential growth of cwnd when
-cwnd = 516, and the bottleneck link was not yet saturated (516 < 619).
-After the patch was applied, HYSTART-ACK-TRAIN stopped the exponential growth of cwnd when
-cwnd = 632, and the bottleneck link was saturated (632 > 619).
-In this test, applying the patch resulted in 300 KB more data delivered.
-
-Fixes: 4e1fddc98d25 ("tcp_cubic: fix spurious Hystart ACK train detections for not-cwnd-limited flows")
-Signed-off-by: Mahdi Arghavani <ma.arghavani@yahoo.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Cc: Neal Cardwell <ncardwell@google.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Haibo Zhang <haibo.zhang@otago.ac.nz>
-Cc: David Eyers <david.eyers@otago.ac.nz>
-Cc: Abbas Arghavani <abbas.arghavani@mdu.se>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Tested-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250115164220.19954-1-n.zhandarovich@fintech.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_cubic.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/rose/af_rose.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
-index af4fc067f2a19..741a15799ab35 100644
---- a/net/ipv4/tcp_cubic.c
-+++ b/net/ipv4/tcp_cubic.c
-@@ -390,6 +390,10 @@ static void hystart_update(struct sock *sk, u32 delay)
- 	if (after(tp->snd_una, ca->end_seq))
- 		bictcp_hystart_reset(sk);
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 1d95ff34b13c9..65fd5b99f9dea 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -396,15 +396,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct rose_sock *rose = rose_sk(sk);
+-	int opt;
++	unsigned int opt;
  
-+	/* hystart triggers when cwnd is larger than some threshold */
-+	if (tcp_snd_cwnd(tp) < hystart_low_window)
-+		return;
-+
- 	if (hystart_detect & HYSTART_ACK_TRAIN) {
- 		u32 now = bictcp_clock_us(sk);
+ 	if (level != SOL_ROSE)
+ 		return -ENOPROTOOPT;
  
-@@ -465,9 +469,7 @@ static void cubictcp_acked(struct sock *sk, const struct ack_sample *sample)
- 	if (ca->delay_min == 0 || ca->delay_min > delay)
- 		ca->delay_min = delay;
+-	if (optlen < sizeof(int))
++	if (optlen < sizeof(unsigned int))
+ 		return -EINVAL;
  
--	/* hystart triggers when cwnd is larger than some threshold */
--	if (!ca->found && tcp_in_slow_start(tp) && hystart &&
--	    tcp_snd_cwnd(tp) >= hystart_low_window)
-+	if (!ca->found && tcp_in_slow_start(tp) && hystart)
- 		hystart_update(sk, delay);
- }
+-	if (copy_from_sockptr(&opt, optval, sizeof(int)))
++	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
+ 		return -EFAULT;
  
+ 	switch (optname) {
+@@ -413,31 +413,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
+ 
+ 	case ROSE_T1:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t1 = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_T2:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t2 = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_T3:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t3 = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_HOLDBACK:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->hb = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_IDLE:
+-		if (opt < 0)
++		if (opt > UINT_MAX / (60 * HZ))
+ 			return -EINVAL;
+ 		rose->idle = opt * 60 * HZ;
+ 		return 0;
 -- 
 2.39.5
 
