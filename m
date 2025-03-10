@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-122841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22A9A5A16E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C081A5A179
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5018A7A7193
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50BC73ADEDF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31BA22D4FD;
-	Mon, 10 Mar 2025 18:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEA222DFB1;
+	Mon, 10 Mar 2025 18:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKTwMKuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRNDls2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE3F17A2E8;
-	Mon, 10 Mar 2025 18:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB0F17A2E8;
+	Mon, 10 Mar 2025 18:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629652; cv=none; b=QE5um5KTtpJ/5lPukElO6pDxK2TG/FJSjfs+UhlIaAVw2wi+oStKk2ykpc1b1+hmSYTQSEB0SwC47RD1rp6gONBsFcmybE9LCoA73ChUYIO7F9kIQMNULV4v2tAhAT3gJe+x5loSG++yGiCaaabhKDyhDG6PsMvwMaaG1Q1LGvs=
+	t=1741629684; cv=none; b=bt+TA3tdAqBnCbQZh3Vh+M5aSErLlUnUSC7QcSJVm3/N+nZbJ6jvKg2YRFD9FKrf/Gb3dOHtAvkFYuvRMOW8SWc77P5qjY/SGUBNI526h6L76bApLZfI330+anf40DonqJ9zQnWWG8wE5voKjAg6fUESq6MAJqFPDQ1od8EXsos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629652; c=relaxed/simple;
-	bh=bd8uJWOCu4NySSRMf33j7vpGeVcquDS8cv5UHc9+hHM=;
+	s=arc-20240116; t=1741629684; c=relaxed/simple;
+	bh=ZNDE6ALcigYqS1ip0+1mUt5sW4jIm1oxOBHBKeKL69M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGd21gdJitOU0gJd5LK4BI7+3RB21QHuja3VyCEG4ERthSTh3RNLxFRXWuTKp7DWqZlCfK3qZsrGaQGeWTwWVW2uL4f/xBu6aIkSYpyqUCZrny/JEJHYhi6yJeg7LZV029YYrYj5O08fQlDmXE+j0XSE0rl88iP7XHErKtX/kIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKTwMKuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E00C4CEE5;
-	Mon, 10 Mar 2025 18:00:51 +0000 (UTC)
+	 MIME-Version; b=Neuja0hRTmru2C4H5+v4K/KP/qwzUdH4u19J2EseSaHPZ1G73Ra1mUCtVw9iSohK/EILIx8wQzJlcRZ14cL8C4UBqC87NdynFN7wKVzHmq7ajDprZWtoiL5zwEKlrqzr4omAvAfClmOhga58v2bDZQ1D0y1RX7Hkbn8snaPMsSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRNDls2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CB4C4CEE5;
+	Mon, 10 Mar 2025 18:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629652;
-	bh=bd8uJWOCu4NySSRMf33j7vpGeVcquDS8cv5UHc9+hHM=;
+	s=korg; t=1741629684;
+	bh=ZNDE6ALcigYqS1ip0+1mUt5sW4jIm1oxOBHBKeKL69M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKTwMKuRiBiZxhPtPkwA7XJOCm4hErBcMSTkxABGianqEK7KNrciBhuesI6tydfL9
-	 PSYzX+x8E71Me+yLR71muXROX0fDNLWr9hD6QgiiA/+VJpUGwVBFe4htsZKcXVJVtB
-	 9RpDaIP8idtQTvheutm0qc4q20pqu/ZR5kOoJkjE=
+	b=PRNDls2eS5AekGzWvw8xV0B+NtPHQTr32FBJc59InfnwBKrCXoiUD/GZvabRiwFTb
+	 aLQ89cXXAU0QEBuc/ny5YIaz+QQFJCLplMv/Ic4s7+JXXwuuS6V4rwoV0pt6keavVD
+	 yHdefzOuPeJYJfSpjgX9IqdTXmr1PZTugytZOj88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramesh Thomas <ramesh.thomas@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Maksym Planeta <maksym@exostellar.io>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 351/620] vfio/pci: Enable iowrite64 and ioread64 for vfio pci
-Date: Mon, 10 Mar 2025 18:03:17 +0100
-Message-ID: <20250310170559.464805967@linuxfoundation.org>
+Subject: [PATCH 5.15 352/620] Grab mm lock before grabbing pt lock
+Date: Mon, 10 Mar 2025 18:03:18 +0100
+Message-ID: <20250310170559.504166187@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -67,47 +66,154 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ramesh Thomas <ramesh.thomas@intel.com>
+From: Maksym Planeta <maksym@exostellar.io>
 
-[ Upstream commit 2b938e3db335e3670475e31a722c2bee34748c5a ]
+[ Upstream commit 6d002348789bc16e9203e9818b7a3688787e3b29 ]
 
-Definitions of ioread64 and iowrite64 macros in asm/io.h called by vfio
-pci implementations are enclosed inside check for CONFIG_GENERIC_IOMAP.
-They don't get defined if CONFIG_GENERIC_IOMAP is defined. Include
-linux/io-64-nonatomic-lo-hi.h to define iowrite64 and ioread64 macros
-when they are not defined. io-64-nonatomic-lo-hi.h maps the macros to
-generic implementation in lib/iomap.c. The generic implementation does
-64 bit rw if readq/writeq is defined for the architecture, otherwise it
-would do 32 bit back to back rw.
+Function xen_pin_page calls xen_pte_lock, which in turn grab page
+table lock (ptlock). When locking, xen_pte_lock expect mm->page_table_lock
+to be held before grabbing ptlock, but this does not happen when pinning
+is caused by xen_mm_pin_all.
 
-Note that there are two versions of the generic implementation that
-differs in the order the 32 bit words are written if 64 bit support is
-not present. This is not the little/big endian ordering, which is
-handled separately. This patch uses the lo followed by hi word ordering
-which is consistent with current back to back implementation in the
-vfio/pci code.
+This commit addresses lockdep warning below, which shows up when
+suspending a Xen VM.
 
-Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241210131938.303500-2-ramesh.thomas@intel.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+[ 3680.658422] Freezing user space processes
+[ 3680.660156] Freezing user space processes completed (elapsed 0.001 seconds)
+[ 3680.660182] OOM killer disabled.
+[ 3680.660192] Freezing remaining freezable tasks
+[ 3680.661485] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[ 3680.685254]
+[ 3680.685265] ==================================
+[ 3680.685269] WARNING: Nested lock was not taken
+[ 3680.685274] 6.12.0+ #16 Tainted: G        W
+[ 3680.685279] ----------------------------------
+[ 3680.685283] migration/0/19 is trying to lock:
+[ 3680.685288] ffff88800bac33c0 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: xen_pin_page+0x175/0x1d0
+[ 3680.685303]
+[ 3680.685303] but this task is not holding:
+[ 3680.685308] init_mm.page_table_lock
+[ 3680.685311]
+[ 3680.685311] stack backtrace:
+[ 3680.685316] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
+[ 3680.685324] Tainted: [W]=WARN
+[ 3680.685328] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
+[ 3680.685339] Call Trace:
+[ 3680.685344]  <TASK>
+[ 3680.685347]  dump_stack_lvl+0x77/0xb0
+[ 3680.685356]  __lock_acquire+0x917/0x2310
+[ 3680.685364]  lock_acquire+0xce/0x2c0
+[ 3680.685369]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685373]  _raw_spin_lock_nest_lock+0x2f/0x70
+[ 3680.685381]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685386]  xen_pin_page+0x175/0x1d0
+[ 3680.685390]  ? __pfx_xen_pin_page+0x10/0x10
+[ 3680.685394]  __xen_pgd_walk+0x233/0x2c0
+[ 3680.685401]  ? stop_one_cpu+0x91/0x100
+[ 3680.685405]  __xen_pgd_pin+0x5d/0x250
+[ 3680.685410]  xen_mm_pin_all+0x70/0xa0
+[ 3680.685415]  xen_pv_pre_suspend+0xf/0x280
+[ 3680.685420]  xen_suspend+0x57/0x1a0
+[ 3680.685428]  multi_cpu_stop+0x6b/0x120
+[ 3680.685432]  ? update_cpumasks_hier+0x7c/0xa60
+[ 3680.685439]  ? __pfx_multi_cpu_stop+0x10/0x10
+[ 3680.685443]  cpu_stopper_thread+0x8c/0x140
+[ 3680.685448]  ? smpboot_thread_fn+0x20/0x1f0
+[ 3680.685454]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[ 3680.685458]  smpboot_thread_fn+0xed/0x1f0
+[ 3680.685462]  kthread+0xde/0x110
+[ 3680.685467]  ? __pfx_kthread+0x10/0x10
+[ 3680.685471]  ret_from_fork+0x2f/0x50
+[ 3680.685478]  ? __pfx_kthread+0x10/0x10
+[ 3680.685482]  ret_from_fork_asm+0x1a/0x30
+[ 3680.685489]  </TASK>
+[ 3680.685491]
+[ 3680.685491] other info that might help us debug this:
+[ 3680.685497] 1 lock held by migration/0/19:
+[ 3680.685500]  #0: ffffffff8284df38 (pgd_lock){+.+.}-{3:3}, at: xen_mm_pin_all+0x14/0xa0
+[ 3680.685512]
+[ 3680.685512] stack backtrace:
+[ 3680.685518] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
+[ 3680.685528] Tainted: [W]=WARN
+[ 3680.685531] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
+[ 3680.685538] Call Trace:
+[ 3680.685541]  <TASK>
+[ 3680.685544]  dump_stack_lvl+0x77/0xb0
+[ 3680.685549]  __lock_acquire+0x93c/0x2310
+[ 3680.685554]  lock_acquire+0xce/0x2c0
+[ 3680.685558]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685562]  _raw_spin_lock_nest_lock+0x2f/0x70
+[ 3680.685568]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685572]  xen_pin_page+0x175/0x1d0
+[ 3680.685578]  ? __pfx_xen_pin_page+0x10/0x10
+[ 3680.685582]  __xen_pgd_walk+0x233/0x2c0
+[ 3680.685588]  ? stop_one_cpu+0x91/0x100
+[ 3680.685592]  __xen_pgd_pin+0x5d/0x250
+[ 3680.685596]  xen_mm_pin_all+0x70/0xa0
+[ 3680.685600]  xen_pv_pre_suspend+0xf/0x280
+[ 3680.685607]  xen_suspend+0x57/0x1a0
+[ 3680.685611]  multi_cpu_stop+0x6b/0x120
+[ 3680.685615]  ? update_cpumasks_hier+0x7c/0xa60
+[ 3680.685620]  ? __pfx_multi_cpu_stop+0x10/0x10
+[ 3680.685625]  cpu_stopper_thread+0x8c/0x140
+[ 3680.685629]  ? smpboot_thread_fn+0x20/0x1f0
+[ 3680.685634]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[ 3680.685638]  smpboot_thread_fn+0xed/0x1f0
+[ 3680.685642]  kthread+0xde/0x110
+[ 3680.685645]  ? __pfx_kthread+0x10/0x10
+[ 3680.685649]  ret_from_fork+0x2f/0x50
+[ 3680.685654]  ? __pfx_kthread+0x10/0x10
+[ 3680.685657]  ret_from_fork_asm+0x1a/0x30
+[ 3680.685662]  </TASK>
+[ 3680.685267] xen:grant_table: Grant tables using version 1 layout
+[ 3680.685921] OOM killer enabled.
+[ 3680.685934] Restarting tasks ... done.
+
+Signed-off-by: Maksym Planeta <maksym@exostellar.io>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241204103516.3309112-1-maksym@exostellar.io>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_rdwr.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/xen/mmu_pv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-index 82ac1569deb05..e45c15e210ffd 100644
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -16,6 +16,7 @@
- #include <linux/io.h>
- #include <linux/vfio.h>
- #include <linux/vgaarb.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
+diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+index f88071566cac5..4eb6a6bb609f4 100644
+--- a/arch/x86/xen/mmu_pv.c
++++ b/arch/x86/xen/mmu_pv.c
+@@ -807,6 +807,7 @@ void xen_mm_pin_all(void)
+ {
+ 	struct page *page;
  
- #include <linux/vfio_pci_core.h>
++	spin_lock(&init_mm.page_table_lock);
+ 	spin_lock(&pgd_lock);
  
+ 	list_for_each_entry(page, &pgd_list, lru) {
+@@ -817,6 +818,7 @@ void xen_mm_pin_all(void)
+ 	}
+ 
+ 	spin_unlock(&pgd_lock);
++	spin_unlock(&init_mm.page_table_lock);
+ }
+ 
+ static void __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
+@@ -914,6 +916,7 @@ void xen_mm_unpin_all(void)
+ {
+ 	struct page *page;
+ 
++	spin_lock(&init_mm.page_table_lock);
+ 	spin_lock(&pgd_lock);
+ 
+ 	list_for_each_entry(page, &pgd_list, lru) {
+@@ -925,6 +928,7 @@ void xen_mm_unpin_all(void)
+ 	}
+ 
+ 	spin_unlock(&pgd_lock);
++	spin_unlock(&init_mm.page_table_lock);
+ }
+ 
+ static void xen_activate_mm(struct mm_struct *prev, struct mm_struct *next)
 -- 
 2.39.5
 
