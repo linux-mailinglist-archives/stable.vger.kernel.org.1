@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-123030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD82A5A280
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1609BA59FA9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0D41894EC7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7BA0188F700
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1C42309B0;
-	Mon, 10 Mar 2025 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA401233716;
+	Mon, 10 Mar 2025 17:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxkBfGmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwIouIO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3910B1C5D6F;
-	Mon, 10 Mar 2025 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C0122D4C3;
+	Mon, 10 Mar 2025 17:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630842; cv=none; b=egasfizTXAtgUR7Uwr8JzIFhC++3C1AG8lXvhmTHDdp7aiVAf1i/aZifjZO7XetiqMvVQCK8uh6/Kg5dPF5F1nnaWBDL0LRQrCcFMvAFLe5ogeVk9TuKw6QuRs1AwyX2GzbEUjB1TlTsfFAtT1dbCos0c9phDDHN+92XuJRFPfs=
+	t=1741628520; cv=none; b=cFAA6MEGrIpFzVmiZ1s4grlm5/YQOaFQgOtLgGApMtfCaff9wFd6hj6MKF3gVF7MgdmLKKcUHcb7D/2Si1xjdm6rskIAGpNCViZ9blCfvAo7KTzodAxywkERjQq+RQUkzPmw9vaB+KUCR8B2wlixKuzXLr79rdxkfIR4sgSLL4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630842; c=relaxed/simple;
-	bh=vmyymX6mrwJeiBDePQhSVHQfTBZ6IJIGVcnBD8c1CIg=;
+	s=arc-20240116; t=1741628520; c=relaxed/simple;
+	bh=hmq7+7UYSUrbskUO8/ynQrF0mVnEYC7NQFEn4HFEo6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6nF2/y+FXYOhEqgQemr5/FfBfPEDmnEZrXCXowguCqFZEPuoGBmu8jqoSurCX54/8YZHH25lPg1tw3DobrbNtIGg2r086EIduyBf48zT5rhmyNfyGteBMyBkzUN8AZhqJ9AGbxXsqbAmN0HkwOwm9zaPncfcYqU0OKlB6/OnmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxkBfGmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88426C4CEE5;
-	Mon, 10 Mar 2025 18:20:41 +0000 (UTC)
+	 MIME-Version; b=fxwFMDdAMbb6FJyGuLp3gkD/BgDf9K9UL0alcZjyaRqwBtS6dhVjq76mbRoqTRGXywaZnUODO+TLYRGYUuAlxWukMBZCtkTTw0mRe2s9RojKwt1s95ZnETCgDHYHRzTdzpQd12l0MSGuOLogiNHUTM3acq2t624/o7sXpPcM2es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwIouIO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE79CC4CEE5;
+	Mon, 10 Mar 2025 17:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630842;
-	bh=vmyymX6mrwJeiBDePQhSVHQfTBZ6IJIGVcnBD8c1CIg=;
+	s=korg; t=1741628520;
+	bh=hmq7+7UYSUrbskUO8/ynQrF0mVnEYC7NQFEn4HFEo6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxkBfGmpNzjCRVLO27tMopuSdYU7ZnVZ/M7KH6rnR3d2dJ/wNRHYmdBFFVEQeef00
-	 4QdgSTpsvQegGHAYiodqJPT9dhtRyy3BdTEngzFUNjZziMQlSgg6eUyzYJs7p7IfLI
-	 7YABtZBTO5XVZGdT10nI/14P1KZ2VrQj1Jbu7NoA=
+	b=AwIouIO7r1frcHvxxmawKJPiUUrndTV0rBeOL3WX9uU1zDptOh1MwCw0CCmm7Ywmu
+	 D3Q0sBgMJN5xKpZNeu2zW3hJioHJi0s6p+uHFV+6kqp7cXjp3L5zo+UI0lht7pc8Nj
+	 rZDYNf3eozXgOmY91x2DrooMN+PrsT3CogJ04ZU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com,
+	Oscar Maes <oscmaes92@gmail.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 552/620] wifi: iwlwifi: limit printed string from FW file
+Subject: [PATCH 6.1 054/109] vlan: enforce underlying device type
 Date: Mon, 10 Mar 2025 18:06:38 +0100
-Message-ID: <20250310170607.332503939@linuxfoundation.org>
+Message-ID: <20250310170429.719504377@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
+[ Upstream commit b33a534610067ade2bdaf2052900aaad99701353 ]
 
-There's no guarantee here that the file is always with a
-NUL-termination, so reading the string may read beyond the
-end of the TLV. If that's the last TLV in the file, it can
-perhaps even read beyond the end of the file buffer.
+Currently, VLAN devices can be created on top of non-ethernet devices.
 
-Fix that by limiting the print format to the size of the
-buffer we have.
+Besides the fact that it doesn't make much sense, this also causes a
+bug which leaks the address of a kernel function to usermode.
 
-Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+When creating a VLAN device, we initialize GARP (garp_init_applicant)
+and MRP (mrp_init_applicant) for the underlying device.
+
+As part of the initialization process, we add the multicast address of
+each applicant to the underlying device, by calling dev_mc_add.
+
+__dev_mc_add uses dev->addr_len to determine the length of the new
+multicast address.
+
+This causes an out-of-bounds read if dev->addr_len is greater than 6,
+since the multicast addresses provided by GARP and MRP are only 6
+bytes long.
+
+This behaviour can be reproduced using the following commands:
+
+ip tunnel add gretest mode ip6gre local ::1 remote ::2 dev lo
+ip l set up dev gretest
+ip link add link gretest name vlantest type vlan id 100
+
+Then, the following command will display the address of garp_pdu_rcv:
+
+ip maddr show | grep 01:80:c2:00:00:21
+
+Fix the bug by enforcing the type of the underlying device during VLAN
+device initialization.
+
+Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
+Reported-by: syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/000000000000ca9a81061a01ec20@google.com/
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20250303155619.8918-1-oscmaes92@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/8021q/vlan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index afa89deb7bc3a..144aa1825286e 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1071,7 +1071,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
+diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
+index e40aa3e3641cb..b477ba37a6991 100644
+--- a/net/8021q/vlan.c
++++ b/net/8021q/vlan.c
+@@ -131,7 +131,8 @@ int vlan_check_real_dev(struct net_device *real_dev,
+ {
+ 	const char *name = real_dev->name;
  
- 			if (tlv_len != sizeof(*fseq_ver))
- 				goto invalid_tlv_len;
--			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
-+			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
- 				 fseq_ver->version);
- 			}
- 			break;
+-	if (real_dev->features & NETIF_F_VLAN_CHALLENGED) {
++	if (real_dev->features & NETIF_F_VLAN_CHALLENGED ||
++	    real_dev->type != ARPHRD_ETHER) {
+ 		pr_info("VLANs not supported on %s\n", name);
+ 		NL_SET_ERR_MSG_MOD(extack, "VLANs not supported on device");
+ 		return -EOPNOTSUPP;
 -- 
 2.39.5
 
