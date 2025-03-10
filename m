@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-121973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAB7A59D45
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E7DFA5A154
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3629F188D79D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 191B63AD7E1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E42231A2A;
-	Mon, 10 Mar 2025 17:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3108233714;
+	Mon, 10 Mar 2025 17:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVw1U3GE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YA20+Dz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CAF22154C;
-	Mon, 10 Mar 2025 17:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6097522DFF3;
+	Mon, 10 Mar 2025 17:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627165; cv=none; b=lLvE95c2a8QPGLmrRzuec+3wMABLUBkHV5zZWT6z/6BYsjv2EdNJ1MtHqZNy3q8SlfwPiB8FhNqYCNCu4vvCOeLrZRrb80/DOtJcwmW3UhecPVxItd74sQY5TgjkxOl08xqsgj8lsc5RyYjrqc9ADbLoWMFvGMObHHPLLjg1oVk=
+	t=1741629577; cv=none; b=N8P/jIWqGtCYLSs+GoZYrK+x1O4UYPLYO0X5UGVWjbp9rexnF144RMY/J+VbjD2JgtoP4IYauZVMgaGLm5uE4CU1IeXxtp3lzK3oxeZwQab70yBX113RNXoYOZy8hYr7nLvC2HyV8/ZreIuptXERhKLL3AgX/Eu2ll4oJFk6Eck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627165; c=relaxed/simple;
-	bh=HCwRmZudjIoIDH5UKn8V9JYr/j/G7Cml/SRdqavsCbA=;
+	s=arc-20240116; t=1741629577; c=relaxed/simple;
+	bh=ZTCxl9CvJ3Lhp0Nb7K1hnauDUQbsgLEyPXOm0n5fBxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UL2WRV3PdI9hH+g5JgZSQhqHXg/m/SZWtFBarYt+Z+kbmSoT/9Pul9AHREbLmCVHiI9kgIgFqe5OQpPdhUwHE+oUd/v0SyMzPICZDQvhEt4MOgg5Df2Yz+llCN7OMAdndZgOGAsnJnVr3n/rAcGj2w1W9qS4jFWAFH+aLotv38U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVw1U3GE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97324C4CEE5;
-	Mon, 10 Mar 2025 17:19:24 +0000 (UTC)
+	 MIME-Version; b=MAEj2j71E4NFofzU7Rhav/9sraE4MzjlfdC00I/cjiVDOY5YqcE1xQ7+neO2oS8w9AgVXLrbYRnoMk692ARTURrJVPOoNmNovCemcXK54KU+h3AgVhxid19SY+SABVDNLEN5vn2qjr3o0wJVbFGVXLp5Jb1V+SwbLV2RHXiIdIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YA20+Dz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FF0C4CEE5;
+	Mon, 10 Mar 2025 17:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627165;
-	bh=HCwRmZudjIoIDH5UKn8V9JYr/j/G7Cml/SRdqavsCbA=;
+	s=korg; t=1741629577;
+	bh=ZTCxl9CvJ3Lhp0Nb7K1hnauDUQbsgLEyPXOm0n5fBxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVw1U3GEuko6NNwcvOBFGvH8Mh3YB5oVnB/ZG7w9IhzRu8CxymIX4E0I6ROAXa32R
-	 V2B6rvT1sZI46+h0ZqlC7sBV6u92V9TkXfaDzN8yTseN08qgz463nKLU9Epc2qP8hA
-	 BRvKL5CrBrBKwCkjjELEdjHru4Fz0uwK8O7f8Tuw=
+	b=YA20+Dz1mn6i7+6YWVZFbIhMqGPR6HaljF7d9g9MY9r97xEDT248B13FNvq26WSfP
+	 YAA/QdCQ7pSTW2OlHgPhKdjWCx/zOKi8e0gcNePoNMX6BtU8AnVLeLfjUie3QkgytO
+	 8oa1p+9rQ3RtuzHNRTX8v3lI3QkkKJEKeVr3L//g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 035/269] rust: alloc: make `allocator` module public
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Mikolaj Wasiak <mikolaj.wasiak@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 342/620] drm/i915/selftests: avoid using uninitialized context
 Date: Mon, 10 Mar 2025 18:03:08 +0100
-Message-ID: <20250310170459.117251389@linuxfoundation.org>
+Message-ID: <20250310170559.112108489@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Krzysztof Karas <krzysztof.karas@intel.com>
 
-commit a87a36f0bf517dae22f3e3790b05c979070f776a upstream.
+[ Upstream commit 53139b3f9998ea07289e7b70b909fea2264a0de9 ]
 
-Subsequent patches implement allocators such as `Kmalloc`, `Vmalloc`,
-`KVmalloc`; we need them to be available outside of the kernel crate as
-well.
+There is an error path in igt_ppgtt_alloc(), which leads
+to ww object being passed down to i915_gem_ww_ctx_fini() without
+initialization. Correct that by only putting ppgtt->vm and
+returning early.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-6-dakr@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 480ae79537b2 ("drm/i915/selftests: Prepare gtt tests for obj->mm.lock removal")
+Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Mikolaj Wasiak <mikolaj.wasiak@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/iuaonpjc3rywmvhna6umjlvzilocn2uqsrxfxfob24e2taocbi@lkaivvfp4777
+(cherry picked from commit 8d8334632ea62424233ac6529712868241d0f8df)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/alloc.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/selftests/i915_gem_gtt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -4,7 +4,7 @@
+diff --git a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
+index f843a5040706a..df3934a990d08 100644
+--- a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
++++ b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
+@@ -160,7 +160,7 @@ static int igt_ppgtt_alloc(void *arg)
+ 		return PTR_ERR(ppgtt);
  
- #[cfg(not(test))]
- #[cfg(not(testlib))]
--mod allocator;
-+pub mod allocator;
- pub mod box_ext;
- pub mod vec_ext;
+ 	if (!ppgtt->vm.allocate_va_range)
+-		goto err_ppgtt_cleanup;
++		goto ppgtt_vm_put;
  
+ 	/*
+ 	 * While we only allocate the page tables here and so we could
+@@ -228,7 +228,7 @@ static int igt_ppgtt_alloc(void *arg)
+ 			goto retry;
+ 	}
+ 	i915_gem_ww_ctx_fini(&ww);
+-
++ppgtt_vm_put:
+ 	i915_vm_put(&ppgtt->vm);
+ 	return err;
+ }
+-- 
+2.39.5
+
 
 
 
