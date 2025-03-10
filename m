@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66474A5A14E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 457D4A59D4C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68364188B3FF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED45A3A503B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7370F233724;
-	Mon, 10 Mar 2025 17:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51A322D799;
+	Mon, 10 Mar 2025 17:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYn0X0Mt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beUkbYpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C2522D7A6;
-	Mon, 10 Mar 2025 17:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D2A2309B0;
+	Mon, 10 Mar 2025 17:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629551; cv=none; b=WyTJIa4BF6Xl7ipyFtIG0TUfOYaJsZU7vi8rju25ylpns22wdPPJUgdxYlNZC11pXHVSmoULwapwN6GglfES/0ftG0LF9TYcxyrbj+Vffdl3Y8fBiR5PhVKWIw/a3znZULwfHbK12C6Y+pRS4tExq+iG8EJO7tzZ6QEfc97c0O0=
+	t=1741627145; cv=none; b=FFcrjRL8icTNHCJZloypPuCQUkl6DIFmgqlUz0aJ5z8ZFzgXfvF/KmxjCzmZZf3gMXpmPappqKVqqgufTy2E+uCief5bXnZb8Mb+NPhK9kJXsBhLNsN6K0WkuAI3igKcLPLMVjhoVZbqsZp4gAx9r9dJV8TZcY7x8oL5EqE7Qfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629551; c=relaxed/simple;
-	bh=JsyC1fXxLqPqqbLZMoa0jYuJ9CzX1D7PWlPmb65TCcs=;
+	s=arc-20240116; t=1741627145; c=relaxed/simple;
+	bh=TcPFJQ+VszTwiw3lLDgFtgubYcZbfZV9g0X7zSQgR4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhBAxXUpc5GnaHj7jx3fgG/p9VVUlYAqj5ivA2YPzEvBjEeMv0hwOn2CzlnUtG+Z3957RCLq2IgP3RLvODLLrmzwAjbEYD78pVeXpziT0UCzNsGctuz/hkZG3z/bYi5P73zUk025P3UzdtRvcdbr00iPKNi/GBnpNNtaYvxq1Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYn0X0Mt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529A4C4CEE5;
-	Mon, 10 Mar 2025 17:59:10 +0000 (UTC)
+	 MIME-Version; b=M2bVPDMT742eGPAbcJ0UJnkT9qztm1OFgWMENj5+S6QHw1+bP0orJoRTAGe96oBQynB2oRtFbvKUeaIs40kf8RljiT36e59+uzfRJ0I76lquU8HNW4mlBId6FGLDiSmONOJsPEnQ06yXtLuEJP31qfLI7rtDg+8/M0g+5VsAXB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beUkbYpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73830C4CEE5;
+	Mon, 10 Mar 2025 17:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629550;
-	bh=JsyC1fXxLqPqqbLZMoa0jYuJ9CzX1D7PWlPmb65TCcs=;
+	s=korg; t=1741627144;
+	bh=TcPFJQ+VszTwiw3lLDgFtgubYcZbfZV9g0X7zSQgR4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYn0X0Mtzt8ohiMuWraFf0ppLRUs6RMF4BDkHfPy0cfC1gBwWRmZkXI54drfaeR1W
-	 bCR6wxlTfKnCcncG/eIfiYWddSwyI5hF75JIS3Jrmkeco7iy6G6ng/Fxutw6wHsex1
-	 mAmHCmSpVf8ykf3qVNIldsZcUOyWdHA0o9CCPNrI=
+	b=beUkbYpLoc8tfSqIVM21q1Yo7vD75n8YvF7CggjqZPb6suoSD4hn+6Bx0QDT7gd2F
+	 XZW6hzMiT0RcHpcbO1Uk5L1JIdctFKRdfQgHqj+smamHOJgLwD+gKbFo6SmWDq3TGP
+	 2WOtALR0VfnP5g41601TFu2XC2f++CJw1CBnBzGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	John Ogness <john.ogness@linutronix.de>
-Subject: [PATCH 5.15 334/620] tty: xilinx_uartps: split sysrq handling
-Date: Mon, 10 Mar 2025 18:03:00 +0100
-Message-ID: <20250310170558.795457624@linuxfoundation.org>
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 028/269] Documentation: rust: discuss `#[expect(...)]` in the guidelines
+Date: Mon, 10 Mar 2025 18:03:01 +0100
+Message-ID: <20250310170458.834986172@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit b06f388994500297bb91be60ffaf6825ecfd2afe upstream.
+commit 04866494e936d041fd196d3a36aecd979e4ef078 upstream.
 
-lockdep detects the following circular locking dependency:
+Discuss `#[expect(...)]` in the Lints sections of the coding guidelines
+document, which is an upcoming feature in Rust 1.81.0, and explain that
+it is generally to be preferred over `allow` unless there is a reason
+not to use it (e.g. conditional compilation being involved).
 
-CPU 0                      CPU 1
-========================== ============================
-cdns_uart_isr()            printk()
-  uart_port_lock(port)       console_lock()
-			     cdns_uart_console_write()
-                               if (!port->sysrq)
-                                 uart_port_lock(port)
-  uart_handle_break()
-    port->sysrq = ...
-  uart_handle_sysrq_char()
-    printk()
-      console_lock()
-
-The fixed commit attempts to avoid this situation by only taking the
-port lock in cdns_uart_console_write if port->sysrq unset. However, if
-(as shown above) cdns_uart_console_write runs before port->sysrq is set,
-then it will try to take the port lock anyway. This may result in a
-deadlock.
-
-Fix this by splitting sysrq handling into two parts. We use the prepare
-helper under the port lock and defer handling until we release the lock.
-
-Fixes: 74ea66d4ca06 ("tty: xuartps: Improve sysrq handling")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: stable@vger.kernel.org # c980248179d: serial: xilinx_uartps: Use port lock wrappers
-Acked-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20250110213822.2107462-1-sean.anderson@linux.dev
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Tested-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20240904204347.168520-19-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/xilinx_uartps.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ Documentation/rust/coding-guidelines.rst |  110 +++++++++++++++++++++++++++++++
+ 1 file changed, 110 insertions(+)
 
---- a/drivers/tty/serial/xilinx_uartps.c
-+++ b/drivers/tty/serial/xilinx_uartps.c
-@@ -268,7 +268,7 @@ static void cdns_uart_handle_rx(void *de
- 				continue;
- 		}
+--- a/Documentation/rust/coding-guidelines.rst
++++ b/Documentation/rust/coding-guidelines.rst
+@@ -262,6 +262,116 @@ default (i.e. outside ``W=`` levels). In
+ false positives but that are otherwise quite useful to keep enabled to catch
+ potential mistakes.
  
--		if (uart_handle_sysrq_char(port, data))
-+		if (uart_prepare_sysrq_char(port, data))
- 			continue;
++On top of that, Rust provides the ``expect`` attribute which takes this further.
++It makes the compiler warn if the warning was not produced. For instance, the
++following will ensure that, when ``f()`` is called somewhere, we will have to
++remove the attribute:
++
++.. code-block:: rust
++
++	#[expect(dead_code)]
++	fn f() {}
++
++If we do not, we get a warning from the compiler::
++
++	warning: this lint expectation is unfulfilled
++	 --> x.rs:3:10
++	  |
++	3 | #[expect(dead_code)]
++	  |          ^^^^^^^^^
++	  |
++	  = note: `#[warn(unfulfilled_lint_expectations)]` on by default
++
++This means that ``expect``\ s do not get forgotten when they are not needed, which
++may happen in several situations, e.g.:
++
++- Temporary attributes added while developing.
++
++- Improvements in lints in the compiler, Clippy or custom tools which may
++  remove a false positive.
++
++- When the lint is not needed anymore because it was expected that it would be
++  removed at some point, such as the ``dead_code`` example above.
++
++It also increases the visibility of the remaining ``allow``\ s and reduces the
++chance of misapplying one.
++
++Thus prefer ``except`` over ``allow`` unless:
++
++- The lint attribute is intended to be temporary, e.g. while developing.
++
++- Conditional compilation triggers the warning in some cases but not others.
++
++  If there are only a few cases where the warning triggers (or does not
++  trigger) compared to the total number of cases, then one may consider using
++  a conditional ``expect`` (i.e. ``cfg_attr(..., expect(...))``). Otherwise,
++  it is likely simpler to just use ``allow``.
++
++- Inside macros, when the different invocations may create expanded code that
++  triggers the warning in some cases but not in others.
++
++- When code may trigger a warning for some architectures but not others, such
++  as an ``as`` cast to a C FFI type.
++
++As a more developed example, consider for instance this program:
++
++.. code-block:: rust
++
++	fn g() {}
++
++	fn main() {
++	    #[cfg(CONFIG_X)]
++	    g();
++	}
++
++Here, function ``g()`` is dead code if ``CONFIG_X`` is not set. Can we use
++``expect`` here?
++
++.. code-block:: rust
++
++	#[expect(dead_code)]
++	fn g() {}
++
++	fn main() {
++	    #[cfg(CONFIG_X)]
++	    g();
++	}
++
++This would emit a lint if ``CONFIG_X`` is set, since it is not dead code in that
++configuration. Therefore, in cases like this, we cannot use ``expect`` as-is.
++
++A simple possibility is using ``allow``:
++
++.. code-block:: rust
++
++	#[allow(dead_code)]
++	fn g() {}
++
++	fn main() {
++	    #[cfg(CONFIG_X)]
++	    g();
++	}
++
++An alternative would be using a conditional ``expect``:
++
++.. code-block:: rust
++
++	#[cfg_attr(not(CONFIG_X), expect(dead_code))]
++	fn g() {}
++
++	fn main() {
++	    #[cfg(CONFIG_X)]
++	    g();
++	}
++
++This would ensure that, if someone introduces another call to ``g()`` somewhere
++(e.g. unconditionally), then it would be spotted that it is not dead code
++anymore. However, the ``cfg_attr`` is more complex than a simple ``allow``.
++
++Therefore, it is likely that it is not worth using conditional ``expect``\ s when
++more than one or two configurations are involved or when the lint may be
++triggered due to non-local changes (such as ``dead_code``).
++
+ For more information about diagnostics in Rust, please see:
  
- 		if (is_rxbs_support) {
-@@ -385,7 +385,7 @@ static irqreturn_t cdns_uart_isr(int irq
- 	    !(readl(port->membase + CDNS_UART_CR) & CDNS_UART_CR_RX_DIS))
- 		cdns_uart_handle_rx(dev_id, isrstatus);
- 
--	spin_unlock(&port->lock);
-+	uart_unlock_and_check_sysrq(port);
- 	return IRQ_HANDLED;
- }
- 
-@@ -1217,10 +1217,8 @@ static void cdns_uart_console_write(stru
- 	unsigned int imr, ctrl;
- 	int locked = 1;
- 
--	if (port->sysrq)
--		locked = 0;
--	else if (oops_in_progress)
--		locked = spin_trylock_irqsave(&port->lock, flags);
-+	if (oops_in_progress)
-+		locked = uart_port_trylock_irqsave(port, &flags);
- 	else
- 		spin_lock_irqsave(&port->lock, flags);
- 
+ 	https://doc.rust-lang.org/stable/reference/attributes/diagnostics.html
 
 
 
