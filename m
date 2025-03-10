@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-121951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43FCA59D22
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E3BA59D55
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6EA16CCC2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730A316F004
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAD5230988;
-	Mon, 10 Mar 2025 17:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AD32309B0;
+	Mon, 10 Mar 2025 17:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pD0xVzWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Im8iDPOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1981C374EA;
-	Mon, 10 Mar 2025 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8204D22154C;
+	Mon, 10 Mar 2025 17:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627102; cv=none; b=RinQMwEql+7e71ji8/XjEsqU1IphmO/EbUBboZRxxvsjer++xMEBn9hzUpEKZzocnMtT4BvhyRo/fVcJojL9y4GzC0MAM5uJpHkNjlxaT2OG8AxOc9UiRunfB/3L6SvA0xayQsmTmC9ewWreNiqS/xWnysX8i4NmJBATgCuN3S4=
+	t=1741627202; cv=none; b=ggnyb1p9mrROVlIH50oQ0S4G6OcpafdtFUWjr5MLnQt7tC1kL14mOD6gG5++9b8N7x3RnZylKt6RxqjcWx0vYQmtijcWaHK+QYBKxJ+S5tnBlOXvBmU5v19okRcRiAhv6poF7Q8JDPeJPY1TwRhTRb3BD2QZNXMHnJz60BOFJvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627102; c=relaxed/simple;
-	bh=SUxduCipxsHqlGhaXryYK+BTcVLX03aks4nYD+W2kng=;
+	s=arc-20240116; t=1741627202; c=relaxed/simple;
+	bh=9npQnosfQVa2/qAKa9hgFna72jpapv4u4w7xnuyGs7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tu04J2LjjLOrnbOFC5/VF6JSwflhuXdAvWXEYsVSSNwtciEnwdTJxoTJwuWMN1MwzDWIKhxT3jq2cL2ktPyDd4Wd4O6v5G5ok6VGZSJB9NEx5aFnVzPuTOW6G4SB47aps2OSLuS1tNusRwalZz8Ctwyk0nyd8mo50stnl/EmJKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pD0xVzWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27416C4CEE5;
-	Mon, 10 Mar 2025 17:18:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BcS9NtWlr1XEYOHCAxHo+8lSwQFvgOtZ7SjbtHjwi34PLe7SPZKBeVUp5HHbfaZye7efwe8++k/Ktq2H7SJK3/IzI1jA/xO3r1IbaC6/xKzCyuhc/aMIBMpXOjO7CFxk0YRYuZELMjStdqYSXPHhVP4HqxhINAHALInVkkqLq/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Im8iDPOM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09837C4CEE5;
+	Mon, 10 Mar 2025 17:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627101;
-	bh=SUxduCipxsHqlGhaXryYK+BTcVLX03aks4nYD+W2kng=;
+	s=korg; t=1741627202;
+	bh=9npQnosfQVa2/qAKa9hgFna72jpapv4u4w7xnuyGs7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pD0xVzWxLGJcjTjIyWHX3mbbloi1c6oHFQ9XnDiL/2hzo9ibD0WGepfw32KmRIX3K
-	 5hWDjpNfKObDWYe4fXLroTppVBUUaXmhNB8cMmRjLHukJBmW7yOkyqzDE8yie7h5PU
-	 5hJ/BUBf9iwLYbxykoCW0JAEzWZv1YGsPF8Byob0=
+	b=Im8iDPOMQS2IKjkGyUfVG/tCBy1hZGHcnegs7eqsJ7r03BXRFyaj6VeR2uXyHOLg5
+	 nggFTfFks53+BH6TgmkLpR/JoYVuvCxVaSotXh/Ex3SJFeE70Ad2l8VZ32UDJRo+kv
+	 4GsFNGfz79yLgPzoNgfDdnJA58r2yRyBKDNoccu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Korsnes <johan.korsnes@remarkable.no>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/269] gpio: vf610: add locking to gpio direction functions
-Date: Mon, 10 Mar 2025 18:02:39 +0100
-Message-ID: <20250310170457.960305464@linuxfoundation.org>
+Subject: [PATCH 6.12 007/269] cifs: Remove symlink member from cifs_open_info_data union
+Date: Mon, 10 Mar 2025 18:02:40 +0100
+Message-ID: <20250310170457.999210129@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
 References: <20250310170457.700086763@linuxfoundation.org>
@@ -63,75 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Korsnes <johan.korsnes@remarkable.no>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 4e667a1968099c6deadee2313ecd648f8f0a8956 ]
+[ Upstream commit 65c49767dd4fc058673f9259fda1772fd398eaa7 ]
 
-Add locking to `vf610_gpio_direction_input|output()` functions. Without
-this locking, a race condition exists between concurrent calls to these
-functions, potentially leading to incorrect GPIO direction settings.
+Member 'symlink' is part of the union in struct cifs_open_info_data. Its
+value is assigned on few places, but is always read through another union
+member 'reparse_point'. So to make code more readable, always use only
+'reparse_point' member and drop whole union structure. No function change.
 
-To verify the correctness of this fix, a `trylock` patch was applied,
-where after a couple of reboots the race was confirmed. I.e., one user
-had to wait before acquiring the lock. With this patch the race has not
-been encountered. It's worth mentioning that any type of debugging
-(printing, tracing, etc.) would "resolve"/hide the issue.
-
-Fixes: 659d8a62311f ("gpio: vf610: add imx7ulp support")
-Signed-off-by: Johan Korsnes <johan.korsnes@remarkable.no>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250217091643.679644-1-johan.korsnes@remarkable.no
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 9df23801c83d ("smb311: failure to open files of length 1040 when mounting with SMB3.1.1 POSIX extensions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-vf610.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/cifsglob.h | 5 +----
+ fs/smb/client/inode.c    | 2 +-
+ fs/smb/client/smb1ops.c  | 4 ++--
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-index c4f34a347cb6e..c36a9dbccd4dd 100644
---- a/drivers/gpio/gpio-vf610.c
-+++ b/drivers/gpio/gpio-vf610.c
-@@ -36,6 +36,7 @@ struct vf610_gpio_port {
- 	struct clk *clk_port;
- 	struct clk *clk_gpio;
- 	int irq;
-+	spinlock_t lock; /* protect gpio direction registers */
- };
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 05274121e46f0..0979feb30bedb 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -209,10 +209,7 @@ struct cifs_cred {
  
- #define GPIO_PDOR		0x00
-@@ -124,6 +125,7 @@ static int vf610_gpio_direction_input(struct gpio_chip *chip, unsigned int gpio)
- 	u32 val;
+ struct cifs_open_info_data {
+ 	bool adjust_tz;
+-	union {
+-		bool reparse_point;
+-		bool symlink;
+-	};
++	bool reparse_point;
+ 	struct {
+ 		/* ioctl response buffer */
+ 		struct {
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index e11e67af760f4..a3f0835e12be3 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -968,7 +968,7 @@ cifs_get_file_info(struct file *filp)
+ 		/* TODO: add support to query reparse tag */
+ 		data.adjust_tz = false;
+ 		if (data.symlink_target) {
+-			data.symlink = true;
++			data.reparse_point = true;
+ 			data.reparse.tag = IO_REPARSE_TAG_SYMLINK;
+ 		}
+ 		path = build_path_from_dentry(dentry, page);
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index c70f4961c4eb7..bd791aa54681f 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -551,7 +551,7 @@ static int cifs_query_path_info(const unsigned int xid,
+ 	int rc;
+ 	FILE_ALL_INFO fi = {};
  
- 	if (port->sdata->have_paddr) {
-+		guard(spinlock_irqsave)(&port->lock);
- 		val = vf610_gpio_readl(port->gpio_base + GPIO_PDDR);
- 		val &= ~mask;
- 		vf610_gpio_writel(val, port->gpio_base + GPIO_PDDR);
-@@ -142,6 +144,7 @@ static int vf610_gpio_direction_output(struct gpio_chip *chip, unsigned int gpio
- 	vf610_gpio_set(chip, gpio, value);
+-	data->symlink = false;
++	data->reparse_point = false;
+ 	data->adjust_tz = false;
  
- 	if (port->sdata->have_paddr) {
-+		guard(spinlock_irqsave)(&port->lock);
- 		val = vf610_gpio_readl(port->gpio_base + GPIO_PDDR);
- 		val |= mask;
- 		vf610_gpio_writel(val, port->gpio_base + GPIO_PDDR);
-@@ -297,6 +300,7 @@ static int vf610_gpio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	port->sdata = device_get_match_data(dev);
-+	spin_lock_init(&port->lock);
- 
- 	dual_base = port->sdata->have_dual_base;
- 
+ 	/* could do find first instead but this returns more info */
+@@ -592,7 +592,7 @@ static int cifs_query_path_info(const unsigned int xid,
+ 		/* Need to check if this is a symbolic link or not */
+ 		tmprc = CIFS_open(xid, &oparms, &oplock, NULL);
+ 		if (tmprc == -EOPNOTSUPP)
+-			data->symlink = true;
++			data->reparse_point = true;
+ 		else if (tmprc == 0)
+ 			CIFSSMBClose(xid, tcon, fid.netfid);
+ 	}
 -- 
 2.39.5
 
