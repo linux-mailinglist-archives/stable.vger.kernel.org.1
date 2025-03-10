@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9655DA59C7B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA7EA59DC4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A72F27A4645
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB3B11881433
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6546222FE18;
-	Mon, 10 Mar 2025 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D59236A98;
+	Mon, 10 Mar 2025 17:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2Xyi5Ab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="df6A1nXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149771E519;
-	Mon, 10 Mar 2025 17:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89E8238148;
+	Mon, 10 Mar 2025 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626698; cv=none; b=gWHCvb8PEjSlrGxhH0hj3MM9ea4ywrn/Ncm/w5bLE6AV1QGymUmRp1jXQ3Hk8aiQZaOj3Tt30PGOEyQsv1yS5/4roAj1llRTAD/42t6r4PShQMyiFZVOlNdX71Vz96rVLDN0VRKiLJA89Zwbzg7VZuPk2asx37BhvaxQHLW839s=
+	t=1741627417; cv=none; b=G2nX6ecmx/xfA4ottKQytSVdxUPaG7R8dxUZxqMEDBRZOMnppXlSYfBya++rzw/CPLgxH5JmTli/KqYE/ihOELFYy3kDS7yTBB54eImwGZfOlM+U3Bk2rzNV0ALRWyC9OIBbgGWxIc5HJp9Gks/eM0Q+LmA+oSeuum8j1UO+SRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626698; c=relaxed/simple;
-	bh=WoQDzEov8J/Z2oYhA2uIhFyvZ9xwxjQNGA/ULj0NQhQ=;
+	s=arc-20240116; t=1741627417; c=relaxed/simple;
+	bh=LnNM9p7ZfauKYIaZn3hHmCVg0J4Us3EuX8f7ECn/NFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbQD5nqL3/Ug6uDaagf1KHozk8/2IdEPd4PROsLetKKluplMZfH7vFKbkqkI+/V+v282zT9IaqtgNPf2yE4Z5PEQtsi5zrktdvbIEbUuZf2jGJNNvYjja9MPrHmAP7YvNrdPsK+Buc9kEA0JTvFMXkeo+BcRu4/x9UQxdMbd4Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2Xyi5Ab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7281C4CEF2;
-	Mon, 10 Mar 2025 17:11:36 +0000 (UTC)
+	 MIME-Version; b=oSIpkzOeAi43QNJee6fN755RC/pQOc8+2hk58+mpN55znYWmLB1vl8YwvJhJPWEVXySDcWKVk/MpCZfgqqYgGRvN3zMABrzuuqVsudGsM7oTOqS3fmOs8h/Zst9/mxX5armeAr8bHfjDPMkKUkY9AUgeZFYpI8gto8pTs286Twg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=df6A1nXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AECC4CEEC;
+	Mon, 10 Mar 2025 17:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626697;
-	bh=WoQDzEov8J/Z2oYhA2uIhFyvZ9xwxjQNGA/ULj0NQhQ=;
+	s=korg; t=1741627416;
+	bh=LnNM9p7ZfauKYIaZn3hHmCVg0J4Us3EuX8f7ECn/NFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2Xyi5AbRAfyQUdt8nN36CVwN0q8B6SXhYrqU95HxMlQOQTRbNAKFet017s8FLRbi
-	 Hg0jBrCpf2hdHLAXoG2/byAwTqkJE+ugvY1OyAS4u1leWyY9Jo/zWFA62L4v6IZl+3
-	 eD6U50MMliU7Krg6giYPFA+KsI4ecsXMguvG1Oew=
+	b=df6A1nXW2ZlHUmtN0yyzGtX1vj1dlR03f5wugBkn/2pNXNyWgwU8Ii/MZlKxtR8Hc
+	 RPzzjkf1oIynpBkv8yrMb4ZlY/HnLH96KpqSQ29TWoKiGXeac/P/yEimGLBAxzE8oM
+	 fqveZOaRMiD2f9S58IsRcknSnn8ZMWniTfxMJYLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 082/207] wifi: iwlwifi: mvm: clean up ROC on failure
-Date: Mon, 10 Mar 2025 18:04:35 +0100
-Message-ID: <20250310170451.022559645@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 123/269] selftests/damon/damos_quota_goal: handle minimum quota that cannot be further reduced
+Date: Mon, 10 Mar 2025 18:04:36 +0100
+Message-ID: <20250310170502.625714111@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit f9751163bffd3fe60794929829f810968c6de73d ]
+commit 349db086a66051bc6114b64b4446787c20ac3f00 upstream.
 
-If the firmware fails to start the session protection, then we
-do call iwl_mvm_roc_finished() here, but that won't do anything
-at all because IWL_MVM_STATUS_ROC_P2P_RUNNING was never set.
-Set IWL_MVM_STATUS_ROC_P2P_RUNNING in the failure/stop path.
-If it started successfully before, it's already set, so that
-doesn't matter, and if it didn't start it needs to be set to
-clean up.
+damos_quota_goal.py selftest see if DAMOS quota goals tuning feature
+increases or reduces the effective size quota for given score as expected.
+The tuning feature sets the minimum quota size as one byte, so if the
+effective size quota is already one, we cannot expect it further be
+reduced.  However the test is not aware of the edge case, and fails since
+it shown no expected change of the effective quota.  Handle the case by
+updating the failure logic for no change to see if it was the case, and
+simply skips to next test input.
 
-Not doing so will lead to a WARN_ON() later on a fresh remain-
-on-channel, since the link is already active when activated as
-it was never deactivated.
-
-Fixes: 35c1bbd93c4e ("wifi: iwlwifi: mvm: remove IWL_MVM_STATUS_NEED_FLUSH_P2P")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.0fe36c291068.I67f5dac742170dd937f11e4d4f937f45f71b7cb4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250217182304.45215-1-sj@kernel.org
+Fixes: f1c07c0a1662 ("selftests/damon: add a test for DAMOS quota goal")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202502171423.b28a918d-lkp@intel.com
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.10.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/damon/damos_quota_goal.py |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 72fa7ac86516c..17b8ccc275693 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -1030,6 +1030,8 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
- 		/* End TE, notify mac80211 */
- 		mvmvif->time_event_data.id = SESSION_PROTECT_CONF_MAX_ID;
- 		mvmvif->time_event_data.link_id = -1;
-+		/* set the bit so the ROC cleanup will actually clean up */
-+		set_bit(IWL_MVM_STATUS_ROC_P2P_RUNNING, &mvm->status);
- 		iwl_mvm_roc_finished(mvm);
- 		ieee80211_remain_on_channel_expired(mvm->hw);
- 	} else if (le32_to_cpu(notif->start)) {
--- 
-2.39.5
-
+--- a/tools/testing/selftests/damon/damos_quota_goal.py
++++ b/tools/testing/selftests/damon/damos_quota_goal.py
+@@ -63,6 +63,9 @@ def main():
+             if last_effective_bytes != 0 else -1.0))
+ 
+         if last_effective_bytes == goal.effective_bytes:
++            # effective quota was already minimum that cannot be more reduced
++            if expect_increase is False and last_effective_bytes == 1:
++                continue
+             print('efective bytes not changed: %d' % goal.effective_bytes)
+             exit(1)
+ 
 
 
 
