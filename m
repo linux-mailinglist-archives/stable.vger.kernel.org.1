@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-122319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0D9A59EFC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDB9A5A28A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3651D1888311
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE8417573A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95D122D7A6;
-	Mon, 10 Mar 2025 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E45B22E418;
+	Mon, 10 Mar 2025 18:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1X8EqCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiGN8KAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DAE1DE89C;
-	Mon, 10 Mar 2025 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3EA1C3F34;
+	Mon, 10 Mar 2025 18:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628158; cv=none; b=k9wvqQ44K48KciXDFFiWnrp9Iv/7JaO0KuOlt1Z1JYKO+Kx7KWXfisvJP64EbzK1/VaLVJjuQfFOTUhb0FerkhU+0QLxByXpQLLNrOOgXGxaKkuB//fnBqh4JzesnrIoxlmANriULSvFysGBlQ0ZXWwld0QsJQ4Fi1W6qT4Yi54=
+	t=1741630871; cv=none; b=E6bCHCQolZmOlsKx56rPTG0pmZbMRFwTW/HsMEuZFi4zYati4U4bCHV6iKSssF5oQ4HVQTgy4nTecn/HiMrT0G1nAYklIDzbB2GzjqMMrhzWpWVVSPJhmc8QHiBbd7dsg6UT1k13t1aehPtSoFqR+CVoO21dNk513ZPAhz10rRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628158; c=relaxed/simple;
-	bh=Uv2pWnJ7iG7MbQQWfShS6TTy7Xlm3An//0gI/kG6GBs=;
+	s=arc-20240116; t=1741630871; c=relaxed/simple;
+	bh=sDHi3ERU0sxc7hAlHaanPM1wK2/eK4LZFyT42iZTiWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r30tR/dJxzPyLScxZdG1kEVXnFXZ5SkITdU2qmceje/mAHJ90HiIMc4BHAnYCysKc07vc/j5AWUNFxSE+rbIc2N+paxy62t5vJl6z72l4UWIFfKrvtf7X+0XQ/tLWKLYhJ5jtjyt6EN+5HSA9v8oHKNz/yBwvYzxONuC+6WYxjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1X8EqCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BBDC4CEE5;
-	Mon, 10 Mar 2025 17:35:57 +0000 (UTC)
+	 MIME-Version; b=mFydxgNzCOhBQgcvisQVESUZywh3ECei3Nsv5ngPBo1bsWXnHOrBnWcgoQrl0CF+xz+X5MXPhDSbncUPwQksKp+1sPf/VMvlcGs1+efhmGEmuiXa/c6f0TANvDxgfWN6hE2inTp0sTC+Zrh3zm6l44zsQGEsXzt+R3C7o3bl/+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiGN8KAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A4AC4CEE5;
+	Mon, 10 Mar 2025 18:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628158;
-	bh=Uv2pWnJ7iG7MbQQWfShS6TTy7Xlm3An//0gI/kG6GBs=;
+	s=korg; t=1741630871;
+	bh=sDHi3ERU0sxc7hAlHaanPM1wK2/eK4LZFyT42iZTiWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1X8EqCCQFASnR+OJigot4JbjrOp2bMEmniVAesWJG15MsrsRpEZd86o+meiGUozX
-	 3MQxziB02WqY/2hoNiU+0Rq6PI2O5owZsroD9qkHR6xpbaNnLRPaWFn8htypp4Nqvh
-	 Ggax9oCpV+DhnyOoe0h4G4QLPr4xfXbAa9wazKBo=
+	b=WiGN8KAdWNs1TYzF9PR08IlAGQp0Ueur8G+I/xwiDXf1nx0C8GM7Cb7xqhQCDp7GK
+	 1Iy4fOX9Rd+LFCBwYuzaSjhBVze2F4P9mZdDDpFvszTtWsXtHtwx3cyiGJaEypIQ4R
+	 I1y9OSNI7sib2Wbdt4lwUL7jYBo+V7X4w8yP2PcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.6 108/145] xhci: pci: Fix indentation in the PCI device ID definitions
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 556/620] net: gso: fix ownership in __udp_gso_segment
 Date: Mon, 10 Mar 2025 18:06:42 +0100
-Message-ID: <20250310170439.118621086@linuxfoundation.org>
+Message-ID: <20250310170607.493081692@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit 0309ed83791c079f239c13e0c605210425cd1a61 upstream.
+[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
 
-Some of the definitions are missing the one TAB, add it to them.
+In __udp_gso_segment the skb destructor is removed before segmenting the
+skb but the socket reference is kept as-is. This is an issue if the
+original skb is later orphaned as we can hit the following bug:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-23-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
+  RIP: 0010:ip_rcv_core+0x8b2/0xca0
+  Call Trace:
+   ip_rcv+0xab/0x6e0
+   __netif_receive_skb_one_core+0x168/0x1b0
+   process_backlog+0x384/0x1100
+   __napi_poll.constprop.0+0xa1/0x370
+   net_rx_action+0x925/0xe50
+
+The above can happen following a sequence of events when using
+OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
+OVS_ACTION_ATTR_OUTPUT action:
+
+1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
+   goes through queue_gso_packets and then __udp_gso_segment, where its
+   destructor is removed.
+2. The segments' data are copied and sent to userspace.
+3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
+   same original skb is sent to its path.
+4. If it later hits skb_orphan, we hit the bug.
+
+Fix this by also removing the reference to the socket in
+__udp_gso_segment.
+
+Fixes: ad405857b174 ("udp: better wmem accounting on gso")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/udp_offload.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -28,8 +28,8 @@
- #define SPARSE_CNTL_ENABLE	0xC12C
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 19a413aad0636..1a57dd8aa513b 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -295,13 +295,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
  
- /* Device for a quirk */
--#define PCI_VENDOR_ID_FRESCO_LOGIC	0x1b73
--#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK	0x1000
-+#define PCI_VENDOR_ID_FRESCO_LOGIC		0x1b73
-+#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK		0x1000
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1009	0x1009
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1100	0x1100
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1400	0x1400
-@@ -38,8 +38,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
+ 	/* clear destructor to avoid skb_segment assigning it to tail */
+ 	copy_dtor = gso_skb->destructor == sock_wfree;
+-	if (copy_dtor)
++	if (copy_dtor) {
+ 		gso_skb->destructor = NULL;
++		gso_skb->sk = NULL;
++	}
  
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
- #define PCI_DEVICE_ID_INTEL_CHERRYVIEW_XHCI		0x22b5
- #define PCI_DEVICE_ID_INTEL_SUNRISEPOINT_H_XHCI		0xa12f
+ 	segs = skb_segment(gso_skb, features);
+ 	if (IS_ERR_OR_NULL(segs)) {
+-		if (copy_dtor)
++		if (copy_dtor) {
+ 			gso_skb->destructor = sock_wfree;
++			gso_skb->sk = sk;
++		}
+ 		return segs;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
