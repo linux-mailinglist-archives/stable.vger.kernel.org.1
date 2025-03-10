@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C557BA59E83
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1C1A59CBD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70B06188F9D8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 340593A86E5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B88223372C;
-	Mon, 10 Mar 2025 17:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB85B230D2B;
+	Mon, 10 Mar 2025 17:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIVoNZOB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10p/hUdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE20A17A31A;
-	Mon, 10 Mar 2025 17:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AFA2236FB;
+	Mon, 10 Mar 2025 17:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627881; cv=none; b=jO+ZbisvhfOuQcpDBjz9BrXcoLC2fDvfkmqZXzvuxPvhnxSQX+Dax30vGK/dE5kivzFjfkC8iUwXWz5l2q0Nsj+B38Y9YfeVZoIpYdsYZihWVuYmRuBIfFLDUrhFpf19Gw8wSNAmpxFgZe7FgfOS6ukqnZ8jkQvNZd4sctBaIdE=
+	t=1741626793; cv=none; b=gmiAMOir5BUvCIKx+JLMTYmSjX/TkENnudPkX0A7O0M2ftxkMjaEdzZaEuR3znQXAuMs9kfsF2APaCr34CChgrlmMJCmCD77X5zPkqN2bWlyOdTEp2smki/jUhGnpf6ZtiWPnqCTmpHH3c0YUBlsgxLXjIzM8FOy6Sc9JwRxdCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627881; c=relaxed/simple;
-	bh=I0E/1rJiXKE2HNbYC14h7sGyJeeyk7KjLbt/RuKNR9k=;
+	s=arc-20240116; t=1741626793; c=relaxed/simple;
+	bh=7LzbM3UV+RcA80JnfMG/jGbucYIgaDGxHfhbrQaYN4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNB4mq/DbO3PZUFNyijL9qglz4ktWNpX1Vdr/UUelk8nfceh6G5wb9IhMeXFiAhvtZFf544fd7bF++XGIHinijdXrUkoJUg48p/Sfdkv6UhV5/ddkrlDCYzFCIw8f3GPEi4q4tcxDAjjLB23YVquDfsCSyD2FSMqFoJQThJ6o0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIVoNZOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B16C4CEEE;
-	Mon, 10 Mar 2025 17:31:21 +0000 (UTC)
+	 MIME-Version; b=C15f5XrEqH8du2a0zJSXLWah2KIM9oWhZg/avrDtFDZFz1VVcni6B1unrTBIZqT0TyW0ELDR7+Y5RyhseCpvoL2X10HFGjkfBHwjRjgk4JAiFdjEMn7azEq8TFkWWTFgS6kREpCOpKwW1SyoOawUYD0DORZDMmjooLqaoXh7Khs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10p/hUdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F94C4CEE5;
+	Mon, 10 Mar 2025 17:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627881;
-	bh=I0E/1rJiXKE2HNbYC14h7sGyJeeyk7KjLbt/RuKNR9k=;
+	s=korg; t=1741626793;
+	bh=7LzbM3UV+RcA80JnfMG/jGbucYIgaDGxHfhbrQaYN4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIVoNZOBZTlwCoJ/bSmlJoSXQYLAq83TDsWcvBrJ+rf6sHBB894BpQiLR2ns5QgZq
-	 bHluFham17rOFnz8IBEoIe/ILaXJDSAva9lmWLoUd1Vi7xRtvkf/int248sLO7zism
-	 3Ftfui5CImj8cNLpO6O1iHnnRiWkuZtZpL1xmxSs=
+	b=10p/hUdTxUlTJRGlHoLbA7YJQEH5SuFcaffI6ukTo3F7l3wPyn+bglX0aYYyo5t8a
+	 WIQUNn0jn88TjnL5pvwf23WYVjNUvBt+3AR2DcU8tnH4ExCoWKreN5/KYsjUdgFJYj
+	 R2+lfy4y3YDBG0SgVe9pSzHW1k3k1E13KHJVx5lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/145] net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC
-Date: Mon, 10 Mar 2025 18:05:07 +0100
-Message-ID: <20250310170435.278561778@linuxfoundation.org>
+Subject: [PATCH 6.13 115/207] cred: Fix RCU warnings in override/revert_creds
+Date: Mon, 10 Mar 2025 18:05:08 +0100
+Message-ID: <20250310170452.383376333@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit a562d0c4a893eae3ea51d512c4d90ab858a6b7ec ]
+[ Upstream commit e04918dc594669068f5d59d567d08db531167188 ]
 
-Actually ENETC VFs do not support HWTSTAMP_TX_ONESTEP_SYNC because only
-ENETC PF can access PMa_SINGLE_STEP registers. And there will be a crash
-if VFs are used to test one-step timestamp, the crash log as follows.
+Fix RCU warnings in override_creds and revert_creds by turning
+the RCU pointer into a normal pointer using rcu_replace_pointer.
 
-[  129.110909] Unable to handle kernel paging request at virtual address 00000000000080c0
-[  129.287769] Call trace:
-[  129.290219]  enetc_port_mac_wr+0x30/0xec (P)
-[  129.294504]  enetc_start_xmit+0xda4/0xe74
-[  129.298525]  enetc_xmit+0x70/0xec
-[  129.301848]  dev_hard_start_xmit+0x98/0x118
+These warnings were previously private to the cred code, but due
+to the move into the header file they are now polluting unrelated
+subsystems.
 
-Fixes: 41514737ecaa ("enetc: add get_ts_info interface for ethtool")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-5-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 49dffdfde462 ("cred: Add a light version of override/revert_creds()")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/r/Z8QGQGW0IaSklKG7@gondor.apana.org.au
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c         | 3 +++
- drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 7 +++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ include/linux/cred.h | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 30653830981d1..8feb7d4226bb5 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -2971,6 +2971,9 @@ static int enetc_hwtstamp_set(struct net_device *ndev, struct ifreq *ifr)
- 		new_offloads |= ENETC_F_TX_TSTAMP;
- 		break;
- 	case HWTSTAMP_TX_ONESTEP_SYNC:
-+		if (!enetc_si_is_pf(priv->si))
-+			return -EOPNOTSUPP;
-+
- 		new_offloads &= ~ENETC_F_TX_TSTAMP_MASK;
- 		new_offloads |= ENETC_F_TX_ONESTEP_SYNC_TSTAMP;
- 		break;
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index 39fbc465746f7..1e3e0073276ec 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -840,6 +840,7 @@ static int enetc_set_coalesce(struct net_device *ndev,
- static int enetc_get_ts_info(struct net_device *ndev,
- 			     struct ethtool_ts_info *info)
+diff --git a/include/linux/cred.h b/include/linux/cred.h
+index 382768a9707b5..1e1ec8834e454 100644
+--- a/include/linux/cred.h
++++ b/include/linux/cred.h
+@@ -179,18 +179,12 @@ static inline bool cap_ambient_invariant_ok(const struct cred *cred)
+  */
+ static inline const struct cred *override_creds_light(const struct cred *override_cred)
  {
-+	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 	int *phc_idx;
+-	const struct cred *old = current->cred;
+-
+-	rcu_assign_pointer(current->cred, override_cred);
+-	return old;
++	return rcu_replace_pointer(current->cred, override_cred, 1);
+ }
  
- 	phc_idx = symbol_get(enetc_phc_index);
-@@ -860,8 +861,10 @@ static int enetc_get_ts_info(struct net_device *ndev,
- 				SOF_TIMESTAMPING_TX_SOFTWARE;
+ static inline const struct cred *revert_creds_light(const struct cred *revert_cred)
+ {
+-	const struct cred *override_cred = current->cred;
+-
+-	rcu_assign_pointer(current->cred, revert_cred);
+-	return override_cred;
++	return rcu_replace_pointer(current->cred, revert_cred, 1);
+ }
  
- 	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
--			 (1 << HWTSTAMP_TX_ON) |
--			 (1 << HWTSTAMP_TX_ONESTEP_SYNC);
-+			 (1 << HWTSTAMP_TX_ON);
-+
-+	if (enetc_si_is_pf(priv->si))
-+		info->tx_types |= (1 << HWTSTAMP_TX_ONESTEP_SYNC);
- 
- 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
- 			   (1 << HWTSTAMP_FILTER_ALL);
+ /**
 -- 
 2.39.5
 
