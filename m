@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-122897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FA7A5A1DE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 186FEA59DA1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 753583A83D7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5797D16F796
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57568233716;
-	Mon, 10 Mar 2025 18:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBB023099F;
+	Mon, 10 Mar 2025 17:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF0JTMOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="us/N6+4w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161B023370B;
-	Mon, 10 Mar 2025 18:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2B41B3927;
+	Mon, 10 Mar 2025 17:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630456; cv=none; b=paoQb1O2TqlygxRLNScB/UiVLCbpNfJqPIcgnD2RaeBdBpNUaGSpRefWCGYMCJqHV/GOczCqqrvv00thFsuurmVYLLVMu86zL00s2wzo2UTroxDzjnYP1xa7vkz58UV1cfHxY4hf/zRS+7jrMOd2PopEQos67QRPAp6cEgaCGtg=
+	t=1741627373; cv=none; b=cn3PgmwYwygirkc66hHxgPar2WUqYay/WyyDfCsgR6yP0r7YQx4Jk/Ly9mrqXP75NfPrg6biPDEC+Ao6kh/Y1NvhqumgN9XBSLYoaC8mufh2d52LZbDtu/ewftee4wufAMF+Q1NcxFBvZBNv47AkcuWGbWf3Dv2x3cY7Yte9E/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630456; c=relaxed/simple;
-	bh=sHBVU/5ZX4+e0RyaoBpQ3dHLwExWtkk36SZVr2r9Dho=;
+	s=arc-20240116; t=1741627373; c=relaxed/simple;
+	bh=mpZAVOQoE8KsAcUnzXd9NOFX6MEX/qi2WVvYFtoX814=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p9YRDtm5ztQ+5Fw8ZlAIS15Lo3KjCVuvpLebcS2Dd6OhNQwu61kA5LlXiYzlTHiNI4wFDrjkSpQp/xBhJXUepXsDoWQjC51PrNWivOmsK1HnKMAPyLTi/dF/U81mZI/Xgi9chRwR8pynGDwe1F69wyeLLvQ9WK75tHfgbWofMuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF0JTMOQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962E9C4CEE5;
-	Mon, 10 Mar 2025 18:14:15 +0000 (UTC)
+	 MIME-Version; b=KklL4u99Rg3Hch7LlKd5peIzSLiGM5rDWiigfb5+YpkDKV45/KP0w9lGMrQPWl3OCMPpYqQrMDgUw0ookJtttpUHm69BveeBrnfSixAX2S3LzkqTnb3OfMIi57IqOvYkgB67EF0Ezv2yyKB59g9qtBA7MkGcygB3sv5QiVtljbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=us/N6+4w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAEDC4CEE5;
+	Mon, 10 Mar 2025 17:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630456;
-	bh=sHBVU/5ZX4+e0RyaoBpQ3dHLwExWtkk36SZVr2r9Dho=;
+	s=korg; t=1741627373;
+	bh=mpZAVOQoE8KsAcUnzXd9NOFX6MEX/qi2WVvYFtoX814=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pF0JTMOQ6DoBvZI4RIXVBVh3BXdozwfMGh1HXTP8exeyuzwib67trih2yJRdC4wEa
-	 Dml625jprmXyipTEMRIDYBROfU1UCS5nrZt8IRq1Z9Wuvh7uK9x8kN1nhLNhRB09vG
-	 c09MoApGcahW69fSpjGT9BBsCxk+PzwZCm3DfHyE=
+	b=us/N6+4weiy2ctcIEhVy99+T1McsVvaCvZ2SsASdezy9yPXJOEByRSSKQbhUG48cT
+	 OCUwnZg1D5vSxgLTJKb3KvHGeMVeGATcAkE1UW7pC5SNCKhhUFjq56PYvDhV6MolkG
+	 TxKxE9N7bVapgImH29/jq0LMYiUpkwlndDMDxFXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 5.15 412/620] drm/v3d: Stop active perfmon if it is being destroyed
-Date: Mon, 10 Mar 2025 18:04:18 +0100
-Message-ID: <20250310170601.851842968@linuxfoundation.org>
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.12 106/269] x86/cacheinfo: Validate CPUID leaf 0x2 EDX output
+Date: Mon, 10 Mar 2025 18:04:19 +0100
+Message-ID: <20250310170501.937342001@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Gmeiner <cgmeiner@igalia.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit 21f1435b1e6b012a07c42f36b206d2b66fc8f13b upstream.
+commit 8177c6bedb7013cf736137da586cf783922309dd upstream.
 
-If the active performance monitor (`v3d->active_perfmon`) is being
-destroyed, stop it first. Currently, the active perfmon is not
-stopped during destruction, leaving the `v3d->active_perfmon` pointer
-stale. This can lead to undefined behavior and instability.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-This patch ensures that the active perfmon is stopped before being
-destroyed, aligning with the behavior introduced in commit
-7d1fd3638ee3 ("drm/v3d: Stop the active perfmon before being destroyed").
+The historical Git commit:
 
-Cc: stable@vger.kernel.org # v5.15+
-Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
-Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241118221948.1758130-1-christian.gmeiner@gmail.com
+  019361a20f016 ("- pre6: Intel: start to add Pentium IV specific stuff (128-byte cacheline etc)...")
+
+introduced leaf 0x2 output parsing.  It only validated the MSBs of EAX,
+EBX, and ECX, but left EDX unchecked.
+
+Validate EDX's most-significant bit.
+
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-2-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kernel/cpu/cacheinfo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -175,6 +175,7 @@ int v3d_perfmon_destroy_ioctl(struct drm
- {
- 	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
- 	struct drm_v3d_perfmon_destroy *req = data;
-+	struct v3d_dev *v3d = v3d_priv->v3d;
- 	struct v3d_perfmon *perfmon;
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -808,7 +808,7 @@ void init_intel_cacheinfo(struct cpuinfo
+ 			cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
  
- 	mutex_lock(&v3d_priv->perfmon.lock);
-@@ -184,6 +185,10 @@ int v3d_perfmon_destroy_ioctl(struct drm
- 	if (!perfmon)
- 		return -EINVAL;
+ 			/* If bit 31 is set, this is an unknown format */
+-			for (j = 0 ; j < 3 ; j++)
++			for (j = 0 ; j < 4 ; j++)
+ 				if (regs[j] & (1 << 31))
+ 					regs[j] = 0;
  
-+	/* If the active perfmon is being destroyed, stop it first */
-+	if (perfmon == v3d->active_perfmon)
-+		v3d_perfmon_stop(v3d, perfmon, false);
-+
- 	v3d_perfmon_put(perfmon);
- 
- 	return 0;
 
 
 
