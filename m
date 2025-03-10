@@ -1,93 +1,116 @@
-Return-Path: <stable+bounces-121727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C7EA59AD8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF7BA59AE4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E46853A4115
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 16:21:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84D157A65C1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 16:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90E9226CFA;
-	Mon, 10 Mar 2025 16:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3410A22FDFF;
+	Mon, 10 Mar 2025 16:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfyWgS3/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luj2N4m5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7837719D8A0
-	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 16:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ED21D79BE;
+	Mon, 10 Mar 2025 16:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741623717; cv=none; b=jrlG205TfJ42yzW3Ww7J3oVM9YKOlWbOnCuCML9m2X8XcSmVR4ril4K4riyVPlg1BKeVHs3SrgRDZurxaxFSH6pYiTW/Yly8ACeXJqS5rHTIYoGXlzksDYFVGRdF+32r+ymC3uLMBjveDPOmUpGha/8jy+jt8+tlE+o2lYxWtTI=
+	t=1741623899; cv=none; b=FkZMFqE0HhPg4isjSHaDF+ZFSP9GoeApS8npyTqMErLLCBpjj7TQFNbIujmmL0kq5VjXtfbQzBY+0JLmxjW7Awfi1GGfWC4v6lSbgipFT7pYMQ56Kqypoa7sKSocjEHtrWicgdfojZwHDks3e7qVl/4cE2Kw86+C9+diBy6tB3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741623717; c=relaxed/simple;
-	bh=E6oy7jeFP+aWKFIjCMI1vRpOMHIiJff0zIJx3uw52VM=;
+	s=arc-20240116; t=1741623899; c=relaxed/simple;
+	bh=8AeJKXf7KBo0Et5UVJ9a3z/GKSyc6SeP17c6nUihQ0w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YTQzKJ+xx7kJaN66mNeHevjxug+efYyYVp0J3ScQqIgH/wPpcFces6SCVrdd2q6YURfn6oyjqHtfYu07fbZykH0Le1hpu3uyk5FwGHyEz9SLhivHFEPXi8PrA5HT6QF2zmflfKrxLZhJpyIJa9A/3IA7bzfEaSJxret/DrhL3Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfyWgS3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A14DC4CEE5;
-	Mon, 10 Mar 2025 16:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741623716;
-	bh=E6oy7jeFP+aWKFIjCMI1vRpOMHIiJff0zIJx3uw52VM=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=er6BCsP3awHCo4uT6VIMRQ1CE1089lKknWG2xpNhhElCmqkI3oVrpeIFG6MnBpWSquL3rvIcqwZQbKDriS0anNSI54rLuiKdWXT5+/rmOvL+vVGjlQHuNmpif8jOFAFnjdaT7u2eUZ1/II+xNSsmCOj49SxUpM5Kzfvrc6FtPhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luj2N4m5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEFBC4CEE5;
+	Mon, 10 Mar 2025 16:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741623898;
+	bh=8AeJKXf7KBo0Et5UVJ9a3z/GKSyc6SeP17c6nUihQ0w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OfyWgS3/IDc3r8ySkkXarBotvGGyaovB0zQYtwXCICcJ+7hMe2Xv6YkGWpIy2+y48
-	 70Ig4zw1lmsLT/iKP9DojDZ8x3PUS5QeWwbt+/K+5N9PIB8RDMzwp03auLIN0rTgZE
-	 DAlXVhTVBb99Ng04IGiihZUox2ZIaA6KfFqVXYlY=
-Date: Mon, 10 Mar 2025 17:21:54 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel =?iso-8859-1?Q?Garc=EDa?= <miguelgarciaroman8@gmail.com>
-Cc: stable@vger.kernel.org, skhan@linuxfoundation.org,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	syzbot+010986becd65dbf9464b@syzkaller.appspotmail.com
-Subject: Re: [PATCH 5.15.y] fs/ntfs3: Fix shift-out-of-bounds in
- ntfs_fill_super
-Message-ID: <2025031032-bamboo-unsent-00fa@gregkh>
-References: <20250309145636.633501-1-miguelgarciaroman8@gmail.com>
+	b=luj2N4m5kv14o7Yc2i/DxNa04kIC73dVLVdrjuO1dq0Idwa6PZ0GbB5Xvunkaz2Iv
+	 Vn6sSCN++sH9UiX6hRwFOPqcOUlSG3qt4kTfz9JzHrsINkdBpCANzE4YS6CHPZiGD2
+	 ruMrJu/GTla4DpIHm3FjS6/WHvxEy9JtmqBH4uD3PtUBwSSwnY5N1R5T7oXPqNHyFn
+	 vjrPPjznzrrsmOiSAST96Bs+T2P0+K1udNGpjzL4FSSlwZl4Iqe5dJVDQ4Bi5hiB26
+	 GuehJwjDXGNcA/2XENy8zI1PWuJksYdPbQx5ieem8Hdlax7V3DTb+TE3WULliAJReJ
+	 4Wb0OzhoGlEfQ==
+Date: Mon, 10 Mar 2025 17:24:53 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Eric <eric.4.debian@grabatoulnz.fr>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jian-Hong Pan <jhp@endlessos.org>, regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	Dieter Mummenschanz <dmummenschanz@web.de>
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+Message-ID: <Z88SVcH28cEEingS@ryzen>
+References: <Z8SBZMBjvVXA7OAK@eldamar.lan>
+ <Z8SyVnXZ4IPZtgGN@ryzen>
+ <8763ed79-991a-4a19-abb6-599c47a35514@grabatoulnz.fr>
+ <Z8VLZERz0FpvpchM@x1-carbon>
+ <8b1cbfd4-6877-48ef-b17d-fc10402efbf7@grabatoulnz.fr>
+ <Z8l61Kxss0bdvAQt@ryzen>
+ <Z8l7paeRL9szo0C0@ryzen>
+ <689f8224-f118-47f0-8ae0-a7377c6ff386@grabatoulnz.fr>
+ <Z8rCF39n5GjTwfjP@ryzen>
+ <6d33dbf2-d514-4a45-aa50-861c5f06f747@grabatoulnz.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250309145636.633501-1-miguelgarciaroman8@gmail.com>
+In-Reply-To: <6d33dbf2-d514-4a45-aa50-861c5f06f747@grabatoulnz.fr>
 
-On Sun, Mar 09, 2025 at 03:56:36PM +0100, Miguel García wrote:
-> From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-> 
-> commit 91a4b1ee78cb ("fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super")
-> 
-> This patch is a backport and fixes an UBSAN warning about shift-out-of-bounds in
-> ntfs_fill_super() function of the NTFS3 driver. The original code
-> incorrectly calculated MFT record size, causing undefined behavior
-> when performing bit shifts with values that exceed type limits.
-> 
-> The fix has been verified by executing the syzkaller reproducer test case.
-> After applying this patch, the system successfully handles the test case
-> without kernel panic or UBSAN warnings.
-> 
-> Bug: https://syzkaller.appspot.com/bug?extid=010986becd65dbf9464b
-> Reported-by: syzbot+010986becd65dbf9464b@syzkaller.appspotmail.com
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-> Signed-off-by: Miguel Garcia Roman <miguelgarciaroman8@gmail.com>
-> (cherry picked from commit 91a4b1ee78cb100b19b70f077c247f211110348f)
-> ---
->  fs/ntfs3/ntfs_fs.h |  2 ++
->  fs/ntfs3/super.c   | 63 +++++++++++++++++++++++++++++++++++-----------
->  2 files changed, 50 insertions(+), 15 deletions(-)
+On Sat, Mar 08, 2025 at 11:05:36AM +0100, Eric wrote:
+> > $ sudo lspci -nns 0000:00:11.0
+> 00:11.0 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD/ATI]
+> SB7x0/SB8x0/SB9x0 SATA Controller [AHCI mode] [1002:4391] (rev 40)
 
-We need a 6.1.y version of this first.  Please submit that first and
-then resend this for older kernels.
+Ok, so some old ATI controller that seems to have a bunch of
+workarounds.
 
-thanks,
+Mario, do you know anything about this AHCI controller?
 
-greg k-h
+
+"""
+3.1.4 Offset 0Ch: PI â€“ Ports Implemented
+
+This register indicates which ports are exposed by the HBA.
+It is loaded by the BIOS. It indicates which ports that the HBA supports are
+available for software to use. For example, on an HBA that supports 6 ports
+as indicated in CAP.NP, only ports 1 and 3 could be available, with ports
+0, 2, 4, and 5 being unavailable.
+
+Software must not read or write to registers within unavailable ports.
+
+The intent of this register is to allow system vendors to build platforms
+that support less than the full number of ports implemented on the HBA
+silicon.
+"""
+
+
+It seems quite clear that it is a BIOS bug.
+It is understandable that HBA vendors reuse the same silicon, but I would
+expect BIOS to always write the same value to the PI register.
+
+
+
+Kind regards,
+Niklas
 
