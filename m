@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-122827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC53A5A160
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC40A59D62
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C949218925E7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38B4A3A6DD3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB4B2253FE;
-	Mon, 10 Mar 2025 18:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC58230BF0;
+	Mon, 10 Mar 2025 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqgNnRr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiVVSwm9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C33227EA0;
-	Mon, 10 Mar 2025 18:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC072309B0;
+	Mon, 10 Mar 2025 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629612; cv=none; b=vD//vSpHFoVEdVhfXcUrisnXnD1MHXNpsrJ0sXomdN9OGd3IWYUTkCQg2XdQT7OhhbxKpmN/cwZetsXGPPP631uUQs4r2ukGYH22SpZE0+7b0cKOB7ZQTGCrElseuQuWs49+TnpGkMsYsORdU10TUFQLkLs1xTLlNnvphcqN+6o=
+	t=1741627199; cv=none; b=qxxz3OX09ISLQAT00iJYzcHveGPP3Pk15uLHyfZjYN7GgvfpQsmNq6fLsFdnWHIbytMhQn4ZdbNgIo4l9R1fyfSIJ8qVQdjfeIGxH2RFKNbqX4aOYbUBz9BgRhYyIdlQg9Hxm89A4YM9/s1NrmVJbSpYR+nPlmYCr0nExAAB/iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629612; c=relaxed/simple;
-	bh=moILZu9gOfdf9MUs/aEdh6oP26Knu+hw+FMRnjMDkBM=;
+	s=arc-20240116; t=1741627199; c=relaxed/simple;
+	bh=Bttj9dlR5V76eNTwEKP7XGMuZMmLViO+ftd2oun0gGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUNlESkcIyD6blb83qAOublxdmGWaZG8LibZ9sAfCDZpBf8UMoyTLeKWFN1dXyctN+Gu/SObVzUsY6MmM3SgkkKGVJUmJfI9z/R0BZLUtQQCpN/WRmXZr1n6XrfcD84FEZWDNUpp0i3icA74RA078rTiuerrL8+s3tOE1DrLBHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqgNnRr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B24BC4CEE5;
-	Mon, 10 Mar 2025 18:00:11 +0000 (UTC)
+	 MIME-Version; b=dpPggGIUHSm8S09DXvEFjH8dJ8GGN1QbIhcl338eDzNyB6HwKWaEIVVei/qtide8b7G6gK01Vk91Wpj0khcNL0f97oMUIU3qiK574Aa6aLqa3Fzj9T5Tfy7bIwtwwBN6vYwSSJBnMaGF3uCVVIat2LrCVwr2lnkNBk4qiu4vTBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiVVSwm9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2915EC4CEE5;
+	Mon, 10 Mar 2025 17:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629612;
-	bh=moILZu9gOfdf9MUs/aEdh6oP26Knu+hw+FMRnjMDkBM=;
+	s=korg; t=1741627199;
+	bh=Bttj9dlR5V76eNTwEKP7XGMuZMmLViO+ftd2oun0gGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqgNnRr0BkCaddK9LsKBgwmTV1uK9ZXSWAZqFhptLkgYl2SJGYhQJF98VTftEyOww
-	 L3kM8OKc3m4xZwhLJddqaWKD4MuOV8pK2zpO+hZSN6/eLT1pofZz2gGCRKjvsu0Ota
-	 7UVeVQKPS+MzhLidYh9Vc2FVl5esJi9mVtc0wFmw=
+	b=yiVVSwm9ye1YMx/oF/DauAlOO7juN3zfBM6QUOZcy8HFWJORS8dieLqqUNbLkE+Hq
+	 PzUm0udwDdV3CRfF1Efd0SlWAA2uMkp1kDyMOGq/t/5xWfXNOIRw1cPRUcX/C7R/DJ
+	 t6lsxzwqRpM85u/pUxajqOdJby4/RpkKyEiWCIjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 323/620] mtd: onenand: Fix uninitialized retlen in do_otp_read()
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 016/269] rust: enable `clippy::unnecessary_safety_comment` lint
 Date: Mon, 10 Mar 2025 18:02:49 +0100
-Message-ID: <20250310170558.356720703@linuxfoundation.org>
+Message-ID: <20250310170458.355020653@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 70a71f8151b9879b0950668ce3ad76263261fee0 upstream.
+commit c28bfe76e4ba707775a205b0274710de7aa1e31c upstream.
 
-The function do_otp_read() does not set the output parameter *retlen,
-which is expected to contain the number of bytes actually read.
-As a result, in onenand_otp_walk(), the tmp_retlen variable remains
-uninitialized after calling do_otp_walk() and used to change
-the values of the buf, len and retlen variables.
+In Rust 1.67.0, Clippy added the `unnecessary_safety_comment` lint [1],
+which is the "inverse" of `undocumented_unsafe_blocks`: it finds places
+where safe code has a `// SAFETY` comment attached.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The lint currently finds 3 places where we had such mistakes, thus it
+seems already quite useful.
 
-Fixes: 49dc08eeda70 ("[MTD] [OneNAND] fix numerous races")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Thus clean those and enable it.
+
+Link: https://rust-lang.github.io/rust-clippy/master/index.html#/unnecessary_safety_comment [1]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Tested-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20240904204347.168520-6-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/onenand/onenand_base.c |    1 +
- 1 file changed, 1 insertion(+)
+ Makefile                 |    1 +
+ rust/kernel/sync/arc.rs  |    2 +-
+ rust/kernel/workqueue.rs |    4 ++--
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/onenand/onenand_base.c
-+++ b/drivers/mtd/nand/onenand/onenand_base.c
-@@ -2911,6 +2911,7 @@ static int do_otp_read(struct mtd_info *
- 	ret = ONENAND_IS_4KB_PAGE(this) ?
- 		onenand_mlc_read_ops_nolock(mtd, from, &ops) :
- 		onenand_read_ops_nolock(mtd, from, &ops);
-+	*retlen = ops.retlen;
+--- a/Makefile
++++ b/Makefile
+@@ -459,6 +459,7 @@ export rust_common_flags := --edition=20
+ 			    -Aclippy::needless_lifetimes \
+ 			    -Wclippy::no_mangle_with_rust_abi \
+ 			    -Wclippy::undocumented_unsafe_blocks \
++			    -Wclippy::unnecessary_safety_comment \
+ 			    -Wrustdoc::missing_crate_level_docs
  
- 	/* Exit OTP access mode */
- 	this->command(mtd, ONENAND_CMD_RESET, 0, 0);
+ KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) \
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -338,7 +338,7 @@ impl<T: 'static> ForeignOwnable for Arc<
+     }
+ 
+     unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
+-        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
++        // By the safety requirement of this function, we know that `ptr` came from
+         // a previous call to `Arc::into_foreign`.
+         let inner = NonNull::new(ptr as *mut ArcInner<T>).unwrap();
+ 
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -526,7 +526,7 @@ where
+     T: HasWork<T, ID>,
+ {
+     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
+-        // SAFETY: The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
++        // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
+         let ptr = ptr as *mut Work<T, ID>;
+         // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
+         let ptr = unsafe { T::work_container_of(ptr) };
+@@ -573,7 +573,7 @@ where
+     T: HasWork<T, ID>,
+ {
+     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
+-        // SAFETY: The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
++        // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
+         let ptr = ptr as *mut Work<T, ID>;
+         // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
+         let ptr = unsafe { T::work_container_of(ptr) };
 
 
 
