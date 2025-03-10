@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-122264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14344A59EAE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C513A59CD7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50AB188FD1E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 800687A2051
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BF4230BED;
-	Mon, 10 Mar 2025 17:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9F5230996;
+	Mon, 10 Mar 2025 17:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaWOPF6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTy5jnr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97A722E407;
-	Mon, 10 Mar 2025 17:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB1A23236E;
+	Mon, 10 Mar 2025 17:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627998; cv=none; b=koRMl/vUI4imbf/aipuPjf5a0di35iFr2elgVbPEmicSo4KhwHqRdm4nN1eGY8nPssePAKu+EtGIohAmhx96DJYNeej7HiWpHR0Ki23FbkCNhPR5YEp9YwC6sPxI4OCfYU8m2f4AC6eMU8p88tYYTGcBw0E+vDqiSCiNkOQBxwg=
+	t=1741626903; cv=none; b=BjKc+YEG9T1Cun+3AsOIjarjqTKkzMf7DuHkhDG3OL4JYzfCC/9w27fsjKdbkQh+3AX07iCbb+wIKLPxGO0PQ6CBIiuRAFDm35ANxnWx+vGgMb/w0a0DXuTqfp1wSpy1lZeZRUvTVix4JrnkMCRualvb7fAF8J7IqWZvJ0zHFDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627998; c=relaxed/simple;
-	bh=EkkgAnYT5zOjIFxCcTWQpJW+WIGa9bXJIqGoh7YuEbs=;
+	s=arc-20240116; t=1741626903; c=relaxed/simple;
+	bh=RpdW1qf8WtEoosLZph9EhoNJZabnbDS/L7DrmYEF134=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r52iW6IuG8G8Ld33FWbmbznvrZ8tY9WF46RujsqhZG6rCMO5hSY+5ufTMQI5TfAwH6Q4MOLBPvTSoR5npj956AfkGPF/58o83GfjgY+D96ZPghtfX+ZtsPVoHe1qUlm9yX3oNs8P29svct4zCwg7bPSvL09UD2tMCM0vQrV66QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaWOPF6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627B5C4CEE5;
-	Mon, 10 Mar 2025 17:33:18 +0000 (UTC)
+	 MIME-Version; b=kkj2mosUnjRMfCUwjNy/vo2Kj6qBAu0h59SslsADnUQaN5wKh8drbfQy5U6HF2fRStaVoc0Y4A9KCatOcqdUhbCGK46Rh/KEBH85ZaJ+ZZy1RKu+ovCTPdfRtir1+i+/8Gl8Zveb0TNtjoNwJ75ua0cUxsy4xr/s/hOeGYmH9g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTy5jnr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B253AC4CEE5;
+	Mon, 10 Mar 2025 17:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627998;
-	bh=EkkgAnYT5zOjIFxCcTWQpJW+WIGa9bXJIqGoh7YuEbs=;
+	s=korg; t=1741626903;
+	bh=RpdW1qf8WtEoosLZph9EhoNJZabnbDS/L7DrmYEF134=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaWOPF6rw6Xr1BTa3IWTAZ/6/nG4WE4m8cdQZDhi9aKlUzFgaLKoI5ueCgHRZDxf9
-	 G7SF/rf8jP/8mh3RV8BkC8ymXlQg5pFXT7iru7Oj6WWIWoFOYdUxFYEvlBk6MXgcJv
-	 QaUc6v1c6SM96qf2x+CBYod1C/nQlSnGVHmidi/E=
+	b=tTy5jnr+1pdGMZ/qMsYfVKv6xKLbpFsocMTodb8r3fTg/9QgmLBhnL3XCBi5D/JBm
+	 sP0l/QCy8Khetp4XQmfMyxCiDXQCg3FQwcEV+MPIJWaDzWdPjKA1krS2TqAoYsmCWJ
+	 xK6F7dJ+fgWMX2t7qILt1h2R9ILVD6wEj9pOBV88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 052/145] rapidio: fix an API misues when rio_add_net() fails
+	stable <stable@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.13 153/207] xhci: Restrict USB4 tunnel detection for USB3 devices to Intel hosts
 Date: Mon, 10 Mar 2025 18:05:46 +0100
-Message-ID: <20250310170436.838091212@linuxfoundation.org>
+Message-ID: <20250310170453.878328201@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit b2ef51c74b0171fde7eb69b6152d3d2f743ef269 upstream.
+commit 487cfd4a8e3dc42d34a759017978a4edaf85fce0 upstream.
 
-rio_add_net() calls device_register() and fails when device_register()
-fails.  Thus, put_device() should be used rather than kfree().  Add
-"mport->net = NULL;" to avoid a use after free issue.
+When adding support for USB3-over-USB4 tunnelling detection, a check
+for an Intel-specific capability was added. This capability, which
+goes by ID 206, is used without any check that we are actually
+dealing with an Intel host.
 
-Link: https://lkml.kernel.org/r/20250227073409.3696854-1-haoxiang_li2024@163.com
-Fixes: e8de370188d0 ("rapidio: add mport char device driver")
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Yang Yingliang <yangyingliang@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+As it turns out, the Cadence XHCI controller *also* exposes an
+extended capability numbered 206 (for unknown purposes), but of
+course doesn't have the Intel-specific registers that the tunnelling
+code is trying to access. Fun follows.
+
+The core of the problems is that the tunnelling code blindly uses
+vendor-specific capabilities without any check (the Intel-provided
+documentation I have at hand indicates that 192-255 are indeed
+vendor-specific).
+
+Restrict the detection code to Intel HW for real, preventing any
+further explosion on my (non-Intel) HW.
+
+Cc: stable <stable@kernel.org>
+Fixes: 948ce83fbb7df ("xhci: Add USB4 tunnel detection for USB3 devices on Intel hosts")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250227194529.2288718-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rapidio/devices/rio_mport_cdev.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-hub.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/rapidio/devices/rio_mport_cdev.c
-+++ b/drivers/rapidio/devices/rio_mport_cdev.c
-@@ -1740,7 +1740,8 @@ static int rio_mport_add_riodev(struct m
- 		err = rio_add_net(net);
- 		if (err) {
- 			rmcd_debug(RDEV, "failed to register net, err=%d", err);
--			kfree(net);
-+			put_device(&net->dev);
-+			mport->net = NULL;
- 			goto cleanup;
- 		}
- 	}
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -12,6 +12,7 @@
+ #include <linux/slab.h>
+ #include <linux/unaligned.h>
+ #include <linux/bitfield.h>
++#include <linux/pci.h>
+ 
+ #include "xhci.h"
+ #include "xhci-trace.h"
+@@ -770,9 +771,16 @@ static int xhci_exit_test_mode(struct xh
+ enum usb_link_tunnel_mode xhci_port_is_tunneled(struct xhci_hcd *xhci,
+ 						struct xhci_port *port)
+ {
++	struct usb_hcd *hcd;
+ 	void __iomem *base;
+ 	u32 offset;
+ 
++	/* Don't try and probe this capability for non-Intel hosts */
++	hcd = xhci_to_hcd(xhci);
++	if (!dev_is_pci(hcd->self.controller) ||
++	    to_pci_dev(hcd->self.controller)->vendor != PCI_VENDOR_ID_INTEL)
++		return USB_LINK_UNKNOWN;
++
+ 	base = &xhci->cap_regs->hc_capbase;
+ 	offset = xhci_find_next_ext_cap(base, 0, XHCI_EXT_CAPS_INTEL_SPR_SHADOW);
+ 
 
 
 
