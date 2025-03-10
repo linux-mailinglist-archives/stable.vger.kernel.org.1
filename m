@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-121971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD685A59D50
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6123FA5A152
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250EE3A6CC4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CA5B18916CE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FC4230D0D;
-	Mon, 10 Mar 2025 17:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDF522ACDC;
+	Mon, 10 Mar 2025 17:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WU/XAZoY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6A6Z+rC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55713230BC3;
-	Mon, 10 Mar 2025 17:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5AB22D7A6;
+	Mon, 10 Mar 2025 17:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627159; cv=none; b=WKqSYrFq8uzLnqxJbL8xD4PLYALojY/TjT6AVusRFOa5COBiJ9GrrkKp6HOKggAmHRpDQUovFeLa/QiUc/92+G1NUN+q6z+qRX4dAbIwYRZNtSST2jf8ARdC8KhnmlqUPFdLHVEQUd42J6cIs6hqqG4hiLcIoOQOGHHhDLq7DPU=
+	t=1741629571; cv=none; b=l62Ko+rep+/isk5kWtTlOPllwFjbnSL7Bo2t4D16UhSSq2QRyVBOGM35ABRRY3uKTbB/jCSmjrnhwbynuNWFbSWu5mZq0wa/hv7dCrCeanUXWnPb9YE4Y94c+x6ha3HPgEUyYRPKR7P3XaJB0tj8aNVTWen26ByOyOEnR4LziDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627159; c=relaxed/simple;
-	bh=QkSuhVO7Elwt/BhLLv9ciO//GQKH4V+UCyKtUIpLUnQ=;
+	s=arc-20240116; t=1741629571; c=relaxed/simple;
+	bh=zxZbeVpS5s9r0gYeG7ig26zs38ittIe15oKvOw5YY4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFl/lmWrvOKlfe+QD5cWIt9KWPKS/DkqWy8aS9hhVM6mgmaJOm/wq3k7CztsQ04n+R6CMwFi9Lw8QoFvZbqKhpvuxnUyJynjJyWQhRr6+iemcsIyLbLs+voHeT0bXblnhLeaN+ohLq8qmE6p/09HGwIACInyqI64Loo9JNS+ToM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WU/XAZoY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23AEC4CEE5;
-	Mon, 10 Mar 2025 17:19:18 +0000 (UTC)
+	 MIME-Version; b=nlVMLQYklRI23wzQ1ohIevlOzZo+tdtpvldKjDeJB5AVhdOwjOQgnwqdQ2bFK7zyGNkgeb9/xLCguPPWKrzCB0/h67kQzFCjekCcEvZPPU+CeRfMJEReJ78oP76oWOWgkQ40plyslr426Je463XqiReNA3Zdkwy4eZGXjV+eUTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6A6Z+rC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DF9C4CEE5;
+	Mon, 10 Mar 2025 17:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627159;
-	bh=QkSuhVO7Elwt/BhLLv9ciO//GQKH4V+UCyKtUIpLUnQ=;
+	s=korg; t=1741629571;
+	bh=zxZbeVpS5s9r0gYeG7ig26zs38ittIe15oKvOw5YY4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WU/XAZoY8Oxw3+CVbu8BANe8y/Pp+++e3E1Nd+vTewnKEmVoKdwqzxu/XQAiGMOfT
-	 W7paBx61EeEwM/4hs2FRpB7bv1OkDSggz4Bggf1EXREPpeNsIe1uQeuVGZKefC/7oT
-	 OuQNdCz8hEUorHaXfBwMLGpRn21klU7R3cz+vKDY=
+	b=i6A6Z+rCs/SMnWlrGOthmefl5e15WnNMaz5cGrwFDZBhin1WPYxEG1iZfVVN1TXqp
+	 VsOEVQ9YpGd55ZCESvm6nmcTZrNmA3QVRRCBjV/8OOMUehjFjsGroRiFkT1usXwRJN
+	 IdLZ8hkAse/UGEB4H1lkuVSoLawppCRgSk/b6oFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 033/269] rust: alloc: rename `KernelAllocator` to `Kmalloc`
+	syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 340/620] team: better TEAM_OPTION_TYPE_STRING validation
 Date: Mon, 10 Mar 2025 18:03:06 +0100
-Message-ID: <20250310170459.036825776@linuxfoundation.org>
+Message-ID: <20250310170559.034729248@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 941e65531446c1eb5d573c5d30172117ebe96112 upstream.
+[ Upstream commit 5bef3ac184b5626ea62385d6b82a1992b89d7940 ]
 
-Subsequent patches implement `Vmalloc` and `KVmalloc` allocators, hence
-align `KernelAllocator` to this naming scheme.
+syzbot reported following splat [1]
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-4-dakr@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure user-provided data contains one nul byte.
+
+[1]
+ BUG: KMSAN: uninit-value in string_nocheck lib/vsprintf.c:633 [inline]
+ BUG: KMSAN: uninit-value in string+0x3ec/0x5f0 lib/vsprintf.c:714
+  string_nocheck lib/vsprintf.c:633 [inline]
+  string+0x3ec/0x5f0 lib/vsprintf.c:714
+  vsnprintf+0xa5d/0x1960 lib/vsprintf.c:2843
+  __request_module+0x252/0x9f0 kernel/module/kmod.c:149
+  team_mode_get drivers/net/team/team_core.c:480 [inline]
+  team_change_mode drivers/net/team/team_core.c:607 [inline]
+  team_mode_option_set+0x437/0x970 drivers/net/team/team_core.c:1401
+  team_option_set drivers/net/team/team_core.c:375 [inline]
+  team_nl_options_set_doit+0x1339/0x1f90 drivers/net/team/team_core.c:2662
+  genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+  genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2543
+  genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1348
+  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1892
+  sock_sendmsg_nosec net/socket.c:718 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:733
+  ____sys_sendmsg+0x877/0xb60 net/socket.c:2573
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2627
+  __sys_sendmsg net/socket.c:2659 [inline]
+  __do_sys_sendmsg net/socket.c:2664 [inline]
+  __se_sys_sendmsg net/socket.c:2662 [inline]
+  __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2662
+  x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
+Reported-by: syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1fcd957a82e3a1baa94d
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20250212134928.1541609-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/alloc/allocator.rs |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/team/team.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -6,7 +6,7 @@ use super::{flags::*, Flags};
- use core::alloc::{GlobalAlloc, Layout};
- use core::ptr;
- 
--struct KernelAllocator;
-+struct Kmalloc;
- 
- /// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
- fn aligned_size(new_layout: Layout) -> usize {
-@@ -37,7 +37,7 @@ pub(crate) unsafe fn krealloc_aligned(pt
- }
- 
- // SAFETY: TODO.
--unsafe impl GlobalAlloc for KernelAllocator {
-+unsafe impl GlobalAlloc for Kmalloc {
-     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-         // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
-         // requirement.
-@@ -74,7 +74,7 @@ unsafe impl GlobalAlloc for KernelAlloca
- }
- 
- #[global_allocator]
--static ALLOCATOR: KernelAllocator = KernelAllocator;
-+static ALLOCATOR: Kmalloc = Kmalloc;
- 
- // See <https://github.com/rust-lang/rust/pull/86844>.
- #[no_mangle]
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index 015151cd22220..1e0adeb5e177c 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2665,7 +2665,9 @@ static int team_nl_cmd_options_set(struct sk_buff *skb, struct genl_info *info)
+ 				ctx.data.u32_val = nla_get_u32(attr_data);
+ 				break;
+ 			case TEAM_OPTION_TYPE_STRING:
+-				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN) {
++				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN ||
++				    !memchr(nla_data(attr_data), '\0',
++					    nla_len(attr_data))) {
+ 					err = -EINVAL;
+ 					goto team_put;
+ 				}
+-- 
+2.39.5
+
 
 
 
