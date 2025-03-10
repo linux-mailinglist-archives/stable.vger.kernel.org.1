@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8143A59C6F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0244A59DC3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6BBF16E777
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9706C3A8EA7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FE6233159;
-	Mon, 10 Mar 2025 17:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534A9237163;
+	Mon, 10 Mar 2025 17:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWZgjkFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQSt4HTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7065C233148;
-	Mon, 10 Mar 2025 17:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F48B236424;
+	Mon, 10 Mar 2025 17:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626694; cv=none; b=SK0uQdJatrnXck/2fFDp9A8hz9qHEZ5XFjL+aD/0naaRuS2qzGCAfHB3KmdXKWbTSV5MmmGIc7Dj+szDy/rq8/xzfK7nUXXhnsFhWlJvd+P0kwnsVGD4k1Cmw8sK0lVa3mD3rYtBTAaWfGlLfQ8TUdPH7W1fhADmImtUbzs6lpg=
+	t=1741627414; cv=none; b=QXRYiyxohrCwBQmgJY+at5JyEVZqNXs+5Ip4tqBjWk890wgeK/wscyS+7yTUElBL08p+p9r8h+isbHuY+/2tx+3Jiv394BVREOCYAunJQD8WnE7gEYdcDI1Gpri7jdmwxj/YersbWWvfswWlNwlQ5rxqQ6I6ecnFEeOrAjq9YIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626694; c=relaxed/simple;
-	bh=Rcrz7qixOlxB3dFDQuQPJ8ibScD6QNVnox6TOHZ/8EU=;
+	s=arc-20240116; t=1741627414; c=relaxed/simple;
+	bh=o//9dZDBBdQoDbSLIhTVYQPRTq7noHn4sb8rZPg5H7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzMdJrPyNtck3WmDl5Vz18ABdqIlgjgro7W40I8J5+AXTfaMU8mD5AMOOoTbp8FFJJymG6XleJ+ovE0h5OJZlq4BfMThHiP4urN1H+FnWEx79OP5REMmDxcexCkVJ3ihz50R7S/KHSasmQyzGwwyCclyBAekA23b1Exe+TTmE50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWZgjkFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECB3C4CEE5;
-	Mon, 10 Mar 2025 17:11:33 +0000 (UTC)
+	 MIME-Version; b=N5t4X7XewxsRkjzGQbIvTuDATOOl5PCyFU/wMeiOnhcqxPXKxRS9WTH0pSo0yHM7AeBi3SQO8jotZxk3v4e+b5yEtlAEoFHOXdTkc/pS+mKGN1jIqbtZwLSOISb1LJ8UAYh1TdXGqVfS/IeZZkuCDZihqDH4ED92LcAcanF6rYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQSt4HTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87623C4CEED;
+	Mon, 10 Mar 2025 17:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626694;
-	bh=Rcrz7qixOlxB3dFDQuQPJ8ibScD6QNVnox6TOHZ/8EU=;
+	s=korg; t=1741627413;
+	bh=o//9dZDBBdQoDbSLIhTVYQPRTq7noHn4sb8rZPg5H7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWZgjkFNYcfjkXisBkowYYG35Edtb+WWTy1a5LWsQqXAX7R0wE2afUP3Obo+v8qLy
-	 9T+rGYTHR8QCnxKbj4CXVbmvEDhcERM9G5iPs7DTaavs8nZarYnTiRFXcQi3rD2dTD
-	 B0cEJm32LPd+xnUjSDUF0QggMLhLiNfQTt0yzMJI=
+	b=IQSt4HTUQVP2npH9UhuRfZjoPd7NTaf2jhr4bRWK182O+692LtzppF8gFKqQMfJP6
+	 gcPDsjBHHsRD8XBbR1WLDMTfg8nPK6Ryp3sDXbSwyCFljqBFTVXv6uXG7mOJsLuYF6
+	 nMxtkvnyvFVM+u4D1u9THGcfnMLN66/GrVrttFhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 081/207] wifi: iwlwifi: fw: avoid using an uninitialized variable
-Date: Mon, 10 Mar 2025 18:04:34 +0100
-Message-ID: <20250310170450.979773646@linuxfoundation.org>
+	syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 122/269] wifi: nl80211: reject cooked mode if it is set along with other flags
+Date: Mon, 10 Mar 2025 18:04:35 +0100
+Message-ID: <20250310170502.584519402@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-[ Upstream commit 3f8aa0b8a53df2247a84eaf3b3aa38b6ef86cb1c ]
+commit 49f27f29446a5bfe633dd2cc0cfebd48a1a5e77f upstream.
 
-iwl_fwrt_read_err_table can return true also when it failed to read
-the memory. In this case, err_id argument is not initialized,
-but the callers are still using it.
+It is possible to set both MONITOR_FLAG_COOK_FRAMES and MONITOR_FLAG_ACTIVE
+flags simultaneously on the same monitor interface from the userspace. This
+causes a sub-interface to be created with no IEEE80211_SDATA_IN_DRIVER bit
+set because the monitor interface is in the cooked state and it takes
+precedence over all other states. When the interface is then being deleted
+the kernel calls WARN_ONCE() from check_sdata_in_driver() because of missing
+that bit.
 
-Simply initialize it to 0. If the error table was read successfully it'll
-be overridden.
+Fix this by rejecting MONITOR_FLAG_COOK_FRAMES if it is set along with
+other flags.
 
-Fixes: 43e0b2ada519 ("wifi: iwlwifi: fw: add an error table status getter")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20250209143303.37cdbba4eb56.I95fe9bd95303b8179f946766558a9f15f4fe254c@changeid
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 66f7ac50ed7c ("nl80211: Add monitor interface configuration flags")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Link: https://patch.msgid.link/20250131152657.5606-1-v.shevtsov@mt-integration.ru
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/nl80211.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index 8e0c85a1240d7..c7b261c8ec969 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-@@ -540,6 +540,9 @@ bool iwl_fwrt_read_err_table(struct iwl_trans *trans, u32 base, u32 *err_id)
- 	} err_info = {};
- 	int ret;
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4218,6 +4218,11 @@ static int parse_monitor_flags(struct nl
+ 		if (flags[flag])
+ 			*mntrflags |= (1<<flag);
  
-+	if (err_id)
-+		*err_id = 0;
++	/* cooked monitor mode is incompatible with other modes */
++	if (*mntrflags & MONITOR_FLAG_COOK_FRAMES &&
++	    *mntrflags != MONITOR_FLAG_COOK_FRAMES)
++		return -EOPNOTSUPP;
 +
- 	if (!base)
- 		return false;
+ 	*mntrflags |= MONITOR_FLAG_CHANGED;
  
--- 
-2.39.5
-
+ 	return 0;
 
 
 
