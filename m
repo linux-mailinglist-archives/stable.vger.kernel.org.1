@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-121947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42606A59D1E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F35A5A127
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B13E57A2B4E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EA1718933EC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C2C22B8D0;
-	Mon, 10 Mar 2025 17:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D1422D7A6;
+	Mon, 10 Mar 2025 17:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DN0alma1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/K3QeV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D697B2F28;
-	Mon, 10 Mar 2025 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFBF1C4A24;
+	Mon, 10 Mar 2025 17:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627089; cv=none; b=HX3TQM4DRPUlEzK8QcaL6XjHggrKUxqUiO/DjkC/JT+1mgOe0v5BUdWWJQoMhavMuAr0t/1qxPkeGmE59nrZsh66q6d0q5d3xoWxHwBak9XAQYUJ09/1Yp9fHxd+aEYGh5pkLHXhWpP4pFdqg9Z1eGHJhYtzzVV/zDNN2HEjXlQ=
+	t=1741629482; cv=none; b=gSvFhJDQHA9AdtnveGRmOuYgsojktU9nfT7lxm4eoxchdmecckkQiDiQrUIzy+UgXWEAfMLhvl30uguGSj8Ljs9qk3jZVxe4mFv3cAiz/u4mVVTP6C9oNh/TezkBFg4FtUrewcdMEzCr2F0MUyaxEcdGMAlHRp0ZmlSoGKKIMQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627089; c=relaxed/simple;
-	bh=lJJOa9Gv76m892YY+DKBJ5CUk43bO3IopUie60mpLvs=;
+	s=arc-20240116; t=1741629482; c=relaxed/simple;
+	bh=9LN5j53TTzmbRY5df1XL1Q2PoJxTA7xRJ9cdcCjf02Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1piJqwMgmi3B1QNTiFCY7445sqLirMAHxd5RiGX0cRqThJuRHeflskEMNcM6DM4eU6JqXmR9vZG+K9EBvM2fc0EcIAoWuHgoLwvLed0qBWoyoxNH0nWDVaTugUBz2mfZ5Go2xvNd6PQWaPT0FaCbpHtiYZgLsMrRv6xFfEwv5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DN0alma1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C852C4CEE5;
-	Mon, 10 Mar 2025 17:18:09 +0000 (UTC)
+	 MIME-Version; b=HVpghtEvqNzlaDNyJKJ2MMwD/rt9vCfvywMTfJ8HCD/GuKLilBfnshYmn+90UagyewwYg85MjdsRFa+Y2OqmsZi9dMakqfLncYimTmxeuFd2//jge8wAiRiXFU7ccL2AyiptwlOwxU0HnO55BE7x5kXMhw0b7iXpDbPjZ9Db8P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/K3QeV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6247FC4CEE5;
+	Mon, 10 Mar 2025 17:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627089;
-	bh=lJJOa9Gv76m892YY+DKBJ5CUk43bO3IopUie60mpLvs=;
+	s=korg; t=1741629481;
+	bh=9LN5j53TTzmbRY5df1XL1Q2PoJxTA7xRJ9cdcCjf02Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DN0alma1+hyOEwlVYTAjaDG51lW9vGD97Qoh5f8s6xb4bkyJ8ZjpWdx2CRBE22B6e
-	 mClwDGWsKc/NGQKtuffLC5lioqrorysfr2zekVnsteHHmjBq/cfrJTl82cboUdn9WV
-	 iw/ZvkeaSdMatxURnEC2su/Fl3Sh0n3Q+BAvqR8o=
+	b=v/K3QeV5l7qYPUm/LCbs/g9MGNvGaYSPFycYWh3ZQVtC4Un3X9ft3MXzLd+vwoRIG
+	 tjWQcYA4+4i1+cIYAg2Kdr1kjVGEnqY/tzUBrnp7Y0Rn0dULv0T2m98rs1vxuQLhVu
+	 m5fqdh5yNoG/Nb0NXB+E/2gE2ZBhWVfNvcyvigHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yutaro Ohno <yutaro.ono.418@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 002/269] rust: block: fix formatting in GenDisk doc
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.15 309/620] media: ccs: Fix CCS static data parsing for large block sizes
 Date: Mon, 10 Mar 2025 18:02:35 +0100
-Message-ID: <20250310170457.801582266@linuxfoundation.org>
+Message-ID: <20250310170557.815435698@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yutaro Ohno <yutaro.ono.418@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 0c5928deada15a8d075516e6e0d9ee19011bb000 upstream.
+commit 82b696750f0b60e7513082a10ad42786854f59f8 upstream.
 
-Align bullet points and improve indentation in the `Invariants` section
-of the `GenDisk` struct documentation for better readability.
+The length field of the CCS static data blocks was mishandled, leading to
+wrong interpretation of the length header for blocks that are 16 kiB in
+size. Such large blocks are very, very rare and so this wasn't found
+earlier.
 
-[ Yutaro is also working on implementing the lint we suggested to catch
-  this sort of issue in upstream Rust:
+As the length is used as part of input validation, the issue has no
+security implications.
 
-    https://github.com/rust-lang/rust-clippy/issues/13601
-    https://github.com/rust-lang/rust-clippy/pull/13711
-
-  Thanks a lot! - Miguel ]
-
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
-Link: https://lore.kernel.org/r/ZxkcU5yTFCagg_lX@ohnotp
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: a6b396f410b1 ("media: ccs: Add CCS static data parser library")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/block/mq/gen_disk.rs |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ccs/ccs-data.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -174,9 +174,9 @@ impl GenDiskBuilder {
- ///
- /// # Invariants
- ///
--///  - `gendisk` must always point to an initialized and valid `struct gendisk`.
--///  - `gendisk` was added to the VFS through a call to
--///     `bindings::device_add_disk`.
-+/// - `gendisk` must always point to an initialized and valid `struct gendisk`.
-+/// - `gendisk` was added to the VFS through a call to
-+///   `bindings::device_add_disk`.
- pub struct GenDisk<T: Operations> {
-     _tagset: Arc<TagSet<T>>,
-     gendisk: *mut bindings::gendisk,
+--- a/drivers/media/i2c/ccs/ccs-data.c
++++ b/drivers/media/i2c/ccs/ccs-data.c
+@@ -98,7 +98,7 @@ ccs_data_parse_length_specifier(const st
+ 		plen = ((size_t)
+ 			(__len3->length[0] &
+ 			 ((1 << CCS_DATA_LENGTH_SPECIFIER_SIZE_SHIFT) - 1))
+-			<< 16) + (__len3->length[0] << 8) + __len3->length[1];
++			<< 16) + (__len3->length[1] << 8) + __len3->length[2];
+ 		break;
+ 	}
+ 	default:
 
 
 
