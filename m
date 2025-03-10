@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5718A5A222
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA09DA59E96
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF62189461C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C9497A5F89
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE55233735;
-	Mon, 10 Mar 2025 18:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3AE2327A3;
+	Mon, 10 Mar 2025 17:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzrAm/iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbS/GudI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98462356CC;
-	Mon, 10 Mar 2025 18:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCCD81E;
+	Mon, 10 Mar 2025 17:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630609; cv=none; b=gYtq9Wi7roAFjkUfJyQ41Bmud3kxKmINoXa5zZK53zpN8cD/OWYs8ONRB1lMh2oopFLvkA77/Mi2jC8WBmpu6pJBLi1qOAhca6aAt3gnuHjBniseaFnT5lGGE5LDkh9FJ41cqMdL0xhajdOwHrWgHmJY+JJXrwbPw6MZ5xQk7ag=
+	t=1741627919; cv=none; b=FOTQCqIqNyBuGLbpMzNp3b850P4zeED2LkqUtDB9qY0n0uGKTkVHJWkhuE5+KThAXGpLrLRxCGVrFh90v6Ho/5pU5t/IDLzFj6a13/pPdUhBYePSyqjywdjBK2i+roFuzpNzHkbUXm1U8b++h4upo/42BdiNnrqmmHOooB1HfsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630609; c=relaxed/simple;
-	bh=2ySZ0YuGx3hvOkPONry/+iGRwUcq8SLOu9E7kFh+bWo=;
+	s=arc-20240116; t=1741627919; c=relaxed/simple;
+	bh=8+/NQluEUZ992eyGN17m2cXctI7MqSRsRlycfICHWec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEj27NIjt8dGhsK+dvmIO5of+T2r2LBg+d84XiexBFFKtzo81cSm8FYnmkZsmjb9stXWdvCnFm//obuRY1qR4nCLvrCErbI+41UfN9KMoS3ZcoxEv0KVFvd2opbvdNz3dNXgBSBeYUfOjiqygMjLV3pMjz10C/6IOM8embnlrY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzrAm/iz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFE3C4CEE5;
-	Mon, 10 Mar 2025 18:16:48 +0000 (UTC)
+	 MIME-Version; b=THKL6jy5YbgGmErkNso3zAKyVhfMbZms+jF6rVt9Q5yr06FKx56mA7kyH4cxsdis1EvF56/vjJQS1PzviFczLTgk4P6UwaSRIDsARWC2uljMgy5WVkwgtq9kSmP+dSKvJ1c66oPxhEcB4XK1mpM5SjP6KZpePL5Iuh8fw216WC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbS/GudI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D37C4CEE5;
+	Mon, 10 Mar 2025 17:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630609;
-	bh=2ySZ0YuGx3hvOkPONry/+iGRwUcq8SLOu9E7kFh+bWo=;
+	s=korg; t=1741627919;
+	bh=8+/NQluEUZ992eyGN17m2cXctI7MqSRsRlycfICHWec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzrAm/iz6Gib6QzfcYAQsA9M3tCCroMFouy7Ym2YFpkgYma9M6GEEHP5pWaNpHUjT
-	 1jAaKe1/408hQhtUn5OQ8dYkSHWE0xDTobmUypJvAJs+WzkGhlZqYCqgwUohNs0IOJ
-	 7AcmDeB/Qp/JLGgtrhuQPto2GkLD7eKe1Xz+mrcg=
+	b=lbS/GudI/B3o7Mp1GaXofNYr5bkTNBq289TPBBYrJccdL5NKn2VpU5jDwLKb6/VM1
+	 aFMpU/njsqdnNAZZ2V4Bs07ReqfvBXnWLdDOuvnTo/p66fUV+uCHumZ/uIrMhWySa2
+	 y509YjcTGM8mMIPk+vMDyOPnY4kJbiVZpxMnGXv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 473/620] power: supply: da9150-fg: fix potential overflow
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 025/145] LoongArch: Convert unreachable() to BUG()
 Date: Mon, 10 Mar 2025 18:05:19 +0100
-Message-ID: <20250310170604.249360687@linuxfoundation.org>
+Message-ID: <20250310170435.751789456@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 3fb3cb4350befc4f901c54e0cb4a2a47b1302e08 ]
+commit da64a2359092ceec4f9dea5b329d0aef20104217 upstream.
 
-Size of variable sd_gain equals four bytes - DA9150_QIF_SD_GAIN_SIZE.
-Size of variable shunt_val equals two bytes - DA9150_QIF_SHUNT_VAL_SIZE.
+When compiling on LoongArch, there exists the following objtool warning
+in arch/loongarch/kernel/machine_kexec.o:
 
-The expression sd_gain * shunt_val is currently being evaluated using
-32-bit arithmetic. So during the multiplication an overflow may occur.
+  kexec_reboot() falls through to next function crash_shutdown_secondary()
 
-As the value of type 'u64' is used as storage for the eventual result, put
-ULL variable at the first position of each expression in order to give the
-compiler complete information about the proper arithmetic to use. According
-to C99 the guaranteed width for a variable of type 'unsigned long long' >=
-64 bits.
+Avoid using unreachable() as it can (and will in the absence of UBSAN)
+generate fall-through code. Use BUG() so we get a "break BRK_BUG" trap
+(with unreachable annotation).
 
-Remove the explicit cast to u64 as it is meaningless.
-
-Just for the sake of consistency, perform the similar trick with another
-expression concerning 'iavg'.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: a419b4fd9138 ("power: Add support for DA9150 Fuel-Gauge")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://lore.kernel.org/r/20250130090030.53422-1-a.vatoropin@crpt.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org  # 6.12+
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/da9150-fg.c | 4 ++--
+ arch/loongarch/kernel/machine_kexec.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/da9150-fg.c b/drivers/power/supply/da9150-fg.c
-index 6e367826aae92..d5e1fbac87f22 100644
---- a/drivers/power/supply/da9150-fg.c
-+++ b/drivers/power/supply/da9150-fg.c
-@@ -247,9 +247,9 @@ static int da9150_fg_current_avg(struct da9150_fg *fg,
- 				      DA9150_QIF_SD_GAIN_SIZE);
- 	da9150_fg_read_sync_end(fg);
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -126,14 +126,14 @@ void kexec_reboot(void)
+ 	/* All secondary cpus go to kexec_smp_wait */
+ 	if (smp_processor_id() > 0) {
+ 		relocated_kexec_smp_wait(NULL);
+-		unreachable();
++		BUG();
+ 	}
+ #endif
  
--	div = (u64) (sd_gain * shunt_val * 65536ULL);
-+	div = 65536ULL * sd_gain * shunt_val;
- 	do_div(div, 1000000);
--	res = (u64) (iavg * 1000000ULL);
-+	res = 1000000ULL * iavg;
- 	do_div(res, div);
+ 	do_kexec = (void *)reboot_code_buffer;
+ 	do_kexec(efi_boot, cmdline_ptr, systable_ptr, start_addr, first_ind_entry);
  
- 	val->intval = (int) res;
--- 
-2.39.5
-
+-	unreachable();
++	BUG();
+ }
+ 
+ 
 
 
 
