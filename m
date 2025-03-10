@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B36EA5A16D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE23A59D73
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93C4172E6A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC7FF3A64B4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FAB22DFF3;
-	Mon, 10 Mar 2025 18:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A249F230BF0;
+	Mon, 10 Mar 2025 17:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKnNH073"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJysrCyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942B817A2E8;
-	Mon, 10 Mar 2025 18:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC5422154C;
+	Mon, 10 Mar 2025 17:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629649; cv=none; b=jUMAzs42RXLbLfgf3knJYRVNe4O8lF6W1N4a4EI3ZEpyANEhFP/9WjQ2sp3WIJcTR7CO253HnyNJamjxdGyjU2jrt5AeYzA65+z9IlgRio98QyjBgn6AcQZ3R5WM/slD9NXVZCJ2odk61n6PIFrFKUgq+cG54cq0qokIB8KJITs=
+	t=1741627240; cv=none; b=P24S1MixPvjitsY0F1lvF1qDRp15JcQaaB5f9TTN1dMirMGmA3dWU3xxQ8yfaVnWkjfab2HRHlkc/kRFFFmJkUUhkzyBwDDocQ3XJDnhBS48n5jLfBjtiPqaKlUgHHGnWhA/Bc2IgkFbuMgELRBG/XdM4oggtx0rnm8hQBLyes8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629649; c=relaxed/simple;
-	bh=bU34KvswcYy/9EiswDDJNFKE4dxrK1va4IlP9eqvUXs=;
+	s=arc-20240116; t=1741627240; c=relaxed/simple;
+	bh=Cv0KAqNzyYANgQoILDjwvr3bBU5/lIYwwDBFXFPJuFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOLBz1NJiLfkLsrTuCaigVE1spkUw7O5nMwFKQrax4p1XYTGYKuaHqfcoXr6821gp3w2RhePLMtsOKXGDwhMxnx77+ZCr5dPW+o8mwowRmy1XI80DkJZXFhP318FiKt+InlxtSfOdQvVK6iypvAQ9A3pMepRJmVcnMk459+o/MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKnNH073; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18977C4CEE5;
-	Mon, 10 Mar 2025 18:00:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rLXPOhm7m79C+o7CfTRYvWZrAirWlffIzrvhy6oEFmNhAZZYQdCrIvf1kQAsxtkF36nIRWcSb07NBkrfgyncd8Zu1neT5aXQ1aGob3GGP9Zzg1Gb7UpptdHuwEnrae3bxfdntMQZgYNs0kdNjN6WPi94lUgJgeGuKrp99q+LxcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJysrCyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEB2C4CEE5;
+	Mon, 10 Mar 2025 17:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629649;
-	bh=bU34KvswcYy/9EiswDDJNFKE4dxrK1va4IlP9eqvUXs=;
+	s=korg; t=1741627240;
+	bh=Cv0KAqNzyYANgQoILDjwvr3bBU5/lIYwwDBFXFPJuFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tKnNH073DfCWaPYUcFdx4k+KGeuUUxweaHgVyCMVQ5FDkHsV+84VIl8ExDvcpoa/w
-	 sF9Bt2U4pO92u0gnMTpjqB3MbO3PMmqOG/XwK8NivLjdbn5F7f/EJlKxVmeHde0nUH
-	 sC0f1uVZqyIYHAxY3959UjTjlETTqRRT5hUsbSII=
+	b=SJysrCyZ9r5dvpkcy8Lxa0JY5F1jqndfqbYW1jQt1x/OQnKjQFpS9NFeZ8RLCPF6Y
+	 4OaXBigEJcyskVwcmtK4M9Z+amWUQr3PRw9yMeo7nHGF9+Z6WKycQ3tmla1aCe/qph
+	 4TnAv5EQ5g/Vv9LNwvt/NaF3Uk01NtQKkTcbzJoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Robert Morris <rtm@csail.mit.edu>
-Subject: [PATCH 5.15 368/620] USB: hub: Ignore non-compliant devices with too many configs or interfaces
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 6.12 061/269] drm/panic: remove unnecessary borrow in alignment_pattern
 Date: Mon, 10 Mar 2025 18:03:34 +0100
-Message-ID: <20250310170600.131656635@linuxfoundation.org>
+Message-ID: <20250310170500.160640798@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Thomas Böhler <witcher@wiredspace.de>
 
-commit 2240fed37afbcdb5e8b627bc7ad986891100e05d upstream.
+commit 7b6de57e0b2d1e62becfa3aac063c4c58d2c2c42 upstream.
 
-Robert Morris created a test program which can cause
-usb_hub_to_struct_hub() to dereference a NULL or inappropriate
-pointer:
+The function `alignment_pattern` returns a static reference to a `u8`
+slice. The borrow of the returned element in `ALIGNMENT_PATTERNS` is
+already a reference as defined in the array definition above so this
+borrow is unnecessary and removed by the compiler. Clippy notes this in
+`needless_borrow`:
 
-Oops: general protection fault, probably for non-canonical address
-0xcccccccccccccccc: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
-CPU: 7 UID: 0 PID: 117 Comm: kworker/7:1 Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #14
-Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_hub_adjust_deviceremovable+0x78/0x110
-...
-Call Trace:
- <TASK>
- ? die_addr+0x31/0x80
- ? exc_general_protection+0x1b4/0x3c0
- ? asm_exc_general_protection+0x26/0x30
- ? usb_hub_adjust_deviceremovable+0x78/0x110
- hub_probe+0x7c7/0xab0
- usb_probe_interface+0x14b/0x350
- really_probe+0xd0/0x2d0
- ? __pfx___device_attach_driver+0x10/0x10
- __driver_probe_device+0x6e/0x110
- driver_probe_device+0x1a/0x90
- __device_attach_driver+0x7e/0xc0
- bus_for_each_drv+0x7f/0xd0
- __device_attach+0xaa/0x1a0
- bus_probe_device+0x8b/0xa0
- device_add+0x62e/0x810
- usb_set_configuration+0x65d/0x990
- usb_generic_driver_probe+0x4b/0x70
- usb_probe_device+0x36/0xd0
+    error: this expression creates a reference which is immediately dereferenced by the compiler
+       --> drivers/gpu/drm/drm_panic_qr.rs:245:9
+        |
+    245 |         &ALIGNMENT_PATTERNS[self.0 - 1]
+        |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: change this to: `ALIGNMENT_PATTERNS[self.0 - 1]`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+        = note: `-D clippy::needless-borrow` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(clippy::needless_borrow)]`
 
-The cause of this error is that the device has two interfaces, and the
-hub driver binds to interface 1 instead of interface 0, which is where
-usb_hub_to_struct_hub() looks.
+Remove the unnecessary borrow.
 
-We can prevent the problem from occurring by refusing to accept hub
-devices that violate the USB spec by having more than one
-configuration or interface.
-
-Reported-and-tested-by: Robert Morris <rtm@csail.mit.edu>
-Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/linux-usb/95564.1737394039@localhost/
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/c27f3bf4-63d8-4fb5-ac82-09e3cd19f61c@rowland.harvard.edu
+Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1123
+Signed-off-by: Thomas Böhler <witcher@wiredspace.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20241019084048.22336-3-witcher@wiredspace.de
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/drm_panic_qr.rs |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -1804,6 +1804,17 @@ static int hub_probe(struct usb_interfac
- 	hdev = interface_to_usbdev(intf);
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -239,7 +239,7 @@ impl Version {
+     }
  
- 	/*
-+	 * The USB 2.0 spec prohibits hubs from having more than one
-+	 * configuration or interface, and we rely on this prohibition.
-+	 * Refuse to accept a device that violates it.
-+	 */
-+	if (hdev->descriptor.bNumConfigurations > 1 ||
-+			hdev->actconfig->desc.bNumInterfaces > 1) {
-+		dev_err(&intf->dev, "Invalid hub with more than one config or interface\n");
-+		return -EINVAL;
-+	}
-+
-+	/*
- 	 * Set default autosuspend delay as 0 to speedup bus suspend,
- 	 * based on the below considerations:
- 	 *
+     fn alignment_pattern(&self) -> &'static [u8] {
+-        &ALIGNMENT_PATTERNS[self.0 - 1]
++        ALIGNMENT_PATTERNS[self.0 - 1]
+     }
+ 
+     fn poly(&self) -> &'static [u8] {
 
 
 
