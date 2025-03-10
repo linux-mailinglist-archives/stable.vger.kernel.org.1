@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF80A5A281
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED081A59FAB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D012175599
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079F218908FF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AE1231A24;
-	Mon, 10 Mar 2025 18:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE4722AE7C;
+	Mon, 10 Mar 2025 17:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJXZWu9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKPCypT0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7C41C3F34;
-	Mon, 10 Mar 2025 18:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2861422172E;
+	Mon, 10 Mar 2025 17:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630847; cv=none; b=PQGXJjTRw8HffFpyAWu+U2iD9QNEUjnu+KCz72L3bqZkSCz8ghmJhohX9WnL8cWaSO9zU7UociH/AxVlbvJXSV65cYYiO+8PXRrUIw/03I10ZQxj96cSx9UP8ciLB9R4LHIpzJW6r1IfxUBXuefbkmXpVHanO+8rp22vGHtABDg=
+	t=1741628529; cv=none; b=IGYIqUXrfcsHirJbYAZ4C1g5Tv5hllqlKyaAvuyZEdnfgEXVFmF9HDYqsbhmO7aWSdkiQ/zYBhh/En9okEW9rWiUw2eqkGoq0+PhxKPUjI9HN14F85qvSFkWaK+OOoyKJj4a+6UYwlHtY8DjvAAiaWSbaTW2gQ8Ax0brOn42V44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630847; c=relaxed/simple;
-	bh=ol6CODX3k8P5NkFPy3cmnH8/gajJsfIgyo+5CJ/YETE=;
+	s=arc-20240116; t=1741628529; c=relaxed/simple;
+	bh=CEWxCi7hJ2ku2fbBThlHsqF5d/QE2AzMA9ZNALRvgkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pM6pMyk15qCBfbbbrhKgUtlGM1EaM+UaIE+zw8zHm+av1huPsOBC5+NuVd+q4g2olz8LPgcvt6rIqf8/HjBmSNw0SCBtr04/dTaGzcDqEfNZcQjGQO0HtQ8XQgRKXUQpYmlALjHRa/vlj6TahxvlewukZD3w/fVkezH8xxwbtKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJXZWu9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DF4C4CEE5;
-	Mon, 10 Mar 2025 18:20:47 +0000 (UTC)
+	 MIME-Version; b=FUocD/7GoamGHyDU0FzKgfUQXGfUOax2eWI47/dEjUT4xGk04yQz/sfPgL/oTcwsWfBIXKRQTnx1OVhH0nkJwYecOGUpMXYoYgZBTFENy3GTAgc0N9fN1mlxDDOZGeUp+57UYaogudkUTa2YsahMJvV1SLZmLkmQBbBgtuuCYVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKPCypT0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F9DC4CEE5;
+	Mon, 10 Mar 2025 17:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630847;
-	bh=ol6CODX3k8P5NkFPy3cmnH8/gajJsfIgyo+5CJ/YETE=;
+	s=korg; t=1741628529;
+	bh=CEWxCi7hJ2ku2fbBThlHsqF5d/QE2AzMA9ZNALRvgkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJXZWu9KsRjJUM0vpSsOBxkCb564xodJFbqtKAHLzefqMDEbO1+4U8atq9cjbKzFq
-	 H8cDMiGrCyLcyTsA/IrPyPk4+cNJEVZopPT9hrvduEGeSv3gHUwfL2WQTin1OjdgDh
-	 D1QBFaeoyx3D8l5jMfP7yd4m8y92qlbhPxkYCnzc=
+	b=dKPCypT0aRmyUx78jRDgnMWEb6afd6MVlMl2yfxkgyNcU9KwOlph3HhoHjZZg7lRH
+	 taocHIU8TxZ0ehBdA8AWMddOE8skqZDkd4FdPwVjEp96/Mage3VcNyQ6Hhhfjhk64a
+	 msqLQoGyMlgAGIyLVWRbnx7ThXEoB+F6OIIvz/ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 554/620] HID: intel-ish-hid: Fix use-after-free issue in ishtp_hid_remove()
-Date: Mon, 10 Mar 2025 18:06:40 +0100
-Message-ID: <20250310170607.416869364@linuxfoundation.org>
+Subject: [PATCH 6.1 057/109] net-timestamp: support TCP GSO case for a few missing flags
+Date: Mon, 10 Mar 2025 18:06:41 +0100
+Message-ID: <20250310170429.840397134@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-[ Upstream commit 07583a0010696a17fb0942e0b499a62785c5fc9f ]
+[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
 
-The system can experience a random crash a few minutes after the driver is
-removed. This issue occurs due to improper handling of memory freeing in
-the ishtp_hid_remove() function.
+When I read through the TSO codes, I found out that we probably
+miss initializing the tx_flags of last seg when TSO is turned
+off, which means at the following points no more timestamp
+(for this last one) will be generated. There are three flags
+to be handled in this patch:
+1. SKBTX_HW_TSTAMP
+2. SKBTX_BPF
+3. SKBTX_SCHED_TSTAMP
+Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
+6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
+and only belongs to net-next branch material for now. The common
+issue of the above three flags can be fixed by this single patch.
 
-The function currently frees the `driver_data` directly within the loop
-that destroys the HID devices, which can lead to accessing freed memory.
-Specifically, `hid_destroy_device()` uses `driver_data` when it calls
-`hid_ishtp_set_feature()` to power off the sensor, so freeing
-`driver_data` beforehand can result in accessing invalid memory.
+This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
+the UDP GSO does to make the newly segmented last skb inherit the
+tx_flags so that requested timestamp will be generated in each
+certain layer, or else that last one has zero value of tx_flags
+which leads to no timestamp at all.
 
-This patch resolves the issue by storing the `driver_data` in a temporary
-variable before calling `hid_destroy_device()`, and then freeing the
-`driver_data` after the device is destroyed.
-
-Fixes: 0b28cb4bcb17 ("HID: intel-ish-hid: ISH HID client driver")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ishtp-hid.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_offload.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ishtp-hid.c b/drivers/hid/intel-ish-hid/ishtp-hid.c
-index 14c271d7d8a94..0377dac3fc9a0 100644
---- a/drivers/hid/intel-ish-hid/ishtp-hid.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-hid.c
-@@ -261,12 +261,14 @@ int ishtp_hid_probe(unsigned int cur_hid_dev,
-  */
- void ishtp_hid_remove(struct ishtp_cl_data *client_data)
- {
-+	void *data;
- 	int i;
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 72a645bf05c92..ce84073e0b7bb 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -12,12 +12,15 @@
+ #include <net/tcp.h>
+ #include <net/protocol.h>
  
- 	for (i = 0; i < client_data->num_hid_devices; ++i) {
- 		if (client_data->hid_sensor_hubs[i]) {
--			kfree(client_data->hid_sensor_hubs[i]->driver_data);
-+			data = client_data->hid_sensor_hubs[i]->driver_data;
- 			hid_destroy_device(client_data->hid_sensor_hubs[i]);
-+			kfree(data);
- 			client_data->hid_sensor_hubs[i] = NULL;
+-static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
++static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
+ 			   unsigned int seq, unsigned int mss)
+ {
++	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
++	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
++
+ 	while (skb) {
+ 		if (before(ts_seq, seq + mss)) {
+-			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
++			skb_shinfo(skb)->tx_flags |= flags;
+ 			skb_shinfo(skb)->tskey = ts_seq;
+ 			return;
  		}
- 	}
+@@ -119,8 +122,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	th = tcp_hdr(skb);
+ 	seq = ntohl(th->seq);
+ 
+-	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
+-		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
++	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
++		tcp_gso_tstamp(segs, gso_skb, seq, mss);
+ 
+ 	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
+ 
 -- 
 2.39.5
 
