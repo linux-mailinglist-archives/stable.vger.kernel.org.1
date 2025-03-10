@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097BEA59CDC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C035A59E0D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02FD33A8BB7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BB3517031B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B949B230BFC;
-	Mon, 10 Mar 2025 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B255A234984;
+	Mon, 10 Mar 2025 17:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUnkVxO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/joFH7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744F1230BEC;
-	Mon, 10 Mar 2025 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA18234970;
+	Mon, 10 Mar 2025 17:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626868; cv=none; b=tx1PsVdMzOSlQq3kJ1Z8/Z6gF+e+TFO3U7ox0npxcTphjfX/4grMMuddmB96BY4MVveTFBUAhY45L9Jc0a4JxIezkI512zmsqA0OQEXK5f/0ppZvIqaprecM5RDERtWBlJ2h1q1ymh3NpO1RLkfkvFzQOGb3mO+CiotwmMILRf8=
+	t=1741627590; cv=none; b=eNBuq3qg6mXOykCyjT9wVCB0sSu4R8Fa2FqdK+dWISfozrDhSIXg8iVCKaHv6RrozCXq1kAsTJhaBO218BVBh/PwruOkl4TmBZv1SRhX0fyf7hfvvTfxbfPBPOMMgwiLGLU7hvCxAT/h1UYvdO7Ni/JF/Qo38qe5+lZ6TrqWR/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626868; c=relaxed/simple;
-	bh=4TG1RVmmWLVoSlsblGM9IOx6ExzMT5DAzEmBJ0dIKVU=;
+	s=arc-20240116; t=1741627590; c=relaxed/simple;
+	bh=bCaGCj6MjvVfdxaMLs3QiqPQxl13RhRLkZURA9xyovQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aESsHXXDnOGpHyttS7Z5RHYTcZdsZ1vswiKalKU4xTsjVbxBg4c8P3Fnwisw8CHdf0nMYdnL/a92H2JvRBSx7bjhOSgCgc6tYEF5smeRwe/YjDPsfU2d2GUffdPhei4JPZHWEBfurwU22PnVz9Yunug72BpzI5k87OO1wBVens4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUnkVxO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975BEC4CEE5;
-	Mon, 10 Mar 2025 17:14:27 +0000 (UTC)
+	 MIME-Version; b=pRvHF6sPfj7THRzLQaDX5FkqnNE3FLjE+djGVN+2Pfz1t3dmTRgNscYW2OaR0gdm9FpxjPkQ1OHkXuwou5KIdZlPZYysZ6EEyzS5IZ96pi2ST49a4wOeRfV3c57TSVWQYeqxVtped+uSjXHKAFMw5mJMZZ6PK2niv3CPpIFAHUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/joFH7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BE8C4CEEC;
+	Mon, 10 Mar 2025 17:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626868;
-	bh=4TG1RVmmWLVoSlsblGM9IOx6ExzMT5DAzEmBJ0dIKVU=;
+	s=korg; t=1741627590;
+	bh=bCaGCj6MjvVfdxaMLs3QiqPQxl13RhRLkZURA9xyovQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUnkVxO1zCUUERCjhupGOrhqkmNttRRx/+i2uJ/qSP6TTYN50Ij7665h86n10yZEm
-	 jEZ6mxHlgcGVZPO8C/1JtPoZI7Ge27ZR4QOji+v24+Fls+YSt14NkhsuP4YaPUG/ub
-	 SLHIiu9uHDdEfEYOwNfJ5MR4wCfczvct3W8GDS70=
+	b=L/joFH7Y3tWNz9mHbXchGBNZL9zM49yFDqBmuhhw07npIT3xmlCuUpnLqQ4GU0iML
+	 D7ziM+V+Ff3bjjnsv3qnz3CP4iSKqYEIDCpGsf007HcHMMRpbritkXw00UiqmVcDkR
+	 RGd8uiteFVe8p3NMoW/BiWJoqtTVV8Km1Nrq/lws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Michael Stapelberg <michael@stapelberg.ch>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 108/207] nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu()
-Date: Mon, 10 Mar 2025 18:05:01 +0100
-Message-ID: <20250310170452.051148873@linuxfoundation.org>
+Subject: [PATCH 6.12 149/269] coredump: Only sort VMAs when core_sort_vma sysctl is set
+Date: Mon, 10 Mar 2025 18:05:02 +0100
+Message-ID: <20250310170503.656244583@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit ad95bab0cd28ed77c2c0d0b6e76e03e031391064 ]
+[ Upstream commit 39ec9eaaa165d297d008d1fa385748430bd18e4d ]
 
-nvme_tcp_recv_pdu() doesn't check the validity of the header length.
-When header digests are enabled, a target might send a packet with an
-invalid header length (e.g. 255), causing nvme_tcp_verify_hdgst()
-to access memory outside the allocated area and cause memory corruptions
-by overwriting it with the calculated digest.
+The sorting of VMAs by size in commit 7d442a33bfe8 ("binfmt_elf: Dump
+smaller VMAs first in ELF cores") breaks elfutils[1]. Instead, sort
+based on the setting of the new sysctl, core_sort_vma, which defaults
+to 0, no sorting.
 
-Fix this by rejecting packets with an unexpected header length.
-
-Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reported-by: Michael Stapelberg <michael@stapelberg.ch>
+Closes: https://lore.kernel.org/all/20250218085407.61126-1-michael@stapelberg.de/ [1]
+Fixes: 7d442a33bfe8 ("binfmt_elf: Dump smaller VMAs first in ELF cores")
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/sysctl/kernel.rst | 11 +++++++++++
+ fs/coredump.c                               | 15 +++++++++++++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 8a9131c95a3da..ade7f1af33d80 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -217,6 +217,19 @@ static inline int nvme_tcp_queue_id(struct nvme_tcp_queue *queue)
- 	return queue - queue->ctrl->queues;
- }
+diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+index f8bc1630eba05..fa21cdd610b21 100644
+--- a/Documentation/admin-guide/sysctl/kernel.rst
++++ b/Documentation/admin-guide/sysctl/kernel.rst
+@@ -212,6 +212,17 @@ pid>/``).
+ This value defaults to 0.
  
-+static inline bool nvme_tcp_recv_pdu_supported(enum nvme_tcp_pdu_type type)
-+{
-+	switch (type) {
-+	case nvme_tcp_c2h_term:
-+	case nvme_tcp_c2h_data:
-+	case nvme_tcp_r2t:
-+	case nvme_tcp_rsp:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- /*
-  * Check if the queue is TLS encrypted
-  */
-@@ -818,6 +831,16 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		return 0;
  
- 	hdr = queue->pdu;
-+	if (unlikely(hdr->hlen != sizeof(struct nvme_tcp_rsp_pdu))) {
-+		if (!nvme_tcp_recv_pdu_supported(hdr->type))
-+			goto unsupported_pdu;
++core_sort_vma
++=============
 +
-+		dev_err(queue->ctrl->ctrl.device,
-+			"pdu type %d has unexpected header length (%d)\n",
-+			hdr->type, hdr->hlen);
-+		return -EPROTO;
-+	}
++The default coredump writes VMAs in address order. By setting
++``core_sort_vma`` to 1, VMAs will be written from smallest size
++to largest size. This is known to break at least elfutils, but
++can be handy when dealing with very large (and truncated)
++coredumps where the more useful debugging details are included
++in the smaller VMAs.
 +
- 	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
- 		/*
- 		 * C2HTermReq never includes Header or Data digests.
-@@ -850,10 +873,13 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		nvme_tcp_init_recv_ctx(queue);
- 		return nvme_tcp_handle_r2t(queue, (void *)queue->pdu);
- 	default:
--		dev_err(queue->ctrl->ctrl.device,
--			"unsupported pdu type (%d)\n", hdr->type);
--		return -EINVAL;
-+		goto unsupported_pdu;
++
+ core_uses_pid
+ =============
+ 
+diff --git a/fs/coredump.c b/fs/coredump.c
+index 45737b43dda5c..2b8c36c9660c5 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -63,6 +63,7 @@ static void free_vma_snapshot(struct coredump_params *cprm);
+ 
+ static int core_uses_pid;
+ static unsigned int core_pipe_limit;
++static unsigned int core_sort_vma;
+ static char core_pattern[CORENAME_MAX_SIZE] = "core";
+ static int core_name_size = CORENAME_MAX_SIZE;
+ unsigned int core_file_note_size_limit = CORE_FILE_NOTE_SIZE_DEFAULT;
+@@ -1025,6 +1026,15 @@ static struct ctl_table coredump_sysctls[] = {
+ 		.extra1		= (unsigned int *)&core_file_note_size_min,
+ 		.extra2		= (unsigned int *)&core_file_note_size_max,
+ 	},
++	{
++		.procname	= "core_sort_vma",
++		.data		= &core_sort_vma,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_douintvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE,
++	},
+ };
+ 
+ static int __init init_fs_coredump_sysctls(void)
+@@ -1255,8 +1265,9 @@ static bool dump_vma_snapshot(struct coredump_params *cprm)
+ 		cprm->vma_data_size += m->dump_size;
  	}
-+
-+unsupported_pdu:
-+	dev_err(queue->ctrl->ctrl.device,
-+		"unsupported pdu type (%d)\n", hdr->type);
-+	return -EINVAL;
- }
  
- static inline void nvme_tcp_end_request(struct request *rq, u16 status)
+-	sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
+-		cmp_vma_size, NULL);
++	if (core_sort_vma)
++		sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
++		     cmp_vma_size, NULL);
+ 
+ 	return true;
+ }
 -- 
 2.39.5
 
