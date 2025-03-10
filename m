@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D62A59CE0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F329A5A22D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 382993A9EBB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42B5E1894849
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87753232395;
-	Mon, 10 Mar 2025 17:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F6923535F;
+	Mon, 10 Mar 2025 18:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hzr5uiUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybfekd4a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4365A23236F;
-	Mon, 10 Mar 2025 17:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B4722FF4E;
+	Mon, 10 Mar 2025 18:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626877; cv=none; b=ecCw1chcUNsLklarQrrSZA+yKsifn+Y8BHHOsCkd0XJLPbzlmN5aHAqT4OteS4Sz9b5YcrY1TYpzCvpTu0LQyPT5P+YtAibj3SubZAqpqEGSeJ7XwFZSpnDCaf1020MTrPhmLPULuLjaknuDSCJWGFboLNcL/RLHPDxNJrrksyc=
+	t=1741630655; cv=none; b=fmu1MjRoTWK4LpmYBqXzab1xJyK6NnXC9rpiJp8LoiGSTHw6KC5k4o5Jbk6emAXgKctdpDc76oSlbXs/DgI8H66SzTl/IZfXgR8sJmUsB+IHtDc1l4/fq4CRU/G9JYJ3rPzf43cd2XcrZxtp0XkMh5vHxOzwo3PXzOfrXu22Jxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626877; c=relaxed/simple;
-	bh=WoZYNLzKoRzto2sFjjWmUATeR/F0EvPxURSN8CiYoaQ=;
+	s=arc-20240116; t=1741630655; c=relaxed/simple;
+	bh=RqUOdaiCU3wc9xS5pShQG7P+XGWp4CaMT3kd4govzHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwKl4A7sBNkIETcPcSx7EodrawsxZCZxCLKaNpcyelQedYKDR72AEyJgr8mGnRTvNaqlb6y1S3lnDlpmk2mbxvYUnRyyouVqF3h7koNkRnmTM4gr/xoj1X+rUFVMH8MthYzG4PpvRXWhm0mTUVPGsIjPvx4ZYvw4ZNZeUilG4SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hzr5uiUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A56EC4CEED;
-	Mon, 10 Mar 2025 17:14:36 +0000 (UTC)
+	 MIME-Version; b=CTndR/TGmsrgwhHPPyfZj1QJM/7kA+ObR7ukTROltzqt9ea8PF7NyByYezjAC++Wx+l2UqKPrz8eug9RFMfKkyuz6lcRJrxAd37NWOmrtuH4yM2sl6C4XY8J+KRkPNhoAfNr12Cd8MgPnTsma8IUt8DC0GJu/aYcPb6u13Q3yIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybfekd4a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDCAC4CEE5;
+	Mon, 10 Mar 2025 18:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626876;
-	bh=WoZYNLzKoRzto2sFjjWmUATeR/F0EvPxURSN8CiYoaQ=;
+	s=korg; t=1741630655;
+	bh=RqUOdaiCU3wc9xS5pShQG7P+XGWp4CaMT3kd4govzHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hzr5uiUXpYSoxFSHj7rY9pp2UAfHNCpcedNm4FVM/1zjnHgr1sJ9sKuN5BdgbHl3j
-	 bXKPHKSFuEc7yuLgQHVdJcb6cWjzBjJfJ3ICw316Bkt3Vq4fiDHKt2kaQmrcUKJwrs
-	 epmgV9S4puClUdCqlKGCgaC9Vc5h09jDsId3Kd8g=
+	b=ybfekd4an7qe2dkxasbEsGV7xcc3Lx2Go65ZDdECkx03atzt3+G43vFDEwWYkdTjn
+	 UAnMreLqjaKc+8jgg5G1AWxQkqmQNVxrINSL3ytdeuT99T3K8w5GTUQ0+S7105iD1g
+	 lrkGhMQutDEr6E/rfHnnDiAi0YSRIqFVjueD99ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 111/207] net: gso: fix ownership in __udp_gso_segment
+Subject: [PATCH 5.15 458/620] usb: dwc3: Increase DWC3 controller halt timeout
 Date: Mon, 10 Mar 2025 18:05:04 +0100
-Message-ID: <20250310170452.167760449@linuxfoundation.org>
+Message-ID: <20250310170603.660385847@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
+[ Upstream commit 461ee467507cb98a348fa91ff8460908bb0ea423 ]
 
-In __udp_gso_segment the skb destructor is removed before segmenting the
-skb but the socket reference is kept as-is. This is an issue if the
-original skb is later orphaned as we can hit the following bug:
+Since EP0 transactions need to be completed before the controller halt
+sequence is finished, this may take some time depending on the host and the
+enabled functions.  Increase the controller halt timeout, so that we give
+the controller sufficient time to handle EP0 transfers.
 
-  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
-  RIP: 0010:ip_rcv_core+0x8b2/0xca0
-  Call Trace:
-   ip_rcv+0xab/0x6e0
-   __netif_receive_skb_one_core+0x168/0x1b0
-   process_backlog+0x384/0x1100
-   __napi_poll.constprop.0+0xa1/0x370
-   net_rx_action+0x925/0xe50
-
-The above can happen following a sequence of events when using
-OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
-OVS_ACTION_ATTR_OUTPUT action:
-
-1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
-   goes through queue_gso_packets and then __udp_gso_segment, where its
-   destructor is removed.
-2. The segments' data are copied and sent to userspace.
-3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
-   same original skb is sent to its path.
-4. If it later hits skb_orphan, we hit the bug.
-
-Fix this by also removing the reference to the socket in
-__udp_gso_segment.
-
-Fixes: ad405857b174 ("udp: better wmem accounting on gso")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20220901193625.8727-4-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: d3a8c28426fc ("usb: dwc3: Fix timeout issue during controller enter/exit from halt state")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index a5be6e4ed326f..ecfca59f31f13 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -321,13 +321,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index d39906248850a..e9daeaa5b68e9 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2457,7 +2457,7 @@ static void __dwc3_gadget_set_speed(struct dwc3 *dwc)
+ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on)
+ {
+ 	u32			reg;
+-	u32			timeout = 500;
++	u32			timeout = 2000;
  
- 	/* clear destructor to avoid skb_segment assigning it to tail */
- 	copy_dtor = gso_skb->destructor == sock_wfree;
--	if (copy_dtor)
-+	if (copy_dtor) {
- 		gso_skb->destructor = NULL;
-+		gso_skb->sk = NULL;
-+	}
+ 	if (pm_runtime_suspended(dwc->dev))
+ 		return 0;
+@@ -2484,6 +2484,7 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on)
+ 	dwc3_gadget_dctl_write_safe(dwc, reg);
  
- 	segs = skb_segment(gso_skb, features);
- 	if (IS_ERR_OR_NULL(segs)) {
--		if (copy_dtor)
-+		if (copy_dtor) {
- 			gso_skb->destructor = sock_wfree;
-+			gso_skb->sk = sk;
-+		}
- 		return segs;
- 	}
- 
+ 	do {
++		usleep_range(1000, 2000);
+ 		reg = dwc3_readl(dwc->regs, DWC3_DSTS);
+ 		reg &= DWC3_DSTS_DEVCTRLHLT;
+ 	} while (--timeout && !(!is_on ^ !reg));
 -- 
 2.39.5
 
