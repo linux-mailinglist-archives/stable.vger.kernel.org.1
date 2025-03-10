@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-122759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18E0A5A117
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:57:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686CEA5A0EE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:55:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62ACF3AD166
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:57:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E93173138
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63725234978;
-	Mon, 10 Mar 2025 17:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052C923237F;
+	Mon, 10 Mar 2025 17:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cayqTM8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqzmq3Ev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7EC2343C5;
-	Mon, 10 Mar 2025 17:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67A22D023;
+	Mon, 10 Mar 2025 17:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629418; cv=none; b=qtBFDbRwmsZV6KYF6nFjRHqNd1H2oqwsxPA9YnSQYfUf9eX/QVIf7aBJyWc66luVGFkEA1aHL5qGEiivKwGbhhH7SgJbSSzc7/UDuaffnE5WyRLF4BWca/Xw+QbIByEuBF7ac3ieQCSsdjr3G3eePyTZDYz2/xBpCDxv7InXQpw=
+	t=1741629327; cv=none; b=u04HZQQqRYFFpRW1LsQcqoAjY01sX7P+OsYY3eO4tyHlWHz57cbNT0mc1oj2jKmYcfsNs8BHzSgaZJPFO81NEI8BHyyAUya897YeTeRLXl98sRJhQQiZ3EafaETWx5joZ9sHbpDFxZfpDQuTAW0u7uDieoz/MCjkzjDUMBSD49A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629418; c=relaxed/simple;
-	bh=o4VMXnq519CjqIqG89OXMde5CJxXEwUHZCN+t1HVsog=;
+	s=arc-20240116; t=1741629327; c=relaxed/simple;
+	bh=6+IvV7UC+poDaNJ2LBTjXPO4jPlMxDtODu9fMh1DPeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgLSIzp6BBZvKDnEmuZP/EjifPw2TyfX1SlRoaUd2tQmN3wROb7HFpS5aV+rzisLQrhcoPhzTYM9DgIu0qaGtiwizIS0c8EQd2xPzbTwXqQ0kKG7LY1508mft+UtytS/cE5OP8hTdNtOJnLFPybGXNxbUVD9qrCrcEuZO8Jjh0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cayqTM8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38843C4CEE5;
-	Mon, 10 Mar 2025 17:56:57 +0000 (UTC)
+	 MIME-Version; b=L/OHE5EhfHk2XZBjye9SEkiGtTUE4VdW3SCa7+wUXX32XJfP5bhgSTlwWac0zGrCxFsK3lrCkVRLmDJR7V4DdgzhaFWqWV9VLSTk0co2MC5290Bw6JD5tz/Xs4rA0ldBvrRLkNnbmLcuOhpW5dOAhgKljdmJdbTtCV9A9Kleak0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqzmq3Ev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B336C4CEE5;
+	Mon, 10 Mar 2025 17:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629417;
-	bh=o4VMXnq519CjqIqG89OXMde5CJxXEwUHZCN+t1HVsog=;
+	s=korg; t=1741629327;
+	bh=6+IvV7UC+poDaNJ2LBTjXPO4jPlMxDtODu9fMh1DPeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cayqTM8jJpCI5bhsuobzd6kngPTT7aqgVL42q+hMAjZ+HFkaufUxXXtITQkv/lyoP
-	 7o1QWW66pqe/AfqmpWXKtknCAuPNDFC84NO2xXgVMMvCmrJBKD8sqNaayji9h1nHHU
-	 PcNJGC2+9J4eG5qSc7nDtzvhlE+NXseFDtnTf1kQ=
+	b=yqzmq3EvAM1Pus7VZ2ajgIbTA7FPycxg64/ix04rLWS0mPiPx7SPO2HXGd6E2Zlxp
+	 VFRSoLDWiB+IEiZb+at+MPF3uWaeToYMCgANxhFxKeHHQPzpEEXiGaV8bcxACBRFVu
+	 VZf9qZ0z9s0j+nGnojlAPZlLVBNtFX6shKbHD9W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 256/620] m68k: vga: Fix I/O defines
-Date: Mon, 10 Mar 2025 18:01:42 +0100
-Message-ID: <20250310170555.729285702@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Nicolas Pitre <npitre@baylibre.com>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 5.15 257/620] binfmt_flat: Fix integer overflow bug on 32 bit systems
+Date: Mon, 10 Mar 2025 18:01:43 +0100
+Message-ID: <20250310170555.770109804@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -69,84 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 53036937a101b5faeaf98e7438555fa854a1a844 upstream.
+commit 55cf2f4b945f6a6416cc2524ba740b83cc9af25a upstream.
 
-Including m68k's <asm/raw_io.h> in vga.h on nommu platforms results
-in conflicting defines with io_no.h for various I/O macros from the
-__raw_read and __raw_write families. An example error is
+Most of these sizes and counts are capped at 256MB so the math doesn't
+result in an integer overflow.  The "relocs" count needs to be checked
+as well.  Otherwise on 32bit systems the calculation of "full_data"
+could be wrong.
 
-   In file included from arch/m68k/include/asm/vga.h:12,
-                 from include/video/vga.h:22,
-                 from include/linux/vgaarb.h:34,
-		 from drivers/video/aperture.c:12:
->> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
-      39 | #define __raw_readb in_8
-	 |
-   In file included from arch/m68k/include/asm/io.h:6,
-		    from include/linux/io.h:13,
-		    from include/linux/irq.h:20,
-		    from include/asm-generic/hardirq.h:17,
-		    from ./arch/m68k/include/generated/asm/hardirq.h:1,
-		    from include/linux/hardirq.h:11,
-		    from include/linux/interrupt.h:11,
-                    from include/linux/trace_recursion.h:5,
-		    from include/linux/ftrace.h:10,
-		    from include/linux/kprobes.h:28,
-		    from include/linux/kgdb.h:19,
-		    from include/linux/fb.h:6,
-		    from drivers/video/aperture.c:5:
-   arch/m68k/include/asm/io_no.h:16: note: this is the location of the previous definition
-      16 | #define __raw_readb(addr) \
-	 |
+	full_data = data_len + relocs * sizeof(unsigned long);
 
-Include <asm/io.h>, which avoids raw_io.h on nommu platforms.
-Also change the defined values of some of the read/write symbols in
-vga.h to __raw_read/__raw_write as the raw_in/raw_out symbols are not
-generally available.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@intel.com/
-Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v3.5+
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/20250107095912.130530-1-tzimmermann@suse.de
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: c995ee28d29d ("binfmt_flat: prevent kernel dammage from corrupted executable headers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Nicolas Pitre <npitre@baylibre.com>
+Link: https://lore.kernel.org/r/5be17f6c-5338-43be-91ef-650153b975cb@stanley.mountain
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/include/asm/vga.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/binfmt_flat.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/m68k/include/asm/vga.h
-+++ b/arch/m68k/include/asm/vga.h
-@@ -9,7 +9,7 @@
-  */
- #ifndef CONFIG_PCI
- 
--#include <asm/raw_io.h>
-+#include <asm/io.h>
- #include <asm/kmap.h>
- 
- /*
-@@ -29,9 +29,9 @@
- #define inw_p(port)		0
- #define outb_p(port, val)	do { } while (0)
- #define outw(port, val)		do { } while (0)
--#define readb			raw_inb
--#define writeb			raw_outb
--#define writew			raw_outw
-+#define readb			__raw_readb
-+#define writeb			__raw_writeb
-+#define writew			__raw_writew
- 
- #endif /* CONFIG_PCI */
- #endif /* _ASM_M68K_VGA_H */
+--- a/fs/binfmt_flat.c
++++ b/fs/binfmt_flat.c
+@@ -542,7 +542,7 @@ static int load_flat_file(struct linux_b
+ 	 * 28 bits (256 MB) is way more than reasonable in this case.
+ 	 * If some top bits are set we have probable binary corruption.
+ 	*/
+-	if ((text_len | data_len | bss_len | stack_len | full_data) >> 28) {
++	if ((text_len | data_len | bss_len | stack_len | relocs | full_data) >> 28) {
+ 		pr_err("bad header\n");
+ 		ret = -ENOEXEC;
+ 		goto err;
 
 
 
