@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-122125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF9FA59E26
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F3EA5A242
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B67523A6441
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777513AAF7E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D2E23236F;
-	Mon, 10 Mar 2025 17:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B632343C9;
+	Mon, 10 Mar 2025 18:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA6Q3fqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER7Fx8Ju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136B322D799;
-	Mon, 10 Mar 2025 17:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754451C3C1C;
+	Mon, 10 Mar 2025 18:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627599; cv=none; b=t7uuszDKAwqa72i61gg2waShnG41f4N4TuIkm+3Jxf3LpLT1hyyh5+W6INjiJD7nzON6WuamT6xPsG2n9FaHUr5HBH1ZnGlNy7x5w8IYY2YS6dHDTuJZjC9P1n/OhZVkJ0oL74Ci8g8WbmpoRRg4a4q1wpEuajtanwtJL7X9Acw=
+	t=1741630661; cv=none; b=J+8OEwjbrn02LT6e37H4l44JAVbTs4L+vEwCHOy/DDzvbrdnzInlq/ho/QnssFhhQS3gT6QfnpRICr6vtefAbKs37rOV9CFnyifbASYYrV/Q9R8oYgavtOVVQvqqqP0NPWgdLvlGXT5DgclOwOwdLhKGqv+UJaoKftWxdVuOd2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627599; c=relaxed/simple;
-	bh=xfavAObudxEKkVmuB6LRaCJSYrQpb1rBWsmkF7xcwhE=;
+	s=arc-20240116; t=1741630661; c=relaxed/simple;
+	bh=LPzKftO9CKTP/DQ8R+7jmPAtimGazgXGmW3rJT362eU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEyb9N/Kheln1kSwIVJUaT5MUOghjpwY9WvLYJE0R2R0egYUbXTjtvcVIxizpcA359st6B0Fx0DxNReL+aX4fvC+kfybS6D3J9gCaUm0iP0pVn8Y4+DSMuHXmpyBTMKaLONw6hCPFSopg2nRNWIv/q4qHTFWcWbrPJWCorE2qa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA6Q3fqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B23EC4CEE5;
-	Mon, 10 Mar 2025 17:26:38 +0000 (UTC)
+	 MIME-Version; b=JPPQsIGGqokB1A/ZiT6ltrfR3me5wxce9YtVxXfAfbmh+BPiOAK/2Vh6Jvta5HubPuSLbsBSfCwiSCasfzC/yx8JF+uWR6Eacps2IIJID8dx/AE3QLQjMUBgtvcQz0uBpUYIxhNIi/3x3gmEDWbeK2nhnG6MUeRY5icVW3+cYtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER7Fx8Ju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88435C4CEE5;
+	Mon, 10 Mar 2025 18:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627598;
-	bh=xfavAObudxEKkVmuB6LRaCJSYrQpb1rBWsmkF7xcwhE=;
+	s=korg; t=1741630660;
+	bh=LPzKftO9CKTP/DQ8R+7jmPAtimGazgXGmW3rJT362eU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RA6Q3fqkghBW/E+iJAWoslgkY4IRGu4EyLS+I/o1NbYFFBniuiSLbTFNlA8O9Mosa
-	 9hRipyGlfmg144KMnXKfqfUe2ODVGG6W3HbR73JUH71nMuXyuFM+391vg7V5KcuNM0
-	 m9vl6MS3pBF5aF56ysZnA1/b62C1m08hjV9iI1KI=
+	b=ER7Fx8JuXB2TIauhEdzrDA3VqQ0iONtWOzAoRKZYy+nSupKHFpM5uq9xKNfjOP5Lm
+	 X2F8JleiQS87dJGQtUXbVeaSCSMSE0nO+e7Phyw1YhO2JI9acSk7HeeylYhtF8s2Cw
+	 9mD7HVO+65YLUAt2gI348wmHE13XURHZGCfDl5YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	stable <stable@kernel.org>,
+	Jill Donahue <jilliandonahue58@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/269] nvme-ioctl: fix leaked requests on mapping error
-Date: Mon, 10 Mar 2025 18:05:05 +0100
-Message-ID: <20250310170503.780475467@linuxfoundation.org>
+Subject: [PATCH 5.15 460/620] USB: gadget: f_midi: f_midi_complete to call queue_work
+Date: Mon, 10 Mar 2025 18:05:06 +0100
+Message-ID: <20250310170603.739615674@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Jill Donahue <jilliandonahue58@gmail.com>
 
-[ Upstream commit 00817f0f1c45b007965f5676b9a2013bb39c7228 ]
+[ Upstream commit 4ab37fcb42832cdd3e9d5e50653285ca84d6686f ]
 
-All the callers assume nvme_map_user_request() frees the request on a
-failure. This wasn't happening on invalid metadata or io_uring command
-flags, so we've been leaking those requests.
+When using USB MIDI, a lock is attempted to be acquired twice through a
+re-entrant call to f_midi_transmit, causing a deadlock.
 
-Fixes: 23fd22e55b767b ("nvme: wire up fixed buffer support for nvme passthrough")
-Fixes: 7c2fd76048e95d ("nvme: fix metadata handling in nvme-passthrough")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fix it by using queue_work() to schedule the inner f_midi_transmit() via
+a high priority work queue from the completion handler.
+
+Link: https://lore.kernel.org/all/CAArt=LjxU0fUZOj06X+5tkeGT+6RbXzpWg1h4t4Fwa_KGVAX6g@mail.gmail.com/
+Fixes: d5daf49b58661 ("USB: gadget: midi: add midi function driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jill Donahue <jilliandonahue58@gmail.com>
+Link: https://lore.kernel.org/r/20250211174805.1369265-1-jdonahue@fender.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/function/f_midi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index d4b80938de09c..e4daac9c24401 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -128,8 +128,10 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 	if (!nvme_ctrl_sgl_supported(ctrl))
- 		dev_warn_once(ctrl->device, "using unchecked data buffer\n");
- 	if (has_metadata) {
--		if (!supports_metadata)
--			return -EINVAL;
-+		if (!supports_metadata) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 		if (!nvme_ctrl_meta_sgl_supported(ctrl))
- 			dev_warn_once(ctrl->device,
- 				      "using unchecked metadata buffer\n");
-@@ -139,8 +141,10 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		struct iov_iter iter;
- 
- 		/* fixedbufs is only for non-vectored io */
--		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 		ret = io_uring_cmd_import_fixed(ubuffer, bufflen,
- 				rq_data_dir(req), &iter, ioucmd);
- 		if (ret < 0)
+diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+index 01c5736d381ef..3e8ea1bbe429a 100644
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -282,7 +282,7 @@ f_midi_complete(struct usb_ep *ep, struct usb_request *req)
+ 			/* Our transmit completed. See if there's more to go.
+ 			 * f_midi_transmit eats req, don't queue it again. */
+ 			req->length = 0;
+-			f_midi_transmit(midi);
++			queue_work(system_highpri_wq, &midi->work);
+ 			return;
+ 		}
+ 		break;
 -- 
 2.39.5
 
