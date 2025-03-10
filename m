@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF27A59EDB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E77FA59F7D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B4F116DAA5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A23A53A7602
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C34230BF6;
-	Mon, 10 Mar 2025 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D2C230BC5;
+	Mon, 10 Mar 2025 17:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WsvDe5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7mw7B+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A6A22DF80;
-	Mon, 10 Mar 2025 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1640C2253FE;
+	Mon, 10 Mar 2025 17:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628107; cv=none; b=QL+xGhFEjE4qGg9VrBT5nQhqbRjJde4RFyM5F2KgXn4zZm1n0rBtz5l2IsrjCADTAhZ+v1eE1bxnPsBcx8eoJYpOQUCTXDBj8yekDgnTwDZc+vCpDs9J+lShcTSEP2fTohnwUdjGzqJVGpTpZtDLqbq5PaKS4LjWFanSmPaRqFQ=
+	t=1741628385; cv=none; b=bVCJ6cZkr5W7g/6ah4Aqm1sV7t/ci7iLJHE/cOAw9zyddtHG/vF7aZgEdIZcTwZbcLxpqBqX+4E4sJ/cv4YeHSca1FnDGSkcPdUAPVibljEQag+0sq3zbc57Ug25hHSVPlOQ+9Fq4xF+TT5RSwyyaTkyFbNNTIZUM5i/CBr9EEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628107; c=relaxed/simple;
-	bh=Jsfm9S5JhEWUSj+9OFH4I0+eDpMkXJUSf5tI0C3UxwA=;
+	s=arc-20240116; t=1741628385; c=relaxed/simple;
+	bh=IQLkVm3SWnsDMjkso35nsyLvgB4zndXlJzJehvbsYwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzYFd2ZkkdISMBWudAK64djJMgqdsHGUnVIHulRJlsEHJbzS9zQOXvyXwycwfsKi11aYb7NCdgzfQYwOyYHKQA+oSH6WId8Sxj9z4z0LG6ooXtwGal7nMBmXhIFEcufS5Z7vKlSZtNtpsHjwNG6SIfhTZlhpKAKNaKCMi6OoYMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WsvDe5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86968C4CEED;
-	Mon, 10 Mar 2025 17:35:06 +0000 (UTC)
+	 MIME-Version; b=sMaAF7LU1o/TiMz4h1X8m3g/1ipfdGOqBUmGYv97pm0X4I2Lq0ViBC5kikh40pmIKlrsV8Fjn9pLg9okupznjGmWMVOhwDMKOUXMt7G5BmT2PexUe4qY2p3rsiY34WwN4pYxWjWra3Fi3KyGojr3fTa3s9ubfWiObp2Noomd5Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7mw7B+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37663C4CEEC;
+	Mon, 10 Mar 2025 17:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628106;
-	bh=Jsfm9S5JhEWUSj+9OFH4I0+eDpMkXJUSf5tI0C3UxwA=;
+	s=korg; t=1741628383;
+	bh=IQLkVm3SWnsDMjkso35nsyLvgB4zndXlJzJehvbsYwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WsvDe5TP4PmuQFFBx/Rsr/OxnBQbckdTUH6aBYnD2KfmWm/pG3t+pkEJ1Mq46N/a
-	 4wPWfFA8NB7lcCDTX9VA7/fBZ67s6tI9/VGC/mgfBCn1LkM+VHtSxe4yqsSxzVIflA
-	 LxsMI278z2znL94H29pfj1EDXRtEvg67D75XMz5M=
+	b=w7mw7B+wxBrsVTPXwz5/NJZQlh3+O13hf3oYab+4+p6xw0zqY/B2cWLyy3pJzGjYa
+	 PMe2liMBDd6E0PzFiRfZarhepFVs4jkRnhlJ7Ma7jAxVcUVvMUB8k3ujXmnGIyEekS
+	 asY26CAHGfnaag8vzDPypbn3OcwR7GjgUFjdjVOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Herbert <tom@herbertland.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/145] net: ipv6: fix dst ref loop in ila lwtunnel
+Subject: [PATCH 6.1 039/109] HID: intel-ish-hid: Fix use-after-free issue in ishtp_hid_remove()
 Date: Mon, 10 Mar 2025 18:06:23 +0100
-Message-ID: <20250310170438.348294077@linuxfoundation.org>
+Message-ID: <20250310170429.114676672@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 0e7633d7b95b67f1758aea19f8e85621c5f506a3 ]
+[ Upstream commit 07583a0010696a17fb0942e0b499a62785c5fc9f ]
 
-This patch follows commit 92191dd10730 ("net: ipv6: fix dst ref loops in
-rpl, seg6 and ioam6 lwtunnels") and, on a second thought, the same patch
-is also needed for ila (even though the config that triggered the issue
-was pathological, but still, we don't want that to happen).
+The system can experience a random crash a few minutes after the driver is
+removed. This issue occurs due to improper handling of memory freeing in
+the ishtp_hid_remove() function.
 
-Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
-Cc: Tom Herbert <tom@herbertland.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250304181039.35951-1-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The function currently frees the `driver_data` directly within the loop
+that destroys the HID devices, which can lead to accessing freed memory.
+Specifically, `hid_destroy_device()` uses `driver_data` when it calls
+`hid_ishtp_set_feature()` to power off the sensor, so freeing
+`driver_data` beforehand can result in accessing invalid memory.
+
+This patch resolves the issue by storing the `driver_data` in a temporary
+variable before calling `hid_destroy_device()`, and then freeing the
+`driver_data` after the device is destroyed.
+
+Fixes: 0b28cb4bcb17 ("HID: intel-ish-hid: ISH HID client driver")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila_lwt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/intel-ish-hid/ishtp-hid.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index ff7e734e335b0..ac4bcc623603a 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -88,7 +88,8 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+diff --git a/drivers/hid/intel-ish-hid/ishtp-hid.c b/drivers/hid/intel-ish-hid/ishtp-hid.c
+index 14c271d7d8a94..0377dac3fc9a0 100644
+--- a/drivers/hid/intel-ish-hid/ishtp-hid.c
++++ b/drivers/hid/intel-ish-hid/ishtp-hid.c
+@@ -261,12 +261,14 @@ int ishtp_hid_probe(unsigned int cur_hid_dev,
+  */
+ void ishtp_hid_remove(struct ishtp_cl_data *client_data)
+ {
++	void *data;
+ 	int i;
  
--		if (ilwt->connected) {
-+		/* cache only if we don't create a dst reference loop */
-+		if (ilwt->connected && orig_dst->lwtstate != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
- 			local_bh_enable();
+ 	for (i = 0; i < client_data->num_hid_devices; ++i) {
+ 		if (client_data->hid_sensor_hubs[i]) {
+-			kfree(client_data->hid_sensor_hubs[i]->driver_data);
++			data = client_data->hid_sensor_hubs[i]->driver_data;
+ 			hid_destroy_device(client_data->hid_sensor_hubs[i]);
++			kfree(data);
+ 			client_data->hid_sensor_hubs[i] = NULL;
+ 		}
+ 	}
 -- 
 2.39.5
 
