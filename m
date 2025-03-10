@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-122853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F465A5A17A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E43A59C3D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1761A1893A51
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DCE53A923F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9B422D4FD;
-	Mon, 10 Mar 2025 18:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002A722D4D0;
+	Mon, 10 Mar 2025 17:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmgzH2Re"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1OE4rt0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE7417A2E8;
-	Mon, 10 Mar 2025 18:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE96722D786;
+	Mon, 10 Mar 2025 17:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629687; cv=none; b=DhExOWEuzaoip20ZoHUtuTTRfJyPgvInxa2YYLQ4uq6FJjpPph3d4C05aTMgKux4Zd7+3dGUT+V2BG/5brvyNi2YzOnikhWFCB9M9KFNlSUPLh1+Pu4bFgKvUdo8dn94IFWqlZuZ9MFnYtJMc+s4x+yXPH5FXgtNfCmln6PY63Y=
+	t=1741626558; cv=none; b=OVzX+Ktuv5hZNMlwGoAGpw+RoQs24WgVLEwZhnUKjMpwQrPaMbdeCeYwjZ+YRoML4ajNgBZOx7EX7ce8opjjtLCKUgBmKqBKJ2iWAFRD01vytTYq596FoygKJM+Mi8relWfCGa1gVzFXPjW7L9BS/yv0EdHGd+gxx7nMvpsNRHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629687; c=relaxed/simple;
-	bh=MnA5bXLNTIQd+XqIHFO7KlBZIKjEXQcSovokQANi9/4=;
+	s=arc-20240116; t=1741626558; c=relaxed/simple;
+	bh=CocNOnSpbDink+FwxRazvx2YSdbXcJ3d8dc5gjA+ydg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jt3hkqyDZ9wgPkSY1U/gT8fsW0UgJ06pboMGFwR1oenAxV85JRmOWGfmJPLFEi416hdCIDzXXHn5ZfATj8TCa0+UlFb9bNBoZnldQCdW1g0cVpdVjwydvZ4KUQchG6Bt+Kyc4gPcqA8er4blD5X3wkiQen196tb+OPQk4rG9C8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmgzH2Re; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B7FC4CEE5;
-	Mon, 10 Mar 2025 18:01:26 +0000 (UTC)
+	 MIME-Version; b=lF8qkFlskyyvRT1W9gyRXWhXGg4zS87VYe0rp49QmyMgJvWoLE/Xpw3NfPJNXiQI8U2Z7xulsnVZTPQ6tC+VNFg7ag71haBTyrkgPbtrBVHT/dgkRVqcFwGlhiTyakzlv6y/E31+X8k9RmcoAtcYj7vRJyGC/obfBHYx6Ondr3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1OE4rt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330F7C4CEE5;
+	Mon, 10 Mar 2025 17:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629687;
-	bh=MnA5bXLNTIQd+XqIHFO7KlBZIKjEXQcSovokQANi9/4=;
+	s=korg; t=1741626558;
+	bh=CocNOnSpbDink+FwxRazvx2YSdbXcJ3d8dc5gjA+ydg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmgzH2RejUslPJlaEvFt/xXBtVyKI8hNHL/4NDN2kSoCr/fzqJgJmzvnwIuo8kzIL
-	 FzmOwEi8qV7Aa8l0uCPxwUS+7tpNVR+I95eLKXOGjNPrDwvz4xjcOOnV/e0mfL/Y1H
-	 h+NinN7oEbTnoJ54QJFwLqHRdrl346ATyOz/5/hY=
+	b=s1OE4rt0qPHSLCksTEA31BfG+2okJmXnU9yRWO+RwOSgVtV7ZN0Szrc7b4ylCum6c
+	 ypOQi9HifcXxIRULOrpsT6zKr3yloizyKx0Gu75hNHzuROT1uuNXi3uUKDanriIx1P
+	 EtXEIncB/KBc1qP/p2qEH/+6WcLjpBaXQuKxSM+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 5.15 379/620] efi: Avoid cold plugged memory for placing the kernel
+	andreas.stuehrk@yaxi.tech,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.13 032/207] virt: sev-guest: Allocate request data dynamically
 Date: Mon, 10 Mar 2025 18:03:45 +0100
-Message-ID: <20250310170600.554538101@linuxfoundation.org>
+Message-ID: <20250310170449.053128699@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,103 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Nikunj A Dadhania <nikunj@amd.com>
 
-commit ba69e0750b0362870294adab09339a0c39c3beaf upstream.
+commit ac7c06acaa3738b38e83815ac0f07140ad320f13 upstream.
 
-UEFI 2.11 introduced EFI_MEMORY_HOT_PLUGGABLE to annotate system memory
-regions that are 'cold plugged' at boot, i.e., hot pluggable memory that
-is available from early boot, and described as system RAM by the
-firmware.
+Commit
 
-Existing loaders and EFI applications running in the boot context will
-happily use this memory for allocating data structures that cannot be
-freed or moved at runtime, and this prevents the memory from being
-unplugged. Going forward, the new EFI_MEMORY_HOT_PLUGGABLE attribute
-should be tested, and memory annotated as such should be avoided for
-such allocations.
+  ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
 
-In the EFI stub, there are a couple of occurrences where, instead of the
-high-level AllocatePages() UEFI boot service, a low-level code sequence
-is used that traverses the EFI memory map and carves out the requested
-number of pages from a free region. This is needed, e.g., for allocating
-as low as possible, or for allocating pages at random.
+narrowed the command mutex scope to snp_send_guest_request().  However,
+GET_REPORT, GET_DERIVED_KEY, and GET_EXT_REPORT share the req structure in
+snp_guest_dev. Without the mutex protection, concurrent requests can overwrite
+each other's data. Fix it by dynamically allocating the request structure.
 
-While AllocatePages() should presumably avoid special purpose memory and
-cold plugged regions, this manual approach needs to incorporate this
-logic itself, in order to prevent the kernel itself from ending up in a
-hot unpluggable region, preventing it from being unplugged.
-
-So add the EFI_MEMORY_HOTPLUGGABLE macro definition, and check for it
-where appropriate.
-
+Fixes: ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
+Closes: https://github.com/AMDESE/AMDSEV/issues/265
+Reported-by: andreas.stuehrk@yaxi.tech
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250307013700.437505-2-aik@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/efi.c                 |    6 ++++--
- drivers/firmware/efi/libstub/randomalloc.c |    3 +++
- drivers/firmware/efi/libstub/relocate.c    |    3 +++
- include/linux/efi.h                        |    1 +
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -774,13 +774,15 @@ char * __init efi_md_typeattr_format(cha
- 		     EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
- 		     EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
- 		     EFI_MEMORY_NV | EFI_MEMORY_SP | EFI_MEMORY_CPU_CRYPTO |
--		     EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
-+		     EFI_MEMORY_MORE_RELIABLE | EFI_MEMORY_HOT_PLUGGABLE |
-+		     EFI_MEMORY_RUNTIME))
- 		snprintf(pos, size, "|attr=0x%016llx]",
- 			 (unsigned long long)attr);
- 	else
- 		snprintf(pos, size,
--			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
-+			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
- 			 attr & EFI_MEMORY_RUNTIME		? "RUN" : "",
-+			 attr & EFI_MEMORY_HOT_PLUGGABLE	? "HP"  : "",
- 			 attr & EFI_MEMORY_MORE_RELIABLE	? "MR"  : "",
- 			 attr & EFI_MEMORY_CPU_CRYPTO   	? "CC"  : "",
- 			 attr & EFI_MEMORY_SP			? "SP"  : "",
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -24,6 +24,9 @@ static unsigned long get_entry_num_slots
- 	if (md->type != EFI_CONVENTIONAL_MEMORY)
- 		return 0;
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -41,12 +41,6 @@ struct snp_guest_dev {
+ 	struct miscdevice misc;
  
-+	if (md->attribute & EFI_MEMORY_HOT_PLUGGABLE)
-+		return 0;
-+
- 	if (efi_soft_reserve_enabled() &&
- 	    (md->attribute & EFI_MEMORY_SP))
- 		return 0;
---- a/drivers/firmware/efi/libstub/relocate.c
-+++ b/drivers/firmware/efi/libstub/relocate.c
-@@ -62,6 +62,9 @@ efi_status_t efi_low_alloc_above(unsigne
- 		if (desc->type != EFI_CONVENTIONAL_MEMORY)
- 			continue;
+ 	struct snp_msg_desc *msg_desc;
+-
+-	union {
+-		struct snp_report_req report;
+-		struct snp_derived_key_req derived_key;
+-		struct snp_ext_report_req ext_report;
+-	} req;
+ };
  
-+		if (desc->attribute & EFI_MEMORY_HOT_PLUGGABLE)
-+			continue;
+ /*
+@@ -390,7 +384,7 @@ struct snp_req_resp {
+ 
+ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+ {
+-	struct snp_report_req *report_req = &snp_dev->req.report;
++	struct snp_report_req *report_req __free(kfree) = NULL;
+ 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+ 	struct snp_report_resp *report_resp;
+ 	struct snp_guest_req req = {};
+@@ -399,6 +393,10 @@ static int get_report(struct snp_guest_d
+ 	if (!arg->req_data || !arg->resp_data)
+ 		return -EINVAL;
+ 
++	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
++	if (!report_req)
++		return -ENOMEM;
 +
- 		if (efi_soft_reserve_enabled() &&
- 		    (desc->attribute & EFI_MEMORY_SP))
- 			continue;
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -125,6 +125,7 @@ typedef	struct {
- #define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
- #define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* soft reserved */
- #define EFI_MEMORY_CPU_CRYPTO	((u64)0x0000000000080000ULL)	/* supports encryption */
-+#define EFI_MEMORY_HOT_PLUGGABLE	BIT_ULL(20)	/* supports unplugging at runtime */
- #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
- #define EFI_MEMORY_DESCRIPTOR_VERSION	1
+ 	if (copy_from_user(report_req, (void __user *)arg->req_data, sizeof(*report_req)))
+ 		return -EFAULT;
+ 
+@@ -435,7 +433,7 @@ e_free:
+ 
+ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+ {
+-	struct snp_derived_key_req *derived_key_req = &snp_dev->req.derived_key;
++	struct snp_derived_key_req *derived_key_req __free(kfree) = NULL;
+ 	struct snp_derived_key_resp derived_key_resp = {0};
+ 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+ 	struct snp_guest_req req = {};
+@@ -455,6 +453,10 @@ static int get_derived_key(struct snp_gu
+ 	if (sizeof(buf) < resp_len)
+ 		return -ENOMEM;
+ 
++	derived_key_req = kzalloc(sizeof(*derived_key_req), GFP_KERNEL_ACCOUNT);
++	if (!derived_key_req)
++		return -ENOMEM;
++
+ 	if (copy_from_user(derived_key_req, (void __user *)arg->req_data,
+ 			   sizeof(*derived_key_req)))
+ 		return -EFAULT;
+@@ -487,7 +489,7 @@ static int get_ext_report(struct snp_gue
+ 			  struct snp_req_resp *io)
+ 
+ {
+-	struct snp_ext_report_req *report_req = &snp_dev->req.ext_report;
++	struct snp_ext_report_req *report_req __free(kfree) = NULL;
+ 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+ 	struct snp_report_resp *report_resp;
+ 	struct snp_guest_req req = {};
+@@ -497,6 +499,10 @@ static int get_ext_report(struct snp_gue
+ 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
+ 		return -EINVAL;
+ 
++	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
++	if (!report_req)
++		return -ENOMEM;
++
+ 	if (copy_from_sockptr(report_req, io->req_data, sizeof(*report_req)))
+ 		return -EFAULT;
  
 
 
