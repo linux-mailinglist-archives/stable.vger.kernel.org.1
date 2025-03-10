@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF3EA59EEA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DC5A59CF1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A412C16F936
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D34E516F672
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3C7230BF6;
-	Mon, 10 Mar 2025 17:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45849230BD5;
+	Mon, 10 Mar 2025 17:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdT66Ba/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBkiRohi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB7722ACDC;
-	Mon, 10 Mar 2025 17:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039571A315A;
+	Mon, 10 Mar 2025 17:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628135; cv=none; b=umZodHD4gmyz45IEChXqUOfPNY2e3YeHsNB9SuwCF0igqh1Qwe9ez2U6HmMOJ03l0P95vdoviQT8tdRz1k1S3oJ4mRWruNadBXJ+rgh5aEIogqTXH3+5sNjNe0eiclMkR+fJFM4BpQX3/F810KIDG6ZtHcuR6/9C/WdvBm7BGkY=
+	t=1741626952; cv=none; b=q9PXebUxTgVV8rWQ5ShGwc/BsbDQOKezet73ttBt+AN26nRmlwoyJ219ZVzNi0E3yyNPhAKdEUBsVKBnHMJ1bRN1NaWLDjgfWdL0HzITcWwR79aBqh6UwfjIXRveeejRQbaoxUOQaWVSOS5NOGdWpSP7KJB+eSKdPjFHur7as7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628135; c=relaxed/simple;
-	bh=ehW36FRejGLEaNyIU02iE5iUHPCF2HeG1tBOHLMTKEc=;
+	s=arc-20240116; t=1741626952; c=relaxed/simple;
+	bh=RsP8HV1YBAVrURIS3ywfPtaULdL+xFUkQy7Kpdm+LQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNqmVWQnnBOjrDq0ZTST0ecLjYdQAEMGx1er9HxUy1oS0SNwV7BRRAmQSE9mx3gyFj7QHipPrVMZpqB1bWgDt7H15vxxg3OLh8huKqjTHGriwq70ovA+1gwz3q9PAevUVuuW9EYGkyf6ypvmh1QdMA8ITUHAxpIE83oJm0ZBbBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdT66Ba/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C32C4CEE5;
-	Mon, 10 Mar 2025 17:35:34 +0000 (UTC)
+	 MIME-Version; b=GqjegRFMBAqx4GksGLl6DaBXJZcphvjzLBtjCKxDSB9RFy6c6OzKunE10T8/xC0Qsr2coytM50cyns1zbK8oilbSMgdrmN/12HLSMIC3T/r9yu3VejTSEDmHNSX9T8bRMo7h/vRNtQg9BiNN9eF+CF4KQKdAMiO60cHks6eDhjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBkiRohi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDDBC4CEE5;
+	Mon, 10 Mar 2025 17:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628135;
-	bh=ehW36FRejGLEaNyIU02iE5iUHPCF2HeG1tBOHLMTKEc=;
+	s=korg; t=1741626951;
+	bh=RsP8HV1YBAVrURIS3ywfPtaULdL+xFUkQy7Kpdm+LQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdT66Ba/zD3UgbA047LB5hm2vJhV+6B4CAyJiMi7Ft3Eow88J64J4UWe3OqnrWBZw
-	 roBBH8z9Qof9mzTF+j9EmeqP+lXS9HQK9knShQElJWDcTOMkSc5m+Cwa1nc1d0hCSy
-	 +JLllevVTdk0mm2C62r956LBwwGGxAw2HQcXiP5Q=
+	b=NBkiRohitOmITKXEjfllr+hIkR9SKOG4ZnoSQ4zVheIHv72JjqJmtd9HlmGC1CuU7
+	 rIEs7hmY8xPANZh+U30PkCcsawMpnvYcooyyEjHHiX9Rwd6BkzrkDtcIET/cVkmcWs
+	 NpMBRMNCPJQz8/x8VObaiMvmh9YhoFBBJ5xsaRZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Titus Rwantare <titusr@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/145] hwmon: (pmbus) Initialise page count in pmbus_identify()
+	stable <stable@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 6.13 168/207] usb: gadget: Fix setting self-powered state on suspend
 Date: Mon, 10 Mar 2025 18:06:01 +0100
-Message-ID: <20250310170437.455793611@linuxfoundation.org>
+Message-ID: <20250310170454.465086039@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Titus Rwantare <titusr@google.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 6b6e2e8fd0de3fa7c6f4f8fe6841b01770b2e7bc ]
+commit c783e1258f29c5caac9eea0aea6b172870f1baf8 upstream.
 
-The `pmbus_identify()` function fails to correctly determine the number
-of supported pages on PMBus devices. This occurs because `info->pages`
-is implicitly zero-initialised, and `pmbus_set_page()` does not perform
-writes to the page register if `info->pages` is not yet initialised.
-Without this patch, `info->pages` is always set to the maximum after
-scanning.
+cdev->config might be NULL, so check it before dereferencing.
 
-This patch initialises `info->pages` to `PMBUS_PAGES` before the probing
-loop, enabling `pmbus_set_page()` writes to make it out onto the bus
-correctly identifying the number of pages. `PMBUS_PAGES` seemed like a
-reasonable non-zero number because that's the current result of the
-identification process.
-
-Testing was done with a PMBus device in QEMU.
-
-Signed-off-by: Titus Rwantare <titusr@google.com>
-Fixes: 442aba78728e7 ("hwmon: PMBus device driver")
-Link: https://lore.kernel.org/r/20250227222455.2583468-1-titusr@google.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable <stable@kernel.org>
+Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/pmbus.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/composite.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.c b/drivers/hwmon/pmbus/pmbus.c
-index ec40c5c599543..59424dc518c8f 100644
---- a/drivers/hwmon/pmbus/pmbus.c
-+++ b/drivers/hwmon/pmbus/pmbus.c
-@@ -103,6 +103,8 @@ static int pmbus_identify(struct i2c_client *client,
- 		if (pmbus_check_byte_register(client, 0, PMBUS_PAGE)) {
- 			int page;
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2616,7 +2616,8 @@ void composite_suspend(struct usb_gadget
  
-+			info->pages = PMBUS_PAGES;
-+
- 			for (page = 1; page < PMBUS_PAGES; page++) {
- 				if (pmbus_set_page(client, page, 0xff) < 0)
- 					break;
--- 
-2.39.5
-
+ 	cdev->suspended = 1;
+ 
+-	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
++	if (cdev->config &&
++	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
+ 		usb_gadget_set_selfpowered(gadget);
+ 
+ 	usb_gadget_vbus_draw(gadget, 2);
 
 
 
