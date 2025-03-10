@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2ACA5A2A3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23872A59FCC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A0ED189547D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 117311714F7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F25F235355;
-	Mon, 10 Mar 2025 18:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5981F2309B3;
+	Mon, 10 Mar 2025 17:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgfrG7Oi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8B3FiCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB262236E4;
-	Mon, 10 Mar 2025 18:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163C022B8A9;
+	Mon, 10 Mar 2025 17:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630930; cv=none; b=NZj5+umDmLjvSRVex0n5ZbC0WRp/zucVx+z5+keq1hWQE1dqvrwRb/+nX+AeZTUia+c2XJ2JAYWx3mjEbUKsgYmt0ncv0xPg27t9vZ5QKCMYFgNLrc9EZWHMtocn9wK01RXHlHmaPWKLOmD5k7c7Xic/9KTRUKfQHIJcpCGR9Lw=
+	t=1741628610; cv=none; b=P7z2THAqa4aczgsX9dlYysE8nxu4hz9qnl7RdeB1Rl7EInJY6OBx7oTbmVASu+OKudyIvEqLyIRECUmmYd+M8djaKHRPuVrd90lCAmoFw6CPIlEKovrIINcAjBzVlwW+IP+e5LgRy9AqX+YgsJZ10HHXbZ4iR7d9C9Y4D7HoNsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630930; c=relaxed/simple;
-	bh=8NEGBTaRcxsKTKhfFOtqrrr3MzIl1JIqHT+0KKcadWA=;
+	s=arc-20240116; t=1741628610; c=relaxed/simple;
+	bh=PSvdKAj037Y5qlfLRROj1jObZIy9yAORWBCa/Dcrxos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PvHY7NvxeC5IGNG++s2tCZ0qYJLbDG5FDP0Oo1hEGnrroAMM7wrIdk53v4zOYm781C0b//mDG+/FMefQNS7ULSVbjKmYo6JYedLV+WpDSU24U8/TrUb800Wee4SPQjjRI2kLXjGUlB0ORVUCWLfoaU8RBvq9BR9B5LYgdMx/zcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgfrG7Oi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E3AC4CEE5;
-	Mon, 10 Mar 2025 18:22:09 +0000 (UTC)
+	 MIME-Version; b=gYyt9S9LGRDuPL/rNw6fMVx9SadYnHn0syyQ5ZVdnA5MSGe85W7IcJ0UqMzIzKvlViUw9XxoEp82HJ/MKXD7vZFGcFx9tGJdHNaa02xmdQz3o6n04j2b467aq/a0Ez8sqz75FtWFVO5mgtckk66n3UQYXxK/XycaXG2Ppm3NxFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8B3FiCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C53C4CEEC;
+	Mon, 10 Mar 2025 17:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630929;
-	bh=8NEGBTaRcxsKTKhfFOtqrrr3MzIl1JIqHT+0KKcadWA=;
+	s=korg; t=1741628610;
+	bh=PSvdKAj037Y5qlfLRROj1jObZIy9yAORWBCa/Dcrxos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgfrG7OiA1GzC/CV0q2kCcLIhg3lJKyAQtjS7p9QP0j3MqsxXkPWep7y/sMK72iln
-	 HGi02PAcI2uX4uGLlNR8JbS/1FAqaCZ8iEjwtc7m9E2kOBJLBC2CRuFppnXN56tROO
-	 6QZF8DhXLd6Z6yM0o6o7kn3OfJhbATR9wpra1tgM=
+	b=b8B3FiCs0ffbDGSbqMEf/Dm98/R/N4RgecMogGHYSMiAu7QkV/h7Rh5vbllw+cUjQ
+	 d4PLNJIore3L+N/uiS0CrDJgUj+yzP+fNtvvpgh86duv9IaXonMwU1/t2gqWbreFyW
+	 3HI6Auwwp383iNWdCfYq8zlDmNy3VEjWAMv/JEgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 583/620] usb: hub: lack of clearing xHC resources
+	Visweswara Tanuku <quic_vtanuku@quicinc.com>
+Subject: [PATCH 6.1 085/109] slimbus: messaging: Free transaction ID in delayed interrupt scenario
 Date: Mon, 10 Mar 2025 18:07:09 +0100
-Message-ID: <20250310170608.547138078@linuxfoundation.org>
+Message-ID: <20250310170430.944585305@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Visweswara Tanuku <quic_vtanuku@quicinc.com>
 
-commit 2b66ef84d0d2a0ea955b40bd306f5e3abbc5cf9c upstream.
+commit dcb0d43ba8eb9517e70b1a0e4b0ae0ab657a0e5a upstream.
 
-The xHC resources allocated for USB devices are not released in correct
-order after resuming in case when while suspend device was reconnected.
+In case of interrupt delay for any reason, slim_do_transfer()
+returns timeout error but the transaction ID (TID) is not freed.
+This results into invalid memory access inside
+qcom_slim_ngd_rx_msgq_cb() due to invalid TID.
 
-This issue has been detected during the fallowing scenario:
-- connect hub HS to root port
-- connect LS/FS device to hub port
-- wait for enumeration to finish
-- force host to suspend
-- reconnect hub attached to root port
-- wake host
+Fix the issue by freeing the TID in slim_do_transfer() before
+returning timeout error to avoid invalid memory access.
 
-For this scenario during enumeration of USB LS/FS device the Cadence xHC
-reports completion error code for xHC commands because the xHC resources
-used for devices has not been properly released.
-XHCI specification doesn't mention that device can be reset in any order
-so, we should not treat this issue as Cadence xHC controller bug.
-Similar as during disconnecting in this case the device resources should
-be cleared starting form the last usb device in tree toward the root hub.
-To fix this issue usbcore driver should call hcd->driver->reset_device
-for all USB devices connected to hub which was reconnected while
-suspending.
+Call trace:
+__memcpy_fromio+0x20/0x190
+qcom_slim_ngd_rx_msgq_cb+0x130/0x290 [slim_qcom_ngd_ctrl]
+vchan_complete+0x2a0/0x4a0
+tasklet_action_common+0x274/0x700
+tasklet_action+0x28/0x3c
+_stext+0x188/0x620
+run_ksoftirqd+0x34/0x74
+smpboot_thread_fn+0x1d8/0x464
+kthread+0x178/0x238
+ret_from_fork+0x10/0x20
+Code: aa0003e8 91000429 f100044a 3940002b (3800150b)
+---[ end trace 0fe00bec2b975c99 ]---
+Kernel panic - not syncing: Oops: Fatal exception in interrupt.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Fixes: afbdcc7c384b ("slimbus: Add messaging APIs to slimbus framework")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/PH7PR07MB953841E38C088678ACDCF6EEDDCC2@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Visweswara Tanuku <quic_vtanuku@quicinc.com>
+Link: https://lore.kernel.org/r/20250124125740.16897-1-quic_vtanuku@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/slimbus/messaging.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5971,6 +5971,36 @@ void usb_hub_cleanup(void)
- } /* usb_hub_cleanup() */
+--- a/drivers/slimbus/messaging.c
++++ b/drivers/slimbus/messaging.c
+@@ -147,8 +147,9 @@ int slim_do_transfer(struct slim_control
+ 	}
  
- /**
-+ * hub_hc_release_resources - clear resources used by host controller
-+ * @udev: pointer to device being released
-+ *
-+ * Context: task context, might sleep
-+ *
-+ * Function releases the host controller resources in correct order before
-+ * making any operation on resuming usb device. The host controller resources
-+ * allocated for devices in tree should be released starting from the last
-+ * usb device in tree toward the root hub. This function is used only during
-+ * resuming device when usb device require reinitialization – that is, when
-+ * flag udev->reset_resume is set.
-+ *
-+ * This call is synchronous, and may not be used in an interrupt context.
-+ */
-+static void hub_hc_release_resources(struct usb_device *udev)
-+{
-+	struct usb_hub *hub = usb_hub_to_struct_hub(udev);
-+	struct usb_hcd *hcd = bus_to_hcd(udev->bus);
-+	int i;
-+
-+	/* Release up resources for all children before this device */
-+	for (i = 0; i < udev->maxchild; i++)
-+		if (hub->ports[i]->child)
-+			hub_hc_release_resources(hub->ports[i]->child);
-+
-+	if (hcd->driver->reset_device)
-+		hcd->driver->reset_device(hcd, udev);
-+}
-+
-+/**
-  * usb_reset_and_verify_device - perform a USB port reset to reinitialize a device
-  * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)
-  *
-@@ -6044,6 +6074,9 @@ static int usb_reset_and_verify_device(s
- 	bos = udev->bos;
- 	udev->bos = NULL;
+ 	ret = ctrl->xfer_msg(ctrl, txn);
+-
+-	if (!ret && need_tid && !txn->msg->comp) {
++	if (ret == -ETIMEDOUT) {
++		slim_free_txn_tid(ctrl, txn);
++	} else if (!ret && need_tid && !txn->msg->comp) {
+ 		unsigned long ms = txn->rl + HZ;
  
-+	if (udev->reset_resume)
-+		hub_hc_release_resources(udev);
-+
- 	mutex_lock(hcd->address0_mutex);
- 
- 	for (i = 0; i < PORT_INIT_TRIES; ++i) {
+ 		timeout = wait_for_completion_timeout(txn->comp,
 
 
 
