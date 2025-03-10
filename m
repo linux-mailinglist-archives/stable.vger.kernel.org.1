@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF317A5A20C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28D8A59CC1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D1217A9216
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E4C318856C2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFD3235BF0;
-	Mon, 10 Mar 2025 18:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE5C226D0B;
+	Mon, 10 Mar 2025 17:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2pLOP8N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoEcP1/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B4B2356D6;
-	Mon, 10 Mar 2025 18:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99054231A5F;
+	Mon, 10 Mar 2025 17:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630542; cv=none; b=YyEKVn4hoUeCkllEFOS6VNmIe/oOPSV2YtpOrouk/5HbqZ7YA7t8Yfq2HgRDY+zZQQdlHXFdx4GT1dry1ZtES/8h2Qj2cQBPJvmvk/A1oPK/lJbVKKwRbtfXdaaCXc2MUkFqY6FpXbY541lelijoJQL6iEqpPnBluimcbQz30Pk=
+	t=1741626882; cv=none; b=g/+nH4CnE+ECFJLx5fk9oYhC8JatbJmdgiWrVtrC8zlBXa8sxPFtMr+4GlJx4x5mPRKr+HgsUyPDl2lt6LBMD8ScHPFDtkHV49gny3AlxXr1mxSDplkRRa33oemPt/dqVl7POcfe31hq/nmrcjG9ty0jvdjnr5ZTS3yLRNXmkyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630542; c=relaxed/simple;
-	bh=uprYDRVml2galCcTtqIl9EZfFM7XtrQc3dI8in4D5Bc=;
+	s=arc-20240116; t=1741626882; c=relaxed/simple;
+	bh=WQf/j+EigYYr+IYGz3qX4YGkg04WUFkg8EqkbtbHAzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lywrkUqGteKhCf7MK7umhZZcQVsQTE12hXWzOxeUaoTL9N9oN6MTzXi16XHZU8ZuDOvaYHr6H60AWjUaD01+McWhmoXqaEcqkAFJpoM413s93neoea9SKOwEkKav/iRkwmiTgo5ObZVhw2o0G9b8AKnlK525cDtsPWfI5Y4uPhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2pLOP8N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8F2C4CEEC;
-	Mon, 10 Mar 2025 18:15:42 +0000 (UTC)
+	 MIME-Version; b=pR1pO17MyITTUxkPZp5xXPsMmjiMN5lYjFKHjPA1N5O6YRO+HB92J7we5aS46If73EuHMfYXZsXMWs7Xu752D2588wxgL8r34bpr9Pci7LJE/J6WoOAgUx2ZmC5UYk63vIPECVerNUDtSx3SZ0WtSbpIJ/XSnpq4vpHTZngebRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoEcP1/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2057AC4CEE5;
+	Mon, 10 Mar 2025 17:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630542;
-	bh=uprYDRVml2galCcTtqIl9EZfFM7XtrQc3dI8in4D5Bc=;
+	s=korg; t=1741626882;
+	bh=WQf/j+EigYYr+IYGz3qX4YGkg04WUFkg8EqkbtbHAzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2pLOP8NaV6ODW6oEUf2q0X738HqU4gFhvInnbYSgY0+ImXsIVqpYNl3+IrKVxfi1
-	 Q0+9L3w3zeuTrrLB09O1Z4mGD7Igg9m/bGitiy3iz9l3PMkRTNfxZAJrOJA6nPRE2q
-	 qmYpzzdLS5IaU+GYNqin0o3D2qHIiFlLJvByrJ4M=
+	b=RoEcP1/fl9XB/L0bJZdF/eHW24k6RNHGscsXqTpQVY0iVOi2gKVwLLrmkXnIfVmh2
+	 nx8y70Oz8f5D84GDSijXmkVT/cdCFvlIFM/HsEFQm/NcqiskD3AEJf0qxgIugq4Twp
+	 Hnxuy2U/jLhUmrGZ/d6z0fvZ1wwSJ7FhIbLBwSeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 449/620] soc: mediatek: mtk-devapc: Switch to devm_clk_get_enabled()
-Date: Mon, 10 Mar 2025 18:04:55 +0100
-Message-ID: <20250310170603.317229256@linuxfoundation.org>
+Subject: [PATCH 6.13 103/207] tracing: fprobe-events: Log error for exceeding the number of entry args
+Date: Mon, 10 Mar 2025 18:04:56 +0100
+Message-ID: <20250310170451.859546701@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 916120df5aa926d65f4666c075ed8d4955ef7bab ]
+[ Upstream commit db5e228611b118cf7b1f8084063feda5c037f4a7 ]
 
-This driver does exactly devm_clk_get() and clk_prepare_enable() right
-after, which is exactly what devm_clk_get_enabled() does: clean that
-up by switching to the latter.
+Add error message when the number of entry argument exceeds the
+maximum size of entry data.
+This is currently checked when registering fprobe, but in this case
+no error message is shown in the error_log file.
 
-This commit brings no functional changes.
+Link: https://lore.kernel.org/all/174055074269.4079315.17809232650360988538.stgit@mhiramat.tok.corp.google.com/
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20221006110935.59695-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
-Stable-dep-of: c0eb059a4575 ("soc: mediatek: mtk-devapc: Fix leaking IO map on error paths")
+Fixes: 25f00e40ce79 ("tracing/probes: Support $argN in return probe (kprobe and fprobe)")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ kernel/trace/trace_fprobe.c | 5 +++++
+ kernel/trace/trace_probe.h  | 3 ++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/mediatek/mtk-devapc.c b/drivers/soc/mediatek/mtk-devapc.c
-index 7c65ad3d1f8a3..1ab7ca82745c6 100644
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -261,19 +261,14 @@ static int mtk_devapc_probe(struct platform_device *pdev)
- 	if (!devapc_irq)
- 		return -EINVAL;
+diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+index d906baba2d40c..94fe261218771 100644
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -1242,6 +1242,11 @@ static int __trace_fprobe_create(int argc, const char *argv[])
+ 	if (is_return && tf->tp.entry_arg) {
+ 		tf->fp.entry_handler = trace_fprobe_entry_handler;
+ 		tf->fp.entry_data_size = traceprobe_get_entry_data_size(&tf->tp);
++		if (ALIGN(tf->fp.entry_data_size, sizeof(long)) > MAX_FPROBE_DATA_SIZE) {
++			trace_probe_log_set_index(2);
++			trace_probe_log_err(0, TOO_MANY_EARGS);
++			return -E2BIG;
++		}
+ 	}
  
--	ctx->infra_clk = devm_clk_get(&pdev->dev, "devapc-infra-clock");
-+	ctx->infra_clk = devm_clk_get_enabled(&pdev->dev, "devapc-infra-clock");
- 	if (IS_ERR(ctx->infra_clk))
- 		return -EINVAL;
+ 	ret = traceprobe_set_print_fmt(&tf->tp,
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index fba3ede870541..c47ca002347a7 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -545,7 +545,8 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+ 	C(NO_BTF_FIELD,		"This field is not found."),	\
+ 	C(BAD_BTF_TID,		"Failed to get BTF type info."),\
+ 	C(BAD_TYPE4STR,		"This type does not fit for string."),\
+-	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),
++	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),\
++	C(TOO_MANY_EARGS,	"Too many entry arguments specified"),
  
--	if (clk_prepare_enable(ctx->infra_clk))
--		return -EINVAL;
--
- 	ret = devm_request_irq(&pdev->dev, devapc_irq, devapc_violation_irq,
- 			       IRQF_TRIGGER_NONE, "devapc", ctx);
--	if (ret) {
--		clk_disable_unprepare(ctx->infra_clk);
-+	if (ret)
- 		return ret;
--	}
- 
- 	platform_set_drvdata(pdev, ctx);
- 
-@@ -288,8 +283,6 @@ static int mtk_devapc_remove(struct platform_device *pdev)
- 
- 	stop_devapc(ctx);
- 
--	clk_disable_unprepare(ctx->infra_clk);
--
- 	return 0;
- }
- 
+ #undef C
+ #define C(a, b)		TP_ERR_##a
 -- 
 2.39.5
 
