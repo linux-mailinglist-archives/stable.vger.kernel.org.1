@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3556AA59DCB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64778A59C73
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD6016EE8A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 959E016E6A6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575D0233705;
-	Mon, 10 Mar 2025 17:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F51233705;
+	Mon, 10 Mar 2025 17:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jT9NHZoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OipRiGub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FC9233149;
-	Mon, 10 Mar 2025 17:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6480A231A30;
+	Mon, 10 Mar 2025 17:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627423; cv=none; b=Jqxc1HVzQpGT1YtpJF5ke3jgM/+2LCZwHy20L9HKbgnjluYQVFTUNw00an2dNN3IBRg5y6LVQAJAe5dHuYo5Xq+uKXjEo1AE4sab7Vh18ot8qdAV2JHmfJy50MiMKzihDP1dg4/Ghrt0cDP3iIDhec+B9qwS13fYeYLsfgj3o9s=
+	t=1741626706; cv=none; b=oD8SMXIVovsY3FBJRyXJ8LAMv/KrmEmEoeUAcqThjVrGFlG+4P1stcP1Bt2q8j0VuIEv2zkJ7GgqLXEPXMNd//03yjRenabLx/IE+7VWWz453iUqtpFq64JDJp47FzUNYA5wdNK9s/hK8rjh7Gls9m3qoKmMM7761lkjqXfajD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627423; c=relaxed/simple;
-	bh=iFiFL8Z78geu32fs+bw9Q3E0oOyyG/1RoXUVWsVa/5c=;
+	s=arc-20240116; t=1741626706; c=relaxed/simple;
+	bh=Hl7Z41DY5KZSNKW8z25gfmaqF1MZLx6BkcAnwUUJ0ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZsR15+F1m+0TdfNtZuOzNCRtzyqT82UoxwR/fv6+VTCpXshVZ1P1X1Vj6DRRD8Ld4Mu4GFfi2NtOLHSyx3lNQuXgyLDeHGh8uFt9thaxSrg45qImXV3MrQVfzVAzt6rzU/ePHEDOW4oX864e9kmefX/mBmZQQsmvgfLCQsYb+hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jT9NHZoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF9FC4CEE5;
-	Mon, 10 Mar 2025 17:23:41 +0000 (UTC)
+	 MIME-Version; b=I+tUpr2R9yDpv7pF0lrFjiKbfFEMHxN9mbSre/7InR3joQjJH8IRObn4d1KnXCQDRTTpIH1IPQpbHa1UYfohPeuTC1Dys0rmMPaJoAFgXKxBzqKQVWVAlqo0j0Uo2hrmbzwca5Lp3WOigJJabu8MsNkCQeJFb2sLTjN96h4KoSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OipRiGub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38F9C4CEE5;
+	Mon, 10 Mar 2025 17:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627422;
-	bh=iFiFL8Z78geu32fs+bw9Q3E0oOyyG/1RoXUVWsVa/5c=;
+	s=korg; t=1741626706;
+	bh=Hl7Z41DY5KZSNKW8z25gfmaqF1MZLx6BkcAnwUUJ0ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jT9NHZoGulbVouZAoSqk9ES8V1zm1vEOKGZKODKuMlhYEBITv8g5+LbZeGdePHbHI
-	 tm1oMeeUnH52UyYVS+ChHb0Tzpgg0UWRybcQJGTFL/4gKlbHNrHx+7B6gXeocsrQIv
-	 VAo6Ly4Wdb+36up+K4qPiWLW2b+/qNS/VsQU2lGc=
+	b=OipRiGubi4g4+nc+yUSD8xg9fa32M28PIq18ky+DghwLRy7dq2ZYsfkr6M7jUGOVF
+	 GYHdeujuIefCyFj3ON7UlPR/sNXLxQ00OF3CPgbhXxedDVF3OrJ0tmC3oee4Mg3QXq
+	 ngTr6F4Zxwms/yGSjmP59qYpU6A7zIYBKEp+YWH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 125/269] selftests/damon/damon_nr_regions: set ops update for merge results check to 100ms
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 085/207] wifi: iwlwifi: mvm: dont try to talk to a dead firmware
 Date: Mon, 10 Mar 2025 18:04:38 +0100
-Message-ID: <20250310170502.705951644@linuxfoundation.org>
+Message-ID: <20250310170451.141201886@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 695469c07a65547acb6e229b3fdf6aaa881817e3 upstream.
+[ Upstream commit d73d2c6e3313f0ba60711ab4f4b9044eddca9ca5 ]
 
-damon_nr_regions.py updates max_nr_regions to a number smaller than
-expected number of real regions and confirms DAMON respect the harsh
-limit.  To give time for DAMON to make changes for the regions, 3
-aggregation intervals (300 milliseconds) are given.
+This fixes:
 
-The internal mechanism works with not only the max_nr_regions, but also
-sz_limit, though.  It avoids merging region if that casn make region of
-size larger than sz_limit.  In the test, sz_limit is set too small to
-achive the new max_nr_regions, unless it is updated for the new
-min_nr_regions.  But the update is done only once per operations set
-update interval, which is one second by default.
+ bad state = 0
+ WARNING: CPU: 10 PID: 702 at drivers/net/wireless/inel/iwlwifi/iwl-trans.c:178 iwl_trans_send_cmd+0xba/0xe0 [iwlwifi]
+ Call Trace:
+  <TASK>
+  ? __warn+0xca/0x1c0
+  ? iwl_trans_send_cmd+0xba/0xe0 [iwlwifi 64fa9ad799a0e0d2ba53d4af93a53ad9a531f8d4]
+  iwl_fw_dbg_clear_monitor_buf+0xd7/0x110 [iwlwifi 64fa9ad799a0e0d2ba53d4af93a53ad9a531f8d4]
+  _iwl_dbgfs_fw_dbg_clear_write+0xe2/0x120 [iwlmvm 0e8adb18cea92d2c341766bcc10b18699290068a]
 
-Hence, the test randomly incurs false positive failures.  Fix it by
-setting the ops interval same to aggregation interval, to make sure
-sz_limit is updated by the time of the check.
+Ask whether the firmware is alive before sending a command.
 
-Link: https://lkml.kernel.org/r/20250225222333.505646-3-sj@kernel.org
-Fixes: 8bf890c81612 ("selftests/damon/damon_nr_regions: test online-tuned max_nr_regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 268712dc3b34 ("wifi: iwlwifi: mvm: add a debugfs hook to clear the monitor data")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.8e1597b62c70.I12ea71dd9b805b095c9fc12a10c9f34a4e801b61@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/damon/damon_nr_regions.py |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/tools/testing/selftests/damon/damon_nr_regions.py
-+++ b/tools/testing/selftests/damon/damon_nr_regions.py
-@@ -109,6 +109,7 @@ def main():
-     attrs = kdamonds.kdamonds[0].contexts[0].monitoring_attrs
-     attrs.min_nr_regions = 3
-     attrs.max_nr_regions = 7
-+    attrs.update_us = 100000
-     err = kdamonds.kdamonds[0].commit()
-     if err is not None:
-         proc.terminate()
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 91ca830a7b603..f4276fdee6bea 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1518,6 +1518,13 @@ static ssize_t iwl_dbgfs_fw_dbg_clear_write(struct iwl_mvm *mvm,
+ 	if (mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_9000)
+ 		return -EOPNOTSUPP;
+ 
++	/*
++	 * If the firmware is not running, silently succeed since there is
++	 * no data to clear.
++	 */
++	if (!iwl_mvm_firmware_running(mvm))
++		return count;
++
+ 	mutex_lock(&mvm->mutex);
+ 	iwl_fw_dbg_clear_monitor_buf(&mvm->fwrt);
+ 	mutex_unlock(&mvm->mutex);
+-- 
+2.39.5
+
 
 
 
