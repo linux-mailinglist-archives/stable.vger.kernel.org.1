@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B09A5A1E9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96BAA59C7C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3641744CB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54101188DBC7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A8E233D99;
-	Mon, 10 Mar 2025 18:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAFD2309B0;
+	Mon, 10 Mar 2025 17:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODP5tZRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgrz/M1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736D22206BD;
-	Mon, 10 Mar 2025 18:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067FC1E519;
+	Mon, 10 Mar 2025 17:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630499; cv=none; b=GWVj6NNQMe2hM9whL3FF2/ZpaoKABarWFyuMdtlGq4F3MBgqxQy+vgj8s3V4rpXrAOGiaAyIB/+b7cXsVo1GPDAQ1M+Px9nirsokkVVk2ZeDmnyUW9VKO0H991FOUu4YWbU1XtGGd7Mg4VdmXE4LIG45BjmyxdtFq3IjnLXEd4w=
+	t=1741626718; cv=none; b=V9fAMRxwKYtACQb8qgRDb+kqe2MixhhFRmmP7ncKZKP9PC3hxlBnUoCCjlTnht76cuaeA8m7GLfFyPteL4Nw2/+H27QiVOMbtvy54iJSkHWEa9ivDYXTnbxliHWjzfqtvIW61pj4tpvr7DT4PBUohu9PAHSEvuW/2FE6Zs8sCes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630499; c=relaxed/simple;
-	bh=8iLeWn/ubdTvnUxs3J13xQwgT/5CiMqkkcomABR204A=;
+	s=arc-20240116; t=1741626718; c=relaxed/simple;
+	bh=UPYWuaSx4CJecMOlOyEVJVv1eQQvQUU7kF4QHFi2Ix8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwZhK89pWV74BbI3LkH0qaYYCLQeflr+5pkukXKlx/N7QzX9DO2YhS6cvKmxP2apDVyaWESmikxhL/2c+8pBx1AjGsy3LVYTKwIBVwNJ7d2bzNKncFiQN5DDlAqywKPvatb++G/tYb+aNU9FgCWkVLuMLCahaC/0YuIT86AOOBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODP5tZRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED944C4CEED;
-	Mon, 10 Mar 2025 18:14:58 +0000 (UTC)
+	 MIME-Version; b=Nnu66OWCm0CV2Zv5Roysy3M5dQNQVOl95mrVR/OM8idxYTd42AwYgtUo9FiCpkzlS/lde7Qc/TXjGASaBwUCXitE822k9988gs0GOSDHrRSlIcAAWUc3a0jJ96MJPqlbuHj+fzT+rEVvUeAF2kI4LGcLJqjDO1HmXKZdaLFASE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgrz/M1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD0AC4CEE5;
+	Mon, 10 Mar 2025 17:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630499;
-	bh=8iLeWn/ubdTvnUxs3J13xQwgT/5CiMqkkcomABR204A=;
+	s=korg; t=1741626717;
+	bh=UPYWuaSx4CJecMOlOyEVJVv1eQQvQUU7kF4QHFi2Ix8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODP5tZRc0lh7Txlz3fNIbR4AMlgyAdB3o8dm9YlwrMD9ZUNucU35p3/CO8QQbVwMI
-	 8bi0h+9RmBL9x75sWLZJYDYrWkai+MYA58RlMxg5AL3elOSbilQASuIqBQCWIypNvG
-	 37pCvApfZvWFlYuvhfhdd33Knwdi0tCfGP2MiAbU=
+	b=qgrz/M1ENnVmV84eaLoBGCXx/y5Z+I265bOFMxEcZwknkIK/zzPpVykJRbOMCmljT
+	 +P9ga3/zvo6Cz/XGAH0aAQBawouSEn3WtAljtrGKqLCa7ec+/W2FGYPVkZ41BwkN11
+	 Th6GO4ObaSMWyBOAskIxacw/b1eOMBiZotyoot6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ming Qian <ming.qian@nxp.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 436/620] media: imx-jpeg: Fix potential error pointer dereference in detach_pm()
+Subject: [PATCH 6.13 089/207] HID: google: fix unused variable warning under !CONFIG_ACPI
 Date: Mon, 10 Mar 2025 18:04:42 +0100
-Message-ID: <20250310170602.808373718@linuxfoundation.org>
+Message-ID: <20250310170451.296398727@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 1378ffec30367233152b7dbf4fa6a25ee98585d1 ]
+[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
 
-The proble is on the first line:
+As reported by the kernel test robot, the following warning occurs:
 
-	if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
+>> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
+     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+         |                                    ^~~~~~~~~~~~~~~~
 
-If jpeg->pd_dev[i] is an error pointer, then passing it to
-pm_runtime_suspended() will lead to an Oops.  The other conditions
-check for both error pointers and NULL, but it would be more clear to
-use the IS_ERR_OR_NULL() check for that.
+The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
+Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
+prevents a compiler warning when ACPI is disabled.
 
-Fixes: fd0af4cd35da ("media: imx-jpeg: Ensure power suppliers be suspended before detach them")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/imx-jpeg/mxc-jpeg.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hid/hid-google-hammer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/platform/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/imx-jpeg/mxc-jpeg.c
-index 8ac844db0e833..059e45aa03b7f 100644
---- a/drivers/media/platform/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/imx-jpeg/mxc-jpeg.c
-@@ -1997,11 +1997,12 @@ static void mxc_jpeg_detach_pm_domains(struct mxc_jpeg_dev *jpeg)
- 	int i;
+diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
+index 0f292b5d3e26d..eb6fd2dc75d0a 100644
+--- a/drivers/hid/hid-google-hammer.c
++++ b/drivers/hid/hid-google-hammer.c
+@@ -268,11 +268,13 @@ static void cbas_ec_remove(struct platform_device *pdev)
+ 	mutex_unlock(&cbas_ec_reglock);
+ }
  
- 	for (i = 0; i < jpeg->num_domains; i++) {
--		if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]) &&
-+		    !pm_runtime_suspended(jpeg->pd_dev[i]))
- 			pm_runtime_force_suspend(jpeg->pd_dev[i]);
--		if (jpeg->pd_link[i] && !IS_ERR(jpeg->pd_link[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_link[i]))
- 			device_link_del(jpeg->pd_link[i]);
--		if (jpeg->pd_dev[i] && !IS_ERR(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]))
- 			dev_pm_domain_detach(jpeg->pd_dev[i], true);
- 		jpeg->pd_dev[i] = NULL;
- 		jpeg->pd_link[i] = NULL;
++#ifdef CONFIG_ACPI
+ static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+ 	{ "GOOG000B", 0 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
++#endif
+ 
+ #ifdef CONFIG_OF
+ static const struct of_device_id cbas_ec_of_match[] = {
 -- 
 2.39.5
 
