@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19787A5A289
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DC7A59D08
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C699E3AF955
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A86316F58A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E84ABA3D;
-	Mon, 10 Mar 2025 18:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAA3230BED;
+	Mon, 10 Mar 2025 17:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0y0R6Nne"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIg6/UGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD6F1C3F34;
-	Mon, 10 Mar 2025 18:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B0C17CA12;
+	Mon, 10 Mar 2025 17:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630868; cv=none; b=Y00b9z6Zj63iarjDHFli+7mlXNSL78E2zbxEUfQcegikoaNptnhHB6xyKjB0H3DiooXsM5LE85JUwai41uiHfq9zGJtf1CNQnpELn29cnrDHJNnEawPJvyrczUBeQbOTr1TEXhmONwz5MHNAY568ACGWsdDmxmzuOyc6Srcu4nc=
+	t=1741627015; cv=none; b=LVRQ4gewJ62VXEIwrrWJjFSfz67rBPzRa+cOpmS77F7yl2QhECnkdcxVZnWenVDVRC9twhIXmTtEWn/AJ3/ItLMWSDS6D1Y+0Tt957OMlUC29WXILIKiSxJLnrClh1g1v7ldZHKhC7Dan4HJi191CxKXuqHcv6HFdhUNDikuITA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630868; c=relaxed/simple;
-	bh=gF/y9RF2oiyzcGStYRVWhvb2Vy27RyYS5RrAMpGdnas=;
+	s=arc-20240116; t=1741627015; c=relaxed/simple;
+	bh=D9vzuX7ExAeorCoOp2sZUwqSp+HeA/9eQCU9/+dZwco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VL30vF/NnvTecZ9+yJWf7LigEMq8ffhAOw1o4rjeRiOqauMnLySqBwyprToXdmnMpY+bKJRF/xODtwOj6uvCiHNAYcOEefJRj5F9LjoeGipmmmaE8xRH/+6BCirNJOK8VzGH0XbiyopoUm6qee1DVI7Gd0fR5TPUi4EQc59iAik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0y0R6Nne; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77B4C4CEE5;
-	Mon, 10 Mar 2025 18:21:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EQC7YNTd+LOujp0W1xQ1h3gP/iUo4fyFdBQF0/LYXhevFAr4FrhXqWgO9IxgnjGrznrtfXcq9YYiena9ug/VcjdqD1+y+24aK4gHdOGBY1o//pSj+EkmPxayGA0NYv/HfO3ZKpiUV8lk+z79iYCSM5wWWX8KDpkI500PPk/5mH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIg6/UGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8719C4CEE5;
+	Mon, 10 Mar 2025 17:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630868;
-	bh=gF/y9RF2oiyzcGStYRVWhvb2Vy27RyYS5RrAMpGdnas=;
+	s=korg; t=1741627015;
+	bh=D9vzuX7ExAeorCoOp2sZUwqSp+HeA/9eQCU9/+dZwco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0y0R6NnewgIhOyPCkucFKB2RT4ateCBV004C7cDLsLvtx6li3sPeKV/+v+P0JE4mq
-	 ajIh7MCyFdfvMx5ynfY0o5UEMYjKzny8Dl641h7W8OblcIBr/gMIIieR/A31Gdc4ew
-	 NVJGQbDQNp60Mt9/qfSWsfEfjQgIZlHg2lV8tmNE=
+	b=nIg6/UGx7zMUwYL1E5c3QLLWMR9nzSFfAvsOiqQKaykLkXO/N/2LMkbxDPEOXQUFW
+	 pkhXyT29uC3srkaRmszbWEFK4pPbd0j6vvUl3vdnlAfi1oy7p2vDM0+z6Wdh/QlZij
+	 GZkXOmyzVPoaBICQWfJNHwire5Sbk3SqPoArg8mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 521/620] net: enetc: update UDP checksum when updating originTimestamp field
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.13 174/207] KVM: SVM: Drop DEBUGCTL[5:2] from guests effective value
 Date: Mon, 10 Mar 2025 18:06:07 +0100
-Message-ID: <20250310170606.118145558@linuxfoundation.org>
+Message-ID: <20250310170454.707578918@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit bbcbc906ab7b5834c1219cd17a38d78dba904aa0 upstream.
+commit ee89e8013383d50a27ea9bf3c8a69eed6799856f upstream.
 
-There is an issue with one-step timestamp based on UDP/IP. The peer will
-discard the sync packet because of the wrong UDP checksum. For ENETC v1,
-the software needs to update the UDP checksum when updating the
-originTimestamp field, so that the hardware can correctly update the UDP
-checksum when updating the correction field. Otherwise, the UDP checksum
-in the sync packet will be wrong.
+Drop bits 5:2 from the guest's effective DEBUGCTL value, as AMD changed
+the architectural behavior of the bits and broke backwards compatibility.
+On CPUs without BusLockTrap (or at least, in APMs from before ~2023),
+bits 5:2 controlled the behavior of external pins:
 
-Fixes: 7294380c5211 ("enetc: support PTP Sync packet one-step timestamping")
+  Performance-Monitoring/Breakpoint Pin-Control (PBi)—Bits 5:2, read/write.
+  Software uses thesebits to control the type of information reported by
+  the four external performance-monitoring/breakpoint pins on the
+  processor. When a PBi bit is cleared to 0, the corresponding external pin
+  (BPi) reports performance-monitor information. When a PBi bit is set to
+  1, the corresponding external pin (BPi) reports breakpoint information.
+
+With the introduction of BusLockTrap, presumably to be compatible with
+Intel CPUs, AMD redefined bit 2 to be BLCKDB:
+
+  Bus Lock #DB Trap (BLCKDB)—Bit 2, read/write. Software sets this bit to
+  enable generation of a #DB trap following successful execution of a bus
+  lock when CPL is > 0.
+
+and redefined bits 5:3 (and bit 6) as "6:3 Reserved MBZ".
+
+Ideally, KVM would treat bits 5:2 as reserved.  Defer that change to a
+feature cleanup to avoid breaking existing guest in LTS kernels.  For now,
+drop the bits to retain backwards compatibility (of a sort).
+
+Note, dropping bits 5:2 is still a guest-visible change, e.g. if the guest
+is enabling LBRs *and* the legacy PBi bits, then the state of the PBi bits
+is visible to the guest, whereas now the guest will always see '0'.
+
+Reported-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-6-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250227222411.3490595-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   41 ++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 7 deletions(-)
+ arch/x86/kvm/svm/svm.c |   12 ++++++++++++
+ arch/x86/kvm/svm/svm.h |    2 +-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -228,9 +228,11 @@ static int enetc_map_tx_buffs(struct ene
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3169,6 +3169,18 @@ static int svm_set_msr(struct kvm_vcpu *
+ 			kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
+ 			break;
  		}
++
++		/*
++		 * AMD changed the architectural behavior of bits 5:2.  On CPUs
++		 * without BusLockTrap, bits 5:2 control "external pins", but
++		 * on CPUs that support BusLockDetect, bit 2 enables BusLockTrap
++		 * and bits 5:3 are reserved-to-zero.  Sadly, old KVM allowed
++		 * the guest to set bits 5:2 despite not actually virtualizing
++		 * Performance-Monitoring/Breakpoint external pins.  Drop bits
++		 * 5:2 for backwards compatibility.
++		 */
++		data &= ~GENMASK(5, 2);
++
+ 		if (data & DEBUGCTL_RESERVED_BITS)
+ 			return 1;
  
- 		if (do_onestep_tstamp) {
--			u32 lo, hi, val;
--			u64 sec, nsec;
-+			__be32 new_sec_l, new_nsec;
-+			u32 lo, hi, nsec, val;
-+			__be16 new_sec_h;
- 			u8 *data;
-+			u64 sec;
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -591,7 +591,7 @@ static inline bool is_vnmi_enabled(struc
+ /* svm.c */
+ #define MSR_INVALID				0xffffffffU
  
- 			lo = enetc_rd_hot(hw, ENETC_SICTR0);
- 			hi = enetc_rd_hot(hw, ENETC_SICTR1);
-@@ -244,13 +246,38 @@ static int enetc_map_tx_buffs(struct ene
- 			/* Update originTimestamp field of Sync packet
- 			 * - 48 bits seconds field
- 			 * - 32 bits nanseconds field
-+			 *
-+			 * In addition, the UDP checksum needs to be updated
-+			 * by software after updating originTimestamp field,
-+			 * otherwise the hardware will calculate the wrong
-+			 * checksum when updating the correction field and
-+			 * update it to the packet.
- 			 */
- 			data = skb_mac_header(skb);
--			*(__be16 *)(data + offset2) =
--				htons((sec >> 32) & 0xffff);
--			*(__be32 *)(data + offset2 + 2) =
--				htonl(sec & 0xffffffff);
--			*(__be32 *)(data + offset2 + 6) = htonl(nsec);
-+			new_sec_h = htons((sec >> 32) & 0xffff);
-+			new_sec_l = htonl(sec & 0xffffffff);
-+			new_nsec = htonl(nsec);
-+			if (udp) {
-+				struct udphdr *uh = udp_hdr(skb);
-+				__be32 old_sec_l, old_nsec;
-+				__be16 old_sec_h;
-+
-+				old_sec_h = *(__be16 *)(data + offset2);
-+				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
-+							 new_sec_h, false);
-+
-+				old_sec_l = *(__be32 *)(data + offset2 + 2);
-+				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
-+							 new_sec_l, false);
-+
-+				old_nsec = *(__be32 *)(data + offset2 + 6);
-+				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
-+							 new_nsec, false);
-+			}
-+
-+			*(__be16 *)(data + offset2) = new_sec_h;
-+			*(__be32 *)(data + offset2 + 2) = new_sec_l;
-+			*(__be32 *)(data + offset2 + 6) = new_nsec;
+-#define DEBUGCTL_RESERVED_BITS (~(0x3fULL))
++#define DEBUGCTL_RESERVED_BITS (~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR))
  
- 			/* Configure single-step register */
- 			val = ENETC_PM0_SINGLE_STEP_EN;
+ extern bool dump_invalid_vmcb;
+ 
 
 
 
