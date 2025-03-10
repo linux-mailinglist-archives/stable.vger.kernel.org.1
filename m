@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4BBA5A231
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 319B9A59EF7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF073AD66B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50A03A4A7E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473F82356A4;
-	Mon, 10 Mar 2025 18:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644E21DE89C;
+	Mon, 10 Mar 2025 17:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pthnF7cp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyKDLziv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F9522B597;
-	Mon, 10 Mar 2025 18:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A3523026D;
+	Mon, 10 Mar 2025 17:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630618; cv=none; b=D3pACUwXrn+z9jOXhVnJS7lXNKb5Uqw2uGD36/H3X+4+uAwHoTt3u1PfiGd4ID+7wOVDQlKejQD/33BoMIXY08Pjg/NuDCyijDmZHELYTReAry5PcSs8f0p2f+tOwGC1ky1sewrE03OE9B+3G7OAeG4KcVviy9zKm5oVfQR8Uf4=
+	t=1741628051; cv=none; b=AFDJMTA0xPLYuKDUoG7fBscX4pOFHphdi6sBvl0FHw053hVeGDRrzPNFVQSmV+CqwXKDB0BdMZTHSgooYDk1k4677eLgodSsqdSpEvVms6wSms/DetOMZWBreul1VjB31CiFG36AuGge5pMWb5rel53DFXeveOs/jS+rfy2jfWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630618; c=relaxed/simple;
-	bh=iz5JGF8zxoPk8phQQzoNmffTmH9ShYmC/z/FoHPiQ3A=;
+	s=arc-20240116; t=1741628051; c=relaxed/simple;
+	bh=cdrLt2cNEocFNrhNTlQ1SEr65qSHTvk0iae1awzP5aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eg4ePWONdWYJ0ZOinyHP5LgS4E1L5mRh08sfm+nvjFAo7UaZmxbRwf0LbkYbubxYMhvUIYDzMwSk0zMZOcmabjaOqlp1XSpnBDzK66B34F4lB4ADgcAECZtqkjgulY9fejpSO15jkpn8RBK/LHr43vAm/WXiIoL+6LSfzXctwTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pthnF7cp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1BFC4CEEC;
-	Mon, 10 Mar 2025 18:16:57 +0000 (UTC)
+	 MIME-Version; b=KwlifXRjHkLJ5U3IhcOVWycZxR9oAiT/Vln6Iv/FOm/IW8/ZHFz3/X95cu2aKAiZmoOh9mOxN58J4a+GEXiC4fPw89PeDXNDcTID5Mrw7vuJ2b7fkdiOZDpnLbM6//bq3WXKpUrfEntIwvkh5gswRnuI3gN6Ia4ESdQ9hbf9L6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyKDLziv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D48C4CEE5;
+	Mon, 10 Mar 2025 17:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630617;
-	bh=iz5JGF8zxoPk8phQQzoNmffTmH9ShYmC/z/FoHPiQ3A=;
+	s=korg; t=1741628051;
+	bh=cdrLt2cNEocFNrhNTlQ1SEr65qSHTvk0iae1awzP5aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pthnF7cpCPnt/cphEWr5LgazcP6aJSzD4rhV6AkexW7Ta9Lfeiwc6xSMU3D968HcW
-	 m67zjwr8VjE1amvxQNs9L4WEf5jgow0V4CisQZMnKDLoMVkdD1P9pyZ004z9Vu3Qav
-	 SCIfjCsrKXCDB0yw/gbWXSZ43pBPESu2HRyX5dvk=
+	b=XyKDLzivfqk83NfiVnJUnJTN+b1eiWFHGZtLYzUwu7UGcDvL0SaOlAVhDoZKqalGn
+	 OpNa+VHIP19sYA/z5F26U8gZro4Ck8sp0jvOx/LiUh1XmSbZRMCMhC4iZU4nYKxCOP
+	 GU7AXEo8JncNKnfTfOOC8wHfW/D21OHeUdjP5/pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sumit Garg <sumit.garg@linaro.org>,
-	Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 5.15 476/620] tee: optee: Fix supplicant wait loop
-Date: Mon, 10 Mar 2025 18:05:22 +0100
-Message-ID: <20250310170604.365141345@linuxfoundation.org>
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 029/145] ksmbd: fix type confusion via race condition when using ipc_msg_send_request
+Date: Mon, 10 Mar 2025 18:05:23 +0100
+Message-ID: <20250310170435.912788689@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Garg <sumit.garg@linaro.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 70b0d6b0a199c5a3ee6c72f5e61681ed6f759612 upstream.
+commit e2ff19f0b7a30e03516e6eb73b948e27a55bc9d2 upstream.
 
-OP-TEE supplicant is a user-space daemon and it's possible for it
-be hung or crashed or killed in the middle of processing an OP-TEE
-RPC call. It becomes more complicated when there is incorrect shutdown
-ordering of the supplicant process vs the OP-TEE client application which
-can eventually lead to system hang-up waiting for the closure of the
-client application.
+req->handle is allocated using ksmbd_acquire_id(&ipc_ida), based on
+ida_alloc. req->handle from ksmbd_ipc_login_request and
+FSCTL_PIPE_TRANSCEIVE ioctl can be same and it could lead to type confusion
+between messages, resulting in access to unexpected parts of memory after
+an incorrect delivery. ksmbd check type of ipc response but missing add
+continue to check next ipc reponse.
 
-Allow the client process waiting in kernel for supplicant response to
-be killed rather than indefinitely waiting in an unkillable state. Also,
-a normal uninterruptible wait should not have resulted in the hung-task
-watchdog getting triggered, but the endless loop would.
-
-This fixes issues observed during system reboot/shutdown when supplicant
-got hung for some reason or gets crashed/killed which lead to client
-getting hung in an unkillable state. It in turn lead to system being in
-hung up state requiring hard power off/on to recover.
-
-Fixes: 4fb0a5eb364d ("tee: add OP-TEE driver")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/optee/supp.c |   35 ++++++++---------------------------
- 1 file changed, 8 insertions(+), 27 deletions(-)
+ fs/smb/server/transport_ipc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tee/optee/supp.c
-+++ b/drivers/tee/optee/supp.c
-@@ -80,7 +80,6 @@ u32 optee_supp_thrd_req(struct tee_conte
- 	struct optee *optee = tee_get_drvdata(ctx->teedev);
- 	struct optee_supp *supp = &optee->supp;
- 	struct optee_supp_req *req;
--	bool interruptable;
- 	u32 ret;
- 
- 	/*
-@@ -111,36 +110,18 @@ u32 optee_supp_thrd_req(struct tee_conte
- 	/*
- 	 * Wait for supplicant to process and return result, once we've
- 	 * returned from wait_for_completion(&req->c) successfully we have
--	 * exclusive access again.
-+	 * exclusive access again. Allow the wait to be killable such that
-+	 * the wait doesn't turn into an indefinite state if the supplicant
-+	 * gets hung for some reason.
- 	 */
--	while (wait_for_completion_interruptible(&req->c)) {
-+	if (wait_for_completion_killable(&req->c)) {
- 		mutex_lock(&supp->mutex);
--		interruptable = !supp->ctx;
--		if (interruptable) {
--			/*
--			 * There's no supplicant available and since the
--			 * supp->mutex currently is held none can
--			 * become available until the mutex released
--			 * again.
--			 *
--			 * Interrupting an RPC to supplicant is only
--			 * allowed as a way of slightly improving the user
--			 * experience in case the supplicant hasn't been
--			 * started yet. During normal operation the supplicant
--			 * will serve all requests in a timely manner and
--			 * interrupting then wouldn't make sense.
--			 */
--			if (req->in_queue) {
--				list_del(&req->link);
--				req->in_queue = false;
--			}
-+		if (req->in_queue) {
-+			list_del(&req->link);
-+			req->in_queue = false;
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -267,6 +267,7 @@ static int handle_response(int type, voi
+ 		if (entry->type + 1 != type) {
+ 			pr_err("Waiting for IPC type %d, got %d. Ignore.\n",
+ 			       entry->type + 1, type);
++			continue;
  		}
- 		mutex_unlock(&supp->mutex);
--
--		if (interruptable) {
--			req->ret = TEEC_ERROR_COMMUNICATION;
--			break;
--		}
-+		req->ret = TEEC_ERROR_COMMUNICATION;
- 	}
  
- 	ret = req->ret;
+ 		entry->response = kvzalloc(sz, GFP_KERNEL);
 
 
 
