@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55AEA5A276
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4528DA59E47
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36CC57A5455
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C41127A4A3B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C1722576A;
-	Mon, 10 Mar 2025 18:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCDB231A3F;
+	Mon, 10 Mar 2025 17:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mULaoJka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAEjyHLQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50944374EA;
-	Mon, 10 Mar 2025 18:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50E022CBED;
+	Mon, 10 Mar 2025 17:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630827; cv=none; b=JymkNc+4GGkOLUy2Fq2X32LyPap4aIAFvJZICHhauCc4UTxV5A0D2D3ejsaJ/PSAPrXbzCFCUwhcrTQ1Do5mkr35HXD1ff8cVF0UsjyxIZ15lMfZNKD2DiqG7re0zDpK1PcHbLNsDIpKwTELZSL0Oz1/ajviCU8YyDV7wS6Yocw=
+	t=1741627764; cv=none; b=fNAialLcb2J7yCZfBtrIT7M9A4zJY2YfewluoY5jRyt87DXGkDmUrn8XKWY354op8OXdtIrZkLuQ4LcRooWvUnH6zYssZIwiusZ9m6F1wp5XU9qRPsTVtMNaFWu1Dh+BnAjSnAsyN2XHedUaS+UYxi0FqjLSDwhDBRDy73JGF9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630827; c=relaxed/simple;
-	bh=SCZpNYYkQfFQRwEqFQlK6I4HWLUFjqrx6tlbJwCiGQU=;
+	s=arc-20240116; t=1741627764; c=relaxed/simple;
+	bh=VzRGuDdOMoonz2RevqjP09IKavuLX1MjDVDb1w6IhlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9YLkgFH2WedW7M2t3xYre0FPsZOyP2aTe+sl7k651KeKUp8Mt82Q5Juy/TTwwI2ZjrscOzZ8xZYUbaXN+BkgdQf42zrBfVdldWU5pb3mvyq9r1FlY5tfGWQqFyXNiUpfpOlrj+QLoBF2KtXdeXUdz3VahI6UOS+ahB1FbY3ujw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mULaoJka; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED46C4AF0B;
-	Mon, 10 Mar 2025 18:20:26 +0000 (UTC)
+	 MIME-Version; b=Bp6bi6OeHW/Q/oyfdEHrY76pnI0jm9TDsEccse1WAPPDIPFSF63EofylapG8spdg772oS7xBmK00uEo6FBorbNrVilOdbzxD1KCa8jBfSgvYJp0eoxxQQiklUMUA6VR91TfDC9iZsY1LyHw5wfc59CszL4G6TUxz0AHBznRsBWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAEjyHLQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4ABC4CEE5;
+	Mon, 10 Mar 2025 17:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630827;
-	bh=SCZpNYYkQfFQRwEqFQlK6I4HWLUFjqrx6tlbJwCiGQU=;
+	s=korg; t=1741627763;
+	bh=VzRGuDdOMoonz2RevqjP09IKavuLX1MjDVDb1w6IhlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mULaoJkav0Hd0QlUDtJkqSNJkzLoE8a2IYst2aJzx8f+MG4rBVXaWzMmsDfBvghi0
-	 FQ2LCjtzwxqvx1KkK4gywOrQOYiegJUqZMSNOtWgC79Fz8aOSYxAG1IzYwsRD32UNM
-	 DrwBzfNhkdXP9q5I9mBz3yb4UT1APWbAkXyYJe/k=
+	b=GAEjyHLQClddj5PxO0UEMoowgHJimTOVVwf30S2lpOd+6JEuyLklWN8GKUVd65xax
+	 JQjOtu8Ew3QIxnetEy9sbc/hLT5ELHQ3NaYqLur2lQis+lAysIzaxCs25b0VjP26vp
+	 WYB894ZoHXdL5c/W9T0S3tFyWtTE1rtQdHqR990w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.15 548/620] s390/traps: Fix test_monitor_call() inline assembly
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.12 241/269] intel_th: pci: Add Panther Lake-H support
 Date: Mon, 10 Mar 2025 18:06:34 +0100
-Message-ID: <20250310170607.176803736@linuxfoundation.org>
+Message-ID: <20250310170507.404053578@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit 5623bc23a1cb9f9a9470fa73b3a20321dc4c4870 upstream.
+commit a70034d6c0d5f3cdee40bb00a578e17fd2ebe426 upstream.
 
-The test_monitor_call() inline assembly uses the xgr instruction, which
-also modifies the condition code, to clear a register. However the clobber
-list of the inline assembly does not specify that the condition code is
-modified, which may lead to incorrect code generation.
+Add support for the Trace Hub in Panther Lake-H.
 
-Use the lhi instruction instead to clear the register without that the
-condition code is modified. Furthermore this limits clearing to the lower
-32 bits of val, since its type is int.
-
-Fixes: 17248ea03674 ("s390: fix __EMIT_BUG() macro")
-Cc: stable@vger.kernel.org
-Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20250211185017.1759193-5-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/traps.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/s390/kernel/traps.c
-+++ b/arch/s390/kernel/traps.c
-@@ -281,10 +281,10 @@ static void __init test_monitor_call(voi
- 		return;
- 	asm volatile(
- 		"	mc	0,0\n"
--		"0:	xgr	%0,%0\n"
-+		"0:	lhi	%[val],0\n"
- 		"1:\n"
--		EX_TABLE(0b,1b)
--		: "+d" (val));
-+		EX_TABLE(0b, 1b)
-+		: [val] "+d" (val));
- 	if (!val)
- 		panic("Monitor call doesn't work!\n");
- }
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -335,6 +335,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Panther Lake-H */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xe324),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
