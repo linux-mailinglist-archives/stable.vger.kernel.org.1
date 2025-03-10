@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-122046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186FEA59DA1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C31A59C55
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5797D16F796
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4339E16E28E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBB023099F;
-	Mon, 10 Mar 2025 17:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F11F232378;
+	Mon, 10 Mar 2025 17:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="us/N6+4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tovionPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2B41B3927;
-	Mon, 10 Mar 2025 17:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3E6230BDF;
+	Mon, 10 Mar 2025 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627373; cv=none; b=cn3PgmwYwygirkc66hHxgPar2WUqYay/WyyDfCsgR6yP0r7YQx4Jk/Ly9mrqXP75NfPrg6biPDEC+Ao6kh/Y1NvhqumgN9XBSLYoaC8mufh2d52LZbDtu/ewftee4wufAMF+Q1NcxFBvZBNv47AkcuWGbWf3Dv2x3cY7Yte9E/Y=
+	t=1741626656; cv=none; b=WCFilnLOO212cqAyLtiyOjQRaSF041IkhZsCGwBHcUhuKUB1bIP54D43/R9WWxxubLuWkynUujq0AzMH5CNyfvvHqfOwhhzKfTS9aLZv5i7b1goyBpQ5Tr+eIN4K5p8LWk9zmyp02LffGd4Wd+euAC1Mjn/JCOhNjuEP1KTw/qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627373; c=relaxed/simple;
-	bh=mpZAVOQoE8KsAcUnzXd9NOFX6MEX/qi2WVvYFtoX814=;
+	s=arc-20240116; t=1741626656; c=relaxed/simple;
+	bh=o1giEUJ3eHLb5IZlvRxgPGJwZrgr7ploI1Aay0tK7pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KklL4u99Rg3Hch7LlKd5peIzSLiGM5rDWiigfb5+YpkDKV45/KP0w9lGMrQPWl3OCMPpYqQrMDgUw0ookJtttpUHm69BveeBrnfSixAX2S3LzkqTnb3OfMIi57IqOvYkgB67EF0Ezv2yyKB59g9qtBA7MkGcygB3sv5QiVtljbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=us/N6+4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAEDC4CEE5;
-	Mon, 10 Mar 2025 17:22:52 +0000 (UTC)
+	 MIME-Version; b=IKQGRJVWHuOjm495OnlrGuu5u4rc0JKwjv+GtaB3GLa6NmCMaSdnj7cAJE/Y7WDgn/XAFfGkQ35g2vwWyCsfVd5VDi1cNLM6D+kCSeAX9MVWY/oWfYWiayrmUJMonFBkUa+oSbFmXXJw39MZ55TujTk2/Mayj3RfygYoMiwjcUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tovionPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F52C4CEE5;
+	Mon, 10 Mar 2025 17:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627373;
-	bh=mpZAVOQoE8KsAcUnzXd9NOFX6MEX/qi2WVvYFtoX814=;
+	s=korg; t=1741626656;
+	bh=o1giEUJ3eHLb5IZlvRxgPGJwZrgr7ploI1Aay0tK7pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=us/N6+4weiy2ctcIEhVy99+T1McsVvaCvZ2SsASdezy9yPXJOEByRSSKQbhUG48cT
-	 OCUwnZg1D5vSxgLTJKb3KvHGeMVeGATcAkE1UW7pC5SNCKhhUFjq56PYvDhV6MolkG
-	 TxKxE9N7bVapgImH29/jq0LMYiUpkwlndDMDxFXU=
+	b=tovionPedHNs6x+CVNc8KvyGmrm93GryDmevwCU8VziLfZlPNrC4l8MI+INfdxh5U
+	 8KxWnM9nYASSDC+2+li2RpPMwK0RlqUpkwOn4T7GC+cwDSNFvX2me703H7HPK3ExrL
+	 jEwVhTEsfeFHNj5ozhNQyyYQNYM+FTKpPRFEAm48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 106/269] x86/cacheinfo: Validate CPUID leaf 0x2 EDX output
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 066/207] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
 Date: Mon, 10 Mar 2025 18:04:19 +0100
-Message-ID: <20250310170501.937342001@linuxfoundation.org>
+Message-ID: <20250310170450.391649925@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 8177c6bedb7013cf736137da586cf783922309dd upstream.
+commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
 
-CPUID leaf 0x2 emits one-byte descriptors in its four output registers
-EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
-significant bit (MSB) of each register must be clear.
+The return value of rio_add_net() should be checked.  If it fails,
+put_device() should be called to free the memory and give up the reference
+initialized in rio_add_net().
 
-The historical Git commit:
-
-  019361a20f016 ("- pre6: Intel: start to add Pentium IV specific stuff (128-byte cacheline etc)...")
-
-introduced leaf 0x2 output parsing.  It only validated the MSBs of EAX,
-EBX, and ECX, but left EDX unchecked.
-
-Validate EDX's most-significant bit.
-
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-2-darwi@linutronix.de
+Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
+Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/cacheinfo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rapidio/rio-scan.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/cacheinfo.c
-+++ b/arch/x86/kernel/cpu/cacheinfo.c
-@@ -808,7 +808,7 @@ void init_intel_cacheinfo(struct cpuinfo
- 			cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
+--- a/drivers/rapidio/rio-scan.c
++++ b/drivers/rapidio/rio-scan.c
+@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
+ 		dev_set_name(&net->dev, "rnet_%d", net->id);
+ 		net->dev.parent = &mport->dev;
+ 		net->dev.release = rio_scan_release_dev;
+-		rio_add_net(net);
++		if (rio_add_net(net)) {
++			put_device(&net->dev);
++			net = NULL;
++		}
+ 	}
  
- 			/* If bit 31 is set, this is an unknown format */
--			for (j = 0 ; j < 3 ; j++)
-+			for (j = 0 ; j < 4 ; j++)
- 				if (regs[j] & (1 << 31))
- 					regs[j] = 0;
- 
+ 	return net;
 
 
 
