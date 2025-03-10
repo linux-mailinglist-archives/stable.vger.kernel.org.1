@@ -1,84 +1,120 @@
-Return-Path: <stable+bounces-121697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275CBA5916E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 11:42:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73A6A59213
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 11:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7305A188D254
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 10:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1C193B0AF7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 10:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F4122688B;
-	Mon, 10 Mar 2025 10:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB64227E8A;
+	Mon, 10 Mar 2025 10:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kll8VgK7"
-X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEhtgwsL"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3144616D9C2;
-	Mon, 10 Mar 2025 10:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0B42253ED;
+	Mon, 10 Mar 2025 10:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741603347; cv=none; b=AHtrsQn98Z7zFqg+sjI0mZtJ3d62hDvVhStGlSIgBPkDlJeltRRBbFita2vR796rsEGIwA7FIrCE3pQ+mK6J6hTbCECJ6ue88F+5ueMhoNzIQ+Wwws7ytK9Wc9FCOp7Ldu/4TrU+/EWGkxRrlFp3DtC2y3iQlhVNs9f3maC0Zfc=
+	t=1741604110; cv=none; b=XwHHufUj81E9FrzBE8bnyioXIQxO7Pabd+ThrV+cA4g3e/ORZZu8+sEbJS9pSePk/1JM656q1donFYK3/XemoRe97npm1LmcxoMYIK5whtLsYsFKFUxSLcPvI3Yjoe1loQbQTx5F37ZZ+AAqTT7DbQ9sEFl6VCIAcE7uj4uH33k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741603347; c=relaxed/simple;
-	bh=BchiH3ks/Bb+a9/rT5xqXs4QG+DKMNtdKB33D7ZrnDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=adVr/7v2N40f4ABHU81oKQacCw6vQoraJlsN/kJLzbMTtvXFjQPUg70nZvB8CWLPwa4X36uI5kV8ZYpn2vmrSjdjY1xZkrPLu8deDkBCl4IfTFLvNCIcPEPZdTuPc4IeT9vmqXJ2oguE1xQ161OfoFp/eiYbaqJ/fvY9J08FUYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kll8VgK7; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=BchiH3ks/Bb+a9/rT5xqXs4QG+DKMNtdKB33D7ZrnDE=; b=kll8VgK7x71s7MRcsXZaZljJ+d
-	CZmyUA4t9opO/YG6CSrjVYn/PDWzBn0UCVrvG/B7gsNpbxizd/6e6LxFKha8AdunpZchZaxv2CU6e
-	clMZLChAMVQ0Kg9RVDeojpBdencE/P/cV1vv7JbuUpxnIkIuY2qDUFZ3+KXvVyvAvQHC0f5m3Wass
-	9VChsgreKUfJY7zvzTAaWAjX0MgWXs7CPEpPm9NAkIxUOESl7+8+5O7Z8qFM4edKjia+aYW9A68n+
-	3VBfCA7Yqr+JkMzkeMMFbMKNdOxVBLZxWFrxwn7hD2D2G42uSsxpPtYHneh85rofjNu0h+TdtxoiI
-	nh7fgzsg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1traaQ-00000002Hm0-3Vjm;
-	Mon, 10 Mar 2025 10:42:18 +0000
-Date: Mon, 10 Mar 2025 03:42:18 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-	dm-devel@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] block: make sure ->nr_integrity_segments is cloned in
- blk_rq_prep_clone
-Message-ID: <Z87CCuYFgA71JvXV@infradead.org>
-References: <20250310091610.2010623-1-ming.lei@redhat.com>
+	s=arc-20240116; t=1741604110; c=relaxed/simple;
+	bh=DwjiqbOPcvwFpHcaDUPFkm/lGfZE5Kj5xWUfEKCkTxY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ltJmy/oBmM7Dy7antGtoMSjNt4UpvxmIz13OUSHyTKbj4TrIhM2wGgI5Cc2mfWdBInBnsXoV8hFz6Xzk6TyQhzP7llIfjltFqYob7ZvXwGprTxDnCHfcpUOdGv9Hn6Yj97NlpA4IKqFOoFktgwYHYia5ga8UgeIEOH08NXBS+VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEhtgwsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BFFC4CEE5;
+	Mon, 10 Mar 2025 10:55:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741604109;
+	bh=DwjiqbOPcvwFpHcaDUPFkm/lGfZE5Kj5xWUfEKCkTxY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=yEhtgwsL5+x1sHrTQd/pruI1Xf/ZmNUSfedErtTBgBA/HDHOMWFQUD1dPikoQLzP3
+	 9Bfu9WzjD0cEPDqQa7bZW6iF2Bq6PHsp0QMev/vesjv6ttTLjRdD0d7/pawoBUCmBS
+	 bFi/xHDk8BplQTLbYGaUmxH1Lbidn2qIXiSGDQw0=
+Subject: Patch "iio: dac: ad3552r: clear reset status flag" has been added to the 6.12-stable tree
+To: Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,adureghello@baylibre.com,gregkh@linuxfoundation.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 10 Mar 2025 11:53:49 +0100
+Message-ID: <2025031049-afflicted-mangy-4da9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250310091610.2010623-1-ming.lei@redhat.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-stable: commit
+X-Patchwork-Hint: ignore 
 
-On Mon, Mar 10, 2025 at 05:16:10PM +0800, Ming Lei wrote:
-> Make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone(),
-> otherwise zero ->nr_integrity_segments will be observed in
-> sg_alloc_table_chained(), in which BUG() is hit.
 
-Maybe reword this to:
+This is a note to let you know that I've just added the patch titled
 
-... otherwise requests cloned by device-mapper multipath will not
-have the prope nr_integrity_segments values set?
+    iio: dac: ad3552r: clear reset status flag
 
-The fact that sg_alloc_table_chained BUG⁽)s is just a symptom of that.
+to the 6.12-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-> Cc: stable@vger.kernel.org
+The filename of the patch is:
+     iio-dac-ad3552r-clear-reset-status-flag.patch
+and it can be found in the queue-6.12 subdirectory.
 
-... and replace this with a proper Fixes tag?
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
+
+From e17b9f20da7d2bc1f48878ab2230523b2512d965 Mon Sep 17 00:00:00 2001
+From: Angelo Dureghello <adureghello@baylibre.com>
+Date: Sat, 25 Jan 2025 17:24:32 +0100
+Subject: iio: dac: ad3552r: clear reset status flag
+
+From: Angelo Dureghello <adureghello@baylibre.com>
+
+commit e17b9f20da7d2bc1f48878ab2230523b2512d965 upstream.
+
+Clear reset status flag, to keep error status register clean after reset
+(ad3552r manual, rev B table 38).
+
+Reset error flag was left to 1, so debugging registers, the "Error
+Status Register" was dirty (0x01). It is important to clear this bit, so
+if there is any reset event over normal working mode, it is possible to
+detect it.
+
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Link: https://patch.msgid.link/20250125-wip-bl-ad3552r-clear-reset-v2-1-aa3a27f3ff8c@baylibre.com
+Cc: <Stable@vger..kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/iio/dac/ad3552r.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+--- a/drivers/iio/dac/ad3552r.c
++++ b/drivers/iio/dac/ad3552r.c
+@@ -714,6 +714,12 @@ static int ad3552r_reset(struct ad3552r_
+ 		return ret;
+ 	}
+ 
++	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
++	ret = ad3552r_write_reg(dac, AD3552R_REG_ADDR_ERR_STATUS,
++				AD3552R_MASK_RESET_STATUS);
++	if (ret)
++		return ret;
++
+ 	return ad3552r_update_reg_field(dac,
+ 					addr_mask_map[AD3552R_ADDR_ASCENSION][0],
+ 					addr_mask_map[AD3552R_ADDR_ASCENSION][1],
+
+
+Patches currently in stable-queue which might be from adureghello@baylibre.com are
+
+queue-6.12/iio-dac-ad3552r-clear-reset-status-flag.patch
 
