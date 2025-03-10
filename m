@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B30A59DD2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BD0A59CA1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CF3E3A9120
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B49253A5582
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C2023370F;
-	Mon, 10 Mar 2025 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A5A23373C;
+	Mon, 10 Mar 2025 17:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukdTK4L2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NagLaJ7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A8118DB24;
-	Mon, 10 Mar 2025 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C63233737;
+	Mon, 10 Mar 2025 17:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627445; cv=none; b=ldBHh1Tsq6deUoQKV77Yj2IVlJZhtdv9uRZHcVNJFr5P3+I+HvO8CZiFuj27oxyPyHN7vvaoPRTwwd9CeGdReDatgasN2dIqr2LuMUwgNHMfqqpPiLqJ/fGQvJCEeDTCSQoC+VnfSIWSkdLKKa1xati6UJpP23Dxeiyyi4foyoc=
+	t=1741626729; cv=none; b=biRobMzMYY84Jg3E/a+mqZS/mGqx3e+h9rEaIMHLUI7CbHuF5mvLG4y4Ewz+pvo45P87i9Mm0CGsat1tS9sO0C91Edapc/3rJVOSW2wh5EJyGc5kbuxgYHno4xxScAnWhRRES9kIK7uEMPzuXsLiU5x/DmU/ABxl95V63JrFGpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627445; c=relaxed/simple;
-	bh=LtXM6VBstzddXldQjWI2K9yD9MV7o9THTuN1NtsNKgw=;
+	s=arc-20240116; t=1741626729; c=relaxed/simple;
+	bh=K/Z8CFzkjX5E5KrljE/lBKAHnPI9xsrgBa/i/hTpVyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIJzNBUeH8RCkjdkNRxFT0I1i/91KEKforRlW1AIReUDrYa0yR+xxY8nOdU9XLJ8XdFu1tQwIFgJVSR79UCA9qYrgR+bwRsv46XgbPiX1GL+YITUPBBP3Y9tavA8mJMdMdhS9cR/QOJDDpCQUtCKhNtiBrLzh/y+VPTlgDcQ000=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukdTK4L2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D7EC4CEE5;
-	Mon, 10 Mar 2025 17:24:04 +0000 (UTC)
+	 MIME-Version; b=izUXd1uq8/KCtBXLk0UfiC/NZJrqyqwFskLv2xOyEpqB5qxHLfjcZLk6HEb0Z23eQMND/yPoe2v2wjDvFw1SDwNsCOw4sskmjDZP8v0WvwIgcb9R7M9CkGSGygwdBXipjo8kUCbfVtO27bQ15zP+7PbIy7oa7GOvD+83ukYW66E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NagLaJ7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1256C4CEED;
+	Mon, 10 Mar 2025 17:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627445;
-	bh=LtXM6VBstzddXldQjWI2K9yD9MV7o9THTuN1NtsNKgw=;
+	s=korg; t=1741626729;
+	bh=K/Z8CFzkjX5E5KrljE/lBKAHnPI9xsrgBa/i/hTpVyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukdTK4L2AOG8hCiW1FzBpuLxN1Qt+HZnm2pYiN74iet9jzA9b3zmxeT6Z1v+BlI2o
-	 JW3ED6LinpKlrGTSLraNpchRhtBtK4N4u9AWGPO7sXYo/X3c9Cuc8/ZtiT3a9kzqk9
-	 ZR3P/+FMWIndskFkIL29rjuqJg9PZpvSVsjz1bzo=
+	b=NagLaJ7wIkR3eJRxF26Zkq4B+dmlNqCTsaSuhA4TlJ8eY2wE7PpHggWTysiMJl/UX
+	 SLH0Ej0BfBn4hGrJEs1Lnoiv4g0isFvlfehWsMX9KZtOkcvm/WnpD1d6blZpIp3NIB
+	 whlGsJHSDSrP4cXdsyLh9HmMmYxHx4gG9K0/6SDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 131/269] NFS: fix nfs_release_folio() to not deadlock via kcompactd writeback
-Date: Mon, 10 Mar 2025 18:04:44 +0100
-Message-ID: <20250310170502.942540850@linuxfoundation.org>
+	Michael Stapelberg <michael@stapelberg.ch>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 092/207] coredump: Only sort VMAs when core_sort_vma sysctl is set
+Date: Mon, 10 Mar 2025 18:04:45 +0100
+Message-ID: <20250310170451.418624345@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Kees Cook <kees@kernel.org>
 
-commit ce6d9c1c2b5cc785016faa11b48b6cd317eb367e upstream.
+[ Upstream commit 39ec9eaaa165d297d008d1fa385748430bd18e4d ]
 
-Add PF_KCOMPACTD flag and current_is_kcompactd() helper to check for it so
-nfs_release_folio() can skip calling nfs_wb_folio() from kcompactd.
+The sorting of VMAs by size in commit 7d442a33bfe8 ("binfmt_elf: Dump
+smaller VMAs first in ELF cores") breaks elfutils[1]. Instead, sort
+based on the setting of the new sysctl, core_sort_vma, which defaults
+to 0, no sorting.
 
-Otherwise NFS can deadlock waiting for kcompactd enduced writeback which
-recurses back to NFS (which triggers writeback to NFSD via NFS loopback
-mount on the same host, NFSD blocks waiting for XFS's call to
-__filemap_get_folio):
-
-6070.550357] INFO: task kcompactd0:58 blocked for more than 4435 seconds.
-
-{---
-[58] "kcompactd0"
-[<0>] folio_wait_bit+0xe8/0x200
-[<0>] folio_wait_writeback+0x2b/0x80
-[<0>] nfs_wb_folio+0x80/0x1b0 [nfs]
-[<0>] nfs_release_folio+0x68/0x130 [nfs]
-[<0>] split_huge_page_to_list_to_order+0x362/0x840
-[<0>] migrate_pages_batch+0x43d/0xb90
-[<0>] migrate_pages_sync+0x9a/0x240
-[<0>] migrate_pages+0x93c/0x9f0
-[<0>] compact_zone+0x8e2/0x1030
-[<0>] compact_node+0xdb/0x120
-[<0>] kcompactd+0x121/0x2e0
-[<0>] kthread+0xcf/0x100
-[<0>] ret_from_fork+0x31/0x40
-[<0>] ret_from_fork_asm+0x1a/0x30
----}
-
-[akpm@linux-foundation.org: fix build]
-Link: https://lkml.kernel.org/r/20250225022002.26141-1-snitzer@kernel.org
-Fixes: 96780ca55e3c ("NFS: fix up nfs_release_folio() to try to release the page")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Michael Stapelberg <michael@stapelberg.ch>
+Closes: https://lore.kernel.org/all/20250218085407.61126-1-michael@stapelberg.de/ [1]
+Fixes: 7d442a33bfe8 ("binfmt_elf: Dump smaller VMAs first in ELF cores")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/file.c              |    3 ++-
- include/linux/compaction.h |    5 +++++
- include/linux/sched.h      |    2 +-
- mm/compaction.c            |    3 +++
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/sysctl/kernel.rst | 11 +++++++++++
+ fs/coredump.c                               | 15 +++++++++++++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -29,6 +29,7 @@
- #include <linux/pagemap.h>
- #include <linux/gfp.h>
- #include <linux/swap.h>
-+#include <linux/compaction.h>
+diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+index b2b36d0c3094d..7a85b6eb884ea 100644
+--- a/Documentation/admin-guide/sysctl/kernel.rst
++++ b/Documentation/admin-guide/sysctl/kernel.rst
+@@ -212,6 +212,17 @@ pid>/``).
+ This value defaults to 0.
  
- #include <linux/uaccess.h>
- #include <linux/filelock.h>
-@@ -451,7 +452,7 @@ static bool nfs_release_folio(struct fol
- 	/* If the private flag is set, then the folio is not freeable */
- 	if (folio_test_private(folio)) {
- 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
--		    current_is_kswapd())
-+		    current_is_kswapd() || current_is_kcompactd())
- 			return false;
- 		if (nfs_wb_folio(folio->mapping->host, folio) < 0)
- 			return false;
---- a/include/linux/compaction.h
-+++ b/include/linux/compaction.h
-@@ -80,6 +80,11 @@ static inline unsigned long compact_gap(
- 	return 2UL << order;
- }
  
-+static inline int current_is_kcompactd(void)
-+{
-+	return current->flags & PF_KCOMPACTD;
-+}
++core_sort_vma
++=============
 +
- #ifdef CONFIG_COMPACTION
++The default coredump writes VMAs in address order. By setting
++``core_sort_vma`` to 1, VMAs will be written from smallest size
++to largest size. This is known to break at least elfutils, but
++can be handy when dealing with very large (and truncated)
++coredumps where the more useful debugging details are included
++in the smaller VMAs.
++
++
+ core_uses_pid
+ =============
  
- extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1682,7 +1682,7 @@ extern struct pid *cad_pid;
- #define PF_USED_MATH		0x00002000	/* If unset the fpu must be initialized before use */
- #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
- #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
--#define PF__HOLE__00010000	0x00010000
-+#define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
- #define PF_KSWAPD		0x00020000	/* I am kswapd */
- #define PF_MEMALLOC_NOFS	0x00040000	/* All allocations inherit GFP_NOFS. See memalloc_nfs_save() */
- #define PF_MEMALLOC_NOIO	0x00080000	/* All allocations inherit GFP_NOIO. See memalloc_noio_save() */
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -3164,6 +3164,7 @@ static int kcompactd(void *p)
- 	if (!cpumask_empty(cpumask))
- 		set_cpus_allowed_ptr(tsk, cpumask);
+diff --git a/fs/coredump.c b/fs/coredump.c
+index d48edb37bc35c..c6f4c745e1bd8 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -63,6 +63,7 @@ static void free_vma_snapshot(struct coredump_params *cprm);
  
-+	current->flags |= PF_KCOMPACTD;
- 	set_freezable();
+ static int core_uses_pid;
+ static unsigned int core_pipe_limit;
++static unsigned int core_sort_vma;
+ static char core_pattern[CORENAME_MAX_SIZE] = "core";
+ static int core_name_size = CORENAME_MAX_SIZE;
+ unsigned int core_file_note_size_limit = CORE_FILE_NOTE_SIZE_DEFAULT;
+@@ -1026,6 +1027,15 @@ static struct ctl_table coredump_sysctls[] = {
+ 		.extra1		= (unsigned int *)&core_file_note_size_min,
+ 		.extra2		= (unsigned int *)&core_file_note_size_max,
+ 	},
++	{
++		.procname	= "core_sort_vma",
++		.data		= &core_sort_vma,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_douintvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE,
++	},
+ };
  
- 	pgdat->kcompactd_max_order = 0;
-@@ -3220,6 +3221,8 @@ static int kcompactd(void *p)
- 			pgdat->proactive_compact_trigger = false;
+ static int __init init_fs_coredump_sysctls(void)
+@@ -1256,8 +1266,9 @@ static bool dump_vma_snapshot(struct coredump_params *cprm)
+ 		cprm->vma_data_size += m->dump_size;
  	}
  
-+	current->flags &= ~PF_KCOMPACTD;
-+
- 	return 0;
- }
+-	sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
+-		cmp_vma_size, NULL);
++	if (core_sort_vma)
++		sort(cprm->vma_meta, cprm->vma_count, sizeof(*cprm->vma_meta),
++		     cmp_vma_size, NULL);
  
+ 	return true;
+ }
+-- 
+2.39.5
+
 
 
 
