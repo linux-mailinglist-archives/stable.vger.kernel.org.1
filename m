@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-122680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50037A5A0BC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:53:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F322A5A0C1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E376172ED4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17FDC3AC719
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3233E231A2A;
-	Mon, 10 Mar 2025 17:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C21023237F;
+	Mon, 10 Mar 2025 17:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4DWQHM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfvX9BPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E388022AE7C;
-	Mon, 10 Mar 2025 17:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3859722AE7C;
+	Mon, 10 Mar 2025 17:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629190; cv=none; b=FhqZeex8MjQcREjcFJey+UeUKCeNWZqDMPe2KLU5UFvET4DNRjiMCEp64/PQjDjr4jib26DZTLda0vT09sPPhW8m3LW4bTW0+M7bkj3VARReAW5zA/1PnYXKzD12wS7R2BLwLqJRHl3l6R6T/Ct84RyEULqcpURXRIfNB0H2P7I=
+	t=1741629207; cv=none; b=Gx7pDJ93GZG6md+1XVHMz0j9vvVuwZgDDkaZXaCeRyooyLtifafgUmUwUe7SWgIZnK0L0L1oab8YwBcPpMwU//0FpDYROJhu2oCBOmRTeLKt3S41ZnMZY7lpqVDh7126+vBt+kS8LGhNAqRoc46VRyeSQEz7CGr+dBX0/6UAj4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629190; c=relaxed/simple;
-	bh=PJ3svGZhiD4QI2Lu0aXLw0iIUJlvLddWWFfwR63hprg=;
+	s=arc-20240116; t=1741629207; c=relaxed/simple;
+	bh=0ehu48MmWVvHSUSvcWvmceOHwrH9/B/Y1OPnzwSIXC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faIZtFTWIK8+wqNzBgZNTsFLG/i6pH8i5+5pKRFjwMs0sOzC0wYY5efY40EfqkH8o2thcDisyKaVPwsZqPwq8KHUxGNOqzrb+iDYKx4vMOASl7Hrb8bx8oB2HKoDscDm85HjFsiSElGsf3oZzua9LstBIDYvPo1klQQVkA73/nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4DWQHM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A4FC4CEE5;
-	Mon, 10 Mar 2025 17:53:09 +0000 (UTC)
+	 MIME-Version; b=FgnCX8+SgVmrOuNm5MYtV4DZ+hw7eqsfccjTntG921+ITFlivwciDKpjwqdzdCTsz4rz2qpHf9B7b8LKJCXSzp5g3edG4tFiuiP3jDW521qlchniw2lG5DU/2dbJr6SnWuT98e+MCV+7Pt3p1wPW1u2hPRxQRCXKw7s99ODOtnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfvX9BPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDFBC4CEE5;
+	Mon, 10 Mar 2025 17:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629189;
-	bh=PJ3svGZhiD4QI2Lu0aXLw0iIUJlvLddWWFfwR63hprg=;
+	s=korg; t=1741629207;
+	bh=0ehu48MmWVvHSUSvcWvmceOHwrH9/B/Y1OPnzwSIXC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4DWQHM56sJQHvB1gHLpsoXKd6yDPfCRqiGyOubQIg/b7QQafNBS53eo1JGUe2Gqd
-	 i7X5vm9QpJqkSQG0lV6RaPq4hy81ivtxWJC5kvQH0KamoSfj6AVho5jcJ45dni46C/
-	 Q8gFllV5gwjHWmgHlt8/p0erezfFNG1JiZtneHXk=
+	b=KfvX9BPqXRScxU6OUyhXXWRnV91MST8XuuwSI1ZXaERm0S6Og3p41+lG6MDkRObvr
+	 1N6Aqg6tThFHoPuie2oTUzv8PrKWjxbOR/paYE7T68ywDeFRNMP3hj2pynLn2uyrDr
+	 0I6DEFH39DMuqALTJqOuw6NrNETI73xX4Mvo9xJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Stefan Reinauer <reinauer@google.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/620] kconfig: deduplicate code in conf_read_simple()
-Date: Mon, 10 Mar 2025 18:00:27 +0100
-Message-ID: <20250310170552.766879495@linuxfoundation.org>
+Subject: [PATCH 5.15 182/620] kconfig: WERROR unmet symbol dependency
+Date: Mon, 10 Mar 2025 18:00:28 +0100
+Message-ID: <20250310170552.814838979@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -65,157 +67,136 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit d854b4b21de684a16a7d6163c7b0e9c5ff8a09d3 ]
+[ Upstream commit 15d3f7664d2776c086f813f1efbfe2ae20a85e89 ]
 
-Kconfig accepts both "# CONFIG_FOO is not set" and "CONFIG_FOO=n" as
-a valid input, but conf_read_simple() duplicates similar code to handle
-them. Factor out the common code.
+When KCONFIG_WERROR env variable is set treat unmet direct
+symbol dependency as a terminal condition (error).
 
+Suggested-by: Stefan Reinauer <reinauer@google.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Stable-dep-of: a409fc1463d6 ("kconfig: fix memory leak in sym_warn_unmet_dep()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/confdata.c | 89 +++++++++++++++-----------------------
- 1 file changed, 35 insertions(+), 54 deletions(-)
+ scripts/kconfig/conf.c      |  6 ++++++
+ scripts/kconfig/confdata.c  | 13 ++++++++-----
+ scripts/kconfig/lkc_proto.h |  2 ++
+ scripts/kconfig/symbol.c    |  9 +++++++++
+ 4 files changed, 25 insertions(+), 5 deletions(-)
 
+diff --git a/scripts/kconfig/conf.c b/scripts/kconfig/conf.c
+index 5d84b44a2a2a7..ab1c41eb6d035 100644
+--- a/scripts/kconfig/conf.c
++++ b/scripts/kconfig/conf.c
+@@ -838,6 +838,9 @@ int main(int ac, char **av)
+ 		break;
+ 	}
+ 
++	if (conf_errors())
++		exit(1);
++
+ 	if (sync_kconfig) {
+ 		name = getenv("KCONFIG_NOSILENTUPDATE");
+ 		if (name && *name) {
+@@ -898,6 +901,9 @@ int main(int ac, char **av)
+ 		break;
+ 	}
+ 
++	if (sym_dep_errors())
++		exit(1);
++
+ 	if (input_mode == savedefconfig) {
+ 		if (conf_write_defconfig(defconfig_file)) {
+ 			fprintf(stderr, "n*** Error while saving defconfig to: %s\n\n",
 diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
-index 8349f6ecd9dc7..ef9deb1e22f8c 100644
+index ef9deb1e22f8c..06d98ca4b612f 100644
 --- a/scripts/kconfig/confdata.c
 +++ b/scripts/kconfig/confdata.c
-@@ -348,11 +348,10 @@ int conf_read_simple(const char *name, int def)
- 	FILE *in = NULL;
- 	char   *line = NULL;
- 	size_t  line_asize = 0;
--	char *p, *p2;
-+	char *p, *p2, *val;
+@@ -173,6 +173,13 @@ static void conf_message(const char *fmt, ...)
+ static const char *conf_filename;
+ static int conf_lineno, conf_warnings;
+ 
++bool conf_errors(void)
++{
++	if (conf_warnings)
++		return getenv("KCONFIG_WERROR");
++	return false;
++}
++
+ static void conf_warning(const char *fmt, ...)
+ {
+ 	va_list ap;
+@@ -351,10 +358,9 @@ int conf_read_simple(const char *name, int def)
+ 	char *p, *p2, *val;
  	struct symbol *sym;
  	int i, def_flags;
--	const char *warn_unknown;
--	const char *werror;
-+	const char *warn_unknown, *werror, *sym_name;
+-	const char *warn_unknown, *werror, *sym_name;
++	const char *warn_unknown, *sym_name;
  
  	warn_unknown = getenv("KCONFIG_WARN_UNKNOWN_SYMBOLS");
- 	werror = getenv("KCONFIG_WERROR");
-@@ -432,77 +431,34 @@ int conf_read_simple(const char *name, int def)
+-	werror = getenv("KCONFIG_WERROR");
+ 	if (name) {
+ 		in = zconf_fopen(name);
+ 	} else {
+@@ -515,9 +521,6 @@ int conf_read_simple(const char *name, int def)
+ 	free(line);
+ 	fclose(in);
  
- 	while (compat_getline(&line, &line_asize, in) != -1) {
- 		conf_lineno++;
--		sym = NULL;
- 		if (line[0] == '#') {
- 			if (line[1] != ' ')
- 				continue;
--			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
-+			p = line + 2;
-+			if (memcmp(p, CONFIG_, strlen(CONFIG_)))
- 				continue;
--			p = strchr(line + 2 + strlen(CONFIG_), ' ');
-+			sym_name = p + strlen(CONFIG_);
-+			p = strchr(sym_name, ' ');
- 			if (!p)
- 				continue;
- 			*p++ = 0;
- 			if (strncmp(p, "is not set", 10))
- 				continue;
+-	if (conf_warnings && werror)
+-		exit(1);
+-
+ 	return 0;
+ }
  
--			sym = sym_find(line + 2 + strlen(CONFIG_));
--			if (!sym) {
--				if (warn_unknown)
--					conf_warning("unknown symbol: %s",
--						     line + 2 + strlen(CONFIG_));
--
--				conf_set_changed(true);
--				continue;
--			}
--			if (sym->flags & def_flags) {
--				conf_warning("override: reassigning to symbol %s", sym->name);
--			}
--			switch (sym->type) {
--			case S_BOOLEAN:
--			case S_TRISTATE:
--				sym->def[def].tri = no;
--				sym->flags |= def_flags;
--				break;
--			default:
--				;
--			}
-+			val = "n";
- 		} else if (memcmp(line, CONFIG_, strlen(CONFIG_)) == 0) {
--			p = strchr(line + strlen(CONFIG_), '=');
-+			sym_name = line + strlen(CONFIG_);
-+			p = strchr(sym_name, '=');
- 			if (!p)
- 				continue;
- 			*p++ = 0;
-+			val = p;
- 			p2 = strchr(p, '\n');
- 			if (p2) {
- 				*p2-- = 0;
- 				if (*p2 == '\r')
- 					*p2 = 0;
- 			}
--
--			sym = sym_find(line + strlen(CONFIG_));
--			if (!sym) {
--				if (def == S_DEF_AUTO) {
--					/*
--					 * Reading from include/config/auto.conf
--					 * If CONFIG_FOO previously existed in
--					 * auto.conf but it is missing now,
--					 * include/config/FOO must be touched.
--					 */
--					conf_touch_dep(line + strlen(CONFIG_));
--				} else {
--					if (warn_unknown)
--						conf_warning("unknown symbol: %s",
--							     line + strlen(CONFIG_));
--
--					conf_set_changed(true);
--				}
--				continue;
--			}
--
--			if (sym->flags & def_flags) {
--				conf_warning("override: reassigning to symbol %s", sym->name);
--			}
--			if (conf_set_sym_val(sym, def, def_flags, p))
--				continue;
- 		} else {
- 			if (line[0] != '\r' && line[0] != '\n')
- 				conf_warning("unexpected data: %.*s",
-@@ -511,6 +467,31 @@ int conf_read_simple(const char *name, int def)
- 			continue;
- 		}
+diff --git a/scripts/kconfig/lkc_proto.h b/scripts/kconfig/lkc_proto.h
+index a11626bdc421c..d7783bc0a4f79 100644
+--- a/scripts/kconfig/lkc_proto.h
++++ b/scripts/kconfig/lkc_proto.h
+@@ -12,6 +12,7 @@ void conf_set_changed(bool val);
+ bool conf_get_changed(void);
+ void conf_set_changed_callback(void (*fn)(void));
+ void conf_set_message_callback(void (*fn)(const char *s));
++bool conf_errors(void);
  
-+		sym = sym_find(sym_name);
-+		if (!sym) {
-+			if (def == S_DEF_AUTO) {
-+				/*
-+				 * Reading from include/config/auto.conf.
-+				 * If CONFIG_FOO previously existed in auto.conf
-+				 * but it is missing now, include/config/FOO
-+				 * must be touched.
-+				 */
-+				conf_touch_dep(sym_name);
-+			} else {
-+				if (warn_unknown)
-+					conf_warning("unknown symbol: %s", sym_name);
+ /* symbol.c */
+ extern struct symbol * symbol_hash[SYMBOL_HASHSIZE];
+@@ -22,6 +23,7 @@ const char * sym_escape_string_value(const char *in);
+ struct symbol ** sym_re_search(const char *pattern);
+ const char * sym_type_name(enum symbol_type type);
+ void sym_calc_value(struct symbol *sym);
++bool sym_dep_errors(void);
+ enum symbol_type sym_get_type(struct symbol *sym);
+ bool sym_tristate_within_range(struct symbol *sym,tristate tri);
+ bool sym_set_tristate_value(struct symbol *sym,tristate tri);
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index f9786621a178e..15d958ba99880 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -40,6 +40,7 @@ static struct symbol symbol_empty = {
+ 
+ struct symbol *modules_sym;
+ static tristate modules_val;
++static int sym_warnings;
+ 
+ enum symbol_type sym_get_type(struct symbol *sym)
+ {
+@@ -320,6 +321,14 @@ static void sym_warn_unmet_dep(struct symbol *sym)
+ 			       "  Selected by [m]:\n");
+ 
+ 	fputs(str_get(&gs), stderr);
++	sym_warnings++;
++}
 +
-+				conf_set_changed(true);
-+			}
-+			continue;
-+		}
-+
-+		if (sym->flags & def_flags)
-+			conf_warning("override: reassigning to symbol %s", sym->name);
-+
-+		if (conf_set_sym_val(sym, def, def_flags, val))
-+			continue;
-+
- 		if (sym && sym_is_choice_value(sym)) {
- 			struct symbol *cs = prop_get_symbol(sym_get_choice_prop(sym));
- 			switch (sym->def[def].tri) {
++bool sym_dep_errors(void)
++{
++	if (sym_warnings)
++		return getenv("KCONFIG_WERROR");
++	return false;
+ }
+ 
+ void sym_calc_value(struct symbol *sym)
 -- 
 2.39.5
 
