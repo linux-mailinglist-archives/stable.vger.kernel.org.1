@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF68A5A26F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1814A59EE9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5AE1894C27
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F5CA189002E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359251DE89C;
-	Mon, 10 Mar 2025 18:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5207723372F;
+	Mon, 10 Mar 2025 17:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJoiM1Pt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2b1v+zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71A2374EA;
-	Mon, 10 Mar 2025 18:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD01233722;
+	Mon, 10 Mar 2025 17:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630810; cv=none; b=Bn4+2Y9Sdsfh+5p7S5IepORufuiYyhXtnmOyW+jvgb40y7uOvgpPgiIcUMM0yd5zulHHKuJfWGngrbJsvbFPyBHVIAdD/h94wltGV2m013E2lENADy3xocu4DBYvbUmmweZMgNQihwMorbTLtbWnekdzUda/5aiD/xxMw+J31I8=
+	t=1741628124; cv=none; b=ihOaEnjLj8l8GeMkQmGjW9A6tkLlCvy80ZNoPlK4wEIZAOIHzOuN/1iyBtbBaRWVwONrPqxH+2MjI9rR42wUPGvk684vNJVaIlOEcxiB2mTGkidnBKc2agMPHn8pWYbtkGX4sO6CAP/lfJCCx/IsNpQqW9LSoJa5T6Q8J57N0Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630810; c=relaxed/simple;
-	bh=OuR/vTnmgZFRLDbAUFD1Qv9bZ5bNebbTc5VHdk4dv98=;
+	s=arc-20240116; t=1741628124; c=relaxed/simple;
+	bh=w0yWN8aTDP0weo6oTQoCifaQx0A2W9Qye8ndHc74TWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmFpjTyt5DvbbRc2t/cGjDe1pLZntbs5jFRtEzNIMb2AC2WsAdkH/mXDkbLx0OZkEUCgC/i532QSnXoqCRyi+EWL3WUcitkt6UxI1aOlLqW8bQiYrPoKXEJEXACLG4LAqzUyZi3yLcp/zZMEdZdynj2RdQkL/U9tGIcGNxp1v5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJoiM1Pt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CFFC4CEE5;
-	Mon, 10 Mar 2025 18:20:09 +0000 (UTC)
+	 MIME-Version; b=Ep/Kr953CUFic3asFgQVFarYFU7k1ZGrgaCKJReH8J89RZheHkCnW+j4la+9UImpi3TtM9ouP6keusOh27UMScccbgFMWLhrfwgPmBNpIIpviMIcnK4ni2dOcKj7CvGEmUNjwy4nIvuwf7WTnWPrPRH0bTZF+u3NplUv6Ve0Ysw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2b1v+zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE4DC4CEE5;
+	Mon, 10 Mar 2025 17:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630809;
-	bh=OuR/vTnmgZFRLDbAUFD1Qv9bZ5bNebbTc5VHdk4dv98=;
+	s=korg; t=1741628123;
+	bh=w0yWN8aTDP0weo6oTQoCifaQx0A2W9Qye8ndHc74TWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PJoiM1PtrdhDNgXx9jSPA/rZQPOndEU9FfwhbNidSYeQALnVNRJajBtdRul+dI47+
-	 pB6ya1iZ3xZdxeamvlAsHYgLB3KLIEAYW1xJBhXFThBYvYvKOB6spIYkzMXnl1IL9f
-	 W0j7PBTF8HeVOgiFYvPp6dr/L4obCpoeto4gmp7k=
+	b=c2b1v+zffdvCyUm2UANzrdO6M+6LlOJn22OVt3iMTZ1mRKdyPke26TNjV153lY2RJ
+	 TcD1Val6vS2Vj+zwa5Lg5scTpT/PM26+HmNcjSmgnvEzWltak3Wg05NerBhOTM9MvC
+	 3MqnhdkRER5k7H0WDc9VOkYl0aNKOA/RLHkk6V3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 542/620] x86/cpu: Validate CPUID leaf 0x2 EDX output
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.6 094/145] usb: renesas_usbhs: Use devm_usb_get_phy()
 Date: Mon, 10 Mar 2025 18:06:28 +0100
-Message-ID: <20250310170606.942244500@linuxfoundation.org>
+Message-ID: <20250310170438.550090374@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
+commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
 
-CPUID leaf 0x2 emits one-byte descriptors in its four output registers
-EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
-significant bit (MSB) of each register must be clear.
+The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
+never released. Use devm_usb_get_phy() to handle this scenario.
 
-Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
-ECX, but left EDX unchecked.
+This issue was identified through code investigation. No issue was found
+without this change.
 
-Validate EDX's most-significant bit as well.
-
-Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
+Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/intel.c |    2 +-
+ drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -913,7 +913,7 @@ static void intel_detect_tlb(struct cpui
- 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
+--- a/drivers/usb/renesas_usbhs/mod_gadget.c
++++ b/drivers/usb/renesas_usbhs/mod_gadget.c
+@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
+ 		goto usbhs_mod_gadget_probe_err_gpriv;
+ 	}
  
- 		/* If bit 31 is set, this is an unknown format */
--		for (j = 0 ; j < 3 ; j++)
-+		for (j = 0 ; j < 4 ; j++)
- 			if (regs[j] & (1 << 31))
- 				regs[j] = 0;
+-	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
++	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
+ 	dev_info(dev, "%stransceiver found\n",
+ 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
  
 
 
