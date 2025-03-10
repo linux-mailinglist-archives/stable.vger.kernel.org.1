@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F054DA59CD5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A02D2A59E00
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95703A8772
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C8AD16FF6F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2199230BE6;
-	Mon, 10 Mar 2025 17:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2EC233724;
+	Mon, 10 Mar 2025 17:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QguRn73A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOI0Nz5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF24422B8D0;
-	Mon, 10 Mar 2025 17:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE90E230BF8;
+	Mon, 10 Mar 2025 17:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626850; cv=none; b=NIX+a3BThQfodzAwEiCvTl/wY/y44cSrpfD6M2keaL1dVmMrLue+8Ga8oFENJexVvP5BEi+il19KaHiSwSCMVDaUKqs1P1Y3P8r+ewQDAndfANfHI+DjA94KyILep8/Ah6kTKBrIss+tKjdrh2di49E0IC/wzdieybsDDKCrNe8=
+	t=1741627566; cv=none; b=qxtaAAnw+qVkHxfUcmZusjU10xufFvY9SeC16NxY03JpeWvmUKAKO/2FO6w130jhFBRy4VleNnmh6Hi4zmu1cxVSX85H1DaRR2EMFB6391H1PAEUYdCA0l3vqCnh9gZnGXB2a69prOP5bIRIQcsKCxLsYistAkF+ZzKMt/Dbtt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626850; c=relaxed/simple;
-	bh=OXumr60NOCNUDR4+qyqdvCdD2IWuNBCHgYrHGUubjVY=;
+	s=arc-20240116; t=1741627566; c=relaxed/simple;
+	bh=Aik8aZPAqMbArTRqBgbQCmWk8OyffNGPeQq/ZqVhobw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfnR8vkNHzdlCxwVIEhB2X7a0S9KiCrUqP2Thn3Olen2G1p6887gcq8r5igLpLxwTIHtMPxM/k31Y85gfuxS2jderXiX+O8r4LADjZClGmrIKeROZdbG3J4l4OZVBylEmLlFwodM9WMAbU+ddpoNWXB4TJ/6tN1B8OzHGMpgUo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QguRn73A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37135C4CEE5;
-	Mon, 10 Mar 2025 17:14:10 +0000 (UTC)
+	 MIME-Version; b=dm5Bo2thWD3kHk3/EAWdsDZFX1/plj5RJWRb0KtgvkgWREKnYuyrCLXScTqI9hwX4cVf8JOoA0pcssBkBV7mDo5dfJZv+u41oPwwEV+WCRDup4XhSQpYsAWaws2eybw4l0NtJmCYbcwI6+NifEYZF0UoPzk1V2GPdNEGVTBCClM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOI0Nz5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5248AC4CEE5;
+	Mon, 10 Mar 2025 17:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626850;
-	bh=OXumr60NOCNUDR4+qyqdvCdD2IWuNBCHgYrHGUubjVY=;
+	s=korg; t=1741627566;
+	bh=Aik8aZPAqMbArTRqBgbQCmWk8OyffNGPeQq/ZqVhobw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QguRn73ADu6LvTeQFf20e17huzGqXQAGngSmXQn6QT9m8YmicwQdyr+asibWeA6r/
-	 qpdh297w+3TGqw/E1aK27RolJifzGacBohHxbVnGi4UrjbUkqZ1ulmCqbAimq3H8zu
-	 e0Uv4Ld8maXJjJnByRDOi5uJVZxFmP+f0uH4QKsw=
+	b=pOI0Nz5L4MLkf2v7JZzDeB8KVw3tFGNoJ4rIvEggOOTVaD6TrBdy47XiEOfejNEWJ
+	 Rbh2mqn5XnsvtXGqHQ5au60c/HF3tfD8ktAYs/15DXc+vQgN4AJSHJHKsr/sxEiYW8
+	 Lb7r/e/wrxydNyKOPOM+DVLLRgsIREST3QknNynk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 133/207] ethtool: linkstate: migrate linkstate functions to support multi-PHY setups
+Subject: [PATCH 6.12 173/269] tracing: probe-events: Remove unused MAX_ARG_BUF_LEN macro
 Date: Mon, 10 Mar 2025 18:05:26 +0100
-Message-ID: <20250310170453.088466395@linuxfoundation.org>
+Message-ID: <20250310170504.611287701@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit fe55b1d401c697c2ef126fe3ebbcaa6885fced5a ]
+[ Upstream commit fd5ba38390c59e1c147480ae49b6133c4ac24001 ]
 
-Adapt linkstate_get_sqi() and linkstate_get_sqi_max() to take a
-phy_device argument directly, enabling support for setups with
-multiple PHYs. The previous assumption of a single PHY attached to
-a net_device no longer holds.
+Commit 18b1e870a496 ("tracing/probes: Add $arg* meta argument for all
+function args") introduced MAX_ARG_BUF_LEN but it is not used.
+Remove it.
 
-Use ethnl_req_get_phydev() to identify the appropriate PHY device
-for the operation. Update linkstate_prepare_data() and related
-logic to accommodate this change, ensuring compatibility with
-multi-PHY configurations.
+Link: https://lore.kernel.org/all/174055075876.4079315.8805416872155957588.stgit@mhiramat.tok.corp.google.com/
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 637399bf7e77 ("net: ethtool: netlink: Allow NULL nlattrs when getting a phy_device")
+Fixes: 18b1e870a496 ("tracing/probes: Add $arg* meta argument for all function args")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/linkstate.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ kernel/trace/trace_probe.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
-index 34d76e87847d0..459cfea7652d4 100644
---- a/net/ethtool/linkstate.c
-+++ b/net/ethtool/linkstate.c
-@@ -26,9 +26,8 @@ const struct nla_policy ethnl_linkstate_get_policy[] = {
- 		NLA_POLICY_NESTED(ethnl_header_policy_stats),
- };
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index fba3ede870541..8a6797c2278d9 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -36,7 +36,6 @@
+ #define MAX_BTF_ARGS_LEN	128
+ #define MAX_DENTRY_ARGS_LEN	256
+ #define MAX_STRING_SIZE		PATH_MAX
+-#define MAX_ARG_BUF_LEN		(MAX_TRACE_ARGS * MAX_ARG_NAME_LEN)
  
--static int linkstate_get_sqi(struct net_device *dev)
-+static int linkstate_get_sqi(struct phy_device *phydev)
- {
--	struct phy_device *phydev = dev->phydev;
- 	int ret;
- 
- 	if (!phydev)
-@@ -46,9 +45,8 @@ static int linkstate_get_sqi(struct net_device *dev)
- 	return ret;
- }
- 
--static int linkstate_get_sqi_max(struct net_device *dev)
-+static int linkstate_get_sqi_max(struct phy_device *phydev)
- {
--	struct phy_device *phydev = dev->phydev;
- 	int ret;
- 
- 	if (!phydev)
-@@ -100,19 +98,28 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
- {
- 	struct linkstate_reply_data *data = LINKSTATE_REPDATA(reply_base);
- 	struct net_device *dev = reply_base->dev;
-+	struct nlattr **tb = info->attrs;
-+	struct phy_device *phydev;
- 	int ret;
- 
-+	phydev = ethnl_req_get_phydev(req_base, tb[ETHTOOL_A_LINKSTATE_HEADER],
-+				      info->extack);
-+	if (IS_ERR(phydev)) {
-+		ret = PTR_ERR(phydev);
-+		goto out;
-+	}
-+
- 	ret = ethnl_ops_begin(dev);
- 	if (ret < 0)
- 		return ret;
- 	data->link = __ethtool_get_link(dev);
- 
--	ret = linkstate_get_sqi(dev);
-+	ret = linkstate_get_sqi(phydev);
- 	if (linkstate_sqi_critical_error(ret))
- 		goto out;
- 	data->sqi = ret;
- 
--	ret = linkstate_get_sqi_max(dev);
-+	ret = linkstate_get_sqi_max(phydev);
- 	if (linkstate_sqi_critical_error(ret))
- 		goto out;
- 	data->sqi_max = ret;
-@@ -127,9 +134,9 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
- 			   sizeof(data->link_stats) / 8);
- 
- 	if (req_base->flags & ETHTOOL_FLAG_STATS) {
--		if (dev->phydev)
-+		if (phydev)
- 			data->link_stats.link_down_events =
--				READ_ONCE(dev->phydev->link_down_events);
-+				READ_ONCE(phydev->link_down_events);
- 
- 		if (dev->ethtool_ops->get_link_ext_stats)
- 			dev->ethtool_ops->get_link_ext_stats(dev,
+ /* Reserved field names */
+ #define FIELD_STRING_IP		"__probe_ip"
 -- 
 2.39.5
 
