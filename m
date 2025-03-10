@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-121842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AC6A59CA9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F82A59E1A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3939A7A8EC3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93DEF16D02F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9464F230D0F;
-	Mon, 10 Mar 2025 17:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410CF2356CB;
+	Mon, 10 Mar 2025 17:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjoTNmEo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/ajClyC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D45422FE18;
-	Mon, 10 Mar 2025 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F238A22D799;
+	Mon, 10 Mar 2025 17:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626788; cv=none; b=btxGOBLpV8deDeR13MLjb8nvQ4wIf4zhCh74O/M+v5uepbmxRLkX67mmZ2p3O2epzTKjOzzwTNJURzbaa9in5/H/OSVqNoaMdB8FTG2l1C244SPMjh0EmdlivvqLG6RE9MD6jcNQ1w8XxGO3fx3wTXc7ApjNA8ipaHYCaRuwCfE=
+	t=1741627602; cv=none; b=LrStvhNBhZmmngaNJS3UNv6+n4FrbjEZ9+F+FENktCc8TzW72JY5YGyAMkE8o4spRHH6uADOYq6H+LbVMN5uCfxoni6nbB4QydjM9yvNeGZfG3++QDzN3DC13SZ2LPlZ0eT1vuOldzqYYg8W9Du54E8qWmu++vR6oS9WzRdCvsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626788; c=relaxed/simple;
-	bh=V/4i8PTmmRCspvU63NDAjWKw0JG5/9LX5BHsUsNfY0I=;
+	s=arc-20240116; t=1741627602; c=relaxed/simple;
+	bh=zvyjyCSLDPQ1rkZSg79nr/sQD90zCiBFlEZVQJPZlCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIwCDkcNhsumSus7F7/7t2DhQo8Inc1JtvL4Dth/QBK5827u5aapsWFGeHO8s40nOsnmlMDBCMInedtYFGGJkUpOfd+IUDy7tRJyunGa/H9MtClwg69x2XiZdS4OpWAEGE/b/5s5kAUfmV5EFgyfCdpIpOZ+0dK5WDbBeHqfrjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjoTNmEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D74C4CEE5;
-	Mon, 10 Mar 2025 17:13:07 +0000 (UTC)
+	 MIME-Version; b=nHGqmxgWN2woH2J+W9NAR/XIL68n0PcZqpfJ2eylGhe+jg7zIEN2nXCs1UgaCcd0t0HrIMHPh6L7ez7dTBknaMuaOov431cf01SqoTr+gKYbD3ngmuvxto10y1/NNxsLGEpnljiXa63RqLtSqYNr7qjm5U2Cj1ARu1KccIoMo8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/ajClyC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F16C4CEE5;
+	Mon, 10 Mar 2025 17:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626787;
-	bh=V/4i8PTmmRCspvU63NDAjWKw0JG5/9LX5BHsUsNfY0I=;
+	s=korg; t=1741627601;
+	bh=zvyjyCSLDPQ1rkZSg79nr/sQD90zCiBFlEZVQJPZlCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjoTNmEoS4SexA5XKz2p7tiA+mmird6IWD3//d0d3e8F3hvMRHtfnnywjrC4S1h5W
-	 5lF2odWNohMFt5MmcY0Hj4xe1e6LmT8zide60qqtd7jidm9IHHWK5j6OuNwE7UEe3F
-	 +m6iJjQ/8JzkXQGCdks1R0v+TY3M3nK1N3AAEd7E=
+	b=v/ajClyCUhfNVUdSwQ0xTWavg5E6y15625qQDJ2CQH7pYeg9YxN0ZWpVGEIXQpiCi
+	 718gR97uYX6k4vEMlbEtCbuTlS3PrgWJIuDNHgR4PB6i7ERxBaZpaKezNiBLFs3UVq
+	 tOQGhrQi8cdnJdjzOmuTsaFozUsZ8/PvAhmfjvJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 113/207] perf/core: Fix pmus_lock vs. pmus_srcu ordering
+Subject: [PATCH 6.12 153/269] wifi: mac80211: Support parsing EPCS ML element
 Date: Mon, 10 Mar 2025 18:05:06 +0100
-Message-ID: <20250310170452.306963355@linuxfoundation.org>
+Message-ID: <20250310170503.822690710@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 2565e42539b120b81a68a58da961ce5d1e34eac8 ]
+[ Upstream commit 24711d60f8492a30622e419cee643d59264ea939 ]
 
-Commit a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
-placed pmus_lock inside pmus_srcu, this makes perf_pmu_unregister()
-trip lockdep.
+Add support for parsing an ML element of type EPCS priority
+access, which can optionally be included in EHT protected action
+frames used to configure EPCS.
 
-Move the locking about such that only pmu_idr and pmus (list) are
-modified while holding pmus_lock. This avoids doing synchronize_srcu()
-while holding pmus_lock and all is well again.
-
-Fixes: a63fbed776c7 ("perf/tracing/cpuhotplug: Fix locking order")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20241104135517.679556858@infradead.org
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250102161730.5afdf65cff46.I0ffa30b40fbad47bc5b608b5fd46047a8c44e904@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 99ca2c28e6b6 ("wifi: mac80211: fix MLE non-inheritance parsing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/parse.c       | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 0e6e16eb2d106..43a44a6e243b1 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11896,6 +11896,8 @@ void perf_pmu_unregister(struct pmu *pmu)
- {
- 	mutex_lock(&pmus_lock);
- 	list_del_rcu(&pmu->entry);
-+	idr_remove(&pmu_idr, pmu->type);
-+	mutex_unlock(&pmus_lock);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 7a0242e937d36..bfe0514efca37 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1751,6 +1751,7 @@ struct ieee802_11_elems {
+ 	const struct ieee80211_eht_operation *eht_operation;
+ 	const struct ieee80211_multi_link_elem *ml_basic;
+ 	const struct ieee80211_multi_link_elem *ml_reconf;
++	const struct ieee80211_multi_link_elem *ml_epcs;
+ 	const struct ieee80211_bandwidth_indication *bandwidth_indication;
+ 	const struct ieee80211_ttlm_elem *ttlm[IEEE80211_TTLM_MAX_CNT];
  
+@@ -1781,6 +1782,7 @@ struct ieee802_11_elems {
+ 	/* mult-link element can be de-fragmented and thus u8 is not sufficient */
+ 	size_t ml_basic_len;
+ 	size_t ml_reconf_len;
++	size_t ml_epcs_len;
+ 
+ 	u8 ttlm_num;
+ 
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 279c5143b3356..cd318c1c67bec 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -44,6 +44,9 @@ struct ieee80211_elems_parse {
+ 	/* The reconfiguration Multi-Link element in the original elements */
+ 	const struct element *ml_reconf_elem;
+ 
++	/* The EPCS Multi-Link element in the original elements */
++	const struct element *ml_epcs_elem;
++
  	/*
- 	 * We dereference the pmu list under both SRCU and regular RCU, so
-@@ -11905,7 +11907,6 @@ void perf_pmu_unregister(struct pmu *pmu)
- 	synchronize_rcu();
- 
- 	free_percpu(pmu->pmu_disable_count);
--	idr_remove(&pmu_idr, pmu->type);
- 	if (pmu_bus_running && pmu->dev && pmu->dev != PMU_NULL_DEV) {
- 		if (pmu->nr_addr_filters)
- 			device_remove_file(pmu->dev, &dev_attr_nr_addr_filters);
-@@ -11913,7 +11914,6 @@ void perf_pmu_unregister(struct pmu *pmu)
- 		put_device(pmu->dev);
- 	}
- 	free_pmu_context(pmu);
--	mutex_unlock(&pmus_lock);
+ 	 * scratch buffer that can be used for various element parsing related
+ 	 * tasks, e.g., element de-fragmentation etc.
+@@ -159,6 +162,9 @@ ieee80211_parse_extension_element(u32 *crc,
+ 			case IEEE80211_ML_CONTROL_TYPE_RECONF:
+ 				elems_parse->ml_reconf_elem = elem;
+ 				break;
++			case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
++				elems_parse->ml_epcs_elem = elem;
++				break;
+ 			default:
+ 				break;
+ 			}
+@@ -943,6 +949,27 @@ ieee80211_mle_defrag_reconf(struct ieee80211_elems_parse *elems_parse)
+ 	elems_parse->scratch_pos += ml_len;
  }
- EXPORT_SYMBOL_GPL(perf_pmu_unregister);
+ 
++static void
++ieee80211_mle_defrag_epcs(struct ieee80211_elems_parse *elems_parse)
++{
++	struct ieee802_11_elems *elems = &elems_parse->elems;
++	ssize_t ml_len;
++
++	ml_len = cfg80211_defragment_element(elems_parse->ml_epcs_elem,
++					     elems->ie_start,
++					     elems->total_len,
++					     elems_parse->scratch_pos,
++					     elems_parse->scratch +
++						elems_parse->scratch_len -
++						elems_parse->scratch_pos,
++					     WLAN_EID_FRAGMENT);
++	if (ml_len < 0)
++		return;
++	elems->ml_epcs = (void *)elems_parse->scratch_pos;
++	elems->ml_epcs_len = ml_len;
++	elems_parse->scratch_pos += ml_len;
++}
++
+ struct ieee802_11_elems *
+ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ {
+@@ -1001,6 +1028,8 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 
+ 	ieee80211_mle_defrag_reconf(elems_parse);
+ 
++	ieee80211_mle_defrag_epcs(elems_parse);
++
+ 	if (elems->tim && !elems->parse_error) {
+ 		const struct ieee80211_tim_ie *tim_ie = elems->tim;
  
 -- 
 2.39.5
