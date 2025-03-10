@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BDBA5A291
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84EFFA59F34
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2891895211
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE2DC3A8F62
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC161CAA6C;
-	Mon, 10 Mar 2025 18:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E44233155;
+	Mon, 10 Mar 2025 17:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMgIl8n6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCr1SvwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994E3BA3D;
-	Mon, 10 Mar 2025 18:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AF723236D;
+	Mon, 10 Mar 2025 17:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630891; cv=none; b=m8KvGGRdnXy9RhgosdCuxY09ajnPursT7ZE730XlYYbiehKGI5jfONo1mMZpOVSGp6utRoEQVfYzL1dZjG0LQvdhvDt9A5xTE6xA572Odnr8JQc724JDDKI0pwZcV7kd+kPj6wwg8/STVlz1xuxcWC6ug0bwHkybwgRYFSvXFXE=
+	t=1741628205; cv=none; b=sW3v07xoJ9VJVZ6SK2QhegjcZ5Wf7hKnC7DQuqgq1+B3NmzRbfCK5X7Y9f1g1LlN9dOGXUx0Hh+nZZilMr3wLihQBJh4bdL8Y6RaKT5d4b1dfevzQN4Dj04HPL3KltEy9e2YHqNMrtzBeFQRoEzB8svGOwTtJG0X53MNCBn1N/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630891; c=relaxed/simple;
-	bh=oFsV43Zt09s14305CTJEGiRtT5MTqBdiM2nrbUDoGhI=;
+	s=arc-20240116; t=1741628205; c=relaxed/simple;
+	bh=BsMtMUihKrGvv1qflL/ygO6Vdf7N9Cx3Vde3ukFQqqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyFP8m/G1j5Ngxe1Q9frAzTUEvqfm7EMe3+JDAkYL3MPVdikG8ULxwciJCncW9NwgD3ltzDsH69qzpObHD8xzGOmJDIrXagL6j5GUwaNykQpC7401WleVh1Nzd7if1hbmyQytPTpjMEVM8LCMz41dq+LAPetDlV+k1/odmCU+JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMgIl8n6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20064C4CEE5;
-	Mon, 10 Mar 2025 18:21:30 +0000 (UTC)
+	 MIME-Version; b=KcH5PjGt9KSZO0z5x4E0sVv3dYfPge2Z8Z9tLSCHXjAI+vQLIZxUG4ZboBFFDOCXb7/9nGWcOQZjFtDm2aPOvPka9woteO8KX2PUUbVQkw4InWebgbF/0UtBtlmZ86aCsERLqoMJV3Mfg6XMKMiY+a5CPCm7Mmxb8Dq9A2Gefrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCr1SvwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AC0C4CEE5;
+	Mon, 10 Mar 2025 17:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630891;
-	bh=oFsV43Zt09s14305CTJEGiRtT5MTqBdiM2nrbUDoGhI=;
+	s=korg; t=1741628204;
+	bh=BsMtMUihKrGvv1qflL/ygO6Vdf7N9Cx3Vde3ukFQqqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMgIl8n6HZrToDsKzM0kwiqgzOaA4doIz0q8HW4BKgWpdHnfIKTL8pXmdxywXcgZR
-	 dEuZx/bNFUiQlJDie/0JsY78Va2bUrGRwXcfUxXIlwqviRyLwDNY2FTE81qoWKvFg4
-	 prR/1TmJ1/a70Cukh4BDeLNj2zFJJWFQKaUEaYSA=
+	b=MCr1SvwW8VOBQK4HwewTG8vvcqnfMZgJsiA13nG6gZXpqHSyUFKlFXwR2d/qSxu1w
+	 SfCPulWNAnPf0rmfgAKf6yv99txv91nS7D1CFCoK26qRTVe2Fj6isHYaYPuE76fZ9I
+	 S6gyZgTjgdrIa5+zERs6OfF1OqkQ4uh6yxzMoib8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 571/620] x86/sgx: Export sgx_encl_{grow,shrink}()
+	Haoyu Li <lihaoyu499@gmail.com>,
+	stable <stable@kernel.org>,
+	Fei Li <fei1.li@intel.com>
+Subject: [PATCH 6.6 123/145] drivers: virt: acrn: hsm: Use kzalloc to avoid info leak in pmcmd_ioctl
 Date: Mon, 10 Mar 2025 18:06:57 +0100
-Message-ID: <20250310170608.082107152@linuxfoundation.org>
+Message-ID: <20250310170439.735095272@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: Haoyu Li <lihaoyu499@gmail.com>
 
-[ Upstream commit 3a5351415228d06c988a1e610e71d3889f707ac9 ]
+commit 819cec1dc47cdeac8f5dd6ba81c1dbee2a68c3bb upstream.
 
-In order to use sgx_encl_{grow,shrink}() in the page augmentation code
-located in encl.c, export these functions.
+In the "pmcmd_ioctl" function, three memory objects allocated by
+kmalloc are initialized by "hcall_get_cpu_state", which are then
+copied to user space. The initializer is indeed implemented in
+"acrn_hypercall2" (arch/x86/include/asm/acrn.h). There is a risk of
+information leakage due to uninitialized bytes.
 
-Suggested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lkml.kernel.org/r/d51730acf54b6565710b2261b3099517b38c2ec4.1652137848.git.reinette.chatre@intel.com
-Stable-dep-of: 0d3e0dfd68fb ("x86/sgx: Fix size overflows in sgx_encl_create()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d679d5aec64 ("virt: acrn: Introduce interfaces to query C-states and P-states allowed by hypervisor")
+Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Fei Li <fei1.li@intel.com>
+Link: https://lore.kernel.org/r/20250130115811.92424-1-lihaoyu499@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/sgx/encl.h  | 2 ++
- arch/x86/kernel/cpu/sgx/ioctl.c | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/virt/acrn/hsm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
-index ed5ced8ccd2c8..90e3a1181bd62 100644
---- a/arch/x86/kernel/cpu/sgx/encl.h
-+++ b/arch/x86/kernel/cpu/sgx/encl.h
-@@ -121,5 +121,7 @@ bool sgx_va_page_full(struct sgx_va_page *va_page);
- void sgx_encl_free_epc_page(struct sgx_epc_page *page);
- struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
- 					 unsigned long addr);
-+struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl);
-+void sgx_encl_shrink(struct sgx_encl *encl, struct sgx_va_page *va_page);
+--- a/drivers/virt/acrn/hsm.c
++++ b/drivers/virt/acrn/hsm.c
+@@ -49,7 +49,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
+ 	switch (cmd & PMCMD_TYPE_MASK) {
+ 	case ACRN_PMCMD_GET_PX_CNT:
+ 	case ACRN_PMCMD_GET_CX_CNT:
+-		pm_info = kmalloc(sizeof(u64), GFP_KERNEL);
++		pm_info = kzalloc(sizeof(u64), GFP_KERNEL);
+ 		if (!pm_info)
+ 			return -ENOMEM;
  
- #endif /* _X86_ENCL_H */
-diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-index 217777c029eea..f21890150216d 100644
---- a/arch/x86/kernel/cpu/sgx/ioctl.c
-+++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-@@ -17,7 +17,7 @@
- #include "encl.h"
- #include "encls.h"
+@@ -64,7 +64,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
+ 		kfree(pm_info);
+ 		break;
+ 	case ACRN_PMCMD_GET_PX_DATA:
+-		px_data = kmalloc(sizeof(*px_data), GFP_KERNEL);
++		px_data = kzalloc(sizeof(*px_data), GFP_KERNEL);
+ 		if (!px_data)
+ 			return -ENOMEM;
  
--static struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl)
-+struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl)
- {
- 	struct sgx_va_page *va_page = NULL;
- 	void *err;
-@@ -43,7 +43,7 @@ static struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl)
- 	return va_page;
- }
+@@ -79,7 +79,7 @@ static int pmcmd_ioctl(u64 cmd, void __u
+ 		kfree(px_data);
+ 		break;
+ 	case ACRN_PMCMD_GET_CX_DATA:
+-		cx_data = kmalloc(sizeof(*cx_data), GFP_KERNEL);
++		cx_data = kzalloc(sizeof(*cx_data), GFP_KERNEL);
+ 		if (!cx_data)
+ 			return -ENOMEM;
  
--static void sgx_encl_shrink(struct sgx_encl *encl, struct sgx_va_page *va_page)
-+void sgx_encl_shrink(struct sgx_encl *encl, struct sgx_va_page *va_page)
- {
- 	encl->page_cnt--;
- 
--- 
-2.39.5
-
 
 
 
