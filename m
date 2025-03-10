@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-122351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABDDAA59F48
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80120A5A274
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 957203A557D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1153AF756
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF88231A51;
-	Mon, 10 Mar 2025 17:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04F122576A;
+	Mon, 10 Mar 2025 18:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIKj2HSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJuELDCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EC22253FE;
-	Mon, 10 Mar 2025 17:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD86374EA;
+	Mon, 10 Mar 2025 18:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628251; cv=none; b=A264cVDOCYTseEZsTXxzwqIDaVqHbgIzHXdh26s01ZoHft8fz+eJdzBIg181ZeO/18J0TWNGVZghgiTp3sLgcClaSGwG8B/7oO7diRe87Otu0sK7cdOQwwoGxzkW9c6vxbw2KFWw6PmG4epUea4DGp3JT3uk8l9oFhbNPQhnIRQ=
+	t=1741630821; cv=none; b=S/RjKXo817dwSDmKpWLunu7MY0G9ksypH1NQQxjCeTbkH/EF4Tp5oanitRh4NjcKcaIpAzrOyoc0hkue8PADPMvJQBNDvRaP1ZxIgpXZDmUjQ3JRJiqqaaawaby50FbE3ILBaPPgZ6Fj5KJZytHFuAM9oxnI+cpOdXm8i4IEbNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628251; c=relaxed/simple;
-	bh=Y2e0JBgMbBTyrCIZvM56hUiNbbNHFCSk/EkyCICD/7c=;
+	s=arc-20240116; t=1741630821; c=relaxed/simple;
+	bh=UjHYPE1jE8CHeqKeSZIBq0JDtfM2vwCe/x/cXVqCwTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0iIyAKWKDLhXeq2xpsb3IHyrLY25CSJBAiuN+Vdor4nUV33HGPukPIjsCWi+y8LJ9zMa0vDvROGir2UmjXzml8LtjO5IuiNHvV1KJNyck994WB18zVsrj0BDRsD952SiIHW0O8e5H4VohkTEBJVYGSssBYZO7LvIiV878xyMPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIKj2HSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464E1C4CEE5;
-	Mon, 10 Mar 2025 17:37:30 +0000 (UTC)
+	 MIME-Version; b=GKhz6w2ekdR2wJivNcKUy11ERTf8i2N6HaZKUM0SDOSbnB0g/ljJcF9PAuAWr5JCq92PCmBHeQ+JuX5bHfhm37GENTjXuw3vV901sKpCXLiEfAZM7Rk/dGUnXSIBmPxyKSMleh9IRePnZtNXaTNknQPkkLnZPoCoXPQcAm4C7PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJuELDCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14967C4CEE5;
+	Mon, 10 Mar 2025 18:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628250;
-	bh=Y2e0JBgMbBTyrCIZvM56hUiNbbNHFCSk/EkyCICD/7c=;
+	s=korg; t=1741630821;
+	bh=UjHYPE1jE8CHeqKeSZIBq0JDtfM2vwCe/x/cXVqCwTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIKj2HSAR9cLEbYAa3YYA0YEWvYxuH8/x3vvyMOdotTP7Cc/JOaB7NTHnm2VOHtDC
-	 s4XK/Mkg2RHkuS4/laB68m+FyZ3BzFX7pe+n364HBT0UDY9nogTUG+ZeDSI+4epCvS
-	 tIEOixF2gsxxeh5y1HffSqhipBUM3cNe5KEvH2ws=
+	b=KJuELDCjtrE5cFl/gEC9dGKu6GnGJhMSqgGKbAu4IkFv9sz95pGNNRP5/AhczB0Ch
+	 dKTVOJ2cm3590M1z3cfSKbIXxjeWli3phpU7IQ/BcX5k3kKcqSSQ7/tJykFB/3vNuy
+	 rkLEAV+JFCqnigi+QWRnecsCYXhq/lV5M76bTxC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.6 098/145] usb: renesas_usbhs: Flush the notify_hotplug_work
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 546/620] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
 Date: Mon, 10 Mar 2025 18:06:32 +0100
-Message-ID: <20250310170438.709629587@linuxfoundation.org>
+Message-ID: <20250310170607.097428918@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
+commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
 
-When performing continuous unbind/bind operations on the USB drivers
-available on the Renesas RZ/G2L SoC, a kernel crash with the message
-"Unable to handle kernel NULL pointer dereference at virtual address"
-may occur. This issue points to the usbhsc_notify_hotplug() function.
+The return value of rio_add_net() should be checked.  If it fails,
+put_device() should be called to free the memory and give up the reference
+initialized in rio_add_net().
 
-Flush the delayed work to avoid its execution when driver resources are
-unavailable.
-
-Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
+Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
+Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rapidio/rio-scan.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -770,6 +770,8 @@ static void usbhs_remove(struct platform
+--- a/drivers/rapidio/rio-scan.c
++++ b/drivers/rapidio/rio-scan.c
+@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
+ 		dev_set_name(&net->dev, "rnet_%d", net->id);
+ 		net->dev.parent = &mport->dev;
+ 		net->dev.release = rio_scan_release_dev;
+-		rio_add_net(net);
++		if (rio_add_net(net)) {
++			put_device(&net->dev);
++			net = NULL;
++		}
+ 	}
  
- 	dev_dbg(&pdev->dev, "usb remove\n");
- 
-+	flush_delayed_work(&priv->notify_hotplug_work);
-+
- 	/* power off */
- 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
- 		usbhsc_power_ctrl(priv, 0);
+ 	return net;
 
 
 
