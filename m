@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-122612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70796A5A075
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:49:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEDEA5A07A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:50:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0FAA17253A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FC843A9646
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCE923236F;
-	Mon, 10 Mar 2025 17:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E49231A3B;
+	Mon, 10 Mar 2025 17:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2o6AdXaD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi0MQJoq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA3522DFF3;
-	Mon, 10 Mar 2025 17:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D91C22D7A6;
+	Mon, 10 Mar 2025 17:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628994; cv=none; b=ulVfkEdNmNPOa2V0/904rAhx0EyGZ+9LU3Bth8vsAvtjla2qjz2CAILULfjUGwTAqi9Fvqw1bNbmZwFz+I9G9scQ/pYqzUIfkCk1var5qY89yF8c6R/KlYUBum4wZga1rOpGn1I1vZd2vRKfOZsCh40I56D1V5lChxnVpzR+T+g=
+	t=1741629009; cv=none; b=UXAepoqQqDEeQi9E9cKw+lPdg+Lqz0MUccHgn0MNif2QQSpAbOz3T97xbCd9pX6oiVLk6fV0rMH2EgDxPlbFKd4mGGIgnp6FruJ8vXXxvuZIbwdpRFm7S83RWe35KmNUHYNvQlMEh1w/md6g6Fo2q5+rmrcMj2nsu6D2xSbXI+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628994; c=relaxed/simple;
-	bh=IdQ+XAAJ16wZMkf0v2jB/9qsBRATFe988L0mPeDttmU=;
+	s=arc-20240116; t=1741629009; c=relaxed/simple;
+	bh=1xx6+HHrGr4vwMTeWlRQnWF8arVgtM08q/aPIvcCTvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yz74TnrhIVHjWF+R7VO/j7KTnBO6GuwTA60DOvGnEGmNwR7o9qnK1Vd4lcWcNR8eTdT2esihhAlJ8yylIJiR+6lGLB6MGF9WhJJuCZFPRhzqCeLkux5xp95GYpxQYUN4oFH9rKSNKVQCl+E+FBn0TTNSiUEkcQzueElV8QTvoJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2o6AdXaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F7BC4CEE5;
-	Mon, 10 Mar 2025 17:49:53 +0000 (UTC)
+	 MIME-Version; b=BL6po786Mlk5iEuBiHnYk1kuBU7v8JAXoAfRxv9AKzpDTpCcpfJn9MZHjwG+TqgMm8MTWY33X8cF3uMmmyHIxH1rKUDdYbioVdbfSCBHhe5MM8ho1EK/9Rdm1UvEpjVKWOua1Kj9DfFtyIl7g0Ishuer1jBkQ949BrMsb74GeLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi0MQJoq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC599C4CEE5;
+	Mon, 10 Mar 2025 17:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628994;
-	bh=IdQ+XAAJ16wZMkf0v2jB/9qsBRATFe988L0mPeDttmU=;
+	s=korg; t=1741629009;
+	bh=1xx6+HHrGr4vwMTeWlRQnWF8arVgtM08q/aPIvcCTvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2o6AdXaDvfirBYCCPCbsMw9aCQbbdJlfbXKvwFhnCoWrq/v3/Gn3aA+XALvzv/fOa
-	 pEIrNOhoH1vBfpXWrLJKHBWdkRA7lX/FHkZKNLIp58G9JqvzNgiWorr1829v/HQUHX
-	 i22+nKH9Se4xQGT8qgkhWnQZM/kCUnRNK0NAe/D0=
+	b=pi0MQJoqRKN0t8P7S8PIhgWTxGr+2r118/ibb3PNugnluzKLWy//eP+d6WP6l6Mmw
+	 bnbCaHxAXtLrIB+/sV3Th7Js5qKo6rrt8ltHsjH0VChiUrCvmdFeo8WaZRrhjq+3Zy
+	 DLQXRfZ1/etYSP7z9mbITaJvNlcfEcjpZg0rSoTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Osipenko <digetx@gmail.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/620] memory: Add LPDDR2-info helpers
-Date: Mon, 10 Mar 2025 17:59:19 +0100
-Message-ID: <20250310170550.066265401@linuxfoundation.org>
+Subject: [PATCH 5.15 114/620] memory: tegra20-emc: Support matching timings by LPDDR2 configuration
+Date: Mon, 10 Mar 2025 17:59:20 +0100
+Message-ID: <20250310170550.104993367@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,259 +68,354 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Osipenko <digetx@gmail.com>
 
-[ Upstream commit 38322cf423f69b89b6e0eaad4017ab41cfe45b45 ]
+[ Upstream commit 131dd9a436d8f6dbaf3d9597803765d271b2fc19 ]
 
-Add common helpers for reading and parsing standard LPDDR2 configuration
-properties.
+ASUS Transformer TF101 doesn't provide RAM code and in this case memory
+timings should be selected based on identity information read out from
+SDRAM chip. Support matching timings by LPDDR2 configuration.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-Link: https://lore.kernel.org/r/20211006224659.21434-9-digetx@gmail.com
+Link: https://lore.kernel.org/r/20211006224659.21434-10-digetx@gmail.com
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 Stable-dep-of: b9784e5cde1f ("memory: tegra20-emc: fix an OF node reference bug in tegra_emc_find_node_by_ram_code()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/jedec_ddr.h      | 47 ++++++++++++++++++
- drivers/memory/jedec_ddr_data.c | 41 ++++++++++++++++
- drivers/memory/of_memory.c      | 87 +++++++++++++++++++++++++++++++++
- drivers/memory/of_memory.h      |  9 ++++
- 4 files changed, 184 insertions(+)
+ drivers/memory/tegra/Kconfig       |   1 +
+ drivers/memory/tegra/tegra20-emc.c | 199 +++++++++++++++++++++++++++--
+ 2 files changed, 186 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/memory/jedec_ddr.h b/drivers/memory/jedec_ddr.h
-index e59ccbd982d02..6cd508478b146 100644
---- a/drivers/memory/jedec_ddr.h
-+++ b/drivers/memory/jedec_ddr.h
-@@ -112,6 +112,26 @@
- #define NUM_DDR_ADDR_TABLE_ENTRIES			11
- #define NUM_DDR_TIMING_TABLE_ENTRIES			4
+diff --git a/drivers/memory/tegra/Kconfig b/drivers/memory/tegra/Kconfig
+index f9bae36c03a39..7951764b4efec 100644
+--- a/drivers/memory/tegra/Kconfig
++++ b/drivers/memory/tegra/Kconfig
+@@ -16,6 +16,7 @@ config TEGRA20_EMC
+ 	depends on ARCH_TEGRA_2x_SOC || COMPILE_TEST
+ 	select DEVFREQ_GOV_SIMPLE_ONDEMAND
+ 	select PM_DEVFREQ
++	select DDR
+ 	help
+ 	  This driver is for the External Memory Controller (EMC) found on
+ 	  Tegra20 chips. The EMC controls the external DRAM on the board.
+diff --git a/drivers/memory/tegra/tegra20-emc.c b/drivers/memory/tegra/tegra20-emc.c
+index 6fc90f2160e93..497b6edbf3ca1 100644
+--- a/drivers/memory/tegra/tegra20-emc.c
++++ b/drivers/memory/tegra/tegra20-emc.c
+@@ -5,6 +5,7 @@
+  * Author: Dmitry Osipenko <digetx@gmail.com>
+  */
  
-+#define LPDDR2_MANID_SAMSUNG				1
-+#define LPDDR2_MANID_QIMONDA				2
-+#define LPDDR2_MANID_ELPIDA				3
-+#define LPDDR2_MANID_ETRON				4
-+#define LPDDR2_MANID_NANYA				5
-+#define LPDDR2_MANID_HYNIX				6
-+#define LPDDR2_MANID_MOSEL				7
-+#define LPDDR2_MANID_WINBOND				8
-+#define LPDDR2_MANID_ESMT				9
-+#define LPDDR2_MANID_SPANSION				11
-+#define LPDDR2_MANID_SST				12
-+#define LPDDR2_MANID_ZMOS				13
-+#define LPDDR2_MANID_INTEL				14
-+#define LPDDR2_MANID_NUMONYX				254
-+#define LPDDR2_MANID_MICRON				255
-+
-+#define LPDDR2_TYPE_S4					0
-+#define LPDDR2_TYPE_S2					1
-+#define LPDDR2_TYPE_NVM					2
-+
- /* Structure for DDR addressing info from the JEDEC spec */
- struct lpddr2_addressing {
- 	u32 num_banks;
-@@ -170,6 +190,33 @@ extern const struct lpddr2_timings
- 	lpddr2_jedec_timings[NUM_DDR_TIMING_TABLE_ENTRIES];
- extern const struct lpddr2_min_tck lpddr2_jedec_min_tck;
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/clk/tegra.h>
+ #include <linux/debugfs.h>
+@@ -27,11 +28,15 @@
+ #include <soc/tegra/common.h>
+ #include <soc/tegra/fuse.h>
  
-+/* Structure of MR8 */
-+union lpddr2_basic_config4 {
-+	u32 value;
++#include "../jedec_ddr.h"
++#include "../of_memory.h"
 +
-+	struct {
-+		unsigned int arch_type : 2;
-+		unsigned int density : 4;
-+		unsigned int io_width : 2;
-+	} __packed;
+ #include "mc.h"
+ 
+ #define EMC_INTSTATUS				0x000
+ #define EMC_INTMASK				0x004
+ #define EMC_DBG					0x008
++#define EMC_ADR_CFG_0				0x010
+ #define EMC_TIMING_CONTROL			0x028
+ #define EMC_RC					0x02c
+ #define EMC_RFC					0x030
+@@ -68,6 +73,7 @@
+ #define EMC_QUSE_EXTRA				0x0ac
+ #define EMC_ODT_WRITE				0x0b0
+ #define EMC_ODT_READ				0x0b4
++#define EMC_MRR					0x0ec
+ #define EMC_FBIO_CFG5				0x104
+ #define EMC_FBIO_CFG6				0x114
+ #define EMC_STAT_CONTROL			0x160
+@@ -94,6 +100,7 @@
+ 
+ #define EMC_REFRESH_OVERFLOW_INT		BIT(3)
+ #define EMC_CLKCHANGE_COMPLETE_INT		BIT(4)
++#define EMC_MRR_DIVLD_INT			BIT(5)
+ 
+ #define EMC_DBG_READ_MUX_ASSEMBLY		BIT(0)
+ #define EMC_DBG_WRITE_MUX_ACTIVE		BIT(1)
+@@ -102,11 +109,25 @@
+ #define EMC_DBG_CFG_PRIORITY			BIT(24)
+ 
+ #define EMC_FBIO_CFG5_DRAM_WIDTH_X16		BIT(4)
++#define EMC_FBIO_CFG5_DRAM_TYPE			GENMASK(1, 0)
++
++#define EMC_MRR_DEV_SELECTN			GENMASK(31, 30)
++#define EMC_MRR_MRR_MA				GENMASK(23, 16)
++#define EMC_MRR_MRR_DATA			GENMASK(15, 0)
++
++#define EMC_ADR_CFG_0_EMEM_NUMDEV		GENMASK(25, 24)
+ 
+ #define EMC_PWR_GATHER_CLEAR			(1 << 8)
+ #define EMC_PWR_GATHER_DISABLE			(2 << 8)
+ #define EMC_PWR_GATHER_ENABLE			(3 << 8)
+ 
++enum emc_dram_type {
++	DRAM_TYPE_RESERVED,
++	DRAM_TYPE_DDR1,
++	DRAM_TYPE_LPDDR2,
++	DRAM_TYPE_DDR2,
 +};
 +
-+/*
-+ * Structure for information about LPDDR2 chip. All parameters are
-+ * matching raw values of standard mode register bitfields or set to
-+ * -ENOENT if info unavailable.
-+ */
-+struct lpddr2_info {
-+	int arch_type;
-+	int density;
-+	int io_width;
-+	int manufacturer_id;
-+	int revision_id1;
-+	int revision_id2;
-+};
+ static const u16 emc_timing_registers[] = {
+ 	EMC_RC,
+ 	EMC_RFC,
+@@ -201,6 +222,14 @@ struct tegra_emc {
+ 	struct mutex rate_lock;
+ 
+ 	struct devfreq_simple_ondemand_data ondemand_data;
 +
-+const char *lpddr2_jedec_manufacturer(unsigned int manufacturer_id);
++	/* memory chip identity information */
++	union lpddr2_basic_config4 basic_conf4;
++	unsigned int manufacturer_id;
++	unsigned int revision_id1;
++	unsigned int revision_id2;
 +
- /*
-  * Structure for timings for LPDDR3 based on LPDDR2 plus additional fields.
-  * All parameters are in pico seconds(ps) excluding max_freq, min_freq which
-diff --git a/drivers/memory/jedec_ddr_data.c b/drivers/memory/jedec_ddr_data.c
-index ed601d813175e..2cca4fa188f92 100644
---- a/drivers/memory/jedec_ddr_data.c
-+++ b/drivers/memory/jedec_ddr_data.c
-@@ -131,3 +131,44 @@ const struct lpddr2_min_tck lpddr2_jedec_min_tck = {
- 	.tFAW		= 8
++	bool mrr_error;
  };
- EXPORT_SYMBOL_GPL(lpddr2_jedec_min_tck);
+ 
+ static irqreturn_t tegra_emc_isr(int irq, void *data)
+@@ -397,15 +426,19 @@ static int tegra_emc_load_timings_from_dt(struct tegra_emc *emc,
+ 	if (!emc->timings)
+ 		return -ENOMEM;
+ 
+-	emc->num_timings = child_count;
+ 	timing = emc->timings;
+ 
+ 	for_each_child_of_node(node, child) {
++		if (of_node_name_eq(child, "lpddr2"))
++			continue;
 +
-+const char *lpddr2_jedec_manufacturer(unsigned int manufacturer_id)
+ 		err = load_one_timing_from_dt(emc, timing++, child);
+ 		if (err) {
+ 			of_node_put(child);
+ 			return err;
+ 		}
++
++		emc->num_timings++;
+ 	}
+ 
+ 	sort(emc->timings, emc->num_timings, sizeof(*timing), cmp_timings,
+@@ -422,12 +455,18 @@ static int tegra_emc_load_timings_from_dt(struct tegra_emc *emc,
+ }
+ 
+ static struct device_node *
+-tegra_emc_find_node_by_ram_code(struct device *dev)
++tegra_emc_find_node_by_ram_code(struct tegra_emc *emc)
+ {
++	struct device *dev = emc->dev;
+ 	struct device_node *np;
+ 	u32 value, ram_code;
+ 	int err;
+ 
++	if (emc->mrr_error) {
++		dev_warn(dev, "memory timings skipped due to MRR error\n");
++		return NULL;
++	}
++
+ 	if (of_get_child_count(dev->of_node) == 0) {
+ 		dev_info_once(dev, "device-tree doesn't have memory timings\n");
+ 		return NULL;
+@@ -442,8 +481,49 @@ tegra_emc_find_node_by_ram_code(struct device *dev)
+ 	     np = of_find_node_by_name(np, "emc-tables")) {
+ 		err = of_property_read_u32(np, "nvidia,ram-code", &value);
+ 		if (err || value != ram_code) {
+-			of_node_put(np);
+-			continue;
++			struct device_node *lpddr2_np;
++			bool cfg_mismatches = false;
++
++			lpddr2_np = of_find_node_by_name(np, "lpddr2");
++			if (lpddr2_np) {
++				const struct lpddr2_info *info;
++
++				info = of_lpddr2_get_info(lpddr2_np, dev);
++				if (info) {
++					if (info->manufacturer_id >= 0 &&
++					    info->manufacturer_id != emc->manufacturer_id)
++						cfg_mismatches = true;
++
++					if (info->revision_id1 >= 0 &&
++					    info->revision_id1 != emc->revision_id1)
++						cfg_mismatches = true;
++
++					if (info->revision_id2 >= 0 &&
++					    info->revision_id2 != emc->revision_id2)
++						cfg_mismatches = true;
++
++					if (info->density != emc->basic_conf4.density)
++						cfg_mismatches = true;
++
++					if (info->io_width != emc->basic_conf4.io_width)
++						cfg_mismatches = true;
++
++					if (info->arch_type != emc->basic_conf4.arch_type)
++						cfg_mismatches = true;
++				} else {
++					dev_err(dev, "failed to parse %pOF\n", lpddr2_np);
++					cfg_mismatches = true;
++				}
++
++				of_node_put(lpddr2_np);
++			} else {
++				cfg_mismatches = true;
++			}
++
++			if (cfg_mismatches) {
++				of_node_put(np);
++				continue;
++			}
+ 		}
+ 
+ 		return np;
+@@ -455,10 +535,72 @@ tegra_emc_find_node_by_ram_code(struct device *dev)
+ 	return NULL;
+ }
+ 
++static int emc_read_lpddr_mode_register(struct tegra_emc *emc,
++					unsigned int emem_dev,
++					unsigned int register_addr,
++					unsigned int *register_data)
 +{
-+	switch (manufacturer_id) {
-+	case LPDDR2_MANID_SAMSUNG:
-+		return "Samsung";
-+	case LPDDR2_MANID_QIMONDA:
-+		return "Qimonda";
-+	case LPDDR2_MANID_ELPIDA:
-+		return "Elpida";
-+	case LPDDR2_MANID_ETRON:
-+		return "Etron";
-+	case LPDDR2_MANID_NANYA:
-+		return "Nanya";
-+	case LPDDR2_MANID_HYNIX:
-+		return "Hynix";
-+	case LPDDR2_MANID_MOSEL:
-+		return "Mosel";
-+	case LPDDR2_MANID_WINBOND:
-+		return "Winbond";
-+	case LPDDR2_MANID_ESMT:
-+		return "ESMT";
-+	case LPDDR2_MANID_SPANSION:
-+		return "Spansion";
-+	case LPDDR2_MANID_SST:
-+		return "SST";
-+	case LPDDR2_MANID_ZMOS:
-+		return "ZMOS";
-+	case LPDDR2_MANID_INTEL:
-+		return "Intel";
-+	case LPDDR2_MANID_NUMONYX:
-+		return "Numonyx";
-+	case LPDDR2_MANID_MICRON:
-+		return "Micron";
-+	default:
++	u32 memory_dev = emem_dev + 1;
++	u32 val, mr_mask = 0xff;
++	int err;
++
++	/* clear data-valid interrupt status */
++	writel_relaxed(EMC_MRR_DIVLD_INT, emc->regs + EMC_INTSTATUS);
++
++	/* issue mode register read request */
++	val  = FIELD_PREP(EMC_MRR_DEV_SELECTN, memory_dev);
++	val |= FIELD_PREP(EMC_MRR_MRR_MA, register_addr);
++
++	writel_relaxed(val, emc->regs + EMC_MRR);
++
++	/* wait for the LPDDR2 data-valid interrupt */
++	err = readl_relaxed_poll_timeout_atomic(emc->regs + EMC_INTSTATUS, val,
++						val & EMC_MRR_DIVLD_INT,
++						1, 100);
++	if (err) {
++		dev_err(emc->dev, "mode register %u read failed: %d\n",
++			register_addr, err);
++		emc->mrr_error = true;
++		return err;
++	}
++
++	/* read out mode register data */
++	val = readl_relaxed(emc->regs + EMC_MRR);
++	*register_data = FIELD_GET(EMC_MRR_MRR_DATA, val) & mr_mask;
++
++	return 0;
++}
++
++static void emc_read_lpddr_sdram_info(struct tegra_emc *emc,
++				      unsigned int emem_dev,
++				      bool print_out)
++{
++	/* these registers are standard for all LPDDR JEDEC memory chips */
++	emc_read_lpddr_mode_register(emc, emem_dev, 5, &emc->manufacturer_id);
++	emc_read_lpddr_mode_register(emc, emem_dev, 6, &emc->revision_id1);
++	emc_read_lpddr_mode_register(emc, emem_dev, 7, &emc->revision_id2);
++	emc_read_lpddr_mode_register(emc, emem_dev, 8, &emc->basic_conf4.value);
++
++	if (!print_out)
++		return;
++
++	dev_info(emc->dev, "SDRAM[dev%u]: manufacturer: 0x%x (%s) rev1: 0x%x rev2: 0x%x prefetch: S%u density: %uMbit iowidth: %ubit\n",
++		 emem_dev, emc->manufacturer_id,
++		 lpddr2_jedec_manufacturer(emc->manufacturer_id),
++		 emc->revision_id1, emc->revision_id2,
++		 4 >> emc->basic_conf4.arch_type,
++		 64 << emc->basic_conf4.density,
++		 32 >> emc->basic_conf4.io_width);
++}
++
+ static int emc_setup_hw(struct tegra_emc *emc)
+ {
++	u32 emc_cfg, emc_dbg, emc_fbio, emc_adr_cfg;
+ 	u32 intmask = EMC_REFRESH_OVERFLOW_INT;
+-	u32 emc_cfg, emc_dbg, emc_fbio;
++	static bool print_sdram_info_once;
++	enum emc_dram_type dram_type;
++	const char *dram_type_str;
++	unsigned int emem_numdev;
+ 
+ 	emc_cfg = readl_relaxed(emc->regs + EMC_CFG_2);
+ 
+@@ -496,7 +638,36 @@ static int emc_setup_hw(struct tegra_emc *emc)
+ 	else
+ 		emc->dram_bus_width = 32;
+ 
+-	dev_info_once(emc->dev, "%ubit DRAM bus\n", emc->dram_bus_width);
++	dram_type = FIELD_GET(EMC_FBIO_CFG5_DRAM_TYPE, emc_fbio);
++
++	switch (dram_type) {
++	case DRAM_TYPE_RESERVED:
++		dram_type_str = "INVALID";
++		break;
++	case DRAM_TYPE_DDR1:
++		dram_type_str = "DDR1";
++		break;
++	case DRAM_TYPE_LPDDR2:
++		dram_type_str = "LPDDR2";
++		break;
++	case DRAM_TYPE_DDR2:
++		dram_type_str = "DDR2";
 +		break;
 +	}
 +
-+	return "invalid";
-+}
-+EXPORT_SYMBOL_GPL(lpddr2_jedec_manufacturer);
-diff --git a/drivers/memory/of_memory.c b/drivers/memory/of_memory.c
-index 1791614f324b7..755ce416fbbad 100644
---- a/drivers/memory/of_memory.c
-+++ b/drivers/memory/of_memory.c
-@@ -300,3 +300,90 @@ const struct lpddr3_timings
- 	return NULL;
++	emc_adr_cfg = readl_relaxed(emc->regs + EMC_ADR_CFG_0);
++	emem_numdev = FIELD_GET(EMC_ADR_CFG_0_EMEM_NUMDEV, emc_adr_cfg) + 1;
++
++	dev_info_once(emc->dev, "%ubit DRAM bus, %u %s %s attached\n",
++		      emc->dram_bus_width, emem_numdev, dram_type_str,
++		      emem_numdev == 2 ? "devices" : "device");
++
++	if (dram_type == DRAM_TYPE_LPDDR2) {
++		while (emem_numdev--)
++			emc_read_lpddr_sdram_info(emc, emem_numdev,
++						  !print_sdram_info_once);
++		print_sdram_info_once = true;
++	}
+ 
+ 	return 0;
  }
- EXPORT_SYMBOL(of_lpddr3_get_ddr_timings);
-+
-+/**
-+ * of_lpddr2_get_info() - extracts information about the lpddr2 chip.
-+ * @np: Pointer to device tree node containing lpddr2 info
-+ * @dev: Device requesting info
-+ *
-+ * Populates lpddr2_info structure by extracting data from device
-+ * tree node. Returns pointer to populated structure. If error
-+ * happened while populating, returns NULL. If property is missing
-+ * in a device-tree, then the corresponding value is set to -ENOENT.
-+ */
-+const struct lpddr2_info
-+*of_lpddr2_get_info(struct device_node *np, struct device *dev)
-+{
-+	struct lpddr2_info *ret_info, info = {};
-+	struct property *prop;
-+	const char *cp;
-+	int err;
-+
-+	err = of_property_read_u32(np, "revision-id1", &info.revision_id1);
-+	if (err)
-+		info.revision_id1 = -ENOENT;
-+
-+	err = of_property_read_u32(np, "revision-id2", &info.revision_id2);
-+	if (err)
-+		info.revision_id2 = -ENOENT;
-+
-+	err = of_property_read_u32(np, "io-width", &info.io_width);
-+	if (err)
-+		return NULL;
-+
-+	info.io_width = 32 / info.io_width - 1;
-+
-+	err = of_property_read_u32(np, "density", &info.density);
-+	if (err)
-+		return NULL;
-+
-+	info.density = ffs(info.density) - 7;
-+
-+	if (of_device_is_compatible(np, "jedec,lpddr2-s4"))
-+		info.arch_type = LPDDR2_TYPE_S4;
-+	else if (of_device_is_compatible(np, "jedec,lpddr2-s2"))
-+		info.arch_type = LPDDR2_TYPE_S2;
-+	else if (of_device_is_compatible(np, "jedec,lpddr2-nvm"))
-+		info.arch_type = LPDDR2_TYPE_NVM;
-+	else
-+		return NULL;
-+
-+	prop = of_find_property(np, "compatible", NULL);
-+	for (cp = of_prop_next_string(prop, NULL); cp;
-+	     cp = of_prop_next_string(prop, cp)) {
-+
-+#define OF_LPDDR2_VENDOR_CMP(compat, ID) \
-+		if (!of_compat_cmp(cp, compat ",", strlen(compat ","))) { \
-+			info.manufacturer_id = LPDDR2_MANID_##ID; \
-+			break; \
-+		}
-+
-+		OF_LPDDR2_VENDOR_CMP("samsung", SAMSUNG)
-+		OF_LPDDR2_VENDOR_CMP("qimonda", QIMONDA)
-+		OF_LPDDR2_VENDOR_CMP("elpida", ELPIDA)
-+		OF_LPDDR2_VENDOR_CMP("etron", ETRON)
-+		OF_LPDDR2_VENDOR_CMP("nanya", NANYA)
-+		OF_LPDDR2_VENDOR_CMP("hynix", HYNIX)
-+		OF_LPDDR2_VENDOR_CMP("mosel", MOSEL)
-+		OF_LPDDR2_VENDOR_CMP("winbond", WINBOND)
-+		OF_LPDDR2_VENDOR_CMP("esmt", ESMT)
-+		OF_LPDDR2_VENDOR_CMP("spansion", SPANSION)
-+		OF_LPDDR2_VENDOR_CMP("sst", SST)
-+		OF_LPDDR2_VENDOR_CMP("zmos", ZMOS)
-+		OF_LPDDR2_VENDOR_CMP("intel", INTEL)
-+		OF_LPDDR2_VENDOR_CMP("numonyx", NUMONYX)
-+		OF_LPDDR2_VENDOR_CMP("micron", MICRON)
-+
-+#undef OF_LPDDR2_VENDOR_CMP
+@@ -1049,14 +1220,6 @@ static int tegra_emc_probe(struct platform_device *pdev)
+ 	emc->clk_nb.notifier_call = tegra_emc_clk_change_notify;
+ 	emc->dev = &pdev->dev;
+ 
+-	np = tegra_emc_find_node_by_ram_code(&pdev->dev);
+-	if (np) {
+-		err = tegra_emc_load_timings_from_dt(emc, np);
+-		of_node_put(np);
+-		if (err)
+-			return err;
+-	}
+-
+ 	emc->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(emc->regs))
+ 		return PTR_ERR(emc->regs);
+@@ -1065,6 +1228,14 @@ static int tegra_emc_probe(struct platform_device *pdev)
+ 	if (err)
+ 		return err;
+ 
++	np = tegra_emc_find_node_by_ram_code(emc);
++	if (np) {
++		err = tegra_emc_load_timings_from_dt(emc, np);
++		of_node_put(np);
++		if (err)
++			return err;
 +	}
 +
-+	if (!info.manufacturer_id)
-+		info.manufacturer_id = -ENOENT;
-+
-+	ret_info = devm_kzalloc(dev, sizeof(*ret_info), GFP_KERNEL);
-+	if (ret_info)
-+		*ret_info = info;
-+
-+	return ret_info;
-+}
-+EXPORT_SYMBOL(of_lpddr2_get_info);
-diff --git a/drivers/memory/of_memory.h b/drivers/memory/of_memory.h
-index 4a99b232ab0a8..1c4e47fede8ae 100644
---- a/drivers/memory/of_memory.h
-+++ b/drivers/memory/of_memory.h
-@@ -20,6 +20,9 @@ const struct lpddr3_min_tck *of_lpddr3_get_min_tck(struct device_node *np,
- const struct lpddr3_timings *
- of_lpddr3_get_ddr_timings(struct device_node *np_ddr,
- 			  struct device *dev, u32 device_type, u32 *nr_frequencies);
-+
-+const struct lpddr2_info *of_lpddr2_get_info(struct device_node *np,
-+					     struct device *dev);
- #else
- static inline const struct lpddr2_min_tck
- 	*of_get_min_tck(struct device_node *np, struct device *dev)
-@@ -46,6 +49,12 @@ static inline const struct lpddr3_timings
- {
- 	return NULL;
- }
-+
-+static inline const struct lpddr2_info
-+	*of_lpddr2_get_info(struct device_node *np, struct device *dev)
-+{
-+	return NULL;
-+}
- #endif /* CONFIG_OF && CONFIG_DDR */
- 
- #endif /* __LINUX_MEMORY_OF_REG_ */
+ 	err = devm_request_irq(&pdev->dev, irq, tegra_emc_isr, 0,
+ 			       dev_name(&pdev->dev), emc);
+ 	if (err) {
 -- 
 2.39.5
 
