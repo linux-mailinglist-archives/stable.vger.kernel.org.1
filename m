@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-122381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E7FA59F6A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16835A59EB9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29A73A7692
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF87E16E5A4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C842230BD4;
-	Mon, 10 Mar 2025 17:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0F6233D85;
+	Mon, 10 Mar 2025 17:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2K2ginF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADbndyDm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA72F22ACDC;
-	Mon, 10 Mar 2025 17:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79843230BC3;
+	Mon, 10 Mar 2025 17:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628329; cv=none; b=naHS7R5vLuIvkNYq92ptq8ismBpNe7y8VRB1KKVLOjdHzf+8Ob7sAfbPm6O5oI1ZKAxKyVRlpL8Ix1nb5U1MUkrf+XUY94LEai1ZByXi00qwJ19muc9S1yRtrBOpq95JdBHafhBq98vzfpKoJA6iaZBFz7D4kBJG/Obz7xpZws0=
+	t=1741628013; cv=none; b=in9Bw0LLMWPJx6dFAHFw++I71tgrXr9R6CUtaxF98pLoVLUKvVAnYKaKIYA7gzpPWyRHXC0A5BrDD6i5Cd9SY8j5bedU+rl/deYg30D+0jnAjBWA4niex/XKg2hs2ZH/lQJt3TD+afhN0oZt5BWw+0imWNnGzQU+WIZwxX/GF9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628329; c=relaxed/simple;
-	bh=fYzXYgQ5XUl65IjJaLdjg0JOiKtx3y14j6uyR+mzlKQ=;
+	s=arc-20240116; t=1741628013; c=relaxed/simple;
+	bh=rl712HeNlhQJB3v2fxPrI0S+sT8jMRpi3ckGjU7+pqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q59Vez4zkAQ9Bh7UXxa9oK24gid5iuzH3ennx4HMsCF77/NcWXwGJ5QGM4MF48qGAAKtuD1yNGJY2XpTjhEvrgbbMpSLF2NbVtms/HS311kRvKz1SNsTXlvu0Y3n7Zqyy7MNB8m6lx9oYjEY5mn3kzddPo+1xfbwG0Guv3LYPwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2K2ginF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EE8C4CEE5;
-	Mon, 10 Mar 2025 17:38:48 +0000 (UTC)
+	 MIME-Version; b=ElApYvjUki8ajGYD5j7u2/zdlwjPyKGclM0NuHaY4uTzffhJJkjhLHZg7wMJfWYZEIu8PFdXyTwyxoLIj1NQUA37qrkpoOXj7cs8njm5M1OjJC6Wc8a8V0jgWusO13MbuFMfnVtGAPU6iCwUJ5E7ABDW5XhYDXFXekRIQSuZHMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADbndyDm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030F5C4CEE5;
+	Mon, 10 Mar 2025 17:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628329;
-	bh=fYzXYgQ5XUl65IjJaLdjg0JOiKtx3y14j6uyR+mzlKQ=;
+	s=korg; t=1741628013;
+	bh=rl712HeNlhQJB3v2fxPrI0S+sT8jMRpi3ckGjU7+pqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2K2ginFB8T15o3ZnyNObfOIh9lFbMpOjrpDQnKuuZUOVNYTj63xmwqRw3SP41DCM
-	 cwGXWEuZBHAGlDGoULBvE6GOQwF3VGKtliXcEmlc7wKRFe1EvjlAt+jgm+sKqPKM8H
-	 kUgo5Yr+usglPosHdPR/avsOhKzXA4Lj/WSYsmgs=
+	b=ADbndyDmr3tvtFyccZELIyxvcCSLWNXtqJwNQT9Kb3oXfa3bsNJSCEvIvSoMxznK2
+	 cqhhKzc5a3tCXN7aVcKC5H12uovcZEScd9pTpLzoAu9QjsasJPvaHKH6dZ4l9dhuXn
+	 EMrQxNlxrQW9qz8FO5T9HyZf6NQd/ezKTP7KlFDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 007/109] x86/amd_nb: Use rdmsr_safe() in amd_get_mmconfig_range()
+	syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com,
+	Hao Zhang <zhanghao1@kylinos.cn>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 057/145] mm/page_alloc: fix uninitialized variable
 Date: Mon, 10 Mar 2025 18:05:51 +0100
-Message-ID: <20250310170427.839844168@linuxfoundation.org>
+Message-ID: <20250310170437.043126217@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Hao Zhang <zhanghao1@kylinos.cn>
 
-commit 14cb5d83068ecf15d2da6f7d0e9ea9edbcbc0457 upstream.
+commit 8fe9ed44dc29fba0786b7e956d2e87179e407582 upstream.
 
-Xen doesn't offer MSR_FAM10H_MMIO_CONF_BASE to all guests.  This results
-in the following warning:
+The variable "compact_result" is not initialized in function
+__alloc_pages_slowpath().  It causes should_compact_retry() to use an
+uninitialized value.
 
-  unchecked MSR access error: RDMSR from 0xc0010058 at rIP: 0xffffffff8101d19f (xen_do_read_msr+0x7f/0xa0)
-  Call Trace:
-   xen_read_msr+0x1e/0x30
-   amd_get_mmconfig_range+0x2b/0x80
-   quirk_amd_mmconfig_area+0x28/0x100
-   pnp_fixup_device+0x39/0x50
-   __pnp_add_device+0xf/0x150
-   pnp_add_device+0x3d/0x100
-   pnpacpi_add_device_handler+0x1f9/0x280
-   acpi_ns_get_device_callback+0x104/0x1c0
-   acpi_ns_walk_namespace+0x1d0/0x260
-   acpi_get_devices+0x8a/0xb0
-   pnpacpi_init+0x50/0x80
-   do_one_initcall+0x46/0x2e0
-   kernel_init_freeable+0x1da/0x2f0
-   kernel_init+0x16/0x1b0
-   ret_from_fork+0x30/0x50
-   ret_from_fork_asm+0x1b/0x30
+Initialize variable "compact_result" with the value COMPACT_SKIPPED.
 
-based on quirks for a "PNP0c01" device.  Treating MMCFG as disabled is the
-right course of action, so no change is needed there.
+BUG: KMSAN: uninit-value in __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
+ __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
+ __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
+ alloc_pages_mpol+0x4cd/0x890 mm/mempolicy.c:2270
+ alloc_frozen_pages_noprof mm/mempolicy.c:2341 [inline]
+ alloc_pages_noprof mm/mempolicy.c:2361 [inline]
+ folio_alloc_noprof+0x1dc/0x350 mm/mempolicy.c:2371
+ filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1019
+ __filemap_get_folio+0xb9a/0x1840 mm/filemap.c:1970
+ grow_dev_folio fs/buffer.c:1039 [inline]
+ grow_buffers fs/buffer.c:1105 [inline]
+ __getblk_slow fs/buffer.c:1131 [inline]
+ bdev_getblk+0x2c9/0xab0 fs/buffer.c:1431
+ getblk_unmovable include/linux/buffer_head.h:369 [inline]
+ ext4_getblk+0x3b7/0xe50 fs/ext4/inode.c:864
+ ext4_bread_batch+0x9f/0x7d0 fs/ext4/inode.c:933
+ __ext4_find_entry+0x1ebb/0x36c0 fs/ext4/namei.c:1627
+ ext4_lookup_entry fs/ext4/namei.c:1729 [inline]
+ ext4_lookup+0x189/0xb40 fs/ext4/namei.c:1797
+ __lookup_slow+0x538/0x710 fs/namei.c:1793
+ lookup_slow+0x6a/0xd0 fs/namei.c:1810
+ walk_component fs/namei.c:2114 [inline]
+ link_path_walk+0xf29/0x1420 fs/namei.c:2479
+ path_openat+0x30f/0x6250 fs/namei.c:3985
+ do_filp_open+0x268/0x600 fs/namei.c:4016
+ do_sys_openat2+0x1bf/0x2f0 fs/open.c:1428
+ do_sys_open fs/open.c:1443 [inline]
+ __do_sys_openat fs/open.c:1459 [inline]
+ __se_sys_openat fs/open.c:1454 [inline]
+ __x64_sys_openat+0x2a1/0x310 fs/open.c:1454
+ x64_sys_call+0x36f5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:258
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-This was most likely exposed by fixing the Xen MSR accessors to not be
-silently-safe.
+Local variable compact_result created at:
+ __alloc_pages_slowpath+0x66/0x16c0 mm/page_alloc.c:4218
+ __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
 
-Fixes: 3fac3734c43a ("xen/pv: support selecting safe/unsafe msr accesses")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250307002846.3026685-1-andrew.cooper3@citrix.com
+Link: https://lkml.kernel.org/r/tencent_ED1032321D6510B145CDBA8CBA0093178E09@qq.com
+Reported-by: syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0cfd5e38e96a5596f2b6
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/amd_nb.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ mm/page_alloc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -342,7 +342,6 @@ bool __init early_is_amd_nb(u32 device)
- 
- struct resource *amd_get_mmconfig_range(struct resource *res)
- {
--	u32 address;
- 	u64 base, msr;
- 	unsigned int segn_busn_bits;
- 
-@@ -350,13 +349,11 @@ struct resource *amd_get_mmconfig_range(
- 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
- 		return NULL;
- 
--	/* assume all cpus from fam10h have mmconfig */
--	if (boot_cpu_data.x86 < 0x10)
-+	/* Assume CPUs from Fam10h have mmconfig, although not all VMs do */
-+	if (boot_cpu_data.x86 < 0x10 ||
-+	    rdmsrl_safe(MSR_FAM10H_MMIO_CONF_BASE, &msr))
- 		return NULL;
- 
--	address = MSR_FAM10H_MMIO_CONF_BASE;
--	rdmsrl(address, msr);
--
- 	/* mmconfig is not enabled */
- 	if (!(msr & FAM10H_MMIO_CONF_ENABLE))
- 		return NULL;
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3936,6 +3936,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
+ restart:
+ 	compaction_retries = 0;
+ 	no_progress_loops = 0;
++	compact_result = COMPACT_SKIPPED;
+ 	compact_priority = DEF_COMPACT_PRIORITY;
+ 	cpuset_mems_cookie = read_mems_allowed_begin();
+ 	zonelist_iter_cookie = zonelist_iter_begin();
 
 
 
