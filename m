@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-122186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54D3A59E48
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2156EA59D11
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7CAB7A85AF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 449E016F324
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B2A22FF40;
-	Mon, 10 Mar 2025 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C302F28;
+	Mon, 10 Mar 2025 17:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzSO1wW9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6mNnp40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EA722CBF1;
-	Mon, 10 Mar 2025 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5575917C225;
+	Mon, 10 Mar 2025 17:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627772; cv=none; b=CoByChe4/02BXsTwsMy62pfRqozhtdgkxqdF+cgo/gOWnQ8UaqJ4wt4UbAcPpx1lo34md2HKYtn68QYkZgwWq6QEZmmCF2Vq5zHyIl3KiGuBYXb/xEoTIIzJzmrtkamynWrwr/JaTup5/80YoHonC+ObYwpd75ubWlyJ0TiEwBU=
+	t=1741627055; cv=none; b=BWGD+c7PqTmXSHr+tnsCfmaJQPIdTg6kye96Fdg8tI2JpqWFWQL4k/RXPDyiny95wqHIqxkPpVBLpohl50ks7I3wV8lP5d7wUokcnYdZI0z/NJRullRgMb6RKJwIVwU7E5Db3KH5ectWJ7RhocNoec+4sIk3Q9OD5ev6UVHH1Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627772; c=relaxed/simple;
-	bh=xkmjvycN8455oS2TxFK7cZ7gl5QFt+XyQgwtZNoYTjU=;
+	s=arc-20240116; t=1741627055; c=relaxed/simple;
+	bh=AFdWZAWyULLVf4IIckyhthgQll7HTLdDQKtif8gwIrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbXnEbjO2yC8MrEdFBjti7HsDLqA+0N65/jOfAzclWlyCIJzor/YUSLzFZN+nMlH7u6xpY4gcGRJkPpSlC1MJ/Txoa7WxtnNd0sniC0SZVtCh424p8iu3ieZQx/Bveg02vsGSIHVuyi/uk7WfQAumJxhMWUKhkxaXCLCZbENe9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzSO1wW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20362C4CEE5;
-	Mon, 10 Mar 2025 17:29:31 +0000 (UTC)
+	 MIME-Version; b=Mnnqeyv//MBMyTYX2cP3Y8c19E639hjORvJrR/08RpnFv9O2e98Md3uZIlKO84JOGbl7FwhWscM/QkzpM0wjHjlWn6rdV2COgOA/DFkLE6y1JQ3mskkJhb9qmVB8Llvz3P9V8vp8sYdpo4cLO/lGqGmBkp35Nhe52xAdOvHnNHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6mNnp40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0722C4CEE5;
+	Mon, 10 Mar 2025 17:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627772;
-	bh=xkmjvycN8455oS2TxFK7cZ7gl5QFt+XyQgwtZNoYTjU=;
+	s=korg; t=1741627055;
+	bh=AFdWZAWyULLVf4IIckyhthgQll7HTLdDQKtif8gwIrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzSO1wW9dPtTRS90T3BuPBCAhAFC0Gqr5qjsOkVKDY9HJ23w7QKHg9Q4EluW/+iu5
-	 apzWN+whxgzYl+2SCkl5B+FWQkv82gqT1MocL/I9I1A1FaUtVQ+OJrRGoZK66akWVS
-	 iZEMgZW26+y6S5m6q4JdBy8KCMzlpdfkveKg+C8A=
+	b=Y6mNnp40mJCKLKiK+NIoe71txhs/75VEh9bcpZCL+LN5crGsMob345IKeVWdCGM5E
+	 cSG8hBVK5eek/EYiA9nRoR7PjbLh1TH7QYjQqVdZ+sTJclM5N8BPwQxoz+D8+F2B2l
+	 j/vdTHdHSvsvKooS4VQC4gSS40vFRDQykq6Dh/oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.12 243/269] char: misc: deallocate static minor in error path
-Date: Mon, 10 Mar 2025 18:06:36 +0100
-Message-ID: <20250310170507.482853230@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 204/207] fprobe: Always unregister fgraph function from ops
+Date: Mon, 10 Mar 2025 18:06:37 +0100
+Message-ID: <20250310170455.887955629@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +68,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 6d991f569c5ef6eaeadf1238df2c36e3975233ad upstream.
+commit ded9140622358a154efb3a777025fa7f7ae2c2d9 upstream.
 
-When creating sysfs files fail, the allocated minor must be freed such that
-it can be later reused. That is specially harmful for static minor numbers,
-since those would always fail to register later on.
+When the last fprobe is removed, it calls unregister_ftrace_graph() to
+remove the graph_ops from function graph. The issue is when it does so, it
+calls return before removing the function from its graph ops via
+ftrace_set_filter_ips(). This leaves the last function lingering in the
+fprobe's fgraph ops and if a probe is added it also enables that last
+function (even though the callback will just drop it, it does add unneeded
+overhead to make that call).
 
-Fixes: 6d04d2b554b1 ("misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://lore.kernel.org/r/20250123123249.4081674-5-cascardo@igalia.com
+  # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+kernel_clone (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+
+  # echo "f:myevent2 schedule_timeout" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+kernel_clone (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+schedule_timeout (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+
+  # > /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+
+  # echo "f:myevent3 kmem_cache_free" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+kmem_cache_free (1)           	tramp: 0xffffffffc0219000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+schedule_timeout (1)           	tramp: 0xffffffffc0219000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+
+The above enabled a fprobe on kernel_clone, and then on schedule_timeout.
+The content of the enabled_functions shows the functions that have a
+callback attached to them. The fprobe attached to those functions
+properly. Then the fprobes were cleared, and enabled_functions was empty
+after that. But after adding a fprobe on kmem_cache_free, the
+enabled_functions shows that the schedule_timeout was attached again. This
+is because it was still left in the fprobe ops that is used to tell
+function graph what functions it wants callbacks from.
+
+Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/20250220202055.393254452@goodmis.org
+Fixes: 4346ba1604093 ("fprobe: Rewrite fprobe on function-graph tracer")
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/misc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/fprobe.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -264,8 +264,8 @@ int misc_register(struct miscdevice *mis
- 		device_create_with_groups(&misc_class, misc->parent, dev,
- 					  misc, misc->groups, "%s", misc->name);
- 	if (IS_ERR(misc->this_device)) {
-+		misc_minor_free(misc->minor);
- 		if (is_dynamic) {
--			misc_minor_free(misc->minor);
- 			misc->minor = MISC_DYNAMIC_MINOR;
- 		}
- 		err = PTR_ERR(misc->this_device);
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -374,11 +374,9 @@ static void fprobe_graph_remove_ips(unsi
+ 	lockdep_assert_held(&fprobe_mutex);
+ 
+ 	fprobe_graph_active--;
+-	if (!fprobe_graph_active) {
+-		/* Q: should we unregister it ? */
++	/* Q: should we unregister it ? */
++	if (!fprobe_graph_active)
+ 		unregister_ftrace_graph(&fprobe_graph_ops);
+-		return;
+-	}
+ 
+ 	ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
+ }
 
 
 
