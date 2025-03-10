@@ -1,178 +1,173 @@
-Return-Path: <stable+bounces-121637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFA9A589DF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 02:16:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3EBA589E4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 02:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E61FA7A3D54
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 01:15:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BAB2188B444
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 01:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E723594A;
-	Mon, 10 Mar 2025 01:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF021130E58;
+	Mon, 10 Mar 2025 01:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2HtYue1"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="nSG+fTdE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3BA81E;
-	Mon, 10 Mar 2025 01:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B568635
+	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 01:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741569375; cv=none; b=hoZ9ub2D87PCE85SfHa0uBZ5t9aHiopT7fhL2BQDHX/p8jWZznol3/QpaWDRF+31eAufDaH0gHVb05h/0v3uBYAqcEFOIFuy/G1lsALAPDMHHPfFIt4oqF7U5EBYyNGvTFu24SEe+S8f06ntsysDTuSpVQxICcqBuYf7jrF/FaI=
+	t=1741569639; cv=none; b=FfF1SgCxl4yBZTF28Fz8XGF31/aNlpqkqUG4bssZSCEtaN6aW5wivsUL8ZL1mOCsjfVfdbVRutLItq6OYuEli1dRY0gaXyThvZwzTnOyLGBYusYB/RpnKgaRlrNqEgD0cePTEnYvEgoG6xyPHu1tu+a7jgmkjLjZR2V03WyVTog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741569375; c=relaxed/simple;
-	bh=fItbnL0VfJSCXWPmbaXP/wonhs74sgjKr0ENQ6tOn88=;
+	s=arc-20240116; t=1741569639; c=relaxed/simple;
+	bh=uF1Nt8hkebC8+WmfMXSOBOB54/PAHzKGsbyYq6RuPfk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pgr2/9dKIacGF0y6fcoJQGin0NcM/5Wl7P3rlaqSFfJ3QypUDyZz4lPNCKrsohpie18hMDsy4vgVNm7D2Sw8yNaDWO3q0bVO9/mMD5hg452A4pjP9dBB7nWrSEQDFiBcHSBDkGwSIAhKTO3QN2WWRd8eHkKKWG1eFAetwgascf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2HtYue1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B82DC4CEE3;
-	Mon, 10 Mar 2025 01:16:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741569374;
-	bh=fItbnL0VfJSCXWPmbaXP/wonhs74sgjKr0ENQ6tOn88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A2HtYue1etjgjLFvcSzEWnKt7vtjBGU3/LluPT4Gt1uWAPxhX268bAstUqUVg7V8M
-	 cAFL+RDVkw7qtrJJIgivE0bh06IsKj+boJ0uqUaxcVFSNpNQoBiQ4I8ESZSxv6C8HJ
-	 aab452vHSI3hQgKUZhqRzfYzi1sUQkDXOiyp/aUzT6L36YTDQvj/KGUJ2CQitPstLp
-	 PyW8MhjPvPWXc2zS8x8A9wjeuoLrReX+N7Y20PiBPHSfwEGL19bE/6NOOl07rCCMUu
-	 m/23Z7pw6gChKciHiM5Bfs7fEw1QWrYHpbFTRaXUYwI+k4ZZ8pz1I3hKsgzBZ6ExAL
-	 6TjNPU5EogXsg==
-Date: Mon, 10 Mar 2025 09:16:04 +0800
-From: Peter Chen <peter.chen@kernel.org>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
-	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-	"christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-	"javier.carrasco@wolfvision.net" <javier.carrasco@wolfvision.net>,
-	"make_ruc2021@163.com" <make_ruc2021@163.com>,
-	"peter.chen@nxp.com" <peter.chen@nxp.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pawel Eichler <peichler@cadence.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] usb: hub: lack of clearing xHC resources
-Message-ID: <Z849VPcttlQXTEoW@nchen-desktop>
-References: <20250228074307.728010-1-pawell@cadence.com>
- <PH7PR07MB953841E38C088678ACDCF6EEDDCC2@PH7PR07MB9538.namprd07.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YoMPGHd/y/zi1CfBF0v1tQE9HsgrZTW2MhbASKiDuQ2hIwVK+wPSunJ7ihR0vmThRyTgcqDBHr9UV54YKPTgc4Jo9c0MxmMi7iKZ/skLjUvoo9hirV9sM3zH67lp0AzI6E4gwRGDvucu7egn3KUbes4lIHRXDy3jaaGr3ewPqRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=nSG+fTdE; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c2303a56d6so430105985a.3
+        for <stable@vger.kernel.org>; Sun, 09 Mar 2025 18:20:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1741569637; x=1742174437; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=dbfLpDom5BLDx11NDBkF0uxb2i0tiAQxGYNhfk1GUVY=;
+        b=nSG+fTdE7mjqQRbrODPMDG/imopheuLycAmDKxMZe+nZfRfTrXBNe/dX+YHP0kdr5K
+         dRP4HDAwTG1yP/H50gTml8YJeJAUpuMpX/8fwa7FrIIAqekmf5rhAi0Houzo0/oUT3fC
+         hX0DDNZf0KhG/RRZK+/ftHtudciSCdoppthVX5yMx2yFQevnrznntoNU9lDmGqEi4va+
+         LjdIk86u/TG2Nxh0AQPD43TmNgcswMDZdHBrEQPdif/8J/qjZkdHrmR4QzQMVP9HWD8m
+         Kjgys9KhIrqIkgpODJCsMRtjeznS8CE6eRZ5FLMJ5laVj66JREi/tTSYx0XVFb1bQyrf
+         /h7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741569637; x=1742174437;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dbfLpDom5BLDx11NDBkF0uxb2i0tiAQxGYNhfk1GUVY=;
+        b=QBjg87+cblFe8pXNOt6GqHQ8EsdT/EKiV4IYaZVOPoTVB7LHzip7/Km9cEXZ+Jcl/0
+         akIc4uJZkvgHcgksJxFQks5Xw0wYhZXBjap5VSXOKgcabDEl7+n0OBREyqwv22e+bu5C
+         kGLcgNBPcD7TppNyu0lR5lvttmvmdYegPvZzAaoDFRAuM8wKspHAV9TWJKkjZT9q3HkX
+         xdsVoE0tEnryTodUXjv4ymfgoboVDq0FUyW2lNb6SJVRMTj/6Y7qAXmElzo3JBkjODck
+         thumUoneX0Tbm4K8a1vcnf8Uzp3rJoe2ePVIwqTE+gzgazgmL5vp+zWVX8CTKFTJK1qj
+         a6Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCXx+QeMYWiJnoMDXpBqzTAaI9f0m+iL8MRkNzOEMo4BnYkCunP9gu8f87VuSdOYx2fxsNrAKAM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCACRg+IGnp+JUNPQRGpaWKOIOlW6ujhsolZ5MOt5PSbWErWdl
+	FYabHbo1DmPvfc9tnmUNtmcLmU6LvmAg3AUbJC5VC4nmZsTauEUaSi23ZSUNZQ==
+X-Gm-Gg: ASbGncv9zPXjUzjBEm+F/90DxhRdTl3wJxuGKOIR9Po1R/EXgc0gicPjDLhwSiSKPBV
+	1lfI/zrct5SSYEd4MbmltY5V1rnPkK4OGc+UaJQAaaWN+REUnQGMQWL80DMcwDFQ7jEUObciD1F
+	Grn2Ve779XgQEkK6KVhkXoJW8dJeqdMia9HYfnowuey3RCrJKqTAx9gjK9wK0LgLn0rPaUHN7AX
+	xeLwcv9+XACgaY2klNEUmKbwmPz/1cMUdgVMcHCrAxcPec89HjKth0FQtXcgckPADlc8Br6Dhs6
+	6DaSeSnuI/ebjCMLcLKLiAe7YnSd+dKeXh3/a9V/NZs625o3IfCFE7V7
+X-Google-Smtp-Source: AGHT+IGYpP/ltEpYgCuJVhtsbF5RU5a5itNpplTHReTjyB5WUbE5DsxEsxHUc6mLYoktA86rEcLYsg==
+X-Received: by 2002:a05:620a:8904:b0:7c5:48bc:8c7d with SMTP id af79cd13be357-7c548bc8f29mr1037403485a.36.1741569637053;
+        Sun, 09 Mar 2025 18:20:37 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::7929])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c54b68cb47sm171152985a.2.2025.03.09.18.20.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 18:20:36 -0700 (PDT)
+Date: Sun, 9 Mar 2025 21:20:34 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Colin Evans <colin.evans.parkstone@gmail.com>
+Cc: eichest@gmail.com, francesco.dolcini@toradex.com,
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org,
+	stefan.eichenberger@toradex.com
+Subject: Re: [PATCH v1] usb: core: fix pipe creation for get_bMaxPacketSize0
+Message-ID: <2b37aad4-d9ef-4dd3-98ea-02a00d1ad993@rowland.harvard.edu>
+References: <Z6HxHXrmeEuTzE-c@eichest-laptop>
+ <857c8982-f09f-4788-b547-1face254946d@gmail.com>
+ <1005263f-0a07-4dae-b74f-28e6ae3952bf@rowland.harvard.edu>
+ <cf6c9693-49ae-4511-8f16-30168567f877@gmail.com>
+ <04cb3076-6e34-432f-9400-0df84c054e5c@rowland.harvard.edu>
+ <bf0fda83-d97d-4a50-94d6-a2d70607a917@gmail.com>
+ <73963187-6dcb-480d-ae35-2cee11001834@rowland.harvard.edu>
+ <dc8894f5-8960-4e0f-93ff-47f305cd902e@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <PH7PR07MB953841E38C088678ACDCF6EEDDCC2@PH7PR07MB9538.namprd07.prod.outlook.com>
+In-Reply-To: <dc8894f5-8960-4e0f-93ff-47f305cd902e@gmail.com>
 
-On 25-02-28 07:50:25, Pawel Laszczak wrote:
-> The xHC resources allocated for USB devices are not released in correct
-> order after resuming in case when while suspend device was reconnected.
+On Sun, Mar 09, 2025 at 09:57:21PM +0000, Colin Evans wrote:
+> > In theory, turning off power to port 4 might stop all the events from
+> > being reported.  You can try this to see if it works:
+> > 
+> > 	echo 1 >/sys/bus/usb/devices/2-0:1.0/usb2-port4/disable
+> > 
+> > Alan Stern
 > 
-> This issue has been detected during the fallowing scenario:
-> - connect hub HS to root port
-> - connect LS/FS device to hub port
-> - wait for enumeration to finish
-> - force host to suspend
-> - reconnect hub attached to root port
-> - wake host
+> Thank you, that is very helpful, for a couple of reasons.
 > 
-> For this scenario during enumeration of USB LS/FS device the Cadence xHC
-> reports completion error code for xHC commands because the xHC resources
-> used for devices has not been properly released.
-> XHCI specification doesn't mention that device can be reset in any order
-> so, we should not treat this issue as Cadence xHC controller bug.
-> Similar as during disconnecting in this case the device resources should
-> be cleared starting form the last usb device in tree toward the root hub.
-> To fix this issue usbcore driver should call hcd->driver->reset_device
-> for all USB devices connected to hub which was reconnected while
-> suspending.
+> "Machine 2" is a new build, so if (as it sounds) the motherboard has a
+> hardware problem, then I need to
+> look into returning it.
 > 
-> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-> cc: <stable@vger.kernel.org>
-> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+> BTW- it seems I spoke too soon about the USB stick suppressing the error.
+> After a couple of reboots with
+> it in place the problem re-occurred. It does seem that connecting a hub
+> (switch) is the  only way
+> to reliably stop the error. The switch has a bunch of wiring connected to
+> USB peripherals and other
+> machines. I would have guessed that might make the likelihood of picking up
+> electrical noise
+> actually worse, but that seems not to be the case here.
 
-Tested at Cixtech sky1 SoC which uses Cadence USB SSP IP.
+It may have something to do with whether the attached device is USB-3 or 
+USB-2.  Hubs are both (or are USB-2 only).
 
-Tested-by: Peter Chen <peter.chen@cixtech.com>
+> "Machine 1" is several years old, it's actually the guts of the same PC that
+> was upgraded to make M/c 2.
+> It's not usable, or sellable, with this performance hit happening. I have
+> tried all the external USB ports
+> on this machine and not found the failing controller, my guess is it's going
+> to be one that supports
+> some of the on-board USB headers.
 
-Peter
-> 
-> ---
-> Changelog:
-> v3:
-> - Changed patch title
-> - Corrected typo
-> - Moved hub_hc_release_resources above mutex_lock(hcd->address0_mutex)
-> 
-> v2:
-> - Replaced disconnection procedure with releasing only the xHC resources
-> 
->  drivers/usb/core/hub.c | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
-> 
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> index a76bb50b6202..dcba4281ea48 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -6065,6 +6065,36 @@ void usb_hub_cleanup(void)
->  	usb_deregister(&hub_driver);
->  } /* usb_hub_cleanup() */
->  
-> +/**
-> + * hub_hc_release_resources - clear resources used by host controller
-> + * @udev: pointer to device being released
-> + *
-> + * Context: task context, might sleep
-> + *
-> + * Function releases the host controller resources in correct order before
-> + * making any operation on resuming usb device. The host controller resources
-> + * allocated for devices in tree should be released starting from the last
-> + * usb device in tree toward the root hub. This function is used only during
-> + * resuming device when usb device require reinitialization â€“ that is, when
-> + * flag udev->reset_resume is set.
-> + *
-> + * This call is synchronous, and may not be used in an interrupt context.
-> + */
-> +static void hub_hc_release_resources(struct usb_device *udev)
-> +{
-> +	struct usb_hub *hub = usb_hub_to_struct_hub(udev);
-> +	struct usb_hcd *hcd = bus_to_hcd(udev->bus);
-> +	int i;
-> +
-> +	/* Release up resources for all children before this device */
-> +	for (i = 0; i < udev->maxchild; i++)
-> +		if (hub->ports[i]->child)
-> +			hub_hc_release_resources(hub->ports[i]->child);
-> +
-> +	if (hcd->driver->reset_device)
-> +		hcd->driver->reset_device(hcd, udev);
-> +}
-> +
->  /**
->   * usb_reset_and_verify_device - perform a USB port reset to reinitialize a device
->   * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)
-> @@ -6129,6 +6159,9 @@ static int usb_reset_and_verify_device(struct usb_device *udev)
->  	bos = udev->bos;
->  	udev->bos = NULL;
->  
-> +	if (udev->reset_resume)
-> +		hub_hc_release_resources(udev);
-> +
->  	mutex_lock(hcd->address0_mutex);
->  
->  	for (i = 0; i < PORT_INIT_TRIES; ++i) {
-> -- 
-> 2.43.0
-> 
+In fact, the port in question might not be attached to anything, or 
+improperly grounded, or something like that.
 
--- 
+> I had been looking on the web for a way to shut down the problem port, or
+> worst case the whole hub,
+> however all the Linux examples I found worked by either-
+> 
+> a) Preventing the loading of the driver for the chipset, by type. However
+> that would kill all ports supported by
+>     the same type of controller, and this motherboard has multiple
+> controllers of the same type onboard.
+> 
+> b) Shutting down a port by searching for the connected device identifier.
+> However in these cases there
+>     _are_ no connected devlces, the fault happens when the controller is not
+> connected to anything.
+> 
+> Hopefully the command you recommended will do the trick, I will let you
+> know.
+> 
+> Would I be correct in thinking this would need to be run at every boot, some
+> time after device enumeration,
+> or would it need to be run after every re-enumeration of devices after a USB
+> device is connected /
+> disconnected? Not sure how to achieve that.
 
-Best regards,
-Peter
+At every boot.  It doesn't have to be after all the other devices 
+are enumerated; after the USB controller itself is enumerated will be 
+good enough.
+
+> I very much appreciate your help in identifying the fault. Thank you.
+
+You're welcome.
+
+Alan Stern
 
