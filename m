@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA37A59E02
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D453A59CAF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9D3016880E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45ECF16EDFF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069EA23372F;
-	Mon, 10 Mar 2025 17:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7230F17CA12;
+	Mon, 10 Mar 2025 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MebD7Vs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5zwx9LO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5164233729;
-	Mon, 10 Mar 2025 17:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE5B230988;
+	Mon, 10 Mar 2025 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627569; cv=none; b=hXRTieIW7NFyNspDJ07JOypeHeQ7KlFd81qmuknEEq4IWv5HRdkt+HiCV+P95ejHS+OPjyc/Q4TolkOv2FQA29UOjiuIeSHmQOrR6RIjxkX6cW2ps9ZG4ruiKr3I+RexXElwpAtAOoA3HbyNMLIZSuUi07AcWPBvo2kDJDcp9b4=
+	t=1741626865; cv=none; b=iMLvXhUCGvPn8+tgVl+KAAJIw+AS71DhHynUORJ/i8qG8T+1mcgh0Z3J9NO1sMZeaSGbVQIpbE+0o/B+5LJ2TtpAnppgsdrIUO0xb210qX452IscDQAe4uRZ6Gv+9+WmolrOcCVN54jVwlNLsS7rzTMHy8hiztO7SeYdiVGWM2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627569; c=relaxed/simple;
-	bh=0oLxBfyXtEnB3oqMzdOVkwUXggd21fRa3QgcJG9oExc=;
+	s=arc-20240116; t=1741626865; c=relaxed/simple;
+	bh=emX6ygGggS7nUpbTIYC/03+/7BSwd/paieLkHLQqSJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVi1lkgIWzGP/DmTlZijtosLdtfO9AC3F6epb/A3IyUfwRdC3uAuIcVMnZSpFUZ9Ll3wN1GR6kj5zCuHbK3VJZshuVHPZmSSIXykjQAEkNOmWvjzY0kvg3WIhHSOWTdXJ1Yyy6/B2RQ8nArTUJ78CXX7K+Fn9PGl1gwsGrudpsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MebD7Vs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A868C4CEEE;
-	Mon, 10 Mar 2025 17:26:09 +0000 (UTC)
+	 MIME-Version; b=dmD5iZZlFbKYICmCAFECH/0JGM4Quady2e1RXInDLPqeumdIZu0i2dMqrAIzRgDtv/Ukdq8FW9jcYvjtJMfKcjb16fi4I0syAbSKjrlcz9E8/kP1o9GFxXe065IR+3W9nur2jaaH886UUFDaD90HyfFoS6Xc6OVGbk/y/5F5ezk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5zwx9LO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA62DC4CEE5;
+	Mon, 10 Mar 2025 17:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627569;
-	bh=0oLxBfyXtEnB3oqMzdOVkwUXggd21fRa3QgcJG9oExc=;
+	s=korg; t=1741626865;
+	bh=emX6ygGggS7nUpbTIYC/03+/7BSwd/paieLkHLQqSJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MebD7VsmUp5etiu/WC2PrJHIktJ29wtCyyyqZq5aoqo33QW+4H87bMw3KHVNcxJB
-	 NB0DVN/VC0qKJkQC8ejzmjDpM8rLx+PmkuOATqAOOAvhSol1GD5SHx0GTV4EUGj33g
-	 bX5bidKnOKWADu+h2GhJWClB5f7N09tzkwgG/6rs=
+	b=c5zwx9LOhIDn2iGxfqA5UaJNtovtrjF5DUSfdGhuHwMXjH0m9sHADOTStomXYrZWe
+	 mU+DMQpmCjZIqOiObBDlvbjizqoJcPoT8s6zo4EN6lTsgUtcGOZfN+xhmsS0iuVr+w
+	 0bkDSgN4hxoo5JicNXqlrTIx4jBawyRCzgO2SpB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 147/269] HID: intel-ish-hid: Fix use-after-free issue in hid_ishtp_cl_remove()
+Subject: [PATCH 6.13 107/207] nvme-tcp: add basic support for the C2HTermReq PDU
 Date: Mon, 10 Mar 2025 18:05:00 +0100
-Message-ID: <20250310170503.575709292@linuxfoundation.org>
+Message-ID: <20250310170452.013048214@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 823987841424289339fdb4ba90e6d2c3792836db ]
+[ Upstream commit 84e009042d0f3dfe91bec60bcd208ee3f866cbcd ]
 
-During the `rmmod` operation for the `intel_ishtp_hid` driver, a
-use-after-free issue can occur in the hid_ishtp_cl_remove() function.
-The function hid_ishtp_cl_deinit() is called before ishtp_hid_remove(),
-which can lead to accessing freed memory or resources during the
-removal process.
+Previously, the NVMe/TCP host driver did not handle the C2HTermReq PDU,
+instead printing "unsupported pdu type (3)" when received. This patch adds
+support for processing the C2HTermReq PDU, allowing the driver
+to print the Fatal Error Status field.
 
-Call Trace:
- ? ishtp_cl_send+0x168/0x220 [intel_ishtp]
- ? hid_output_report+0xe3/0x150 [hid]
- hid_ishtp_set_feature+0xb5/0x120 [intel_ishtp_hid]
- ishtp_hid_request+0x7b/0xb0 [intel_ishtp_hid]
- hid_hw_request+0x1f/0x40 [hid]
- sensor_hub_set_feature+0x11f/0x190 [hid_sensor_hub]
- _hid_sensor_power_state+0x147/0x1e0 [hid_sensor_trigger]
- hid_sensor_runtime_resume+0x22/0x30 [hid_sensor_trigger]
- sensor_hub_remove+0xa8/0xe0 [hid_sensor_hub]
- hid_device_remove+0x49/0xb0 [hid]
- hid_destroy_device+0x6f/0x90 [hid]
- ishtp_hid_remove+0x42/0x70 [intel_ishtp_hid]
- hid_ishtp_cl_remove+0x6b/0xb0 [intel_ishtp_hid]
- ishtp_cl_device_remove+0x4a/0x60 [intel_ishtp]
- ...
+Example of output:
+nvme nvme4: Received C2HTermReq (FES = Invalid PDU Header Field)
 
-Additionally, ishtp_hid_remove() is a HID level power off, which should
-occur before the ISHTP level disconnect.
-
-This patch resolves the issue by reordering the calls in
-hid_ishtp_cl_remove(). The function ishtp_hid_remove() is now
-called before hid_ishtp_cl_deinit().
-
-Fixes: f645a90e8ff7 ("HID: intel-ish-hid: ishtp-hid-client: use helper functions for connection")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Stable-dep-of: ad95bab0cd28 ("nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ishtp-hid-client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/tcp.c  | 43 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/nvme-tcp.h |  2 ++
+ 2 files changed, 45 insertions(+)
 
-diff --git a/drivers/hid/intel-ish-hid/ishtp-hid-client.c b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-index fbd4f8ea1951b..af6a5afc1a93e 100644
---- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-@@ -833,9 +833,9 @@ static void hid_ishtp_cl_remove(struct ishtp_cl_device *cl_device)
- 			hid_ishtp_cl);
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index d7c193028e7c3..8a9131c95a3da 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -763,6 +763,40 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
+ 	return 0;
+ }
  
- 	dev_dbg(ishtp_device(cl_device), "%s\n", __func__);
--	hid_ishtp_cl_deinit(hid_ishtp_cl);
- 	ishtp_put_device(cl_device);
- 	ishtp_hid_remove(client_data);
-+	hid_ishtp_cl_deinit(hid_ishtp_cl);
++static void nvme_tcp_handle_c2h_term(struct nvme_tcp_queue *queue,
++		struct nvme_tcp_term_pdu *pdu)
++{
++	u16 fes;
++	const char *msg;
++	u32 plen = le32_to_cpu(pdu->hdr.plen);
++
++	static const char * const msg_table[] = {
++		[NVME_TCP_FES_INVALID_PDU_HDR] = "Invalid PDU Header Field",
++		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
++		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
++		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
++		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
++		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
++	};
++
++	if (plen < NVME_TCP_MIN_C2HTERM_PLEN ||
++	    plen > NVME_TCP_MAX_C2HTERM_PLEN) {
++		dev_err(queue->ctrl->ctrl.device,
++			"Received a malformed C2HTermReq PDU (plen = %u)\n",
++			plen);
++		return;
++	}
++
++	fes = le16_to_cpu(pdu->fes);
++	if (fes && fes < ARRAY_SIZE(msg_table))
++		msg = msg_table[fes];
++	else
++		msg = "Unknown";
++
++	dev_err(queue->ctrl->ctrl.device,
++		"Received C2HTermReq (FES = %s)\n", msg);
++}
++
+ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
+ 		unsigned int *offset, size_t *len)
+ {
+@@ -784,6 +818,15 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
+ 		return 0;
  
- 	hid_ishtp_cl = NULL;
+ 	hdr = queue->pdu;
++	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
++		/*
++		 * C2HTermReq never includes Header or Data digests.
++		 * Skip the checks.
++		 */
++		nvme_tcp_handle_c2h_term(queue, (void *)queue->pdu);
++		return -EINVAL;
++	}
++
+ 	if (queue->hdr_digest) {
+ 		ret = nvme_tcp_verify_hdgst(queue, queue->pdu, hdr->hlen);
+ 		if (unlikely(ret))
+diff --git a/include/linux/nvme-tcp.h b/include/linux/nvme-tcp.h
+index e07e8978d691b..e435250fcb4d0 100644
+--- a/include/linux/nvme-tcp.h
++++ b/include/linux/nvme-tcp.h
+@@ -13,6 +13,8 @@
+ #define NVME_TCP_ADMIN_CCSZ	SZ_8K
+ #define NVME_TCP_DIGEST_LENGTH	4
+ #define NVME_TCP_MIN_MAXH2CDATA 4096
++#define NVME_TCP_MIN_C2HTERM_PLEN	24
++#define NVME_TCP_MAX_C2HTERM_PLEN	152
  
+ enum nvme_tcp_pfv {
+ 	NVME_TCP_PFV_1_0 = 0x0,
 -- 
 2.39.5
 
