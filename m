@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-121834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D6CA59CB7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76591A59DE5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F7133AA566
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C5BF16FF07
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF379233723;
-	Mon, 10 Mar 2025 17:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F2A2356DA;
+	Mon, 10 Mar 2025 17:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n31VhrQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVkwO26v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAFD2327A7;
-	Mon, 10 Mar 2025 17:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BE22356D1;
+	Mon, 10 Mar 2025 17:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626764; cv=none; b=UV54k8fzPnYXfDQOtgmD2paD3eiJr01F1lcTd2+2sn8nH6dGJYlSTpJ3uiIbzfsE/HUM613LiPFAXiQZZpXkzwoRuC/sJxgsT7XgvsUoPhUkUibmOtFGMy7X/7zwwoDLIESb9qjwYTwSB5lTn4DYRdHq8PMJ3LyS0lg61tYhpzU=
+	t=1741627489; cv=none; b=JuzhPsI+myCyA6aFRxJoTLOf4OhVMcqZ2UyNkSMAWcUitzINcUZrZDGMobjFv2hQoGbRUIiuA4UK5dnveaoUlXISN5uuFj9Xfi6CdOnOC/pnFVO/+xIpiv44tJpCp2+eiMQKEu/KDewilAgFXKfzCouy+x6XsCXm2ww8CBb9P08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626764; c=relaxed/simple;
-	bh=GhpgmitjOSuLqOUaVlVpNwbg3VQOwdbcCa7MSJYwncs=;
+	s=arc-20240116; t=1741627489; c=relaxed/simple;
+	bh=gfe00VXttz7BGADwFSx0NnZ0BzxAlMfoQhMJwwC4IXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvNYBELiEfRLkiIb8yNw1rPDMvF1L9IcoY09wuJH+2ZEV9wxdCAdktKm6vvY7lPUHJrRNTabaC/16KhObmQoBuKBmDXjSpZL4JoU08kot7dyVj3ixspCt7PDwoppLGzLS7ZK6/i1Dc03vMaXDtL3rbDJrhol81zoqGoOUtY1Vx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n31VhrQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D55C4CEE5;
-	Mon, 10 Mar 2025 17:12:44 +0000 (UTC)
+	 MIME-Version; b=PNx5cYPcI2Ne45vAeChrG4UW34+rYu05Pe20uX1cc4GQff5PlAHHiyfDghew542EWsW8ZMWQwabx59iGoLvsS05rIbfjLlpctIv0WMgqhbpEMdwq0gAR0fIl3FSU51w1YIALKQZ7F0UO/lT2ay9Csi0i8Z7TCB+2baPRXbHo07Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVkwO26v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0984AC4CEE5;
+	Mon, 10 Mar 2025 17:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626764;
-	bh=GhpgmitjOSuLqOUaVlVpNwbg3VQOwdbcCa7MSJYwncs=;
+	s=korg; t=1741627489;
+	bh=gfe00VXttz7BGADwFSx0NnZ0BzxAlMfoQhMJwwC4IXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n31VhrQ2s0L0Zq4uMIqXi56qemUbULWXIyFItQeOna/FzeDb1kNIcgrxLbgXgf2DJ
-	 uIiS6fGaigAutxSe18+pckhfcE92ER4dDJ+7Eb8axX4jBqZEOy16YxX3J3bB2m/0GB
-	 EXckHLma537nZPs9EowMd1n/nqe6p9Y+XJDgBPrE=
+	b=MVkwO26vONkTC1EBlu3xAYHRCtPw4H9qHeEpPf5OsCrGUXqs0YC368WfE6gNNYnsW
+	 tsMlhI3m4LaS6WhH1Kr28WOmvyw8VnCEwVoURptqR3OAPiPwJjoRf1onWTsot8Oryu
+	 PYGzMOqBjvFcQ/xoGn3bw0VXCRGCdA7FCAe4NuZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com,
-	Hao Zhang <zhanghao1@kylinos.cn>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 074/207] mm/page_alloc: fix uninitialized variable
-Date: Mon, 10 Mar 2025 18:04:27 +0100
-Message-ID: <20250310170450.704736340@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12 115/269] drm/xe: Fix GT "for each engine" workarounds
+Date: Mon, 10 Mar 2025 18:04:28 +0100
+Message-ID: <20250310170502.303514757@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-commit 8fe9ed44dc29fba0786b7e956d2e87179e407582 upstream.
+commit 54f94dc7f6b4db45dbc23b4db3d20c7194e2c54f upstream.
 
-The variable "compact_result" is not initialized in function
-__alloc_pages_slowpath().  It causes should_compact_retry() to use an
-uninitialized value.
+Any rules using engine matching are currently broken due RTP processing
+happening too in early init, before the list of hardware engines has been
+initialised.
 
-Initialize variable "compact_result" with the value COMPACT_SKIPPED.
+Fix this by moving workaround processing to later in the driver probe
+sequence, to just before the processed list is used for the first time.
 
-BUG: KMSAN: uninit-value in __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
- alloc_pages_mpol+0x4cd/0x890 mm/mempolicy.c:2270
- alloc_frozen_pages_noprof mm/mempolicy.c:2341 [inline]
- alloc_pages_noprof mm/mempolicy.c:2361 [inline]
- folio_alloc_noprof+0x1dc/0x350 mm/mempolicy.c:2371
- filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1019
- __filemap_get_folio+0xb9a/0x1840 mm/filemap.c:1970
- grow_dev_folio fs/buffer.c:1039 [inline]
- grow_buffers fs/buffer.c:1105 [inline]
- __getblk_slow fs/buffer.c:1131 [inline]
- bdev_getblk+0x2c9/0xab0 fs/buffer.c:1431
- getblk_unmovable include/linux/buffer_head.h:369 [inline]
- ext4_getblk+0x3b7/0xe50 fs/ext4/inode.c:864
- ext4_bread_batch+0x9f/0x7d0 fs/ext4/inode.c:933
- __ext4_find_entry+0x1ebb/0x36c0 fs/ext4/namei.c:1627
- ext4_lookup_entry fs/ext4/namei.c:1729 [inline]
- ext4_lookup+0x189/0xb40 fs/ext4/namei.c:1797
- __lookup_slow+0x538/0x710 fs/namei.c:1793
- lookup_slow+0x6a/0xd0 fs/namei.c:1810
- walk_component fs/namei.c:2114 [inline]
- link_path_walk+0xf29/0x1420 fs/namei.c:2479
- path_openat+0x30f/0x6250 fs/namei.c:3985
- do_filp_open+0x268/0x600 fs/namei.c:4016
- do_sys_openat2+0x1bf/0x2f0 fs/open.c:1428
- do_sys_open fs/open.c:1443 [inline]
- __do_sys_openat fs/open.c:1459 [inline]
- __se_sys_openat fs/open.c:1454 [inline]
- __x64_sys_openat+0x2a1/0x310 fs/open.c:1454
- x64_sys_call+0x36f5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Looking at the debugfs gt0/workarounds on ADL-P we notice 14011060649
+should be present while we see, before:
 
-Local variable compact_result created at:
- __alloc_pages_slowpath+0x66/0x16c0 mm/page_alloc.c:4218
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
+ GT Workarounds
+     14011059788
+     14015795083
 
-Link: https://lkml.kernel.org/r/tencent_ED1032321D6510B145CDBA8CBA0093178E09@qq.com
-Reported-by: syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0cfd5e38e96a5596f2b6
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+And with the patch:
+
+ GT Workarounds
+     14011060649
+     14011059788
+     14015795083
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: stable@vger.kernel.org # v6.11+
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250227101304.46660-2-tvrtko.ursulin@igalia.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 25d434cef791e03cf40680f5441b576c639bfa84)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_gt.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4243,6 +4243,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
- restart:
- 	compaction_retries = 0;
- 	no_progress_loops = 0;
-+	compact_result = COMPACT_SKIPPED;
- 	compact_priority = DEF_COMPACT_PRIORITY;
- 	cpuset_mems_cookie = read_mems_allowed_begin();
- 	zonelist_iter_cookie = zonelist_iter_begin();
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -379,9 +379,7 @@ int xe_gt_init_early(struct xe_gt *gt)
+ 	if (err)
+ 		return err;
+ 
+-	xe_wa_process_gt(gt);
+ 	xe_wa_process_oob(gt);
+-	xe_tuning_process_gt(gt);
+ 
+ 	xe_force_wake_init_gt(gt, gt_to_fw(gt));
+ 	spin_lock_init(&gt->global_invl_lock);
+@@ -469,6 +467,8 @@ static int all_fw_domain_init(struct xe_
+ 		goto err_hw_fence_irq;
+ 
+ 	xe_gt_mcr_set_implicit_defaults(gt);
++	xe_wa_process_gt(gt);
++	xe_tuning_process_gt(gt);
+ 	xe_reg_sr_apply_mmio(&gt->reg_sr, gt);
+ 
+ 	err = xe_gt_clock_init(gt);
 
 
 
