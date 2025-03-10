@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-122077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732E7A59DE1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F80A5A1FF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 593C03A9713
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D0CA18935AE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1632823815B;
-	Mon, 10 Mar 2025 17:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A72231A24;
+	Mon, 10 Mar 2025 18:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8vG2gbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUWjKl4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6836235364;
-	Mon, 10 Mar 2025 17:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF011DE89C;
+	Mon, 10 Mar 2025 18:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627460; cv=none; b=j6X4bVg9h6Yrr7tKMEgxLgwi9zFM04/HSbGPdUuBY0No++fTlrmb9BNSGsF8Uv7umnnEIYSMcPZKLEPVW7pXGbCDrHExS4nHZmHJZUYeHtXiGSGZoPsYuJnwNtTt3TmJZ011UY1vd5+JlIMKUVgFceS6pjY9ZwAdK1YLlcDxlVQ=
+	t=1741630525; cv=none; b=dooSU1yG7aOUqQPPtoeJ6jVXL26Sy/sujxSeOdCzYyz1GNkfXnYcydwvPuZ79GeNWP8l6C2O1LCoH0bU+SVJ8IGTOQmEUn8f66y5TpmYfY/TNcBpNL+EnOsKxiIIjQTUd6ucpJn6sPo58JDFF4FQtl4i2MQtc69WeuR1j/q9pwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627460; c=relaxed/simple;
-	bh=2ug4dBua3hnlzYIplZeHBBdV8n9wvcSS3No9PIR1o1o=;
+	s=arc-20240116; t=1741630525; c=relaxed/simple;
+	bh=mcOFbP1DxCuclKaMgxQw/vSy8WBakJjLZIi6R/z3wIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTtsjjba/I1kmZp0hTYryuuDPWs2VsAyeagLBkkYXLPocxL0uFYplk25Iv08YHRMuyF/Na1GG6YuP4j9hEszKS4QwtHa2AwxlOG29z3zZlYwHKxlWZYOwJ78/tPxaHmhQLty5b9ygQbLv5f9cPrQ6bzDTfbEgpYjxflExO/HAzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8vG2gbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34136C4CEE5;
-	Mon, 10 Mar 2025 17:24:20 +0000 (UTC)
+	 MIME-Version; b=dSTieuqc1jZw5jNtBhb1LrRmlsZN5///iNBQdnrTwepmZPeF4Ywxy6+Ia8u4jgBYiL6IVgZdgszICTqvgoIlSoSIJjc1pusKdOVyxlw8ps2+RynsVJHpGpHD/2tp8Na6bhHrBIAkZaR0i/bSZzG9svvqg5q5FRNpPedHPPibjtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUWjKl4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24615C4CEEC;
+	Mon, 10 Mar 2025 18:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627460;
-	bh=2ug4dBua3hnlzYIplZeHBBdV8n9wvcSS3No9PIR1o1o=;
+	s=korg; t=1741630525;
+	bh=mcOFbP1DxCuclKaMgxQw/vSy8WBakJjLZIi6R/z3wIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8vG2gbbDLOQlOqiDG3tSP7+pFSjwl2OXvUtD0jq+/9pXoWsgYqqtB/i2Dje/j1SX
-	 RT4vT5CTTpW1GpGeAYm/aGG+jqwi1jIBm+spX4pJEuka9GW/BLs+oZ9SbCEEfqHCry
-	 QkCG+4vWv/Ir0afhqAjKY/FOqdzeyXvERLD7PX20=
+	b=KUWjKl4qzGgtkUat0y+FBdTpawELiIb39XC9GfFy3SyXaUPrs1FJ4mrKMr7NhPGie
+	 0r3PXLLPl+NotcrtJMMjjxyAkhaAltrWxTrlrNqPG+pvcItL1CoEHeQPwkB19I8NBB
+	 zQRMISCsdnGO1tgk1HUIKpVXqKOQ5ITEcPornw9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Wupeng <mawupeng1@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 136/269] mm: memory-failure: update ttu flag inside unmap_poisoned_folio
-Date: Mon, 10 Mar 2025 18:04:49 +0100
-Message-ID: <20250310170503.143175393@linuxfoundation.org>
+	Eddie James <eajames@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 444/620] tpm: Use managed allocation for bios event log
+Date: Mon, 10 Mar 2025 18:04:50 +0100
+Message-ID: <20250310170603.121206598@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,234 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Wupeng <mawupeng1@huawei.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-commit b81679b1633aa43c0d973adfa816d78c1ed0d032 upstream.
+[ Upstream commit 441b7152729f4a2bdb100135a58625fa0aeb69e4 ]
 
-Patch series "mm: memory_failure: unmap poisoned folio during migrate
-properly", v3.
+Since the bios event log is freed in the device release function,
+let devres handle the deallocation. This will allow other memory
+allocation/mapping functions to be used for the bios event log.
 
-Fix two bugs during folio migration if the folio is poisoned.
-
-
-This patch (of 3):
-
-Commit 6da6b1d4a7df ("mm/hwpoison: convert TTU_IGNORE_HWPOISON to
-TTU_HWPOISON") introduce TTU_HWPOISON to replace TTU_IGNORE_HWPOISON in
-order to stop send SIGBUS signal when accessing an error page after a
-memory error on a clean folio.  However during page migration, anon folio
-must be set with TTU_HWPOISON during unmap_*().  For pagecache we need
-some policy just like the one in hwpoison_user_mappings to set this flag.
-So move this policy from hwpoison_user_mappings to unmap_poisoned_folio to
-handle this warning properly.
-
-Warning will be produced during unamp poison folio with the following log:
-
-  ------------[ cut here ]------------
-  WARNING: CPU: 1 PID: 365 at mm/rmap.c:1847 try_to_unmap_one+0x8fc/0xd3c
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 365 Comm: bash Tainted: G        W          6.13.0-rc1-00018-gacdb4bbda7ab #42
-  Tainted: [W]=WARN
-  Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-  pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : try_to_unmap_one+0x8fc/0xd3c
-  lr : try_to_unmap_one+0x3dc/0xd3c
-  Call trace:
-   try_to_unmap_one+0x8fc/0xd3c (P)
-   try_to_unmap_one+0x3dc/0xd3c (L)
-   rmap_walk_anon+0xdc/0x1f8
-   rmap_walk+0x3c/0x58
-   try_to_unmap+0x88/0x90
-   unmap_poisoned_folio+0x30/0xa8
-   do_migrate_range+0x4a0/0x568
-   offline_pages+0x5a4/0x670
-   memory_block_action+0x17c/0x374
-   memory_subsys_offline+0x3c/0x78
-   device_offline+0xa4/0xd0
-   state_store+0x8c/0xf0
-   dev_attr_store+0x18/0x2c
-   sysfs_kf_write+0x44/0x54
-   kernfs_fop_write_iter+0x118/0x1a8
-   vfs_write+0x3a8/0x4bc
-   ksys_write+0x6c/0xf8
-   __arm64_sys_write+0x1c/0x28
-   invoke_syscall+0x44/0x100
-   el0_svc_common.constprop.0+0x40/0xe0
-   do_el0_svc+0x1c/0x28
-   el0_svc+0x30/0xd0
-   el0t_64_sync_handler+0xc8/0xcc
-   el0t_64_sync+0x198/0x19c
-  ---[ end trace 0000000000000000 ]---
-
-[mawupeng1@huawei.com: unmap_poisoned_folio(): remove shadowed local `mapping', per Miaohe]
-  Link: https://lkml.kernel.org/r/20250219060653.3849083-1-mawupeng1@huawei.com
-Link: https://lkml.kernel.org/r/20250217014329.3610326-1-mawupeng1@huawei.com
-Link: https://lkml.kernel.org/r/20250217014329.3610326-2-mawupeng1@huawei.com
-Fixes: 6da6b1d4a7df ("mm/hwpoison: convert TTU_IGNORE_HWPOISON to TTU_HWPOISON")
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Ma Wupeng <mawupeng1@huawei.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Stable-dep-of: a3a860bc0fd6 ("tpm: Change to kvalloc() in eventlog/acpi.c")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/internal.h       |    5 ++--
- mm/memory-failure.c |   63 +++++++++++++++++++++++++---------------------------
- mm/memory_hotplug.c |    3 +-
- 3 files changed, 36 insertions(+), 35 deletions(-)
+ drivers/char/tpm/eventlog/acpi.c |  5 +++--
+ drivers/char/tpm/eventlog/efi.c  | 13 +++++++------
+ drivers/char/tpm/eventlog/of.c   |  3 ++-
+ drivers/char/tpm/tpm-chip.c      |  1 -
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1101,7 +1101,7 @@ static inline int find_next_best_node(in
-  * mm/memory-failure.c
+diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
+index cd266021d0103..bd757d836c5cf 100644
+--- a/drivers/char/tpm/eventlog/acpi.c
++++ b/drivers/char/tpm/eventlog/acpi.c
+@@ -14,6 +14,7 @@
+  * Access to the event log extended by the TCG BIOS of PC platform
   */
- #ifdef CONFIG_MEMORY_FAILURE
--void unmap_poisoned_folio(struct folio *folio, enum ttu_flags ttu);
-+int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill);
- void shake_folio(struct folio *folio);
- extern int hwpoison_filter(struct page *p);
  
-@@ -1123,8 +1123,9 @@ void add_to_kill_ksm(struct task_struct
- unsigned long page_mapped_in_vma(struct page *page, struct vm_area_struct *vma);
++#include <linux/device.h>
+ #include <linux/seq_file.h>
+ #include <linux/fs.h>
+ #include <linux/security.h>
+@@ -135,7 +136,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	}
  
- #else
--static inline void unmap_poisoned_folio(struct folio *folio, enum ttu_flags ttu)
-+static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
- {
-+	return -EBUSY;
- }
- #endif
+ 	/* malloc EventLog space */
+-	log->bios_event_log = kmalloc(len, GFP_KERNEL);
++	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
  
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1554,11 +1554,35 @@ static int get_hwpoison_page(struct page
+@@ -164,7 +165,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	return format;
+ 
+ err:
+-	kfree(log->bios_event_log);
++	devm_kfree(&chip->dev, log->bios_event_log);
+ 	log->bios_event_log = NULL;
  	return ret;
  }
+diff --git a/drivers/char/tpm/eventlog/efi.c b/drivers/char/tpm/eventlog/efi.c
+index e6cb9d525e30c..4e9d7c2bf32ee 100644
+--- a/drivers/char/tpm/eventlog/efi.c
++++ b/drivers/char/tpm/eventlog/efi.c
+@@ -6,6 +6,7 @@
+  *      Thiebaud Weksteen <tweek@google.com>
+  */
  
--void unmap_poisoned_folio(struct folio *folio, enum ttu_flags ttu)
-+int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
- {
--	if (folio_test_hugetlb(folio) && !folio_test_anon(folio)) {
--		struct address_space *mapping;
-+	enum ttu_flags ttu = TTU_IGNORE_MLOCK | TTU_SYNC | TTU_HWPOISON;
-+	struct address_space *mapping;
-+
-+	if (folio_test_swapcache(folio)) {
-+		pr_err("%#lx: keeping poisoned page in swap cache\n", pfn);
-+		ttu &= ~TTU_HWPOISON;
-+	}
-+
-+	/*
-+	 * Propagate the dirty bit from PTEs to struct page first, because we
-+	 * need this to decide if we should kill or just drop the page.
-+	 * XXX: the dirty test could be racy: set_page_dirty() may not always
-+	 * be called inside page lock (it's recommended but not enforced).
-+	 */
-+	mapping = folio_mapping(folio);
-+	if (!must_kill && !folio_test_dirty(folio) && mapping &&
-+	    mapping_can_writeback(mapping)) {
-+		if (folio_mkclean(folio)) {
-+			folio_set_dirty(folio);
-+		} else {
-+			ttu &= ~TTU_HWPOISON;
-+			pr_info("%#lx: corrupted page was clean: dropped without side effects\n",
-+				pfn);
-+		}
-+	}
++#include <linux/device.h>
+ #include <linux/efi.h>
+ #include <linux/tpm_eventlog.h>
  
-+	if (folio_test_hugetlb(folio) && !folio_test_anon(folio)) {
- 		/*
- 		 * For hugetlb folios in shared mappings, try_to_unmap
- 		 * could potentially call huge_pmd_unshare.  Because of
-@@ -1570,7 +1594,7 @@ void unmap_poisoned_folio(struct folio *
- 		if (!mapping) {
- 			pr_info("%#lx: could not lock mapping for mapped hugetlb folio\n",
- 				folio_pfn(folio));
--			return;
-+			return -EBUSY;
- 		}
- 
- 		try_to_unmap(folio, ttu|TTU_RMAP_LOCKED);
-@@ -1578,6 +1602,8 @@ void unmap_poisoned_folio(struct folio *
- 	} else {
- 		try_to_unmap(folio, ttu);
+@@ -55,7 +56,7 @@ int tpm_read_log_efi(struct tpm_chip *chip)
  	}
-+
-+	return folio_mapped(folio) ? -EBUSY : 0;
- }
  
- /*
-@@ -1587,8 +1613,6 @@ void unmap_poisoned_folio(struct folio *
- static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
- 		unsigned long pfn, int flags)
- {
--	enum ttu_flags ttu = TTU_IGNORE_MLOCK | TTU_SYNC | TTU_HWPOISON;
--	struct address_space *mapping;
- 	LIST_HEAD(tokill);
- 	bool unmap_success;
- 	int forcekill;
-@@ -1611,29 +1635,6 @@ static bool hwpoison_user_mappings(struc
- 	if (!folio_mapped(folio))
- 		return true;
- 
--	if (folio_test_swapcache(folio)) {
--		pr_err("%#lx: keeping poisoned page in swap cache\n", pfn);
--		ttu &= ~TTU_HWPOISON;
--	}
--
--	/*
--	 * Propagate the dirty bit from PTEs to struct page first, because we
--	 * need this to decide if we should kill or just drop the page.
--	 * XXX: the dirty test could be racy: set_page_dirty() may not always
--	 * be called inside page lock (it's recommended but not enforced).
--	 */
--	mapping = folio_mapping(folio);
--	if (!(flags & MF_MUST_KILL) && !folio_test_dirty(folio) && mapping &&
--	    mapping_can_writeback(mapping)) {
--		if (folio_mkclean(folio)) {
--			folio_set_dirty(folio);
--		} else {
--			ttu &= ~TTU_HWPOISON;
--			pr_info("%#lx: corrupted page was clean: dropped without side effects\n",
--				pfn);
--		}
--	}
--
- 	/*
- 	 * First collect all the processes that have the page
- 	 * mapped in dirty form.  This has to be done before try_to_unmap,
-@@ -1641,9 +1642,7 @@ static bool hwpoison_user_mappings(struc
+ 	/* malloc EventLog space */
+-	log->bios_event_log = kmemdup(log_tbl->log, log_size, GFP_KERNEL);
++	log->bios_event_log = devm_kmemdup(&chip->dev, log_tbl->log, log_size, GFP_KERNEL);
+ 	if (!log->bios_event_log) {
+ 		ret = -ENOMEM;
+ 		goto out;
+@@ -76,7 +77,7 @@ int tpm_read_log_efi(struct tpm_chip *chip)
+ 			     MEMREMAP_WB);
+ 	if (!final_tbl) {
+ 		pr_err("Could not map UEFI TPM final log\n");
+-		kfree(log->bios_event_log);
++		devm_kfree(&chip->dev, log->bios_event_log);
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -91,11 +92,11 @@ int tpm_read_log_efi(struct tpm_chip *chip)
+ 	 * Allocate memory for the 'combined log' where we will append the
+ 	 * 'final events log' to.
  	 */
- 	collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
+-	tmp = krealloc(log->bios_event_log,
+-		       log_size + final_events_log_size,
+-		       GFP_KERNEL);
++	tmp = devm_krealloc(&chip->dev, log->bios_event_log,
++			    log_size + final_events_log_size,
++			    GFP_KERNEL);
+ 	if (!tmp) {
+-		kfree(log->bios_event_log);
++		devm_kfree(&chip->dev, log->bios_event_log);
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+diff --git a/drivers/char/tpm/eventlog/of.c b/drivers/char/tpm/eventlog/of.c
+index a9ce66d09a754..741ab2204b11a 100644
+--- a/drivers/char/tpm/eventlog/of.c
++++ b/drivers/char/tpm/eventlog/of.c
+@@ -10,6 +10,7 @@
+  * Read the event log created by the firmware on PPC64
+  */
  
--	unmap_poisoned_folio(folio, ttu);
--
--	unmap_success = !folio_mapped(folio);
-+	unmap_success = !unmap_poisoned_folio(folio, pfn, flags & MF_MUST_KILL);
- 	if (!unmap_success)
- 		pr_err("%#lx: failed to unmap page (folio mapcount=%d)\n",
- 		       pfn, folio_mapcount(folio));
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1806,7 +1806,8 @@ static void do_migrate_range(unsigned lo
- 			if (WARN_ON(folio_test_lru(folio)))
- 				folio_isolate_lru(folio);
- 			if (folio_mapped(folio))
--				unmap_poisoned_folio(folio, TTU_IGNORE_MLOCK);
-+				unmap_poisoned_folio(folio, pfn, false);
-+
- 			continue;
- 		}
++#include <linux/device.h>
+ #include <linux/slab.h>
+ #include <linux/of.h>
+ #include <linux/tpm_eventlog.h>
+@@ -65,7 +66,7 @@ int tpm_read_log_of(struct tpm_chip *chip)
+ 		return -EIO;
+ 	}
  
+-	log->bios_event_log = kmemdup(__va(base), size, GFP_KERNEL);
++	log->bios_event_log = devm_kmemdup(&chip->dev, __va(base), size, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index 65d800ecc9964..a3459238ecb36 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -267,7 +267,6 @@ static void tpm_dev_release(struct device *dev)
+ 	idr_remove(&dev_nums_idr, chip->dev_num);
+ 	mutex_unlock(&idr_lock);
+ 
+-	kfree(chip->log.bios_event_log);
+ 	kfree(chip->work_space.context_buf);
+ 	kfree(chip->work_space.session_buf);
+ 	kfree(chip->allocated_banks);
+-- 
+2.39.5
+
 
 
 
