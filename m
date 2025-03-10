@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-122233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBE2A59E95
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78915A5A21E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C41A1637FE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE049174C7A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B94C233703;
-	Mon, 10 Mar 2025 17:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFD8235377;
+	Mon, 10 Mar 2025 18:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPC/Tmtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7lmt44u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D929E2327A3;
-	Mon, 10 Mar 2025 17:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5FF215F49;
+	Mon, 10 Mar 2025 18:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627907; cv=none; b=XNJqdiojzJQbt1vhM1o2L8KUexXmgvx/DSBcqpXxFp//dWSw6/3TM7djsT2ivCcmSVe7HjQQ5XHvHk7Ym+ovYWUnuh7I7tvdTehpzzPz+wCNpKaw75TeX3q6qJmy9C/HVJ44p5ZIZiWrrqNmu2NAwq3l2hjns9tTGpCW7+i15O4=
+	t=1741630595; cv=none; b=BYxayIJikTV2DiYwKmKTreSM1sXBKDna13HfDrQBP7UcbEbQNmJOJzaYBmIEg7Xet+w52X9nv+iZf3og637xQyYt+tMAjdgkhm1UVl53L58svxr+Nt+XAJyYvOCOfy52pG0bwyAjICNVrLvdkFArZg5vWOl2ZBC91foi3BF85OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627907; c=relaxed/simple;
-	bh=1eGOkeGb3ar8aiWekpu20nlGgzEsJ8AvIMO6ZylFabg=;
+	s=arc-20240116; t=1741630595; c=relaxed/simple;
+	bh=lFfSTqhWtOaCXW2qwLRQIC9MeJPR7AQS52IP7VSq23I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJTOzB2POSIfCg9kSN2LktmPU0/xPXV11/5kksNg+786kyX5D+0Yu4eLI0pIClXHfBuOaw9twaDJRb7hnJdmNnCYrLl/RtE2j5oKAdVRtUDJE3KIfSREBOmuP6u/oxdHYLnWE3pRt9tWKyxNC0Of/DkSU5HvyVdifZNd1IQywCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPC/Tmtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A369C4CEE5;
-	Mon, 10 Mar 2025 17:31:47 +0000 (UTC)
+	 MIME-Version; b=T9LTkatn+UuPOdGklMoy0suoWa2jfNQnJDCAULahpZUYf1agMhpoVx+3SxL3UJ97kMSw/vSZNwmebwsBv7pzu4pRO3NgkKlcVedrLr8RbHAoa7p/4Y02UrW121PHmO+azMOiBEIDhKZJRd7BwSGBKJExLxQHx6LKx2fLgdJY0Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7lmt44u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB32C4CEE5;
+	Mon, 10 Mar 2025 18:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627907;
-	bh=1eGOkeGb3ar8aiWekpu20nlGgzEsJ8AvIMO6ZylFabg=;
+	s=korg; t=1741630594;
+	bh=lFfSTqhWtOaCXW2qwLRQIC9MeJPR7AQS52IP7VSq23I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPC/TmtrPelIRSlBbYdsW5R9vMsHczc0kj04hcqExp2KzYywSodLSe2nJ/rhBm9S8
-	 F3ZNtf8+aUAJlBJIJ5lmrfI6t3wBkHHZn3uUX0YVFMW+031W85GGGB+53Chfw+XanY
-	 KbIZXi1RYZOqX4gUd+s6wmn4QByCg31Lk9QinKC0=
+	b=X7lmt44uN7fDPNB58zlQJxUTRm1vBt9p7lV44FhYQk6bcWicdsotQSEKPNozMVu6X
+	 /S9p5JD4Sx6zUc3XLaIN9QLAS/v1EQyUf4wMKOqfK8Q6jBde4lsSFMHCDsEde/uwig
+	 v8QfNUFHzL8uGbUJqQ20t216T+GAeqKra++4bdZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Zong Li <zong.li@sifive.com>,
-	Andy Chiu <andybnac@gmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Qiang Zhang <dtzq01@gmail.com>,
+	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/145] riscv: signal: fix signal_minsigstksz
+Subject: [PATCH 5.15 469/620] flow_dissector: Fix handling of mixed port and port-range keys
 Date: Mon, 10 Mar 2025 18:05:15 +0100
-Message-ID: <20250310170435.595243812@linuxfoundation.org>
+Message-ID: <20250310170604.090632273@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +67,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 564fc8eb6f78e01292ff10801f318feae6153fdd ]
+[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
 
-The init_rt_signal_env() funciton is called before the alternative patch
-is applied, so using the alternative-related API to check the availability
-of an extension within this function doesn't have the intended effect.
-This patch reorders the init_rt_signal_env() and apply_boot_alternatives()
-to get the correct signal_minsigstksz.
+This patch fixes a bug in TC flower filter where rules combining a
+specific destination port with a source port range weren't working
+correctly.
 
-Fixes: e92f469b0771 ("riscv: signal: Report signal frame size to userspace via auxv")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Zong Li <zong.li@sifive.com>
-Reviewed-by: Andy Chiu <andybnac@gmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241220083926.19453-3-yongxuan.wang@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The specific case was when users tried to configure rules like:
+
+tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
+dst_port 5000 src_port 2000-3000 action drop
+
+The root cause was in the flow dissector code. While both
+FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
+were being set correctly in the classifier, the __skb_flow_dissect_ports()
+function was only populating one of them: whichever came first in
+the enum check. This meant that when the code needed both a specific
+port and a port range, one of them would be left as 0, causing the
+filter to not match packets as expected.
+
+Fix it by removing the either/or logic and instead checking and
+populating both key types independently when they're in use.
+
+Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
+Reported-by: Qiang Zhang <dtzq01@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
+Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/flow_dissector.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 89ff6395dadbc..175184b059264 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -306,8 +306,8 @@ void __init setup_arch(char **cmdline_p)
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index a1efbd0f2ad32..7dfc7ac0624d8 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -725,23 +725,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
+ 			 void *target_container, const void *data,
+ 			 int nhoff, u8 ip_proto, int hlen)
+ {
+-	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
+-	struct flow_dissector_key_ports *key_ports;
++	struct flow_dissector_key_ports_range *key_ports_range = NULL;
++	struct flow_dissector_key_ports *key_ports = NULL;
++	__be32 ports;
  
- 	riscv_init_cbo_blocksizes();
- 	riscv_fill_hwcap();
--	init_rt_signal_env();
- 	apply_boot_alternatives();
-+	init_rt_signal_env();
+ 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
+-	else if (dissector_uses_key(flow_dissector,
+-				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
++		key_ports = skb_flow_dissector_target(flow_dissector,
++						      FLOW_DISSECTOR_KEY_PORTS,
++						      target_container);
++
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
++		key_ports_range = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
++							    target_container);
  
- 	if (IS_ENABLED(CONFIG_RISCV_ISA_ZICBOM) &&
- 	    riscv_isa_extension_available(NULL, ZICBOM))
+-	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
++	if (!key_ports && !key_ports_range)
+ 		return;
+ 
+-	key_ports = skb_flow_dissector_target(flow_dissector,
+-					      dissector_ports,
+-					      target_container);
+-	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
+-						data, hlen);
++	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
++
++	if (key_ports)
++		key_ports->ports = ports;
++
++	if (key_ports_range)
++		key_ports_range->tp.ports = ports;
+ }
+ 
+ static void
 -- 
 2.39.5
 
