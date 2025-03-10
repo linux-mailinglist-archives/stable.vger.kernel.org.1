@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-122588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A2AA5A058
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:48:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902B8A5A036
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67397172106
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:48:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F3DE189110A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CAF232792;
-	Mon, 10 Mar 2025 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C276A18FDAB;
+	Mon, 10 Mar 2025 17:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY/5UHLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOwZp46Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E9B17CA12;
-	Mon, 10 Mar 2025 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CB617CA12;
+	Mon, 10 Mar 2025 17:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628925; cv=none; b=ALP3RgO7Wj3HwrErUtE6l4oAd4k/Fx2xOEo+ClM6qwQemGkbV/sPWmOLPQwte1Wba1fCASCsCE4sqhMy+y0jFPJvEVgTc7t7/jMsPX1WvzKEfJnZZqTWnjmFdGmkf3ACCKo2zE2EMCcS8RsfmuyLOCPFX6YzXb1+yq1o67Wdpm0=
+	t=1741628835; cv=none; b=oZVt47WOXpGhsGbvzudUgGytz/2gmNDD0vEmXUTDt+9pljoUwSCuc7dJrjQ2n8ZO545q9goG/4tu2nNWVMYo23YWnTFivn19u1d4FkAtgGVCiPr5v4o/t70UhOlyOQhDQQEtPbJxhObWtKBTL8yXHvEMyEHIolL9OdZ9bnukcLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628925; c=relaxed/simple;
-	bh=c53ed6WC/8IFonWm9fSPQj2m/h2mzgxOuBUOQc7hRT8=;
+	s=arc-20240116; t=1741628835; c=relaxed/simple;
+	bh=G9yyuew9FZAiAKVtFkhZAtOkEHT+22edJWh3nTf4Nug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdezMVPgLXgCDSfwgamPjWvMiFPfvkizsJDtmkN44/JtvrJZunulvzv6UbiNJFwY8mSshmzVyzjgWMYbahOliCB+h1kctT24KzbjNp1W7rvJNf3wZm0Zg+tBM/OvhqOkcss1Q95py52m18xM+7sXxg1OKIEMxoqhEwOmRnXNNe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY/5UHLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9130BC4CEE5;
-	Mon, 10 Mar 2025 17:48:44 +0000 (UTC)
+	 MIME-Version; b=nMLlNQwQ7HGJR2xdK2pkqXjkdG4/W72TJYDZH5qQGjgEct5n9In4E9XE5KNFMJ5kdkIet6qC979U326n0IOzVbzeDvVmc7Z4PekqzriHz7mYgG1CKUqEtxbq/2bnfhiFgBTtn6kLpqFbPgrBSpmdmLyhZdpFY2okuB990jSjbkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOwZp46Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC208C4CEE5;
+	Mon, 10 Mar 2025 17:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628925;
-	bh=c53ed6WC/8IFonWm9fSPQj2m/h2mzgxOuBUOQc7hRT8=;
+	s=korg; t=1741628835;
+	bh=G9yyuew9FZAiAKVtFkhZAtOkEHT+22edJWh3nTf4Nug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oY/5UHLBlz0GlTkkoL5QJCRbhO6gf2Tv2PbDrGUTSxZVWSs2uZ8A+N6FNvMTi8xel
-	 mSTGiIghB08OwymnPk8IwxPIUZu9ffqsBQr2QNNIhmACc0L7CmCndPbsfzOjq04+oN
-	 FeBxBNRQwg9w/pSf6UBeo32sMsHkUuJ/sAlljIfI=
+	b=zOwZp46ZegKlcXNAGT8JZGc8JBXm+suBE7aWPMFoE/UFH3v964YN+SGlxVy0w6fKw
+	 lsKJzl0ILCeG02ORQfZz5a3WcRYfk7dSQbnvILMyh2uu86cgcIBxeGJZUIsl2iBEm/
+	 6mXSUzQjWxpxYg7HHbfPbHESqHHpv1O2ElPoIbdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kai Ye <yekai13@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/620] crypto: hisilicon/sec - add some comments for soft fallback
-Date: Mon, 10 Mar 2025 17:58:51 +0100
-Message-ID: <20250310170548.939039271@linuxfoundation.org>
+Subject: [PATCH 5.15 086/620] crypto: hisilicon/sec - delete redundant blank lines
+Date: Mon, 10 Mar 2025 17:58:52 +0100
+Message-ID: <20250310170548.977349009@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,75 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Kai Ye <yekai13@huawei.com>
 
-[ Upstream commit e764d81d58070e66e61fb1b972c81eb9d2ea971e ]
+[ Upstream commit 0413623c27a380d0da7240717f9435d24776b985 ]
 
-Modify the print of information that might lead to user misunderstanding.
-Currently only XTS mode need the fallback tfm when using 192bit key.
-Others algs not need soft fallback tfm. So others algs can return
-directly.
+Some coding style fixes in sec crypto file.
 
 Signed-off-by: Kai Ye <yekai13@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Stable-dep-of: fd337f852b26 ("crypto: hisilicon/sec2 - fix for aead icv error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index 28c167e1be426..c8fa964238e7d 100644
+index c8fa964238e7d..72e26a4bfb8e6 100644
 --- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
 +++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -643,13 +643,15 @@ static int sec_skcipher_fbtfm_init(struct crypto_skcipher *tfm)
- 	struct sec_cipher_ctx *c_ctx = &ctx->c_ctx;
- 
- 	c_ctx->fallback = false;
-+
-+	/* Currently, only XTS mode need fallback tfm when using 192bit key */
- 	if (likely(strncmp(alg, "xts", SEC_XTS_NAME_SZ)))
- 		return 0;
- 
- 	c_ctx->fbtfm = crypto_alloc_sync_skcipher(alg, 0,
- 						  CRYPTO_ALG_NEED_FALLBACK);
- 	if (IS_ERR(c_ctx->fbtfm)) {
--		pr_err("failed to alloc fallback tfm!\n");
-+		pr_err("failed to alloc xts mode fallback tfm!\n");
- 		return PTR_ERR(c_ctx->fbtfm);
- 	}
- 
-@@ -810,7 +812,7 @@ static int sec_skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	}
- 
- 	memcpy(c_ctx->c_key, key, keylen);
--	if (c_ctx->fallback) {
-+	if (c_ctx->fallback && c_ctx->fbtfm) {
- 		ret = crypto_sync_skcipher_setkey(c_ctx->fbtfm, key, keylen);
- 		if (ret) {
- 			dev_err(dev, "failed to set fallback skcipher key!\n");
-@@ -2034,13 +2036,12 @@ static int sec_skcipher_soft_crypto(struct sec_ctx *ctx,
- 				    struct skcipher_request *sreq, bool encrypt)
- {
- 	struct sec_cipher_ctx *c_ctx = &ctx->c_ctx;
-+	SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, c_ctx->fbtfm);
- 	struct device *dev = ctx->dev;
- 	int ret;
- 
--	SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, c_ctx->fbtfm);
+@@ -1674,7 +1674,6 @@ static void sec_aead_callback(struct sec_ctx *c, struct sec_req *req, int err)
+ 					  aead_req->out_mac,
+ 					  authsize, a_req->cryptlen +
+ 					  a_req->assoclen);
 -
- 	if (!c_ctx->fbtfm) {
--		dev_err(dev, "failed to check fallback tfm\n");
-+		dev_err_ratelimited(dev, "the soft tfm isn't supported in the current system.\n");
- 		return -EINVAL;
- 	}
+ 		if (unlikely(sz != authsize)) {
+ 			dev_err(c->dev, "copy out mac err!\n");
+ 			err = -EINVAL;
+@@ -1961,7 +1960,6 @@ static int sec_aead_sha512_ctx_init(struct crypto_aead *tfm)
+ 	return sec_aead_ctx_init(tfm, "sha512");
+ }
  
-@@ -2258,7 +2259,6 @@ static int sec_aead_param_check(struct sec_ctx *ctx, struct sec_req *sreq)
- 	if (ctx->sec->qm.ver == QM_HW_V2) {
- 		if (unlikely(!req->cryptlen || (!sreq->c_req.encrypt &&
- 		    req->cryptlen <= authsize))) {
--			dev_err(dev, "Kunpeng920 not support 0 length!\n");
- 			ctx->a_ctx.fallback = true;
- 			return -EINVAL;
- 		}
+-
+ static int sec_skcipher_cryptlen_ckeck(struct sec_ctx *ctx,
+ 	struct sec_req *sreq)
+ {
 -- 
 2.39.5
 
