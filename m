@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFF2A59CF6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9DFA5A25E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1181616F234
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D86189212D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145A6233140;
-	Mon, 10 Mar 2025 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D371C3F34;
+	Mon, 10 Mar 2025 18:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCd5+ez+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epeBObHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C659A231A2D;
-	Mon, 10 Mar 2025 17:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D341DE89C;
+	Mon, 10 Mar 2025 18:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626974; cv=none; b=erXAfbs8C3EF39rYZm3sV3p5iYBxaseUwMZgTrfuHfTN94RiakWrHP2xH7tH3tftMiZgf7qjBTQS0ExMDbXu/ZFSdMmVcPD9gkNDaynntFdTWJYrVScAF59c6fuwk8MZW9OSbgregRtdoX02b2MLTMRvs8nag2Q9hJA1/PSf5rU=
+	t=1741630764; cv=none; b=IvIhrq1gCCmECmMiK9jWwYlmvz6+6+r6zFtl3dyvM77tcsd7AJwaIA5nWYKTpqX0CHm8nN94KpyxpZt/fNxK/8QeAw5J/bhUNyWxXo8MFF2JdGwEJzKbmnYItiaFTCN65D7qo1/kzE91uiNZ0ctKP97d+XYE63nv13GWnmEq2zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626974; c=relaxed/simple;
-	bh=1eWag9KY0Ryz964/FpUyH6+B48eI31nyllL8FBMjKzM=;
+	s=arc-20240116; t=1741630764; c=relaxed/simple;
+	bh=tNO4ecaQZUd97GUOabi62i5gjc8e3wS1TlmmFzkR5CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iw6X3ZSdPRdz4VcoE+FRsVktm01mwtORtKL+agPduW2nZq/e9hqzpZAMJwl5k0GILcQ7PGRi7iv7tZot+AJn9I5jaQVQn0MfR26ZOEqlwcc+vguZjHSn3N3UX4XgTIlwl/q8u3kzrgsbnzgaIxqBvYQa7As5q7SPj+9ShRR+v0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCd5+ez+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EE7C4CEEB;
-	Mon, 10 Mar 2025 17:16:14 +0000 (UTC)
+	 MIME-Version; b=GYmPPIyAYETb5dqI/Me/U3wWwT+ajZJk3uYlXVNNmQBmcABlBPrEXogmAu0ugsA8Lh+Q4t4+CtPxy8EohtFsjBTu9Czq602Rq2NHq/6mZ2hmtEyCtoNXK1liiFiyQM3UxQom8lJNUC0/vQ7OrZEStQ1uSJSiyGmbUYsStL6id24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epeBObHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50555C4CEE5;
+	Mon, 10 Mar 2025 18:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626974;
-	bh=1eWag9KY0Ryz964/FpUyH6+B48eI31nyllL8FBMjKzM=;
+	s=korg; t=1741630763;
+	bh=tNO4ecaQZUd97GUOabi62i5gjc8e3wS1TlmmFzkR5CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCd5+ez+dNPiixDARQFTuSdjPNnGnx+DhSBOV2RltNeqWuVwKZPdg4C54Xeq27Cuv
-	 KPba99KrGQ2wkivUfEtkBQ8+B9xNsgM4kE9Af1kugVstffV6Yh2VpX+qfjv1BURzIW
-	 p0B0F132b6LfunO7qcn1RUj6RKpDwg0BCv0kWL8I=
+	b=epeBObHnT8CNea2PLhb3kuXCkLR2kDIncXFTFc5joFpwxSTKnMFGpO94NWcaD/gGs
+	 nBwy3c/Ex3sOfRGO4Meb6z159OPyfppbJub1bvZa4SRwMuXT9w6TLIFS3GxRa4q0xM
+	 O7hEc5JWW2DtkqiMNt/UczYrpv1H5fwOBvfsdNXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Takashi Iwai <tiwai@suse.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 146/207] drm/bochs: Fix DPMS regression
-Date: Mon, 10 Mar 2025 18:05:39 +0100
-Message-ID: <20250310170453.600026838@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 5.15 494/620] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
+Date: Mon, 10 Mar 2025 18:05:40 +0100
+Message-ID: <20250310170605.070020512@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 80da96d735094ea22985ced98bc57fe3a4422921 ]
+[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
 
-The recent rewrite with the use of regular atomic helpers broke the
-DPMS unblanking on X11.  Fix it by moving the call of
-bochs_hw_blank(false) from CRTC mode_set_nofb() to atomic_enable().
+We fixed the UAF issue in USB MIDI code by canceling the pending work
+at closing each MIDI output device in the commit below.  However, this
+assumed that it's the only one that is tied with the endpoint, and it
+resulted in unexpected data truncations when multiple devices are
+assigned to a single endpoint and opened simultaneously.
 
-Fixes: 2037174993c8 ("drm/bochs: Use regular atomic helpers")
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1238209
+For addressing the unexpected MIDI message drops, simply replace
+cancel_work_sync() with flush_work().  The drain callback should have
+been already invoked before the close callback, hence the port->active
+flag must be already cleared.  So this just assures that the pending
+work is finished before freeing the resources.
+
+Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
+Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
+Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
+Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250304134203.20534-1-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tiny/bochs.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/usb/midi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tiny/bochs.c b/drivers/gpu/drm/tiny/bochs.c
-index 6f91ff1dbf7e2..4e7d49fb9e6e6 100644
---- a/drivers/gpu/drm/tiny/bochs.c
-+++ b/drivers/gpu/drm/tiny/bochs.c
-@@ -335,8 +335,6 @@ static void bochs_hw_setmode(struct bochs_device *bochs, struct drm_display_mode
- 			 bochs->xres, bochs->yres, bochs->bpp,
- 			 bochs->yres_virtual);
- 
--	bochs_hw_blank(bochs, false);
--
- 	bochs_dispi_write(bochs, VBE_DISPI_INDEX_ENABLE,      0);
- 	bochs_dispi_write(bochs, VBE_DISPI_INDEX_BPP,         bochs->bpp);
- 	bochs_dispi_write(bochs, VBE_DISPI_INDEX_XRES,        bochs->xres);
-@@ -506,6 +504,9 @@ static int bochs_crtc_helper_atomic_check(struct drm_crtc *crtc,
- static void bochs_crtc_helper_atomic_enable(struct drm_crtc *crtc,
- 					    struct drm_atomic_state *state)
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 9a361b202a09d..a56c1a69b422a 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1145,7 +1145,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
  {
-+	struct bochs_device *bochs = to_bochs_device(crtc->dev);
-+
-+	bochs_hw_blank(bochs, false);
+ 	struct usbmidi_out_port *port = substream->runtime->private_data;
+ 
+-	cancel_work_sync(&port->ep->work);
++	flush_work(&port->ep->work);
+ 	return substream_open(substream, 0, 0);
  }
  
- static void bochs_crtc_helper_atomic_disable(struct drm_crtc *crtc,
 -- 
 2.39.5
 
