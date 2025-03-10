@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-121967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F235A59D3E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628E8A5A14B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B40487A3D72
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A239C16E7EC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2291C22D4D0;
-	Mon, 10 Mar 2025 17:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F403C22ACDC;
+	Mon, 10 Mar 2025 17:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqqtjAov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEGHRccP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41BF17C225;
-	Mon, 10 Mar 2025 17:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC5227EA0;
+	Mon, 10 Mar 2025 17:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627147; cv=none; b=jVbf2IGL1SuQRQeKWIhvyjxtZi1hIHFLKXrdtGCN7BqyIWsRwbDXJeWUJrKV3JxqSWlFGpieD4t1mBXEHaefW32VoacknMUTIctdJ01VGB1Fqgc1hvRgGyeUlQcMbuQEw39GqdgxCnBpCAt8o7P/t8fMqKjIVtib35eNMxadV2w=
+	t=1741629559; cv=none; b=Mh9OUQ0lOQ/PW6aFMEm49YXNHm0W1blwIh0jFSuBHuAu1JY3WpiuoHHgbRP1rT0SZmzGVojeblAUY5HRHkwFriB2MUrQxdJ8HQ9Wz6dGWqjVKOkyRqsr/xehSP5QkRNu67TkFomSY+94Ox1aWBVCk67K4ZOLQiy/0AGCKbIwCTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627147; c=relaxed/simple;
-	bh=TlWPLeCEdsQDDiR5E97+kyjT1rYFxp64uDl3cELXV28=;
+	s=arc-20240116; t=1741629559; c=relaxed/simple;
+	bh=U4qs+FUTItryTATlQ7ziMl1+pSQXkAiePlJOLpyA5js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZrR3CHJfgQ1F4x6CI/fwnxAW84i53QDPVZrXDv27bdotJWMeIDkmxS+gnyKAA4zXHml2q2k5zJ4SOpTcKbuwfdMDmWyEm+t8GqfujIm7dE0w6Exicn9yq3Z1U8Ava0xYEzpfZhUYRGqW6ShCKI1UQeq7tlKgp9NSmmoAGJT4t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqqtjAov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE3CC4CEE5;
-	Mon, 10 Mar 2025 17:19:07 +0000 (UTC)
+	 MIME-Version; b=FrXv4ZtL/6Lk51Vyt7MaMrFST0EwvvKsbz7L0bmQb8DkFa6gxibGTn5C3hyLJZpgOIddOpd4L+oX9htjkfOUx+rtc+bJC3AMjhFw0dQnjd2rex+7luuRsVXWGRx8/74fjVsEz5S2a0tXI236HgJrvRtcHAWATK8zxdWKmhPfWtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEGHRccP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362BFC4CEE5;
+	Mon, 10 Mar 2025 17:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627147;
-	bh=TlWPLeCEdsQDDiR5E97+kyjT1rYFxp64uDl3cELXV28=;
+	s=korg; t=1741629559;
+	bh=U4qs+FUTItryTATlQ7ziMl1+pSQXkAiePlJOLpyA5js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqqtjAovC7YhKhEBOsnMxJaYvWvETe+j5/SKwUfyQzarbwVtzjxG/CRLJDBuG7WmC
-	 Z6JxlcCt9JO7JI+MNYw6hpto1uHdRUSGdHxv23rHNqQNU4SN6R2TsejVeO4g1JKw6r
-	 mu7jQeyX92CcUm9Ks4Kib98TUr4JTMm5hUM7PpwY=
+	b=ZEGHRccPxBt+5FOH2b+QMvlr+b4FXuYDqFMKMUN/H3b0lOmrEh5KaWmniItP2EiG5
+	 zf1GrSEaLYAdm56bG9rqiXMz2pJiXIhBicQa2iOzawSIKO5bDZag35SDuujlKTIXU1
+	 3zmNkPEXuBotyG87ZVlT7qimiroFQVIRDC0sP6Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Filipe Xavier <felipe_life@live.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 029/269] rust: error: make conversion functions public
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 336/620] NFSD: fix hang in nfsd4_shutdown_callback
 Date: Mon, 10 Mar 2025 18:03:02 +0100
-Message-ID: <20250310170458.877085856@linuxfoundation.org>
+Message-ID: <20250310170558.873324252@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Xavier <felipe_life@live.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit 5ed147473458f8c20f908a03227d8f5bb3cb8f7d upstream.
+commit 036ac2778f7b28885814c6fbc07e156ad1624d03 upstream.
 
-Change visibility to public of functions in error.rs:
-from_err_ptr, from_errno, from_result and to_ptr.
-Additionally, remove dead_code annotations.
+If nfs4_client is in courtesy state then there is no point to send
+the callback. This causes nfsd4_shutdown_callback to hang since
+cl_cb_inflight is not 0. This hang lasts about 15 minutes until TCP
+notifies NFSD that the connection was dropped.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1105
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Filipe Xavier <felipe_life@live.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/DM4PR14MB7276E6948E67B3B23D8EA847E9652@DM4PR14MB7276.namprd14.prod.outlook.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This patch modifies nfsd4_run_cb_work to skip the RPC call if
+nfs4_client is in courtesy state.
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Fixes: 66af25799940 ("NFSD: add courteous server support for thread with only delegation")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/error.rs |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ fs/nfsd/nfs4callback.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -95,7 +95,7 @@ impl Error {
-     ///
-     /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
-     /// be returned in such a case.
--    pub(crate) fn from_errno(errno: core::ffi::c_int) -> Error {
-+    pub fn from_errno(errno: core::ffi::c_int) -> Error {
-         if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
-             // TODO: Make it a `WARN_ONCE` once available.
-             crate::pr_warn!(
-@@ -133,8 +133,7 @@ impl Error {
-     }
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1410,8 +1410,11 @@ nfsd4_run_cb_work(struct work_struct *wo
+ 		nfsd4_process_cb_update(cb);
  
-     /// Returns the error encoded as a pointer.
--    #[expect(dead_code)]
--    pub(crate) fn to_ptr<T>(self) -> *mut T {
-+    pub fn to_ptr<T>(self) -> *mut T {
-         #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
-         // SAFETY: `self.0` is a valid error due to its invariant.
-         unsafe {
-@@ -270,9 +269,7 @@ pub fn to_result(err: core::ffi::c_int)
- ///     from_err_ptr(unsafe { bindings::devm_platform_ioremap_resource(pdev.to_ptr(), index) })
- /// }
- /// ```
--// TODO: Remove `dead_code` marker once an in-kernel client is available.
--#[allow(dead_code)]
--pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
-+pub fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
-     // CAST: Casting a pointer to `*const core::ffi::c_void` is always valid.
-     let const_ptr: *const core::ffi::c_void = ptr.cast();
-     // SAFETY: The FFI function does not deref the pointer.
-@@ -318,9 +315,7 @@ pub(crate) fn from_err_ptr<T>(ptr: *mut
- ///     })
- /// }
- /// ```
--// TODO: Remove `dead_code` marker once an in-kernel client is available.
--#[allow(dead_code)]
--pub(crate) fn from_result<T, F>(f: F) -> T
-+pub fn from_result<T, F>(f: F) -> T
- where
-     T: From<i16>,
-     F: FnOnce() -> Result<T>,
+ 	clnt = clp->cl_cb_client;
+-	if (!clnt) {
+-		/* Callback channel broken, or client killed; give up: */
++	if (!clnt || clp->cl_state == NFSD4_COURTESY) {
++		/*
++		 * Callback channel broken, client killed or
++		 * nfs4_client in courtesy state; give up.
++		 */
+ 		nfsd41_destroy_cb(cb);
+ 		return;
+ 	}
 
 
 
