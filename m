@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-123048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7350A5A292
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770D7A59E64
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2387A7A8F01
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5142163A56
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C9022E418;
-	Mon, 10 Mar 2025 18:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C60623373C;
+	Mon, 10 Mar 2025 17:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHmnzTNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgNyazFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4E4BA3D;
-	Mon, 10 Mar 2025 18:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE8223372F;
+	Mon, 10 Mar 2025 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630894; cv=none; b=f8ARnXNVpLCVvlj2yVY1cCbcsyBU7q4HdxlRezr3nWvPAXJdDk/fAASKxEExZLy35XwOqdCk7a0/asYYb+C6xYcNilNSzfXI6eM3SSPSIG89ZAi0/OVHQVaEvZd3sqmZdbUpDSsfMQD2Ximcg8TOdaFxKbX5pu18oYQYPjV1WE4=
+	t=1741627830; cv=none; b=BsZTzRE9hmK2aG+H4ArMRGPo3DfWM88EjC1dkY2lHwqECOIotvfmAMw7Zy3wWicvvJexaC7QAlIfx/gzxx8lqYdqBKJEGirU1E2AfvZOq7f6QejpOe4R5ZR1Wws9wuOVQSvePzgFv4ltmuNk2FGN1JyjpZ/CppiRxN8nG0WSecE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630894; c=relaxed/simple;
-	bh=4Az6KDQL25Psxn9PVk4tvesWybbgChUUFbtt7ReIYMo=;
+	s=arc-20240116; t=1741627830; c=relaxed/simple;
+	bh=z3eLuin3BQ22mugZidU3HprZjOtFcDDek/DgSPRJ2Hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0nd3WleKtxpOeRh9zSSEltvKdNJvAXlaxTDXTeMYOYUyiZqqro/oaQ2o8W8oQWNz0nCtsIm7n9lTUUaiL1PJ9Kfa2Cz6VBrdgVHCu/C2K2o1G+GiSvTQ3LZNdZeQZDDQohwT0yyULXjul4hvA4LHK6JGv30qJUKf6nmitjWdGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHmnzTNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B2FC4CEE5;
-	Mon, 10 Mar 2025 18:21:33 +0000 (UTC)
+	 MIME-Version; b=ZAdnjovcoDORfCekCeJRxX3ZXxfgNDkYjAUEqt8EKARnF1BUkM/TQRJ1y9HQ256RIqRWEbOEJNN21RA6Ot1ZZfOCJnpIHBP8kQb8PTIWsbhbrqvOTgMbzAtJHnWOEbJG2kriWtj1qI52HdZ/kq8t4WLpxyq53Ko8r2bvL/8C4PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgNyazFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67387C4CEE5;
+	Mon, 10 Mar 2025 17:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630894;
-	bh=4Az6KDQL25Psxn9PVk4tvesWybbgChUUFbtt7ReIYMo=;
+	s=korg; t=1741627829;
+	bh=z3eLuin3BQ22mugZidU3HprZjOtFcDDek/DgSPRJ2Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHmnzTNW4xShvZzZWJD/pVxLLeCz0F6WCx6rXP5tNM5xHKxD+f+YbQ5bX//B1w+tg
-	 u+HTa1cgHywrArQlB821YMxrN5m5AIZFMwBPB+4T8JQ+7kRJy+XtLEqwwQouwhghBZ
-	 LExxvdnuCVdUdm0HNwKWMm8pjC0f90BIm31vcpIg=
+	b=VgNyazFFhyuRqj+xMun5/Qb7aQGFkZqTmjy2Cy1xDTCUmAS/0/1787aF7n1yubSVR
+	 XHOhSJ2pDkwBsDogLFh1XRb/fR+iFkUlBO/Zl+ZnQeMhsdRmBnYmVEjFJp8C7zU8Ce
+	 9RGtREm9yHi/fset0ilaEOxpKtHgsUGcQAQh9KqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haitao Huang <haitao.huang@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 572/620] x86/sgx: Support VA page allocation without reclaiming
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 265/269] Revert "KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()"
 Date: Mon, 10 Mar 2025 18:06:58 +0100
-Message-ID: <20250310170608.120451529@linuxfoundation.org>
+Message-ID: <20250310170508.351495005@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit a76e7f1f18884a94998ca82862c0a4e6d0fd2933 ]
+This reverts commit dec857329fb9a66a5bce4f9db14c97ef64725a32 which is
+commit c9be85dabb376299504e0d391d15662c0edf8273 upstream.
 
-struct sgx_encl should be protected with the mutex
-sgx_encl->lock. One exception is sgx_encl->page_cnt that
-is incremented (in sgx_encl_grow()) when an enclave page
-is added to the enclave. The reason the mutex is not held
-is to allow the reclaimer to be called directly if there are
-no EPC pages (in support of a new VA page) available at the time.
+It should not have been applied.
 
-Incrementing sgx_encl->page_cnt without sgc_encl->lock held
-is currently (before SGX2) safe from concurrent updates because
-all paths in which sgx_encl_grow() is called occur before
-enclave initialization and are protected with an atomic
-operation on SGX_ENCL_IOCTL.
-
-SGX2 includes support for dynamically adding pages after
-enclave initialization where the protection of SGX_ENCL_IOCTL
-is not available.
-
-Make direct reclaim of EPC pages optional when new VA pages
-are added to the enclave. Essentially the existing "reclaim"
-flag used when regular EPC pages are added to an enclave
-becomes available to the caller when used to allocate VA pages
-instead of always being "true".
-
-When adding pages without invoking the reclaimer it is possible
-to do so with sgx_encl->lock held, gaining its protection against
-concurrent updates to sgx_encl->page_cnt after enclave
-initialization.
-
-No functional change.
-
-Reported-by: Haitao Huang <haitao.huang@intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lkml.kernel.org/r/42c5934c229982ee67982bb97c6ab34bde758620.1652137848.git.reinette.chatre@intel.com
-Stable-dep-of: 0d3e0dfd68fb ("x86/sgx: Fix size overflows in sgx_encl_create()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/sgx/encl.c  | 6 ++++--
- arch/x86/kernel/cpu/sgx/encl.h  | 4 ++--
- arch/x86/kernel/cpu/sgx/ioctl.c | 8 ++++----
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ arch/powerpc/kvm/e500_mmu_host.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 7cb9f89ee7365..2e93bafa7c475 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -981,6 +981,8 @@ void sgx_zap_enclave_ptes(struct sgx_encl *encl, unsigned long addr)
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -242,7 +242,7 @@ static inline int tlbe_is_writable(struc
+ 	return tlbe->mas7_3 & (MAS3_SW|MAS3_UW);
+ }
  
- /**
-  * sgx_alloc_va_page() - Allocate a Version Array (VA) page
-+ * @reclaim: Reclaim EPC pages directly if none available. Enclave
-+ *           mutex should not be held if this is set.
-  *
-  * Allocate a free EPC page and convert it to a Version Array (VA) page.
-  *
-@@ -988,12 +990,12 @@ void sgx_zap_enclave_ptes(struct sgx_encl *encl, unsigned long addr)
-  *   a VA page,
-  *   -errno otherwise
-  */
--struct sgx_epc_page *sgx_alloc_va_page(void)
-+struct sgx_epc_page *sgx_alloc_va_page(bool reclaim)
+-static inline bool kvmppc_e500_ref_setup(struct tlbe_ref *ref,
++static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
+ 					 struct kvm_book3e_206_tlb_entry *gtlbe,
+ 					 kvm_pfn_t pfn, unsigned int wimg)
  {
- 	struct sgx_epc_page *epc_page;
- 	int ret;
+@@ -252,7 +252,11 @@ static inline bool kvmppc_e500_ref_setup
+ 	/* Use guest supplied MAS2_G and MAS2_E */
+ 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
  
--	epc_page = sgx_alloc_epc_page(NULL, true);
-+	epc_page = sgx_alloc_epc_page(NULL, reclaim);
- 	if (IS_ERR(epc_page))
- 		return ERR_CAST(epc_page);
+-	return tlbe_is_writable(gtlbe);
++	/* Mark the page accessed */
++	kvm_set_pfn_accessed(pfn);
++
++	if (tlbe_is_writable(gtlbe))
++		kvm_set_pfn_dirty(pfn);
+ }
  
-diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
-index 90e3a1181bd62..b5e9602be127e 100644
---- a/arch/x86/kernel/cpu/sgx/encl.h
-+++ b/arch/x86/kernel/cpu/sgx/encl.h
-@@ -114,14 +114,14 @@ void sgx_encl_put_backing(struct sgx_backing *backing);
- int sgx_encl_test_and_clear_young(struct mm_struct *mm,
- 				  struct sgx_encl_page *page);
- void sgx_zap_enclave_ptes(struct sgx_encl *encl, unsigned long addr);
--struct sgx_epc_page *sgx_alloc_va_page(void);
-+struct sgx_epc_page *sgx_alloc_va_page(bool reclaim);
- unsigned int sgx_alloc_va_slot(struct sgx_va_page *va_page);
- void sgx_free_va_slot(struct sgx_va_page *va_page, unsigned int offset);
- bool sgx_va_page_full(struct sgx_va_page *va_page);
- void sgx_encl_free_epc_page(struct sgx_epc_page *page);
- struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
- 					 unsigned long addr);
--struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl);
-+struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl, bool reclaim);
- void sgx_encl_shrink(struct sgx_encl *encl, struct sgx_va_page *va_page);
+ static inline void kvmppc_e500_ref_release(struct tlbe_ref *ref)
+@@ -333,7 +337,6 @@ static inline int kvmppc_e500_shadow_map
+ 	unsigned int wimg = 0;
+ 	pgd_t *pgdir;
+ 	unsigned long flags;
+-	bool writable = false;
  
- #endif /* _X86_ENCL_H */
-diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-index f21890150216d..4de31b0b0dd5d 100644
---- a/arch/x86/kernel/cpu/sgx/ioctl.c
-+++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-@@ -17,7 +17,7 @@
- #include "encl.h"
- #include "encls.h"
- 
--struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl)
-+struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl, bool reclaim)
- {
- 	struct sgx_va_page *va_page = NULL;
- 	void *err;
-@@ -30,7 +30,7 @@ struct sgx_va_page *sgx_encl_grow(struct sgx_encl *encl)
- 		if (!va_page)
- 			return ERR_PTR(-ENOMEM);
- 
--		va_page->epc_page = sgx_alloc_va_page();
-+		va_page->epc_page = sgx_alloc_va_page(reclaim);
- 		if (IS_ERR(va_page->epc_page)) {
- 			err = ERR_CAST(va_page->epc_page);
- 			kfree(va_page);
-@@ -64,7 +64,7 @@ static int sgx_encl_create(struct sgx_encl *encl, struct sgx_secs *secs)
- 	struct file *backing;
- 	long ret;
- 
--	va_page = sgx_encl_grow(encl);
-+	va_page = sgx_encl_grow(encl, true);
- 	if (IS_ERR(va_page))
- 		return PTR_ERR(va_page);
- 	else if (va_page)
-@@ -306,7 +306,7 @@ static int sgx_encl_add_page(struct sgx_encl *encl, unsigned long src,
- 		return PTR_ERR(epc_page);
+ 	/* used to check for invalidations in progress */
+ 	mmu_seq = kvm->mmu_invalidate_seq;
+@@ -487,9 +490,7 @@ static inline int kvmppc_e500_shadow_map
+ 			goto out;
+ 		}
  	}
+-	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
+-	if (writable)
+-		kvm_set_pfn_dirty(pfn);
++	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
  
--	va_page = sgx_encl_grow(encl);
-+	va_page = sgx_encl_grow(encl, true);
- 	if (IS_ERR(va_page)) {
- 		ret = PTR_ERR(va_page);
- 		goto err_out_free;
--- 
-2.39.5
-
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
 
 
 
