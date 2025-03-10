@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-121896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B861A59CDE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E1AA59F06
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB90D18852E5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADA5F3AA0FC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9071B233727;
-	Mon, 10 Mar 2025 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2363722D7A6;
+	Mon, 10 Mar 2025 17:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HwqNI76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr0jXpqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E85B231A3F;
-	Mon, 10 Mar 2025 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42492253FE;
+	Mon, 10 Mar 2025 17:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626943; cv=none; b=K9RdDY63xEt1bIqwKBU+7NfSLFLLfYrSTAUzABz6mDm1G+jtJGyT44BwPAFvx3u7Q6JI3NmbhzxCv3kf24xhm+7drmqmo7esS+hviQvjEumcQqGIC6Vkmbr2puHpsJIRshiOaslcO7Dyt0b30Z4xrM0BbWh57v3BxEIYLPyYrAU=
+	t=1741628086; cv=none; b=YCr79DMxizEIBtL8PGSXrUJNF/kYLcof2odZ1OuI6DGseDSFbi15YfQpIOWc4ObhjED+CtkjXdti/TgAYnJ+Dp2/6WMdHuK/AV+YsLUIaNEnya4VKCuJBR085ZX9ujGUjRLg9VZ/4hUVdcOd6hCsJuQYMSaqyXa7ROjMGhKgMXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626943; c=relaxed/simple;
-	bh=LBHAPYXj9xXkZ9xqiByRAh00vhHfMnQ4krMPE3a6mPI=;
+	s=arc-20240116; t=1741628086; c=relaxed/simple;
+	bh=3DZBHKlBfZTSBjRa9wLFEX391ftUgbHKDlxQt/E+IKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwxLJJRCjdtEShwfuu9QW3JrgbwUL4RnkfkYB8L6rP8HY+cdLgc/ZERNC3TefIvXXnTSwxPxz8BnQPLKqOhfRosy5yglql8SW81YwVrAH//wNkbPmIBbOJZEq1BmpBh327Q6LSfB4Pn/eJnJB9Ne6OD+qt6N3j/h1tdBRTvDT4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HwqNI76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD93C4CEEB;
-	Mon, 10 Mar 2025 17:15:42 +0000 (UTC)
+	 MIME-Version; b=MwhVDIaqpZb1LQyo+v4kdjJok+1vMAbCGysGcsYqaV4C1O3pzESGZMHsrP4brpHarMNEsQYMxHQjXGALR38rZxOJccsunHMbmkd/ZWN9WR7WOCSdrmOkzyLu0BzZ15OOG71o9MkfHZ/w5NeT6ZowooYRLw2n6URip7JQ6MUpchE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr0jXpqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AD0C4CEE5;
+	Mon, 10 Mar 2025 17:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626943;
-	bh=LBHAPYXj9xXkZ9xqiByRAh00vhHfMnQ4krMPE3a6mPI=;
+	s=korg; t=1741628086;
+	bh=3DZBHKlBfZTSBjRa9wLFEX391ftUgbHKDlxQt/E+IKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0HwqNI76hYLEj5XdiDwZn7tJhfAR5BM/uWebx9uU+sUnGrEvH7Zy2UVrxjJDYOFdv
-	 mJ17buvfmyNqMUz0pmltvlGtvZujfuA2VnMrxGbItPeRGjLuh+nHxgVa6dXQw3D2LO
-	 9Ew0tf7uXLFzG74J7rJzJcZJuyLxtQ9COBVlCzTM=
+	b=vr0jXpqyGBTfpvbD8Y2OhS8ucHNggMvH3gDL+LaG+GrXS/tyb9sw79dQ60AxiZOFP
+	 l1NTpMXp8FHWPiMNBCjYfRUdBiNz09bCgPLWorT9XuU4llPcGDwH08CjdlrPzE+KcP
+	 KACUgQnZpeuonjLjPQHHEA35mHsqHja9pwCMqP4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.13 166/207] usb: typec: tcpci_rt1711h: Unmask alert interrupts to fix functionality
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 065/145] caif_virtio: fix wrong pointer check in cfv_probe()
 Date: Mon, 10 Mar 2025 18:05:59 +0100
-Message-ID: <20250310170454.386671694@linuxfoundation.org>
+Message-ID: <20250310170437.374408315@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-commit d6b82dafd17db0658f089b9cdec573982ca82bc5 upstream.
+[ Upstream commit a466fd7e9fafd975949e5945e2f70c33a94b1a70 ]
 
-During probe, the TCPC alert interrupts are getting masked to
-avoid unwanted interrupts during chip setup: this is ok to do
-but there is no unmasking happening at any later time, which
-means that the chip will not raise any interrupt, essentially
-making it not functional as, while internally it does perform
-all of the intended functions, it won't signal anything to the
-outside.
+del_vqs() frees virtqueues, therefore cfv->vq_tx pointer should be checked
+for NULL before calling it, not cfv->vdev. Also the current implementation
+is redundant because the pointer cfv->vdev is dereferenced before it is
+checked for NULL.
 
-Unmask the alert interrupts to fix functionality.
+Fix this by checking cfv->vq_tx for NULL instead of cfv->vdev before
+calling del_vqs().
 
-Fixes: ce08eaeb6388 ("staging: typec: rt1711h typec chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250219114700.41700-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Link: https://patch.msgid.link/20250227184716.4715-1-v.shevtsov@mt-integration.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci_rt1711h.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/caif/caif_virtio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-+++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-@@ -334,6 +334,11 @@ static int rt1711h_probe(struct i2c_clie
- {
- 	int ret;
- 	struct rt1711h_chip *chip;
-+	const u16 alert_mask = TCPC_ALERT_TX_SUCCESS | TCPC_ALERT_TX_DISCARDED |
-+			       TCPC_ALERT_TX_FAILED | TCPC_ALERT_RX_HARD_RST |
-+			       TCPC_ALERT_RX_STATUS | TCPC_ALERT_POWER_STATUS |
-+			       TCPC_ALERT_CC_STATUS | TCPC_ALERT_RX_BUF_OVF |
-+			       TCPC_ALERT_FAULT;
+diff --git a/drivers/net/caif/caif_virtio.c b/drivers/net/caif/caif_virtio.c
+index 0b0f234b0b508..a8b9ada7526c7 100644
+--- a/drivers/net/caif/caif_virtio.c
++++ b/drivers/net/caif/caif_virtio.c
+@@ -745,7 +745,7 @@ static int cfv_probe(struct virtio_device *vdev)
  
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
-@@ -382,6 +387,12 @@ static int rt1711h_probe(struct i2c_clie
- 					dev_name(chip->dev), chip);
- 	if (ret < 0)
- 		return ret;
-+
-+	/* Enable alert interrupts */
-+	ret = rt1711h_write16(chip, TCPC_ALERT_MASK, alert_mask);
-+	if (ret < 0)
-+		return ret;
-+
- 	enable_irq_wake(client->irq);
- 
- 	return 0;
+ 	if (cfv->vr_rx)
+ 		vdev->vringh_config->del_vrhs(cfv->vdev);
+-	if (cfv->vdev)
++	if (cfv->vq_tx)
+ 		vdev->config->del_vqs(cfv->vdev);
+ 	free_netdev(netdev);
+ 	return err;
+-- 
+2.39.5
+
 
 
 
