@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-121925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076F4A59D20
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF68A5A26F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8642D3A9232
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5AE1894C27
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E107F230D2B;
-	Mon, 10 Mar 2025 17:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359251DE89C;
+	Mon, 10 Mar 2025 18:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpwygO30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJoiM1Pt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E53C17CA12;
-	Mon, 10 Mar 2025 17:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71A2374EA;
+	Mon, 10 Mar 2025 18:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627026; cv=none; b=tcqerqfEYvBgfmz5Jdli22S1LqbTNFtZ8G7SD4NhxOk7QuDlRxkef5QQg54iniyZgqqD8JMXiXeTrYw18ShFhK+o42Sk4iws+ApLiT0lndIEF9xYlJh1wSPJfXys8PwXethX43e9oA4rsmUp7P9QWFUFQWkGZysqO1O1rc/T0AU=
+	t=1741630810; cv=none; b=Bn4+2Y9Sdsfh+5p7S5IepORufuiYyhXtnmOyW+jvgb40y7uOvgpPgiIcUMM0yd5zulHHKuJfWGngrbJsvbFPyBHVIAdD/h94wltGV2m013E2lENADy3xocu4DBYvbUmmweZMgNQihwMorbTLtbWnekdzUda/5aiD/xxMw+J31I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627026; c=relaxed/simple;
-	bh=Mu9UFr4YwO4+klGEXFBUJ3KdMInh8xif02R38qSRwio=;
+	s=arc-20240116; t=1741630810; c=relaxed/simple;
+	bh=OuR/vTnmgZFRLDbAUFD1Qv9bZ5bNebbTc5VHdk4dv98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o9Raj+dDYNbh7abqFHncekehoD+GQWWCtApiizoQUXL4zTZX2GpRAu4h1KJnxpCgpzEVO8b+5wtrc7Sv82HwS7h/fXRmm4zlu9kcObZTqmH2bcZzrSjN0YvzRR58yvKrxtIQnyHydNyPcHNRqPujS4fYA3UU6L5w54riFoNSUcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpwygO30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B96C4CEE5;
-	Mon, 10 Mar 2025 17:17:05 +0000 (UTC)
+	 MIME-Version; b=tmFpjTyt5DvbbRc2t/cGjDe1pLZntbs5jFRtEzNIMb2AC2WsAdkH/mXDkbLx0OZkEUCgC/i532QSnXoqCRyi+EWL3WUcitkt6UxI1aOlLqW8bQiYrPoKXEJEXACLG4LAqzUyZi3yLcp/zZMEdZdynj2RdQkL/U9tGIcGNxp1v5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJoiM1Pt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CFFC4CEE5;
+	Mon, 10 Mar 2025 18:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627026;
-	bh=Mu9UFr4YwO4+klGEXFBUJ3KdMInh8xif02R38qSRwio=;
+	s=korg; t=1741630809;
+	bh=OuR/vTnmgZFRLDbAUFD1Qv9bZ5bNebbTc5VHdk4dv98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UpwygO30PW3MgRLAhNj2gYp9ti2BYZFiuDqUtntGnjfEf4oMml5914nTGqaNzDosi
-	 5J/PpDQaiq9yv1aNcDoLqMR7aDHoS7prkP7ULMUGTEA00AwGn01Uj9Le3GhHXid5WO
-	 fBUjbgQOYBV/C2Kn1k+Re7Yw5NaQ64Y7W5Me8RxA=
+	b=PJoiM1PtrdhDNgXx9jSPA/rZQPOndEU9FfwhbNidSYeQALnVNRJajBtdRul+dI47+
+	 pB6ya1iZ3xZdxeamvlAsHYgLB3KLIEAYW1xJBhXFThBYvYvKOB6spIYkzMXnl1IL9f
+	 W0j7PBTF8HeVOgiFYvPp6dr/L4obCpoeto4gmp7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Burri <markus.burri@mt.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.13 195/207] iio: adc: ad7192: fix channel select
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 542/620] x86/cpu: Validate CPUID leaf 0x2 EDX output
 Date: Mon, 10 Mar 2025 18:06:28 +0100
-Message-ID: <20250310170455.533210378@linuxfoundation.org>
+Message-ID: <20250310170606.942244500@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Burri <markus.burri@mt.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit 21d7241faf406e8aee3ce348451cc362d5db6a02 upstream.
+commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
 
-Channel configuration doesn't work as expected.
-For FIELD_PREP the bit mask is needed and not the bit number.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-Fixes: 874bbd1219c7 ("iio: adc: ad7192: Use bitfield access macros")
-Signed-off-by: Markus Burri <markus.burri@mt.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250124150703.97848-1-markus.burri@mt.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
+ECX, but left EDX unchecked.
+
+Validate EDX's most-significant bit as well.
+
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7192.c |    2 +-
+ arch/x86/kernel/cpu/intel.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -1082,7 +1082,7 @@ static int ad7192_update_scan_mode(struc
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -913,7 +913,7 @@ static void intel_detect_tlb(struct cpui
+ 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
  
- 	conf &= ~AD7192_CONF_CHAN_MASK;
- 	for_each_set_bit(i, scan_mask, 8)
--		conf |= FIELD_PREP(AD7192_CONF_CHAN_MASK, i);
-+		conf |= FIELD_PREP(AD7192_CONF_CHAN_MASK, BIT(i));
+ 		/* If bit 31 is set, this is an unknown format */
+-		for (j = 0 ; j < 3 ; j++)
++		for (j = 0 ; j < 4 ; j++)
+ 			if (regs[j] & (1 << 31))
+ 				regs[j] = 0;
  
- 	ret = ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, conf);
- 	if (ret < 0)
 
 
 
