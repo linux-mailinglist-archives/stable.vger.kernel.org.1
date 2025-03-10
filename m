@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9233DA59EC6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12EBA59E0F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 460B2188FF8C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16CA3A92BC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DE6233D69;
-	Mon, 10 Mar 2025 17:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA257233D72;
+	Mon, 10 Mar 2025 17:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBix4bzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgJOESZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1302A23372B;
-	Mon, 10 Mar 2025 17:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AEB23373C;
+	Mon, 10 Mar 2025 17:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628034; cv=none; b=KQTU9AK3zrNw4X18AjMJrmKkfGK00wXqU+uBfTTKU1qu+hIY4l6hDDFpkcBiAKkcv+7nHsh0qLrhHsyqz/SwFnlvcY+zCzNTdO6/WPb7vSJdT1yVatr+lDrb6N4lqQzvhxvbooW8p6CfVSniblzTufoIOq+k5Ku1o8Gzw8YgGAU=
+	t=1741627572; cv=none; b=I7Ev3Ri8+InycvuGSGB94eNi7yrLABaN5wnJRe6slJpKIKgR2lCBcZ8gRO7I7iJei+PcPsEMuJj1pka4hm7603Rexul2o2b6xI7B4dxvNRkrAvMWRpiWW+nS8rElGmWqeaeAwTA8momTSmpApyMGfsJjCR3RwoOG1qsokfFAFeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628034; c=relaxed/simple;
-	bh=brQsS8fNG4lMYoHGRfirxPe65GVSf5WfRHVvw/mFH4g=;
+	s=arc-20240116; t=1741627572; c=relaxed/simple;
+	bh=gxKz7+Fkc8BkjdermLYwU4Vw4ZX7vj8A1zu7MbKCyqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QSUZfFBL9lbZ2Cy2UeaCggq1BmxZmcWZXIwZwBuzobJYfZ0z8pN6qusdrXNINbolMBqZkGl8LVJCb4uv28gF28uXhWGwyrDuF/7Yl81g8Mhl/ZbwDo2l2kWvJhD+RFjBgbQs/mBLHKSWcfl/oUjFXL4emza7/rYle41fMUc+p9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBix4bzD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A646C4AF09;
-	Mon, 10 Mar 2025 17:33:52 +0000 (UTC)
+	 MIME-Version; b=GZOU6SxM/NSMsXj/EFt3zON13UH+AzGY6rgQe2YoqqcMKj+xFeQtnQOjm01aU/1pVS0DGa8YRMEhUtt9jXAGsdhjXffEUpUC2jeD8tomEmScLnwETGNiBHI5n5h8Am5OpSnxOatTJ8ETGbYV7MkWsNKiBZric6wbZdquLro0kIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgJOESZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF82C4CEE5;
+	Mon, 10 Mar 2025 17:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628033;
-	bh=brQsS8fNG4lMYoHGRfirxPe65GVSf5WfRHVvw/mFH4g=;
+	s=korg; t=1741627572;
+	bh=gxKz7+Fkc8BkjdermLYwU4Vw4ZX7vj8A1zu7MbKCyqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBix4bzDbB4fiMmlhCIyUja+iGMab/gRNq47VGh9zR3FrvL8EdUm7T9/uyOW7CDPq
-	 kvFUwwTypy/PwWbqMCoLqbsfV6fYg7ADDbx1oIlRho4SrGZBLKBSaUMSU5/LHNmzlg
-	 3Mfjf0ZdLQzjQARVtpNFJr89lx8n5jTbshjmtcyA=
+	b=vgJOESZsepJia/soH/diAlroESzqZ0Y7Omw6eNIRWgrRo9+mCbExuSP4U3q04ZApC
+	 /aLkHI4zk6A2vM9mmnXklC9rDI65/BBg3W9qsVEoH+jPIjltuICTRaEq72q793Ibwq
+	 KaYvENh1Zt4DEqoP9eZTgs+bWNpm99JzSIscKHV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 033/145] gpio: rcar: Use raw_spinlock to protect register access
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 174/269] drm/imagination: Fix timestamps in firmware traces
 Date: Mon, 10 Mar 2025 18:05:27 +0100
-Message-ID: <20250310170436.070394186@linuxfoundation.org>
+Message-ID: <20250310170504.649837008@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,190 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Alessio Belle <alessio.belle@imgtec.com>
 
-commit f02c41f87cfe61440c18bf77d1ef0a884b9ee2b5 upstream.
+[ Upstream commit 1d2eabb6616433ccaa13927811bdfa205e91ba60 ]
 
-Use raw_spinlock in order to fix spurious messages about invalid context
-when spinlock debugging is enabled. The lock is only used to serialize
-register access.
+When firmware traces are enabled, the firmware dumps 48-bit timestamps
+for each trace as two 32-bit values, highest 32 bits (of which only 16
+useful) first.
 
-    [    4.239592] =============================
-    [    4.239595] [ BUG: Invalid wait context ]
-    [    4.239599] 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35 Not tainted
-    [    4.239603] -----------------------------
-    [    4.239606] kworker/u8:5/76 is trying to lock:
-    [    4.239609] ffff0000091898a0 (&p->lock){....}-{3:3}, at: gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.239641] other info that might help us debug this:
-    [    4.239643] context-{5:5}
-    [    4.239646] 5 locks held by kworker/u8:5/76:
-    [    4.239651]  #0: ffff0000080fb148 ((wq_completion)async){+.+.}-{0:0}, at: process_one_work+0x190/0x62c
-    [    4.250180] OF: /soc/sound@ec500000/ports/port@0/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.254094]  #1: ffff80008299bd80 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x1b8/0x62c
-    [    4.254109]  #2: ffff00000920c8f8
-    [    4.258345] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'bitclock-master' with a value.
-    [    4.264803]  (&dev->mutex){....}-{4:4}, at: __device_attach_async_helper+0x3c/0xdc
-    [    4.264820]  #3: ffff00000a50ca40 (request_class#2){+.+.}-{4:4}, at: __setup_irq+0xa0/0x690
-    [    4.264840]  #4:
-    [    4.268872] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.273275] ffff00000a50c8c8 (lock_class){....}-{2:2}, at: __setup_irq+0xc4/0x690
-    [    4.296130] renesas_sdhi_internal_dmac ee100000.mmc: mmc1 base at 0x00000000ee100000, max clock rate 200 MHz
-    [    4.304082] stack backtrace:
-    [    4.304086] CPU: 1 UID: 0 PID: 76 Comm: kworker/u8:5 Not tainted 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35
-    [    4.304092] Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
-    [    4.304097] Workqueue: async async_run_entry_fn
-    [    4.304106] Call trace:
-    [    4.304110]  show_stack+0x14/0x20 (C)
-    [    4.304122]  dump_stack_lvl+0x6c/0x90
-    [    4.304131]  dump_stack+0x14/0x1c
-    [    4.304138]  __lock_acquire+0xdfc/0x1584
-    [    4.426274]  lock_acquire+0x1c4/0x33c
-    [    4.429942]  _raw_spin_lock_irqsave+0x5c/0x80
-    [    4.434307]  gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.440061]  gpio_rcar_irq_set_type+0xd4/0xd8
-    [    4.444422]  __irq_set_trigger+0x5c/0x178
-    [    4.448435]  __setup_irq+0x2e4/0x690
-    [    4.452012]  request_threaded_irq+0xc4/0x190
-    [    4.456285]  devm_request_threaded_irq+0x7c/0xf4
-    [    4.459398] ata1: link resume succeeded after 1 retries
-    [    4.460902]  mmc_gpiod_request_cd_irq+0x68/0xe0
-    [    4.470660]  mmc_start_host+0x50/0xac
-    [    4.474327]  mmc_add_host+0x80/0xe4
-    [    4.477817]  tmio_mmc_host_probe+0x2b0/0x440
-    [    4.482094]  renesas_sdhi_probe+0x488/0x6f4
-    [    4.486281]  renesas_sdhi_internal_dmac_probe+0x60/0x78
-    [    4.491509]  platform_probe+0x64/0xd8
-    [    4.495178]  really_probe+0xb8/0x2a8
-    [    4.498756]  __driver_probe_device+0x74/0x118
-    [    4.503116]  driver_probe_device+0x3c/0x154
-    [    4.507303]  __device_attach_driver+0xd4/0x160
-    [    4.511750]  bus_for_each_drv+0x84/0xe0
-    [    4.515588]  __device_attach_async_helper+0xb0/0xdc
-    [    4.520470]  async_run_entry_fn+0x30/0xd8
-    [    4.524481]  process_one_work+0x210/0x62c
-    [    4.528494]  worker_thread+0x1ac/0x340
-    [    4.532245]  kthread+0x10c/0x110
-    [    4.535476]  ret_from_fork+0x10/0x20
+The driver was reassembling them the other way round i.e. interpreting
+the first value in memory as the lowest 32 bits, and the second value
+as the highest 32 bits (then truncated to 16 bits).
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250121135833.3769310-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Due to this, firmware trace dumps showed very large timestamps even for
+traces recorded shortly after GPU boot. The timestamps in these dumps
+would also sometimes jump backwards because of the truncation.
+
+Example trace dumped after loading the powervr module and enabling
+firmware traces, where each line is commented with the timestamp value
+in hexadecimal to better show both issues:
+
+[93540092739584] : Host Sync Partition marker: 1    // 0x551300000000
+[28419798597632] : GPU units deinit                 // 0x19d900000000
+[28548647616512] : GPU deinit                       // 0x19f700000000
+
+Update logic to reassemble the timestamps halves in the correct order.
+
+Fixes: cb56cd610866 ("drm/imagination: Add firmware trace to debugfs")
+Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250221-fix-fw-trace-timestamps-v1-1-dba4aeb030ca@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rcar.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/imagination/pvr_fw_trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpio/gpio-rcar.c
-+++ b/drivers/gpio/gpio-rcar.c
-@@ -40,7 +40,7 @@ struct gpio_rcar_info {
+diff --git a/drivers/gpu/drm/imagination/pvr_fw_trace.c b/drivers/gpu/drm/imagination/pvr_fw_trace.c
+index 73707daa4e52d..5dbb636d7d4ff 100644
+--- a/drivers/gpu/drm/imagination/pvr_fw_trace.c
++++ b/drivers/gpu/drm/imagination/pvr_fw_trace.c
+@@ -333,8 +333,8 @@ static int fw_trace_seq_show(struct seq_file *s, void *v)
+ 	if (sf_id == ROGUE_FW_SF_LAST)
+ 		return -EINVAL;
  
- struct gpio_rcar_priv {
- 	void __iomem *base;
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	struct device *dev;
- 	struct gpio_chip gpio_chip;
- 	unsigned int irq_parent;
-@@ -123,7 +123,7 @@ static void gpio_rcar_config_interrupt_i
- 	 * "Setting Level-Sensitive Interrupt Input Mode"
- 	 */
+-	timestamp = read_fw_trace(trace_seq_data, 1) |
+-		((u64)read_fw_trace(trace_seq_data, 2) << 32);
++	timestamp = ((u64)read_fw_trace(trace_seq_data, 1) << 32) |
++		read_fw_trace(trace_seq_data, 2);
+ 	timestamp = (timestamp & ~ROGUE_FWT_TIMESTAMP_TIME_CLRMSK) >>
+ 		ROGUE_FWT_TIMESTAMP_TIME_SHIFT;
  
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive or negative logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, hwirq, !active_high_rising_edge);
-@@ -142,7 +142,7 @@ static void gpio_rcar_config_interrupt_i
- 	if (!level_trigger)
- 		gpio_rcar_write(p, INTCLR, BIT(hwirq));
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_irq_set_type(struct irq_data *d, unsigned int type)
-@@ -246,7 +246,7 @@ static void gpio_rcar_config_general_inp
- 	 * "Setting General Input Mode"
- 	 */
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, gpio, false);
-@@ -261,7 +261,7 @@ static void gpio_rcar_config_general_inp
- 	if (p->info.has_outdtsel && output)
- 		gpio_rcar_modify_bit(p, OUTDTSEL, gpio, false);
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_request(struct gpio_chip *chip, unsigned offset)
-@@ -347,7 +347,7 @@ static int gpio_rcar_get_multiple(struct
- 		return 0;
- 	}
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	outputs = gpio_rcar_read(p, INOUTSEL);
- 	m = outputs & bankmask;
- 	if (m)
-@@ -356,7 +356,7 @@ static int gpio_rcar_get_multiple(struct
- 	m = ~outputs & bankmask;
- 	if (m)
- 		val |= gpio_rcar_read(p, INDT) & m;
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- 
- 	bits[0] = val;
- 	return 0;
-@@ -367,9 +367,9 @@ static void gpio_rcar_set(struct gpio_ch
- 	struct gpio_rcar_priv *p = gpiochip_get_data(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	gpio_rcar_modify_bit(p, OUTDT, offset, value);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static void gpio_rcar_set_multiple(struct gpio_chip *chip, unsigned long *mask,
-@@ -386,12 +386,12 @@ static void gpio_rcar_set_multiple(struc
- 	if (!bankmask)
- 		return;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	val = gpio_rcar_read(p, OUTDT);
- 	val &= ~bankmask;
- 	val |= (bankmask & bits[0]);
- 	gpio_rcar_write(p, OUTDT, val);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_direction_output(struct gpio_chip *chip, unsigned offset,
-@@ -505,7 +505,7 @@ static int gpio_rcar_probe(struct platfo
- 		return -ENOMEM;
- 
- 	p->dev = dev;
--	spin_lock_init(&p->lock);
-+	raw_spin_lock_init(&p->lock);
- 
- 	/* Get device configuration from DT node */
- 	ret = gpio_rcar_parse_dt(p, &npins);
+-- 
+2.39.5
+
 
 
 
