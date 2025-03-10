@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-122025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93868A59D8B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04ACAA59C41
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEF1416F6D0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A446A18847BE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E97230BC8;
-	Mon, 10 Mar 2025 17:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9282F234966;
+	Mon, 10 Mar 2025 17:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0IYteVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0DJ2gYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865BF226D0B;
-	Mon, 10 Mar 2025 17:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE07233738;
+	Mon, 10 Mar 2025 17:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627312; cv=none; b=GNvdjC3jGJ5yrA9CqNgNtPC8S5M4+MppC2b5ecyjA2symzerWOCTajh2wjU/gauE8rkTIGYkOnPQgTHgnEWAraGnI98DmOv1SxnNdbi3KCq4jJ0qb58JhMgZPv2lIjpNNuZHswtZ0nGh3A9asXsH8mxOfNUDXuT8IxABj9Kl5yg=
+	t=1741626596; cv=none; b=DPqpw9u2blrbDuveNQndAWhR3jQYlWopNSVsJmvNpob7g2Ovn1MD2vZMm4Jl8Ss9/X6/vEdAJo6HhKvxJoG/8iasMCGyjQgAn3U104gQoCcAuPidjuiiBUvtgi81S9uLrWCcxJXn5q3L5/P2Qa3CTkBp/YVww3YyGfGS1FRechw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627312; c=relaxed/simple;
-	bh=BZy/f+1YukiMRIoX8dQnIRdFqGOKPop8sY2T6eTWYJw=;
+	s=arc-20240116; t=1741626596; c=relaxed/simple;
+	bh=m7LF5H1MOtIFA1Drof4t3+oYLkzZvQrJDw644Tra7b0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gspnm2br8VGbpPxeatP6QPquPa3Xp9E8tM0Nw9Etd3vkxJD9nCM5esHNQ2PDeFIe+L8w9Tg5GxmLFhqU1Q/9iUV8GfkbMJBQ4BaYDBJ3wElAQvzxGeGrwy4we4PXB8yxdDs+EIWBzqtPeWoOrXvqJvjTH3t0oQmuFcftwNcknrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0IYteVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03ADEC4CEE5;
-	Mon, 10 Mar 2025 17:21:51 +0000 (UTC)
+	 MIME-Version; b=Wl+/4ok9cbZslet8SEu+fo5DL4tnF4sQvaxuO1ScTN20aF/VKJTqer6aGSuXvshBhD920J/Mo0zmCxVRRo0C9kApQyJ9TRf1cEXkdpPRDjBrU/Md8d6wZVD3KgQFR3My77STCSaUv+kGspPnIHWYYXHNlD2a6a60WqYQFYvFRao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0DJ2gYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EC7C4CEE5;
+	Mon, 10 Mar 2025 17:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627312;
-	bh=BZy/f+1YukiMRIoX8dQnIRdFqGOKPop8sY2T6eTWYJw=;
+	s=korg; t=1741626596;
+	bh=m7LF5H1MOtIFA1Drof4t3+oYLkzZvQrJDw644Tra7b0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0IYteVHiFXhMcaeWDJ5eKdfnDPRnYVMl0kEtZqsNPZdh4VJwRSkv9EGr1oEtzzlF
-	 HnpIY+wuj/ijya8H2C9TMNNGL7fgub8VROQuySHk3SBN4RQ8WrLUieGMyq2//uB+rD
-	 6E4DMwF4tDvJ/ZDrHM1tnmgJ66E+eMAferB9+/FM=
+	b=N0DJ2gYQfBw/HASf6ANuNHti4dMP8fHDWuz4dcU4B4UYjUqQRhdlBtqLG8PfDsR5Y
+	 1mpf3a23xiISTz35hIuOT8iNGdqj9UCwXv4m9ZVWIBAlWtTr6y8eduQ2B8vaR7yo61
+	 TYr1CUqTs5Af9H4QGJY7yFmvhbkfVKf1uTsJYFC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 087/269] gpio: rcar: Use raw_spinlock to protect register access
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.13 047/207] x86/cpu: Properly parse CPUID leaf 0x2 TLB descriptor 0x63
 Date: Mon, 10 Mar 2025 18:04:00 +0100
-Message-ID: <20250310170501.183690710@linuxfoundation.org>
+Message-ID: <20250310170449.635971204@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,190 +62,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit f02c41f87cfe61440c18bf77d1ef0a884b9ee2b5 upstream.
+commit f6bdaab79ee4228a143ee1b4cb80416d6ffc0c63 upstream.
 
-Use raw_spinlock in order to fix spurious messages about invalid context
-when spinlock debugging is enabled. The lock is only used to serialize
-register access.
+CPUID leaf 0x2's one-byte TLB descriptors report the number of entries
+for specific TLB types, among other properties.
 
-    [    4.239592] =============================
-    [    4.239595] [ BUG: Invalid wait context ]
-    [    4.239599] 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35 Not tainted
-    [    4.239603] -----------------------------
-    [    4.239606] kworker/u8:5/76 is trying to lock:
-    [    4.239609] ffff0000091898a0 (&p->lock){....}-{3:3}, at: gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.239641] other info that might help us debug this:
-    [    4.239643] context-{5:5}
-    [    4.239646] 5 locks held by kworker/u8:5/76:
-    [    4.239651]  #0: ffff0000080fb148 ((wq_completion)async){+.+.}-{0:0}, at: process_one_work+0x190/0x62c
-    [    4.250180] OF: /soc/sound@ec500000/ports/port@0/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.254094]  #1: ffff80008299bd80 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x1b8/0x62c
-    [    4.254109]  #2: ffff00000920c8f8
-    [    4.258345] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'bitclock-master' with a value.
-    [    4.264803]  (&dev->mutex){....}-{4:4}, at: __device_attach_async_helper+0x3c/0xdc
-    [    4.264820]  #3: ffff00000a50ca40 (request_class#2){+.+.}-{4:4}, at: __setup_irq+0xa0/0x690
-    [    4.264840]  #4:
-    [    4.268872] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.273275] ffff00000a50c8c8 (lock_class){....}-{2:2}, at: __setup_irq+0xc4/0x690
-    [    4.296130] renesas_sdhi_internal_dmac ee100000.mmc: mmc1 base at 0x00000000ee100000, max clock rate 200 MHz
-    [    4.304082] stack backtrace:
-    [    4.304086] CPU: 1 UID: 0 PID: 76 Comm: kworker/u8:5 Not tainted 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35
-    [    4.304092] Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
-    [    4.304097] Workqueue: async async_run_entry_fn
-    [    4.304106] Call trace:
-    [    4.304110]  show_stack+0x14/0x20 (C)
-    [    4.304122]  dump_stack_lvl+0x6c/0x90
-    [    4.304131]  dump_stack+0x14/0x1c
-    [    4.304138]  __lock_acquire+0xdfc/0x1584
-    [    4.426274]  lock_acquire+0x1c4/0x33c
-    [    4.429942]  _raw_spin_lock_irqsave+0x5c/0x80
-    [    4.434307]  gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.440061]  gpio_rcar_irq_set_type+0xd4/0xd8
-    [    4.444422]  __irq_set_trigger+0x5c/0x178
-    [    4.448435]  __setup_irq+0x2e4/0x690
-    [    4.452012]  request_threaded_irq+0xc4/0x190
-    [    4.456285]  devm_request_threaded_irq+0x7c/0xf4
-    [    4.459398] ata1: link resume succeeded after 1 retries
-    [    4.460902]  mmc_gpiod_request_cd_irq+0x68/0xe0
-    [    4.470660]  mmc_start_host+0x50/0xac
-    [    4.474327]  mmc_add_host+0x80/0xe4
-    [    4.477817]  tmio_mmc_host_probe+0x2b0/0x440
-    [    4.482094]  renesas_sdhi_probe+0x488/0x6f4
-    [    4.486281]  renesas_sdhi_internal_dmac_probe+0x60/0x78
-    [    4.491509]  platform_probe+0x64/0xd8
-    [    4.495178]  really_probe+0xb8/0x2a8
-    [    4.498756]  __driver_probe_device+0x74/0x118
-    [    4.503116]  driver_probe_device+0x3c/0x154
-    [    4.507303]  __device_attach_driver+0xd4/0x160
-    [    4.511750]  bus_for_each_drv+0x84/0xe0
-    [    4.515588]  __device_attach_async_helper+0xb0/0xdc
-    [    4.520470]  async_run_entry_fn+0x30/0xd8
-    [    4.524481]  process_one_work+0x210/0x62c
-    [    4.528494]  worker_thread+0x1ac/0x340
-    [    4.532245]  kthread+0x10c/0x110
-    [    4.535476]  ret_from_fork+0x10/0x20
+Typically, each emitted descriptor implies the same number of entries
+for its respective TLB type(s).  An emitted 0x63 descriptor is an
+exception: it implies 4 data TLB entries for 1GB pages and 32 data TLB
+entries for 2MB or 4MB pages.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250121135833.3769310-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+For the TLB descriptors parsing code, the entry count for 1GB pages is
+encoded at the intel_tlb_table[] mapping, but the 2MB/4MB entry count is
+totally ignored.
+
+Update leaf 0x2's parsing logic 0x2 to account for 32 data TLB entries
+for 2MB/4MB pages implied by the 0x63 descriptor.
+
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-4-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-rcar.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ arch/x86/kernel/cpu/intel.c |   60 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 39 insertions(+), 21 deletions(-)
 
---- a/drivers/gpio/gpio-rcar.c
-+++ b/drivers/gpio/gpio-rcar.c
-@@ -40,7 +40,7 @@ struct gpio_rcar_info {
- 
- struct gpio_rcar_priv {
- 	void __iomem *base;
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	struct device *dev;
- 	struct gpio_chip gpio_chip;
- 	unsigned int irq_parent;
-@@ -123,7 +123,7 @@ static void gpio_rcar_config_interrupt_i
- 	 * "Setting Level-Sensitive Interrupt Input Mode"
- 	 */
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive or negative logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, hwirq, !active_high_rising_edge);
-@@ -142,7 +142,7 @@ static void gpio_rcar_config_interrupt_i
- 	if (!level_trigger)
- 		gpio_rcar_write(p, INTCLR, BIT(hwirq));
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -640,26 +640,37 @@ static unsigned int intel_size_cache(str
  }
+ #endif
  
- static int gpio_rcar_irq_set_type(struct irq_data *d, unsigned int type)
-@@ -246,7 +246,7 @@ static void gpio_rcar_config_general_inp
- 	 * "Setting General Input Mode"
- 	 */
+-#define TLB_INST_4K	0x01
+-#define TLB_INST_4M	0x02
+-#define TLB_INST_2M_4M	0x03
+-
+-#define TLB_INST_ALL	0x05
+-#define TLB_INST_1G	0x06
+-
+-#define TLB_DATA_4K	0x11
+-#define TLB_DATA_4M	0x12
+-#define TLB_DATA_2M_4M	0x13
+-#define TLB_DATA_4K_4M	0x14
+-
+-#define TLB_DATA_1G	0x16
+-
+-#define TLB_DATA0_4K	0x21
+-#define TLB_DATA0_4M	0x22
+-#define TLB_DATA0_2M_4M	0x23
+-
+-#define STLB_4K		0x41
+-#define STLB_4K_2M	0x42
++#define TLB_INST_4K		0x01
++#define TLB_INST_4M		0x02
++#define TLB_INST_2M_4M		0x03
++
++#define TLB_INST_ALL		0x05
++#define TLB_INST_1G		0x06
++
++#define TLB_DATA_4K		0x11
++#define TLB_DATA_4M		0x12
++#define TLB_DATA_2M_4M		0x13
++#define TLB_DATA_4K_4M		0x14
++
++#define TLB_DATA_1G		0x16
++#define TLB_DATA_1G_2M_4M	0x17
++
++#define TLB_DATA0_4K		0x21
++#define TLB_DATA0_4M		0x22
++#define TLB_DATA0_2M_4M		0x23
++
++#define STLB_4K			0x41
++#define STLB_4K_2M		0x42
++
++/*
++ * All of leaf 0x2's one-byte TLB descriptors implies the same number of
++ * entries for their respective TLB types.  The 0x63 descriptor is an
++ * exception: it implies 4 dTLB entries for 1GB pages 32 dTLB entries
++ * for 2MB or 4MB pages.  Encode descriptor 0x63 dTLB entry count for
++ * 2MB/4MB pages here, as its count for dTLB 1GB pages is already at the
++ * intel_tlb_table[] mapping.
++ */
++#define TLB_0x63_2M_4M_ENTRIES	32
  
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, gpio, false);
-@@ -261,7 +261,7 @@ static void gpio_rcar_config_general_inp
- 	if (p->info.has_outdtsel && output)
- 		gpio_rcar_modify_bit(p, OUTDTSEL, gpio, false);
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_request(struct gpio_chip *chip, unsigned offset)
-@@ -347,7 +347,7 @@ static int gpio_rcar_get_multiple(struct
- 		return 0;
- 	}
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	outputs = gpio_rcar_read(p, INOUTSEL);
- 	m = outputs & bankmask;
- 	if (m)
-@@ -356,7 +356,7 @@ static int gpio_rcar_get_multiple(struct
- 	m = ~outputs & bankmask;
- 	if (m)
- 		val |= gpio_rcar_read(p, INDT) & m;
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- 
- 	bits[0] = val;
- 	return 0;
-@@ -367,9 +367,9 @@ static void gpio_rcar_set(struct gpio_ch
- 	struct gpio_rcar_priv *p = gpiochip_get_data(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	gpio_rcar_modify_bit(p, OUTDT, offset, value);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static void gpio_rcar_set_multiple(struct gpio_chip *chip, unsigned long *mask,
-@@ -386,12 +386,12 @@ static void gpio_rcar_set_multiple(struc
- 	if (!bankmask)
- 		return;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	val = gpio_rcar_read(p, OUTDT);
- 	val &= ~bankmask;
- 	val |= (bankmask & bits[0]);
- 	gpio_rcar_write(p, OUTDT, val);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_direction_output(struct gpio_chip *chip, unsigned offset,
-@@ -505,7 +505,7 @@ static int gpio_rcar_probe(struct platfo
- 		return -ENOMEM;
- 
- 	p->dev = dev;
--	spin_lock_init(&p->lock);
-+	raw_spin_lock_init(&p->lock);
- 
- 	/* Get device configuration from DT node */
- 	ret = gpio_rcar_parse_dt(p, &npins);
+ static const struct _tlb_table intel_tlb_table[] = {
+ 	{ 0x01, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages, 4-way set associative" },
+@@ -681,7 +692,8 @@ static const struct _tlb_table intel_tlb
+ 	{ 0x5c, TLB_DATA_4K_4M,		128,	" TLB_DATA 4 KByte and 4 MByte pages" },
+ 	{ 0x5d, TLB_DATA_4K_4M,		256,	" TLB_DATA 4 KByte and 4 MByte pages" },
+ 	{ 0x61, TLB_INST_4K,		48,	" TLB_INST 4 KByte pages, full associative" },
+-	{ 0x63, TLB_DATA_1G,		4,	" TLB_DATA 1 GByte pages, 4-way set associative" },
++	{ 0x63, TLB_DATA_1G_2M_4M,	4,	" TLB_DATA 1 GByte pages, 4-way set associative"
++						" (plus 32 entries TLB_DATA 2 MByte or 4 MByte pages, not encoded here)" },
+ 	{ 0x6b, TLB_DATA_4K,		256,	" TLB_DATA 4 KByte pages, 8-way associative" },
+ 	{ 0x6c, TLB_DATA_2M_4M,		128,	" TLB_DATA 2 MByte or 4 MByte pages, 8-way associative" },
+ 	{ 0x6d, TLB_DATA_1G,		16,	" TLB_DATA 1 GByte pages, fully associative" },
+@@ -781,6 +793,12 @@ static void intel_tlb_lookup(const unsig
+ 		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
+ 			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
+ 		break;
++	case TLB_DATA_1G_2M_4M:
++		if (tlb_lld_2m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
++			tlb_lld_2m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
++		if (tlb_lld_4m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
++			tlb_lld_4m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
++		fallthrough;
+ 	case TLB_DATA_1G:
+ 		if (tlb_lld_1g[ENTRIES] < intel_tlb_table[k].entries)
+ 			tlb_lld_1g[ENTRIES] = intel_tlb_table[k].entries;
 
 
 
