@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EABA59DEF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6FF8A59CB0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14F8E18860F4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A78D27A92A7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E37E23099F;
-	Mon, 10 Mar 2025 17:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5D422D4D0;
+	Mon, 10 Mar 2025 17:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSxCB1Yn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+E2F5Lq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D070B18DB24;
-	Mon, 10 Mar 2025 17:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BBF17A2E3;
+	Mon, 10 Mar 2025 17:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627543; cv=none; b=YpwL5mQO8RjTGXNvNNVo3J8MoOIRGaBYqs8ZwcFiXGj2kQvT96gfLAgXek+svocJ2J1xN7qa28rluLeMiCdGoR7HqwJns6zykRhHyj5gtTKhTUd9Hg4/GbTAJpd9tPqn/ksFj96988xT48O0bcHrU3gVlFGmFY3hViHkuEmCm2A=
+	t=1741626825; cv=none; b=dy+QZ0m0wV1KS7MK+ZdQ+In3tPKAklhnhEIjoSouArLxanODSR3CHEtVJUqTTaSlH8t7hWLmR628yFP47Hp2nq+WA9U6T6B20MCz6w1B/pZTCC7EyBg5d/xzroKu1RqiA6tgB5qstmQYhyoxpNx65WzrDQ5ZfpcoEIqrXNjanp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627543; c=relaxed/simple;
-	bh=ivNm45UoN58W+AsBg65UG1s2+BfYVLTATVn5dHl/x48=;
+	s=arc-20240116; t=1741626825; c=relaxed/simple;
+	bh=+zdzFMoahP5ZHAc2fjpfZEvFjLURvKmjfwFwC3uwUYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrD1naEWl/fwUWYjOYjdnrgSYrbGXYLSyMbGBrML1sgcYDYjv/dfqFYYWY+7kvwj+vRSeadvsyfTs610k2+i2XUcVeVua82eAKzmRrNp7YFXBFal0jg2+XgH3Di6iS+k7h0whLWHrro6NPj3icP5zLZ3puVpuEwsesFaTIoXzW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSxCB1Yn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5652DC4CEE5;
-	Mon, 10 Mar 2025 17:25:43 +0000 (UTC)
+	 MIME-Version; b=R0Xh4hmi0gPE1sfQuD2nojgxu6eMYJwUmrIDjnKnm43cbH0ZhOE+Aa8sN4R0vXV7SNJD8TDk7iQQd6qTVvG3JZtt7eM6hnfm5wUBGdMekPEKKKRJ8RTJex3B99pcVJKvOjzLvWjzhL3r3SkKwy8+Kf8aej/tf7PdDCnVYZBAJmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+E2F5Lq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662C5C4CEE5;
+	Mon, 10 Mar 2025 17:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627543;
-	bh=ivNm45UoN58W+AsBg65UG1s2+BfYVLTATVn5dHl/x48=;
+	s=korg; t=1741626825;
+	bh=+zdzFMoahP5ZHAc2fjpfZEvFjLURvKmjfwFwC3uwUYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSxCB1Yn3B5hGFh+jYyHgUnlwgxzMmYA0UE7bSz1iF6WUzMqrzVAGX+8kEi7xuuET
-	 YdiSP2K7MZ1hSdPXrS7f6t/Tj1qrjKXnu7plzgqq0isLL6laCaPEY5r+a4/mTjC5R7
-	 pNJijtYXSJ0UyWstMahoI+deMMgIfrlvxchDoFj0=
+	b=L+E2F5LqveqdVWbAqcuHbuZa0ZNubAP89Dq8wW9FEn1R2WbJHb83wGJvUST1AMIr4
+	 NtiaYEyNmOQdYU+pmnYsH54rHa0IkqgNVj1cFcQ+JWzdSgbtJ+DnNvSAHle84GUgs0
+	 MHUN7kphxYroJFhEMOrxwdw5m1TO8zQ41GlB4FZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meir Elisha <meir.elisha@volumez.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Ian Kumlien <ian.kumlien@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/269] nvmet-tcp: Fix a possible sporadic response drops in weakly ordered arch
+Subject: [PATCH 6.13 125/207] be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink
 Date: Mon, 10 Mar 2025 18:05:18 +0100
-Message-ID: <20250310170504.295166857@linuxfoundation.org>
+Message-ID: <20250310170452.774001080@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,953 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meir Elisha <meir.elisha@volumez.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit a16f88964c647103dad7743a484b216d488a6352 ]
+[ Upstream commit 1a82d19ca2d6835904ee71e2d40fd331098f94a0 ]
 
-The order in which queue->cmd and rcv_state are updated is crucial.
-If these assignments are reordered by the compiler, the worker might not
-get queued in nvmet_tcp_queue_response(), hanging the IO. to enforce the
-the correct reordering, set rcv_state using smp_store_release().
+Partially revert commit b71724147e73 ("be2net: replace polling with
+sleeping in the FW completion path") w.r.t mcc mutex it introduces and the
+use of usleep_range. The be2net be_ndo_bridge_getlink() callback is
+called with rcu_read_lock, so this code has been broken for a long time.
+Both the mutex_lock and the usleep_range can cause the issue Ian Kumlien
+reported[1]. The call path is:
+be_ndo_bridge_getlink -> be_cmd_get_hsw_config -> be_mcc_notify_wait ->
+be_mcc_wait_compl -> usleep_range()
 
-Fixes: bdaf13279192 ("nvmet-tcp: fix a segmentation fault during io parsing error")
+[1] https://lore.kernel.org/netdev/CAA85sZveppNgEVa_FD+qhOMtG_AavK9_mFiU+jWrMtXmwqefGA@mail.gmail.com/
 
-Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Tested-by: Ian Kumlien <ian.kumlien@gmail.com>
+Fixes: b71724147e73 ("be2net: replace polling with sleeping in the FW completion path")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250227164129.1201164-1-razor@blackwall.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/emulex/benet/be.h      |   2 +-
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 197 ++++++++++----------
+ drivers/net/ethernet/emulex/benet/be_main.c |   2 +-
+ 3 files changed, 100 insertions(+), 101 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 7c51c2a8c109a..4f9cac8a5abe0 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -571,10 +571,16 @@ static void nvmet_tcp_queue_response(struct nvmet_req *req)
- 	struct nvmet_tcp_cmd *cmd =
- 		container_of(req, struct nvmet_tcp_cmd, req);
- 	struct nvmet_tcp_queue	*queue = cmd->queue;
-+	enum nvmet_tcp_recv_state queue_state;
-+	struct nvmet_tcp_cmd *queue_cmd;
- 	struct nvme_sgl_desc *sgl;
- 	u32 len;
+diff --git a/drivers/net/ethernet/emulex/benet/be.h b/drivers/net/ethernet/emulex/benet/be.h
+index e48b861e4ce15..270ff9aab3352 100644
+--- a/drivers/net/ethernet/emulex/benet/be.h
++++ b/drivers/net/ethernet/emulex/benet/be.h
+@@ -562,7 +562,7 @@ struct be_adapter {
+ 	struct be_dma_mem mbox_mem_alloced;
  
--	if (unlikely(cmd == queue->cmd)) {
-+	/* Pairs with store_release in nvmet_prepare_receive_pdu() */
-+	queue_state = smp_load_acquire(&queue->rcv_state);
-+	queue_cmd = READ_ONCE(queue->cmd);
-+
-+	if (unlikely(cmd == queue_cmd)) {
- 		sgl = &cmd->req.cmd->common.dptr.sgl;
- 		len = le32_to_cpu(sgl->length);
+ 	struct be_mcc_obj mcc_obj;
+-	struct mutex mcc_lock;	/* For serializing mcc cmds to BE card */
++	spinlock_t mcc_lock;	/* For serializing mcc cmds to BE card */
+ 	spinlock_t mcc_cq_lock;
  
-@@ -583,7 +589,7 @@ static void nvmet_tcp_queue_response(struct nvmet_req *req)
- 		 * Avoid using helpers, this might happen before
- 		 * nvmet_req_init is completed.
- 		 */
--		if (queue->rcv_state == NVMET_TCP_RECV_PDU &&
-+		if (queue_state == NVMET_TCP_RECV_PDU &&
- 		    len && len <= cmd->req.port->inline_data_size &&
- 		    nvme_is_write(cmd->req.cmd))
- 			return;
-@@ -847,8 +853,9 @@ static void nvmet_prepare_receive_pdu(struct nvmet_tcp_queue *queue)
+ 	u16 cfg_num_rx_irqs;		/* configured via set-channels */
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 61adcebeef010..51b8377edd1d0 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -575,7 +575,7 @@ int be_process_mcc(struct be_adapter *adapter)
+ /* Wait till no more pending mcc requests are present */
+ static int be_mcc_wait_compl(struct be_adapter *adapter)
  {
- 	queue->offset = 0;
- 	queue->left = sizeof(struct nvme_tcp_hdr);
--	queue->cmd = NULL;
--	queue->rcv_state = NVMET_TCP_RECV_PDU;
-+	WRITE_ONCE(queue->cmd, NULL);
-+	/* Ensure rcv_state is visible only after queue->cmd is set */
-+	smp_store_release(&queue->rcv_state, NVMET_TCP_RECV_PDU);
+-#define mcc_timeout		12000 /* 12s timeout */
++#define mcc_timeout		120000 /* 12s timeout */
+ 	int i, status = 0;
+ 	struct be_mcc_obj *mcc_obj = &adapter->mcc_obj;
+ 
+@@ -589,7 +589,7 @@ static int be_mcc_wait_compl(struct be_adapter *adapter)
+ 
+ 		if (atomic_read(&mcc_obj->q.used) == 0)
+ 			break;
+-		usleep_range(500, 1000);
++		udelay(100);
+ 	}
+ 	if (i == mcc_timeout) {
+ 		dev_err(&adapter->pdev->dev, "FW not responding\n");
+@@ -866,7 +866,7 @@ static bool use_mcc(struct be_adapter *adapter)
+ static int be_cmd_lock(struct be_adapter *adapter)
+ {
+ 	if (use_mcc(adapter)) {
+-		mutex_lock(&adapter->mcc_lock);
++		spin_lock_bh(&adapter->mcc_lock);
+ 		return 0;
+ 	} else {
+ 		return mutex_lock_interruptible(&adapter->mbox_lock);
+@@ -877,7 +877,7 @@ static int be_cmd_lock(struct be_adapter *adapter)
+ static void be_cmd_unlock(struct be_adapter *adapter)
+ {
+ 	if (use_mcc(adapter))
+-		return mutex_unlock(&adapter->mcc_lock);
++		return spin_unlock_bh(&adapter->mcc_lock);
+ 	else
+ 		return mutex_unlock(&adapter->mbox_lock);
+ }
+@@ -1047,7 +1047,7 @@ int be_cmd_mac_addr_query(struct be_adapter *adapter, u8 *mac_addr,
+ 	struct be_cmd_req_mac_query *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1076,7 +1076,7 @@ int be_cmd_mac_addr_query(struct be_adapter *adapter, u8 *mac_addr,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
  }
  
- static void nvmet_tcp_free_crypto(struct nvmet_tcp_queue *queue)
+@@ -1088,7 +1088,7 @@ int be_cmd_pmac_add(struct be_adapter *adapter, const u8 *mac_addr,
+ 	struct be_cmd_req_pmac_add *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1113,7 +1113,7 @@ int be_cmd_pmac_add(struct be_adapter *adapter, const u8 *mac_addr,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (base_status(status) == MCC_STATUS_UNAUTHORIZED_REQUEST)
+ 		status = -EPERM;
+@@ -1131,7 +1131,7 @@ int be_cmd_pmac_del(struct be_adapter *adapter, u32 if_id, int pmac_id, u32 dom)
+ 	if (pmac_id == -1)
+ 		return 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1151,7 +1151,7 @@ int be_cmd_pmac_del(struct be_adapter *adapter, u32 if_id, int pmac_id, u32 dom)
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1414,7 +1414,7 @@ int be_cmd_rxq_create(struct be_adapter *adapter,
+ 	struct be_dma_mem *q_mem = &rxq->dma_mem;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1444,7 +1444,7 @@ int be_cmd_rxq_create(struct be_adapter *adapter,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1508,7 +1508,7 @@ int be_cmd_rxq_destroy(struct be_adapter *adapter, struct be_queue_info *q)
+ 	struct be_cmd_req_q_destroy *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1525,7 +1525,7 @@ int be_cmd_rxq_destroy(struct be_adapter *adapter, struct be_queue_info *q)
+ 	q->created = false;
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1593,7 +1593,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
+ 	struct be_cmd_req_hdr *hdr;
+ 	int status = 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1621,7 +1621,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
+ 	adapter->stats_cmd_sent = true;
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1637,7 +1637,7 @@ int lancer_cmd_get_pport_stats(struct be_adapter *adapter,
+ 			    CMD_SUBSYSTEM_ETH))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1660,7 +1660,7 @@ int lancer_cmd_get_pport_stats(struct be_adapter *adapter,
+ 	adapter->stats_cmd_sent = true;
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1697,7 +1697,7 @@ int be_cmd_link_status_query(struct be_adapter *adapter, u16 *link_speed,
+ 	struct be_cmd_req_link_status *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	if (link_status)
+ 		*link_status = LINK_DOWN;
+@@ -1736,7 +1736,7 @@ int be_cmd_link_status_query(struct be_adapter *adapter, u16 *link_speed,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1747,7 +1747,7 @@ int be_cmd_get_die_temperature(struct be_adapter *adapter)
+ 	struct be_cmd_req_get_cntl_addnl_attribs *req;
+ 	int status = 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1762,7 +1762,7 @@ int be_cmd_get_die_temperature(struct be_adapter *adapter)
+ 
+ 	status = be_mcc_notify(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1811,7 +1811,7 @@ int be_cmd_get_fat_dump(struct be_adapter *adapter, u32 buf_len, void *buf)
+ 	if (!get_fat_cmd.va)
+ 		return -ENOMEM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	while (total_size) {
+ 		buf_size = min(total_size, (u32)60 * 1024);
+@@ -1849,9 +1849,9 @@ int be_cmd_get_fat_dump(struct be_adapter *adapter, u32 buf_len, void *buf)
+ 		log_offset += buf_size;
+ 	}
+ err:
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	dma_free_coherent(&adapter->pdev->dev, get_fat_cmd.size,
+ 			  get_fat_cmd.va, get_fat_cmd.dma);
+-	mutex_unlock(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1862,7 +1862,7 @@ int be_cmd_get_fw_ver(struct be_adapter *adapter)
+ 	struct be_cmd_req_get_fw_version *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1885,7 +1885,7 @@ int be_cmd_get_fw_ver(struct be_adapter *adapter)
+ 			sizeof(adapter->fw_on_flash));
+ 	}
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1899,7 +1899,7 @@ static int __be_cmd_modify_eqd(struct be_adapter *adapter,
+ 	struct be_cmd_req_modify_eq_delay *req;
+ 	int status = 0, i;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1922,7 +1922,7 @@ static int __be_cmd_modify_eqd(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1949,7 +1949,7 @@ int be_cmd_vlan_config(struct be_adapter *adapter, u32 if_id, u16 *vtag_array,
+ 	struct be_cmd_req_vlan_config *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1971,7 +1971,7 @@ int be_cmd_vlan_config(struct be_adapter *adapter, u32 if_id, u16 *vtag_array,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1982,7 +1982,7 @@ static int __be_cmd_rx_filter(struct be_adapter *adapter, u32 flags, u32 value)
+ 	struct be_cmd_req_rx_filter *req = mem->va;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2015,7 +2015,7 @@ static int __be_cmd_rx_filter(struct be_adapter *adapter, u32 flags, u32 value)
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2046,7 +2046,7 @@ int be_cmd_set_flow_control(struct be_adapter *adapter, u32 tx_fc, u32 rx_fc)
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2066,7 +2066,7 @@ int be_cmd_set_flow_control(struct be_adapter *adapter, u32 tx_fc, u32 rx_fc)
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (base_status(status) == MCC_STATUS_FEATURE_NOT_SUPPORTED)
+ 		return  -EOPNOTSUPP;
+@@ -2085,7 +2085,7 @@ int be_cmd_get_flow_control(struct be_adapter *adapter, u32 *tx_fc, u32 *rx_fc)
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2108,7 +2108,7 @@ int be_cmd_get_flow_control(struct be_adapter *adapter, u32 *tx_fc, u32 *rx_fc)
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2189,7 +2189,7 @@ int be_cmd_rss_config(struct be_adapter *adapter, u8 *rsstable,
+ 	if (!(be_if_cap_flags(adapter) & BE_IF_FLAGS_RSS))
+ 		return 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2214,7 +2214,7 @@ int be_cmd_rss_config(struct be_adapter *adapter, u8 *rsstable,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2226,7 +2226,7 @@ int be_cmd_set_beacon_state(struct be_adapter *adapter, u8 port_num,
+ 	struct be_cmd_req_enable_disable_beacon *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2247,7 +2247,7 @@ int be_cmd_set_beacon_state(struct be_adapter *adapter, u8 port_num,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2258,7 +2258,7 @@ int be_cmd_get_beacon_state(struct be_adapter *adapter, u8 port_num, u32 *state)
+ 	struct be_cmd_req_get_beacon_state *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2282,7 +2282,7 @@ int be_cmd_get_beacon_state(struct be_adapter *adapter, u8 port_num, u32 *state)
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2306,7 +2306,7 @@ int be_cmd_read_port_transceiver_data(struct be_adapter *adapter,
+ 		return -ENOMEM;
+ 	}
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2328,7 +2328,7 @@ int be_cmd_read_port_transceiver_data(struct be_adapter *adapter,
+ 		memcpy(data, resp->page_data + off, len);
+ 	}
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	return status;
+ }
+@@ -2345,7 +2345,7 @@ static int lancer_cmd_write_object(struct be_adapter *adapter,
+ 	void *ctxt = NULL;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 	adapter->flash_status = 0;
+ 
+ 	wrb = wrb_from_mccq(adapter);
+@@ -2387,7 +2387,7 @@ static int lancer_cmd_write_object(struct be_adapter *adapter,
+ 	if (status)
+ 		goto err_unlock;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (!wait_for_completion_timeout(&adapter->et_cmd_compl,
+ 					 msecs_to_jiffies(60000)))
+@@ -2406,7 +2406,7 @@ static int lancer_cmd_write_object(struct be_adapter *adapter,
+ 	return status;
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2460,7 +2460,7 @@ static int lancer_cmd_delete_object(struct be_adapter *adapter,
+ 	struct be_mcc_wrb *wrb;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2478,7 +2478,7 @@ static int lancer_cmd_delete_object(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2491,7 +2491,7 @@ int lancer_cmd_read_object(struct be_adapter *adapter, struct be_dma_mem *cmd,
+ 	struct lancer_cmd_resp_read_object *resp;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2525,7 +2525,7 @@ int lancer_cmd_read_object(struct be_adapter *adapter, struct be_dma_mem *cmd,
+ 	}
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2537,7 +2537,7 @@ static int be_cmd_write_flashrom(struct be_adapter *adapter,
+ 	struct be_cmd_write_flashrom *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 	adapter->flash_status = 0;
+ 
+ 	wrb = wrb_from_mccq(adapter);
+@@ -2562,7 +2562,7 @@ static int be_cmd_write_flashrom(struct be_adapter *adapter,
+ 	if (status)
+ 		goto err_unlock;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (!wait_for_completion_timeout(&adapter->et_cmd_compl,
+ 					 msecs_to_jiffies(40000)))
+@@ -2573,7 +2573,7 @@ static int be_cmd_write_flashrom(struct be_adapter *adapter,
+ 	return status;
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2584,7 +2584,7 @@ static int be_cmd_get_flash_crc(struct be_adapter *adapter, u8 *flashed_crc,
+ 	struct be_mcc_wrb *wrb;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2611,7 +2611,7 @@ static int be_cmd_get_flash_crc(struct be_adapter *adapter, u8 *flashed_crc,
+ 		memcpy(flashed_crc, req->crc, 4);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3217,7 +3217,7 @@ int be_cmd_enable_magic_wol(struct be_adapter *adapter, u8 *mac,
+ 	struct be_cmd_req_acpi_wol_magic_config *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3234,7 +3234,7 @@ int be_cmd_enable_magic_wol(struct be_adapter *adapter, u8 *mac,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3249,7 +3249,7 @@ int be_cmd_set_loopback(struct be_adapter *adapter, u8 port_num,
+ 			    CMD_SUBSYSTEM_LOWLEVEL))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3272,7 +3272,7 @@ int be_cmd_set_loopback(struct be_adapter *adapter, u8 port_num,
+ 	if (status)
+ 		goto err_unlock;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (!wait_for_completion_timeout(&adapter->et_cmd_compl,
+ 					 msecs_to_jiffies(SET_LB_MODE_TIMEOUT)))
+@@ -3281,7 +3281,7 @@ int be_cmd_set_loopback(struct be_adapter *adapter, u8 port_num,
+ 	return status;
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3298,7 +3298,7 @@ int be_cmd_loopback_test(struct be_adapter *adapter, u32 port_num,
+ 			    CMD_SUBSYSTEM_LOWLEVEL))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3324,7 +3324,7 @@ int be_cmd_loopback_test(struct be_adapter *adapter, u32 port_num,
+ 	if (status)
+ 		goto err;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	wait_for_completion(&adapter->et_cmd_compl);
+ 	resp = embedded_payload(wrb);
+@@ -3332,7 +3332,7 @@ int be_cmd_loopback_test(struct be_adapter *adapter, u32 port_num,
+ 
+ 	return status;
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3348,7 +3348,7 @@ int be_cmd_ddr_dma_test(struct be_adapter *adapter, u64 pattern,
+ 			    CMD_SUBSYSTEM_LOWLEVEL))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3382,7 +3382,7 @@ int be_cmd_ddr_dma_test(struct be_adapter *adapter, u64 pattern,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3393,7 +3393,7 @@ int be_cmd_get_seeprom_data(struct be_adapter *adapter,
+ 	struct be_cmd_req_seeprom_read *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3409,7 +3409,7 @@ int be_cmd_get_seeprom_data(struct be_adapter *adapter,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3424,7 +3424,7 @@ int be_cmd_get_phy_info(struct be_adapter *adapter)
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3469,7 +3469,7 @@ int be_cmd_get_phy_info(struct be_adapter *adapter)
+ 	}
+ 	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3479,7 +3479,7 @@ static int be_cmd_set_qos(struct be_adapter *adapter, u32 bps, u32 domain)
+ 	struct be_cmd_req_set_qos *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3499,7 +3499,7 @@ static int be_cmd_set_qos(struct be_adapter *adapter, u32 bps, u32 domain)
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3611,7 +3611,7 @@ int be_cmd_get_fn_privileges(struct be_adapter *adapter, u32 *privilege,
+ 	struct be_cmd_req_get_fn_privileges *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3643,7 +3643,7 @@ int be_cmd_get_fn_privileges(struct be_adapter *adapter, u32 *privilege,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3655,7 +3655,7 @@ int be_cmd_set_fn_privileges(struct be_adapter *adapter, u32 privileges,
+ 	struct be_cmd_req_set_fn_privileges *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3675,7 +3675,7 @@ int be_cmd_set_fn_privileges(struct be_adapter *adapter, u32 privileges,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3707,7 +3707,7 @@ int be_cmd_get_mac_from_list(struct be_adapter *adapter, u8 *mac,
+ 		return -ENOMEM;
+ 	}
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3771,7 +3771,7 @@ int be_cmd_get_mac_from_list(struct be_adapter *adapter, u8 *mac,
+ 	}
+ 
+ out:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	dma_free_coherent(&adapter->pdev->dev, get_mac_list_cmd.size,
+ 			  get_mac_list_cmd.va, get_mac_list_cmd.dma);
+ 	return status;
+@@ -3831,7 +3831,7 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
+ 	if (!cmd.va)
+ 		return -ENOMEM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3853,7 +3853,7 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
+ 
+ err:
+ 	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3889,7 +3889,7 @@ int be_cmd_set_hsw_config(struct be_adapter *adapter, u16 pvid,
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3930,7 +3930,7 @@ int be_cmd_set_hsw_config(struct be_adapter *adapter, u16 pvid,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3944,7 +3944,7 @@ int be_cmd_get_hsw_config(struct be_adapter *adapter, u16 *pvid,
+ 	int status;
+ 	u16 vid;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3991,7 +3991,7 @@ int be_cmd_get_hsw_config(struct be_adapter *adapter, u16 *pvid,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4190,7 +4190,7 @@ int be_cmd_set_ext_fat_capabilites(struct be_adapter *adapter,
+ 	struct be_cmd_req_set_ext_fat_caps *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4206,7 +4206,7 @@ int be_cmd_set_ext_fat_capabilites(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4684,7 +4684,7 @@ int be_cmd_manage_iface(struct be_adapter *adapter, u32 iface, u8 op)
+ 	if (iface == 0xFFFFFFFF)
+ 		return -1;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4701,7 +4701,7 @@ int be_cmd_manage_iface(struct be_adapter *adapter, u32 iface, u8 op)
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4735,7 +4735,7 @@ int be_cmd_get_if_id(struct be_adapter *adapter, struct be_vf_cfg *vf_cfg,
+ 	struct be_cmd_resp_get_iface_list *resp;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4756,7 +4756,7 @@ int be_cmd_get_if_id(struct be_adapter *adapter, struct be_vf_cfg *vf_cfg,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4850,7 +4850,7 @@ int be_cmd_enable_vf(struct be_adapter *adapter, u8 domain)
+ 	if (BEx_chip(adapter))
+ 		return 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4868,7 +4868,7 @@ int be_cmd_enable_vf(struct be_adapter *adapter, u8 domain)
+ 	req->enable = 1;
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4941,7 +4941,7 @@ __be_cmd_set_logical_link_config(struct be_adapter *adapter,
+ 	u32 link_config = 0;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4969,7 +4969,7 @@ __be_cmd_set_logical_link_config(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -5000,8 +5000,7 @@ int be_cmd_set_features(struct be_adapter *adapter)
+ 	struct be_mcc_wrb *wrb;
+ 	int status;
+ 
+-	if (mutex_lock_interruptible(&adapter->mcc_lock))
+-		return -1;
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -5039,7 +5038,7 @@ int be_cmd_set_features(struct be_adapter *adapter)
+ 		dev_info(&adapter->pdev->dev,
+ 			 "Adapter does not support HW error recovery\n");
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -5053,7 +5052,7 @@ int be_roce_mcc_cmd(void *netdev_handle, void *wrb_payload,
+ 	struct be_cmd_resp_hdr *resp;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -5076,7 +5075,7 @@ int be_roce_mcc_cmd(void *netdev_handle, void *wrb_payload,
+ 	memcpy(wrb_payload, resp, sizeof(*resp) + resp->response_length);
+ 	be_dws_le_to_cpu(wrb_payload, sizeof(*resp) + resp->response_length);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ EXPORT_SYMBOL(be_roce_mcc_cmd);
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index 875fe379eea21..3d2e215921191 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -5667,8 +5667,8 @@ static int be_drv_init(struct be_adapter *adapter)
+ 	}
+ 
+ 	mutex_init(&adapter->mbox_lock);
+-	mutex_init(&adapter->mcc_lock);
+ 	mutex_init(&adapter->rx_filter_lock);
++	spin_lock_init(&adapter->mcc_lock);
+ 	spin_lock_init(&adapter->mcc_cq_lock);
+ 	init_completion(&adapter->et_cmd_compl);
+ 
 -- 
 2.39.5
 
