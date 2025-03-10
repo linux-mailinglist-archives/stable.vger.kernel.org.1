@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66405A59F63
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F3AA59E40
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D12D13AB65D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5EB3A9773
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65B2232378;
-	Mon, 10 Mar 2025 17:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639C92F28;
+	Mon, 10 Mar 2025 17:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZmq0u9d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpufzueD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D06230BD4;
-	Mon, 10 Mar 2025 17:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F51222D4C3;
+	Mon, 10 Mar 2025 17:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628303; cv=none; b=B0qVJAEaWCkkjCD7AabSNR8+AyXKHkT9angUL4PZCPN4NKxY5dT3pCixhMzHBSpiwtBRE5RuU3wStUQ6IIM0JPxjHB8Pql3PPbWt2avDQ6WZ9bPV2reqhAdIuJRclOGk3WoIrQVHV+xZqSVzwt9BpeWH7KRUYd0m6UjtTvmEuZw=
+	t=1741627654; cv=none; b=IOOTCDZxHy1xZPtDOeH/GKAdV49WP8b6h6JComqIdKWmSr+aZUddQoyM8GLnHrAd2BGFFfvyKGRGIViFValNxg/qYRfy4oGIqTYyIcAoSrnTt+PcWBABEK932H0PwD/BjvGJZ71aP+3uV2aW7dGCFTPhssQDS5tO8DFC20PCzd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628303; c=relaxed/simple;
-	bh=gkHi7o13ETXRJyofAOsnn5EWC5EYg8Dmf4u/D4hsxDU=;
+	s=arc-20240116; t=1741627654; c=relaxed/simple;
+	bh=NDWepIjVPV8CwaG08AH/ShavxF2T1ljY82dEwYmUEc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2slh1jJiYUf1DLVHGAasD4cK75u7SyPT0ytjWN4BAfbkoWSbePZXhgyD87ewbnDN+SuUsqn7WlBJWmOsF6xo8P1PaLwXvP/qjhlQqGQwEZr8xMs5lz2w/s/sgFDqG6VWUlErslK37q/ajnyxItCqPhGoHXwJV+eDjPRki/COuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZmq0u9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EBCC4CEE5;
-	Mon, 10 Mar 2025 17:38:22 +0000 (UTC)
+	 MIME-Version; b=YZwQ+t7VnrrRfThZ4PqXEoMk0pJx7VsAf52gDF4cGsWQb23cYSfz9lmvvxCLM5mZuafUZ8Z97ea2/qTugjbbHHlWj94CvCuP0YkAiaWKrXJoJNGcTnURE6CSml6GgoDhehUCjtvQh81gXT8VIKoC2zphSfdPRjgJYTEk+PoSOtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpufzueD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C54DC4CEE5;
+	Mon, 10 Mar 2025 17:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628303;
-	bh=gkHi7o13ETXRJyofAOsnn5EWC5EYg8Dmf4u/D4hsxDU=;
+	s=korg; t=1741627654;
+	bh=NDWepIjVPV8CwaG08AH/ShavxF2T1ljY82dEwYmUEc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZmq0u9d1j6Vi64mPPcD/94pTgBr2vf+Soz49LpP371aiGWSiSrq9zHM7JciBwvlH
-	 Hyhr6a+Ghr5E+aAaqs7W2U74t/IGwhEQy4sEPdMprqKqVFEAkBnHuikqI91w6Ns2KD
-	 rTLGjrbbByGv7Gpcipc7rbu734OfDnk+71VZmybU=
+	b=SpufzueDOSa1aIg4CbtAGPQv99q+OO7nxLoXnesQ52lV82b6JNhr9uIxG4CqyNxkA
+	 nrleWlTySoysIL8PVnzmTDbguAgFQTOIw3kU5+/7Wh020HpUrcSsQDamG2lnGJCkud
+	 g+hnKazSIa6fFyH9lmA/jan7UiUX6kypm6eUu7JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 012/109] ksmbd: fix use-after-free in smb2_lock
+	Tom Herbert <tom@herbertland.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 203/269] net: ipv6: fix dst ref loop in ila lwtunnel
 Date: Mon, 10 Mar 2025 18:05:56 +0100
-Message-ID: <20250310170428.038762044@linuxfoundation.org>
+Message-ID: <20250310170505.785307360@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-commit 84d2d1641b71dec326e8736a749b7ee76a9599fc upstream.
+[ Upstream commit 0e7633d7b95b67f1758aea19f8e85621c5f506a3 ]
 
-If smb_lock->zero_len has value, ->llist of smb_lock is not delete and
-flock is old one. It will cause use-after-free on error handling
-routine.
+This patch follows commit 92191dd10730 ("net: ipv6: fix dst ref loops in
+rpl, seg6 and ioam6 lwtunnels") and, on a second thought, the same patch
+is also needed for ila (even though the config that triggered the issue
+was pathological, but still, we don't want that to happen).
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
+Cc: Tom Herbert <tom@herbertland.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Link: https://patch.msgid.link/20250304181039.35951-1-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/ila/ila_lwt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7124,13 +7124,13 @@ out_check_cl:
+diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
+index ff7e734e335b0..ac4bcc623603a 100644
+--- a/net/ipv6/ila/ila_lwt.c
++++ b/net/ipv6/ila/ila_lwt.c
+@@ -88,7 +88,8 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
  		}
  
- no_check_cl:
-+		flock = smb_lock->fl;
-+		list_del(&smb_lock->llist);
-+
- 		if (smb_lock->zero_len) {
- 			err = 0;
- 			goto skip;
- 		}
--
--		flock = smb_lock->fl;
--		list_del(&smb_lock->llist);
- retry:
- 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
- skip:
+-		if (ilwt->connected) {
++		/* cache only if we don't create a dst reference loop */
++		if (ilwt->connected && orig_dst->lwtstate != dst->lwtstate) {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
+ 			local_bh_enable();
+-- 
+2.39.5
+
 
 
 
