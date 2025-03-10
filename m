@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343D9A59E54
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD8DA59F8A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3380188D7E1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0415C1669B2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5C0230BF0;
-	Mon, 10 Mar 2025 17:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93990231CB0;
+	Mon, 10 Mar 2025 17:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtilBSGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVceC8Ta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA4F2253FE;
-	Mon, 10 Mar 2025 17:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5055B22D4C3;
+	Mon, 10 Mar 2025 17:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627813; cv=none; b=Sbt/I2YtVTkzalipEksiMdvztMEQl3JojZWPiL2Sf1ArtR+b96uDE7S4lCYic/VrAn25GK7ooeU5LpvDDc5qXA3VgOWH3mpQAxbwh8PX0hg4kGKGXdnfUvjUNYU02I/sN8zdEwuUi4JgseqwbHg4QSb2SLVFpE9suFF4Pd5adtc=
+	t=1741628465; cv=none; b=QKM+W28XzZRTXvApgg8NlphzAIxxU4MpCopIxsoMcY9xlUNUNM6kKwfQJBY704RumO9aXT6MGw9Rzh0RRHTMmWHWHFu83HtnNpOdfxo1HCKX2wW70TPvt5Hd1MfHcFdrXAtZCtVSaGDW9bjeywWfBS6WMJXKbw8p2EmkoZyPt7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627813; c=relaxed/simple;
-	bh=zy6TLv4fCa0/HqRGiRmEJDCON+Bm3LxFmrX7Jcw0mJ8=;
+	s=arc-20240116; t=1741628465; c=relaxed/simple;
+	bh=4s3gU41rPPtxeCyyVzxZ7oTJRv/yddpDYMUZ29iyIQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMeCbiZw+Bxz4JgdjcCxyyfgecCsifCu/8xyv85cF9cVV+uolfla6YHxRhzruFG+9o5NgOTHClR4ENP3IJs5qNsk4KW5WcXuKpvyGiUdD8cZQKbUMomRujRNMoIKrnE29ny6cUdm9VOXJTrWOZU1O5NuBMtYsFzsdi64MXs+/MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtilBSGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CD3C4CEE5;
-	Mon, 10 Mar 2025 17:30:12 +0000 (UTC)
+	 MIME-Version; b=egkbKBBBITmXuFi2EU6xPcT77c0uc6q3fS5t+Uw7CSGevzlmu/ivpw6S/3z+MMSzLLj9T8tMWJqktYX57YP1pKnQWmUy+L+5HoEVnOanivd05D7rUBFUJlT+LzsEqqR4RqO5Ek3n60aa77cMT4eslGIXKf3idC0VhRgA3pA8R2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVceC8Ta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF214C4CEE5;
+	Mon, 10 Mar 2025 17:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627812;
-	bh=zy6TLv4fCa0/HqRGiRmEJDCON+Bm3LxFmrX7Jcw0mJ8=;
+	s=korg; t=1741628465;
+	bh=4s3gU41rPPtxeCyyVzxZ7oTJRv/yddpDYMUZ29iyIQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtilBSGAGHHC79XVUn6uGE35aEd1+pMZwsnN1h5v28jaiZYDFmaxT9WhMwqZVQiuI
-	 iwtynw5yeWJB+aXVHFtjhS5hDS24H1VkiHvbh8mQy/Ywd2j9zExUGj+t1LDRdpyDmi
-	 z8j0xV1YND6oY1eofVJXp9n9uA7CfkleHr4cYSsc=
+	b=oVceC8Ta6zQ/FNUJDi9uQ9pWkM6Oz4ceKoUX/9mMZ65DR1CRrMlHmv5LO9S38ghTb
+	 w8TonEx/swFBLh6YKZBX+4gg4T4rfajn4KaxH2LM7GKvbRUhN2AkrKiNC8FZM4aMLG
+	 1C4ptcVNjPrB1r/s3aABPvxe7qw/XtMs34aDBCuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 259/269] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.1 068/109] usb: renesas_usbhs: Flush the notify_hotplug_work
 Date: Mon, 10 Mar 2025 18:06:52 +0100
-Message-ID: <20250310170508.114092105@linuxfoundation.org>
+Message-ID: <20250310170430.269963168@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
+commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
 
-The alternative path leads to a build error after a recent change:
+When performing continuous unbind/bind operations on the USB drivers
+available on the Renesas RZ/G2L SoC, a kernel crash with the message
+"Unable to handle kernel NULL pointer dereference at virtual address"
+may occur. This issue points to the usbhsc_notify_hotplug() function.
 
-sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
-include/linux/stddef.h:9:14: error: called object is not a function or function pointer
-    9 | #define NULL ((void *)0)
-      |              ^
-sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
- 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
-      |                                                 ^~~~
-sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
- 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
+Flush the delayed work to avoid its execution when driver resources are
+unavailable.
 
-Using IS_REACHABLE() is somewhat questionable here anyway since it
-leads to the input code not working when the HDA driver is builtin
-but input is in a loadable module. Replace this with a hard compile-time
-dependency on CONFIG_INPUT. In practice this won't chance much
-other than solve the compiler error because it is rare to require
-sound output but no input support.
-
-Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/Kconfig         |    1 +
- sound/pci/hda/patch_realtek.c |    5 -----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -208,6 +208,7 @@ comment "Set to Y if you want auto-loadi
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -770,6 +770,8 @@ static int usbhs_remove(struct platform_
  
- config SND_HDA_CODEC_REALTEK
- 	tristate "Build Realtek HD-audio codec support"
-+	depends on INPUT
- 	select SND_HDA_GENERIC
- 	select SND_HDA_GENERIC_LEDS
- 	select SND_HDA_SCODEC_COMPONENT
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -5002,7 +5002,6 @@ static void alc298_fixup_samsung_amp_v2_
- 		alc298_samsung_v2_init_amps(codec, 4);
- }
+ 	dev_dbg(&pdev->dev, "usb remove\n");
  
--#if IS_REACHABLE(CONFIG_INPUT)
- static void gpio2_mic_hotkey_event(struct hda_codec *codec,
- 				   struct hda_jack_callback *event)
- {
-@@ -5111,10 +5110,6 @@ static void alc233_fixup_lenovo_line2_mi
- 		spec->kb_dev = NULL;
- 	}
- }
--#else /* INPUT */
--#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
--#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
--#endif /* INPUT */
- 
- static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
++	flush_delayed_work(&priv->notify_hotplug_work);
++
+ 	/* power off */
+ 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+ 		usbhsc_power_ctrl(priv, 0);
 
 
 
