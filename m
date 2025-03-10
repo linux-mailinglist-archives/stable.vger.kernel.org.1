@@ -1,166 +1,108 @@
-Return-Path: <stable+bounces-121659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F91A58A56
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 03:15:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAB7A58A79
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 03:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F35FD188ACF9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 02:15:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 308A13AA5E2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 02:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE35F199223;
-	Mon, 10 Mar 2025 02:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adiHPbh3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D9519B5B8;
+	Mon, 10 Mar 2025 02:28:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E58B198E81
-	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 02:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F62288D6;
+	Mon, 10 Mar 2025 02:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741572897; cv=none; b=DOigMV6gcsyBIUaw0lf7VycrIiYkAco+JBd8t7IfHv0OykNKfDLkNpXbsZBorB97wVG3cSv3cR7J9OfPwen5lKpZ9eAqOhhDMV+oY43Dd95q+zQWZn0mMWimnzwZCryu3a17WeuiwOIHKq2RtqzbYlPlHcsJOl1blkXKwBSaD0A=
+	t=1741573718; cv=none; b=cPNTNCijETb9IZpmpfW70EKTJnqDf238qDtyijrZzQW2/k77C9zNAfHBhgN2GHUPPNTkSj4+EbKnvRvYyy95DoFFk9E53vtHv07EDslL3JwP7WVFcErF5kTaiY3KOatJiTBeoyV5U7d17n4VYpgjN+JRxyOYfh9TXskUolEKNs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741572897; c=relaxed/simple;
-	bh=XnmVPGLupYRkD0AM68QGNmO7LgRfQXKkhRFWLlkoHzo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pW3RHElOQwZqwUvMnBq0zIe1pkQpA+iVhl2fY0Mvd9IX2T+uW1ad0HZKGaU+n7ezDB2u2k+FPXDxoBs73zDS1pSQOCL72oFzvForJqRuqg4UzITOnbpyOjjVRb99tezkwQogVHdLO2jOVBj4t7agp9vliu48Y9xj6RLV1mTN6fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adiHPbh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29F3C4CEED;
-	Mon, 10 Mar 2025 02:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741572897;
-	bh=XnmVPGLupYRkD0AM68QGNmO7LgRfQXKkhRFWLlkoHzo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adiHPbh3ViJyzkkXT9YR0ENuTCBZP2uFuOblX5V/MZboNWhSuQiUcBYuJ52VT9QGr
-	 sUdeiww7QalU4Hyadi/dFJR1eGRZSlcyadA5o4QpDeWehriog5OxA7/LzxCQfAOG2/
-	 akfL3O+YMN7WkzeP1dhvNcvz6Ns9Ib9nxXOaeomRY7VyqAlc8GImp0KLQ9iiN7MIrx
-	 HYDzlnTCcb7/OvIavPy1HJt7DJVKFOfqXtzgOy4Eq0HXdajuaR0soqpJEkPuKz9oAF
-	 RFrUB0+GoVikIoun+5x//tScvFiwuJ5Wx1q/a5ZnSJ0WyoOZA2nFWRFPhn6gTnYNMA
-	 81ec3lY/HpZeg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4] x86/mm: Don't disable PCID when INVLPG has been fixed by microcode
-Date: Sun,  9 Mar 2025 22:14:55 -0400
-Message-Id: <20250309202750-392a3cc39587e3b3@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250308-clear-pcid-5-4-v1-1-e8bd7c402503@linux.intel.com>
-References: 
+	s=arc-20240116; t=1741573718; c=relaxed/simple;
+	bh=HNEg0+3WipjXdcvdRHeHQ72N6wixwMcaX5VZ+mtcxas=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fKFePJKTZdwPnFj+02EvI4Bd+qBuFue5V3gSh+6AO2KlGaKaKimnr10hd/2ky+0jKJigCJylpLlJ25SOX9Pb6i5hGY/AeYV+nC+MngnBH+B1oQ9azkwki0XddcMaY9jFNcG/MG8apublz2Y+8Gpskr05Wd3IB8v2ga5/5Xo7SNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAA3Plo8Ts5naU_XEw--.39940S2;
+	Mon, 10 Mar 2025 10:28:21 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: eli.billauer@gmail.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] char: xillybus: Fix error handling in xillybus_init_chrdev()
+Date: Mon, 10 Mar 2025 10:28:11 +0800
+Message-Id: <20250310022811.182553-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAA3Plo8Ts5naU_XEw--.39940S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKr4ktr47JrWfJF4kKry8Krg_yoWkuFb_CF
+	1FkrWkWry0krnrJw15Kw18uF1j9w13Z3WfGF1vq3WaqryFvr4Uur4xWr1DZw15KrWv9ry7
+	Ca42y3yUXFWa9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
+	evJa73UjIFyTuYvjfUY3kuUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-[ Sasha's backport helper bot ]
+After cdev_alloc() succeed and cdev_add() failed, call cdev_del() to
+remove unit->cdev from the system properly.
 
-Hi,
+Found by code review.
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
-
-The upstream commit SHA1 provided is correct: f24f669d03f884a6ef95cca84317d0f329e93961
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pawan Gupta<pawan.kumar.gupta@linux.intel.com>
-Commit author: Xi Ruoyao<xry111@xry111.site>
-
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Not found
-6.6.y | Not found
-6.1.y | Not found
-
-Note: The patch differs from the upstream commit:
+Cc: stable@vger.kernel.org
+Fixes: 8cb5d216ab33 ("char: xillybus: Move class-related functions to new xillybus_class.c")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
-1:  f24f669d03f88 ! 1:  1bbb6075a546b x86/mm: Don't disable PCID when INVLPG has been fixed by microcode
-    @@ Metadata
-      ## Commit message ##
-         x86/mm: Don't disable PCID when INVLPG has been fixed by microcode
-     
-    +    commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
-    +
-         Per the "Processor Specification Update" documentations referred by
-         the intel-microcode-20240312 release note, this microcode release has
-         fixed the issue for all affected models.
-    @@ Commit message
-         Intel.
-     
-         [ dhansen: comment and changelog tweaks ]
-    +    [ pawan: backported to 5.4
-    +             s/ATOM_GRACEMONT/ALDERLAKE_N/
-    +             added microcode matching to INTEL_MATCH() and invlpg_miss_ids ]
-     
-         Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-         Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-         Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    +    Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-         Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
-         Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
-         Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
-    @@ Commit message
-     
-      ## arch/x86/mm/init.c ##
-     @@ arch/x86/mm/init.c: static void __init probe_page_size_mask(void)
-    + 	}
-      }
-      
-    +-#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
-    +-			      .family  = 6,			\
-    +-			      .model = _model,			\
-    +-			    }
-    ++#define INTEL_MATCH(_model, ucode) { .vendor  = X86_VENDOR_INTEL,	\
-    ++				     .family  = 6,			\
-    ++				     .model = _model,			\
-    ++				     .driver_data = ucode,		\
-    ++				   }
-      /*
-     - * INVLPG may not properly flush Global entries
-     - * on these CPUs when PCIDs are enabled.
-    @@ arch/x86/mm/init.c: static void __init probe_page_size_mask(void)
-     + * these CPUs.  New microcode fixes the issue.
-       */
-      static const struct x86_cpu_id invlpg_miss_ids[] = {
-    --	X86_MATCH_VFM(INTEL_ALDERLAKE,	    0),
-    --	X86_MATCH_VFM(INTEL_ALDERLAKE_L,    0),
-    --	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT, 0),
-    --	X86_MATCH_VFM(INTEL_RAPTORLAKE,	    0),
-    --	X86_MATCH_VFM(INTEL_RAPTORLAKE_P,   0),
-    --	X86_MATCH_VFM(INTEL_RAPTORLAKE_S,   0),
-    -+	X86_MATCH_VFM(INTEL_ALDERLAKE,	    0x2e),
-    -+	X86_MATCH_VFM(INTEL_ALDERLAKE_L,    0x42c),
-    -+	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT, 0x11),
-    -+	X86_MATCH_VFM(INTEL_RAPTORLAKE,	    0x118),
-    -+	X86_MATCH_VFM(INTEL_RAPTORLAKE_P,   0x4117),
-    -+	X86_MATCH_VFM(INTEL_RAPTORLAKE_S,   0x2e),
-    +-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
-    +-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
-    +-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
-    +-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
-    +-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
-    +-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-    ++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE,	0x2e),
-    ++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L,	0x42c),
-    ++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N,	0x11),
-    ++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE,	0x118),
-    ++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P,	0x4117),
-    ++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S,	0x2e),
-      	{}
-      };
-      
----
+ drivers/char/xillybus/xillybus_class.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Results of testing on various branches:
+diff --git a/drivers/char/xillybus/xillybus_class.c b/drivers/char/xillybus/xillybus_class.c
+index c92a628e389e..045e125ec423 100644
+--- a/drivers/char/xillybus/xillybus_class.c
++++ b/drivers/char/xillybus/xillybus_class.c
+@@ -105,7 +105,7 @@ int xillybus_init_chrdev(struct device *dev,
+ 		dev_err(dev, "Failed to add cdev.\n");
+ 		/* kobject_put() is normally done by cdev_del() */
+ 		kobject_put(&unit->cdev->kobj);
+-		goto unregister_chrdev;
++		goto err_cdev;
+ 	}
+ 
+ 	for (i = 0; i < num_nodes; i++) {
+@@ -157,6 +157,7 @@ int xillybus_init_chrdev(struct device *dev,
+ 		device_destroy(&xillybus_class, MKDEV(unit->major,
+ 						     i + unit->lowest_minor));
+ 
++err_cdev:
+ 	cdev_del(unit->cdev);
+ 
+ unregister_chrdev:
+-- 
+2.25.1
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
 
