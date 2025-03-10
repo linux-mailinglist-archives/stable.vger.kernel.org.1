@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-122898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A93A5A1E3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA4BA59DA2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7939E1891E89
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49EDE16F90C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871A5233D86;
-	Mon, 10 Mar 2025 18:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84ADE22D799;
+	Mon, 10 Mar 2025 17:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVTeFnQa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yN5e2fMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321723236F;
-	Mon, 10 Mar 2025 18:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D571B3927;
+	Mon, 10 Mar 2025 17:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630459; cv=none; b=nbXFh210t2P5bwr6pi9XdNKuSMF+nSgBOKM/ZWUGsAS7oj88eee3d1Kif7QKzKddExDhSlGvz7gRDDxQDY9WwhxphtdlNNzvdwLrb+oJPtV4dok5r2341aQie179e5WuiiyCVga64f4a0bgO5/xO5yDF0B16yn5tLdCft46hIpo=
+	t=1741627376; cv=none; b=erotVy86P3J3UT7XEOc65eDZ8pDlVv3qFLz4GEUIp5lIa/u5pScpzGPSlgJwcbUIwWDxfy6fOdFTpksjQ5eyf9T0B4H64xxfbpPDj0EbU1ZXBy1WQJjLXpcYFiieGKc/cDpOxwAfsd0VeCa0HTQgbrFRHywjZWTNc7/G/SwA/4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630459; c=relaxed/simple;
-	bh=fsXOZwNIFSbGPAgPTJHpYkJdYaRSxY714E7oO19eqJU=;
+	s=arc-20240116; t=1741627376; c=relaxed/simple;
+	bh=CTdVhJulmRgXtnYBzINdaX1nWXhGDd7M9nzn3s1KMGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTCCxzArtqS+3nQ92gxLV4DHlZs7KrXib+W5EE+6xupHR+P6HWxglwtzK2eLgVXVjuAmpVovLzvn/DEVZxsPYHYUUpWScTrB7vIUSjIgWCuiw3nQnR5/z1tOoflDyQO5kfNtxigdkOgQLZxJpWyqpLSUEBkrJdo2aM9bUiGcrbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVTeFnQa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC17C4CEEC;
-	Mon, 10 Mar 2025 18:14:18 +0000 (UTC)
+	 MIME-Version; b=W1EYysHrLLWF6IUMGk4SiNcj3wcH00tbsmElIOB8r7QaKEr9P/Ww265+jSiWVqpxhHnrFAZZbJcGyLJ3ucqGLW8QVgdJfYy/hwJL9Vu35zlS/xUAALL5CKrJxFkDI/FLzJNpHzVxZw3z2ucKGVoOFVs+gudPIKqbIYGtYTkerwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yN5e2fMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD68BC4CEE5;
+	Mon, 10 Mar 2025 17:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630458;
-	bh=fsXOZwNIFSbGPAgPTJHpYkJdYaRSxY714E7oO19eqJU=;
+	s=korg; t=1741627376;
+	bh=CTdVhJulmRgXtnYBzINdaX1nWXhGDd7M9nzn3s1KMGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVTeFnQaElHIotO8RAAxLqYkAYREMjV9ZX+AxXl7PoxQqd3u508VFZU4Ze7RSYcZb
-	 EcFijcF12TJDjy5f7N5K9vPV9H6YzfcjWX1nDfzO+sTWQwoR4btPI9T0bpwzjOJbV3
-	 +qbYiEN6za/7nO/4ITzqQ1A04P/biBA2IFdW8IaU=
+	b=yN5e2fMONESiG+3gaz66O1cAk0z3pL57CnKnr+Lyj4ii3f93eZtd5ng3MI+dJQ1hL
+	 HtmGotNQtNXvvbi6hRb7cd1jwPyVds9vj3ptrVJywRRXg5E3hzIPFuhg9j3IDuvsuf
+	 7sNhn3CqvXn9NktgwikuBEpN0LKYFCVPOiTUqqi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Brian Norris <briannorris@chromium.org>
-Subject: [PATCH 5.15 413/620] kdb: Do not assume write() callback available
-Date: Mon, 10 Mar 2025 18:04:19 +0100
-Message-ID: <20250310170601.892094073@linuxfoundation.org>
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.12 107/269] x86/cpu: Validate CPUID leaf 0x2 EDX output
+Date: Mon, 10 Mar 2025 18:04:20 +0100
+Message-ID: <20250310170501.977208909@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit 6d3e0d8cc63221dec670d0ee92ac57961581e975 upstream.
+commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
 
-It is allowed for consoles to not provide a write() callback. For
-example ttynull does this.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-Check if a write() callback is available before using it.
+Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
+ECX, but left EDX unchecked.
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230717194607.145135-2-john.ogness@linutronix.de
-Cc: Brian Norris <briannorris@chromium.org>
+Validate EDX's most-significant bit as well.
+
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/intel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -577,6 +577,8 @@ static void kdb_msg_write(const char *ms
- 			continue;
- 		if (c == dbg_io_ops->cons)
- 			continue;
-+		if (!c->write)
-+			continue;
- 		/*
- 		 * Set oops_in_progress to encourage the console drivers to
- 		 * disregard their internal spin locks: in the current calling
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -836,7 +836,7 @@ static void intel_detect_tlb(struct cpui
+ 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
+ 
+ 		/* If bit 31 is set, this is an unknown format */
+-		for (j = 0 ; j < 3 ; j++)
++		for (j = 0 ; j < 4 ; j++)
+ 			if (regs[j] & (1 << 31))
+ 				regs[j] = 0;
+ 
 
 
 
