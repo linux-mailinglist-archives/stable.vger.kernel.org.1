@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-122345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A431A59F1F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAB3A59D0A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36C1618900CB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51814188E473
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7051B3927;
-	Mon, 10 Mar 2025 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A5B21E087;
+	Mon, 10 Mar 2025 17:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSLDOf4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQLd3K/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9F518DB24;
-	Mon, 10 Mar 2025 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7621C2F28;
+	Mon, 10 Mar 2025 17:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628233; cv=none; b=NTgFyaQRsazC25zaCpfpucOm+ZjVs1WJyNOGvO3KNmX/D2cHHnRa4tCbtugz+9alaPRAw2NBMSg9eBPgMNX+bskK1sE8/7QBfF6IM73guUP8sYf/rjWm4PYUtQz6AOOpG/MeZb66sLQRptuWSxw+Qidjyzt1dEI3xLRssDubU3U=
+	t=1741627052; cv=none; b=pPv5lpPRACvhI2wGrHJulxa80HzcqD04VgU1qHdT2ukaVg5ggefUtGwkKvQJArDnf2SL3xM/qbZieyq1H3xvHdl0efebbWye3yuxFZ1fClHECCiJJJukeuWXVbwa1kJU9TuD+3cPWsuLOWORxfcp9bYj8wBCEegVen+nBtb2uAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628233; c=relaxed/simple;
-	bh=bRtJ1WAntY8pH81YN6yxCy3rHl4IP0Cw7FtSzs/oCEY=;
+	s=arc-20240116; t=1741627052; c=relaxed/simple;
+	bh=3EafQxO6IiafQ3fB8S6LrNMWrG+/uucFPUtmaBMNAko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMXoSpK27Q6g1bhp8rN0umU+DREh8k4k+CqovkriOWYKf5mnZlDTA0sleUldS/td2ImsjDZFgognZqjSHtbPCUY8iqkcmxZbvIvqsLTTO1bTFJaN7WfZRyFkFGoA/7F1z55LH6ovmqCCrKF7RDDr4kOgUqJoVeupduIKsUOxmWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSLDOf4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE681C4CEE5;
-	Mon, 10 Mar 2025 17:37:12 +0000 (UTC)
+	 MIME-Version; b=dVy+tTq2DjNy1G2h+7//sRmVRQ79ww3+jSteEgQ4kmbSUfiOjpwSbHLbMLyYKqmHj9t923F3dp4skoezKgDvxCuPobDMeHNAQuMdKz8ULJ3Aj3RBriyIkg/fMb0WKnZAE7b7pNw1HpVJBdspXGtj/pNYrJc6AP/VfM7V2asW6lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQLd3K/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F107FC4CEE5;
+	Mon, 10 Mar 2025 17:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628233;
-	bh=bRtJ1WAntY8pH81YN6yxCy3rHl4IP0Cw7FtSzs/oCEY=;
+	s=korg; t=1741627052;
+	bh=3EafQxO6IiafQ3fB8S6LrNMWrG+/uucFPUtmaBMNAko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RSLDOf4Ja2eY9CAiU7EBRicVgRP9rfL7a7NEnX7NAuX9tC2rBePi0tO1jJNMfKT+R
-	 5b4WTsjiQKSFrVuog1Xxih2gBCWBqD7tjrFGGD0jiSdiGQEcWOaXBQEc3XwpeZ5USJ
-	 /DTK3VJsaxpNXNP6A1kJ0abg4ge1im7RpRAv/bZk=
+	b=EQLd3K/W1+43v+/hdh4BnhKLbxpVT2byyuXwdsavM2LoHx+QTyPOrZPRG2Q3aZ8jT
+	 ZCMaVyB1/6sJKHmweRqb/12vncUnfpr1nAD2ueUjX5H8LT27dvNwdl9MqXLWERmUZo
+	 fhprW3OkGExWOs4FHmubzaFnzOD5mTDtSLhDVtFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 6.6 102/145] usb: dwc3: gadget: Prevent irq storm when TH re-executes
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.13 203/207] arm64: Kconfig: Remove selecting replaced HAVE_FUNCTION_GRAPH_RETVAL
 Date: Mon, 10 Mar 2025 18:06:36 +0100
-Message-ID: <20250310170438.881511520@linuxfoundation.org>
+Message-ID: <20250310170455.848801067@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-commit 69c58deec19628c8a686030102176484eb94fed4 upstream.
+commit f458b2165d7ac0f2401fff48f19c8f864e7e1e38 upstream.
 
-While commit d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in
-event cache") makes sure that top half(TH) does not end up overwriting the
-cached events before processing them when the TH gets invoked more than one
-time, returning IRQ_HANDLED results in occasional irq storm where the TH
-hogs the CPU. The irq storm can be prevented by the flag before event
-handler busy is cleared. Default enable interrupt moderation in all
-versions which support them.
+Commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
+replaces the config HAVE_FUNCTION_GRAPH_RETVAL with the config
+HAVE_FUNCTION_GRAPH_FREGS, and it replaces all the select commands in the
+various architecture Kconfig files. In the arm64 architecture, the commit
+adds the 'select HAVE_FUNCTION_GRAPH_FREGS', but misses to remove the
+'select HAVE_FUNCTION_GRAPH_RETVAL', i.e., the select on the replaced
+config.
 
-ftrace event stub during dwc3 irq storm:
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000866: irq_handler_exit: irq=14 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000872: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000874: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000881: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000883: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000889: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000892: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000898: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000901: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000907: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000909: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000915: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000918: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000924: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000927: irq_handler_exit: irq=504 ret=handled
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000933: irq_handler_entry: irq=504 name=dwc3
-    irq/504_dwc3-1111  ( 1111) [000] .... 70.000935: irq_handler_exit: irq=504 ret=handled
-    ....
+Remove selecting the replaced config. No functional change, just cleanup.
 
-Cc: stable <stable@kernel.org>
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Fixes: d325a1de49d6 ("usb: dwc3: gadget: Prevent losing events in event cache")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250216223003.3568039-1-badhri@google.com
+Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Link: https://lore.kernel.org/r/20250117125522.99071-1-lukas.bulwahn@redhat.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c   |   16 ++++++----------
- drivers/usb/dwc3/gadget.c |   10 +++++++---
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ arch/arm64/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1671,8 +1671,6 @@ static void dwc3_get_properties(struct d
- 	dwc->tx_thr_num_pkt_prd = tx_thr_num_pkt_prd;
- 	dwc->tx_max_burst_prd = tx_max_burst_prd;
- 
--	dwc->imod_interval = 0;
--
- 	dwc->tx_fifo_resize_max_num = tx_fifo_resize_max_num;
- }
- 
-@@ -1690,21 +1688,19 @@ static void dwc3_check_params(struct dwc
- 	unsigned int hwparam_gen =
- 		DWC3_GHWPARAMS3_SSPHY_IFC(dwc->hwparams.hwparams3);
- 
--	/* Check for proper value of imod_interval */
--	if (dwc->imod_interval && !dwc3_has_imod(dwc)) {
--		dev_warn(dwc->dev, "Interrupt moderation not supported\n");
--		dwc->imod_interval = 0;
--	}
--
- 	/*
-+	 * Enable IMOD for all supporting controllers.
-+	 *
-+	 * Particularly, DWC_usb3 v3.00a must enable this feature for
-+	 * the following reason:
-+	 *
- 	 * Workaround for STAR 9000961433 which affects only version
- 	 * 3.00a of the DWC_usb3 core. This prevents the controller
- 	 * interrupt from being masked while handling events. IMOD
- 	 * allows us to work around this issue. Enable it for the
- 	 * affected version.
- 	 */
--	if (!dwc->imod_interval &&
--	    DWC3_VER_IS(DWC3, 300A))
-+	if (dwc3_has_imod((dwc)))
- 		dwc->imod_interval = 1;
- 
- 	/* Check the maximum_speed parameter */
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4507,14 +4507,18 @@ static irqreturn_t dwc3_process_event_bu
- 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0),
- 		    DWC3_GEVNTSIZ_SIZE(evt->length));
- 
-+	evt->flags &= ~DWC3_EVENT_PENDING;
-+	/*
-+	 * Add an explicit write memory barrier to make sure that the update of
-+	 * clearing DWC3_EVENT_PENDING is observed in dwc3_check_event_buf()
-+	 */
-+	wmb();
-+
- 	if (dwc->imod_interval) {
- 		dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), DWC3_GEVNTCOUNT_EHB);
- 		dwc3_writel(dwc->regs, DWC3_DEV_IMOD(0), dwc->imod_interval);
- 	}
- 
--	/* Keep the clearing of DWC3_EVENT_PENDING at the end */
--	evt->flags &= ~DWC3_EVENT_PENDING;
--
- 	return ret;
- }
- 
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -221,7 +221,6 @@ config ARM64
+ 	select HAVE_FUNCTION_ERROR_INJECTION
+ 	select HAVE_FUNCTION_GRAPH_FREGS
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+-	select HAVE_FUNCTION_GRAPH_RETVAL
+ 	select HAVE_GCC_PLUGINS
+ 	select HAVE_HARDLOCKUP_DETECTOR_PERF if PERF_EVENTS && \
+ 		HW_PERF_EVENTS && HAVE_PERF_EVENTS_NMI
 
 
 
