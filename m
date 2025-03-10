@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91865A5A17D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A663A59C51
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF9AF173C1D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 465673A87CC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F5122D4FD;
-	Mon, 10 Mar 2025 18:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0051223371B;
+	Mon, 10 Mar 2025 17:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdKV3kOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHaJO/BH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D947C17A2E8;
-	Mon, 10 Mar 2025 18:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2DA233710;
+	Mon, 10 Mar 2025 17:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629695; cv=none; b=ZfS6zvfFGFaiPONGJkiB1/dgwNCD1BUBiNidaW3HkILVTwLYSsNIPlCVuIMHXfvimL+94906MOAAP/BxM/KmzcfeFS6q77JVjytoNaJeT8FS91DAsECiM2KfIToi+Z7Efgrb+etieiR9Pssae49tygpRACacZvcmR3buPP/669Y=
+	t=1741626587; cv=none; b=Iu8We/aM4/DGtb18Xng3+AVaJd/2vdeVf7G5/+SDskMlWYeqhMQvAyAwmnpth8AxDQ4DfDxprLLzIAa5Wz+gsPC2RuK/KuM2ymHmzdza8OAx6XgTbkzJPoY6FGMA08yAkeH1hT5L8Q/rutoNuzP1yn8611i3H9Is7v7nQbKgJa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629695; c=relaxed/simple;
-	bh=RReYE5rHDT6GxeVVqovL/J9q/2fXpTImkdJjU9a0+HQ=;
+	s=arc-20240116; t=1741626587; c=relaxed/simple;
+	bh=JzGrlxkpqQCUAyOwRXaeGQnxuDs9tMhWajShR4N8Fxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4fUyz3stnpx/2NWdHe47zBq0csLZJU232jNJvZ1Kl1o9dF5cTrCYgi6MxSc30sLvc5VBqwlT+b2m+88Rgw/KdQmVbmXxFCZvp9jGaLau5CwN77/XQs4XeeCaLCh4WgVgUlaEVIt5P6C3xfnqXRXjXeYFrp8o9Jq1bSASVQsTUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdKV3kOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F271C4CEE5;
-	Mon, 10 Mar 2025 18:01:35 +0000 (UTC)
+	 MIME-Version; b=hvOABDLJi8jvcYF5hB8+mwCCpLEB25yYXBIfHiAwXk8lX/ZcMlUXo4lUtt/+Ne/rWyPBiO+WVZXDsumA4sBSScsR2iZaKw6nbHkVm+8majLGw/576IUGYXK7ObUnAJtKF7dHfbBJmT1bt1oUB59fa/DD050RLFruRE4ko6fTeh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHaJO/BH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B16C4CEED;
+	Mon, 10 Mar 2025 17:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629695;
-	bh=RReYE5rHDT6GxeVVqovL/J9q/2fXpTImkdJjU9a0+HQ=;
+	s=korg; t=1741626587;
+	bh=JzGrlxkpqQCUAyOwRXaeGQnxuDs9tMhWajShR4N8Fxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdKV3kOM8Wk92sUUGpAcPwWF9lgw7VrC6Vjyegii4CW9oye3O6P4fhhaVxtN9gPZT
-	 2F0SOMO0CkKQpDeQFPUX4Q7wKdycKVtxhvY1aD/dQmJ3wpGQt01McipH2GaTWgNt72
-	 SskiZCdREvF/kS+M/pt1B1UyclXMjaRw0PUx0uTo=
+	b=yHaJO/BHXMyxVFySrsmcks2e6Zd+rwwLSUxbwhn3TsqHlcB7MF1WX5/FzePRC29nK
+	 EK7vwiOgFBf4tln0PMq80K6YOSizVCfAmsmPmh/G/H+NFNH+roPW7Ot25kxHcjOofD
+	 XyqLNtJWaKUV5iIpGUjS/m1XgASupilAk1nrwuaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 5.15 382/620] alpha: align stack for page fault and user unaligned trap handlers
-Date: Mon, 10 Mar 2025 18:03:48 +0100
-Message-ID: <20250310170600.672674323@linuxfoundation.org>
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 036/207] drm/amd/pm: always allow ih interrupt from fw
+Date: Mon, 10 Mar 2025 18:03:49 +0100
+Message-ID: <20250310170449.209077446@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
+commit da552bda987420e877500fdd90bd0172e3bf412b upstream.
 
-do_page_fault() and do_entUna() are special because they use
-non-standard stack frame layout. Fix them manually.
+always allow ih interrupt from fw on smu v14 based on
+the interface requirement
 
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a3199eba46c54324193607d9114a1e321292d7a1)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/alpha/kernel/entry.S |   20 ++++++++++----------
- arch/alpha/kernel/traps.c |    2 +-
- arch/alpha/mm/fault.c     |    4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c |   12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
- CFI_START_OSF_FRAME entMM
- 	SAVE_ALL
- /* save $9 - $15 so the inline exception code can manipulate them.  */
--	subq	$sp, 56, $sp
--	.cfi_adjust_cfa_offset	56
-+	subq	$sp, 64, $sp
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_rel_offset	$13, 32
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- /* handle the fault */
- 	lda	$8, 0x3fff
- 	bic	$sp, $8, $8
-@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	addq	$sp, 56, $sp
-+	addq	$sp, 64, $sp
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- /* finish up the syscall as normal.  */
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entMM
-@@ -383,8 +383,8 @@ entUnaUser:
- 	.cfi_restore	$0
- 	.cfi_adjust_cfa_offset	-256
- 	SAVE_ALL		/* setup normal kernel stack */
--	lda	$sp, -56($sp)
--	.cfi_adjust_cfa_offset	56
-+	lda	$sp, -64($sp)
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -400,7 +400,7 @@ entUnaUser:
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
- 	lda	$8, 0x3fff
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- 	bic	$sp, $8, $8
- 	jsr	$26, do_entUnaUser
- 	ldq	$9, 0($sp)
-@@ -410,7 +410,7 @@ entUnaUser:
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	lda	$sp, 56($sp)
-+	lda	$sp, 64($sp)
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -418,7 +418,7 @@ entUnaUser:
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entUna
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
+@@ -1899,16 +1899,6 @@ static int smu_v14_0_allow_ih_interrupt(
+ 				    NULL);
+ }
  
---- a/arch/alpha/kernel/traps.c
-+++ b/arch/alpha/kernel/traps.c
-@@ -709,7 +709,7 @@ s_reg_to_mem (unsigned long s_reg)
- static int unauser_reg_offsets[32] = {
- 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
- 	/* r9 ... r15 are stored in front of regs.  */
--	-56, -48, -40, -32, -24, -16, -8,
-+	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
- 	R(r16), R(r17), R(r18),
- 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
- 	R(r27), R(r28), R(gp),
---- a/arch/alpha/mm/fault.c
-+++ b/arch/alpha/mm/fault.c
-@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *
+-static int smu_v14_0_process_pending_interrupt(struct smu_context *smu)
+-{
+-	int ret = 0;
+-
+-	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_ACDC_BIT))
+-		ret = smu_v14_0_allow_ih_interrupt(smu);
+-
+-	return ret;
+-}
+-
+ int smu_v14_0_enable_thermal_alert(struct smu_context *smu)
+ {
+ 	int ret = 0;
+@@ -1920,7 +1910,7 @@ int smu_v14_0_enable_thermal_alert(struc
+ 	if (ret)
+ 		return ret;
  
- /* Macro for exception fixup code to access integer registers.  */
- #define dpf_reg(r)							\
--	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
--				 (r) <= 18 ? (r)+10 : (r)-10])
-+	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
-+				 (r) <= 18 ? (r)+11 : (r)-10])
+-	return smu_v14_0_process_pending_interrupt(smu);
++	return smu_v14_0_allow_ih_interrupt(smu);
+ }
  
- asmlinkage void
- do_page_fault(unsigned long address, unsigned long mmcsr,
+ int smu_v14_0_disable_thermal_alert(struct smu_context *smu)
 
 
 
