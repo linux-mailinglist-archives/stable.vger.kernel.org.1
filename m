@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4211A5A18C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8797BA59DAA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEAE83AE2EF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ADF43A6A30
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6716422DFB1;
-	Mon, 10 Mar 2025 18:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11C122D799;
+	Mon, 10 Mar 2025 17:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf6/xAc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjbM+67D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2539B17A2E8;
-	Mon, 10 Mar 2025 18:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901861B3927;
+	Mon, 10 Mar 2025 17:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629739; cv=none; b=A5bkA8qusJsTIRXuIIMWT69k4KbUts2+c596XjFgDkbn3BnSA8xKjfRQ8dQq7aJizdWkXUjfApNXuGHUdHRXfnaHFnlO+20NGfFuA/rqVDlcHT08kgmd5lZ6kwOQx4hFMr+ny1Sw7EFb1MdWkX2nYtlilqI0SbTJ8DL4GxfAxic=
+	t=1741627393; cv=none; b=Ch8GWFksm9I2mPml1bdpXEmuZ6G2TLuSS2sCn0hx/jMgnPeS4k9xrCyDc+ETTBLJaw/3Awj0lJZFVl1NWQ3zoZDcS3S+NPONL7zNkP0fMeAO3R18sIxPlAb6M67OI4Z5JQ6yEQ+hrNWkA+USMukTXrpNFaBD+lqD7VJrBii2Eyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629739; c=relaxed/simple;
-	bh=xzbTxzI5ClxzWdDFXkgR3mZjExNgC+9F/Km81sEjLjc=;
+	s=arc-20240116; t=1741627393; c=relaxed/simple;
+	bh=Fy6wIe2C0Y0LMzjtPogGdALSRoZfLQnZh/62ObIxdaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uigaOD+ZkDS1HQ9A/rKRnjMU3o/rCDF0JPckBLhZ2YuieBX/Sk+zMLcESN96tH80KG+cz8Z5i7QOoJogJe0GH0tP7LGm0p7vsiNlBx1wiQAaAW56iRRA/1VODibSGEBpyuAKrSqn4zw4kB/oi9fPBWOpe9Piz57v07IEI7IjwIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf6/xAc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E58C4CEE5;
-	Mon, 10 Mar 2025 18:02:18 +0000 (UTC)
+	 MIME-Version; b=MzAn6zWWyKvnGe/kXtH0YuH+v3T+oTfRtrxfGJaC0HvoNZWhi71mFH1s8Q/u5ZXj4XBfU6nESwXMgZXIYBefWU00vfshNLD4eZt/PlD9uxwS0gohtc2FCVgQvLt7LsFobFet1HA4iwz5etPc8xUpuXrdRr4/ybD0SEVx4HtGX9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjbM+67D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181FEC4CEE5;
+	Mon, 10 Mar 2025 17:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629739;
-	bh=xzbTxzI5ClxzWdDFXkgR3mZjExNgC+9F/Km81sEjLjc=;
+	s=korg; t=1741627393;
+	bh=Fy6wIe2C0Y0LMzjtPogGdALSRoZfLQnZh/62ObIxdaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lf6/xAc85tuKFZQtVfbPS2HZx5o44lGJ+vMh664GA7Sy1HbtomXnWNDPfAyou/tax
-	 BM3hjOuTQIfboIbqrNuRBVk0QAmKXaIM2vi/7XN408Z+HuHWfLL0ajV620YUMujqmI
-	 cMfyXrUHPFLw777jdUc1cahGQEdLjgR8ID0euwCI=
+	b=EjbM+67DwSea6yw1eIkssGTdmv6987aw28Dax5UDG6ylFaSd4LAXZarYNCQvUMyDT
+	 J8HDcd0PauLK+f0fh2GIrWcr3kqkX99rD3fZAPZkUWNgRl19Ouxo/nWHJVgP1UAx+J
+	 4+NX13y+HG4AvyrGBZTmYPrjrHfHjragIClS51v4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yury Norov <yury.norov@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 389/620] clocksource: Replace cpumask_weight() with cpumask_empty()
-Date: Mon, 10 Mar 2025 18:03:55 +0100
-Message-ID: <20250310170600.951382918@linuxfoundation.org>
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 083/269] ksmbd: fix type confusion via race condition when using ipc_msg_send_request
+Date: Mon, 10 Mar 2025 18:03:56 +0100
+Message-ID: <20250310170501.029788421@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yury Norov <yury.norov@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 8afbcaf8690dac19ebf570a4e4fef9c59c75bf8e ]
+commit e2ff19f0b7a30e03516e6eb73b948e27a55bc9d2 upstream.
 
-clocksource_verify_percpu() calls cpumask_weight() to check if any bit of a
-given cpumask is set.
+req->handle is allocated using ksmbd_acquire_id(&ipc_ida), based on
+ida_alloc. req->handle from ksmbd_ipc_login_request and
+FSCTL_PIPE_TRANSCEIVE ioctl can be same and it could lead to type confusion
+between messages, resulting in access to unexpected parts of memory after
+an incorrect delivery. ksmbd check type of ipc response but missing add
+continue to check next ipc reponse.
 
-This can be done more efficiently with cpumask_empty() because
-cpumask_empty() stops traversing the cpumask as soon as it finds first set
-bit, while cpumask_weight() counts all bits unconditionally.
-
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220210224933.379149-24-yury.norov@gmail.com
-Stable-dep-of: 6bb05a33337b ("clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/clocksource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_ipc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 5aa8eec89e781..ee7e8d0dc182f 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -344,7 +344,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
- 	cpus_read_lock();
- 	preempt_disable();
- 	clocksource_verify_choose_cpus();
--	if (cpumask_weight(&cpus_chosen) == 0) {
-+	if (cpumask_empty(&cpus_chosen)) {
- 		preempt_enable();
- 		cpus_read_unlock();
- 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
--- 
-2.39.5
-
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -281,6 +281,7 @@ static int handle_response(int type, voi
+ 		if (entry->type + 1 != type) {
+ 			pr_err("Waiting for IPC type %d, got %d. Ignore.\n",
+ 			       entry->type + 1, type);
++			continue;
+ 		}
+ 
+ 		entry->response = kvzalloc(sz, GFP_KERNEL);
 
 
 
