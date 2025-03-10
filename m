@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-121874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1045A59CBF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78710A59E80
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 852FB188A44A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91FD188F932
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0837B231A2D;
-	Mon, 10 Mar 2025 17:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431D1235354;
+	Mon, 10 Mar 2025 17:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FO/5ygjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="js5LiMF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93E1233705;
-	Mon, 10 Mar 2025 17:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014E222E407;
+	Mon, 10 Mar 2025 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626879; cv=none; b=TpnoLawirkTAmFtj6OGvq48PoKtnf3KJpKzExVs8Y7f4STtVgAJrhT5+K52zTXlHb8QpQDu8vLeM64ZHtCXpb4PY2pW6g29JNRNs46BmEV2DaWmuq+YA1lX7vy/VUu5HXEiLBE9K3lGRFeNqO5krlid9LiHlv/H8Mzd2UNHTrV8=
+	t=1741627876; cv=none; b=Z75sZkOrNUXwtvYGxiF2bM0JE1LGcuLox1xu5adU3QlPayNpq7y9bY7Hrt67Z9vrKK++J35B7dhqCOzLj8qqRrsSn1HNw8jRQ7oKn12XVt1cQROtRkiBNaoKN/3dLJnuxzkpQbD5hSTzlkIc551W54VsgWz9qYUkoirDHcrZs1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626879; c=relaxed/simple;
-	bh=itI0yDnlLqUHUtR5N8W0OdEPbQ7RqLZ7FDqqedbNdyQ=;
+	s=arc-20240116; t=1741627876; c=relaxed/simple;
+	bh=XCYGV5tYrZ164r3UIhSODmRJ2e68K1cI2VlWhH64CBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0EnVg/jV7XIbyrr08e3JG31ds5Hodjh7ZtB/MiEd8vcAF/EY57Pcdy87CTGOdcJaQ0SlJpTd/A/Y3LKsTJcTOuDOUmZzFBUcFGh4za2Nr4pvxyJENFF9Z0brJN5tWM+6gW0kiEk6rwC+RGeE0ARoCjqpn5mvLZbznhiwiCdMxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FO/5ygjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C06C4CEE5;
-	Mon, 10 Mar 2025 17:14:39 +0000 (UTC)
+	 MIME-Version; b=BSc340T1YoreuLqzQ4kZeeookVq9GWe8ZGrLFT8q/L8gftIitx6FgRdTgHvcp+eBabbDG7yBs4YoIPAX9ivtNiY9xLYHI46scQmYeT4lFw21dNh4P2C6jZRllFyqogL8edefpsFbXtv2amZiUahBlIoMXAUUisfVwNP2MgV7GFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=js5LiMF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C0BC4CEEC;
+	Mon, 10 Mar 2025 17:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626879;
-	bh=itI0yDnlLqUHUtR5N8W0OdEPbQ7RqLZ7FDqqedbNdyQ=;
+	s=korg; t=1741627875;
+	bh=XCYGV5tYrZ164r3UIhSODmRJ2e68K1cI2VlWhH64CBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FO/5ygjIljZFXQNRSLGCDnuFYFvRTNtmch7060bwKlSyRgPMRhaGNp8LId8dsmca+
-	 6gPXccCA+I24yg44skjSjPb5Gt/xB4b7e5IeauFXYLgqWD1eSDlyCx8bTn3yHQ/Sbv
-	 1nyt9ynBgutcOtg7FYq2hSPPjyTf8763dKAKKM7I=
+	b=js5LiMF9dPGSSsOCC/98tBeIAMaFjTNWyAwX+BlX4p9k4feAqytjRKowlWieXQ7T2
+	 rfFNkV2TzoDSXtZRAflmu0xmLz6x/HkNmqxp0ZhpK24C9RThD6yL0dPVOEYJwYrKlT
+	 XPXudCmfxvdo799snlCHu0ihAYozpJgy2HeGkgII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Wei Fang <wei.fang@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 112/207] caif_virtio: fix wrong pointer check in cfv_probe()
+Subject: [PATCH 6.6 011/145] net: enetc: Remove setting of RX software timestamp
 Date: Mon, 10 Mar 2025 18:05:05 +0100
-Message-ID: <20250310170452.267096617@linuxfoundation.org>
+Message-ID: <20250310170435.198284905@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit a466fd7e9fafd975949e5945e2f70c33a94b1a70 ]
+[ Upstream commit 3dd261ca7f84c65af40f37825bf1cbb0cf3d5583 ]
 
-del_vqs() frees virtqueues, therefore cfv->vq_tx pointer should be checked
-for NULL before calling it, not cfv->vdev. Also the current implementation
-is redundant because the pointer cfv->vdev is dereferenced before it is
-checked for NULL.
+The responsibility for reporting of RX software timestamp has moved to
+the core layer (see __ethtool_get_ts_info()), remove usage from the
+device drivers.
 
-Fix this by checking cfv->vq_tx for NULL instead of cfv->vdev before
-calling del_vqs().
-
-Fixes: 0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Link: https://patch.msgid.link/20250227184716.4715-1-v.shevtsov@mt-integration.ru
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20240901112803.212753-13-gal@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a562d0c4a893 ("net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/caif/caif_virtio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/caif/caif_virtio.c b/drivers/net/caif/caif_virtio.c
-index 7fea00c7ca8a6..c60386bf2d1a4 100644
---- a/drivers/net/caif/caif_virtio.c
-+++ b/drivers/net/caif/caif_virtio.c
-@@ -745,7 +745,7 @@ static int cfv_probe(struct virtio_device *vdev)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+index e993ed04ab572..aa7d427e654ff 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+@@ -846,17 +846,13 @@ static int enetc_get_ts_info(struct net_device *ndev,
+ 	if (phc_idx) {
+ 		info->phc_index = *phc_idx;
+ 		symbol_put(enetc_phc_index);
+-	} else {
+-		info->phc_index = -1;
+ 	}
  
- 	if (cfv->vr_rx)
- 		vdev->vringh_config->del_vrhs(cfv->vdev);
--	if (cfv->vdev)
-+	if (cfv->vq_tx)
- 		vdev->config->del_vqs(cfv->vdev);
- 	free_netdev(netdev);
- 	return err;
+ #ifdef CONFIG_FSL_ENETC_PTP_CLOCK
+ 	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
+ 				SOF_TIMESTAMPING_RX_HARDWARE |
+ 				SOF_TIMESTAMPING_RAW_HARDWARE |
+-				SOF_TIMESTAMPING_TX_SOFTWARE |
+-				SOF_TIMESTAMPING_RX_SOFTWARE |
+-				SOF_TIMESTAMPING_SOFTWARE;
++				SOF_TIMESTAMPING_TX_SOFTWARE;
+ 
+ 	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
+ 			 (1 << HWTSTAMP_TX_ON) |
+@@ -864,9 +860,7 @@ static int enetc_get_ts_info(struct net_device *ndev,
+ 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
+ 			   (1 << HWTSTAMP_FILTER_ALL);
+ #else
+-	info->so_timestamping = SOF_TIMESTAMPING_RX_SOFTWARE |
+-				SOF_TIMESTAMPING_TX_SOFTWARE |
+-				SOF_TIMESTAMPING_SOFTWARE;
++	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
+ #endif
+ 	return 0;
+ }
 -- 
 2.39.5
 
