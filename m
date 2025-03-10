@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-122951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8A4A5A22F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FDDA59C9C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A366A3ABD96
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C10B188A302
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797DF235BEE;
-	Mon, 10 Mar 2025 18:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00984230988;
+	Mon, 10 Mar 2025 17:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnLPmBaa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPA5pPtu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276C722CBE9;
-	Mon, 10 Mar 2025 18:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B316B17A2E3;
+	Mon, 10 Mar 2025 17:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630612; cv=none; b=qShaiqjifB4p7M+0OsuHk+8JGxcYCLJwIaUR3rNMkHombjw8A07fOy5MM4HIdSi6Fz1tVak1wWT9wZbGVKSDkUjeY10hg5wsoWL2wLZoNR8wE9FMXVg9IBQHv+/3jWuw0vhdMJLz3oUok6P4KLNpBBaYKGha0kfkrxzC+We53Cg=
+	t=1741626830; cv=none; b=XLoTkGbXE92bEjmgTIuZa3t6nVW/ZKleDqvepEYBbHPgX+VvocgyvntBPzG9SOd9YPVd29OhQ8eIOhKRtmoSgcp9KMGe7+MBcwqaUCS4BemB9uHfX8zd2zH84VxSJ2i6c8fBUiPsVGOKewzg1C658c+ahZMEWpHsw5gdHDZSiBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630612; c=relaxed/simple;
-	bh=tvAOI3V5jZhHw95fyjiKjdIjXmRP6KoTWyjCcZOOQKs=;
+	s=arc-20240116; t=1741626830; c=relaxed/simple;
+	bh=mfWvI21v5x8oLl4j09IuezZStJYLifedV21mO2AtY/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZ1T9tKm27QO8ps9+BFjs1EnnUy1lhw1DuJhnSB1CSeD4E//YUT3EqL2gmA3wOBGFwCIEnzqD1XCbJ/v1mgcF+kvtDHVDX3v9KnFW5uibF3XGBbVsqh80EEj5B/Bn90fxVPZ6CHMHsHjaLtf5h9XoMcL0UBdFp2ROqAgwGZjqjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnLPmBaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B39C4CEE5;
-	Mon, 10 Mar 2025 18:16:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RO27/pj/Pktv/DLZbtYeExXHiu832yI6CX1lXsWz3+HqUeVvzJDCzxKlKqcTzmkApbikrGLYVr29r5rgXaQ05NiIHTfrElrOMLhHKArTPqqAdhZbVer9GUehY5290JlzP0E7o2kRz2bAI9XIMZQ5973Hewn8btWuAzHU9QbywZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPA5pPtu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391D7C4CEE5;
+	Mon, 10 Mar 2025 17:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630612;
-	bh=tvAOI3V5jZhHw95fyjiKjdIjXmRP6KoTWyjCcZOOQKs=;
+	s=korg; t=1741626830;
+	bh=mfWvI21v5x8oLl4j09IuezZStJYLifedV21mO2AtY/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnLPmBaaM9JTDUJfZCgJEUWfEHTpow2FmvinBM4SA1iGfG8s7HPiYPFGsrgjWh7jN
-	 QM4SzhX5qi9L84/WjHBeMldmbGwuD3Sh9AeVlX4TCIsm6IPn0fP6T6FXrgfvfOe1BV
-	 0JAa4EL51qJboJ6/s+yHSsEErjGJvTgOahhvT3MA=
+	b=XPA5pPtuu4rRsZMKdTxiyw2A/5EIG9fontIAnXaIGZUprp2MNJS96YtwMv69Deams
+	 AMHpEXLGqPpTObssFgsHxi6pjQ4rUSC5yOnWgeGMEg7yesXuh8+Ui6v1cC776Z9S3q
+	 wi0cIgXQDw3r2qNy9NCr1mnbj4tJoXlGRn+zLM9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Vinod Govindapillai <vinod.govindapillai@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 474/620] nvme/ioctl: add missing space in err message
+Subject: [PATCH 6.13 127/207] drm/xe: Remove double pageflip
 Date: Mon, 10 Mar 2025 18:05:20 +0100
-Message-ID: <20250310170604.287265697@linuxfoundation.org>
+Message-ID: <20250310170452.853317329@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit 487a3ea7b1b8ba2ca7d2c2bb3c3594dc360d6261 ]
+[ Upstream commit 30bfc151f0c1ec80c27a80a7651b2c15c648ad16 ]
 
-nvme_validate_passthru_nsid() logs an err message whose format string is
-split over 2 lines. There is a missing space between the two pieces,
-resulting in log lines like "... does not match nsid (1)of namespace".
-Add the missing space between ")" and "of". Also combine the format
-string pieces onto a single line to make the err message easier to grep.
+This is already handled below in the code by fixup_initial_plane_config.
 
-Fixes: e7d4b5493a2d ("nvme: factor out a nvme_validate_passthru_nsid helper")
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: a8153627520a ("drm/i915: Try to relocate the BIOS fb to the start of ggtt")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241210083111.230484-3-dev@lankhorst.se
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+(cherry picked from commit 2218704997979fbf11765281ef752f07c5cf25bb)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/xe/display/xe_plane_initial.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 22ff0e617b8f0..f160e2b760d13 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -183,8 +183,7 @@ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
- {
- 	if (ns && nsid != ns->head->ns_id) {
- 		dev_err(ctrl->device,
--			"%s: nsid (%u) in cmd does not match nsid (%u)"
--			"of namespace\n",
-+			"%s: nsid (%u) in cmd does not match nsid (%u) of namespace\n",
- 			current->comm, nsid, ns->head->ns_id);
- 		return false;
- 	}
+diff --git a/drivers/gpu/drm/xe/display/xe_plane_initial.c b/drivers/gpu/drm/xe/display/xe_plane_initial.c
+index 8c113463a3d55..668f544a7ac80 100644
+--- a/drivers/gpu/drm/xe/display/xe_plane_initial.c
++++ b/drivers/gpu/drm/xe/display/xe_plane_initial.c
+@@ -194,8 +194,6 @@ intel_find_initial_plane_obj(struct intel_crtc *crtc,
+ 		to_intel_plane(crtc->base.primary);
+ 	struct intel_plane_state *plane_state =
+ 		to_intel_plane_state(plane->base.state);
+-	struct intel_crtc_state *crtc_state =
+-		to_intel_crtc_state(crtc->base.state);
+ 	struct drm_framebuffer *fb;
+ 	struct i915_vma *vma;
+ 
+@@ -241,14 +239,6 @@ intel_find_initial_plane_obj(struct intel_crtc *crtc,
+ 	atomic_or(plane->frontbuffer_bit, &to_intel_frontbuffer(fb)->bits);
+ 
+ 	plane_config->vma = vma;
+-
+-	/*
+-	 * Flip to the newly created mapping ASAP, so we can re-use the
+-	 * first part of GGTT for WOPCM, prevent flickering, and prevent
+-	 * the lookup of sysmem scratch pages.
+-	 */
+-	plane->check_plane(crtc_state, plane_state);
+-	plane->async_flip(NULL, plane, crtc_state, plane_state, true);
+ 	return;
+ 
+ nofb:
 -- 
 2.39.5
 
