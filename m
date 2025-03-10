@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-122823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A54A5A15C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FD4A59D52
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7074A172AED
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A92116F43C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12ED231A2A;
-	Mon, 10 Mar 2025 18:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93269231A24;
+	Mon, 10 Mar 2025 17:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FreTDOre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02tK3kwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6D622ACDC;
-	Mon, 10 Mar 2025 18:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D1821E087;
+	Mon, 10 Mar 2025 17:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629600; cv=none; b=scupSuAwndKi8ZsmjJk1UykKZy+YXUJwfUPED/X90gVRoXf3svkk23la+IcUUZdPf7L2BEaJBCtL///eA9fXzZaFCmAVeI+Kwwcd4VfrDYTtnahDt+fzlVUcbYT/RJwsAXoQLlTzkHHzxubd7HadqpcS1olFsMdDYORkfzOsqNw=
+	t=1741627188; cv=none; b=GKctsqEK/YilKUK5XrBuWFlZFeNVK+6XeRmxZLu77/k6H7v8aB7usod4bKF1Ow+EyLDJk+HgieCksbRTG2DJ3H1oK42SSybsUN8ASx9tSjhpg20/CJhLPdfxbcsTcHWfnI/9aIdKnZitPhYZ8QeDiExV/DcKGj2cGPOzGVi4OEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629600; c=relaxed/simple;
-	bh=hAz7LGVUH2vIiPdTogzTKF1R95LHL/FcDSPa7jM/kxA=;
+	s=arc-20240116; t=1741627188; c=relaxed/simple;
+	bh=h5ICg7jMtEIrzFNkWynIYbmFvM2efuoxsbYLeGlr+E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPeERUQPEKnFWT+wKuZPCfxC3PwMkcUTMicha7jFQDb1geqrYB4RmNjcIyksXCH0IXoin5DsSs0+o1inQ9GXHh8306faCjX/fKNRpivFWXJ1s+CC9qBG1Dp8YTkTCNR8uU9p2KjcApW9tesgXrtMRWtqUGwRygHxG8BtGgW6YqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FreTDOre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0704BC4CEE5;
-	Mon, 10 Mar 2025 17:59:59 +0000 (UTC)
+	 MIME-Version; b=qMV4OwZPLb0FIuY4AppNwT23O35fWfG+2fwlxxnnmzyznwBSMIwuYlgde65k7IPeMChXzk6hG1YKzALTnraieLPLf6SdAFhFHcJgRZDPUvx6FY9AsBliHjyuUVjbh2SSIztX9ZEbcLS+RHe1tV8Bw96TwInk2Z/12NPYQIKrGyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02tK3kwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2E2C4CEE5;
+	Mon, 10 Mar 2025 17:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629600;
-	bh=hAz7LGVUH2vIiPdTogzTKF1R95LHL/FcDSPa7jM/kxA=;
+	s=korg; t=1741627188;
+	bh=h5ICg7jMtEIrzFNkWynIYbmFvM2efuoxsbYLeGlr+E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FreTDOresliOJzgKJC2/ez4Wuhfi6DtbY0gcTNE1XLoCn3RY5P9PzNX+JZC79kBZd
-	 e7ARMRym7BW8NxnbhOlMms+ZH4sMwbHUEwE7T7BWolSFFw9dFP2mR/jT71nIRV50Rn
-	 VV+mzgCSw5yX6ljfYh7Ix0p92yDus2JKvOvjVRBw=
+	b=02tK3kwPclugzOo7XhyLhwX4KVDsGBW1/p5EF1+MeeS5p88kkIB6Pfj85YhPGIqus
+	 PvuCu0jlz6BUn5E9mngzRSJ3bftcU0PcoOEejHy9mYL7pWlPUTIetpB7MqvcuBtYJN
+	 XKS7eB4nFoagiURRMcJ8z9xJJN5ous9oSDlDxG58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 319/620] ocfs2: fix incorrect CPU endianness conversion causing mount failure
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 012/269] rust: workqueue: remove unneeded ``#[allow(clippy::new_ret_no_self)]`
 Date: Mon, 10 Mar 2025 18:02:45 +0100
-Message-ID: <20250310170558.203156985@linuxfoundation.org>
+Message-ID: <20250310170458.194458227@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,46 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit f921da2c34692dfec5f72b5ae347b1bea22bb369 upstream.
+commit 024f9676a6d236132119832a90fb9a1a9115b41a upstream.
 
-Commit 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
-introduced a regression bug.  The blksz_bits value is already converted to
-CPU endian in the previous code; therefore, the code shouldn't use
-le32_to_cpu() anymore.
+Perform the same clean commit b2516f7af9d2 ("rust: kernel: remove
+`#[allow(clippy::new_ret_no_self)]`") did for a case that appeared in
+workqueue in parallel in commit 7324b88975c5 ("rust: workqueue: add
+helper for defining work_struct fields"):
 
-Link: https://lkml.kernel.org/r/20250121112204.12834-1-heming.zhao@suse.com
-Fixes: 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    Clippy triggered a false positive on its `new_ret_no_self` lint
+    when using the `pin_init!` macro. Since Rust 1.67.0, that does
+    not happen anymore, since Clippy learnt to not warn about
+    `-> impl Trait<Self>` [1][2].
+
+    The kernel nowadays uses Rust 1.72.1, thus remove the `#[allow]`.
+
+    Link: https://github.com/rust-lang/rust-clippy/issues/7344 [1]
+    Link: https://github.com/rust-lang/rust-clippy/pull/9733 [2]
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Tested-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20240904204347.168520-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/workqueue.rs |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/ocfs2/super.c
-+++ b/fs/ocfs2/super.c
-@@ -2346,7 +2346,7 @@ static int ocfs2_verify_volume(struct oc
- 			mlog(ML_ERROR, "found superblock with incorrect block "
- 			     "size bits: found %u, should be 9, 10, 11, or 12\n",
- 			     blksz_bits);
--		} else if ((1 << le32_to_cpu(blksz_bits)) != blksz) {
-+		} else if ((1 << blksz_bits) != blksz) {
- 			mlog(ML_ERROR, "found superblock with incorrect block "
- 			     "size: found %u, should be %u\n", 1 << blksz_bits, blksz);
- 		} else if (le16_to_cpu(di->id2.i_super.s_major_rev_level) !=
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -366,7 +366,6 @@ unsafe impl<T: ?Sized, const ID: u64> Sy
+ impl<T: ?Sized, const ID: u64> Work<T, ID> {
+     /// Creates a new instance of [`Work`].
+     #[inline]
+-    #[allow(clippy::new_ret_no_self)]
+     pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self>
+     where
+         T: WorkItem<ID>,
 
 
 
