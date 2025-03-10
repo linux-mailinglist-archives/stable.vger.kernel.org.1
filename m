@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA42A59DA8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD02A5A18A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D733A6ED2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:23:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15A411893D71
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13ACE231A37;
-	Mon, 10 Mar 2025 17:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F28B22DFB1;
+	Mon, 10 Mar 2025 18:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5CJqzk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLiO7q5v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ADE230D0F;
-	Mon, 10 Mar 2025 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE9117A2E8;
+	Mon, 10 Mar 2025 18:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627387; cv=none; b=OHOtiGAV26pbmcl/BO+oIFzN3JgmrUAAkn0fPNdB78vWYeH7ZyXV/AAKuA24fuKjvb7MoK9OA7PQiwA7y1gg0wEUtJjDgUjfx787S9sLJY12au39NVUuILS6RTjC2vq53QN3BbowdIOus8AM65lseSzN+zuaqtnqIAN33xON4fM=
+	t=1741629736; cv=none; b=JjcqmqU/2meDjgf9J+al1rYEszxpXN3h7xq/YGymXZo1TtcSsJQ+MWn97k/YxF4j8ec+oTdTcO75dDe39f8QhHsIj8Mc5xeZ6e5gr8kgblWyZ7aVg5LdXl7xc1gzV43khPYTF8M3uHhs0MvU/SDT06reDWKlsstKpoIi/Sm1AGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627387; c=relaxed/simple;
-	bh=dV7IMrglaS2mWMRPqwxl9HsQZOnc4vKZjT0AcBI/Uuc=;
+	s=arc-20240116; t=1741629736; c=relaxed/simple;
+	bh=QVKeZ2q/2+JxQrEn0NcpRe1IW7RdkBRZme+GyJO61iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bsRVaOCXRMQYLli2EcgMN7Ysej5Thhd2oLWxBfa8/uuHto3WHzAVuBXdJb8C4Rv9AQJ8E1rczW6xxzdl4omZ65gyLiZKtdYQtHQCqG5PnMH3MI1Iqpn6w9NKdZkXTWTp5UNvjJFdPB3Q7c2UTiJPJGAYgX1/z2696PNXtv1CSeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5CJqzk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E52CC4CEE5;
-	Mon, 10 Mar 2025 17:23:07 +0000 (UTC)
+	 MIME-Version; b=aniQ+rwwaYJbeGchDanU3YZusKg67OLTr+Xy46mtzAzg1KRxjmGceuinLJognRJDk3fX7TUfI3dScCxOw8zPjOU8tWkdUnumPmQrKaxav10zm00kWG78vUC+z6HOBpYZOw6rvbb7faxIdqfs0Z/Ri4jEjtvfzPPfb/FANfyAtmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLiO7q5v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4B7C4CEE5;
+	Mon, 10 Mar 2025 18:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627387;
-	bh=dV7IMrglaS2mWMRPqwxl9HsQZOnc4vKZjT0AcBI/Uuc=;
+	s=korg; t=1741629736;
+	bh=QVKeZ2q/2+JxQrEn0NcpRe1IW7RdkBRZme+GyJO61iA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5CJqzk2w8wC22SWUqxaRRXztupZPMrfkO7bBXpEdjEnF57/vEeXdgcpsqduqRPca
-	 8los+fmqvR59J6a5URUo1JI9LFMUt/oL3CvUL/5pxBr+tpDMLB/6NyYJteh2KMxOMP
-	 eJuSSMTEZ+3F4BJjBbYo7igmnDLYsCXNIUeOpaho=
+	b=SLiO7q5vRoL7Bt7XVzlqsmS8KqpwEs9Gndm+kVA1fjwET8YUwdYC/+5L2VDtw0CrJ
+	 z9zMwLqHcNiF4Qsc99+ANdsdvfuzc8oTNELVPUOUyDIW9Oczgdp4TNOMw44lTdiwOv
+	 svRH3cv6Ce/S5selkt9JjsokeT25Um3AcUH8f2B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 081/269] LoongArch: KVM: Fix GPA size issue about VM
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 388/620] btrfs: fix hole expansion when writing at an offset beyond EOF
 Date: Mon, 10 Mar 2025 18:03:54 +0100
-Message-ID: <20250310170500.952700456@linuxfoundation.org>
+Message-ID: <20250310170600.912025287@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 6bdbb73dc8d99fbb77f5db79dbb6f108708090b4 upstream.
+commit da2dccd7451de62b175fb8f0808d644959e964c7 upstream.
 
-Physical address space is 48 bit on Loongson-3A5000 physical machine,
-however it is 47 bit for VM on Loongson-3A5000 system. Size of physical
-address space of VM is the same with the size of virtual user space (a
-half) of physical machine.
+At btrfs_write_check() if our file's i_size is not sector size aligned and
+we have a write that starts at an offset larger than the i_size that falls
+within the same page of the i_size, then we end up not zeroing the file
+range [i_size, write_offset).
 
-Variable cpu_vabits represents user address space, kernel address space
-is not included (user space and kernel space are both a half of total).
-Here cpu_vabits, rather than cpu_vabits - 1, is to represent the size of
-guest physical address space.
+The code is this:
 
-Also there is strict checking about page fault GPA address, inject error
-if it is larger than maximum GPA address of VM.
+    start_pos = round_down(pos, fs_info->sectorsize);
+    oldsize = i_size_read(inode);
+    if (start_pos > oldsize) {
+        /* Expand hole size to cover write data, preventing empty gap */
+        loff_t end_pos = round_up(pos + count, fs_info->sectorsize);
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+        ret = btrfs_cont_expand(BTRFS_I(inode), oldsize, end_pos);
+        if (ret)
+            return ret;
+    }
+
+So if our file's i_size is 90269 bytes and a write at offset 90365 bytes
+comes in, we get 'start_pos' set to 90112 bytes, which is less than the
+i_size and therefore we don't zero out the range [90269, 90365) by
+calling btrfs_cont_expand().
+
+This is an old bug introduced in commit 9036c10208e1 ("Btrfs: update hole
+handling v2"), from 2008, and the buggy code got moved around over the
+years.
+
+Fix this by discarding 'start_pos' and comparing against the write offset
+('pos') without any alignment.
+
+This bug was recently exposed by test case generic/363 which tests this
+scenario by polluting ranges beyond EOF with an mmap write and than verify
+that after a file increases we get zeroes for the range which is supposed
+to be a hole and not what we wrote with the previous mmaped write.
+
+We're only seeing this exposed now because generic/363 used to run only
+on xfs until last Sunday's fstests update.
+
+The test was failing like this:
+
+   $ ./check generic/363
+   FSTYP         -- btrfs
+   PLATFORM      -- Linux/x86_64 debian0 6.13.0-rc7-btrfs-next-185+ #17 SMP PREEMPT_DYNAMIC Mon Feb  3 12:28:46 WET 2025
+   MKFS_OPTIONS  -- /dev/sdc
+   MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
+
+   generic/363 0s ... [failed, exit status 1]- output mismatch (see /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad)
+#      --- tests/generic/363.out	2025-02-05 15:31:14.013646509 +0000
+#      +++ /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad	2025-02-05 17:25:33.112630781 +0000
+       @@ -1 +1,46 @@
+        QA output created by 363
+       +READ BAD DATA: offset = 0xdcad, size = 0xd921, fname = /home/fdmanana/btrfs-tests/dev/junk
+       +OFFSET      GOOD    BAD     RANGE
+       +0x1609d     0x0000  0x3104  0x0
+       +operation# (mod 256) for the bad data may be 4
+       +0x1609e     0x0000  0x0472  0x1
+       +operation# (mod 256) for the bad data may be 4
+       ...
+       (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/generic/363.out /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad'  to see the entire diff)
+   Ran: generic/363
+   Failures: generic/363
+   Failed 1 of 1 tests
+
+Fixes: 9036c10208e1 ("Btrfs: update hole handling v2")
+CC: stable@vger.kernel.org
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/exit.c |    6 ++++++
- arch/loongarch/kvm/vm.c   |    6 +++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ fs/btrfs/file.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/loongarch/kvm/exit.c
-+++ b/arch/loongarch/kvm/exit.c
-@@ -624,6 +624,12 @@ static int kvm_handle_rdwr_fault(struct
- 	struct kvm_run *run = vcpu->run;
- 	unsigned long badv = vcpu->arch.badv;
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1607,7 +1607,6 @@ static int btrfs_write_check(struct kioc
+ 	loff_t pos = iocb->ki_pos;
+ 	int ret;
+ 	loff_t oldsize;
+-	loff_t start_pos;
  
-+	/* Inject ADE exception if exceed max GPA size */
-+	if (unlikely(badv >= vcpu->kvm->arch.gpa_size)) {
-+		kvm_queue_exception(vcpu, EXCCODE_ADE, EXSUBCODE_ADEM);
-+		return RESUME_GUEST;
-+	}
-+
- 	ret = kvm_handle_mm_fault(vcpu, badv, write);
- 	if (ret) {
- 		/* Treat as MMIO */
---- a/arch/loongarch/kvm/vm.c
-+++ b/arch/loongarch/kvm/vm.c
-@@ -46,7 +46,11 @@ int kvm_arch_init_vm(struct kvm *kvm, un
- 	if (kvm_pvtime_supported())
- 		kvm->arch.pv_features |= BIT(KVM_FEATURE_STEAL_TIME);
+ 	if (iocb->ki_flags & IOCB_NOWAIT) {
+ 		size_t nocow_bytes = count;
+@@ -1637,9 +1636,8 @@ static int btrfs_write_check(struct kioc
+ 	 */
+ 	update_time_for_write(inode);
  
--	kvm->arch.gpa_size = BIT(cpu_vabits - 1);
-+	/*
-+	 * cpu_vabits means user address space only (a half of total).
-+	 * GPA size of VM is the same with the size of user address space.
-+	 */
-+	kvm->arch.gpa_size = BIT(cpu_vabits);
- 	kvm->arch.root_level = CONFIG_PGTABLE_LEVELS - 1;
- 	kvm->arch.invalid_ptes[0] = 0;
- 	kvm->arch.invalid_ptes[1] = (unsigned long)invalid_pte_table;
+-	start_pos = round_down(pos, fs_info->sectorsize);
+ 	oldsize = i_size_read(inode);
+-	if (start_pos > oldsize) {
++	if (pos > oldsize) {
+ 		/* Expand hole size to cover write data, preventing empty gap */
+ 		loff_t end_pos = round_up(pos + count, fs_info->sectorsize);
+ 
 
 
 
