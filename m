@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-122439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E02FA59FB0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E60A5A296
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE2403A4D02
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45FA2189536C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB88233721;
-	Mon, 10 Mar 2025 17:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51691C3F34;
+	Mon, 10 Mar 2025 18:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sa8mzgjY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFaYQUsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8C318DB24;
-	Mon, 10 Mar 2025 17:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AAD2236E4;
+	Mon, 10 Mar 2025 18:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628494; cv=none; b=u+28phCtkKYKj/HF6EwAAkZ93RjyKCQKVKmCl1SLimbI86UKp5uFw00z7uyaZnZWgKZ5z3FTHb5qTCPXaeAd+m6FBFLqRseQchOaR4s3TWgUeaVCvHyH0vcgTqsjcEFAXfxvAXmwTZQjKfTnXsnlK1jMvFhsArkDVBb3FLANfos=
+	t=1741630907; cv=none; b=U4dUzsePYdswLksLU09coT5hu91yVimRJVLLy1xpZfewAoOVkLbOB7w9AwGaUw1CnNYW4vhd4rXL/VK1rrmqPcmMSDfkUBYhj+49u3Tw25RksCXXndPtvLUo5mZ/H9e2WfM7BXGrrGQ9Tl83J9Xx4/h+2o7+N121voH98zi1g4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628494; c=relaxed/simple;
-	bh=PyVSk9HxHIti5/u43x9K7I5hnXZcvM15YlCNPv5HY/g=;
+	s=arc-20240116; t=1741630907; c=relaxed/simple;
+	bh=2/yz5PFu+QUCqMbgQeFFGs+cWEeLw9oq9SWWlxgQkX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+uhfSBwiHJWj7rq6JOWkmMnDRZU0tViX0SUObztouftDjslRzniw8emYmDNVth28lLhvEAslzz8pS4Rc1WWNh6QHJxQZE458A1d3akXjaBNqFZJpXxAEWOgMih6394un7/jZ+ctzqVQv6U8zVjUOfKj7a+guMBQAnjJw3/GN8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sa8mzgjY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFBFC4CEE5;
-	Mon, 10 Mar 2025 17:41:33 +0000 (UTC)
+	 MIME-Version; b=kUiZSdbo6lvnI5+3TYM9mxKR+jKZXia4Yz2Yqq15ynIwSYCyMEFeWcPumE39Vgbg+OQkGTOLsURV2tOSgltQ3QXdm/H8/ttHqeMw4Xv6TNXvd6FqTm3Gw7wC50Xx5qswCdd00OySbnfiPb25a42oYzMPek5QBpg0HQ0Zf1mEoyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFaYQUsI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76556C4CEE5;
+	Mon, 10 Mar 2025 18:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628494;
-	bh=PyVSk9HxHIti5/u43x9K7I5hnXZcvM15YlCNPv5HY/g=;
+	s=korg; t=1741630906;
+	bh=2/yz5PFu+QUCqMbgQeFFGs+cWEeLw9oq9SWWlxgQkX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sa8mzgjYMi+pE6nA0M5JXIATIf5IMj7l3BcCosVp8jM0mjfg3s3dVIkT7MSlaHYNR
-	 WpNKONpiw6eEUBMvaIVsyePBYSHIjHFCAnASPdog/PUdWNyGfJzDbJPaEOQABslQAQ
-	 4sVWS5R/WSMXK9Q4idnz5qmPGSN2lx8AQiaggnHU=
+	b=OFaYQUsIDOvaYkGjU/iqEuOdSgSuSAC6vu6ttDrXHqNZTbMCk7uVHLj67Doe11mq5
+	 YiU+Tc3olofWhB/g99X37McEcKJigeLTCqL5kAPD7gsWk3xAPwJ5oO8LxMo+IX85ao
+	 KamiuGpM2/A0bHz1bSGf/lpoMXK5qOlUYzuj94JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.1 077/109] xhci: pci: Fix indentation in the PCI device ID definitions
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 575/620] net-timestamp: support TCP GSO case for a few missing flags
 Date: Mon, 10 Mar 2025 18:07:01 +0100
-Message-ID: <20250310170430.623498310@linuxfoundation.org>
+Message-ID: <20250310170608.239172036@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-commit 0309ed83791c079f239c13e0c605210425cd1a61 upstream.
+[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
 
-Some of the definitions are missing the one TAB, add it to them.
+When I read through the TSO codes, I found out that we probably
+miss initializing the tx_flags of last seg when TSO is turned
+off, which means at the following points no more timestamp
+(for this last one) will be generated. There are three flags
+to be handled in this patch:
+1. SKBTX_HW_TSTAMP
+2. SKBTX_BPF
+3. SKBTX_SCHED_TSTAMP
+Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
+6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
+and only belongs to net-next branch material for now. The common
+issue of the above three flags can be fixed by this single patch.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-23-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
+the UDP GSO does to make the newly segmented last skb inherit the
+tx_flags so that requested timestamp will be generated in each
+certain layer, or else that last one has zero value of tx_flags
+which leads to no timestamp at all.
+
+Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/tcp_offload.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -28,8 +28,8 @@
- #define SPARSE_CNTL_ENABLE	0xC12C
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 357d3be04f84c..20267290f555c 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -11,12 +11,15 @@
+ #include <net/tcp.h>
+ #include <net/protocol.h>
  
- /* Device for a quirk */
--#define PCI_VENDOR_ID_FRESCO_LOGIC	0x1b73
--#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK	0x1000
-+#define PCI_VENDOR_ID_FRESCO_LOGIC		0x1b73
-+#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK		0x1000
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1009	0x1009
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1100	0x1100
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1400	0x1400
-@@ -38,8 +38,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
+-static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
++static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
+ 			   unsigned int seq, unsigned int mss)
+ {
++	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
++	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
++
+ 	while (skb) {
+ 		if (before(ts_seq, seq + mss)) {
+-			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
++			skb_shinfo(skb)->tx_flags |= flags;
+ 			skb_shinfo(skb)->tskey = ts_seq;
+ 			return;
+ 		}
+@@ -118,8 +121,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	th = tcp_hdr(skb);
+ 	seq = ntohl(th->seq);
  
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
- #define PCI_DEVICE_ID_INTEL_CHERRYVIEW_XHCI		0x22b5
- #define PCI_DEVICE_ID_INTEL_SUNRISEPOINT_H_XHCI		0xa12f
+-	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
+-		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
++	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
++		tcp_gso_tstamp(segs, gso_skb, seq, mss);
+ 
+ 	newcheck = ~csum_fold((__force __wsum)((__force u32)th->check +
+ 					       (__force u32)delta));
+-- 
+2.39.5
+
 
 
 
