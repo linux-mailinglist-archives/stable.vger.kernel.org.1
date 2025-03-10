@@ -1,64 +1,72 @@
-Return-Path: <stable+bounces-122878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A2AA5A1AF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3D6A5A1C5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:13:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71D73A36E0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC1A3AEC01
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE96233D98;
-	Mon, 10 Mar 2025 18:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FA6233721;
+	Mon, 10 Mar 2025 18:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXzR4HdH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifDr2I4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B96233737;
-	Mon, 10 Mar 2025 18:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A1222576A;
+	Mon, 10 Mar 2025 18:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630192; cv=none; b=nB9e872vrIVwu1w/Q5t+tEs1SvpQv+LQ3dfPzAx1KkW9s5VOb4ybVarlWmBDJ/63rSHC2w/mDmvElMAMcHD9IOreYjYwjqinWFehUVf192Poq3PtOHa0WM8W9y3wGqzUkKujKY3ywBx1QfQymQid8sVuQUubdC6w3B+HzcgF6co=
+	t=1741630394; cv=none; b=qwX51isLo+EDi0cdAw5OYr3jQcs0FIrR1uf1Oa2ciDWPOnBrLj8kjSnbJf96ewJ4Pq94H/K1Le1nyY7dkRBkMzBU8oRwZTsJIxKl+r5gx7agCr50nqidkD1J/N8Z4apo/SO1iFkzO1oMYrF3hrtUEtUpOmngqtx6Z/U+WLQ3l+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630192; c=relaxed/simple;
-	bh=NqjlWBV34qNah3nFVeImdNVUTYXHJApCOBgfG6qXSxQ=;
+	s=arc-20240116; t=1741630394; c=relaxed/simple;
+	bh=1lvYD4dJwhu3up1yUrM2XpUAp0MTVEkduNtJ4hcy4rM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tjOeEPSWbrDsvyK6LnKBWOD+JPwIF/lp56NMWKne5spUtXH7i/yz+bE2meeAxZawOYR7uqDwEqAd3h/GBEx9JjdYjfRuYrjG8BUS/M+swZcIPuhWJ/g0ZuFEW25cQgZqAyEa/xbB2oOXaPCzcKiGPNKU7ixQD4OMbiDK361Xkv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXzR4HdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164C3C4CEE5;
-	Mon, 10 Mar 2025 18:09:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DvoHrdd5YjFWm+XWDSKySrzmoCYwzmAIMXufp1rqrwqQvoRB07aOkkqrzJprTkuFhtyRX9I9xPIus4J8hIGXI+mtqkel2qwdnig7VdJ+GikN5ytNyDbv8nKfe21JjtKlQkRPcV4opN5LK0p7uuNpS7/FgnARi7uh2Bb49odB0JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifDr2I4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3DCC4CEE5;
+	Mon, 10 Mar 2025 18:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741630192;
-	bh=NqjlWBV34qNah3nFVeImdNVUTYXHJApCOBgfG6qXSxQ=;
+	s=k20201202; t=1741630393;
+	bh=1lvYD4dJwhu3up1yUrM2XpUAp0MTVEkduNtJ4hcy4rM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IXzR4HdHNm0lCsWhMS7Qh2ZjVOzf793rCeaBCvEbLwZeZieX3JWFlq4gZvAAmPjyz
-	 +IXxKcH2D1GD2eTMbbrioyLSrC46Ufngk3DzORjpFG6zL1zigudZ/E9IyxzG3d3Irx
-	 /gJYrBxcr4PtoBIItjeKpMldJ7F88T0Nxlomw/giWIVZaEQB4FqY+tBsKeviBkfhfG
-	 +A/HtZ2+76YRzJt/V9IFIe8hoyZEIeoeAN+O+T0O4FmSfeSITfxFX2JO+XaxOs+tkj
-	 qAZye9TjbuNu62QFmZC3adnFt5aWSAz+JNmg0SlenJTRG3g1cSSc/ovdo9KAdyR9c6
-	 SpHxFa+1X7K0w==
-Date: Mon, 10 Mar 2025 11:09:48 -0700
-From: Kees Cook <kees@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Peter Collingbourne <pcc@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] string: Disable read_word_at_a_time() optimizations if
- kernel MTE is enabled
-Message-ID: <202503101107.995ECFA@keescook>
-References: <20250308023314.3981455-1-pcc@google.com>
- <202503071927.1A795821A@keescook>
- <Z88jbhobIz2yWBbJ@arm.com>
+	b=ifDr2I4LfGxd+q+0U+d/hAPdjxlxpILdlbBItf62WGSrsvHDbxKnOVO3ojHLubc4Y
+	 WFXmp/Abok5F82GJtyRS6+js8q9F8Y1IhmtYiOWbmgKH44gaBvf/0Sja6H62+Q3uVq
+	 H2OhDYDO9UxXQVFBT12b61lc9CaihqMp67iXG5bH2N12XX1l564msuBqLb5UVuFKUI
+	 chyKxzOnwV9shTj0g9QoVKKcHHxGp56n404JtcRIW6fgS9egd33yE/tbt0xS1Ed36G
+	 XRWUVt4z1XoGBiK2Ncjs41b1K6cKBc5WnEn/iyH3KASj48Z1MX+xaa0bUO8ck/9v/l
+	 ybVGAzQP44hPg==
+Date: Mon, 10 Mar 2025 19:13:08 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Eric <eric.4.debian@grabatoulnz.fr>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jian-Hong Pan <jhp@endlessos.org>, regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	Dieter Mummenschanz <dmummenschanz@web.de>
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+Message-ID: <Z88rtGH39C-S8phk@ryzen>
+References: <Z8SBZMBjvVXA7OAK@eldamar.lan>
+ <Z8SyVnXZ4IPZtgGN@ryzen>
+ <8763ed79-991a-4a19-abb6-599c47a35514@grabatoulnz.fr>
+ <Z8VLZERz0FpvpchM@x1-carbon>
+ <8b1cbfd4-6877-48ef-b17d-fc10402efbf7@grabatoulnz.fr>
+ <Z8l61Kxss0bdvAQt@ryzen>
+ <Z8l7paeRL9szo0C0@ryzen>
+ <689f8224-f118-47f0-8ae0-a7377c6ff386@grabatoulnz.fr>
+ <Z8rCF39n5GjTwfjP@ryzen>
+ <9c4a635a-ce9f-4ed9-9605-002947490c61@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,64 +75,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z88jbhobIz2yWBbJ@arm.com>
+In-Reply-To: <9c4a635a-ce9f-4ed9-9605-002947490c61@redhat.com>
 
-On Mon, Mar 10, 2025 at 05:37:50PM +0000, Catalin Marinas wrote:
-> On Fri, Mar 07, 2025 at 07:36:31PM -0800, Kees Cook wrote:
-> > On Fri, Mar 07, 2025 at 06:33:13PM -0800, Peter Collingbourne wrote:
-> > > The optimized strscpy() and dentry_string_cmp() routines will read 8
-> > > unaligned bytes at a time via the function read_word_at_a_time(), but
-> > > this is incompatible with MTE which will fault on a partially invalid
-> > > read. The attributes on read_word_at_a_time() that disable KASAN are
-> > > invisible to the CPU so they have no effect on MTE. Let's fix the
-> > > bug for now by disabling the optimizations if the kernel is built
-> > > with HW tag-based KASAN and consider improvements for followup changes.
-> > 
-> > Why is faulting on a partially invalid read a problem? It's still
-> > invalid, so ... it should fault, yes? What am I missing?
-> 
-> read_word_at_a_time() is used to read 8 bytes, potentially unaligned and
-> beyond the end of string. The has_zero() function is then used to check
-> where the string ends. For this uses, I think we can go with
-> load_unaligned_zeropad() which handles a potential fault and pads the
-> rest with zeroes.
+Hello Hans,
 
-Agh, right, I keep forgetting that this can read past the end of the
-actual allocation. I'd agree, load_unaligned_zeropad() makes sense
-there.
+On Mon, Mar 10, 2025 at 10:34:13AM +0100, Hans de Goede wrote:
+> 
+> I think that the port-mask register is only read-only from an OS pov,
+> the BIOS/UEFI/firmware can likely set it to e.g. exclude ports which are
+> not enabled on the motherboard (e.g. an M2 slot which can do both pci-e + 
+> ata and is used in pci-e mode, so the sata port on that slot should be
+> ignored).
+> 
+> What we seem to be hitting here is a bug where the UEFI can not detect
+> the SATA SSD after reboot if it ALPM was used by the OS before reboot and
+> the UEFI's SATA driver responds to the not detecting by clearing the bit
+> in the port-mask register.
+> 
+> The UEFI not detecting the disk after reboot when ALPM was in use also
+> matches with not being able to boot from the disk after reboot.
+
+If we look at dmesg:
+ahci 0000:00:11.0: AHCI vers 0001.0200, 32 command slots, 6 Gbps, SATA mode
+ahci 0000:00:11.0: 3/3 ports implemented (port mask 0x38)
+ahci 0000:00:11.0: flags: 64bit ncq sntf ilck pm led clo pmp pio slum part 
+
+We can see that the controller supports slumber, partial,
+and aggressive link power management ("pm").
+
+
+A COMRESET is supposed to take the device out of partial or slumber.
+
+Now, we do not know if the BIOS code sends a COMRESET, but it definitely
+should.
+
+Anyway, it is stated in AHCI 1.3.1 "10.1 Software Initialization of HBA",
+
+"To aid system software during runtime, the BIOS shall ensure that the
+following registers are initialized to values that are reflective of the
+capabilities supported by the platform."
+
+"-PI (ports implemented)"
+
 
 > 
-> > > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > > Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-> > > Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
-> > > Cc: stable@vger.kernel.org
-> > > ---
-> > >  fs/dcache.c  | 2 +-
-> > >  lib/string.c | 3 ++-
-> > >  2 files changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > Why are DCACHE_WORD_ACCESS and HAVE_EFFICIENT_UNALIGNED_ACCESS separate
-> > things? I can see at least one place where it's directly tied:
-> > 
-> > arch/arm/Kconfig:58:    select DCACHE_WORD_ACCESS if HAVE_EFFICIENT_UNALIGNED_ACCESS
+> I think what would be worth a try would be to disable ALPM on reboot
+> from a driver shutdown hook. IIRC the ALPM level can be changed at runtime
+> from a sysfs file, so we should be able to do the same at shutdown ?
 > 
-> DCACHE_WORD_ACCESS requires load_unaligned_zeropad() which handles the
-> faults. For some reason, read_word_at_a_time() doesn't expect to fault
-> and it is only used with HAVE_EFFICIENT_UNALIGNED_ACCESS. I guess arm32
-> only enabled load_unaligned_zeropad() on hardware that supports
-> efficient unaligned accesses (v6 onwards), hence the dependency.
-> 
-> > Would it make sense to sort this out so that KASAN_HW_TAGS can be taken
-> > into account at the Kconfig level instead?
-> 
-> I don't think we should play with config options but rather sort out the
-> fault path (load_unaligned_zeropad) or disable MTE temporarily. I'd go
-> with the former as long as read_word_at_a_time() is only used for
-> strings in conjunction with has_zero(). I haven't checked.
+> Its been a while since I last touched the AHCI code, so I hope someone else
+> can write a proof of concept patch with the shutdown handler disabling ALPM
+> on reboot ?
 
-Okay, sounds good. (And with a mild thread-merge: yes, folks want to use
-KASAN_HW_TAGS=y in production.)
+I mean, that would be a quirk, and if such a quirk is created, it should
+only be applied for buggy BIOS versions.
 
--- 
-Kees Cook
+(Since BIOS is supposed to initialize the PI register properly.)
+
+If
+ahci.mobile_lpm_policy=1
+or
+ahci.mobile_lpm_policy=2
+works around your buggy BIOS, then I suggest you keep that
+until your BIOS vendor manages to release a new BIOS version.
+
+
+Kind regards,
+Niklas
 
