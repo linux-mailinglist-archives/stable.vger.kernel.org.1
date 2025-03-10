@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD63A5A271
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0D2A59E68
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17ACE17542A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5945C3ABBA5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141531DE89C;
-	Mon, 10 Mar 2025 18:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0171A233731;
+	Mon, 10 Mar 2025 17:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hv2gWoes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ar6YnfNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E4B374EA;
-	Mon, 10 Mar 2025 18:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18CC23372B;
+	Mon, 10 Mar 2025 17:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630815; cv=none; b=BD/439p0NuEWN/cqNtL9Iy/2kIdPLu+y9xxbpuXTc5F7zAKhKE7aXtP04x8gyErI2Gq4saK+kwOef5SUxa4q5XVMQQP16IfslphRv/yv5cLxXRYVPvigvLu37Z0YKrmi4l4bGZNvOxF5Tbnf/ra5n7ennGbuiJbbdNOGXR6r+Xw=
+	t=1741627752; cv=none; b=F9XKb0l47pbZcVA+gJR6XJbnL+ydVL8D94ABvLyroxG1XHJ1BNwh5nwF3seSjwrMQUF2D7sWM18J02LQHZCfSR2ieAwl7hLqjcK4xeJKMYtmtnvApkyjwyusEkFo40W8ZK44jiRWsxdhHI/GscBPVFKnssYmWTojnSCfy8G2dtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630815; c=relaxed/simple;
-	bh=c726hd/s0ojZYLk24o7/gDPEaF+/PxLux7HV9wbZ2J0=;
+	s=arc-20240116; t=1741627752; c=relaxed/simple;
+	bh=zQIig8y4PsNpB79LSA9qqS8FSPZIc6uGI70w9EFAgMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u8+/VdFjMbjQnC3fp5LE1NNT6LEIwaLMDQRt5lg1S3HIa8Ta2aOiQRFtXGQqIsbD1OX16ssg3VcBSBE8wUco7/vFRMyWmX4+TWXlnC2q3z0zB24HP/ETS+VsaAQdDSub2NcnO18Qg3sysUqUoRURg5Ojb+AId5LcZWi85FR4Hac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hv2gWoes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D9FC4CEE5;
-	Mon, 10 Mar 2025 18:20:15 +0000 (UTC)
+	 MIME-Version; b=tpkXzfFBVl4xyN3mVOG4nvm8r2pnmo7tqDunLvgqFtx5q15UDZudokysP3xeVAUvbE1OLY+jpEp4vLMack38NTQRJV7Bnrb7ZNKSbaEGsvu1r5AVFF5liG3ucJ+6uXX7dZN1JEOTlJ9pbSrJU7SK33GkPq8NXu+r2wVYAt1VgQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ar6YnfNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B1CC4CEED;
+	Mon, 10 Mar 2025 17:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630815;
-	bh=c726hd/s0ojZYLk24o7/gDPEaF+/PxLux7HV9wbZ2J0=;
+	s=korg; t=1741627752;
+	bh=zQIig8y4PsNpB79LSA9qqS8FSPZIc6uGI70w9EFAgMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hv2gWoesM2PR187rzhN2hayBB4z0eoW3/cllbNiPlNPROn9M2l+RJxvx4MbjWHvGP
-	 MNw5l1zRSANBNWtpo2eTAho40Ye9FpgGF4RMwcmbClzdvZBV9WdOu+9XbS3M/uw9w9
-	 8X3OOcNoGdNHYfUDdzrbUvYz7ouho4kxYpcgsKHw=
+	b=Ar6YnfNytIHrZdAmpb1VqzYjg88xvuC4meW8yvRl93me9pysXmbqkSbtE6bjxm1OF
+	 8TWq5jmd1bOz9U6NUZJVJwOG8kQdrkICzHUaHo1jQiThvlf4QGGBUae4d4tHPpUkVP
+	 gU6P+VtWgBRuqJJL/vzNkGyfH73ZzYoaZy81/y2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e10709ac3c44f3d4e800@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 544/620] wifi: cfg80211: regulatory: improve invalid hints checking
+	stable <stable@kernel.org>,
+	Qiu-ji Chen <chenqiuji666@gmail.com>
+Subject: [PATCH 6.12 237/269] cdx: Fix possible UAF error in driver_override_show()
 Date: Mon, 10 Mar 2025 18:06:30 +0100
-Message-ID: <20250310170607.020457785@linuxfoundation.org>
+Message-ID: <20250310170507.130186508@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 59b348be7597c4a9903cb003c69e37df20c04a30 upstream.
+commit 91d44c1afc61a2fec37a9c7a3485368309391e0b upstream.
 
-Syzbot keeps reporting an issue [1] that occurs when erroneous symbols
-sent from userspace get through into user_alpha2[] via
-regulatory_hint_user() call. Such invalid regulatory hints should be
-rejected.
+Fixed a possible UAF problem in driver_override_show() in drivers/cdx/cdx.c
 
-While a sanity check from commit 47caf685a685 ("cfg80211: regulatory:
-reject invalid hints") looks to be enough to deter these very cases,
-there is a way to get around it due to 2 reasons.
+This function driver_override_show() is part of DEVICE_ATTR_RW, which
+includes both driver_override_show() and driver_override_store().
+These functions can be executed concurrently in sysfs.
 
-1) The way isalpha() works, symbols other than latin lower and
-upper letters may be used to determine a country/domain.
-For instance, greek letters will also be considered upper/lower
-letters and for such characters isalpha() will return true as well.
-However, ISO-3166-1 alpha2 codes should only hold latin
-characters.
+The driver_override_store() function uses driver_set_override() to
+update the driver_override value, and driver_set_override() internally
+locks the device (device_lock(dev)). If driver_override_show() reads
+cdx_dev->driver_override without locking, it could potentially access
+a freed pointer if driver_override_store() frees the string
+concurrently. This could lead to printing a kernel address, which is a
+security risk since DEVICE_ATTR can be read by all users.
 
-2) While processing a user regulatory request, between
-reg_process_hint_user() and regulatory_hint_user() there happens to
-be a call to queue_regulatory_request() which modifies letters in
-request->alpha2[] with toupper(). This works fine for latin symbols,
-less so for weird letter characters from the second part of _ctype[].
+Additionally, a similar pattern is used in drivers/amba/bus.c, as well
+as many other bus drivers, where device_lock() is taken in the show
+function, and it has been working without issues.
 
-Syzbot triggers a warning in is_user_regdom_saved() by first sending
-over an unexpected non-latin letter that gets malformed by toupper()
-into a character that ends up failing isalpha() check.
+This potential bug was detected by our experimental static analysis
+tool, which analyzes locking APIs and paired functions to identify
+data races and atomicity violations.
 
-Prevent this by enhancing is_an_alpha2() to ensure that incoming
-symbols are latin letters and nothing else.
-
-[1] Syzbot report:
-------------[ cut here ]------------
-Unexpected user alpha2: A�
-WARNING: CPU: 1 PID: 964 at net/wireless/reg.c:442 is_user_regdom_saved net/wireless/reg.c:440 [inline]
-WARNING: CPU: 1 PID: 964 at net/wireless/reg.c:442 restore_alpha2 net/wireless/reg.c:3424 [inline]
-WARNING: CPU: 1 PID: 964 at net/wireless/reg.c:442 restore_regulatory_settings+0x3c0/0x1e50 net/wireless/reg.c:3516
-Modules linked in:
-CPU: 1 UID: 0 PID: 964 Comm: kworker/1:2 Not tainted 6.12.0-rc5-syzkaller-00044-gc1e939a21eb1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events_power_efficient crda_timeout_work
-RIP: 0010:is_user_regdom_saved net/wireless/reg.c:440 [inline]
-RIP: 0010:restore_alpha2 net/wireless/reg.c:3424 [inline]
-RIP: 0010:restore_regulatory_settings+0x3c0/0x1e50 net/wireless/reg.c:3516
-...
-Call Trace:
- <TASK>
- crda_timeout_work+0x27/0x50 net/wireless/reg.c:542
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa65/0x1850 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f2/0x390 kernel/kthread.c:389
- ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-Reported-by: syzbot+e10709ac3c44f3d4e800@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e10709ac3c44f3d4e800
-Fixes: 09d989d179d0 ("cfg80211: add regulatory hint disconnect support")
-Cc: stable@kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250228134659.1577656-1-n.zhandarovich@fintech.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Link: https://lore.kernel.org/r/20250118070833.27201-1-chenqiuji666@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/reg.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/cdx/cdx.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -404,7 +404,8 @@ static bool is_an_alpha2(const char *alp
+--- a/drivers/cdx/cdx.c
++++ b/drivers/cdx/cdx.c
+@@ -470,8 +470,12 @@ static ssize_t driver_override_show(stru
+ 				    struct device_attribute *attr, char *buf)
  {
- 	if (!alpha2)
- 		return false;
--	return isalpha(alpha2[0]) && isalpha(alpha2[1]);
-+	return isascii(alpha2[0]) && isalpha(alpha2[0]) &&
-+	       isascii(alpha2[1]) && isalpha(alpha2[1]);
- }
+ 	struct cdx_device *cdx_dev = to_cdx_device(dev);
++	ssize_t len;
  
- static bool alpha2_equal(const char *alpha2_x, const char *alpha2_y)
+-	return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
++	device_unlock(dev);
++	return len;
+ }
+ static DEVICE_ATTR_RW(driver_override);
+ 
 
 
 
