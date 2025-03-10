@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-122691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918E1A5A0C7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4149AA5A0A6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BBD73AC66C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF1F23AC483
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A6222FAF8;
-	Mon, 10 Mar 2025 17:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D0A231A2A;
+	Mon, 10 Mar 2025 17:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFETYHph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lG5PlyUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FB317CA12;
-	Mon, 10 Mar 2025 17:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679FE17CA12;
+	Mon, 10 Mar 2025 17:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629221; cv=none; b=ejmUvezVrAyCfSqBlTMWSf1X19ujCBkB2JGnHAdTdfMcmoTdZzmft3FY7NHALwZZvT++qogq5IGA0UWb+xsAiQoVxlwJG3lfZXKTks7kTaIFbFQ28ylu9be6OP0gaEz+ye5MrOPTRH4npOFTvW3U5nhMpdZOeiaqgSyywOWw/84=
+	t=1741629129; cv=none; b=Fg3S6X6s5lfNEgRM0lv2TjIBcfGls/LlMkNZyIcz9sM+CWMYV3iGQcmsLFcb9uY8v4XgLyOvacEA88VKVE/TgPzIhcEX8v6mJZ1JF2swhWL0jh7XAMsA7QJ0lPwuVDF41THse/+gchM0tbeQNLw59Vh+BgZg8U3/LgTAZVr0IzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629221; c=relaxed/simple;
-	bh=UQXlsoacyhPtXQNPxu5+9BxZgAqmkp/ASav0WzOm43I=;
+	s=arc-20240116; t=1741629129; c=relaxed/simple;
+	bh=+sndNOySwgR/4X+PF7GvnkhUdAtCmln3h3qwdkWTcMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izjaGoOE+P6nqDXPEzNk+ZKyTExUtu7JyijgZeOG1ptRLuwk1vqPP8Y9x2RiLp7jZVXJ1YglJILHTnUk0VM92/0AjnYNRNVdsfkxUVYVxB7ecAmErtE6KAO7D8f4onm+NSH0bWmoBBw6K+XEgjq0dS35p8Ve/aKpsyXvxyC87G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFETYHph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295ECC4CEE5;
-	Mon, 10 Mar 2025 17:53:40 +0000 (UTC)
+	 MIME-Version; b=rE0padwa0DYa/UFQ3YSAVYPgr1HQeKdSJZPLUQ6U7uUIAISQfMPdf5EYYfMzE4477VDMyA+5MjtrRSONTemiAcHE3RutuYESrNB2Xp1wafAEjG9WqtSrt7Ls7zaS8dGmAQ9bXdYCFeZ7BQO3AkIXPm9q4qQVO8LERmYQ2WFg6VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lG5PlyUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13356C4CEE5;
+	Mon, 10 Mar 2025 17:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629221;
-	bh=UQXlsoacyhPtXQNPxu5+9BxZgAqmkp/ASav0WzOm43I=;
+	s=korg; t=1741629129;
+	bh=+sndNOySwgR/4X+PF7GvnkhUdAtCmln3h3qwdkWTcMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFETYHphKv7+gEKm+lVeWR5DPVIGKXMD57oOkEuPlbmUtreU9OfOcwVuIfZqB0t86
-	 iDIXXHju0Ndqfp15BW8ZWQRhlwOnUuugMUfc9jGtePbM2v8L1pcJXWinQcdQyk6hF7
-	 ma2iAsBH8VUgFHHKrJCcg1bnP6K1hF3V/WYjutTM=
+	b=lG5PlyUvPnS6+PPxp/8RLaJAYUbMOquVu9x4qD/Eac0W17g7FB+f8JfR4ErHfDv/3
+	 TQzdzY7XNH7lHtbMyBvkvS3TW/vWqiMzJQRuGdJ8PyIHLIGOLDq9Lthnr7zA8GIZZt
+	 MNyRKdtbOcOvMUhJS2RXPO6GCpHIDdKTRCDVwf2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 187/620] NFSD: Reset cb_seq_status after NFS4ERR_DELAY
-Date: Mon, 10 Mar 2025 18:00:33 +0100
-Message-ID: <20250310170553.016037205@linuxfoundation.org>
+	Noam Rathaus <noamr@ssd-disclosure.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 188/620] netfilter: nf_tables: reject mismatching sum of field_len with set key length
+Date: Mon, 10 Mar 2025 18:00:34 +0100
+Message-ID: <20250310170553.056156851@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,41 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 961b4b5e86bf56a2e4b567f81682defa5cba957e upstream.
+commit 1b9335a8000fb70742f7db10af314104b6ace220 upstream.
 
-I noticed that once an NFSv4.1 callback operation gets a
-NFS4ERR_DELAY status on CB_SEQUENCE and then the connection is lost,
-the callback client loops, resending it indefinitely.
+The field length description provides the length of each separated key
+field in the concatenation, each field gets rounded up to 32-bits to
+calculate the pipapo rule width from pipapo_init(). The set key length
+provides the total size of the key aligned to 32-bits.
 
-The switch arm in nfsd4_cb_sequence_done() that handles
-NFS4ERR_DELAY uses rpc_restart_call() to rearm the RPC state machine
-for the retransmit, but that path does not call the rpc_prepare_call
-callback again. Thus cb_seq_status is set to -10008 by the first
-NFS4ERR_DELAY result, but is never set back to 1 for the retransmits.
+Register-based arithmetics still allows for combining mismatching set
+key length and field length description, eg. set key length 10 and field
+description [ 5, 4 ] leading to pipapo width of 12.
 
-nfsd4_cb_sequence_done() thinks it's getting nothing but a
-long series of CB_SEQUENCE NFS4ERR_DELAY replies.
-
-Fixes: 7ba6cad6c88f ("nfsd: New helper nfsd4_cb_sequence_done() for processing more cb errors")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: 3ce67e3793f4 ("netfilter: nf_tables: do not allow mismatch field size and set key length")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_tables_api.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1202,6 +1202,7 @@ static bool nfsd4_cb_sequence_done(struc
- 		ret = false;
- 		break;
- 	case -NFS4ERR_DELAY:
-+		cb->cb_seq_status = 1;
- 		if (!rpc_restart_call(task))
- 			goto out;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4497,7 +4497,7 @@ static int nft_set_desc_concat_parse(con
+ static int nft_set_desc_concat(struct nft_set_desc *desc,
+ 			       const struct nlattr *nla)
+ {
+-	u32 num_regs = 0, key_num_regs = 0;
++	u32 len = 0, num_regs;
+ 	struct nlattr *attr;
+ 	int rem, err, i;
+ 
+@@ -4511,12 +4511,12 @@ static int nft_set_desc_concat(struct nf
+ 	}
+ 
+ 	for (i = 0; i < desc->field_count; i++)
+-		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
++		len += round_up(desc->field_len[i], sizeof(u32));
+ 
+-	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
+-	if (key_num_regs != num_regs)
++	if (len != desc->klen)
+ 		return -EINVAL;
+ 
++	num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
+ 	if (num_regs > NFT_REG32_COUNT)
+ 		return -E2BIG;
  
 
 
