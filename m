@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AC6A59CCA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83ADBA59DF3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 269863A5010
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F027188582F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD7017A2E3;
-	Mon, 10 Mar 2025 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79A8232792;
+	Mon, 10 Mar 2025 17:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TodMhCTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmnNmR5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD92226D0B;
-	Mon, 10 Mar 2025 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E3E2309B6;
+	Mon, 10 Mar 2025 17:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626833; cv=none; b=Qgtl63uNa6x8XbtOS/UWOF5CZSxe+Jsbhc5ddr2OQdZszDmgzTjAB1T92S72dCczyLtZldDBf0BqNF58OAkD9L7bi3gajfsBqelLAUH0nc3dHG1xTxOK7C78j8wTdqs5wJLUctAkMT2ppgV/HaLfWU8kUjCxEeiyySpVXM+1q8s=
+	t=1741627552; cv=none; b=oDl+ZdiYBUgWRkRaLZ7yv8BnJg+qZ87NSxnAL1c3bQF4S7TYbyc0fkqWZm6N2RX9hyYS2O+Lqq0fe3v2/1Ehk0Bi2Ly7UwfpdeGIbGCdwczuH6FiiR6uYwGIf4GCNlurn2nvN09IcQYpBJXQJr4bY/THYRjw1aUjDYWOOCbiceQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626833; c=relaxed/simple;
-	bh=sBKEfCExQUnHw7or5Jbu3i6Ioz4eTrsZSa1QB6tfb4Y=;
+	s=arc-20240116; t=1741627552; c=relaxed/simple;
+	bh=8kOOq+lB3hw8bjeYRJgmRHwkvge5rxOvBAq6eFy3WbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riF1OxzybX75Zl+/uuRxc/B+vydLLBmuACwURx7yZwqXyyrp53P2Dfqg0hjwkF8CWIqm9pXct/GDQdPxkCfPCvJve3QqyP8GDMIwu+gaRM8LvfCA+X18xADjXDYPwyN5to9cR240yzJu/4SwVy8xbiziwmiCTyURnXFiHP3G5dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TodMhCTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14721C4CEE5;
-	Mon, 10 Mar 2025 17:13:52 +0000 (UTC)
+	 MIME-Version; b=HEeNjo5RaXTMDxEd131o9RQasYVFptA5++/UdJhYwVxLHenw+g131xL/tEyuIkDF6Xj7VvB4ptJFvPKjsEjGFDfH29eeXOvtEUIFF4eVewrrckrYvbqu1MU0B35yubIPAG2UsGa13sceVi0qbCursfkwHmWRJWuaRP/4ZyK9TQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmnNmR5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F225CC4CEE5;
+	Mon, 10 Mar 2025 17:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626833;
-	bh=sBKEfCExQUnHw7or5Jbu3i6Ioz4eTrsZSa1QB6tfb4Y=;
+	s=korg; t=1741627552;
+	bh=8kOOq+lB3hw8bjeYRJgmRHwkvge5rxOvBAq6eFy3WbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TodMhCTnm+V8B7BawvVa5yEIIAHBauUy8aolIn9I5VReVpq6/1QghOFLA4NtqPXBi
-	 I3KSsDjRjtzzTqw1E5YCTua+pauMzWE/duZxhkS/T5tn98A+0m9ZUpF0EBZlR5IJJa
-	 Jp7lu5lLdQIlH+Qn9/4Ge/TTmHLrOD84UlV9271M=
+	b=gmnNmR5JGP16UIQSfM9gzxmhz2mi23c5Pj2abyUrcUBb20diKmgeY87EGmF/03rLu
+	 1B10iusak6JoP8ITae1QxplCvidWkc0DytLFRPuz/7UI7be5m4nyW9q8Dij5YzsZCM
+	 ToMgKj9IthCekSz2W/TCyKEgUBL5PWI9b9ToUYbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 128/207] HID: hid-steam: Fix use-after-free when detaching device
+Subject: [PATCH 6.12 168/269] caif_virtio: fix wrong pointer check in cfv_probe()
 Date: Mon, 10 Mar 2025 18:05:21 +0100
-Message-ID: <20250310170452.892699640@linuxfoundation.org>
+Message-ID: <20250310170504.415896655@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-[ Upstream commit e53fc232a65f7488ab75d03a5b95f06aaada7262 ]
+[ Upstream commit a466fd7e9fafd975949e5945e2f70c33a94b1a70 ]
 
-When a hid-steam device is removed it must clean up the client_hdev used for
-intercepting hidraw access. This can lead to scheduling deferred work to
-reattach the input device. Though the cleanup cancels the deferred work, this
-was done before the client_hdev itself is cleaned up, so it gets rescheduled.
-This patch fixes the ordering to make sure the deferred work is properly
-canceled.
+del_vqs() frees virtqueues, therefore cfv->vq_tx pointer should be checked
+for NULL before calling it, not cfv->vdev. Also the current implementation
+is redundant because the pointer cfv->vdev is dereferenced before it is
+checked for NULL.
 
-Reported-by: syzbot+0154da2d403396b2bd59@syzkaller.appspotmail.com
-Fixes: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fix this by checking cfv->vq_tx for NULL instead of cfv->vdev before
+calling del_vqs().
+
+Fixes: 0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Link: https://patch.msgid.link/20250227184716.4715-1-v.shevtsov@mt-integration.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-steam.c | 2 +-
+ drivers/net/caif/caif_virtio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 5f8518f6f5ac7..03e57d8acdadf 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -1327,11 +1327,11 @@ static void steam_remove(struct hid_device *hdev)
- 		return;
- 	}
+diff --git a/drivers/net/caif/caif_virtio.c b/drivers/net/caif/caif_virtio.c
+index 7fea00c7ca8a6..c60386bf2d1a4 100644
+--- a/drivers/net/caif/caif_virtio.c
++++ b/drivers/net/caif/caif_virtio.c
+@@ -745,7 +745,7 @@ static int cfv_probe(struct virtio_device *vdev)
  
-+	hid_destroy_device(steam->client_hdev);
- 	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->work_connect);
- 	cancel_work_sync(&steam->rumble_work);
- 	cancel_work_sync(&steam->unregister_work);
--	hid_destroy_device(steam->client_hdev);
- 	steam->client_hdev = NULL;
- 	steam->client_opened = 0;
- 	if (steam->quirks & STEAM_QUIRK_WIRELESS) {
+ 	if (cfv->vr_rx)
+ 		vdev->vringh_config->del_vrhs(cfv->vdev);
+-	if (cfv->vdev)
++	if (cfv->vq_tx)
+ 		vdev->config->del_vqs(cfv->vdev);
+ 	free_netdev(netdev);
+ 	return err;
 -- 
 2.39.5
 
