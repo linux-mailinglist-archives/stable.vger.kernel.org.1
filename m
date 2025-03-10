@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A383A59D31
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A69A9A5A145
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA36167522
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9517B188C0DF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF68B22154C;
-	Mon, 10 Mar 2025 17:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C28C22D7A6;
+	Mon, 10 Mar 2025 17:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWuxfiSm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8w3Lv8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC7422AE7C;
-	Mon, 10 Mar 2025 17:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD69822E418;
+	Mon, 10 Mar 2025 17:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627119; cv=none; b=TcA0ZEBTZw1ru53UoYGfJgfVF41DFqsmyVtqOoLvVKNGrF//lWmd5+bBrP/LW/OPjHOXRV5xFfB4jCDD/lktP3seMJvU4lTYOdfcYyxNzxcjRm57jQdJnk2b4RkFmpKAJyUUc2Vvm5pPq7RsQBdXCGUSBNFA+KbvdFMKSFXpUW4=
+	t=1741629533; cv=none; b=iTrhN4rguza+ixUGVce+BgUIrBh/JXcSj5DLD/pFxRblEMhX5dYpnTShn0PbByVmRkD4oV8uCMM2i2X1NpY5Fd1MK/CMUmWevxDnOtgnD0ybQuLGPzNbg625gCa1nAdA/cz5KE8srfSvxe2SrRQe99gWC5o+l0rnTjyF0L3ila8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627119; c=relaxed/simple;
-	bh=VMilkHu/czIYgT1m5bQhbibReSzJFNxRJQ7nSPzPSF0=;
+	s=arc-20240116; t=1741629533; c=relaxed/simple;
+	bh=K9JOocJaltOnphSvTSNLORi17ICONN/XOLkaXBUgBHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzOC5CWw6xZzSRhACXzOUd9UpN9ISoF6Lb5drWkBCtaGXpbWVr74GahR0BSvuZJIdKmmQlv6SlNxpc2q+gYVeI+3feEWM4b3FSw/5T4NiIxL1bDKBVJLyDoqGdIcylww/B54DodHBsSbv/Qcosr3iSXbGDTEwajJTqDRIIK6tUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWuxfiSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B522C4CEE5;
-	Mon, 10 Mar 2025 17:18:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DScuQdkXA3ft2IMDIl6bDXeUmlWUkjjoAYqPpbHWyqXvJwJkvvDFPG5HC22KQXZ6JpGsFRVOdfME3T3K4HKuMHCMl6ghxDrdsgObD/dmrvjQbbqU4AWddaQtsdIbeMRa3BYib2AmlW4sxevmRwwvcHNsiGUaA4FB6lWgKu1gpNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8w3Lv8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547BFC4CEE5;
+	Mon, 10 Mar 2025 17:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627119;
-	bh=VMilkHu/czIYgT1m5bQhbibReSzJFNxRJQ7nSPzPSF0=;
+	s=korg; t=1741629533;
+	bh=K9JOocJaltOnphSvTSNLORi17ICONN/XOLkaXBUgBHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWuxfiSmgMBoz2AlIVVcbDJoXOA079R0LPwzQfUNeUTiDrQCuXDhAanMzO47BU1Ls
-	 ECs68UchtRNAHKJmsvCpcQqUrSZrz5SZeIsAJdjKTErb7rnCkQ3144qb4+mssPbWpO
-	 /1nRWok1rVYwBSEa87TKxOO0As5wwf/sKhBigeyg=
+	b=z8w3Lv8qVX8qwOW5MtmHYa1y0XkWk+Efj4tcXaTug8GQO4s/djNr8JIL1fTaM3mio
+	 /c9a4lwEvptaVXG6ZnYwL7ZQZIlXZxemCQ30PBZER2ldo6kayiwto6CTnkkljRXNT3
+	 8EKfRF2CRv0WhoY8shG8PBcZ7rSGBPWF7cMQjfu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 020/269] rust: init: remove unneeded `#[allow(clippy::disallowed_names)]`
-Date: Mon, 10 Mar 2025 18:02:53 +0100
-Message-ID: <20250310170458.514890283@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 328/620] MIPS: ftrace: Declare ftrace_get_parent_ra_addr() as static
+Date: Mon, 10 Mar 2025 18:02:54 +0100
+Message-ID: <20250310170558.553319738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit d5cc7ab0a0a99496de1bd933dac242699a417809 upstream.
+commit ddd068d81445b17ac0bed084dfeb9e58b4df3ddd upstream.
 
-These few cases, unlike others in the same file, did not need the `allow`.
+Declare ftrace_get_parent_ra_addr() as static to suppress clang
+compiler warning that 'no previous prototype'. This function is
+not intended to be called from other parts.
 
-Thus clean them up.
+Fix follow error with clang-19:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Tested-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240904204347.168520-10-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+arch/mips/kernel/ftrace.c:251:15: error: no previous prototype for function 'ftrace_get_parent_ra_addr' [-Werror,-Wmissing-prototypes]
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      |               ^
+arch/mips/kernel/ftrace.c:251:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      | ^
+      | static
+1 error generated.
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/init.rs |    4 ----
- 1 file changed, 4 deletions(-)
+ arch/mips/kernel/ftrace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -87,7 +87,6 @@
- //! To declare an init macro/function you just return an [`impl PinInit<T, E>`]:
- //!
- //! ```rust
--//! # #![allow(clippy::disallowed_names)]
- //! # use kernel::{sync::Mutex, new_mutex, init::PinInit, try_pin_init};
- //! #[pin_data]
- //! struct DriverData {
-@@ -368,7 +367,6 @@ macro_rules! stack_try_pin_init {
- /// The syntax is almost identical to that of a normal `struct` initializer:
- ///
- /// ```rust
--/// # #![allow(clippy::disallowed_names)]
- /// # use kernel::{init, pin_init, macros::pin_data, init::*};
- /// # use core::pin::Pin;
- /// #[pin_data]
-@@ -413,7 +411,6 @@ macro_rules! stack_try_pin_init {
- /// To create an initializer function, simply declare it like this:
- ///
- /// ```rust
--/// # #![allow(clippy::disallowed_names)]
- /// # use kernel::{init, pin_init, init::*};
- /// # use core::pin::Pin;
- /// # #[pin_data]
-@@ -468,7 +465,6 @@ macro_rules! stack_try_pin_init {
- /// They can also easily embed it into their own `struct`s:
- ///
- /// ```rust
--/// # #![allow(clippy::disallowed_names)]
- /// # use kernel::{init, pin_init, macros::pin_data, init::*};
- /// # use core::pin::Pin;
- /// # #[pin_data]
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -248,7 +248,7 @@ int ftrace_disable_ftrace_graph_caller(v
+ #define S_R_SP	(0xafb0 << 16)	/* s{d,w} R, offset(sp) */
+ #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
+ 
+-unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
++static unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+ 		old_parent_ra, unsigned long parent_ra_addr, unsigned long fp)
+ {
+ 	unsigned long sp, ip, tmp;
 
 
 
