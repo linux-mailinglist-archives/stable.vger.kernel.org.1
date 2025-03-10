@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513A9A59F96
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612BDA59EFE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EB923A8565
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7C8188FED0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A60233D85;
-	Mon, 10 Mar 2025 17:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8617A23026D;
+	Mon, 10 Mar 2025 17:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PG0FE6a5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/GNGj3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B823233D69;
-	Mon, 10 Mar 2025 17:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BDF1DE89C;
+	Mon, 10 Mar 2025 17:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628442; cv=none; b=SLhcz7AZQDvBr4cWRyOYvK7gRvzD+7P2OmM51gAEGhuEkLauLlFA+O97vwAfTOeeLqdIA3FVv32jmMWzV3oHtkLIvJzvuuL7kLWQ5P4FvKBlkTEMyET2jV2SGJmTKtSwGktlWqEQYMvuAF8i48GC9dWGjcjKfbLRcddz21OiZv4=
+	t=1741628164; cv=none; b=T0i93Mdt408igO6AVNTQenChSeqEMFTCGe5bPfM6US+3atZbkHzTFu57Wb+AUxrvEkoplJy51Uaei15KGmUM/J7yLb3BOGRG1ox523sOG6DPrsyzOOuminqrETcb3jNgrhESAFZfrEZLS2js5p6AyfJA/AWaDAja3GydG+jrdo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628442; c=relaxed/simple;
-	bh=8iV0rBZRO+bupJXd6VDAHMWl0gmP4FmoAd67YVj0mQA=;
+	s=arc-20240116; t=1741628164; c=relaxed/simple;
+	bh=Vf1evhxe7wgfXxDGC9hYs2rN9gZKShP42Rd17QblQ0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQBiJG52lF6wILEqaALZtKk+LQA64d0Cv0nUmUhcmRuFvD6J0ThXgkRaF3lXFgM/WStBr9A7uLn8LEmtjmUECYlkl3YThWHNYNOJ9xEDqmekKT26u6XlBn327PXvak1OdfOn9lK4pvzTjJL9spl+b+A4ZAdrfG2FBWGRk/n5Q+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PG0FE6a5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11581C4CEF0;
-	Mon, 10 Mar 2025 17:40:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m9VUrRGSokoSpjnDyJaH+TQJ59Wr1lrdaq2seCCn74NG+pnbOLcvkiMFJy/40Zo4B65A2JohAtnRWpqIP9ATsXJoo1EbP05V9nApWECrhSvUkBTu/VpAa1ec/sp4m32eqpjOQjJM7tGZgpzzJjk7pK/FuEkx3mkcbU3Xb6UKStw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/GNGj3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34BCC4CEE5;
+	Mon, 10 Mar 2025 17:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628442;
-	bh=8iV0rBZRO+bupJXd6VDAHMWl0gmP4FmoAd67YVj0mQA=;
+	s=korg; t=1741628164;
+	bh=Vf1evhxe7wgfXxDGC9hYs2rN9gZKShP42Rd17QblQ0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PG0FE6a5QJKnY8lPU9zf30F1ZfBopSdR0EEiLvKlWGlgdQaZIlDAsS/2zJVzvgze1
-	 PGVKD699D7pmYQZ5oLMA/XlIJBmuhfw9TQUOPnbF47AM/dvL1FxkkncfIKtCmyiSFK
-	 WPHjQBARIrch8P555k2l9ndLrCLhc5OaIrkTDZqo=
+	b=g/GNGj3XUpoUOj8gRfSoDzrlycFe4Jur34SVvQIg4bnkDflOzIN/zxakVe/6W7tqY
+	 EVT2HWB+Mh2Aq/ULtU7LKnOHi5nAeIsSZ19UpX0xBoo3w6eOvDSCnhYjoLyzzOYFYX
+	 BePCHHumEwor41ES6O/NyqTAMR27PJOM796YmkZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Herbert <tom@herbertland.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/109] net: ipv6: fix dst ref loop in ila lwtunnel
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 110/145] KVM: SVM: Drop DEBUGCTL[5:2] from guests effective value
 Date: Mon, 10 Mar 2025 18:06:44 +0100
-Message-ID: <20250310170429.958227862@linuxfoundation.org>
+Message-ID: <20250310170439.201487722@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 0e7633d7b95b67f1758aea19f8e85621c5f506a3 ]
+commit ee89e8013383d50a27ea9bf3c8a69eed6799856f upstream.
 
-This patch follows commit 92191dd10730 ("net: ipv6: fix dst ref loops in
-rpl, seg6 and ioam6 lwtunnels") and, on a second thought, the same patch
-is also needed for ila (even though the config that triggered the issue
-was pathological, but still, we don't want that to happen).
+Drop bits 5:2 from the guest's effective DEBUGCTL value, as AMD changed
+the architectural behavior of the bits and broke backwards compatibility.
+On CPUs without BusLockTrap (or at least, in APMs from before ~2023),
+bits 5:2 controlled the behavior of external pins:
 
-Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
-Cc: Tom Herbert <tom@herbertland.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250304181039.35951-1-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Performance-Monitoring/Breakpoint Pin-Control (PBi)—Bits 5:2, read/write.
+  Software uses thesebits to control the type of information reported by
+  the four external performance-monitoring/breakpoint pins on the
+  processor. When a PBi bit is cleared to 0, the corresponding external pin
+  (BPi) reports performance-monitor information. When a PBi bit is set to
+  1, the corresponding external pin (BPi) reports breakpoint information.
+
+With the introduction of BusLockTrap, presumably to be compatible with
+Intel CPUs, AMD redefined bit 2 to be BLCKDB:
+
+  Bus Lock #DB Trap (BLCKDB)—Bit 2, read/write. Software sets this bit to
+  enable generation of a #DB trap following successful execution of a bus
+  lock when CPL is > 0.
+
+and redefined bits 5:3 (and bit 6) as "6:3 Reserved MBZ".
+
+Ideally, KVM would treat bits 5:2 as reserved.  Defer that change to a
+feature cleanup to avoid breaking existing guest in LTS kernels.  For now,
+drop the bits to retain backwards compatibility (of a sort).
+
+Note, dropping bits 5:2 is still a guest-visible change, e.g. if the guest
+is enabling LBRs *and* the legacy PBi bits, then the state of the PBi bits
+is visible to the guest, whereas now the guest will always see '0'.
+
+Reported-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250227222411.3490595-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ila/ila_lwt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c |   12 ++++++++++++
+ arch/x86/kvm/svm/svm.h |    2 +-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 9d37f7164e732..6d37dda3d26fc 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -88,7 +88,8 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3156,6 +3156,18 @@ static int svm_set_msr(struct kvm_vcpu *
+ 			kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
+ 			break;
  		}
++
++		/*
++		 * AMD changed the architectural behavior of bits 5:2.  On CPUs
++		 * without BusLockTrap, bits 5:2 control "external pins", but
++		 * on CPUs that support BusLockDetect, bit 2 enables BusLockTrap
++		 * and bits 5:3 are reserved-to-zero.  Sadly, old KVM allowed
++		 * the guest to set bits 5:2 despite not actually virtualizing
++		 * Performance-Monitoring/Breakpoint external pins.  Drop bits
++		 * 5:2 for backwards compatibility.
++		 */
++		data &= ~GENMASK(5, 2);
++
+ 		if (data & DEBUGCTL_RESERVED_BITS)
+ 			return 1;
  
--		if (ilwt->connected) {
-+		/* cache only if we don't create a dst reference loop */
-+		if (ilwt->connected && orig_dst->lwtstate != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
- 			local_bh_enable();
--- 
-2.39.5
-
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -533,7 +533,7 @@ static inline bool is_vnmi_enabled(struc
+ /* svm.c */
+ #define MSR_INVALID				0xffffffffU
+ 
+-#define DEBUGCTL_RESERVED_BITS (~(0x3fULL))
++#define DEBUGCTL_RESERVED_BITS (~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR))
+ 
+ extern bool dump_invalid_vmcb;
+ 
 
 
 
