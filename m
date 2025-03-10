@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-122899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1C9A5A1DD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF69A59C57
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1375517423B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5052B16E47D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5C8233D9D;
-	Mon, 10 Mar 2025 18:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AE7230BED;
+	Mon, 10 Mar 2025 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ff3E0Ybw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJEwxmhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF6F233710;
-	Mon, 10 Mar 2025 18:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39FC230BD5;
+	Mon, 10 Mar 2025 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630461; cv=none; b=R2D2MzQ1qkNS+F27wN+9yIgdyn+kMBgmMjpRFYwS7SQ8Gv/ZjCrchfHZ4GDjOic2UwUzkOwFnp0pR3O1vdOR+WTRAk/qFBTlplU1xSywYIP3ieIY+qnjBk17vNKQcWV+86oPA6kjzTSdRg2vHDtyXPO3Htpz03IizTWpOdm6zxA=
+	t=1741626659; cv=none; b=DO/NGooznW/j5jxtCojdHVCYf5AP3KxikN01REg9sJP6JjUgLGjwOEqyqgnvdYshCLDz6Doamx60sFcAa8UTU4na2CYosWgL1h0/iZdSurXWDplwsw0cjwKAUNteHDEYFXp6P9LR7QWvIq0STB2IlKQ8LIeOcDK1FM7oJ5P5UQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630461; c=relaxed/simple;
-	bh=nIQ3/c99Og5WOn6AEqIbrnXiHWF378hCDooQKOhiPtM=;
+	s=arc-20240116; t=1741626659; c=relaxed/simple;
+	bh=dUUQCezPFGQD25IQq0TfrDxMdW2XHLn4I4NHOINBwx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0ITSv+mQxHflRgDoFSPzesZKQxkhCF2pRo2G8rtOhlwAlW9/PmfDxlZ9HNsohl7eFvafMUSFqGtOgRr3LJIzZpX5U7bpOmLGzpUywZT8KpEbzB9xkQPzRTWwHCEkOH1F9NlXAx4Nhby/tk0QOo8CCB8r6+Xaq/fw+I+juPF7gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ff3E0Ybw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9B3C4CEE5;
-	Mon, 10 Mar 2025 18:14:21 +0000 (UTC)
+	 MIME-Version; b=G/7zYrMHwh/fSDCYg+q7wrY+giZqyT3jztpir0+vGPHvih/GlJUWGCOVPN075NZg1qObwFeLdwwrfMntuzk2Ws5Q4miueDq9HcI86a/Frcqn4jkU51KTd3JXIxp+rMJuWIPS84X0a/9xLnZO2lEBzEBWNAq3UtIlsgDh8q0jgpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJEwxmhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE83C4CEE5;
+	Mon, 10 Mar 2025 17:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630461;
-	bh=nIQ3/c99Og5WOn6AEqIbrnXiHWF378hCDooQKOhiPtM=;
+	s=korg; t=1741626659;
+	bh=dUUQCezPFGQD25IQq0TfrDxMdW2XHLn4I4NHOINBwx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ff3E0YbwCmRm8tsg+ljt5dViK1XNUwJjKVT9z20NHrZNWgLLwuXfkgDO+FnYjkgwg
-	 kesbFkwjrLDAlksrQ0XFcvD284Sttu8WbmtlgZ7ARwp9gLHXxTV5Ov5SG0oxPa/icU
-	 L1MPjGVX7A+N4nyibRWuY1KXvpcW3avOLUtRIJrY=
+	b=IJEwxmhDPa+M583EZk18/LJUSkMNKvut6N3BtZoGyxu0McMWBpAiP5ljnxnZKNa8a
+	 E/s9ZTIGuKXwuXwgLuurVh3Qc5d47moHTWooe5nVKYL72Mo3OI9LqF3IOomhncl+iY
+	 rDMHMNToAx5vYBWepaFfhRxdcdPlFJ/5V7J6riXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Zenla <alex@edera.dev>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 414/620] x86/static-call: Remove early_boot_irqs_disabled check to fix Xen PVH dom0
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 067/207] rapidio: fix an API misues when rio_add_net() fails
 Date: Mon, 10 Mar 2025 18:04:20 +0100
-Message-ID: <20250310170601.930949866@linuxfoundation.org>
+Message-ID: <20250310170450.430919757@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 5cc2db37124bb33914996d6fdbb2ddb3811f2945 upstream.
+commit b2ef51c74b0171fde7eb69b6152d3d2f743ef269 upstream.
 
-__static_call_update_early() has a check for early_boot_irqs_disabled, but
-is used before early_boot_irqs_disabled is set up in start_kernel().
+rio_add_net() calls device_register() and fails when device_register()
+fails.  Thus, put_device() should be used rather than kfree().  Add
+"mport->net = NULL;" to avoid a use after free issue.
 
-Xen PV has always special cased early_boot_irqs_disabled, but Xen PVH does
-not and falls over the BUG when booting as dom0.
-
-It is very suspect that early_boot_irqs_disabled starts as 0, becomes 1 for
-a time, then becomes 0 again, but as this needs backporting to fix a
-breakage in a security fix, dropping the BUG_ON() is the far safer option.
-
-Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219620
-Reported-by: Alex Zenla <alex@edera.dev>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Alex Zenla <alex@edera.dev>
-Link: https://lore.kernel.org/r/20241221211046.6475-1-andrew.cooper3@citrix.com
+Link: https://lkml.kernel.org/r/20250227073409.3696854-1-haoxiang_li2024@163.com
+Fixes: e8de370188d0 ("rapidio: add mport char device driver")
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Yang Yingliang <yangyingliang@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/static_call.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/rapidio/devices/rio_mport_cdev.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -169,7 +169,6 @@ EXPORT_SYMBOL_GPL(arch_static_call_trans
- noinstr void __static_call_update_early(void *tramp, void *func)
- {
- 	BUG_ON(system_state != SYSTEM_BOOTING);
--	BUG_ON(!early_boot_irqs_disabled);
- 	BUG_ON(static_call_initialized);
- 	__text_gen_insn(tramp, JMP32_INSN_OPCODE, tramp, func, JMP32_INSN_SIZE);
- 	sync_core();
+--- a/drivers/rapidio/devices/rio_mport_cdev.c
++++ b/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -1742,7 +1742,8 @@ static int rio_mport_add_riodev(struct m
+ 		err = rio_add_net(net);
+ 		if (err) {
+ 			rmcd_debug(RDEV, "failed to register net, err=%d", err);
+-			kfree(net);
++			put_device(&net->dev);
++			mport->net = NULL;
+ 			goto cleanup;
+ 		}
+ 	}
 
 
 
