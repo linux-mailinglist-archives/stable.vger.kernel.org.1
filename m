@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-123102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAB4A5A2D1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D50CA59FC5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EED0A170222
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 124923A70A1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAE823370D;
-	Mon, 10 Mar 2025 18:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240B2231CB0;
+	Mon, 10 Mar 2025 17:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9VQ2zef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEcjVrr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3FE156861;
-	Mon, 10 Mar 2025 18:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EEC2236FB;
+	Mon, 10 Mar 2025 17:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741631048; cv=none; b=BGsBy0AZ28Bt5qsEd6a61WU24GxolFdCMmb+TL8Q7uF5XLAm3n6dmh4lJT2AH6A7f5NdEYsrLqQX/jA4Sl4Wm0FIMsCZQEMdZj6LHhRR6g+1qgepQhpesgg0KGfBZhWRI4tCwlUHlZ1Blneaz0OsEYQaGtR/Pv90P8/pLpnM9TM=
+	t=1741628549; cv=none; b=hHzVoS4/zvueen7m0ZUxNU5kLfvljnBXVS45C1xukZqazx0nNU35ltB6PzhQBJ6SdBHCPBz8xrlBlMA2ML89DtAfmAXYAYmr6jPGQfHTIpu7zdu+Q+AJNXAV/9t4DyC6q52Xd/kakH8ySwkX1WqUh1QsDkHldSDkG05KTltyI8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741631048; c=relaxed/simple;
-	bh=kZdOAPEMUcK6nG6cq5EECpdQWUqZ6ozILVDAhLfDA7A=;
+	s=arc-20240116; t=1741628549; c=relaxed/simple;
+	bh=Gl5YskV2rN+xRoo6NL/IInQbAp/8E/AB4vntqhpbU2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EREjCrEvcLY5sE1M/+WG82KlWNl+z2cDg+AO3J6ShxXYZVPn3ZUpr2YmcX217zU0PvUpIDHL7Z3g5SB/jdfK0IbmmbOuvC1Spbzvo4HlkLv1i8hJn5kbSPfSyIl3NlYFDg+T0nyIPTtaQ4M6cgQjxgp2+JpHuROP6qbyUkhJx1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9VQ2zef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C3DC4CEED;
-	Mon, 10 Mar 2025 18:24:08 +0000 (UTC)
+	 MIME-Version; b=d5mOPJJGOlLvG0Q8lgZ1xzEaCC8COI1rvn9zsIOz6RkPXW2w7uX1Bpw5D/Wl4UyRYoWN3kFGhvQpyU6OE/QupML7PpbkxQryUdYHsCFrBTkBrGwETGiRNDYOyKZ168EkdsneAZGvwdNbYzGRA6OSRYPEJpERvv/VpLi+o4LFPaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEcjVrr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0396C4CEE5;
+	Mon, 10 Mar 2025 17:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741631048;
-	bh=kZdOAPEMUcK6nG6cq5EECpdQWUqZ6ozILVDAhLfDA7A=;
+	s=korg; t=1741628549;
+	bh=Gl5YskV2rN+xRoo6NL/IInQbAp/8E/AB4vntqhpbU2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9VQ2zefT+ulDLNc8tZQYKGb/qZtQU/g0sBwVNfW5HyyJiefQl+NZRcQfk0hvhBlJ
-	 6eV8nthVEIjpsg77HG+PPnkgN4d/buzsEgtitiW5NPwzQNWIjmqB72s1/uKPNhGIWJ
-	 1vmw/8efxn3Xzyed+6M28PQZX6GDcivophuaKauI=
+	b=ZEcjVrr9OIXU7cZk8RTeqPkgA4rttDEutMIezliUdTLtlCl8gS8e6ny9QT4HM6wUf
+	 3F0eFd+g9kgEprzU9TX/KL6SubQCxm/TdKPaufPKoIbFhaU0+OpfAoXbvkUp7uLMGE
+	 kPnPSlz86FSR5pMxxBUWF7AKexlJoq2rI7LxLq8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.15 594/620] xhci: pci: Fix indentation in the PCI device ID definitions
-Date: Mon, 10 Mar 2025 18:07:20 +0100
-Message-ID: <20250310170608.981352018@linuxfoundation.org>
+	Max Makarov <maxpain@linux.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Christian Simon <simon@swine.de>
+Subject: [PATCH 6.1 097/109] uprobes: Fix race in uprobe_free_utask
+Date: Mon, 10 Mar 2025 18:07:21 +0100
+Message-ID: <20250310170431.419762561@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit 0309ed83791c079f239c13e0c605210425cd1a61 upstream.
+commit b583ef82b671c9a752fbe3e95bd4c1c51eab764d upstream.
 
-Some of the definitions are missing the one TAB, add it to them.
+Max Makarov reported kernel panic [1] in perf user callchain code.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-23-mathias.nyman@linux.intel.com
+The reason for that is the race between uprobe_free_utask and bpf
+profiler code doing the perf user stack unwind and is triggered
+within uprobe_free_utask function:
+  - after current->utask is freed and
+  - before current->utask is set to NULL
+
+ general protection fault, probably for non-canonical address 0x9e759c37ee555c76: 0000 [#1] SMP PTI
+ RIP: 0010:is_uprobe_at_func_entry+0x28/0x80
+ ...
+  ? die_addr+0x36/0x90
+  ? exc_general_protection+0x217/0x420
+  ? asm_exc_general_protection+0x26/0x30
+  ? is_uprobe_at_func_entry+0x28/0x80
+  perf_callchain_user+0x20a/0x360
+  get_perf_callchain+0x147/0x1d0
+  bpf_get_stackid+0x60/0x90
+  bpf_prog_9aac297fb833e2f5_do_perf_event+0x434/0x53b
+  ? __smp_call_single_queue+0xad/0x120
+  bpf_overflow_handler+0x75/0x110
+  ...
+  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+ RIP: 0010:__kmem_cache_free+0x1cb/0x350
+ ...
+  ? uprobe_free_utask+0x62/0x80
+  ? acct_collect+0x4c/0x220
+  uprobe_free_utask+0x62/0x80
+  mm_release+0x12/0xb0
+  do_exit+0x26b/0xaa0
+  __x64_sys_exit+0x1b/0x20
+  do_syscall_64+0x5a/0x80
+
+It can be easily reproduced by running following commands in
+separate terminals:
+
+  # while :; do bpftrace -e 'uprobe:/bin/ls:_start  { printf("hit\n"); }' -c ls; done
+  # bpftrace -e 'profile:hz:100000 { @[ustack()] = count(); }'
+
+Fixing this by making sure current->utask pointer is set to NULL
+before we start to release the utask object.
+
+[1] https://github.com/grafana/pyroscope/issues/3673
+
+Fixes: cfa7f3d2c526 ("perf,x86: avoid missing caller address in stack traces captured in uprobe")
+Reported-by: Max Makarov <maxpain@linux.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250109141440.2692173-1-jolsa@kernel.org
+[Christian Simon: Rebased for 6.12.y, due to mainline change https://lore.kernel.org/all/20240929144239.GA9475@redhat.com/]
+Signed-off-by: Christian Simon <simon@swine.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/events/uprobes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -28,8 +28,8 @@
- #define SPARSE_CNTL_ENABLE	0xC12C
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1724,6 +1724,7 @@ void uprobe_free_utask(struct task_struc
+ 	if (!utask)
+ 		return;
  
- /* Device for a quirk */
--#define PCI_VENDOR_ID_FRESCO_LOGIC	0x1b73
--#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK	0x1000
-+#define PCI_VENDOR_ID_FRESCO_LOGIC		0x1b73
-+#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK		0x1000
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1009	0x1009
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1100	0x1100
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1400	0x1400
-@@ -38,8 +38,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
++	t->utask = NULL;
+ 	if (utask->active_uprobe)
+ 		put_uprobe(utask->active_uprobe);
  
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
- #define PCI_DEVICE_ID_INTEL_CHERRYVIEW_XHCI		0x22b5
- #define PCI_DEVICE_ID_INTEL_SUNRISEPOINT_H_XHCI		0xa12f
+@@ -1733,7 +1734,6 @@ void uprobe_free_utask(struct task_struc
+ 
+ 	xol_free_insn_slot(t);
+ 	kfree(utask);
+-	t->utask = NULL;
+ }
+ 
+ /*
 
 
 
