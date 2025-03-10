@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-121934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAB3A59D0A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50960A59F8D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51814188E473
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0224188F80D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A5B21E087;
-	Mon, 10 Mar 2025 17:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4D923236D;
+	Mon, 10 Mar 2025 17:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQLd3K/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVroIhrg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7621C2F28;
-	Mon, 10 Mar 2025 17:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24809230BC5;
+	Mon, 10 Mar 2025 17:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627052; cv=none; b=pPv5lpPRACvhI2wGrHJulxa80HzcqD04VgU1qHdT2ukaVg5ggefUtGwkKvQJArDnf2SL3xM/qbZieyq1H3xvHdl0efebbWye3yuxFZ1fClHECCiJJJukeuWXVbwa1kJU9TuD+3cPWsuLOWORxfcp9bYj8wBCEegVen+nBtb2uAo=
+	t=1741628471; cv=none; b=FKcKdTx4sFQhIUL0bQT8/SsQhcrdZlDYR1VwOmLFSyGeGAAPVAG9G3B54JDTbpPtbM4YW/EqCGhcP7DOWvmNOfd/uA4HjDMdWlZPJC0L5zu6F0t+kCYPdZPiHmESRSkyvTwltycwJsCvmWnmcB9XhKXSWGsLUdcRuoA85f2JvRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627052; c=relaxed/simple;
-	bh=3EafQxO6IiafQ3fB8S6LrNMWrG+/uucFPUtmaBMNAko=;
+	s=arc-20240116; t=1741628471; c=relaxed/simple;
+	bh=8hgQ5wC09AJSmtSamIDokwYQrGu5i22Nu9R7Zu/lcNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVy+tTq2DjNy1G2h+7//sRmVRQ79ww3+jSteEgQ4kmbSUfiOjpwSbHLbMLyYKqmHj9t923F3dp4skoezKgDvxCuPobDMeHNAQuMdKz8ULJ3Aj3RBriyIkg/fMb0WKnZAE7b7pNw1HpVJBdspXGtj/pNYrJc6AP/VfM7V2asW6lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQLd3K/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F107FC4CEE5;
-	Mon, 10 Mar 2025 17:17:31 +0000 (UTC)
+	 MIME-Version; b=L1qyfWxI7B6KuctsWZ2aUBO5HiwXiyLvzqY9BrXCQcpol3gcDEHJJGQoiCZBKxpuDKcVoplLlVueKdrzZfCAuS3KJ0ZDsQihd/IW219Y29CavBAqsMbY1csFsyyfKmcK3/Ds+2gJIYEmsiwwjp/jJz2ztOzGhCTPJ7nXdJcj3H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVroIhrg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B03C4CEE5;
+	Mon, 10 Mar 2025 17:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627052;
-	bh=3EafQxO6IiafQ3fB8S6LrNMWrG+/uucFPUtmaBMNAko=;
+	s=korg; t=1741628471;
+	bh=8hgQ5wC09AJSmtSamIDokwYQrGu5i22Nu9R7Zu/lcNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQLd3K/W1+43v+/hdh4BnhKLbxpVT2byyuXwdsavM2LoHx+QTyPOrZPRG2Q3aZ8jT
-	 ZCMaVyB1/6sJKHmweRqb/12vncUnfpr1nAD2ueUjX5H8LT27dvNwdl9MqXLWERmUZo
-	 fhprW3OkGExWOs4FHmubzaFnzOD5mTDtSLhDVtFI=
+	b=vVroIhrgAzhNfCphyrTpg2+3mav2isf7UDgvFzOh3spfNTHQ4fkfkcxxlWrgjIhhe
+	 HwkkGr2e0gIKp6rAE5/GbZRspP6L8RX1gJR0mYPkcEwSWFR+EpPA8uLmg/Pufl/jzI
+	 emrtPHMUjlc5DoHsnPP0ZLT3AC6o1L0gQb5bRJI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.13 203/207] arm64: Kconfig: Remove selecting replaced HAVE_FUNCTION_GRAPH_RETVAL
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/109] net: hns3: make sure ptp clock is unregister and freed if hclge_ptp_get_cycle returns an error
 Date: Mon, 10 Mar 2025 18:06:36 +0100
-Message-ID: <20250310170455.848801067@linuxfoundation.org>
+Message-ID: <20250310170429.636951378@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-commit f458b2165d7ac0f2401fff48f19c8f864e7e1e38 upstream.
+[ Upstream commit b7365eab39831487a84e63a9638209b68dc54008 ]
 
-Commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
-replaces the config HAVE_FUNCTION_GRAPH_RETVAL with the config
-HAVE_FUNCTION_GRAPH_FREGS, and it replaces all the select commands in the
-various architecture Kconfig files. In the arm64 architecture, the commit
-adds the 'select HAVE_FUNCTION_GRAPH_FREGS', but misses to remove the
-'select HAVE_FUNCTION_GRAPH_RETVAL', i.e., the select on the replaced
-config.
+During the initialization of ptp, hclge_ptp_get_cycle might return an error
+and returned directly without unregister clock and free it. To avoid that,
+call hclge_ptp_destroy_clock to unregist and free clock if
+hclge_ptp_get_cycle failed.
 
-Remove selecting the replaced config. No functional change, just cleanup.
-
-Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Link: https://lore.kernel.org/r/20250117125522.99071-1-lukas.bulwahn@redhat.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8373cd38a888 ("net: hns3: change the method of obtaining default ptp cycle")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250228105258.1243461-1-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -221,7 +221,6 @@ config ARM64
- 	select HAVE_FUNCTION_ERROR_INJECTION
- 	select HAVE_FUNCTION_GRAPH_FREGS
- 	select HAVE_FUNCTION_GRAPH_TRACER
--	select HAVE_FUNCTION_GRAPH_RETVAL
- 	select HAVE_GCC_PLUGINS
- 	select HAVE_HARDLOCKUP_DETECTOR_PERF if PERF_EVENTS && \
- 		HW_PERF_EVENTS && HAVE_PERF_EVENTS_NMI
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+index 0f06f95b09bc2..4d4cea1f50157 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+@@ -496,7 +496,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 
+ 		ret = hclge_ptp_get_cycle(hdev);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 	}
+ 
+ 	ret = hclge_ptp_int_en(hdev, true);
+-- 
+2.39.5
+
 
 
 
