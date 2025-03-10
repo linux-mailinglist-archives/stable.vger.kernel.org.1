@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-121867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C99EA59CCD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41DEEA5A229
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82C167A20AF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E364C18945DB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A74233140;
-	Mon, 10 Mar 2025 17:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67DD1C57B2;
+	Mon, 10 Mar 2025 18:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1OlpgFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3vy3MYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AF723314A;
-	Mon, 10 Mar 2025 17:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731B61B395F;
+	Mon, 10 Mar 2025 18:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626859; cv=none; b=dfv9uuobuia/5q4GczvSXh8TYF+PS2wz97srBdbRXqDP0T0GvQKflzlZ0vyhN+IJPp5bdqLE3EdF57hf0WH60RuuNmTNpsb16NHr3X1YP/LKHQyxL0EkwkP9d1hZdnBrxFowAUlnCP2vlughMXMsZ0pXAo4rW7aqWevFm4Fpb3w=
+	t=1741630641; cv=none; b=CrmOBb9JkcHQzNiiDG30JLsJHGtzksZrjoKp8nm8oVqOLIOFEAbfMMdGHbSG3borRodJ1vLvz0ntXX7B/DwWfF2Cs4zU3ouY7VxAwG1Q1jtZMGPCBKAr/GWi8uRJvJup+AMzlwc9Jx4qJxh11OfGKUFw9039CwRIu1i5QNjRMNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626859; c=relaxed/simple;
-	bh=91OMtU0NG+3UvnKd+VOpaICgTBZEJpMwbaaFaBymgO0=;
+	s=arc-20240116; t=1741630641; c=relaxed/simple;
+	bh=6lucfIsumZ6POxy16tkVXzCmFx6JZ1hu+aPHpThjjXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2oPMlC51eoVKFiow0X6hT90TA4FXPwNs5CG1Go2zY+rSSmDyNeFPzTrTO9EaTWx5WJ9RxDjJqa2+WKa9CDZqeTGFUOYUQDXwe88QubSbMPNFogEujSGd+hoS/mYleRD53wTdSiKGVIQyNCF5S3s+ASlwl1lcubQxa6VzaSvZII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1OlpgFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA460C4CEEB;
-	Mon, 10 Mar 2025 17:14:18 +0000 (UTC)
+	 MIME-Version; b=NAHrsCgvdYSME9m43RMREOdiAltwvqMqPl8arHSLQQCSC1Ae/zn6o8SBuvrzen6PvOgtUVzSr+y2v5rDEQR9O+XjIXoSGljTBgMovnwaGaSfoYLaNiSqNuuWnSmXU8M+zcvB53/7e22pgpQrfDSAr+g5N3AGrQnxBW4id+ZPDlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3vy3MYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2F3C4CEE5;
+	Mon, 10 Mar 2025 18:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626859;
-	bh=91OMtU0NG+3UvnKd+VOpaICgTBZEJpMwbaaFaBymgO0=;
+	s=korg; t=1741630640;
+	bh=6lucfIsumZ6POxy16tkVXzCmFx6JZ1hu+aPHpThjjXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1OlpgFjoG1v8vrVCK+sfMa996hBxm6AnM1AALA07+X0kGk+sgNnyTT5cbgUfviT5
-	 7OTfcr1P/ZQT9+O/11j/28Yk72yIb3zKAi4bBfsv6OE6xeZxSMt5f0SWAT+RNdHG04
-	 0NM+QgXFmiY8SJcqqlgp0/ei8HxoKzlJalAEsQRE=
+	b=E3vy3MYfjjZ8LHYQuNr5rEQf4Y0n5iwSWiJkUp/WtPevOehDyLI3WRbkugvzZtC4O
+	 I4Elh8HQlQRUa29XcXxX5AUP1QBFo8G+U8nCF8tnoPi2FCE0eKDVlbmJ3zNxKGzSda
+	 ZSb9WO24ywDh0G2nw+GR2gWTXsDqDeKoXWG2JP8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com,
-	Oscar Maes <oscmaes92@gmail.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 136/207] vlan: enforce underlying device type
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 483/620] mtd: rawnand: cadence: use dma_map_resource for sdma address
 Date: Mon, 10 Mar 2025 18:05:29 +0100
-Message-ID: <20250310170453.203263632@linuxfoundation.org>
+Message-ID: <20250310170604.635970671@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +61,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-[ Upstream commit b33a534610067ade2bdaf2052900aaad99701353 ]
+commit d76d22b5096c5b05208fd982b153b3f182350b19 upstream.
 
-Currently, VLAN devices can be created on top of non-ethernet devices.
+Remap the slave DMA I/O resources to enhance driver portability.
+Using a physical address causes DMA translation failure when the
+ARM SMMU is enabled.
 
-Besides the fact that it doesn't make much sense, this also causes a
-bug which leaks the address of a kernel function to usermode.
-
-When creating a VLAN device, we initialize GARP (garp_init_applicant)
-and MRP (mrp_init_applicant) for the underlying device.
-
-As part of the initialization process, we add the multicast address of
-each applicant to the underlying device, by calling dev_mc_add.
-
-__dev_mc_add uses dev->addr_len to determine the length of the new
-multicast address.
-
-This causes an out-of-bounds read if dev->addr_len is greater than 6,
-since the multicast addresses provided by GARP and MRP are only 6
-bytes long.
-
-This behaviour can be reproduced using the following commands:
-
-ip tunnel add gretest mode ip6gre local ::1 remote ::2 dev lo
-ip l set up dev gretest
-ip link add link gretest name vlantest type vlan id 100
-
-Then, the following command will display the address of garp_pdu_rcv:
-
-ip maddr show | grep 01:80:c2:00:00:21
-
-Fix the bug by enforcing the type of the underlying device during VLAN
-device initialization.
-
-Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
-Reported-by: syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/000000000000ca9a81061a01ec20@google.com/
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20250303155619.8918-1-oscmaes92@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/8021q/vlan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |   29 +++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index e45187b882206..41be38264493d 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -131,7 +131,8 @@ int vlan_check_real_dev(struct net_device *real_dev,
- {
- 	const char *name = real_dev->name;
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -469,6 +469,8 @@ struct cdns_nand_ctrl {
+ 	struct {
+ 		void __iomem *virt;
+ 		dma_addr_t dma;
++		dma_addr_t iova_dma;
++		u32 size;
+ 	} io;
  
--	if (real_dev->features & NETIF_F_VLAN_CHALLENGED) {
-+	if (real_dev->features & NETIF_F_VLAN_CHALLENGED ||
-+	    real_dev->type != ARPHRD_ETHER) {
- 		pr_info("VLANs not supported on %s\n", name);
- 		NL_SET_ERR_MSG_MOD(extack, "VLANs not supported on device");
- 		return -EOPNOTSUPP;
--- 
-2.39.5
-
+ 	int irq;
+@@ -1830,11 +1832,11 @@ static int cadence_nand_slave_dma_transf
+ 	}
+ 
+ 	if (dir == DMA_FROM_DEVICE) {
+-		src_dma = cdns_ctrl->io.dma;
++		src_dma = cdns_ctrl->io.iova_dma;
+ 		dst_dma = buf_dma;
+ 	} else {
+ 		src_dma = buf_dma;
+-		dst_dma = cdns_ctrl->io.dma;
++		dst_dma = cdns_ctrl->io.iova_dma;
+ 	}
+ 
+ 	tx = dmaengine_prep_dma_memcpy(cdns_ctrl->dmac, dst_dma, src_dma, len,
+@@ -2831,6 +2833,7 @@ cadence_nand_irq_cleanup(int irqnum, str
+ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	dma_cap_mask_t mask;
++	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
+ 	int ret;
+ 
+ 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
+@@ -2874,6 +2877,16 @@ static int cadence_nand_init(struct cdns
+ 		}
+ 	}
+ 
++	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
++						  cdns_ctrl->io.size,
++						  DMA_BIDIRECTIONAL, 0);
++
++	ret = dma_mapping_error(dma_dev->dev, cdns_ctrl->io.iova_dma);
++	if (ret) {
++		dev_err(cdns_ctrl->dev, "Failed to map I/O resource to DMA\n");
++		goto dma_release_chnl;
++	}
++
+ 	nand_controller_init(&cdns_ctrl->controller);
+ 	INIT_LIST_HEAD(&cdns_ctrl->chips);
+ 
+@@ -2884,18 +2897,22 @@ static int cadence_nand_init(struct cdns
+ 	if (ret) {
+ 		dev_err(cdns_ctrl->dev, "Failed to register MTD: %d\n",
+ 			ret);
+-		goto dma_release_chnl;
++		goto unmap_dma_resource;
+ 	}
+ 
+ 	kfree(cdns_ctrl->buf);
+ 	cdns_ctrl->buf = kzalloc(cdns_ctrl->buf_size, GFP_KERNEL);
+ 	if (!cdns_ctrl->buf) {
+ 		ret = -ENOMEM;
+-		goto dma_release_chnl;
++		goto unmap_dma_resource;
+ 	}
+ 
+ 	return 0;
+ 
++unmap_dma_resource:
++	dma_unmap_resource(dma_dev->dev, cdns_ctrl->io.iova_dma,
++			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
++
+ dma_release_chnl:
+ 	if (cdns_ctrl->dmac)
+ 		dma_release_channel(cdns_ctrl->dmac);
+@@ -2917,6 +2934,8 @@ free_buf_desc:
+ static void cadence_nand_remove(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	cadence_nand_chips_cleanup(cdns_ctrl);
++	dma_unmap_resource(cdns_ctrl->dmac->device->dev, cdns_ctrl->io.iova_dma,
++			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
+ 	cadence_nand_irq_cleanup(cdns_ctrl->irq, cdns_ctrl);
+ 	kfree(cdns_ctrl->buf);
+ 	dma_free_coherent(cdns_ctrl->dev, sizeof(struct cadence_nand_cdma_desc),
+@@ -2985,7 +3004,9 @@ static int cadence_nand_dt_probe(struct
+ 	cdns_ctrl->io.virt = devm_platform_get_and_ioremap_resource(ofdev, 1, &res);
+ 	if (IS_ERR(cdns_ctrl->io.virt))
+ 		return PTR_ERR(cdns_ctrl->io.virt);
++
+ 	cdns_ctrl->io.dma = res->start;
++	cdns_ctrl->io.size = resource_size(res);
+ 
+ 	dt->clk = devm_clk_get(cdns_ctrl->dev, "nf_clk");
+ 	if (IS_ERR(dt->clk))
 
 
 
