@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C081A5A179
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80DDA59D7F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50BC73ADEDF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 693EC3A479A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEA222DFB1;
-	Mon, 10 Mar 2025 18:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1259231A2A;
+	Mon, 10 Mar 2025 17:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRNDls2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG+CEe5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB0F17A2E8;
-	Mon, 10 Mar 2025 18:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E76222154C;
+	Mon, 10 Mar 2025 17:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629684; cv=none; b=bt+TA3tdAqBnCbQZh3Vh+M5aSErLlUnUSC7QcSJVm3/N+nZbJ6jvKg2YRFD9FKrf/Gb3dOHtAvkFYuvRMOW8SWc77P5qjY/SGUBNI526h6L76bApLZfI330+anf40DonqJ9zQnWWG8wE5voKjAg6fUESq6MAJqFPDQ1od8EXsos=
+	t=1741627286; cv=none; b=P5CP8ncOXB6+Oty1A2JW0NfuzM+wpd7RZC0iCMG8sl77qUMubtmGmFdzNbLmi1D6TxvlC/BmrPm+zV5RYP9hMLOAnnbhaoAwMYo0M9pR+1+FLHS9U38/6zMz+gDqCDsbnw/SlJ6piDwrx1Rrr2CzOLJu4d5Kcqi8rJR/vwCjShI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629684; c=relaxed/simple;
-	bh=ZNDE6ALcigYqS1ip0+1mUt5sW4jIm1oxOBHBKeKL69M=;
+	s=arc-20240116; t=1741627286; c=relaxed/simple;
+	bh=v/uLL9o937fQHEh2taIWHhETdUQ8cA8rEWrrDpg1msY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Neuja0hRTmru2C4H5+v4K/KP/qwzUdH4u19J2EseSaHPZ1G73Ra1mUCtVw9iSohK/EILIx8wQzJlcRZ14cL8C4UBqC87NdynFN7wKVzHmq7ajDprZWtoiL5zwEKlrqzr4omAvAfClmOhga58v2bDZQ1D0y1RX7Hkbn8snaPMsSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRNDls2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CB4C4CEE5;
-	Mon, 10 Mar 2025 18:01:23 +0000 (UTC)
+	 MIME-Version; b=PpFzDPiMG+RKXB2pyDQpsCmugxBDwuQ+9ALd5wW383MlvkwvL9fJf6BvrniRkZIVN+6S9ovIIQn7y82g3TxjOUNPk3tDg4AgdsQsnOEEnBUSS0QFdOhSv4E5pmlaxZsb3/uGdzI9drT8o3r3sOWWNHLiEgAaw6igQrRNSYYNXOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rG+CEe5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B2BC4CEE5;
+	Mon, 10 Mar 2025 17:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629684;
-	bh=ZNDE6ALcigYqS1ip0+1mUt5sW4jIm1oxOBHBKeKL69M=;
+	s=korg; t=1741627286;
+	bh=v/uLL9o937fQHEh2taIWHhETdUQ8cA8rEWrrDpg1msY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRNDls2eS5AekGzWvw8xV0B+NtPHQTr32FBJc59InfnwBKrCXoiUD/GZvabRiwFTb
-	 aLQ89cXXAU0QEBuc/ny5YIaz+QQFJCLplMv/Ic4s7+JXXwuuS6V4rwoV0pt6keavVD
-	 yHdefzOuPeJYJfSpjgX9IqdTXmr1PZTugytZOj88=
+	b=rG+CEe5XoVObYjPf/oahrReyd2iYpsSUZ7NXtEsXFJmuliyKARWTfOVTuBr6pvJSt
+	 S5wypGd4s4TnI85GXq1buBY06Ps4qs/0WaEvpjGRPdFEMzQwBguh/IZw7DP7lljTRG
+	 m6z0ily++XkcrjLBOswACdVDia1ru2EDzx/uD2TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maksym Planeta <maksym@exostellar.io>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 352/620] Grab mm lock before grabbing pt lock
+	Gary Guo <gary@garyguo.net>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 045/269] rust: alloc: introduce `ArrayLayout`
 Date: Mon, 10 Mar 2025 18:03:18 +0100
-Message-ID: <20250310170559.504166187@linuxfoundation.org>
+Message-ID: <20250310170459.518866042@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maksym Planeta <maksym@exostellar.io>
+From: Benno Lossin <benno.lossin@proton.me>
 
-[ Upstream commit 6d002348789bc16e9203e9818b7a3688787e3b29 ]
+commit 9e7bbfa182767f638ba61dba3518ff78da9f31ff upstream.
 
-Function xen_pin_page calls xen_pte_lock, which in turn grab page
-table lock (ptlock). When locking, xen_pte_lock expect mm->page_table_lock
-to be held before grabbing ptlock, but this does not happen when pinning
-is caused by xen_mm_pin_all.
+When allocating memory for arrays using allocators, the `Layout::array`
+function is typically used. It returns a result, since the given size
+might be too big. However, `Vec` and its iterators store their allocated
+capacity and thus they already did check that the size is not too big.
 
-This commit addresses lockdep warning below, which shows up when
-suspending a Xen VM.
+The `ArrayLayout` type provides this exact behavior, as it can be
+infallibly converted into a `Layout`. Instead of a `usize` capacity,
+`Vec` and other similar array-storing types can use `ArrayLayout`
+instead.
 
-[ 3680.658422] Freezing user space processes
-[ 3680.660156] Freezing user space processes completed (elapsed 0.001 seconds)
-[ 3680.660182] OOM killer disabled.
-[ 3680.660192] Freezing remaining freezable tasks
-[ 3680.661485] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[ 3680.685254]
-[ 3680.685265] ==================================
-[ 3680.685269] WARNING: Nested lock was not taken
-[ 3680.685274] 6.12.0+ #16 Tainted: G        W
-[ 3680.685279] ----------------------------------
-[ 3680.685283] migration/0/19 is trying to lock:
-[ 3680.685288] ffff88800bac33c0 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: xen_pin_page+0x175/0x1d0
-[ 3680.685303]
-[ 3680.685303] but this task is not holding:
-[ 3680.685308] init_mm.page_table_lock
-[ 3680.685311]
-[ 3680.685311] stack backtrace:
-[ 3680.685316] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
-[ 3680.685324] Tainted: [W]=WARN
-[ 3680.685328] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
-[ 3680.685339] Call Trace:
-[ 3680.685344]  <TASK>
-[ 3680.685347]  dump_stack_lvl+0x77/0xb0
-[ 3680.685356]  __lock_acquire+0x917/0x2310
-[ 3680.685364]  lock_acquire+0xce/0x2c0
-[ 3680.685369]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685373]  _raw_spin_lock_nest_lock+0x2f/0x70
-[ 3680.685381]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685386]  xen_pin_page+0x175/0x1d0
-[ 3680.685390]  ? __pfx_xen_pin_page+0x10/0x10
-[ 3680.685394]  __xen_pgd_walk+0x233/0x2c0
-[ 3680.685401]  ? stop_one_cpu+0x91/0x100
-[ 3680.685405]  __xen_pgd_pin+0x5d/0x250
-[ 3680.685410]  xen_mm_pin_all+0x70/0xa0
-[ 3680.685415]  xen_pv_pre_suspend+0xf/0x280
-[ 3680.685420]  xen_suspend+0x57/0x1a0
-[ 3680.685428]  multi_cpu_stop+0x6b/0x120
-[ 3680.685432]  ? update_cpumasks_hier+0x7c/0xa60
-[ 3680.685439]  ? __pfx_multi_cpu_stop+0x10/0x10
-[ 3680.685443]  cpu_stopper_thread+0x8c/0x140
-[ 3680.685448]  ? smpboot_thread_fn+0x20/0x1f0
-[ 3680.685454]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[ 3680.685458]  smpboot_thread_fn+0xed/0x1f0
-[ 3680.685462]  kthread+0xde/0x110
-[ 3680.685467]  ? __pfx_kthread+0x10/0x10
-[ 3680.685471]  ret_from_fork+0x2f/0x50
-[ 3680.685478]  ? __pfx_kthread+0x10/0x10
-[ 3680.685482]  ret_from_fork_asm+0x1a/0x30
-[ 3680.685489]  </TASK>
-[ 3680.685491]
-[ 3680.685491] other info that might help us debug this:
-[ 3680.685497] 1 lock held by migration/0/19:
-[ 3680.685500]  #0: ffffffff8284df38 (pgd_lock){+.+.}-{3:3}, at: xen_mm_pin_all+0x14/0xa0
-[ 3680.685512]
-[ 3680.685512] stack backtrace:
-[ 3680.685518] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
-[ 3680.685528] Tainted: [W]=WARN
-[ 3680.685531] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
-[ 3680.685538] Call Trace:
-[ 3680.685541]  <TASK>
-[ 3680.685544]  dump_stack_lvl+0x77/0xb0
-[ 3680.685549]  __lock_acquire+0x93c/0x2310
-[ 3680.685554]  lock_acquire+0xce/0x2c0
-[ 3680.685558]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685562]  _raw_spin_lock_nest_lock+0x2f/0x70
-[ 3680.685568]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685572]  xen_pin_page+0x175/0x1d0
-[ 3680.685578]  ? __pfx_xen_pin_page+0x10/0x10
-[ 3680.685582]  __xen_pgd_walk+0x233/0x2c0
-[ 3680.685588]  ? stop_one_cpu+0x91/0x100
-[ 3680.685592]  __xen_pgd_pin+0x5d/0x250
-[ 3680.685596]  xen_mm_pin_all+0x70/0xa0
-[ 3680.685600]  xen_pv_pre_suspend+0xf/0x280
-[ 3680.685607]  xen_suspend+0x57/0x1a0
-[ 3680.685611]  multi_cpu_stop+0x6b/0x120
-[ 3680.685615]  ? update_cpumasks_hier+0x7c/0xa60
-[ 3680.685620]  ? __pfx_multi_cpu_stop+0x10/0x10
-[ 3680.685625]  cpu_stopper_thread+0x8c/0x140
-[ 3680.685629]  ? smpboot_thread_fn+0x20/0x1f0
-[ 3680.685634]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[ 3680.685638]  smpboot_thread_fn+0xed/0x1f0
-[ 3680.685642]  kthread+0xde/0x110
-[ 3680.685645]  ? __pfx_kthread+0x10/0x10
-[ 3680.685649]  ret_from_fork+0x2f/0x50
-[ 3680.685654]  ? __pfx_kthread+0x10/0x10
-[ 3680.685657]  ret_from_fork_asm+0x1a/0x30
-[ 3680.685662]  </TASK>
-[ 3680.685267] xen:grant_table: Grant tables using version 1 layout
-[ 3680.685921] OOM killer enabled.
-[ 3680.685934] Restarting tasks ... done.
-
-Signed-off-by: Maksym Planeta <maksym@exostellar.io>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241204103516.3309112-1-maksym@exostellar.io>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-16-dakr@kernel.org
+[ Formatted a few comments. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/mmu_pv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ rust/kernel/alloc.rs        |    1 
+ rust/kernel/alloc/layout.rs |   91 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 92 insertions(+)
+ create mode 100644 rust/kernel/alloc/layout.rs
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index f88071566cac5..4eb6a6bb609f4 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -807,6 +807,7 @@ void xen_mm_pin_all(void)
- {
- 	struct page *page;
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -5,6 +5,7 @@
+ #[cfg(not(any(test, testlib)))]
+ pub mod allocator;
+ pub mod kbox;
++pub mod layout;
+ pub mod vec_ext;
  
-+	spin_lock(&init_mm.page_table_lock);
- 	spin_lock(&pgd_lock);
- 
- 	list_for_each_entry(page, &pgd_list, lru) {
-@@ -817,6 +818,7 @@ void xen_mm_pin_all(void)
- 	}
- 
- 	spin_unlock(&pgd_lock);
-+	spin_unlock(&init_mm.page_table_lock);
- }
- 
- static void __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
-@@ -914,6 +916,7 @@ void xen_mm_unpin_all(void)
- {
- 	struct page *page;
- 
-+	spin_lock(&init_mm.page_table_lock);
- 	spin_lock(&pgd_lock);
- 
- 	list_for_each_entry(page, &pgd_list, lru) {
-@@ -925,6 +928,7 @@ void xen_mm_unpin_all(void)
- 	}
- 
- 	spin_unlock(&pgd_lock);
-+	spin_unlock(&init_mm.page_table_lock);
- }
- 
- static void xen_activate_mm(struct mm_struct *prev, struct mm_struct *next)
--- 
-2.39.5
-
+ #[cfg(any(test, testlib))]
+--- /dev/null
++++ b/rust/kernel/alloc/layout.rs
+@@ -0,0 +1,91 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Memory layout.
++//!
++//! Custom layout types extending or improving [`Layout`].
++
++use core::{alloc::Layout, marker::PhantomData};
++
++/// Error when constructing an [`ArrayLayout`].
++pub struct LayoutError;
++
++/// A layout for an array `[T; n]`.
++///
++/// # Invariants
++///
++/// - `len * size_of::<T>() <= isize::MAX`.
++pub struct ArrayLayout<T> {
++    len: usize,
++    _phantom: PhantomData<fn() -> T>,
++}
++
++impl<T> Clone for ArrayLayout<T> {
++    fn clone(&self) -> Self {
++        *self
++    }
++}
++impl<T> Copy for ArrayLayout<T> {}
++
++const ISIZE_MAX: usize = isize::MAX as usize;
++
++impl<T> ArrayLayout<T> {
++    /// Creates a new layout for `[T; 0]`.
++    pub const fn empty() -> Self {
++        // INVARIANT: `0 * size_of::<T>() <= isize::MAX`.
++        Self {
++            len: 0,
++            _phantom: PhantomData,
++        }
++    }
++
++    /// Creates a new layout for `[T; len]`.
++    ///
++    /// # Errors
++    ///
++    /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
++    pub const fn new(len: usize) -> Result<Self, LayoutError> {
++        match len.checked_mul(core::mem::size_of::<T>()) {
++            Some(len) if len <= ISIZE_MAX => {
++                // INVARIANT: We checked above that `len * size_of::<T>() <= isize::MAX`.
++                Ok(Self {
++                    len,
++                    _phantom: PhantomData,
++                })
++            }
++            _ => Err(LayoutError),
++        }
++    }
++
++    /// Creates a new layout for `[T; len]`.
++    ///
++    /// # Safety
++    ///
++    /// `len` must be a value, for which `len * size_of::<T>() <= isize::MAX` is true.
++    pub unsafe fn new_unchecked(len: usize) -> Self {
++        // INVARIANT: By the safety requirements of this function
++        // `len * size_of::<T>() <= isize::MAX`.
++        Self {
++            len,
++            _phantom: PhantomData,
++        }
++    }
++
++    /// Returns the number of array elements represented by this layout.
++    pub const fn len(&self) -> usize {
++        self.len
++    }
++
++    /// Returns `true` when no array elements are represented by this layout.
++    pub const fn is_empty(&self) -> bool {
++        self.len == 0
++    }
++}
++
++impl<T> From<ArrayLayout<T>> for Layout {
++    fn from(value: ArrayLayout<T>) -> Self {
++        let res = Layout::array::<T>(value.len);
++        // SAFETY: By the type invariant of `ArrayLayout` we have
++        // `len * size_of::<T>() <= isize::MAX` and thus the result must be `Ok`.
++        unsafe { res.unwrap_unchecked() }
++    }
++}
 
 
 
