@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A39A59F07
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FADA5A2AD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF0D16FDC8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F775175BB1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADC0231A51;
-	Mon, 10 Mar 2025 17:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E78D226D17;
+	Mon, 10 Mar 2025 18:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvSS1VdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2W3XCCXx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387D622D7A6;
-	Mon, 10 Mar 2025 17:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C222309B0;
+	Mon, 10 Mar 2025 18:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628182; cv=none; b=rs9L5Omos5b4uIsT/lUhgleI3neW8eumbKNfiRh4NRO967vzSC9fBeINEnANElG4jDr6sDUTGbL+onnAvwG6ahlzj7WeSefptruVfgQ1h2ZcfUtMuejPUAkvCL/EoCwwTYNegpPGbhCk+MOWnuzm9Vw8skPejxoB4HfyVpwt67M=
+	t=1741630965; cv=none; b=MiONBjnGAYHotWTrgB9vFXvBrDyD3OFdul+rE3Nb/SiN50jhTmtuph8A9lGVFrLi4CNHeobDAGFnayihxy3qS0Ci5J3Kg5V6dKniwhEKvg6SBIXXGE2tOzv7tZqAb/rbBUL9kNiDexdG4wNsNi+1h9py1OblnH99eUiftRfrfxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628182; c=relaxed/simple;
-	bh=Bnym0fn8b5tARkFELdWXKcZEfTt60hGt4sFD46zS5fc=;
+	s=arc-20240116; t=1741630965; c=relaxed/simple;
+	bh=rNbCDWF0KCo2OeAXqo2Wtwk1TgC3daphuXh0oCLeiG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLCb026BIQ6RzKWvh5p13TIHQVLOnIZ91OCSHFr9aF/NWwBsZUJ1lnYeghrqQmW3YYYiAhUMoaFSlimEFRUNB1rQy9s/IX4HjWcsDq9o3hcTWRrMgHdt9e2bKh85JHmchQePnIy2bl6MzvN6Yrcsyvu9votr2BUwShiZ1wfA+F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvSS1VdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F269C4CEE5;
-	Mon, 10 Mar 2025 17:36:20 +0000 (UTC)
+	 MIME-Version; b=gVGvjRhmoJl8R47hVU+G5ZGBu+wRAs8R6uWvzrrGZ7GmtJDHm4oYyveGPwNKZ9RL5USG8Uw5SHPiaAmPoGbHUaf0vrS/iFVts/cdrdTCpuBz81N/q47bq7JYjyUQyFU032grvu9W8SG9fqCuWNr0eXD7Fv//z7K5L4+jp2T4U20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2W3XCCXx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDA1C4CEE5;
+	Mon, 10 Mar 2025 18:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628181;
-	bh=Bnym0fn8b5tARkFELdWXKcZEfTt60hGt4sFD46zS5fc=;
+	s=korg; t=1741630964;
+	bh=rNbCDWF0KCo2OeAXqo2Wtwk1TgC3daphuXh0oCLeiG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvSS1VdJQk/El3v5Ai+PB3dkn8hldTYgxM2tZ/Z69tfRAjx/os1a6o68WcDE3Q5eE
-	 l7raJSs0+6W4Ki/7Zfp5mWOZwPetXiOjj0ywdPMdk+h5Cv1Xg3WhQMd0RTFh022pXW
-	 E7/jp8aG0LsIEafkNvShEPyTGISGyDLh8H76QQ7s=
+	b=2W3XCCXxlf3VFW3FhQRlstMrks0lIr9F7T52CClTJvvoBr8h9Wa6ABb55JDfWGmdu
+	 ShdmpiMKod0wOkyNhy+/2AiZVOT4fRFwQ4i8+unbmi04Xp3K67+Bcw8wUDoo11Mw7V
+	 eWsgsmXmtFt8jZkhD9C8W8qVN5rhIS5PanRgObSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 116/145] intel_th: pci: Add Panther Lake-H support
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 564/620] drm/sched: Fix preprocessor guard
 Date: Mon, 10 Mar 2025 18:06:50 +0100
-Message-ID: <20250310170439.441876775@linuxfoundation.org>
+Message-ID: <20250310170607.806795835@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-commit a70034d6c0d5f3cdee40bb00a578e17fd2ebe426 upstream.
+[ Upstream commit 23e0832d6d7be2d3c713f9390c060b6f1c48bf36 ]
 
-Add support for the Trace Hub in Panther Lake-H.
+When writing the header guard for gpu_scheduler_trace.h, a typo,
+apparently, occurred.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20250211185017.1759193-5-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the typo and document the scope of the guard.
+
+Fixes: 353da3c520b4 ("drm/amdgpu: add tracepoint for scheduler (v2)")
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218124149.118002-2-phasta@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/scheduler/gpu_scheduler_trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -335,6 +335,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Panther Lake-H */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xe324),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+diff --git a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+index 877ce9b127f16..caa5268c51ef1 100644
+--- a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
++++ b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+@@ -21,7 +21,7 @@
+  *
+  */
+ 
+-#if !defined(_GPU_SCHED_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#if !defined(_GPU_SCHED_TRACE_H_) || defined(TRACE_HEADER_MULTI_READ)
+ #define _GPU_SCHED_TRACE_H_
+ 
+ #include <linux/stringify.h>
+@@ -123,7 +123,7 @@ TRACE_EVENT(drm_sched_job_wait_dep,
+ 		      __entry->seqno)
+ );
+ 
+-#endif
++#endif /* _GPU_SCHED_TRACE_H_ */
+ 
+ /* This part must be outside protection */
+ #undef TRACE_INCLUDE_PATH
+-- 
+2.39.5
+
 
 
 
