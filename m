@@ -1,106 +1,108 @@
-Return-Path: <stable+bounces-122364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950A4A59F3E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E22A9A59F35
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B69141890513
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A660188754F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32CA233D91;
-	Mon, 10 Mar 2025 17:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="uajN0eka"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A839D230BDF;
+	Mon, 10 Mar 2025 17:37:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783C722ACDC;
-	Mon, 10 Mar 2025 17:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736301DE89C;
+	Mon, 10 Mar 2025 17:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628282; cv=none; b=c4XNzNkeIKHl92TEbkaFZ6oQhHoRZ/Cgztni/JNXp7h+j0jaGyEqApjRjUNmBg2cVvGzgyO/xMsKeB8Daia398uaiyxn8WwPJ+Ejk9U2QcacBaIFWn87lfLC9lCoMcJjOMhNwSvtvmeIljB7W6E4V77ko3dLNP1AlN+JZ8WW1jI=
+	t=1741628275; cv=none; b=FL7eztX3ETWKgc+NNm7DWwhVdzbR22B/owME1Jlk4TYYXt8p56UpUG//kYHxoJCF6zsMP9OZ0WWm6ArGgm9kCnoxIP5kJIdpIOUKBSD8yr+T0QBnui95aFtK0cWqljhGZA/0ZEd5pLnuj0PcNJH6K5+M2zAEsFWVa1ZjBGgMGEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628282; c=relaxed/simple;
-	bh=ap3sPasrD3MtqJJ59dpJLS9W6lSJm9jqsQdhmWCCPrE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tnZ6qDlgOE13DVDurzkf9ScjHbXbMx7z4lQPeiHNmOIbTTE80rocrZcYD8/JNRL9Ij1uQIwT5DtYSmEQDvDlunEZ7qezp/7voucysf7wchzSyOmjzgc4Q1EtHY95o5rvxOFhkqmiMrmx5dvsXF+vjo6XdaFC/NjrYNuWJejl1HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=uajN0eka; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Andrey Kalachev <kalachev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1741628270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9lmtUAfPPLINDeikVCo6wgZcDq+CKBrrfwKQrdC9wco=;
-	b=uajN0ekaVNJgGbX6wPMIW8yBvV99/KzRPvEvGZqnvKAKDtTNV7RtahGfzOV2j8pni4l7o/
-	hIOXGp9Ki6BZr8uVLlMJvOUIVSB8dccijGng/jger4E+l8cIODcmP3fx2CiQ1oH6Bl2fJl
-	4zNl3qdkbQSeSd7FF/9wgOhzq5iW5NA=
-To: stable@vger.kernel.org
-Cc: rananta@google.com,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kalachev@swemel.ru,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1.y] KVM: selftests: Fix build error due to assert in dirty_log_test
-Date: Mon, 10 Mar 2025 20:37:49 +0300
-Message-Id: <20250310173749.11260-2-kalachev@swemel.ru>
-In-Reply-To: <20250310173749.11260-1-kalachev@swemel.ru>
-References: <20250310173749.11260-1-kalachev@swemel.ru>
+	s=arc-20240116; t=1741628275; c=relaxed/simple;
+	bh=RGwv37QAnQo/a2wz5AMKCuLUSQ01Tyu2yE4BPDzoJK8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LabITKIJTb7k3K7elEzWFGuLMl7kuY7ZuD6s9xWJU35Ny6o5rIr8E0MvswCdleqxqHQjU0GQTKjHPENOMPsTsIbZzwuqlU7aRSSouSrJlqGFE4Cjgl3CerW1LTPXSSyIcc95AbIPK0tjgeUPiM8ATZoXzjNo5apS2lmDUQ90MtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D57C4CEE5;
+	Mon, 10 Mar 2025 17:37:52 +0000 (UTC)
+Date: Mon, 10 Mar 2025 17:37:50 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Peter Collingbourne <pcc@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] string: Disable read_word_at_a_time() optimizations if
+ kernel MTE is enabled
+Message-ID: <Z88jbhobIz2yWBbJ@arm.com>
+References: <20250308023314.3981455-1-pcc@google.com>
+ <202503071927.1A795821A@keescook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202503071927.1A795821A@keescook>
 
-From: Raghavendra Rao Ananta <rananta@google.com>
+On Fri, Mar 07, 2025 at 07:36:31PM -0800, Kees Cook wrote:
+> On Fri, Mar 07, 2025 at 06:33:13PM -0800, Peter Collingbourne wrote:
+> > The optimized strscpy() and dentry_string_cmp() routines will read 8
+> > unaligned bytes at a time via the function read_word_at_a_time(), but
+> > this is incompatible with MTE which will fault on a partially invalid
+> > read. The attributes on read_word_at_a_time() that disable KASAN are
+> > invisible to the CPU so they have no effect on MTE. Let's fix the
+> > bug for now by disabling the optimizations if the kernel is built
+> > with HW tag-based KASAN and consider improvements for followup changes.
+> 
+> Why is faulting on a partially invalid read a problem? It's still
+> invalid, so ... it should fault, yes? What am I missing?
 
-The commit e5ed6c922537 ("KVM: selftests: Fix a semaphore imbalance in
-the dirty ring logging test") backported the fix from v6.8 to stable
-v6.1. However, since the patch uses 'TEST_ASSERT_EQ()', which doesn't
-exist on v6.1, the following build error is seen:
+read_word_at_a_time() is used to read 8 bytes, potentially unaligned and
+beyond the end of string. The has_zero() function is then used to check
+where the string ends. For this uses, I think we can go with
+load_unaligned_zeropad() which handles a potential fault and pads the
+rest with zeroes.
 
-dirty_log_test.c:775:2: error: call to undeclared function
-'TEST_ASSERT_EQ'; ISO C99 and later do not support implicit function
-declarations [-Wimplicit-function-declaration]
-        TEST_ASSERT_EQ(sem_val, 0);
-        ^
-1 error generated.
+> > Signed-off-by: Peter Collingbourne <pcc@google.com>
+> > Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
+> > Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  fs/dcache.c  | 2 +-
+> >  lib/string.c | 3 ++-
+> >  2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> Why are DCACHE_WORD_ACCESS and HAVE_EFFICIENT_UNALIGNED_ACCESS separate
+> things? I can see at least one place where it's directly tied:
+> 
+> arch/arm/Kconfig:58:    select DCACHE_WORD_ACCESS if HAVE_EFFICIENT_UNALIGNED_ACCESS
 
-Replace the macro with its equivalent, 'ASSERT_EQ()' to fix the issue.
+DCACHE_WORD_ACCESS requires load_unaligned_zeropad() which handles the
+faults. For some reason, read_word_at_a_time() doesn't expect to fault
+and it is only used with HAVE_EFFICIENT_UNALIGNED_ACCESS. I guess arm32
+only enabled load_unaligned_zeropad() on hardware that supports
+efficient unaligned accesses (v6 onwards), hence the dependency.
 
-Fixes: e5ed6c922537 ("KVM: selftests: Fix a semaphore imbalance in the dirty ring logging test")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
----
- tools/testing/selftests/kvm/dirty_log_test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Would it make sense to sort this out so that KASAN_HW_TAGS can be taken
+> into account at the Kconfig level instead?
 
-diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
-index ec40a33c29fd..711b9e4d86aa 100644
---- a/tools/testing/selftests/kvm/dirty_log_test.c
-+++ b/tools/testing/selftests/kvm/dirty_log_test.c
-@@ -772,9 +772,9 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 	 * verification of all iterations.
- 	 */
- 	sem_getvalue(&sem_vcpu_stop, &sem_val);
--	TEST_ASSERT_EQ(sem_val, 0);
-+	ASSERT_EQ(sem_val, 0);
- 	sem_getvalue(&sem_vcpu_cont, &sem_val);
--	TEST_ASSERT_EQ(sem_val, 0);
-+	ASSERT_EQ(sem_val, 0);
- 
- 	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);
- 
+I don't think we should play with config options but rather sort out the
+fault path (load_unaligned_zeropad) or disable MTE temporarily. I'd go
+with the former as long as read_word_at_a_time() is only used for
+strings in conjunction with has_zero(). I haven't checked.
+
 -- 
-2.30.2
-
+Catalin
 
