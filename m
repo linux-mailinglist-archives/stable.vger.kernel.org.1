@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-121953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C68EA59D26
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD80A59D3B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C2DE16DE3F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:18:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA0AB188A634
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F83230BE7;
-	Mon, 10 Mar 2025 17:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DAE230BC3;
+	Mon, 10 Mar 2025 17:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMEu9s8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buM+2MLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07832309B6;
-	Mon, 10 Mar 2025 17:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE85230988;
+	Mon, 10 Mar 2025 17:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627107; cv=none; b=FVjpQv1xP8RPVTeHSzCsRg3q3yQ7n9EbuqO9rfy/qzlh4LZQjGpU7p7NKCCPoVSHczc3A9nXkEqumFeEZspru96V3esW0pkhYb1wU9nWCfdE0U51B333DCyGOWMbDF2G3TG0tiwc+jtW+uRxenx1j7l/k0yUAmdNadYihNHhHzg=
+	t=1741627139; cv=none; b=fqHhx3CVOEApeGYpiXp4kUrZFX9qjTRipjg9QD5Yt6lb4oA3GFYXJ96m5S832RvJpme55K55zwb8oAQ4oPi1b4raRzAxKhzvQLNykkJ1dEYcEoGmR3SNddvL7tT1U0tYzTbDfU2j9yWlQsKmuQIfwMWWRrAJb/PSMgpqR3lQJMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627107; c=relaxed/simple;
-	bh=LP+FFBoz6UnKPEQsMr4pyuyE4tMdofwH45P1j7gy7y4=;
+	s=arc-20240116; t=1741627139; c=relaxed/simple;
+	bh=xF+VORUlVuibP7c/P3JuoOG6VqUO1TfhjQfNiIUpKo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1x/dn3ijubzroI4HtVWiIPjcmxxv1iQD+XhDbviapwx4IQ47mvA6AJmG7W3n/84Zt5EiLVPyyaIGDGvMLrP4kJqbs9pwa2+Ww2a1uG201iTf4AQ9WOvS/TNMWVkXRHaodkCDon/hxyZBG3V5Nttc6DYzg4CQnOoVulzeuR9x5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMEu9s8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24247C4CEED;
-	Mon, 10 Mar 2025 17:18:26 +0000 (UTC)
+	 MIME-Version; b=qdRc1LDxpzkqNe/t31jOwH8AE0Sa1WzES+YN/p5eo6oIb5gNA7Z/SsXZbSSfGUNngmGi3X8YzU+57Xt3yDOYKiURNX0NoP+HCBFkJM0QrFfQuq1XMJPl64Rt8ZviFxt/eANFOt8nGna+RwBrnBrjnEu1o5li3W5+eTF+jcvHaEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buM+2MLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD98CC4CEEC;
+	Mon, 10 Mar 2025 17:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627107;
-	bh=LP+FFBoz6UnKPEQsMr4pyuyE4tMdofwH45P1j7gy7y4=;
+	s=korg; t=1741627139;
+	bh=xF+VORUlVuibP7c/P3JuoOG6VqUO1TfhjQfNiIUpKo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMEu9s8UQ4ZpsQXiMUaD9zzNvaURJv2O7ldk1z9yX2JuwvzE3S4dMHdBjDtmDwp6M
-	 CSlBnzFPksTSqBSraScW2+OsjQPFFqEAJYbZI4I0aA4pN8JlqhjCj7bPsjgqVrgC5T
-	 rmxHvy/eP2y7tdpDcPI4lDf2YVgXVBiz8ZTnNBvg=
+	b=buM+2MLGDHNR9A5eQ0QhkIHPrKyVwYdmRhPiARc2ieT7Y3Y+b5fl6ZF6sWs9aN0nB
+	 MOij5vlxVXrFt4H83bzlMxljoQ9ffwxSsMJNdMwRdgR5aJJGz8z1QegO6lZbkk8/Ym
+	 9v0ayv5Awde52B5wWWTH9QC397uwbiP5edRccyCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleh Nykyforchyn <oleh.nyk@gmail.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/269] smb311: failure to open files of length 1040 when mounting with SMB3.1.1 POSIX extensions
-Date: Mon, 10 Mar 2025 18:02:41 +0100
-Message-ID: <20250310170458.037948615@linuxfoundation.org>
+Subject: [PATCH 6.12 009/269] btrfs: fix data overwriting bug during buffered write when block size < page size
+Date: Mon, 10 Mar 2025 18:02:42 +0100
+Message-ID: <20250310170458.075551838@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
 References: <20250310170457.700086763@linuxfoundation.org>
@@ -67,143 +67,145 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 9df23801c83d3e12b4c09be39d37d2be385e52f9 ]
+[ Upstream commit efa11fd269c139e29b71ec21bc9c9c0063fde40d ]
 
-If a file size has bits 0x410 = ATTR_DIRECTORY | ATTR_REPARSE set
-then during queryinfo (stat) the file is regarded as a directory
-and subsequent opens can fail. A simple test example is trying
-to open any file 1040 bytes long when mounting with "posix"
-(SMB3.1.1 POSIX/Linux Extensions).
+[BUG]
+When running generic/418 with a btrfs whose block size < page size
+(subpage cases), it always fails.
 
-The cause of this bug is that Attributes field in smb2_file_all_info
-struct occupies the same place that EndOfFile field in
-smb311_posix_qinfo, and sometimes the latter struct is incorrectly
-processed as if it was the first one.
+And the following minimal reproducer is more than enough to trigger it
+reliably:
 
-Reported-by: Oleh Nykyforchyn <oleh.nyk@gmail.com>
-Tested-by: Oleh Nykyforchyn <oleh.nyk@gmail.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+workload()
+{
+        mkfs.btrfs -s 4k -f $dev > /dev/null
+        dmesg -C
+        mount $dev $mnt
+        $fsstree_dir/src/dio-invalidate-cache -r -b 4096 -n 3 -i 1 -f $mnt/diotest
+        ret=$?
+        umount $mnt
+        stop_trace
+        if [ $ret -ne 0 ]; then
+                fail
+        fi
+}
+
+for (( i = 0; i < 1024; i++)); do
+        echo "=== $i/$runtime ==="
+        workload
+done
+
+[CAUSE]
+With extra trace printk added to the following functions:
+- btrfs_buffered_write()
+  * Which folio is touched
+  * The file offset (start) where the buffered write is at
+  * How many bytes are copied
+  * The content of the write (the first 2 bytes)
+
+- submit_one_sector()
+  * Which folio is touched
+  * The position inside the folio
+  * The content of the page cache (the first 2 bytes)
+
+- pagecache_isize_extended()
+  * The parameters of the function itself
+  * The parameters of the folio_zero_range()
+
+Which are enough to show the problem:
+
+  22.158114: btrfs_buffered_write: folio pos=0 start=0 copied=4096 content=0x0101
+  22.158161: submit_one_sector: r/i=5/257 folio=0 pos=0 content=0x0101
+  22.158609: btrfs_buffered_write: folio pos=0 start=4096 copied=4096 content=0x0101
+  22.158634: btrfs_buffered_write: folio pos=0 start=8192 copied=4096 content=0x0101
+  22.158650: pagecache_isize_extended: folio=0 from=4096 to=8192 bsize=4096 zero off=4096 len=8192
+  22.158682: submit_one_sector: r/i=5/257 folio=0 pos=4096 content=0x0000
+  22.158686: submit_one_sector: r/i=5/257 folio=0 pos=8192 content=0x0101
+
+The tool dio-invalidate-cache will start 3 threads, each doing a buffered
+write with 0x01 at offset 0, 4096 and 8192, do a fsync, then do a direct read,
+and compare the read buffer with the write buffer.
+
+Note that all 3 btrfs_buffered_write() are writing the correct 0x01 into
+the page cache.
+
+But at submit_one_sector(), at file offset 4096, the content is zeroed
+out, by pagecache_isize_extended().
+
+The race happens like this:
+ Thread A is writing into range [4K, 8K).
+ Thread B is writing into range [8K, 12k).
+
+               Thread A              |         Thread B
+-------------------------------------+------------------------------------
+btrfs_buffered_write()               | btrfs_buffered_write()
+|- old_isize = 4K;                   | |- old_isize = 4096;
+|- btrfs_inode_lock()                | |
+|- write into folio range [4K, 8K)   | |
+|- pagecache_isize_extended()        | |
+|  extend isize from 4096 to 8192    | |
+|  no folio_zero_range() called      | |
+|- btrfs_inode_lock()                | |
+                                     | |- btrfs_inode_lock()
+				     | |- write into folio range [8K, 12K)
+				     | |- pagecache_isize_extended()
+				     | |  calling folio_zero_range(4K, 8K)
+				     | |  This is caused by the old_isize is
+				     | |  grabbed too early, without any
+				     | |  inode lock.
+				     | |- btrfs_inode_unlock()
+
+The @old_isize is grabbed without inode lock, causing race between two
+buffered write threads and making pagecache_isize_extended() to zero
+range which is still containing cached data.
+
+And this is only affecting subpage btrfs, because for regular blocksize
+== page size case, the function pagecache_isize_extended() will do
+nothing if the block size >= page size.
+
+[FIX]
+Grab the old i_size while holding the inode lock.
+This means each buffered write thread will have a stable view of the
+old inode size, thus avoid the above race.
+
+CC: stable@vger.kernel.org # 5.15+
+Fixes: 5e8b9ef30392 ("btrfs: move pos increment and pagecache extension to btrfs_buffered_write")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h  |  1 +
- fs/smb/client/reparse.h   | 28 ++++++++++++++++++++++------
- fs/smb/client/smb2inode.c |  4 ++++
- fs/smb/client/smb2ops.c   |  3 ++-
- 4 files changed, 29 insertions(+), 7 deletions(-)
+ fs/btrfs/file.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 0979feb30bedb..b630beb757a44 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -210,6 +210,7 @@ struct cifs_cred {
- struct cifs_open_info_data {
- 	bool adjust_tz;
- 	bool reparse_point;
-+	bool contains_posix_file_info;
- 	struct {
- 		/* ioctl response buffer */
- 		struct {
-diff --git a/fs/smb/client/reparse.h b/fs/smb/client/reparse.h
-index ff05b0e75c928..f080f92cb1e74 100644
---- a/fs/smb/client/reparse.h
-+++ b/fs/smb/client/reparse.h
-@@ -97,14 +97,30 @@ static inline bool reparse_inode_match(struct inode *inode,
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 848cb2c3d9dde..78c4a3765002e 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1200,7 +1200,7 @@ ssize_t btrfs_buffered_write(struct kiocb *iocb, struct iov_iter *i)
+ 	ssize_t ret;
+ 	bool only_release_metadata = false;
+ 	bool force_page_uptodate = false;
+-	loff_t old_isize = i_size_read(inode);
++	loff_t old_isize;
+ 	unsigned int ilock_flags = 0;
+ 	const bool nowait = (iocb->ki_flags & IOCB_NOWAIT);
+ 	unsigned int bdp_flags = (nowait ? BDP_ASYNC : 0);
+@@ -1212,6 +1212,13 @@ ssize_t btrfs_buffered_write(struct kiocb *iocb, struct iov_iter *i)
+ 	if (ret < 0)
+ 		return ret;
  
- static inline bool cifs_open_data_reparse(struct cifs_open_info_data *data)
- {
--	struct smb2_file_all_info *fi = &data->fi;
--	u32 attrs = le32_to_cpu(fi->Attributes);
-+	u32 attrs;
- 	bool ret;
- 
--	ret = data->reparse_point || (attrs & ATTR_REPARSE);
--	if (ret)
--		attrs |= ATTR_REPARSE;
--	fi->Attributes = cpu_to_le32(attrs);
-+	if (data->contains_posix_file_info) {
-+		struct smb311_posix_qinfo *fi = &data->posix_fi;
++	/*
++	 * We can only trust the isize with inode lock held, or it can race with
++	 * other buffered writes and cause incorrect call of
++	 * pagecache_isize_extended() to overwrite existing data.
++	 */
++	old_isize = i_size_read(inode);
 +
-+		attrs = le32_to_cpu(fi->DosAttributes);
-+		if (data->reparse_point) {
-+			attrs |= ATTR_REPARSE;
-+			fi->DosAttributes = cpu_to_le32(attrs);
-+		}
-+
-+	} else {
-+		struct smb2_file_all_info *fi = &data->fi;
-+
-+		attrs = le32_to_cpu(fi->Attributes);
-+		if (data->reparse_point) {
-+			attrs |= ATTR_REPARSE;
-+			fi->Attributes = cpu_to_le32(attrs);
-+		}
-+	}
-+
-+	ret = attrs & ATTR_REPARSE;
-+
- 	return ret;
- }
- 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 7dfd3eb3847b3..6048b3fed3e78 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -648,6 +648,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 		switch (cmds[i]) {
- 		case SMB2_OP_QUERY_INFO:
- 			idata = in_iov[i].iov_base;
-+			idata->contains_posix_file_info = false;
- 			if (rc == 0 && cfile && cfile->symlink_target) {
- 				idata->symlink_target = kstrdup(cfile->symlink_target, GFP_KERNEL);
- 				if (!idata->symlink_target)
-@@ -671,6 +672,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 			break;
- 		case SMB2_OP_POSIX_QUERY_INFO:
- 			idata = in_iov[i].iov_base;
-+			idata->contains_posix_file_info = true;
- 			if (rc == 0 && cfile && cfile->symlink_target) {
- 				idata->symlink_target = kstrdup(cfile->symlink_target, GFP_KERNEL);
- 				if (!idata->symlink_target)
-@@ -768,6 +770,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 				idata = in_iov[i].iov_base;
- 				idata->reparse.io.iov = *iov;
- 				idata->reparse.io.buftype = resp_buftype[i + 1];
-+				idata->contains_posix_file_info = false; /* BB VERIFY */
- 				rbuf = reparse_buf_ptr(iov);
- 				if (IS_ERR(rbuf)) {
- 					rc = PTR_ERR(rbuf);
-@@ -789,6 +792,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 		case SMB2_OP_QUERY_WSL_EA:
- 			if (!rc) {
- 				idata = in_iov[i].iov_base;
-+				idata->contains_posix_file_info = false;
- 				qi_rsp = rsp_iov[i + 1].iov_base;
- 				data[0] = (u8 *)qi_rsp + le16_to_cpu(qi_rsp->OutputBufferOffset);
- 				size[0] = le32_to_cpu(qi_rsp->OutputBufferLength);
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index e8da63d29a28f..516be8c0b2a9b 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -1001,6 +1001,7 @@ static int smb2_query_file_info(const unsigned int xid, struct cifs_tcon *tcon,
- 		if (!data->symlink_target)
- 			return -ENOMEM;
- 	}
-+	data->contains_posix_file_info = false;
- 	return SMB2_query_info(xid, tcon, fid->persistent_fid, fid->volatile_fid, &data->fi);
- }
- 
-@@ -5177,7 +5178,7 @@ int __cifs_sfu_make_node(unsigned int xid, struct inode *inode,
- 			     FILE_CREATE, CREATE_NOT_DIR |
- 			     CREATE_OPTION_SPECIAL, ACL_NO_MODE);
- 	oparms.fid = &fid;
--
-+	idata.contains_posix_file_info = false;
- 	rc = server->ops->open(xid, &oparms, &oplock, &idata);
- 	if (rc)
+ 	ret = generic_write_checks(iocb, i);
+ 	if (ret <= 0)
  		goto out;
 -- 
 2.39.5
