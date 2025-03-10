@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E77FA59F7D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C653CA5A269
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A23A53A7602
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FDED3AF5D5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D2C230BC5;
-	Mon, 10 Mar 2025 17:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9B11C5D6F;
+	Mon, 10 Mar 2025 18:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7mw7B+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMjTDrzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1640C2253FE;
-	Mon, 10 Mar 2025 17:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC73D374EA;
+	Mon, 10 Mar 2025 18:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628385; cv=none; b=bVCJ6cZkr5W7g/6ah4Aqm1sV7t/ci7iLJHE/cOAw9zyddtHG/vF7aZgEdIZcTwZbcLxpqBqX+4E4sJ/cv4YeHSca1FnDGSkcPdUAPVibljEQag+0sq3zbc57Ug25hHSVPlOQ+9Fq4xF+TT5RSwyyaTkyFbNNTIZUM5i/CBr9EEw=
+	t=1741630792; cv=none; b=kZ9+A+FxCg0aeMyPGUejiXreZbibW2Gx0NXyYoLwndVPtp1BLdFEJ95kVQ/ieYgwtDbAW7HQNTciehMGc2aRpZsqTyE9Wqs55MY66Bkriysavgo16rhMLmb1JTXEMzZwUE1NQr95hyiauBLc6yN8VRrOxPeDZhHqU5Y3EVP3Uso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628385; c=relaxed/simple;
-	bh=IQLkVm3SWnsDMjkso35nsyLvgB4zndXlJzJehvbsYwo=;
+	s=arc-20240116; t=1741630792; c=relaxed/simple;
+	bh=JXsQYEusX8LgFgBgFKu/akyFJk1gjD9LL+jF59iDYAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMaAF7LU1o/TiMz4h1X8m3g/1ipfdGOqBUmGYv97pm0X4I2Lq0ViBC5kikh40pmIKlrsV8Fjn9pLg9okupznjGmWMVOhwDMKOUXMt7G5BmT2PexUe4qY2p3rsiY34WwN4pYxWjWra3Fi3KyGojr3fTa3s9ubfWiObp2Noomd5Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7mw7B+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37663C4CEEC;
-	Mon, 10 Mar 2025 17:39:43 +0000 (UTC)
+	 MIME-Version; b=sjxBqgu5aaE2cQYdfkj3I7w7RyTYCtObO9dNMaeVhfIJEiL+NNXYK0e4Nxf6mb83YYypysB3ThFz5d2gRSvqbHqIy5qOdV6t3BiBJB0Lh4ZxczGfG60mVtORqER0igkcs98BH1e3g0u8IbVVH0Rn9XWoAfnVPDxo8Qag/Q+9I1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMjTDrzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47367C4CEE5;
+	Mon, 10 Mar 2025 18:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628383;
-	bh=IQLkVm3SWnsDMjkso35nsyLvgB4zndXlJzJehvbsYwo=;
+	s=korg; t=1741630792;
+	bh=JXsQYEusX8LgFgBgFKu/akyFJk1gjD9LL+jF59iDYAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7mw7B+wxBrsVTPXwz5/NJZQlh3+O13hf3oYab+4+p6xw0zqY/B2cWLyy3pJzGjYa
-	 PMe2liMBDd6E0PzFiRfZarhepFVs4jkRnhlJ7Ma7jAxVcUVvMUB8k3ujXmnGIyEekS
-	 asY26CAHGfnaag8vzDPypbn3OcwR7GjgUFjdjVOc=
+	b=rMjTDrzXBN00q/ypn5bnP+3OLRJvmBEvsQaSpHiUhIZgap1eoPxhipQ4cRE00xitR
+	 GNFP0cmoiCuRut3p4AX9RuaiP/oKNcVtMTeT16qCEqpPFDkDBdJlJGPtvbC8/PJoPK
+	 0cD/dGpFVQz0yUR55CmkX9bcve/64e6s+PuN1ZCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/109] HID: intel-ish-hid: Fix use-after-free issue in ishtp_hid_remove()
+	Hoku Ishibe <me@hokuishi.be>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 537/620] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
 Date: Mon, 10 Mar 2025 18:06:23 +0100
-Message-ID: <20250310170429.114676672@linuxfoundation.org>
+Message-ID: <20250310170606.738700041@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Hoku Ishibe <me@hokuishi.be>
 
-[ Upstream commit 07583a0010696a17fb0942e0b499a62785c5fc9f ]
+commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
 
-The system can experience a random crash a few minutes after the driver is
-removed. This issue occurs due to improper handling of memory freeing in
-the ishtp_hid_remove() function.
+Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
+persistent humming noise when the power_save mode is enabled.
+This issue occurs when the codec enters power saving mode,
+leading to unwanted noise from the speakers.
 
-The function currently frees the `driver_data` directly within the loop
-that destroys the HID devices, which can lead to accessing freed memory.
-Specifically, `hid_destroy_device()` uses `driver_data` when it calls
-`hid_ishtp_set_feature()` to power off the sensor, so freeing
-`driver_data` beforehand can result in accessing invalid memory.
+This patch adds the affected model (PCI ID 0x1028:0x0962) to the
+power_save denylist to ensure power_save is disabled by default,
+preventing power-off related noise issues.
 
-This patch resolves the issue by storing the `driver_data` in a temporary
-variable before calling `hid_destroy_device()`, and then freeing the
-`driver_data` after the device is destroyed.
+Steps to Reproduce
+1. Boot the system with `snd_hda_intel` loaded.
+2. Verify that `power_save` mode is enabled:
+```sh
+cat /sys/module/snd_hda_intel/parameters/power_save
+````
+output: 10 (default power save timeout)
+3. Wait for the power save timeout
+4. Observe a persistent humming noise from the speakers
+5. Disable `power_save` manually:
+```sh
+echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+````
+6. Confirm that the noise disappears immediately.
 
-Fixes: 0b28cb4bcb17 ("HID: intel-ish-hid: ISH HID client driver")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue has been observed on my system, and this patch
+successfully eliminates the unwanted noise. If other users
+experience similar issues, additional reports would be helpful.
+
+Signed-off-by: Hoku Ishibe <me@hokuishi.be>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/intel-ish-hid/ishtp-hid.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/intel-ish-hid/ishtp-hid.c b/drivers/hid/intel-ish-hid/ishtp-hid.c
-index 14c271d7d8a94..0377dac3fc9a0 100644
---- a/drivers/hid/intel-ish-hid/ishtp-hid.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-hid.c
-@@ -261,12 +261,14 @@ int ishtp_hid_probe(unsigned int cur_hid_dev,
-  */
- void ishtp_hid_remove(struct ishtp_cl_data *client_data)
- {
-+	void *data;
- 	int i;
- 
- 	for (i = 0; i < client_data->num_hid_devices; ++i) {
- 		if (client_data->hid_sensor_hubs[i]) {
--			kfree(client_data->hid_sensor_hubs[i]->driver_data);
-+			data = client_data->hid_sensor_hubs[i]->driver_data;
- 			hid_destroy_device(client_data->hid_sensor_hubs[i]);
-+			kfree(data);
- 			client_data->hid_sensor_hubs[i] = NULL;
- 		}
- 	}
--- 
-2.39.5
-
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2212,6 +2212,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
+ 	/* KONTRON SinglePC may cause a stall at runtime resume */
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
++	/* Dell ALC3271 */
++	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
+ 	{}
+ };
+ #endif /* CONFIG_PM */
 
 
 
