@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-121740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78424A59C11
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F4CA59D6C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEAB916C250
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B46913A889C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518E3231A4D;
-	Mon, 10 Mar 2025 17:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A73E233703;
+	Mon, 10 Mar 2025 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpBOjxNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkVTNow7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B36231A2D;
-	Mon, 10 Mar 2025 17:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5922322154C;
+	Mon, 10 Mar 2025 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626492; cv=none; b=e0bkYayKudBQxjecV8os8PFae82cI3uVT5Tnicn3ZKgMzz4+e4/qWGCFZIqmX3e+6sPVs9Y3b5jLtyrwN2QiJFlLTlEFthkpiyTTjs4KW0H/hrVFcdF0Gx0K1kaNQDSQqWe5Ktp/j5wB671eIieMdvJlyVdPady08kBAuGSJSt0=
+	t=1741627208; cv=none; b=eYAPvXVlqXaPqkCVt/w5n7eeH/V5SUYYJxb4V41NrvZwyW/jhKPyjSfP6oQKDbUy8tbkwmlxflk2PduB1SNvqQ1f3oBqL3pmRAv49pNqHwgDbPtNHlkWe7jaUi0RAO0O+ySKIiwwtCyTo/8gscRSE0X6Y+lEwvggOw1vvoGrcaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626492; c=relaxed/simple;
-	bh=p4X1MjHaqegkxzbOzWwxVO7twSPcWhxj6AYWwSiuWww=;
+	s=arc-20240116; t=1741627208; c=relaxed/simple;
+	bh=vN4AKFS+wYiXMqUUkZ6C51bLGJ/yD696zQBFfr6Q5Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnRxMUfBH7rKboefnKCg1f5MC06e6v5kod1BbeTAQr0bxB7+/iOsZuFgRdC3hCmuAJVbK7kZ2idwoz3N9c7NTv7XJDqVAC4vAT7D6mWCQab/gMPplQa2TQHhQDmr7kz3lqeGl2SpXG48cJ9wQ1zax9nPkJ+Kcivh82fp2vQE0MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpBOjxNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257A9C4CEE5;
-	Mon, 10 Mar 2025 17:08:10 +0000 (UTC)
+	 MIME-Version; b=FMsFArc8i3/FlNqj8B0+yfdO/47p7X19qcyHvleXYQo8moh2Hq23oksNjpSEC1+p16NuwD7wTHUGfiAVPlzIEUCmsFRh8vL5IqMhU+kENma1tsFjr0zFdrp9XFoLBSRNpcCIwlfG7+U34dqyCaf6usSQGvN7z2Ni2IK2Z5MOaaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkVTNow7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D47C4CEE5;
+	Mon, 10 Mar 2025 17:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626491;
-	bh=p4X1MjHaqegkxzbOzWwxVO7twSPcWhxj6AYWwSiuWww=;
+	s=korg; t=1741627208;
+	bh=vN4AKFS+wYiXMqUUkZ6C51bLGJ/yD696zQBFfr6Q5Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpBOjxNOQfObkQhTzVuLI7V4uKFkVfK/Sy5vm9gHI6Zk2m2OCO+wQz6kSTGxYw4/o
-	 C9J1saoxIrW0aV2L+aMtZmrQ/AzzwRHVPJzEDA8wgnzUJJjYxHgqAu0exNRtHg2twX
-	 02zhgaua110e6ECHUZvEmnd6JUUFum+o7k+RfiWw=
+	b=GkVTNow7LUJkQ6HOliRaS21hHJaNnpVInLsjFsQXpGFq9BUexsazQnC69zD435o8R
+	 YjrAi1LcBBsvB1aRDeok3qAbg2Q4PhSwhH3KaxEj2xzjXabOmYrv5skA1M9FPSK5wU
+	 b6VQIrEX/k+mKuV9Bcu2fyHXHbfGho0hA4W5lgmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.13 011/207] LoongArch: Convert unreachable() to BUG()
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 051/269] rust: alloc: add `Vec` to prelude
 Date: Mon, 10 Mar 2025 18:03:24 +0100
-Message-ID: <20250310170448.214363483@linuxfoundation.org>
+Message-ID: <20250310170459.759400642@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit da64a2359092ceec4f9dea5b329d0aef20104217 upstream.
+commit 3145dc91c3c0ad945f06354385a6eb89d22becdb upstream.
 
-When compiling on LoongArch, there exists the following objtool warning
-in arch/loongarch/kernel/machine_kexec.o:
+Now that we removed `VecExt` and the corresponding includes in
+prelude.rs, add the new kernel `Vec` type instead.
 
-  kexec_reboot() falls through to next function crash_shutdown_secondary()
-
-Avoid using unreachable() as it can (and will in the absence of UBSAN)
-generate fall-through code. Use BUG() so we get a "break BRK_BUG" trap
-(with unreachable annotation).
-
-Cc: stable@vger.kernel.org  # 6.12+
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-22-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/machine_kexec.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/kernel/prelude.rs |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/machine_kexec.c
-+++ b/arch/loongarch/kernel/machine_kexec.c
-@@ -126,14 +126,14 @@ void kexec_reboot(void)
- 	/* All secondary cpus go to kexec_smp_wait */
- 	if (smp_processor_id() > 0) {
- 		relocated_kexec_smp_wait(NULL);
--		unreachable();
-+		BUG();
- 	}
- #endif
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -14,7 +14,7 @@
+ #[doc(no_inline)]
+ pub use core::pin::Pin;
  
- 	do_kexec = (void *)reboot_code_buffer;
- 	do_kexec(efi_boot, cmdline_ptr, systable_ptr, start_addr, first_ind_entry);
+-pub use crate::alloc::{flags::*, Box, KBox, KVBox, KVVec, KVec, VBox, VVec};
++pub use crate::alloc::{flags::*, Box, KBox, KVBox, KVVec, KVec, VBox, VVec, Vec};
  
--	unreachable();
-+	BUG();
- }
- 
- 
+ #[doc(no_inline)]
+ pub use macros::{module, pin_data, pinned_drop, vtable, Zeroable};
 
 
 
