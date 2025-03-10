@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6817A59E5B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46DDA59F5E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A30133A52C3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86DF21889E81
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A831230BF0;
-	Mon, 10 Mar 2025 17:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5FC23026D;
+	Mon, 10 Mar 2025 17:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lk+beIHT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccjol8Mw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E5922D4C3;
-	Mon, 10 Mar 2025 17:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC09018DB24;
+	Mon, 10 Mar 2025 17:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627723; cv=none; b=dYJgjvBdiMMR6Tqt8rM5lwZ6eHbxEFfUTur9dpxsicVu8Q4thtJgBzN6U+Kz8jga6eujafKnlwGD68G5qBnsbXTqDYq5HrVnKPx8RVYNC5KqG0xo1H5jtZTimaDDdLexaNZAEGFKlgI18VfrI2iu3MJonTiOyvzZorvBlQJNOe8=
+	t=1741628378; cv=none; b=ARyjNBU4f/Tv3/L/7c+ZMXk6WrdXccQIRFc27Q1CQ96g74CJqN1Xn6oF0CvEMhJfg8CWYnfIJ03f/vqdGDmGUj93IE9aNZN9Dj4ExgBT+3P55qNfCdAD9O0o6lSdUJDPbcdbiUpquzaYSqy0Jh5kIDRjd+ivuJOcoxeKrcHgHkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627723; c=relaxed/simple;
-	bh=NTli4D1i+Q6crMorWj0MBv6jhgoZX68OGoLzvw7cUj4=;
+	s=arc-20240116; t=1741628378; c=relaxed/simple;
+	bh=Z3RRMe+mLjuCDnqZyAxVHzAcVAxZuGcfxLaOCNeoc+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIshfGU8vHlaPxMyCaeXrdCUZgXzg3TUBzbct5WYf8Nx6H8T7Ip/f9VbbLY7umAsrxK9No1XpWBXKRa8yLT/fP7wPoey0h1TMVpCCdtw/hvdQiinbuMgcutiDFPoWxYcrIaBBLZK9rT7jXm1dF2QqQmwFJYuoFFdbf6DkIdhv0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lk+beIHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D370AC4CEE5;
-	Mon, 10 Mar 2025 17:28:42 +0000 (UTC)
+	 MIME-Version; b=N9hvkyp+SuvgF9k2fQT7JQiCqxzHUQu58ypTLAFwL6/gXeexwAJa/GeuPYwrlnOAaYstOaZxTKK1WoBPoIZQ9xCefUJB9yypGL4jV/lmsgksUXAi92ZotZOlyVBAtnxosPGe1TsQUZD4Ku69BMvnwvoDEsSB7rHscI6hMzaAyBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccjol8Mw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57536C4CEED;
+	Mon, 10 Mar 2025 17:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627723;
-	bh=NTli4D1i+Q6crMorWj0MBv6jhgoZX68OGoLzvw7cUj4=;
+	s=korg; t=1741628377;
+	bh=Z3RRMe+mLjuCDnqZyAxVHzAcVAxZuGcfxLaOCNeoc+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lk+beIHT9sQ9Lh2sWxy/F/stFmSmmfJ00J0qypXA2tSmkLfCZUX4FePmiX3eubUiL
-	 xU3ygFe/0shob6RD9kzMAiKxVF0nSTR9f1BZIo3mFspP6KGmoo2O8naDpLhEdvCD7l
-	 VrsM3mBMNzQuLg/JE4EKCs9sdbTxsNjmpDnss0BE=
+	b=ccjol8Mw+SOYXL/Yis7vhTqizYJsTW44/DomowJvPiKcwyd1cuDRnH9Gl/SC93Pnl
+	 8UwlQ7JFoXOxpsbsGPvGsxFEbQFoKBi0sGDKNO5bspQsZ7ioTiKSbAjjaqzebEX4gI
+	 TYhABdv6JO9WWwCtweFQumzpMVxfWYkpH3ezkWKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 228/269] usb: xhci: Enable the TRB overfetch quirk on VIA VL805
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 037/109] wifi: iwlwifi: limit printed string from FW file
 Date: Mon, 10 Mar 2025 18:06:21 +0100
-Message-ID: <20250310170506.776127553@linuxfoundation.org>
+Message-ID: <20250310170429.036973701@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit c133ec0e5717868c9967fa3df92a55e537b1aead upstream.
+[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
 
-Raspberry Pi is a major user of those chips and they discovered a bug -
-when the end of a transfer ring segment is reached, up to four TRBs can
-be prefetched from the next page even if the segment ends with link TRB
-and on page boundary (the chip claims to support standard 4KB pages).
+There's no guarantee here that the file is always with a
+NUL-termination, so reading the string may read beyond the
+end of the TLV. If that's the last TLV in the file, it can
+perhaps even read beyond the end of the file buffer.
 
-It also appears that if the prefetched TRBs belong to a different ring
-whose doorbell is later rung, they may be used without refreshing from
-system RAM and the endpoint will stay idle if their cycle bit is stale.
+Fix that by limiting the print format to the size of the
+buffer we have.
 
-Other users complain about IOMMU faults on x86 systems, unsurprisingly.
-
-Deal with it by using existing quirk which allocates a dummy page after
-each transfer ring segment. This was seen to resolve both problems. RPi
-came up with a more efficient solution, shortening each segment by four
-TRBs, but it complicated the driver and they ditched it for this quirk.
-
-Also rename the quirk and add VL805 device ID macro.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://github.com/raspberrypi/linux/issues/4685
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215906
-CC: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225095927.2512358-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c |    3 ++-
- drivers/usb/host/xhci-pci.c |   10 +++++++---
- drivers/usb/host/xhci.h     |    2 +-
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2443,7 +2443,8 @@ int xhci_mem_init(struct xhci_hcd *xhci,
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+	if (xhci->quirks & XHCI_TRB_OVERFETCH)
-+		/* Buggy HC prefetches beyond segment bounds - allocate dummy space at the end */
- 		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
- 				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
- 	else
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -38,6 +38,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 024c37062a60b..789393aa68cd8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1141,7 +1141,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
  
-+#define PCI_DEVICE_ID_VIA_VL805			0x3483
-+
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
-@@ -424,8 +426,10 @@ static void xhci_pci_quirks(struct devic
- 			pdev->device == 0x3432)
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 
--	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
-+	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
- 		xhci->quirks |= XHCI_LPM_SUPPORT;
-+		xhci->quirks |= XHCI_TRB_OVERFETCH;
-+	}
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
-@@ -473,11 +477,11 @@ static void xhci_pci_quirks(struct devic
- 
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 		}
- 
- 		if (pdev->device == 0x9203)
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 	}
- 
- 	if (pdev->vendor == PCI_DEVICE_ID_CADENCE &&
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1621,7 +1621,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
--#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+ 			if (tlv_len != sizeof(*fseq_ver))
+ 				goto invalid_tlv_len;
+-			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
++			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
+ 				 fseq_ver->version);
+ 			}
+ 			break;
+-- 
+2.39.5
+
 
 
 
