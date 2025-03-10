@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-122455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DEAA59FBD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA57A59F31
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEEB13A521C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27D2318904D1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658C322D4C3;
-	Mon, 10 Mar 2025 17:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D3A18DB24;
+	Mon, 10 Mar 2025 17:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUa36ccb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrgQHnIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2247222DFB1;
-	Mon, 10 Mar 2025 17:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763EB22ACDC;
+	Mon, 10 Mar 2025 17:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628541; cv=none; b=PnSvKAlfoNxWxk/85HBCoHLSprB6RxqtBbdSStZXTsNKM7OLP2I4RrhCaXzyoOCAq6LvG51+0Wkf6toANbEUvdCDrbAteRTHlzfS1SJv5bOaDldT5QDDTUp3nxacxlpIqLnCHSevZhHLCsi07U0mR5kit/b46DCTTdd/H2xNRsI=
+	t=1741628274; cv=none; b=WfiKpcBIfq8RXOE5ACo9pwk2Omvr7stlQiLUSbXVDDB73F/tnmUl8zcDX/CIlKOBz5Hxh9OOQIot+MzdUrbwLVGSF9WG6sODl9hz/60WmGhnY8MNbX3bvDRAVUrgeS0UAob4G/KLim9dTHoZ5lWn3inOWvnMVCw4cmBgKm1cICw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628541; c=relaxed/simple;
-	bh=RoGrguD4LEcWs611ktCH2bFqQC+I14oVZ74DdNpI0V4=;
+	s=arc-20240116; t=1741628274; c=relaxed/simple;
+	bh=700NkAp/4AxpLOMLkeTAKyLxVEQzinTUCm7LcZgxDiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hk0qInGZbOiCEuANhMW/QjI7dBSlXcJtW75/FR8cdOV4i24jyPDf7KE4aIQSwFqyFNOU3RSruQOg8nEL3IHwkm6sCbKK0ZEgr0x2F+XQL3tv2U3yS/XThMuzxSKlW2UN05tJdxjsCM1pto9rUzKDJ3x3K2YRDMp8eRWPT2omomo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUa36ccb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4373BC4CEE5;
-	Mon, 10 Mar 2025 17:42:20 +0000 (UTC)
+	 MIME-Version; b=RLbeI4R8S0nSeqSs82rE2J/FFSKKthGmiDrgNh/NWv0bFMHEE4vJEoKM1jjUT0H7+q5uKer+ouJohRnwTBxgs6TckvfnXNtn8it6Ze+Ydb8eej58gRmkFSOdL5bt/9o0QijlugJfPnGtHRtd7FALPUzn6XZ9OVX4iDDMR9jh6gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrgQHnIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D296C4CEEC;
+	Mon, 10 Mar 2025 17:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628540;
-	bh=RoGrguD4LEcWs611ktCH2bFqQC+I14oVZ74DdNpI0V4=;
+	s=korg; t=1741628273;
+	bh=700NkAp/4AxpLOMLkeTAKyLxVEQzinTUCm7LcZgxDiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUa36ccbHv1oBHKzHzAObQ19TiOBkhAz5Rh3IhgB5bfzn2TGdYQoKCLOvd7SOucld
-	 er86ubi5E0Wwn4+zvx5kLan02ZZ/hIcOAbUdbLx8xCNoAe1JRt5KR47wkfsyKv49hF
-	 vIV85TS1Tha8Q3g48tKOfKT4sDrg662WmQmqClZo=
+	b=OrgQHnIRZ7/D3FHIc5uQ8JwTbMSrhSZvdD9ObrrGF75rsjUnEzSzPYqTCigMbICdq
+	 g5uhXdThBWOEr+uKZcV8hmOk5tKL/epAe11i7uxd5tcE56IdkkSpkmG4Q/fgxjf4ky
+	 iNILNVimvok4xMWQTYHMRFZNG2WfMvX2WHlawNSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.1 086/109] bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 136/145] Revert "KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()"
 Date: Mon, 10 Mar 2025 18:07:10 +0100
-Message-ID: <20250310170430.983555680@linuxfoundation.org>
+Message-ID: <20250310170440.246428388@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit a321d163de3d8aa38a6449ab2becf4b1581aed96 upstream.
+This reverts commit 15d60c13b704f770ba45c58477380d4577cebfa3 which is
+commit c9be85dabb376299504e0d391d15662c0edf8273 upstream.
 
-There are multiple places from where the recovery work gets scheduled
-asynchronously. Also, there are multiple places where the caller waits
-synchronously for the recovery to be completed. One such place is during
-the PM shutdown() callback.
+It should not have been applied.
 
-If the device is not alive during recovery_work, it will try to reset the
-device using pci_reset_function(). This function internally will take the
-device_lock() first before resetting the device. By this time, if the lock
-has already been acquired, then recovery_work will get stalled while
-waiting for the lock. And if the lock was already acquired by the caller
-which waits for the recovery_work to be completed, it will lead to
-deadlock.
-
-This is what happened on the X1E80100 CRD device when the device died
-before shutdown() callback. Driver core calls the driver's shutdown()
-callback while holding the device_lock() leading to deadlock.
-
-And this deadlock scenario can occur on other paths as well, like during
-the PM suspend() callback, where the driver core would hold the
-device_lock() before calling driver's suspend() callback. And if the
-recovery_work was already started, it could lead to deadlock. This is also
-observed on the X1E80100 CRD.
-
-So to fix both issues, use pci_try_reset_function() in recovery_work. This
-function first checks for the availability of the device_lock() before
-trying to reset the device. If the lock is available, it will acquire it
-and reset the device. Otherwise, it will return -EAGAIN. If that happens,
-recovery_work will fail with the error message "Recovery failed" as not
-much could be done.
-
-Cc: stable@vger.kernel.org # 5.12
-Reported-by: Johan Hovold <johan@kernel.org>
-Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
-Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Analyzed-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Link: https://lore.kernel.org/r/20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/kvm/e500_mmu_host.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -824,8 +824,9 @@ static void mhi_pci_recovery_work(struct
- err_unprepare:
- 	mhi_unprepare_after_power_down(mhi_cntrl);
- err_try_reset:
--	if (pci_reset_function(pdev))
--		dev_err(&pdev->dev, "Recovery failed\n");
-+	err = pci_try_reset_function(pdev);
-+	if (err)
-+		dev_err(&pdev->dev, "Recovery failed: %d\n", err);
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -242,7 +242,7 @@ static inline int tlbe_is_writable(struc
+ 	return tlbe->mas7_3 & (MAS3_SW|MAS3_UW);
  }
  
- static void health_check(struct timer_list *t)
+-static inline bool kvmppc_e500_ref_setup(struct tlbe_ref *ref,
++static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
+ 					 struct kvm_book3e_206_tlb_entry *gtlbe,
+ 					 kvm_pfn_t pfn, unsigned int wimg)
+ {
+@@ -252,7 +252,11 @@ static inline bool kvmppc_e500_ref_setup
+ 	/* Use guest supplied MAS2_G and MAS2_E */
+ 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
+ 
+-	return tlbe_is_writable(gtlbe);
++	/* Mark the page accessed */
++	kvm_set_pfn_accessed(pfn);
++
++	if (tlbe_is_writable(gtlbe))
++		kvm_set_pfn_dirty(pfn);
+ }
+ 
+ static inline void kvmppc_e500_ref_release(struct tlbe_ref *ref)
+@@ -333,7 +337,6 @@ static inline int kvmppc_e500_shadow_map
+ 	unsigned int wimg = 0;
+ 	pgd_t *pgdir;
+ 	unsigned long flags;
+-	bool writable = false;
+ 
+ 	/* used to check for invalidations in progress */
+ 	mmu_seq = kvm->mmu_invalidate_seq;
+@@ -487,9 +490,7 @@ static inline int kvmppc_e500_shadow_map
+ 			goto out;
+ 		}
+ 	}
+-	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
+-	if (writable)
+-		kvm_set_pfn_dirty(pfn);
++	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
+ 
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
 
 
 
