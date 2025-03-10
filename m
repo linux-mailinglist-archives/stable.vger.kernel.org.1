@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E3BA59D55
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A30A5A138
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730A316F004
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BDA3AD644
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AD32309B0;
-	Mon, 10 Mar 2025 17:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627A122DFF3;
+	Mon, 10 Mar 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Im8iDPOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJ49pPBP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8204D22154C;
-	Mon, 10 Mar 2025 17:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F077227EA0;
+	Mon, 10 Mar 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627202; cv=none; b=ggnyb1p9mrROVlIH50oQ0S4G6OcpafdtFUWjr5MLnQt7tC1kL14mOD6gG5++9b8N7x3RnZylKt6RxqjcWx0vYQmtijcWaHK+QYBKxJ+S5tnBlOXvBmU5v19okRcRiAhv6poF7Q8JDPeJPY1TwRhTRb3BD2QZNXMHnJz60BOFJvs=
+	t=1741629499; cv=none; b=hRpQ77+OuZt+TJ824tfA4ckryZd3+JUvjHgNU9nmFVqpmREzEtAGKpLh4P04+p3ugsWMRFDmuA+qaMqI71akBWmupHl+ANnV0V0/Gl29CZtvDelcV7sx6OfX8CB1IiuHyt86sIYYqtpIPENJDbgWzo30ZEmPdkBcjcZ/YKUHHLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627202; c=relaxed/simple;
-	bh=9npQnosfQVa2/qAKa9hgFna72jpapv4u4w7xnuyGs7Y=;
+	s=arc-20240116; t=1741629499; c=relaxed/simple;
+	bh=gBbbQBZR8DBFYNzAmFLpO48E9x3C5vBvBuW8ku23BHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BcS9NtWlr1XEYOHCAxHo+8lSwQFvgOtZ7SjbtHjwi34PLe7SPZKBeVUp5HHbfaZye7efwe8++k/Ktq2H7SJK3/IzI1jA/xO3r1IbaC6/xKzCyuhc/aMIBMpXOjO7CFxk0YRYuZELMjStdqYSXPHhVP4HqxhINAHALInVkkqLq/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Im8iDPOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09837C4CEE5;
-	Mon, 10 Mar 2025 17:20:01 +0000 (UTC)
+	 MIME-Version; b=V+Olr/mfRBetfj9+PlvpxTn762WXiM3Su8sMcKiNbUdOzjf4X2N37DCcdAj6u0S8d3I3xsfaoQMtPhW122cxnU56B88KcCGAHW+io3GmlMMDI/5/O7u7SD01asyInpckvU+Vul1w8heq3z3i1MZKXHnzk2UNc+oNokFJfB7sbFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJ49pPBP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB87C4CEE5;
+	Mon, 10 Mar 2025 17:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627202;
-	bh=9npQnosfQVa2/qAKa9hgFna72jpapv4u4w7xnuyGs7Y=;
+	s=korg; t=1741629499;
+	bh=gBbbQBZR8DBFYNzAmFLpO48E9x3C5vBvBuW8ku23BHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Im8iDPOMQS2IKjkGyUfVG/tCBy1hZGHcnegs7eqsJ7r03BXRFyaj6VeR2uXyHOLg5
-	 nggFTfFks53+BH6TgmkLpR/JoYVuvCxVaSotXh/Ex3SJFeE70Ad2l8VZ32UDJRo+kv
-	 4GsFNGfz79yLgPzoNgfDdnJA58r2yRyBKDNoccu4=
+	b=RJ49pPBP/rpEembFzpkhZbaYRDUbg0NBISXVy/UwSbsOmfKohHsrUR2Fs5Hbwt0pJ
+	 V+3LvE2Dn8WKvKomdzTHPQhW/eB0hXPiPrJSyYt1Ozxtn7aLqvm5OXbLYr4HYz3/vJ
+	 7aA2Z9JqCjGHTDNu76CjSBXSYPd2C3PANR9Rhe94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/269] cifs: Remove symlink member from cifs_open_info_data union
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 314/620] crypto: qce - unregister previously registered algos in error path
 Date: Mon, 10 Mar 2025 18:02:40 +0100
-Message-ID: <20250310170457.999210129@linuxfoundation.org>
+Message-ID: <20250310170558.011817295@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 65c49767dd4fc058673f9259fda1772fd398eaa7 ]
+commit e80cf84b608725303113d6fe98bb727bf7b7a40d upstream.
 
-Member 'symlink' is part of the union in struct cifs_open_info_data. Its
-value is assigned on few places, but is always read through another union
-member 'reparse_point'. So to make code more readable, always use only
-'reparse_point' member and drop whole union structure. No function change.
+If we encounter an error when registering alorithms with the crypto
+framework, we just bail out and don't unregister the ones we
+successfully registered in prior iterations of the loop.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 9df23801c83d ("smb311: failure to open files of length 1040 when mounting with SMB3.1.1 POSIX extensions")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add code that goes back over the algos and unregisters them before
+returning an error from qce_register_algs().
+
+Cc: stable@vger.kernel.org
+Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h | 5 +----
- fs/smb/client/inode.c    | 2 +-
- fs/smb/client/smb1ops.c  | 4 ++--
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/crypto/qce/core.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 05274121e46f0..0979feb30bedb 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -209,10 +209,7 @@ struct cifs_cred {
+--- a/drivers/crypto/qce/core.c
++++ b/drivers/crypto/qce/core.c
+@@ -48,16 +48,19 @@ static void qce_unregister_algs(struct q
+ static int qce_register_algs(struct qce_device *qce)
+ {
+ 	const struct qce_algo_ops *ops;
+-	int i, ret = -ENODEV;
++	int i, j, ret = -ENODEV;
  
- struct cifs_open_info_data {
- 	bool adjust_tz;
--	union {
--		bool reparse_point;
--		bool symlink;
--	};
-+	bool reparse_point;
- 	struct {
- 		/* ioctl response buffer */
- 		struct {
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index e11e67af760f4..a3f0835e12be3 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -968,7 +968,7 @@ cifs_get_file_info(struct file *filp)
- 		/* TODO: add support to query reparse tag */
- 		data.adjust_tz = false;
- 		if (data.symlink_target) {
--			data.symlink = true;
-+			data.reparse_point = true;
- 			data.reparse.tag = IO_REPARSE_TAG_SYMLINK;
- 		}
- 		path = build_path_from_dentry(dentry, page);
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
-index c70f4961c4eb7..bd791aa54681f 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -551,7 +551,7 @@ static int cifs_query_path_info(const unsigned int xid,
- 	int rc;
- 	FILE_ALL_INFO fi = {};
- 
--	data->symlink = false;
-+	data->reparse_point = false;
- 	data->adjust_tz = false;
- 
- 	/* could do find first instead but this returns more info */
-@@ -592,7 +592,7 @@ static int cifs_query_path_info(const unsigned int xid,
- 		/* Need to check if this is a symbolic link or not */
- 		tmprc = CIFS_open(xid, &oparms, &oplock, NULL);
- 		if (tmprc == -EOPNOTSUPP)
--			data->symlink = true;
-+			data->reparse_point = true;
- 		else if (tmprc == 0)
- 			CIFSSMBClose(xid, tcon, fid.netfid);
+ 	for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
+ 		ops = qce_ops[i];
+ 		ret = ops->register_algs(qce);
+-		if (ret)
+-			break;
++		if (ret) {
++			for (j = i - 1; j >= 0; j--)
++				ops->unregister_algs(qce);
++			return ret;
++		}
  	}
--- 
-2.39.5
-
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int qce_handle_request(struct crypto_async_request *async_req)
 
 
 
