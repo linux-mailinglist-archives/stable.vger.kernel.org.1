@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-123058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD8BA5A29D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45EB9A59F2A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE5113AFCFA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF96E188FE99
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5DA1C5D6F;
-	Mon, 10 Mar 2025 18:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE5A18DB24;
+	Mon, 10 Mar 2025 17:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uM7UeOMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxkklIQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3961C3F34;
-	Mon, 10 Mar 2025 18:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7CB1B3927;
+	Mon, 10 Mar 2025 17:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630924; cv=none; b=c+aTi32ENHcBCUPQpUKnh+H3EUX1nm9IJYqaWAQYPl+gY2R/KDBIs0amYRJAcTCwVge6Zw+ZoRPvtdm5IkaJVHdQ9n+0EPT1Nqdvlz8miP+2gbNVG886u4R2EbjRWnaF1cLi2yINuhIkxE7YHjImy7haYFG+cA9nLsXqcMUzOZg=
+	t=1741628253; cv=none; b=TkRUMNQt/WrtZl80o80DQk4mxlrAbSn/AkIoF29zYjXeC7g7wnR+IWOvI0MMqbmo2lrw4eVTuwnQTYyQAD7Qpvv4IyojjlGPQEjfPErkuf0iBd7G1cfrBD0IYOoCjeHHom5I8kGsfpdyeqm+JD82R8I0YNn35Bf9XNBTjFYG3UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630924; c=relaxed/simple;
-	bh=yNAWlPCvcTASrILR6GIMRPysVVkhGH1wDM6PtJzr5lQ=;
+	s=arc-20240116; t=1741628253; c=relaxed/simple;
+	bh=Y/gHGP/cpJOCeXGKdmpmpzlht57NTNhChzP59BHOn4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn6mt4LHZUfgSFsEOk7fS0qs7SiNLWFEAfHsm/sn3ifDgQdgkdxZC8cwR+PxT4+r2wFEyvrt7kjR3wRuOYJUvWJSds5aQvlk235tvAz+XOS9FoybHu3ttSWe1SehQi4n1cXRQQ9u7ovRyWupNKiDXJyv9d/JqhqBv7LFv/qJ0+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uM7UeOMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CFBC4CEE5;
-	Mon, 10 Mar 2025 18:22:03 +0000 (UTC)
+	 MIME-Version; b=q1Lb+vZcqCS/p4yREJ43jLu8iGzl9BAD2AlEW6xmlFpCaB4Rab5/Viz361PNhe1LbaHQy/eLZA3OlDnU0SYfmwviIfx+Yiy7h9xndCflvsGfZbxtd/HrcHOzYocREaZIR8tBJIf64iS6adKaJIzqaBI1X/EcW7ghnHnHx/dQfl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxkklIQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4582DC4CEE5;
+	Mon, 10 Mar 2025 17:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630924;
-	bh=yNAWlPCvcTASrILR6GIMRPysVVkhGH1wDM6PtJzr5lQ=;
+	s=korg; t=1741628253;
+	bh=Y/gHGP/cpJOCeXGKdmpmpzlht57NTNhChzP59BHOn4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uM7UeOMOGqSLXpoaYZQF+3jIhTLS3ccS03STK+iYY92W7W6hOp1eeS6iH2NukY/oE
-	 n/dVje3GW98jmO4RCUxQO+pmM150WAnJW4ezuto1GVmOFHZXIwFuudvr4yMVUxxhAV
-	 7sJwhtlul8Qqpb+WftFZPkyEYcsSdhbJsBuLjJ+s=
+	b=gxkklIQ1YS+5RrIVWiEIIuBE1Q9SCQXMUxZP1FDu63qnGR/ntXXmQbH1AJEUhEk5+
+	 AmmLjM1aJ3EPEfN3U+ZjHvnudNf3duqDLEn/nAr4Y87piSq6Okzzf/wYqCddNe/A3R
+	 FqJb8P0jhs0QqmAIHdkTQ9V59OHxHudgOnwmn2aE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.15 581/620] usb: renesas_usbhs: Call clk_put()
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 133/145] Revert "KVM: e500: always restore irqs"
 Date: Mon, 10 Mar 2025 18:07:07 +0100
-Message-ID: <20250310170608.469737838@linuxfoundation.org>
+Message-ID: <20250310170440.128564740@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b5ea08aa883da05106fcc683d12489a4292d1122 upstream.
+This reverts commit b9d93eda1214985d1b3d00a0f9d4306282a5b189 which is
+commit 87ecfdbc699cc95fac73291b52650283ddcf929d upstream.
 
-Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
-clk_put() on priv->clks[0] on error path.
+It should not have been applied.
 
-Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com
+Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/e500_mmu_host.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device
- 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
- 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
- 		priv->clks[1] = NULL;
--	else if (IS_ERR(priv->clks[1]))
-+	else if (IS_ERR(priv->clks[1])) {
-+		clk_put(priv->clks[0]);
- 		return PTR_ERR(priv->clks[1]);
-+	}
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -479,6 +479,7 @@ static inline int kvmppc_e500_shadow_map
+ 		if (pte_present(pte)) {
+ 			wimg = (pte_val(pte) >> PTE_WIMGE_SHIFT) &
+ 				MAS2_WIMGE_MASK;
++			local_irq_restore(flags);
+ 		} else {
+ 			local_irq_restore(flags);
+ 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
+@@ -487,9 +488,8 @@ static inline int kvmppc_e500_shadow_map
+ 			goto out;
+ 		}
+ 	}
+-	local_irq_restore(flags);
+-
+ 	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
++
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
  
- 	return 0;
- }
 
 
 
