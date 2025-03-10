@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C627A59D95
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1091BA59C52
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA29716F75F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15EAE16E325
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7DC2309B0;
-	Mon, 10 Mar 2025 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FDE230D3D;
+	Mon, 10 Mar 2025 17:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tUcT27q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyylUeiR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC651DE89C;
-	Mon, 10 Mar 2025 17:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0638F232787;
+	Mon, 10 Mar 2025 17:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627339; cv=none; b=Ii37PPxS4UalrxG6I7CgNPTMDfW+JsOJG4x5EeQvPaCtHd+xoXgsmxqXRQapN7+lAlpZcaoN8+msyoczwb/XgqxxOcqvHH7NURHUUrlvlG1aLUSail9uw1M52+AwYf3WPdNqehqqPN3Cw7keQtvucEbJ5pIsE+o7GChJgT6nGXI=
+	t=1741626651; cv=none; b=jiW/0nWmHB13SL4gipyKq/ExrD16uqMAzECkUb6MDRWj6COLVAWsujDMNax3hfdkazNbTyJogM0PJMNlMHW3ayk/FkEDeaVpNfwwQe5ZaYZ3RBwDO9WTuRiORVWybgYa0VqWUWpqP4oyV+5YR1WG+0YL74IQ4lh5c8KKgmXGbWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627339; c=relaxed/simple;
-	bh=j+XNxy1tQdcQIV3ZYWcBMxQnWW7DnhvqJFsi16HAvF0=;
+	s=arc-20240116; t=1741626651; c=relaxed/simple;
+	bh=X/Z0heMr3HPAfVaIjYbkUvzkLa43h75AJAMZx8tqr1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2OA6raG+qdvxwWMMmx4CkA1XN/6TgCsu6QHs1Z0tWdduIAnPtDE+n4FZP4kwLIXo2j4RShg8ROsXVael9IBuHdoEfGl/Ik51kBkraS/DtjppHU4jHkdu0B7TgFddSrEZrtL3xghiuKFXHHBa9s50uADZs4Gsj85jrQ2zeehawA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tUcT27q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23093C4CEEC;
-	Mon, 10 Mar 2025 17:22:17 +0000 (UTC)
+	 MIME-Version; b=mMRrIkuN1EJj+Q/+OayyKUXvIIDZci5IXFYGz1Ct+w8CDyvi1AzLlVm4OyweO4ise0CzItUlZxe6PRcunH2knP7RnNSgGnM6yYXJ4fl0mv2E5hb7mw0chyitXic+MSRPvKHLSwsZgqb7raRHSg5zbKhYHKO7dCSx8Bk0Ax8Xp1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyylUeiR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8659AC4CEE5;
+	Mon, 10 Mar 2025 17:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627338;
-	bh=j+XNxy1tQdcQIV3ZYWcBMxQnWW7DnhvqJFsi16HAvF0=;
+	s=korg; t=1741626650;
+	bh=X/Z0heMr3HPAfVaIjYbkUvzkLa43h75AJAMZx8tqr1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tUcT27qyIX7F7BTB3SDtuwLXMpedrqXORdXQ8sYenYoxWNoVrbvYp21JDw0L13J3
-	 8b+oX1Sk12T35n129MHqTvJu+mTsz8ei/nlnEvGaZ+JtSZQMZ4kC0clv0IWmgUhnIN
-	 U7mZTS3sIdEmiX8Jrkh7+dvO0r0AE93WDzupBKR0=
+	b=zyylUeiR105t6d1AF+DNY7S16fKrjqWtwksbf4Gyir5YzTcEQR1V7Lw0SJXtVJ4x+
+	 Va443mLuQpfY+OiUNZKsVMtHbPuKYG9iryBU23z2Dg4YnXQ83mLxwZCtzesSBXHnNq
+	 I78Pl9dgw27TzFBvGCNwPohvx6qLAB7tFofJ89HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 078/269] LoongArch: Set max_pfn with the PFN of the last page
+	Brendan King <brendan.king@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>
+Subject: [PATCH 6.13 038/207] drm/imagination: Hold drm_gem_gpuva lock for unmap
 Date: Mon, 10 Mar 2025 18:03:51 +0100
-Message-ID: <20250310170500.833510390@linuxfoundation.org>
+Message-ID: <20250310170449.288114767@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,259 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Brendan King <Brendan.King@imgtec.com>
 
-commit c8477bb0a8e7f6b2e47952b403c5cb67a6929e55 upstream.
+commit a5c4c3ba95a52d66315acdfbaba9bd82ed39c250 upstream.
 
-The current max_pfn equals to zero. In this case, it causes user cannot
-get some page information through /proc filesystem such as kpagecount.
-The following message is displayed by stress-ng test suite with command
-"stress-ng --verbose --physpage 1 -t 1".
+Avoid a warning from drm_gem_gpuva_assert_lock_held in drm_gpuva_unlink.
 
- # stress-ng --verbose --physpage 1 -t 1
- stress-ng: error: [1691] physpage: cannot read page count for address 0x134ac000 in /proc/kpagecount, errno=22 (Invalid argument)
- stress-ng: error: [1691] physpage: cannot read page count for address 0x7ffff207c3a8 in /proc/kpagecount, errno=22 (Invalid argument)
- stress-ng: error: [1691] physpage: cannot read page count for address 0x134b0000 in /proc/kpagecount, errno=22 (Invalid argument)
- ...
+The Imagination driver uses the GEM object reservation lock to protect
+the gpuva list, but the GEM object was not always known in the code
+paths that ended up calling drm_gpuva_unlink. When the GEM object isn't
+known, it is found by calling drm_gpuva_find to lookup the object
+associated with a given virtual address range, or by calling
+drm_gpuva_find_first when removing all mappings.
 
-After applying this patch, the kernel can pass the test.
-
- # stress-ng --verbose --physpage 1 -t 1
- stress-ng: debug: [1701] physpage: [1701] started (instance 0 on CPU 3)
- stress-ng: debug: [1701] physpage: [1701] exited (instance 0 on CPU 3)
- stress-ng: debug: [1700] physpage: [1701] terminated (success)
-
-Cc: stable@vger.kernel.org  # 6.8+
-Fixes: ff6c3d81f2e8 ("NUMA: optimize detection of memory with no node id assigned by firmware")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org
+Fixes: 4bc736f890ce ("drm/imagination: vm: make use of GPUVM's drm_exec helper")
+Signed-off-by: Brendan King <brendan.king@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250226-hold-drm_gem_gpuva-lock-for-unmap-v2-1-3fdacded227f@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/setup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/imagination/pvr_fw_meta.c |    6 -
+ drivers/gpu/drm/imagination/pvr_vm.c      |  134 ++++++++++++++++++++++++------
+ drivers/gpu/drm/imagination/pvr_vm.h      |    3 
+ 3 files changed, 115 insertions(+), 28 deletions(-)
 
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -387,6 +387,9 @@ static void __init check_kernel_sections
-  */
- static void __init arch_mem_init(char **cmdline_p)
+--- a/drivers/gpu/drm/imagination/pvr_fw_meta.c
++++ b/drivers/gpu/drm/imagination/pvr_fw_meta.c
+@@ -527,8 +527,10 @@ pvr_meta_vm_map(struct pvr_device *pvr_d
+ static void
+ pvr_meta_vm_unmap(struct pvr_device *pvr_dev, struct pvr_fw_object *fw_obj)
  {
-+	/* Recalculate max_low_pfn for "mem=xxx" */
-+	max_pfn = max_low_pfn = PHYS_PFN(memblock_end_of_DRAM());
+-	pvr_vm_unmap(pvr_dev->kernel_vm_ctx, fw_obj->fw_mm_node.start,
+-		     fw_obj->fw_mm_node.size);
++	struct pvr_gem_object *pvr_obj = fw_obj->gem;
 +
- 	if (usermem)
- 		pr_info("User-defined physical RAM map overwrite\n");
++	pvr_vm_unmap_obj(pvr_dev->kernel_vm_ctx, pvr_obj,
++			 fw_obj->fw_mm_node.start, fw_obj->fw_mm_node.size);
+ }
+ 
+ static bool
+--- a/drivers/gpu/drm/imagination/pvr_vm.c
++++ b/drivers/gpu/drm/imagination/pvr_vm.c
+@@ -293,8 +293,9 @@ err_bind_op_fini:
+ 
+ static int
+ pvr_vm_bind_op_unmap_init(struct pvr_vm_bind_op *bind_op,
+-			  struct pvr_vm_context *vm_ctx, u64 device_addr,
+-			  u64 size)
++			  struct pvr_vm_context *vm_ctx,
++			  struct pvr_gem_object *pvr_obj,
++			  u64 device_addr, u64 size)
+ {
+ 	int err;
+ 
+@@ -318,6 +319,7 @@ pvr_vm_bind_op_unmap_init(struct pvr_vm_
+ 		goto err_bind_op_fini;
+ 	}
+ 
++	bind_op->pvr_obj = pvr_obj;
+ 	bind_op->vm_ctx = vm_ctx;
+ 	bind_op->device_addr = device_addr;
+ 	bind_op->size = size;
+@@ -598,20 +600,6 @@ err_free:
+ }
+ 
+ /**
+- * pvr_vm_unmap_all() - Unmap all mappings associated with a VM context.
+- * @vm_ctx: Target VM context.
+- *
+- * This function ensures that no mappings are left dangling by unmapping them
+- * all in order of ascending device-virtual address.
+- */
+-void
+-pvr_vm_unmap_all(struct pvr_vm_context *vm_ctx)
+-{
+-	WARN_ON(pvr_vm_unmap(vm_ctx, vm_ctx->gpuvm_mgr.mm_start,
+-			     vm_ctx->gpuvm_mgr.mm_range));
+-}
+-
+-/**
+  * pvr_vm_context_release() - Teardown a VM context.
+  * @ref_count: Pointer to reference counter of the VM context.
+  *
+@@ -703,11 +691,7 @@ pvr_vm_lock_extra(struct drm_gpuvm_exec
+ 	struct pvr_vm_bind_op *bind_op = vm_exec->extra.priv;
+ 	struct pvr_gem_object *pvr_obj = bind_op->pvr_obj;
+ 
+-	/* Unmap operations don't have an object to lock. */
+-	if (!pvr_obj)
+-		return 0;
+-
+-	/* Acquire lock on the GEM being mapped. */
++	/* Acquire lock on the GEM object being mapped/unmapped. */
+ 	return drm_exec_lock_obj(&vm_exec->exec, gem_from_pvr_gem(pvr_obj));
+ }
+ 
+@@ -772,8 +756,10 @@ err_cleanup:
+ }
+ 
+ /**
+- * pvr_vm_unmap() - Unmap an already mapped section of device-virtual memory.
++ * pvr_vm_unmap_obj_locked() - Unmap an already mapped section of device-virtual
++ * memory.
+  * @vm_ctx: Target VM context.
++ * @pvr_obj: Target PowerVR memory object.
+  * @device_addr: Virtual device address at the start of the target mapping.
+  * @size: Size of the target mapping.
+  *
+@@ -784,9 +770,13 @@ err_cleanup:
+  *  * Any error encountered while performing internal operations required to
+  *    destroy the mapping (returned from pvr_vm_gpuva_unmap or
+  *    pvr_vm_gpuva_remap).
++ *
++ * The vm_ctx->lock must be held when calling this function.
+  */
+-int
+-pvr_vm_unmap(struct pvr_vm_context *vm_ctx, u64 device_addr, u64 size)
++static int
++pvr_vm_unmap_obj_locked(struct pvr_vm_context *vm_ctx,
++			struct pvr_gem_object *pvr_obj,
++			u64 device_addr, u64 size)
+ {
+ 	struct pvr_vm_bind_op bind_op = {0};
+ 	struct drm_gpuvm_exec vm_exec = {
+@@ -799,11 +789,13 @@ pvr_vm_unmap(struct pvr_vm_context *vm_c
+ 		},
+ 	};
+ 
+-	int err = pvr_vm_bind_op_unmap_init(&bind_op, vm_ctx, device_addr,
+-					    size);
++	int err = pvr_vm_bind_op_unmap_init(&bind_op, vm_ctx, pvr_obj,
++					    device_addr, size);
+ 	if (err)
+ 		return err;
+ 
++	pvr_gem_object_get(pvr_obj);
++
+ 	err = drm_gpuvm_exec_lock(&vm_exec);
+ 	if (err)
+ 		goto err_cleanup;
+@@ -818,6 +810,96 @@ err_cleanup:
+ 	return err;
+ }
+ 
++/**
++ * pvr_vm_unmap_obj() - Unmap an already mapped section of device-virtual
++ * memory.
++ * @vm_ctx: Target VM context.
++ * @pvr_obj: Target PowerVR memory object.
++ * @device_addr: Virtual device address at the start of the target mapping.
++ * @size: Size of the target mapping.
++ *
++ * Return:
++ *  * 0 on success,
++ *  * Any error encountered by pvr_vm_unmap_obj_locked.
++ */
++int
++pvr_vm_unmap_obj(struct pvr_vm_context *vm_ctx, struct pvr_gem_object *pvr_obj,
++		 u64 device_addr, u64 size)
++{
++	int err;
++
++	mutex_lock(&vm_ctx->lock);
++	err = pvr_vm_unmap_obj_locked(vm_ctx, pvr_obj, device_addr, size);
++	mutex_unlock(&vm_ctx->lock);
++
++	return err;
++}
++
++/**
++ * pvr_vm_unmap() - Unmap an already mapped section of device-virtual memory.
++ * @vm_ctx: Target VM context.
++ * @device_addr: Virtual device address at the start of the target mapping.
++ * @size: Size of the target mapping.
++ *
++ * Return:
++ *  * 0 on success,
++ *  * Any error encountered by drm_gpuva_find,
++ *  * Any error encountered by pvr_vm_unmap_obj_locked.
++ */
++int
++pvr_vm_unmap(struct pvr_vm_context *vm_ctx, u64 device_addr, u64 size)
++{
++	struct pvr_gem_object *pvr_obj;
++	struct drm_gpuva *va;
++	int err;
++
++	mutex_lock(&vm_ctx->lock);
++
++	va = drm_gpuva_find(&vm_ctx->gpuvm_mgr, device_addr, size);
++	if (va) {
++		pvr_obj = gem_to_pvr_gem(va->gem.obj);
++		err = pvr_vm_unmap_obj_locked(vm_ctx, pvr_obj,
++					      va->va.addr, va->va.range);
++	} else {
++		err = -ENOENT;
++	}
++
++	mutex_unlock(&vm_ctx->lock);
++
++	return err;
++}
++
++/**
++ * pvr_vm_unmap_all() - Unmap all mappings associated with a VM context.
++ * @vm_ctx: Target VM context.
++ *
++ * This function ensures that no mappings are left dangling by unmapping them
++ * all in order of ascending device-virtual address.
++ */
++void
++pvr_vm_unmap_all(struct pvr_vm_context *vm_ctx)
++{
++	mutex_lock(&vm_ctx->lock);
++
++	for (;;) {
++		struct pvr_gem_object *pvr_obj;
++		struct drm_gpuva *va;
++
++		va = drm_gpuva_find_first(&vm_ctx->gpuvm_mgr,
++					  vm_ctx->gpuvm_mgr.mm_start,
++					  vm_ctx->gpuvm_mgr.mm_range);
++		if (!va)
++			break;
++
++		pvr_obj = gem_to_pvr_gem(va->gem.obj);
++
++		WARN_ON(pvr_vm_unmap_obj_locked(vm_ctx, pvr_obj,
++						va->va.addr, va->va.range));
++	}
++
++	mutex_unlock(&vm_ctx->lock);
++}
++
+ /* Static data areas are determined by firmware. */
+ static const struct drm_pvr_static_data_area static_data_areas[] = {
+ 	{
+--- a/drivers/gpu/drm/imagination/pvr_vm.h
++++ b/drivers/gpu/drm/imagination/pvr_vm.h
+@@ -38,6 +38,9 @@ struct pvr_vm_context *pvr_vm_create_con
+ int pvr_vm_map(struct pvr_vm_context *vm_ctx,
+ 	       struct pvr_gem_object *pvr_obj, u64 pvr_obj_offset,
+ 	       u64 device_addr, u64 size);
++int pvr_vm_unmap_obj(struct pvr_vm_context *vm_ctx,
++		     struct pvr_gem_object *pvr_obj,
++		     u64 device_addr, u64 size);
+ int pvr_vm_unmap(struct pvr_vm_context *vm_ctx, u64 device_addr, u64 size);
+ void pvr_vm_unmap_all(struct pvr_vm_context *vm_ctx);
  
 
 
