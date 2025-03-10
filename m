@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-121991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3022A59D5C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB753A59C19
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D6516F44B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F82D7A7D44
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ACB231A2A;
-	Mon, 10 Mar 2025 17:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455EE233126;
+	Mon, 10 Mar 2025 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpAkHezo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1SuIgMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22A92309B6;
-	Mon, 10 Mar 2025 17:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A50232395;
+	Mon, 10 Mar 2025 17:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627216; cv=none; b=FHCpsGs89f3cxJdP9SH/YcUhR1hU0ZUMs1Orc8oYlJsKI6M0yDkg/lGwh98Cq63vbSf/MtVL3w4QST9/eQvfwUoEHdg73SmzjX/b6IsCHaMN0n3ZiqgC4p/xKPfCNnxyPtvSUo60bUE27E2ZZntOF99noiUujT5wmRmwwC1Ni2E=
+	t=1741626501; cv=none; b=T/sId2xxNPfY2Ue2D7VUByWi9guOZmagXvL4j8UCQnVG2RWLtK0BzEm+RIZ8jPFZH6EQycPvi0Q5VPB2Mrg+Wahj8hPd/auQbCCZWUDSmMjPJ0ZtN2U0+nChG/MrBqofye9ftGeEaDPqjFnIYl+r7wSxG/iJ5Yb//zC48ibmiIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627216; c=relaxed/simple;
-	bh=Ya6a1uhaRteuLUbOALOreS6aRgq0/cYLUmDZn80oCEk=;
+	s=arc-20240116; t=1741626501; c=relaxed/simple;
+	bh=xtWhock9YDlDBOc63q+3pEBnVKgVePN5D4+Yymsoo7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcqm2u3MWqkG8XyJh2NK0hC5gQ56yckXzIZlO48JE4XVa/AZ7ffss6ys3qmxPEZYHLYKwUwCHBo4o+E+BOait9ZOSdy7Z8xS3WC+f9rbgrMLFE/eJLbHFmVgYG9FAT1HZ4pGuTVJZHh9uNQmy440Lz0owMOG6aipMRCp+fwonSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpAkHezo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCE1C4CEED;
-	Mon, 10 Mar 2025 17:20:16 +0000 (UTC)
+	 MIME-Version; b=sgh7Vhdt6/yTqp1b8iDmtinS4iuHbf9oM4mLl3EdQhhn8pmslP4tj62Y9zOSF6hDELW3V7srK764VfER4gXjphZ4mStZNuDA7Y4JaUwlf1qO/DIT55H+pXbI5fKDaBxeCBa/hA3vPvoB/fLn+Qjunwyocg2ZZbeZzeBIpkPP39k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1SuIgMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12609C4CEE5;
+	Mon, 10 Mar 2025 17:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627216;
-	bh=Ya6a1uhaRteuLUbOALOreS6aRgq0/cYLUmDZn80oCEk=;
+	s=korg; t=1741626500;
+	bh=xtWhock9YDlDBOc63q+3pEBnVKgVePN5D4+Yymsoo7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WpAkHezokgtTcuJiS6ok268alKV0U28tdV0u8PZoG+kJp6snBYb/FwpJf7f1ToF/q
-	 Hi3AV/CujZxuVaM9nUE8W4xuUiuaWyw8jgF9ZTShtlFJHRm0l2d9m5836kI/CFXxZ0
-	 RRA8KznoAtKbFZ1FCHojZzFSCZ4mvCwmPPYlgSds=
+	b=D1SuIgMX46q/4n2Cv2ONdlJFjjxHEuPiKG8NAHvbQraz/8jvr5xUhYBFrKOY/IYN1
+	 MtgqCYmo8b8irtCNRZ7xrPd/q/dVMBtMqf1wxlbehMtsc6loKEtXTNeEtGuPniZwi1
+	 JiLugeUBxgXG+knyqei17jxi38oT8bNm6jldMIKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 054/269] rust: alloc: implement `contains` for `Flags`
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.13 014/207] LoongArch: Set max_pfn with the PFN of the last page
 Date: Mon, 10 Mar 2025 18:03:27 +0100
-Message-ID: <20250310170459.879462074@linuxfoundation.org>
+Message-ID: <20250310170448.334836262@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 909037ce0369bc3f4fd31743fd2d8d7096f06002 upstream.
+commit c8477bb0a8e7f6b2e47952b403c5cb67a6929e55 upstream.
 
-Provide a simple helper function to check whether given flags do
-contain one or multiple other flags.
+The current max_pfn equals to zero. In this case, it causes user cannot
+get some page information through /proc filesystem such as kpagecount.
+The following message is displayed by stress-ng test suite with command
+"stress-ng --verbose --physpage 1 -t 1".
 
-This is used by a subsequent patch implementing the Cmalloc `Allocator`
-to check for __GFP_ZERO.
+ # stress-ng --verbose --physpage 1 -t 1
+ stress-ng: error: [1691] physpage: cannot read page count for address 0x134ac000 in /proc/kpagecount, errno=22 (Invalid argument)
+ stress-ng: error: [1691] physpage: cannot read page count for address 0x7ffff207c3a8 in /proc/kpagecount, errno=22 (Invalid argument)
+ stress-ng: error: [1691] physpage: cannot read page count for address 0x134b0000 in /proc/kpagecount, errno=22 (Invalid argument)
+ ...
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-25-dakr@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+After applying this patch, the kernel can pass the test.
+
+ # stress-ng --verbose --physpage 1 -t 1
+ stress-ng: debug: [1701] physpage: [1701] started (instance 0 on CPU 3)
+ stress-ng: debug: [1701] physpage: [1701] exited (instance 0 on CPU 3)
+ stress-ng: debug: [1700] physpage: [1701] terminated (success)
+
+Cc: stable@vger.kernel.org  # 6.8+
+Fixes: ff6c3d81f2e8 ("NUMA: optimize detection of memory with no node id assigned by firmware")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc.rs |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/setup.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -35,7 +35,7 @@ use core::{alloc::Layout, ptr::NonNull};
- /// They can be combined with the operators `|`, `&`, and `!`.
- ///
- /// Values can be used from the [`flags`] module.
--#[derive(Clone, Copy)]
-+#[derive(Clone, Copy, PartialEq)]
- pub struct Flags(u32);
- 
- impl Flags {
-@@ -43,6 +43,11 @@ impl Flags {
-     pub(crate) fn as_raw(self) -> u32 {
-         self.0
-     }
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -387,6 +387,9 @@ static void __init check_kernel_sections
+  */
+ static void __init arch_mem_init(char **cmdline_p)
+ {
++	/* Recalculate max_low_pfn for "mem=xxx" */
++	max_pfn = max_low_pfn = PHYS_PFN(memblock_end_of_DRAM());
 +
-+    /// Check whether `flags` is contained in `self`.
-+    pub fn contains(self, flags: Flags) -> bool {
-+        (self & flags) == flags
-+    }
- }
+ 	if (usermem)
+ 		pr_info("User-defined physical RAM map overwrite\n");
  
- impl core::ops::BitOr for Flags {
 
 
 
