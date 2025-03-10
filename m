@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC18A59E19
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94369A59E81
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1749316FD32
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C7B61637F7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1DE2356C4;
-	Mon, 10 Mar 2025 17:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7B02343C1;
+	Mon, 10 Mar 2025 17:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2loivsOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/NEClOh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0E922D786;
-	Mon, 10 Mar 2025 17:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48438233D88;
+	Mon, 10 Mar 2025 17:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627596; cv=none; b=gbQ44uVGaiIdj+1Ur5DWiWimoS3MuOieSz8IC6mcSswUmzaFyFdSvV8+b+XsTTGYfATP4M0R55oFPcMERtsgjeWSeDe7a2DQQYHS7R65Z5v/TQpkCjtIF1LFd6+iLSZ7psKlrFszpkQ7uA7CAbcRU94SF3qJXqCJTNrHb8g5aa4=
+	t=1741627873; cv=none; b=NzWtomfEcq8aczcanifdueNv2DFQfKoUyHem+TYsCcJ7Th0aVPofrNHF67HitHmbSPKe0RyZyCUKKYyRiSqSM4Af8gE9+eLIsOMoQFT7abu2Lz15vUmbLamPWOdvWgmspEoCvpqXMmfk33HWvtsDV+FB+DFUG4c5DTQ1qDSJ14Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627596; c=relaxed/simple;
-	bh=+OjgeeHGTKLSmn3o/hrhdpeOdbAerngPef1rN3LXGoI=;
+	s=arc-20240116; t=1741627873; c=relaxed/simple;
+	bh=YgeocFEz8ujjVBpu609gIchb2CEEHLeWIGTN76lWJeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/1xtMCGU32bahn1tOrBnVRYlyAPw0cYp6xMNhQ/auVrYCU++5ES6oLP3KkH89BIso+444xWl6Bp+dxwIdwI4YMb7eNQS2ehBfSpZPUVz3iADOxG/iIsgV1tVuzeh8eNxWfRvRsEqCgLSEgea6SbnZf/yZhiXk2/LkjqtiZwHe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2loivsOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A57C4CEE5;
-	Mon, 10 Mar 2025 17:26:35 +0000 (UTC)
+	 MIME-Version; b=DaUPS5cbGt7tq4y1zIdz94Fs22o5UutEpwNm35JoxXjDRQUhg3BHQCQzhUSGZHShjTOB6p+49V+bJIyQzKGnKpoFyhpWWZKlVh5Gg4GbYjNpcBtyVmaq7xunhFj0qVMCt18NbxcTvIVlCieqL1il7OmBxJaeiKoS/zzBxhJabv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/NEClOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C437BC4CEEE;
+	Mon, 10 Mar 2025 17:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627596;
-	bh=+OjgeeHGTKLSmn3o/hrhdpeOdbAerngPef1rN3LXGoI=;
+	s=korg; t=1741627873;
+	bh=YgeocFEz8ujjVBpu609gIchb2CEEHLeWIGTN76lWJeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2loivsOhjEQOAvigN+u537n0QLVty5WWTz4Q7On9kpMDRRHpoH3YmSb7wNEuO7ps7
-	 92DaLIdanl3kuE21fPKr7Tv7g6ipJfWv5sUy+qGXtvdBf/SE3lIFiOYbZcl8q3MXrL
-	 zrwWbvhXyq4bCtrWV5k3iAjlTeU4OVu9QYhPsDcI=
+	b=K/NEClOhsKIKGpLDbm5s9nUKwly3vtWavYECD0B74tlSjk9oamo91H8Arf6DYp97p
+	 Eq63ZVWOLte40sAGhDsDaTLfr6Y/mB5TRAv0GM31nnXp3Gw6MBl+1nEepu5QmgQSkF
+	 G0wKcvayYj4jNDEY4G6QtCHO9FMPBfWBg26NzHGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/269] nvme-pci: use sgls for all user requests if possible
+Subject: [PATCH 6.6 010/145] drm/amdgpu: disable BAR resize on Dell G5 SE
 Date: Mon, 10 Mar 2025 18:05:04 +0100
-Message-ID: <20250310170503.738636812@linuxfoundation.org>
+Message-ID: <20250310170435.158382097@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 6fad84a4d624c300d03ebba457cc641765050c43 ]
+[ Upstream commit 099bffc7cadff40bfab1517c3461c53a7a38a0d7 ]
 
-If the device supports SGLs, use these for all user requests. This
-format encodes the expected transfer length so it can catch short buffer
-errors in a user command, whether it occurred accidently or maliciously.
+There was a quirk added to add a workaround for a Sapphire
+RX 5600 XT Pulse that didn't allow BAR resizing.  However,
+the quirk caused a regression with runtime pm on Dell laptops
+using those chips, rather than narrowing the scope of the
+resizing quirk, add a quirk to prevent amdgpu from resizing
+the BAR on those Dell platforms unless runtime pm is disabled.
 
-For controllers that support SGL data mode, this is a viable mitigation
-to CVE-2023-6238. For controllers that don't support SGLs, log a warning
-in the passthrough path since not having the capability can corrupt
-data if the interface is not used correctly.
+v2: update commit message, add runpm check
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: 00817f0f1c45 ("nvme-ioctl: fix leaked requests on mapping error")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1707
+Fixes: 907830b0fc9e ("PCI: Add a REBAR size quirk for Sapphire RX 5600 XT Pulse")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5235053f443cef4210606e5fb71f99b915a9723d)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 12 ++++++++++--
- drivers/nvme/host/pci.c   |  5 +++--
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 61af1583356c2..d4b80938de09c 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -120,12 +120,20 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 	struct nvme_ns *ns = q->queuedata;
- 	struct block_device *bdev = ns ? ns->disk->part0 : NULL;
- 	bool supports_metadata = bdev && blk_get_integrity(bdev->bd_disk);
-+	struct nvme_ctrl *ctrl = nvme_req(req)->ctrl;
- 	bool has_metadata = meta_buffer && meta_len;
- 	struct bio *bio = NULL;
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index f1db7c9deaec2..45dd6cbad81e7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1116,6 +1116,13 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
+ 	if (amdgpu_sriov_vf(adev))
+ 		return 0;
  
--	if (has_metadata && !supports_metadata)
--		return -EINVAL;
-+	if (!nvme_ctrl_sgl_supported(ctrl))
-+		dev_warn_once(ctrl->device, "using unchecked data buffer\n");
-+	if (has_metadata) {
-+		if (!supports_metadata)
-+			return -EINVAL;
-+		if (!nvme_ctrl_meta_sgl_supported(ctrl))
-+			dev_warn_once(ctrl->device,
-+				      "using unchecked metadata buffer\n");
-+	}
- 
- 	if (ioucmd && (ioucmd->flags & IORING_URING_CMD_FIXED)) {
- 		struct iov_iter iter;
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 58bdd0da6b658..e1329d4974fd6 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -514,7 +514,8 @@ static inline bool nvme_pci_metadata_use_sgls(struct nvme_dev *dev,
- {
- 	if (!nvme_ctrl_meta_sgl_supported(&dev->ctrl))
- 		return false;
--	return req->nr_integrity_segments > 1;
-+	return req->nr_integrity_segments > 1 ||
-+		nvme_req(req)->flags & NVME_REQ_USERCMD;
- }
- 
- static inline bool nvme_pci_use_sgls(struct nvme_dev *dev, struct request *req,
-@@ -532,7 +533,7 @@ static inline bool nvme_pci_use_sgls(struct nvme_dev *dev, struct request *req,
- 	if (nvme_pci_metadata_use_sgls(dev, req))
- 		return true;
- 	if (!sgl_threshold || avg_seg_size < sgl_threshold)
--		return false;
-+		return nvme_req(req)->flags & NVME_REQ_USERCMD;
- 	return true;
- }
- 
++	/* resizing on Dell G5 SE platforms causes problems with runtime pm */
++	if ((amdgpu_runtime_pm != 0) &&
++	    adev->pdev->vendor == PCI_VENDOR_ID_ATI &&
++	    adev->pdev->device == 0x731f &&
++	    adev->pdev->subsystem_vendor == PCI_VENDOR_ID_DELL)
++		return 0;
++
+ 	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
+ 	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
+ 		DRM_WARN("System can't access extended configuration space,please check!!\n");
 -- 
 2.39.5
 
