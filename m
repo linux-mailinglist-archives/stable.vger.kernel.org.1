@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F311A59C94
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FD4A5A21F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18AC31880A49
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1457D7A03FE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B625231A42;
-	Mon, 10 Mar 2025 17:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A463B236426;
+	Mon, 10 Mar 2025 18:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVPp9cFk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soEbJyo7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC85A231A24;
-	Mon, 10 Mar 2025 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2D32356AB;
+	Mon, 10 Mar 2025 18:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626807; cv=none; b=Y4RFPX3DZc5M6UjpYjMF/VDynS5f5oK2KXVDALLN3JzbJ+QSt/zh8uEKgJPtZwtnDAGeYC4KCmq1Z2KLEr2M2TuhkdRza3xd0hsvRW5ZrK1daUGCZQHRaMRySufKuyQijzIv/rkdw3e0ibV5MwOmtNe0szk9UE1arJ/z8MJPquw=
+	t=1741630589; cv=none; b=IlJYg7z9fupJcfSjcaeI6BWRZVEuz8cA7OznwDtkU43kYYGLg2fpVQlEhLvsJSeZcpHOvpDRNA6UBOmRdKaavoRMJZIWQ7x9w/SLvhaubOD3UqCTJXFClJddkFwWihjx3XALxcDA1iTPqW2INhKJEii57G1JbArwaE4kKXzxY6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626807; c=relaxed/simple;
-	bh=DPOJay1pMmwmP/DlMk5NoZnhoqcLxWFFRIBPp3qUsNQ=;
+	s=arc-20240116; t=1741630589; c=relaxed/simple;
+	bh=Z8ypCqY88m5hm8Pv9gs4+XOxdBR0iBSiGLi5wBJabdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZ0p/TXNJbhpFYpy6vM7okIFSuo1Nc/oyGZRWVWJaAtmPTeCkRjST0hf5gVCCUx/8Qo+myU3VJWsWuDMW2CWNcfT2Bjn5CCoLuVuyOAgbvXYNmS4AhkTBYws2Z9en1ZMEP69P9HgoQ+ZFUqKyrp7KJpxVpPgzaDCGUPba8Ysfw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVPp9cFk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F75C4CEE5;
-	Mon, 10 Mar 2025 17:13:27 +0000 (UTC)
+	 MIME-Version; b=nK0x/xeubpoc4iHV/taDTH+/aV2gtHiLZ6UXTDY8wpgvlbEg/RteVIwaP0YuUWrXYWGzs8ursQicYVNX7XHGqDo0eQoHbEg4Ui22PDY1l6Fvio33vTdErfMXDSXQBIdI/174vBmBWGszy29baMotSF+mQwaXX6yO+1VaG8d1p/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soEbJyo7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675D0C4CEEE;
+	Mon, 10 Mar 2025 18:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626807;
-	bh=DPOJay1pMmwmP/DlMk5NoZnhoqcLxWFFRIBPp3qUsNQ=;
+	s=korg; t=1741630588;
+	bh=Z8ypCqY88m5hm8Pv9gs4+XOxdBR0iBSiGLi5wBJabdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVPp9cFkNk/zcY3XqDKHCNLIUnOO5uipNzDdwEIsVgfDiiEfg2r1OYWo4BDXXJ/5m
-	 uD0HM7iPe0BBPteznMIeXhlRNu3Lr0iHylzo9koB1hn6p9liawiDp+5dJvsPUf71jA
-	 sqjxn91m2mHuzgTe0oT4s4d+mDpStk1GnlrLWAjQ=
+	b=soEbJyo7L2ey7X8yjPTbVKWtjc00voW9xPHQE7ocpxkkyr+RqQ29aSUi0/bwGbh11
+	 /74aUlmcG4FoZ07s9oxZwpW4UnyIEc4gYRZkgidfn8s9Pzm/3sM2JvHoZCnzCm8XPF
+	 XuyOvGvYWjrjedqEht62Gr/TVV2WktY2qwTDr1Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 120/207] drm/imagination: Fix timestamps in firmware traces
+Subject: [PATCH 5.15 467/620] geneve: Suppress list corruption splat in geneve_destroy_tunnels().
 Date: Mon, 10 Mar 2025 18:05:13 +0100
-Message-ID: <20250310170452.578396693@linuxfoundation.org>
+Message-ID: <20250310170604.013516931@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 1d2eabb6616433ccaa13927811bdfa205e91ba60 ]
+[ Upstream commit 62fab6eef61f245dc8797e3a6a5b890ef40e8628 ]
 
-When firmware traces are enabled, the firmware dumps 48-bit timestamps
-for each trace as two 32-bit values, highest 32 bits (of which only 16
-useful) first.
+As explained in the previous patch, iterating for_each_netdev() and
+gn->geneve_list during ->exit_batch_rtnl() could trigger ->dellink()
+twice for the same device.
 
-The driver was reassembling them the other way round i.e. interpreting
-the first value in memory as the lowest 32 bits, and the second value
-as the highest 32 bits (then truncated to 16 bits).
+If CONFIG_DEBUG_LIST is enabled, we will see a list_del() corruption
+splat in the 2nd call of geneve_dellink().
 
-Due to this, firmware trace dumps showed very large timestamps even for
-traces recorded shortly after GPU boot. The timestamps in these dumps
-would also sometimes jump backwards because of the truncation.
+Let's remove for_each_netdev() in geneve_destroy_tunnels() and delegate
+that part to default_device_exit_batch().
 
-Example trace dumped after loading the powervr module and enabling
-firmware traces, where each line is commented with the timestamp value
-in hexadecimal to better show both issues:
-
-[93540092739584] : Host Sync Partition marker: 1    // 0x551300000000
-[28419798597632] : GPU units deinit                 // 0x19d900000000
-[28548647616512] : GPU deinit                       // 0x19f700000000
-
-Update logic to reassemble the timestamps halves in the correct order.
-
-Fixes: cb56cd610866 ("drm/imagination: Add firmware trace to debugfs")
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250221-fix-fw-trace-timestamps-v1-1-dba4aeb030ca@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Fixes: 9593172d93b9 ("geneve: Fix use-after-free in geneve_find_dev().")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250217203705.40342-3-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_fw_trace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/geneve.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_fw_trace.c b/drivers/gpu/drm/imagination/pvr_fw_trace.c
-index 73707daa4e52d..5dbb636d7d4ff 100644
---- a/drivers/gpu/drm/imagination/pvr_fw_trace.c
-+++ b/drivers/gpu/drm/imagination/pvr_fw_trace.c
-@@ -333,8 +333,8 @@ static int fw_trace_seq_show(struct seq_file *s, void *v)
- 	if (sf_id == ROGUE_FW_SF_LAST)
- 		return -EINVAL;
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 5e270cb0d8cb4..c51b39390c015 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -1960,14 +1960,7 @@ static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
+ {
+ 	struct geneve_net *gn = net_generic(net, geneve_net_id);
+ 	struct geneve_dev *geneve, *next;
+-	struct net_device *dev, *aux;
  
--	timestamp = read_fw_trace(trace_seq_data, 1) |
--		((u64)read_fw_trace(trace_seq_data, 2) << 32);
-+	timestamp = ((u64)read_fw_trace(trace_seq_data, 1) << 32) |
-+		read_fw_trace(trace_seq_data, 2);
- 	timestamp = (timestamp & ~ROGUE_FWT_TIMESTAMP_TIME_CLRMSK) >>
- 		ROGUE_FWT_TIMESTAMP_TIME_SHIFT;
- 
+-	/* gather any geneve devices that were moved into this ns */
+-	for_each_netdev_safe(net, dev, aux)
+-		if (dev->rtnl_link_ops == &geneve_link_ops)
+-			geneve_dellink(dev, head);
+-
+-	/* now gather any other geneve devices that were created in this ns */
+ 	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
+ 		geneve_dellink(geneve->dev, head);
+ }
 -- 
 2.39.5
 
