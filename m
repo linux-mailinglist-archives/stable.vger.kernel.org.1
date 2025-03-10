@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-122225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F75CA59E87
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12719A59DF9
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB32C165073
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9E5170486
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FF1233156;
-	Mon, 10 Mar 2025 17:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEA1236454;
+	Mon, 10 Mar 2025 17:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8gOtWSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VN+WSFkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AFD230BC3;
-	Mon, 10 Mar 2025 17:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68488236445;
+	Mon, 10 Mar 2025 17:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627885; cv=none; b=SVidxM9Alinjfvg0rGncCPkggCmfvsjdX3KKw3rRLWT0lMah4ESDN/jfhgTdSSVRgdXKdOn+h+UWFBtxETs3XvnJbSgY+lSoiVI8E4m4gT/+35w01yzxIttULevhHHKB1ARNkI0BSldxZO1CFgp81LUnHGH6uu4yrRgXmjOjw4c=
+	t=1741627512; cv=none; b=DWedW0HTwb+Ak02joZt1fjhBiHUjNJ8IwsJAFYRq9aRz56lgNghONFNNK2pEXn5pO6sJqprDwgb+YYIG7o7Dxaob2CkjUrHdqUTIQq0cjLnIYvfp+rADGrTPUGpYWIVzSZ6T7YCq2eT3wzA4hixDJKKMqrzGYyOhQ7ugdU6vG+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627885; c=relaxed/simple;
-	bh=j1bXyfniMYChJjsGYB+bGFuO+ICfMleG+utOCcL2/u0=;
+	s=arc-20240116; t=1741627512; c=relaxed/simple;
+	bh=pWRsnoIOT8cJ9Gt+IeCeq7rW1E1gu5WrqxyoO/3bOl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h6KpCAb3T0O99dLVi7buNT0JR5THeDB7bWc2zsyV8VstbUi3l+K9c9tquZ+Dnfiex3pBOdptRJ7ZdQ3nuE0Y3YtaJEFsAyW2ZlyGlwu8J+DfKsx3Dn8eIGGnCZurGnsWOj12kadLcirQV502/MYCQu2yzKRqlA6VKJ0xvOmBcqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8gOtWSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19240C4CEE5;
-	Mon, 10 Mar 2025 17:31:23 +0000 (UTC)
+	 MIME-Version; b=VKWpPMOPdFUCqPg8wtn/IqG1qHHHpFW3+rYhuNz5uCraDyBlD1KF0fhxVlaGRupW8CdEk7LPR1EJj+G7k1ZVPtQDVyq64Rp4mzQHT9Zra9PrMPeKTcWtADioahCB3PtbDC5KRtCsaZWcbxGpLPaSChEIt2WmOCWueaDwUcR9yXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VN+WSFkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B63C4CEE5;
+	Mon, 10 Mar 2025 17:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627884;
-	bh=j1bXyfniMYChJjsGYB+bGFuO+ICfMleG+utOCcL2/u0=;
+	s=korg; t=1741627512;
+	bh=pWRsnoIOT8cJ9Gt+IeCeq7rW1E1gu5WrqxyoO/3bOl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8gOtWSwhzv4K2kxsZ9VXUxQROaMOCn6pN4y4sOQ4+MfFApgf9ZB/+AsB+pcx8aES
-	 EHG07LyYWuD3T62c1i4nDgfacS0Gz9TlLvuXpj2WV4j8XW3gbxpYfdyB3zqYKUNBGC
-	 Xdffwg/afC7ES+wZ8T/pHie9gZ+K2BWteNk5/RI0=
+	b=VN+WSFkB4/BCUE+fc+lw6+ObnXU3hJ1MhEYQaJzSHOLgGoJQklDnLEcZjOcKpmrwH
+	 nRe3WeW2xwA1W0PP2dZg/qn9pc6uo8vCHNnu9RDFl2w2oiSov7SbmmE1aq0a1X31tl
+	 sYd63PJxBjbcvwC+U3tARTXYaofFlnxA1jyCsarc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Waiman Long <longman@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/145] x86/speculation: Add __update_spec_ctrl() helper
+Subject: [PATCH 6.12 155/269] wifi: mac80211: fix vendor-specific inheritance
 Date: Mon, 10 Mar 2025 18:05:08 +0100
-Message-ID: <20250310170435.317861541@linuxfoundation.org>
+Message-ID: <20250310170503.901504232@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit e3e3bab1844d448a239cd57ebf618839e26b4157 ]
+[ Upstream commit 130067e9c13bdc4820748ef16076a6972364745f ]
 
-Add a new __update_spec_ctrl() helper which is a variant of
-update_spec_ctrl() that can be used in a noinstr function.
+If there's any vendor-specific element in the subelements
+then the outer element parsing must not parse any vendor
+element at all. This isn't implemented correctly now due
+to parsing into the pointers and then overriding them, so
+explicitly skip vendor elements if any exist in the sub-
+elements (non-transmitted profile or per-STA profile).
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20230727184600.26768-2-longman@redhat.com
-Stable-dep-of: c157d351460b ("intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly")
+Fixes: 671042a4fb77 ("mac80211: support non-inheritance element")
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250221112451.fd71e5268840.I9db3e6a3367e6ff38d052d07dc07005f0dd3bd5c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/spec-ctrl.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/mac80211/parse.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/include/asm/spec-ctrl.h b/arch/x86/include/asm/spec-ctrl.h
-index cb0386fc4dc3b..c648502e45357 100644
---- a/arch/x86/include/asm/spec-ctrl.h
-+++ b/arch/x86/include/asm/spec-ctrl.h
-@@ -4,6 +4,7 @@
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 3d5d6658fe8d5..6da39c864f45b 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -48,6 +48,7 @@ struct ieee80211_elems_parse {
+ 	const struct element *ml_epcs_elem;
  
- #include <linux/thread_info.h>
- #include <asm/nospec-branch.h>
-+#include <asm/msr.h>
+ 	bool multi_link_inner;
++	bool skip_vendor;
  
- /*
-  * On VMENTER we must preserve whatever view of the SPEC_CTRL MSR
-@@ -76,6 +77,16 @@ static inline u64 ssbd_tif_to_amd_ls_cfg(u64 tifn)
- 	return (tifn & _TIF_SSBD) ? x86_amd_ls_cfg_ssbd_mask : 0ULL;
- }
- 
-+/*
-+ * This can be used in noinstr functions & should only be called in bare
-+ * metal context.
-+ */
-+static __always_inline void __update_spec_ctrl(u64 val)
-+{
-+	__this_cpu_write(x86_spec_ctrl_current, val);
-+	native_wrmsrl(MSR_IA32_SPEC_CTRL, val);
-+}
+ 	/*
+ 	 * scratch buffer that can be used for various element parsing related
+@@ -400,6 +401,9 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+ 					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
+ 			break;
+ 		case WLAN_EID_VENDOR_SPECIFIC:
++			if (elems_parse->skip_vendor)
++				break;
 +
- #ifdef CONFIG_SMP
- extern void speculative_store_bypass_ht_init(void);
- #else
+ 			if (elen >= 4 && pos[0] == 0x00 && pos[1] == 0x50 &&
+ 			    pos[2] == 0xf2) {
+ 				/* Microsoft OUI (00:50:F2) */
+@@ -1054,12 +1058,16 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 		multi_link_inner = true;
+ 	}
+ 
++	elems_parse->skip_vendor =
++		cfg80211_find_elem(WLAN_EID_VENDOR_SPECIFIC,
++				   sub.start, sub.len);
+ 	elems->crc = _ieee802_11_parse_elems_full(params, elems_parse,
+ 						  non_inherit);
+ 
+ 	/* Override with nontransmitted/per-STA profile if found */
+ 	if (sub.len) {
+ 		elems_parse->multi_link_inner = multi_link_inner;
++		elems_parse->skip_vendor = false;
+ 		_ieee802_11_parse_elems_full(&sub, elems_parse, NULL);
+ 	}
+ 
 -- 
 2.39.5
 
