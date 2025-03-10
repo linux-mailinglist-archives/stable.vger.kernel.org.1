@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-122983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E12A5A247
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52D8A59EBB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F37F1894A26
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5B49188350A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E671C3F34;
-	Mon, 10 Mar 2025 18:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FA2230BD4;
+	Mon, 10 Mar 2025 17:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pg+Q+MXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTP3Mh8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657BC1DE89C;
-	Mon, 10 Mar 2025 18:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C921822E407;
+	Mon, 10 Mar 2025 17:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630705; cv=none; b=dIisKHGiI1TLXi3C/nwrNGI0bVCuR9yvVQ/GMJ4dpCjAoq8CRo7twmH3PjR0cveyexRzfrPKxi0nmXi5qzuUng3xt0UqyC/i0lWCPuhpxTTkuQNyuNq8e7kkf10PNRb99lB5Hep6h1Gw0GQdYVd9cLJjiVIzSRZj5PL0sxlNJwk=
+	t=1741628016; cv=none; b=GhMs+fqzT3AwXbp6xCABIiaGyB8GZPyIOSW1h3lyfHKgEu7ro/j6svqwo7cfEOIvn5zKXxG0rzZa23GzGzJhHqJlArGQYqyMxUgulCkvQwAnHIUz1whtKV+kUYOXjyi4vOOQH0Wytb3PfjUX8Jq7Sd8zlwDZ+2i6Z71Rs9x+SJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630705; c=relaxed/simple;
-	bh=faNorA/pvHahRkDSZVoluddfKBDF1tyqVDAIQqDZHCM=;
+	s=arc-20240116; t=1741628016; c=relaxed/simple;
+	bh=oC79xdEh/EHrBoJeUy2kMAsOrWg5HPuYp80+xNfdBxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVkTtZnYW0Pnu55piz1Ew9YrprIK8CIox6Czs7Y2On0Hqt3R2e8V27nUF3K2Oxnd/WODt+nbkCoPRqDnRhPzwG8Ogs3lOGVyTUultU+L6L9FftMMpmskbm5Y4kkJyEafXjViGKHh0ww+URwopxfoE5wtzkNgBCu8iuIJpmwlGlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pg+Q+MXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB90C4CEE5;
-	Mon, 10 Mar 2025 18:18:24 +0000 (UTC)
+	 MIME-Version; b=CPxbHowQWJ1fxrBKUqZ+SrPPMYO3ziqzHq+M7iQzMiOx6OyjEsZcArl2QqOQ9FAo5JwQkAtj7F3CReEkwfn0sl5xtgcGBdo7GwOFcn2c7o1b6rjbXqSyVXKbOG15AUTAhYupSsUmq9YJDPQ/9PW9rEKE023DemT7vguSmX6Zo1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTP3Mh8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FA5C4CEE5;
+	Mon, 10 Mar 2025 17:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630705;
-	bh=faNorA/pvHahRkDSZVoluddfKBDF1tyqVDAIQqDZHCM=;
+	s=korg; t=1741628016;
+	bh=oC79xdEh/EHrBoJeUy2kMAsOrWg5HPuYp80+xNfdBxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pg+Q+MXviAn54QXIst+XLLXxj/52UacRN7cd62W2wKF9f178rIcKZaXWLlpkUYffc
-	 Ou5HXR8TCA6eMOMjVDynoVHZinM5+aZrxI4cLI7Eou1gVro2yiTg4UVIHtF9Ytb6pP
-	 4v9+ZRbFPAtvERme/cQRNV9Ji8tfvQKvTp4NDcSg=
+	b=fTP3Mh8EBu9kd3pKLcNVAD1nucbmlzwJ7dx4qjexSSV8dGFOq3XiEB5AP3mu19lI7
+	 tQQhjDN5ihVvHrHo/T7B4fG8EQlFVF7ZL/w7p2eDVovPJxXNw/E2k43piIUEvD5D60
+	 S42zSjwW2mRbreu66+UQJ/yvyYpX/Ji8sZnSYKRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Anton Makarov <anton.makarov11235@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 506/620] seg6: add support for SRv6 H.Encaps.Red behavior
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christop Hellwig <hch@infradead.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 058/145] mm: dont skip arch_sync_kernel_mappings() in error paths
 Date: Mon, 10 Mar 2025 18:05:52 +0100
-Message-ID: <20250310170605.534679632@linuxfoundation.org>
+Message-ID: <20250310170437.088124502@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,219 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit b07c8cdbe918aa17da864da9a89b22afaed0393e ]
+commit 3685024edd270f7c791f993157d65d3c928f3d6e upstream.
 
-The SRv6 H.Encaps.Red behavior described in [1] is an optimization of
-the SRv6 H.Encaps behavior [2].
+Fix callers that previously skipped calling arch_sync_kernel_mappings() if
+an error occurred during a pgtable update.  The call is still required to
+sync any pgtable updates that may have occurred prior to hitting the error
+condition.
 
-H.Encaps.Red reduces the length of the SRH by excluding the first
-segment (SID) in the SRH of the pushed IPv6 header. The first SID is
-only placed in the IPv6 Destination Address field of the pushed IPv6
-header.
-When the SRv6 Policy only contains one SID the SRH is omitted, unless
-there is an HMAC TLV to be carried.
+These are theoretical bugs discovered during code review.
 
-[1] - https://datatracker.ietf.org/doc/html/rfc8986#section-5.2
-[2] - https://datatracker.ietf.org/doc/html/rfc8986#section-5.1
-
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Signed-off-by: Anton Makarov <anton.makarov11235@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: c64a0727f9b1 ("net: ipv6: fix dst ref loop on input in seg6 lwt")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250226121610.2401743-1-ryan.roberts@arm.com
+Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
+Fixes: 0c95cba49255 ("mm: apply_to_pte_range warn and fail if a large pte is encountered")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christop Hellwig <hch@infradead.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/seg6_iptunnel.h |   1 +
- net/ipv6/seg6_iptunnel.c           | 128 ++++++++++++++++++++++++++++-
- 2 files changed, 128 insertions(+), 1 deletion(-)
+ mm/memory.c  |    6 ++++--
+ mm/vmalloc.c |    4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/seg6_iptunnel.h b/include/uapi/linux/seg6_iptunnel.h
-index eb815e0d0ac3e..538152a7b2c3f 100644
---- a/include/uapi/linux/seg6_iptunnel.h
-+++ b/include/uapi/linux/seg6_iptunnel.h
-@@ -35,6 +35,7 @@ enum {
- 	SEG6_IPTUN_MODE_INLINE,
- 	SEG6_IPTUN_MODE_ENCAP,
- 	SEG6_IPTUN_MODE_L2ENCAP,
-+	SEG6_IPTUN_MODE_ENCAP_RED,
- };
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2746,8 +2746,10 @@ static int __apply_to_page_range(struct
+ 		next = pgd_addr_end(addr, end);
+ 		if (pgd_none(*pgd) && !create)
+ 			continue;
+-		if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+-			return -EINVAL;
++		if (WARN_ON_ONCE(pgd_leaf(*pgd))) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (!pgd_none(*pgd) && WARN_ON_ONCE(pgd_bad(*pgd))) {
+ 			if (!create)
+ 				continue;
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -558,13 +558,13 @@ static int vmap_small_pages_range_noflus
+ 			mask |= PGTBL_PGD_MODIFIED;
+ 		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+ 		if (err)
+-			return err;
++			break;
+ 	} while (pgd++, addr = next, addr != end);
  
- #endif
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 135712649d25f..0e4b11d190be3 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -36,6 +36,7 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
- 	case SEG6_IPTUN_MODE_INLINE:
- 		break;
- 	case SEG6_IPTUN_MODE_ENCAP:
-+	case SEG6_IPTUN_MODE_ENCAP_RED:
- 		head = sizeof(struct ipv6hdr);
- 		break;
- 	case SEG6_IPTUN_MODE_L2ENCAP:
-@@ -197,6 +198,124 @@ int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
+ 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+ 		arch_sync_kernel_mappings(start, end);
+ 
+-	return 0;
++	return err;
  }
- EXPORT_SYMBOL_GPL(seg6_do_srh_encap);
  
-+/* encapsulate an IPv6 packet within an outer IPv6 header with reduced SRH */
-+static int seg6_do_srh_encap_red(struct sk_buff *skb,
-+				 struct ipv6_sr_hdr *osrh, int proto)
-+{
-+	__u8 first_seg = osrh->first_segment;
-+	struct dst_entry *dst = skb_dst(skb);
-+	struct net *net = dev_net(dst->dev);
-+	struct ipv6hdr *hdr, *inner_hdr;
-+	int hdrlen = ipv6_optlen(osrh);
-+	int red_tlv_offset, tlv_offset;
-+	struct ipv6_sr_hdr *isrh;
-+	bool skip_srh = false;
-+	__be32 flowlabel;
-+	int tot_len, err;
-+	int red_hdrlen;
-+	int tlvs_len;
-+
-+	if (first_seg > 0) {
-+		red_hdrlen = hdrlen - sizeof(struct in6_addr);
-+	} else {
-+		/* NOTE: if tag/flags and/or other TLVs are introduced in the
-+		 * seg6_iptunnel infrastructure, they should be considered when
-+		 * deciding to skip the SRH.
-+		 */
-+		skip_srh = !sr_has_hmac(osrh);
-+
-+		red_hdrlen = skip_srh ? 0 : hdrlen;
-+	}
-+
-+	tot_len = red_hdrlen + sizeof(struct ipv6hdr);
-+
-+	err = skb_cow_head(skb, tot_len + skb->mac_len);
-+	if (unlikely(err))
-+		return err;
-+
-+	inner_hdr = ipv6_hdr(skb);
-+	flowlabel = seg6_make_flowlabel(net, skb, inner_hdr);
-+
-+	skb_push(skb, tot_len);
-+	skb_reset_network_header(skb);
-+	skb_mac_header_rebuild(skb);
-+	hdr = ipv6_hdr(skb);
-+
-+	/* based on seg6_do_srh_encap() */
-+	if (skb->protocol == htons(ETH_P_IPV6)) {
-+		ip6_flow_hdr(hdr, ip6_tclass(ip6_flowinfo(inner_hdr)),
-+			     flowlabel);
-+		hdr->hop_limit = inner_hdr->hop_limit;
-+	} else {
-+		ip6_flow_hdr(hdr, 0, flowlabel);
-+		hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
-+
-+		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-+		IP6CB(skb)->iif = skb->skb_iif;
-+	}
-+
-+	/* no matter if we have to skip the SRH or not, the first segment
-+	 * always comes in the pushed IPv6 header.
-+	 */
-+	hdr->daddr = osrh->segments[first_seg];
-+
-+	if (skip_srh) {
-+		hdr->nexthdr = proto;
-+
-+		set_tun_src(net, dst->dev, &hdr->daddr, &hdr->saddr);
-+		goto out;
-+	}
-+
-+	/* we cannot skip the SRH, slow path */
-+
-+	hdr->nexthdr = NEXTHDR_ROUTING;
-+	isrh = (void *)hdr + sizeof(struct ipv6hdr);
-+
-+	if (unlikely(!first_seg)) {
-+		/* this is a very rare case; we have only one SID but
-+		 * we cannot skip the SRH since we are carrying some
-+		 * other info.
-+		 */
-+		memcpy(isrh, osrh, hdrlen);
-+		goto srcaddr;
-+	}
-+
-+	tlv_offset = sizeof(*osrh) + (first_seg + 1) * sizeof(struct in6_addr);
-+	red_tlv_offset = tlv_offset - sizeof(struct in6_addr);
-+
-+	memcpy(isrh, osrh, red_tlv_offset);
-+
-+	tlvs_len = hdrlen - tlv_offset;
-+	if (unlikely(tlvs_len > 0)) {
-+		const void *s = (const void *)osrh + tlv_offset;
-+		void *d = (void *)isrh + red_tlv_offset;
-+
-+		memcpy(d, s, tlvs_len);
-+	}
-+
-+	--isrh->first_segment;
-+	isrh->hdrlen -= 2;
-+
-+srcaddr:
-+	isrh->nexthdr = proto;
-+	set_tun_src(net, dst->dev, &hdr->daddr, &hdr->saddr);
-+
-+#ifdef CONFIG_IPV6_SEG6_HMAC
-+	if (unlikely(!skip_srh && sr_has_hmac(isrh))) {
-+		err = seg6_push_hmac(net, &hdr->saddr, isrh);
-+		if (unlikely(err))
-+			return err;
-+	}
-+#endif
-+
-+out:
-+	hdr->payload_len = htons(skb->len - sizeof(struct ipv6hdr));
-+
-+	skb_postpush_rcsum(skb, hdr, tot_len);
-+
-+	return 0;
-+}
-+
- /* insert an SRH within an IPv6 packet, just after the IPv6 header */
- int seg6_do_srh_inline(struct sk_buff *skb, struct ipv6_sr_hdr *osrh)
- {
-@@ -269,6 +388,7 @@ static int seg6_do_srh(struct sk_buff *skb)
- 			return err;
- 		break;
- 	case SEG6_IPTUN_MODE_ENCAP:
-+	case SEG6_IPTUN_MODE_ENCAP_RED:
- 		err = iptunnel_handle_offloads(skb, SKB_GSO_IPXIP6);
- 		if (err)
- 			return err;
-@@ -280,7 +400,11 @@ static int seg6_do_srh(struct sk_buff *skb)
- 		else
- 			return -EINVAL;
- 
--		err = seg6_do_srh_encap(skb, tinfo->srh, proto);
-+		if (tinfo->mode == SEG6_IPTUN_MODE_ENCAP)
-+			err = seg6_do_srh_encap(skb, tinfo->srh, proto);
-+		else
-+			err = seg6_do_srh_encap_red(skb, tinfo->srh, proto);
-+
- 		if (err)
- 			return err;
- 
-@@ -516,6 +640,8 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 		break;
- 	case SEG6_IPTUN_MODE_L2ENCAP:
- 		break;
-+	case SEG6_IPTUN_MODE_ENCAP_RED:
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
--- 
-2.39.5
-
+ /*
 
 
 
