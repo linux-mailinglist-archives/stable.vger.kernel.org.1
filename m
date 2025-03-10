@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E05A5A1E7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3556AA59DCB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C654416E31A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD6016EE8A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC47234989;
-	Mon, 10 Mar 2025 18:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575D0233705;
+	Mon, 10 Mar 2025 17:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpKjEEF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jT9NHZoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA07233724;
-	Mon, 10 Mar 2025 18:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FC9233149;
+	Mon, 10 Mar 2025 17:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630485; cv=none; b=qSF7S3J/8Gw34eHwjd3/mkijwq9zTnbpYQ8/uXDUoTFGQMgQYR+EHnYMAkvKJLqv+IK3yWdBLrCWEwKGMbnhYgzy/3SAE3U4YxLZ7FSoD5lgdiZf30fIbtp/HWZY8KB0HHfD+m8lppSJ9vNJzwMDbX96sYmOeKkcjCvyQmNn744=
+	t=1741627423; cv=none; b=Jqxc1HVzQpGT1YtpJF5ke3jgM/+2LCZwHy20L9HKbgnjluYQVFTUNw00an2dNN3IBRg5y6LVQAJAe5dHuYo5Xq+uKXjEo1AE4sab7Vh18ot8qdAV2JHmfJy50MiMKzihDP1dg4/Ghrt0cDP3iIDhec+B9qwS13fYeYLsfgj3o9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630485; c=relaxed/simple;
-	bh=fqjoWfhi7L0dAtFiGz8u2g0IYrDdxigF9TNID90A76w=;
+	s=arc-20240116; t=1741627423; c=relaxed/simple;
+	bh=iFiFL8Z78geu32fs+bw9Q3E0oOyyG/1RoXUVWsVa/5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qapC/2zOqK7TWO72DU6tmer3ORxddGMJsGBDJXierZZ1y4i62FP1xqHFqpb36BJqmAZP7YeFTgKfBJ+/tN98OpbhGPDt93IFxXkgljMQO5TSMIbeJWOssLXz3FqghD3iB/dPxViwU+BmimrxxU2d86vxa67laBoIl4GCh58sP/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpKjEEF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676CDC4CEED;
-	Mon, 10 Mar 2025 18:14:44 +0000 (UTC)
+	 MIME-Version; b=ZsR15+F1m+0TdfNtZuOzNCRtzyqT82UoxwR/fv6+VTCpXshVZ1P1X1Vj6DRRD8Ld4Mu4GFfi2NtOLHSyx3lNQuXgyLDeHGh8uFt9thaxSrg45qImXV3MrQVfzVAzt6rzU/ePHEDOW4oX864e9kmefX/mBmZQQsmvgfLCQsYb+hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jT9NHZoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF9FC4CEE5;
+	Mon, 10 Mar 2025 17:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630484;
-	bh=fqjoWfhi7L0dAtFiGz8u2g0IYrDdxigF9TNID90A76w=;
+	s=korg; t=1741627422;
+	bh=iFiFL8Z78geu32fs+bw9Q3E0oOyyG/1RoXUVWsVa/5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpKjEEF4/TvII3536NtjB63+4QQssnjH0gkApnht316C4WUXR0NE/7RmEpzdGH8kD
-	 L5oAus6IqoYopbAs9ERxKzEJpY8q7YtDZA55I443yv3prp4aK1vsftgfoAUXNowPRX
-	 NCmCvQnFsAFKuvRWxnhAksGLBz4CalHEG/55ohlY=
+	b=jT9NHZoGulbVouZAoSqk9ES8V1zm1vEOKGZKODKuMlhYEBITv8g5+LbZeGdePHbHI
+	 tm1oMeeUnH52UyYVS+ChHb0Tzpgg0UWRybcQJGTFL/4gKlbHNrHx+7B6gXeocsrQIv
+	 VAo6Ly4Wdb+36up+K4qPiWLW2b+/qNS/VsQU2lGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei He <helei.sig11@bytedance.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 431/620] crypto: testmgr - fix wrong key length for pkcs1pad
-Date: Mon, 10 Mar 2025 18:04:37 +0100
-Message-ID: <20250310170602.611185706@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 125/269] selftests/damon/damon_nr_regions: set ops update for merge results check to 100ms
+Date: Mon, 10 Mar 2025 18:04:38 +0100
+Message-ID: <20250310170502.705951644@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei He <helei.sig11@bytedance.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 39ef08517082a424b5b65c3dbaa6c0fa9d3303b9 ]
+commit 695469c07a65547acb6e229b3fdf6aaa881817e3 upstream.
 
-Fix wrong test data at testmgr.h, it seems to be caused
-by ignoring the last '\0' when calling sizeof.
+damon_nr_regions.py updates max_nr_regions to a number smaller than
+expected number of real regions and confirms DAMON respect the harsh
+limit.  To give time for DAMON to make changes for the regions, 3
+aggregation intervals (300 milliseconds) are given.
 
-Signed-off-by: Lei He <helei.sig11@bytedance.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The internal mechanism works with not only the max_nr_regions, but also
+sz_limit, though.  It avoids merging region if that casn make region of
+size larger than sz_limit.  In the test, sz_limit is set too small to
+achive the new max_nr_regions, unless it is updated for the new
+min_nr_regions.  But the update is done only once per operations set
+update interval, which is one second by default.
+
+Hence, the test randomly incurs false positive failures.  Fix it by
+setting the ops interval same to aggregation interval, to make sure
+sz_limit is updated by the time of the check.
+
+Link: https://lkml.kernel.org/r/20250225222333.505646-3-sj@kernel.org
+Fixes: 8bf890c81612 ("selftests/damon/damon_nr_regions: test online-tuned max_nr_regions")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/testmgr.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/damon/damon_nr_regions.py |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index 2be20a590a606..d94d02cb30d4e 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -1201,7 +1201,7 @@ static const struct akcipher_testvec pkcs1pad_rsa_tv_template[] = {
- 	"\xd1\x86\x48\x55\xce\x83\xee\x8e\x51\xc7\xde\x32\x12\x47\x7d\x46"
- 	"\xb8\x35\xdf\x41\x02\x01\x00\x02\x01\x00\x02\x01\x00\x02\x01\x00"
- 	"\x02\x01\x00",
--	.key_len = 804,
-+	.key_len = 803,
- 	/*
- 	 * m is SHA256 hash of following message:
- 	 * "\x49\x41\xbe\x0a\x0c\xc9\xf6\x35\x51\xe4\x27\x56\x13\x71\x4b\xd0"
--- 
-2.39.5
-
+--- a/tools/testing/selftests/damon/damon_nr_regions.py
++++ b/tools/testing/selftests/damon/damon_nr_regions.py
+@@ -109,6 +109,7 @@ def main():
+     attrs = kdamonds.kdamonds[0].contexts[0].monitoring_attrs
+     attrs.min_nr_regions = 3
+     attrs.max_nr_regions = 7
++    attrs.update_us = 100000
+     err = kdamonds.kdamonds[0].commit()
+     if err is not None:
+         proc.terminate()
 
 
 
