@@ -1,108 +1,137 @@
-Return-Path: <stable+bounces-121660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAB7A58A79
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 03:28:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D51A58ADB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 04:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 308A13AA5E2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 02:28:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B004B188A8F3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 03:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D9519B5B8;
-	Mon, 10 Mar 2025 02:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC31156C69;
+	Mon, 10 Mar 2025 03:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="ZkgF1m4h"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F62288D6;
-	Mon, 10 Mar 2025 02:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760F67E765
+	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 03:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741573718; cv=none; b=cPNTNCijETb9IZpmpfW70EKTJnqDf238qDtyijrZzQW2/k77C9zNAfHBhgN2GHUPPNTkSj4+EbKnvRvYyy95DoFFk9E53vtHv07EDslL3JwP7WVFcErF5kTaiY3KOatJiTBeoyV5U7d17n4VYpgjN+JRxyOYfh9TXskUolEKNs8=
+	t=1741577557; cv=none; b=n7U1hLlaFMRl1Je1+ndfm4zfPfqcHOrur7E8Tue1ZZ4JfxlYhJvZGk7ea1JYvmoUDcqu/TXXT9bnV3703spryJ6eA25beJYfWCCgVhZgwIKcB4upifLew62kahLJi8IJ8cjVu2KnSW/fsk4SgmQVbZrWR9YRYr/rbsfrd0bQETQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741573718; c=relaxed/simple;
-	bh=HNEg0+3WipjXdcvdRHeHQ72N6wixwMcaX5VZ+mtcxas=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fKFePJKTZdwPnFj+02EvI4Bd+qBuFue5V3gSh+6AO2KlGaKaKimnr10hd/2ky+0jKJigCJylpLlJ25SOX9Pb6i5hGY/AeYV+nC+MngnBH+B1oQ9azkwki0XddcMaY9jFNcG/MG8apublz2Y+8Gpskr05Wd3IB8v2ga5/5Xo7SNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAA3Plo8Ts5naU_XEw--.39940S2;
-	Mon, 10 Mar 2025 10:28:21 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: eli.billauer@gmail.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] char: xillybus: Fix error handling in xillybus_init_chrdev()
-Date: Mon, 10 Mar 2025 10:28:11 +0800
-Message-Id: <20250310022811.182553-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1741577557; c=relaxed/simple;
+	bh=f0k56qvsMhHdVRFz0QM/+Bghg7k+qB60yoKABxJ9b1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ywy2vgLeMbc8kqlQ6YZ380T1z8qgc2WXP8ISLVyxhQf0VWXs8Maya7GIZQQ7e6qRsPbLIr9pvf8YDOT9lBYUh10I+NZwqS+/on6h+nQDDYhxaSOn+z/TFiUj7ovy8B6qVR34aP+FY57a8FbriXraXlfaN3Lh4vNkRDvo74Vgj30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=pass smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=ZkgF1m4h; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deepin.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
+	s=ukjg2408; t=1741577547;
+	bh=F5DYTblmaHizCFECd/mw4UoRe44G105xCaXSNa1BSk8=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version;
+	b=ZkgF1m4huCwsp7ODGucbxUiRloU6UpcsERbncOiGHBwIbf8Z9+5xwX/eenIRsRZ3Y
+	 rcZJttKbOUjflFz2HdkkpOiEUxKzGJAWUh0NzNj9d0GYUKq8+Uz4bqoz8xqYwATlBE
+	 u9/jGxjNj/BTce7R0Y+IEHKHqhz0ezorqFXIoWD4=
+X-QQ-mid: bizesmtp91t1741577543t5z8ofco
+X-QQ-Originating-IP: +kaqd/DxV6IMruITGncQdVFlxOnMDUpyUV3edS5dF7k=
+Received: from black-desk-ThinkPad-L14-Gen-2 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 10 Mar 2025 11:32:20 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 11214409611350112389
+Date: Mon, 10 Mar 2025 11:32:20 +0800
+From: Chen Linxuan <chenlinxuan@deepin.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>, Jann Horn <jannh@google.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH] lib/buildid: Handle memfd_secret() files in
+ build_id_parse()
+Message-ID: <6C251C41A8C9FE1F+Z85dRCJilpuUgaWZ@black-desk-ThinkPad-L14-Gen-2>
+References: <0E394E84CB1C5456+20250306050701.314895-1-chenlinxuan@deepin.org>
+ <20250306150811.a2a5fbf0919f06fb5f08178a@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3Plo8Ts5naU_XEw--.39940S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKr4ktr47JrWfJF4kKry8Krg_yoWkuFb_CF
-	1FkrWkWry0krnrJw15Kw18uF1j9w13Z3WfGF1vq3WaqryFvr4Uur4xWr1DZw15KrWv9ry7
-	Ca42y3yUXFWa9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
-	evJa73UjIFyTuYvjfUY3kuUUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250306150811.a2a5fbf0919f06fb5f08178a@linux-foundation.org>
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
+X-QQ-XMAILINFO: OcNFEUcu5uzrK2I3tdT6RfAcrfei6Q7LGW/QCKI7V4jWf0PxKLj6Yeqv
+	s8KtE8p9bGRNwRAYKe+QX9SAgTXbYCw2kM/ElcXr+7630VdI2XG+J4CIj6vbKXYqp+sKoSw
+	cjz0r46ksvGR6k7j3y+1B7+byk/70r4KSiOmQLW1dy+zQycQh1tuZyzJQ7aSH8xw/oRGrtk
+	4vcgvQ1TzgpuEtToI5tH04Jy7p9Az7RcGkz8g6DHuwFvh8/DiVFTKFFY1hR1HNtjOK8wFEp
+	yTWj+PeNuX1tflJCZhzmczg4yJuQf/FFozVjLlNM3kp77mtJ4Fhl9XEX5v8PN0PT+3qOUpS
+	LsYgD1nFQ3kI5O4JHiH7XGnIK40IutltKEmstHJyjFLeBNJB0jQIzX9gICF8+FGQ4QwTVDq
+	UixNKslt6YLdtDf6FI9cNrJpPTnCniD0f0WodJRo+9s1P8PfJtaJxr894slXU5oRzg1noYY
+	e/1Za6AVpNhO6mrmNqzieHhul2qTaNGrGh78ens6Bkg0dRt6Ck8yUxLQGqx2yazQAnpCOay
+	eKPrCuTiuEFkqT86MlXhmqfhHOkazWXqZ21PPdIGgCUV9xO7jO5DxSvj77cj1aNee1Hlrcs
+	Ep3NcRuHRBar5XgfRMuiWySmqtr0ChLOsxq11+6lSLF+ApWw8Cv8vOY4YpY0OrVjySwKUM0
+	2ayJrXeOZ7XZ3y6zojSE5ROEUwIsUulJnRmyGrUQbIpgDpBDiMnIpf0a0kFJoXE35/SjZXu
+	bAKruw7RNpzRLGW78XGd/HNuYb5QNn81s2I8/2vHghIYeAxaxN3wfoczNeWYfabQ4Cgq/IR
+	F9RHGBARzppryho647UIJ6PVb4klfb/9OiYOxEUxMpnxOATW8Pp7L+RdcCE0Xr5jmvmrc+Q
+	MenQjgo7tBFuUEhet1yCr7Z9bGo9QwFM76gqWMxwPEkfy8TNVeIDkUdFkj0lRHyUj0tf3kP
+	Hh2qcd722HDuN9RnxqK894sn6+OBeso+ta90=
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
-After cdev_alloc() succeed and cdev_add() failed, call cdev_del() to
-remove unit->cdev from the system properly.
+On Thu, Mar 06, 2025 at 03:08:11PM -0800, Andrew Morton wrote:
+> On Thu,  6 Mar 2025 13:06:58 +0800 Chen Linxuan <chenlinxuan@deepin.org> wrote:
+> 
+> > Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
+> > Handle memfd_secret() files in build_id_parse()") to address an issue
+> > where accessing secret memfd contents through build_id_parse() would
+> > trigger faults.
+> > 
+> > Original report and repro can be found in [0].
+> > 
+> >   [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
+> > 
+> > This repro will cause BUG: unable to handle kernel paging request in
+> > build_id_parse in 5.15/6.1/6.6.
+> > 
+> > ...
+> >
+> > --- a/lib/buildid.c
+> > +++ b/lib/buildid.c
+> > @@ -157,6 +157,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+> >  	if (!vma->vm_file)
+> >  		return -EINVAL;
+> >  
+> > +#ifdef CONFIG_SECRETMEM
+> > +	/* reject secretmem folios created with memfd_secret() */
+> > +	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
+> > +		return -EFAULT;
+> > +#endif
+> > +
+> >  	page = find_get_page(vma->vm_file->f_mapping, 0);
+> >  	if (!page)
+> >  		return -EFAULT;	/* page not mapped */
+> 
+> Please redo this against a current kernel?  build_id_parse() has
+> changed a lot.
 
-Found by code review.
+stable/linux-6.13.y and stable/linux-6.12.y has commit 5ac9b4e935df
+("lib/buildid: Handle memfd_secret() files in build_id_parse()").
 
-Cc: stable@vger.kernel.org
-Fixes: 8cb5d216ab33 ("char: xillybus: Move class-related functions to new xillybus_class.c")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/char/xillybus/xillybus_class.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+stable/linux-5.10.y and stable/linux-5.4.y do not have memfd_secret(2) feature,
+so this patch is not needed.
 
-diff --git a/drivers/char/xillybus/xillybus_class.c b/drivers/char/xillybus/xillybus_class.c
-index c92a628e389e..045e125ec423 100644
---- a/drivers/char/xillybus/xillybus_class.c
-+++ b/drivers/char/xillybus/xillybus_class.c
-@@ -105,7 +105,7 @@ int xillybus_init_chrdev(struct device *dev,
- 		dev_err(dev, "Failed to add cdev.\n");
- 		/* kobject_put() is normally done by cdev_del() */
- 		kobject_put(&unit->cdev->kobj);
--		goto unregister_chrdev;
-+		goto err_cdev;
- 	}
- 
- 	for (i = 0; i < num_nodes; i++) {
-@@ -157,6 +157,7 @@ int xillybus_init_chrdev(struct device *dev,
- 		device_destroy(&xillybus_class, MKDEV(unit->major,
- 						     i + unit->lowest_minor));
- 
-+err_cdev:
- 	cdev_del(unit->cdev);
- 
- unregister_chrdev:
--- 
-2.25.1
-
+> 
+> 
 
