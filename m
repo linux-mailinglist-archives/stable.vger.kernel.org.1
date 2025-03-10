@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-122851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF7DA5A178
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F903A59D7A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF24E1893A4C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ECFF16F45D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA11C22DFF3;
-	Mon, 10 Mar 2025 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF7C2309B0;
+	Mon, 10 Mar 2025 17:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAfT1pAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5ZTPix7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685CA17A2E8;
-	Mon, 10 Mar 2025 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3C222D799;
+	Mon, 10 Mar 2025 17:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629681; cv=none; b=uP1NO2Heu8cOW57cg2/Ic3UTkspv+qTbtOxfsHc9sIDp84aPuhMcvl+6YUNSEq6gTDW4iwFphuzUnMoo0RUocdu5g5//X83o6I3zCjhsRRxnfTqDRnTWQsoqXr5I1eDR53kqoHBEx1AVRsJsKVCj0R7KZaAKOsfBIHkSJEge+cs=
+	t=1741627272; cv=none; b=eQrdp7kgs9Xp1NAvSL0ug5qEu9Msy3Mrpja7ArgHbZyGfzhTsls7Pin3k29dTKuqLYAHVXYlCDMdcNl3z1oExfq5fssXBl/AgFoDhpnhPDPwuSRINpii/DEhLyyoTl8P9yWf0BlUvZmy0ZjmXUOEjkyBAPRXr8FENXn/5zT/shY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629681; c=relaxed/simple;
-	bh=xTIQuVuLRHO0tUD2cy2y69PxmNVrDycb1rXiHw+vSDs=;
+	s=arc-20240116; t=1741627272; c=relaxed/simple;
+	bh=8fsXcnz0IrFQreGsAWF7yVwcbpUzoeM/6l5+3e4ejpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIZUhD4dBhNkSHp8qsCUylYGmx+lmj27UPSOihF+oHn5AISTa1V69nLtFcajsl9N8HOyBhOlMA+MYgjIl/R+4pFg+ajlsQjCX+MwRcdGuDnGKCPIEi9Bx4ZbeBBsETHl8lv3n8O5ByrLMGd62sOutTUUFq5f1khsqeEeHr++eEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAfT1pAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC532C4CEED;
-	Mon, 10 Mar 2025 18:01:20 +0000 (UTC)
+	 MIME-Version; b=Hfu3Vk8XH+JH2IxNXAhyH6Q6TqHw1PpSoksHVE1PaljpYYfxZSQzNINMkzS8IClkcZ7DDyaFGZsMP2C0xJ89beJPKSpYKS14ok0nAjZNuc9mfHH1e4H4nRlUTBcHmmROktVwht5R9M0VEQQ24oqJu50Q3yKP6rTXxxXz3xuZ5fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5ZTPix7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DE6C4CEE5;
+	Mon, 10 Mar 2025 17:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629681;
-	bh=xTIQuVuLRHO0tUD2cy2y69PxmNVrDycb1rXiHw+vSDs=;
+	s=korg; t=1741627272;
+	bh=8fsXcnz0IrFQreGsAWF7yVwcbpUzoeM/6l5+3e4ejpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAfT1pAhTsKVvM4Vw5xG8WRynbv4t4X+pKiFPh8qN/eIf+3rfDRzDW98Ks5KuWYzn
-	 yy65YcmuIpxsnXTBW30+EGVmpO50tP0RrXdzJbjha6+rfULHLK+U7djDLNm8nGBXk8
-	 u4fjPqp0KgmEGNvuLF21VlEK/KcyIwEsvTxfOIuY=
+	b=r5ZTPix7bvjYbNlPbES47anGFTBuBytpol6vW3ZAs1xKXq//ELH6LIycjLOer8A1t
+	 cUwCUD/7wyp1bQCOVogooycP0wbaXt/aNLMm9rclAEPVU6rpGe/n9yPs5re4Y7ylio
+	 iIUmjACxouc2KsiwK0TZn49iyj02AGfUZortEpm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 5.15 378/620] alpha: make stack 16-byte aligned (most cases)
+	Janne Grunau <j@jannau.net>,
+	Asahi Lina <lina@asahilina.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neal Gompa <neal@gompa.dev>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 071/269] rust: alloc: Fix `ArrayLayout` allocations
 Date: Mon, 10 Mar 2025 18:03:44 +0100
-Message-ID: <20250310170600.516461112@linuxfoundation.org>
+Message-ID: <20250310170500.560529012@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Asahi Lina <lina@asahilina.net>
 
-commit 0a0f7362b0367634a2d5cb7c96226afc116f19c9 upstream.
+commit b7ed2b6f4e8d7f64649795e76ee9db67300de8eb upstream.
 
-The problem is that GCC expects 16-byte alignment of the incoming stack
-since early 2004, as Maciej found out [1]:
-  Having actually dug speculatively I can see that the psABI was changed in
- GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
- improperly aligned)") back in Mar 2004, when the stack pointer alignment
- was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
- various suspicious stack pointer adjustments, starting with SP_OFF which
- is not a whole multiple of 16.
+We were accidentally allocating a layout for the *square* of the object
+size due to a variable shadowing mishap.
 
-Also, as Magnus noted, "ALPHA Calling Standard" [2] required the same:
- D.3.1 Stack Alignment
-  This standard requires that stacks be octaword aligned at the time a
-  new procedure is invoked.
+Fixes memory bloat and page allocation failures in drm/asahi.
 
-However:
-- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
-  the odd number of 64-bit words in 'struct pt_regs', which is the very
-  first thing pushed onto the kernel thread stack;
-- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
-  stack depending on numerous factors.
-
-Somehow we got away with it until recently, when we ended up with
-a stack corruption in kernel/smp.c:smp_call_function_single() due to
-its use of 32-byte aligned local data and the compiler doing clever
-things allocating it on the stack.
-
-This adds padding between the PAL-saved and kernel-saved registers
-so that 'struct pt_regs' have an even number of 64-bit words.
-This makes the stack properly aligned for most of the kernel
-code, except two handlers which need special threatment.
-
-Note: struct pt_regs doesn't belong in uapi/asm; this should be fixed,
-but let's put this off until later.
-
-Link: https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/ [1]
-Link: https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf [2]
-
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
+Reported-by: Janne Grunau <j@jannau.net>
+Fixes: 9e7bbfa18276 ("rust: alloc: introduce `ArrayLayout`")
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Link: https://lore.kernel.org/r/20241123-rust-fix-arraylayout-v1-1-197e64c95bd4@asahilina.net
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/alpha/include/uapi/asm/ptrace.h |    2 ++
- 1 file changed, 2 insertions(+)
+ rust/kernel/alloc/layout.rs |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/alpha/include/uapi/asm/ptrace.h
-+++ b/arch/alpha/include/uapi/asm/ptrace.h
-@@ -42,6 +42,8 @@ struct pt_regs {
- 	unsigned long trap_a0;
- 	unsigned long trap_a1;
- 	unsigned long trap_a2;
-+/* This makes the stack 16-byte aligned as GCC expects */
-+	unsigned long __pad0;
- /* These are saved by PAL-code: */
- 	unsigned long ps;
- 	unsigned long pc;
+--- a/rust/kernel/alloc/layout.rs
++++ b/rust/kernel/alloc/layout.rs
+@@ -45,7 +45,7 @@ impl<T> ArrayLayout<T> {
+     /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
+     pub const fn new(len: usize) -> Result<Self, LayoutError> {
+         match len.checked_mul(core::mem::size_of::<T>()) {
+-            Some(len) if len <= ISIZE_MAX => {
++            Some(size) if size <= ISIZE_MAX => {
+                 // INVARIANT: We checked above that `len * size_of::<T>() <= isize::MAX`.
+                 Ok(Self {
+                     len,
 
 
 
