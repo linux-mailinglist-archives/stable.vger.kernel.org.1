@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B79A59DEA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E5FA5A21C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CD9E1887003
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7DF7174AC8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5408A236A77;
-	Mon, 10 Mar 2025 17:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F34235368;
+	Mon, 10 Mar 2025 18:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOg61+ju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAwbm/Ka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1033E22D4C3;
-	Mon, 10 Mar 2025 17:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F32235377;
+	Mon, 10 Mar 2025 18:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627521; cv=none; b=OLcizsnIz+CyWFHAudI/fEyASn6vC+NLcgeWMniH2RMboqrfC19zmCNdSV6pkNAEQkKgfjoEvcFxes03VmX1r+Z1whlC/+qg24vrERnAOxQLSUnOnXIdZ1If9QgItR+Om3+0Sq64unykG4QYeTGY6nJsE7qTtwJxtf8iZ7PjoSc=
+	t=1741630583; cv=none; b=l8CEbZbyprsRg5CeghckQC6Z40q9Enrxmh/LPdCt5Rs4OSelk/usjpqJyQcmnbFdyh3tl6shU/Nuzj2R+4baqfebAEqJ6Op/Yqoq1Hn98OkGonEbfK/h6P2diACJLT7tsHsT6uTI4Ngvvkw9mgL8eK/aGoVSxUeR7uen1FjRR6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627521; c=relaxed/simple;
-	bh=bQZgGTx1rGlzH2hLhUNkuy2rKdKKaDG4e+2ck/I25cA=;
+	s=arc-20240116; t=1741630583; c=relaxed/simple;
+	bh=UC2onKzE1YDaHeM5mH4LWtLX63XVqhRr5nrCE1D+Q9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJKiKYIosF6IdevRrh4knIIN8A2KtVEvvpzcDXrqrSjEgzYWyBIhcHKxpKW86O3z223j95RwDiP9bY+u4qHKyaj5YbKr1LPngDOmy277qkJq2IkTWtqeTRPs6lTvWuArIrSv2+oksa22IXTy/tBl0sEwHNR9JtJy/+NwTOZDtec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOg61+ju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89572C4CEE5;
-	Mon, 10 Mar 2025 17:25:20 +0000 (UTC)
+	 MIME-Version; b=QI920ClObvDAI+oNHd1dryWolNQphYcuDrd0dQcQXb3+B6ACZ2Nc5zFO4rCoiH0a0uBcx4sKl9h1F0AedjM9wO8kzL6drG3oiJwaaWd3uMPHV+X/TB+iHBezsxw8IzxI3LWbyR2cu30eoThk3rMaGSYoeAeR6AK3MSttxfqUqdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAwbm/Ka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8CBC4CEE5;
+	Mon, 10 Mar 2025 18:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627520;
-	bh=bQZgGTx1rGlzH2hLhUNkuy2rKdKKaDG4e+2ck/I25cA=;
+	s=korg; t=1741630583;
+	bh=UC2onKzE1YDaHeM5mH4LWtLX63XVqhRr5nrCE1D+Q9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOg61+jujow4zahKyUk2ft7b2RqfGFGZMf7V46uNFPT7m0//KGkkTpw8JlncZUFQt
-	 iiwEUQ/pWCLHTI17ALAEcYHoTU4Hm9QLoiqN29gmRqaz5Ut40qSIZo/qLhnvv7OZ49
-	 foRNoexeZ+x4V/8x1yea+U6IskL6tXmtaqAOefRc=
+	b=BAwbm/KacaJTbUWAdi4PFalxe7b3QTGydctr36BdKqZoOicXr68TfgK5wDG48qxhh
+	 gMkYxBFfj9OYwkZY/F5TCua4p2RSCIWacVZbqaCxKVylQgT1FlHPh2DUGHj9KmUOen
+	 jpxP0AUHQgIGi619Tt34l5P/EDuyGBd7AcNBuLdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 158/269] drm: Add client-agnostic setup helper
+Subject: [PATCH 5.15 465/620] geneve: Fix use-after-free in geneve_find_dev().
 Date: Mon, 10 Mar 2025 18:05:11 +0100
-Message-ID: <20250310170504.021227426@linuxfoundation.org>
+Message-ID: <20250310170603.937659220@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,197 +63,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit d07fdf9225922d3e36ebd13ccab3df62b1ccdab3 ]
+[ Upstream commit 9593172d93b9f91c362baec4643003dc29802929 ]
 
-DRM may support multiple in-kernel clients that run as soon as a DRM
-driver has been registered. To select the client(s) in a single place,
-introduce drm_client_setup().
+syzkaller reported a use-after-free in geneve_find_dev() [0]
+without repro.
 
-Drivers that call the new helper automatically instantiate the kernel's
-configured default clients. Only fbdev emulation is currently supported.
-Later versions can add support for DRM-based logging, a boot logo or even
-a console.
+geneve_configure() links struct geneve_dev.next to
+net_generic(net, geneve_net_id)->geneve_list.
 
-Some drivers handle the color mode for clients internally. Provide the
-helper drm_client_setup_with_color_mode() for them.
+The net here could differ from dev_net(dev) if IFLA_NET_NS_PID,
+IFLA_NET_NS_FD, or IFLA_TARGET_NETNSID is set.
 
-Using the new interface requires the driver to select
-DRM_CLIENT_SELECTION in its Kconfig. For now this only enables the
-client-setup helpers if the fbdev client has been configured by the
-user. A future patchset will further modularize client support and
-rework DRM_CLIENT_SELECTION to select the correct dependencies for
-all its clients.
+When dev_net(dev) is dismantled, geneve_exit_batch_rtnl() finally
+calls unregister_netdevice_queue() for each dev in the netns,
+and later the dev is freed.
 
-v5:
-- add CONFIG_DRM_CLIENT_SELECTION und DRM_CLIENT_SETUP
-v4:
-- fix docs for drm_client_setup_with_fourcc() (Geert)
-v3:
-- fix build error
-v2:
-- add drm_client_setup_with_fourcc() (Laurent)
-- push default-format handling into actual clients
+However, its geneve_dev.next is still linked to the backend UDP
+socket netns.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240924071734.98201-5-tzimmermann@suse.de
-Stable-dep-of: 6b481ab0e685 ("drm/nouveau: select FW caching")
+Then, use-after-free will occur when another geneve dev is created
+in the netns.
+
+Let's call geneve_dellink() instead in geneve_destroy_tunnels().
+
+[0]:
+BUG: KASAN: slab-use-after-free in geneve_find_dev drivers/net/geneve.c:1295 [inline]
+BUG: KASAN: slab-use-after-free in geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
+Read of size 2 at addr ffff000054d6ee24 by task syz.1.4029/13441
+
+CPU: 1 UID: 0 PID: 13441 Comm: syz.1.4029 Not tainted 6.13.0-g0ad9617c78ac #24 dc35ca22c79fb82e8e7bc5c9c9adafea898b1e3d
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ show_stack+0x38/0x50 arch/arm64/kernel/stacktrace.c:466 (C)
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbc/0x108 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x16c/0x6f0 mm/kasan/report.c:489
+ kasan_report+0xc0/0x120 mm/kasan/report.c:602
+ __asan_report_load2_noabort+0x20/0x30 mm/kasan/report_generic.c:379
+ geneve_find_dev drivers/net/geneve.c:1295 [inline]
+ geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
+ geneve_newlink+0xb8/0x128 drivers/net/geneve.c:1634
+ rtnl_newlink_create+0x23c/0x868 net/core/rtnetlink.c:3795
+ __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+ rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
+ rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
+ netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
+ rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
+ sock_sendmsg_nosec net/socket.c:713 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
+ ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
+ __sys_sendmsg net/socket.c:2654 [inline]
+ __do_sys_sendmsg net/socket.c:2659 [inline]
+ __se_sys_sendmsg net/socket.c:2657 [inline]
+ __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
+
+Allocated by task 13247:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x68 mm/kasan/common.c:68
+ kasan_save_alloc_info+0x44/0x58 mm/kasan/generic.c:568
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x84/0xa0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4298 [inline]
+ __kmalloc_node_noprof+0x2a0/0x560 mm/slub.c:4304
+ __kvmalloc_node_noprof+0x9c/0x230 mm/util.c:645
+ alloc_netdev_mqs+0xb8/0x11a0 net/core/dev.c:11470
+ rtnl_create_link+0x2b8/0xb50 net/core/rtnetlink.c:3604
+ rtnl_newlink_create+0x19c/0x868 net/core/rtnetlink.c:3780
+ __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+ rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
+ rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
+ netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
+ rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
+ sock_sendmsg_nosec net/socket.c:713 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
+ ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
+ __sys_sendmsg net/socket.c:2654 [inline]
+ __do_sys_sendmsg net/socket.c:2659 [inline]
+ __se_sys_sendmsg net/socket.c:2657 [inline]
+ __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
+
+Freed by task 45:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x68 mm/kasan/common.c:68
+ kasan_save_free_info+0x58/0x70 mm/kasan/generic.c:582
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x48/0x68 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2353 [inline]
+ slab_free mm/slub.c:4613 [inline]
+ kfree+0x140/0x420 mm/slub.c:4761
+ kvfree+0x4c/0x68 mm/util.c:688
+ netdev_release+0x94/0xc8 net/core/net-sysfs.c:2065
+ device_release+0x98/0x1c0
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x2b0/0x438 lib/kobject.c:737
+ netdev_run_todo+0xe5c/0xfc8 net/core/dev.c:11185
+ rtnl_unlock+0x20/0x38 net/core/rtnetlink.c:151
+ cleanup_net+0x4fc/0x8c0 net/core/net_namespace.c:648
+ process_one_work+0x700/0x1398 kernel/workqueue.c:3236
+ process_scheduled_works kernel/workqueue.c:3317 [inline]
+ worker_thread+0x8c4/0xe10 kernel/workqueue.c:3398
+ kthread+0x4bc/0x608 kernel/kthread.c:464
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:862
+
+The buggy address belongs to the object at ffff000054d6e000
+ which belongs to the cache kmalloc-cg-4k of size 4096
+The buggy address is located 3620 bytes inside of
+ freed 4096-byte region [ffff000054d6e000, ffff000054d6f000)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x94d68
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+memcg:ffff000016276181
+flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
+page_type: f5(slab)
+raw: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
+head: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
+head: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
+head: 03fffe0000000003 fffffdffc1535a01 ffffffffffffffff 0000000000000000
+head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff000054d6ed00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff000054d6ed80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff000054d6ee00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                               ^
+ ffff000054d6ee80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff000054d6ef00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+
+Fixes: 2d07dc79fe04 ("geneve: add initial netdev driver for GENEVE tunnels")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250213043354.91368-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/Kconfig            | 12 ++++++
- drivers/gpu/drm/Makefile           |  2 +
- drivers/gpu/drm/drm_client_setup.c | 66 ++++++++++++++++++++++++++++++
- include/drm/drm_client_setup.h     | 26 ++++++++++++
- 4 files changed, 106 insertions(+)
- create mode 100644 drivers/gpu/drm/drm_client_setup.c
- create mode 100644 include/drm/drm_client_setup.h
+ drivers/net/geneve.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 7408ea8caacc3..ae53f26da945f 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -211,6 +211,18 @@ config DRM_DEBUG_MODESET_LOCK
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 10e3d69205a4f..5e270cb0d8cb4 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -1965,16 +1965,11 @@ static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
+ 	/* gather any geneve devices that were moved into this ns */
+ 	for_each_netdev_safe(net, dev, aux)
+ 		if (dev->rtnl_link_ops == &geneve_link_ops)
+-			unregister_netdevice_queue(dev, head);
++			geneve_dellink(dev, head);
  
- 	  If in doubt, say "N".
+ 	/* now gather any other geneve devices that were created in this ns */
+-	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next) {
+-		/* If geneve->dev is in the same netns, it was already added
+-		 * to the list by the previous loop.
+-		 */
+-		if (!net_eq(dev_net(geneve->dev), net))
+-			unregister_netdevice_queue(geneve->dev, head);
+-	}
++	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
++		geneve_dellink(geneve->dev, head);
+ }
  
-+config DRM_CLIENT_SELECTION
-+	bool
-+	depends on DRM
-+	select DRM_CLIENT_SETUP if DRM_FBDEV_EMULATION
-+	help
-+	  Drivers that support in-kernel DRM clients have to select this
-+	  option.
-+
-+config DRM_CLIENT_SETUP
-+	bool
-+	depends on DRM_CLIENT_SELECTION
-+
- config DRM_FBDEV_EMULATION
- 	bool "Enable legacy fbdev support for your modesetting driver"
- 	depends on DRM
-diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
-index a1dd0909fa38b..1ec44529447a7 100644
---- a/drivers/gpu/drm/Makefile
-+++ b/drivers/gpu/drm/Makefile
-@@ -144,6 +144,8 @@ drm_kms_helper-y := \
- 	drm_rect.o \
- 	drm_self_refresh_helper.o \
- 	drm_simple_kms_helper.o
-+drm_kms_helper-$(CONFIG_DRM_CLIENT_SETUP) += \
-+	drm_client_setup.o
- drm_kms_helper-$(CONFIG_DRM_PANEL_BRIDGE) += bridge/panel.o
- drm_kms_helper-$(CONFIG_DRM_FBDEV_EMULATION) += \
- 	drm_fbdev_client.o \
-diff --git a/drivers/gpu/drm/drm_client_setup.c b/drivers/gpu/drm/drm_client_setup.c
-new file mode 100644
-index 0000000000000..5969c4ffe31ba
---- /dev/null
-+++ b/drivers/gpu/drm/drm_client_setup.c
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: MIT
-+
-+#include <drm/drm_client_setup.h>
-+#include <drm/drm_device.h>
-+#include <drm/drm_fbdev_client.h>
-+#include <drm/drm_fourcc.h>
-+#include <drm/drm_print.h>
-+
-+/**
-+ * drm_client_setup() - Setup in-kernel DRM clients
-+ * @dev: DRM device
-+ * @format: Preferred pixel format for the device. Use NULL, unless
-+ *          there is clearly a driver-preferred format.
-+ *
-+ * This function sets up the in-kernel DRM clients. Restore, hotplug
-+ * events and teardown are all taken care of.
-+ *
-+ * Drivers should call drm_client_setup() after registering the new
-+ * DRM device with drm_dev_register(). This function is safe to call
-+ * even when there are no connectors present. Setup will be retried
-+ * on the next hotplug event.
-+ *
-+ * The clients are destroyed by drm_dev_unregister().
-+ */
-+void drm_client_setup(struct drm_device *dev, const struct drm_format_info *format)
-+{
-+	int ret;
-+
-+	ret = drm_fbdev_client_setup(dev, format);
-+	if (ret)
-+		drm_warn(dev, "Failed to set up DRM client; error %d\n", ret);
-+}
-+EXPORT_SYMBOL(drm_client_setup);
-+
-+/**
-+ * drm_client_setup_with_fourcc() - Setup in-kernel DRM clients for color mode
-+ * @dev: DRM device
-+ * @fourcc: Preferred pixel format as 4CC code for the device
-+ *
-+ * This function sets up the in-kernel DRM clients. It is equivalent
-+ * to drm_client_setup(), but expects a 4CC code as second argument.
-+ */
-+void drm_client_setup_with_fourcc(struct drm_device *dev, u32 fourcc)
-+{
-+	drm_client_setup(dev, drm_format_info(fourcc));
-+}
-+EXPORT_SYMBOL(drm_client_setup_with_fourcc);
-+
-+/**
-+ * drm_client_setup_with_color_mode() - Setup in-kernel DRM clients for color mode
-+ * @dev: DRM device
-+ * @color_mode: Preferred color mode for the device
-+ *
-+ * This function sets up the in-kernel DRM clients. It is equivalent
-+ * to drm_client_setup(), but expects a color mode as second argument.
-+ *
-+ * Do not use this function in new drivers. Prefer drm_client_setup() with a
-+ * format of NULL.
-+ */
-+void drm_client_setup_with_color_mode(struct drm_device *dev, unsigned int color_mode)
-+{
-+	u32 fourcc = drm_driver_color_mode_format(dev, color_mode);
-+
-+	drm_client_setup_with_fourcc(dev, fourcc);
-+}
-+EXPORT_SYMBOL(drm_client_setup_with_color_mode);
-diff --git a/include/drm/drm_client_setup.h b/include/drm/drm_client_setup.h
-new file mode 100644
-index 0000000000000..46aab3fb46be5
---- /dev/null
-+++ b/include/drm/drm_client_setup.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: MIT */
-+
-+#ifndef DRM_CLIENT_SETUP_H
-+#define DRM_CLIENT_SETUP_H
-+
-+#include <linux/types.h>
-+
-+struct drm_device;
-+struct drm_format_info;
-+
-+#if defined(CONFIG_DRM_CLIENT_SETUP)
-+void drm_client_setup(struct drm_device *dev, const struct drm_format_info *format);
-+void drm_client_setup_with_fourcc(struct drm_device *dev, u32 fourcc);
-+void drm_client_setup_with_color_mode(struct drm_device *dev, unsigned int color_mode);
-+#else
-+static inline void drm_client_setup(struct drm_device *dev,
-+				    const struct drm_format_info *format)
-+{ }
-+static inline void drm_client_setup_with_fourcc(struct drm_device *dev, u32 fourcc)
-+{ }
-+static inline void drm_client_setup_with_color_mode(struct drm_device *dev,
-+						    unsigned int color_mode)
-+{ }
-+#endif
-+
-+#endif
+ static void __net_exit geneve_exit_batch_net(struct list_head *net_list)
 -- 
 2.39.5
 
