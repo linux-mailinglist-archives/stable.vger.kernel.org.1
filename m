@@ -1,125 +1,175 @@
-Return-Path: <stable+bounces-122785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5F9A5A132
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:58:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7E8A5A19F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 357EB7A4B00
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:57:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 228C83A82EF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E6E23237F;
-	Mon, 10 Mar 2025 17:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D324F233155;
+	Mon, 10 Mar 2025 18:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="seh49vo2"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A461C4A24;
-	Mon, 10 Mar 2025 17:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5C22309B0
+	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 18:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629492; cv=none; b=TNuqsJahexFekkZAabM7p7mmJBwodkd88m9cZTMU3FehXtehgXehm904yxk3Se1HN9HnK6aj58s2MJKveNitJTPr7dIfjnLP2ttL0D3Eg7S9F8v8WVVQTCVC/USnx8uOvC4enIbyiyvXabHzAfTj7prDdEOOPtBu5+G6ARlfAJE=
+	t=1741629995; cv=none; b=OQHL8aT/zH+7HiNsmpcVld2AqbqmjtahsnxpTU3WBUi+M/Wqqryd9peZJoqiVucbwdGNbXR7kbJaX3GXCgiT4qYaPrznSs1cUKvwTBswnYofmoOqqCxRJ4Y7z+x4vpyh2UJtR225sLgIthe58Zjydry9rV1nezE/q68FIrVvRGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629492; c=relaxed/simple;
-	bh=oZAX4ZsFkwdrUYXqPWdEuU4XKuGxf5NrIGOTkEDVuB8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g0sXYMjPgt30MDzj+/IXmkP5h2Q7u069BlsRn/I0Myw9ZxdimVEE1qm28fs5qVVBfZ8yjfo0tyip6Ew3c0rdGjMXRLp6HODRkkQaVuOXgrhpqdqB+NiCbzkg3egBCWBaFkkZ0jdEC4PRpIINt/eyBy3bhojh8z67iXKPpjeeifI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCD851516;
-	Mon, 10 Mar 2025 10:58:20 -0700 (PDT)
-Received: from pluto.guest.local (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E3DA83F673;
-	Mon, 10 Mar 2025 10:58:07 -0700 (PDT)
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	arm-scmi@vger.kernel.org
-Cc: sudeep.holla@arm.com,
-	dan.carpenter@linaro.org,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Huangjie <huangjie1663@phytium.com.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] firmware: arm_scmi: Fix timeout checks on polling path
-Date: Mon, 10 Mar 2025 17:58:00 +0000
-Message-ID: <20250310175800.1444293-1-cristian.marussi@arm.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1741629995; c=relaxed/simple;
+	bh=79NoslWFokmPF3M7/bKxqWenIFPB3+bRkcmISSkX+ao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FeOte9GPM0X6G9f7KQb2V6Q0P2+XLTLtsMk5r38qlk4A4sZb1gbIC+hXlYSV856sSTxLbG/xREXonM9T5thbM5dDh92GG6DG3ouzDv5mLOkLqcNvDwYZ1B2bIDwDKROwlOyuS1JVwQZJE7xad8JJnFXYd7smfSST1IxadFH8paU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=seh49vo2; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c3c4ff7d31so531610385a.1
+        for <stable@vger.kernel.org>; Mon, 10 Mar 2025 11:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1741629993; x=1742234793; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XCbplbGo+wXAErff6OKF5gDHtfLPjvXhdrCE0hTtOQY=;
+        b=seh49vo2icOw7VzqrPiotl5ZTi9vDAfyUOdsDz/mdeHfmvCxLlGiWj4gj+qVFGxjYZ
+         fe+jvgC+u9Bd4vvsTejtyEyrIwlFji5dP8StviOmbjR2PB7mmNqF0PNqIL4B87AUb6JS
+         I0o0EgOYV8o8gQiLWjjaNwVas+KuWtMeSbeyJAnSZLsxNVZSajwp0DtE0EeyFyPOXA6H
+         EdhuQTZcG6AaeauaLvtVoE2gH4ZolAlJfsB0KEyDYtK8gf69VWkU6vkiL9zje/EOsxRd
+         ZXKcl194pWd9Jg3YxXklQYTWOxcSVoBgH6DH4FvzWaMgxYmP8/vdBXGpgSrnlLRwPyz8
+         RB+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741629993; x=1742234793;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XCbplbGo+wXAErff6OKF5gDHtfLPjvXhdrCE0hTtOQY=;
+        b=DHbJljsw1rEGBU/XHRjAKPSpaUm/evdNH8f/RFKMs2szzAMyeERbS9OUubXkWk0cZV
+         4nqS4Vfo/Ve+f+ZQsrafdDZ+WZBXDmyCqfOh6boxoddeiGS6RtbuVKrG7xwYAbNAQ84b
+         RbRw2xx6539OeoYbOQoW6AHh+xFJG/1Ba9MRs4Rp6OaXgeY37RVmQ9ppd977a8AIJzXq
+         X2QeXF3//1Tl65XMPei8eH6T7znW1jwNSvVyIlkraCb1ftFm5PNsCyS22ZlKkq/tEevk
+         Xqw+Gu5YE+TnbjmVx7hZ4lWTkw5Zi6jl1zv4n5dMxkx4nNMwqKcl0KgBHXQ6IZ/jnP9e
+         S4cg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvRM+jeWRMYg3TvqXCYZ5k6aOFaX/Th3NN2D4CzD8/V9EXfyBKS+lrIs+zibXnhAfS/AcIxpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMQwgAWHwFBt7lSUGbuxtoiTsA5dFyFIhweNdP4xLj8pJ86iaC
+	Mx4DqxCTvmYQOHS4KBlDa0UmucyIX6Sb7xA453qZU6xAgzrqvTkg8yt1gyYOKw==
+X-Gm-Gg: ASbGncs1U8sab6qY8RZqn/1oUxzTUwrrW/BT3xY8sCsqgEE/4Mcx/7sn7V43xGNvAxC
+	eIXQo4l7j5iBWsmAx87BAsmHOd45fGUy3fUE0UKSXkJk9U9fah4qXANiYIkQiu5q4M5o8xYf4Pt
+	r8a+gEOQVJq1D09Z+KLqFEW9gGx52zdOq1rcxI17bph0vVN6OLKYdCKzGOqXySRa2Ta10Rfwu2c
+	5L9h8DivYDjTuPT7UN8mcSOzAJ39DM7RWbe7TJgISw0Amc8pe+mpAzm11vSjz46FV3XnaDLmXVT
+	Xek7L/iLoERRY6UUJxLNkihleUTm+N0jVxwsHED1MIRhqvIz1rLHfg3JUNPP5yu15qEY6J/q14x
+	3X3GhWkxrKUsRWj28U+XC9nW6j6ndeKk5gSukdw==
+X-Google-Smtp-Source: AGHT+IGBXTLd9FGucbRKIujIIutoo5xIGlcogc24jO38Y8DB5mhjUv+LLAgNLG3yRzzvwDJkN5rqHg==
+X-Received: by 2002:a05:620a:84c4:b0:7c5:5a51:d2c0 with SMTP id af79cd13be357-7c55a51d82emr378482285a.52.1741629992671;
+        Mon, 10 Mar 2025 11:06:32 -0700 (PDT)
+Received: from rowland.harvard.edu (nat-65-112-8-24.harvard-secure.wrls.harvard.edu. [65.112.8.24])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3e54ffa55sm703579985a.81.2025.03.10.11.06.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 11:06:32 -0700 (PDT)
+Date: Mon, 10 Mar 2025 14:06:29 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Fiona Klute <fiona.klute@gmx.de>
+Cc: netdev@vger.kernel.org,
+	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
+	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-list@raspberrypi.com, stable@vger.kernel.org
+Subject: Re: [PATCH] net: usb: lan78xx: Enforce a minimum interrupt polling
+ period
+Message-ID: <d52e460d-2c73-4117-95b9-bed3892ac41d@rowland.harvard.edu>
+References: <20250310165932.1201702-1-fiona.klute@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250310165932.1201702-1-fiona.klute@gmx.de>
 
-Polling mode transactions wait for a reply busy-looping without holding a
-spinlock, but currently the timeout checks are based only on elapsed time:
-as a result we could hit a false positive whenever our busy-looping thread
-is pre-empted and scheduled out for a time greater than the polling
-timeout.
+On Mon, Mar 10, 2025 at 05:59:31PM +0100, Fiona Klute wrote:
+> If a new reset event appears before the previous one has been
+> processed, the device can get stuck into a reset loop. This happens
+> rarely, but blocks the device when it does, and floods the log with
+> messages like the following:
+> 
+>   lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
+> 
+> The only bit that the driver pays attention to in the interrupt data
+> is "link was reset". If there's a flapping status bit in that endpoint
+> data (such as if PHY negotiation needs a few tries to get a stable
+> link), polling at a slower rate allows the state to settle.
+> 
+> This is a simplified version of a patch that's been in the Raspberry
+> Pi downstream kernel since their 4.14 branch, see also:
+> https://github.com/raspberrypi/linux/issues/2447
+> 
+> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+> Cc: kernel-list@raspberrypi.com
+> Cc: stable@vger.kernel.org
+> ---
+> For the stable crew: I've *tested* the patch with 6.12.7 and 6.13.5 on
+> a Revolution Pi Connect 4 (Raspberry Pi CM4 based device with built-in
+> LAN7800 as second ethernet port), according to the linked issue for
+> the RPi downstream kernel the problem should be present in all
+> maintained longterm kernel versions, too (based on how long they've
+> carried a patch).
+> 
+>  drivers/net/usb/lan78xx.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+> index a91bf9c7e31d..7bf01a31a932 100644
+> --- a/drivers/net/usb/lan78xx.c
+> +++ b/drivers/net/usb/lan78xx.c
+> @@ -173,6 +173,12 @@
+>  #define INT_EP_GPIO_1			(1)
+>  #define INT_EP_GPIO_0			(0)
+>  
+> +/* highspeed device, so polling interval is in microframes (eight per
+> + * millisecond)
+> + */
+> +#define INT_URB_MICROFRAMES_PER_MS	8
+> +#define MIN_INT_URB_INTERVAL_MS		8
+> +
+>  static const char lan78xx_gstrings[][ETH_GSTRING_LEN] = {
+>  	"RX FCS Errors",
+>  	"RX Alignment Errors",
+> @@ -4527,7 +4533,11 @@ static int lan78xx_probe(struct usb_interface *intf,
+>  	if (ret < 0)
+>  		goto out4;
+>  
+> -	period = ep_intr->desc.bInterval;
+> +	period = max(ep_intr->desc.bInterval,
+> +		     MIN_INT_URB_INTERVAL_MS * INT_URB_MICROFRAMES_PER_MS);
 
-Change the checks at the end of the busy-loop to make sure that the polling
-wasn't indeed successful or an out-of-order reply caused the polling to be
-forcibly terminated.
+This calculation is completely wrong.  For high-speed interrupt 
+endpoints, the bInterval value is encoded using a logarithmic scheme.  
+The actual interval in microframes is given by 2^(bInterval - 1) (see 
+Table 9-13 in the USB 2.0 spec).  Furthermore, when the value is passed 
+to usb_fill_int_urb(), the interval argument must be encoded in the same 
+way (see the kerneldoc for usb_fill_int_urb() in include/linux/usb.h).
 
-Fixes: 31d2f803c19c ("firmware: arm_scmi: Add sync_cmds_completed_on_ret transport flag")
-Reported-by: Huangjie <huangjie1663@phytium.com.cn>
-Closes: https://lore.kernel.org/arm-scmi/20250123083323.2363749-1-jackhuang021@gmail.com/
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Cc: <stable@vger.kernel.org> # 5.18.x
----
-This fix got to be backported to 5.4/5.10./5.15 due to small changes in the
-context
----
- drivers/firmware/arm_scmi/driver.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+The encoded value corresponding to 8 ms is 7, not 64, since 8 ms = 64 
+uframes and 64 = 2^(7-1).
 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 60050da54bf2..e6cf83950875 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1248,7 +1248,8 @@ static void xfer_put(const struct scmi_protocol_handle *ph,
- }
- 
- static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
--				      struct scmi_xfer *xfer, ktime_t stop)
-+				      struct scmi_xfer *xfer, ktime_t stop,
-+				      bool *ooo)
- {
- 	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
- 
-@@ -1257,7 +1258,7 @@ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
- 	 * in case of out-of-order receptions of delayed responses
- 	 */
- 	return info->desc->ops->poll_done(cinfo, xfer) ||
--	       try_wait_for_completion(&xfer->done) ||
-+	       (*ooo = try_wait_for_completion(&xfer->done)) ||
- 	       ktime_after(ktime_get(), stop);
- }
- 
-@@ -1274,15 +1275,17 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
- 		 * itself to support synchronous commands replies.
- 		 */
- 		if (!desc->sync_cmds_completed_on_ret) {
-+			bool ooo = false;
-+
- 			/*
- 			 * Poll on xfer using transport provided .poll_done();
- 			 * assumes no completion interrupt was available.
- 			 */
- 			ktime_t stop = ktime_add_ms(ktime_get(), timeout_ms);
- 
--			spin_until_cond(scmi_xfer_done_no_timeout(cinfo,
--								  xfer, stop));
--			if (ktime_after(ktime_get(), stop)) {
-+			spin_until_cond(scmi_xfer_done_no_timeout(cinfo, xfer,
-+								  stop, &ooo));
-+			if (!ooo && !info->desc->ops->poll_done(cinfo, xfer)) {
- 				dev_err(dev,
- 					"timed out in resp(caller: %pS) - polling\n",
- 					(void *)_RET_IP_);
--- 
-2.47.0
+> +	dev_info(&intf->dev,
+> +		 "interrupt urb period set to %d, bInterval is %d\n",
+> +		 period, ep_intr->desc.bInterval);
 
+I doubt that this dev_info() will be very helpful to anyone (in addition 
+to being wrong since the value in "period" is not the actual period).
+
+Alan Stern
 
