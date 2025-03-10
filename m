@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FCCA59D6F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68990A59C1F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9208B16F4B9
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A783A16DC0A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3722230BC8;
-	Mon, 10 Mar 2025 17:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569672327A3;
+	Mon, 10 Mar 2025 17:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2z/htp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYkVQneP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E20226D0B;
-	Mon, 10 Mar 2025 17:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1343B230BE6;
+	Mon, 10 Mar 2025 17:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627257; cv=none; b=XV+zk23ZxEI3umdKosxFpERlbnjCwYgVsLATY0w9vao6Tdh8MTXTs9lnCmxrqxNjkN8yG4EH4EUBLsRpeYMrZvLBGAeCRYGK6I4HG3SzBnxEX498Yt2N22PpndCCgc7AUDEPKEVvC4J0D8VO+vbAcHEwPxnBaJzWdHHuzcg8vAg=
+	t=1741626541; cv=none; b=lw29o6QHEEK83Wj7/LxXqzzmxpynF00NndrAMSx2wpjlgtkpW6sFSB/MnHZkj/G1F4CVqxBCSHDy3xu12HKRhm8xWPyj8qNj81x5BtRmxtLDDuiib9C88h+Pas80GrvW6wzqsRGAEMyt/0xADSBXsP/8CAjBa8T4PIV+6ds+5qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627257; c=relaxed/simple;
-	bh=a58PannorxVF+EfZFdd2PhRAmebVEKi59PNgsRD/Z6E=;
+	s=arc-20240116; t=1741626541; c=relaxed/simple;
+	bh=Kyjs2yAshyximXYR0e7167sKqgWakFwjG0ez9syso0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mc825zITlfDX+sIJKOAElYb+jz47oPDEJuMqc2fCOTGhj9uVMwR03RbWUZPCcW7Z2AnFH8XA14o+5r4bbKBG4w+M0Pg2CLzr1S4ig0WypaW/ohsr5UK1XXVIKdts76yAR2jrF9tj4iT6hHNQPH4ZOSs6pfZW8Y4zzbi24aGfl6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2z/htp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC60C4CEED;
-	Mon, 10 Mar 2025 17:20:56 +0000 (UTC)
+	 MIME-Version; b=qOaJjrsli1Wh9LjoyCIOaTWY73O+BNYjoaV1Z3PBAHTfWUPktpXByji2rmSYwhUI76P46DRgc/Mo0Ym5cI6fA+cvjyrRQ1qvRMrTOqUqictzr36GZ2/VYxpzMq2hISdIoOUvBaNlNZethpUw3OVfllRUBVgOf8jj6LjyI98D52g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYkVQneP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF4DC4CEE5;
+	Mon, 10 Mar 2025 17:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627257;
-	bh=a58PannorxVF+EfZFdd2PhRAmebVEKi59PNgsRD/Z6E=;
+	s=korg; t=1741626540;
+	bh=Kyjs2yAshyximXYR0e7167sKqgWakFwjG0ez9syso0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2z/htp4/NV9ikjf4gWuLYa1RAef6F+IbKDHAqSi7V5pNYV2K47SD+apKXc7HC2J8
-	 dwfLVXbFn5boK6tlF0q98f8DGJ1S4wWjBqihwilQfw2EseR7K2/m9qEi4VGjcitU9T
-	 OAomfcUkOs84QmxJC7h1QAtlA2nA5tb9DYQj6yto=
+	b=tYkVQnePQMTk/CX2y8KB+u3hupxPFbRpQfi+V58H2rd1+vRwouVae3DYw2MqDLmHd
+	 TkkFsJBiQy5vT3WzloabG7K5Lik7Nt558x8eDpPY6l5R5PyuMk8WvyhHNJ82QVUGbe
+	 Y7flmw65cn3qCVrLH1wKZOFFNPrUWTImwhfu2Ag4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ethan D. Twardy" <ethan.twardy@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 067/269] rust: kbuild: expand rusttest target for macros
+	Hoku Ishibe <me@hokuishi.be>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 027/207] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
 Date: Mon, 10 Mar 2025 18:03:40 +0100
-Message-ID: <20250310170500.400589552@linuxfoundation.org>
+Message-ID: <20250310170448.852098308@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Ethan D. Twardy" <ethan.twardy@gmail.com>
+From: Hoku Ishibe <me@hokuishi.be>
 
-commit b2c261fa8629dff2bd1143fa790797a773ace102 upstream.
+commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
 
-Previously, the rusttest target for the macros crate did not specify
-the dependencies necessary to run the rustdoc tests. These tests rely on
-the kernel crate, so add the dependencies.
+Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
+persistent humming noise when the power_save mode is enabled.
+This issue occurs when the codec enters power saving mode,
+leading to unwanted noise from the speakers.
 
-Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/1076
-Link: https://lore.kernel.org/r/20240704145607.17732-2-ethan.twardy@gmail.com
-[ Rebased (`alloc` is gone nowadays, sysroot handling is simpler) and
-  simplified (reused `rustdoc_test` rule instead of adding a new one,
-  no need for `rustdoc-compiler_builtins`, removed unneeded `macros`
-  explicit path). Made `vtable` example fail (avoiding to increase
-  the complexity in the `rusttest` target). Removed unstable
-  `-Zproc-macro-backtrace` option. Reworded accordingly. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This patch adds the affected model (PCI ID 0x1028:0x0962) to the
+power_save denylist to ensure power_save is disabled by default,
+preventing power-off related noise issues.
+
+Steps to Reproduce
+1. Boot the system with `snd_hda_intel` loaded.
+2. Verify that `power_save` mode is enabled:
+```sh
+cat /sys/module/snd_hda_intel/parameters/power_save
+````
+output: 10 (default power save timeout)
+3. Wait for the power save timeout
+4. Observe a persistent humming noise from the speakers
+5. Disable `power_save` manually:
+```sh
+echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+````
+6. Confirm that the noise disappears immediately.
+
+This issue has been observed on my system, and this patch
+successfully eliminates the unwanted noise. If other users
+experience similar issues, additional reports would be helpful.
+
+Signed-off-by: Hoku Ishibe <me@hokuishi.be>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/Makefile      |   17 +++++++++++++----
- rust/macros/lib.rs |    2 +-
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -129,6 +129,14 @@ rusttestlib-macros: private rustc_test_l
- rusttestlib-macros: $(src)/macros/lib.rs FORCE
- 	+$(call if_changed,rustc_test_library)
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2232,6 +2232,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
+ 	/* KONTRON SinglePC may cause a stall at runtime resume */
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
++	/* Dell ALC3271 */
++	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
+ 	{}
+ };
  
-+rusttestlib-kernel: private rustc_target_flags = \
-+    --extern build_error --extern macros \
-+    --extern bindings --extern uapi
-+rusttestlib-kernel: $(src)/kernel/lib.rs \
-+    rusttestlib-bindings rusttestlib-uapi rusttestlib-build_error \
-+    $(obj)/libmacros.so $(obj)/bindings.o FORCE
-+	+$(call if_changed,rustc_test_library)
-+
- rusttestlib-bindings: $(src)/bindings/lib.rs FORCE
- 	+$(call if_changed,rustc_test_library)
- 
-@@ -181,19 +189,20 @@ quiet_cmd_rustc_test = RUSTC T  $<
- 
- rusttest: rusttest-macros rusttest-kernel
- 
--rusttest-macros: private rustc_target_flags = --extern proc_macro
-+rusttest-macros: private rustc_target_flags = --extern proc_macro \
-+	--extern macros --extern kernel
- rusttest-macros: private rustdoc_test_target_flags = --crate-type proc-macro
--rusttest-macros: $(src)/macros/lib.rs FORCE
-+rusttest-macros: $(src)/macros/lib.rs \
-+    rusttestlib-macros rusttestlib-kernel FORCE
- 	+$(call if_changed,rustc_test)
- 	+$(call if_changed,rustdoc_test)
- 
- rusttest-kernel: private rustc_target_flags = \
-     --extern build_error --extern macros --extern bindings --extern uapi
--rusttest-kernel: $(src)/kernel/lib.rs \
-+rusttest-kernel: $(src)/kernel/lib.rs rusttestlib-kernel \
-     rusttestlib-build_error rusttestlib-macros rusttestlib-bindings \
-     rusttestlib-uapi FORCE
- 	+$(call if_changed,rustc_test)
--	+$(call if_changed,rustc_test_library)
- 
- ifdef CONFIG_CC_IS_CLANG
- bindgen_c_flags = $(c_flags)
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -132,7 +132,7 @@ pub fn module(ts: TokenStream) -> TokenS
- /// calls to this function at compile time:
- ///
- /// ```compile_fail
--/// # use kernel::error::VTABLE_DEFAULT_ERROR;
-+/// # // Intentionally missing `use`s to simplify `rusttest`.
- /// kernel::build_error(VTABLE_DEFAULT_ERROR)
- /// ```
- ///
 
 
 
