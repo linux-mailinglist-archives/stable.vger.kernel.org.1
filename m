@@ -1,77 +1,63 @@
-Return-Path: <stable+bounces-123129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE087A5A5AC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 22:08:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4ACA5A623
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 22:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AB1B3AA684
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 21:08:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D9D91894282
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 21:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE251DF991;
-	Mon, 10 Mar 2025 21:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6586D1E102E;
+	Mon, 10 Mar 2025 21:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="iQmDEC8E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918631DF73B;
-	Mon, 10 Mar 2025 21:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D406C1DF72D;
+	Mon, 10 Mar 2025 21:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741640871; cv=none; b=Dt7pDuMv74Fa/NMAbamTIRh+c8O42ltJsyxBeu3m2quoRJrqffo3Q/70PVmtaO0ap3BGxpSxH6YjtiGBQKIk5O9qqcOp2ACDCM11foZNyBn5TX2bwJ4Ev24EIpO09pO4THuJyOuq3L/C0OewUKy5yT5H2muvIMcZzvHci7fpvt0=
+	t=1741642041; cv=none; b=eOoZyTN8owLfTJf+MVGYYyR+pp+o4SovtAivKZnhMRBF0S0BQ/vGQe2KJICqdwIjL2ZKLttpBJA3qNobayRL6XXxSGgfYuHERCtYVK2Ndte/roUAvjgwgVWQbjZ9LaXbsTNrzlfm6L0JnEF2AWmH9EmfxbSMJg/U8kaaFfn/cZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741640871; c=relaxed/simple;
-	bh=QnQz6XBkpBOMKQ6PwrmcAnUjIKRFzxIkV3rImnzlsjk=;
+	s=arc-20240116; t=1741642041; c=relaxed/simple;
+	bh=DvazVX0g80o/XqqnPHhoDEhonQprDhV2KvjSM2hR+t0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uf3h//OmnoEYIOkcq3FuO5ORJObj+Yue3mmywwUZsv+G7Guxcsl7ImZZ3fNaCJU8nj4F8f+ZqLDyEuGNsoOvy2tqQo/ygIjLS77WybzUbjdJLzm6fnAn5dqm6GjCB3hdRXbLinXvd11OqsgFKznC9fVnXbZ4N42vX8DmpIFZWFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ff694d2d4dso6732450a91.0;
-        Mon, 10 Mar 2025 14:07:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741640869; x=1742245669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w1AJb/5nJjGuAi7KNzBsrlIYLjJOf6yj55dAqxN2Vz8=;
-        b=YUp3K+Pxd7wDt/K84SvDT6FMs26gWvKxrKaLmRj7MQxNVvRipZBU39WXR8mBd7acM3
-         mUg84AnTaN8/bNjtpodBMmOttZYHB8yzS18rnNNhyURN94qmaFDHD7X6thF9dv7svWOh
-         Fy3FnEdKuHyX4Hra4cKPZf/oREPaS5xHREjo1Z9rBVyFTtlXCT8bTK7H2bbuzCszrwd+
-         nRcTmCREKTPPUpXiN5EY7Fi2boSIROzt2a5yGAlr5pxsQ8BNMbs4Lqf7M9IlfVLexlyk
-         7qRumo3JDlxAJjvrl1GsGOw6j7ChUii3xBq8ZSxmMvrtXyh3YLLm6zYyywXJjbHY4xAx
-         Etrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUK8aGQOB1yCB5pkFYWqqEkl7b8q5LGI7FQJfvlK2tupUobh/2t4uyni5wj4UHAqOyRYSu9yEhNSi+z6VQ=@vger.kernel.org, AJvYcCUyBPE4D+trUegn/iejf/biVQn7w08k4TsJMkhZbrxtW4qT4lKi8r06JmelVbYsdv+Ex9zj1h7p@vger.kernel.org, AJvYcCVg9qfYxcMED93Embc1vIqnKRUH/k1Gg3ILGDiEi4ahD1++fie6CjZBG8XlgVLSe90ll/JX+mVpEmux@vger.kernel.org, AJvYcCWdu6BaBdadKHTsdhIpDm4ipPkcDZk6+jhe3mxeyKdJ2KC+pKTW/uHAsT3ydgbMH5AGZB6BEA2RN8Yj+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWutSt6QlmMj78b6QsmC7d8YUhnp5OtnoCYt9Hm6JGlO6RG4r4
-	L6W5hMLjwhpGdao4+lFOcWBR0QYfSF0dugLZDpKpKTxt08HjdkUn
-X-Gm-Gg: ASbGncveQvfWjWrnxx0s2grPFGsmSyi7XV03cDfBJ4h2VRPb5mqn11srqlBaj+AW7q7
-	9SCXoHWEVwvCO2J8aNZHTx/IEukHde+IszGjab9lPXGVCtTSWXuAWT1WGm9/4jPSR83LFAYlVuA
-	B2bxbNPkfq0jC4pdyA8fFP1Og+Wf6B7/ffaHQTCc71VU8vkBiZ3GbgRg7hpjS5Ot1eKJ++36HMD
-	r5Xv+/5+lxXpgvdxQRfxvmsYlrvdQsONskjQOeRQVNUF9jzoZw/CussD3C5TDaFasdYtOp/Xsjt
-	+xJqBOQ8TomxAcdhnhJiJesEndykXt8Dzm+KLL0+brab3JOspP0afrqAxCML/tuGcdatvpepedj
-	qN+A=
-X-Google-Smtp-Source: AGHT+IGc1KBuVi32oJuLLXoUmcYMGQ+dxMVqfvMg27687+GtmjFcAnXL+mt7Wixdqbol46Ej6Gut0Q==
-X-Received: by 2002:a17:90b:4c44:b0:2ff:4e8f:b055 with SMTP id 98e67ed59e1d1-2ff7cf14526mr24048537a91.35.1741640868746;
-        Mon, 10 Mar 2025 14:07:48 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-300fe40c28dsm706225a91.33.2025.03.10.14.07.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 14:07:48 -0700 (PDT)
-Date: Tue, 11 Mar 2025 06:07:46 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, vigneshr@ti.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250310210746.GA2377483@rocinante>
-References: <20250305132018.2260771-1-s-vadapalli@ti.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z7AvZzjNqHG/XQeeCO6UWWTMSo79lnEC9Z9KmKi8ldUuPtfKV5fK8FwyWIE9p4JBYnvPnz6KP1BW6RMMQv9EY0FrOzuA4Knyj6dlQt5fRT9eIQ+Sg7dCGooE9JOsX6nsj3DHb6krM2MPjDUadtAAtGDgpunHelS7C3aAxA+nOZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=iQmDEC8E; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=4gvNFaVt7SP8lVgM6g77SePTU6ZZWH3MPFK4OksX/QQ=; b=iQmDEC8EGow0Md5fTAv3RCVgRI
+	Yw+FwHamSz5gLPm0YjX9chpb+8a+BEbl8lCYNJThLM2H5mAypAQ0H9ZHCthKAfsxyRKOmVBOnUrfu
+	gouWN4yVK4fceh+hf1eFYuefUSbYg1PijazS9ikUMqFKZP9wMEkT8geBOeoitubF8Ed8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1trkeN-0048cC-Th; Mon, 10 Mar 2025 22:27:03 +0100
+Date: Mon, 10 Mar 2025 22:27:03 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Fiona Klute <fiona.klute@gmx.de>
+Cc: netdev@vger.kernel.org,
+	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
+	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-list@raspberrypi.com, stable@vger.kernel.org
+Subject: Re: [PATCH] net: usb: lan78xx: Enforce a minimum interrupt polling
+ period
+Message-ID: <11f5be1d-9250-4aba-8f51-f231b09d3992@lunn.ch>
+References: <20250310165932.1201702-1-fiona.klute@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,55 +66,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250305132018.2260771-1-s-vadapalli@ti.com>
+In-Reply-To: <20250310165932.1201702-1-fiona.klute@gmx.de>
 
-Hello,
+On Mon, Mar 10, 2025 at 05:59:31PM +0100, Fiona Klute wrote:
+> If a new reset event appears before the previous one has been
+> processed, the device can get stuck into a reset loop. This happens
+> rarely, but blocks the device when it does, and floods the log with
+> messages like the following:
+> 
+>   lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
+> 
+> The only bit that the driver pays attention to in the interrupt data
+> is "link was reset". If there's a flapping status bit in that endpoint
+> data (such as if PHY negotiation needs a few tries to get a stable
+> link), polling at a slower rate allows the state to settle.
 
-> Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-> expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-> already reuse this macro since it accurately represents the link-state
-> field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
+Could you expand on this a little bit more. What is the issue you are
+seeing?
 
-Can you confirm for me that the following use the correct macro?
+I had a quick look at the PHY handling code, and it looks broken. The
+only time a MAC driver should look at members of phydev is during the
+adjust link callback, so lan78xx_link_status_change(). Everything is
+guaranteed to be consistent at this time. However, the current
+lan78xx_link_status_change() only adjusts EEE setting. The PHY code in
+lan78xx_link_reset() looks wrong. MAC drivers should not be reading
+PHY registers, or calling functions like phy_read_status(). Setting
+flow control should be performed in lan78xx_link_status_change() using
+phydev->pause and phydev->asym_pause.
 
-  333-static const struct j721e_pcie_data j721e_pcie_rc_data = {
-  337:	.linkdown_irq_regfield = LINK_DOWN,
-  
-  341-static const struct j721e_pcie_data j721e_pcie_ep_data = {
-  343:	.linkdown_irq_regfield = LINK_DOWN,
-  
-  347-static const struct j721e_pcie_data j7200_pcie_rc_data = {
-  350:	.linkdown_irq_regfield = J7200_LINK_DOWN,
-  
-  362-static const struct j721e_pcie_data am64_pcie_rc_data = {
-  364:	.linkdown_irq_regfield = J7200_LINK_DOWN,
-  
-  369-static const struct j721e_pcie_data am64_pcie_ep_data = {
-  371:	.linkdown_irq_regfield = J7200_LINK_DOWN,
-  
-  375-static const struct j721e_pcie_data j784s4_pcie_rc_data = {
-  379:	.linkdown_irq_regfield = LINK_DOWN,
-  
-  383-static const struct j721e_pcie_data j784s4_pcie_ep_data = {
-  385:	.linkdown_irq_regfield = LINK_DOWN,
-  
-  389-static const struct j721e_pcie_data j722s_pcie_rc_data = {
-  391:	.linkdown_irq_regfield = J7200_LINK_DOWN,
-
-I am asking as some use LINK_DOWN, so I wanted to make sure.
-
-Tht said, the following has no .linkdown_irq_regfield property set:
-
-  355-static const struct j721e_pcie_data j7200_pcie_ep_data = {
-  356-	.mode = PCI_MODE_EP,
-  357-	.quirk_detect_quiet_flag = true,
-  358-	.quirk_disable_flr = true,
-  359-	.max_lanes = 2,
-  360-};
-
-Would this be a problem?  Or is this as expected?
-
-Thank you!
-
-	Krzysztof
+	Andrew
 
