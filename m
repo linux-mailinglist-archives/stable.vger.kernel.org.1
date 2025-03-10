@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-122380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200D3A59F69
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4ED5A59E0E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA9493ABE21
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 709F5188F1CD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEBF231CB0;
-	Mon, 10 Mar 2025 17:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBF6233716;
+	Mon, 10 Mar 2025 17:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofpYHRSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBTzX2TR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3347E22ACDC;
-	Mon, 10 Mar 2025 17:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CBB230BC3;
+	Mon, 10 Mar 2025 17:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628326; cv=none; b=bRyFKhhgZ6dda89/H9KEfui910vGn/MEgTLXoENe5nRJu4tTWTraYu5DUaHvvjW/URvJzcB4rmY3ip99OlCFdI0cErBaL/efSqLnYFwR4NsDlkwiNKuknCKXewFn85y5/3y8yluNkMOSMS7i+cVEUmRUjBqhB2C2QQR+fDuau00=
+	t=1741627633; cv=none; b=nVVAKCvrkpOIe1WRPP0RpGV26uINfUh/fSfWDUg6N8wnubYRBnrc+f7WzjTt65uG4htI422KlPMnx3BK0/uiwQTbTngfs7bv40bEMdIVwzix24IHpDgPjdcDGLgigvaNIS1apCDZjOHqOiL1zubdwXm7pewe2Vxh7EJ2cBlnuos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628326; c=relaxed/simple;
-	bh=dUW73rSm6UYz24fCbFMuxlJhzzui7O26U1GjSur+Xms=;
+	s=arc-20240116; t=1741627633; c=relaxed/simple;
+	bh=4h5DEU5YzhKUlHRsAAFC3inR05CU5AQyVv2bt8Oo/Qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuXZUOraLeJB/QDxno92pzn2Klh6pYE3KNeeP1bfZm4UqAWCdGmPqtTszY8ZTaCpubCGgDt/jk21Cz2UubMewRnPDGAkhxY/Groui0u8LUmxVmjDzqckDFwXC+i93q5UJMfPGwxyQdPjsI6Kq5hVWgq+IVVQRtEZXukK7W9+RtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofpYHRSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D26C4CEE5;
-	Mon, 10 Mar 2025 17:38:45 +0000 (UTC)
+	 MIME-Version; b=EspPeltGrwI79lyWkHnsXrJsnUVnQPjz+kXdJqnOfu9tQflCzqnF3pGRYQzed5u4Uvdp5TDsFLHs8REVbeXIFSdncJddaAHg5lPF9DYpEIXKNUM3Fm6aAP8oALinqXaj8Esggk9Bjdgu1xIzEvVGMsYceEspWrY5in8xBVmFQDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBTzX2TR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A233C4CEE5;
+	Mon, 10 Mar 2025 17:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628326;
-	bh=dUW73rSm6UYz24fCbFMuxlJhzzui7O26U1GjSur+Xms=;
+	s=korg; t=1741627633;
+	bh=4h5DEU5YzhKUlHRsAAFC3inR05CU5AQyVv2bt8Oo/Qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofpYHRSoZx5zzZ4KED3ADBSiEpENnMKg/Rwm/um48Y7+yRxHVy5OGPI5nHly4F0yH
-	 HKt9n/xL/QYDZKxBWOZYuHskDWlDfTRVXSUujAdp1pLvekInHj5B+ost2kMo/3dxiQ
-	 a74WgK6TLck1oZEowBPOpYlTShz0Z72PQpVTNeRE=
+	b=aBTzX2TRJHSI9PG1r2BEHEMdtZ2zzNXX4KQo+RFQrit2loenOjqK4zPVOyqMISW/e
+	 CMHl+dOUOOnWftbJ1Fe9HzeetYPgte9qAODZMR2B0lcHgITE4xa6a/T6iVqTjhtgk9
+	 8x17DbvMGU0gzQm+HlJiPLDbCT9vxsQnYkGg1JeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Waiman Long <longman@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/109] x86/speculation: Add __update_spec_ctrl() helper
+Subject: [PATCH 6.12 197/269] net-timestamp: support TCP GSO case for a few missing flags
 Date: Mon, 10 Mar 2025 18:05:50 +0100
-Message-ID: <20250310170427.800026279@linuxfoundation.org>
+Message-ID: <20250310170505.550212094@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-[ Upstream commit e3e3bab1844d448a239cd57ebf618839e26b4157 ]
+[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
 
-Add a new __update_spec_ctrl() helper which is a variant of
-update_spec_ctrl() that can be used in a noinstr function.
+When I read through the TSO codes, I found out that we probably
+miss initializing the tx_flags of last seg when TSO is turned
+off, which means at the following points no more timestamp
+(for this last one) will be generated. There are three flags
+to be handled in this patch:
+1. SKBTX_HW_TSTAMP
+2. SKBTX_BPF
+3. SKBTX_SCHED_TSTAMP
+Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
+6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
+and only belongs to net-next branch material for now. The common
+issue of the above three flags can be fixed by this single patch.
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20230727184600.26768-2-longman@redhat.com
-Stable-dep-of: c157d351460b ("intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly")
+This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
+the UDP GSO does to make the newly segmented last skb inherit the
+tx_flags so that requested timestamp will be generated in each
+certain layer, or else that last one has zero value of tx_flags
+which leads to no timestamp at all.
+
+Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/spec-ctrl.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/ipv4/tcp_offload.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/spec-ctrl.h b/arch/x86/include/asm/spec-ctrl.h
-index cb0386fc4dc3b..c648502e45357 100644
---- a/arch/x86/include/asm/spec-ctrl.h
-+++ b/arch/x86/include/asm/spec-ctrl.h
-@@ -4,6 +4,7 @@
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 2308665b51c53..2dfac79dc78b8 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -13,12 +13,15 @@
+ #include <net/tcp.h>
+ #include <net/protocol.h>
  
- #include <linux/thread_info.h>
- #include <asm/nospec-branch.h>
-+#include <asm/msr.h>
- 
- /*
-  * On VMENTER we must preserve whatever view of the SPEC_CTRL MSR
-@@ -76,6 +77,16 @@ static inline u64 ssbd_tif_to_amd_ls_cfg(u64 tifn)
- 	return (tifn & _TIF_SSBD) ? x86_amd_ls_cfg_ssbd_mask : 0ULL;
- }
- 
-+/*
-+ * This can be used in noinstr functions & should only be called in bare
-+ * metal context.
-+ */
-+static __always_inline void __update_spec_ctrl(u64 val)
-+{
-+	__this_cpu_write(x86_spec_ctrl_current, val);
-+	native_wrmsrl(MSR_IA32_SPEC_CTRL, val);
-+}
+-static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
++static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
+ 			   unsigned int seq, unsigned int mss)
+ {
++	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
++	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
 +
- #ifdef CONFIG_SMP
- extern void speculative_store_bypass_ht_init(void);
- #else
+ 	while (skb) {
+ 		if (before(ts_seq, seq + mss)) {
+-			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
++			skb_shinfo(skb)->tx_flags |= flags;
+ 			skb_shinfo(skb)->tskey = ts_seq;
+ 			return;
+ 		}
+@@ -193,8 +196,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	th = tcp_hdr(skb);
+ 	seq = ntohl(th->seq);
+ 
+-	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
+-		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
++	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
++		tcp_gso_tstamp(segs, gso_skb, seq, mss);
+ 
+ 	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
+ 
 -- 
 2.39.5
 
