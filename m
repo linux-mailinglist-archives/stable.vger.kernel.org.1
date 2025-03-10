@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-121797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C31A59C55
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A93A5A1E3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4339E16E28E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7939E1891E89
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F11F232378;
-	Mon, 10 Mar 2025 17:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871A5233D86;
+	Mon, 10 Mar 2025 18:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tovionPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVTeFnQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3E6230BDF;
-	Mon, 10 Mar 2025 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321723236F;
+	Mon, 10 Mar 2025 18:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626656; cv=none; b=WCFilnLOO212cqAyLtiyOjQRaSF041IkhZsCGwBHcUhuKUB1bIP54D43/R9WWxxubLuWkynUujq0AzMH5CNyfvvHqfOwhhzKfTS9aLZv5i7b1goyBpQ5Tr+eIN4K5p8LWk9zmyp02LffGd4Wd+euAC1Mjn/JCOhNjuEP1KTw/qw=
+	t=1741630459; cv=none; b=nbXFh210t2P5bwr6pi9XdNKuSMF+nSgBOKM/ZWUGsAS7oj88eee3d1Kif7QKzKddExDhSlGvz7gRDDxQDY9WwhxphtdlNNzvdwLrb+oJPtV4dok5r2341aQie179e5WuiiyCVga64f4a0bgO5/xO5yDF0B16yn5tLdCft46hIpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626656; c=relaxed/simple;
-	bh=o1giEUJ3eHLb5IZlvRxgPGJwZrgr7ploI1Aay0tK7pM=;
+	s=arc-20240116; t=1741630459; c=relaxed/simple;
+	bh=fsXOZwNIFSbGPAgPTJHpYkJdYaRSxY714E7oO19eqJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKQGRJVWHuOjm495OnlrGuu5u4rc0JKwjv+GtaB3GLa6NmCMaSdnj7cAJE/Y7WDgn/XAFfGkQ35g2vwWyCsfVd5VDi1cNLM6D+kCSeAX9MVWY/oWfYWiayrmUJMonFBkUa+oSbFmXXJw39MZ55TujTk2/Mayj3RfygYoMiwjcUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tovionPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F52C4CEE5;
-	Mon, 10 Mar 2025 17:10:56 +0000 (UTC)
+	 MIME-Version; b=YTCCxzArtqS+3nQ92gxLV4DHlZs7KrXib+W5EE+6xupHR+P6HWxglwtzK2eLgVXVjuAmpVovLzvn/DEVZxsPYHYUUpWScTrB7vIUSjIgWCuiw3nQnR5/z1tOoflDyQO5kfNtxigdkOgQLZxJpWyqpLSUEBkrJdo2aM9bUiGcrbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVTeFnQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC17C4CEEC;
+	Mon, 10 Mar 2025 18:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626656;
-	bh=o1giEUJ3eHLb5IZlvRxgPGJwZrgr7ploI1Aay0tK7pM=;
+	s=korg; t=1741630458;
+	bh=fsXOZwNIFSbGPAgPTJHpYkJdYaRSxY714E7oO19eqJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tovionPedHNs6x+CVNc8KvyGmrm93GryDmevwCU8VziLfZlPNrC4l8MI+INfdxh5U
-	 8KxWnM9nYASSDC+2+li2RpPMwK0RlqUpkwOn4T7GC+cwDSNFvX2me703H7HPK3ExrL
-	 jEwVhTEsfeFHNj5ozhNQyyYQNYM+FTKpPRFEAm48=
+	b=yVTeFnQaElHIotO8RAAxLqYkAYREMjV9ZX+AxXl7PoxQqd3u508VFZU4Ze7RSYcZb
+	 EcFijcF12TJDjy5f7N5K9vPV9H6YzfcjWX1nDfzO+sTWQwoR4btPI9T0bpwzjOJbV3
+	 +qbYiEN6za/7nO/4ITzqQ1A04P/biBA2IFdW8IaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 066/207] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 5.15 413/620] kdb: Do not assume write() callback available
 Date: Mon, 10 Mar 2025 18:04:19 +0100
-Message-ID: <20250310170450.391649925@linuxfoundation.org>
+Message-ID: <20250310170601.892094073@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
+commit 6d3e0d8cc63221dec670d0ee92ac57961581e975 upstream.
 
-The return value of rio_add_net() should be checked.  If it fails,
-put_device() should be called to free the memory and give up the reference
-initialized in rio_add_net().
+It is allowed for consoles to not provide a write() callback. For
+example ttynull does this.
 
-Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Check if a write() callback is available before using it.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-2-john.ogness@linutronix.de
+Cc: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rapidio/rio-scan.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/debug/kdb/kdb_io.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
- 		dev_set_name(&net->dev, "rnet_%d", net->id);
- 		net->dev.parent = &mport->dev;
- 		net->dev.release = rio_scan_release_dev;
--		rio_add_net(net);
-+		if (rio_add_net(net)) {
-+			put_device(&net->dev);
-+			net = NULL;
-+		}
- 	}
- 
- 	return net;
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -577,6 +577,8 @@ static void kdb_msg_write(const char *ms
+ 			continue;
+ 		if (c == dbg_io_ops->cons)
+ 			continue;
++		if (!c->write)
++			continue;
+ 		/*
+ 		 * Set oops_in_progress to encourage the console drivers to
+ 		 * disregard their internal spin locks: in the current calling
 
 
 
