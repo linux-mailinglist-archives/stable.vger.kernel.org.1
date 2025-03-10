@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06753A59D9E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995EDA5A1DB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B33188F02C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C93217423B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D96322B8D0;
-	Mon, 10 Mar 2025 17:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB66622FACA;
+	Mon, 10 Mar 2025 18:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osJqaJdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVyxZNMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C80F1B3927;
-	Mon, 10 Mar 2025 17:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8253233710;
+	Mon, 10 Mar 2025 18:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627365; cv=none; b=SXAKwdLE5LcQ7fpL1CprQWjj5MksbRN4Za/qcRf3K/mHcfsBliciCzMjgenjDhu3MaK/sGuhgQqtRsSxonMff1zERsF1vnwepSCUlaB2yqi9ubSzlyRDR1sA34PQQza7AMls7T4xFwfwSYDpiuKs99k7LnsCveDVaiEPGKxbHcw=
+	t=1741630453; cv=none; b=UzEFn43Gyyaz3oW51OviXa1rJ3fcziP+kfGwpmFvXwhOWcefI+TN027aosk/p5wT69nfOgVQ8IC8vJWheG3iFR9fC2ZRSagyjsSxHqhiO9eg0Fiq72LeMOtohOGI6Q6PxILE0Ky74sivAHpCeMm6B4LuPJeN0s4N4M8JvgLLP84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627365; c=relaxed/simple;
-	bh=CW8irCflxJrT+Yxhx0AslNDwiuec+rP4f79aISKi7ok=;
+	s=arc-20240116; t=1741630453; c=relaxed/simple;
+	bh=0ZzCJnoAWQ9KeqLw6/LNXTnKqUsQEGApkeZ8eIR/8Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IUzDmAkbq9cqEc3n6zJxdMOMJ5O5bj8T4EGT5S2VWww0YmIymFdUVOsAiuc57KIliqV7EIb5vU1OF4wodcPsbIBStFxwfmHzk8nNfAwA+evbH58KsFWTQyeczRIOL9Hwc/TM5975DC1xYe+sCD7y1CiHS1T0Jlt2dfW7dsCndQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osJqaJdD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316DEC4CEE5;
-	Mon, 10 Mar 2025 17:22:44 +0000 (UTC)
+	 MIME-Version; b=C0J70VjHt9pjfjwZGrdiK2RC57bh80H/MmUGehRqGQ/TYoqXKyphsuBf9rFiS38tjva87MXHClL+PNoOwDdM5H/FuzOo63rISgcxF3i4uQNB5h7YK3R5urHAKU5roaiBVidfv6/J77/5K8dKUJO1y6mshd6JdYEqc70f+rM4kBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVyxZNMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF653C4CEE5;
+	Mon, 10 Mar 2025 18:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627364;
-	bh=CW8irCflxJrT+Yxhx0AslNDwiuec+rP4f79aISKi7ok=;
+	s=korg; t=1741630453;
+	bh=0ZzCJnoAWQ9KeqLw6/LNXTnKqUsQEGApkeZ8eIR/8Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=osJqaJdDVKPIDkUOoM67+8FA7hqv1gWBbOd1Kw3JFvmQtJQJ3/Jtej7jkqjz9DZVW
-	 ADoIPYoBhmht2Esjcz+X2gi4+SZlTfzW4Z+92HMOes3odVDt+jlKu0pbhl9YPqNuLq
-	 oAZQQm4bCLS5OfMdaliwFdaNGf1SlERsuycNALqk=
+	b=gVyxZNMpg066T71UER2rt4Vj4vX/1EXP+zGpP2ZlPSw7pb521l8ubL8gACLFbGSPQ
+	 0hKZTRVUWzxCyLsq4P3QkGR+mtDiGblJAEA3fnpG0D4GXE3CwffMN++qgszCWpfj28
+	 shV9xkpUNeGdLp/xIzxebT6DGFfAyZSYSltSsKB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Yang <804284660@qq.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 104/269] platform/x86: thinkpad_acpi: Add battery quirk for ThinkPad X131e
+	Jonathan Cormier <jcormier@criticallink.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 5.15 411/620] drm/tidss: Clear the interrupt status for interrupts being disabled
 Date: Mon, 10 Mar 2025 18:04:17 +0100
-Message-ID: <20250310170501.858112032@linuxfoundation.org>
+Message-ID: <20250310170601.813515390@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-commit d0d10eaedcb53740883d7e5d53c5e15c879b48fb upstream.
+commit 361a2ebb5cad211732ec3c5d962de49b21895590 upstream.
 
-Based on the dmesg messages from the original reporter:
+The driver does not touch the irqstatus register when it is disabling
+interrupts.  This might cause an interrupt to trigger for an interrupt
+that was just disabled.
 
-[    4.964073] ACPI: \_SB_.PCI0.LPCB.EC__.HKEY: BCTG evaluated but flagged as error
-[    4.964083] thinkpad_acpi: Error probing battery 2
+To fix the issue, clear the irqstatus registers right after disabling
+the interrupts.
 
-Lenovo ThinkPad X131e also needs this battery quirk.
-
-Reported-by: Fan Yang <804284660@qq.com>
-Tested-by: Fan Yang <804284660@qq.com>
-Co-developed-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250221164825.77315-1-jeffbai@aosc.io
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reported-by: Jonathan Cormier <jcormier@criticallink.com>
+Closes: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1394222/am625-issue-about-tidss-rcu_preempt-self-detected-stall-on-cpu/5424479#5424479
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+[Tomi: mostly rewrote the patch]
+Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
+Tested-by: Jonathan Cormier <jcormier@criticallink.com>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-5-82ddaec94e4a@ideasonboard.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/tidss/tidss_dispc.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -9958,6 +9958,7 @@ static const struct tpacpi_quirk battery
- 	 * Individual addressing is broken on models that expose the
- 	 * primary battery as BAT1.
- 	 */
-+	TPACPI_Q_LNV('G', '8', true),       /* ThinkPad X131e */
- 	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
- 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
- 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -596,7 +596,7 @@ void dispc_k2g_set_irqenable(struct disp
+ {
+ 	dispc_irq_t old_mask = dispc_k2g_read_irqenable(dispc);
+ 
+-	/* clear the irqstatus for newly enabled irqs */
++	/* clear the irqstatus for irqs that will be enabled */
+ 	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & mask);
+ 
+ 	dispc_k2g_vp_set_irqenable(dispc, 0, mask);
+@@ -604,6 +604,9 @@ void dispc_k2g_set_irqenable(struct disp
+ 
+ 	dispc_write(dispc, DISPC_IRQENABLE_SET, (1 << 0) | (1 << 7));
+ 
++	/* clear the irqstatus for irqs that were disabled */
++	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & old_mask);
++
+ 	/* flush posted write */
+ 	dispc_k2g_read_irqenable(dispc);
+ }
+@@ -735,7 +738,7 @@ static void dispc_k3_set_irqenable(struc
+ 
+ 	old_mask = dispc_k3_read_irqenable(dispc);
+ 
+-	/* clear the irqstatus for newly enabled irqs */
++	/* clear the irqstatus for irqs that will be enabled */
+ 	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & mask);
+ 
+ 	for (i = 0; i < dispc->feat->num_vps; ++i) {
+@@ -760,6 +763,9 @@ static void dispc_k3_set_irqenable(struc
+ 	if (main_disable)
+ 		dispc_write(dispc, DISPC_IRQENABLE_CLR, main_disable);
+ 
++	/* clear the irqstatus for irqs that were disabled */
++	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & old_mask);
++
+ 	/* Flush posted writes */
+ 	dispc_read(dispc, DISPC_IRQENABLE_SET);
+ }
 
 
 
