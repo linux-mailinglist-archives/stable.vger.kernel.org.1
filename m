@@ -1,63 +1,69 @@
-Return-Path: <stable+bounces-122924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C12A5A203
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C164A59C9A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C06A33A5C15
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 305777A89FD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03AC1B4F09;
-	Mon, 10 Mar 2025 18:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6F0232376;
+	Mon, 10 Mar 2025 17:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uz18IzDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcXaDXE0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5C323644A;
-	Mon, 10 Mar 2025 18:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAD6231A42;
+	Mon, 10 Mar 2025 17:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630534; cv=none; b=ArKNwo/5nvsNXSqXWZh4LkdC2OLt4ye0SpsUT/V2xZ7bNBRsxqknnTW9Nr7tkYdoWYH4JTqPNVm428r+XgeFHnKB7mSOjLBaxYS9f6zjabw63tWhKAZqJvfKM2Jse0f3E0n0BtjWFzl4LnGmWvztOrzcZEb6Kr8vTY4lLFUGG1M=
+	t=1741626756; cv=none; b=uBEY0D2AASHwLGEdEp370LzpcqQ9ZCq89vWvYH8gf/G+NZyoHY5EWQqBjjpviM4fNGMGXeWHRd+CMSihDfq1ZDu4STTo4NEPu9d0H0BNo1QJxaPC8pIh1H7XyyMt4uJXfB5USwjjeoVhZn3zGhAaRQCBTEFg8aByQc81OtdaOzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630534; c=relaxed/simple;
-	bh=LToPF2A1MexopEuHTOBHZVrZS6vPxByuGfg6m32zols=;
+	s=arc-20240116; t=1741626756; c=relaxed/simple;
+	bh=VSIGPvkXzulVY2d/HjsC6UhIFGBXaTz7fmDR/EaZCrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=seSKdhPw+SClqZNnyjR6xUC3qkfMoUY6Xd84bbIw8k4ISLswgOtdtL23iTNtm0Dnzkqq827y+RuGhDLXn2agkHCWzXuSLFKYwiNzH54WH3/XzWR0rrJU07H88FEArWB2AWwhXEk5oz+aPE0tHhWVsVmZ5lLgCWXpepr5VcIg8DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uz18IzDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FA3C4CEEC;
-	Mon, 10 Mar 2025 18:15:33 +0000 (UTC)
+	 MIME-Version; b=UetXPdxjvAIHD6BQtym0+/jYzVoNESz4V0kNXFJIrrtkOYiErlK+EAbaxXcvICI+RrH4dwCIAROfUVWuspUxJwBrv0nJzNjvUvEDYxiTTrBmPZmYrF6+wnF+O6kR4h/Ks6Wj2Vo6o3jJuc7qTvUd6FONiv7PhHiWPuey14p9wYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcXaDXE0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2813EC4CEE5;
+	Mon, 10 Mar 2025 17:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630534;
-	bh=LToPF2A1MexopEuHTOBHZVrZS6vPxByuGfg6m32zols=;
+	s=korg; t=1741626755;
+	bh=VSIGPvkXzulVY2d/HjsC6UhIFGBXaTz7fmDR/EaZCrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uz18IzDYcuFs7QwrXvbbTeMNVFg/SzjYUD3VKfyedG5IZHxMSdPnOUCIgdVIpCMhh
-	 JHDIYOwQ7trL26I020u+koSfRDN0MmoY+KSDf8EV3RmohLI3vLiP69TZCPd149W7E3
-	 WB7WAp+lidTNqgJ7OaYf97x9VA0AqNGh2I8V9Tcw=
+	b=LcXaDXE0dK7lDgHZT5XZOxYw+IU440B1sDMvZpYza8HqMzR5Ke09ZlpO7huvZA7jl
+	 NsToKkduTEWwhwObdeL+tit7tEgg2BgEg3hcCLRouU2v2dGqN4aujbTUFhSSYlHj0l
+	 sp+/C22KrzrDU8XquX5oQDytxDZP70mBMJutWYBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	huangshaobo <huangshaobo6@huawei.com>,
-	chenzefeng <chenzefeng2@huawei.com>,
-	Marco Elver <elver@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Xiaoming Ni <nixiaoming@huawei.com>,
-	Wangbing <wangbing6@huawei.com>,
-	Jubin Zhong <zhongjubin@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Florent Revest <revest@chromium.org>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	bpf <bpf@vger.kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 447/620] kfence: enable check kfence canary on panic via boot param
+Subject: [PATCH 6.13 100/207] tracing: Add ftrace_partial_regs() for converting ftrace_regs to pt_regs
 Date: Mon, 10 Mar 2025 18:04:53 +0100
-Message-ID: <20250310170603.239224040@linuxfoundation.org>
+Message-ID: <20250310170451.734174424@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,112 +75,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: huangshaobo <huangshaobo6@huawei.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 3c81b3bb0a33e2b555edb8d7eb99a7ae4f17d8bb ]
+[ Upstream commit b9b55c8912ce1e5555715d126486bdd63ddfeaec ]
 
-Out-of-bounds accesses that aren't caught by a guard page will result in
-corruption of canary memory.  In pathological cases, where an object has
-certain alignment requirements, an out-of-bounds access might never be
-caught by the guard page.  Such corruptions, however, are only detected on
-kfree() normally.  If the bug causes the kernel to panic before kfree(),
-KFENCE has no opportunity to report the issue.  Such corruptions may also
-indicate failing memory or other faults.
+Add ftrace_partial_regs() which converts the ftrace_regs to pt_regs.
+This is for the eBPF which needs this to keep the same pt_regs interface
+to access registers.
+Thus when replacing the pt_regs with ftrace_regs in fprobes (which is
+used by kprobe_multi eBPF event), this will be used.
 
-To provide some more information in such cases, add the option to check
-canary bytes on panic.  This might help narrow the search for the panic
-cause; but, due to only having the allocation stack trace, such reports
-are difficult to use to diagnose an issue alone.  In most cases, such
-reports are inactionable, and is therefore an opt-in feature (disabled by
-default).
+If the architecture defines its own ftrace_regs, this copies partial
+registers to pt_regs and returns it. If not, ftrace_regs is the same as
+pt_regs and ftrace_partial_regs() will return ftrace_regs::regs.
 
-[akpm@linux-foundation.org: add __read_mostly, per Marco]
-Link: https://lkml.kernel.org/r/20220425022456.44300-1-huangshaobo6@huawei.com
-Signed-off-by: huangshaobo <huangshaobo6@huawei.com>
-Suggested-by: chenzefeng <chenzefeng2@huawei.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Xiaoming Ni <nixiaoming@huawei.com>
-Cc: Wangbing <wangbing6@huawei.com>
-Cc: Jubin Zhong <zhongjubin@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: e64f81946adf ("kfence: skip __GFP_THISNODE allocations on NUMA systems")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Florent Revest <revest@chromium.org>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Alan Maguire <alan.maguire@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Link: https://lore.kernel.org/173518996761.391279.4987911298206448122.stgit@devnote2
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: db5e228611b1 ("tracing: fprobe-events: Log error for exceeding the number of entry args")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kfence/core.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ arch/arm64/include/asm/ftrace.h | 13 +++++++++++++
+ arch/riscv/include/asm/ftrace.h | 14 ++++++++++++++
+ include/linux/ftrace.h          | 17 +++++++++++++++++
+ 3 files changed, 44 insertions(+)
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 1a2dc187a72f9..0d1a66811c32b 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -21,6 +21,8 @@
- #include <linux/log2.h>
- #include <linux/memblock.h>
- #include <linux/moduleparam.h>
-+#include <linux/notifier.h>
-+#include <linux/panic_notifier.h>
- #include <linux/random.h>
- #include <linux/rcupdate.h>
- #include <linux/sched/clock.h>
-@@ -93,6 +95,10 @@ module_param_named(skip_covered_thresh, kfence_skip_covered_thresh, ulong, 0644)
- static bool kfence_deferrable __read_mostly = IS_ENABLED(CONFIG_KFENCE_DEFERRABLE);
- module_param_named(deferrable, kfence_deferrable, bool, 0444);
+diff --git a/arch/arm64/include/asm/ftrace.h b/arch/arm64/include/asm/ftrace.h
+index b5fa57b61378e..09210f853f12d 100644
+--- a/arch/arm64/include/asm/ftrace.h
++++ b/arch/arm64/include/asm/ftrace.h
+@@ -135,6 +135,19 @@ ftrace_regs_get_frame_pointer(const struct ftrace_regs *fregs)
+ 	return arch_ftrace_regs(fregs)->fp;
+ }
  
-+/* If true, check all canary bytes on panic. */
-+static bool kfence_check_on_panic __read_mostly;
-+module_param_named(check_on_panic, kfence_check_on_panic, bool, 0444);
-+
- /* The pool of pages used for guard pages and objects. */
- char *__kfence_pool __ro_after_init;
- EXPORT_SYMBOL(__kfence_pool); /* Export for test modules. */
-@@ -697,6 +703,31 @@ static int kfence_debugfs_init(void)
- 
- late_initcall(kfence_debugfs_init);
- 
-+/* === Panic Notifier ====================================================== */
-+
-+static void kfence_check_all_canary(void)
++static __always_inline struct pt_regs *
++ftrace_partial_regs(const struct ftrace_regs *fregs, struct pt_regs *regs)
 +{
-+	int i;
++	struct __arch_ftrace_regs *afregs = arch_ftrace_regs(fregs);
 +
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		struct kfence_metadata *meta = &kfence_metadata[i];
-+
-+		if (meta->state == KFENCE_OBJECT_ALLOCATED)
-+			for_each_canary(meta, check_canary_byte);
-+	}
++	memcpy(regs->regs, afregs->regs, sizeof(afregs->regs));
++	regs->sp = afregs->sp;
++	regs->pc = afregs->pc;
++	regs->regs[29] = afregs->fp;
++	regs->regs[30] = afregs->lr;
++	return regs;
 +}
 +
-+static int kfence_check_canary_callback(struct notifier_block *nb,
-+					unsigned long reason, void *arg)
+ int ftrace_regs_query_register_offset(const char *name);
+ 
+ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec);
+diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
+index 9372f8d7036f8..7064a530794b6 100644
+--- a/arch/riscv/include/asm/ftrace.h
++++ b/arch/riscv/include/asm/ftrace.h
+@@ -197,6 +197,20 @@ static __always_inline void ftrace_override_function_with_return(struct ftrace_r
+ 	arch_ftrace_regs(fregs)->epc = arch_ftrace_regs(fregs)->ra;
+ }
+ 
++static __always_inline struct pt_regs *
++ftrace_partial_regs(const struct ftrace_regs *fregs, struct pt_regs *regs)
 +{
-+	kfence_check_all_canary();
-+	return NOTIFY_OK;
++	struct __arch_ftrace_regs *afregs = arch_ftrace_regs(fregs);
++
++	memcpy(&regs->a0, afregs->args, sizeof(afregs->args));
++	regs->epc = afregs->epc;
++	regs->ra = afregs->ra;
++	regs->sp = afregs->sp;
++	regs->s0 = afregs->s0;
++	regs->t1 = afregs->t1;
++	return regs;
 +}
 +
-+static struct notifier_block kfence_check_canary_notifier = {
-+	.notifier_call = kfence_check_canary_callback,
-+};
+ int ftrace_regs_query_register_offset(const char *name);
+ 
+ void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
+diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+index 46ac44366c90a..863c014dff683 100644
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -190,6 +190,23 @@ static __always_inline struct pt_regs *ftrace_get_regs(struct ftrace_regs *fregs
+ 	return arch_ftrace_get_regs(fregs);
+ }
+ 
++#if !defined(CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS) || \
++	defined(CONFIG_HAVE_FTRACE_REGS_HAVING_PT_REGS)
 +
- /* === Allocation Gate Timer ================================================ */
- 
- static struct delayed_work kfence_timer;
-@@ -784,6 +815,9 @@ void __init kfence_init(void)
- 	else
- 		INIT_DELAYED_WORK(&kfence_timer, toggle_allocation_gate);
- 
-+	if (kfence_check_on_panic)
-+		atomic_notifier_chain_register(&panic_notifier_list, &kfence_check_canary_notifier);
++static __always_inline struct pt_regs *
++ftrace_partial_regs(struct ftrace_regs *fregs, struct pt_regs *regs)
++{
++	/*
++	 * If CONFIG_HAVE_FTRACE_REGS_HAVING_PT_REGS=y, ftrace_regs memory
++	 * layout is including pt_regs. So always returns that address.
++	 * Since arch_ftrace_get_regs() will check some members and may return
++	 * NULL, we can not use it.
++	 */
++	return &arch_ftrace_regs(fregs)->regs;
++}
 +
- 	WRITE_ONCE(kfence_enabled, true);
- 	queue_delayed_work(system_unbound_wq, &kfence_timer, 0);
- 
++#endif /* !CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS || CONFIG_HAVE_FTRACE_REGS_HAVING_PT_REGS */
++
+ /*
+  * When true, the ftrace_regs_{get,set}_*() functions may be used on fregs.
+  * Note: this can be true even when ftrace_get_regs() cannot provide a pt_regs.
 -- 
 2.39.5
 
