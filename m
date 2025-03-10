@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-122938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69479A5A21B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F75CA59E87
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B5B97A5FAB
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB32C165073
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CFE23370D;
-	Mon, 10 Mar 2025 18:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FF1233156;
+	Mon, 10 Mar 2025 17:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9Low/xQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8gOtWSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E791230D0F;
-	Mon, 10 Mar 2025 18:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AFD230BC3;
+	Mon, 10 Mar 2025 17:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630574; cv=none; b=ERoNqCX5/iQQC7obZvaQn3N5FxOtXVcwqmK6FrnPazwYZIncQe9yuDnb9sZSqJHCGyux00FPNwJTvIgH3GC6hEP/zgtwvuZv/Wyec1trxZXdmrVyfEcdpZ4FhysVUlJcyqVtnxrQOHCYkPOy4vR7aTZcN8841q0GjaoMLz8LMpQ=
+	t=1741627885; cv=none; b=SVidxM9Alinjfvg0rGncCPkggCmfvsjdX3KKw3rRLWT0lMah4ESDN/jfhgTdSSVRgdXKdOn+h+UWFBtxETs3XvnJbSgY+lSoiVI8E4m4gT/+35w01yzxIttULevhHHKB1ARNkI0BSldxZO1CFgp81LUnHGH6uu4yrRgXmjOjw4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630574; c=relaxed/simple;
-	bh=6br4VAfI2VkqQjw3k6koFSyojs8yH4b/+yjaP+XBae0=;
+	s=arc-20240116; t=1741627885; c=relaxed/simple;
+	bh=j1bXyfniMYChJjsGYB+bGFuO+ICfMleG+utOCcL2/u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+qrnGWpgzlAUGNQ5YT74YF/W2xiwAn/ALyzdKskgHNBPo3Ftam/EbOwWzXMg9idEix7e8r36uLuSUQikw3gkP407N2vzXK5eGZMk0Zqc12VDldf4nV9h90eAR+M6CFscrLU+15sjaXdpsPk71F5XifMUhdSghHCXPxGmm/sIZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9Low/xQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E879FC4CEE5;
-	Mon, 10 Mar 2025 18:16:13 +0000 (UTC)
+	 MIME-Version; b=h6KpCAb3T0O99dLVi7buNT0JR5THeDB7bWc2zsyV8VstbUi3l+K9c9tquZ+Dnfiex3pBOdptRJ7ZdQ3nuE0Y3YtaJEFsAyW2ZlyGlwu8J+DfKsx3Dn8eIGGnCZurGnsWOj12kadLcirQV502/MYCQu2yzKRqlA6VKJ0xvOmBcqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8gOtWSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19240C4CEE5;
+	Mon, 10 Mar 2025 17:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630574;
-	bh=6br4VAfI2VkqQjw3k6koFSyojs8yH4b/+yjaP+XBae0=;
+	s=korg; t=1741627884;
+	bh=j1bXyfniMYChJjsGYB+bGFuO+ICfMleG+utOCcL2/u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9Low/xQBNMPDpiJGfTuKPBIPLuaFmFuKLhEbNB4LYnYXZfH/70p88fDhShK12n5r
-	 ABEUmATvuClNhEtLdm/6HJw9GDaWi9n3IlTtgDTv/Kf5PglZAl6EDuLouVX9j9hr+A
-	 jAY2IMTwRTCtR0BMRIOXsRM9eP5Fb9AEPD4e4yZE=
+	b=J8gOtWSwhzv4K2kxsZ9VXUxQROaMOCn6pN4y4sOQ4+MfFApgf9ZB/+AsB+pcx8aES
+	 EHG07LyYWuD3T62c1i4nDgfacS0Gz9TlLvuXpj2WV4j8XW3gbxpYfdyB3zqYKUNBGC
+	 Xdffwg/afC7ES+wZ8T/pHie9gZ+K2BWteNk5/RI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Waiman Long <longman@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 462/620] powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
+Subject: [PATCH 6.6 014/145] x86/speculation: Add __update_spec_ctrl() helper
 Date: Mon, 10 Mar 2025 18:05:08 +0100
-Message-ID: <20250310170603.820949189@linuxfoundation.org>
+Message-ID: <20250310170435.317861541@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 61bcc752d1b81fde3cae454ff20c1d3c359df500 ]
+[ Upstream commit e3e3bab1844d448a239cd57ebf618839e26b4157 ]
 
-Rewrite __real_pte() and __rpte_to_hidx() as static inline in order to
-avoid following warnings/errors when building with 4k page size:
+Add a new __update_spec_ctrl() helper which is a variant of
+update_spec_ctrl() that can be used in a noinstr function.
 
-	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
-	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
-	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
-	   49 |         int i, offset;
-	      |                ^~~~~~
-
-	  CC      arch/powerpc/mm/book3s64/hash_native.o
-	arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
-	arch/powerpc/mm/book3s64/hash_native.c:782:29: error: variable 'index' set but not used [-Werror=unused-but-set-variable]
-	  782 |         unsigned long hash, index, hidx, shift, slot;
-	      |                             ^~~~~
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
-Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/e0d340a5b7bd478ecbf245d826e6ab2778b74e06.1736706263.git.christophe.leroy@csgroup.eu
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20230727184600.26768-2-longman@redhat.com
+Stable-dep-of: c157d351460b ("intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/book3s/64/hash-4k.h | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/spec-ctrl.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-index 5a79dd66b2ed0..433d164374cb6 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-@@ -92,9 +92,17 @@ static inline int hash__hugepd_ok(hugepd_t hpd)
- /*
-  * With 4K page size the real_pte machinery is all nops.
-  */
--#define __real_pte(e, p, o)		((real_pte_t){(e)})
-+static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
-+{
-+	return (real_pte_t){pte};
-+}
-+
- #define __rpte_to_pte(r)	((r).pte)
--#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
-+
-+static inline unsigned long __rpte_to_hidx(real_pte_t rpte, unsigned long index)
-+{
-+	return pte_val(__rpte_to_pte(rpte)) >> H_PAGE_F_GIX_SHIFT;
-+}
+diff --git a/arch/x86/include/asm/spec-ctrl.h b/arch/x86/include/asm/spec-ctrl.h
+index cb0386fc4dc3b..c648502e45357 100644
+--- a/arch/x86/include/asm/spec-ctrl.h
++++ b/arch/x86/include/asm/spec-ctrl.h
+@@ -4,6 +4,7 @@
  
- #define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
- 	do {							         \
+ #include <linux/thread_info.h>
+ #include <asm/nospec-branch.h>
++#include <asm/msr.h>
+ 
+ /*
+  * On VMENTER we must preserve whatever view of the SPEC_CTRL MSR
+@@ -76,6 +77,16 @@ static inline u64 ssbd_tif_to_amd_ls_cfg(u64 tifn)
+ 	return (tifn & _TIF_SSBD) ? x86_amd_ls_cfg_ssbd_mask : 0ULL;
+ }
+ 
++/*
++ * This can be used in noinstr functions & should only be called in bare
++ * metal context.
++ */
++static __always_inline void __update_spec_ctrl(u64 val)
++{
++	__this_cpu_write(x86_spec_ctrl_current, val);
++	native_wrmsrl(MSR_IA32_SPEC_CTRL, val);
++}
++
+ #ifdef CONFIG_SMP
+ extern void speculative_store_bypass_ht_init(void);
+ #else
 -- 
 2.39.5
 
