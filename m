@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-121806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FCDAA59C65
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F4BA5A18D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 065287A4F08
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADC21893DCA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB9B232367;
-	Mon, 10 Mar 2025 17:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C8322DFB1;
+	Mon, 10 Mar 2025 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDQ49SlD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhqck++Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF5B230D3D;
-	Mon, 10 Mar 2025 17:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352CC1C4A24;
+	Mon, 10 Mar 2025 18:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626682; cv=none; b=pwq2tJMROtKbe2r0fctG6gKo4Q1u4VwD2HHHP0oLuY+GuZm+BktjZ3RNNvvRXXns1pLeuEzIzBP29keTOvTmMZ9oBfhRCQnMCtf/C8s3XzfucnAiUywgPGwAMrH/n4p4fc5Q33JbUlFI6V/urxu8N//NUx0f9MTnxjj2gLNMRFk=
+	t=1741629745; cv=none; b=EFZpZx1wg8AyYyFauFUAer5OAGDSPaLVvOLJNK8naZoCuEfKMA1TcAC1DrE5POl3G2ZTfvFx2p/8gX/eqw5rsEYJgN+1vSsCaWnLGW8Wkyc8RYqv9ell7hrMPVChq6cxPsyrk7zobMx8/VezDausGqdMPBycL9iUDGfntXxhTiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626682; c=relaxed/simple;
-	bh=QwelUynC+k/WXZ0wpEiavr6+XPkrjcrjp2joBoNx1lc=;
+	s=arc-20240116; t=1741629745; c=relaxed/simple;
+	bh=g5d9NLG7k54W7ZHSwsCz6RsYLm1Tgnplb1/PGmJUqVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYtn6949XV2i5aQNJkQud202S5Tpk8JndZoOZrYy0AYTwlQZ7G+14at+Sl9wjZabnLGprcoQZQ48ppLdlajkC5exb3Uy0Ovg/hdc8N+N3nWoWlKqt7g3c2vO6r7MmQbPL2vfFTRlgQUQDsUGLx3VCWqU1BaIexJeof10TMMBPGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDQ49SlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C41C4CEE5;
-	Mon, 10 Mar 2025 17:11:22 +0000 (UTC)
+	 MIME-Version; b=KAZ1dfpBalHU6kJ7rHWTXWq34iQ1jS0rPm6OoW/dFFPpOq0WnLEVpSxCCCcj1PjhyWPMrtq6DfaTk8b3LF++4zcCW8JgqUNyv7nmjX3VtinKJCrZV5Hjl3oTZyYzyygfyrS7ttHiEiZ5eptthM/rPjQCFZFjIbqJ8UmdPvuamrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhqck++Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A81C4CEE5;
+	Mon, 10 Mar 2025 18:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626682;
-	bh=QwelUynC+k/WXZ0wpEiavr6+XPkrjcrjp2joBoNx1lc=;
+	s=korg; t=1741629744;
+	bh=g5d9NLG7k54W7ZHSwsCz6RsYLm1Tgnplb1/PGmJUqVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDQ49SlDif8ITgM18KspGrLG1dmBpus0B/c76hVBH3G1spNZlWMb7fAwyN5j1oOQO
-	 L3FF4pmwGTab+wMnpP3I8Oeeawvh/hik9nYTW1AGb47krJAKtSddhIJfcWpGVZDtWJ
-	 HAJuFycOgkqfoTnMbgIUzQypfydEquW3pVZo81DY=
+	b=fhqck++Q4vKiiL/HwM06wNiRHZP7IdRwqXgFiyIAdLCWhL79q54UGtMBybO7pZQT+
+	 kbeolNM1Uh09mCOirDC3XFxOaCXeemyvM7zONtP2g/cPb5XKwFz65mOwiWC4+cU88+
+	 x/Ne5WO5XldG4fbu/sJN4LhsZrDdw+DKhN7dA3Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.13 044/207] x86/boot: Sanitize boot params before parsing command line
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 391/620] clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context
 Date: Mon, 10 Mar 2025 18:03:57 +0100
-Message-ID: <20250310170449.518856383@linuxfoundation.org>
+Message-ID: <20250310170601.029807331@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Waiman Long <longman@redhat.com>
 
-commit c00b413a96261faef4ce22329153c6abd4acef25 upstream.
+[ Upstream commit 6bb05a33337b2c842373857b63de5c9bf1ae2a09 ]
 
-The 5-level paging code parses the command line to look for the 'no5lvl'
-string, and does so very early, before sanitize_boot_params() has been
-called and has been given the opportunity to wipe bogus data from the
-fields in boot_params that are not covered by struct setup_header, and
-are therefore supposed to be initialized to zero by the bootloader.
+The following bug report happened with a PREEMPT_RT kernel:
 
-This triggers an early boot crash when using syslinux-efi to boot a
-recent kernel built with CONFIG_X86_5LEVEL=y and CONFIG_EFI_STUB=n, as
-the 0xff padding that now fills the unused PE/COFF header is copied into
-boot_params by the bootloader, and interpreted as the top half of the
-command line pointer.
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2012, name: kwatchdog
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  get_random_u32+0x4f/0x110
+  clocksource_verify_choose_cpus+0xab/0x1a0
+  clocksource_verify_percpu.part.0+0x6b/0x330
+  clocksource_watchdog_kthread+0x193/0x1a0
 
-Fix this by sanitizing the boot_params before use. Note that there is no
-harm in calling this more than once; subsequent invocations are able to
-spot that the boot_params have already been cleaned up.
+It is due to the fact that clocksource_verify_choose_cpus() is invoked with
+preemption disabled.  This function invokes get_random_u32() to obtain
+random numbers for choosing CPUs.  The batched_entropy_32 local lock and/or
+the base_crng.lock spinlock in driver/char/random.c will be acquired during
+the call. In PREEMPT_RT kernel, they are both sleeping locks and so cannot
+be acquired in atomic context.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <stable@vger.kernel.org> # v6.1+
-Link: https://lore.kernel.org/r/20250306155915.342465-2-ardb+git@google.com
-Closes: https://lore.kernel.org/all/202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this problem by using migrate_disable() to allow smp_processor_id() to
+be reliably used without introducing atomic context. preempt_disable() is
+then called after clocksource_verify_choose_cpus() but before the
+clocksource measurement is being run to avoid introducing unexpected
+latency.
+
+Fixes: 7560c02bdffb ("clocksource: Check per-CPU clock synchronization when marked unstable")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/all/20250131173323.891943-2-longman@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/pgtable_64.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/time/clocksource.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "misc.h"
- #include <asm/bootparam.h>
-+#include <asm/bootparam_utils.h>
- #include <asm/e820/types.h>
- #include <asm/processor.h>
- #include "pgtable.h"
-@@ -107,6 +108,7 @@ asmlinkage void configure_5level_paging(
- 	bool l5_required = false;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
-+	sanitize_boot_params(bp);
- 	boot_params_ptr = bp;
- 
- 	/*
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 8d9b11555f7ef..32efc87c41f20 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -342,10 +342,10 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 	cpumask_clear(&cpus_ahead);
+ 	cpumask_clear(&cpus_behind);
+ 	cpus_read_lock();
+-	preempt_disable();
++	migrate_disable();
+ 	clocksource_verify_choose_cpus();
+ 	if (cpumask_empty(&cpus_chosen)) {
+-		preempt_enable();
++		migrate_enable();
+ 		cpus_read_unlock();
+ 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
+ 		return;
+@@ -353,6 +353,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 	testcpu = smp_processor_id();
+ 	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
+ 		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
++	preempt_disable();
+ 	for_each_cpu(cpu, &cpus_chosen) {
+ 		if (cpu == testcpu)
+ 			continue;
+@@ -372,6 +373,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 			cs_nsec_min = cs_nsec;
+ 	}
+ 	preempt_enable();
++	migrate_enable();
+ 	cpus_read_unlock();
+ 	if (!cpumask_empty(&cpus_ahead))
+ 		pr_warn("        CPUs %*pbl ahead of CPU %d for clocksource %s.\n",
+-- 
+2.39.5
+
 
 
 
