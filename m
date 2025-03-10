@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-122459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B533CA59FB2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A3EA5A2DD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19FC718908CA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F1253A3D3F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8AA22FAF8;
-	Mon, 10 Mar 2025 17:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D02309BD;
+	Mon, 10 Mar 2025 18:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZprwCSS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeOL48Rs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3DA22D7A6;
-	Mon, 10 Mar 2025 17:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F40B23370B;
+	Mon, 10 Mar 2025 18:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628553; cv=none; b=Xd3PLnO1kssdWj/BTTGTbhrpR71iBqpcVtI1afjafOAJbub+5m80Wicvw4+Lis1YVHQriUvf5w7loaCVx53yt61aoF9bD6n0yw2Gx+lcQ5y7XpEz7wtkoc6oTmR4qSvMiSmj49MaYiczwCtFbOdbtB9QemfkPo/jjx4qiGnxo6I=
+	t=1741631054; cv=none; b=Tc4GC2LeMxs3F3eHh32pctySGJwcwEaleilKDyLQBU9xn8cP80o9lyzVFKHoj5UCwzGtx3+lQrkNbc5xGCcGFQTPYkomabgI7ob6L+HR7Ng9j7v22rDMrz0Vri89GzURYJ2E0/v2boABnx2vyDtNLJdU5lCFPc50yEXaeNJmSR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628553; c=relaxed/simple;
-	bh=sFUhukOp3igGTidZku8sPLnuZyHYoMg1Zfz+7xVOZSw=;
+	s=arc-20240116; t=1741631054; c=relaxed/simple;
+	bh=t0Y/PdUafhcObrADrqS26juKfd95uRREIieJRkVk3QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqTrDvm0zFuvYcoqZTN7DDOimbR5gcz8JNsGefkFjJrbX9n7lIjc0dIV9/yWL8BGRb2CW2rhjcEvbvfScIaWmWh43l/V4jf3ZQDaiic/hPufBi5Pmjn01RlraWROOgm0//bIC0g7gyA8McS1BbSNVUpuWFJH+T7G2RI8YxioF5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZprwCSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DC9C4CEE5;
-	Mon, 10 Mar 2025 17:42:31 +0000 (UTC)
+	 MIME-Version; b=GXmsC7cwDAwaMadS+d8pnkwj/jWv0CMt01oxAWN2sD5roOA4t7TEAzTZyelF/NHuxBsPIZ7B4KfrFNDXK6jiXFp5hj1nLsxJdtKedf3/+v1zfoyUQ3U/WQCWWzgkujmPqOVQ2yvMoF/KqMzx56xe/rZUngpZ4UZN6QY8g98fY6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeOL48Rs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14473C4CEE5;
+	Mon, 10 Mar 2025 18:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628552;
-	bh=sFUhukOp3igGTidZku8sPLnuZyHYoMg1Zfz+7xVOZSw=;
+	s=korg; t=1741631054;
+	bh=t0Y/PdUafhcObrADrqS26juKfd95uRREIieJRkVk3QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZprwCSS2UTG+a5OYK+B6NbVhpapSvLIArWgo1gNNa2v6HK1NvtZmzrCH//b0o0E/
-	 azPzLxVEz/zi6aNEffVkiYTlUW+8rZqjjDiFxbwpttf456VMIZOeQioxQBjNBFVdNo
-	 aoIpOTNSmNCBA5J8oo6KLRhT+X9NGRPN3uUm6Erg=
+	b=LeOL48RsSbf8J/jPRBNCGR5TLvAv2dxI88JpUZoQxiGPTl016DXamOqfJ0vUHIftW
+	 ROkvTz6Lro4hXu6Kcmt/lElqGDnAogdEokOXK7d5QT8xNl4d9tRJAUEBcXT9l3mAqR
+	 DE5s1i6nOtM5K3fpdTHvC15dX5IpMSYtAStbWIxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 6.1 098/109] x86/mm: Dont disable PCID when INVLPG has been fixed by microcode
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	"Ubisectech Sirius" <bugreport@ubisectech.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 596/620] Squashfs: check the inode number is not the invalid value of zero
 Date: Mon, 10 Mar 2025 18:07:22 +0100
-Message-ID: <20250310170431.459252461@linuxfoundation.org>
+Message-ID: <20250310170609.060861304@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
+commit 9253c54e01b6505d348afbc02abaa4d9f8a01395 upstream.
 
-Per the "Processor Specification Update" documentations referred by
-the intel-microcode-20240312 release note, this microcode release has
-fixed the issue for all affected models.
+Syskiller has produced an out of bounds access in fill_meta_index().
 
-So don't disable PCID if the microcode is new enough.  The precise
-minimum microcode revision fixing the issue was provided by Pawan
-Intel.
+That out of bounds access is ultimately caused because the inode
+has an inode number with the invalid value of zero, which was not checked.
 
-[ dhansen: comment and changelog tweaks ]
+The reason this causes the out of bounds access is due to following
+sequence of events:
 
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
-Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
-Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
-Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
-Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
-Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+1. Fill_meta_index() is called to allocate (via empty_meta_index())
+   and fill a metadata index.  It however suffers a data read error
+   and aborts, invalidating the newly returned empty metadata index.
+   It does this by setting the inode number of the index to zero,
+   which means unused (zero is not a valid inode number).
+
+2. When fill_meta_index() is subsequently called again on another
+   read operation, locate_meta_index() returns the previous index
+   because it matches the inode number of 0.  Because this index
+   has been returned it is expected to have been filled, and because
+   it hasn't been, an out of bounds access is performed.
+
+This patch adds a sanity check which checks that the inode number
+is not zero when the inode is created and returns -EINVAL if it is.
+
+[phillip@squashfs.org.uk: whitespace fix]
+  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
+Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/init.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ fs/squashfs/inode.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -263,28 +263,33 @@ static void __init probe_page_size_mask(
- }
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
+ 	gid_t i_gid;
+ 	int err;
  
- /*
-- * INVLPG may not properly flush Global entries
-- * on these CPUs when PCIDs are enabled.
-+ * INVLPG may not properly flush Global entries on
-+ * these CPUs.  New microcode fixes the issue.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0x2e),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0x42c),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0x11),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0x118),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0x4117),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0x2e),
- 	{}
- };
- 
- static void setup_pcid(void)
- {
-+	const struct x86_cpu_id *invlpg_miss_match;
++	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
++	if (inode->i_ino == 0)
++		return -EINVAL;
 +
- 	if (!IS_ENABLED(CONFIG_X86_64))
- 		return;
+ 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
+ 	if (err)
+ 		return err;
+@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
  
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
--	if (x86_match_cpu(invlpg_miss_ids)) {
-+	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
-+
-+	if (invlpg_miss_match &&
-+	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
- 		pr_info("Incomplete global flushes, disabling PCID");
- 		setup_clear_cpu_cap(X86_FEATURE_PCID);
- 		return;
+ 	i_uid_write(inode, i_uid);
+ 	i_gid_write(inode, i_gid);
+-	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
+ 	inode->i_mtime.tv_sec = le32_to_cpu(sqsh_ino->mtime);
+ 	inode->i_atime.tv_sec = inode->i_mtime.tv_sec;
+ 	inode->i_ctime.tv_sec = inode->i_mtime.tv_sec;
 
 
 
