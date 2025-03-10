@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B6FA5A16C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21AFBA59C20
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0503172E58
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3464D188DAA5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8A622D4FD;
-	Mon, 10 Mar 2025 18:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6CD233731;
+	Mon, 10 Mar 2025 17:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ssXC9rt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjI2OcQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2DA17A2E8;
-	Mon, 10 Mar 2025 18:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182FC23372A;
+	Mon, 10 Mar 2025 17:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629646; cv=none; b=ZOhwYBVDlX46KdWiV2VbAcmW1sIiJALVeQXnRduMtPyb3+cdJeFLXlvpRri1acwddLw45qxOBdWdC/xI6nPl7DzMsdaVDoeTffYlPzwu/4Tvrwwnme+7YpS2GPCHVeEMiRe5c1dPZafdfQ8upkzpAjRyD1H6m/OOPDZb3SyneGM=
+	t=1741626518; cv=none; b=mTe6O5SZQjfO4ToGWVVdjC4wK/cwGpnb+f5WFG/aYhYTsjR64BT8lcOKdEtq0Otw7hnLRokGcT5swrLvVov684dxsQtVsFuwxLTHexoYbXcdiqBnZSH0VhWaAPOtdPtGAqzZVNdqJLEyJVclcsd+oFdDrLBwZFNGMfybfumSjiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629646; c=relaxed/simple;
-	bh=mcZCSoDSluwZVURjx8ioWcBqLnAuyAwziGQ7VQ7dxWM=;
+	s=arc-20240116; t=1741626518; c=relaxed/simple;
+	bh=17vZxk8dopXOFKzZ0PqTCBqm0Ha4035TzrVPw1Wetvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RbnSOCnCemzyN2v86OvGdx46mpE0GiNlE8cQbWQAizYb/TPFi8F4HzwL6OWMmncrCE34kieofqdWLaLrVJhUh+u0XXAxFDYEwMd3nAbK4r3oW+5P+2Sntp57trwwbpICOuzGVHP0JJUrPMWZ50Mei45MZ437E+rGZmxFEbsCRKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ssXC9rt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32208C4CEE5;
-	Mon, 10 Mar 2025 18:00:46 +0000 (UTC)
+	 MIME-Version; b=a1kLTA2pol82gVEbqQfZkHzqYKrBAFR2r1ZNVf2MtKQm3q00lP5rQli7WV6taKTYbxeH3gDBw4tnNCJKM7NGMX7jn7jxekTwkEKp2Bd+Qo9V6NdJaH1IWYvYTWGbNRDzNCa1KxyUYEVFVBFQTcdcm9fLKo45G24QSWLnUEvnPRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjI2OcQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEC2C4CEE5;
+	Mon, 10 Mar 2025 17:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629646;
-	bh=mcZCSoDSluwZVURjx8ioWcBqLnAuyAwziGQ7VQ7dxWM=;
+	s=korg; t=1741626517;
+	bh=17vZxk8dopXOFKzZ0PqTCBqm0Ha4035TzrVPw1Wetvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ssXC9rtftLe8EYYda/vj+J2aiIoenNNJcnMGqDVu5bML2KkfP20qnriVZ9poGZUF
-	 gzx0CRgiFEcu/UQw5FBrcEpLpKghKzATfpmReNrZ1xAJPr0CfZXFEO3etof12w09EQ
-	 Aw/xHsURoEzzQY8KkoJvTSqmOfozNW3h+3/rvb6s=
+	b=HjI2OcQDHsggT5rfbcO3hLG6gLAViKE1H3qQbtMVQFQmdt0DhQhPkQmkSYP1zkxCb
+	 XrI6ji8dSdxAWRI3HuIF+a+qtnoBwpoV+x623xB0yMrWMER7sElZ/N/HMdwJlJ2YoE
+	 xng1yiHa5psARUoXx9l9GlOZe7Vzlk8fjEkAfom0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 367/620] usb: gadget: f_midi: fix MIDI Streaming descriptor lengths
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 020/207] ksmbd: fix type confusion via race condition when using ipc_msg_send_request
 Date: Mon, 10 Mar 2025 18:03:33 +0100
-Message-ID: <20250310170600.091768848@linuxfoundation.org>
+Message-ID: <20250310170448.573338898@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit da1668997052ed1cb00322e1f3b63702615c9429 upstream.
+commit e2ff19f0b7a30e03516e6eb73b948e27a55bc9d2 upstream.
 
-While the MIDI jacks are configured correctly, and the MIDIStreaming
-endpoint descriptors are filled with the correct information,
-bNumEmbMIDIJack and bLength are set incorrectly in these descriptors.
+req->handle is allocated using ksmbd_acquire_id(&ipc_ida), based on
+ida_alloc. req->handle from ksmbd_ipc_login_request and
+FSCTL_PIPE_TRANSCEIVE ioctl can be same and it could lead to type confusion
+between messages, resulting in access to unexpected parts of memory after
+an incorrect delivery. ksmbd check type of ipc response but missing add
+continue to check next ipc reponse.
 
-This does not matter when the numbers of in and out ports are equal, but
-when they differ the host will receive broken descriptors with
-uninitialized stack memory leaking into the descriptor for whichever
-value is smaller.
-
-The precise meaning of "in" and "out" in the port counts is not clearly
-defined and can be confusing.  But elsewhere the driver consistently
-uses this to match the USB meaning of IN and OUT viewed from the host,
-so that "in" ports send data to the host and "out" ports receive data
-from it.
-
-Cc: stable <stable@kernel.org>
-Fixes: c8933c3f79568 ("USB: gadget: f_midi: allow a dynamic number of input and output ports")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20250130195035.3883857-1-jkeeping@inmusicbrands.com
+Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_midi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/smb/server/transport_ipc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -999,11 +999,11 @@ static int f_midi_bind(struct usb_config
- 	}
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -281,6 +281,7 @@ static int handle_response(int type, voi
+ 		if (entry->type + 1 != type) {
+ 			pr_err("Waiting for IPC type %d, got %d. Ignore.\n",
+ 			       entry->type + 1, type);
++			continue;
+ 		}
  
- 	/* configure the endpoint descriptors ... */
--	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
--	ms_out_desc.bNumEmbMIDIJack = midi->in_ports;
-+	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
-+	ms_out_desc.bNumEmbMIDIJack = midi->out_ports;
- 
--	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
--	ms_in_desc.bNumEmbMIDIJack = midi->out_ports;
-+	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
-+	ms_in_desc.bNumEmbMIDIJack = midi->in_ports;
- 
- 	/* ... and add them to the list */
- 	endpoint_descriptor_index = i;
+ 		entry->response = kvzalloc(sz, KSMBD_DEFAULT_GFP);
 
 
 
