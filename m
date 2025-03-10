@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-122268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13499A59EB3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200D3A59F69
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92EA188FCF1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA9493ABE21
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08D71A7264;
-	Mon, 10 Mar 2025 17:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEBF231CB0;
+	Mon, 10 Mar 2025 17:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZkw1eIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofpYHRSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6D1233150;
-	Mon, 10 Mar 2025 17:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3347E22ACDC;
+	Mon, 10 Mar 2025 17:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628010; cv=none; b=Klpo5fQAOfZBvqxHsQC0ZExV9JAjyrBxDRZlLZJVT+T1mCbV6us67S7s8NzNikY0ZlwWojlN1zkQVZyG40EUGg+91muabwh751tuoYIuB/H0sfE/g6tiZMLZRB7QKuL2O0IsK/Q8xd+slUbLgTvUL/aDbNTJDxkGsrvpNyHIAWg=
+	t=1741628326; cv=none; b=bRyFKhhgZ6dda89/H9KEfui910vGn/MEgTLXoENe5nRJu4tTWTraYu5DUaHvvjW/URvJzcB4rmY3ip99OlCFdI0cErBaL/efSqLnYFwR4NsDlkwiNKuknCKXewFn85y5/3y8yluNkMOSMS7i+cVEUmRUjBqhB2C2QQR+fDuau00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628010; c=relaxed/simple;
-	bh=JMBvMV/hTCJORvZRKttGqp/U1WJLePJU5Rs5/GzyZmE=;
+	s=arc-20240116; t=1741628326; c=relaxed/simple;
+	bh=dUW73rSm6UYz24fCbFMuxlJhzzui7O26U1GjSur+Xms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PquaQLqaS4wJWQF3dQIQatYEPFaI+VJ/C4zIwgbJaUgMQEA2etJ7Hc/pmseC1VQOKawZJWRMgOUWAdGrYgyM1RNjSGZ8qveiAnwKIXgbptghUNQI+N82GWzmBUPUGV9Yl00x7Ij7uAy3ccWmpCxug+zqC4EaFG8mtoAoIo8l0iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZkw1eIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21144C4CEEC;
-	Mon, 10 Mar 2025 17:33:29 +0000 (UTC)
+	 MIME-Version; b=HuXZUOraLeJB/QDxno92pzn2Klh6pYE3KNeeP1bfZm4UqAWCdGmPqtTszY8ZTaCpubCGgDt/jk21Cz2UubMewRnPDGAkhxY/Groui0u8LUmxVmjDzqckDFwXC+i93q5UJMfPGwxyQdPjsI6Kq5hVWgq+IVVQRtEZXukK7W9+RtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofpYHRSo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D26C4CEE5;
+	Mon, 10 Mar 2025 17:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628010;
-	bh=JMBvMV/hTCJORvZRKttGqp/U1WJLePJU5Rs5/GzyZmE=;
+	s=korg; t=1741628326;
+	bh=dUW73rSm6UYz24fCbFMuxlJhzzui7O26U1GjSur+Xms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZkw1eIVBaXvJJHTyzxCVCOi7D+RdM/1Vmytj3PRTT/axrRvp0z1V1/rFV2T8T13x
-	 IsGrrsczvDxzeXrPxPU0V2DM7q3jSoV2Uqv/6MGR+4qWY/r7SJyUtaXrt3PCvhS/v2
-	 VqVktpmFy0brsb7Lxh2eRe0iNu3ZOn9teDbJuVWg=
+	b=ofpYHRSoZx5zzZ4KED3ADBSiEpENnMKg/Rwm/um48Y7+yRxHVy5OGPI5nHly4F0yH
+	 HKt9n/xL/QYDZKxBWOZYuHskDWlDfTRVXSUujAdp1pLvekInHj5B+ost2kMo/3dxiQ
+	 a74WgK6TLck1oZEowBPOpYlTShz0Z72PQpVTNeRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mulhern <amulhern@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Olivier Gayot <olivier.gayot@canonical.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 056/145] block: fix conversion of GPT partition name to 7-bit
+	Peter Zijlstra <peterz@infradead.org>,
+	Waiman Long <longman@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 006/109] x86/speculation: Add __update_spec_ctrl() helper
 Date: Mon, 10 Mar 2025 18:05:50 +0100
-Message-ID: <20250310170437.003526156@linuxfoundation.org>
+Message-ID: <20250310170427.800026279@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Gayot <olivier.gayot@canonical.com>
+From: Waiman Long <longman@redhat.com>
 
-commit e06472bab2a5393430cc2fbc3211cd3602422c1e upstream.
+[ Upstream commit e3e3bab1844d448a239cd57ebf618839e26b4157 ]
 
-The utf16_le_to_7bit function claims to, naively, convert a UTF-16
-string to a 7-bit ASCII string. By naively, we mean that it:
- * drops the first byte of every character in the original UTF-16 string
- * checks if all characters are printable, and otherwise replaces them
-   by exclamation mark "!".
+Add a new __update_spec_ctrl() helper which is a variant of
+update_spec_ctrl() that can be used in a noinstr function.
 
-This means that theoretically, all characters outside the 7-bit ASCII
-range should be replaced by another character. Examples:
-
- * lower-case alpha (ɒ) 0x0252 becomes 0x52 (R)
- * ligature OE (œ) 0x0153 becomes 0x53 (S)
- * hangul letter pieup (ㅂ) 0x3142 becomes 0x42 (B)
- * upper-case gamma (Ɣ) 0x0194 becomes 0x94 (not printable) so gets
-   replaced by "!"
-
-The result of this conversion for the GPT partition name is passed to
-user-space as PARTNAME via udev, which is confusing and feels questionable.
-
-However, there is a flaw in the conversion function itself. By dropping
-one byte of each character and using isprint() to check if the remaining
-byte corresponds to a printable character, we do not actually guarantee
-that the resulting character is 7-bit ASCII.
-
-This happens because we pass 8-bit characters to isprint(), which
-in the kernel returns 1 for many values > 0x7f - as defined in ctype.c.
-
-This results in many values which should be replaced by "!" to be kept
-as-is, despite not being valid 7-bit ASCII. Examples:
-
- * e with acute accent (é) 0x00E9 becomes 0xE9 - kept as-is because
-   isprint(0xE9) returns 1.
- * euro sign (€) 0x20AC becomes 0xAC - kept as-is because isprint(0xAC)
-   returns 1.
-
-This way has broken pyudev utility[1], fixes it by using a mask of 7 bits
-instead of 8 bits before calling isprint.
-
-Link: https://github.com/pyudev/pyudev/issues/490#issuecomment-2685794648 [1]
-Link: https://lore.kernel.org/linux-block/4cac90c2-e414-4ebb-ae62-2a4589d9dc6e@canonical.com/
-Cc: Mulhern <amulhern@redhat.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Olivier Gayot <olivier.gayot@canonical.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250305022154.3903128-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20230727184600.26768-2-longman@redhat.com
+Stable-dep-of: c157d351460b ("intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/efi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/spec-ctrl.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/block/partitions/efi.c
-+++ b/block/partitions/efi.c
-@@ -682,7 +682,7 @@ static void utf16_le_to_7bit(const __le1
- 	out[size] = 0;
+diff --git a/arch/x86/include/asm/spec-ctrl.h b/arch/x86/include/asm/spec-ctrl.h
+index cb0386fc4dc3b..c648502e45357 100644
+--- a/arch/x86/include/asm/spec-ctrl.h
++++ b/arch/x86/include/asm/spec-ctrl.h
+@@ -4,6 +4,7 @@
  
- 	while (i < size) {
--		u8 c = le16_to_cpu(in[i]) & 0xff;
-+		u8 c = le16_to_cpu(in[i]) & 0x7f;
+ #include <linux/thread_info.h>
+ #include <asm/nospec-branch.h>
++#include <asm/msr.h>
  
- 		if (c && !isprint(c))
- 			c = '!';
+ /*
+  * On VMENTER we must preserve whatever view of the SPEC_CTRL MSR
+@@ -76,6 +77,16 @@ static inline u64 ssbd_tif_to_amd_ls_cfg(u64 tifn)
+ 	return (tifn & _TIF_SSBD) ? x86_amd_ls_cfg_ssbd_mask : 0ULL;
+ }
+ 
++/*
++ * This can be used in noinstr functions & should only be called in bare
++ * metal context.
++ */
++static __always_inline void __update_spec_ctrl(u64 val)
++{
++	__this_cpu_write(x86_spec_ctrl_current, val);
++	native_wrmsrl(MSR_IA32_SPEC_CTRL, val);
++}
++
+ #ifdef CONFIG_SMP
+ extern void speculative_store_bypass_ht_init(void);
+ #else
+-- 
+2.39.5
+
 
 
 
