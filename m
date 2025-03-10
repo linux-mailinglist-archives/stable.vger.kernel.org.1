@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-121919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4277FA59CFE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE13A59E5E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD2917A2F8D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16D8D3A558A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B1E230BF0;
-	Mon, 10 Mar 2025 17:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E9A22FF40;
+	Mon, 10 Mar 2025 17:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLuv1JBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEiLElxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E588F22FACA;
-	Mon, 10 Mar 2025 17:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D0D22D786;
+	Mon, 10 Mar 2025 17:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627010; cv=none; b=IdUggymnEg0PSLKXa1txgZB14cTYh+J/twJyKFBnf45/4Zi/dAeiQjIKuaf375IbX4FjG6dqh4qSxdTUDl8Re76+HoTIqXxXiPsC4dumhdGCBR9GBBAcF4Vvdd6E1cps92On4yfprnmaEDNMOjfj0bhqRjcjJm6EIcJOWg/YQGA=
+	t=1741627729; cv=none; b=uMsN5Ws2j8u2Q/grIo0Mr/7JSnA4ZN+zIR6hxvTsTHDXhlTL/8EjBIKqb9eKRSroAdA2nWtstAIcprf++qebuVOiXMkeo96gqB/aRM5pAsUWLAPkcE7z50hdjlnuacNmeUTY7iPusjkB6ToLQb92ajFlTRfJqDUQft+TI7AZuCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627010; c=relaxed/simple;
-	bh=CQEIVUrXqxrIp5XpP7OM1RkFrlpfo7UYSbird1Lc378=;
+	s=arc-20240116; t=1741627729; c=relaxed/simple;
+	bh=sEjJOQT74fDiMBpFK+KhraBLjAKlzvWKCjS0DkUJlWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTrdKbsycYEvVGvMKvKWNkH5J79qtD8ikdaWSqFTdBh7VDpqtuP1NLOva/3ClCc3W8Wa80aaMWFJiDR4iwFuogWOHlJnOqD+O6bawzaxoWZF1k4JMx/sZUJACRrQ1vuIQGjivf8NjlpcrkGLeQ/XQjN2ul08HLDPZr4a+vKUjaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLuv1JBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A88C4CEEB;
-	Mon, 10 Mar 2025 17:16:48 +0000 (UTC)
+	 MIME-Version; b=UVy0u+R4DIBm0r503uH8lMLZzq/w88/HQptMjAC1THs/RPE+QggqzqXQ8pMoVkhr18wG4duh5FqJ9YO1Luif6jiaaEqWSg5RBvQnAFlkl21z9MOjvyTm+Xgu2JBKFUF3IDLKeSgJOHPj8NzmNggccsc11RaBLLO0NLLS/4G7lhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEiLElxJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A635C4CEE5;
+	Mon, 10 Mar 2025 17:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627009;
-	bh=CQEIVUrXqxrIp5XpP7OM1RkFrlpfo7UYSbird1Lc378=;
+	s=korg; t=1741627729;
+	bh=sEjJOQT74fDiMBpFK+KhraBLjAKlzvWKCjS0DkUJlWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLuv1JBITO24/SYbQT6fJqfOuuWIGDWvHBcOSpxcfOIzd7PFJ0VoBiPbvbZmrmn2C
-	 6d74UfAbRIJALEUHrk/x+ZjVc8OH168Rw5JBJXIPnDeatFRdisG4KqpmcBz+K8eYP5
-	 8tJX3YkLyK4dbJ9y2yjizNcMmCvAJnKkF3RNB8j8=
+	b=OEiLElxJHD1fvBXKFQJL8vKSxFGJMKksCukf/bBa5XrUaazUxp1sLAVdhUSSHhxqO
+	 xtOk2RQ9WWuoUL636VekrbhJTPZjE2J89KGLj5JH3oeXKOJhrabD5UzJ9j5JGY9odB
+	 CZuqQiEc2PQDETaTAbQXJeyPdrb0PvhpBTLeiD7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.13 190/207] eeprom: digsy_mtc: Make GPIO lookup table match the device
+	Naveen N Rao <naveen@kernel.org>,
+	Kim Phillips <kim.phillips@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 230/269] KVM: SVM: Save host DR masks on CPUs with DebugSwap
 Date: Mon, 10 Mar 2025 18:06:23 +0100
-Message-ID: <20250310170455.335821113@linuxfoundation.org>
+Message-ID: <20250310170506.855508881@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 038ef0754aae76f79b147b8867f9250e6a976872 upstream.
+commit b2653cd3b75f62f29b72df4070e20357acb52bc4 upstream.
 
-The dev_id value in the GPIO lookup table must match to
-the device instance name, which in this case is combined
-of name and platform device ID, i.e. "spi_gpio.1". But
-the table assumed that there was no platform device ID
-defined, which is wrong. Fix the dev_id value accordingly.
+When running SEV-SNP guests on a CPU that supports DebugSwap, always save
+the host's DR0..DR3 mask MSR values irrespective of whether or not
+DebugSwap is enabled, to ensure the host values aren't clobbered by the
+CPU.  And for now, also save DR0..DR3, even though doing so isn't
+necessary (see below).
 
-Fixes: 9b00bc7b901f ("spi: spi-gpio: Rewrite to use GPIO descriptors")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206220311.1554075-1-andriy.shevchenko@linux.intel.com
+SVM_VMGEXIT_AP_CREATE is deeply flawed in that it allows the *guest* to
+create a VMSA with guest-controlled SEV_FEATURES.  A well behaved guest
+can inform the hypervisor, i.e. KVM, of its "requested" features, but on
+CPUs without ALLOWED_SEV_FEATURES support, nothing prevents the guest from
+lying about which SEV features are being enabled (or not!).
+
+If a misbehaving guest enables DebugSwap in a secondary vCPU's VMSA, the
+CPU will load the DR0..DR3 mask MSRs on #VMEXIT, i.e. will clobber the
+MSRs with '0' if KVM doesn't save its desired value.
+
+Note, DR0..DR3 themselves are "ok", as DR7 is reset on #VMEXIT, and KVM
+restores all DRs in common x86 code as needed via hw_breakpoint_restore().
+I.e. there is no risk of host DR0..DR3 being clobbered (when it matters).
+However, there is a flaw in the opposite direction; because the guest can
+lie about enabling DebugSwap, i.e. can *disable* DebugSwap without KVM's
+knowledge, KVM must not rely on the CPU to restore DRs.  Defer fixing
+that wart, as it's more of a documentation issue than a bug in the code.
+
+Note, KVM added support for DebugSwap on commit d1f85fbe836e ("KVM: SEV:
+Enable data breakpoints in SEV-ES"), but that is not an appropriate Fixes,
+as the underlying flaw exists in hardware, not in KVM.  I.e. all kernels
+that support SEV-SNP need to be patched, not just kernels with KVM's full
+support for DebugSwap (ignoring that DebugSwap support landed first).
+
+Opportunistically fix an incorrect statement in the comment; on CPUs
+without DebugSwap, the CPU does NOT save or load debug registers, i.e.
+
+Fixes: e366f92ea99e ("KVM: SEV: Support SEV-SNP AP Creation NAE event")
+Cc: stable@vger.kernel.org
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Kim Phillips <kim.phillips@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20250227012541.3234589-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/eeprom/digsy_mtc_eeprom.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/eeprom/digsy_mtc_eeprom.c
-+++ b/drivers/misc/eeprom/digsy_mtc_eeprom.c
-@@ -50,7 +50,7 @@ static struct platform_device digsy_mtc_
- };
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4579,6 +4579,8 @@ void sev_es_vcpu_reset(struct vcpu_svm *
  
- static struct gpiod_lookup_table eeprom_spi_gpiod_table = {
--	.dev_id         = "spi_gpio",
-+	.dev_id         = "spi_gpio.1",
- 	.table          = {
- 		GPIO_LOOKUP("gpio@b00", GPIO_EEPROM_CLK,
- 			    "sck", GPIO_ACTIVE_HIGH),
+ void sev_es_prepare_switch_to_guest(struct vcpu_svm *svm, struct sev_es_save_area *hostsa)
+ {
++	struct kvm *kvm = svm->vcpu.kvm;
++
+ 	/*
+ 	 * All host state for SEV-ES guests is categorized into three swap types
+ 	 * based on how it is handled by hardware during a world switch:
+@@ -4602,10 +4604,15 @@ void sev_es_prepare_switch_to_guest(stru
+ 
+ 	/*
+ 	 * If DebugSwap is enabled, debug registers are loaded but NOT saved by
+-	 * the CPU (Type-B). If DebugSwap is disabled/unsupported, the CPU both
+-	 * saves and loads debug registers (Type-A).
++	 * the CPU (Type-B). If DebugSwap is disabled/unsupported, the CPU does
++	 * not save or load debug registers.  Sadly, on CPUs without
++	 * ALLOWED_SEV_FEATURES, KVM can't prevent SNP guests from enabling
++	 * DebugSwap on secondary vCPUs without KVM's knowledge via "AP Create".
++	 * Save all registers if DebugSwap is supported to prevent host state
++	 * from being clobbered by a misbehaving guest.
+ 	 */
+-	if (sev_vcpu_has_debug_swap(svm)) {
++	if (sev_vcpu_has_debug_swap(svm) ||
++	    (sev_snp_guest(kvm) && cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP))) {
+ 		hostsa->dr0 = native_get_debugreg(0);
+ 		hostsa->dr1 = native_get_debugreg(1);
+ 		hostsa->dr2 = native_get_debugreg(2);
 
 
 
