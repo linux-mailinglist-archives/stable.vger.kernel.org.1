@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65744A5A272
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABDDAA59F48
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:38:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A231C175491
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 957203A557D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2601CAA6C;
-	Mon, 10 Mar 2025 18:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF88231A51;
+	Mon, 10 Mar 2025 17:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiPMUMRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIKj2HSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADB9374EA;
-	Mon, 10 Mar 2025 18:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EC22253FE;
+	Mon, 10 Mar 2025 17:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630818; cv=none; b=oGUsKk02m22G8WsKF+SwLt1R9P5CQ76wTZD7lml3+FJmOyBpafR+yy6ZMJoaZduBG2gW5eL75qXoKxhzEzWiH62DBDcMi5ZusCIZrdEZAjWds1Uwg3l1M5Uv83EIEmYYCN7ob5GNMPxztbm/xOsnDhOOorX/6ap9pmbQX0PP2mY=
+	t=1741628251; cv=none; b=A264cVDOCYTseEZsTXxzwqIDaVqHbgIzHXdh26s01ZoHft8fz+eJdzBIg181ZeO/18J0TWNGVZghgiTp3sLgcClaSGwG8B/7oO7diRe87Otu0sK7cdOQwwoGxzkW9c6vxbw2KFWw6PmG4epUea4DGp3JT3uk8l9oFhbNPQhnIRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630818; c=relaxed/simple;
-	bh=5lpaH16CQRYKprFja1E8ddWt4nJhp1144YiwEN1OD00=;
+	s=arc-20240116; t=1741628251; c=relaxed/simple;
+	bh=Y2e0JBgMbBTyrCIZvM56hUiNbbNHFCSk/EkyCICD/7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIxj3XGkwI7HKHGX2r9ph2vUVEQWxgsu4lIFKbUwrI+u2kuUr5tPlMfXGk2yghtbgfRR/wm6zekp1Q5B4whtzcbd5+qIul25AP4eah5ZQBPrSsq/N9/m3GQt1KcKpal3HP7VMNM9zJbBIdDdl7iAhaU2Cevp/BSx9MfZZrnr7yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiPMUMRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CE2C4CEE5;
-	Mon, 10 Mar 2025 18:20:18 +0000 (UTC)
+	 MIME-Version; b=t0iIyAKWKDLhXeq2xpsb3IHyrLY25CSJBAiuN+Vdor4nUV33HGPukPIjsCWi+y8LJ9zMa0vDvROGir2UmjXzml8LtjO5IuiNHvV1KJNyck994WB18zVsrj0BDRsD952SiIHW0O8e5H4VohkTEBJVYGSssBYZO7LvIiV878xyMPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIKj2HSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464E1C4CEE5;
+	Mon, 10 Mar 2025 17:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630818;
-	bh=5lpaH16CQRYKprFja1E8ddWt4nJhp1144YiwEN1OD00=;
+	s=korg; t=1741628250;
+	bh=Y2e0JBgMbBTyrCIZvM56hUiNbbNHFCSk/EkyCICD/7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiPMUMRxInFi7X9T3k0I068mucpVX+XQ03w7mmpS/odwDptdqSjrKRSd8naFsZ/f/
-	 DdKPGQCBDY71+GxwEMTjImYgCwOFT5no6KwWOv6h6Kr5EnVsiiVsSHesuiyEvkKYpu
-	 EcdlMnK7nqaJbnUqvBNqKNmham+8pamL8tY7eDHA=
+	b=zIKj2HSAR9cLEbYAa3YYA0YEWvYxuH8/x3vvyMOdotTP7Cc/JOaB7NTHnm2VOHtDC
+	 s4XK/Mkg2RHkuS4/laB68m+FyZ3BzFX7pe+n364HBT0UDY9nogTUG+ZeDSI+4epCvS
+	 tIEOixF2gsxxeh5y1HffSqhipBUM3cNe5KEvH2ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 545/620] wifi: nl80211: reject cooked mode if it is set along with other flags
-Date: Mon, 10 Mar 2025 18:06:31 +0100
-Message-ID: <20250310170607.058365035@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.6 098/145] usb: renesas_usbhs: Flush the notify_hotplug_work
+Date: Mon, 10 Mar 2025 18:06:32 +0100
+Message-ID: <20250310170438.709629587@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 49f27f29446a5bfe633dd2cc0cfebd48a1a5e77f upstream.
+commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
 
-It is possible to set both MONITOR_FLAG_COOK_FRAMES and MONITOR_FLAG_ACTIVE
-flags simultaneously on the same monitor interface from the userspace. This
-causes a sub-interface to be created with no IEEE80211_SDATA_IN_DRIVER bit
-set because the monitor interface is in the cooked state and it takes
-precedence over all other states. When the interface is then being deleted
-the kernel calls WARN_ONCE() from check_sdata_in_driver() because of missing
-that bit.
+When performing continuous unbind/bind operations on the USB drivers
+available on the Renesas RZ/G2L SoC, a kernel crash with the message
+"Unable to handle kernel NULL pointer dereference at virtual address"
+may occur. This issue points to the usbhsc_notify_hotplug() function.
 
-Fix this by rejecting MONITOR_FLAG_COOK_FRAMES if it is set along with
-other flags.
+Flush the delayed work to avoid its execution when driver resources are
+unavailable.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 66f7ac50ed7c ("nl80211: Add monitor interface configuration flags")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Link: https://patch.msgid.link/20250131152657.5606-1-v.shevtsov@mt-integration.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/nl80211.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/renesas_usbhs/common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3800,6 +3800,11 @@ static int parse_monitor_flags(struct nl
- 		if (flags[flag])
- 			*mntrflags |= (1<<flag);
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -770,6 +770,8 @@ static void usbhs_remove(struct platform
  
-+	/* cooked monitor mode is incompatible with other modes */
-+	if (*mntrflags & MONITOR_FLAG_COOK_FRAMES &&
-+	    *mntrflags != MONITOR_FLAG_COOK_FRAMES)
-+		return -EOPNOTSUPP;
+ 	dev_dbg(&pdev->dev, "usb remove\n");
+ 
++	flush_delayed_work(&priv->notify_hotplug_work);
 +
- 	*mntrflags |= MONITOR_FLAG_CHANGED;
- 
- 	return 0;
+ 	/* power off */
+ 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+ 		usbhsc_power_ctrl(priv, 0);
 
 
 
