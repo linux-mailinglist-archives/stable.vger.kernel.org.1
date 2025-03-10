@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C4CA5A295
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:21:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB7DA59EFD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDEB81895334
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B9E716FD9F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567D81CAA6C;
-	Mon, 10 Mar 2025 18:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3BA22D7A6;
+	Mon, 10 Mar 2025 17:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tkhp+6G7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/e3Bjfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C01156861;
-	Mon, 10 Mar 2025 18:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9251DE89C;
+	Mon, 10 Mar 2025 17:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630903; cv=none; b=Q10QoOM5x+gwwBocZlU2B7Wl7gzR4i7aw/JNa3rfxazYioacxN8HnsmqPyXcMXe2jU6xTi15YF394PeZ2dKLOKCT8wTjqw6BnznTL4QiSqkq77pr98hQAY4/yFIoX1O2gvrEY10cBxQZrlvVy2t6M1Qdwg5dcac4vsdO83gUyS4=
+	t=1741628161; cv=none; b=HDYI6ATLSQ72J6ek9HA6TrtyUYdCI+8ewFaNumeyBROefWvtjIYOikjDuIvZthzeaKnqIjuMULIPIb3rDrf74gSWHK0aQK2Suq3QOsy/kIDY8Ssp/lOgPIBF2URcE6j7nhKrKuBoUckcZ6HoXkidmjCbaTnZxT6j0A5VhyWce9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630903; c=relaxed/simple;
-	bh=1VQ1Yqak4H8lsij8SmFykPqKDRuZxdsfAI9GAKFeLoM=;
+	s=arc-20240116; t=1741628161; c=relaxed/simple;
+	bh=LGCE7Mq1Bz+FiIikO4vYEEyWq33yIlx+KeK8Ll3qKMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ip6XHTMkf++7vGJNI8gAW6zw5KscXBz3udKn3Lk9Tiv9iO/FDCAmeir7iuyH7GYSbiQyxEd2D6jNB8gPZB3c28uGDZ95fq0PXVsUYEtb4u+OOfGayrZFCoa73YcQ+4tqGVH3xma8IBW/Fp2E5xblW6ir+dXKYcU5XkFgz+QGtdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tkhp+6G7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC08C4CEE5;
-	Mon, 10 Mar 2025 18:21:42 +0000 (UTC)
+	 MIME-Version; b=pzV3OjS1sTE6xY1iyLgtB9sPnOQw/U51K2ddPpZYkfHyl4FBFuvsbHRB+Jh29c1z5IJaMjsGNVGU8r5GI+N95QUzoCD5MrHaVijdUNqFlSCziGVoJBuAYPPNsz6x0MrKxOhSxvjJ2tqPogWDd7bUhspSnMALoo/7LsI6/p7jpmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/e3Bjfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C856EC4CEE5;
+	Mon, 10 Mar 2025 17:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630902;
-	bh=1VQ1Yqak4H8lsij8SmFykPqKDRuZxdsfAI9GAKFeLoM=;
+	s=korg; t=1741628161;
+	bh=LGCE7Mq1Bz+FiIikO4vYEEyWq33yIlx+KeK8Ll3qKMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tkhp+6G7zHM/VOEHLgXM+6DUXxnYQktsYNHPB67V84HNfMAfH6i6sckXasipGWVJv
-	 20BdU6MlZrTd6Lm+r/Aik2rX2Il8hlkezL6YMrqH8HE8q18DI89EadWbEu/n8COkGt
-	 Axm7gJ3EbTXZAsmtBumcQZy0irHoqkxYppOFuo9E=
+	b=V/e3BjfpGwyTlM3ai38Zj7J5bcu3QOMtljeDNuncl0FYbP3SEQvz/6CgIT57YwJ5g
+	 wZ6/18c6tovMVrrftoD8KArDqGKR8MA7o9CfS6p/syar569/a7U8s2MqeEUB6ck5gZ
+	 Dx20Z5eSqzNWmoaHel4f5xMNErVLJdS9RwwnDCCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 557/620] caif_virtio: fix wrong pointer check in cfv_probe()
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 109/145] usb: xhci: Enable the TRB overfetch quirk on VIA VL805
 Date: Mon, 10 Mar 2025 18:06:43 +0100
-Message-ID: <20250310170607.532349573@linuxfoundation.org>
+Message-ID: <20250310170439.162550987@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit a466fd7e9fafd975949e5945e2f70c33a94b1a70 ]
+commit c133ec0e5717868c9967fa3df92a55e537b1aead upstream.
 
-del_vqs() frees virtqueues, therefore cfv->vq_tx pointer should be checked
-for NULL before calling it, not cfv->vdev. Also the current implementation
-is redundant because the pointer cfv->vdev is dereferenced before it is
-checked for NULL.
+Raspberry Pi is a major user of those chips and they discovered a bug -
+when the end of a transfer ring segment is reached, up to four TRBs can
+be prefetched from the next page even if the segment ends with link TRB
+and on page boundary (the chip claims to support standard 4KB pages).
 
-Fix this by checking cfv->vq_tx for NULL instead of cfv->vdev before
-calling del_vqs().
+It also appears that if the prefetched TRBs belong to a different ring
+whose doorbell is later rung, they may be used without refreshing from
+system RAM and the endpoint will stay idle if their cycle bit is stale.
 
-Fixes: 0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Link: https://patch.msgid.link/20250227184716.4715-1-v.shevtsov@mt-integration.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Other users complain about IOMMU faults on x86 systems, unsurprisingly.
+
+Deal with it by using existing quirk which allocates a dummy page after
+each transfer ring segment. This was seen to resolve both problems. RPi
+came up with a more efficient solution, shortening each segment by four
+TRBs, but it complicated the driver and they ditched it for this quirk.
+
+Also rename the quirk and add VL805 device ID macro.
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Link: https://github.com/raspberrypi/linux/issues/4685
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215906
+CC: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250225095927.2512358-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/caif/caif_virtio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-mem.c |    3 ++-
+ drivers/usb/host/xhci-pci.c |   10 +++++++---
+ drivers/usb/host/xhci.h     |    2 +-
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/caif/caif_virtio.c b/drivers/net/caif/caif_virtio.c
-index da87de02b2fcc..38a243dfcf285 100644
---- a/drivers/net/caif/caif_virtio.c
-+++ b/drivers/net/caif/caif_virtio.c
-@@ -744,7 +744,7 @@ static int cfv_probe(struct virtio_device *vdev)
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2364,7 +2364,8 @@ int xhci_mem_init(struct xhci_hcd *xhci,
+ 	 * and our use of dma addresses in the trb_address_map radix tree needs
+ 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
+ 	 */
+-	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
++	if (xhci->quirks & XHCI_TRB_OVERFETCH)
++		/* Buggy HC prefetches beyond segment bounds - allocate dummy space at the end */
+ 		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
+ 				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
+ 	else
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -38,6 +38,8 @@
+ #define PCI_DEVICE_ID_EJ168		0x7023
+ #define PCI_DEVICE_ID_EJ188		0x7052
  
- 	if (cfv->vr_rx)
- 		vdev->vringh_config->del_vrhs(cfv->vdev);
--	if (cfv->vdev)
-+	if (cfv->vq_tx)
- 		vdev->config->del_vqs(cfv->vdev);
- 	free_netdev(netdev);
- 	return err;
--- 
-2.39.5
-
++#define PCI_DEVICE_ID_VIA_VL805			0x3483
++
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
+ #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
+@@ -480,8 +482,10 @@ static void xhci_pci_quirks(struct devic
+ 			pdev->device == 0x3432)
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 
+-	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
++	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
+ 		xhci->quirks |= XHCI_LPM_SUPPORT;
++		xhci->quirks |= XHCI_TRB_OVERFETCH;
++	}
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
+ 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
+@@ -529,11 +533,11 @@ static void xhci_pci_quirks(struct devic
+ 
+ 		if (pdev->device == 0x9202) {
+ 			xhci->quirks |= XHCI_RESET_ON_RESUME;
+-			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
++			xhci->quirks |= XHCI_TRB_OVERFETCH;
+ 		}
+ 
+ 		if (pdev->device == 0x9203)
+-			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
++			xhci->quirks |= XHCI_TRB_OVERFETCH;
+ 	}
+ 
+ 	if (pdev->vendor == PCI_DEVICE_ID_CADENCE &&
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1657,7 +1657,7 @@ struct xhci_hcd {
+ #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
+ #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
+ #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
+-#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
++#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
+ #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
 
 
 
