@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-121823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F833A59CA2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D24A5A1FB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EEE63A7ED3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505921893D75
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD1C231A2D;
-	Mon, 10 Mar 2025 17:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C271235C15;
+	Mon, 10 Mar 2025 18:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAfxMWmC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awRXIwAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF432230BF6;
-	Mon, 10 Mar 2025 17:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BD6235BFF;
+	Mon, 10 Mar 2025 18:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626732; cv=none; b=BKrM52t9PDT0LP5CTKMPrvgUa8pwe3JQQcV5BJdDbWunbdBhBeNp20a+HA0E72nuVdB2RINw+CC0QKpqg9e9HQ0xdXEXkiECLritwVYUriyjTaxIURP73ml55CLcEMKt8yv7Fg3OHyn0lfXgLWnv3Rsn60snQnPT36Fv6THZl6c=
+	t=1741630517; cv=none; b=Brx6r4fQIUJ+ihtsO31YfJ3PCQleQanUllrHdvFj26IYv5v5IzpC1KR9O05aFKhy7RKr+IPpXe4PqVY3zDKbflsybgjQgwZ6yya0JdQwI1d5I8vdVatgVzOJvjaH7s0gOv6C7YG5/hZu841gFZsUKUERCgLDpK5blEz/0C1LDGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626732; c=relaxed/simple;
-	bh=8k44+r0wMWiCprAmKUon55zhTQVLYXjT2TUswB9Z6nE=;
+	s=arc-20240116; t=1741630517; c=relaxed/simple;
+	bh=vzvrSyqn6DJjUIxws5xS9TDyA2751Ep1ig0ZZJZcS6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7J1BZFrfXLFFuLBKVYn8vaKpdYWzW5lM1jrIGv73Cc2D2/vVt/ZKsJvHhGp4PinRh3UEpcdsnwaK2G5cH0ZfrHY09i9YQGbJSSxqKD+L78tuFxYwVXbNO8DZkcywmhjvtCnTJBi0lVkY7mMC/KiH7BmoLB1PVxLbtbm5/AL2Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAfxMWmC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90A9C4CEE5;
-	Mon, 10 Mar 2025 17:12:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CccKUSuDvATT7qdXmZFSv2zZOKpA8ltTSk5C9IzSqdG6fdoGaW/DROdMSo/3H6//zG4+xF1h5GzkGLUttIh2MeFMi99XLz0iQn6/vVXqACK/OttmoHiM2gSobbdtKSybNKEMvJJUzObNHwpTEj80vn/xwT68HFa2oK/LFKKwWlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awRXIwAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573F9C4CEE5;
+	Mon, 10 Mar 2025 18:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626732;
-	bh=8k44+r0wMWiCprAmKUon55zhTQVLYXjT2TUswB9Z6nE=;
+	s=korg; t=1741630516;
+	bh=vzvrSyqn6DJjUIxws5xS9TDyA2751Ep1ig0ZZJZcS6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAfxMWmCiRFVKZSvbzZOULsd2mV/UO0VEWjeHmqTxpBTgwHriMahPSZN5uAnubeJl
-	 Gs8ZP8uYJYZaVBbHXMagziqsSrmIVDsD6INqCuyI1xzwLOEOb/GtkVsbOBFkeJz5zK
-	 yG1QgRgE3cuF/R6Y7M91jCCmaQ2jCZPg3N+eHk8g=
+	b=awRXIwASt6IM3fvoJMk4Djw8panTo+rxZVnNeA8VV4Y+c6PJE1og6Q9JM96VhqCsu
+	 ZEE2EFu8XUpTS+eol+cVEGRTtL61JjM0oUwy5nW5b37ltPRNsbBLsCbgVmvy4wKfOY
+	 xLhrmMt6x6crzR99T3GvUWT+EhAr84zuywaM/hhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Chris Zhong <zyw@rock-chips.com>,
+	Guenter Roeck <groeck@chromium.org>,
+	Sandy Huang <hjc@rock-chips.com>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 093/207] nvme-ioctl: fix leaked requests on mapping error
-Date: Mon, 10 Mar 2025 18:04:46 +0100
-Message-ID: <20250310170451.456364638@linuxfoundation.org>
+Subject: [PATCH 5.15 441/620] drm/rockchip: cdn-dp: Use drm_connector_helper_hpd_irq_event()
+Date: Mon, 10 Mar 2025 18:04:47 +0100
+Message-ID: <20250310170603.006059216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +67,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 00817f0f1c45b007965f5676b9a2013bb39c7228 ]
+[ Upstream commit 666e1960464140cc4bc9203c203097e70b54c95a ]
 
-All the callers assume nvme_map_user_request() frees the request on a
-failure. This wasn't happening on invalid metadata or io_uring command
-flags, so we've been leaking those requests.
+The code for detecting and updating the connector status in
+cdn_dp_pd_event_work() has a number of problems.
 
-Fixes: 23fd22e55b767b ("nvme: wire up fixed buffer support for nvme passthrough")
-Fixes: 7c2fd76048e95d ("nvme: fix metadata handling in nvme-passthrough")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+- It does not aquire the locks to call the detect helper and update
+the connector status. These are struct drm_mode_config.connection_mutex
+and struct drm_mode_config.mutex.
+
+- It does not use drm_helper_probe_detect(), which helps with the
+details of locking and detection.
+
+- It uses the connector's status field to determine a change to
+the connector status. The epoch_counter field is the correct one. The
+field signals a change even if the connector status' value did not
+change.
+
+Replace the code with a call to drm_connector_helper_hpd_irq_event(),
+which fixes all these problems.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 81632df69772 ("drm/rockchip: cdn-dp: do not use drm_helper_hpd_irq_event")
+Cc: Chris Zhong <zyw@rock-chips.com>
+Cc: Guenter Roeck <groeck@chromium.org>
+Cc: Sandy Huang <hjc@rock-chips.com>
+Cc: "Heiko Stübner" <heiko@sntech.de>
+Cc: Andy Yan <andy.yan@rock-chips.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v4.11+
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241105133848.480407-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/rockchip/cdn-dp-core.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index b1b46c2713e1c..24e2c702da7a2 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -128,8 +128,10 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 	if (!nvme_ctrl_sgl_supported(ctrl))
- 		dev_warn_once(ctrl->device, "using unchecked data buffer\n");
- 	if (has_metadata) {
--		if (!supports_metadata)
--			return -EINVAL;
-+		if (!supports_metadata) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 		if (!nvme_ctrl_meta_sgl_supported(ctrl))
- 			dev_warn_once(ctrl->device,
- 				      "using unchecked metadata buffer\n");
-@@ -139,8 +141,10 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		struct iov_iter iter;
+diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+index b9ef35a35c857..af1e361da8df9 100644
+--- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
++++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+@@ -916,9 +916,6 @@ static void cdn_dp_pd_event_work(struct work_struct *work)
+ {
+ 	struct cdn_dp_device *dp = container_of(work, struct cdn_dp_device,
+ 						event_work);
+-	struct drm_connector *connector = &dp->connector;
+-	enum drm_connector_status old_status;
+-
+ 	int ret;
  
- 		/* fixedbufs is only for non-vectored io */
--		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 		ret = io_uring_cmd_import_fixed(ubuffer, bufflen,
- 				rq_data_dir(req), &iter, ioucmd);
- 		if (ret < 0)
+ 	mutex_lock(&dp->lock);
+@@ -980,11 +977,7 @@ static void cdn_dp_pd_event_work(struct work_struct *work)
+ 
+ out:
+ 	mutex_unlock(&dp->lock);
+-
+-	old_status = connector->status;
+-	connector->status = connector->funcs->detect(connector, false);
+-	if (old_status != connector->status)
+-		drm_kms_helper_hotplug_event(dp->drm_dev);
++	drm_connector_helper_hpd_irq_event(&dp->connector);
+ }
+ 
+ static int cdn_dp_pd_event(struct notifier_block *nb,
 -- 
 2.39.5
 
