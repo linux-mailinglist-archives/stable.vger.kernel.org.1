@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-122990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001C2A5A250
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DA1A59F52
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADD323A7F8B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C839A16E22B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D93A1C5F1B;
-	Mon, 10 Mar 2025 18:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3F12327A3;
+	Mon, 10 Mar 2025 17:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIp4TRFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP1bexli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0310374EA;
-	Mon, 10 Mar 2025 18:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4052309A6;
+	Mon, 10 Mar 2025 17:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630726; cv=none; b=JeKrY4KWOmqHJcj8a9rWxjulW4pj4Mc+mv0Wffbg6HfydbhlV/JrLPUdiMUxPv+ivP7jVfbJS7zi7FNTM2WH61TschUw8GxsSqWG32hnhCqdsgl0zfyKeoMqnigsSRIkwLVj9o5MyALgXtUrLOpq+hQM42NipuBCk7l1koWacRY=
+	t=1741628312; cv=none; b=r22eAgRtdTHzzDwWu5PM5NdDwb3cSqkw8YxewHLdKTy2XFCBagei/OogWrBRDTkGwtoLTOpo0KMys/FTleUpfPRb+rFnDukINkLyFdoEZyM6X02Q/YAFDUaz7oO6EVxpFhhIJgOrIJZyYoreROWiFooz+zNnUQf580bw/da5sQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630726; c=relaxed/simple;
-	bh=Hryd4M2vJrIYfrbfaeC7xMFoGZ8Ta4mp6zrJgrsp0zs=;
+	s=arc-20240116; t=1741628312; c=relaxed/simple;
+	bh=0VzJWoiJ9xvPxdbC1s5kYKo1lCJU4FtjQmM6e/aQABI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3LptxROiDlZELp0T4uKfDoqDpTem6hOqWuotjmtViihcZIXfUNBczGsD3JFCd+TVP33iD9XxLT06B9VXT1U4+0H/tOOYw3cl0FrlxtseHlTjk3k1saoDXlo2psX3qfSRDDAL2NzlmVVHaNUdspCQYnpazHm2i4S0TxIn2W6B7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIp4TRFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645CBC4CEE5;
-	Mon, 10 Mar 2025 18:18:45 +0000 (UTC)
+	 MIME-Version; b=SJq+qYqkVZhGmvPM4y9rC9WRQcLJo5cZ93sMsJt2uxITbWPifdIW9ghesZEGQc0zpWRb5KBilcrj7OG2YRLLeUCpZW+x4zfb5quqoaNrdFb4DpGy/UyYo7KxQtFKt7Wns+zIA8qIUJ4Fsl6OYdnynVNSgf8368SZkG00BNZh3F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP1bexli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6DAC4CEE5;
+	Mon, 10 Mar 2025 17:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630725;
-	bh=Hryd4M2vJrIYfrbfaeC7xMFoGZ8Ta4mp6zrJgrsp0zs=;
+	s=korg; t=1741628311;
+	bh=0VzJWoiJ9xvPxdbC1s5kYKo1lCJU4FtjQmM6e/aQABI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIp4TRFPsrPsU6wB7n/q/U5Y3ydqrdYafPuf0zQAiFYNaeHB+EgtTehK321npJn88
-	 q1lYaxN72h4fhUYLkEQCfz+YDnERS8cjWKQ8bixYU5kx1Zovvf6O8WDPZ96UeAEtnQ
-	 0ZgZTW1lg//x8K6VhdLOt714ye78m9oo7CcZzW6c=
+	b=aP1bexlimmj0D291oqWXFxIX43cAN05MoyTObmW0WmWiwzLZPUklfZukeRP3GBXdL
+	 IIM9+7XfKfoOHrBt9v0R7UAHrRm3rdurmU6b6Yr+ecJcL7SmQbEGubr7WMx7dYyME+
+	 zbzyPuQ8Xikzo+b/XqT+nLYmCZUSlgYCWZhmcNec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell Senior <russell@personaltelco.net>,
-	Ingo Molnar <mingo@kernel.org>,
-	Matthew Whitehead <tedheadster@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jonas Gorski <jonas.gorski@gmail.com>
-Subject: [PATCH 5.15 513/620] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
+	Koichiro Den <koichiro.den@canonical.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1 015/109] gpio: aggregator: protect driver attr handlers against module unload
 Date: Mon, 10 Mar 2025 18:05:59 +0100
-Message-ID: <20250310170605.807117317@linuxfoundation.org>
+Message-ID: <20250310170428.157502566@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +61,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Senior <russell@personaltelco.net>
+From: Koichiro Den <koichiro.den@canonical.com>
 
-[ Upstream commit bebe35bb738b573c32a5033499cd59f20293f2a3 ]
+commit 12f65d1203507f7db3ba59930fe29a3b8eee9945 upstream.
 
-I still have some Soekris net4826 in a Community Wireless Network I
-volunteer with. These devices use an AMD SC1100 SoC. I am running
-OpenWrt on them, which uses a patched kernel, that naturally has
-evolved over time.  I haven't updated the ones in the field in a
-number of years (circa 2017), but have one in a test bed, where I have
-intermittently tried out test builds.
+Both new_device_store and delete_device_store touch module global
+resources (e.g. gpio_aggregator_lock). To prevent race conditions with
+module unload, a reference needs to be held.
 
-A few years ago, I noticed some trouble, particularly when "warm
-booting", that is, doing a reboot without removing power, and noticed
-the device was hanging after the kernel message:
+Add try_module_get() in these handlers.
 
-  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
+For new_device_store, this eliminates what appears to be the most dangerous
+scenario: if an id is allocated from gpio_aggregator_idr but
+platform_device_register has not yet been called or completed, a concurrent
+module unload could fail to unregister/delete the device, leaving behind a
+dangling platform device/GPIO forwarder. This can result in various issues.
+The following simple reproducer demonstrates these problems:
 
-If I removed power and then restarted, it would boot fine, continuing
-through the message above, thusly:
+  #!/bin/bash
+  while :; do
+    # note: whether 'gpiochip0 0' exists or not does not matter.
+    echo 'gpiochip0 0' > /sys/bus/platform/drivers/gpio-aggregator/new_device
+  done &
+  while :; do
+    modprobe gpio-aggregator
+    modprobe -r gpio-aggregator
+  done &
+  wait
 
-  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
-  [    0.090076] Enable Memory-Write-back mode on Cyrix/NSC processor.
-  [    0.100000] Enable Memory access reorder on Cyrix/NSC processor.
-  [    0.100070] Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
-  [    0.110058] Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
-  [    0.120037] CPU: NSC Geode(TM) Integrated Processor by National Semi (family: 0x5, model: 0x9, stepping: 0x1)
+  Starting with the following warning, several kinds of warnings will appear
+  and the system may become unstable:
+
+  ------------[ cut here ]------------
+  list_del corruption, ffff888103e2e980->next is LIST_POISON1 (dead000000000100)
+  WARNING: CPU: 1 PID: 1327 at lib/list_debug.c:56 __list_del_entry_valid_or_report+0xa3/0x120
   [...]
+  RIP: 0010:__list_del_entry_valid_or_report+0xa3/0x120
+  [...]
+  Call Trace:
+   <TASK>
+   ? __list_del_entry_valid_or_report+0xa3/0x120
+   ? __warn.cold+0x93/0xf2
+   ? __list_del_entry_valid_or_report+0xa3/0x120
+   ? report_bug+0xe6/0x170
+   ? __irq_work_queue_local+0x39/0xe0
+   ? handle_bug+0x58/0x90
+   ? exc_invalid_op+0x13/0x60
+   ? asm_exc_invalid_op+0x16/0x20
+   ? __list_del_entry_valid_or_report+0xa3/0x120
+   gpiod_remove_lookup_table+0x22/0x60
+   new_device_store+0x315/0x350 [gpio_aggregator]
+   kernfs_fop_write_iter+0x137/0x1f0
+   vfs_write+0x262/0x430
+   ksys_write+0x60/0xd0
+   do_syscall_64+0x6c/0x180
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   [...]
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-In order to continue using modern tools, like ssh, to interact with
-the software on these old devices, I need modern builds of the OpenWrt
-firmware on the devices. I confirmed that the warm boot hang was still
-an issue in modern OpenWrt builds (currently using a patched linux
-v6.6.65).
-
-Last night, I decided it was time to get to the bottom of the warm
-boot hang, and began bisecting. From preserved builds, I narrowed down
-the bisection window from late February to late May 2019. During this
-period, the OpenWrt builds were using 4.14.x. I was able to build
-using period-correct Ubuntu 18.04.6. After a number of bisection
-iterations, I identified a kernel bump from 4.14.112 to 4.14.113 as
-the commit that introduced the warm boot hang.
-
-  https://github.com/openwrt/openwrt/commit/07aaa7e3d62ad32767d7067107db64b6ade81537
-
-Looking at the upstream changes in the stable kernel between 4.14.112
-and 4.14.113 (tig v4.14.112..v4.14.113), I spotted a likely suspect:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=20afb90f730982882e65b01fb8bdfe83914339c5
-
-So, I tried reverting just that kernel change on top of the breaking
-OpenWrt commit, and my warm boot hang went away.
-
-Presumably, the warm boot hang is due to some register not getting
-cleared in the same way that a loss of power does. That is
-approximately as much as I understand about the problem.
-
-More poking/prodding and coaching from Jonas Gorski, it looks
-like this test patch fixes the problem on my board: Tested against
-v6.6.67 and v4.14.113.
-
-Fixes: 18fb053f9b82 ("x86/cpu/cyrix: Use correct macros for Cyrix calls on Geode processors")
-Debugged-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Russell Senior <russell@personaltelco.net>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/CAHP3WfOgs3Ms4Z+L9i0-iBOE21sdMk5erAiJurPjnrL9LSsgRA@mail.gmail.com
-Cc: Matthew Whitehead <tedheadster@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 828546e24280 ("gpio: Add GPIO Aggregator")
+Cc: stable@vger.kernel.org
+Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Link: https://lore.kernel.org/r/20250224143134.3024598-2-koichiro.den@canonical.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/cyrix.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-aggregator.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/cyrix.c b/arch/x86/kernel/cpu/cyrix.c
-index 7227c15299d0b..7de799ab2a048 100644
---- a/arch/x86/kernel/cpu/cyrix.c
-+++ b/arch/x86/kernel/cpu/cyrix.c
-@@ -152,8 +152,8 @@ static void geode_configure(void)
- 	u8 ccr3;
- 	local_irq_save(flags);
+--- a/drivers/gpio/gpio-aggregator.c
++++ b/drivers/gpio/gpio-aggregator.c
+@@ -116,10 +116,15 @@ static ssize_t new_device_store(struct d
+ 	struct platform_device *pdev;
+ 	int res, id;
  
--	/* Suspend on halt power saving and enable #SUSP pin */
--	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x88);
-+	/* Suspend on halt power saving */
-+	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x08);
++	if (!try_module_get(THIS_MODULE))
++		return -ENOENT;
++
+ 	/* kernfs guarantees string termination, so count + 1 is safe */
+ 	aggr = kzalloc(sizeof(*aggr) + count + 1, GFP_KERNEL);
+-	if (!aggr)
+-		return -ENOMEM;
++	if (!aggr) {
++		res = -ENOMEM;
++		goto put_module;
++	}
  
- 	ccr3 = getCx86(CX86_CCR3);
- 	setCx86(CX86_CCR3, (ccr3 & 0x0f) | 0x10);	/* enable MAPEN */
--- 
-2.39.5
-
+ 	memcpy(aggr->args, buf, count + 1);
+ 
+@@ -158,6 +163,7 @@ static ssize_t new_device_store(struct d
+ 	}
+ 
+ 	aggr->pdev = pdev;
++	module_put(THIS_MODULE);
+ 	return count;
+ 
+ remove_table:
+@@ -172,6 +178,8 @@ free_table:
+ 	kfree(aggr->lookups);
+ free_ga:
+ 	kfree(aggr);
++put_module:
++	module_put(THIS_MODULE);
+ 	return res;
+ }
+ 
+@@ -200,13 +208,19 @@ static ssize_t delete_device_store(struc
+ 	if (error)
+ 		return error;
+ 
++	if (!try_module_get(THIS_MODULE))
++		return -ENOENT;
++
+ 	mutex_lock(&gpio_aggregator_lock);
+ 	aggr = idr_remove(&gpio_aggregator_idr, id);
+ 	mutex_unlock(&gpio_aggregator_lock);
+-	if (!aggr)
++	if (!aggr) {
++		module_put(THIS_MODULE);
+ 		return -ENOENT;
++	}
+ 
+ 	gpio_aggregator_free(aggr);
++	module_put(THIS_MODULE);
+ 	return count;
+ }
+ static DRIVER_ATTR_WO(delete_device);
 
 
 
