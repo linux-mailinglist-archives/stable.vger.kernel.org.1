@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-122303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A2DA59F13
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C7EA59CFF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 175E23A895F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E66D188DF89
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90D5233153;
-	Mon, 10 Mar 2025 17:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503B1232373;
+	Mon, 10 Mar 2025 17:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxl3eDTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUoCpsaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61051DE89C;
-	Mon, 10 Mar 2025 17:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1DB230D3A;
+	Mon, 10 Mar 2025 17:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628112; cv=none; b=Jr7LW0Uuh/gzR97HddUK+S4DdeRHnrXpX4iqIFijEETM+wgThV370TQts5dtY5hu6O+16KUvSORbiCPYIxMpMfLQ1TcU9hsfZVGoQDoTFN82cCj/kZAB9bFpZgdEvBgPA5oX5/KVygKZIyXL4F8DZs1MVencJMMavXHMIu92G9o=
+	t=1741627018; cv=none; b=nsSIzdozBNXNHSKAkyewNKES2oUcPLVr31vXCQh+ZMuYnATzZMTSSlm5g915iJavq0Jy/gGocbje1XzdJuxvBSlBiuEgwN70g8ZLNIFHqYEJuDwiYLzgplYa/IdRvwicDJLMVn1wBR0QN2OPEX/GiRuWpTRdLMPl5Twe3hh5+A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628112; c=relaxed/simple;
-	bh=5PaMAnQp+hGcvd8mlf5G4LypC+HSybq9el0NCU6fwRA=;
+	s=arc-20240116; t=1741627018; c=relaxed/simple;
+	bh=2ksU6EGvpL9O8c+U8po51+1f4xZz6A0eXB+luBXLkKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdC1nKxhvi1YXsliVH8YBUQroKfIJiWY5qZ+F53OI5ekkaJCo0FwfoSscw4ztQA5iaD3uB/ydD6Uq0EFOR1/SvSGCo7dFl1pXx480E6g4ChdHBAP3coFjaXZiN+ngFr9GMFxUSWRt9EuZNB9zECHA+juJoBVvn/5kWvlJlLtY4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxl3eDTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C923C4CEE5;
-	Mon, 10 Mar 2025 17:35:12 +0000 (UTC)
+	 MIME-Version; b=iBu0hgyRLrH/o/5rJdezhSl7RSQyvWqiJh0db2SK5GzcsFDLfqvoAC38pIwQ4JzVMJJZfHFcQ1KJoeGnCRotIrVGM281gzy5pJFGY7Svmxb+BHrjBP31Ne8FzuRZLt8n2XvnIduhk4WlkgnsfxmvZchkRLwQimcWs8djFj1Gxk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUoCpsaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E90C4CEEB;
+	Mon, 10 Mar 2025 17:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628112;
-	bh=5PaMAnQp+hGcvd8mlf5G4LypC+HSybq9el0NCU6fwRA=;
+	s=korg; t=1741627017;
+	bh=2ksU6EGvpL9O8c+U8po51+1f4xZz6A0eXB+luBXLkKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxl3eDTDFWmwxqkzA3kwJf4HtwAF0qtWzX+SDXgDjCUVC6kMkQ1f1Gz2KuLUuMOMR
-	 fWTu0r02LzQwb6oWZjmAgy4eXgNysYhRKaSAsDiOTYE+6rKKSSOj1bsM6F/pLMdzHX
-	 AeuK692Yrr1Wm87Q5dPlsx+4koNFmpuaInaIbyyI=
+	b=BUoCpsaPzE7Gy990B6KBRYkl4EZkxDsoEXdYozeO/RC9QwR+7aStRClSHDmaZvEvS
+	 08jYLtjlWof37Tz/m5TitghxVNnCeMErJgYHdbsS76E7WUW0DdWKx/d9iap7f8jzVs
+	 4OGpFcLZIhJAsfYCEnPi6iLQ9I0lui3PQbhexZK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/145] gpio: rcar: Fix missing of_node_put() call
+	Sam Winchenbach <swinchenbach@arka.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.13 192/207] iio: filter: admv8818: Force initialization of SDO
 Date: Mon, 10 Mar 2025 18:06:25 +0100
-Message-ID: <20250310170438.428672660@linuxfoundation.org>
+Message-ID: <20250310170455.414284019@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Sam Winchenbach <swinchenbach@arka.org>
 
-[ Upstream commit 391b41f983bf7ff853de44704d8e14e7cc648a9b ]
+commit cc2c3540d9477a9931fb0fd851fcaeba524a5b35 upstream.
 
-of_parse_phandle_with_fixed_args() requires its caller to
-call into of_node_put() on the node pointer from the output
-structure, but such a call is currently missing.
+When a weak pull-up is present on the SDO line, regmap_update_bits fails
+to write both the SOFTRESET and SDOACTIVE bits because it incorrectly
+reads them as already set.
 
-Call into of_node_put() to rectify that.
+Since the soft reset disables the SDO line, performing a
+read-modify-write operation on ADI_SPI_CONFIG_A to enable the SDO line
+doesn't make sense. This change directly writes to the register instead
+of using regmap_update_bits.
 
-Fixes: 159f8a0209af ("gpio-rcar: Add DT support")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20250305163753.34913-2-fabrizio.castro.jz@renesas.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+Link: https://patch.msgid.link/SA1P110MB106904C961B0F3FAFFED74C0BCF5A@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-rcar.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/iio/filter/admv8818.c |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpio/gpio-rcar.c b/drivers/gpio/gpio-rcar.c
-index 170798025d6e0..53ec8cc047983 100644
---- a/drivers/gpio/gpio-rcar.c
-+++ b/drivers/gpio/gpio-rcar.c
-@@ -468,7 +468,12 @@ static int gpio_rcar_parse_dt(struct gpio_rcar_priv *p, unsigned int *npins)
- 	p->info = *info;
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -574,21 +574,15 @@ static int admv8818_init(struct admv8818
+ 	struct spi_device *spi = st->spi;
+ 	unsigned int chip_id;
  
- 	ret = of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3, 0, &args);
--	*npins = ret == 0 ? args.args[2] : RCAR_MAX_GPIO_PER_BANK;
-+	if (ret) {
-+		*npins = RCAR_MAX_GPIO_PER_BANK;
-+	} else {
-+		*npins = args.args[2];
-+		of_node_put(args.np);
-+	}
+-	ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
+-				 ADMV8818_SOFTRESET_N_MSK |
+-				 ADMV8818_SOFTRESET_MSK,
+-				 FIELD_PREP(ADMV8818_SOFTRESET_N_MSK, 1) |
+-				 FIELD_PREP(ADMV8818_SOFTRESET_MSK, 1));
++	ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
++			   ADMV8818_SOFTRESET_N_MSK | ADMV8818_SOFTRESET_MSK);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "ADMV8818 Soft Reset failed.\n");
+ 		return ret;
+ 	}
  
- 	if (*npins == 0 || *npins > RCAR_MAX_GPIO_PER_BANK) {
- 		dev_warn(p->dev, "Invalid number of gpio lines %u, using %u\n",
--- 
-2.39.5
-
+-	ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
+-				 ADMV8818_SDOACTIVE_N_MSK |
+-				 ADMV8818_SDOACTIVE_MSK,
+-				 FIELD_PREP(ADMV8818_SDOACTIVE_N_MSK, 1) |
+-				 FIELD_PREP(ADMV8818_SDOACTIVE_MSK, 1));
++	ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
++			   ADMV8818_SDOACTIVE_N_MSK | ADMV8818_SDOACTIVE_MSK);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "ADMV8818 SDO Enable failed.\n");
+ 		return ret;
 
 
 
