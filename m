@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B45A59FCF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1377A5A2BB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6613B3A7F0D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC1021895C16
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEB12253FE;
-	Mon, 10 Mar 2025 17:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5862309BD;
+	Mon, 10 Mar 2025 18:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsxTT//O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m99xPCvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D102F190072;
-	Mon, 10 Mar 2025 17:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA3B22758F;
+	Mon, 10 Mar 2025 18:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628575; cv=none; b=Q3GW8+Ecz4rQ1fW+qFFAWp7HYlTki2GfcpniiXJ4onsyC9/nCz2uE4Ur9afT1j/sKySgYMvZs2K9zvC+9/VnCf/SkGvUx/Ix4bMFbz098LRJIxeJCMdODtOwK1sAbsX1mV11X6aNrZeQoMW+N9+NcATVW0mOp20m1hiVkXEBe2g=
+	t=1741630985; cv=none; b=FW6404zk9gQelDdPXUKckY/cQP1jIXEhSfzF5Uk6Pg3suxa2VzsrZ0glCFBtmfz+JgpBLe8lAWiR2FrpWNJ6pQ4KoHHzCGNrvGCbyVu+QQbSRHBXu5mVfqsMdQpQeeek7I/+oZG/ZsftX1VesZ+9FdFxFMsAP/5wcbMsRpv0xtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628575; c=relaxed/simple;
-	bh=z24/pwxPOEsbL2G7MKKrcpL3wRYAMyc+Vm6Fch7PGUs=;
+	s=arc-20240116; t=1741630985; c=relaxed/simple;
+	bh=RKfirVrlDNn7kl/gN3mSSkybuC+WrbHIarOed64lSVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWXC1qUJn8e8lpg/iNJcM19nzAZIBuwD4Fzl4pGAnHqc3cLYZwCYpgYwO4bsenaCFMUB5dnAqvBmy4tV4PrSJCoZ9gWqwLViySQcU8fH0HZqlcWjDimvcRciaxGe+11eb+4Es3E9ct70doYEnLo5zcPwkmyhDtMhOhuh8JcYHeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsxTT//O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97EDC4CEE5;
-	Mon, 10 Mar 2025 17:42:54 +0000 (UTC)
+	 MIME-Version; b=acGrVF+Waq98ZvTxO0R8wEGskXfjIEMJLlaPm+3LyKg0olil2ARhiuZHWwPgm204kHGLXzaeaf4L/TG3jpZvk0Aa/OONU4PJnDde7DPneM+M6nbkez8tULJ1MmoC8fNBd84vBYpeq6RRDIBM5MzsZQtTX/rWccjXKRsoj1/8sJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m99xPCvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9E2C4CEE5;
+	Mon, 10 Mar 2025 18:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628575;
-	bh=z24/pwxPOEsbL2G7MKKrcpL3wRYAMyc+Vm6Fch7PGUs=;
+	s=korg; t=1741630985;
+	bh=RKfirVrlDNn7kl/gN3mSSkybuC+WrbHIarOed64lSVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsxTT//OtysiaiftafNhMMJ1O/jKpg8TgEQiIVYYU81VhsVRRJxdeSpX72XXHS0PL
-	 /lYLWNUQSu8Lt0krdNfPGUlIgbDJT53FpCBsX8gwCLY6ln9FzYF0vS58bAhIfJlYgR
-	 uzstXpopxcrINkn+0BaNwLP9ubMwy8r8vp73xwaM=
+	b=m99xPCvqQRiWbrIjVpgqWcUucUfTD9onTljzLEB2UkT4E89TfPWnxHW5lsCIzdqU4
+	 7NGki043SufQHtcBpqMh9RQQEm/BEV7Tu9LzycA21EdB36Aw8/PafnDdnejr/UMeN5
+	 5ClhJy6LAxTNSjTM9znaG60v9+RuA+xZY3yMOQuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 105/109] fs/ntfs3: Add rough attr alloc_size check
+	stable <stable@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 5.15 603/620] eeprom: digsy_mtc: Make GPIO lookup table match the device
 Date: Mon, 10 Mar 2025 18:07:29 +0100
-Message-ID: <20250310170431.734296678@linuxfoundation.org>
+Message-ID: <20250310170609.334837789@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,35 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit c4a8ba334262e9a5c158d618a4820e1b9c12495c upstream.
+commit 038ef0754aae76f79b147b8867f9250e6a976872 upstream.
 
-Reported-by: syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+The dev_id value in the GPIO lookup table must match to
+the device instance name, which in this case is combined
+of name and platform device ID, i.e. "spi_gpio.1". But
+the table assumed that there was no platform device ID
+defined, which is wrong. Fix the dev_id value accordingly.
+
+Fixes: 9b00bc7b901f ("spi: spi-gpio: Rewrite to use GPIO descriptors")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206220311.1554075-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/record.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/eeprom/digsy_mtc_eeprom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -325,6 +325,9 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 	} else {
- 		if (attr->nres.c_unit)
- 			return NULL;
-+
-+		if (alloc_size > mi->sbi->volume.size)
-+			return NULL;
- 	}
+--- a/drivers/misc/eeprom/digsy_mtc_eeprom.c
++++ b/drivers/misc/eeprom/digsy_mtc_eeprom.c
+@@ -60,7 +60,7 @@ static struct platform_device digsy_mtc_
+ };
  
- 	return attr;
+ static struct gpiod_lookup_table eeprom_spi_gpiod_table = {
+-	.dev_id         = "spi_gpio",
++	.dev_id         = "spi_gpio.1",
+ 	.table          = {
+ 		GPIO_LOOKUP("gpio@b00", GPIO_EEPROM_CLK,
+ 			    "sck", GPIO_ACTIVE_HIGH),
 
 
 
