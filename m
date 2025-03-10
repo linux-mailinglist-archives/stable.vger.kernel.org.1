@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4CCA59D51
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFEA1A5A157
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1419216F4F8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 998253AD804
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56E6230BC8;
-	Mon, 10 Mar 2025 17:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E86E230BF9;
+	Mon, 10 Mar 2025 17:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq7343cB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqgHoskI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6409C21E087;
-	Mon, 10 Mar 2025 17:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B57C22ACDC;
+	Mon, 10 Mar 2025 17:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627185; cv=none; b=G0ChYDnGdOp/Qzw0u23r5opzpaUlMHG33IYHRsDxWNCcCDL79dlrsDmPzVBJLsMVq9Klhaz51VARBOGwZa1lhH+OGiu9Fj6qt3sK9xufXhyim+8Nrh1bl0eRRq1iRYQ1W1QRwD7JDi50tAxZ1XxPvz+SsppaW4PARyQwsJD/2BM=
+	t=1741629586; cv=none; b=GmqLwOuRfB/6EeYctwKLllK+z9ehGIl7lJ9NIMZUFldO5BURgWRU4CDr0Q7QT4N6kPeV4VeB5vYl7BQfoVhAWJkJrWXHfMWEcSUTtevQe4jDQNKC0SsoP8ArHdtUyxknJ2moFlCT66Ch3wE9bRd9GoFeBjxv+lkMvdUv5hUqWiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627185; c=relaxed/simple;
-	bh=+dsgfyUl5bJX4Cie+gXLl5KRUwkBxnnpKHD+dGAvSac=;
+	s=arc-20240116; t=1741629586; c=relaxed/simple;
+	bh=+1n+gxKsLvffICNc/+IuX4OwN4PDYpv+UDuaGDnsNMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=crnfl6UXKrLI28XhNc+Gu9M9PlZPJjtKlAm3VzXyd0jFwYY3+0cBFq3LAlmRMwaIF9+IVHFSijDWM/y6mctA90cgpdIAODbMFSMQI8mvDgbnWBdlQwSbocKhe8FJ1U42VUol9dtZvl4suREDAxbg5nAiHsoJdVUJwLSsPr8sGts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq7343cB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE69FC4CEE5;
-	Mon, 10 Mar 2025 17:19:44 +0000 (UTC)
+	 MIME-Version; b=VsymG1vSVTN0YghmUheE+jTdrpzO8+3m1dTr7cuvw1K1dC/M0CjSvaU0vLcGYhdoS2UyeNFdTcEdtDp3PaXBfnJimjeCObJrpr66lUfsXaVr1oTZnCMf3F82laJVuMqAISzFwNRc+4oYEMpylBbkAUbUxTKJvtq8gn9vsYhc3Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqgHoskI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831E7C4CEE5;
+	Mon, 10 Mar 2025 17:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627185;
-	bh=+dsgfyUl5bJX4Cie+gXLl5KRUwkBxnnpKHD+dGAvSac=;
+	s=korg; t=1741629585;
+	bh=+1n+gxKsLvffICNc/+IuX4OwN4PDYpv+UDuaGDnsNMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lq7343cBboddHVUShSVazycI0xYMTTcHs77mgbVeRjRCcHCRuUu+f1h4rQMVmHWsZ
-	 YzlPQaKLv+5juLCqjNSoQ1IQZxR4AhCnCVOA49qzFROMI4Cxu++EwZgLYBzn8NTgnL
-	 BB+thOEM7zxqEKrpeGCsckW0aJj2urUGRGrTCD9w=
+	b=cqgHoskIaKsINNOWYIk7ockP/FZ+KJUxfFr7r3nyiVWzITwe2Zu3K73OcdKrVKHT1
+	 rhS3kjidpJLP1OjoP6nGrwwT4jA6vUYNztY3FDa0h9pb2e2BhLbveDTT7wSn5HjhRN
+	 JRaK0b3jFzrnYUmw3g+o6t9JfCAeqogyqaUEPujg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 011/269] loongarch: Use ASM_REACHABLE
+	Mike Snitzer <snitzer@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 5.15 318/620] pnfs/flexfiles: retry getting layout segment for reads
 Date: Mon, 10 Mar 2025 18:02:44 +0100
-Message-ID: <20250310170458.155042546@linuxfoundation.org>
+Message-ID: <20250310170558.165533792@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit 624bde3465f660e54a7cd4c1efc3e536349fead5 upstream.
+commit eb3fabde15bccdf34f1c9b35a83aa4c0dacbb4ca upstream.
 
-annotate_reachable() is unreliable since the compiler is free to place
-random code inbetween two consecutive asm() statements.
+If ff_layout_pg_get_read()'s attempt to get a layout segment results
+in -EAGAIN have ff_layout_pg_init_read() retry it after sleeping.
 
-This removes the last and only annotate_reachable() user.
+If "softerr" mount is used, use 'io_maxretrans' to limit the number of
+attempts to get a layout segment.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20241128094312.133437051@infradead.org
-Closes: https://lore.kernel.org/loongarch/20250307214943.372210-1-ojeda@kernel.org/
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+This fixes a long-standing issue of O_DIRECT reads failing with
+-EAGAIN (11) when using flexfiles Client Side Mirroring (CSM).
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/bug.h |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c |   27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
---- a/arch/loongarch/include/asm/bug.h
-+++ b/arch/loongarch/include/asm/bug.h
-@@ -4,6 +4,7 @@
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -836,6 +836,9 @@ ff_layout_pg_init_read(struct nfs_pageio
+ 	struct nfs4_pnfs_ds *ds;
+ 	u32 ds_idx;
  
- #include <asm/break.h>
- #include <linux/stringify.h>
-+#include <linux/objtool.h>
++	if (NFS_SERVER(pgio->pg_inode)->flags &
++			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
++		pgio->pg_maxretrans = io_maxretrans;
+ retry:
+ 	ff_layout_pg_check_layout(pgio, req);
+ 	/* Use full layout for now */
+@@ -849,6 +852,8 @@ retry:
+ 		if (!pgio->pg_lseg)
+ 			goto out_nolseg;
+ 	}
++	/* Reset wb_nio, since getting layout segment was successful */
++	req->wb_nio = 0;
  
- #ifndef CONFIG_DEBUG_BUGVERBOSE
- #define _BUGVERBOSE_LOCATION(file, line)
-@@ -33,25 +34,25 @@
+ 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
+ 	if (!ds) {
+@@ -865,14 +870,24 @@ retry:
+ 	pgm->pg_bsize = mirror->mirror_ds->ds_versions[0].rsize;
  
- #define ASM_BUG_FLAGS(flags)					\
- 	__BUG_ENTRY(flags)					\
--	break		BRK_BUG
-+	break		BRK_BUG;
- 
- #define ASM_BUG()	ASM_BUG_FLAGS(0)
- 
--#define __BUG_FLAGS(flags)					\
--	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags)));
-+#define __BUG_FLAGS(flags, extra)					\
-+	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags))		\
-+			     extra);
- 
- #define __WARN_FLAGS(flags)					\
- do {								\
- 	instrumentation_begin();				\
--	__BUG_FLAGS(BUGFLAG_WARNING|(flags));			\
--	annotate_reachable();					\
-+	__BUG_FLAGS(BUGFLAG_WARNING|(flags), ASM_REACHABLE);	\
- 	instrumentation_end();					\
- } while (0)
- 
- #define BUG()							\
- do {								\
- 	instrumentation_begin();				\
--	__BUG_FLAGS(0);						\
-+	__BUG_FLAGS(0, "");					\
- 	unreachable();						\
- } while (0)
- 
+ 	pgio->pg_mirror_idx = ds_idx;
+-
+-	if (NFS_SERVER(pgio->pg_inode)->flags &
+-			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
+-		pgio->pg_maxretrans = io_maxretrans;
+ 	return;
+ out_nolseg:
+-	if (pgio->pg_error < 0)
+-		return;
++	if (pgio->pg_error < 0) {
++		if (pgio->pg_error != -EAGAIN)
++			return;
++		/* Retry getting layout segment if lower layer returned -EAGAIN */
++		if (pgio->pg_maxretrans && req->wb_nio++ > pgio->pg_maxretrans) {
++			if (NFS_SERVER(pgio->pg_inode)->flags & NFS_MOUNT_SOFTERR)
++				pgio->pg_error = -ETIMEDOUT;
++			else
++				pgio->pg_error = -EIO;
++			return;
++		}
++		pgio->pg_error = 0;
++		/* Sleep for 1 second before retrying */
++		ssleep(1);
++		goto retry;
++	}
+ out_mds:
+ 	trace_pnfs_mds_fallback_pg_init_read(pgio->pg_inode,
+ 			0, NFS4_MAX_UINT64, IOMODE_READ,
 
 
 
