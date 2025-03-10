@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F29A5A2CC
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48443A59FD3
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 172FA3B100C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC3CA3A9465
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F76233D98;
-	Mon, 10 Mar 2025 18:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CADB22DFB1;
+	Mon, 10 Mar 2025 17:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dREs0a8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6H9duFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9211B395F;
-	Mon, 10 Mar 2025 18:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A48B223702;
+	Mon, 10 Mar 2025 17:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630996; cv=none; b=UJ8KkXXnzwal3/CS0TYt7Jpth4A+jPGK9FPCowANDEdSGeFQ2nXZnC5X5EL4ywgrfld1HbVE40m6idIaaviuQ3qm0ae/uyXP1p9f+19s+ZjPLYc60gPYMOlA+8qaUZIxtn/FPOGJW/qItwEcdZgc+zbNn+D8++C54Ew83t3IsZw=
+	t=1741628587; cv=none; b=jWMXosBWZH7X2Zxor9qsOmHs5+0R3UfD+huytTAfqGmumkwNSVieSam2FvUFoIMmPJbINyV+GuRtElM6FUhOr/zgo8QKQbeCFJH58i+SFQq5CXSjljryweNqiqiUy+E1bCxo5sE1wTQyYjDNczExA+TZUbyaLqsXxhMH86KOsns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630996; c=relaxed/simple;
-	bh=o/qSWwZPaIGOrXWNvB68O65vpC2Pu34qBrir1/gEwt0=;
+	s=arc-20240116; t=1741628587; c=relaxed/simple;
+	bh=D3hRvTJHLpzD0qcxp8KQa4hh2uj5Igug4alj80IJ+fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1SCSocRpl51k86vN3WGQNxYKh517PZk6Zp2KH1AoOmudzM24todXDdPNDJweC2nIimH2KBgDcBh8RbgwG0kd0VBU4DlhuIDkk9wlsMC3fy++BPsWMzxEvBSYrFKUDnO0R10T3IzQIrbFgineSJu6t9Brjc220oIq42sqMTTSi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dREs0a8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F88C4CEE5;
-	Mon, 10 Mar 2025 18:23:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zbo4LTTlP4DMDoMoaTwfu04RNc9Y2VYL3BH9Dd11sHlOPtAsxiCIDjjRQCTd+DtlqZjykizxtiOjqNVOIHDXcnxnoTUbWcgfqSH4eaWXAsSx1GkxBtC2CqWwnM8Y+dGzMZYVqyyHNzRCI4/QdYdkUvRYbDkwN1FBlHYfXeJFwSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6H9duFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A5BC4CEE5;
+	Mon, 10 Mar 2025 17:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630996;
-	bh=o/qSWwZPaIGOrXWNvB68O65vpC2Pu34qBrir1/gEwt0=;
+	s=korg; t=1741628586;
+	bh=D3hRvTJHLpzD0qcxp8KQa4hh2uj5Igug4alj80IJ+fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dREs0a8/Tibxk8Zx9krUWQT8HPv0aMBhVOS9V5T9Mgga3E12ZCC18jeEdkwXhrs9H
-	 sA8Vklpv/hRsEmHxrHL0I5Aa+47Lx3gj2n929LYDjzsGkVIutd8c9iGs5QiGsgDH6u
-	 OvzSNy3wdVodm4ZgvVvoot4tN4ntwhqsISYULMjE=
+	b=v6H9duFS8ppGVy/JKvDxMm4pDYfZSKmlKO7vRW8meXzXgSsldt3dTrKiBpOXN1kjU
+	 XhWV4aLZU1Btu3AfH4ERdTg4+SVDEJ1GnhkwCxpe9Cqf/NBrP6bIpcEK+1/VhP/S+p
+	 3EDw8J5kBhJMq5w1te6VLFOF5fW86ooPQMLsQRhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 5.15 607/620] md: select BLOCK_LEGACY_AUTOLOAD
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.1 109/109] kbuild: userprogs: use correct lld when linking through clang
 Date: Mon, 10 Mar 2025 18:07:33 +0100
-Message-ID: <20250310170609.490012176@linuxfoundation.org>
+Message-ID: <20250310170431.892320782@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: "Thomas Weiﬂschuh" <thomas.weissschuh@linutronix.de>
 
-commit 6c0f5898836c05c6d850a750ed7940ba29e4e6c5 upstream.
+commit dfc1b168a8c4b376fa222b27b97c2c4ad4b786e1 upstream.
 
-When BLOCK_LEGACY_AUTOLOAD is not enable, mdadm is not able to
-activate new arrays unless "CREATE names=yes" appears in
-mdadm.conf
+The userprog infrastructure links objects files through $(CC).
+Either explicitly by manually calling $(CC) on multiple object files or
+implicitly by directly compiling a source file to an executable.
+The documentation at Documentation/kbuild/llvm.rst indicates that ld.lld
+would be used for linking if LLVM=1 is specified.
+However clang instead will use either a globally installed cross linker
+from $PATH called ${target}-ld or fall back to the system linker, which
+probably does not support crosslinking.
+For the normal kernel build this is not an issue because the linker is
+always executed directly, without the compiler being involved.
 
-As this is a regression we need to always enable BLOCK_LEGACY_AUTOLOAD
-for when MD is selected - at least until mdadm is updated and the
-updates widely available.
+Explicitly pass --ld-path to clang so $(LD) is respected.
+As clang 13.0.1 is required to build the kernel, this option is available.
 
-Cc: stable@vger.kernel.org # v5.18+
-Fixes: fbdee71bb5d8 ("block: deprecate autoloading based on dev_t")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 7f3a59db274c ("kbuild: add infrastructure to build userspace programs")
+Cc: stable@vger.kernel.org # needs wrapping in $(cc-option) for < 6.9
+Signed-off-by: Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: use cc-option for 6.6 and older, as those trees support back to
+         clang-11]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/Kconfig |    4 ++++
- 1 file changed, 4 insertions(+)
+ Makefile |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/md/Kconfig
-+++ b/drivers/md/Kconfig
-@@ -16,6 +16,10 @@ if MD
- config BLK_DEV_MD
- 	tristate "RAID support"
- 	select BLOCK_HOLDER_DEPRECATED if SYSFS
-+	# BLOCK_LEGACY_AUTOLOAD requirement should be removed
-+	# after relevant mdadm enhancements - to make "names=yes"
-+	# the default - are widely available.
-+	select BLOCK_LEGACY_AUTOLOAD
- 	help
- 	  This driver lets you combine several hard disk partitions into one
- 	  logical block device. This can be used to simply append one
+--- a/Makefile
++++ b/Makefile
+@@ -1127,6 +1127,11 @@ endif
+ KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
+ KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
+ 
++# userspace programs are linked via the compiler, use the correct linker
++ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
++KBUILD_USERLDFLAGS += $(call cc-option, --ld-path=$(LD))
++endif
++
+ # make the checker run with the right architecture
+ CHECKFLAGS += --arch=$(ARCH)
+ 
 
 
 
