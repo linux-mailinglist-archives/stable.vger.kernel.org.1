@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9A2A5A149
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4CCA59D51
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBC4916DFA7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1419216F4F8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C0E230BD4;
-	Mon, 10 Mar 2025 17:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56E6230BC8;
+	Mon, 10 Mar 2025 17:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UokVtJgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq7343cB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65B522D7A6;
-	Mon, 10 Mar 2025 17:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6409C21E087;
+	Mon, 10 Mar 2025 17:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629553; cv=none; b=DhLzBBVbI8JBlbPj7pjKmxYaBV9pQDI/dLo00m0BxIwJkUKZSdSKHyQZOqabKEPPhZtMTZsuk627TB7H7acJ6dMNpQxyh22Ly1a2ZrQSQcm6kfNSM/NFTnlABz4ZhcrNtxITaRLPTQ3ZtxNHak3hoLBfqZ/zNBpTgbUZ/A4tEB4=
+	t=1741627185; cv=none; b=G0ChYDnGdOp/Qzw0u23r5opzpaUlMHG33IYHRsDxWNCcCDL79dlrsDmPzVBJLsMVq9Klhaz51VARBOGwZa1lhH+OGiu9Fj6qt3sK9xufXhyim+8Nrh1bl0eRRq1iRYQ1W1QRwD7JDi50tAxZ1XxPvz+SsppaW4PARyQwsJD/2BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629553; c=relaxed/simple;
-	bh=wwPeZA6I2zdDQZn/kLb0OJHFtgW5kLb3U8B/y09mV5c=;
+	s=arc-20240116; t=1741627185; c=relaxed/simple;
+	bh=+dsgfyUl5bJX4Cie+gXLl5KRUwkBxnnpKHD+dGAvSac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lUNCvUuIWWqT9Iyf1quzq1yxJF+KtWi5HpJVE/cEpsMlwSuSQIfv9lNpM2TLSKguOwMLTFIjng1KkzvoIGxpruG72Y2g1+J1M4YtYR4pHeJEhFvE6R91RcqI29YY3L8TsbQwprmkLmFVhyFjgpLk3THaRIBlICccZTTIeYNhRSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UokVtJgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C35AC4CEE5;
-	Mon, 10 Mar 2025 17:59:12 +0000 (UTC)
+	 MIME-Version; b=crnfl6UXKrLI28XhNc+Gu9M9PlZPJjtKlAm3VzXyd0jFwYY3+0cBFq3LAlmRMwaIF9+IVHFSijDWM/y6mctA90cgpdIAODbMFSMQI8mvDgbnWBdlQwSbocKhe8FJ1U42VUol9dtZvl4suREDAxbg5nAiHsoJdVUJwLSsPr8sGts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq7343cB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE69FC4CEE5;
+	Mon, 10 Mar 2025 17:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629553;
-	bh=wwPeZA6I2zdDQZn/kLb0OJHFtgW5kLb3U8B/y09mV5c=;
+	s=korg; t=1741627185;
+	bh=+dsgfyUl5bJX4Cie+gXLl5KRUwkBxnnpKHD+dGAvSac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UokVtJgLV/o69ZI13ctsYgqkj0Htjg2pm8ke0Ituwbrm1+/YMRcUBNPaVPmm9FyJJ
-	 /iplmV1HAweLxkkwzgGyGE0+9TntgWvzS6lR0ZxXVsNk0e5VSY4e1XYDM4Z0SxJj5o
-	 di+t84np5XMulxGAclqDesxknwbFri0DWmAkTmNc=
+	b=Lq7343cBboddHVUShSVazycI0xYMTTcHs77mgbVeRjRCcHCRuUu+f1h4rQMVmHWsZ
+	 YzlPQaKLv+5juLCqjNSoQ1IQZxR4AhCnCVOA49qzFROMI4Cxu++EwZgLYBzn8NTgnL
+	 BB+thOEM7zxqEKrpeGCsckW0aJj2urUGRGrTCD9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 5.15 317/620] vfio/platform: check the bounds of read/write syscalls
-Date: Mon, 10 Mar 2025 18:02:43 +0100
-Message-ID: <20250310170558.128038258@linuxfoundation.org>
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 011/269] loongarch: Use ASM_REACHABLE
+Date: Mon, 10 Mar 2025 18:02:44 +0100
+Message-ID: <20250310170458.155042546@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
+commit 624bde3465f660e54a7cd4c1efc3e536349fead5 upstream.
 
-count and offset are passed from user space and not checked, only
-offset is capped to 40 bits, which can be used to read/write out of
-bounds of the device.
+annotate_reachable() is unreliable since the compiler is free to place
+random code inbetween two consecutive asm() statements.
 
-Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
-Cc: stable@vger.kernel.org
-Reported-by: Mostafa Saleh <smostafa@google.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+This removes the last and only annotate_reachable() user.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20241128094312.133437051@infradead.org
+Closes: https://lore.kernel.org/loongarch/20250307214943.372210-1-ojeda@kernel.org/
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/loongarch/include/asm/bug.h |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -393,6 +393,11 @@ static ssize_t vfio_platform_read_mmio(s
+--- a/arch/loongarch/include/asm/bug.h
++++ b/arch/loongarch/include/asm/bug.h
+@@ -4,6 +4,7 @@
  
- 	count = min_t(size_t, count, reg->size - off);
+ #include <asm/break.h>
+ #include <linux/stringify.h>
++#include <linux/objtool.h>
  
-+	if (off >= reg->size)
-+		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
-@@ -473,6 +478,11 @@ static ssize_t vfio_platform_write_mmio(
+ #ifndef CONFIG_DEBUG_BUGVERBOSE
+ #define _BUGVERBOSE_LOCATION(file, line)
+@@ -33,25 +34,25 @@
  
- 	if (off >= reg->size)
- 		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
-+	if (off >= reg->size)
-+		return -EINVAL;
+ #define ASM_BUG_FLAGS(flags)					\
+ 	__BUG_ENTRY(flags)					\
+-	break		BRK_BUG
++	break		BRK_BUG;
  
- 	count = min_t(size_t, count, reg->size - off);
+ #define ASM_BUG()	ASM_BUG_FLAGS(0)
+ 
+-#define __BUG_FLAGS(flags)					\
+-	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags)));
++#define __BUG_FLAGS(flags, extra)					\
++	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags))		\
++			     extra);
+ 
+ #define __WARN_FLAGS(flags)					\
+ do {								\
+ 	instrumentation_begin();				\
+-	__BUG_FLAGS(BUGFLAG_WARNING|(flags));			\
+-	annotate_reachable();					\
++	__BUG_FLAGS(BUGFLAG_WARNING|(flags), ASM_REACHABLE);	\
+ 	instrumentation_end();					\
+ } while (0)
+ 
+ #define BUG()							\
+ do {								\
+ 	instrumentation_begin();				\
+-	__BUG_FLAGS(0);						\
++	__BUG_FLAGS(0, "");					\
+ 	unreachable();						\
+ } while (0)
  
 
 
