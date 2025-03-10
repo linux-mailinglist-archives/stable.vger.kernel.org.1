@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966DAA59C7F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6431A59DCF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D469916EA3F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B76D3A66E5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37FA232360;
-	Mon, 10 Mar 2025 17:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC10C232395;
+	Mon, 10 Mar 2025 17:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lBQOq+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rT3/0N7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAFF231A42;
-	Mon, 10 Mar 2025 17:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686FB233149;
+	Mon, 10 Mar 2025 17:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626723; cv=none; b=p4NqLHTAaiI3koohOs66nnTLqrtQG9rtJK0hR9WXBPlsVb3I6ekWDUEQE1ReJob4Dl40YrSEYT6kPIS05AaezbB7I0qv+VrVdur9oIlYQoVn3rTkhhDlPFhEkP1aK5fd/PPF1XjS+BpF9AYJNo9HZzdzg8gHQhdjm/4144kH6cE=
+	t=1741627442; cv=none; b=I8o8COk2ccOwckx5GlbgJ2Wt3k9KbGJxKaQyjoFE/4ELMEuI73+a2YmP+xXurPG7oDfZGopyIJTcIHvZMUuZwHuTel8QCWfm6ZVmlA4bcHHGEvjV+CXaBtgg4JQG9iYhe5wOJwEWgYyVB2b/86Wwl691LPTxwCuau691Ab756cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626723; c=relaxed/simple;
-	bh=QUHpg5B7OIfvm3wc/L6yV1sNxDcUVV3aO4jnBLADbNo=;
+	s=arc-20240116; t=1741627442; c=relaxed/simple;
+	bh=koPw3EbEcyxUkGx2lzzLr8dxLYv3JlB9mLH5UxoSUkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eT9B5E0AzKJOIHBwCJKodakhzYaqG/6OvMVdIKhsa4C7zm2FwdLdQXQ+seIcOpZfQW0J4ALYWuG/+E4b5Mn+7yojPas7Bk0ODfaagwvEhIVGF00Qp2wNZdwSPsnhVRbmPFR3kMa9rOEvajOhy0f+0nXzbMd6mDlqhgoaFgRXF2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lBQOq+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37493C4CEEB;
-	Mon, 10 Mar 2025 17:12:03 +0000 (UTC)
+	 MIME-Version; b=qYzsq6wVuHEN+xxo9Iv0DQ50cCMhnyI5M1+Wqs2Ct+olTzdJ7s1KDO7g3OOKE6uoTj8NycWP8kOX+NNmxUBICd4GhazgBQHRV6x1Sy+UXBdqe9/NC88suV9Two5Y5u0zQl/5Gl+pBhUkZ8ycXIw9M0R3zLwbYEcIPRoRdIwkRDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rT3/0N7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DFAC4CEE5;
+	Mon, 10 Mar 2025 17:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626723;
-	bh=QUHpg5B7OIfvm3wc/L6yV1sNxDcUVV3aO4jnBLADbNo=;
+	s=korg; t=1741627442;
+	bh=koPw3EbEcyxUkGx2lzzLr8dxLYv3JlB9mLH5UxoSUkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lBQOq+CrI11R7mDXac1b2tzKmasegtJPSVah8lur72j3DyBGtAUVIENqEG3c70x8
-	 MbJ7ZMurx+v4jrsRBIh27fVc8vEoBhmodL25LVT+fz1ksIxkwJIsNtulT5xmuHXUOl
-	 XVvKYboMo3xaqSBCIjVVPciLcHBYwFCNtMk5HIcs=
+	b=rT3/0N7lNLd0RGh3ruYLbn4cMfYs0rMNcEgTgM/I86qh2Xdh8ik6oIZ6RLJFWPC7t
+	 DB9gXOYbALZDBHjX7xnMxVV0MmHUcD6LwGRy0X3lNTHukpgY94CSBl9Q+AKCZ1rKQe
+	 e0zcyyM6aXCtQ1/89qNHuc9bSXUjTwUEIYWyAJBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 090/207] HID: intel-ish-hid: Fix use-after-free issue in hid_ishtp_cl_remove()
+	Juergen Christ <jchrist@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.12 130/269] s390/traps: Fix test_monitor_call() inline assembly
 Date: Mon, 10 Mar 2025 18:04:43 +0100
-Message-ID: <20250310170451.334614127@linuxfoundation.org>
+Message-ID: <20250310170502.903419287@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 823987841424289339fdb4ba90e6d2c3792836db ]
+commit 5623bc23a1cb9f9a9470fa73b3a20321dc4c4870 upstream.
 
-During the `rmmod` operation for the `intel_ishtp_hid` driver, a
-use-after-free issue can occur in the hid_ishtp_cl_remove() function.
-The function hid_ishtp_cl_deinit() is called before ishtp_hid_remove(),
-which can lead to accessing freed memory or resources during the
-removal process.
+The test_monitor_call() inline assembly uses the xgr instruction, which
+also modifies the condition code, to clear a register. However the clobber
+list of the inline assembly does not specify that the condition code is
+modified, which may lead to incorrect code generation.
 
-Call Trace:
- ? ishtp_cl_send+0x168/0x220 [intel_ishtp]
- ? hid_output_report+0xe3/0x150 [hid]
- hid_ishtp_set_feature+0xb5/0x120 [intel_ishtp_hid]
- ishtp_hid_request+0x7b/0xb0 [intel_ishtp_hid]
- hid_hw_request+0x1f/0x40 [hid]
- sensor_hub_set_feature+0x11f/0x190 [hid_sensor_hub]
- _hid_sensor_power_state+0x147/0x1e0 [hid_sensor_trigger]
- hid_sensor_runtime_resume+0x22/0x30 [hid_sensor_trigger]
- sensor_hub_remove+0xa8/0xe0 [hid_sensor_hub]
- hid_device_remove+0x49/0xb0 [hid]
- hid_destroy_device+0x6f/0x90 [hid]
- ishtp_hid_remove+0x42/0x70 [intel_ishtp_hid]
- hid_ishtp_cl_remove+0x6b/0xb0 [intel_ishtp_hid]
- ishtp_cl_device_remove+0x4a/0x60 [intel_ishtp]
- ...
+Use the lhi instruction instead to clear the register without that the
+condition code is modified. Furthermore this limits clearing to the lower
+32 bits of val, since its type is int.
 
-Additionally, ishtp_hid_remove() is a HID level power off, which should
-occur before the ISHTP level disconnect.
-
-This patch resolves the issue by reordering the calls in
-hid_ishtp_cl_remove(). The function ishtp_hid_remove() is now
-called before hid_ishtp_cl_deinit().
-
-Fixes: f645a90e8ff7 ("HID: intel-ish-hid: ishtp-hid-client: use helper functions for connection")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17248ea03674 ("s390: fix __EMIT_BUG() macro")
+Cc: stable@vger.kernel.org
+Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/intel-ish-hid/ishtp-hid-client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/traps.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ishtp-hid-client.c b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-index cb04cd1d980bd..6550ad5bfbb53 100644
---- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-@@ -832,9 +832,9 @@ static void hid_ishtp_cl_remove(struct ishtp_cl_device *cl_device)
- 			hid_ishtp_cl);
- 
- 	dev_dbg(ishtp_device(cl_device), "%s\n", __func__);
--	hid_ishtp_cl_deinit(hid_ishtp_cl);
- 	ishtp_put_device(cl_device);
- 	ishtp_hid_remove(client_data);
-+	hid_ishtp_cl_deinit(hid_ishtp_cl);
- 
- 	hid_ishtp_cl = NULL;
- 
--- 
-2.39.5
-
+--- a/arch/s390/kernel/traps.c
++++ b/arch/s390/kernel/traps.c
+@@ -284,10 +284,10 @@ static void __init test_monitor_call(voi
+ 		return;
+ 	asm volatile(
+ 		"	mc	0,0\n"
+-		"0:	xgr	%0,%0\n"
++		"0:	lhi	%[val],0\n"
+ 		"1:\n"
+-		EX_TABLE(0b,1b)
+-		: "+d" (val));
++		EX_TABLE(0b, 1b)
++		: [val] "+d" (val));
+ 	if (!val)
+ 		panic("Monitor call doesn't work!\n");
+ }
 
 
 
