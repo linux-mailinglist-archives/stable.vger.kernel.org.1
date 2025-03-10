@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74426A59CA4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132D1A5A1E8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8AF37A85AD
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93AE189400C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5710B230BED;
-	Mon, 10 Mar 2025 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1293D23535D;
+	Mon, 10 Mar 2025 18:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfheZlnt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQQeJ7oy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143F6230BE6;
-	Mon, 10 Mar 2025 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EE623370D;
+	Mon, 10 Mar 2025 18:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626782; cv=none; b=rJIl/SFyx3o8qn4FH4H4RcTyQN6QmiYMgclxIY1yuGqQSGWmwFwYchImp8GrO8RY3SXkcGlwYkJxr/NXc+XReBdf2aJXVRFt3ArgTObCfq1s9c73n2wj5xx3kbZynWGWsZu02jrTgvWe6oXU0Qhpx7LBo6tjBD/y3+5xmsG5D4w=
+	t=1741630470; cv=none; b=WcVAmVcFD8vAZtWduHQ61NlzcAdGzIDW1MB6DomPH3vWDbZIH79TT6bGgbj++YvhxhyIC2vvtE6WdvTDSYoHOG0sc8nfm9uVmKx0uCD6jIYKZtY5f5Dfs7hQGnveVtHqHMInE88PV8P1nwoLvZc/4FTIpqNJBCfdNmVS+1t64GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626782; c=relaxed/simple;
-	bh=Fjk0Va2wpj0NnvX5Omrsu4cYDOVz3b7ZQB9y/yrkNQo=;
+	s=arc-20240116; t=1741630470; c=relaxed/simple;
+	bh=kNFBybKdzBiHzmo5epOltPYPefk2B7qLUBGmpIJsseg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=elqYp6uQls//oGj3zwQnfJM+wEa258/sn7z24IqvxPKzsUYqBD/Eir854haDhGtHPo2cXwaZEiw/KcHKwEA5JmYXe2cnjndkOkqdphEMGSzHPHa9iDRwfn/16Gymx5sLcg/ZkJGR4ghe/x/j4xeeKcSWViVr4kNpNMvlv0HbZg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfheZlnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E3AC4CEE5;
-	Mon, 10 Mar 2025 17:13:01 +0000 (UTC)
+	 MIME-Version; b=dIweAJOdvMtX/3igQE+j/X/+KS9nKY7JLT5yaVeHmtTRT3/ePDxgHO2T/osr59t+q5dhooqjmlkkEHjqiECCcLrByaHLogMYHvUrlNjmsmuioq4LU/pnBy6TMxpEqxWJIZEx2zesHoDrpTYGw93pW4Em/iVw6RvAuHH/hputdYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQQeJ7oy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE62C4CEE5;
+	Mon, 10 Mar 2025 18:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626782;
-	bh=Fjk0Va2wpj0NnvX5Omrsu4cYDOVz3b7ZQB9y/yrkNQo=;
+	s=korg; t=1741630470;
+	bh=kNFBybKdzBiHzmo5epOltPYPefk2B7qLUBGmpIJsseg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfheZlntOKXC7n6mVCQHuGfg5iTylocPZaDwcQ9uCzKBPh7MY6CWtoLHwTKaNEhNX
-	 pQAlGff5rwxBRLsISnDQ4qS97z6DV/QvlCi8gmb/N3utdCm21u35qOkocj9WPnfGUA
-	 FUH7hgJv3nSFTvBTv3NdWIWphcP8vQ4JBEh2dstk=
+	b=VQQeJ7oyZTR8LJvFIMgAiUAH2VRebvOywd3WkxTWcGTC31V+wgqW9b/LdsDsn3coq
+	 UHaIXpyZKa57uClhoquPBD5DJBP07pg3dywFCnzv2rbq5k5UiYXZF7vTmB/r9Kigdt
+	 i4F71gzdUmDjSf5MreCY32S+a9Ac7PGHxfnvJLqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 070/207] NFS: fix nfs_release_folio() to not deadlock via kcompactd writeback
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com,
+	syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 417/620] nilfs2: do not force clear folio if buffer is referenced
 Date: Mon, 10 Mar 2025 18:04:23 +0100
-Message-ID: <20250310170450.546883566@linuxfoundation.org>
+Message-ID: <20250310170602.049030938@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit ce6d9c1c2b5cc785016faa11b48b6cd317eb367e upstream.
+commit ca76bb226bf47ff04c782cacbd299f12ddee1ec1 upstream.
 
-Add PF_KCOMPACTD flag and current_is_kcompactd() helper to check for it so
-nfs_release_folio() can skip calling nfs_wb_folio() from kcompactd.
+Patch series "nilfs2: protect busy buffer heads from being force-cleared".
 
-Otherwise NFS can deadlock waiting for kcompactd enduced writeback which
-recurses back to NFS (which triggers writeback to NFSD via NFS loopback
-mount on the same host, NFSD blocks waiting for XFS's call to
-__filemap_get_folio):
+This series fixes the buffer head state inconsistency issues reported by
+syzbot that occurs when the filesystem is corrupted and falls back to
+read-only, and the associated buffer head use-after-free issue.
 
-6070.550357] INFO: task kcompactd0:58 blocked for more than 4435 seconds.
+This patch (of 2):
 
-{---
-[58] "kcompactd0"
-[<0>] folio_wait_bit+0xe8/0x200
-[<0>] folio_wait_writeback+0x2b/0x80
-[<0>] nfs_wb_folio+0x80/0x1b0 [nfs]
-[<0>] nfs_release_folio+0x68/0x130 [nfs]
-[<0>] split_huge_page_to_list_to_order+0x362/0x840
-[<0>] migrate_pages_batch+0x43d/0xb90
-[<0>] migrate_pages_sync+0x9a/0x240
-[<0>] migrate_pages+0x93c/0x9f0
-[<0>] compact_zone+0x8e2/0x1030
-[<0>] compact_node+0xdb/0x120
-[<0>] kcompactd+0x121/0x2e0
-[<0>] kthread+0xcf/0x100
-[<0>] ret_from_fork+0x31/0x40
-[<0>] ret_from_fork_asm+0x1a/0x30
----}
+Syzbot has reported that after nilfs2 detects filesystem corruption and
+falls back to read-only, inconsistencies in the buffer state may occur.
 
-[akpm@linux-foundation.org: fix build]
-Link: https://lkml.kernel.org/r/20250225022002.26141-1-snitzer@kernel.org
-Fixes: 96780ca55e3c ("NFS: fix up nfs_release_folio() to try to release the page")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: <stable@vger.kernel.org>
+One of the inconsistencies is that when nilfs2 calls mark_buffer_dirty()
+to set a data or metadata buffer as dirty, but it detects that the buffer
+is not in the uptodate state:
+
+ WARNING: CPU: 0 PID: 6049 at fs/buffer.c:1177 mark_buffer_dirty+0x2e5/0x520
+  fs/buffer.c:1177
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_palloc_commit_alloc_entry+0x4b/0x160 fs/nilfs2/alloc.c:598
+  nilfs_ifile_create_inode+0x1dd/0x3a0 fs/nilfs2/ifile.c:73
+  nilfs_new_inode+0x254/0x830 fs/nilfs2/inode.c:344
+  nilfs_mkdir+0x10d/0x340 fs/nilfs2/namei.c:218
+  vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+  do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+  __do_sys_mkdirat fs/namei.c:4295 [inline]
+  __se_sys_mkdirat fs/namei.c:4293 [inline]
+  __x64_sys_mkdirat+0x87/0xa0 fs/namei.c:4293
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The other is when nilfs_btree_propagate(), which propagates the dirty
+state to the ancestor nodes of a b-tree that point to a dirty buffer,
+detects that the origin buffer is not dirty, even though it should be:
+
+ WARNING: CPU: 0 PID: 5245 at fs/nilfs2/btree.c:2089
+  nilfs_btree_propagate+0xc79/0xdf0 fs/nilfs2/btree.c:2089
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_bmap_propagate+0x75/0x120 fs/nilfs2/bmap.c:345
+  nilfs_collect_file_data+0x4d/0xd0 fs/nilfs2/segment.c:587
+  nilfs_segctor_apply_buffers+0x184/0x340 fs/nilfs2/segment.c:1006
+  nilfs_segctor_scan_file+0x28c/0xa50 fs/nilfs2/segment.c:1045
+  nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1216 [inline]
+  nilfs_segctor_collect fs/nilfs2/segment.c:1540 [inline]
+  nilfs_segctor_do_construct+0x1c28/0x6b90 fs/nilfs2/segment.c:2115
+  nilfs_segctor_construct+0x181/0x6b0 fs/nilfs2/segment.c:2479
+  nilfs_segctor_thread_construct fs/nilfs2/segment.c:2587 [inline]
+  nilfs_segctor_thread+0x69e/0xe80 fs/nilfs2/segment.c:2701
+  kthread+0x2f0/0x390 kernel/kthread.c:389
+  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+  </TASK>
+
+Both of these issues are caused by the callbacks that handle the
+page/folio write requests, forcibly clear various states, including the
+working state of the buffers they hold, at unexpected times when they
+detect read-only fallback.
+
+Fix these issues by checking if the buffer is referenced before clearing
+the page/folio state, and skipping the clear if it is.
+
+[konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
+Link: https://lkml.kernel.org/r/20250107200202.6432-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20250107200202.6432-2-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b2b14916b77acf8626d7
+Reported-by: syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=d98fd19acd08b36ff422
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Tested-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/file.c              |    3 ++-
- include/linux/compaction.h |    5 +++++
- include/linux/sched.h      |    2 +-
- mm/compaction.c            |    3 +++
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ fs/nilfs2/page.c |   35 +++++++++++++++++++++++++++++------
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -29,6 +29,7 @@
- #include <linux/pagemap.h>
- #include <linux/gfp.h>
- #include <linux/swap.h>
-+#include <linux/compaction.h>
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -388,24 +388,44 @@ void nilfs_clear_dirty_pages(struct addr
+ /**
+  * nilfs_clear_dirty_page - discard dirty page
+  * @page: dirty page that will be discarded
++ *
++ * nilfs_clear_dirty_page() clears working states including dirty state for
++ * the page and its buffers.  If the page has buffers, clear only if it is
++ * confirmed that none of the buffer heads are busy (none have valid
++ * references and none are locked).
+  */
+ void nilfs_clear_dirty_page(struct page *page)
+ {
+ 	BUG_ON(!PageLocked(page));
  
- #include <linux/uaccess.h>
- #include <linux/filelock.h>
-@@ -457,7 +458,7 @@ static bool nfs_release_folio(struct fol
- 	/* If the private flag is set, then the folio is not freeable */
- 	if (folio_test_private(folio)) {
- 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
--		    current_is_kswapd())
-+		    current_is_kswapd() || current_is_kcompactd())
- 			return false;
- 		if (nfs_wb_folio(folio->mapping->host, folio) < 0)
- 			return false;
---- a/include/linux/compaction.h
-+++ b/include/linux/compaction.h
-@@ -80,6 +80,11 @@ static inline unsigned long compact_gap(
- 	return 2UL << order;
- }
+-	ClearPageUptodate(page);
+-	ClearPageMappedToDisk(page);
+-	ClearPageChecked(page);
+-
+ 	if (page_has_buffers(page)) {
+-		struct buffer_head *bh, *head;
++		struct buffer_head *bh, *head = page_buffers(page);
+ 		const unsigned long clear_bits =
+ 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+ 			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
+ 			 BIT(BH_Delay));
++		bool busy, invalidated = false;
  
-+static inline int current_is_kcompactd(void)
-+{
-+	return current->flags & PF_KCOMPACTD;
-+}
+-		bh = head = page_buffers(page);
++recheck_buffers:
++		busy = false;
++		bh = head;
++		do {
++			if (atomic_read(&bh->b_count) | buffer_locked(bh)) {
++				busy = true;
++				break;
++			}
++		} while (bh = bh->b_this_page, bh != head);
 +
- #ifdef CONFIG_COMPACTION
- 
- extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1686,7 +1686,7 @@ extern struct pid *cad_pid;
- #define PF_USED_MATH		0x00002000	/* If unset the fpu must be initialized before use */
- #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
- #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
--#define PF__HOLE__00010000	0x00010000
-+#define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
- #define PF_KSWAPD		0x00020000	/* I am kswapd */
- #define PF_MEMALLOC_NOFS	0x00040000	/* All allocations inherit GFP_NOFS. See memalloc_nfs_save() */
- #define PF_MEMALLOC_NOIO	0x00080000	/* All allocations inherit GFP_NOIO. See memalloc_noio_save() */
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -3164,6 +3164,7 @@ static int kcompactd(void *p)
- 	if (!cpumask_empty(cpumask))
- 		set_cpus_allowed_ptr(tsk, cpumask);
- 
-+	current->flags |= PF_KCOMPACTD;
- 	set_freezable();
- 
- 	pgdat->kcompactd_max_order = 0;
-@@ -3220,6 +3221,8 @@ static int kcompactd(void *p)
- 			pgdat->proactive_compact_trigger = false;
++		if (busy) {
++			if (invalidated)
++				return;
++			invalidate_bh_lrus();
++			invalidated = true;
++			goto recheck_buffers;
++		}
++
++		bh = head;
+ 		do {
+ 			lock_buffer(bh);
+ 			set_mask_bits(&bh->b_state, clear_bits, 0);
+@@ -413,6 +433,9 @@ void nilfs_clear_dirty_page(struct page
+ 		} while (bh = bh->b_this_page, bh != head);
  	}
  
-+	current->flags &= ~PF_KCOMPACTD;
-+
- 	return 0;
++	ClearPageUptodate(page);
++	ClearPageMappedToDisk(page);
++	ClearPageChecked(page);
+ 	__nilfs_clear_page_dirty(page);
  }
  
 
