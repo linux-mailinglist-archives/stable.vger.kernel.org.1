@@ -1,78 +1,49 @@
-Return-Path: <stable+bounces-122075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC86EA59DE0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0883A59E63
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 228C93A8F09
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775B33A88BA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34977238159;
-	Mon, 10 Mar 2025 17:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MDrChP47"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C0422CBED;
+	Mon, 10 Mar 2025 17:29:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF08C233D89
-	for <stable@vger.kernel.org>; Mon, 10 Mar 2025 17:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E8922FF40;
+	Mon, 10 Mar 2025 17:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627456; cv=none; b=J4NupDIjY3BUazjbTGZ0MzomFPhSlXT+XMbdGxRv5xStZ0C3vE0xYNmHVHjrHXvM/ybGPd6Q94aXOV7mAwRhT0mbOKARteVjprOsujrelzMvZAn2lbzGj+r0HpTQSMX/As9CVbTGjXc3hM2aYgYAAStQ+vN56/KBPW8IxWzCFCk=
+	t=1741627750; cv=none; b=ofPRqBPekRDHvP1u6fL/jfetTQDnqAqsPRY0cOp6Go6ozLRFpGW0Pn3runetuBaHmyMpayW2dxuNQK4yOAPaPNd+TKN3GarVmUe/kub0b4PKSFEWr6Wc33PnEbdELa25w4Hc8+BSPrjBGyTXduRcDJMPAnM0nNNLQq+Z/DDQWaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627456; c=relaxed/simple;
-	bh=ozllqk5S67aFz36fwplmFyIVSyxFwwEnKQYA9usfaxc=;
+	s=arc-20240116; t=1741627750; c=relaxed/simple;
+	bh=5xnuI1TveaclJB5R/6loAt6lIQ6vPPgbqwh7vS1MAhU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p4wD317oKzXrWRnBirA07PAlqvVBLeR5QDmuBckg3DrAec9orR1KLOtbvR51KCvdsHi0QylZtgL8QZA130Xgwdz0zOjS2e3C2rtjWlWJ+zMU8thzA1QPF1IOAz7gSOWJpqS+JOpHfnTZXb0Z+693Eq3MfMStZSK6oNrXJsxeAmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MDrChP47; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741627454; x=1773163454;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   mime-version:in-reply-to;
-  bh=ozllqk5S67aFz36fwplmFyIVSyxFwwEnKQYA9usfaxc=;
-  b=MDrChP47yq92kLWysETHAGVnNWjC9ZDgXEnuLWZchjsqSRd/VBsBO58j
-   SIZRhQV56VvFUQarIAb0IfdemUVkJ8WYJmzSE/tCV8xPL89oeMDT7faGt
-   4vrq/7XOi16XpUcMlzpCD1XriLanDDtpnRb1cHOOBRycs1YCfjC6G3qEr
-   nRGeQcwp2bDW72sWnMjSZt/Fc968hT81os3vBXW2tJA2s3N4rlhIHfyZ/
-   M1p3bQpTWv078rFfAoDpc+wg8+H0jt3mLyMTeTNqFP+B9JBIhE+llGQSI
-   fR7xuE7XlKJ0EBS4QHDTuW+4qFb+qkohUT+jv5XRcB/J/3J2ZZHGMxEx0
-   Q==;
-X-CSE-ConnectionGUID: S5XwHv28Q6+wfAR9JcJz/g==
-X-CSE-MsgGUID: kPRb+NOySsC1jJoCtxAY+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42543760"
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="42543760"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:24:14 -0700
-X-CSE-ConnectionGUID: CRiOwP2AQ2eGeJiacZziTw==
-X-CSE-MsgGUID: p8H1nH1+Q3ydkmlaaaFggg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="124217238"
-Received: from ideak-desk.fi.intel.com ([10.237.72.78])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:24:11 -0700
-Date: Mon, 10 Mar 2025 19:24:09 +0200
-From: Imre Deak <imre.deak@intel.com>
-To: Wayne Lin <Wayne.Lin@amd.com>, Lyude Paul <lyude@redhat.com>
-Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/dp_mst: Fix locking when skipping CSN before
- topology probing
-Message-ID: <Z88gObXxfqUCiqBe@ideak-desk.fi.intel.com>
-Reply-To: imre.deak@intel.com
-References: <20250307183152.3822170-1-imre.deak@intel.com>
- <CO6PR12MB5489FF5590A559FD1B48A34EFCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
- <Z87GNTziGPAl6UCv@ideak-desk.fi.intel.com>
- <CO6PR12MB548903C49BF9AD7F335E3EC8FCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=aXXg/GPhcsN94ixGi079Fu3dPsIHjOI8WmTFyM3AKQbwWRh16aWsKrRJ2oD+sqmDhOfa2FLAzxZXGVOwSSJnrSpvbRiubDXJeSekN5/qKg9JABGeC6D0iMimIyLhnMHx80BSQwG3uDCaxwb0pBCQXanSULAUh2+q3CUf3vjj3Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61A4C4CEE5;
+	Mon, 10 Mar 2025 17:29:07 +0000 (UTC)
+Date: Mon, 10 Mar 2025 17:29:05 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Peter Collingbourne <pcc@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] string: Disable read_word_at_a_time() optimizations if
+ kernel MTE is enabled
+Message-ID: <Z88hYdTAe6ok4_WT@arm.com>
+References: <20250308023314.3981455-1-pcc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,117 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CO6PR12MB548903C49BF9AD7F335E3EC8FCD62@CO6PR12MB5489.namprd12.prod.outlook.com>
+In-Reply-To: <20250308023314.3981455-1-pcc@google.com>
 
-On Mon, Mar 10, 2025 at 01:01:25PM +0000, Lin, Wayne wrote:
-> [Public]
+On Fri, Mar 07, 2025 at 06:33:13PM -0800, Peter Collingbourne wrote:
+> The optimized strscpy() and dentry_string_cmp() routines will read 8
+> unaligned bytes at a time via the function read_word_at_a_time(), but
+> this is incompatible with MTE which will fault on a partially invalid
+> read. The attributes on read_word_at_a_time() that disable KASAN are
+> invisible to the CPU so they have no effect on MTE. Let's fix the
+> bug for now by disabling the optimizations if the kernel is built
+> with HW tag-based KASAN and consider improvements for followup changes.
 > 
-> > -----Original Message-----
-> > From: Imre Deak <imre.deak@intel.com>
-> > Sent: Monday, March 10, 2025 7:00 PM
-> > To: Lin, Wayne <Wayne.Lin@amd.com>
-> > Cc: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org; dri-
-> > devel@lists.freedesktop.org; Lyude Paul <lyude@redhat.com>;
-> > stable@vger.kernel.org
-> > Subject: Re: [PATCH] drm/dp_mst: Fix locking when skipping CSN before topology
-> > probing
-> >
-> > On Mon, Mar 10, 2025 at 08:59:51AM +0000, Lin, Wayne wrote:
-> > >
-> > > > -----Original Message-----
-> > > > From: Imre Deak <imre.deak@intel.com>
-> > > > Sent: Saturday, March 8, 2025 2:32 AM
-> > > > To: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org;
-> > > > dri- devel@lists.freedesktop.org
-> > > > Cc: Lin, Wayne <Wayne.Lin@amd.com>; Lyude Paul <lyude@redhat.com>;
-> > > > stable@vger.kernel.org
-> > > > Subject: [PATCH] drm/dp_mst: Fix locking when skipping CSN before
-> > > > topology probing
-> > > >
-> > > > The handling of the MST Connection Status Notify message is skipped
-> > > > if the probing of the topology is still pending. Acquiring the
-> > > > drm_dp_mst_topology_mgr::probe_lock
-> > > > for this in
-> > > > drm_dp_mst_handle_up_req() is problematic: the task/work this
-> > > > function is called from is also responsible for handling MST
-> > > > down-request replies (in drm_dp_mst_handle_down_rep()). Thus
-> > > > drm_dp_mst_link_probe_work() - holding already probe_lock - could be
-> > > > blocked waiting for an MST down-request reply while
-> > > > drm_dp_mst_handle_up_req() is waiting for probe_lock while
-> > > > processing a CSN message. This leads to the probe
-> > > > work's down-request message timing out.
-> > > >
-> > > > A scenario similar to the above leading to a down-request timeout is
-> > > > handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
-> > > > probe_lock and sending down-request messages while a second CSN
-> > > > message sent by the sink subsequently is handled by drm_dp_mst_handle_up_req().
-> > > >
-> > > > Fix the above by moving the logic to skip the CSN handling to
-> > > > drm_dp_mst_process_up_req(). This function is called from a work
-> > > > (separate from the task/work handling new up/down messages), already
-> > > > holding probe_lock. This solves the above timeout issue, since
-> > > > handling of down-request replies won't be blocked by probe_lock.
-> > > >
-> > > > Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is
-> > > > not done yet")
-> > > > Cc: Wayne Lin <Wayne.Lin@amd.com>
-> > > > Cc: Lyude Paul <lyude@redhat.com>
-> > > > Cc: stable@vger.kernel.org # v6.6+
-> > > > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > > > ---
-> > > >  drivers/gpu/drm/display/drm_dp_mst_topology.c | 40
-> > > > +++++++++++--------
-> > > >  1 file changed, 24 insertions(+), 16 deletions(-)
-> > > >
-> > > > diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > > > b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > > > index 8b68bb3fbffb0..3a1f1ffc7b552 100644
-> > > > --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > > > +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > > > @@ -4036,6 +4036,22 @@ static int drm_dp_mst_handle_down_rep(struct
-> > > > drm_dp_mst_topology_mgr *mgr)
-> > > >       return 0;
-> > > >  }
-> > > >
-> > > > +static bool primary_mstb_probing_is_done(struct drm_dp_mst_topology_mgr *mgr)
-> > > > +{
-> > > > +     bool probing_done = false;
-> > > > +
-> > > > +     mutex_lock(&mgr->lock);
-> > >
-> > > Thanks for catching this, Imre!
-> > >
-> > > Here I think using mgr->lock is not sufficient for determining probing
-> > > is done or not by mst_primary->link_address_sent. Since it might still
-> > > be probing the rest of the topology with mst_primary probed. Use
-> > > probe_lock instead? Thanks!
-> >
-> > mgr->lock is taken here to guard the mgr->mst_primary access.
-> >
-> > probe_lock is also held, taken already by the caller in drm_dp_mst_up_req_work().
-> 
-> Oh I see. It looks good to me. Feel free to add:
-> 
-> Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
+> Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
+> Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
+> Cc: stable@vger.kernel.org
 
-Thanks for the review.
+Some time ago Vincenzo had an attempt at fixing this but neither of us
+got around to posting it. It's on top of 6.2 and not sure how cleanly it
+would rebase:
 
-Lyude, are you ok with the change and if I push it to drm-misc-fixes?
+git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux devel/mte-strscpy
 
-> 
-> Thanks!
-> >
-> > > > +
-> > > > +     if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->mst_primary)) {
-> > > > +             probing_done = mgr->mst_primary->link_address_sent;
-> > > > +             drm_dp_mst_topology_put_mstb(mgr->mst_primary);
-> > > > +     }
-> > > > +
-> > > > +     mutex_unlock(&mgr->lock);
-> > > > +
-> > > > +     return probing_done;
-> > > > +}
-> --
-> Regards,
-> Wayne Lin
+Feel free to cherry-pick patches from above, rewrite them etc.
+
+> diff --git a/lib/string.c b/lib/string.c
+> index eb4486ed40d25..9a43a3824d0d7 100644
+> --- a/lib/string.c
+> +++ b/lib/string.c
+> @@ -119,7 +119,8 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+>  	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
+>  		return -E2BIG;
+>  
+> -#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+> +#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && \
+> +	!defined(CONFIG_KASAN_HW_TAGS)
+
+Assuming that no-one wants to ever use KASAN_HW_TAGS=y in production,
+this patch would do. Otherwise I'd rather use TCO around the access as
+per the last patch from Vincenzo above.
+
+Yet another option - use load_unaligned_zeropad() instead of
+read_word_at_a_time(), not sure how it changes the semantics of
+strscpy() in any way. This can be done in the arch code
+
+-- 
+Catalin
 
