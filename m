@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-121802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA00A59C5F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:11:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1EEA59DA5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:23:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5940216E240
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:11:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5AD17A2953
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B46231A3B;
-	Mon, 10 Mar 2025 17:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD152309A6;
+	Mon, 10 Mar 2025 17:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5PevDBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1FykEMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D540230D14;
-	Mon, 10 Mar 2025 17:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02A41B3927;
+	Mon, 10 Mar 2025 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626671; cv=none; b=oRQ//s2Yzi9T12znTSxHRujTdhs62gjA3UNi1U0fMlmqHhhmwwVp8cX+TMOjR9qTR2VLjClOPpz/XpUi0KvVyFsg1koOgWfvOo706pJauCqIdy85v7nf/b5454/EHY/1EF4wpjOzsLNhEdyj/1Men7ol6LnVOrZjL0gMgy4mDIs=
+	t=1741627385; cv=none; b=clqs+liwqk/He9mcb84oREwyiPqQoQ9E1TdykJrpANFCG6n+QWaIDtq7WvZBS12ViAoZ+fbtctSB4HezIqPVEr5/gho+y3BieW9ii1WJN4XcUzzUjXCdW+aScocwyIgi4oycnX2qndtIJt2KaYvT04FUEuccfFhYPMr+Tq1lKd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626671; c=relaxed/simple;
-	bh=NkdW2BMCxvEB+qJ237GmTMxUuGseoJPc4t0mTVgEXGQ=;
+	s=arc-20240116; t=1741627385; c=relaxed/simple;
+	bh=D7tB8EvONLaYhmOJAJo4hzBaGkCofz4Ypy204H5qb04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KG/op0mz4CGiTMMsUh5OrfNtYqh7TvOd1g/337jEOnuz+G+glf17tGTg/5YrV1EWwAiBhre1CZ0NiOeB9kHdNeEHfrpABu6jZa1AZ6uAn/kkeyFOTVrEANwqTH/olZHIB+XsHmoGKCUHDr2z2miPJxs/bRMr3Jh/tylRubTtwrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5PevDBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A269FC4CEE5;
-	Mon, 10 Mar 2025 17:11:10 +0000 (UTC)
+	 MIME-Version; b=Qz4gputshIDrz8gz1DpSdn/ukiTp9hwiiIx7dGKukUlf7Ys7Kyy/qgQ5PRmAd7SA+yEsK76z6hMCvCWBZmSr0W82BdHqf+aJq6xy0gyeUfJ5r+yTdpTkgIHCOaGCT8ZZiFk2ikJ7YI1xMpmYjD3L+m4numzx9MfjF65NxUr07BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1FykEMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4D6C4CEE5;
+	Mon, 10 Mar 2025 17:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626671;
-	bh=NkdW2BMCxvEB+qJ237GmTMxUuGseoJPc4t0mTVgEXGQ=;
+	s=korg; t=1741627384;
+	bh=D7tB8EvONLaYhmOJAJo4hzBaGkCofz4Ypy204H5qb04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5PevDBZImEHgg7pxYxGMgcpqIPzd0M2OiX2t8Cz/EV9nMun7g8j1P/Gnuvb7fEnE
-	 zIXqG0YD3cAdfA/a+xnoPiZJ6VYVyawJXgC3m0QBcjch1nTEVpC8ilH9Z13XoLFHXz
-	 ZNc2RQJp+rPbW8PTC6RwW80ft/WFTDEq2kR9ZnHY=
+	b=X1FykEMzHDaUB9guheGb4WvDeUCBwbMo2gcG4i8uGwKCpoEf9Bp7dM6Qv/y+2z888
+	 8njtQwwpt/FRx6FsfsQoq+BqNSDpEgQtIFtwycZDHgSfjiDc0DWW50kLmQR6JGdBnR
+	 xdnF44Xjj26wPEM2cRR81p0iIkYYVTRYRL1ERrHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Richard Thier <u9vata@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 040/207] drm/radeon: Fix rs400_gpu_init for ATI mobility radeon Xpress 200M
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 080/269] LoongArch: KVM: Reload guest CSR registers after sleep
 Date: Mon, 10 Mar 2025 18:03:53 +0100
-Message-ID: <20250310170449.363955639@linuxfoundation.org>
+Message-ID: <20250310170500.913983411@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Thier <u9vata@gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 29ffeb73b216ce3eff10229eb077cf9b7812119d upstream.
+commit 78d7bc5a02e1468df53896df354fa80727f35b7d upstream.
 
-num_gb_pipes was set to a wrong value using r420_pipe_config
+On host, the HW guest CSR registers are lost after suspend and resume
+operation. Since last_vcpu of boot CPU still records latest vCPU pointer
+so that the guest CSR register skips to reload when boot CPU resumes and
+vCPU is scheduled.
 
-This have lead to HyperZ glitches on fast Z clearing.
+Here last_vcpu is cleared so that guest CSR registers will reload from
+scheduled vCPU context after suspend and resume.
 
-Closes: https://bugs.freedesktop.org/show_bug.cgi?id=110897
-Reviewed-by: Marek Olšák <marek.olsak@amd.com>
-Signed-off-by: Richard Thier <u9vata@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 044e59a85c4d84e3c8d004c486e5c479640563a6)
 Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/r300.c        |    3 ++-
- drivers/gpu/drm/radeon/radeon_asic.h |    1 +
- drivers/gpu/drm/radeon/rs400.c       |   18 ++++++++++++++++--
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ arch/loongarch/kvm/main.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/radeon/r300.c
-+++ b/drivers/gpu/drm/radeon/r300.c
-@@ -359,7 +359,8 @@ int r300_mc_wait_for_idle(struct radeon_
- 	return -1;
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -297,6 +297,13 @@ int kvm_arch_enable_virtualization_cpu(v
+ 	kvm_debug("GCFG:%lx GSTAT:%lx GINTC:%lx GTLBC:%lx",
+ 		  read_csr_gcfg(), read_csr_gstat(), read_csr_gintc(), read_csr_gtlbc());
+ 
++	/*
++	 * HW Guest CSR registers are lost after CPU suspend and resume.
++	 * Clear last_vcpu so that Guest CSR registers forced to reload
++	 * from vCPU SW state.
++	 */
++	this_cpu_ptr(vmcs)->last_vcpu = NULL;
++
+ 	return 0;
  }
  
--static void r300_gpu_init(struct radeon_device *rdev)
-+/* rs400_gpu_init also calls this! */
-+void r300_gpu_init(struct radeon_device *rdev)
- {
- 	uint32_t gb_tile_config, tmp;
- 
---- a/drivers/gpu/drm/radeon/radeon_asic.h
-+++ b/drivers/gpu/drm/radeon/radeon_asic.h
-@@ -165,6 +165,7 @@ void r200_set_safe_registers(struct rade
-  */
- extern int r300_init(struct radeon_device *rdev);
- extern void r300_fini(struct radeon_device *rdev);
-+extern void r300_gpu_init(struct radeon_device *rdev);
- extern int r300_suspend(struct radeon_device *rdev);
- extern int r300_resume(struct radeon_device *rdev);
- extern int r300_asic_reset(struct radeon_device *rdev, bool hard);
---- a/drivers/gpu/drm/radeon/rs400.c
-+++ b/drivers/gpu/drm/radeon/rs400.c
-@@ -256,8 +256,22 @@ int rs400_mc_wait_for_idle(struct radeon
- 
- static void rs400_gpu_init(struct radeon_device *rdev)
- {
--	/* FIXME: is this correct ? */
--	r420_pipes_init(rdev);
-+	/* Earlier code was calling r420_pipes_init and then
-+	 * rs400_mc_wait_for_idle(rdev). The problem is that
-+	 * at least on my Mobility Radeon Xpress 200M RC410 card
-+	 * that ends up in this code path ends up num_gb_pipes == 3
-+	 * while the card seems to have only one pipe. With the
-+	 * r420 pipe initialization method.
-+	 *
-+	 * Problems shown up as HyperZ glitches, see:
-+	 * https://bugs.freedesktop.org/show_bug.cgi?id=110897
-+	 *
-+	 * Delegating initialization to r300 code seems to work
-+	 * and results in proper pipe numbers. The rs400 cards
-+	 * are said to be not r400, but r300 kind of cards.
-+	 */
-+	r300_gpu_init(rdev);
-+
- 	if (rs400_mc_wait_for_idle(rdev)) {
- 		pr_warn("rs400: Failed to wait MC idle while programming pipes. Bad things might happen. %08x\n",
- 			RREG32(RADEON_MC_STATUS));
 
 
 
