@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F35A5A0F8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:55:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD63BA5A103
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 940D71892D1C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:56:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4109D7A43F7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C7523237F;
-	Mon, 10 Mar 2025 17:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD07A231A2A;
+	Mon, 10 Mar 2025 17:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZ38ZbJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ3sNpcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D907B22AE7C;
-	Mon, 10 Mar 2025 17:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0982D023;
+	Mon, 10 Mar 2025 17:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629356; cv=none; b=kfZ1jSjFl3sQB+0S0Tt1cjyIF5TaKAmiRftMMvol5Dz5ZdQeMMcRUAIflLK0Y1YOcl90Y44OP1d5SSidOdoru55/LSI8jt2mjmNjnPaTJBYYsjiOBg7qLS594M3htg8VQ8CUtE5+TJI3cejCLn8U/YNtg/t0kY6h+LObXTgCupQ=
+	t=1741629389; cv=none; b=MEf5yFW/Sq1Q2sl9pfVattH2amSgs5j6h03A+gfh4t8TbvGtM3SUE1mN7PBvvoZoOe9lrkLAOpw+qeyvy28mf15LccY6dMnbijEulz3lIRrju3uKotxPdGSKxEZ9WeIPFc/MdTa2zCx/88e2ZBs6nGP9Wv593qpEBhnjH5LvXn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629356; c=relaxed/simple;
-	bh=jub+bQ+hSG4mluBkUikM4L9GBk4gh4OmDUKp42lhiJ8=;
+	s=arc-20240116; t=1741629389; c=relaxed/simple;
+	bh=N4CvQvDRZWfi1iPA9PsRt311EZpU2+cr3Ib8Noj9HXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihh9mGKaaj13J+Fbr1LvPWWPUVfcG/SJQC6KRCWzPMHgfQmgID94//EVKiX6tgZ6UZt9U/j3JO4SkEx+Gd4NaH0Vg/LEOC24lLpGdyWvBDzQnZ/SYCLIgMufCxrnWSaYlSFXWY5euvi0axB5WvmwLTN9M40ofmt2g+vtcJfUFiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZ38ZbJj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56356C4CEE5;
-	Mon, 10 Mar 2025 17:55:56 +0000 (UTC)
+	 MIME-Version; b=sbg+fptoHuGCoeTf7tz2p2RHBNMY3dQxWjK+Qw/QaTbRg/e7OmJTYmLd/6YQ34THwHrRKJKD2GOaxvDKXBB3z4NtsySl530Pqa+o0b3B/J7HMHB//flLaMhu4AyUYXMF7wcdrvDEBrQ4Vo64wMSxRXlh6mohUW4aJV75rwm0xqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ3sNpcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AEFC4CEE5;
+	Mon, 10 Mar 2025 17:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629356;
-	bh=jub+bQ+hSG4mluBkUikM4L9GBk4gh4OmDUKp42lhiJ8=;
+	s=korg; t=1741629389;
+	bh=N4CvQvDRZWfi1iPA9PsRt311EZpU2+cr3Ib8Noj9HXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZ38ZbJjrJY+ILBt1mIXftpcxZavcWjIg07cjxJl4FGe2QWpumImrt5ZLg5wnJ3j6
-	 fzdtIo9+ivJE1enkODzp/qFaSEDIfExXMbYur5GPOOR0J8/wXlqFOrt5atyg1MOf4m
-	 R5RIYM9mQCTsiBZNyaUsRH1Nu8Vj2Pvu0C51I08k=
+	b=HQ3sNpcrmVELH8HF+UlVZUf8w5hBlfQ0E4LT6EIZvtHLa//RVgMuWyBNnIV8SD/hX
+	 a7RxtEPkdpCg30ZFUJ1AESk3j6F1MBvsMFgsd85vXn3Pj8jHf3NKnTppzy3W3EeIhJ
+	 Xw027It6I0JNqz58RGBCWJV7iLF5kchAUZazWJnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Martin Ottens <martin.ottens@fau.de>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 249/620] x86/xen: add FRAME_END to xen_hypercall_hvm()
-Date: Mon, 10 Mar 2025 18:01:35 +0100
-Message-ID: <20250310170555.455689403@linuxfoundation.org>
+Subject: [PATCH 5.15 250/620] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
+Date: Mon, 10 Mar 2025 18:01:36 +0100
+Message-ID: <20250310170555.493617174@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -68,36 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit 0bd797b801bd8ee06c822844e20d73aaea0878dd ]
+[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
 
-xen_hypercall_hvm() is missing a FRAME_END at the end, add it.
+qdisc_tree_reduce_backlog() notifies parent qdisc only if child
+qdisc becomes empty, therefore we need to reduce the backlog of the
+child qdisc before calling it. Otherwise it would miss the opportunity
+to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
+since DRR uses ->qlen_notify() to maintain its active list.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502030848.HTNTTuo9-lkp@intel.com/
-Fixes: b4845bb63838 ("x86/xen: add central hypercall functions")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Cc: Martin Ottens <martin.ottens@fau.de>
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/xen-head.S | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_netem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
-index 0dce73077c8cb..6105404ba5703 100644
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -130,6 +130,7 @@ SYM_FUNC_START(xen_hypercall_hvm)
- 	pop %rcx
- 	pop %rax
- #endif
-+	FRAME_END
- 	/* Use correct hypercall function. */
- 	jz xen_hypercall_amd
- 	jmp xen_hypercall_intel
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index f459e34684ad3..22f5d9421f6a6 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -739,9 +739,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 				if (err != NET_XMIT_SUCCESS) {
+ 					if (net_xmit_drop_count(err))
+ 						qdisc_qstats_drop(sch);
+-					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 					sch->qstats.backlog -= pkt_len;
+ 					sch->q.qlen--;
++					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
 -- 
 2.39.5
 
