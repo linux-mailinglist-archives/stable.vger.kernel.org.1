@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-122909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD79FA5A1F0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 911E1A59DC6
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096651889762
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DDD41884A02
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75570233D89;
-	Mon, 10 Mar 2025 18:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83CE230D3A;
+	Mon, 10 Mar 2025 17:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dT8Leg9y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/aB+ouh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326B323236F;
-	Mon, 10 Mar 2025 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94735230BF5;
+	Mon, 10 Mar 2025 17:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630491; cv=none; b=gRU0tRPn1hZEaBSFX2HJOC52VgFeQe5pYRrzwiQdAVHbfQ3aQXyEKzqI72EsTbUnkqjLBLZkKEvh+IMrkhjJ7LZS/kf4K+P/4bjMtmzKUFjofWAozevVl8aKKKeNVZZ0pHr5ohQtmFi6p0/sY8DbFqb7UZspH+GhzsEm90lUo9Y=
+	t=1741627428; cv=none; b=endYcAT+DkDrIJ8FtRdwnh6O6rm1fpvdfATQs2QUBRByGwfo+d+/74mlOZea4kKh4rKUsHoY7dzCHggZ24CGmWXT5VXZE26rquzAUhBUhhDJftDjRgC++OBLIKsdER6HMm7c1DFUQFH17orTHh/DnJLnt43j8z1IbTBpmaW4TSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630491; c=relaxed/simple;
-	bh=R5PWXUU36Qan8LYfT0G9WUVXZ1tAyWb9oNqIuu+etRk=;
+	s=arc-20240116; t=1741627428; c=relaxed/simple;
+	bh=/nrtmwo2zEhdptjqgof2mdx9hmXC3sAYLpvsIRgHH08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCue5WKmfMjMGmQISRQ/PRjOyzSAUvQVihqwx1Fq6pt0mSA8VPQE4CxDRGvXXfy+IkOII3LM79aIM8zFkDc77pXWTE87NsNfD8eC9H8+VAylwcxl8WHPM9W5L8ME+QHvgyrwd6xSXi27VnRt2mlw1jtTX3qn3Z+ENp0Wx66eoO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dT8Leg9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D38C4CEE5;
-	Mon, 10 Mar 2025 18:14:50 +0000 (UTC)
+	 MIME-Version; b=JgRZc954R3MLAinJ1p/F21G6s75SweRrsY98J/B5QSbRS8UPcI+mey43KLYxq/JcplPXkf8eq8HRM2vOzqYo5Jyojv1bOUzDO8XOuKMRO75FaTY7FRaAo/+V9UJ+hAsIj0oWyYHOF5N/FKFNTy+dSK3IkSlASJWg8Joal68J8OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/aB+ouh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF428C4CEE5;
+	Mon, 10 Mar 2025 17:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630490;
-	bh=R5PWXUU36Qan8LYfT0G9WUVXZ1tAyWb9oNqIuu+etRk=;
+	s=korg; t=1741627428;
+	bh=/nrtmwo2zEhdptjqgof2mdx9hmXC3sAYLpvsIRgHH08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dT8Leg9yLBJPytuce5MhPpHHlKIxuhm0/K+zZHBS0+xBs9UJmX4lsX7RpNbIbozFN
-	 Hp6uKd5FoX1mpK9pbNI9j4AdPPmq84aVQvqubaI3yNMGEqFaMuoNmkO13+RMQuscaL
-	 SBofLMO04dTsXUqnn3Fb0H9e1IzsoVCyT5J1lPgc=
+	b=D/aB+ouh3wJXXMVaQrvPh9B3F8lQXNFz94cRJ6WcXqnm8ROC7aUZHQqgrR2wooBtg
+	 C7gB5CfJI0pmqKM8OD+8kyGD6hm5uCm6MUOcymU74pCY8OEL4qwf1NvX/TB1Phj/sf
+	 Vpf7OH7g6KCyohu5pYUZtiqE6ZMaePoORwGxj7iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei he <helei.sig11@bytedance.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 433/620] crypto: testmgr - fix version number of RSA tests
-Date: Mon, 10 Mar 2025 18:04:39 +0100
-Message-ID: <20250310170602.690239936@linuxfoundation.org>
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 127/269] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
+Date: Mon, 10 Mar 2025 18:04:40 +0100
+Message-ID: <20250310170502.786007118@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei he <helei.sig11@bytedance.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 0bb8f125253843c445b70fc6ef4fb21aa7b25625 ]
+commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
 
-According to PKCS#1 standard, the 'otherPrimeInfos' field contains
-the information for the additional primes r_3, ..., r_u, in order.
-It shall be omitted if the version is 0 and shall contain at least
-one instance of OtherPrimeInfo if the version is 1, see:
-	https://www.rfc-editor.org/rfc/rfc3447#page-44
+The return value of rio_add_net() should be checked.  If it fails,
+put_device() should be called to free the memory and give up the reference
+initialized in rio_add_net().
 
-Replace the version number '1' with 0, otherwise, some drivers may
-not pass the run-time tests.
-
-Signed-off-by: lei he <helei.sig11@bytedance.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
+Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/testmgr.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/rapidio/rio-scan.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index c2bad3ee89085..a0ea68e92e69b 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -184,7 +184,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
- #ifndef CONFIG_CRYPTO_FIPS
- 	.key =
- 	"\x30\x81\x9A" /* sequence of 154 bytes */
--	"\x02\x01\x01" /* version - integer of 1 byte */
-+	"\x02\x01\x00" /* version - integer of 1 byte */
- 	"\x02\x41" /* modulus - integer of 65 bytes */
- 	"\x00\xAA\x36\xAB\xCE\x88\xAC\xFD\xFF\x55\x52\x3C\x7F\xC4\x52\x3F"
- 	"\x90\xEF\xA0\x0D\xF3\x77\x4A\x25\x9F\x2E\x62\xB4\xC5\xD9\x9C\xB5"
-@@ -214,7 +214,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
- 	}, {
- 	.key =
- 	"\x30\x82\x01\x1D" /* sequence of 285 bytes */
--	"\x02\x01\x01" /* version - integer of 1 byte */
-+	"\x02\x01\x00" /* version - integer of 1 byte */
- 	"\x02\x81\x81" /* modulus - integer of 129 bytes */
- 	"\x00\xBB\xF8\x2F\x09\x06\x82\xCE\x9C\x23\x38\xAC\x2B\x9D\xA8\x71"
- 	"\xF7\x36\x8D\x07\xEE\xD4\x10\x43\xA4\x40\xD6\xB6\xF0\x74\x54\xF5"
-@@ -258,7 +258,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
- #endif
- 	.key =
- 	"\x30\x82\x02\x20" /* sequence of 544 bytes */
--	"\x02\x01\x01" /* version - integer of 1 byte */
-+	"\x02\x01\x00" /* version - integer of 1 byte */
- 	"\x02\x82\x01\x01\x00" /* modulus - integer of 256 bytes */
- 	"\xDB\x10\x1A\xC2\xA3\xF1\xDC\xFF\x13\x6B\xED\x44\xDF\xF0\x02\x6D"
- 	"\x13\xC7\x88\xDA\x70\x6B\x54\xF1\xE8\x27\xDC\xC3\x0F\x99\x6A\xFA"
--- 
-2.39.5
-
+--- a/drivers/rapidio/rio-scan.c
++++ b/drivers/rapidio/rio-scan.c
+@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
+ 		dev_set_name(&net->dev, "rnet_%d", net->id);
+ 		net->dev.parent = &mport->dev;
+ 		net->dev.release = rio_scan_release_dev;
+-		rio_add_net(net);
++		if (rio_add_net(net)) {
++			put_device(&net->dev);
++			net = NULL;
++		}
+ 	}
+ 
+ 	return net;
 
 
 
