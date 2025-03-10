@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-121930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79883A59D0D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A26CA59F10
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0274616F9C1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99881170032
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2739722D7A6;
-	Mon, 10 Mar 2025 17:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A16232376;
+	Mon, 10 Mar 2025 17:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KAcf0w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKgiPnyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A4A18DB24;
-	Mon, 10 Mar 2025 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1824523026D;
+	Mon, 10 Mar 2025 17:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627040; cv=none; b=i1EfWqlQoPfA0sfwk885mAleqZm3dQqgs2OtsmS4vXtL+2esIvooyDRoq3TAYjZCpRNkOKM3/rfHOmw7edxHUUMiIwkUc63M8acO+I6tuDgUpfsGBTvF9avwq7c43nDCHt86U4NBOhxTcbSyO39Eccsi2QvEbYEdtFY+5xSderg=
+	t=1741628188; cv=none; b=C0CNwnF2nPOwb456OdNxCnMwuo+l0qbDRsyweHQFzN3v954KLZ1Arqq6hMDBFTmXhCk+RBs2rlLf0DbsNt1iBxj+DvaomKjZiwVWzogQosI9I9VKNRCu8ezP7GaSznawaDLTKkSiJBPY1seFGfJI/R0GjJ4pzPdmesJEpxnf+OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627040; c=relaxed/simple;
-	bh=AiozW++0Z8C7zBMfxtvEGAth/zd/dzykyYKk8jvv7n4=;
+	s=arc-20240116; t=1741628188; c=relaxed/simple;
+	bh=kGJt/WI3IfNQfPwW2XhXB0oChH5b+QW3IuP+d+BoDJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syv8AadaKx89Oqnbgj76tWyAVfb0RCQ7HxxehJAhV9VE2oZSwB78jnq829vBsC88YKQz7L1m36loo0LwxvrGVGbsVnyFjl0/0dinifdEBuiaH6fjcu4P8QMaWWYp6kkfd7X0voZ+uACjDRw2TfgRTtikWTYs+01EpFtB/KylKE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KAcf0w+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A59C4CEE5;
-	Mon, 10 Mar 2025 17:17:20 +0000 (UTC)
+	 MIME-Version; b=hghSh93QmoN4cXGypSs460XcZZ2LqGNPRNltumwQjiDuuqr+XQ52pTn+v8TL6wq3QJICe9NKDk9cHt0581LK/WCtIZGVbVyAWJkek33sKPI/Te+wz8FAk8cn4aZXqmwpfIwpNSYejaLZ0JTUvUkGUOwXpB4lCNFuRv91s/okYVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKgiPnyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ED4C4CEED;
+	Mon, 10 Mar 2025 17:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627040;
-	bh=AiozW++0Z8C7zBMfxtvEGAth/zd/dzykyYKk8jvv7n4=;
+	s=korg; t=1741628187;
+	bh=kGJt/WI3IfNQfPwW2XhXB0oChH5b+QW3IuP+d+BoDJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0KAcf0w+HluzHsgcaUWXjW80kEd0EAXZrPCuJPC56PkZNW7NlksaV7XKQQu78s/pL
-	 JKk1k94rGrWFNO47Sdv8xR7KJmahm6PLQy8T7DIth+JNNwgbnRMNONs60RHNfSDf44
-	 kKbRRptu96+JwvOp+Uqb6v1HrZyb8fAjsWOdK6mQ=
+	b=fKgiPnyHCdpoYXVm0yhd1i2wIRr/8/SOxczhtrsUiB1geHTeT+uSpXdchvEEsfyFQ
+	 uwIP7yJLscEJc8no9NGfFgxQCeaTHR4CwYPqA8bDSm6lByaByDOFzF0QCygdmAYk60
+	 X6Weo+k505YVGY9fwHk/elanc/wugkrXoYWzI4+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 200/207] dt-bindings: iio: dac: adi-axi-adc: fix ad7606 pwm-names
-Date: Mon, 10 Mar 2025 18:06:33 +0100
-Message-ID: <20250310170455.733600193@linuxfoundation.org>
+	stable@kernel.org,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	syzbot+ccbbc229a024fa3e13b5@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 100/145] usb: atm: cxacru: fix a flaw in existing endpoint checks
+Date: Mon, 10 Mar 2025 18:06:34 +0100
+Message-ID: <20250310170438.800976428@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 02ccd7e5d81af4ae20852fc1ad67e7d943fa5778 ]
+commit c90aad369899a607cfbc002bebeafd51e31900cd upstream.
 
-Fix make dt_binding_check warning:
+Syzbot once again identified a flaw in usb endpoint checking, see [1].
+This time the issue stems from a commit authored by me (2eabb655a968
+("usb: atm: cxacru: fix endpoint checking in cxacru_bind()")).
 
-DTC [C] Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dtb
-.../adc/adi,axi-adc.example.dtb: adc@0: pwm-names: ['convst1'] is too short
-    from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
+While using usb_find_common_endpoints() may usually be enough to
+discard devices with wrong endpoints, in this case one needs more
+than just finding and identifying the sufficient number of endpoints
+of correct types - one needs to check the endpoint's address as well.
 
-Add "minItems" to pwm-names, it allows to use one single pwm when
-connected to both adc conversion inputs.
+Since cxacru_bind() fills URBs with CXACRU_EP_CMD address in mind,
+switch the endpoint verification approach to usb_check_XXX_endpoints()
+instead to fix incomplete ep testing.
 
-Fixes: 7c2357b10490 ("dt-bindings: iio: adc: ad7606: Add iio backend bindings")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20250129-wip-bl-ad7606_add_backend_sw_mode-v3-1-c3aec77c0ab7@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] Syzbot report:
+usb 5-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 0 PID: 1378 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
+...
+RIP: 0010:usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
+...
+Call Trace:
+ <TASK>
+ cxacru_cm+0x3c8/0xe50 drivers/usb/atm/cxacru.c:649
+ cxacru_card_status drivers/usb/atm/cxacru.c:760 [inline]
+ cxacru_bind+0xcf9/0x1150 drivers/usb/atm/cxacru.c:1223
+ usbatm_usb_probe+0x314/0x1d30 drivers/usb/atm/usbatm.c:1058
+ cxacru_usb_probe+0x184/0x220 drivers/usb/atm/cxacru.c:1377
+ usb_probe_interface+0x641/0xbb0 drivers/usb/core/driver.c:396
+ really_probe+0x2b9/0xad0 drivers/base/dd.c:658
+ __driver_probe_device+0x1a2/0x390 drivers/base/dd.c:800
+ driver_probe_device+0x50/0x430 drivers/base/dd.c:830
+...
+
+Reported-and-tested-by: syzbot+ccbbc229a024fa3e13b5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ccbbc229a024fa3e13b5
+Fixes: 2eabb655a968 ("usb: atm: cxacru: fix endpoint checking in cxacru_bind()")
+Cc: stable@kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20250213122259.730772-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/atm/cxacru.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-index ab5881d0d017f..52d3f1ce33678 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-@@ -146,6 +146,7 @@ properties:
-     maxItems: 2
+--- a/drivers/usb/atm/cxacru.c
++++ b/drivers/usb/atm/cxacru.c
+@@ -1131,7 +1131,10 @@ static int cxacru_bind(struct usbatm_dat
+ 	struct cxacru_data *instance;
+ 	struct usb_device *usb_dev = interface_to_usbdev(intf);
+ 	struct usb_host_endpoint *cmd_ep = usb_dev->ep_in[CXACRU_EP_CMD];
+-	struct usb_endpoint_descriptor *in, *out;
++	static const u8 ep_addrs[] = {
++		CXACRU_EP_CMD + USB_DIR_IN,
++		CXACRU_EP_CMD + USB_DIR_OUT,
++		0};
+ 	int ret;
  
-   pwm-names:
-+    minItems: 1
-     items:
-       - const: convst1
-       - const: convst2
--- 
-2.39.5
-
+ 	/* instance init */
+@@ -1179,13 +1182,11 @@ static int cxacru_bind(struct usbatm_dat
+ 	}
+ 
+ 	if (usb_endpoint_xfer_int(&cmd_ep->desc))
+-		ret = usb_find_common_endpoints(intf->cur_altsetting,
+-						NULL, NULL, &in, &out);
++		ret = usb_check_int_endpoints(intf, ep_addrs);
+ 	else
+-		ret = usb_find_common_endpoints(intf->cur_altsetting,
+-						&in, &out, NULL, NULL);
++		ret = usb_check_bulk_endpoints(intf, ep_addrs);
+ 
+-	if (ret) {
++	if (!ret) {
+ 		usb_err(usbatm_instance, "cxacru_bind: interface has incorrect endpoints\n");
+ 		ret = -ENODEV;
+ 		goto fail;
 
 
 
