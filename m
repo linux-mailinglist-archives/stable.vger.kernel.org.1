@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9563FA59E88
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:31:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5F9A5A219
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DD667A56C2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63010174B95
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C413623536F;
-	Mon, 10 Mar 2025 17:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C20A234970;
+	Mon, 10 Mar 2025 18:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ixFoMe4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arNSdmi3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F2A23535B;
-	Mon, 10 Mar 2025 17:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0252F28;
+	Mon, 10 Mar 2025 18:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627887; cv=none; b=O+mhyNKwyqnpyboSY5ea/8MLoHa/9expN4s6ApvY+3BRmSnVJhFsyGMlx1HvXhv7FoVhZUpKws1RzKs3qsSK8IIGGec822dGLg1au908eH7pux0gibfCEcPrminhDTforjXUyIpNbCA2AzmFjLZYqkiYb3bFpgOHHehQdyLvQdo=
+	t=1741630577; cv=none; b=XbgcQROjDGvqfAg7qAZDq+RpqM48zGQyDDBlOId/IbV4gDVqO3dwCHpYVp1K2icFuuOk743DjHY5kPhgN7IdwKDsuyGUZf+ZwklVD6KvP3a5VxGK6Q8bkl3trdxghQnHABSWu30V2AlGztBX5UiYz+cMGcRRhrH7X5U34zFQDZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627887; c=relaxed/simple;
-	bh=/Z8UVRcukBjLcV7CDp+vMFN3Dfcj5hDCWqfDime4alw=;
+	s=arc-20240116; t=1741630577; c=relaxed/simple;
+	bh=b/2gsvK/Idw5oRq9lUtgmFg+PHmMP2LoqHTg2mNQaCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ex9ECR3cE3tu50qKEi1l6x+NV0HJuwLqWKNmLkx64H4Kq+KhuuekAdsNfLKENQlFZ/va9gHXrtIROn2zE6dc7iflPsABlGZO8UJFMXEhI5IT2QuPB6Eu5SvXgQn5v6QckRKBTQmlGKiQLlcdSRtYbkvuxLOLIdRWzwAaHj+7ChM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ixFoMe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D7FC4CEED;
-	Mon, 10 Mar 2025 17:31:26 +0000 (UTC)
+	 MIME-Version; b=UjrWu8/Us8hfccNhkn/65pyMefSetJf2b8F10RLEv1k9CDexKxBuViSx2WtJJZveuM/y7MPwige4DCWs3XMJ43aB8IHzofIdTGaLWyV+nDXIFMrp52Q8ghzPCC9HO3XB9hvXCc99quangT0TkQZqiTHtzStfl/N9lYAsO79xStU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arNSdmi3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD669C4CEE5;
+	Mon, 10 Mar 2025 18:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627887;
-	bh=/Z8UVRcukBjLcV7CDp+vMFN3Dfcj5hDCWqfDime4alw=;
+	s=korg; t=1741630577;
+	bh=b/2gsvK/Idw5oRq9lUtgmFg+PHmMP2LoqHTg2mNQaCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ixFoMe4ubSQKgZ+sw6WgxBReiTUdAsnCc9Vfks/F4OZMCCt8CEtgucs9wQcGZajJ
-	 /fcSeH6IBX7eQV97y5Lwo/PQ76OiibSH6Npf/660//mIF0IkDYG8aUYkxD5aiRTWUu
-	 94fo9rYpvy9hMeiyPi/h98Mpv+OPyiKjVrdopEXY=
+	b=arNSdmi34NUOPw7jy1ItyuKYO6FS/TINjflLlMR3JFDtw7JReGrnjUmPFcq/6L7rw
+	 aJbWwWM2w/qfGSmhHHt39mcSSHhlBn1776Fzm3NFB7j/dLpi71bSsy7xC7zpBjLvZp
+	 pdRVBcegOn+e0LvKZqG7y/06DOgDzbCI3mM5oC/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/145] NFS: O_DIRECT writes must check and adjust the file length
+Subject: [PATCH 5.15 463/620] ALSA: hda/realtek: Fixup ALC225 depop procedure
 Date: Mon, 10 Mar 2025 18:05:09 +0100
-Message-ID: <20250310170435.361092917@linuxfoundation.org>
+Message-ID: <20250310170603.860844886@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit fcf857ee1958e9247298251f7615d0c76f1e9b38 ]
+[ Upstream commit 174448badb4409491bfba2e6b46f7aa078741c5e ]
 
-While it is uncommon for delegations to be held while O_DIRECT writes
-are in progress, it is possible. The xfstests generic/647 and
-generic/729 both end up triggering that state, and end up failing due to
-the fact that the file size is not adjusted.
+Headset MIC will no function when power_save=0.
 
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219738
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 1fd50509fe14 ("ALSA: hda/realtek: Update ALC225 depop procedure")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219743
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/0474a095ab0044d0939ec4bf4362423d@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 258521d5125ed..a1ff4a4f5380e 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -130,6 +130,20 @@ static void nfs_direct_truncate_request(struct nfs_direct_req *dreq,
- 		dreq->count = req_start;
- }
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index bf88deb1ae950..bc4a2c7fff4ef 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3770,6 +3770,7 @@ static void alc225_init(struct hda_codec *codec)
+ 				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
  
-+static void nfs_direct_file_adjust_size_locked(struct inode *inode,
-+					       loff_t offset, size_t count)
-+{
-+	loff_t newsize = offset + (loff_t)count;
-+	loff_t oldsize = i_size_read(inode);
-+
-+	if (newsize > oldsize) {
-+		i_size_write(inode, newsize);
-+		NFS_I(inode)->cache_validity &= ~NFS_INO_INVALID_SIZE;
-+		trace_nfs_size_grow(inode, newsize);
-+		nfs_inc_stats(inode, NFSIOS_EXTENDWRITE);
-+	}
-+}
-+
- /**
-  * nfs_swap_rw - NFS address space operation for swap I/O
-  * @iocb: target I/O control block
-@@ -728,6 +742,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
- 	struct nfs_direct_req *dreq = hdr->dreq;
- 	struct nfs_commit_info cinfo;
- 	struct nfs_page *req = nfs_list_entry(hdr->pages.next);
-+	struct inode *inode = dreq->inode;
- 	int flags = NFS_ODIRECT_DONE;
- 
- 	trace_nfs_direct_write_completion(dreq);
-@@ -749,6 +764,10 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ 		msleep(75);
++		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+ 		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
  	}
- 	spin_unlock(&dreq->lock);
- 
-+	spin_lock(&inode->i_lock);
-+	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
-+	spin_unlock(&inode->i_lock);
-+
- 	while (!list_empty(&hdr->pages)) {
- 
- 		req = nfs_list_entry(hdr->pages.next);
+ }
 -- 
 2.39.5
 
