@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564EDA59E08
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E696A59C9B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD363A9B7E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B7ED165559
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69833233703;
-	Mon, 10 Mar 2025 17:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B0617A2E3;
+	Mon, 10 Mar 2025 17:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7yJPSoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hb9su+5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264B72309B6;
-	Mon, 10 Mar 2025 17:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5524122D4C3;
+	Mon, 10 Mar 2025 17:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627558; cv=none; b=Yxc9jD1npdw1g3I9hSW0isFpkYPwWVpU2H3rsYfUAuC8YS2j4nrBxQMIOadlbhtedFOMp1N967RSnHzpGAZtspNWRFu4y2+RYI11leG7Bvh0SyxtuUgZK6qqSZvIwSFjeskthXtJjQ3mKJuG0A3FW7hsutQU6KJSRmvcxGHT3Sc=
+	t=1741626839; cv=none; b=YrihS1I5OtKFOqes+vuOMaCovDsbAHel5hTYZArxgE3IJ4yQ34vcRZZtcIZFzROzb+XcHvIc/6TEjm0reFGcFyNYRj7VLiTmSjKD03f4aUzMLgcv7jqcmenIOgo9RiOyVrKZbua69aYcev3Z5xYOE+F+nH9Bzkph+USLNz5SsC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627558; c=relaxed/simple;
-	bh=9l2GU0i4L03SJtG1J6OPNThI+/lFg+hYB2C+T5jxwxo=;
+	s=arc-20240116; t=1741626839; c=relaxed/simple;
+	bh=2GaO+Q0tr39ZAhsqyVG66bXQDWZ5QFaJbRBbsv5PYyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdi84VRuSR3j2yKnh0Aju4edZvOBzGNVxZVTtnOZNNCctAJzIrz2T8FYQ5uM3pfe1+hMNhgwNy5uOJrCsfgZuLQyK8dWx6PwjD0rxlf40ErgFeZL9T4WsoNcPKoP5EiGNS8NVTEWsHQ5Y3mwQLX789M9rdxiaZvmWZu8hs3Zm4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7yJPSoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CE3C4CEE5;
-	Mon, 10 Mar 2025 17:25:57 +0000 (UTC)
+	 MIME-Version; b=AFHOHGKrku0ZOV6dJOUoQSULehmdfwkAxRFb2YzBVpA4GSFJuiUek7QgBGnQ1BGk5dP64u8GEwPa2Bss11RPuTFzkXzV7d5UkqqxdCVb+95tjyqMt2TUdZezgkZlCKGq9pNmKuMMbDeMrViD5dezOHs7loHdnk5wXP0nIK8yjZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hb9su+5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D108DC4CEE5;
+	Mon, 10 Mar 2025 17:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627558;
-	bh=9l2GU0i4L03SJtG1J6OPNThI+/lFg+hYB2C+T5jxwxo=;
+	s=korg; t=1741626839;
+	bh=2GaO+Q0tr39ZAhsqyVG66bXQDWZ5QFaJbRBbsv5PYyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7yJPSojJOI5eIAcYKW287aiFhu8j6kteQB/wCQpPKAYNsIg0FkIVLoK0tRELANzf
-	 vSh1SbxlVHfftjJUfaywcLquhsHNQED/vJ2GrAPKccz6t4ATrHN6SZw1eKpdjoTwuk
-	 t6D3oWSgCfLMxe0nnyRQZN3oRofyTEq6outELLSw=
+	b=Hb9su+5lKmqnrcc9UTu8nYOUzn9ucHVvYQtNbHbg/TtWeI1YayZSbADAUdLs9bEnY
+	 AslvIvS8a8prLpbD+K6ma7CdX0b0J2JWOBNlNxpEcBlQPpom3owXaLhEKaB5xWikFi
+	 IAN3FT2a6UDSmNe7BZ/dNHzrb0FLasRadfpuIAHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Titus Rwantare <titusr@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Alex Elder <elder@riscstar.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 170/269] hwmon: (pmbus) Initialise page count in pmbus_identify()
+Subject: [PATCH 6.13 130/207] net: ipa: Fix QSB data for v4.7
 Date: Mon, 10 Mar 2025 18:05:23 +0100
-Message-ID: <20250310170504.493788543@linuxfoundation.org>
+Message-ID: <20250310170452.971426833@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Titus Rwantare <titusr@google.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 6b6e2e8fd0de3fa7c6f4f8fe6841b01770b2e7bc ]
+[ Upstream commit 6a2843aaf551d87beb92d774f7d5b8ae007fe774 ]
 
-The `pmbus_identify()` function fails to correctly determine the number
-of supported pages on PMBus devices. This occurs because `info->pages`
-is implicitly zero-initialised, and `pmbus_set_page()` does not perform
-writes to the page register if `info->pages` is not yet initialised.
-Without this patch, `info->pages` is always set to the maximum after
-scanning.
+As per downstream reference, max_writes should be 12 and max_reads
+should be 13.
 
-This patch initialises `info->pages` to `PMBUS_PAGES` before the probing
-loop, enabling `pmbus_set_page()` writes to make it out onto the bus
-correctly identifying the number of pages. `PMBUS_PAGES` seemed like a
-reasonable non-zero number because that's the current result of the
-identification process.
-
-Testing was done with a PMBus device in QEMU.
-
-Signed-off-by: Titus Rwantare <titusr@google.com>
-Fixes: 442aba78728e7 ("hwmon: PMBus device driver")
-Link: https://lore.kernel.org/r/20250227222455.2583468-1-titusr@google.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Link: https://patch.msgid.link/20250227-ipa-v4-7-fixes-v1-2-a88dd8249d8a@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ipa/data/ipa_data-v4.7.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.c b/drivers/hwmon/pmbus/pmbus.c
-index ec40c5c599543..59424dc518c8f 100644
---- a/drivers/hwmon/pmbus/pmbus.c
-+++ b/drivers/hwmon/pmbus/pmbus.c
-@@ -103,6 +103,8 @@ static int pmbus_identify(struct i2c_client *client,
- 		if (pmbus_check_byte_register(client, 0, PMBUS_PAGE)) {
- 			int page;
- 
-+			info->pages = PMBUS_PAGES;
-+
- 			for (page = 1; page < PMBUS_PAGES; page++) {
- 				if (pmbus_set_page(client, page, 0xff) < 0)
- 					break;
+diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
+index 7e315779e6648..e63dcf8d45567 100644
+--- a/drivers/net/ipa/data/ipa_data-v4.7.c
++++ b/drivers/net/ipa/data/ipa_data-v4.7.c
+@@ -38,8 +38,8 @@ enum ipa_rsrc_group_id {
+ /* QSB configuration data for an SoC having IPA v4.7 */
+ static const struct ipa_qsb_data ipa_qsb_data[] = {
+ 	[IPA_QSB_MASTER_DDR] = {
+-		.max_writes		= 8,
+-		.max_reads		= 0,	/* no limit (hardware max) */
++		.max_writes		= 12,
++		.max_reads		= 13,
+ 		.max_reads_beats	= 120,
+ 	},
+ };
 -- 
 2.39.5
 
