@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-122066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911E1A59DC6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:25:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3234BA59C76
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:12:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DDD41884A02
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:25:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3471188DAD5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83CE230D3A;
-	Mon, 10 Mar 2025 17:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960E6230D14;
+	Mon, 10 Mar 2025 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/aB+ouh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgyDLto+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94735230BF5;
-	Mon, 10 Mar 2025 17:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7901E519;
+	Mon, 10 Mar 2025 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627428; cv=none; b=endYcAT+DkDrIJ8FtRdwnh6O6rm1fpvdfATQs2QUBRByGwfo+d+/74mlOZea4kKh4rKUsHoY7dzCHggZ24CGmWXT5VXZE26rquzAUhBUhhDJftDjRgC++OBLIKsdER6HMm7c1DFUQFH17orTHh/DnJLnt43j8z1IbTBpmaW4TSI=
+	t=1741626712; cv=none; b=L8Qk9roNREZnb4OvbLXy59KzpRDsQ4KvtZFRUtXwZOvja5cj6xJ2SkXgq0cZvM6ctKTYbugp9nWDtf7F9Lme7DgmeeTZNS/zv45ayx7Tl+8c75vfOARyj0m7MtvQeV0DVG3Ioqszj9BDrIHOLKB5kAxQ8o6N/QOfud0Y5jAtsKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627428; c=relaxed/simple;
-	bh=/nrtmwo2zEhdptjqgof2mdx9hmXC3sAYLpvsIRgHH08=;
+	s=arc-20240116; t=1741626712; c=relaxed/simple;
+	bh=gzbi3oKP2P7xCDjZjuZKpTR8GevMKRao7s7GCbLbYjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JgRZc954R3MLAinJ1p/F21G6s75SweRrsY98J/B5QSbRS8UPcI+mey43KLYxq/JcplPXkf8eq8HRM2vOzqYo5Jyojv1bOUzDO8XOuKMRO75FaTY7FRaAo/+V9UJ+hAsIj0oWyYHOF5N/FKFNTy+dSK3IkSlASJWg8Joal68J8OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/aB+ouh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF428C4CEE5;
-	Mon, 10 Mar 2025 17:23:47 +0000 (UTC)
+	 MIME-Version; b=hKsZd5FTEhdnyMBdMa+ygRSl63GW6uh/KQzkxjTEkTEsMuZrrfERthXy8a+8ld8AjEY88pK8c8htGp2IbfYLrSCtH7ZxcMVjbNvnZHPUK0PkdtiYXfZpdeWsDW7HYEepmBFcVgnBLbwvdr0AHjz1WN6z/DBnV3TeRp4KW2PCp/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgyDLto+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B333BC4CEEB;
+	Mon, 10 Mar 2025 17:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627428;
-	bh=/nrtmwo2zEhdptjqgof2mdx9hmXC3sAYLpvsIRgHH08=;
+	s=korg; t=1741626712;
+	bh=gzbi3oKP2P7xCDjZjuZKpTR8GevMKRao7s7GCbLbYjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/aB+ouh3wJXXMVaQrvPh9B3F8lQXNFz94cRJ6WcXqnm8ROC7aUZHQqgrR2wooBtg
-	 C7gB5CfJI0pmqKM8OD+8kyGD6hm5uCm6MUOcymU74pCY8OEL4qwf1NvX/TB1Phj/sf
-	 Vpf7OH7g6KCyohu5pYUZtiqE6ZMaePoORwGxj7iE=
+	b=IgyDLto+aLDX3lwDMBP+GgGL6nkWH9cy2hi3TWiUnqjiNiPABYgivbpuNsReMO/O/
+	 PD6aEJLFnMRdpo8weNQEsBDpxZjbdUDgIeEkWa8Yqp7ZBeIdNMGJ/grXVQo3H2U6zg
+	 4ZnA0NoX0CkVAmxZauBB8WbDolBCgCWeCB8inCVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 127/269] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
+	Ilan Peer <ilan.peer@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 087/207] wifi: iwlwifi: Free pages allocated when failing to build A-MSDU
 Date: Mon, 10 Mar 2025 18:04:40 +0100
-Message-ID: <20250310170502.786007118@linuxfoundation.org>
+Message-ID: <20250310170451.219551742@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
+[ Upstream commit 3b08e608d50c44ca1135beed179f266aa0461da7 ]
 
-The return value of rio_add_net() should be checked.  If it fails,
-put_device() should be called to free the memory and give up the reference
-initialized in rio_add_net().
+When failing to prepare the data needed for A-MSDU transmission, the memory
+allocated for the TSO management was not freed. Fix it.
 
-Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7f5e3038f029 ("wifi: iwlwifi: map entire SKB when sending AMSDUs")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.bc27fad9b3d5.Ibf43dd18fb652b1a59061204e081f11c9fa34a3f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rapidio/rio-scan.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -871,7 +871,10 @@ static struct rio_net *rio_scan_alloc_ne
- 		dev_set_name(&net->dev, "rnet_%d", net->id);
- 		net->dev.parent = &mport->dev;
- 		net->dev.release = rio_scan_release_dev;
--		rio_add_net(net);
-+		if (rio_add_net(net)) {
-+			put_device(&net->dev);
-+			net = NULL;
-+		}
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index b1846abb99b78..7bb74a480d7f1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -347,6 +347,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx_amsdu(struct iwl_trans *trans,
+ 	return tfd;
  
- 	return net;
+ out_err:
++	iwl_pcie_free_tso_pages(trans, skb, out_meta);
+ 	iwl_txq_gen2_tfd_unmap(trans, out_meta, tfd);
+ 	return NULL;
+ }
+-- 
+2.39.5
+
 
 
 
