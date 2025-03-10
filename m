@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402E1A5A170
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEB0A59D6B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF881893907
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C960D16F478
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B7E22D4FD;
-	Mon, 10 Mar 2025 18:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8029E230BF0;
+	Mon, 10 Mar 2025 17:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLUW3Xhn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ko1t8eeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3310117A2E8;
-	Mon, 10 Mar 2025 18:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFFA230BD5;
+	Mon, 10 Mar 2025 17:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629658; cv=none; b=Af+BGS5TN7/HQALicTq1Is41DB5sj/ODUaNIYOhUCOAkqsmP5vSpzTX28AWclicszhGYk6V0Ttze+5Xn9bO40bP4b31rVCpdEh6uZlF/CCmZFp55jHX/vhUUMqMbiaXMJBJHhn/sqDUta6P1BCZvfEgCWIntmBiQcn0w2fmMLxo=
+	t=1741627246; cv=none; b=f/dzSy0Xa9TF8lcyZOGnLqi7yhsp5yl53ZvwOoOoqAGKU8lxbO5iUwMWgY7y2Z7JJr4ToYNZChOKvgEEnN24AhY0lc3NcducpsSbowrjoUMb3v488Zo5fOfQvxCESLAilRfXAD3tQ0H8626JV2uchMkrmj5mNO6LNf08GGCy1xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629658; c=relaxed/simple;
-	bh=t0be2u4hB7CxQRFPZLuRaCFGy0Ml7TKT2MMXqWo4t8g=;
+	s=arc-20240116; t=1741627246; c=relaxed/simple;
+	bh=DAGkjcJ8JhbBYz1hS7a5kGIRCUaBgT2bhM92YGDAOO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UD9Pioc3pQdOg5659SxfyxkkhAu7B8MJseWTi2iaQqa7L+twA0uq6wG6sYeaoe5qUb8iWDF2q6CIXwjnBqo2U0TMiSmfGlksuYr4WWezSALaGQVsiMhIW9/T5NLVVx3nctwcMaFJgqNHufrrpfCf4eblbTmTO2vDS5zB/4FQKIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLUW3Xhn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8C9C4CEE5;
-	Mon, 10 Mar 2025 18:00:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KpBsUTxoJmDBZiNo8hNQx0MEzV1/bCKnCVD98jgbW4puMV32MRIZNp9SxEWUARihaPXST881whRmNTA1kR0+zEkPi8r7d605y6Ln+V3QDi635fxsDYE9SxDnzzwi1F/fN5alZkqzQOnF1a3VBjfFBpArQOdVB0VhkxiUPeAYhDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ko1t8eeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C4DC4CEED;
+	Mon, 10 Mar 2025 17:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629658;
-	bh=t0be2u4hB7CxQRFPZLuRaCFGy0Ml7TKT2MMXqWo4t8g=;
+	s=korg; t=1741627246;
+	bh=DAGkjcJ8JhbBYz1hS7a5kGIRCUaBgT2bhM92YGDAOO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLUW3Xhng6ayxDwpjPMzBahklK0oyPWfeKI7YW31jvVKGi3c2R+vnmCex4E/OBeqw
-	 UYDJ+seRZDv7bYkjR3lIe2uB1A+/MnWXpP1GOv/fBs33n2ip7n0vGmu9kKX6ezUHXb
-	 +MSVI1Rc9Qq5NFchHuL+fqKQilcduKA+dgjiwDs0=
+	b=ko1t8eeHY4987UWGIW1DoaBoEB8Xr8FmvlC+e74D7jtC/8cIxnHn0YrjeS7k30u5n
+	 NSDyi0qLbBrBo8Qj7kAcaMqzPl5DTm8epe68k8vU7CO9oAFjlcMBuqtIfq1Mtddyou
+	 Gy8o0rnVgiNRwtNHtST2kYAid2Ja3fq1yU88hgPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 5.15 370/620] usb: cdc-acm: Check control transfer buffer size before access
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 6.12 063/269] drm/panic: remove redundant field when assigning value
 Date: Mon, 10 Mar 2025 18:03:36 +0100
-Message-ID: <20250310170600.207416657@linuxfoundation.org>
+Message-ID: <20250310170500.241532296@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Thomas Böhler <witcher@wiredspace.de>
 
-commit e563b01208f4d1f609bcab13333b6c0e24ce6a01 upstream.
+commit da13129a3f2a75d49469e1d6f7dcefac2d11d205 upstream.
 
-If the first fragment is shorter than struct usb_cdc_notification, we can't
-calculate an expected_size. Log an error and discard the notification
-instead of reading lengths from memory outside the received data, which can
-lead to memory corruption when the expected_size decreases between
-fragments, causing `expected_size - acm->nb_index` to wrap.
+Rust allows initializing fields of a struct without specifying the
+attribute that is assigned if the variable has the same name. In this
+instance this is done for all other attributes of the struct except for
+`data`. Clippy notes the redundant field name:
 
-This issue has been present since the beginning of git history; however,
-it only leads to memory corruption since commit ea2583529cd1
-("cdc-acm: reassemble fragmented notifications").
+    error: redundant field names in struct initialization
+    --> drivers/gpu/drm/drm_panic_qr.rs:495:13
+        |
+    495 |             data: data,
+        |             ^^^^^^^^^^ help: replace it with: `data`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_field_names
+        = note: `-D clippy::redundant-field-names` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(clippy::redundant_field_names)]`
 
-A mitigating factor is that acm_ctrl_irq() can only execute after userspace
-has opened /dev/ttyACM*; but if ModemManager is running, ModemManager will
-do that automatically depending on the USB device's vendor/product IDs and
-its other interfaces.
+Remove the redundant `data` in the assignment to be consistent.
 
-Cc: stable <stable@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jann Horn <jannh@google.com>
+Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1123
+Signed-off-by: Thomas Böhler <witcher@wiredspace.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20241019084048.22336-5-witcher@wiredspace.de
+[ Reworded to add Clippy warning like it is done in the rest of the
+  series. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |   17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_panic_qr.rs |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -360,7 +360,7 @@ static void acm_process_notification(str
- static void acm_ctrl_irq(struct urb *urb)
- {
- 	struct acm *acm = urb->context;
--	struct usb_cdc_notification *dr = urb->transfer_buffer;
-+	struct usb_cdc_notification *dr;
- 	unsigned int current_size = urb->actual_length;
- 	unsigned int expected_size, copy_size, alloc_size;
- 	int retval;
-@@ -387,9 +387,20 @@ static void acm_ctrl_irq(struct urb *urb
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -489,7 +489,7 @@ impl EncodedMsg<'_> {
+         data.fill(0);
  
- 	usb_mark_last_busy(acm->dev);
- 
--	if (acm->nb_index)
-+	if (acm->nb_index == 0) {
-+		/*
-+		 * The first chunk of a message must contain at least the
-+		 * notification header with the length field, otherwise we
-+		 * can't get an expected_size.
-+		 */
-+		if (current_size < sizeof(struct usb_cdc_notification)) {
-+			dev_dbg(&acm->control->dev, "urb too short\n");
-+			goto exit;
-+		}
-+		dr = urb->transfer_buffer;
-+	} else {
- 		dr = (struct usb_cdc_notification *)acm->notification_buffer;
--
-+	}
- 	/* size = notification-header + (optional) data */
- 	expected_size = sizeof(struct usb_cdc_notification) +
- 					le16_to_cpu(dr->wLength);
+         let mut em = EncodedMsg {
+-            data: data,
++            data,
+             ec_size,
+             g1_blocks,
+             g2_blocks,
 
 
 
