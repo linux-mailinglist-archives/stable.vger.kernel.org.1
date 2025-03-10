@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-122435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6176A59F9F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE994A59E5A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DF6316E3FE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F2517A2749
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E8C2356AD;
-	Mon, 10 Mar 2025 17:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B0822FF40;
+	Mon, 10 Mar 2025 17:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSCcpKgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5n63lCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4318623372B;
-	Mon, 10 Mar 2025 17:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115F881E;
+	Mon, 10 Mar 2025 17:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628483; cv=none; b=g08+FrEnLyc14Z2t7O5I8CpDm6kQoGuscxq5rS6p5Iq4JLXH7njCUUcNezD4G5s9/oLG7tQjDfIlEYVvAdQskiszlAjzJ9VfJQEiKkaGEU6QQNjJWRdyv/3Q7hD28eg+4WneQtr33g/0KmKk+PL4Qc+LEn2cqq4EJkBeTKxg5G4=
+	t=1741627827; cv=none; b=thqWvqyJLYt0iuLbRnhRFWXkZvt7QJwTmPgyUQ25hjl4sNSfQ6pCPmD/AREK+cdtM6S0yM3Deg4gkgTF/Mnk8FEiCwwHcKPuOQnepJV0baMR1hSkLAVTqTuhNo3TRlb+b4lGNHnyr4eCEzR48M0QTea5s52ipGP7KbM4NfutoC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628483; c=relaxed/simple;
-	bh=f7YBsyZ6IDxzvLqlJUper7YIkPQCZrRPCia5K8OJbcY=;
+	s=arc-20240116; t=1741627827; c=relaxed/simple;
+	bh=OMlUQmkpNma5SzczMSOHLTZYJ1lelsbN6NCw+9vvAIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+Ej3haiVVU5efwZigpXYW0SkVH+5B3nynhdIb7/vEGGWTHPZ7UuSbEmD22Gl+qwNIae1f4m0CTuHccD2kuwTYbkLwlkFkOhqxm+sYt9GuAtkBlMlmwiQsOVtt8Nmnx6A7vCXBbUtx1a1AFMYd4KY5G0uegf853FitK/kYQXghs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSCcpKgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9B9C4CEE5;
-	Mon, 10 Mar 2025 17:41:21 +0000 (UTC)
+	 MIME-Version; b=pifMTTkx02R5CZBxfPckicQl772k3GDO9FAPmwxiQ+0zHNQ89SCMtk+RZbH1ZH/yGIYzH6sRZRL1BrVQJ3hKF0XNnBo0PBbzRS0PFGMd+oaRZHfx9lxRnHXsT6wdW3wHF04NrMhYn4nTPHvUa0UV5uIlYnyQhAHUWApHMip1RhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5n63lCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B96EC4CEE5;
+	Mon, 10 Mar 2025 17:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628482;
-	bh=f7YBsyZ6IDxzvLqlJUper7YIkPQCZrRPCia5K8OJbcY=;
+	s=korg; t=1741627826;
+	bh=OMlUQmkpNma5SzczMSOHLTZYJ1lelsbN6NCw+9vvAIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSCcpKgqsLnYgzAj6S5rWq93gkipYX8VX/qJJmUNJrbLvUOIQu0/+SsHnjG3dBX2S
-	 3fkOVk/zlWjooTxd5FZz2K0dZGv/YYMwNgNTCY+IEv6GM/z0dsJFNA52Egzuwr/SWJ
-	 ptOfEq6XuBGQeCGXhBf3N2DfhDqeG/DW02wvujgE=
+	b=L5n63lCSHKW0brFW+RcKUWoSRF3fRGjeyrjWUhgdIqKOBTNfwopcQ9niAsPzaUgrk
+	 olvVdrpvBAoWU5Lnz6zXcGOweNp4E26brVAXyK13FA5rTwwvnKX1APd9cN5bxrKuwi
+	 hkgha3NF8CJtaFWNiXCVreFBebsmy70wqWpwobXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.1 073/109] usb: typec: tcpci_rt1711h: Unmask alert interrupts to fix functionality
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 264/269] Revert "KVM: PPC: e500: Mark "struct page" pfn accessed before dropping mmu_lock"
 Date: Mon, 10 Mar 2025 18:06:57 +0100
-Message-ID: <20250310170430.464809001@linuxfoundation.org>
+Message-ID: <20250310170508.308321638@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit d6b82dafd17db0658f089b9cdec573982ca82bc5 upstream.
+This reverts commit f2623aec7fdc2675667042c85f87502c9139c098 which is
+commit 84cf78dcd9d65c45ab73998d4ad50f433d53fb93 upstream.
 
-During probe, the TCPC alert interrupts are getting masked to
-avoid unwanted interrupts during chip setup: this is ok to do
-but there is no unmasking happening at any later time, which
-means that the chip will not raise any interrupt, essentially
-making it not functional as, while internally it does perform
-all of the intended functions, it won't signal anything to the
-outside.
+It should not have been applied.
 
-Unmask the alert interrupts to fix functionality.
-
-Fixes: ce08eaeb6388 ("staging: typec: rt1711h typec chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250219114700.41700-1-angelogioacchino.delregno@collabora.com
+Link: https://lore.kernel.org/r/CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci_rt1711h.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/powerpc/kvm/e500_mmu_host.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-+++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-@@ -332,6 +332,11 @@ static int rt1711h_probe(struct i2c_clie
- {
- 	int ret;
- 	struct rt1711h_chip *chip;
-+	const u16 alert_mask = TCPC_ALERT_TX_SUCCESS | TCPC_ALERT_TX_DISCARDED |
-+			       TCPC_ALERT_TX_FAILED | TCPC_ALERT_RX_HARD_RST |
-+			       TCPC_ALERT_RX_STATUS | TCPC_ALERT_POWER_STATUS |
-+			       TCPC_ALERT_CC_STATUS | TCPC_ALERT_RX_BUF_OVF |
-+			       TCPC_ALERT_FAULT;
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -498,9 +498,11 @@ static inline int kvmppc_e500_shadow_map
+ 	kvmppc_mmu_flush_icache(pfn);
  
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
-@@ -380,6 +385,12 @@ static int rt1711h_probe(struct i2c_clie
- 					dev_name(chip->dev), chip);
- 	if (ret < 0)
- 		return ret;
+ out:
++	spin_unlock(&kvm->mmu_lock);
 +
-+	/* Enable alert interrupts */
-+	ret = rt1711h_write16(chip, TCPC_ALERT_MASK, alert_mask);
-+	if (ret < 0)
-+		return ret;
+ 	/* Drop refcount on page, so that mmu notifiers can clear it */
+ 	kvm_release_pfn_clean(pfn);
+-	spin_unlock(&kvm->mmu_lock);
 +
- 	enable_irq_wake(client->irq);
+ 	return ret;
+ }
  
- 	return 0;
 
 
 
