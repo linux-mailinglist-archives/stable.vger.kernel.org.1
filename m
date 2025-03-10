@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F38A59EA5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5B0A59E23
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43047188FBD6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4EC97A01EB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9836C22E407;
-	Mon, 10 Mar 2025 17:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8308230BC8;
+	Mon, 10 Mar 2025 17:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7+Se5/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GH5fVJyq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5654C1A7264;
-	Mon, 10 Mar 2025 17:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A7D23099F;
+	Mon, 10 Mar 2025 17:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627964; cv=none; b=irsE2X+8PkRMMGTCnBSUaTHTv2uvg8lWXlnSzR7E0EM+uBhc/iFx48dJ4SDbFtFFGCSxGzLqBWohMyLL8ZWgUgEnFyIUTzgcdRA9Qdg9e8PC1sB0GwWVkcL1C3V/ElpvmMtMX7VzBHtfu11sXY5teeX9vMr/lChNJJZnIcflWgo=
+	t=1741627671; cv=none; b=Kn87EkDtjvS4e9uGpvxfZGZimU8fqXyBsoPm1N8IposkPaU9QTurPKOvPb3zjOG81E9qoPMEkL+efXgApEdJdIXih5gp8vxfoN5MjuC5Nbc8V5bG0Yz4ZplyMra9GZBVpu003AtmjHxP/8aNwI15spWmG/+KGnPJ07GL5VU2nds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627964; c=relaxed/simple;
-	bh=QSJqXEUJXVeqai6DUnTNFCuXfFavGtIiYc48KkmXvtI=;
+	s=arc-20240116; t=1741627671; c=relaxed/simple;
+	bh=MyC0Kj3GceMt4yEL4AaS4qujEtV6dahMQ7iSXn8lL2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bIkgGY/JVEHsrbe/hJD1wdL+8dFq9Jp+qFyVB+iCYL88S5Xu5aVSx8ClRRpmzV0UHS+akwTPf6nwUuVZSi7j+sApXq/yAgKFRk6haVtq629Vc/xX/JU03+K7rzjKYiHPL+lm7HDJ8IQmmeFTsXw4ZIt41s2/80ics47HOogs9c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7+Se5/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0580C4CEE5;
-	Mon, 10 Mar 2025 17:32:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GjsSqWttkf+Wf3YD+8PquPY27ieM2qZks9gjuMUlJbz/lKB3foI/bBZpXsoORQ2jqnx+GVtDy53RytBynw7fTjjkgnj86xPzTdNgdie2tDhXO27aHybA/HVrHQQBHYOqJ9bXY6W1cWG+KvyqpfMGxDJgzDNPZDk46xEXl+eDgRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GH5fVJyq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0676C4CEE5;
+	Mon, 10 Mar 2025 17:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627964;
-	bh=QSJqXEUJXVeqai6DUnTNFCuXfFavGtIiYc48KkmXvtI=;
+	s=korg; t=1741627671;
+	bh=MyC0Kj3GceMt4yEL4AaS4qujEtV6dahMQ7iSXn8lL2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7+Se5/q0cFhl4JBWFdrHU4/+8FjLLV2jMW6gpYGJ9Q1KAe/uQ/5bGM6NtzMYDeHC
-	 4S9Otbw7IjWM0nm2PIWpmXSEO8HLHlGufmFkbyGAAqaYeg7zj/U6Dp8MV/+A6LaL/f
-	 2eD/TxF5gzK7eRSeY2pOSjQ2qEaN4PHTn1t3sKr0=
+	b=GH5fVJyqFTR81bBtp2uXtrZIMvgblIPJxvWRk/TICl1F9oHt2rxvgZ7HuCFstMYL+
+	 SDS0VaH6kXmMgI/V0SfgWHVdndvH7WOyZd53CHrdAxmraH5ormXfAsKB5GrnCRtJgh
+	 Fh2gCtGonLH4q8tSOWC4FiEmRrOCaR2HWjFRkoPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Richard Thier <u9vata@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 041/145] drm/radeon: Fix rs400_gpu_init for ATI mobility radeon Xpress 200M
+	Animesh Manna <animesh.manna@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 182/269] drm/i915: Plumb dsb all way to the plane hooks
 Date: Mon, 10 Mar 2025 18:05:35 +0100
-Message-ID: <20250310170436.395542603@linuxfoundation.org>
+Message-ID: <20250310170504.963862036@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,1392 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Thier <u9vata@gmail.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 29ffeb73b216ce3eff10229eb077cf9b7812119d upstream.
+[ Upstream commit 01389846f7d61d262cc92d42ad4d1a25730e3eff ]
 
-num_gb_pipes was set to a wrong value using r420_pipe_config
+We need to be able to do both MMIO and DSB based pipe/plane
+programming. To that end plumb the 'dsb' all way from the top
+into the plane commit hooks.
 
-This have lead to HyperZ glitches on fast Z clearing.
+The compiler appears smart enough to combine the branches from
+all the back-to-back register writes into a single branch.
+So the generated asm ends up looking more or less like this:
+plane_hook()
+{
+	if (dsb) {
+		intel_dsb_reg_write();
+		intel_dsb_reg_write();
+		...
+	} else {
+		intel_de_write_fw();
+		intel_de_write_fw();
+		...
+	}
+}
+which seems like a reasonably efficient way to do this.
 
-Closes: https://bugs.freedesktop.org/show_bug.cgi?id=110897
-Reviewed-by: Marek Olšák <marek.olsak@amd.com>
-Signed-off-by: Richard Thier <u9vata@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 044e59a85c4d84e3c8d004c486e5c479640563a6)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+An alternative I was also considering is some kind of closure
+(register write function + display vs. dsb pointer passed to it).
+That does result is smaller code as there are no branches anymore,
+but having each register access go via function pointer sounds
+less efficient.
+
+Not that I actually measured the overhead of either approach yet.
+Also the reg_rw tracepoint seems to be making a huge mess of the
+generated code for the mmio path. And additionally there's some
+kind of IS_GSI_REG() hack in __raw_uncore_read() which ends up
+generating a pointless branch for every mmio register access.
+So looks like there might be quite a bit of room for improvement
+in the mmio path still.
+
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240930170415.23841-12-ville.syrjala@linux.intel.com
+Stable-dep-of: 30bfc151f0c1 ("drm/xe: Remove double pageflip")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r300.c        |    3 ++-
- drivers/gpu/drm/radeon/radeon_asic.h |    1 +
- drivers/gpu/drm/radeon/rs400.c       |   18 ++++++++++++++++--
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/i9xx_plane.c     |  22 +-
+ .../gpu/drm/i915/display/intel_atomic_plane.c |  49 +--
+ .../gpu/drm/i915/display/intel_atomic_plane.h |  19 +-
+ drivers/gpu/drm/i915/display/intel_color.c    |   2 +-
+ drivers/gpu/drm/i915/display/intel_cursor.c   | 101 +++---
+ drivers/gpu/drm/i915/display/intel_de.h       |  11 +
+ drivers/gpu/drm/i915/display/intel_display.c  |  25 +-
+ .../drm/i915/display/intel_display_types.h    |  16 +-
+ drivers/gpu/drm/i915/display/intel_sprite.c   |  27 +-
+ .../drm/i915/display/skl_universal_plane.c    | 307 ++++++++++--------
+ drivers/gpu/drm/xe/display/xe_plane_initial.c |   2 +-
+ 11 files changed, 334 insertions(+), 247 deletions(-)
 
---- a/drivers/gpu/drm/radeon/r300.c
-+++ b/drivers/gpu/drm/radeon/r300.c
-@@ -358,7 +358,8 @@ int r300_mc_wait_for_idle(struct radeon_
- 	return -1;
+diff --git a/drivers/gpu/drm/i915/display/i9xx_plane.c b/drivers/gpu/drm/i915/display/i9xx_plane.c
+index 9447f7229b608..17a1e3801a85c 100644
+--- a/drivers/gpu/drm/i915/display/i9xx_plane.c
++++ b/drivers/gpu/drm/i915/display/i9xx_plane.c
+@@ -416,7 +416,8 @@ static int i9xx_plane_min_cdclk(const struct intel_crtc_state *crtc_state,
+ 	return DIV_ROUND_UP(pixel_rate * num, den);
  }
  
--static void r300_gpu_init(struct radeon_device *rdev)
-+/* rs400_gpu_init also calls this! */
-+void r300_gpu_init(struct radeon_device *rdev)
+-static void i9xx_plane_update_noarm(struct intel_plane *plane,
++static void i9xx_plane_update_noarm(struct intel_dsb *dsb,
++				    struct intel_plane *plane,
+ 				    const struct intel_crtc_state *crtc_state,
+ 				    const struct intel_plane_state *plane_state)
  {
- 	uint32_t gb_tile_config, tmp;
+@@ -444,7 +445,8 @@ static void i9xx_plane_update_noarm(struct intel_plane *plane,
+ 	}
+ }
  
---- a/drivers/gpu/drm/radeon/radeon_asic.h
-+++ b/drivers/gpu/drm/radeon/radeon_asic.h
-@@ -165,6 +165,7 @@ void r200_set_safe_registers(struct rade
-  */
- extern int r300_init(struct radeon_device *rdev);
- extern void r300_fini(struct radeon_device *rdev);
-+extern void r300_gpu_init(struct radeon_device *rdev);
- extern int r300_suspend(struct radeon_device *rdev);
- extern int r300_resume(struct radeon_device *rdev);
- extern int r300_asic_reset(struct radeon_device *rdev, bool hard);
---- a/drivers/gpu/drm/radeon/rs400.c
-+++ b/drivers/gpu/drm/radeon/rs400.c
-@@ -255,8 +255,22 @@ int rs400_mc_wait_for_idle(struct radeon
- 
- static void rs400_gpu_init(struct radeon_device *rdev)
+-static void i9xx_plane_update_arm(struct intel_plane *plane,
++static void i9xx_plane_update_arm(struct intel_dsb *dsb,
++				  struct intel_plane *plane,
+ 				  const struct intel_crtc_state *crtc_state,
+ 				  const struct intel_plane_state *plane_state)
  {
--	/* FIXME: is this correct ? */
--	r420_pipes_init(rdev);
-+	/* Earlier code was calling r420_pipes_init and then
-+	 * rs400_mc_wait_for_idle(rdev). The problem is that
-+	 * at least on my Mobility Radeon Xpress 200M RC410 card
-+	 * that ends up in this code path ends up num_gb_pipes == 3
-+	 * while the card seems to have only one pipe. With the
-+	 * r420 pipe initialization method.
-+	 *
-+	 * Problems shown up as HyperZ glitches, see:
-+	 * https://bugs.freedesktop.org/show_bug.cgi?id=110897
-+	 *
-+	 * Delegating initialization to r300 code seems to work
-+	 * and results in proper pipe numbers. The rs400 cards
-+	 * are said to be not r400, but r300 kind of cards.
-+	 */
-+	r300_gpu_init(rdev);
+@@ -507,7 +509,8 @@ static void i9xx_plane_update_arm(struct intel_plane *plane,
+ 				  intel_plane_ggtt_offset(plane_state) + dspaddr_offset);
+ }
+ 
+-static void i830_plane_update_arm(struct intel_plane *plane,
++static void i830_plane_update_arm(struct intel_dsb *dsb,
++				  struct intel_plane *plane,
+ 				  const struct intel_crtc_state *crtc_state,
+ 				  const struct intel_plane_state *plane_state)
+ {
+@@ -517,11 +520,12 @@ static void i830_plane_update_arm(struct intel_plane *plane,
+ 	 * Additional breakage on i830 causes register reads to return
+ 	 * the last latched value instead of the last written value [ALM026].
+ 	 */
+-	i9xx_plane_update_noarm(plane, crtc_state, plane_state);
+-	i9xx_plane_update_arm(plane, crtc_state, plane_state);
++	i9xx_plane_update_noarm(dsb, plane, crtc_state, plane_state);
++	i9xx_plane_update_arm(dsb, plane, crtc_state, plane_state);
+ }
+ 
+-static void i9xx_plane_disable_arm(struct intel_plane *plane,
++static void i9xx_plane_disable_arm(struct intel_dsb *dsb,
++				   struct intel_plane *plane,
+ 				   const struct intel_crtc_state *crtc_state)
+ {
+ 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+@@ -549,7 +553,8 @@ static void i9xx_plane_disable_arm(struct intel_plane *plane,
+ }
+ 
+ static void
+-g4x_primary_async_flip(struct intel_plane *plane,
++g4x_primary_async_flip(struct intel_dsb *dsb,
++		       struct intel_plane *plane,
+ 		       const struct intel_crtc_state *crtc_state,
+ 		       const struct intel_plane_state *plane_state,
+ 		       bool async_flip)
+@@ -569,7 +574,8 @@ g4x_primary_async_flip(struct intel_plane *plane,
+ }
+ 
+ static void
+-vlv_primary_async_flip(struct intel_plane *plane,
++vlv_primary_async_flip(struct intel_dsb *dsb,
++		       struct intel_plane *plane,
+ 		       const struct intel_crtc_state *crtc_state,
+ 		       const struct intel_plane_state *plane_state,
+ 		       bool async_flip)
+diff --git a/drivers/gpu/drm/i915/display/intel_atomic_plane.c b/drivers/gpu/drm/i915/display/intel_atomic_plane.c
+index e979786aa5cf3..5c2a7987cccb4 100644
+--- a/drivers/gpu/drm/i915/display/intel_atomic_plane.c
++++ b/drivers/gpu/drm/i915/display/intel_atomic_plane.c
+@@ -790,7 +790,8 @@ skl_next_plane_to_commit(struct intel_atomic_state *state,
+ 	return NULL;
+ }
+ 
+-void intel_plane_update_noarm(struct intel_plane *plane,
++void intel_plane_update_noarm(struct intel_dsb *dsb,
++			      struct intel_plane *plane,
+ 			      const struct intel_crtc_state *crtc_state,
+ 			      const struct intel_plane_state *plane_state)
+ {
+@@ -799,10 +800,11 @@ void intel_plane_update_noarm(struct intel_plane *plane,
+ 	trace_intel_plane_update_noarm(plane, crtc);
+ 
+ 	if (plane->update_noarm)
+-		plane->update_noarm(plane, crtc_state, plane_state);
++		plane->update_noarm(dsb, plane, crtc_state, plane_state);
+ }
+ 
+-void intel_plane_async_flip(struct intel_plane *plane,
++void intel_plane_async_flip(struct intel_dsb *dsb,
++			    struct intel_plane *plane,
+ 			    const struct intel_crtc_state *crtc_state,
+ 			    const struct intel_plane_state *plane_state,
+ 			    bool async_flip)
+@@ -810,34 +812,37 @@ void intel_plane_async_flip(struct intel_plane *plane,
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+ 
+ 	trace_intel_plane_async_flip(plane, crtc, async_flip);
+-	plane->async_flip(plane, crtc_state, plane_state, async_flip);
++	plane->async_flip(dsb, plane, crtc_state, plane_state, async_flip);
+ }
+ 
+-void intel_plane_update_arm(struct intel_plane *plane,
++void intel_plane_update_arm(struct intel_dsb *dsb,
++			    struct intel_plane *plane,
+ 			    const struct intel_crtc_state *crtc_state,
+ 			    const struct intel_plane_state *plane_state)
+ {
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+ 
+ 	if (crtc_state->do_async_flip && plane->async_flip) {
+-		intel_plane_async_flip(plane, crtc_state, plane_state, true);
++		intel_plane_async_flip(dsb, plane, crtc_state, plane_state, true);
+ 		return;
+ 	}
+ 
+ 	trace_intel_plane_update_arm(plane, crtc);
+-	plane->update_arm(plane, crtc_state, plane_state);
++	plane->update_arm(dsb, plane, crtc_state, plane_state);
+ }
+ 
+-void intel_plane_disable_arm(struct intel_plane *plane,
++void intel_plane_disable_arm(struct intel_dsb *dsb,
++			     struct intel_plane *plane,
+ 			     const struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+ 
+ 	trace_intel_plane_disable_arm(plane, crtc);
+-	plane->disable_arm(plane, crtc_state);
++	plane->disable_arm(dsb, plane, crtc_state);
+ }
+ 
+-void intel_crtc_planes_update_noarm(struct intel_atomic_state *state,
++void intel_crtc_planes_update_noarm(struct intel_dsb *dsb,
++				    struct intel_atomic_state *state,
+ 				    struct intel_crtc *crtc)
+ {
+ 	struct intel_crtc_state *new_crtc_state =
+@@ -862,11 +867,13 @@ void intel_crtc_planes_update_noarm(struct intel_atomic_state *state,
+ 		/* TODO: for mailbox updates this should be skipped */
+ 		if (new_plane_state->uapi.visible ||
+ 		    new_plane_state->planar_slave)
+-			intel_plane_update_noarm(plane, new_crtc_state, new_plane_state);
++			intel_plane_update_noarm(dsb, plane,
++						 new_crtc_state, new_plane_state);
+ 	}
+ }
+ 
+-static void skl_crtc_planes_update_arm(struct intel_atomic_state *state,
++static void skl_crtc_planes_update_arm(struct intel_dsb *dsb,
++				       struct intel_atomic_state *state,
+ 				       struct intel_crtc *crtc)
+ {
+ 	struct intel_crtc_state *old_crtc_state =
+@@ -893,13 +900,14 @@ static void skl_crtc_planes_update_arm(struct intel_atomic_state *state,
+ 		 */
+ 		if (new_plane_state->uapi.visible ||
+ 		    new_plane_state->planar_slave)
+-			intel_plane_update_arm(plane, new_crtc_state, new_plane_state);
++			intel_plane_update_arm(dsb, plane, new_crtc_state, new_plane_state);
+ 		else
+-			intel_plane_disable_arm(plane, new_crtc_state);
++			intel_plane_disable_arm(dsb, plane, new_crtc_state);
+ 	}
+ }
+ 
+-static void i9xx_crtc_planes_update_arm(struct intel_atomic_state *state,
++static void i9xx_crtc_planes_update_arm(struct intel_dsb *dsb,
++					struct intel_atomic_state *state,
+ 					struct intel_crtc *crtc)
+ {
+ 	struct intel_crtc_state *new_crtc_state =
+@@ -919,21 +927,22 @@ static void i9xx_crtc_planes_update_arm(struct intel_atomic_state *state,
+ 		 * would have to be called here as well.
+ 		 */
+ 		if (new_plane_state->uapi.visible)
+-			intel_plane_update_arm(plane, new_crtc_state, new_plane_state);
++			intel_plane_update_arm(dsb, plane, new_crtc_state, new_plane_state);
+ 		else
+-			intel_plane_disable_arm(plane, new_crtc_state);
++			intel_plane_disable_arm(dsb, plane, new_crtc_state);
+ 	}
+ }
+ 
+-void intel_crtc_planes_update_arm(struct intel_atomic_state *state,
++void intel_crtc_planes_update_arm(struct intel_dsb *dsb,
++				  struct intel_atomic_state *state,
+ 				  struct intel_crtc *crtc)
+ {
+ 	struct drm_i915_private *i915 = to_i915(state->base.dev);
+ 
+ 	if (DISPLAY_VER(i915) >= 9)
+-		skl_crtc_planes_update_arm(state, crtc);
++		skl_crtc_planes_update_arm(dsb, state, crtc);
+ 	else
+-		i9xx_crtc_planes_update_arm(state, crtc);
++		i9xx_crtc_planes_update_arm(dsb, state, crtc);
+ }
+ 
+ int intel_atomic_plane_check_clipping(struct intel_plane_state *plane_state,
+diff --git a/drivers/gpu/drm/i915/display/intel_atomic_plane.h b/drivers/gpu/drm/i915/display/intel_atomic_plane.h
+index 6c4fe35964650..0f982f452ff39 100644
+--- a/drivers/gpu/drm/i915/display/intel_atomic_plane.h
++++ b/drivers/gpu/drm/i915/display/intel_atomic_plane.h
+@@ -14,6 +14,7 @@ struct drm_rect;
+ struct intel_atomic_state;
+ struct intel_crtc;
+ struct intel_crtc_state;
++struct intel_dsb;
+ struct intel_plane;
+ struct intel_plane_state;
+ enum plane_id;
+@@ -32,26 +33,32 @@ void intel_plane_copy_uapi_to_hw_state(struct intel_plane_state *plane_state,
+ 				       struct intel_crtc *crtc);
+ void intel_plane_copy_hw_state(struct intel_plane_state *plane_state,
+ 			       const struct intel_plane_state *from_plane_state);
+-void intel_plane_async_flip(struct intel_plane *plane,
++void intel_plane_async_flip(struct intel_dsb *dsb,
++			    struct intel_plane *plane,
+ 			    const struct intel_crtc_state *crtc_state,
+ 			    const struct intel_plane_state *plane_state,
+ 			    bool async_flip);
+-void intel_plane_update_noarm(struct intel_plane *plane,
++void intel_plane_update_noarm(struct intel_dsb *dsb,
++			      struct intel_plane *plane,
+ 			      const struct intel_crtc_state *crtc_state,
+ 			      const struct intel_plane_state *plane_state);
+-void intel_plane_update_arm(struct intel_plane *plane,
++void intel_plane_update_arm(struct intel_dsb *dsb,
++			    struct intel_plane *plane,
+ 			    const struct intel_crtc_state *crtc_state,
+ 			    const struct intel_plane_state *plane_state);
+-void intel_plane_disable_arm(struct intel_plane *plane,
++void intel_plane_disable_arm(struct intel_dsb *dsb,
++			     struct intel_plane *plane,
+ 			     const struct intel_crtc_state *crtc_state);
+ struct intel_plane *intel_plane_alloc(void);
+ void intel_plane_free(struct intel_plane *plane);
+ struct drm_plane_state *intel_plane_duplicate_state(struct drm_plane *plane);
+ void intel_plane_destroy_state(struct drm_plane *plane,
+ 			       struct drm_plane_state *state);
+-void intel_crtc_planes_update_noarm(struct intel_atomic_state *state,
++void intel_crtc_planes_update_noarm(struct intel_dsb *dsb,
++				    struct intel_atomic_state *state,
+ 				    struct intel_crtc *crtc);
+-void intel_crtc_planes_update_arm(struct intel_atomic_state *state,
++void intel_crtc_planes_update_arm(struct intel_dsb *dsbx,
++				  struct intel_atomic_state *state,
+ 				  struct intel_crtc *crtc);
+ int intel_plane_atomic_check_with_state(const struct intel_crtc_state *old_crtc_state,
+ 					struct intel_crtc_state *crtc_state,
+diff --git a/drivers/gpu/drm/i915/display/intel_color.c b/drivers/gpu/drm/i915/display/intel_color.c
+index 808bece71c247..1fbe3cd452c13 100644
+--- a/drivers/gpu/drm/i915/display/intel_color.c
++++ b/drivers/gpu/drm/i915/display/intel_color.c
+@@ -1925,7 +1925,7 @@ void intel_color_modeset(const struct intel_crtc_state *crtc_state)
+ 		struct intel_plane *plane = to_intel_plane(crtc->base.primary);
+ 
+ 		/* update DSPCNTR to configure gamma/csc for pipe bottom color */
+-		plane->disable_arm(plane, crtc_state);
++		plane->disable_arm(NULL, plane, crtc_state);
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/i915/display/intel_cursor.c b/drivers/gpu/drm/i915/display/intel_cursor.c
+index 9ad53e1cbbd06..aeadb834d3328 100644
+--- a/drivers/gpu/drm/i915/display/intel_cursor.c
++++ b/drivers/gpu/drm/i915/display/intel_cursor.c
+@@ -275,7 +275,8 @@ static int i845_check_cursor(struct intel_crtc_state *crtc_state,
+ }
+ 
+ /* TODO: split into noarm+arm pair */
+-static void i845_cursor_update_arm(struct intel_plane *plane,
++static void i845_cursor_update_arm(struct intel_dsb *dsb,
++				   struct intel_plane *plane,
+ 				   const struct intel_crtc_state *crtc_state,
+ 				   const struct intel_plane_state *plane_state)
+ {
+@@ -315,10 +316,11 @@ static void i845_cursor_update_arm(struct intel_plane *plane,
+ 	}
+ }
+ 
+-static void i845_cursor_disable_arm(struct intel_plane *plane,
++static void i845_cursor_disable_arm(struct intel_dsb *dsb,
++				    struct intel_plane *plane,
+ 				    const struct intel_crtc_state *crtc_state)
+ {
+-	i845_cursor_update_arm(plane, crtc_state, NULL);
++	i845_cursor_update_arm(dsb, plane, crtc_state, NULL);
+ }
+ 
+ static bool i845_cursor_get_hw_state(struct intel_plane *plane,
+@@ -527,22 +529,25 @@ static int i9xx_check_cursor(struct intel_crtc_state *crtc_state,
+ 	return 0;
+ }
+ 
+-static void i9xx_cursor_disable_sel_fetch_arm(struct intel_plane *plane,
++static void i9xx_cursor_disable_sel_fetch_arm(struct intel_dsb *dsb,
++					      struct intel_plane *plane,
+ 					      const struct intel_crtc_state *crtc_state)
+ {
+-	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum pipe pipe = plane->pipe;
+ 
+ 	if (!crtc_state->enable_psr2_sel_fetch)
+ 		return;
+ 
+-	intel_de_write_fw(dev_priv, SEL_FETCH_CUR_CTL(pipe), 0);
++	intel_de_write_dsb(display, dsb, SEL_FETCH_CUR_CTL(pipe), 0);
+ }
+ 
+-static void wa_16021440873(struct intel_plane *plane,
++static void wa_16021440873(struct intel_dsb *dsb,
++			   struct intel_plane *plane,
+ 			   const struct intel_crtc_state *crtc_state,
+ 			   const struct intel_plane_state *plane_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+ 	u32 ctl = plane_state->ctl;
+ 	int et_y_position = drm_rect_height(&crtc_state->pipe_src) + 1;
+@@ -551,16 +556,18 @@ static void wa_16021440873(struct intel_plane *plane,
+ 	ctl &= ~MCURSOR_MODE_MASK;
+ 	ctl |= MCURSOR_MODE_64_2B;
+ 
+-	intel_de_write_fw(dev_priv, SEL_FETCH_CUR_CTL(pipe), ctl);
++	intel_de_write_dsb(display, dsb, SEL_FETCH_CUR_CTL(pipe), ctl);
+ 
+-	intel_de_write(dev_priv, CURPOS_ERLY_TPT(dev_priv, pipe),
+-		       CURSOR_POS_Y(et_y_position));
++	intel_de_write_dsb(display, dsb, CURPOS_ERLY_TPT(dev_priv, pipe),
++			   CURSOR_POS_Y(et_y_position));
+ }
+ 
+-static void i9xx_cursor_update_sel_fetch_arm(struct intel_plane *plane,
++static void i9xx_cursor_update_sel_fetch_arm(struct intel_dsb *dsb,
++					     struct intel_plane *plane,
+ 					     const struct intel_crtc_state *crtc_state,
+ 					     const struct intel_plane_state *plane_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+ 	enum pipe pipe = plane->pipe;
+ 
+@@ -571,19 +578,17 @@ static void i9xx_cursor_update_sel_fetch_arm(struct intel_plane *plane,
+ 		if (crtc_state->enable_psr2_su_region_et) {
+ 			u32 val = intel_cursor_position(crtc_state, plane_state,
+ 				true);
+-			intel_de_write_fw(dev_priv,
+-					  CURPOS_ERLY_TPT(dev_priv, pipe),
+-					  val);
 +
- 	if (rs400_mc_wait_for_idle(rdev)) {
- 		pr_warn("rs400: Failed to wait MC idle while programming pipes. Bad things might happen. %08x\n",
- 			RREG32(RADEON_MC_STATUS));
++			intel_de_write_dsb(display, dsb, CURPOS_ERLY_TPT(dev_priv, pipe), val);
+ 		}
+ 
+-		intel_de_write_fw(dev_priv, SEL_FETCH_CUR_CTL(pipe),
+-				  plane_state->ctl);
++		intel_de_write_dsb(display, dsb, SEL_FETCH_CUR_CTL(pipe), plane_state->ctl);
+ 	} else {
+ 		/* Wa_16021440873 */
+ 		if (crtc_state->enable_psr2_su_region_et)
+-			wa_16021440873(plane, crtc_state, plane_state);
++			wa_16021440873(dsb, plane, crtc_state, plane_state);
+ 		else
+-			i9xx_cursor_disable_sel_fetch_arm(plane, crtc_state);
++			i9xx_cursor_disable_sel_fetch_arm(dsb, plane, crtc_state);
+ 	}
+ }
+ 
+@@ -610,9 +615,11 @@ static u32 skl_cursor_wm_reg_val(const struct skl_wm_level *level)
+ 	return val;
+ }
+ 
+-static void skl_write_cursor_wm(struct intel_plane *plane,
++static void skl_write_cursor_wm(struct intel_dsb *dsb,
++				struct intel_plane *plane,
+ 				const struct intel_crtc_state *crtc_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *i915 = to_i915(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+@@ -622,30 +629,32 @@ static void skl_write_cursor_wm(struct intel_plane *plane,
+ 	int level;
+ 
+ 	for (level = 0; level < i915->display.wm.num_levels; level++)
+-		intel_de_write_fw(i915, CUR_WM(pipe, level),
+-				  skl_cursor_wm_reg_val(skl_plane_wm_level(pipe_wm, plane_id, level)));
++		intel_de_write_dsb(display, dsb, CUR_WM(pipe, level),
++				   skl_cursor_wm_reg_val(skl_plane_wm_level(pipe_wm, plane_id, level)));
+ 
+-	intel_de_write_fw(i915, CUR_WM_TRANS(pipe),
+-			  skl_cursor_wm_reg_val(skl_plane_trans_wm(pipe_wm, plane_id)));
++	intel_de_write_dsb(display, dsb, CUR_WM_TRANS(pipe),
++			   skl_cursor_wm_reg_val(skl_plane_trans_wm(pipe_wm, plane_id)));
+ 
+ 	if (HAS_HW_SAGV_WM(i915)) {
+ 		const struct skl_plane_wm *wm = &pipe_wm->planes[plane_id];
+ 
+-		intel_de_write_fw(i915, CUR_WM_SAGV(pipe),
+-				  skl_cursor_wm_reg_val(&wm->sagv.wm0));
+-		intel_de_write_fw(i915, CUR_WM_SAGV_TRANS(pipe),
+-				  skl_cursor_wm_reg_val(&wm->sagv.trans_wm));
++		intel_de_write_dsb(display, dsb, CUR_WM_SAGV(pipe),
++				   skl_cursor_wm_reg_val(&wm->sagv.wm0));
++		intel_de_write_dsb(display, dsb, CUR_WM_SAGV_TRANS(pipe),
++				   skl_cursor_wm_reg_val(&wm->sagv.trans_wm));
+ 	}
+ 
+-	intel_de_write_fw(i915, CUR_BUF_CFG(pipe),
+-			  skl_cursor_ddb_reg_val(ddb));
++	intel_de_write_dsb(display, dsb, CUR_BUF_CFG(pipe),
++			   skl_cursor_ddb_reg_val(ddb));
+ }
+ 
+ /* TODO: split into noarm+arm pair */
+-static void i9xx_cursor_update_arm(struct intel_plane *plane,
++static void i9xx_cursor_update_arm(struct intel_dsb *dsb,
++				   struct intel_plane *plane,
+ 				   const struct intel_crtc_state *crtc_state,
+ 				   const struct intel_plane_state *plane_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+ 	enum pipe pipe = plane->pipe;
+ 	u32 cntl = 0, base = 0, pos = 0, fbc_ctl = 0;
+@@ -685,38 +694,36 @@ static void i9xx_cursor_update_arm(struct intel_plane *plane,
+ 	 */
+ 
+ 	if (DISPLAY_VER(dev_priv) >= 9)
+-		skl_write_cursor_wm(plane, crtc_state);
++		skl_write_cursor_wm(dsb, plane, crtc_state);
+ 
+ 	if (plane_state)
+-		i9xx_cursor_update_sel_fetch_arm(plane, crtc_state,
+-						 plane_state);
++		i9xx_cursor_update_sel_fetch_arm(dsb, plane, crtc_state, plane_state);
+ 	else
+-		i9xx_cursor_disable_sel_fetch_arm(plane, crtc_state);
++		i9xx_cursor_disable_sel_fetch_arm(dsb, plane, crtc_state);
+ 
+ 	if (plane->cursor.base != base ||
+ 	    plane->cursor.size != fbc_ctl ||
+ 	    plane->cursor.cntl != cntl) {
+ 		if (HAS_CUR_FBC(dev_priv))
+-			intel_de_write_fw(dev_priv,
+-					  CUR_FBC_CTL(dev_priv, pipe),
+-					  fbc_ctl);
+-		intel_de_write_fw(dev_priv, CURCNTR(dev_priv, pipe), cntl);
+-		intel_de_write_fw(dev_priv, CURPOS(dev_priv, pipe), pos);
+-		intel_de_write_fw(dev_priv, CURBASE(dev_priv, pipe), base);
++			intel_de_write_dsb(display, dsb, CUR_FBC_CTL(dev_priv, pipe), fbc_ctl);
++		intel_de_write_dsb(display, dsb, CURCNTR(dev_priv, pipe), cntl);
++		intel_de_write_dsb(display, dsb, CURPOS(dev_priv, pipe), pos);
++		intel_de_write_dsb(display, dsb, CURBASE(dev_priv, pipe), base);
+ 
+ 		plane->cursor.base = base;
+ 		plane->cursor.size = fbc_ctl;
+ 		plane->cursor.cntl = cntl;
+ 	} else {
+-		intel_de_write_fw(dev_priv, CURPOS(dev_priv, pipe), pos);
+-		intel_de_write_fw(dev_priv, CURBASE(dev_priv, pipe), base);
++		intel_de_write_dsb(display, dsb, CURPOS(dev_priv, pipe), pos);
++		intel_de_write_dsb(display, dsb, CURBASE(dev_priv, pipe), base);
+ 	}
+ }
+ 
+-static void i9xx_cursor_disable_arm(struct intel_plane *plane,
++static void i9xx_cursor_disable_arm(struct intel_dsb *dsb,
++				    struct intel_plane *plane,
+ 				    const struct intel_crtc_state *crtc_state)
+ {
+-	i9xx_cursor_update_arm(plane, crtc_state, NULL);
++	i9xx_cursor_update_arm(dsb, plane, crtc_state, NULL);
+ }
+ 
+ static bool i9xx_cursor_get_hw_state(struct intel_plane *plane,
+@@ -905,10 +912,10 @@ intel_legacy_cursor_update(struct drm_plane *_plane,
+ 	}
+ 
+ 	if (new_plane_state->uapi.visible) {
+-		intel_plane_update_noarm(plane, crtc_state, new_plane_state);
+-		intel_plane_update_arm(plane, crtc_state, new_plane_state);
++		intel_plane_update_noarm(NULL, plane, crtc_state, new_plane_state);
++		intel_plane_update_arm(NULL, plane, crtc_state, new_plane_state);
+ 	} else {
+-		intel_plane_disable_arm(plane, crtc_state);
++		intel_plane_disable_arm(NULL, plane, crtc_state);
+ 	}
+ 
+ 	local_irq_enable();
+diff --git a/drivers/gpu/drm/i915/display/intel_de.h b/drivers/gpu/drm/i915/display/intel_de.h
+index e881bfeafb47d..e017cd4a81685 100644
+--- a/drivers/gpu/drm/i915/display/intel_de.h
++++ b/drivers/gpu/drm/i915/display/intel_de.h
+@@ -8,6 +8,7 @@
+ 
+ #include "i915_drv.h"
+ #include "i915_trace.h"
++#include "intel_dsb.h"
+ #include "intel_uncore.h"
+ 
+ static inline struct intel_uncore *__to_uncore(struct intel_display *display)
+@@ -233,4 +234,14 @@ __intel_de_write_notrace(struct intel_display *display, i915_reg_t reg,
+ }
+ #define intel_de_write_notrace(p,...) __intel_de_write_notrace(__to_intel_display(p), __VA_ARGS__)
+ 
++static __always_inline void
++intel_de_write_dsb(struct intel_display *display, struct intel_dsb *dsb,
++		   i915_reg_t reg, u32 val)
++{
++	if (dsb)
++		intel_dsb_reg_write(dsb, reg, val);
++	else
++		intel_de_write_fw(display, reg, val);
++}
++
+ #endif /* __INTEL_DE_H__ */
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index ac5febd076e10..3039ee03e1c7a 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -135,7 +135,8 @@
+ static void intel_set_transcoder_timings(const struct intel_crtc_state *crtc_state);
+ static void intel_set_pipe_src_size(const struct intel_crtc_state *crtc_state);
+ static void hsw_set_transconf(const struct intel_crtc_state *crtc_state);
+-static void bdw_set_pipe_misc(const struct intel_crtc_state *crtc_state);
++static void bdw_set_pipe_misc(struct intel_dsb *dsb,
++			      const struct intel_crtc_state *crtc_state);
+ 
+ /* returns HPLL frequency in kHz */
+ int vlv_get_hpll_vco(struct drm_i915_private *dev_priv)
+@@ -715,7 +716,7 @@ void intel_plane_disable_noatomic(struct intel_crtc *crtc,
+ 	if (DISPLAY_VER(dev_priv) == 2 && !crtc_state->active_planes)
+ 		intel_set_cpu_fifo_underrun_reporting(dev_priv, crtc->pipe, false);
+ 
+-	intel_plane_disable_arm(plane, crtc_state);
++	intel_plane_disable_arm(NULL, plane, crtc_state);
+ 	intel_crtc_wait_for_next_vblank(crtc);
+ }
+ 
+@@ -1172,8 +1173,8 @@ static void intel_crtc_async_flip_disable_wa(struct intel_atomic_state *state,
+ 			 * Apart from the async flip bit we want to
+ 			 * preserve the old state for the plane.
+ 			 */
+-			intel_plane_async_flip(plane, old_crtc_state,
+-					       old_plane_state, false);
++			intel_plane_async_flip(NULL, plane,
++					       old_crtc_state, old_plane_state, false);
+ 			need_vbl_wait = true;
+ 		}
+ 	}
+@@ -1315,7 +1316,7 @@ static void intel_crtc_disable_planes(struct intel_atomic_state *state,
+ 		    !(update_mask & BIT(plane->id)))
+ 			continue;
+ 
+-		intel_plane_disable_arm(plane, new_crtc_state);
++		intel_plane_disable_arm(NULL, plane, new_crtc_state);
+ 
+ 		if (old_plane_state->uapi.visible)
+ 			fb_bits |= plane->frontbuffer_bit;
+@@ -1704,7 +1705,7 @@ static void hsw_crtc_enable(struct intel_atomic_state *state,
+ 		intel_set_pipe_src_size(pipe_crtc_state);
+ 
+ 		if (DISPLAY_VER(dev_priv) >= 9 || IS_BROADWELL(dev_priv))
+-			bdw_set_pipe_misc(pipe_crtc_state);
++			bdw_set_pipe_misc(NULL, pipe_crtc_state);
+ 	}
+ 
+ 	if (!transcoder_is_dsi(cpu_transcoder))
+@@ -3221,9 +3222,11 @@ static void hsw_set_transconf(const struct intel_crtc_state *crtc_state)
+ 	intel_de_posting_read(dev_priv, TRANSCONF(dev_priv, cpu_transcoder));
+ }
+ 
+-static void bdw_set_pipe_misc(const struct intel_crtc_state *crtc_state)
++static void bdw_set_pipe_misc(struct intel_dsb *dsb,
++			      const struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
++	struct intel_display *display = to_intel_display(crtc->base.dev);
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+ 	u32 val = 0;
+ 
+@@ -3268,7 +3271,7 @@ static void bdw_set_pipe_misc(const struct intel_crtc_state *crtc_state)
+ 	if (IS_BROADWELL(dev_priv))
+ 		val |= PIPE_MISC_PSR_MASK_SPRITE_ENABLE;
+ 
+-	intel_de_write(dev_priv, PIPE_MISC(crtc->pipe), val);
++	intel_de_write_dsb(display, dsb, PIPE_MISC(crtc->pipe), val);
+ }
+ 
+ int bdw_get_pipe_misc_bpp(struct intel_crtc *crtc)
+@@ -6821,7 +6824,7 @@ static void commit_pipe_pre_planes(struct intel_atomic_state *state,
+ 			intel_color_commit_arm(new_crtc_state);
+ 
+ 		if (DISPLAY_VER(dev_priv) >= 9 || IS_BROADWELL(dev_priv))
+-			bdw_set_pipe_misc(new_crtc_state);
++			bdw_set_pipe_misc(NULL, new_crtc_state);
+ 
+ 		if (intel_crtc_needs_fastset(new_crtc_state))
+ 			intel_pipe_fastset(old_crtc_state, new_crtc_state);
+@@ -6921,7 +6924,7 @@ static void intel_pre_update_crtc(struct intel_atomic_state *state,
+ 	    intel_crtc_needs_color_update(new_crtc_state))
+ 		intel_color_commit_noarm(new_crtc_state);
+ 
+-	intel_crtc_planes_update_noarm(state, crtc);
++	intel_crtc_planes_update_noarm(NULL, state, crtc);
+ }
+ 
+ static void intel_update_crtc(struct intel_atomic_state *state,
+@@ -6937,7 +6940,7 @@ static void intel_update_crtc(struct intel_atomic_state *state,
+ 
+ 	commit_pipe_pre_planes(state, crtc);
+ 
+-	intel_crtc_planes_update_arm(state, crtc);
++	intel_crtc_planes_update_arm(NULL, state, crtc);
+ 
+ 	commit_pipe_post_planes(state, crtc);
+ 
+diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
+index f29e5dc3db910..3e24d2e90d3cf 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1036,6 +1036,10 @@ struct intel_csc_matrix {
+ 	u16 postoff[3];
+ };
+ 
++void intel_io_mmio_fw_write(void *ctx, i915_reg_t reg, u32 val);
++
++typedef void (*intel_io_reg_write)(void *ctx, i915_reg_t reg, u32 val);
++
+ struct intel_crtc_state {
+ 	/*
+ 	 * uapi (drm) state. This is the software state shown to userspace.
+@@ -1578,22 +1582,26 @@ struct intel_plane {
+ 				   u32 pixel_format, u64 modifier,
+ 				   unsigned int rotation);
+ 	/* Write all non-self arming plane registers */
+-	void (*update_noarm)(struct intel_plane *plane,
++	void (*update_noarm)(struct intel_dsb *dsb,
++			     struct intel_plane *plane,
+ 			     const struct intel_crtc_state *crtc_state,
+ 			     const struct intel_plane_state *plane_state);
+ 	/* Write all self-arming plane registers */
+-	void (*update_arm)(struct intel_plane *plane,
++	void (*update_arm)(struct intel_dsb *dsb,
++			   struct intel_plane *plane,
+ 			   const struct intel_crtc_state *crtc_state,
+ 			   const struct intel_plane_state *plane_state);
+ 	/* Disable the plane, must arm */
+-	void (*disable_arm)(struct intel_plane *plane,
++	void (*disable_arm)(struct intel_dsb *dsb,
++			    struct intel_plane *plane,
+ 			    const struct intel_crtc_state *crtc_state);
+ 	bool (*get_hw_state)(struct intel_plane *plane, enum pipe *pipe);
+ 	int (*check_plane)(struct intel_crtc_state *crtc_state,
+ 			   struct intel_plane_state *plane_state);
+ 	int (*min_cdclk)(const struct intel_crtc_state *crtc_state,
+ 			 const struct intel_plane_state *plane_state);
+-	void (*async_flip)(struct intel_plane *plane,
++	void (*async_flip)(struct intel_dsb *dsb,
++			   struct intel_plane *plane,
+ 			   const struct intel_crtc_state *crtc_state,
+ 			   const struct intel_plane_state *plane_state,
+ 			   bool async_flip);
+diff --git a/drivers/gpu/drm/i915/display/intel_sprite.c b/drivers/gpu/drm/i915/display/intel_sprite.c
+index e657b09ede999..e6fadcef58e06 100644
+--- a/drivers/gpu/drm/i915/display/intel_sprite.c
++++ b/drivers/gpu/drm/i915/display/intel_sprite.c
+@@ -378,7 +378,8 @@ static void vlv_sprite_update_gamma(const struct intel_plane_state *plane_state)
+ }
+ 
+ static void
+-vlv_sprite_update_noarm(struct intel_plane *plane,
++vlv_sprite_update_noarm(struct intel_dsb *dsb,
++			struct intel_plane *plane,
+ 			const struct intel_crtc_state *crtc_state,
+ 			const struct intel_plane_state *plane_state)
+ {
+@@ -399,7 +400,8 @@ vlv_sprite_update_noarm(struct intel_plane *plane,
+ }
+ 
+ static void
+-vlv_sprite_update_arm(struct intel_plane *plane,
++vlv_sprite_update_arm(struct intel_dsb *dsb,
++		      struct intel_plane *plane,
+ 		      const struct intel_crtc_state *crtc_state,
+ 		      const struct intel_plane_state *plane_state)
+ {
+@@ -449,7 +451,8 @@ vlv_sprite_update_arm(struct intel_plane *plane,
+ }
+ 
+ static void
+-vlv_sprite_disable_arm(struct intel_plane *plane,
++vlv_sprite_disable_arm(struct intel_dsb *dsb,
++		       struct intel_plane *plane,
+ 		       const struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_display *display = to_intel_display(plane->base.dev);
+@@ -795,7 +798,8 @@ static void ivb_sprite_update_gamma(const struct intel_plane_state *plane_state)
+ }
+ 
+ static void
+-ivb_sprite_update_noarm(struct intel_plane *plane,
++ivb_sprite_update_noarm(struct intel_dsb *dsb,
++			struct intel_plane *plane,
+ 			const struct intel_crtc_state *crtc_state,
+ 			const struct intel_plane_state *plane_state)
+ {
+@@ -826,7 +830,8 @@ ivb_sprite_update_noarm(struct intel_plane *plane,
+ }
+ 
+ static void
+-ivb_sprite_update_arm(struct intel_plane *plane,
++ivb_sprite_update_arm(struct intel_dsb *dsb,
++		      struct intel_plane *plane,
+ 		      const struct intel_crtc_state *crtc_state,
+ 		      const struct intel_plane_state *plane_state)
+ {
+@@ -874,7 +879,8 @@ ivb_sprite_update_arm(struct intel_plane *plane,
+ }
+ 
+ static void
+-ivb_sprite_disable_arm(struct intel_plane *plane,
++ivb_sprite_disable_arm(struct intel_dsb *dsb,
++		       struct intel_plane *plane,
+ 		       const struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_display *display = to_intel_display(plane->base.dev);
+@@ -1133,7 +1139,8 @@ static void ilk_sprite_update_gamma(const struct intel_plane_state *plane_state)
+ }
+ 
+ static void
+-g4x_sprite_update_noarm(struct intel_plane *plane,
++g4x_sprite_update_noarm(struct intel_dsb *dsb,
++			struct intel_plane *plane,
+ 			const struct intel_crtc_state *crtc_state,
+ 			const struct intel_plane_state *plane_state)
+ {
+@@ -1162,7 +1169,8 @@ g4x_sprite_update_noarm(struct intel_plane *plane,
+ }
+ 
+ static void
+-g4x_sprite_update_arm(struct intel_plane *plane,
++g4x_sprite_update_arm(struct intel_dsb *dsb,
++		      struct intel_plane *plane,
+ 		      const struct intel_crtc_state *crtc_state,
+ 		      const struct intel_plane_state *plane_state)
+ {
+@@ -1206,7 +1214,8 @@ g4x_sprite_update_arm(struct intel_plane *plane,
+ }
+ 
+ static void
+-g4x_sprite_disable_arm(struct intel_plane *plane,
++g4x_sprite_disable_arm(struct intel_dsb *dsb,
++		       struct intel_plane *plane,
+ 		       const struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_display *display = to_intel_display(plane->base.dev);
+diff --git a/drivers/gpu/drm/i915/display/skl_universal_plane.c b/drivers/gpu/drm/i915/display/skl_universal_plane.c
+index 62a5287ea1d9c..7f77a76309bd5 100644
+--- a/drivers/gpu/drm/i915/display/skl_universal_plane.c
++++ b/drivers/gpu/drm/i915/display/skl_universal_plane.c
+@@ -589,11 +589,11 @@ static u32 skl_plane_min_alignment(struct intel_plane *plane,
+  * in full-range YCbCr.
+  */
+ static void
+-icl_program_input_csc(struct intel_plane *plane,
+-		      const struct intel_crtc_state *crtc_state,
++icl_program_input_csc(struct intel_dsb *dsb,
++		      struct intel_plane *plane,
+ 		      const struct intel_plane_state *plane_state)
+ {
+-	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum pipe pipe = plane->pipe;
+ 	enum plane_id plane_id = plane->id;
+ 
+@@ -637,31 +637,31 @@ icl_program_input_csc(struct intel_plane *plane,
+ 	};
+ 	const u16 *csc = input_csc_matrix[plane_state->hw.color_encoding];
+ 
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 0),
+-			  ROFF(csc[0]) | GOFF(csc[1]));
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 1),
+-			  BOFF(csc[2]));
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 2),
+-			  ROFF(csc[3]) | GOFF(csc[4]));
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 3),
+-			  BOFF(csc[5]));
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 4),
+-			  ROFF(csc[6]) | GOFF(csc[7]));
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 5),
+-			  BOFF(csc[8]));
+-
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_PREOFF(pipe, plane_id, 0),
+-			  PREOFF_YUV_TO_RGB_HI);
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_PREOFF(pipe, plane_id, 1),
+-			  PREOFF_YUV_TO_RGB_ME);
+-	intel_de_write_fw(dev_priv, PLANE_INPUT_CSC_PREOFF(pipe, plane_id, 2),
+-			  PREOFF_YUV_TO_RGB_LO);
+-	intel_de_write_fw(dev_priv,
+-			  PLANE_INPUT_CSC_POSTOFF(pipe, plane_id, 0), 0x0);
+-	intel_de_write_fw(dev_priv,
+-			  PLANE_INPUT_CSC_POSTOFF(pipe, plane_id, 1), 0x0);
+-	intel_de_write_fw(dev_priv,
+-			  PLANE_INPUT_CSC_POSTOFF(pipe, plane_id, 2), 0x0);
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 0),
++			   ROFF(csc[0]) | GOFF(csc[1]));
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 1),
++			   BOFF(csc[2]));
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 2),
++			   ROFF(csc[3]) | GOFF(csc[4]));
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 3),
++			   BOFF(csc[5]));
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 4),
++			   ROFF(csc[6]) | GOFF(csc[7]));
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_COEFF(pipe, plane_id, 5),
++			   BOFF(csc[8]));
++
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_PREOFF(pipe, plane_id, 0),
++			   PREOFF_YUV_TO_RGB_HI);
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_PREOFF(pipe, plane_id, 1),
++			   PREOFF_YUV_TO_RGB_ME);
++	intel_de_write_dsb(display, dsb, PLANE_INPUT_CSC_PREOFF(pipe, plane_id, 2),
++			   PREOFF_YUV_TO_RGB_LO);
++	intel_de_write_dsb(display, dsb,
++			   PLANE_INPUT_CSC_POSTOFF(pipe, plane_id, 0), 0x0);
++	intel_de_write_dsb(display, dsb,
++			   PLANE_INPUT_CSC_POSTOFF(pipe, plane_id, 1), 0x0);
++	intel_de_write_dsb(display, dsb,
++			   PLANE_INPUT_CSC_POSTOFF(pipe, plane_id, 2), 0x0);
+ }
+ 
+ static unsigned int skl_plane_stride_mult(const struct drm_framebuffer *fb,
+@@ -715,9 +715,11 @@ static u32 skl_plane_wm_reg_val(const struct skl_wm_level *level)
+ 	return val;
+ }
+ 
+-static void skl_write_plane_wm(struct intel_plane *plane,
++static void skl_write_plane_wm(struct intel_dsb *dsb,
++			       struct intel_plane *plane,
+ 			       const struct intel_crtc_state *crtc_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *i915 = to_i915(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+@@ -729,71 +731,75 @@ static void skl_write_plane_wm(struct intel_plane *plane,
+ 	int level;
+ 
+ 	for (level = 0; level < i915->display.wm.num_levels; level++)
+-		intel_de_write_fw(i915, PLANE_WM(pipe, plane_id, level),
+-				  skl_plane_wm_reg_val(skl_plane_wm_level(pipe_wm, plane_id, level)));
++		intel_de_write_dsb(display, dsb, PLANE_WM(pipe, plane_id, level),
++				   skl_plane_wm_reg_val(skl_plane_wm_level(pipe_wm, plane_id, level)));
+ 
+-	intel_de_write_fw(i915, PLANE_WM_TRANS(pipe, plane_id),
+-			  skl_plane_wm_reg_val(skl_plane_trans_wm(pipe_wm, plane_id)));
++	intel_de_write_dsb(display, dsb, PLANE_WM_TRANS(pipe, plane_id),
++			   skl_plane_wm_reg_val(skl_plane_trans_wm(pipe_wm, plane_id)));
+ 
+ 	if (HAS_HW_SAGV_WM(i915)) {
+ 		const struct skl_plane_wm *wm = &pipe_wm->planes[plane_id];
+ 
+-		intel_de_write_fw(i915, PLANE_WM_SAGV(pipe, plane_id),
+-				  skl_plane_wm_reg_val(&wm->sagv.wm0));
+-		intel_de_write_fw(i915, PLANE_WM_SAGV_TRANS(pipe, plane_id),
+-				  skl_plane_wm_reg_val(&wm->sagv.trans_wm));
++		intel_de_write_dsb(display, dsb, PLANE_WM_SAGV(pipe, plane_id),
++				   skl_plane_wm_reg_val(&wm->sagv.wm0));
++		intel_de_write_dsb(display, dsb, PLANE_WM_SAGV_TRANS(pipe, plane_id),
++				   skl_plane_wm_reg_val(&wm->sagv.trans_wm));
+ 	}
+ 
+-	intel_de_write_fw(i915, PLANE_BUF_CFG(pipe, plane_id),
+-			  skl_plane_ddb_reg_val(ddb));
++	intel_de_write_dsb(display, dsb, PLANE_BUF_CFG(pipe, plane_id),
++			   skl_plane_ddb_reg_val(ddb));
+ 
+ 	if (DISPLAY_VER(i915) < 11)
+-		intel_de_write_fw(i915, PLANE_NV12_BUF_CFG(pipe, plane_id),
+-				  skl_plane_ddb_reg_val(ddb_y));
++		intel_de_write_dsb(display, dsb, PLANE_NV12_BUF_CFG(pipe, plane_id),
++				   skl_plane_ddb_reg_val(ddb_y));
+ }
+ 
+ static void
+-skl_plane_disable_arm(struct intel_plane *plane,
++skl_plane_disable_arm(struct intel_dsb *dsb,
++		      struct intel_plane *plane,
+ 		      const struct intel_crtc_state *crtc_state)
+ {
+-	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+ 
+-	skl_write_plane_wm(plane, crtc_state);
++	skl_write_plane_wm(dsb, plane, crtc_state);
+ 
+-	intel_de_write_fw(dev_priv, PLANE_CTL(pipe, plane_id), 0);
+-	intel_de_write_fw(dev_priv, PLANE_SURF(pipe, plane_id), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CTL(pipe, plane_id), 0);
++	intel_de_write_dsb(display, dsb, PLANE_SURF(pipe, plane_id), 0);
+ }
+ 
+-static void icl_plane_disable_sel_fetch_arm(struct intel_plane *plane,
++static void icl_plane_disable_sel_fetch_arm(struct intel_dsb *dsb,
++					    struct intel_plane *plane,
+ 					    const struct intel_crtc_state *crtc_state)
+ {
+-	struct drm_i915_private *i915 = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum pipe pipe = plane->pipe;
+ 
+ 	if (!crtc_state->enable_psr2_sel_fetch)
+ 		return;
+ 
+-	intel_de_write_fw(i915, SEL_FETCH_PLANE_CTL(pipe, plane->id), 0);
++	intel_de_write_dsb(display, dsb, SEL_FETCH_PLANE_CTL(pipe, plane->id), 0);
+ }
+ 
+ static void
+-icl_plane_disable_arm(struct intel_plane *plane,
++icl_plane_disable_arm(struct intel_dsb *dsb,
++		      struct intel_plane *plane,
+ 		      const struct intel_crtc_state *crtc_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+ 
+ 	if (icl_is_hdr_plane(dev_priv, plane_id))
+-		intel_de_write_fw(dev_priv, PLANE_CUS_CTL(pipe, plane_id), 0);
++		intel_de_write_dsb(display, dsb, PLANE_CUS_CTL(pipe, plane_id), 0);
+ 
+-	skl_write_plane_wm(plane, crtc_state);
++	skl_write_plane_wm(dsb, plane, crtc_state);
+ 
+-	icl_plane_disable_sel_fetch_arm(plane, crtc_state);
+-	intel_de_write_fw(dev_priv, PLANE_CTL(pipe, plane_id), 0);
+-	intel_de_write_fw(dev_priv, PLANE_SURF(pipe, plane_id), 0);
++	icl_plane_disable_sel_fetch_arm(dsb, plane, crtc_state);
++	intel_de_write_dsb(display, dsb, PLANE_CTL(pipe, plane_id), 0);
++	intel_de_write_dsb(display, dsb, PLANE_SURF(pipe, plane_id), 0);
+ }
+ 
+ static bool
+@@ -1230,28 +1236,30 @@ static u32 skl_plane_keymsk(const struct intel_plane_state *plane_state)
+ 	return keymsk;
+ }
+ 
+-static void icl_plane_csc_load_black(struct intel_plane *plane)
++static void icl_plane_csc_load_black(struct intel_dsb *dsb,
++				     struct intel_plane *plane,
++				     const struct intel_crtc_state *crtc_state)
+ {
+-	struct drm_i915_private *i915 = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+ 
+-	intel_de_write_fw(i915, PLANE_CSC_COEFF(pipe, plane_id, 0), 0);
+-	intel_de_write_fw(i915, PLANE_CSC_COEFF(pipe, plane_id, 1), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_COEFF(pipe, plane_id, 0), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_COEFF(pipe, plane_id, 1), 0);
+ 
+-	intel_de_write_fw(i915, PLANE_CSC_COEFF(pipe, plane_id, 2), 0);
+-	intel_de_write_fw(i915, PLANE_CSC_COEFF(pipe, plane_id, 3), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_COEFF(pipe, plane_id, 2), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_COEFF(pipe, plane_id, 3), 0);
+ 
+-	intel_de_write_fw(i915, PLANE_CSC_COEFF(pipe, plane_id, 4), 0);
+-	intel_de_write_fw(i915, PLANE_CSC_COEFF(pipe, plane_id, 5), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_COEFF(pipe, plane_id, 4), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_COEFF(pipe, plane_id, 5), 0);
+ 
+-	intel_de_write_fw(i915, PLANE_CSC_PREOFF(pipe, plane_id, 0), 0);
+-	intel_de_write_fw(i915, PLANE_CSC_PREOFF(pipe, plane_id, 1), 0);
+-	intel_de_write_fw(i915, PLANE_CSC_PREOFF(pipe, plane_id, 2), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_PREOFF(pipe, plane_id, 0), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_PREOFF(pipe, plane_id, 1), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_PREOFF(pipe, plane_id, 2), 0);
+ 
+-	intel_de_write_fw(i915, PLANE_CSC_POSTOFF(pipe, plane_id, 0), 0);
+-	intel_de_write_fw(i915, PLANE_CSC_POSTOFF(pipe, plane_id, 1), 0);
+-	intel_de_write_fw(i915, PLANE_CSC_POSTOFF(pipe, plane_id, 2), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_POSTOFF(pipe, plane_id, 0), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_POSTOFF(pipe, plane_id, 1), 0);
++	intel_de_write_dsb(display, dsb, PLANE_CSC_POSTOFF(pipe, plane_id, 2), 0);
+ }
+ 
+ static int icl_plane_color_plane(const struct intel_plane_state *plane_state)
+@@ -1264,11 +1272,12 @@ static int icl_plane_color_plane(const struct intel_plane_state *plane_state)
+ }
+ 
+ static void
+-skl_plane_update_noarm(struct intel_plane *plane,
++skl_plane_update_noarm(struct intel_dsb *dsb,
++		       struct intel_plane *plane,
+ 		       const struct intel_crtc_state *crtc_state,
+ 		       const struct intel_plane_state *plane_state)
+ {
+-	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+ 	u32 stride = skl_plane_stride(plane_state, 0);
+@@ -1283,21 +1292,23 @@ skl_plane_update_noarm(struct intel_plane *plane,
+ 		crtc_y = 0;
+ 	}
+ 
+-	intel_de_write_fw(dev_priv, PLANE_STRIDE(pipe, plane_id),
+-			  PLANE_STRIDE_(stride));
+-	intel_de_write_fw(dev_priv, PLANE_POS(pipe, plane_id),
+-			  PLANE_POS_Y(crtc_y) | PLANE_POS_X(crtc_x));
+-	intel_de_write_fw(dev_priv, PLANE_SIZE(pipe, plane_id),
+-			  PLANE_HEIGHT(src_h - 1) | PLANE_WIDTH(src_w - 1));
++	intel_de_write_dsb(display, dsb, PLANE_STRIDE(pipe, plane_id),
++			   PLANE_STRIDE_(stride));
++	intel_de_write_dsb(display, dsb, PLANE_POS(pipe, plane_id),
++			   PLANE_POS_Y(crtc_y) | PLANE_POS_X(crtc_x));
++	intel_de_write_dsb(display, dsb, PLANE_SIZE(pipe, plane_id),
++			   PLANE_HEIGHT(src_h - 1) | PLANE_WIDTH(src_w - 1));
+ 
+-	skl_write_plane_wm(plane, crtc_state);
++	skl_write_plane_wm(dsb, plane, crtc_state);
+ }
+ 
+ static void
+-skl_plane_update_arm(struct intel_plane *plane,
++skl_plane_update_arm(struct intel_dsb *dsb,
++		     struct intel_plane *plane,
+ 		     const struct intel_crtc_state *crtc_state,
+ 		     const struct intel_plane_state *plane_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+@@ -1317,22 +1328,26 @@ skl_plane_update_arm(struct intel_plane *plane,
+ 		plane_color_ctl = plane_state->color_ctl |
+ 			glk_plane_color_ctl_crtc(crtc_state);
+ 
+-	intel_de_write_fw(dev_priv, PLANE_KEYVAL(pipe, plane_id), skl_plane_keyval(plane_state));
+-	intel_de_write_fw(dev_priv, PLANE_KEYMSK(pipe, plane_id), skl_plane_keymsk(plane_state));
+-	intel_de_write_fw(dev_priv, PLANE_KEYMAX(pipe, plane_id), skl_plane_keymax(plane_state));
++	intel_de_write_dsb(display, dsb, PLANE_KEYVAL(pipe, plane_id),
++			   skl_plane_keyval(plane_state));
++	intel_de_write_dsb(display, dsb, PLANE_KEYMSK(pipe, plane_id),
++			   skl_plane_keymsk(plane_state));
++	intel_de_write_dsb(display, dsb, PLANE_KEYMAX(pipe, plane_id),
++			   skl_plane_keymax(plane_state));
+ 
+-	intel_de_write_fw(dev_priv, PLANE_OFFSET(pipe, plane_id),
+-			  PLANE_OFFSET_Y(y) | PLANE_OFFSET_X(x));
++	intel_de_write_dsb(display, dsb, PLANE_OFFSET(pipe, plane_id),
++			   PLANE_OFFSET_Y(y) | PLANE_OFFSET_X(x));
+ 
+-	intel_de_write_fw(dev_priv, PLANE_AUX_DIST(pipe, plane_id),
+-			  skl_plane_aux_dist(plane_state, 0));
++	intel_de_write_dsb(display, dsb, PLANE_AUX_DIST(pipe, plane_id),
++			   skl_plane_aux_dist(plane_state, 0));
+ 
+-	intel_de_write_fw(dev_priv, PLANE_AUX_OFFSET(pipe, plane_id),
+-			  PLANE_OFFSET_Y(plane_state->view.color_plane[1].y) |
+-			  PLANE_OFFSET_X(plane_state->view.color_plane[1].x));
++	intel_de_write_dsb(display, dsb, PLANE_AUX_OFFSET(pipe, plane_id),
++			   PLANE_OFFSET_Y(plane_state->view.color_plane[1].y) |
++			   PLANE_OFFSET_X(plane_state->view.color_plane[1].x));
+ 
+ 	if (DISPLAY_VER(dev_priv) >= 10)
+-		intel_de_write_fw(dev_priv, PLANE_COLOR_CTL(pipe, plane_id), plane_color_ctl);
++		intel_de_write_dsb(display, dsb, PLANE_COLOR_CTL(pipe, plane_id),
++				   plane_color_ctl);
+ 
+ 	/*
+ 	 * Enable the scaler before the plane so that we don't
+@@ -1349,17 +1364,19 @@ skl_plane_update_arm(struct intel_plane *plane,
+ 	 * disabled. Try to make the plane enable atomic by writing
+ 	 * the control register just before the surface register.
+ 	 */
+-	intel_de_write_fw(dev_priv, PLANE_CTL(pipe, plane_id), plane_ctl);
+-	intel_de_write_fw(dev_priv, PLANE_SURF(pipe, plane_id),
+-			  skl_plane_surf(plane_state, 0));
++	intel_de_write_dsb(display, dsb, PLANE_CTL(pipe, plane_id),
++			   plane_ctl);
++	intel_de_write_dsb(display, dsb, PLANE_SURF(pipe, plane_id),
++			   skl_plane_surf(plane_state, 0));
+ }
+ 
+-static void icl_plane_update_sel_fetch_noarm(struct intel_plane *plane,
++static void icl_plane_update_sel_fetch_noarm(struct intel_dsb *dsb,
++					     struct intel_plane *plane,
+ 					     const struct intel_crtc_state *crtc_state,
+ 					     const struct intel_plane_state *plane_state,
+ 					     int color_plane)
+ {
+-	struct drm_i915_private *i915 = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum pipe pipe = plane->pipe;
+ 	const struct drm_rect *clip;
+ 	u32 val;
+@@ -1376,7 +1393,7 @@ static void icl_plane_update_sel_fetch_noarm(struct intel_plane *plane,
+ 		y = (clip->y1 + plane_state->uapi.dst.y1);
+ 	val = y << 16;
+ 	val |= plane_state->uapi.dst.x1;
+-	intel_de_write_fw(i915, SEL_FETCH_PLANE_POS(pipe, plane->id), val);
++	intel_de_write_dsb(display, dsb, SEL_FETCH_PLANE_POS(pipe, plane->id), val);
+ 
+ 	x = plane_state->view.color_plane[color_plane].x;
+ 
+@@ -1391,20 +1408,21 @@ static void icl_plane_update_sel_fetch_noarm(struct intel_plane *plane,
+ 
+ 	val = y << 16 | x;
+ 
+-	intel_de_write_fw(i915, SEL_FETCH_PLANE_OFFSET(pipe, plane->id),
+-			  val);
++	intel_de_write_dsb(display, dsb, SEL_FETCH_PLANE_OFFSET(pipe, plane->id), val);
+ 
+ 	/* Sizes are 0 based */
+ 	val = (drm_rect_height(clip) - 1) << 16;
+ 	val |= (drm_rect_width(&plane_state->uapi.src) >> 16) - 1;
+-	intel_de_write_fw(i915, SEL_FETCH_PLANE_SIZE(pipe, plane->id), val);
++	intel_de_write_dsb(display, dsb, SEL_FETCH_PLANE_SIZE(pipe, plane->id), val);
+ }
+ 
+ static void
+-icl_plane_update_noarm(struct intel_plane *plane,
++icl_plane_update_noarm(struct intel_dsb *dsb,
++		       struct intel_plane *plane,
+ 		       const struct intel_crtc_state *crtc_state,
+ 		       const struct intel_plane_state *plane_state)
+ {
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+@@ -1428,76 +1446,82 @@ icl_plane_update_noarm(struct intel_plane *plane,
+ 		crtc_y = 0;
+ 	}
+ 
+-	intel_de_write_fw(dev_priv, PLANE_STRIDE(pipe, plane_id),
+-			  PLANE_STRIDE_(stride));
+-	intel_de_write_fw(dev_priv, PLANE_POS(pipe, plane_id),
+-			  PLANE_POS_Y(crtc_y) | PLANE_POS_X(crtc_x));
+-	intel_de_write_fw(dev_priv, PLANE_SIZE(pipe, plane_id),
+-			  PLANE_HEIGHT(src_h - 1) | PLANE_WIDTH(src_w - 1));
++	intel_de_write_dsb(display, dsb, PLANE_STRIDE(pipe, plane_id),
++			   PLANE_STRIDE_(stride));
++	intel_de_write_dsb(display, dsb, PLANE_POS(pipe, plane_id),
++			   PLANE_POS_Y(crtc_y) | PLANE_POS_X(crtc_x));
++	intel_de_write_dsb(display, dsb, PLANE_SIZE(pipe, plane_id),
++			   PLANE_HEIGHT(src_h - 1) | PLANE_WIDTH(src_w - 1));
+ 
+-	intel_de_write_fw(dev_priv, PLANE_KEYVAL(pipe, plane_id), skl_plane_keyval(plane_state));
+-	intel_de_write_fw(dev_priv, PLANE_KEYMSK(pipe, plane_id), skl_plane_keymsk(plane_state));
+-	intel_de_write_fw(dev_priv, PLANE_KEYMAX(pipe, plane_id), skl_plane_keymax(plane_state));
++	intel_de_write_dsb(display, dsb, PLANE_KEYVAL(pipe, plane_id),
++			   skl_plane_keyval(plane_state));
++	intel_de_write_dsb(display, dsb, PLANE_KEYMSK(pipe, plane_id),
++			   skl_plane_keymsk(plane_state));
++	intel_de_write_dsb(display, dsb, PLANE_KEYMAX(pipe, plane_id),
++			   skl_plane_keymax(plane_state));
+ 
+-	intel_de_write_fw(dev_priv, PLANE_OFFSET(pipe, plane_id),
+-			  PLANE_OFFSET_Y(y) | PLANE_OFFSET_X(x));
++	intel_de_write_dsb(display, dsb, PLANE_OFFSET(pipe, plane_id),
++			   PLANE_OFFSET_Y(y) | PLANE_OFFSET_X(x));
+ 
+ 	if (intel_fb_is_rc_ccs_cc_modifier(fb->modifier)) {
+-		intel_de_write_fw(dev_priv, PLANE_CC_VAL(pipe, plane_id, 0),
+-				  lower_32_bits(plane_state->ccval));
+-		intel_de_write_fw(dev_priv, PLANE_CC_VAL(pipe, plane_id, 1),
+-				  upper_32_bits(plane_state->ccval));
++		intel_de_write_dsb(display, dsb, PLANE_CC_VAL(pipe, plane_id, 0),
++				   lower_32_bits(plane_state->ccval));
++		intel_de_write_dsb(display, dsb, PLANE_CC_VAL(pipe, plane_id, 1),
++				   upper_32_bits(plane_state->ccval));
+ 	}
+ 
+ 	/* FLAT CCS doesn't need to program AUX_DIST */
+ 	if (!HAS_FLAT_CCS(dev_priv) && DISPLAY_VER(dev_priv) < 20)
+-		intel_de_write_fw(dev_priv, PLANE_AUX_DIST(pipe, plane_id),
+-				  skl_plane_aux_dist(plane_state, color_plane));
++		intel_de_write_dsb(display, dsb, PLANE_AUX_DIST(pipe, plane_id),
++				   skl_plane_aux_dist(plane_state, color_plane));
+ 
+ 	if (icl_is_hdr_plane(dev_priv, plane_id))
+-		intel_de_write_fw(dev_priv, PLANE_CUS_CTL(pipe, plane_id),
+-				  plane_state->cus_ctl);
++		intel_de_write_dsb(display, dsb, PLANE_CUS_CTL(pipe, plane_id),
++				   plane_state->cus_ctl);
+ 
+-	intel_de_write_fw(dev_priv, PLANE_COLOR_CTL(pipe, plane_id), plane_color_ctl);
++	intel_de_write_dsb(display, dsb, PLANE_COLOR_CTL(pipe, plane_id),
++			   plane_color_ctl);
+ 
+ 	if (fb->format->is_yuv && icl_is_hdr_plane(dev_priv, plane_id))
+-		icl_program_input_csc(plane, crtc_state, plane_state);
++		icl_program_input_csc(dsb, plane, plane_state);
+ 
+-	skl_write_plane_wm(plane, crtc_state);
++	skl_write_plane_wm(dsb, plane, crtc_state);
+ 
+ 	/*
+ 	 * FIXME: pxp session invalidation can hit any time even at time of commit
+ 	 * or after the commit, display content will be garbage.
+ 	 */
+ 	if (plane_state->force_black)
+-		icl_plane_csc_load_black(plane);
++		icl_plane_csc_load_black(dsb, plane, crtc_state);
+ 
+-	icl_plane_update_sel_fetch_noarm(plane, crtc_state, plane_state, color_plane);
++	icl_plane_update_sel_fetch_noarm(dsb, plane, crtc_state, plane_state, color_plane);
+ }
+ 
+-static void icl_plane_update_sel_fetch_arm(struct intel_plane *plane,
++static void icl_plane_update_sel_fetch_arm(struct intel_dsb *dsb,
++					   struct intel_plane *plane,
+ 					   const struct intel_crtc_state *crtc_state,
+ 					   const struct intel_plane_state *plane_state)
+ {
+-	struct drm_i915_private *i915 = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum pipe pipe = plane->pipe;
+ 
+ 	if (!crtc_state->enable_psr2_sel_fetch)
+ 		return;
+ 
+ 	if (drm_rect_height(&plane_state->psr2_sel_fetch_area) > 0)
+-		intel_de_write_fw(i915, SEL_FETCH_PLANE_CTL(pipe, plane->id),
+-				  SEL_FETCH_PLANE_CTL_ENABLE);
++		intel_de_write_dsb(display, dsb, SEL_FETCH_PLANE_CTL(pipe, plane->id),
++				   SEL_FETCH_PLANE_CTL_ENABLE);
+ 	else
+-		icl_plane_disable_sel_fetch_arm(plane, crtc_state);
++		icl_plane_disable_sel_fetch_arm(dsb, plane, crtc_state);
+ }
+ 
+ static void
+-icl_plane_update_arm(struct intel_plane *plane,
++icl_plane_update_arm(struct intel_dsb *dsb,
++		     struct intel_plane *plane,
+ 		     const struct intel_crtc_state *crtc_state,
+ 		     const struct intel_plane_state *plane_state)
+ {
+-	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+ 	int color_plane = icl_plane_color_plane(plane_state);
+@@ -1516,25 +1540,27 @@ icl_plane_update_arm(struct intel_plane *plane,
+ 	if (plane_state->scaler_id >= 0)
+ 		skl_program_plane_scaler(plane, crtc_state, plane_state);
+ 
+-	icl_plane_update_sel_fetch_arm(plane, crtc_state, plane_state);
++	icl_plane_update_sel_fetch_arm(dsb, plane, crtc_state, plane_state);
+ 
+ 	/*
+ 	 * The control register self-arms if the plane was previously
+ 	 * disabled. Try to make the plane enable atomic by writing
+ 	 * the control register just before the surface register.
+ 	 */
+-	intel_de_write_fw(dev_priv, PLANE_CTL(pipe, plane_id), plane_ctl);
+-	intel_de_write_fw(dev_priv, PLANE_SURF(pipe, plane_id),
+-			  skl_plane_surf(plane_state, color_plane));
++	intel_de_write_dsb(display, dsb, PLANE_CTL(pipe, plane_id),
++			   plane_ctl);
++	intel_de_write_dsb(display, dsb, PLANE_SURF(pipe, plane_id),
++			   skl_plane_surf(plane_state, color_plane));
+ }
+ 
+ static void
+-skl_plane_async_flip(struct intel_plane *plane,
++skl_plane_async_flip(struct intel_dsb *dsb,
++		     struct intel_plane *plane,
+ 		     const struct intel_crtc_state *crtc_state,
+ 		     const struct intel_plane_state *plane_state,
+ 		     bool async_flip)
+ {
+-	struct drm_i915_private *dev_priv = to_i915(plane->base.dev);
++	struct intel_display *display = to_intel_display(plane->base.dev);
+ 	enum plane_id plane_id = plane->id;
+ 	enum pipe pipe = plane->pipe;
+ 	u32 plane_ctl = plane_state->ctl;
+@@ -1544,9 +1570,10 @@ skl_plane_async_flip(struct intel_plane *plane,
+ 	if (async_flip)
+ 		plane_ctl |= PLANE_CTL_ASYNC_FLIP;
+ 
+-	intel_de_write_fw(dev_priv, PLANE_CTL(pipe, plane_id), plane_ctl);
+-	intel_de_write_fw(dev_priv, PLANE_SURF(pipe, plane_id),
+-			  skl_plane_surf(plane_state, 0));
++	intel_de_write_dsb(display, dsb, PLANE_CTL(pipe, plane_id),
++			   plane_ctl);
++	intel_de_write_dsb(display, dsb, PLANE_SURF(pipe, plane_id),
++			   skl_plane_surf(plane_state, 0));
+ }
+ 
+ static bool intel_format_is_p01x(u32 format)
+diff --git a/drivers/gpu/drm/xe/display/xe_plane_initial.c b/drivers/gpu/drm/xe/display/xe_plane_initial.c
+index a50ab9eae40ae..0ae3f02b9261b 100644
+--- a/drivers/gpu/drm/xe/display/xe_plane_initial.c
++++ b/drivers/gpu/drm/xe/display/xe_plane_initial.c
+@@ -248,7 +248,7 @@ intel_find_initial_plane_obj(struct intel_crtc *crtc,
+ 	 * the lookup of sysmem scratch pages.
+ 	 */
+ 	plane->check_plane(crtc_state, plane_state);
+-	plane->async_flip(plane, crtc_state, plane_state, true);
++	plane->async_flip(NULL, plane, crtc_state, plane_state, true);
+ 	return;
+ 
+ nofb:
+-- 
+2.39.5
+
 
 
 
