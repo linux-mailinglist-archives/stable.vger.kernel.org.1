@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7384A59D35
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D94A59F23
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06EFB3A4C51
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4478418903DE
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B65622B8D0;
-	Mon, 10 Mar 2025 17:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFA018DB24;
+	Mon, 10 Mar 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Upmfz1Qc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enUhxn2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390AF18DB24;
-	Mon, 10 Mar 2025 17:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190891B3927;
+	Mon, 10 Mar 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627061; cv=none; b=rPgfYF3GyvPhfL0+CV/rd2d46b+af05QOG6hz3ve3Ds0Bk8E7cU2+VDLgw8QUfaNwYlhJuEdwsKVImNDXF9jMU7O33l1rIdIMmpY8iGWx8khkUhMqQnXeWgRVOKGlB2Me54hIRlm7VBAKqUoCssvo7p2DlbLVXKoIkUCNnYkW08=
+	t=1741628242; cv=none; b=VARkw5X+6jta/GTpmKKAW82ovzjksIpcrw4v6TvyunoQo8NkS0rPMW6EgnnhGlgiT8u/ui/XAbyGoTKjuuIzwnHKpVI4mKnbCAkG6ecxOGme90q1o2qpw5oqYhIwzl2oneNvPcmRYtT+RfP6yZVgC8UCrGWPqHa+HOiu6+/C804=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627061; c=relaxed/simple;
-	bh=xTFO5HTdi2uJmS4u9W+dN5rGgLslRnUkUcs1PTxljc4=;
+	s=arc-20240116; t=1741628242; c=relaxed/simple;
+	bh=GxmhEsVtt9ORjJpRWftHutEM/fsS4fp01mqEUFhcrzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cI6o66IiW3jVMwDhdUyPQkFT8L8UTu4nZ9E6xmGqGDs1E3JHrekbc4iQNKR8EAjRQSK7P9sWm90VgCjDx8mj1fotfdFKChfa39QXb/GHVcd/dbbVRs3JE8a0t1lTXyk0ZcG7CXVD2AzV24y+RMYPJ8PZb8LQ03hG6Pu8TFOKJ8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upmfz1Qc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63D7C4CEE5;
-	Mon, 10 Mar 2025 17:17:40 +0000 (UTC)
+	 MIME-Version; b=G52L16qYkU7FtEi3yComxxIc5Lef0J9hQi/7zAN9pP6/Qqfu0y4/Jfnmtd/omRPzptBxCdxvlU2Wg7S6Wg+z+w7FQGJN0gtd1S9CS5z0LNaa0nf5uVdcZ12nhH8+LMyZEvkKh2ukaUMq+5satvyL2Rv+3XJWm9hBfcjXnL8+Lqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enUhxn2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F00C4CEE5;
+	Mon, 10 Mar 2025 17:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627061;
-	bh=xTFO5HTdi2uJmS4u9W+dN5rGgLslRnUkUcs1PTxljc4=;
+	s=korg; t=1741628242;
+	bh=GxmhEsVtt9ORjJpRWftHutEM/fsS4fp01mqEUFhcrzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Upmfz1QcNnvSwtDRghU4lpiX/ZK0AF4XSBK+iUn8WneEnjW6LKF9DqIFmQKnjG5Gx
-	 Si2FvKA/kxhAFZn2M3gV0wp7SJIJM8XVijVD0nvigJiTsJoKyEEnvGZfDsU5pOBP6O
-	 UPeQ5p7V1OZoYUhLmZmSx0xPiRHQ/EDYnOBQfKbw=
+	b=enUhxn2MvXKrPFxfY985zI3F/YSezOv7DeLboqOHRYOcxfR5ulqmWyQolAPtE/GD7
+	 jXIOgnVscRrSu8wcVQ1IDNGBXMQZoMKsLzlgAv9JVkvwDcDdvG2x1Ypnnu/wpj6zpm
+	 WACMSV8uyX7/9kEzRNt0II4T+Kp5lr0xuUZFEtVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.13 206/207] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
+	stable <stable@kernel.org>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.6 105/145] usb: gadget: Set self-powered based on MaxPower and bmAttributes
 Date: Mon, 10 Mar 2025 18:06:39 +0100
-Message-ID: <20250310170455.965311992@linuxfoundation.org>
+Message-ID: <20250310170439.001818141@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
 
-commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
+commit 40e89ff5750fca2c1d6da93f98a2038716bba86c upstream.
 
-The alternative path leads to a build error after a recent change:
+Currently the USB gadget will be set as bus-powered based solely
+on whether its bMaxPower is greater than 100mA, but this may miss
+devices that may legitimately draw less than 100mA but still want
+to report as bus-powered. Similarly during suspend & resume, USB
+gadget is incorrectly marked as bus/self powered without checking
+the bmAttributes field. Fix these by configuring the USB gadget
+as self or bus powered based on bmAttributes, and explicitly set
+it as bus-powered if it draws more than 100mA.
 
-sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
-include/linux/stddef.h:9:14: error: called object is not a function or function pointer
-    9 | #define NULL ((void *)0)
-      |              ^
-sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
- 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
-      |                                                 ^~~~
-sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
- 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
-
-Using IS_REACHABLE() is somewhat questionable here anyway since it
-leads to the input code not working when the HDA driver is builtin
-but input is in a loadable module. Replace this with a hard compile-time
-dependency on CONFIG_INPUT. In practice this won't chance much
-other than solve the compiler error because it is rare to require
-sound output but no input support.
-
-Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable <stable@kernel.org>
+Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250217120328.2446639-1-prashanth.k@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/Kconfig         |    1 +
- sound/pci/hda/patch_realtek.c |    5 -----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/usb/gadget/composite.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -208,6 +208,7 @@ comment "Set to Y if you want auto-loadi
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1050,10 +1050,11 @@ static int set_config(struct usb_composi
+ 	else
+ 		usb_gadget_set_remote_wakeup(gadget, 0);
+ done:
+-	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
+-		usb_gadget_set_selfpowered(gadget);
+-	else
++	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
++	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
+ 		usb_gadget_clear_selfpowered(gadget);
++	else
++		usb_gadget_set_selfpowered(gadget);
  
- config SND_HDA_CODEC_REALTEK
- 	tristate "Build Realtek HD-audio codec support"
-+	depends on INPUT
- 	select SND_HDA_GENERIC
- 	select SND_HDA_GENERIC_LEDS
- 	select SND_HDA_SCODEC_COMPONENT
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -5002,7 +5002,6 @@ static void alc298_fixup_samsung_amp_v2_
- 		alc298_samsung_v2_init_amps(codec, 4);
+ 	usb_gadget_vbus_draw(gadget, power);
+ 	if (result >= 0 && cdev->delayed_status)
+@@ -2615,7 +2616,9 @@ void composite_suspend(struct usb_gadget
+ 
+ 	cdev->suspended = 1;
+ 
+-	usb_gadget_set_selfpowered(gadget);
++	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
++		usb_gadget_set_selfpowered(gadget);
++
+ 	usb_gadget_vbus_draw(gadget, 2);
  }
  
--#if IS_REACHABLE(CONFIG_INPUT)
- static void gpio2_mic_hotkey_event(struct hda_codec *codec,
- 				   struct hda_jack_callback *event)
- {
-@@ -5111,10 +5110,6 @@ static void alc233_fixup_lenovo_line2_mi
- 		spec->kb_dev = NULL;
- 	}
- }
--#else /* INPUT */
--#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
--#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
--#endif /* INPUT */
+@@ -2649,8 +2652,11 @@ void composite_resume(struct usb_gadget
+ 		else
+ 			maxpower = min(maxpower, 900U);
  
- static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
+-		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW)
++		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
++		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
+ 			usb_gadget_clear_selfpowered(gadget);
++		else
++			usb_gadget_set_selfpowered(gadget);
+ 
+ 		usb_gadget_vbus_draw(gadget, maxpower);
+ 	} else {
 
 
 
