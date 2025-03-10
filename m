@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E36A59EB4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F311A59C94
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:13:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 888F83AAF7A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:32:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18AC31880A49
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7B9230BF0;
-	Mon, 10 Mar 2025 17:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B625231A42;
+	Mon, 10 Mar 2025 17:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+bQQ8k8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVPp9cFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973D0226D0B;
-	Mon, 10 Mar 2025 17:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC85A231A24;
+	Mon, 10 Mar 2025 17:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627899; cv=none; b=p7BBNsCMsYg4XO3Gaq2WtUCKHkJ3+d1TIgR8GgEPF3guJyTLR0H5T+fqBV/0BKP0/KqcHdxurroryXuUG0E2cPQEUKVbdBW07EZ13bEVJrTYejA+WK10Ecx/tJtZfr8IhPvSIuElSUUrqbMw5s7tu4ULCWGbW9PBdkB2DcT6D3s=
+	t=1741626807; cv=none; b=Y4RFPX3DZc5M6UjpYjMF/VDynS5f5oK2KXVDALLN3JzbJ+QSt/zh8uEKgJPtZwtnDAGeYC4KCmq1Z2KLEr2M2TuhkdRza3xd0hsvRW5ZrK1daUGCZQHRaMRySufKuyQijzIv/rkdw3e0ibV5MwOmtNe0szk9UE1arJ/z8MJPquw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627899; c=relaxed/simple;
-	bh=lL1ZHpLixLlPzoi/ujzPbluKeOMDxEHFbkuLBMxcELU=;
+	s=arc-20240116; t=1741626807; c=relaxed/simple;
+	bh=DPOJay1pMmwmP/DlMk5NoZnhoqcLxWFFRIBPp3qUsNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bC1ST5uc+I36Zhnxf0mgZYtTUjcs358d13c9MoigpygSuFz0P6s7RskofsJONX+XbjKXGGpd4DMFvxAMl70mMnEK8p1oruSoj6xu0mJ8snzZIH0ebM9SD+yCS28kLlSpCwMwR9poRbXhDlWjywcgnduD2X4RpPwtZMAR6cQjNUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+bQQ8k8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E5DC4CEE5;
-	Mon, 10 Mar 2025 17:31:38 +0000 (UTC)
+	 MIME-Version; b=kZ0p/TXNJbhpFYpy6vM7okIFSuo1Nc/oyGZRWVWJaAtmPTeCkRjST0hf5gVCCUx/8Qo+myU3VJWsWuDMW2CWNcfT2Bjn5CCoLuVuyOAgbvXYNmS4AhkTBYws2Z9en1ZMEP69P9HgoQ+ZFUqKyrp7KJpxVpPgzaDCGUPba8Ysfw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVPp9cFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F75C4CEE5;
+	Mon, 10 Mar 2025 17:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627899;
-	bh=lL1ZHpLixLlPzoi/ujzPbluKeOMDxEHFbkuLBMxcELU=;
+	s=korg; t=1741626807;
+	bh=DPOJay1pMmwmP/DlMk5NoZnhoqcLxWFFRIBPp3qUsNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+bQQ8k8aNzdDlWDApzNFzsKR/QmyvJTvqWmrbJR865xutY9YWWePw+03zFIzPTr6
-	 fR27c+vbGUiBTn7gnFRaBkoIth0gc0DHWvS6fEgp0A6wPKqdkt3Y/tVdgEkfeucOXx
-	 nfAdGF+42CM8YpJI00uT9ecSwyancYjpnMKBuizs=
+	b=JVPp9cFkNk/zcY3XqDKHCNLIUnOO5uipNzDdwEIsVgfDiiEfg2r1OYWo4BDXXJ/5m
+	 uD0HM7iPe0BBPteznMIeXhlRNu3Lr0iHylzo9koB1hn6p9liawiDp+5dJvsPUf71jA
+	 sqjxn91m2mHuzgTe0oT4s4d+mDpStk1GnlrLWAjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/145] riscv: cacheinfo: Use of_property_present() for non-boolean properties
+Subject: [PATCH 6.13 120/207] drm/imagination: Fix timestamps in firmware traces
 Date: Mon, 10 Mar 2025 18:05:13 +0100
-Message-ID: <20250310170435.517417282@linuxfoundation.org>
+Message-ID: <20250310170452.578396693@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Alessio Belle <alessio.belle@imgtec.com>
 
-[ Upstream commit fb8179ce2996bffaa36a04e2b6262843b01b7565 ]
+[ Upstream commit 1d2eabb6616433ccaa13927811bdfa205e91ba60 ]
 
-The use of of_property_read_bool() for non-boolean properties is
-deprecated in favor of of_property_present() when testing for property
-presence.
+When firmware traces are enabled, the firmware dumps 48-bit timestamps
+for each trace as two 32-bit values, highest 32 bits (of which only 16
+useful) first.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Clément Léger <cleger@rivosinc.com>
-Cc: stable@vger.kernel.org
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Link: https://lore.kernel.org/r/20241104190314.270095-1-robh@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The driver was reassembling them the other way round i.e. interpreting
+the first value in memory as the lowest 32 bits, and the second value
+as the highest 32 bits (then truncated to 16 bits).
+
+Due to this, firmware trace dumps showed very large timestamps even for
+traces recorded shortly after GPU boot. The timestamps in these dumps
+would also sometimes jump backwards because of the truncation.
+
+Example trace dumped after loading the powervr module and enabling
+firmware traces, where each line is commented with the timestamp value
+in hexadecimal to better show both issues:
+
+[93540092739584] : Host Sync Partition marker: 1    // 0x551300000000
+[28419798597632] : GPU units deinit                 // 0x19d900000000
+[28548647616512] : GPU deinit                       // 0x19f700000000
+
+Update logic to reassemble the timestamps halves in the correct order.
+
+Fixes: cb56cd610866 ("drm/imagination: Add firmware trace to debugfs")
+Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250221-fix-fw-trace-timestamps-v1-1-dba4aeb030ca@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cacheinfo.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/imagination/pvr_fw_trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-index d32dfdba083e1..9fb97c9f9b0be 100644
---- a/arch/riscv/kernel/cacheinfo.c
-+++ b/arch/riscv/kernel/cacheinfo.c
-@@ -103,11 +103,11 @@ int populate_cache_leaves(unsigned int cpu)
- 	if (!np)
- 		return -ENOENT;
+diff --git a/drivers/gpu/drm/imagination/pvr_fw_trace.c b/drivers/gpu/drm/imagination/pvr_fw_trace.c
+index 73707daa4e52d..5dbb636d7d4ff 100644
+--- a/drivers/gpu/drm/imagination/pvr_fw_trace.c
++++ b/drivers/gpu/drm/imagination/pvr_fw_trace.c
+@@ -333,8 +333,8 @@ static int fw_trace_seq_show(struct seq_file *s, void *v)
+ 	if (sf_id == ROGUE_FW_SF_LAST)
+ 		return -EINVAL;
  
--	if (of_property_read_bool(np, "cache-size"))
-+	if (of_property_present(np, "cache-size"))
- 		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
--	if (of_property_read_bool(np, "i-cache-size"))
-+	if (of_property_present(np, "i-cache-size"))
- 		ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
--	if (of_property_read_bool(np, "d-cache-size"))
-+	if (of_property_present(np, "d-cache-size"))
- 		ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+-	timestamp = read_fw_trace(trace_seq_data, 1) |
+-		((u64)read_fw_trace(trace_seq_data, 2) << 32);
++	timestamp = ((u64)read_fw_trace(trace_seq_data, 1) << 32) |
++		read_fw_trace(trace_seq_data, 2);
+ 	timestamp = (timestamp & ~ROGUE_FWT_TIMESTAMP_TIME_CLRMSK) >>
+ 		ROGUE_FWT_TIMESTAMP_TIME_SHIFT;
  
- 	prev = np;
-@@ -120,11 +120,11 @@ int populate_cache_leaves(unsigned int cpu)
- 			break;
- 		if (level <= levels)
- 			break;
--		if (of_property_read_bool(np, "cache-size"))
-+		if (of_property_present(np, "cache-size"))
- 			ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
--		if (of_property_read_bool(np, "i-cache-size"))
-+		if (of_property_present(np, "i-cache-size"))
- 			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
--		if (of_property_read_bool(np, "d-cache-size"))
-+		if (of_property_present(np, "d-cache-size"))
- 			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
- 		levels = level;
- 	}
 -- 
 2.39.5
 
