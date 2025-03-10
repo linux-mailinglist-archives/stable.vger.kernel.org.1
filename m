@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-122018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB3FA59D81
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDA5A59C29
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AC1188EAF3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D79C716DF6D
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD162309B0;
-	Mon, 10 Mar 2025 17:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E091DE89C;
+	Mon, 10 Mar 2025 17:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krzwLcW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rABz2MUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5819122154C;
-	Mon, 10 Mar 2025 17:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349D8232367;
+	Mon, 10 Mar 2025 17:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627292; cv=none; b=OLQ4SB6TRBfAfLGKdGzxMWLtlh9/hqilFFaHM7zbYb+gCMmlT5JfGIPWtSiZt0uSCzNu4GdXgOyuPUMAbLFHEjTHJMjhDUh8VOcSSRdGCTNUHJG8cP00c/Bg7mK+hnz1lMaxS3pJGJTzboR4JPqkInRSpmYqYAU9Sq8cucr6LRg=
+	t=1741626573; cv=none; b=IjLvQXAa1VaaI0O+NuLcIYrb+ftNY7Pff2Xrmjci9UNrGHzL+6Em4jKYQHkWMlprWyQ8bPLcwQPgSnbhg+rhFWSSmBViBflHDloGdNUmfwRoJbT+nhu1jspz320oMSbsWi4uFbaNU3Qp06u0D0ruI0RE/DqpAUMkuAZkYwAm2Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627292; c=relaxed/simple;
-	bh=xwyzZpXyiZNKilwOTU2+imPAauOHgP2BcGxiinGsxHY=;
+	s=arc-20240116; t=1741626573; c=relaxed/simple;
+	bh=0pPobXUKYXhdR3tL6TOq33YD00+kySJc1PoiYgBQZMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPNRWmRugAkIz2r4wqLL2wHhDbT9K2PSvrvD1MF0Wvit8ZYXrGJhneVyliK5p/nG/M9ilLNILmIIt+6nXBN+dM1oRLQVC361aKcGhuEYinHYED2WSCzp1XfLzmS0LNEbqRkh/FrCUOK12baegi0l+ROYnBlwyduHoOxRiLUom2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krzwLcW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A59C4CEE5;
-	Mon, 10 Mar 2025 17:21:31 +0000 (UTC)
+	 MIME-Version; b=kbuuwYfYZPqf6XeaR+iEHQQIgTNIz+FDe8fJTssbhE3W4lpEBApKegWbOSEyrfEA0cdPpXPr87ePiTJexfBtDKi14e96QrWoYKbPGnfLC2QKYwZfNDci1G6qR3RDr6CYr47iOb9re+XJxjUoqMcwrLRFRl/s95Y6d8RyGeZF0/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rABz2MUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD4AC4CEE5;
+	Mon, 10 Mar 2025 17:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627292;
-	bh=xwyzZpXyiZNKilwOTU2+imPAauOHgP2BcGxiinGsxHY=;
+	s=korg; t=1741626573;
+	bh=0pPobXUKYXhdR3tL6TOq33YD00+kySJc1PoiYgBQZMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krzwLcW0yjuan7VdTqM0rMsMHGtkLPKdqhYT8jXIZPzYZ2qtxFI2QrmgQdcGA6scj
-	 OImB69yxSMzDMwUTzj88VrEdZVvRL7uGPMfPZI9OpsXNA8rXn2Io8cLcJd2h+jJv2N
-	 zFOmrVuK+jtfksaoDURnmMRNm1y75jXmGEgpQq6Q=
+	b=rABz2MUccZEQLIhUTEnyxcOlcZ3fhVUKQ7f4f62siLH+g1qdbvxSLmxZBPf35SU6W
+	 vuyMOvlufmYuvTWj5/w8K4VOi8qIUeiQR65yGF0AMIDe+pXuthoWBBiO0KS48UGAnr
+	 aVeDuArT7CNr8mbacTvY9Z8N8a/8ppGcJhexPe8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 047/269] rust: alloc: implement `IntoIterator` for `Vec`
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.13 007/207] Revert "of: reserved-memory: Fix using wrong number of cells to get property alignment"
 Date: Mon, 10 Mar 2025 18:03:20 +0100
-Message-ID: <20250310170459.598815207@linuxfoundation.org>
+Message-ID: <20250310170448.046914952@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,225 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-commit 1d1d223aa3b37c34271aefc2706340d0843bfcb2 upstream.
+commit 75f1f311d883dfaffb98be3c1da208d6ed5d4df9 upstream.
 
-Implement `IntoIterator` for `Vec`, `Vec`'s `IntoIter` type, as well as
-`Iterator` for `IntoIter`.
+This reverts commit 267b21d0bef8e67dbe6c591c9991444e58237ec9.
 
-`Vec::into_iter` disassembles the `Vec` into its raw parts; additionally,
-`IntoIter` keeps track of a separate pointer, which is incremented
-correspondingly as the iterator advances, while the length, or the count
-of elements, is decremented.
+Turns out some DTs do depend on this behavior. Specifically, a
+downstream Pixel 6 DT. Revert the change at least until we can decide if
+the DT spec can be changed instead.
 
-This also means that `IntoIter` takes the ownership of the backing
-buffer and is responsible to drop the remaining elements and free the
-backing buffer, if it's dropped.
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-18-dakr@kernel.org
-[ Fixed typos. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc.rs      |    1 
- rust/kernel/alloc/kvec.rs |  170 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 171 insertions(+)
+ drivers/of/of_reserved_mem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -20,6 +20,7 @@ pub use self::kbox::KBox;
- pub use self::kbox::KVBox;
- pub use self::kbox::VBox;
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -415,12 +415,12 @@ static int __init __reserved_mem_alloc_s
  
-+pub use self::kvec::IntoIter;
- pub use self::kvec::KVVec;
- pub use self::kvec::KVec;
- pub use self::kvec::VVec;
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -646,3 +646,173 @@ impl_slice_eq! {
-     [A: Allocator, const N: usize] Vec<T, A>, [U; N],
-     [A: Allocator, const N: usize] Vec<T, A>, &[U; N],
- }
-+
-+impl<'a, T, A> IntoIterator for &'a Vec<T, A>
-+where
-+    A: Allocator,
-+{
-+    type Item = &'a T;
-+    type IntoIter = slice::Iter<'a, T>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        self.iter()
-+    }
-+}
-+
-+impl<'a, T, A: Allocator> IntoIterator for &'a mut Vec<T, A>
-+where
-+    A: Allocator,
-+{
-+    type Item = &'a mut T;
-+    type IntoIter = slice::IterMut<'a, T>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        self.iter_mut()
-+    }
-+}
-+
-+/// An [`Iterator`] implementation for [`Vec`] that moves elements out of a vector.
-+///
-+/// This structure is created by the [`Vec::into_iter`] method on [`Vec`] (provided by the
-+/// [`IntoIterator`] trait).
-+///
-+/// # Examples
-+///
-+/// ```
-+/// let v = kernel::kvec![0, 1, 2]?;
-+/// let iter = v.into_iter();
-+///
-+/// # Ok::<(), Error>(())
-+/// ```
-+pub struct IntoIter<T, A: Allocator> {
-+    ptr: *mut T,
-+    buf: NonNull<T>,
-+    len: usize,
-+    layout: ArrayLayout<T>,
-+    _p: PhantomData<A>,
-+}
-+
-+impl<T, A> Iterator for IntoIter<T, A>
-+where
-+    A: Allocator,
-+{
-+    type Item = T;
-+
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let v = kernel::kvec![1, 2, 3]?;
-+    /// let mut it = v.into_iter();
-+    ///
-+    /// assert_eq!(it.next(), Some(1));
-+    /// assert_eq!(it.next(), Some(2));
-+    /// assert_eq!(it.next(), Some(3));
-+    /// assert_eq!(it.next(), None);
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    fn next(&mut self) -> Option<T> {
-+        if self.len == 0 {
-+            return None;
-+        }
-+
-+        let current = self.ptr;
-+
-+        // SAFETY: We can't overflow; decreasing `self.len` by one every time we advance `self.ptr`
-+        // by one guarantees that.
-+        unsafe { self.ptr = self.ptr.add(1) };
-+
-+        self.len -= 1;
-+
-+        // SAFETY: `current` is guaranteed to point at a valid element within the buffer.
-+        Some(unsafe { current.read() })
-+    }
-+
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let v: KVec<u32> = kernel::kvec![1, 2, 3]?;
-+    /// let mut iter = v.into_iter();
-+    /// let size = iter.size_hint().0;
-+    ///
-+    /// iter.next();
-+    /// assert_eq!(iter.size_hint().0, size - 1);
-+    ///
-+    /// iter.next();
-+    /// assert_eq!(iter.size_hint().0, size - 2);
-+    ///
-+    /// iter.next();
-+    /// assert_eq!(iter.size_hint().0, size - 3);
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    fn size_hint(&self) -> (usize, Option<usize>) {
-+        (self.len, Some(self.len))
-+    }
-+}
-+
-+impl<T, A> Drop for IntoIter<T, A>
-+where
-+    A: Allocator,
-+{
-+    fn drop(&mut self) {
-+        // SAFETY: `self.ptr` is guaranteed to be valid by the type invariant.
-+        unsafe { ptr::drop_in_place(ptr::slice_from_raw_parts_mut(self.ptr, self.len)) };
-+
-+        // SAFETY:
-+        // - `self.buf` was previously allocated with `A`.
-+        // - `self.layout` matches the `ArrayLayout` of the preceding allocation.
-+        unsafe { A::free(self.buf.cast(), self.layout.into()) };
-+    }
-+}
-+
-+impl<T, A> IntoIterator for Vec<T, A>
-+where
-+    A: Allocator,
-+{
-+    type Item = T;
-+    type IntoIter = IntoIter<T, A>;
-+
-+    /// Consumes the `Vec<T, A>` and creates an `Iterator`, which moves each value out of the
-+    /// vector (from start to end).
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let v = kernel::kvec![1, 2]?;
-+    /// let mut v_iter = v.into_iter();
-+    ///
-+    /// let first_element: Option<u32> = v_iter.next();
-+    ///
-+    /// assert_eq!(first_element, Some(1));
-+    /// assert_eq!(v_iter.next(), Some(2));
-+    /// assert_eq!(v_iter.next(), None);
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    ///
-+    /// ```
-+    /// let v = kernel::kvec![];
-+    /// let mut v_iter = v.into_iter();
-+    ///
-+    /// let first_element: Option<u32> = v_iter.next();
-+    ///
-+    /// assert_eq!(first_element, None);
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    #[inline]
-+    fn into_iter(self) -> Self::IntoIter {
-+        let buf = self.ptr;
-+        let layout = self.layout;
-+        let (ptr, len, _) = self.into_raw_parts();
-+
-+        IntoIter {
-+            ptr,
-+            buf,
-+            len,
-+            layout,
-+            _p: PhantomData::<A>,
-+        }
-+    }
-+}
+ 	prop = of_get_flat_dt_prop(node, "alignment", &len);
+ 	if (prop) {
+-		if (len != dt_root_size_cells * sizeof(__be32)) {
++		if (len != dt_root_addr_cells * sizeof(__be32)) {
+ 			pr_err("invalid alignment property in '%s' node.\n",
+ 				uname);
+ 			return -EINVAL;
+ 		}
+-		align = dt_mem_next_cell(dt_root_size_cells, &prop);
++		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
+ 	}
+ 
+ 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
 
 
 
