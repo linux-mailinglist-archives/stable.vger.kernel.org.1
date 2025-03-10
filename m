@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB120A5A282
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:20:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7384A59D35
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B9497A848E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06EFB3A4C51
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F0922FF4E;
-	Mon, 10 Mar 2025 18:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B65622B8D0;
+	Mon, 10 Mar 2025 17:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/mNPnO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Upmfz1Qc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F371BBBFD;
-	Mon, 10 Mar 2025 18:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390AF18DB24;
+	Mon, 10 Mar 2025 17:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630845; cv=none; b=VR/YiZbGYpO4w+E7Fh4YCMw/+yNIB6alWe7l3JgiiRQchE4w01Ns0yigj/1s48hjkTXJWBwCfHbyOfIhl1B/q7DjA6YQ4zEvgFQ2X90xcFNvhnS/dOpPbt+sIzfrDf8r2otvp1lfiv1ew1b9sxhG5DvygPieF14jza+CCcq7tRM=
+	t=1741627061; cv=none; b=rPgfYF3GyvPhfL0+CV/rd2d46b+af05QOG6hz3ve3Ds0Bk8E7cU2+VDLgw8QUfaNwYlhJuEdwsKVImNDXF9jMU7O33l1rIdIMmpY8iGWx8khkUhMqQnXeWgRVOKGlB2Me54hIRlm7VBAKqUoCssvo7p2DlbLVXKoIkUCNnYkW08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630845; c=relaxed/simple;
-	bh=QOudwY9eaw2R3WAr8181oqSYMJDb6QSy8T3ykxNqlf8=;
+	s=arc-20240116; t=1741627061; c=relaxed/simple;
+	bh=xTFO5HTdi2uJmS4u9W+dN5rGgLslRnUkUcs1PTxljc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUlT+6uJAUeqLsDVXC4cDdHiYyHO4SJdF1+CoIzT92dp2rQP19Wu+D+01VB78rjJqMqH1/JENddR2DKUx0rTUgherP26JWvGdro53BaUl3zOofrdEFKTWOzSB2v4RL+lr+uiwIkBT27TIAv8wPPLXDg5mmYaU2CHngTjbpYnKRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/mNPnO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAEFC4CEE5;
-	Mon, 10 Mar 2025 18:20:44 +0000 (UTC)
+	 MIME-Version; b=cI6o66IiW3jVMwDhdUyPQkFT8L8UTu4nZ9E6xmGqGDs1E3JHrekbc4iQNKR8EAjRQSK7P9sWm90VgCjDx8mj1fotfdFKChfa39QXb/GHVcd/dbbVRs3JE8a0t1lTXyk0ZcG7CXVD2AzV24y+RMYPJ8PZb8LQ03hG6Pu8TFOKJ8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upmfz1Qc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63D7C4CEE5;
+	Mon, 10 Mar 2025 17:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630844;
-	bh=QOudwY9eaw2R3WAr8181oqSYMJDb6QSy8T3ykxNqlf8=;
+	s=korg; t=1741627061;
+	bh=xTFO5HTdi2uJmS4u9W+dN5rGgLslRnUkUcs1PTxljc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/mNPnO8DcP5YYiKoO4DMhDoe4wu/tuAe72CaYuQoH+DglGobmg6QNNiLM9RUTPik
-	 jAW0eKI4a7mIpckCcgG+YP+ChIIEOkpN4Yhy5T6e1/qE0lzZyQ/adCf6rG7sN8yxdD
-	 u0+OznDNxZBe16rS2z25ifib1tOUlak063Eyftw4=
+	b=Upmfz1QcNnvSwtDRghU4lpiX/ZK0AF4XSBK+iUn8WneEnjW6LKF9DqIFmQKnjG5Gx
+	 Si2FvKA/kxhAFZn2M3gV0wp7SJIJM8XVijVD0nvigJiTsJoKyEEnvGZfDsU5pOBP6O
+	 UPeQ5p7V1OZoYUhLmZmSx0xPiRHQ/EDYnOBQfKbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 553/620] HID: google: fix unused variable warning under !CONFIG_ACPI
+	Arnd Bergmann <arnd@arndb.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 206/207] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
 Date: Mon, 10 Mar 2025 18:06:39 +0100
-Message-ID: <20250310170607.372711575@linuxfoundation.org>
+Message-ID: <20250310170455.965311992@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
+commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
 
-As reported by the kernel test robot, the following warning occurs:
+The alternative path leads to a build error after a recent change:
 
->> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
-     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
-         |                                    ^~~~~~~~~~~~~~~~
+sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
+include/linux/stddef.h:9:14: error: called object is not a function or function pointer
+    9 | #define NULL ((void *)0)
+      |              ^
+sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
+ 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
+      |                                                 ^~~~
+sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
+ 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
 
-The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
-Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
-prevents a compiler warning when ACPI is disabled.
+Using IS_REACHABLE() is somewhat questionable here anyway since it
+leads to the input code not working when the HDA driver is builtin
+but input is in a loadable module. Replace this with a hard compile-time
+dependency on CONFIG_INPUT. In practice this won't chance much
+other than solve the compiler error because it is rare to require
+sound output but no input support.
 
-Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-google-hammer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/Kconfig         |    1 +
+ sound/pci/hda/patch_realtek.c |    5 -----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
-index 6a227e07f8943..5f20925bdc21f 100644
---- a/drivers/hid/hid-google-hammer.c
-+++ b/drivers/hid/hid-google-hammer.c
-@@ -267,11 +267,13 @@ static int cbas_ec_remove(struct platform_device *pdev)
- 	return 0;
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -208,6 +208,7 @@ comment "Set to Y if you want auto-loadi
+ 
+ config SND_HDA_CODEC_REALTEK
+ 	tristate "Build Realtek HD-audio codec support"
++	depends on INPUT
+ 	select SND_HDA_GENERIC
+ 	select SND_HDA_GENERIC_LEDS
+ 	select SND_HDA_SCODEC_COMPONENT
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -5002,7 +5002,6 @@ static void alc298_fixup_samsung_amp_v2_
+ 		alc298_samsung_v2_init_amps(codec, 4);
  }
  
-+#ifdef CONFIG_ACPI
- static const struct acpi_device_id cbas_ec_acpi_ids[] = {
- 	{ "GOOG000B", 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
-+#endif
+-#if IS_REACHABLE(CONFIG_INPUT)
+ static void gpio2_mic_hotkey_event(struct hda_codec *codec,
+ 				   struct hda_jack_callback *event)
+ {
+@@ -5111,10 +5110,6 @@ static void alc233_fixup_lenovo_line2_mi
+ 		spec->kb_dev = NULL;
+ 	}
+ }
+-#else /* INPUT */
+-#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
+-#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
+-#endif /* INPUT */
  
- #ifdef CONFIG_OF
- static const struct of_device_id cbas_ec_of_match[] = {
--- 
-2.39.5
-
+ static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
 
 
 
