@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014F7A59E58
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57491A59F88
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 064281649AF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C70A53A4FCD
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4074322DFA5;
-	Mon, 10 Mar 2025 17:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8DD230BC5;
+	Mon, 10 Mar 2025 17:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vK4TeLht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBoGXJbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE91A233145;
-	Mon, 10 Mar 2025 17:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086D22253FE;
+	Mon, 10 Mar 2025 17:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627804; cv=none; b=jmgUR7q+nitsJlfTcisiQeDAiN8HnOdjwtD6qz8mqira97CoM+n0nsP3wDwowGyqyZozEHtOu6ZezWpow6SGNDqWVfDRtnYyUpMOXpmpfjgM6r6gDAv46U/FDaz+KzPx3nx2Iig6wOtlwRdfecSeI0rBUldNjKgKM1Ekj3ekzpw=
+	t=1741628424; cv=none; b=cLhqSgTdmYqqN8LkPpGcCPv7iZx7GIvXEPy/Ix1d1vql5DUUFGxNphAi7MdCRebrytSXSZV8/H5EOIhL/gR0+6wKfaW7Z51fx7nKFZkavBrhmalVZkiXMoWPXt9+UdhsT0cWC6GGZrAIgHioco5ON4dEhVSQBMQRliiQGaoU80M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627804; c=relaxed/simple;
-	bh=Aay2TFQj1ZhmU9F35W8FtETXxv48fm+p6X6NkTfHoB0=;
+	s=arc-20240116; t=1741628424; c=relaxed/simple;
+	bh=5VtMTqJLHH2XIOAAlY/U5g1Xfpk4ILiaX4Ei71oTtc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDMkOdGhBTWVK506k2V+QY6wa0y9vGQ2vO8AAGbM+1sdKIRoywa4MByiUmdzuS2iWXSCm5Y2Wh4LTOF3BGQlHqy9OG7TiIyaFbHdEJoaTcvQZYzbp8viG1F5vNN6xHd6ES44DMuh4fTFJ2QfcTh5A903iSYrMNKchRdRsXtTeTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vK4TeLht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D6C4CEE5;
-	Mon, 10 Mar 2025 17:30:03 +0000 (UTC)
+	 MIME-Version; b=q+UOezUBrF449wDHlKFTAzsUJ/20uqIwcqZ9onYMOS74CJem+pT3zHXsorVTYEdk3Rzfx/74UeOGTANl8X7yKZWTnhkI8r44knvmdYhn+CDv5WiDaBtAhW8WIeyWXq5IGRoPLONW3gNu+5QTDJMwMKqKiuDNK/2l9TaqEESNDjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBoGXJbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C35C4CEE5;
+	Mon, 10 Mar 2025 17:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627803;
-	bh=Aay2TFQj1ZhmU9F35W8FtETXxv48fm+p6X6NkTfHoB0=;
+	s=korg; t=1741628423;
+	bh=5VtMTqJLHH2XIOAAlY/U5g1Xfpk4ILiaX4Ei71oTtc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vK4TeLhtDMt9jsbHYsK5timrGbY1xbICYgoogwj2bYKwiJxxBkq+qlz3Pgj4adSiP
-	 ZptB3wACqi+nhfhvnGCrDQscamkIxqOcwNEm5utK5llsK8vMQ85xt+pnqng2BAUN0H
-	 wePbiGES7fy5OXArtqPL2Gx5VArVdHdngTyzJh/I=
+	b=fBoGXJbAesYNLNAwz2y6JRNldJJf46kX4/AO6bxKhB6ChmwKBC6jwYbWKW+4Hv56p
+	 FeEg59JBlLM2wmWu4tHj7D9b0fNUo2maau6sLFVUs+4uObP4ibG5mYlz6YnO2w5TIy
+	 NNxVBAw2o1V0esOTuHsXrIlF3oawr+KJ2iIJY/UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.12 213/269] usb: renesas_usbhs: Flush the notify_hotplug_work
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 022/109] x86/cacheinfo: Validate CPUID leaf 0x2 EDX output
 Date: Mon, 10 Mar 2025 18:06:06 +0100
-Message-ID: <20250310170506.180479545@linuxfoundation.org>
+Message-ID: <20250310170428.432520363@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
+commit 8177c6bedb7013cf736137da586cf783922309dd upstream.
 
-When performing continuous unbind/bind operations on the USB drivers
-available on the Renesas RZ/G2L SoC, a kernel crash with the message
-"Unable to handle kernel NULL pointer dereference at virtual address"
-may occur. This issue points to the usbhsc_notify_hotplug() function.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-Flush the delayed work to avoid its execution when driver resources are
-unavailable.
+The historical Git commit:
 
-Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
+  019361a20f016 ("- pre6: Intel: start to add Pentium IV specific stuff (128-byte cacheline etc)...")
+
+introduced leaf 0x2 output parsing.  It only validated the MSBs of EAX,
+EBX, and ECX, but left EDX unchecked.
+
+Validate EDX's most-significant bit.
+
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-2-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/cacheinfo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -781,6 +781,8 @@ static void usbhs_remove(struct platform
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -801,7 +801,7 @@ void init_intel_cacheinfo(struct cpuinfo
+ 			cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
  
- 	dev_dbg(&pdev->dev, "usb remove\n");
+ 			/* If bit 31 is set, this is an unknown format */
+-			for (j = 0 ; j < 3 ; j++)
++			for (j = 0 ; j < 4 ; j++)
+ 				if (regs[j] & (1 << 31))
+ 					regs[j] = 0;
  
-+	flush_delayed_work(&priv->notify_hotplug_work);
-+
- 	/* power off */
- 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
- 		usbhsc_power_ctrl(priv, 0);
 
 
 
