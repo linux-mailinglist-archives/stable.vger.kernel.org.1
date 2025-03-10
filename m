@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-121763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E43A59C3D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8A4A59D7B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DCE53A923F
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D66EB188EA96
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002A722D4D0;
-	Mon, 10 Mar 2025 17:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D608230BC8;
+	Mon, 10 Mar 2025 17:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1OE4rt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHAGkOWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE96722D786;
-	Mon, 10 Mar 2025 17:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A00D22154C;
+	Mon, 10 Mar 2025 17:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626558; cv=none; b=OVzX+Ktuv5hZNMlwGoAGpw+RoQs24WgVLEwZhnUKjMpwQrPaMbdeCeYwjZ+YRoML4ajNgBZOx7EX7ce8opjjtLCKUgBmKqBKJ2iWAFRD01vytTYq596FoygKJM+Mi8relWfCGa1gVzFXPjW7L9BS/yv0EdHGd+gxx7nMvpsNRHA=
+	t=1741627275; cv=none; b=n77ZV4G8BjPgyeGdDSYXgu/9HqJQyCt/i038e6h09xqAVkbxwHUE69NE8Segh+ZcTvDv+9L9kRfjLQGLyNxYiG0fW4UUdTaPLnKYrGRF1rR3ZvLfrzp0NkZKnXsB3W0TO7Lt5tNSdYgmDTeQJfnOPobRVnjane+7Yt34qQeaDGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626558; c=relaxed/simple;
-	bh=CocNOnSpbDink+FwxRazvx2YSdbXcJ3d8dc5gjA+ydg=;
+	s=arc-20240116; t=1741627275; c=relaxed/simple;
+	bh=2HJS8GwaImbM1rvv4Gsh2QX73RLQpAokWR1QN8b5v4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lF8qkFlskyyvRT1W9gyRXWhXGg4zS87VYe0rp49QmyMgJvWoLE/Xpw3NfPJNXiQI8U2Z7xulsnVZTPQ6tC+VNFg7ag71haBTyrkgPbtrBVHT/dgkRVqcFwGlhiTyakzlv6y/E31+X8k9RmcoAtcYj7vRJyGC/obfBHYx6Ondr3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1OE4rt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330F7C4CEE5;
-	Mon, 10 Mar 2025 17:09:18 +0000 (UTC)
+	 MIME-Version; b=QlMKbL0T14NxR+b91EmXSJLR9uf9E+VsnkosvqcepBi0IiBnHtqA7PjKcUm8eSZZ2vrEItKo8FmTTHfTQr7Cz5K1xp3VGIzNcv6t/I57EfZZLULRURikfGIwVwZvOnAYWdGnxHoItJQEoW5PsJwAKlLplpVmTSrupDnWHFMhU/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHAGkOWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D94C4CEE5;
+	Mon, 10 Mar 2025 17:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626558;
-	bh=CocNOnSpbDink+FwxRazvx2YSdbXcJ3d8dc5gjA+ydg=;
+	s=korg; t=1741627275;
+	bh=2HJS8GwaImbM1rvv4Gsh2QX73RLQpAokWR1QN8b5v4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1OE4rt0qPHSLCksTEA31BfG+2okJmXnU9yRWO+RwOSgVtV7ZN0Szrc7b4ylCum6c
-	 ypOQi9HifcXxIRULOrpsT6zKr3yloizyKx0Gu75hNHzuROT1uuNXi3uUKDanriIx1P
-	 EtXEIncB/KBc1qP/p2qEH/+6WcLjpBaXQuKxSM+A=
+	b=xHAGkOWXNI5J/clul0hlY6Y4TQsmjxpGbl6OTtSMp+R8qr87IyV8PtC16PzNka+qH
+	 uMYKL3CmaEt7MGbLiQX0PFZlJwt0LAA2kagk1pOIMvfEjC2I6b8SKOPmUCzWbphwpp
+	 lfEU1iI4Nk3Aub66pYjcvwrwMuf5Fc3jzjoqhwig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	andreas.stuehrk@yaxi.tech,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.13 032/207] virt: sev-guest: Allocate request data dynamically
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 072/269] Revert "of: reserved-memory: Fix using wrong number of cells to get property alignment"
 Date: Mon, 10 Mar 2025 18:03:45 +0100
-Message-ID: <20250310170449.053128699@linuxfoundation.org>
+Message-ID: <20250310170500.598950909@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikunj A Dadhania <nikunj@amd.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-commit ac7c06acaa3738b38e83815ac0f07140ad320f13 upstream.
+commit 75f1f311d883dfaffb98be3c1da208d6ed5d4df9 upstream.
 
-Commit
+This reverts commit 267b21d0bef8e67dbe6c591c9991444e58237ec9.
 
-  ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
+Turns out some DTs do depend on this behavior. Specifically, a
+downstream Pixel 6 DT. Revert the change at least until we can decide if
+the DT spec can be changed instead.
 
-narrowed the command mutex scope to snp_send_guest_request().  However,
-GET_REPORT, GET_DERIVED_KEY, and GET_EXT_REPORT share the req structure in
-snp_guest_dev. Without the mutex protection, concurrent requests can overwrite
-each other's data. Fix it by dynamically allocating the request structure.
-
-Fixes: ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
-Closes: https://github.com/AMDESE/AMDSEV/issues/265
-Reported-by: andreas.stuehrk@yaxi.tech
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250307013700.437505-2-aik@amd.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/of/of_reserved_mem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -41,12 +41,6 @@ struct snp_guest_dev {
- 	struct miscdevice misc;
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -360,12 +360,12 @@ static int __init __reserved_mem_alloc_s
  
- 	struct snp_msg_desc *msg_desc;
--
--	union {
--		struct snp_report_req report;
--		struct snp_derived_key_req derived_key;
--		struct snp_ext_report_req ext_report;
--	} req;
- };
+ 	prop = of_get_flat_dt_prop(node, "alignment", &len);
+ 	if (prop) {
+-		if (len != dt_root_size_cells * sizeof(__be32)) {
++		if (len != dt_root_addr_cells * sizeof(__be32)) {
+ 			pr_err("invalid alignment property in '%s' node.\n",
+ 				uname);
+ 			return -EINVAL;
+ 		}
+-		align = dt_mem_next_cell(dt_root_size_cells, &prop);
++		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
+ 	}
  
- /*
-@@ -390,7 +384,7 @@ struct snp_req_resp {
- 
- static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
--	struct snp_report_req *report_req = &snp_dev->req.report;
-+	struct snp_report_req *report_req __free(kfree) = NULL;
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_report_resp *report_resp;
- 	struct snp_guest_req req = {};
-@@ -399,6 +393,10 @@ static int get_report(struct snp_guest_d
- 	if (!arg->req_data || !arg->resp_data)
- 		return -EINVAL;
- 
-+	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
-+	if (!report_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_user(report_req, (void __user *)arg->req_data, sizeof(*report_req)))
- 		return -EFAULT;
- 
-@@ -435,7 +433,7 @@ e_free:
- 
- static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
--	struct snp_derived_key_req *derived_key_req = &snp_dev->req.derived_key;
-+	struct snp_derived_key_req *derived_key_req __free(kfree) = NULL;
- 	struct snp_derived_key_resp derived_key_resp = {0};
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_guest_req req = {};
-@@ -455,6 +453,10 @@ static int get_derived_key(struct snp_gu
- 	if (sizeof(buf) < resp_len)
- 		return -ENOMEM;
- 
-+	derived_key_req = kzalloc(sizeof(*derived_key_req), GFP_KERNEL_ACCOUNT);
-+	if (!derived_key_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_user(derived_key_req, (void __user *)arg->req_data,
- 			   sizeof(*derived_key_req)))
- 		return -EFAULT;
-@@ -487,7 +489,7 @@ static int get_ext_report(struct snp_gue
- 			  struct snp_req_resp *io)
- 
- {
--	struct snp_ext_report_req *report_req = &snp_dev->req.ext_report;
-+	struct snp_ext_report_req *report_req __free(kfree) = NULL;
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_report_resp *report_resp;
- 	struct snp_guest_req req = {};
-@@ -497,6 +499,10 @@ static int get_ext_report(struct snp_gue
- 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
- 		return -EINVAL;
- 
-+	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
-+	if (!report_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_sockptr(report_req, io->req_data, sizeof(*report_req)))
- 		return -EFAULT;
- 
+ 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
 
 
 
