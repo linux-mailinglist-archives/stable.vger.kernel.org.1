@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947F0A59F2C
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 397A3A59FC1
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FC2170AB0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9513D16F5C5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BBB22D799;
-	Mon, 10 Mar 2025 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B602923236D;
+	Mon, 10 Mar 2025 17:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKAwTxZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VumSGfZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A155218DB24;
-	Mon, 10 Mar 2025 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BF222FF40;
+	Mon, 10 Mar 2025 17:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628256; cv=none; b=otpyURuQFGsIgnJEFlaJE3In4YoenDlPx03CnuOH0CQtTCZEEF50ecknJY1ZBSYkUNDKaUKyLbY3qVkHuSgOaUyuK79suNq7jPQCz9qO0ZtnlxpiV1RiBtfH4aP8Jz7QDVbL/SpSGj5u51MLV3Tb8qMr3xF3XYMpKX2kl4PIMJw=
+	t=1741628601; cv=none; b=WByVmLhqNHFjE9jSls9O9zR7f2NbtJSEYfF+EKnoEHmQ5m9k6mmEQyq0BxOpUPMGYQcLaYKUJDaUPCuNP7QbfJ7eAvwgXjCtZMOFlyBEbKtWjpPGuwZ9hCJnv2j2p0NRK20OVhET7w3lAJ7WxA4+5hVuDNr9j4/UhuT9F8SNqYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628256; c=relaxed/simple;
-	bh=uWZPosHr+nN+nkhrubCA0fAyRyg5E5KIupXUdORVhyw=;
+	s=arc-20240116; t=1741628601; c=relaxed/simple;
+	bh=VkXw9i1Oxch3DMMVpY40N6rSnjP3QGwmI1VntL/o1cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvIrNA9h8Cw7g8nhmLV0dFvuHrDKlDs/dZu2le1dthTpZZe0eaacB+hUIwPfi4DIeiPFkvYfdOwKEaZMU8/fjGlW5jEKkVY6WFM/fATpf9hxFjrVyCDR6E1KyV+Zkj/Ypt7H9qbxsR7j1Phonua/kzEWwnf2J/+W/r/cRyLYlsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKAwTxZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28685C4CEE5;
-	Mon, 10 Mar 2025 17:37:35 +0000 (UTC)
+	 MIME-Version; b=YPuzWUkiziIZOz9VH0WHDS7dbGbjvICwOSVu/0AIKN/yrZenY7rJMI8NaTs8cWNruR8L2MnCQTI7uDvo+Yi2Y3E8PTF7sOEVfQusX/d0witKTSCzw0OWCC4PumrK9T4ZjK0q56QNQ9Lkr4luI0DtyNKYJH1sCEEMMsH/p0Ql810=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VumSGfZO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13C5C4CEEC;
+	Mon, 10 Mar 2025 17:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628256;
-	bh=uWZPosHr+nN+nkhrubCA0fAyRyg5E5KIupXUdORVhyw=;
+	s=korg; t=1741628601;
+	bh=VkXw9i1Oxch3DMMVpY40N6rSnjP3QGwmI1VntL/o1cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKAwTxZht6+ySY5zX7hf9F4fUcfn3f0xDdpvl47mO0fFPwt/DJzI3TKpQaTkah47f
-	 WnQfsL0wrc6bnTt9GX4D9vF9LAjyJK8S9/YNOZuF1KGND8flaCp7Yjoi7DB4eMEEKY
-	 8Y7Vr6sFbbfJB49iHDfbdN/x34KVcFLsVRvBFv20=
+	b=VumSGfZOQy2BSUY+r070mAN6oqD+FTln/nmaJttUZ4oJ6aXdJA37J8TPG/bfEK2+f
+	 nwh7F4gYi7JTXfNzX1wQA9P85cmAkVW8KmS4YkCqnYfHa9htAGmzGCohSazK/e88+f
+	 Nls2uEKdT/vCUo1M3Qiuw4BWaZGpiOj6w2urZ/GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 142/145] x86/boot: Sanitize boot params before parsing command line
+	Arnd Bergmann <arnd@arndb.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 092/109] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
 Date: Mon, 10 Mar 2025 18:07:16 +0100
-Message-ID: <20250310170440.488777898@linuxfoundation.org>
+Message-ID: <20250310170431.221928897@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit c00b413a96261faef4ce22329153c6abd4acef25 upstream.
+commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
 
-The 5-level paging code parses the command line to look for the 'no5lvl'
-string, and does so very early, before sanitize_boot_params() has been
-called and has been given the opportunity to wipe bogus data from the
-fields in boot_params that are not covered by struct setup_header, and
-are therefore supposed to be initialized to zero by the bootloader.
+The alternative path leads to a build error after a recent change:
 
-This triggers an early boot crash when using syslinux-efi to boot a
-recent kernel built with CONFIG_X86_5LEVEL=y and CONFIG_EFI_STUB=n, as
-the 0xff padding that now fills the unused PE/COFF header is copied into
-boot_params by the bootloader, and interpreted as the top half of the
-command line pointer.
+sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
+include/linux/stddef.h:9:14: error: called object is not a function or function pointer
+    9 | #define NULL ((void *)0)
+      |              ^
+sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
+ 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
+      |                                                 ^~~~
+sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
+ 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
 
-Fix this by sanitizing the boot_params before use. Note that there is no
-harm in calling this more than once; subsequent invocations are able to
-spot that the boot_params have already been cleaned up.
+Using IS_REACHABLE() is somewhat questionable here anyway since it
+leads to the input code not working when the HDA driver is builtin
+but input is in a loadable module. Replace this with a hard compile-time
+dependency on CONFIG_INPUT. In practice this won't chance much
+other than solve the compiler error because it is rare to require
+sound output but no input support.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <stable@vger.kernel.org> # v6.1+
-Link: https://lore.kernel.org/r/20250306155915.342465-2-ardb+git@google.com
-Closes: https://lore.kernel.org/all/202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de
-[ardb: resolve conflict]
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/pgtable_64.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/Kconfig         |    1 +
+ sound/pci/hda/patch_realtek.c |    5 -----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "misc.h"
-+#include <asm/bootparam_utils.h>
- #include <asm/e820/types.h>
- #include <asm/processor.h>
- #include "pgtable.h"
-@@ -106,6 +107,7 @@ asmlinkage void configure_5level_paging(
- 	bool l5_required = false;
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -132,6 +132,7 @@ comment "Set to Y if you want auto-loadi
  
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
-+	sanitize_boot_params(bp);
- 	boot_params_ptr = bp;
+ config SND_HDA_CODEC_REALTEK
+ 	tristate "Build Realtek HD-audio codec support"
++	depends on INPUT
+ 	select SND_HDA_GENERIC
+ 	select SND_HDA_GENERIC_LEDS
+ 	help
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4862,7 +4862,6 @@ static void alc298_fixup_samsung_amp(str
+ 	}
+ }
  
- 	/*
+-#if IS_REACHABLE(CONFIG_INPUT)
+ static void gpio2_mic_hotkey_event(struct hda_codec *codec,
+ 				   struct hda_jack_callback *event)
+ {
+@@ -4971,10 +4970,6 @@ static void alc233_fixup_lenovo_line2_mi
+ 		spec->kb_dev = NULL;
+ 	}
+ }
+-#else /* INPUT */
+-#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
+-#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
+-#endif /* INPUT */
+ 
+ static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
 
 
 
