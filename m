@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-122322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C6FA59EFF
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95065A59F84
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22D9E16FF4E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:36:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D130188AF1F
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C201230BF6;
-	Mon, 10 Mar 2025 17:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A3F23237F;
+	Mon, 10 Mar 2025 17:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1usxPfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pw1JKR8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACF71DE89C;
-	Mon, 10 Mar 2025 17:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E98F230BC5;
+	Mon, 10 Mar 2025 17:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628167; cv=none; b=camveBFyWfC5nO82GXCrG40oCefhSQWpi0QQAZEqrjGCEcgdnp62IhPn1h6tkESEs3IJx25JGweyY3VXD+9nA3q2xA5+CuCKi402UbBbukN+J7M0aY9mMkczRajANdfXDB5TXCs88bN7DPX4m3RQqAEaNgVyrfKU48KTaX4Qv9c=
+	t=1741628445; cv=none; b=WU2bqE2mi+sSCC0WSdq+pv1xgy60p5proqoWHeRSzIBZOspTM1WWgjeUTwbGwvVjcqwbXAfob8kTvf9y/zMYvTVpEo/4a7A6/WbKGwChENFAw/RJjFu1jVu09mXXkEVJrU4IQBTHzJ+Cl0SMmb4BqBm5N8qblH7kO8bOQTDmwP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628167; c=relaxed/simple;
-	bh=sUTe8fuMD9XgAfwsrX/uGSiNErP3RTPe/q1QpLOBiGc=;
+	s=arc-20240116; t=1741628445; c=relaxed/simple;
+	bh=9qj3qQRmBoMjurH+NgGHfFgtKiey7oNsW8MqWHotkOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAse4Rio2vxLa7aueUleiz6SYIoOM1rfjDRKonXus50SSvPi0bsFmUv471SP4ic9g5d+Bs8s3Pd7x530azwfvSJxRBB36HLgvKjMCivTRjKLLS5ipTpiLSULpB1ejMCiW2aak1gEzIesO/8kMtjAcqfDtuzMGURjhZBkPdfsOGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1usxPfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F95DC4CEE5;
-	Mon, 10 Mar 2025 17:36:06 +0000 (UTC)
+	 MIME-Version; b=LZwYHt6VsQqYNXWxiUjw2SSzSJpw9tU4twdNmacp1XP9P9/sCPIEV2f+9ZDeXCFbUhx6Xr5fOvu/Iw9RwWXb2ZW91ost6ObJxhhs3uvgepMQ49SUXlLYqSiye8Mv6wGWtCiMGwN92HBdnvim+BBziirotbNVp3YKNvqB7gLnfMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pw1JKR8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDD3C4CEE5;
+	Mon, 10 Mar 2025 17:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628166;
-	bh=sUTe8fuMD9XgAfwsrX/uGSiNErP3RTPe/q1QpLOBiGc=;
+	s=korg; t=1741628445;
+	bh=9qj3qQRmBoMjurH+NgGHfFgtKiey7oNsW8MqWHotkOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1usxPfVILeEPnIqeWjBHXOYEt2JUuOrJ/56I0LWkIqxQ82KUXad4onI5t7wJihJo
-	 tlna2+1lfbwvBosmccxcALuPhPZ6Dc44+jAe1XP4J1IfH6jI+z3uJhaQBlYnmHA/6W
-	 oXBOQBysiDqBNoN7+fObwOF2/hnQjWxp3ZzxTEak=
+	b=pw1JKR8M1TVcxikO+pEehWzRK/Yq1eUeGoP+9/SZ8JYpxyqDOjQguVBB79ZRxxGZA
+	 /O7WkjFvfQi82/aFUDr7QmkEm8rt+mLfsCw1RfRKBidWNmjrVhgvJP6xWOb+3vgeQG
+	 GHV8COiEK2IjcClsDgod6rWCF0UqfgwIJpkxTz34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 111/145] KVM: SVM: Suppress DEBUGCTL.BTF on AMD
+	Tom Herbert <tom@herbertland.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 061/109] net: ipv6: fix missing dst ref drop in ila lwtunnel
 Date: Mon, 10 Mar 2025 18:06:45 +0100
-Message-ID: <20250310170439.240805863@linuxfoundation.org>
+Message-ID: <20250310170429.997660613@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-commit d0eac42f5cecce009d315655bee341304fbe075e upstream.
+[ Upstream commit 5da15a9c11c1c47ef573e6805b60a7d8a1687a2a ]
 
-Mark BTF as reserved in DEBUGCTL on AMD, as KVM doesn't actually support
-BTF, and fully enabling BTF virtualization is non-trivial due to
-interactions with the emulator, guest_debug, #DB interception, nested SVM,
-etc.
+Add missing skb_dst_drop() to drop reference to the old dst before
+adding the new dst to the skb.
 
-Don't inject #GP if the guest attempts to set BTF, as there's no way to
-communicate lack of support to the guest, and instead suppress the flag
-and treat the WRMSR as (partially) unsupported.
-
-In short, make KVM behave the same on AMD and Intel (VMX already squashes
-BTF).
-
-Note, due to other bugs in KVM's handling of DEBUGCTL, the only way BTF
-has "worked" in any capacity is if the guest simultaneously enables LBRs.
-
-Reported-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250227222411.3490595-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
+Cc: Tom Herbert <tom@herbertland.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Link: https://patch.msgid.link/20250305081655.19032-1-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |    9 +++++++++
- arch/x86/kvm/svm/svm.h |    2 +-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ net/ipv6/ila/ila_lwt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3168,6 +3168,15 @@ static int svm_set_msr(struct kvm_vcpu *
- 		 */
- 		data &= ~GENMASK(5, 2);
+diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
+index 6d37dda3d26fc..7397f764c66cc 100644
+--- a/net/ipv6/ila/ila_lwt.c
++++ b/net/ipv6/ila/ila_lwt.c
+@@ -96,6 +96,7 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		}
+ 	}
  
-+		/*
-+		 * Suppress BTF as KVM doesn't virtualize BTF, but there's no
-+		 * way to communicate lack of support to the guest.
-+		 */
-+		if (data & DEBUGCTLMSR_BTF) {
-+			kvm_pr_unimpl_wrmsr(vcpu, MSR_IA32_DEBUGCTLMSR, data);
-+			data &= ~DEBUGCTLMSR_BTF;
-+		}
-+
- 		if (data & DEBUGCTL_RESERVED_BITS)
- 			return 1;
++	skb_dst_drop(skb);
+ 	skb_dst_set(skb, dst);
+ 	return dst_output(net, sk, skb);
  
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -533,7 +533,7 @@ static inline bool is_vnmi_enabled(struc
- /* svm.c */
- #define MSR_INVALID				0xffffffffU
- 
--#define DEBUGCTL_RESERVED_BITS (~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR))
-+#define DEBUGCTL_RESERVED_BITS (~DEBUGCTLMSR_LBR)
- 
- extern bool dump_invalid_vmcb;
- 
+-- 
+2.39.5
+
 
 
 
