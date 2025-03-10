@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DFBA59E3D
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E15A59ED4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF4E16F5C8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94C6E1643FB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE37B230D2B;
-	Mon, 10 Mar 2025 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7ED8230BED;
+	Mon, 10 Mar 2025 17:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMWwe8eP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naJN1jKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8739522D4C3;
-	Mon, 10 Mar 2025 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A637B1DE89C;
+	Mon, 10 Mar 2025 17:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627717; cv=none; b=Wad10YheA4nyAuiLhezAmrIW797Ofqrr2JlBl2/e41VWZyahG9x4ltLrWzS9aRwKOKm5lDIfbIFEI1t9WwCov5/T3mFq0THuhp47jwwLdXfdcv+3N5EzQoW/lV9w+ONq4wYrFcGQVDct2yKX+lsQ2LkNCuIdHiWKrCBaEZBsmS4=
+	t=1741628095; cv=none; b=ZT+KLfCjPoXX72vpTMrcH+R+NWhOV9FkUH9eNkyQi+pwHSo+Ft/aMGKvF+u9DwG7kyTvIiWR1/RgyqLwThhEopvbhbNKxQZGJ2oFT92eIlseIwB9dAjcjobo3BK8jvHMUxX20TiBTj9yE3Z9ee3Q/hEAZg44m+SVXH9jYZeTE+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627717; c=relaxed/simple;
-	bh=MbtHpB0LfGz6o6zQku2y8ZMssZ45/jDJ2wORBU4bJJw=;
+	s=arc-20240116; t=1741628095; c=relaxed/simple;
+	bh=vpYC7RKmtv8u9MFweLVT0immuap8sYtmsrgDlS7ElBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFBYDq31TfcjrFoLhuVkw1Z567YP1tHMsgBrzAwVnJ37tYs87ILAP5dVr1qBqAXcFbJGlCzbZXZHnIgxIn9HNhTkmiZccWouNLwRWj4yLhoTgOgI1VKnyxbcNRe3nx/YwOaQXtBHIjaENPwPhuxOCnL8iguG617JHe9lJawoVyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMWwe8eP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D263C4CEE5;
-	Mon, 10 Mar 2025 17:28:36 +0000 (UTC)
+	 MIME-Version; b=tVh19MdYtrYsEnxoZDlzcjMLqocjg+bRQLz02HN3PgIALlhstaEWhcQ/qFjXz3poGsBhZXu7nZ9NEJJnkx20mUwBzLXth8Mg0OYfwBZMUDsT4ZopZsIvA0Qcmxst4NsxmJCvqs2cqglBaGqko8Bh0YEKRvt572uxrJi4kWwGRuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naJN1jKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D001C4CEE5;
+	Mon, 10 Mar 2025 17:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627717;
-	bh=MbtHpB0LfGz6o6zQku2y8ZMssZ45/jDJ2wORBU4bJJw=;
+	s=korg; t=1741628095;
+	bh=vpYC7RKmtv8u9MFweLVT0immuap8sYtmsrgDlS7ElBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMWwe8ePpt3P12MjRCFLdPw36CcuEWAIYSW+PyPXHVgBclNXvMCgW+oYIhf5cyCBe
-	 RwgWPef/5crr/W2fz2JT9fN4ApHcsykp/gV3QgB1aoLMjP7oY8WeUuYTYpRRLRiJOi
-	 OcJCKn/sP/bS5NvsPHEJESdTx4685ngfW4fey17k=
+	b=naJN1jKoVOuqW1ZpLVCO3WrheVLqfAo8v6Xrx9BtSWcBXUB3nRDAE6t7jpRo14ldD
+	 VeTYsN8l4ot8PFE0t1IXaotF/O/2hKE+FoDiDPpdEAgKdbEfw8kh+VUJtkbCT5Qddr
+	 S53B3WE5btbSRsLiRm9KJPaxCwnJF/5LNJEwVB5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 226/269] rust: map `long` to `isize` and `char` to `u8`
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 085/145] net-timestamp: support TCP GSO case for a few missing flags
 Date: Mon, 10 Mar 2025 18:06:19 +0100
-Message-ID: <20250310170506.695249114@linuxfoundation.org>
+Message-ID: <20250310170438.191133908@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,192 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gary Guo <gary@garyguo.net>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-commit 1bae8729e50a900f41e9a1c17ae81113e4cf62b8 upstream.
+[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
 
-The following FFI types are replaced compared to `core::ffi`:
+When I read through the TSO codes, I found out that we probably
+miss initializing the tx_flags of last seg when TSO is turned
+off, which means at the following points no more timestamp
+(for this last one) will be generated. There are three flags
+to be handled in this patch:
+1. SKBTX_HW_TSTAMP
+2. SKBTX_BPF
+3. SKBTX_SCHED_TSTAMP
+Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
+6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
+and only belongs to net-next branch material for now. The common
+issue of the above three flags can be fixed by this single patch.
 
-1. `char` type is now always mapped to `u8`, since kernel uses
-   `-funsigned-char` on the C code. `core::ffi` maps it to platform
-   default ABI, which can be either signed or unsigned.
+This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
+the UDP GSO does to make the newly segmented last skb inherit the
+tx_flags so that requested timestamp will be generated in each
+certain layer, or else that last one has zero value of tx_flags
+which leads to no timestamp at all.
 
-2. `long` is now always mapped to `isize`. It's very common in the
-   kernel to use `long` to represent a pointer-sized integer, and in
-   fact `intptr_t` is a typedef of `long` in the kernel. Enforce this
-   mapping rather than mapping to `i32/i64` depending on platform can
-   save us a lot of unnecessary casts.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240913213041.395655-5-gary@garyguo.net
-[ Moved `uaccess` changes from the next commit, since they were
-  irrefutable patterns that Rust >= 1.82.0 warns about. Reworded
-  slightly and reformatted a few documentation comments. Rebased on
-  top of `rust-next`. Added the removal of two casts to avoid Clippy
-  warnings. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/ffi.rs             |   37 ++++++++++++++++++++++++++++++++++++-
- rust/kernel/error.rs    |    5 +----
- rust/kernel/firmware.rs |    2 +-
- rust/kernel/uaccess.rs  |   27 +++++++--------------------
- 4 files changed, 45 insertions(+), 26 deletions(-)
+ net/ipv4/tcp_offload.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/rust/ffi.rs
-+++ b/rust/ffi.rs
-@@ -10,4 +10,39 @@
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 69e6012ae82fb..f1f723579a490 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -13,12 +13,15 @@
+ #include <net/tcp.h>
+ #include <net/protocol.h>
  
- #![no_std]
+-static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
++static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
+ 			   unsigned int seq, unsigned int mss)
+ {
++	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
++	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
++
+ 	while (skb) {
+ 		if (before(ts_seq, seq + mss)) {
+-			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
++			skb_shinfo(skb)->tx_flags |= flags;
+ 			skb_shinfo(skb)->tskey = ts_seq;
+ 			return;
+ 		}
+@@ -120,8 +123,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	th = tcp_hdr(skb);
+ 	seq = ntohl(th->seq);
  
--pub use core::ffi::*;
-+macro_rules! alias {
-+    ($($name:ident = $ty:ty;)*) => {$(
-+        #[allow(non_camel_case_types, missing_docs)]
-+        pub type $name = $ty;
-+
-+        // Check size compatibility with `core`.
-+        const _: () = assert!(
-+            core::mem::size_of::<$name>() == core::mem::size_of::<core::ffi::$name>()
-+        );
-+    )*}
-+}
-+
-+alias! {
-+    // `core::ffi::c_char` is either `i8` or `u8` depending on architecture. In the kernel, we use
-+    // `-funsigned-char` so it's always mapped to `u8`.
-+    c_char = u8;
-+
-+    c_schar = i8;
-+    c_uchar = u8;
-+
-+    c_short = i16;
-+    c_ushort = u16;
-+
-+    c_int = i32;
-+    c_uint = u32;
-+
-+    // In the kernel, `intptr_t` is defined to be `long` in all platforms, so we can map the type to
-+    // `isize`.
-+    c_long = isize;
-+    c_ulong = usize;
-+
-+    c_longlong = i64;
-+    c_ulonglong = u64;
-+}
-+
-+pub use core::ffi::c_void;
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -153,11 +153,8 @@ impl Error {
+-	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
+-		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
++	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
++		tcp_gso_tstamp(segs, gso_skb, seq, mss);
  
-     /// Returns the error encoded as a pointer.
-     pub fn to_ptr<T>(self) -> *mut T {
--        #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
-         // SAFETY: `self.0` is a valid error due to its invariant.
--        unsafe {
--            bindings::ERR_PTR(self.0.get().into()) as *mut _
--        }
-+        unsafe { bindings::ERR_PTR(self.0.get() as _) as *mut _ }
-     }
+ 	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
  
-     /// Returns a string representing the error, if one exists.
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -12,7 +12,7 @@ use core::ptr::NonNull;
- /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
- /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
- struct FwFunc(
--    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
-+    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
- );
- 
- impl FwFunc {
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -8,7 +8,7 @@ use crate::{
-     alloc::Flags,
-     bindings,
-     error::Result,
--    ffi::{c_ulong, c_void},
-+    ffi::c_void,
-     prelude::*,
-     types::{AsBytes, FromBytes},
- };
-@@ -224,13 +224,9 @@ impl UserSliceReader {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
--        // SAFETY: `out_ptr` points into a mutable slice of length `len_ulong`, so we may write
-+        // SAFETY: `out_ptr` points into a mutable slice of length `len`, so we may write
-         // that many bytes to it.
--        let res =
--            unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len_ulong) };
-+        let res = unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len) };
-         if res != 0 {
-             return Err(EFAULT);
-         }
-@@ -259,9 +255,6 @@ impl UserSliceReader {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
-         let mut out: MaybeUninit<T> = MaybeUninit::uninit();
-         // SAFETY: The local variable `out` is valid for writing `size_of::<T>()` bytes.
-         //
-@@ -272,7 +265,7 @@ impl UserSliceReader {
-             bindings::_copy_from_user(
-                 out.as_mut_ptr().cast::<c_void>(),
-                 self.ptr as *const c_void,
--                len_ulong,
-+                len,
-             )
-         };
-         if res != 0 {
-@@ -335,12 +328,9 @@ impl UserSliceWriter {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
--        // SAFETY: `data_ptr` points into an immutable slice of length `len_ulong`, so we may read
-+        // SAFETY: `data_ptr` points into an immutable slice of length `len`, so we may read
-         // that many bytes from it.
--        let res = unsafe { bindings::copy_to_user(self.ptr as *mut c_void, data_ptr, len_ulong) };
-+        let res = unsafe { bindings::copy_to_user(self.ptr as *mut c_void, data_ptr, len) };
-         if res != 0 {
-             return Err(EFAULT);
-         }
-@@ -359,9 +349,6 @@ impl UserSliceWriter {
-         if len > self.length {
-             return Err(EFAULT);
-         }
--        let Ok(len_ulong) = c_ulong::try_from(len) else {
--            return Err(EFAULT);
--        };
-         // SAFETY: The reference points to a value of type `T`, so it is valid for reading
-         // `size_of::<T>()` bytes.
-         //
-@@ -372,7 +359,7 @@ impl UserSliceWriter {
-             bindings::_copy_to_user(
-                 self.ptr as *mut c_void,
-                 (value as *const T).cast::<c_void>(),
--                len_ulong,
-+                len,
-             )
-         };
-         if res != 0 {
+-- 
+2.39.5
+
 
 
 
