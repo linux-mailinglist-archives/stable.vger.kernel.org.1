@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-122008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7816FA59D72
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229F7A5A176
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B707A16F460
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D06443ADE6E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C70230BF0;
-	Mon, 10 Mar 2025 17:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB2222DFF3;
+	Mon, 10 Mar 2025 18:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YON47DH5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pp8CHRBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61262230BC3;
-	Mon, 10 Mar 2025 17:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A55317A2E8;
+	Mon, 10 Mar 2025 18:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627263; cv=none; b=hDSr2Gq0CJxMhIhiNhDdoOfjZy+GwYQCcj5Ymm/fh5DjvkW0YJhoHHGNzJ5AmZxT8+ZT5Au5fHkSWbpjoCwIt27bJjnCbCsncSHXETqkAMA9YMC9xZKfgaOeeZkdCKB+a8Td1MDcWssTiMl/f/ZvOt+ffACJSjCBz7U0nR34evU=
+	t=1741629676; cv=none; b=p4dK2g7k1NxNGd29YgrYUEFxPgCFmZWXY4dq8IusQaRUvOtZVKSRt+awEJo2h11yPbZeIh1pxw5HVDFu0FZK8CLstcVTSbQEi+8BFdJHMnsvJ11gm4m81sOEiUVN1Te19p29do7HjOkAzRwqEcclLqMyg8sonBYKe3cktGhjd3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627263; c=relaxed/simple;
-	bh=hQhbVSVp/WrSrf/FnRZeoMV+qb2M4YV8zfRdQx6dw/k=;
+	s=arc-20240116; t=1741629676; c=relaxed/simple;
+	bh=31USZCam+YDOl4oIJBFTSXHlDwgUw0RTK3EDAFaoeCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLeFnu5xf2ePcOKVVX8WvpmSsUmSmmADf+RBDw3NW6fjqQ/uAzydTXc9RnCiATT+yybp+alZbiQXCOOGG61bs06S1WwWdL1QafDwiLF3fbFhtLf9TaG4oeKSbx4Qyi6mSNhAkyeU8Hxz1tW/6MfCzxDlWvEkI4xduEMGulQHv5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YON47DH5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF46BC4CEE5;
-	Mon, 10 Mar 2025 17:21:02 +0000 (UTC)
+	 MIME-Version; b=K55JM6ghHZxtabT62CnRObNMSBdR/YGVoxAq0W7HFgLmn3qvlUc3zKf3rmmiZA/yXYRK0bLSu7wOoIC2E/B3AeYszkRvJyVp9OeAG7F7VR4sQSZsjWU+Gf0edeNAEy46Pv/+FlQrbqYGM8QX72XYwxsMLImQrANykpYyEzXZi/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pp8CHRBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEDAC4CEE5;
+	Mon, 10 Mar 2025 18:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627263;
-	bh=hQhbVSVp/WrSrf/FnRZeoMV+qb2M4YV8zfRdQx6dw/k=;
+	s=korg; t=1741629675;
+	bh=31USZCam+YDOl4oIJBFTSXHlDwgUw0RTK3EDAFaoeCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YON47DH5CcjSUiEYwjxKqRAduUUCdBBbElAVpgdWc4S6tHOIp1uU4+XBNVx2pmLk1
-	 HFU+XiZBqUUiZNxeNFjUMQ5pRWIpIruLqpoGx8hsRg6ZKz7L3XECqVnhoEdyDsWGaV
-	 modtHlc6b810u7E764c8kcJ5/AQfqvieGYDQwZVI=
+	b=pp8CHRBFS87k4cvCf+kxeZzAgM9liKtzsRY+RU6iCAqXdM1W/YEmcdYmxThOuSqeq
+	 VLvttwFU3QmGX+kHEIBr/wrUFdKMCS0PwSsIDgXauZJnLnvJbHsaeNRSG3eN5XPojk
+	 Lvtu9tfbKbKyVxLXc8wmXnBsRrBXaEaZcKFXBxn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 069/269] rust: map `__kernel_size_t` and friends also to usize/isize
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 376/620] can: c_can: fix unbalanced runtime PM disable in error path
 Date: Mon, 10 Mar 2025 18:03:42 +0100
-Message-ID: <20250310170500.480250839@linuxfoundation.org>
+Message-ID: <20250310170600.439075641@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gary Guo <gary@garyguo.net>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 2fd6f55c048d0c863ffbc8590b1bd2edb5ff13e5 upstream.
+commit 257a2cd3eb578ee63d6bf90475dc4f4b16984139 upstream.
 
-Currently bindgen has special logic to recognise `size_t` and `ssize_t`
-and map them to Rust `usize` and `isize`. Similarly, `ptrdiff_t` is
-mapped to `isize`.
+Runtime PM is enabled as one of the last steps of probe(), so all
+earlier gotos to "exit_free_device" label were not correct and were
+leading to unbalanced runtime PM disable depth.
 
-However this falls short for `__kernel_size_t`, `__kernel_ssize_t` and
-`__kernel_ptrdiff_t`. To ensure that they are mapped to usize/isize
-rather than 32/64 integers depending on platform, blocklist them in
-bindgen parameters and manually provide their definition.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Link: https://lore.kernel.org/r/20240913213041.395655-3-gary@garyguo.net
-[ Formatted comment. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 6e2fe01dd6f9 ("can: c_can: move runtime PM enable/disable to c_can_platform")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250112-syscon-phandle-args-can-v1-1-314d9549906f@linaro.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/bindgen_parameters |    5 +++++
- rust/bindings/lib.rs    |    5 +++++
- rust/uapi/lib.rs        |    5 +++++
- 3 files changed, 15 insertions(+)
+ drivers/net/can/c_can/c_can_platform.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -1,5 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0
+--- a/drivers/net/can/c_can/c_can_platform.c
++++ b/drivers/net/can/c_can/c_can_platform.c
+@@ -395,15 +395,16 @@ static int c_can_plat_probe(struct platf
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
+ 			KBUILD_MODNAME, ret);
+-		goto exit_free_device;
++		goto exit_pm_runtime;
+ 	}
  
-+# We want to map these types to `isize`/`usize` manually, instead of
-+# define them as `int`/`long` depending on platform bitwidth.
-+--blocklist-type __kernel_s?size_t
-+--blocklist-type __kernel_ptrdiff_t
-+
- --opaque-type xregs_state
- --opaque-type desc_struct
- --opaque-type arch_lbr_state
---- a/rust/bindings/lib.rs
-+++ b/rust/bindings/lib.rs
-@@ -27,6 +27,11 @@
- #[allow(dead_code)]
- #[allow(clippy::undocumented_unsafe_blocks)]
- mod bindings_raw {
-+    // Manual definition for blocklisted types.
-+    type __kernel_size_t = usize;
-+    type __kernel_ssize_t = isize;
-+    type __kernel_ptrdiff_t = isize;
-+
-     // Use glob import here to expose all helpers.
-     // Symbols defined within the module will take precedence to the glob import.
-     pub use super::bindings_helper::*;
---- a/rust/uapi/lib.rs
-+++ b/rust/uapi/lib.rs
-@@ -25,4 +25,9 @@
-     unsafe_op_in_unsafe_fn
- )]
+ 	dev_info(&pdev->dev, "%s device registered (regs=%p, irq=%d)\n",
+ 		 KBUILD_MODNAME, priv->base, dev->irq);
+ 	return 0;
  
-+// Manual definition of blocklisted types.
-+type __kernel_size_t = usize;
-+type __kernel_ssize_t = isize;
-+type __kernel_ptrdiff_t = isize;
-+
- include!(concat!(env!("OBJTREE"), "/rust/uapi/uapi_generated.rs"));
+-exit_free_device:
++exit_pm_runtime:
+ 	pm_runtime_disable(priv->device);
++exit_free_device:
+ 	free_c_can_dev(dev);
+ exit:
+ 	dev_err(&pdev->dev, "probe failed\n");
 
 
 
