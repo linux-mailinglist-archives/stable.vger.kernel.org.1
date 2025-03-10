@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDBBA5A29A
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE5AA59F1E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC77C175970
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAB2C170654
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D871230BF9;
-	Mon, 10 Mar 2025 18:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2475322D799;
+	Mon, 10 Mar 2025 17:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xX1C3G71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bivCL5qC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DC2156861;
-	Mon, 10 Mar 2025 18:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54DF18DB24;
+	Mon, 10 Mar 2025 17:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630915; cv=none; b=TaHvP5Yf2urhNOTxuJGt/RDDAjU7VK2w3wJJUebPThACX7QCtTeDnWNLeMdM6c+NDsyWMoYg0kwDEcjnhCwF9ww+FrXs+nU1lYUewARRPvRsiKp48mIzfxz3ihSAhZxZCkB2Tudv+phsnP258hh9kzgAO6A90RXXQ4nllXDGd1A=
+	t=1741628227; cv=none; b=KzF1eLHPE8BMskz0i4ONMJwnFEykZOEXf6iVcw5ECaHGufLsraOfFLpGm2Is755bozqi3HZja5xrT20Na0OA7SsTysHtSFhevMmo1WPlhYuEGO6qnuusKgP0COT3M0NaPwohBlrsW7xqazHEoU8E3xqGhf4HznODbT/HMQFdauc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630915; c=relaxed/simple;
-	bh=4V79ixrOHDd2/gbG2iveDW2pk9gPTJlvK1wkdc2QTmI=;
+	s=arc-20240116; t=1741628227; c=relaxed/simple;
+	bh=z2OwOhvMreIMK1159BZVtr4gqpVc7upS1+RlpR4POgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWWAimj7PSbOXpPJ5LOewJ8urHf6cICRXhmrFuWwfMevfq825pUIymfJco9y9xvswkAk9H9GLutzM7Vhhnnvo2du4Szd06OCaTIuEiraQUaqbAxPaNnZqIUZvput4LsO/azIo8liLHYboNfnd10aCWr2iai3Ihnmx9vBMPjRcN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xX1C3G71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B00AC4CEE5;
-	Mon, 10 Mar 2025 18:21:55 +0000 (UTC)
+	 MIME-Version; b=uxqWXrtKjTwcHmpd9zRtnhCWeYx4a4N24WlprANFlvKYx/4Y4xPNAwszsn//4MzFozSTDDWK7jW6yWoBI7KakCm+Hv9hbU+rUPfhai7ndCINeCGrYPI0tynWhzIyoDPBomedTbao6NRNm63nxhweP+Fy5MbqC/zoY1VfRF3DFJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bivCL5qC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B729C4CEE5;
+	Mon, 10 Mar 2025 17:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630915;
-	bh=4V79ixrOHDd2/gbG2iveDW2pk9gPTJlvK1wkdc2QTmI=;
+	s=korg; t=1741628227;
+	bh=z2OwOhvMreIMK1159BZVtr4gqpVc7upS1+RlpR4POgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xX1C3G713hn4vlXRqi7A1WEc2eK7h99htww+dK0D3G+wQuK2fwNFpD7rkN1DrNUdB
-	 0D9604JffBWzexfuxfNxg61hgtqU2YMkMykUiR6uMLm1k4DuIqTzeSKoNzYPRXC/z8
-	 Kb1Suo2ju7Rh1ctM57C4sxD0UeHQoIH/MPqr7uCI=
+	b=bivCL5qCkyp4iwo/30P0Om/hC7zCj/lBZG10F86clPwco2DHqZadLOA6ldLEP/VPo
+	 RuTlrZ0EO7eEssTX4i+3aH3X1adAZAPSr0EArAUE9aAYVpFlB3pU4CMG2MQ4coPpsk
+	 29d/bDhdNI6GZ+3AwRvxEkUkcIZdAjFu9QvOZQUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Herbert <tom@herbertland.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 578/620] net: ipv6: fix missing dst ref drop in ila lwtunnel
+	Arnd Bergmann <arnd@arndb.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 130/145] ALSA: hda: realtek: fix incorrect IS_REACHABLE() usage
 Date: Mon, 10 Mar 2025 18:07:04 +0100
-Message-ID: <20250310170608.355257302@linuxfoundation.org>
+Message-ID: <20250310170440.012879200@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5da15a9c11c1c47ef573e6805b60a7d8a1687a2a ]
+commit d0bbe332669c5db32c8c92bc967f8e7f8d460ddf upstream.
 
-Add missing skb_dst_drop() to drop reference to the old dst before
-adding the new dst to the skb.
+The alternative path leads to a build error after a recent change:
 
-Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
-Cc: Tom Herbert <tom@herbertland.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250305081655.19032-1-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sound/pci/hda/patch_realtek.c: In function 'alc233_fixup_lenovo_low_en_micmute_led':
+include/linux/stddef.h:9:14: error: called object is not a function or function pointer
+    9 | #define NULL ((void *)0)
+      |              ^
+sound/pci/hda/patch_realtek.c:5041:49: note: in expansion of macro 'NULL'
+ 5041 | #define alc233_fixup_lenovo_line2_mic_hotkey    NULL
+      |                                                 ^~~~
+sound/pci/hda/patch_realtek.c:5063:9: note: in expansion of macro 'alc233_fixup_lenovo_line2_mic_hotkey'
+ 5063 |         alc233_fixup_lenovo_line2_mic_hotkey(codec, fix, action);
+
+Using IS_REACHABLE() is somewhat questionable here anyway since it
+leads to the input code not working when the HDA driver is builtin
+but input is in a loadable module. Replace this with a hard compile-time
+dependency on CONFIG_INPUT. In practice this won't chance much
+other than solve the compiler error because it is rare to require
+sound output but no input support.
+
+Fixes: f603b159231b ("ALSA: hda/realtek - add supported Mic Mute LED for Lenovo platform")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250304142620.582191-1-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ila/ila_lwt.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/Kconfig         |    1 +
+ sound/pci/hda/patch_realtek.c |    5 -----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 6d37dda3d26fc..7397f764c66cc 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -96,6 +96,7 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		}
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -183,6 +183,7 @@ comment "Set to Y if you want auto-loadi
+ 
+ config SND_HDA_CODEC_REALTEK
+ 	tristate "Build Realtek HD-audio codec support"
++	depends on INPUT
+ 	select SND_HDA_GENERIC
+ 	select SND_HDA_GENERIC_LEDS
+ 	help
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4865,7 +4865,6 @@ static void alc298_fixup_samsung_amp(str
  	}
+ }
  
-+	skb_dst_drop(skb);
- 	skb_dst_set(skb, dst);
- 	return dst_output(net, sk, skb);
+-#if IS_REACHABLE(CONFIG_INPUT)
+ static void gpio2_mic_hotkey_event(struct hda_codec *codec,
+ 				   struct hda_jack_callback *event)
+ {
+@@ -4974,10 +4973,6 @@ static void alc233_fixup_lenovo_line2_mi
+ 		spec->kb_dev = NULL;
+ 	}
+ }
+-#else /* INPUT */
+-#define alc280_fixup_hp_gpio2_mic_hotkey	NULL
+-#define alc233_fixup_lenovo_line2_mic_hotkey	NULL
+-#endif /* INPUT */
  
--- 
-2.39.5
-
+ static void alc269_fixup_hp_line1_mic1_led(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
 
 
 
