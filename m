@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-122860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62559A5A181
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:01:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AE2A59D82
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C4383AE0B4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:01:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22E9C188EDDA
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FAF22DFB1;
-	Mon, 10 Mar 2025 18:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801AD22154C;
+	Mon, 10 Mar 2025 17:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xS6cW18J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7H1+6hz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856BD17A2E8;
-	Mon, 10 Mar 2025 18:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC9A226D0B;
+	Mon, 10 Mar 2025 17:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629707; cv=none; b=V2jlYXYHgPFzxmeL/b13EA5PxcYMQmEjGTIISzLIjXK0QCyCGn7Kfjr/n9xQQFHfFfWQxAkwdCKK9946Og1b0DKJ/06huH2iv7IWw6PEvgq1XvJxpolzO4zDe927BRv2F4XOmXQaCRSf/NXesR0wEzmoUIbKyjmCQOJ0lnxIAq0=
+	t=1741627295; cv=none; b=k1mvBFxhXXXzXFg1QijxaNGozwR92OasrNvjarRSnY4efeg4fQamQbTbVOR6hW5W2i42jyXy9JideyuCPiigUtkhMEasx8LAwYOA+5wRJfrgZhndj+z/Lph5t+7ww/ukp35PTR9CkojJ8c+hLgi8qOxpPKLsqdE8ytRrpg6XMUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629707; c=relaxed/simple;
-	bh=EbG5tIPYDm3wNo11ODW9mtb3XO9bgk0XA/sjMN4VLT4=;
+	s=arc-20240116; t=1741627295; c=relaxed/simple;
+	bh=HQZJtU9NJ/i09jXuopgpOMszbyGbCaVhyiPdu3/YsE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWcvCBD+Xpi10CSL33yquEXa+vcsKsrhocyEM0TV8qpo3NX2S7raTvfnunQfCh4XfYfVUDFRYyeuhR4V0cunxuLms9m53PGJlyv8HmI+UIY7qyOkknjW3sUUBVvokp/pYDQ3+1k85CNUwdB3MZOjwiGb8NNiAv8pLAcoYp7KOuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xS6cW18J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFD9C4CEE5;
-	Mon, 10 Mar 2025 18:01:46 +0000 (UTC)
+	 MIME-Version; b=e3+z1bSkRgHFBj8D7Zz3McblugcIYScj02RSX5pXBpMO1JXtyLjqro+AzaoUNxeF2nudrEZI26zrIvxe2TBqbgBCauEDfRby/gAXrNkBexVS2jdYlNHvXVwNylNpOEApFg8V0N/MRcZgSTX1+EZFGSSdhAGq0D6jaWM5Y2FJRi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7H1+6hz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6D5C4CEE5;
+	Mon, 10 Mar 2025 17:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629707;
-	bh=EbG5tIPYDm3wNo11ODW9mtb3XO9bgk0XA/sjMN4VLT4=;
+	s=korg; t=1741627295;
+	bh=HQZJtU9NJ/i09jXuopgpOMszbyGbCaVhyiPdu3/YsE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xS6cW18JK8WYC57ZwqhpQ/bj/MyaUPkSB0xYpbqe9nVoDsz6nkeZtkMCQ2qXW4Pna
-	 EI6EEfEbw0/lIQeIq27/iS0W1FF8WwxWZ7dXXdlDvuifvEjl2MsTy3V4fRa2gwuXFm
-	 lzDmrwIuQMSqSMdvGcAtZxqakRH3JlSxKQadVPc4=
+	b=O7H1+6hzJWFoRw/3bM7pE9HhNpJF1L7iLc28B4+9TndtEyAc2Qy7cusamf0BgOU9q
+	 B+WDZf68jqGTeHLO4blpqNT1w4pT4l0mNZz490AbH1XWskMK5l5jkBC6BGTf4rqflu
+	 vHK4IezgkHUDubBabTLAfKl6+Rat/n/3XrNDfeL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 355/620] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 048/269] rust: alloc: implement `collect` for `IntoIter`
 Date: Mon, 10 Mar 2025 18:03:21 +0100
-Message-ID: <20250310170559.622392979@linuxfoundation.org>
+Message-ID: <20250310170459.639354920@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
+commit 93e602310f87b7b515b86a8f919cc0799387e5c3 upstream.
 
-The Vexia EDU ATLA 10 tablet comes in 2 different versions with
-significantly different mainboards. The only outward difference is that
-the charging barrel on one is marked 5V and the other is marked 9V.
+Currently, we can't implement `FromIterator`. There are a couple of
+issues with this trait in the kernel, namely:
 
-The 5V version mostly works with the BYTCR defaults, except that it is
-missing a CHAN package in its ACPI tables and the default of using
-SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
-detect signal is not inverted as it usually is.
+  - Rust's specialization feature is unstable. This prevents us to
+    optimize for the special case where `I::IntoIter` equals `Vec`'s
+    `IntoIter` type.
+  - We also can't use `I::IntoIter`'s type ID either to work around this,
+    since `FromIterator` doesn't require this type to be `'static`.
+  - `FromIterator::from_iter` does return `Self` instead of
+    `Result<Self, AllocError>`, hence we can't properly handle allocation
+    failures.
+  - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle
+    additional allocation flags.
 
-Add a DMI quirk for the 5V version to fix sound not working.
+Instead, provide `IntoIter::collect`, such that we can at least convert
+`IntoIter` into a `Vec` again.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-19-dakr@kernel.org
+[ Added newline in documentation, changed case of section to be
+  consistent with an existing one, fixed typo. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ rust/kernel/alloc/kvec.rs |   95 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 95 insertions(+)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 8706fef8ccce8..721b9971fd744 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -1102,7 +1102,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
--	{	/* Vexia Edu Atla 10 tablet */
-+	{
-+		/* Vexia Edu Atla 10 tablet 5V version */
-+		.matches = {
-+			/* Having all 3 of these not set is somewhat unique */
-+			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_JD_NOT_INV |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
-+	{	/* Vexia Edu Atla 10 tablet 9V version */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
--- 
-2.39.5
-
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -692,6 +692,101 @@ pub struct IntoIter<T, A: Allocator> {
+     _p: PhantomData<A>,
+ }
+ 
++impl<T, A> IntoIter<T, A>
++where
++    A: Allocator,
++{
++    fn into_raw_parts(self) -> (*mut T, NonNull<T>, usize, usize) {
++        let me = ManuallyDrop::new(self);
++        let ptr = me.ptr;
++        let buf = me.buf;
++        let len = me.len;
++        let cap = me.layout.len();
++        (ptr, buf, len, cap)
++    }
++
++    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoIter`.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// let v = kernel::kvec![1, 2, 3]?;
++    /// let mut it = v.into_iter();
++    ///
++    /// assert_eq!(it.next(), Some(1));
++    ///
++    /// let v = it.collect(GFP_KERNEL);
++    /// assert_eq!(v, [2, 3]);
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
++    ///
++    /// # Implementation details
++    ///
++    /// Currently, we can't implement `FromIterator`. There are a couple of issues with this trait
++    /// in the kernel, namely:
++    ///
++    /// - Rust's specialization feature is unstable. This prevents us to optimize for the special
++    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
++    /// - We also can't use `I::IntoIter`'s type ID either to work around this, since `FromIterator`
++    ///   doesn't require this type to be `'static`.
++    /// - `FromIterator::from_iter` does return `Self` instead of `Result<Self, AllocError>`, hence
++    ///   we can't properly handle allocation failures.
++    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle additional allocation
++    ///   flags.
++    ///
++    /// Instead, provide `IntoIter::collect`, such that we can at least convert a `IntoIter` into a
++    /// `Vec` again.
++    ///
++    /// Note that `IntoIter::collect` doesn't require `Flags`, since it re-uses the existing backing
++    /// buffer. However, this backing buffer may be shrunk to the actual count of elements.
++    pub fn collect(self, flags: Flags) -> Vec<T, A> {
++        let old_layout = self.layout;
++        let (mut ptr, buf, len, mut cap) = self.into_raw_parts();
++        let has_advanced = ptr != buf.as_ptr();
++
++        if has_advanced {
++            // Copy the contents we have advanced to at the beginning of the buffer.
++            //
++            // SAFETY:
++            // - `ptr` is valid for reads of `len * size_of::<T>()` bytes,
++            // - `buf.as_ptr()` is valid for writes of `len * size_of::<T>()` bytes,
++            // - `ptr` and `buf.as_ptr()` are not be subject to aliasing restrictions relative to
++            //   each other,
++            // - both `ptr` and `buf.ptr()` are properly aligned.
++            unsafe { ptr::copy(ptr, buf.as_ptr(), len) };
++            ptr = buf.as_ptr();
++
++            // SAFETY: `len` is guaranteed to be smaller than `self.layout.len()`.
++            let layout = unsafe { ArrayLayout::<T>::new_unchecked(len) };
++
++            // SAFETY: `buf` points to the start of the backing buffer and `len` is guaranteed to be
++            // smaller than `cap`. Depending on `alloc` this operation may shrink the buffer or leaves
++            // it as it is.
++            ptr = match unsafe {
++                A::realloc(Some(buf.cast()), layout.into(), old_layout.into(), flags)
++            } {
++                // If we fail to shrink, which likely can't even happen, continue with the existing
++                // buffer.
++                Err(_) => ptr,
++                Ok(ptr) => {
++                    cap = len;
++                    ptr.as_ptr().cast()
++                }
++            };
++        }
++
++        // SAFETY: If the iterator has been advanced, the advanced elements have been copied to
++        // the beginning of the buffer and `len` has been adjusted accordingly.
++        //
++        // - `ptr` is guaranteed to point to the start of the backing buffer.
++        // - `cap` is either the original capacity or, after shrinking the buffer, equal to `len`.
++        // - `alloc` is guaranteed to be unchanged since `into_iter` has been called on the original
++        //   `Vec`.
++        unsafe { Vec::from_raw_parts(ptr, len, cap) }
++    }
++}
++
+ impl<T, A> Iterator for IntoIter<T, A>
+ where
+     A: Allocator,
 
 
 
