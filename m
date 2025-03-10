@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-121877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E849DA59CC3
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A26A59EA8
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32BA71885132
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F7A188FBFC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C81230BD5;
-	Mon, 10 Mar 2025 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B5722E407;
+	Mon, 10 Mar 2025 17:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xl3yrfdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajUs+ICh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5333C17CA12;
-	Mon, 10 Mar 2025 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B612C1A7264;
+	Mon, 10 Mar 2025 17:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626888; cv=none; b=QpPtg2Eoub9cQwNXZwLfdmw6OgZJ9uI7YdYfTU477uzyZvD/7Tnk0YVEeQlwgGPxmSIrd4bzQ5jMy+MneqyBikI4kH74u3ppzhQs0KgSKzfU4f2o7SASRrhhKbnyY4VDlWn3L8oQDYd/WyRsW9fEOa3+AVUZ7CZUUW4cJKHCeh0=
+	t=1741627981; cv=none; b=KGqBI8hbtXgGiCo9QKrvMhS9AG31Tk80rO3cOcTa6mZDM/n1nK27HxOHIOFmYi95b+mJEMvaxW8mELCMV3YcUgz65ASxg61pW8EpDUbhwiKLJR8HDxWGjZJtViOxpxNoUm6yECMNoht/09QOjV5Dy+q6BEwn3wb+o0BsgoQlQac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626888; c=relaxed/simple;
-	bh=LBLfJftY2BbzJ/SgKj7cChLxW6wjYL/B9fURMYB9zik=;
+	s=arc-20240116; t=1741627981; c=relaxed/simple;
+	bh=oB0/tzJw7k/fsPuLavSfO9rzjh6L+/gkh/9LBg4EaRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFUG3qMXAigx7otCTVSRXUsgrQYwRzo17RvJDiMAzhnCCLp3h0fuQb4nqg1bH7FAVu4XQHvtBw9mPZZ8B9uwU4NUbBDNw86wbTSljHJPAg1G3U13h3z241KF2YxrRGPMENyBpd8YqtK9+3kfwG9njZQkUIhMXcxhUYDZ4FAQLTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xl3yrfdd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C880DC4CEE5;
-	Mon, 10 Mar 2025 17:14:47 +0000 (UTC)
+	 MIME-Version; b=A4AhEpZcD3XGi7FEMW+fM7QCe36diSiEX02Q15fT1ciF69xSNw4TACGVAsJy78qgBloN3NMBA7BGp4szGbQC60FkQ1w18eXYbbVQU8hWM979rS7jKi43EMWsIx6BFivuckeq+LcuLGzpXs/Hs2GvKs3m0lqkq8j34y9ZPgsZ8Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajUs+ICh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB40C4CEE5;
+	Mon, 10 Mar 2025 17:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626888;
-	bh=LBLfJftY2BbzJ/SgKj7cChLxW6wjYL/B9fURMYB9zik=;
+	s=korg; t=1741627981;
+	bh=oB0/tzJw7k/fsPuLavSfO9rzjh6L+/gkh/9LBg4EaRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xl3yrfdd6ukFYbf0fNTNY080JPc1QDAwyruZKGgsLgpVu+MUlE3bk1BUyWk67hRXy
-	 /lzQn61LoL1FTKyAv5zfeOGUChDCRmrznWetdHM/WqqiNtue2jMvoJtnYWrL+sWQp3
-	 XeyOzlRHY4lNaZOdH77OcRNlJ/cdIZGzEtkkTDb0=
+	b=ajUs+IChZun8nXAMmnHVmbzKydbNpx05E47KZ/UzBItkCcLbFAzfj78xqIknVK4s3
+	 CWoMPTA3BoBtZR5MB/O+bU07SVwKKlAT7FLnLVHX9+xSBYaajKOVYqyi3U9vX+V+hn
+	 cRq1QFofZbYw1zZgY2ltaovUhWqHCdsXyKA8Luqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Herbert <tom@herbertland.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 148/207] net: ipv6: fix dst ref loop in ila lwtunnel
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 047/145] Bluetooth: Add check for mgmt_alloc_skb() in mgmt_remote_name()
 Date: Mon, 10 Mar 2025 18:05:41 +0100
-Message-ID: <20250310170453.680174092@linuxfoundation.org>
+Message-ID: <20250310170436.635598489@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 0e7633d7b95b67f1758aea19f8e85621c5f506a3 ]
+commit f2176a07e7b19f73e05c805cf3d130a2999154cb upstream.
 
-This patch follows commit 92191dd10730 ("net: ipv6: fix dst ref loops in
-rpl, seg6 and ioam6 lwtunnels") and, on a second thought, the same patch
-is also needed for ila (even though the config that triggered the issue
-was pathological, but still, we don't want that to happen).
+Add check for the return value of mgmt_alloc_skb() in
+mgmt_remote_name() to prevent null pointer dereference.
 
-Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
-Cc: Tom Herbert <tom@herbertland.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250304181039.35951-1-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ba17bb62ce41 ("Bluetooth: Fix skb allocation in mgmt_remote_name() & mgmt_device_connected()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ila/ila_lwt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/mgmt.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index ff7e734e335b0..ac4bcc623603a 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -88,7 +88,8 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -10443,6 +10443,8 @@ void mgmt_remote_name(struct hci_dev *hd
  
--		if (ilwt->connected) {
-+		/* cache only if we don't create a dst reference loop */
-+		if (ilwt->connected && orig_dst->lwtstate != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
- 			local_bh_enable();
--- 
-2.39.5
-
+ 	skb = mgmt_alloc_skb(hdev, MGMT_EV_DEVICE_FOUND,
+ 			     sizeof(*ev) + (name ? eir_precalc_len(name_len) : 0));
++	if (!skb)
++		return;
+ 
+ 	ev = skb_put(skb, sizeof(*ev));
+ 	bacpy(&ev->addr.bdaddr, bdaddr);
 
 
 
