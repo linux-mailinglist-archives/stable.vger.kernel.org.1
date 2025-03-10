@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-122623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CF0A5A080
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F81A5A059
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:48:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C6E1172711
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:50:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22A14172083
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD47232369;
-	Mon, 10 Mar 2025 17:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7465F22DFF3;
+	Mon, 10 Mar 2025 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aidG+tsH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fc811nEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1CD17CA12;
-	Mon, 10 Mar 2025 17:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AC522E418;
+	Mon, 10 Mar 2025 17:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629026; cv=none; b=BiqP7pGkJGmTwBLzcBR03WucY0j8eKapBxVK7xjffthqc7fioRjXtXWosFDE7/sZlxvP7tjGaBsik2xkDFQV3ygMbxGyFubgMB9/tDcnuRBUboSyY/YnxKPEjXhEJm9K04zjIuiU9UawxpGanu+sZVDqXhj3PcZjOLoYftTrzHc=
+	t=1741628931; cv=none; b=O1RnsYX4uGzK5sgeI8RyLB7jmPEgCPth1eL2wSeNzw2tZ3d+CxeSUdorUWORv8AEfqWPdVkP6iOoWq84ZwBgobipeNZlddEzq6N7OVSdP55Q/N6DLCc+Ss8OWqTNuwu0ebJ9DKUoq/tJYfYXhF1eKltQeEmEOLcplBwfdU2Tl5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629026; c=relaxed/simple;
-	bh=Z9JhkaJ/nODUt1zmUcRRTVQosQUvzef7mL/EXaYZY5I=;
+	s=arc-20240116; t=1741628931; c=relaxed/simple;
+	bh=/DEwEEhGfAj5zTjhRnqqQdApk8sjXY3nTVC7877Ej2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VclpCajODZ6P63bYXPwXpFDX2kQ4vtIgNrXrE+kuKncLYUJjhvhHoKdIRKHxvP8+Q92nm6UAiqBnOiFqSCzGEf0s+n78/1/YOxIlY4ZV1ItzdO4DF0Bj4M8vcO//7qGZVKVsoXGAVpKAnQUTDN7DSx1I0xRQ/EudTzuFk+Z5CPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aidG+tsH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A5FC4CEE5;
-	Mon, 10 Mar 2025 17:50:26 +0000 (UTC)
+	 MIME-Version; b=Zgb5YvUZk4ZqkG5qCd2Sy2EJj8s/P17X2W3dLrFiSifThq+EBO3uRx6hJamVm8R5pLR0iaOeBV/076us2PN4islI/zB66ZZDamhRIJU2IIFMUGMxo4PqsNawWnGNui6PSVSoliILzL6MNKBnK5dqqJlWclyWCiCNpMfRBw/crmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fc811nEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5118CC4CEE5;
+	Mon, 10 Mar 2025 17:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629026;
-	bh=Z9JhkaJ/nODUt1zmUcRRTVQosQUvzef7mL/EXaYZY5I=;
+	s=korg; t=1741628930;
+	bh=/DEwEEhGfAj5zTjhRnqqQdApk8sjXY3nTVC7877Ej2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aidG+tsH8f2al0InNIg6C6+4HOqpH59Z5XLkRM/RmtoUzgVxXBp0eYJXqtXXnZgCD
-	 IRaVexmdUHV93Xxkp4HEGk46sOVZmbOc3HYO06BQYBPIe6BhdiGB2FB6HRMIDRhL32
-	 3ii5Xa50xIJ7gSQtMrTUABcCQ5/7X0wfOO9KnUIg=
+	b=Fc811nEKtGKA9XS63S4PxV46/n/WL8G/JLAFwOLeJFNkF7RCgRdOCl14p3dg0LQ8r
+	 f9IHqqR30tNSYEvA0fWT/5r1ckU5EX+yjNB8osLhttWOAeVOBnh+nrvyghtOQweX5J
+	 pIWqiWwAsQ01xy0UEHyd2twD4pz6f7MVLSvXEJ5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 110/620] arm64: dts: mediatek: mt8173-evb: Fix MT6397 PMIC sub-node names
-Date: Mon, 10 Mar 2025 17:59:16 +0100
-Message-ID: <20250310170549.948144239@linuxfoundation.org>
+Subject: [PATCH 5.15 111/620] arm64: dts: mediatek: mt8183: kenzo: Support second source touchscreen
+Date: Mon, 10 Mar 2025 17:59:17 +0100
+Message-ID: <20250310170549.989359368@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
 References: <20250310170545.553361750@linuxfoundation.org>
@@ -66,38 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 9545ba142865b9099d43c972b9ebcf463606499a ]
+[ Upstream commit 5ec5dc73c5ac0c6e06803dc3b5aea4493e856568 ]
 
-The MT6397 PMIC bindings specify exact names for its sub-nodes. The
-names used in the current dts don't match, causing a validation error.
+Some kenzo devices use second source touchscreen.
 
-Fix up the names. Also drop the label for the regulators node, since
-any reference should be against the individual regulator sub-nodes.
-
-Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241210092614.3951748-2-wenst@chromium.org
+Fixes: 0a9cefe21aec ("arm64: dts: mt8183: Add kukui-jacuzzi-kenzo board")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://lore.kernel.org/r/20241213-touchscreen-v3-1-7c1f670913f9@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-index cd52926190470..52b56069c51d6 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-@@ -307,7 +307,7 @@
- 		interrupt-controller;
- 		#interrupt-cells = <2>;
- 
--		mt6397regulator: mt6397regulator {
-+		regulators {
- 			compatible = "mediatek,mt6397-regulator";
- 
- 			mt6397_vpca15_reg: buck_vpca15 {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
+index 6f1aa692753ad..a477e2cce2048 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
+@@ -10,3 +10,18 @@
+ 	model = "Google kenzo sku17 board";
+ 	compatible = "google,juniper-sku17", "google,juniper", "mediatek,mt8183";
+ };
++
++&i2c0 {
++	touchscreen@40 {
++		compatible = "hid-over-i2c";
++		reg = <0x40>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&touchscreen_pins>;
++
++		interrupts-extended = <&pio 155 IRQ_TYPE_LEVEL_LOW>;
++
++		post-power-on-delay-ms = <70>;
++		hid-descr-addr = <0x0001>;
++	};
++};
 -- 
 2.39.5
 
