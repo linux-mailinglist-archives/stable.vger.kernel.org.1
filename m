@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76591A59DE5
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:26:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B68EA5A210
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C5BF16FF07
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BAFA1749B5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F2A2356DA;
-	Mon, 10 Mar 2025 17:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27352356C5;
+	Mon, 10 Mar 2025 18:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVkwO26v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOuWbRVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BE22356D1;
-	Mon, 10 Mar 2025 17:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7103A1B395F;
+	Mon, 10 Mar 2025 18:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627489; cv=none; b=JuzhPsI+myCyA6aFRxJoTLOf4OhVMcqZ2UyNkSMAWcUitzINcUZrZDGMobjFv2hQoGbRUIiuA4UK5dnveaoUlXISN5uuFj9Xfi6CdOnOC/pnFVO/+xIpiv44tJpCp2+eiMQKEu/KDewilAgFXKfzCouy+x6XsCXm2ww8CBb9P08=
+	t=1741630551; cv=none; b=KjLOycKRhpMen6tImEU0oRMhqAcbvMURAkKOxa0WWpxibNHLvNj7L7GNhWCVTbm6/AcqBJ9iPKlzAxXHAO3TJ+EP6Muxm6qi2J8I2aYGJ4Pjxvpv3HfdBOUwzthZhUQs0cAs5cJihZXcX7MIOOJsT6HSDQEdC9JnwC0JuE8fb6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627489; c=relaxed/simple;
-	bh=gfe00VXttz7BGADwFSx0NnZ0BzxAlMfoQhMJwwC4IXM=;
+	s=arc-20240116; t=1741630551; c=relaxed/simple;
+	bh=jiYtgw8OSGsIek3Sz+bz81Hz/xN09R8ab1rf/GIFxeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNx5cYPcI2Ne45vAeChrG4UW34+rYu05Pe20uX1cc4GQff5PlAHHiyfDghew542EWsW8ZMWQwabx59iGoLvsS05rIbfjLlpctIv0WMgqhbpEMdwq0gAR0fIl3FSU51w1YIALKQZ7F0UO/lT2ay9Csi0i8Z7TCB+2baPRXbHo07Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVkwO26v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0984AC4CEE5;
-	Mon, 10 Mar 2025 17:24:48 +0000 (UTC)
+	 MIME-Version; b=iXy6VgjZNomb9rTtQsRoUdRpcR2MJvxnuk+YhNZfP6JaXg0NGLcN8/ZJmrPl2NTL8lLUNkBaO0amydmwN9u7Uk2Vg83WRlI0+uFX2shnEktuTtLt0yyboYqs2KqGVcw7zlq4xV1WO89+STuTYEF2kZFVsx9r8Pdq7x1khdU3fXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOuWbRVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA009C4CEE5;
+	Mon, 10 Mar 2025 18:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627489;
-	bh=gfe00VXttz7BGADwFSx0NnZ0BzxAlMfoQhMJwwC4IXM=;
+	s=korg; t=1741630551;
+	bh=jiYtgw8OSGsIek3Sz+bz81Hz/xN09R8ab1rf/GIFxeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVkwO26vONkTC1EBlu3xAYHRCtPw4H9qHeEpPf5OsCrGUXqs0YC368WfE6gNNYnsW
-	 tsMlhI3m4LaS6WhH1Kr28WOmvyw8VnCEwVoURptqR3OAPiPwJjoRf1onWTsot8Oryu
-	 PYGzMOqBjvFcQ/xoGn3bw0VXCRGCdA7FCAe4NuZI=
+	b=lOuWbRVfvUmv1JvENBlFqqoFk5nne5rXz4SrUJq7doFWpZjgHMgNpLd9ypInRzpcr
+	 aumtIsYkhTpHlhZiol5/a9OJycSMkjzs+vUcEOQzLBNDqpLOZDmiyG0+2HyrAKKpo2
+	 dCRTf5s5Gsku8RM6KkLQISNNmwj092oCE4PFzrtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.12 115/269] drm/xe: Fix GT "for each engine" workarounds
+	Simon Horman <horms@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15 422/620] netdevsim: print human readable IP address
 Date: Mon, 10 Mar 2025 18:04:28 +0100
-Message-ID: <20250310170502.303514757@linuxfoundation.org>
+Message-ID: <20250310170602.246293019@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 54f94dc7f6b4db45dbc23b4db3d20c7194e2c54f upstream.
+commit c71bc6da6198a6d88df86094f1052bb581951d65 upstream.
 
-Any rules using engine matching are currently broken due RTP processing
-happening too in early init, before the list of hardware engines has been
-initialised.
+Currently, IPSec addresses are printed in hexadecimal format, which is
+not user-friendly. e.g.
 
-Fix this by moving workaround processing to later in the driver probe
-sequence, to just before the processed list is used for the first time.
+  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] rx ipaddr=0x00000000 00000000 00000000 0100a8c0
+  sa[0]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] tx ipaddr=0x00000000 00000000 00000000 00000000
+  sa[1]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
 
-Looking at the debugfs gt0/workarounds on ADL-P we notice 14011060649
-should be present while we see, before:
+This patch updates the code to print the IPSec address in a human-readable
+format for easier debug. e.g.
 
- GT Workarounds
-     14011059788
-     14015795083
+ # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+ SA count=4 tx=40
+ sa[0] tx ipaddr=0.0.0.0
+ sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[1] rx ipaddr=192.168.0.1
+ sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[2] tx ipaddr=::
+ sa[2]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[2]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[3] rx ipaddr=2000::1
+ sa[3]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[3]    key=0x3167608a ca4f1397 43565909 941fa627
 
-And with the patch:
-
- GT Workarounds
-     14011060649
-     14011059788
-     14015795083
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: stable@vger.kernel.org # v6.11+
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250227101304.46660-2-tvrtko.ursulin@igalia.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 25d434cef791e03cf40680f5441b576c639bfa84)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241010040027.21440-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/netdevsim/ipsec.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -379,9 +379,7 @@ int xe_gt_init_early(struct xe_gt *gt)
- 	if (err)
- 		return err;
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -39,10 +39,14 @@ static ssize_t nsim_dbg_netdev_ops_read(
+ 		if (!sap->used)
+ 			continue;
  
--	xe_wa_process_gt(gt);
- 	xe_wa_process_oob(gt);
--	xe_tuning_process_gt(gt);
- 
- 	xe_force_wake_init_gt(gt, gt_to_fw(gt));
- 	spin_lock_init(&gt->global_invl_lock);
-@@ -469,6 +467,8 @@ static int all_fw_domain_init(struct xe_
- 		goto err_hw_fence_irq;
- 
- 	xe_gt_mcr_set_implicit_defaults(gt);
-+	xe_wa_process_gt(gt);
-+	xe_tuning_process_gt(gt);
- 	xe_reg_sr_apply_mmio(&gt->reg_sr, gt);
- 
- 	err = xe_gt_clock_init(gt);
+-		p += scnprintf(p, bufsize - (p - buf),
+-			       "sa[%i] %cx ipaddr=0x%08x %08x %08x %08x\n",
+-			       i, (sap->rx ? 'r' : 't'), sap->ipaddr[0],
+-			       sap->ipaddr[1], sap->ipaddr[2], sap->ipaddr[3]);
++		if (sap->xs->props.family == AF_INET6)
++			p += scnprintf(p, bufsize - (p - buf),
++				       "sa[%i] %cx ipaddr=%pI6c\n",
++				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr);
++		else
++			p += scnprintf(p, bufsize - (p - buf),
++				       "sa[%i] %cx ipaddr=%pI4\n",
++				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr[3]);
+ 		p += scnprintf(p, bufsize - (p - buf),
+ 			       "sa[%i]    spi=0x%08x proto=0x%x salt=0x%08x crypt=%d\n",
+ 			       i, be32_to_cpu(sap->xs->id.spi),
 
 
 
