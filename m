@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B97A59C13
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:09:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DFEA5A185
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3B827A78A2
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5597173D47
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C56F230D0F;
-	Mon, 10 Mar 2025 17:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4494122FF4E;
+	Mon, 10 Mar 2025 18:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiA37R46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03gtrC9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A512309B1;
-	Mon, 10 Mar 2025 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FB117A2E8;
+	Mon, 10 Mar 2025 18:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626489; cv=none; b=XpUUr1CDWyuw1LzbA3qLh3y2Kn5CtNuS+I3tATLIDpvxVIGpRh3PNNsf7uMgjn9rcxA0EpUdsHiwriFia9qzf8yWWp6PWaGelhVfleZb9mavR2e3eKmVfqjfQZ6J+2hVHRq/SYp51p721WEKaemzhbHsnPx2wcOpjbUMiYYLoXs=
+	t=1741629719; cv=none; b=MX4XmKihT3rVfpPnvIeipIWz3uuia+QawYzu9Q6yWSBEcTnR7S/CX/ac2+aPKxnpNPc4PiNM+/xJf+4Xb33X3FYFMzXu1vYbZ+scPrkESaCJ5uGIm8NIeQHYtaMzIH7E2PVSnZ6b6G7yGoB0B591xxODT2wyuq4dj4J8IbHRNyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626489; c=relaxed/simple;
-	bh=Ix1aJVExGawJ3l5bD+Bi+7m2ITSCP5bIlGi+ZuIR25Q=;
+	s=arc-20240116; t=1741629719; c=relaxed/simple;
+	bh=kKAs93igI3SPIFlXy2o6MQhliq7f/R4KNZJOKSJkksg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/1D3vM1ONkkUXAFmP+ow4zqNyxRbthb1TkqzaZyw9qaXYD0US5a2DhjKl7un6w/fvjMGTvl2kF2hgap8e1l+sKHE8zZr28eaN5fEjKCQdT4eUNZa4xmvNghiPQlQenLUqTqxeXPATQG8N/yxWAI487hveCNwS9W2Kcy+bm8OTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiA37R46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D31C4CEE5;
-	Mon, 10 Mar 2025 17:08:07 +0000 (UTC)
+	 MIME-Version; b=cj/dl2gVlFJjS6XLl5V22XZK4RszeVnE8YgZbvp5enKHALU7WvXb1IshpmmdKkTXmGWD4YieC9UhYMnCuG4Xm2aKV/7UZ+o09xZCBExwTiJJGaMlNFI/oSOy0XKjDBWuByU1l1zfmAXDNooxFRzYmk28xti0FKKv85QLxOZBmus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03gtrC9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C041C4CEE5;
+	Mon, 10 Mar 2025 18:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626488;
-	bh=Ix1aJVExGawJ3l5bD+Bi+7m2ITSCP5bIlGi+ZuIR25Q=;
+	s=korg; t=1741629718;
+	bh=kKAs93igI3SPIFlXy2o6MQhliq7f/R4KNZJOKSJkksg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiA37R46aA4M3hvQc3Qm5PrOsKbkS7GYi50WJScjkLsy7RGfc8AVZq4AwPnn7KSBi
-	 ThAXPLWd+ryNxrQ/j+tO4SGqezWJH7eV4dl7qnG+Rz92kDqjXP7Vxtk25FIEJmmmGR
-	 hOXe+gioBlJb869EmIJnrjZKu38x0zF3Ha9xvlAk=
+	b=03gtrC9VUdyfXTA62Sm7BRM0O2NQ4ychJZTUNOIOR+471JNbVJ/l8GIph4R8bzsxh
+	 qe7XempDNRKaMJLJKn34s55o+aNsDieeq7GJEjwpXwvEKHOUNYlqDzdHp64rAfmu1t
+	 rJXxqPIngkryq1z/u79Bogpmp8iVmLMAXUzVKyMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yutaro Ohno <yutaro.ono.418@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.13 002/207] rust: block: fix formatting in GenDisk doc
+	syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 349/620] media: vidtv: Fix a null-ptr-deref in vidtv_mux_stop_thread
 Date: Mon, 10 Mar 2025 18:03:15 +0100
-Message-ID: <20250310170447.844477981@linuxfoundation.org>
+Message-ID: <20250310170559.386234054@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yutaro Ohno <yutaro.ono.418@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 0c5928deada15a8d075516e6e0d9ee19011bb000 upstream.
+[ Upstream commit 1221989555db711578a327a9367f1be46500cb48 ]
 
-Align bullet points and improve indentation in the `Invariants` section
-of the `GenDisk` struct documentation for better readability.
+syzbot report a null-ptr-deref in vidtv_mux_stop_thread. [1]
 
-[ Yutaro is also working on implementing the lint we suggested to catch
-  this sort of issue in upstream Rust:
+If dvb->mux is not initialized successfully by vidtv_mux_init() in the
+vidtv_start_streaming(), it will trigger null pointer dereference about mux
+in vidtv_mux_stop_thread().
 
-    https://github.com/rust-lang/rust-clippy/issues/13601
-    https://github.com/rust-lang/rust-clippy/pull/13711
+Adjust the timing of streaming initialization and check it before
+stopping it.
 
-  Thanks a lot! - Miguel ]
+[1]
+KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
+CPU: 0 UID: 0 PID: 5842 Comm: syz-executor248 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:vidtv_mux_stop_thread+0x26/0x80 drivers/media/test-drivers/vidtv/vidtv_mux.c:471
+Code: 90 90 90 90 66 0f 1f 00 55 53 48 89 fb e8 82 2e c8 f9 48 8d bb 28 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 02 7e 3b 0f b6 ab 28 01 00 00 31 ff 89 ee e8
+RSP: 0018:ffffc90003f2faa8 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff87cfb125
+RDX: 0000000000000025 RSI: ffffffff87d120ce RDI: 0000000000000128
+RBP: ffff888029b8d220 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000003 R12: ffff888029b8d188
+R13: ffffffff8f590aa0 R14: ffffc9000581c5c8 R15: ffff888029a17710
+FS:  00007f7eef5156c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f7eef5e635c CR3: 0000000076ca6000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ vidtv_stop_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:209 [inline]
+ vidtv_stop_feed+0x151/0x250 drivers/media/test-drivers/vidtv/vidtv_bridge.c:252
+ dmx_section_feed_stop_filtering+0x90/0x160 drivers/media/dvb-core/dvb_demux.c:1000
+ dvb_dmxdev_feed_stop.isra.0+0x1ee/0x270 drivers/media/dvb-core/dmxdev.c:486
+ dvb_dmxdev_filter_stop+0x22a/0x3a0 drivers/media/dvb-core/dmxdev.c:559
+ dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
+ dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
+ __fput+0x3f8/0xb60 fs/file_table.c:450
+ task_work_run+0x14e/0x250 kernel/task_work.c:239
+ get_signal+0x1d3/0x2610 kernel/signal.c:2790
+ arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
+ do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
-Link: https://lore.kernel.org/r/ZxkcU5yTFCagg_lX@ohnotp
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5e248227c80a3be8e96a
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/block/mq/gen_disk.rs |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_bridge.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -174,9 +174,9 @@ impl GenDiskBuilder {
- ///
- /// # Invariants
- ///
--///  - `gendisk` must always point to an initialized and valid `struct gendisk`.
--///  - `gendisk` was added to the VFS through a call to
--///     `bindings::device_add_disk`.
-+/// - `gendisk` must always point to an initialized and valid `struct gendisk`.
-+/// - `gendisk` was added to the VFS through a call to
-+///   `bindings::device_add_disk`.
- pub struct GenDisk<T: Operations> {
-     _tagset: Arc<TagSet<T>>,
-     gendisk: *mut bindings::gendisk,
+diff --git a/drivers/media/test-drivers/vidtv/vidtv_bridge.c b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
+index dff7265a42ca2..c1621680ec570 100644
+--- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
+@@ -191,10 +191,11 @@ static int vidtv_start_streaming(struct vidtv_dvb *dvb)
+ 
+ 	mux_args.mux_buf_sz  = mux_buf_sz;
+ 
+-	dvb->streaming = true;
+ 	dvb->mux = vidtv_mux_init(dvb->fe[0], dev, &mux_args);
+ 	if (!dvb->mux)
+ 		return -ENOMEM;
++
++	dvb->streaming = true;
+ 	vidtv_mux_start_thread(dvb->mux);
+ 
+ 	dev_dbg_ratelimited(dev, "Started streaming\n");
+@@ -205,6 +206,11 @@ static int vidtv_stop_streaming(struct vidtv_dvb *dvb)
+ {
+ 	struct device *dev = &dvb->pdev->dev;
+ 
++	if (!dvb->streaming) {
++		dev_warn_ratelimited(dev, "No streaming. Skipping.\n");
++		return 0;
++	}
++
+ 	dvb->streaming = false;
+ 	vidtv_mux_stop_thread(dvb->mux);
+ 	vidtv_mux_destroy(dvb->mux);
+-- 
+2.39.5
+
 
 
 
