@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2607A5A1D7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:14:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE7BA59D93
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6EF1887AF0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE03016F73E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0A0233D98;
-	Mon, 10 Mar 2025 18:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2E822D799;
+	Mon, 10 Mar 2025 17:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pUD8RVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSZHnoPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B50A233D86;
-	Mon, 10 Mar 2025 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCC422154C;
+	Mon, 10 Mar 2025 17:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630424; cv=none; b=cj8PpkPAzII139+ca+CHFWIpKzmNXN34FmvwPj8N8q5s53zha2HAyg6kjwiz9W/EvvWlhUUB8bs8qhP8UAvN413WGiXJ0nlwqAuzOKg8/N2XBYBir0On28xlIOjBdDqtBKx4jwGhww5Qm50XTP0yrbl5IeAoVBrS3a09kBfMaJs=
+	t=1741627332; cv=none; b=GfXPswlx3uylf4Omt3qVdDV23gjdVHSQhVrxfGbb3SIW7CvcsGAB8g9RHvfa/QFTirGL60cB1bVey+Ts5/bHR7Ff7ttBHGINgtpCeRkKcymlAahyeFpzk9FhFPKphRQ2suq5wj9EOx+KK0Iad/M801FLbH1WsoOCakuHzPwIjbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630424; c=relaxed/simple;
-	bh=zpayB7jgpI1oNYvn/tks9gVIHuFivmpkJkesvyg/FfI=;
+	s=arc-20240116; t=1741627332; c=relaxed/simple;
+	bh=gSbG8uCcllxKbVIa+rRvv4NBWSYZa4oPOK1DxVySQAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTAAM7u/2vwU/uSzIH0F1gJV3sdAOkiXWrlNpVEWkyD9zTIiHvcABSRc9a0ICyY+Xoub3mMk0iZG/9FRBztqf0skz8wg5I9KM40kX+21DVkHMS6OoK1fOEq9/q6V+8OqPti11oaZxYwcMk0WwtUiSK9O3x+x8TPqiMJLtejpDWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pUD8RVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201D7C4CEE5;
-	Mon, 10 Mar 2025 18:13:42 +0000 (UTC)
+	 MIME-Version; b=n2mmBP5i/qIv1LaOC8R26itEjsrVBxAj53IzjXJz8aidVdTk+L0keldU9yXMjJZs/vlBGAm+1+7KR1ZpHM79tJST9+hDtqMBARmKvtdOw6Ldd+4khlXkustAdbiR40LpPX+Pvgkj5HfEL6ATtZDep871fk8EgoMe/VodUN9GDrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSZHnoPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1BDC4CEE5;
+	Mon, 10 Mar 2025 17:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630423;
-	bh=zpayB7jgpI1oNYvn/tks9gVIHuFivmpkJkesvyg/FfI=;
+	s=korg; t=1741627332;
+	bh=gSbG8uCcllxKbVIa+rRvv4NBWSYZa4oPOK1DxVySQAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pUD8RVqHvOvi9wf0jZhQ18X0xQLpHW7XduM4m8T2HjjcYtZK3qYSf2oKSb1kkLHD
-	 1T917N37Csf1ejTwONGUbyNquWjMiuwQz++T9Tpt30LfMmA7WlnoogIpA6C/FOBO4n
-	 EyVheUAJQUitY3TjqHZhTd6a9Y025y0NG4HcJ+eA=
+	b=lSZHnoPS9Yaid37CwU4mHPvwdWpi8sSKBOq3qamG4R5ZfLiHLjzRH1R0mWSA66e4v
+	 dWJbJ2KhgIrRPzh41isT8oCBfrpinQE7F56BtuUbvw+2+pFhpMJGpithVSD1EiD3yT
+	 JWVC9C4ZuSXIBTWNP+crcxiKxOK9oDCz5XgglbBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 401/620] ipv4: use RCU protection in __ip_rt_update_pmtu()
+	Paul Fertser <fercerpav@gmail.com>,
+	Iwona Winiarska <iwona.winiarska@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 094/269] hwmon: (peci/dimmtemp) Do not provide fake thresholds data
 Date: Mon, 10 Mar 2025 18:04:07 +0100
-Message-ID: <20250310170601.421198863@linuxfoundation.org>
+Message-ID: <20250310170501.457779521@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paul Fertser <fercerpav@gmail.com>
 
-[ Upstream commit 139512191bd06f1b496117c76372b2ce372c9a41 ]
+commit 5797c04400ee117bfe459ff1e468d0ea38054ab4 upstream.
 
-__ip_rt_update_pmtu() must use RCU protection to make
-sure the net structure it reads does not disappear.
+When an Icelake or Sapphire Rapids CPU isn't providing the maximum and
+critical thresholds for particular DIMM the driver should return an
+error to the userspace instead of giving it stale (best case) or wrong
+(the structure contains all zeros after kzalloc() call) data.
 
-Fixes: 2fbc6e89b2f1 ("ipv4: Update exception handling for multipath routes via same device")
-Fixes: 1de6b15a434c ("Namespaceify min_pmtu sysctl")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250205155120.1676781-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue can be reproduced by binding the peci driver while the host is
+fully booted and idle, this makes PECI interaction unreliable enough.
+
+Fixes: 73bc1b885dae ("hwmon: peci: Add dimmtemp driver")
+Fixes: 621995b6d795 ("hwmon: (peci/dimmtemp) Add Sapphire Rapids support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Reviewed-by: Iwona Winiarska <iwona.winiarska@intel.com>
+Link: https://lore.kernel.org/r/20250123122003.6010-1-fercerpav@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/hwmon/peci/dimmtemp.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 2ae9d2855efab..a4884d434038e 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1023,9 +1023,9 @@ out:	kfree_skb(skb);
- static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- {
- 	struct dst_entry *dst = &rt->dst;
--	struct net *net = dev_net(dst->dev);
- 	struct fib_result res;
- 	bool lock = false;
-+	struct net *net;
- 	u32 old_mtu;
+--- a/drivers/hwmon/peci/dimmtemp.c
++++ b/drivers/hwmon/peci/dimmtemp.c
+@@ -127,8 +127,6 @@ static int update_thresholds(struct peci
+ 		return 0;
  
- 	if (ip_mtu_locked(dst))
-@@ -1035,6 +1035,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- 	if (old_mtu < mtu)
- 		return;
+ 	ret = priv->gen_info->read_thresholds(priv, dimm_order, chan_rank, &data);
+-	if (ret == -ENODATA) /* Use default or previous value */
+-		return 0;
+ 	if (ret)
+ 		return ret;
  
-+	rcu_read_lock();
-+	net = dev_net_rcu(dst->dev);
- 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
- 		lock = true;
- 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
-@@ -1042,9 +1044,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+@@ -509,11 +507,11 @@ read_thresholds_icx(struct peci_dimmtemp
  
- 	if (rt->rt_pmtu == mtu && !lock &&
- 	    time_before(jiffies, dst->expires - net->ipv4.ip_rt_mtu_expires / 2))
--		return;
-+		goto out;
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd4, &reg_val);
+ 	if (ret || !(reg_val & BIT(31)))
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
  
--	rcu_read_lock();
- 	if (fib_lookup(net, fl4, &res, 0) == 0) {
- 		struct fib_nh_common *nhc;
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd0, &reg_val);
+ 	if (ret)
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
  
-@@ -1058,14 +1059,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
- 						      jiffies + net->ipv4.ip_rt_mtu_expires);
- 			}
--			rcu_read_unlock();
--			return;
-+			goto out;
- 		}
- #endif /* CONFIG_IP_ROUTE_MULTIPATH */
- 		nhc = FIB_RES_NHC(res);
- 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
- 				      jiffies + net->ipv4.ip_rt_mtu_expires);
- 	}
-+out:
- 	rcu_read_unlock();
- }
+ 	/*
+ 	 * Device 26, Offset 224e0: IMC 0 channel 0 -> rank 0
+@@ -546,11 +544,11 @@ read_thresholds_spr(struct peci_dimmtemp
  
--- 
-2.39.5
-
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd4, &reg_val);
+ 	if (ret || !(reg_val & BIT(31)))
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
+ 
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd0, &reg_val);
+ 	if (ret)
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
+ 
+ 	/*
+ 	 * Device 26, Offset 219a8: IMC 0 channel 0 -> rank 0
 
 
 
