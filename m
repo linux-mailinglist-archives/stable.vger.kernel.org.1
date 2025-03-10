@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-122423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D81A59F85
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F99A5A2AB
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45319188E8D7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:41:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BD8718953E0
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C622327A7;
-	Mon, 10 Mar 2025 17:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015F6233729;
+	Mon, 10 Mar 2025 18:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4I0h8rP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pgk+4DmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C59230BC5;
-	Mon, 10 Mar 2025 17:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31FB231A24;
+	Mon, 10 Mar 2025 18:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628448; cv=none; b=L4dy5k8hvEGHiN4YBTWH5hgDoXvhUdTj9XeJBdiUkfIvybrW9FeB37l5l2qbHjgWw4ujV+h8E6hrYeLTJAyvr4T5zbCDJR14Tm+G2WP/gwnNXsChkQUnmm2PrOwD8F+ApAqsuuim6h3ssRWtaoldi5zytKRcR1i7pQ54MiI+69A=
+	t=1741630953; cv=none; b=cR+PDlkJ1CJoKlT4vOEWip05AK0xXwIF+lGc0iLI5T6xkuQiY3RmBwOj18JSdURIcyGDuLTsozWw4EDMQTZKqZp7enANFSWlw9ms2aOFgoV3gzv4LhuWCa8Ar2LcUQCdCvrFmQ+alKqLRPvM4Rsy/JeIpVnVdjhoNmsGzro0U7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628448; c=relaxed/simple;
-	bh=i1K1Pw6+hdlvAQa3mSbnnWMkrSgv/WUKhlRMES4gUJU=;
+	s=arc-20240116; t=1741630953; c=relaxed/simple;
+	bh=w6O/0Z/+DjwKy2nDT62KLTFDZ1OVsFK5S2NRYC2nz1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZU9ff1VixlSM4ba5B3l/VtkOQaj+KG/q4jYjFo7IfpUM88d3AgiH7InSH+i+zRUUXJVneTVPmQDBcwOEdDwxBqxi6chkkpjnn9DMYc9kO+12C97521ZQ7wdrO2VAON5ibI8XBo8p9iZfxS6gnTPS0EjHYQftpyp4GhYke2E1xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4I0h8rP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9A4C4CEE5;
-	Mon, 10 Mar 2025 17:40:47 +0000 (UTC)
+	 MIME-Version; b=VDLZ7YHoTYgBRDAx/qcq63kKaiCZ0YlF+alrkIZ5Zhdg1RsPtz5mmKXsEEcWWqtJJyfecUsAwzW3BVXowBV/MhtL23w2fIW4VQy0PJzV24jPvJzUA2p0EInBG4lZtgnWJw8MF9BfjH5DqmckxKmL4maj7z8ySd59HkwaO+9UgSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pgk+4DmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4F0C4CEE5;
+	Mon, 10 Mar 2025 18:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628448;
-	bh=i1K1Pw6+hdlvAQa3mSbnnWMkrSgv/WUKhlRMES4gUJU=;
+	s=korg; t=1741630953;
+	bh=w6O/0Z/+DjwKy2nDT62KLTFDZ1OVsFK5S2NRYC2nz1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4I0h8rPs8ye6zcOeWIP5o2CuQGbKfCJSq/202MSt1mOhg8G9teuBULGEhFCMT50n
-	 KVUPZSk20raqDMgThtF112GD0JzWiieTn5GDS1PzjmJnYEF3jQDddVgaAtLU5ouNFk
-	 j1GWBSSn8MEYAuLPIsU7j3Us5IbQF0DZwlQWwX7c=
+	b=Pgk+4DmR8iZL8Ow4WLH9zHmUhebCml5GPTQV1HOQqz5WKEgQgqgmvR8bO3NJ3OPce
+	 0PDmamlMe3tyibHSLk1c5xW36dTMQjkApROxrwvHlC2cljTas72jUphw5sOkqaCiHE
+	 mYmEVCWtSAq4aIC+WKj1LDlIeGwLAJSJwWAxwM4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/109] gpio: rcar: Fix missing of_node_put() call
+Subject: [PATCH 5.15 560/620] hwmon: (ad7314) Validate leading zero bits and return error
 Date: Mon, 10 Mar 2025 18:06:46 +0100
-Message-ID: <20250310170430.035828173@linuxfoundation.org>
+Message-ID: <20250310170607.646534301@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-[ Upstream commit 391b41f983bf7ff853de44704d8e14e7cc648a9b ]
+[ Upstream commit e278d5e8aef4c0a1d9a9fa8b8910d713a89aa800 ]
 
-of_parse_phandle_with_fixed_args() requires its caller to
-call into of_node_put() on the node pointer from the output
-structure, but such a call is currently missing.
+Leading zero bits are sent on the bus before the temperature value is
+transmitted. If any of these bits are high, the connection might be
+unstable or there could be no AD7314 / ADT730x (or compatible) at all.
+Return -EIO in that case.
 
-Call into of_node_put() to rectify that.
-
-Fixes: 159f8a0209af ("gpio-rcar: Add DT support")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20250305163753.34913-2-fabrizio.castro.jz@renesas.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Fixes: 4f3a659581cab ("hwmon: AD7314 driver (ported from IIO)")
+Link: https://lore.kernel.org/r/24a50c2981a318580aca8f50d23be7987b69ea00.camel@iris-sensing.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rcar.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/hwmon/ad7314.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpio/gpio-rcar.c b/drivers/gpio/gpio-rcar.c
-index fd35e4611cc6d..ab200e6250108 100644
---- a/drivers/gpio/gpio-rcar.c
-+++ b/drivers/gpio/gpio-rcar.c
-@@ -469,7 +469,12 @@ static int gpio_rcar_parse_dt(struct gpio_rcar_priv *p, unsigned int *npins)
- 	p->info = *info;
+diff --git a/drivers/hwmon/ad7314.c b/drivers/hwmon/ad7314.c
+index 7802bbf5f9587..59424103f6348 100644
+--- a/drivers/hwmon/ad7314.c
++++ b/drivers/hwmon/ad7314.c
+@@ -22,11 +22,13 @@
+  */
+ #define AD7314_TEMP_MASK		0x7FE0
+ #define AD7314_TEMP_SHIFT		5
++#define AD7314_LEADING_ZEROS_MASK	BIT(15)
  
- 	ret = of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3, 0, &args);
--	*npins = ret == 0 ? args.args[2] : RCAR_MAX_GPIO_PER_BANK;
-+	if (ret) {
-+		*npins = RCAR_MAX_GPIO_PER_BANK;
-+	} else {
-+		*npins = args.args[2];
-+		of_node_put(args.np);
-+	}
+ /*
+  * ADT7301 and ADT7302 temperature masks
+  */
+ #define ADT7301_TEMP_MASK		0x3FFF
++#define ADT7301_LEADING_ZEROS_MASK	(BIT(15) | BIT(14))
  
- 	if (*npins == 0 || *npins > RCAR_MAX_GPIO_PER_BANK) {
- 		dev_warn(p->dev, "Invalid number of gpio lines %u, using %u\n",
+ enum ad7314_variant {
+ 	adt7301,
+@@ -65,12 +67,20 @@ static ssize_t ad7314_temperature_show(struct device *dev,
+ 		return ret;
+ 	switch (spi_get_device_id(chip->spi_dev)->driver_data) {
+ 	case ad7314:
++		if (ret & AD7314_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		data = (ret & AD7314_TEMP_MASK) >> AD7314_TEMP_SHIFT;
+ 		data = sign_extend32(data, 9);
+ 
+ 		return sprintf(buf, "%d\n", 250 * data);
+ 	case adt7301:
+ 	case adt7302:
++		if (ret & ADT7301_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		/*
+ 		 * Documented as a 13 bit twos complement register
+ 		 * with a sign bit - which is a 14 bit 2's complement
 -- 
 2.39.5
 
