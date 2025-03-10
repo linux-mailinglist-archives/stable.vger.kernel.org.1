@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-122443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6368DA59FA4
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:42:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583A1A5A29B
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E9FA171132
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:42:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6D881895503
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC97233714;
-	Mon, 10 Mar 2025 17:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB33923370D;
+	Mon, 10 Mar 2025 18:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVFAdT1f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEyjN/++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C9C230BC5;
-	Mon, 10 Mar 2025 17:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BBF22FF4E;
+	Mon, 10 Mar 2025 18:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628506; cv=none; b=Gj80vpUeaA2px6DhxUnl6haBsegy3QVkgO0GipDq7bU1eRtJ0TgID5qCHxIx7elaYbMiwtymY8sK6gI0hnikGpMKJ+S0ntcOdKhmkU2PlWCEtnfTf+gc/QK2g00lltsuhO6lBEiI4t/afkjiuHRNRS3KtvKaUARtYFqpPOQfbQI=
+	t=1741630918; cv=none; b=J0uSsKkMxJIYFdjMZrLW3ayXeP7XvwyBZAZzBHmOFHNYiBwhqyPJh25rhg7ulECClHEKZrL743SyfeQkrjmkUQuoKEwM/NK044Uh2iB5ippELjK0cYzNsIC5Ec28Q6V/BVuq9xQDUqTHGQqWtfWY4Or97fWgiwVCap5s53TBFUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628506; c=relaxed/simple;
-	bh=/vXNJF1k6bgN77WLxqvzttKGVCAqs0o2UyVyo6pn0cE=;
+	s=arc-20240116; t=1741630918; c=relaxed/simple;
+	bh=oqiqWduC2as5eC4UUQ7yyJaaYiL+lE/vgIRDiYthqQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TO6QQqz6WQMbJCpVr08FEYyhP1AumJLRxzXU6a+ieXlQzEexb1QUmcdheycscIPSUPH5BGdOhpUq1PTs4dGeakdpzKR+woDtAlA5DYSxDbD7yr3iz5WVZpqgwjbA7TxWAk7mZUMJSytGLLOuN7iWpNBQY4WDqcaIODYV5MVWgZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVFAdT1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805AFC4CEE5;
-	Mon, 10 Mar 2025 17:41:45 +0000 (UTC)
+	 MIME-Version; b=LjrcARdxVCCIc8ueMKPKuLlAlBP9bKJWKjuBxd1ctfLqvY+QPBq2/pQC/pHP9USVrufxyTYwuuEfVlmjM4VgjsZ2uCeG4bL5KwlGwDN2ywALNO8MkuELgse5Gv6+WRAOTNUPcBGgHNOD8VPAgaCPBLJ31e9Ce698XkdESEC4be8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEyjN/++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E228C4CEE5;
+	Mon, 10 Mar 2025 18:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628505;
-	bh=/vXNJF1k6bgN77WLxqvzttKGVCAqs0o2UyVyo6pn0cE=;
+	s=korg; t=1741630918;
+	bh=oqiqWduC2as5eC4UUQ7yyJaaYiL+lE/vgIRDiYthqQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVFAdT1fhP/Rv4oq94pmokNCpHeml6JZQjYJ91lYvpcIHPKoo/JP3GVLYGjMEyB8L
-	 V1e8+4y7JAd6XHqPA7KpCXPMa8oot3rI+hP3w4pfPuxdDUx00dtmjCGLC9/3twpvnH
-	 SqjDcEUkMf+YlONVaTRn/NzGOoPZsVtolWegdtLY=
+	b=vEyjN/++nGQD9vqB9QPM8R+O/wLOwEgHr58UixrCiA/gTK0uq/9+1zBEx+jicXYDe
+	 T5wKXrQ+Jz7DSqIXoxrHq9t77s2gp6sMET5NLVHNtpHXh06N19uyx3KYan+b4eq6BA
+	 IDYjFN6uqW8h0Tre5EL8uU/+msHw0WrxKAWq0JXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 6.1 080/109] mei: me: add panther lake P DID
-Date: Mon, 10 Mar 2025 18:07:04 +0100
-Message-ID: <20250310170430.746997601@linuxfoundation.org>
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 579/620] gpio: rcar: Fix missing of_node_put() call
+Date: Mon, 10 Mar 2025 18:07:05 +0100
+Message-ID: <20250310170608.392896405@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-commit a8e8ffcc3afce2ee5fb70162aeaef3f03573ee1e upstream.
+[ Upstream commit 391b41f983bf7ff853de44704d8e14e7cc648a9b ]
 
-Add Panther Lake P device id.
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-Cc: stable <stable@kernel.org>
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://lore.kernel.org/r/20250209110550.1582982-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Call into of_node_put() to rectify that.
+
+Fixes: 159f8a0209af ("gpio-rcar: Add DT support")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250305163753.34913-2-fabrizio.castro.jz@renesas.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/gpio/gpio-rcar.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -117,6 +117,8 @@
+diff --git a/drivers/gpio/gpio-rcar.c b/drivers/gpio/gpio-rcar.c
+index f4612a62fd96a..8e2acf3b022f7 100644
+--- a/drivers/gpio/gpio-rcar.c
++++ b/drivers/gpio/gpio-rcar.c
+@@ -452,7 +452,12 @@ static int gpio_rcar_parse_dt(struct gpio_rcar_priv *p, unsigned int *npins)
+ 	p->info = *info;
  
- #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ 	ret = of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3, 0, &args);
+-	*npins = ret == 0 ? args.args[2] : RCAR_MAX_GPIO_PER_BANK;
++	if (ret) {
++		*npins = RCAR_MAX_GPIO_PER_BANK;
++	} else {
++		*npins = args.args[2];
++		of_node_put(args.np);
++	}
  
-+#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
-+
- /*
-  * MEI HW Section
-  */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -124,6 +124,8 @@ static const struct pci_device_id mei_me
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
- 
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
-+
- 	/* required last entry */
- 	{0, }
- };
+ 	if (*npins == 0 || *npins > RCAR_MAX_GPIO_PER_BANK) {
+ 		dev_warn(p->dev, "Invalid number of gpio lines %u, using %u\n",
+-- 
+2.39.5
+
 
 
 
