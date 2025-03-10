@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-122864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DFEA5A185
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:02:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B498FA59D69
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5597173D47
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:02:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F2F83A5103
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4494122FF4E;
-	Mon, 10 Mar 2025 18:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D0E232395;
+	Mon, 10 Mar 2025 17:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03gtrC9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+9AQcNG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FB117A2E8;
-	Mon, 10 Mar 2025 18:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF00232373;
+	Mon, 10 Mar 2025 17:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629719; cv=none; b=MX4XmKihT3rVfpPnvIeipIWz3uuia+QawYzu9Q6yWSBEcTnR7S/CX/ac2+aPKxnpNPc4PiNM+/xJf+4Xb33X3FYFMzXu1vYbZ+scPrkESaCJ5uGIm8NIeQHYtaMzIH7E2PVSnZ6b6G7yGoB0B591xxODT2wyuq4dj4J8IbHRNyM=
+	t=1741627205; cv=none; b=PjkbmqsdqCJAeQF4YsZIjgfm3WoI3M9NL7AmUVCp8eX3UcTef/EP1jiPriiGOztbukRHmZp1aGvpnY7IMhhxOhV4bvUCT16txd1KQhEezvqQXFlw+sQNDLSsgV3EBQIih2YrmZe33lRK4FEeAN8adkJSe7i588HxTKP6f7GiR34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629719; c=relaxed/simple;
-	bh=kKAs93igI3SPIFlXy2o6MQhliq7f/R4KNZJOKSJkksg=;
+	s=arc-20240116; t=1741627205; c=relaxed/simple;
+	bh=TBqKtopl8UjPK9BYIjNefEz6NyZetSYpex3FGsP+Kq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cj/dl2gVlFJjS6XLl5V22XZK4RszeVnE8YgZbvp5enKHALU7WvXb1IshpmmdKkTXmGWD4YieC9UhYMnCuG4Xm2aKV/7UZ+o09xZCBExwTiJJGaMlNFI/oSOy0XKjDBWuByU1l1zfmAXDNooxFRzYmk28xti0FKKv85QLxOZBmus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03gtrC9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C041C4CEE5;
-	Mon, 10 Mar 2025 18:01:58 +0000 (UTC)
+	 MIME-Version; b=pVId5x/X+020TyBDnUTYAV4dde3v6s1ILLVcDBsx451aIlJ+pVq5NV1PHX4b0iLMkxkWFnpgSo7zLjOIjqC9pVk/9e2nhB2Vdwp50hJCHYhA4gflHT5MuXDS6a57moyCk/HmC2/XHcbFZXJONBhu9nEl3in0M3HabmNfdyMnju0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+9AQcNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED752C4CEF4;
+	Mon, 10 Mar 2025 17:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629718;
-	bh=kKAs93igI3SPIFlXy2o6MQhliq7f/R4KNZJOKSJkksg=;
+	s=korg; t=1741627205;
+	bh=TBqKtopl8UjPK9BYIjNefEz6NyZetSYpex3FGsP+Kq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03gtrC9VUdyfXTA62Sm7BRM0O2NQ4ychJZTUNOIOR+471JNbVJ/l8GIph4R8bzsxh
-	 qe7XempDNRKaMJLJKn34s55o+aNsDieeq7GJEjwpXwvEKHOUNYlqDzdHp64rAfmu1t
-	 rJXxqPIngkryq1z/u79Bogpmp8iVmLMAXUzVKyMg=
+	b=t+9AQcNGDMHpMUsrYGXxzBXjOhy1Bhz/v88rI0N9YraauO5ZnZA3C7y9VSUuZP0Ls
+	 DwhB+7JfIX7irP2Vs4E2IGFm5t+afP9M5BepLK/Xg9tH3F+WXcfbWeSosi7UodAzHP
+	 k0qumNu0+3ZX9Sepl3pNyLeviQWdq+/rnDmSDqDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 349/620] media: vidtv: Fix a null-ptr-deref in vidtv_mux_stop_thread
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 042/269] rust: treewide: switch to our kernel `Box` type
 Date: Mon, 10 Mar 2025 18:03:15 +0100
-Message-ID: <20250310170559.386234054@linuxfoundation.org>
+Message-ID: <20250310170459.399557015@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,627 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 1221989555db711578a327a9367f1be46500cb48 ]
+commit 8373147ce4961665c5700016b1c76299e962d077 upstream.
 
-syzbot report a null-ptr-deref in vidtv_mux_stop_thread. [1]
+Now that we got the kernel `Box` type in place, convert all existing
+`Box` users to make use of it.
 
-If dvb->mux is not initialized successfully by vidtv_mux_init() in the
-vidtv_start_streaming(), it will trigger null pointer dereference about mux
-in vidtv_mux_stop_thread().
-
-Adjust the timing of streaming initialization and check it before
-stopping it.
-
-[1]
-KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
-CPU: 0 UID: 0 PID: 5842 Comm: syz-executor248 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:vidtv_mux_stop_thread+0x26/0x80 drivers/media/test-drivers/vidtv/vidtv_mux.c:471
-Code: 90 90 90 90 66 0f 1f 00 55 53 48 89 fb e8 82 2e c8 f9 48 8d bb 28 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 02 7e 3b 0f b6 ab 28 01 00 00 31 ff 89 ee e8
-RSP: 0018:ffffc90003f2faa8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff87cfb125
-RDX: 0000000000000025 RSI: ffffffff87d120ce RDI: 0000000000000128
-RBP: ffff888029b8d220 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000003 R12: ffff888029b8d188
-R13: ffffffff8f590aa0 R14: ffffc9000581c5c8 R15: ffff888029a17710
-FS:  00007f7eef5156c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7eef5e635c CR3: 0000000076ca6000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- vidtv_stop_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:209 [inline]
- vidtv_stop_feed+0x151/0x250 drivers/media/test-drivers/vidtv/vidtv_bridge.c:252
- dmx_section_feed_stop_filtering+0x90/0x160 drivers/media/dvb-core/dvb_demux.c:1000
- dvb_dmxdev_feed_stop.isra.0+0x1ee/0x270 drivers/media/dvb-core/dmxdev.c:486
- dvb_dmxdev_filter_stop+0x22a/0x3a0 drivers/media/dvb-core/dmxdev.c:559
- dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
- dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
- __fput+0x3f8/0xb60 fs/file_table.c:450
- task_work_run+0x14e/0x250 kernel/task_work.c:239
- get_signal+0x1d3/0x2610 kernel/signal.c:2790
- arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-by: syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5e248227c80a3be8e96a
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-13-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/block/rnull.rs            |    4 +-
+ rust/kernel/init.rs               |   51 +++++++++++++++++++-------------------
+ rust/kernel/init/__internal.rs    |    2 -
+ rust/kernel/rbtree.rs             |   49 ++++++++++++++++++++----------------
+ rust/kernel/sync/arc.rs           |   17 +++++-------
+ rust/kernel/sync/condvar.rs       |    4 +-
+ rust/kernel/sync/lock/mutex.rs    |    2 -
+ rust/kernel/sync/lock/spinlock.rs |    2 -
+ rust/kernel/workqueue.rs          |   20 +++++++-------
+ rust/macros/lib.rs                |    6 ++--
+ 10 files changed, 81 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_bridge.c b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-index dff7265a42ca2..c1621680ec570 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -191,10 +191,11 @@ static int vidtv_start_streaming(struct vidtv_dvb *dvb)
+--- a/drivers/block/rnull.rs
++++ b/drivers/block/rnull.rs
+@@ -32,7 +32,7 @@ module! {
+ }
  
- 	mux_args.mux_buf_sz  = mux_buf_sz;
+ struct NullBlkModule {
+-    _disk: Pin<Box<Mutex<GenDisk<NullBlkDevice>>>>,
++    _disk: Pin<KBox<Mutex<GenDisk<NullBlkDevice>>>>,
+ }
  
--	dvb->streaming = true;
- 	dvb->mux = vidtv_mux_init(dvb->fe[0], dev, &mux_args);
- 	if (!dvb->mux)
- 		return -ENOMEM;
+ impl kernel::Module for NullBlkModule {
+@@ -47,7 +47,7 @@ impl kernel::Module for NullBlkModule {
+             .rotational(false)
+             .build(format_args!("rnullb{}", 0), tagset)?;
+ 
+-        let disk = Box::pin_init(new_mutex!(disk, "nullb:disk"), flags::GFP_KERNEL)?;
++        let disk = KBox::pin_init(new_mutex!(disk, "nullb:disk"), flags::GFP_KERNEL)?;
+ 
+         Ok(Self { _disk: disk })
+     }
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -13,7 +13,7 @@
+ //! To initialize a `struct` with an in-place constructor you will need two things:
+ //! - an in-place constructor,
+ //! - a memory location that can hold your `struct` (this can be the [stack], an [`Arc<T>`],
+-//!   [`UniqueArc<T>`], [`Box<T>`] or any other smart pointer that implements [`InPlaceInit`]).
++//!   [`UniqueArc<T>`], [`KBox<T>`] or any other smart pointer that implements [`InPlaceInit`]).
+ //!
+ //! To get an in-place constructor there are generally three options:
+ //! - directly creating an in-place constructor using the [`pin_init!`] macro,
+@@ -68,7 +68,7 @@
+ //! #     a <- new_mutex!(42, "Foo::a"),
+ //! #     b: 24,
+ //! # });
+-//! let foo: Result<Pin<Box<Foo>>> = Box::pin_init(foo, GFP_KERNEL);
++//! let foo: Result<Pin<KBox<Foo>>> = KBox::pin_init(foo, GFP_KERNEL);
+ //! ```
+ //!
+ //! For more information see the [`pin_init!`] macro.
+@@ -92,14 +92,14 @@
+ //! struct DriverData {
+ //!     #[pin]
+ //!     status: Mutex<i32>,
+-//!     buffer: Box<[u8; 1_000_000]>,
++//!     buffer: KBox<[u8; 1_000_000]>,
+ //! }
+ //!
+ //! impl DriverData {
+ //!     fn new() -> impl PinInit<Self, Error> {
+ //!         try_pin_init!(Self {
+ //!             status <- new_mutex!(0, "DriverData::status"),
+-//!             buffer: Box::init(kernel::init::zeroed(), GFP_KERNEL)?,
++//!             buffer: KBox::init(kernel::init::zeroed(), GFP_KERNEL)?,
+ //!         })
+ //!     }
+ //! }
+@@ -211,7 +211,7 @@
+ //! [`pin_init!`]: crate::pin_init!
+ 
+ use crate::{
+-    alloc::{box_ext::BoxExt, AllocError, Flags},
++    alloc::{box_ext::BoxExt, AllocError, Flags, KBox},
+     error::{self, Error},
+     sync::Arc,
+     sync::UniqueArc,
+@@ -298,7 +298,7 @@ macro_rules! stack_pin_init {
+ /// struct Foo {
+ ///     #[pin]
+ ///     a: Mutex<usize>,
+-///     b: Box<Bar>,
++///     b: KBox<Bar>,
+ /// }
+ ///
+ /// struct Bar {
+@@ -307,7 +307,7 @@ macro_rules! stack_pin_init {
+ ///
+ /// stack_try_pin_init!(let foo: Result<Pin<&mut Foo>, AllocError> = pin_init!(Foo {
+ ///     a <- new_mutex!(42),
+-///     b: Box::new(Bar {
++///     b: KBox::new(Bar {
+ ///         x: 64,
+ ///     }, GFP_KERNEL)?,
+ /// }));
+@@ -324,7 +324,7 @@ macro_rules! stack_pin_init {
+ /// struct Foo {
+ ///     #[pin]
+ ///     a: Mutex<usize>,
+-///     b: Box<Bar>,
++///     b: KBox<Bar>,
+ /// }
+ ///
+ /// struct Bar {
+@@ -333,7 +333,7 @@ macro_rules! stack_pin_init {
+ ///
+ /// stack_try_pin_init!(let foo: Pin<&mut Foo> =? pin_init!(Foo {
+ ///     a <- new_mutex!(42),
+-///     b: Box::new(Bar {
++///     b: KBox::new(Bar {
+ ///         x: 64,
+ ///     }, GFP_KERNEL)?,
+ /// }));
+@@ -391,7 +391,7 @@ macro_rules! stack_try_pin_init {
+ ///     },
+ /// });
+ /// # initializer }
+-/// # Box::pin_init(demo(), GFP_KERNEL).unwrap();
++/// # KBox::pin_init(demo(), GFP_KERNEL).unwrap();
+ /// ```
+ ///
+ /// Arbitrary Rust expressions can be used to set the value of a variable.
+@@ -460,7 +460,7 @@ macro_rules! stack_try_pin_init {
+ /// #         })
+ /// #     }
+ /// # }
+-/// let foo = Box::pin_init(Foo::new(), GFP_KERNEL);
++/// let foo = KBox::pin_init(Foo::new(), GFP_KERNEL);
+ /// ```
+ ///
+ /// They can also easily embed it into their own `struct`s:
+@@ -592,7 +592,7 @@ macro_rules! pin_init {
+ /// use kernel::{init::{self, PinInit}, error::Error};
+ /// #[pin_data]
+ /// struct BigBuf {
+-///     big: Box<[u8; 1024 * 1024 * 1024]>,
++///     big: KBox<[u8; 1024 * 1024 * 1024]>,
+ ///     small: [u8; 1024 * 1024],
+ ///     ptr: *mut u8,
+ /// }
+@@ -600,7 +600,7 @@ macro_rules! pin_init {
+ /// impl BigBuf {
+ ///     fn new() -> impl PinInit<Self, Error> {
+ ///         try_pin_init!(Self {
+-///             big: Box::init(init::zeroed(), GFP_KERNEL)?,
++///             big: KBox::init(init::zeroed(), GFP_KERNEL)?,
+ ///             small: [0; 1024 * 1024],
+ ///             ptr: core::ptr::null_mut(),
+ ///         }? Error)
+@@ -692,16 +692,16 @@ macro_rules! init {
+ /// # Examples
+ ///
+ /// ```rust
+-/// use kernel::{init::{PinInit, zeroed}, error::Error};
++/// use kernel::{alloc::KBox, init::{PinInit, zeroed}, error::Error};
+ /// struct BigBuf {
+-///     big: Box<[u8; 1024 * 1024 * 1024]>,
++///     big: KBox<[u8; 1024 * 1024 * 1024]>,
+ ///     small: [u8; 1024 * 1024],
+ /// }
+ ///
+ /// impl BigBuf {
+ ///     fn new() -> impl Init<Self, Error> {
+ ///         try_init!(Self {
+-///             big: Box::init(zeroed(), GFP_KERNEL)?,
++///             big: KBox::init(zeroed(), GFP_KERNEL)?,
+ ///             small: [0; 1024 * 1024],
+ ///         }? Error)
+ ///     }
+@@ -812,8 +812,8 @@ macro_rules! assert_pinned {
+ /// A pin-initializer for the type `T`.
+ ///
+ /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
+-/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`] or even the stack (see [`stack_pin_init!`]). Use the
+-/// [`InPlaceInit::pin_init`] function of a smart pointer like [`Arc<T>`] on this.
++/// be [`KBox<T>`], [`Arc<T>`], [`UniqueArc<T>`] or even the stack (see [`stack_pin_init!`]). Use
++/// the [`InPlaceInit::pin_init`] function of a smart pointer like [`Arc<T>`] on this.
+ ///
+ /// Also see the [module description](self).
+ ///
+@@ -893,7 +893,7 @@ pub unsafe trait PinInit<T: ?Sized, E =
+ }
+ 
+ /// An initializer returned by [`PinInit::pin_chain`].
+-pub struct ChainPinInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant<(E, Box<T>)>);
++pub struct ChainPinInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant<(E, KBox<T>)>);
+ 
+ // SAFETY: The `__pinned_init` function is implemented such that it
+ // - returns `Ok(())` on successful initialization,
+@@ -919,8 +919,8 @@ where
+ /// An initializer for `T`.
+ ///
+ /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
+-/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`] or even the stack (see [`stack_pin_init!`]). Use the
+-/// [`InPlaceInit::init`] function of a smart pointer like [`Arc<T>`] on this. Because
++/// be [`KBox<T>`], [`Arc<T>`], [`UniqueArc<T>`] or even the stack (see [`stack_pin_init!`]). Use
++/// the [`InPlaceInit::init`] function of a smart pointer like [`Arc<T>`] on this. Because
+ /// [`PinInit<T, E>`] is a super trait, you can use every function that takes it as well.
+ ///
+ /// Also see the [module description](self).
+@@ -992,7 +992,7 @@ pub unsafe trait Init<T: ?Sized, E = Inf
+ }
+ 
+ /// An initializer returned by [`Init::chain`].
+-pub struct ChainInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant<(E, Box<T>)>);
++pub struct ChainInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant<(E, KBox<T>)>);
+ 
+ // SAFETY: The `__init` function is implemented such that it
+ // - returns `Ok(())` on successful initialization,
+@@ -1076,8 +1076,9 @@ pub fn uninit<T, E>() -> impl Init<Maybe
+ /// # Examples
+ ///
+ /// ```rust
+-/// use kernel::{error::Error, init::init_array_from_fn};
+-/// let array: Box<[usize; 1_000]> = Box::init::<Error>(init_array_from_fn(|i| i), GFP_KERNEL).unwrap();
++/// use kernel::{alloc::KBox, error::Error, init::init_array_from_fn};
++/// let array: KBox<[usize; 1_000]> =
++///     KBox::init::<Error>(init_array_from_fn(|i| i), GFP_KERNEL).unwrap();
+ /// assert_eq!(array.len(), 1_000);
+ /// ```
+ pub fn init_array_from_fn<I, const N: usize, T, E>(
+@@ -1453,7 +1454,7 @@ impl_zeroable! {
+     //
+     // In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant.
+     {<T: ?Sized>} Option<NonNull<T>>,
+-    {<T: ?Sized>} Option<Box<T>>,
++    {<T: ?Sized>} Option<KBox<T>>,
+ 
+     // SAFETY: `null` pointer is valid.
+     //
+--- a/rust/kernel/init/__internal.rs
++++ b/rust/kernel/init/__internal.rs
+@@ -105,7 +105,7 @@ pub unsafe trait InitData: Copy {
+     }
+ }
+ 
+-pub struct AllData<T: ?Sized>(PhantomData<fn(Box<T>) -> Box<T>>);
++pub struct AllData<T: ?Sized>(PhantomData<fn(KBox<T>) -> KBox<T>>);
+ 
+ impl<T: ?Sized> Clone for AllData<T> {
+     fn clone(&self) -> Self {
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -7,7 +7,6 @@
+ //! Reference: <https://docs.kernel.org/core-api/rbtree.html>
+ 
+ use crate::{alloc::Flags, bindings, container_of, error::Result, prelude::*};
+-use alloc::boxed::Box;
+ use core::{
+     cmp::{Ord, Ordering},
+     marker::PhantomData,
+@@ -497,7 +496,7 @@ impl<K, V> Drop for RBTree<K, V> {
+             // but it is not observable. The loop invariant is still maintained.
+ 
+             // SAFETY: `this` is valid per the loop invariant.
+-            unsafe { drop(Box::from_raw(this.cast_mut())) };
++            unsafe { drop(KBox::from_raw(this.cast_mut())) };
+         }
+     }
+ }
+@@ -764,7 +763,7 @@ impl<'a, K, V> Cursor<'a, K, V> {
+         // point to the links field of `Node<K, V>` objects.
+         let this = unsafe { container_of!(self.current.as_ptr(), Node<K, V>, links) }.cast_mut();
+         // SAFETY: `this` is valid by the type invariants as described above.
+-        let node = unsafe { Box::from_raw(this) };
++        let node = unsafe { KBox::from_raw(this) };
+         let node = RBTreeNode { node };
+         // SAFETY: The reference to the tree used to create the cursor outlives the cursor, so
+         // the tree cannot change. By the tree invariant, all nodes are valid.
+@@ -809,7 +808,7 @@ impl<'a, K, V> Cursor<'a, K, V> {
+             // point to the links field of `Node<K, V>` objects.
+             let this = unsafe { container_of!(neighbor, Node<K, V>, links) }.cast_mut();
+             // SAFETY: `this` is valid by the type invariants as described above.
+-            let node = unsafe { Box::from_raw(this) };
++            let node = unsafe { KBox::from_raw(this) };
+             return Some(RBTreeNode { node });
+         }
+         None
+@@ -1038,7 +1037,7 @@ impl<K, V> Iterator for IterRaw<K, V> {
+ /// It contains the memory needed to hold a node that can be inserted into a red-black tree. One
+ /// can be obtained by directly allocating it ([`RBTreeNodeReservation::new`]).
+ pub struct RBTreeNodeReservation<K, V> {
+-    node: Box<MaybeUninit<Node<K, V>>>,
++    node: KBox<MaybeUninit<Node<K, V>>>,
+ }
+ 
+ impl<K, V> RBTreeNodeReservation<K, V> {
+@@ -1046,7 +1045,7 @@ impl<K, V> RBTreeNodeReservation<K, V> {
+     /// call to [`RBTree::insert`].
+     pub fn new(flags: Flags) -> Result<RBTreeNodeReservation<K, V>> {
+         Ok(RBTreeNodeReservation {
+-            node: <Box<_> as BoxExt<_>>::new_uninit(flags)?,
++            node: KBox::new_uninit(flags)?,
+         })
+     }
+ }
+@@ -1062,14 +1061,15 @@ impl<K, V> RBTreeNodeReservation<K, V> {
+     /// Initialises a node reservation.
+     ///
+     /// It then becomes an [`RBTreeNode`] that can be inserted into a tree.
+-    pub fn into_node(mut self, key: K, value: V) -> RBTreeNode<K, V> {
+-        self.node.write(Node {
+-            key,
+-            value,
+-            links: bindings::rb_node::default(),
+-        });
+-        // SAFETY: We just wrote to it.
+-        let node = unsafe { self.node.assume_init() };
++    pub fn into_node(self, key: K, value: V) -> RBTreeNode<K, V> {
++        let node = KBox::write(
++            self.node,
++            Node {
++                key,
++                value,
++                links: bindings::rb_node::default(),
++            },
++        );
+         RBTreeNode { node }
+     }
+ }
+@@ -1079,7 +1079,7 @@ impl<K, V> RBTreeNodeReservation<K, V> {
+ /// The node is fully initialised (with key and value) and can be inserted into a tree without any
+ /// extra allocations or failure paths.
+ pub struct RBTreeNode<K, V> {
+-    node: Box<Node<K, V>>,
++    node: KBox<Node<K, V>>,
+ }
+ 
+ impl<K, V> RBTreeNode<K, V> {
+@@ -1091,7 +1091,9 @@ impl<K, V> RBTreeNode<K, V> {
+ 
+     /// Get the key and value from inside the node.
+     pub fn to_key_value(self) -> (K, V) {
+-        (self.node.key, self.node.value)
++        let node = KBox::into_inner(self.node);
 +
-+	dvb->streaming = true;
- 	vidtv_mux_start_thread(dvb->mux);
++        (node.key, node.value)
+     }
+ }
  
- 	dev_dbg_ratelimited(dev, "Started streaming\n");
-@@ -205,6 +206,11 @@ static int vidtv_stop_streaming(struct vidtv_dvb *dvb)
- {
- 	struct device *dev = &dvb->pdev->dev;
+@@ -1113,7 +1115,7 @@ impl<K, V> RBTreeNode<K, V> {
+     /// may be freed (but only for the key/value; memory for the node itself is kept for reuse).
+     pub fn into_reservation(self) -> RBTreeNodeReservation<K, V> {
+         RBTreeNodeReservation {
+-            node: Box::drop_contents(self.node),
++            node: KBox::drop_contents(self.node),
+         }
+     }
+ }
+@@ -1164,7 +1166,7 @@ impl<'a, K, V> RawVacantEntry<'a, K, V>
+     /// The `node` must have a key such that inserting it here does not break the ordering of this
+     /// [`RBTree`].
+     fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
+-        let node = Box::into_raw(node.node);
++        let node = KBox::into_raw(node.node);
  
-+	if (!dvb->streaming) {
-+		dev_warn_ratelimited(dev, "No streaming. Skipping.\n");
-+		return 0;
-+	}
+         // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
+         // the node is removed or replaced.
+@@ -1238,21 +1240,24 @@ impl<'a, K, V> OccupiedEntry<'a, K, V> {
+             // SAFETY: The node was a node in the tree, but we removed it, so we can convert it
+             // back into a box.
+             node: unsafe {
+-                Box::from_raw(container_of!(self.node_links, Node<K, V>, links).cast_mut())
++                KBox::from_raw(container_of!(self.node_links, Node<K, V>, links).cast_mut())
+             },
+         }
+     }
+ 
+     /// Takes the value of the entry out of the map, and returns it.
+     pub fn remove(self) -> V {
+-        self.remove_node().node.value
++        let rb_node = self.remove_node();
++        let node = KBox::into_inner(rb_node.node);
 +
- 	dvb->streaming = false;
- 	vidtv_mux_stop_thread(dvb->mux);
- 	vidtv_mux_destroy(dvb->mux);
--- 
-2.39.5
-
++        node.value
+     }
+ 
+     /// Swap the current node for the provided node.
+     ///
+     /// The key of both nodes must be equal.
+     fn replace(self, node: RBTreeNode<K, V>) -> RBTreeNode<K, V> {
+-        let node = Box::into_raw(node.node);
++        let node = KBox::into_raw(node.node);
+ 
+         // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
+         // the node is removed or replaced.
+@@ -1268,7 +1273,7 @@ impl<'a, K, V> OccupiedEntry<'a, K, V> {
+         // - `self.node_ptr` produces a valid pointer to a node in the tree.
+         // - Now that we removed this entry from the tree, we can convert the node to a box.
+         let old_node =
+-            unsafe { Box::from_raw(container_of!(self.node_links, Node<K, V>, links).cast_mut()) };
++            unsafe { KBox::from_raw(container_of!(self.node_links, Node<K, V>, links).cast_mut()) };
+ 
+         RBTreeNode { node: old_node }
+     }
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -17,13 +17,12 @@
+ //! [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
+ 
+ use crate::{
+-    alloc::{box_ext::BoxExt, AllocError, Flags},
++    alloc::{AllocError, Flags, KBox},
+     bindings,
+     init::{self, InPlaceInit, Init, PinInit},
+     try_init,
+     types::{ForeignOwnable, Opaque},
+ };
+-use alloc::boxed::Box;
+ use core::{
+     alloc::Layout,
+     fmt,
+@@ -201,11 +200,11 @@ impl<T> Arc<T> {
+             data: contents,
+         };
+ 
+-        let inner = <Box<_> as BoxExt<_>>::new(value, flags)?;
++        let inner = KBox::new(value, flags)?;
+ 
+         // SAFETY: We just created `inner` with a reference count of 1, which is owned by the new
+         // `Arc` object.
+-        Ok(unsafe { Self::from_inner(Box::leak(inner).into()) })
++        Ok(unsafe { Self::from_inner(KBox::leak(inner).into()) })
+     }
+ }
+ 
+@@ -398,8 +397,8 @@ impl<T: ?Sized> Drop for Arc<T> {
+         if is_zero {
+             // The count reached zero, we must free the memory.
+             //
+-            // SAFETY: The pointer was initialised from the result of `Box::leak`.
+-            unsafe { drop(Box::from_raw(self.ptr.as_ptr())) };
++            // SAFETY: The pointer was initialised from the result of `KBox::leak`.
++            unsafe { drop(KBox::from_raw(self.ptr.as_ptr())) };
+         }
+     }
+ }
+@@ -641,7 +640,7 @@ impl<T> UniqueArc<T> {
+     /// Tries to allocate a new [`UniqueArc`] instance whose contents are not initialised yet.
+     pub fn new_uninit(flags: Flags) -> Result<UniqueArc<MaybeUninit<T>>, AllocError> {
+         // INVARIANT: The refcount is initialised to a non-zero value.
+-        let inner = Box::try_init::<AllocError>(
++        let inner = KBox::try_init::<AllocError>(
+             try_init!(ArcInner {
+                 // SAFETY: There are no safety requirements for this FFI call.
+                 refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }),
+@@ -651,8 +650,8 @@ impl<T> UniqueArc<T> {
+         )?;
+         Ok(UniqueArc {
+             // INVARIANT: The newly-created object has a refcount of 1.
+-            // SAFETY: The pointer from the `Box` is valid.
+-            inner: unsafe { Arc::from_inner(Box::leak(inner).into()) },
++            // SAFETY: The pointer from the `KBox` is valid.
++            inner: unsafe { Arc::from_inner(KBox::leak(inner).into()) },
+         })
+     }
+ }
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -70,8 +70,8 @@ pub use new_condvar;
+ /// }
+ ///
+ /// /// Allocates a new boxed `Example`.
+-/// fn new_example() -> Result<Pin<Box<Example>>> {
+-///     Box::pin_init(pin_init!(Example {
++/// fn new_example() -> Result<Pin<KBox<Example>>> {
++///     KBox::pin_init(pin_init!(Example {
+ ///         value <- new_mutex!(0),
+ ///         value_changed <- new_condvar!(),
+ ///     }), GFP_KERNEL)
+--- a/rust/kernel/sync/lock/mutex.rs
++++ b/rust/kernel/sync/lock/mutex.rs
+@@ -58,7 +58,7 @@ pub use new_mutex;
+ /// }
+ ///
+ /// // Allocate a boxed `Example`.
+-/// let e = Box::pin_init(Example::new(), GFP_KERNEL)?;
++/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
+ /// assert_eq!(e.c, 10);
+ /// assert_eq!(e.d.lock().a, 20);
+ /// assert_eq!(e.d.lock().b, 30);
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -56,7 +56,7 @@ pub use new_spinlock;
+ /// }
+ ///
+ /// // Allocate a boxed `Example`.
+-/// let e = Box::pin_init(Example::new(), GFP_KERNEL)?;
++/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
+ /// assert_eq!(e.c, 10);
+ /// assert_eq!(e.d.lock().a, 20);
+ /// assert_eq!(e.d.lock().b, 30);
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -216,7 +216,7 @@ impl Queue {
+             func: Some(func),
+         });
+ 
+-        self.enqueue(Box::pin_init(init, flags).map_err(|_| AllocError)?);
++        self.enqueue(KBox::pin_init(init, flags).map_err(|_| AllocError)?);
+         Ok(())
+     }
+ }
+@@ -239,9 +239,9 @@ impl<T> ClosureWork<T> {
+ }
+ 
+ impl<T: FnOnce()> WorkItem for ClosureWork<T> {
+-    type Pointer = Pin<Box<Self>>;
++    type Pointer = Pin<KBox<Self>>;
+ 
+-    fn run(mut this: Pin<Box<Self>>) {
++    fn run(mut this: Pin<KBox<Self>>) {
+         if let Some(func) = this.as_mut().project().take() {
+             (func)()
+         }
+@@ -297,7 +297,7 @@ pub unsafe trait RawWorkItem<const ID: u
+ 
+ /// Defines the method that should be called directly when a work item is executed.
+ ///
+-/// This trait is implemented by `Pin<Box<T>>` and [`Arc<T>`], and is mainly intended to be
++/// This trait is implemented by `Pin<KBox<T>>` and [`Arc<T>`], and is mainly intended to be
+ /// implemented for smart pointer types. For your own structs, you would implement [`WorkItem`]
+ /// instead. The [`run`] method on this trait will usually just perform the appropriate
+ /// `container_of` translation and then call into the [`run`][WorkItem::run] method from the
+@@ -329,7 +329,7 @@ pub unsafe trait WorkItemPointer<const I
+ /// This trait is used when the `work_struct` field is defined using the [`Work`] helper.
+ pub trait WorkItem<const ID: u64 = 0> {
+     /// The pointer type that this struct is wrapped in. This will typically be `Arc<Self>` or
+-    /// `Pin<Box<Self>>`.
++    /// `Pin<KBox<Self>>`.
+     type Pointer: WorkItemPointer<ID>;
+ 
+     /// The method that should be called when this work item is executed.
+@@ -567,7 +567,7 @@ where
+ }
+ 
+ // SAFETY: TODO.
+-unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<Box<T>>
++unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+     T: HasWork<T, ID>,
+@@ -578,7 +578,7 @@ where
+         // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
+         let ptr = unsafe { T::work_container_of(ptr) };
+         // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
+-        let boxed = unsafe { Box::from_raw(ptr) };
++        let boxed = unsafe { KBox::from_raw(ptr) };
+         // SAFETY: The box was already pinned when it was enqueued.
+         let pinned = unsafe { Pin::new_unchecked(boxed) };
+ 
+@@ -587,7 +587,7 @@ where
+ }
+ 
+ // SAFETY: TODO.
+-unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<Box<T>>
++unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+     T: HasWork<T, ID>,
+@@ -601,9 +601,9 @@ where
+         // SAFETY: We're not going to move `self` or any of its fields, so its okay to temporarily
+         // remove the `Pin` wrapper.
+         let boxed = unsafe { Pin::into_inner_unchecked(self) };
+-        let ptr = Box::into_raw(boxed);
++        let ptr = KBox::into_raw(boxed);
+ 
+-        // SAFETY: Pointers into a `Box` point at a valid value.
++        // SAFETY: Pointers into a `KBox` point at a valid value.
+         let work_ptr = unsafe { T::raw_get_work(ptr) };
+         // SAFETY: `raw_get_work` returns a pointer to a valid value.
+         let work_ptr = unsafe { Work::raw_get(work_ptr) };
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -243,7 +243,7 @@ pub fn concat_idents(ts: TokenStream) ->
+ /// struct DriverData {
+ ///     #[pin]
+ ///     queue: Mutex<Vec<Command>>,
+-///     buf: Box<[u8; 1024 * 1024]>,
++///     buf: KBox<[u8; 1024 * 1024]>,
+ /// }
+ /// ```
+ ///
+@@ -252,7 +252,7 @@ pub fn concat_idents(ts: TokenStream) ->
+ /// struct DriverData {
+ ///     #[pin]
+ ///     queue: Mutex<Vec<Command>>,
+-///     buf: Box<[u8; 1024 * 1024]>,
++///     buf: KBox<[u8; 1024 * 1024]>,
+ ///     raw_info: *mut Info,
+ /// }
+ ///
+@@ -282,7 +282,7 @@ pub fn pin_data(inner: TokenStream, item
+ /// struct DriverData {
+ ///     #[pin]
+ ///     queue: Mutex<Vec<Command>>,
+-///     buf: Box<[u8; 1024 * 1024]>,
++///     buf: KBox<[u8; 1024 * 1024]>,
+ ///     raw_info: *mut Info,
+ /// }
+ ///
 
 
 
