@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-122815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7DFA5A154
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:59:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E711A59D44
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 191B63AD7E1
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:59:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93FF316F2F7
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3108233714;
-	Mon, 10 Mar 2025 17:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F9822154C;
+	Mon, 10 Mar 2025 17:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YA20+Dz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oj83Q+Us"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6097522DFF3;
-	Mon, 10 Mar 2025 17:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AE518DB24;
+	Mon, 10 Mar 2025 17:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629577; cv=none; b=N8P/jIWqGtCYLSs+GoZYrK+x1O4UYPLYO0X5UGVWjbp9rexnF144RMY/J+VbjD2JgtoP4IYauZVMgaGLm5uE4CU1IeXxtp3lzK3oxeZwQab70yBX113RNXoYOZy8hYr7nLvC2HyV8/ZreIuptXERhKLL3AgX/Eu2ll4oJFk6Eck=
+	t=1741627168; cv=none; b=R+opa5x0Fz+fstjO+Ba4xcaYTEUJXWSs5/ZmXWxS5kMowFvngYCtqU9BqP4F3j2/9rSo9pk1CWAfgquvjsmnBTuxPkqBB52h/HvVagd5cKNez9nOE1z7YA9KVvhTk9xODzmKbnXS+bHnYgPctuskXy9E64thQW/swWarJv6xNww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629577; c=relaxed/simple;
-	bh=ZTCxl9CvJ3Lhp0Nb7K1hnauDUQbsgLEyPXOm0n5fBxg=;
+	s=arc-20240116; t=1741627168; c=relaxed/simple;
+	bh=cyhA+hU10mw2Qidrp3YG2Xu6tp16SO8hRnkoxM2WcJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAEj2j71E4NFofzU7Rhav/9sraE4MzjlfdC00I/cjiVDOY5YqcE1xQ7+neO2oS8w9AgVXLrbYRnoMk692ARTURrJVPOoNmNovCemcXK54KU+h3AgVhxid19SY+SABVDNLEN5vn2qjr3o0wJVbFGVXLp5Jb1V+SwbLV2RHXiIdIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YA20+Dz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FF0C4CEE5;
-	Mon, 10 Mar 2025 17:59:36 +0000 (UTC)
+	 MIME-Version; b=EZ829S1qbERwYJJk0bHaVfF5rsssopuhb/GSxMIXYNcaLa6gTP+9MC5csIm2++48fRiN1Rt7ZLBIUY1VVR/7z70eJN4SrXgGcGFPUUCCbt6UOxkIyO/A7Scprvw+6WabjpQhGD6exqJpYeWm3X5dSfBxfK7wLfmAEfn15Jl5d6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oj83Q+Us; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81392C4CEE5;
+	Mon, 10 Mar 2025 17:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629577;
-	bh=ZTCxl9CvJ3Lhp0Nb7K1hnauDUQbsgLEyPXOm0n5fBxg=;
+	s=korg; t=1741627167;
+	bh=cyhA+hU10mw2Qidrp3YG2Xu6tp16SO8hRnkoxM2WcJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YA20+Dz1mn6i7+6YWVZFbIhMqGPR6HaljF7d9g9MY9r97xEDT248B13FNvq26WSfP
-	 YAA/QdCQ7pSTW2OlHgPhKdjWCx/zOKi8e0gcNePoNMX6BtU8AnVLeLfjUie3QkgytO
-	 8oa1p+9rQ3RtuzHNRTX8v3lI3QkkKJEKeVr3L//g=
+	b=oj83Q+UsS6zQcqmp4iXDI7L0StP8nl62HKPpBaM2sFgl/md9EEH2ydPGf7SEsdQ36
+	 mDACKpAKKUBmpCh/IyIj6Eys+txrE89FBTsT2gHFDw/GticUy+cjgZPowUJbIyDm2H
+	 H4t4sts8ONjmO3KGDesZ7XGWhJ3xK+JYFvG9SMwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Mikolaj Wasiak <mikolaj.wasiak@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 342/620] drm/i915/selftests: avoid using uninitialized context
-Date: Mon, 10 Mar 2025 18:03:08 +0100
-Message-ID: <20250310170559.112108489@linuxfoundation.org>
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 036/269] rust: alloc: implement `Allocator` for `Kmalloc`
+Date: Mon, 10 Mar 2025 18:03:09 +0100
+Message-ID: <20250310170459.159391152@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Karas <krzysztof.karas@intel.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 53139b3f9998ea07289e7b70b909fea2264a0de9 ]
+commit a34822d1c4c93085f635b922441a017bd7e959b0 upstream.
 
-There is an error path in igt_ppgtt_alloc(), which leads
-to ww object being passed down to i915_gem_ww_ctx_fini() without
-initialization. Correct that by only putting ppgtt->vm and
-returning early.
+Implement `Allocator` for `Kmalloc`, the kernel's default allocator,
+typically used for objects smaller than page size.
 
-Fixes: 480ae79537b2 ("drm/i915/selftests: Prepare gtt tests for obj->mm.lock removal")
-Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Mikolaj Wasiak <mikolaj.wasiak@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/iuaonpjc3rywmvhna6umjlvzilocn2uqsrxfxfob24e2taocbi@lkaivvfp4777
-(cherry picked from commit 8d8334632ea62424233ac6529712868241d0f8df)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+All memory allocations made with `Kmalloc` end up in `krealloc()`.
+
+It serves as allocator for the subsequently introduced types `KBox` and
+`KVec`.
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-7-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/selftests/i915_gem_gtt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/kernel/alloc/allocator.rs |   31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
-index f843a5040706a..df3934a990d08 100644
---- a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
-+++ b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
-@@ -160,7 +160,7 @@ static int igt_ppgtt_alloc(void *arg)
- 		return PTR_ERR(ppgtt);
+--- a/rust/kernel/alloc/allocator.rs
++++ b/rust/kernel/alloc/allocator.rs
+@@ -13,10 +13,16 @@ use core::alloc::{GlobalAlloc, Layout};
+ use core::ptr;
+ use core::ptr::NonNull;
  
- 	if (!ppgtt->vm.allocate_va_range)
--		goto err_ppgtt_cleanup;
-+		goto ppgtt_vm_put;
+-use crate::alloc::AllocError;
++use crate::alloc::{AllocError, Allocator};
+ use crate::bindings;
  
- 	/*
- 	 * While we only allocate the page tables here and so we could
-@@ -228,7 +228,7 @@ static int igt_ppgtt_alloc(void *arg)
- 			goto retry;
- 	}
- 	i915_gem_ww_ctx_fini(&ww);
--
-+ppgtt_vm_put:
- 	i915_vm_put(&ppgtt->vm);
- 	return err;
+-struct Kmalloc;
++/// The contiguous kernel allocator.
++///
++/// `Kmalloc` is typically used for physically contiguous allocations up to page size, but also
++/// supports larger allocations up to `bindings::KMALLOC_MAX_SIZE`, which is hardware specific.
++///
++/// For more details see [self].
++pub struct Kmalloc;
+ 
+ /// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
+ fn aligned_size(new_layout: Layout) -> usize {
+@@ -53,8 +59,10 @@ struct ReallocFunc(
+     unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut core::ffi::c_void,
+ );
+ 
+-#[expect(dead_code)]
+ impl ReallocFunc {
++    // INVARIANT: `krealloc` satisfies the type invariants.
++    const KREALLOC: Self = Self(bindings::krealloc);
++
+     /// # Safety
+     ///
+     /// This method has the same safety requirements as [`Allocator::realloc`].
+@@ -106,6 +114,23 @@ impl ReallocFunc {
+     }
  }
--- 
-2.39.5
-
+ 
++// SAFETY: `realloc` delegates to `ReallocFunc::call`, which guarantees that
++// - memory remains valid until it is explicitly freed,
++// - passing a pointer to a valid memory allocation is OK,
++// - `realloc` satisfies the guarantees, since `ReallocFunc::call` has the same.
++unsafe impl Allocator for Kmalloc {
++    #[inline]
++    unsafe fn realloc(
++        ptr: Option<NonNull<u8>>,
++        layout: Layout,
++        old_layout: Layout,
++        flags: Flags,
++    ) -> Result<NonNull<[u8]>, AllocError> {
++        // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
++        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, old_layout, flags) }
++    }
++}
++
+ // SAFETY: TODO.
+ unsafe impl GlobalAlloc for Kmalloc {
+     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
 
 
 
