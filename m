@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-122379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C672A59F51
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:39:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 685A1A5A245
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAC4F1889026
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:38:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1916166121
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAF6230BF8;
-	Mon, 10 Mar 2025 17:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE9A1B4F09;
+	Mon, 10 Mar 2025 18:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CADm8Fc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7BuB3Kh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4A21B3927;
-	Mon, 10 Mar 2025 17:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CBA2F28;
+	Mon, 10 Mar 2025 18:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628323; cv=none; b=cP5Iikxe1w1CKBGfwYusVbmA/NhUNvNLxY5HCUG6c/rvMPFg54ppBkVVUIXdaW7Ugw03PQl0IvydBbFd97+Rd/n2GFqQ05BIs0B8cJRztPUjJ/uc3PfgGG/gzyg48o1KVaE4aSEs4NNm5RqtLZ95CxQZOc4JObGYWHTNZSkzQsg=
+	t=1741630693; cv=none; b=dR1PyusjRdaTOEEaWeNt9OGnrMg5yLTdZAMkEDm1mA62M0zvMUjzbr7d+f1CIPcbEjlfORxcEphyyyoTzW6AuKYk4uChrZJMswl3692XkXV8x+xPVL7dH6XKIxpIpaNgNfFzYCUhd1+bGtxYs2YQrLHPbShivWTdCFwo0hICUMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628323; c=relaxed/simple;
-	bh=AZiF63Di2n/qcVWkyg0rxYricfWXoescIA39/PzL1M0=;
+	s=arc-20240116; t=1741630693; c=relaxed/simple;
+	bh=TZTeoR7P6XiFAvMuIdBwZxaGt50jW0eX+nKc+sr3Sjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2KfKxmLlRaOVJIhba2HaS8lsPUE28hXO1camR/dQlF2X7YSwnXftlBLjkZBYt8F4u0oD5A4kmdTmGprw/vNqf8vSPW5+8J1bHuHHI+0fkhatg2Dea6+/AsseC2Aem/5qG7qDt0tyc2vo4xohaPOl/DHCJ/6izcmu32slFpaMYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CADm8Fc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60E3C4CEEC;
-	Mon, 10 Mar 2025 17:38:42 +0000 (UTC)
+	 MIME-Version; b=aYOlgAt4M/U4+NFSrFyBQCUZqKNU6IazANEfDy/RGq8GCvBKdCD7PMeYSh0ihi7GnMETEITPPJhl2gn+zoip8YqzPG+ZqQ+XEl1Z6uEizK829rgcJ7foO10ATtfnAvwXFQ6d0YRT7WNRC08oGgjmZBLM1xmoJGvH8q7ucfBafXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7BuB3Kh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0ECAC4CEE5;
+	Mon, 10 Mar 2025 18:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628323;
-	bh=AZiF63Di2n/qcVWkyg0rxYricfWXoescIA39/PzL1M0=;
+	s=korg; t=1741630693;
+	bh=TZTeoR7P6XiFAvMuIdBwZxaGt50jW0eX+nKc+sr3Sjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CADm8Fc15m7AQysAX21c+9nOreq6MoR6NINTKlOm277AZsukb7kWilEFcFzCmf0LN
-	 s0Qk9Ff4G1VtPxFnmBuY3I/hLm4frUbZlU5xyqEg8EnkypLd2cP19TWbttY2vGQIQo
-	 IkOfcSiWr4bU1d82ap8PbWUSXFYPD9NsUTgqqcXA=
+	b=L7BuB3KhYdG+8wE2P9unu+J1mVabue2/kiL+Hmj12pcoDyv31KGdB4DyoxgSWQHuV
+	 HqrI5TTxeL4olBAO4/pxrZglzNEtI1WKDfrCrNCw3AVZz7WJst59FEngB2hS2CJgm1
+	 CpWsLBnd15w7GhqjRY+NwGb5u3DMGn6aAeuckI44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/109] cpuidle, intel_idle: Fix CPUIDLE_FLAG_IBRS
+Subject: [PATCH 5.15 503/620] tcp: Defer ts_recent changes until req is owned
 Date: Mon, 10 Mar 2025 18:05:49 +0100
-Message-ID: <20250310170427.760538798@linuxfoundation.org>
+Message-ID: <20250310170605.418854964@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-References: <20250310170427.529761261@linuxfoundation.org>
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 9b461a6faae7b220c32466261965778b10189e54 ]
+[ Upstream commit 8d52da23b6c68a0f6bad83959ebb61a2cf623c4e ]
 
-objtool to the rescue:
+Recently a bug was discovered where the server had entered TCP_ESTABLISHED
+state, but the upper layers were not notified.
 
-  vmlinux.o: warning: objtool: intel_idle_ibrs+0x17: call to spec_ctrl_current() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_ibrs+0x27: call to wrmsrl.constprop.0() leaves .noinstr.text section
+The same 5-tuple packet may be processed by different CPUSs, so two
+CPUs may receive different ack packets at the same time when the
+state is TCP_NEW_SYN_RECV.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230112195540.556912863@infradead.org
-Stable-dep-of: c157d351460b ("intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly")
+In that case, req->ts_recent in tcp_check_req may be changed concurrently,
+which will probably cause the newsk's ts_recent to be incorrectly large.
+So that tcp_validate_incoming will fail. At this point, newsk will not be
+able to enter the TCP_ESTABLISHED.
+
+cpu1                                    cpu2
+tcp_check_req
+                                        tcp_check_req
+ req->ts_recent = rcv_tsval = t1
+                                         req->ts_recent = rcv_tsval = t2
+
+ syn_recv_sock
+  tcp_sk(child)->rx_opt.ts_recent = req->ts_recent = t2 // t1 < t2
+tcp_child_process
+ tcp_rcv_state_process
+  tcp_validate_incoming
+   tcp_paws_check
+    if ((s32)(rx_opt->ts_recent - rx_opt->rcv_tsval) <= paws_win)
+        // t2 - t1 > paws_win, failed
+                                        tcp_v4_do_rcv
+                                         tcp_rcv_state_process
+                                         // TCP_ESTABLISHED
+
+The cpu2's skb or a newly received skb will call tcp_v4_do_rcv to get
+the newsk into the TCP_ESTABLISHED state, but at this point it is no
+longer possible to notify the upper layer application. A notification
+mechanism could be added here, but the fix is more complex, so the
+current fix is used.
+
+In tcp_check_req, req->ts_recent is used to assign a value to
+tcp_sk(child)->rx_opt.ts_recent, so removing the change in req->ts_recent
+and changing tcp_sk(child)->rx_opt.ts_recent directly after owning the
+req fixes this bug.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 2 +-
- drivers/idle/intel_idle.c  | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/ipv4/tcp_minisocks.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 03221a060ae77..7d73b53115514 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -92,7 +92,7 @@ void update_spec_ctrl_cond(u64 val)
- 		wrmsrl(MSR_IA32_SPEC_CTRL, val);
- }
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index d84b71f70766b..061225d645e6b 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -725,12 +725,6 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
  
--u64 spec_ctrl_current(void)
-+noinstr u64 spec_ctrl_current(void)
- {
- 	return this_cpu_read(x86_spec_ctrl_current);
- }
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 5d7bbccb52b5e..ae07dc018e666 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -188,12 +188,12 @@ static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
- 	int ret;
+ 	/* In sequence, PAWS is OK. */
  
- 	if (smt_active)
--		wrmsrl(MSR_IA32_SPEC_CTRL, 0);
-+		native_wrmsrl(MSR_IA32_SPEC_CTRL, 0);
+-	/* TODO: We probably should defer ts_recent change once
+-	 * we take ownership of @req.
+-	 */
+-	if (tmp_opt.saw_tstamp && !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
+-		WRITE_ONCE(req->ts_recent, tmp_opt.rcv_tsval);
+-
+ 	if (TCP_SKB_CB(skb)->seq == tcp_rsk(req)->rcv_isn) {
+ 		/* Truncate SYN, it is out of window starting
+ 		   at tcp_rsk(req)->rcv_isn + 1. */
+@@ -779,6 +773,10 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+ 	if (!child)
+ 		goto listen_overflow;
  
- 	ret = __intel_idle(dev, drv, index);
- 
- 	if (smt_active)
--		wrmsrl(MSR_IA32_SPEC_CTRL, spec_ctrl);
-+		native_wrmsrl(MSR_IA32_SPEC_CTRL, spec_ctrl);
- 
- 	return ret;
- }
++	if (own_req && tmp_opt.saw_tstamp &&
++	    !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
++		tcp_sk(child)->rx_opt.ts_recent = tmp_opt.rcv_tsval;
++
+ 	if (own_req && rsk_drop_req(req)) {
+ 		reqsk_queue_removed(&inet_csk(req->rsk_listener)->icsk_accept_queue, req);
+ 		inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
 -- 
 2.39.5
 
