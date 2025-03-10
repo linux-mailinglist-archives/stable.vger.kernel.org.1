@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-122002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEB0A59D6B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD694A59C35
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C960D16F478
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 826293A8943
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8029E230BF0;
-	Mon, 10 Mar 2025 17:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF65230BE7;
+	Mon, 10 Mar 2025 17:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ko1t8eeH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1XkPTTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFFA230BD5;
-	Mon, 10 Mar 2025 17:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CC622F17C;
+	Mon, 10 Mar 2025 17:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627246; cv=none; b=f/dzSy0Xa9TF8lcyZOGnLqi7yhsp5yl53ZvwOoOoqAGKU8lxbO5iUwMWgY7y2Z7JJr4ToYNZChOKvgEEnN24AhY0lc3NcducpsSbowrjoUMb3v488Zo5fOfQvxCESLAilRfXAD3tQ0H8626JV2uchMkrmj5mNO6LNf08GGCy1xM=
+	t=1741626529; cv=none; b=SwfZR2rlb08AFgaemRVULkV/9IyIBWJNge4UW+tmERuDs4+hqSRVtM8iiAZB0bF/C5ks7r+TeC534978A7gtIOF5Od3upfVp//7cQOcayyfxui/wgJdqlrQy0DKS/l7mhTBBrbM3cpl/NeZtd2AwTOOlr/kDKWpgESjeGSP9Vlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627246; c=relaxed/simple;
-	bh=DAGkjcJ8JhbBYz1hS7a5kGIRCUaBgT2bhM92YGDAOO4=;
+	s=arc-20240116; t=1741626529; c=relaxed/simple;
+	bh=J7jDXwcO3c3U4iCFx1DKK2ZzjKXt13zdU83F+IPS+B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KpBsUTxoJmDBZiNo8hNQx0MEzV1/bCKnCVD98jgbW4puMV32MRIZNp9SxEWUARihaPXST881whRmNTA1kR0+zEkPi8r7d605y6Ln+V3QDi635fxsDYE9SxDnzzwi1F/fN5alZkqzQOnF1a3VBjfFBpArQOdVB0VhkxiUPeAYhDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ko1t8eeH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C4DC4CEED;
-	Mon, 10 Mar 2025 17:20:45 +0000 (UTC)
+	 MIME-Version; b=qB1eafzRzywEqBC3ozTbshqUUTPmxmqtg+iugjTMvpfoDWwMg+SZN7VFUqb98Wb6ZUt7AiSmN2OLNZgPXQHwAytdu7I/JfKF8I4Oi9TSei5PzawMgRS4xxAEFOrEyiX3fZLILxpYvWXbnwBKDLO6I09KYR+2cPXR1Ovs8lX6CRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1XkPTTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A05C4CEE5;
+	Mon, 10 Mar 2025 17:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627246;
-	bh=DAGkjcJ8JhbBYz1hS7a5kGIRCUaBgT2bhM92YGDAOO4=;
+	s=korg; t=1741626529;
+	bh=J7jDXwcO3c3U4iCFx1DKK2ZzjKXt13zdU83F+IPS+B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ko1t8eeHY4987UWGIW1DoaBoEB8Xr8FmvlC+e74D7jtC/8cIxnHn0YrjeS7k30u5n
-	 NSDyi0qLbBrBo8Qj7kAcaMqzPl5DTm8epe68k8vU7CO9oAFjlcMBuqtIfq1Mtddyou
-	 Gy8o0rnVgiNRwtNHtST2kYAid2Ja3fq1yU88hgPU=
+	b=k1XkPTTfupudqDy9keE/K2IsU7PrNJpM/dDpAlcYmkdQQ8fNzyQveLmVGRTqCyzCH
+	 TrCmljPkqawcgPWxkWPXsxRaN3uZc+P10nwAT/iq9kVrRufWsZ4ha/cgEbcaxmKFEA
+	 5EWotuxGqd8qI9YDjBCyN/BqYnmf8dg6B17X2w7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH 6.12 063/269] drm/panic: remove redundant field when assigning value
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 023/207] ksmbd: fix bug on trap in smb2_lock
 Date: Mon, 10 Mar 2025 18:03:36 +0100
-Message-ID: <20250310170500.241532296@linuxfoundation.org>
+Message-ID: <20250310170448.693716178@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Böhler <witcher@wiredspace.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit da13129a3f2a75d49469e1d6f7dcefac2d11d205 upstream.
+commit e26e2d2e15daf1ab33e0135caf2304a0cfa2744b upstream.
 
-Rust allows initializing fields of a struct without specifying the
-attribute that is assigned if the variable has the same name. In this
-instance this is done for all other attributes of the struct except for
-`data`. Clippy notes the redundant field name:
+If lock count is greater than 1, flags could be old value.
+It should be checked with flags of smb_lock, not flags.
+It will cause bug-on trap from locks_free_lock in error handling
+routine.
 
-    error: redundant field names in struct initialization
-    --> drivers/gpu/drm/drm_panic_qr.rs:495:13
-        |
-    495 |             data: data,
-        |             ^^^^^^^^^^ help: replace it with: `data`
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_field_names
-        = note: `-D clippy::redundant-field-names` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(clippy::redundant_field_names)]`
-
-Remove the redundant `data` in the assignment to be consistent.
-
-Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1123
-Signed-off-by: Thomas Böhler <witcher@wiredspace.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://lore.kernel.org/r/20241019084048.22336-5-witcher@wiredspace.de
-[ Reworded to add Clippy warning like it is done in the rest of the
-  series. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panic_qr.rs |    2 +-
+ fs/smb/server/smb2pdu.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -489,7 +489,7 @@ impl EncodedMsg<'_> {
-         data.fill(0);
- 
-         let mut em = EncodedMsg {
--            data: data,
-+            data,
-             ec_size,
-             g1_blocks,
-             g2_blocks,
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7467,7 +7467,7 @@ no_check_cl:
+ retry:
+ 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
+ skip:
+-		if (flags & SMB2_LOCKFLAG_UNLOCK) {
++		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
+ 			if (!rc) {
+ 				ksmbd_debug(SMB, "File unlocked\n");
+ 			} else if (rc == -ENOENT) {
 
 
 
