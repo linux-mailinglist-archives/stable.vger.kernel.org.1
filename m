@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215E8A59F15
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:36:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C7EA59E2C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 165AE3A869E
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:35:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4984188917C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59D8230BD4;
-	Mon, 10 Mar 2025 17:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DCE23099F;
+	Mon, 10 Mar 2025 17:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6ilIesw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMJyEfoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836AD2253FE;
-	Mon, 10 Mar 2025 17:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6351B22B8BD;
+	Mon, 10 Mar 2025 17:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628115; cv=none; b=joqzXbz2oNBwWPfNmD7UxOYZy19jMxEuALS4G2QvZwn/IMRUlAJbc/5OrwnQywPHvpwL5ux9lZVUerxxo45GuuYohjiZfEXHjWT6DwNDan6aay4CVF+oW/QKn0Sa18ENtFJRfBALhfNSe8JyF1IDj5q3mS+DP4yjIeahtRNvjxM=
+	t=1741627740; cv=none; b=ZMBDdhzMEtX1NEOkZNSDe8mtqO5DzeDgYSq8uT/YwbTfk+GST+Pfy734u9qn8BVEu/XWG/rnTESGPhVKlEdFCPBpWNQ7sfsm6kgQeMySgVk3M2FBJHIdMmuDLYDJKpdmS47/HwGp3Vfxj2nJn/jol0ngJmuT838bW34r9Ndd4+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628115; c=relaxed/simple;
-	bh=67UXhwQR//LkyVl+lzFOAggbkcM1do2ufzpe48r61ww=;
+	s=arc-20240116; t=1741627740; c=relaxed/simple;
+	bh=NkKRCbP8txvE1xMo4hgwyVtFsfdZhth0eurr7dNc+Ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVYkJpg1mXOeWq/YZa2Khbkcr2jOR/trsQ5jMFv1qMjXxWWn6fBla80e7YvtrGyDSHKPiODm+q7gyEt/Qivz5RPfDNWARskU5MTqBN5eI5rAseuwGPjq9y2b0mXD5frwOlEedWwu24yxECeud1uoaheWOg3Zno3h7NDf4xPPzIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6ilIesw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D711C4CEE5;
-	Mon, 10 Mar 2025 17:35:14 +0000 (UTC)
+	 MIME-Version; b=DMJYSWKSvbdKhrSOK8zRqOrHfwxZE86zOjGZye/8XUy1G+3/WF+uBIb5i/sbB74xOYMMaJ866AtwJbSkvOKLf/U1k9t0I49TfsNYOeuC4ADeFSSYXhA9SJq5oe3io8DPlLXIuUF4wTFWUv0fE/ql6IHdcWDFe/Th0bYAr54IBA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMJyEfoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2373C4CEEC;
+	Mon, 10 Mar 2025 17:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741628115;
-	bh=67UXhwQR//LkyVl+lzFOAggbkcM1do2ufzpe48r61ww=;
+	s=korg; t=1741627740;
+	bh=NkKRCbP8txvE1xMo4hgwyVtFsfdZhth0eurr7dNc+Ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6ilIeswGFzRDi6utqyuldvTy94jjtqbeKNvesHcCTHH2o4S8GcaY7x42zK+S9dQu
-	 9O03dc/ycmw+ht6NzO7xLPhd9XGkdOVRFdGFDcZL2tWX384wqnE5f9464jXhJkpa9o
-	 D4Px98tX22NT2XOgZ0QLkKPenDf1h+rVGavIrN4c=
+	b=KMJyEfoUN3q2aZ0M6wDYh4KYmTpEki9L6ZjdSt/HVOPv3Lam1NOgxLt5qs0Ix4nH6
+	 cuVcehku/zE2hFkGt9KfvprS3QPYDbXO13vFpXsHA3HqpH59+BFBfOF03p4/hUecX9
+	 zfQfkJIqs0w4cLUDY7V0LzmOIAqYNPgAoiE89NeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qf <quintafeira@tutanota.com>,
-	Christian Heusel <christian@heusel.eu>
-Subject: [PATCH 6.6 092/145] Revert "drivers/card_reader/rtsx_usb: Restore interrupt based detection"
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>
+Subject: [PATCH 6.12 233/269] KVM: x86: Snapshot the hosts DEBUGCTL in common x86
 Date: Mon, 10 Mar 2025 18:06:26 +0100
-Message-ID: <20250310170438.470950283@linuxfoundation.org>
+Message-ID: <20250310170506.971498440@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-References: <20250310170434.733307314@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Heusel <christian@heusel.eu>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 2397d61ee45cddb8f3bd3a3a9840ef0f0b5aa843 upstream.
+commit fb71c795935652fa20eaf9517ca9547f5af99a76 upstream.
 
-This reverts commit 235b630eda072d7e7b102ab346d6b8a2c028a772.
+Move KVM's snapshot of DEBUGCTL to kvm_vcpu_arch and take the snapshot in
+common x86, so that SVM can also use the snapshot.
 
-This commit was found responsible for issues with SD card recognition,
-as users had to re-insert their cards in the readers and wait for a
-while. As for some people the SD card was involved in the boot process
-it also caused boot failures.
+Opportunistically change the field to a u64.  While bits 63:32 are reserved
+on AMD, not mentioned at all in Intel's SDM, and managed as an "unsigned
+long" by the kernel, DEBUGCTL is an MSR and therefore a 64-bit value.
 
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://bbs.archlinux.org/viewtopic.php?id=303321
-Fixes: 235b630eda07 ("drivers/card_reader/rtsx_usb: Restore interrupt based detection")
-Reported-by: qf <quintafeira@tutanota.com>
-Closes: https://lore.kernel.org/all/1de87dfa-1e81-45b7-8dcb-ad86c21d5352@heusel.eu
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-Link: https://lore.kernel.org/r/20250224-revert-sdcard-patch-v1-1-d1a457fbb796@heusel.eu
+Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250227222411.3490595-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   15 ---------------
- 1 file changed, 15 deletions(-)
+ arch/x86/include/asm/kvm_host.h |    1 +
+ arch/x86/kvm/vmx/vmx.c          |    8 ++------
+ arch/x86/kvm/vmx/vmx.h          |    2 --
+ arch/x86/kvm/x86.c              |    1 +
+ 4 files changed, 4 insertions(+), 8 deletions(-)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -286,7 +286,6 @@ static int rtsx_usb_get_status_with_bulk
- int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -761,6 +761,7 @@ struct kvm_vcpu_arch {
+ 	u32 pkru;
+ 	u32 hflags;
+ 	u64 efer;
++	u64 host_debugctl;
+ 	u64 apic_base;
+ 	struct kvm_lapic *apic;    /* kernel irqchip context */
+ 	bool load_eoi_exitmap_pending;
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1515,16 +1515,12 @@ void vmx_vcpu_load_vmcs(struct kvm_vcpu
+  */
+ void vmx_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
  {
- 	int ret;
--	u8 interrupt_val = 0;
- 	u16 *buf;
+-	struct vcpu_vmx *vmx = to_vmx(vcpu);
+-
+ 	if (vcpu->scheduled_out && !kvm_pause_in_guest(vcpu->kvm))
+ 		shrink_ple_window(vcpu);
  
- 	if (!status)
-@@ -309,20 +308,6 @@ int rtsx_usb_get_card_status(struct rtsx
- 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
+ 	vmx_vcpu_load_vmcs(vcpu, cpu, NULL);
+ 
+ 	vmx_vcpu_pi_load(vcpu, cpu);
+-
+-	vmx->host_debugctlmsr = get_debugctlmsr();
+ }
+ 
+ void vmx_vcpu_put(struct kvm_vcpu *vcpu)
+@@ -7454,8 +7450,8 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu
  	}
  
--	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
--	/* Cross check presence with interrupts */
--	if (*status & XD_CD)
--		if (!(interrupt_val & XD_INT))
--			*status &= ~XD_CD;
+ 	/* MSR_IA32_DEBUGCTLMSR is zeroed on vmexit. Restore it if needed */
+-	if (vmx->host_debugctlmsr)
+-		update_debugctlmsr(vmx->host_debugctlmsr);
++	if (vcpu->arch.host_debugctl)
++		update_debugctlmsr(vcpu->arch.host_debugctl);
+ 
+ #ifndef CONFIG_X86_64
+ 	/*
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -339,8 +339,6 @@ struct vcpu_vmx {
+ 	/* apic deadline value in host tsc */
+ 	u64 hv_deadline_tsc;
+ 
+-	unsigned long host_debugctlmsr;
 -
--	if (*status & SD_CD)
--		if (!(interrupt_val & SD_INT))
--			*status &= ~SD_CD;
--
--	if (*status & MS_CD)
--		if (!(interrupt_val & MS_INT))
--			*status &= ~MS_CD;
--
- 	/* usb_control_msg may return positive when success */
- 	if (ret < 0)
- 		return ret;
+ 	/*
+ 	 * Only bits masked by msr_ia32_feature_control_valid_bits can be set in
+ 	 * msr_ia32_feature_control. FEAT_CTL_LOCKED is always included
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4993,6 +4993,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu
+ 
+ 	/* Save host pkru register if supported */
+ 	vcpu->arch.host_pkru = read_pkru();
++	vcpu->arch.host_debugctl = get_debugctlmsr();
+ 
+ 	/* Apply any externally detected TSC adjustments (due to suspend) */
+ 	if (unlikely(vcpu->arch.tsc_offset_adjustment)) {
 
 
 
