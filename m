@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-122119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CC5A59DFE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B89A59CB4
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 017D9188B4A7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:27:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC905188A754
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7E12343D4;
-	Mon, 10 Mar 2025 17:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FAB23236D;
+	Mon, 10 Mar 2025 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RATPqLsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIId12NB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553CC2343C1;
-	Mon, 10 Mar 2025 17:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4139E231CB0;
+	Mon, 10 Mar 2025 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627581; cv=none; b=fMBJttVTjWZrJMUi1TrlL43LvFTaKO6/QzIi8TZwDTknF5sulU61dwLggXRroGvqNKA9f4j1KM7Xp8qpjMSprdO0xrIp0zmiboazC4KFCDJdI7Hon1gyPAOyV5JjbUwQrCj9HD0ID+3opphP43W63CI25o46mAhBhYrFzp7OyjU=
+	t=1741626862; cv=none; b=Ss1dTJ9rCHYkM+SmFppIk3s7pOyVd8gyTnjPExSXeFeD7Qn/1sEH6Y+Qnifr20yYl8iNM71lokh2pLdfRIOQDx7MVOrRJbbd1UGh1h4bl9Q9IPpSGuRm0YBZ40gfOUbFlsPOVXhxnUp3ldPsi7XtnH9L9z9zRAiqrliCTpx9PW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627581; c=relaxed/simple;
-	bh=yG5qXD9Gb1X5EZElGO0RNA172FRVVFRWhNiHUiYvMOw=;
+	s=arc-20240116; t=1741626862; c=relaxed/simple;
+	bh=7s+SjlOmhpDtZyJ3yPLEThT5oCWKPfmxyX6YkABccGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0ka0nDWGkpklwOSjQKWyaISMjYh+J7rBLOY1qnpYSlFd+4L9QN0brcir3jhz00ydbudZMXWaDLxNqMuHPGGnfbygqoNOD5AaR+aZKM8qY5oJmda1ZQ0Ool8t0gv5j/oRaUG2w4OH1KDaf92kN2Hj0oqPr5uZH60LDqXhSI+Lns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RATPqLsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00B1C4CEE5;
-	Mon, 10 Mar 2025 17:26:20 +0000 (UTC)
+	 MIME-Version; b=mFcMUHw3Cbzgkrpy4T5UpU0BOpIb4EJ/Pmi7hXU1opGJrTGIspfKEaw507fLuHjnrk9TU99E9Fml/+uCKqL06KOLcy4aR+Evp3/1Ag9mU1IKZ2G0JeLFtd5oP7bxzRKS1uLXSU5Hh+3ANo0z1G4DHRqKa0TDlWAD0jp6OQqUo+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIId12NB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD71C4CEE5;
+	Mon, 10 Mar 2025 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627581;
-	bh=yG5qXD9Gb1X5EZElGO0RNA172FRVVFRWhNiHUiYvMOw=;
+	s=korg; t=1741626862;
+	bh=7s+SjlOmhpDtZyJ3yPLEThT5oCWKPfmxyX6YkABccGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RATPqLsK/zFLsOQI1pZXX5962kGqXmJBrf+K6cG35+iD0ahOUmm6WqWzAlzjltYqz
-	 +ZfaPbvl3Yce3N8qbJGpio7+DGWRXuiYmMa495wpc5E457SDWInhZnWFgDzWFj8yAC
-	 I/3hKOiA09fScQQehRoYf8at5/gGwDe+qFm+L240=
+	b=VIId12NBqOqDHVg8f4uQ0lQ9WIEaCKO4f1ZW0LyBmz0Uq3KTsqOlnAIKuzOzjyc6H
+	 OT/bUtLZjTlJBRVhkSPlvMTOT9HQVyo4Vj5QUWNGvQGGXUm6jbM8yW01XlhsMvJKae
+	 /PqHfYQNBvcCtzJrYvBmO/Mr7UhIPL8Ij7oOZtjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinghuo Chen <xinghuo.chen@foxmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 177/269] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
+Subject: [PATCH 6.13 137/207] x86/sgx: Fix size overflows in sgx_encl_create()
 Date: Mon, 10 Mar 2025 18:05:30 +0100
-Message-ID: <20250310170504.765712577@linuxfoundation.org>
+Message-ID: <20250310170453.242445525@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinghuo Chen <xinghuo.chen@foxmail.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
+[ Upstream commit 0d3e0dfd68fb9e6b0ec865be9f3377cc3ff55733 ]
 
-The devm_memremap() function returns error pointers on error,
-it doesn't return NULL.
+The total size calculated for EPC can overflow u64 given the added up page
+for SECS.  Further, the total size calculated for shmem can overflow even
+when the EPC size stays within limits of u64, given that it adds the extra
+space for 128 byte PCMD structures (one for each page).
 
-Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
-Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Address this by pre-evaluating the micro-architectural requirement of
+SGX: the address space size must be power of two. This is eventually
+checked up by ECREATE but the pre-check has the additional benefit of
+making sure that there is some space for additional data.
+
+Fixes: 888d24911787 ("x86/sgx: Add SGX_IOC_ENCLAVE_CREATE")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20250305050006.43896-1-jarkko@kernel.org
+
+Closes: https://lore.kernel.org/linux-sgx/c87e01a0-e7dd-4749-a348-0980d3444f04@stanley.mountain/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/sgx/ioctl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 5e0759a70f6d5..92d82faf237fc 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -706,7 +706,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
- 			goto out;
- 		}
+diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
+index b65ab214bdf57..776a20172867e 100644
+--- a/arch/x86/kernel/cpu/sgx/ioctl.c
++++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+@@ -64,6 +64,13 @@ static int sgx_encl_create(struct sgx_encl *encl, struct sgx_secs *secs)
+ 	struct file *backing;
+ 	long ret;
  
--		if (!ctx->pcc_comm_addr) {
-+		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
- 			dev_err(&pdev->dev,
- 				"Failed to ioremap PCC comm region\n");
- 			rc = -ENOMEM;
++	/*
++	 * ECREATE would detect this too, but checking here also ensures
++	 * that the 'encl_size' calculations below can never overflow.
++	 */
++	if (!is_power_of_2(secs->size))
++		return -EINVAL;
++
+ 	va_page = sgx_encl_grow(encl, true);
+ 	if (IS_ERR(va_page))
+ 		return PTR_ERR(va_page);
 -- 
 2.39.5
 
