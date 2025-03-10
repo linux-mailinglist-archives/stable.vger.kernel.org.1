@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-122956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32251A5A236
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:18:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA0BA59E0A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BADB93AEFC6
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28CD23A9BBC
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0222023372C;
-	Mon, 10 Mar 2025 18:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378B823371F;
+	Mon, 10 Mar 2025 17:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMOmDRAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y91moC/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21E51BBBFD;
-	Mon, 10 Mar 2025 18:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FE4233140;
+	Mon, 10 Mar 2025 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630626; cv=none; b=FWkHhVUQpICxngc7Cwyi4HXibc9u4Cyey2Tzpvxp7jtySeCl/AgXAa4WuGna2HGDIsuzOFnf5H8wx9cpxir1plDvnziirhKcVg0QbSUcdhFL8iJyUF3H85AnG7n24KZI1DhcbQ5izjaR9R0HSQZ8UZYqtGYSE/vWwhfecZlUEOA=
+	t=1741627564; cv=none; b=hjoRfA1W5XL8RWnS9Y83L9xN7rsMMtW/VKKVo4Ik9qpdFT6q5P9jhegfNUes7mFGUeXYyjzTnWQqdOmWMnnDPjq4gMCBWxV5+hpxdjIVtSOitXNNJkNjAryDQLj18hESt9slqACpSv4GS7lzYDQ7c9zqLGvvXCbRm7a29FS8Xqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630626; c=relaxed/simple;
-	bh=MRZIb4ghWiIiQzYiTK0oYn7BsMIVMEBCDLD6GNJncjw=;
+	s=arc-20240116; t=1741627564; c=relaxed/simple;
+	bh=hbMLbrChWcIlTjfTlcgm/rEgAhhFl++XtRCjEggvVTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/bSrtRUN2K4l4jjawUQlmTHoYnzQSrghxCSi9C45l7QC7VQfAcOE41EPuTzIPTPEPrhii9Uqer6/Dz2buztmAkReQUWFMt1JGYq0yvJzJ/ArtZop0dgJl3GWwYjRUfSlMjacynSKDPk/PcEpuDdzQabjdEgRTQAxkOgjwlQkPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMOmDRAZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375D2C4CEE5;
-	Mon, 10 Mar 2025 18:17:06 +0000 (UTC)
+	 MIME-Version; b=eqJTIh3ijLVqo90u97ty2GJ/U5htGoFU6GY/av7g3ZXNFGjDYEevkTP5XhOWXrv3+xjMtNlccrhDoRJb0lQ4sW3ZZqqgB4doy4hMadNxNmZNVeA2LjXwb6JY2LkBE41mN5iFd6i80iHloLqk9869j5pZ9h4xDojWQcXUoVhE3Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y91moC/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8D5C4CEE5;
+	Mon, 10 Mar 2025 17:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630626;
-	bh=MRZIb4ghWiIiQzYiTK0oYn7BsMIVMEBCDLD6GNJncjw=;
+	s=korg; t=1741627563;
+	bh=hbMLbrChWcIlTjfTlcgm/rEgAhhFl++XtRCjEggvVTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMOmDRAZOw92c0EZpZLybfsE0r63yuT40gbYVUBcP4uICo9fvd70r4O3nDeym4NEx
-	 4eZlgx+W1xgpDZV50ICFM0edBXdvfhqT8SP2hSCNvlkhT1O9dAcjMzFaHRttj3/wWd
-	 fS8Vn07cNLFRc6I2qTjbRSPihTkOXisXugU8bDiQ=
+	b=y91moC/PYlrq3ey8yRTeFrHPSAqjpFnY2hWnJdBXZaw9LZAl093ZZvRmGYM0UMiN0
+	 83x9OWHRH7U7Sqtd4mcjzPfC6XzsDCqVNwl59O/9gh/cWT0bCBc954MpWla4/Fb7gR
+	 I3CzvcPq2c/7nI28AqxB7cHMkgQOLF1i22D+rnUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Veness <john-linux@pelago.org.uk>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 479/620] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 172/269] hwmon: (ad7314) Validate leading zero bits and return error
 Date: Mon, 10 Mar 2025 18:05:25 +0100
-Message-ID: <20250310170604.482563062@linuxfoundation.org>
+Message-ID: <20250310170504.571605452@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Veness <john-linux@pelago.org.uk>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
+[ Upstream commit e278d5e8aef4c0a1d9a9fa8b8910d713a89aa800 ]
 
-Allows the LED on the dedicated mute button on the HP ProBook 450 G4
-laptop to change colour correctly.
+Leading zero bits are sent on the bus before the temperature value is
+transmitted. If any of these bits are high, the connection might be
+unstable or there could be no AD7314 / ADT730x (or compatible) at all.
+Return -EIO in that case.
 
-Signed-off-by: John Veness <john-linux@pelago.org.uk>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Fixes: 4f3a659581cab ("hwmon: AD7314 driver (ported from IIO)")
+Link: https://lore.kernel.org/r/24a50c2981a318580aca8f50d23be7987b69ea00.camel@iris-sensing.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/ad7314.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1098,6 +1098,7 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+diff --git a/drivers/hwmon/ad7314.c b/drivers/hwmon/ad7314.c
+index 7802bbf5f9587..59424103f6348 100644
+--- a/drivers/hwmon/ad7314.c
++++ b/drivers/hwmon/ad7314.c
+@@ -22,11 +22,13 @@
+  */
+ #define AD7314_TEMP_MASK		0x7FE0
+ #define AD7314_TEMP_SHIFT		5
++#define AD7314_LEADING_ZEROS_MASK	BIT(15)
+ 
+ /*
+  * ADT7301 and ADT7302 temperature masks
+  */
+ #define ADT7301_TEMP_MASK		0x3FFF
++#define ADT7301_LEADING_ZEROS_MASK	(BIT(15) | BIT(14))
+ 
+ enum ad7314_variant {
+ 	adt7301,
+@@ -65,12 +67,20 @@ static ssize_t ad7314_temperature_show(struct device *dev,
+ 		return ret;
+ 	switch (spi_get_device_id(chip->spi_dev)->driver_data) {
+ 	case ad7314:
++		if (ret & AD7314_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		data = (ret & AD7314_TEMP_MASK) >> AD7314_TEMP_SHIFT;
+ 		data = sign_extend32(data, 9);
+ 
+ 		return sprintf(buf, "%d\n", 250 * data);
+ 	case adt7301:
+ 	case adt7302:
++		if (ret & ADT7301_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		/*
+ 		 * Documented as a 13 bit twos complement register
+ 		 * with a sign bit - which is a 14 bit 2's complement
+-- 
+2.39.5
+
 
 
 
