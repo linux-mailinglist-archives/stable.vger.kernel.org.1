@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-122019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AE2A59D82
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:21:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F06A59C31
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22E9C188EDDA
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:21:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5702A188DE58
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801AD22154C;
-	Mon, 10 Mar 2025 17:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C75523236F;
+	Mon, 10 Mar 2025 17:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7H1+6hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNnT0/8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC9A226D0B;
-	Mon, 10 Mar 2025 17:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135F4233157;
+	Mon, 10 Mar 2025 17:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627295; cv=none; b=k1mvBFxhXXXzXFg1QijxaNGozwR92OasrNvjarRSnY4efeg4fQamQbTbVOR6hW5W2i42jyXy9JideyuCPiigUtkhMEasx8LAwYOA+5wRJfrgZhndj+z/Lph5t+7ww/ukp35PTR9CkojJ8c+hLgi8qOxpPKLsqdE8ytRrpg6XMUA=
+	t=1741626576; cv=none; b=irv4S33vjt4ZFtarSzjEn7mKnlJvNj1gWdzt6WH88KMYynTSSRZA+KK1PjIB59FsmKWM4z1OeaIu7JGy9iZq5e6U8nTGFDqYzZJDoKzFExgmKHp+lEc3rmpVwTmoIucAH8oLdBoheWWJn26Zaz8rIaSnpVHRez3Zj1oSfpExoFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627295; c=relaxed/simple;
-	bh=HQZJtU9NJ/i09jXuopgpOMszbyGbCaVhyiPdu3/YsE4=;
+	s=arc-20240116; t=1741626576; c=relaxed/simple;
+	bh=a813Kl5bDiRXPCnCOFC3o4BMrq/LJSnZ7aE26uC/kqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3+z1bSkRgHFBj8D7Zz3McblugcIYScj02RSX5pXBpMO1JXtyLjqro+AzaoUNxeF2nudrEZI26zrIvxe2TBqbgBCauEDfRby/gAXrNkBexVS2jdYlNHvXVwNylNpOEApFg8V0N/MRcZgSTX1+EZFGSSdhAGq0D6jaWM5Y2FJRi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7H1+6hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6D5C4CEE5;
-	Mon, 10 Mar 2025 17:21:34 +0000 (UTC)
+	 MIME-Version; b=fZF22NkXcLgw2zT4fVLf/iVdN7PHQg8CtygjX+juebQhmASkxTTgTzmxcJ60axVlVRO0RV/FpKNd5/vwtFpkmTr80gq5Gfw/IEwBBClX6sM5lomYQ1T9tqc4EqYLW7jUo8kdqYkyxMMpfpXBPBNjReS7/IeDup9IBbiH3DRt//Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNnT0/8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90056C4CEE5;
+	Mon, 10 Mar 2025 17:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627295;
-	bh=HQZJtU9NJ/i09jXuopgpOMszbyGbCaVhyiPdu3/YsE4=;
+	s=korg; t=1741626576;
+	bh=a813Kl5bDiRXPCnCOFC3o4BMrq/LJSnZ7aE26uC/kqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7H1+6hzJWFoRw/3bM7pE9HhNpJF1L7iLc28B4+9TndtEyAc2Qy7cusamf0BgOU9q
-	 B+WDZf68jqGTeHLO4blpqNT1w4pT4l0mNZz490AbH1XWskMK5l5jkBC6BGTf4rqflu
-	 vHK4IezgkHUDubBabTLAfKl6+Rat/n/3XrNDfeL0=
+	b=SNnT0/8/whqLnuIkIQY/ioHa9QtGrKYARDTQWZAtRBClst8BIbl3T0ks09hN9Jiyh
+	 xhHkfZ8J1HJRjfuO9uVU2QGVEyD9Hs4bygjieT7r/YOXDprthlCoUhG0cNNLz4cPar
+	 p1kqXA/i8Kroyi0l5ls2P28S6B8N8mxZevcj8m64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 048/269] rust: alloc: implement `collect` for `IntoIter`
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 008/207] tracing: tprobe-events: Fix a memory leak when tprobe with $retval
 Date: Mon, 10 Mar 2025 18:03:21 +0100
-Message-ID: <20250310170459.639354920@linuxfoundation.org>
+Message-ID: <20250310170448.086009816@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 93e602310f87b7b515b86a8f919cc0799387e5c3 upstream.
+commit ac965d7d88fc36fb42e3d50225c0a44dd8326da4 upstream.
 
-Currently, we can't implement `FromIterator`. There are a couple of
-issues with this trait in the kernel, namely:
+Fix a memory leak when a tprobe is defined with $retval. This
+combination is not allowed, but the parse_symbol_and_return() does
+not free the *symbol which should not be used if it returns the error.
+Thus, it leaks the *symbol memory in that error path.
 
-  - Rust's specialization feature is unstable. This prevents us to
-    optimize for the special case where `I::IntoIter` equals `Vec`'s
-    `IntoIter` type.
-  - We also can't use `I::IntoIter`'s type ID either to work around this,
-    since `FromIterator` doesn't require this type to be `'static`.
-  - `FromIterator::from_iter` does return `Self` instead of
-    `Result<Self, AllocError>`, hence we can't properly handle allocation
-    failures.
-  - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle
-    additional allocation flags.
+Link: https://lore.kernel.org/all/174055072650.4079315.3063014346697447838.stgit@mhiramat.tok.corp.google.com/
 
-Instead, provide `IntoIter::collect`, such that we can at least convert
-`IntoIter` into a `Vec` again.
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20241004154149.93856-19-dakr@kernel.org
-[ Added newline in documentation, changed case of section to be
-  consistent with an existing one, fixed typo. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: ce51e6153f77 ("tracing: fprobe-event: Fix to check tracepoint event and return")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc/kvec.rs |   95 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
+ kernel/trace/trace_fprobe.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -692,6 +692,101 @@ pub struct IntoIter<T, A: Allocator> {
-     _p: PhantomData<A>,
- }
- 
-+impl<T, A> IntoIter<T, A>
-+where
-+    A: Allocator,
-+{
-+    fn into_raw_parts(self) -> (*mut T, NonNull<T>, usize, usize) {
-+        let me = ManuallyDrop::new(self);
-+        let ptr = me.ptr;
-+        let buf = me.buf;
-+        let len = me.len;
-+        let cap = me.layout.len();
-+        (ptr, buf, len, cap)
-+    }
-+
-+    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoIter`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let v = kernel::kvec![1, 2, 3]?;
-+    /// let mut it = v.into_iter();
-+    ///
-+    /// assert_eq!(it.next(), Some(1));
-+    ///
-+    /// let v = it.collect(GFP_KERNEL);
-+    /// assert_eq!(v, [2, 3]);
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    ///
-+    /// # Implementation details
-+    ///
-+    /// Currently, we can't implement `FromIterator`. There are a couple of issues with this trait
-+    /// in the kernel, namely:
-+    ///
-+    /// - Rust's specialization feature is unstable. This prevents us to optimize for the special
-+    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
-+    /// - We also can't use `I::IntoIter`'s type ID either to work around this, since `FromIterator`
-+    ///   doesn't require this type to be `'static`.
-+    /// - `FromIterator::from_iter` does return `Self` instead of `Result<Self, AllocError>`, hence
-+    ///   we can't properly handle allocation failures.
-+    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle additional allocation
-+    ///   flags.
-+    ///
-+    /// Instead, provide `IntoIter::collect`, such that we can at least convert a `IntoIter` into a
-+    /// `Vec` again.
-+    ///
-+    /// Note that `IntoIter::collect` doesn't require `Flags`, since it re-uses the existing backing
-+    /// buffer. However, this backing buffer may be shrunk to the actual count of elements.
-+    pub fn collect(self, flags: Flags) -> Vec<T, A> {
-+        let old_layout = self.layout;
-+        let (mut ptr, buf, len, mut cap) = self.into_raw_parts();
-+        let has_advanced = ptr != buf.as_ptr();
-+
-+        if has_advanced {
-+            // Copy the contents we have advanced to at the beginning of the buffer.
-+            //
-+            // SAFETY:
-+            // - `ptr` is valid for reads of `len * size_of::<T>()` bytes,
-+            // - `buf.as_ptr()` is valid for writes of `len * size_of::<T>()` bytes,
-+            // - `ptr` and `buf.as_ptr()` are not be subject to aliasing restrictions relative to
-+            //   each other,
-+            // - both `ptr` and `buf.ptr()` are properly aligned.
-+            unsafe { ptr::copy(ptr, buf.as_ptr(), len) };
-+            ptr = buf.as_ptr();
-+
-+            // SAFETY: `len` is guaranteed to be smaller than `self.layout.len()`.
-+            let layout = unsafe { ArrayLayout::<T>::new_unchecked(len) };
-+
-+            // SAFETY: `buf` points to the start of the backing buffer and `len` is guaranteed to be
-+            // smaller than `cap`. Depending on `alloc` this operation may shrink the buffer or leaves
-+            // it as it is.
-+            ptr = match unsafe {
-+                A::realloc(Some(buf.cast()), layout.into(), old_layout.into(), flags)
-+            } {
-+                // If we fail to shrink, which likely can't even happen, continue with the existing
-+                // buffer.
-+                Err(_) => ptr,
-+                Ok(ptr) => {
-+                    cap = len;
-+                    ptr.as_ptr().cast()
-+                }
-+            };
-+        }
-+
-+        // SAFETY: If the iterator has been advanced, the advanced elements have been copied to
-+        // the beginning of the buffer and `len` has been adjusted accordingly.
-+        //
-+        // - `ptr` is guaranteed to point to the start of the backing buffer.
-+        // - `cap` is either the original capacity or, after shrinking the buffer, equal to `len`.
-+        // - `alloc` is guaranteed to be unchanged since `into_iter` has been called on the original
-+        //   `Vec`.
-+        unsafe { Vec::from_raw_parts(ptr, len, cap) }
-+    }
-+}
-+
- impl<T, A> Iterator for IntoIter<T, A>
- where
-     A: Allocator,
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -1025,6 +1025,8 @@ static int parse_symbol_and_return(int a
+ 			if (is_tracepoint) {
+ 				trace_probe_log_set_index(i);
+ 				trace_probe_log_err(tmp - argv[i], RETVAL_ON_PROBE);
++				kfree(*symbol);
++				*symbol = NULL;
+ 				return -EINVAL;
+ 			}
+ 			*is_return = true;
 
 
 
