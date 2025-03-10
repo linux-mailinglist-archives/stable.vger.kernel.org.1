@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-122919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03407A5A1FE
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:16:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB03A59CA5
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0926718930F7
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:16:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21D533A6E07
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CD1235BEB;
-	Mon, 10 Mar 2025 18:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583A4231A24;
+	Mon, 10 Mar 2025 17:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMkX++0S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZB8WuNJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CCF230D0F;
-	Mon, 10 Mar 2025 18:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1726E230BEC;
+	Mon, 10 Mar 2025 17:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630520; cv=none; b=G622wa6hhPqwGobVUFXtg8GnK3f0d8VXPXNhEHp1VOmerDuRTc2XoKnx/Vt+yaQc/eE68uAbG3vCSAbY51I/PoToQnyHwWA8HYT6g7T5n5JnFShU87RBtpH7ehtIZWEUn1Hhmy8aPgHoUgfBWIeWrUZ2gumcC7dTMmeKmnqO9Lg=
+	t=1741626741; cv=none; b=P9ZB6Xp9lQkdr2/OgTdkHPyxcxmG1AYxu9eizCaCwD3Lp3p9rj9TOfslkdPf5yu7RjQ5ddtm1q5gJGfngB6RIkInSrW2VwaC/fUc6h1g6D32o/2wFgpsTb7cZTs5TOPahVqPCYA05+yE7nm6E9RhJhOdHtIdxsLs5LA8Q3PAY3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630520; c=relaxed/simple;
-	bh=czVgeV/K4dbdUrTYh6yLn2IyPogjjqRa0IKDH/y9hF0=;
+	s=arc-20240116; t=1741626741; c=relaxed/simple;
+	bh=JeywlziXQd7S5ayr9STxpFJmNNLNhFiQ3/6VJiY0fdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AY4gsc28FMioRu1TQRHWpavISAv1GodEhPIMqKd7qkqy1VPSpEKYRIq1I9wy9ptNRXIjr/KQDpFpXaNpONRkjdm8JU6CF4lqBWbDDL28OuAyt0r4N1JFQpPaFlgFiZL82Et0iU7uJjf4bT1CXhis5mfzDhf8ctRaQwY1cHlLIjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMkX++0S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68256C4CEE5;
-	Mon, 10 Mar 2025 18:15:19 +0000 (UTC)
+	 MIME-Version; b=NL58Gh/2/7E2s0IDmMRzYE02JcdJEPqGLkrIEB0Idc7fAIi7jy9c0mnIbKqS64AWbJdSqbAg7Dd3UqoayeTqtlIOWTXmjLLzB6JsUdt989F9CGREUhOazt8ajRCGA9BigSDsqFGjUbuVW2Ub3gQtYdfXV0VTCpfnqo1bkxmtHEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZB8WuNJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918ADC4CEEB;
+	Mon, 10 Mar 2025 17:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630519;
-	bh=czVgeV/K4dbdUrTYh6yLn2IyPogjjqRa0IKDH/y9hF0=;
+	s=korg; t=1741626741;
+	bh=JeywlziXQd7S5ayr9STxpFJmNNLNhFiQ3/6VJiY0fdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMkX++0SR1sSYCdHsedonE+jWX2s7I8kyxvJ/3W1JaCKAh0DLaFkOd3dPPEwUxomC
-	 RmogcRIn0poM5ZH7kgrytYAkeBNfOdM/Gf+isJXIa2+O0VthD/TVxZj8llcE9b1Pw2
-	 cwJRvP+T/xgCxM01DhPhji1H2i+53qKO9Zc6DTIg=
+	b=ZB8WuNJAEcZnI0GwpNlh5dch/NMzT7kZQq+oULu3lDPv0KfQqBk1isS5VfB8PYqsa
+	 +2UNz30giVv/m5aaop9NgjQnxWRvMUSle5A6YmnsjqiFqyDpYlHQ4nrer6vvzoUiDO
+	 V8kNzOGAbMjUBOtUEMlcRfqjq07M4pJALREA6z44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 442/620] ASoC: renesas: rz-ssi: Add a check for negative sample_space
-Date: Mon, 10 Mar 2025 18:04:48 +0100
-Message-ID: <20250310170603.045175368@linuxfoundation.org>
+Subject: [PATCH 6.13 096/207] wifi: mac80211: fix vendor-specific inheritance
+Date: Mon, 10 Mar 2025 18:04:49 +0100
+Message-ID: <20250310170451.572883743@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+References: <20250310170447.729440535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 82a0a3e6f8c02b3236b55e784a083fa4ee07c321 ]
+[ Upstream commit 130067e9c13bdc4820748ef16076a6972364745f ]
 
-My static checker rule complains about this code.  The concern is that
-if "sample_space" is negative then the "sample_space >= runtime->channels"
-condition will not work as intended because it will be type promoted to a
-high unsigned int value.
+If there's any vendor-specific element in the subelements
+then the outer element parsing must not parse any vendor
+element at all. This isn't implemented correctly now due
+to parsing into the pointers and then overriding them, so
+explicitly skip vendor elements if any exist in the sub-
+elements (non-transmitted profile or per-STA profile).
 
-strm->fifo_sample_size is SSI_FIFO_DEPTH (32).  The SSIFSR_TDC_MASK is
-0x3f.  Without any further context it does seem like a reasonable warning
-and it can't hurt to add a check for negatives.
-
-Cc: stable@vger.kernel.org
-Fixes: 03e786bd4341 ("ASoC: sh: Add RZ/G2L SSIF-2 driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/e07c3dc5-d885-4b04-a742-71f42243f4fd@stanley.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 671042a4fb77 ("mac80211: support non-inheritance element")
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250221112451.fd71e5268840.I9db3e6a3367e6ff38d052d07dc07005f0dd3bd5c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sh/rz-ssi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/parse.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
-index 9ef7d0a12d985..b6a7011b4e3b1 100644
---- a/sound/soc/sh/rz-ssi.c
-+++ b/sound/soc/sh/rz-ssi.c
-@@ -487,6 +487,8 @@ static int rz_ssi_pio_send(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
- 	sample_space = strm->fifo_sample_size;
- 	ssifsr = rz_ssi_reg_readl(ssi, SSIFSR);
- 	sample_space -= (ssifsr >> SSIFSR_TDC_SHIFT) & SSIFSR_TDC_MASK;
-+	if (sample_space < 0)
-+		return -EINVAL;
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 3d5d6658fe8d5..6da39c864f45b 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -48,6 +48,7 @@ struct ieee80211_elems_parse {
+ 	const struct element *ml_epcs_elem;
  
- 	/* Only add full frames at a time */
- 	while (frames_left && (sample_space >= runtime->channels)) {
+ 	bool multi_link_inner;
++	bool skip_vendor;
+ 
+ 	/*
+ 	 * scratch buffer that can be used for various element parsing related
+@@ -400,6 +401,9 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+ 					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
+ 			break;
+ 		case WLAN_EID_VENDOR_SPECIFIC:
++			if (elems_parse->skip_vendor)
++				break;
++
+ 			if (elen >= 4 && pos[0] == 0x00 && pos[1] == 0x50 &&
+ 			    pos[2] == 0xf2) {
+ 				/* Microsoft OUI (00:50:F2) */
+@@ -1054,12 +1058,16 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 		multi_link_inner = true;
+ 	}
+ 
++	elems_parse->skip_vendor =
++		cfg80211_find_elem(WLAN_EID_VENDOR_SPECIFIC,
++				   sub.start, sub.len);
+ 	elems->crc = _ieee802_11_parse_elems_full(params, elems_parse,
+ 						  non_inherit);
+ 
+ 	/* Override with nontransmitted/per-STA profile if found */
+ 	if (sub.len) {
+ 		elems_parse->multi_link_inner = multi_link_inner;
++		elems_parse->skip_vendor = false;
+ 		_ieee802_11_parse_elems_full(&sub, elems_parse, NULL);
+ 	}
+ 
 -- 
 2.39.5
 
