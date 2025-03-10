@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-122998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF8BA5A25B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:19:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014F7A59E58
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E27918936F0
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:19:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 064281649AF
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A093022A808;
-	Mon, 10 Mar 2025 18:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4074322DFA5;
+	Mon, 10 Mar 2025 17:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZavMkCZ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vK4TeLht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB5F1BBBFD;
-	Mon, 10 Mar 2025 18:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE91A233145;
+	Mon, 10 Mar 2025 17:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630749; cv=none; b=u+xFY24KLnwRh0e4yt9Q4YYpzI1zxp91MxF7R3Xpjq2hzBpPxUv4p7Y8TlCUlukuJBY68kPcTNwIGBAWuna5R7CX7hfTyMI2IpmrAWlCEkRHKTaXu4BCH2JUuBPvbgBrz2ncd9hBpzrCO8r/ry8qzBC5szPJ0LNhFw9xLE1HVe8=
+	t=1741627804; cv=none; b=jmgUR7q+nitsJlfTcisiQeDAiN8HnOdjwtD6qz8mqira97CoM+n0nsP3wDwowGyqyZozEHtOu6ZezWpow6SGNDqWVfDRtnYyUpMOXpmpfjgM6r6gDAv46U/FDaz+KzPx3nx2Iig6wOtlwRdfecSeI0rBUldNjKgKM1Ekj3ekzpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630749; c=relaxed/simple;
-	bh=9jDKiDlmmWRWWON+cxdG54kcMlQOF3ErFpj5Ik53EQI=;
+	s=arc-20240116; t=1741627804; c=relaxed/simple;
+	bh=Aay2TFQj1ZhmU9F35W8FtETXxv48fm+p6X6NkTfHoB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kc9So1x2jImhSPZ6H14g7gTVd0Uy+y9KEjhw5iVgNrNHzCAqDUinb2jsv0UGB+/hWGT0dkDEqeV8SuxODBi7l/Oxbkdr4BtPd32Mbvr8j2yHtNNwDCgxo/HHhD0v71DfROjxtVrAQMtstEds5NGQbLN8Wnmf+dSwgeKUPU7dpVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZavMkCZ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AE8C4CEE5;
-	Mon, 10 Mar 2025 18:19:08 +0000 (UTC)
+	 MIME-Version; b=FDMkOdGhBTWVK506k2V+QY6wa0y9vGQ2vO8AAGbM+1sdKIRoywa4MByiUmdzuS2iWXSCm5Y2Wh4LTOF3BGQlHqy9OG7TiIyaFbHdEJoaTcvQZYzbp8viG1F5vNN6xHd6ES44DMuh4fTFJ2QfcTh5A903iSYrMNKchRdRsXtTeTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vK4TeLht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D6C4CEE5;
+	Mon, 10 Mar 2025 17:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741630749;
-	bh=9jDKiDlmmWRWWON+cxdG54kcMlQOF3ErFpj5Ik53EQI=;
+	s=korg; t=1741627803;
+	bh=Aay2TFQj1ZhmU9F35W8FtETXxv48fm+p6X6NkTfHoB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZavMkCZ+6KGpXctsi6VUIaxM8TcHbkpG9ehzrq71izWMRSK8sqn/oyaKJ8uCBppij
-	 FSEPA6cN+5I4V6P0jUDNX+MdlkAC7Hw8+teWhU0HJJUZmLPfukF4ZkdscBmZtQRUDU
-	 /EJoCWGWnVWd+ts3i7zXGfRtITnKkcfH8UgynEGw=
+	b=vK4TeLhtDMt9jsbHYsK5timrGbY1xbICYgoogwj2bYKwiJxxBkq+qlz3Pgj4adSiP
+	 ZptB3wACqi+nhfhvnGCrDQscamkIxqOcwNEm5utK5llsK8vMQ85xt+pnqng2BAUN0H
+	 wePbiGES7fy5OXArtqPL2Gx5VArVdHdngTyzJh/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 520/620] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.12 213/269] usb: renesas_usbhs: Flush the notify_hotplug_work
 Date: Mon, 10 Mar 2025 18:06:06 +0100
-Message-ID: <20250310170606.080213518@linuxfoundation.org>
+Message-ID: <20250310170506.180479545@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
+commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
 
-When a DMA mapping error occurs while processing skb frags, it will free
-one more tx_swbd than expected, so fix this off-by-one issue.
+When performing continuous unbind/bind operations on the USB drivers
+available on the Renesas RZ/G2L SoC, a kernel crash with the message
+"Unable to handle kernel NULL pointer dereference at virtual address"
+may occur. This issue points to the usbhsc_notify_hotplug() function.
 
-Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-Cc: stable@vger.kernel.org
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Flush the delayed work to avoid its execution when driver resources are
+unavailable.
+
+Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -121,6 +121,24 @@ static int enetc_ptp_parse(struct sk_buf
- 	return 0;
- }
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -781,6 +781,8 @@ static void usbhs_remove(struct platform
  
-+/**
-+ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
-+ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
-+ * @count: Number of Tx buffer descriptors which need to be unmapped
-+ * @i: Index of the last successfully mapped Tx buffer descriptor
-+ */
-+static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
-+{
-+	while (count--) {
-+		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
+ 	dev_dbg(&pdev->dev, "usb remove\n");
+ 
++	flush_delayed_work(&priv->notify_hotplug_work);
 +
-+		enetc_free_tx_frame(tx_ring, tx_swbd);
-+		if (i == 0)
-+			i = tx_ring->bd_count;
-+		i--;
-+	}
-+}
-+
- static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- {
- 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
-@@ -303,13 +321,7 @@ static int enetc_map_tx_buffs(struct ene
- dma_err:
- 	dev_err(tx_ring->dev, "DMA map error");
- 
--	do {
--		tx_swbd = &tx_ring->tx_swbd[i];
--		enetc_free_tx_frame(tx_ring, tx_swbd);
--		if (i == 0)
--			i = tx_ring->bd_count;
--		i--;
--	} while (count--);
-+	enetc_unwind_tx_frame(tx_ring, count, i);
- 
- 	return 0;
- }
+ 	/* power off */
+ 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+ 		usbhsc_power_ctrl(priv, 0);
 
 
 
