@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-121915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67663A59D1B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:18:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B74A59E3E
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CBDA3A87ED
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:16:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB4D4170102
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2702B230BC3;
-	Mon, 10 Mar 2025 17:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DE822FF40;
+	Mon, 10 Mar 2025 17:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfuML2Gf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miaVoX/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D980A21E087;
-	Mon, 10 Mar 2025 17:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8E622C336;
+	Mon, 10 Mar 2025 17:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626997; cv=none; b=X5KGdowA7ocdi9j80bzPf6bqNCL1Rfk8oWB/AeIHKkhYOfNXf+MtOuWshugmQtBlGTU3G7MeTe41Qj+ZrGkoFUQ3nSBPI7YelVulx3L0hadgwmAmIOwtpb1gj7vhK2P9svloRdhxw3nR988ZXmcq+Z4muHw+apXW3KpUTDooXYI=
+	t=1741627720; cv=none; b=p+tUs2aamuvPBnMLKjIBty4CEVlozNwZHmOg0imLn+F4FVgqhWNZZX6TNtK6x+rS8iNQFy+FFhsEXmoy5pgJD3tyJwUdBEFGdxa6KhcBI3mxXxP5JvbnBfC1eICs1dJkGE2rfO1LYHjfriBIddP2MYaStkMFrCscIgOfOIKdtt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626997; c=relaxed/simple;
-	bh=uvu/ku6+mejnkkWhS4aiFc3FotPHFr43bva/IC5VaPU=;
+	s=arc-20240116; t=1741627720; c=relaxed/simple;
+	bh=pPIZSrHmvyFAiUvY44+FwY/lS0eOKDw+9mutS2YByQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUs1P5j8SVaoFDm0dZTcUExowKi/IkMML4V6S3HpECTLL7Z1xj4LD5ebpHtuDjxYCmJLa0BGWTSss2myX25Cq1u2nUwYQBcMMcnli3jctw9foyEYyqGkUFrVqqu4+VrxX5dNWGdFlwPVDcmd6C9cnxlTOEJh8hmTd/y4Evv1yHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfuML2Gf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFECC4CEE5;
-	Mon, 10 Mar 2025 17:16:37 +0000 (UTC)
+	 MIME-Version; b=SCmQDLaGpqpAMn/IygEQYAxo0N2CtcwcujszdBtld7f9XR/blzYkfTKpqj/gPoQXElFEs7j7LZ79ZOPGdIFnzxVNM26CA3sM5T2MEQIp0F1kiOov6cz2YIgmCCakf61YIKE2OzUHHAT2dWlZCcHalM3KbqQPVxdwjmFE11g6hHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miaVoX/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B92C4CEE5;
+	Mon, 10 Mar 2025 17:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626997;
-	bh=uvu/ku6+mejnkkWhS4aiFc3FotPHFr43bva/IC5VaPU=;
+	s=korg; t=1741627720;
+	bh=pPIZSrHmvyFAiUvY44+FwY/lS0eOKDw+9mutS2YByQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfuML2Gf4zyH3Ipi/8ePmdfqquP9Zbqf1z/EJGsWqFGcGVeUQeChSHiFvRwPHn2vy
-	 gZCDBon6f0tbcOxrOK8faY30TFNbLgY92k6NL73Mw9oGGDx1P2Qq+07YXHb7NkRqW5
-	 ZeS4Dbd2JZN9eD5is3vHqz0UISIpdHAqSw502pls=
+	b=miaVoX/mPbKOVpnmZ20PyB39JowhFWfJmrIU2GZWHxNd6MeuhMemqO46Qs2v3/s4z
+	 4oER0mQvPtgw29R3XWx5Jk1wEC8Q93DO266mYsRCmCHLwuKehbJJkidbuJVO+KIhL+
+	 KVWbtJv4oTB3FnRCQL2ciilyanSYbQG8reUkaoCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.13 186/207] char: misc: deallocate static minor in error path
-Date: Mon, 10 Mar 2025 18:06:19 +0100
-Message-ID: <20250310170455.178304627@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.12 227/269] xhci: pci: Fix indentation in the PCI device ID definitions
+Date: Mon, 10 Mar 2025 18:06:20 +0100
+Message-ID: <20250310170506.736012896@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
-References: <20250310170447.729440535@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 6d991f569c5ef6eaeadf1238df2c36e3975233ad upstream.
+commit 0309ed83791c079f239c13e0c605210425cd1a61 upstream.
 
-When creating sysfs files fail, the allocated minor must be freed such that
-it can be later reused. That is specially harmful for static minor numbers,
-since those would always fail to register later on.
+Some of the definitions are missing the one TAB, add it to them.
 
-Fixes: 6d04d2b554b1 ("misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://lore.kernel.org/r/20250123123249.4081674-5-cascardo@igalia.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-23-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/misc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -264,8 +264,8 @@ int misc_register(struct miscdevice *mis
- 		device_create_with_groups(&misc_class, misc->parent, dev,
- 					  misc, misc->groups, "%s", misc->name);
- 	if (IS_ERR(misc->this_device)) {
-+		misc_minor_free(misc->minor);
- 		if (is_dynamic) {
--			misc_minor_free(misc->minor);
- 			misc->minor = MISC_DYNAMIC_MINOR;
- 		}
- 		err = PTR_ERR(misc->this_device);
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -28,8 +28,8 @@
+ #define SPARSE_CNTL_ENABLE	0xC12C
+ 
+ /* Device for a quirk */
+-#define PCI_VENDOR_ID_FRESCO_LOGIC	0x1b73
+-#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK	0x1000
++#define PCI_VENDOR_ID_FRESCO_LOGIC		0x1b73
++#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK		0x1000
+ #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1009	0x1009
+ #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1100	0x1100
+ #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1400	0x1400
+@@ -38,8 +38,8 @@
+ #define PCI_DEVICE_ID_EJ168		0x7023
+ #define PCI_DEVICE_ID_EJ188		0x7052
+ 
+-#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
+-#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
++#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
++#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
+ #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
+ #define PCI_DEVICE_ID_INTEL_CHERRYVIEW_XHCI		0x22b5
+ #define PCI_DEVICE_ID_INTEL_SUNRISEPOINT_H_XHCI		0xa12f
 
 
 
