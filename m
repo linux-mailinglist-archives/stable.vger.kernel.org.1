@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-121886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D5DA59CC8
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C8EA59CD2
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CECF16F044
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577CD16F21C
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1206F230996;
-	Mon, 10 Mar 2025 17:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D218817C225;
+	Mon, 10 Mar 2025 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rc7l/d8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSlSF1Ly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C330B230988;
-	Mon, 10 Mar 2025 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9BB230BF6;
+	Mon, 10 Mar 2025 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626914; cv=none; b=dCPZTh7LCXGfFoXygyz9dBcrkXrOt9x89Qv/p9xSrMTpXc3Fe+QKDbL43LuO98qByxWTz3kJOwmEk/dvYW/NPPH4rNiTxb7Db9sNIcB0SDMCMHxuMGY045nVKuXOOMSv3pd266lkVmhHJbhmuy9s8Fx6j5zLFHRYMqRrs1I0KKA=
+	t=1741626920; cv=none; b=oC2NExogUq2R320wVQ1KCaQ/SCWFDvA4TFbKSizQyZ40uBn4NQ6ccSFlsVNGnGqRZPkyvjF1T9INrxEYAjhjEx5gOZi1KzoTwStjprJdf6TzR+p7+fmfuQ6A6gEqL6Jq2tTSeNUbqrgvifba7jqHmh1cZJs9wPKLQn4lH5rDb2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626914; c=relaxed/simple;
-	bh=1AmeVFjHe+0LP4SSkNVGniDiUjFHVVnaswomeBpUmDE=;
+	s=arc-20240116; t=1741626920; c=relaxed/simple;
+	bh=lpBvOJ7iacnTcEMd/g6bgHzeaXnrq92QgbevZwBIoEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcD1e6gT7d08vwDIJA/uWH1bfkQy9CiaGq4zMbfyivTzAZ9wxBH83gpycrSqKoVe5yKQFxZxzCckseXZDGlazShMQtFkDDdPQIFFewi6l3VFyKQOTaLpQmXWXnk6PZOX3akGPNRq/Y21HaYtUL9oZaUxzEqYQyT93wHkTz3UsmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rc7l/d8V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43103C4CEEB;
-	Mon, 10 Mar 2025 17:15:14 +0000 (UTC)
+	 MIME-Version; b=i2RcLmk3gU6yltQ2S5El9PW2OT9ABxTATeAcaiZuMA0JO1/y7SHNrXpi0vR5Uqr7Sxz4rh3eezE6ohm5OL9eWTUxiuEDmmR5seGkpULHyiOrIEdeNB3wo1Nhtu4i03HK1TeevbNDjAc9P88ZHR7ZrvpN7oUMKSYtDuW41ofkUfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSlSF1Ly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CB6C4CEE5;
+	Mon, 10 Mar 2025 17:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741626914;
-	bh=1AmeVFjHe+0LP4SSkNVGniDiUjFHVVnaswomeBpUmDE=;
+	s=korg; t=1741626920;
+	bh=lpBvOJ7iacnTcEMd/g6bgHzeaXnrq92QgbevZwBIoEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rc7l/d8VwDQ2vjFCOOlWp+Y9cABpA85HyNfgOWilroc7bTuF7tWuHU5wPcLgiPNBM
-	 1x6VgV5Q7WtuqSFoJ5mXNshyjQM9eeRx5SNjOO6phBUZqvSUmT8K4cZGH2/H24qKAa
-	 w6SgmUMdvD/hn8Y8XOzwEAm667hQJxEi1yufalxo=
+	b=qSlSF1LyCLpDJxwQ5hcKpfmhCkg4SZ3f8IJirB9ofZIwUdl0gKtsb1mj7KbGojBuH
+	 dM6rCL567+u8IYPWZb+WRBZQU+CsHEm8Pjkw+lEsB+B1ByI8jwBkCMYpInct0nZsi7
+	 iEcA8+mmJI6uxkvkDcDOm9SSsFgETh1WX+/yIdpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.13 157/207] usb: xhci: Fix host controllers "dying" after suspend and resume
-Date: Mon, 10 Mar 2025 18:05:50 +0100
-Message-ID: <20250310170454.034631245@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.13 158/207] usb: typec: ucsi: Fix NULL pointer access
+Date: Mon, 10 Mar 2025 18:05:51 +0100
+Message-ID: <20250310170454.073935817@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
 References: <20250310170447.729440535@linuxfoundation.org>
@@ -65,64 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit c7c1f3b05c67173f462d73d301d572b3f9e57e3b upstream.
+commit b13abcb7ddd8d38de769486db5bd917537b32ab1 upstream.
 
-A recent cleanup went a bit too far and dropped clearing the cycle bit
-of link TRBs, so it stays different from the rest of the ring half of
-the time. Then a race occurs: if the xHC reaches such link TRB before
-more commands are queued, the link's cycle bit unintentionally matches
-the xHC's cycle so it follows the link and waits for further commands.
-If more commands are queued before the xHC gets there, inc_enq() flips
-the bit so the xHC later sees a mismatch and stops executing commands.
+Resources should be released only after all threads that utilize them
+have been destroyed.
+This commit ensures that resources are not released prematurely by waiting
+for the associated workqueue to complete before deallocating them.
 
-This function is called before suspend and 50% of times after resuming
-the xHC is doomed to get stuck sooner or later. Then some Stop Endpoint
-command fails to complete in 5 seconds and this shows up
-
-xhci_hcd 0000:00:10.0: xHCI host not responding to stop endpoint command
-xhci_hcd 0000:00:10.0: xHCI host controller not responding, assume dead
-xhci_hcd 0000:00:10.0: HC died; cleaning up
-
-followed by loss of all USB decives on the affected bus. That's if you
-are lucky, because if Set Deq gets stuck instead, the failure is silent.
-
-Likely responsible for kernel bug 219824. I found this while searching
-for possible causes of that regression and reproduced it locally before
-hearing back from the reporter. To repro, simply wait for link cycle to
-become set (debugfs), then suspend, resume and wait. To accelerate the
-failure I used a script which repeatedly starts and stops a UVC camera.
-
-Some HCs get fully reinitialized on resume and they are not affected.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219824
-Fixes: 36b972d4b7ce ("usb: xhci: improve xhci_clear_command_ring()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250304113147.3322584-2-mathias.nyman@linux.intel.com
+Cc: stable <stable@kernel.org>
+Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250305111739.1489003-2-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -779,8 +779,12 @@ static void xhci_clear_command_ring(stru
- 	struct xhci_segment *seg;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1825,11 +1825,11 @@ static int ucsi_init(struct ucsi *ucsi)
  
- 	ring = xhci->cmd_ring;
--	xhci_for_each_ring_seg(ring->first_seg, seg)
-+	xhci_for_each_ring_seg(ring->first_seg, seg) {
-+		/* erase all TRBs before the link */
- 		memset(seg->trbs, 0, sizeof(union xhci_trb) * (TRBS_PER_SEGMENT - 1));
-+		/* clear link cycle bit */
-+		seg->trbs[TRBS_PER_SEGMENT - 1].link.control &= cpu_to_le32(~TRB_CYCLE);
-+	}
+ err_unregister:
+ 	for (con = connector; con->port; con++) {
++		if (con->wq)
++			destroy_workqueue(con->wq);
+ 		ucsi_unregister_partner(con);
+ 		ucsi_unregister_altmodes(con, UCSI_RECIPIENT_CON);
+ 		ucsi_unregister_port_psy(con);
+-		if (con->wq)
+-			destroy_workqueue(con->wq);
  
- 	xhci_initialize_ring_info(ring);
- 	/*
+ 		usb_power_delivery_unregister_capabilities(con->port_sink_caps);
+ 		con->port_sink_caps = NULL;
+@@ -2013,10 +2013,6 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 
+ 	for (i = 0; i < ucsi->cap.num_connectors; i++) {
+ 		cancel_work_sync(&ucsi->connector[i].work);
+-		ucsi_unregister_partner(&ucsi->connector[i]);
+-		ucsi_unregister_altmodes(&ucsi->connector[i],
+-					 UCSI_RECIPIENT_CON);
+-		ucsi_unregister_port_psy(&ucsi->connector[i]);
+ 
+ 		if (ucsi->connector[i].wq) {
+ 			struct ucsi_work *uwork;
+@@ -2032,6 +2028,11 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 			destroy_workqueue(ucsi->connector[i].wq);
+ 		}
+ 
++		ucsi_unregister_partner(&ucsi->connector[i]);
++		ucsi_unregister_altmodes(&ucsi->connector[i],
++					 UCSI_RECIPIENT_CON);
++		ucsi_unregister_port_psy(&ucsi->connector[i]);
++
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_sink_caps);
+ 		ucsi->connector[i].port_sink_caps = NULL;
+ 		usb_power_delivery_unregister_capabilities(ucsi->connector[i].port_source_caps);
 
 
 
