@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-122187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-122347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45C2A59E55
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:30:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B9EA59F22
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E224170415
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:29:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C192D170782
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2800B22CBF1;
-	Mon, 10 Mar 2025 17:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5B722ACDC;
+	Mon, 10 Mar 2025 17:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuJCQO5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQ+KOgUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E0122DFA5;
-	Mon, 10 Mar 2025 17:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28E218DB24;
+	Mon, 10 Mar 2025 17:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627775; cv=none; b=aOtsYGQqlMPfOLNb2APElTajanRckiZrTqW7O335FpKlNm8p6JqLZGH5fl0ZmCYJokdbAr4APq1275tc5j4zVl3l95zS+XJhR95yyr7TsXt1tIEOnxpFtuL7ROjQCW10FFmVSlJjK9ZeokXTpI+yLdryahVlVtJGuKj6bangRFM=
+	t=1741628239; cv=none; b=b77J8ZMWo1x/XBd3+wPKU49I4yaemOMnSWAYlp0rkiW+75suMfwFI+rnIAgspfdUxtMBUbmGyOHJlZigGLfDt3NT6tRGGMyN1JbZKWJnObSjnz8wFM6n/WyY4g2zAnvqb0p6Fuk1T+C/IU5c7JTW8XFHqO2Y/sjsOvlhyeOcKVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627775; c=relaxed/simple;
-	bh=ct3L0Nm0Z+NAacsefIlLnMBTVPIc4eb0RH77khvHjUU=;
+	s=arc-20240116; t=1741628239; c=relaxed/simple;
+	bh=Kn18c6M1KoZK25ypF6TJbVuJv35kmKJP1ou1xWWYGFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8SkgbaRIOnf9mk+AoIq78Oj32kEheaLBByuJDNfFhLXFYvag7/miCSLcmp5Csx0Ae5Hf3JEWexasRmNJoOymSj48nXSF4IgnR2Xd1GZ/6GFMWHmHbf7BWl8m7LPax/JdHDlsLb87lxXbdsyME4KzhE5yw3OU2Ggb+ei1Zh6y74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuJCQO5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0104C4CEE5;
-	Mon, 10 Mar 2025 17:29:34 +0000 (UTC)
+	 MIME-Version; b=KxdRjEkT87P8TK0kkPz+4HX3dU9D2LTEcIyv7X1BvObTdqQuZN0/tkO4cYf6jIF4gFKuH9v7SG4eR+jFQojuui0igMouuWbKkwwvVKIzX1UX9exAVaN/9LUkpcFoAuGAoYWXk3CIkQnt4TfLGjzKsHA2nSXE6SaenUpwjOBRMzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQ+KOgUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7170C4CEE5;
+	Mon, 10 Mar 2025 17:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741627775;
-	bh=ct3L0Nm0Z+NAacsefIlLnMBTVPIc4eb0RH77khvHjUU=;
+	s=korg; t=1741628239;
+	bh=Kn18c6M1KoZK25ypF6TJbVuJv35kmKJP1ou1xWWYGFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuJCQO5FxRhC8dz1SgU68roFjPKeAG8NpUdzGGT2ZZtaeqi2O8PP5oLnpwm2yBwHt
-	 70/dS1Rzri/BIdAQpDnnZ+i9hguS5x20t1x0lHvH8eyFWdphaiFbZvOVXi6pguCBtk
-	 g9oRvaXAScxnoZUBDJLc8qM5D9m0IJSEWKHBMAeY=
+	b=xQ+KOgUfEAfy4sGbBPb6LG1j31a4mehA8La6rDqcSOr5gL2PRzK0Xd7JgRBqNq747
+	 Duvz/5WSOH/Hi4aVOYe8c1a+OUHbYYHhS4xUNqC1CkyZr0GxQsksDRw8jL5/VCAMUy
+	 uErLXMyKoWMjqWImOofyykyrIIyI5vrXBJk6GBCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.12 244/269] drivers: core: fix device leak in __fw_devlink_relax_cycles()
-Date: Mon, 10 Mar 2025 18:06:37 +0100
-Message-ID: <20250310170507.521324798@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 104/145] usb: typec: tcpci_rt1711h: Unmask alert interrupts to fix functionality
+Date: Mon, 10 Mar 2025 18:06:38 +0100
+Message-ID: <20250310170438.961474896@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
-References: <20250310170457.700086763@linuxfoundation.org>
+In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
+References: <20250310170434.733307314@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit 78eb41f518f414378643ab022241df2a9dcd008b upstream.
+commit d6b82dafd17db0658f089b9cdec573982ca82bc5 upstream.
 
-Commit bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize
-cycle detection logic") introduced a new struct device *con_dev and a
-get_dev_from_fwnode() call to get it, but without adding a corresponding
-put_device().
+During probe, the TCPC alert interrupts are getting masked to
+avoid unwanted interrupts during chip setup: this is ok to do
+but there is no unmasking happening at any later time, which
+means that the chip will not raise any interrupt, essentially
+making it not functional as, while internally it does perform
+all of the intended functions, it won't signal anything to the
+outside.
 
-Closes: https://lore.kernel.org/all/20241204124826.2e055091@booty/
-Fixes: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
-Cc: stable@vger.kernel.org
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://lore.kernel.org/r/20250213-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-8cd3b03e6a3f@bootlin.com
+Unmask the alert interrupts to fix functionality.
+
+Fixes: ce08eaeb6388 ("staging: typec: rt1711h typec chip driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250219114700.41700-1-angelogioacchino.delregno@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/tcpm/tcpci_rt1711h.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2079,6 +2079,7 @@ static bool __fw_devlink_relax_cycles(st
- out:
- 	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
- 	put_device(sup_dev);
-+	put_device(con_dev);
- 	put_device(par_dev);
- 	return ret;
- }
+--- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
++++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
+@@ -331,6 +331,11 @@ static int rt1711h_probe(struct i2c_clie
+ {
+ 	int ret;
+ 	struct rt1711h_chip *chip;
++	const u16 alert_mask = TCPC_ALERT_TX_SUCCESS | TCPC_ALERT_TX_DISCARDED |
++			       TCPC_ALERT_TX_FAILED | TCPC_ALERT_RX_HARD_RST |
++			       TCPC_ALERT_RX_STATUS | TCPC_ALERT_POWER_STATUS |
++			       TCPC_ALERT_CC_STATUS | TCPC_ALERT_RX_BUF_OVF |
++			       TCPC_ALERT_FAULT;
+ 
+ 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
+ 	if (!chip)
+@@ -379,6 +384,12 @@ static int rt1711h_probe(struct i2c_clie
+ 					dev_name(chip->dev), chip);
+ 	if (ret < 0)
+ 		return ret;
++
++	/* Enable alert interrupts */
++	ret = rt1711h_write16(chip, TCPC_ALERT_MASK, alert_mask);
++	if (ret < 0)
++		return ret;
++
+ 	enable_irq_wake(client->irq);
+ 
+ 	return 0;
 
 
 
