@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-122831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684C2A5A164
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 19:00:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E38A59D5A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7AE4172C2B
-	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 18:00:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4114216F43A
+	for <lists+stable@lfdr.de>; Mon, 10 Mar 2025 17:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80882309B0;
-	Mon, 10 Mar 2025 18:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D897230D0D;
+	Mon, 10 Mar 2025 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FN0yqL6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYnTZfpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A414622B8A5;
-	Mon, 10 Mar 2025 18:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F8F230BF5;
+	Mon, 10 Mar 2025 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629623; cv=none; b=eflZuVdU+mslgqivUAUF0lQUdaIwTgvW1BdCfxIvEV5GIcZ6l5QwUEUlWtOecGoDZ6pzXZpn1ZDRuNHsXaQetP5b/VIGSIb2kSzTUiYQFJAW0LCsPGuWC41XZwxc9C6UHPHnF/6io4UWUJOL3eHVtu7i00mUm8Jq1GPRG8ZfPDY=
+	t=1741627211; cv=none; b=efP7ouXhDzyCNvAQDSpTxAb+HruJfCfEDhd2WkzDHkh7FdrUg483PuMQUu0BSbFcfntRmxYPeA9UxwzBB+ttm7g2bPL2YhscAqRM3BJV6TvFMAh8sraKh9hH5rzt1il5q0MLWayBw0mdW2wKQ6iHAeFceCYx1+Srs8ZyRTgb6Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629623; c=relaxed/simple;
-	bh=Fl16tFJU4CJEBp0z3fGcsLFoO70MqRT2HAv5qOyNhBA=;
+	s=arc-20240116; t=1741627211; c=relaxed/simple;
+	bh=Q92PtQgqW6l/WwO0Ydgzc/7Ix2yEeJk0uwalDNQB5ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LE7XLlLjC4qDAG4F2+SB9534uc9qrAQUZgLRDjt56zNsv+blNz9WLwus2t9cbJqzepxXTOQ0WpjLf2BKuxofQjwFyVtph3238jnysfjr6XIq/I8hSdNS52HKnbgHVq/jl90FhWkRZWNpVoxPQy4MhLkIyJb8lCy4qx5esjdhaT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FN0yqL6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D39C4CEE5;
-	Mon, 10 Mar 2025 18:00:22 +0000 (UTC)
+	 MIME-Version; b=pntLNOCh5Er86Ao8KUFdJFFexSvFmCq7jtflyw4MwTgKtXiIAj3oDvAwUSpOVind0fzawkgMlzfaazzzINVPkfRugmDw4/Uji119zCs1U2rH74bKMPaD5lebM828RyPfICeOC9Ile6aFG9aszA41jpySYlStre9sLl6umCsit1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYnTZfpM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9B9C4CEE5;
+	Mon, 10 Mar 2025 17:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629623;
-	bh=Fl16tFJU4CJEBp0z3fGcsLFoO70MqRT2HAv5qOyNhBA=;
+	s=korg; t=1741627211;
+	bh=Q92PtQgqW6l/WwO0Ydgzc/7Ix2yEeJk0uwalDNQB5ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FN0yqL6XWITXheFfLuYGnTEasTyZqC22H97Zb50rBZdRJC7FIpbGvt2WS55m7C44K
-	 yvM2iDv2hacXubiUvN2wHqiNukJq7w7Orz571EouDcL2doqAqw1riFLWSiu5L5s9Kx
-	 QYAY1Pfe4BIqZzLiGiYyENw9a1NFCIlqDIZloya4=
+	b=YYnTZfpMZQzRTvA+niMgQP3ew2jxxHH6kbj1AN7Xy2pIbBJNlp42EUwxoZK6doYJR
+	 8uO9ct0pybRT2S19UKlysoO8oBTlishSe8TkRDNd0xN6t1Wsw2uv+AOC9EL6XPYKXa
+	 CzVNFwVgk8jA0wvk0UQfMZrDrk4PzI9VVnBdbr1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.15 359/620] perf/x86/intel: Ensure LBRs are disabled when a CPU is starting
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 052/269] rust: error: use `core::alloc::LayoutError`
 Date: Mon, 10 Mar 2025 18:03:25 +0100
-Message-ID: <20250310170559.779860562@linuxfoundation.org>
+Message-ID: <20250310170459.799148882@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+References: <20250310170457.700086763@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit c631a2de7ae48d50434bdc205d901423f8577c65 upstream.
+commit 29a48d25ff53c183482dc88a99133a0fb5aa541a upstream.
 
-Explicitly clear DEBUGCTL.LBR when a CPU is starting, prior to purging the
-LBR MSRs themselves, as at least one system has been found to transfer
-control to the kernel with LBRs enabled (it's unclear whether it's a BIOS
-flaw or a CPU goof).  Because the kernel preserves the original DEBUGCTL,
-even when toggling LBRs, leaving DEBUGCTL.LBR as is results in running
-with LBRs enabled at all times.
+Use `core::alloc::LayoutError` instead of `alloc::alloc::LayoutError` in
+preparation to get rid of Rust's alloc crate.
 
-Closes: https://lore.kernel.org/all/c9d8269bff69f6359731d758e3b1135dedd7cc61.camel@redhat.com
-Reported-by: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250131010721.470503-1-seanjc@google.com
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20241004154149.93856-23-dakr@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c     |    5 ++++-
- arch/x86/include/asm/msr-index.h |    3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ rust/kernel/error.rs |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4364,8 +4364,11 @@ static void intel_pmu_cpu_starting(int c
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -6,7 +6,7 @@
  
- 	init_debug_store_on_cpu(cpu);
- 	/*
--	 * Deal with CPUs that don't clear their LBRs on power-up.
-+	 * Deal with CPUs that don't clear their LBRs on power-up, and that may
-+	 * even boot with LBRs enabled.
- 	 */
-+	if (!static_cpu_has(X86_FEATURE_ARCH_LBR) && x86_pmu.lbr_nr)
-+		msr_clear_bit(MSR_IA32_DEBUGCTLMSR, DEBUGCTLMSR_LBR_BIT);
- 	intel_pmu_lbr_reset();
+ use crate::{alloc::AllocError, str::CStr};
  
- 	cpuc->lbr_sel = NULL;
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -337,7 +337,8 @@
- #define MSR_IA32_PASID_VALID		BIT_ULL(31)
+-use alloc::alloc::LayoutError;
++use core::alloc::LayoutError;
  
- /* DEBUGCTLMSR bits (others vary by model): */
--#define DEBUGCTLMSR_LBR			(1UL <<  0) /* last branch recording */
-+#define DEBUGCTLMSR_LBR_BIT		0	     /* last branch recording */
-+#define DEBUGCTLMSR_LBR			(1UL <<  DEBUGCTLMSR_LBR_BIT)
- #define DEBUGCTLMSR_BTF_SHIFT		1
- #define DEBUGCTLMSR_BTF			(1UL <<  1) /* single-step on branches */
- #define DEBUGCTLMSR_BUS_LOCK_DETECT	(1UL <<  2)
+ use core::fmt;
+ use core::num::NonZeroI32;
 
 
 
