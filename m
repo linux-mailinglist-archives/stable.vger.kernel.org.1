@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-123419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FE6A5C533
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D660A5C7EF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A504B7ABAC6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE5D3AA733
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5473E25E813;
-	Tue, 11 Mar 2025 15:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AC325E826;
+	Tue, 11 Mar 2025 15:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtqaR7d9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqLbITcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1082825C715;
-	Tue, 11 Mar 2025 15:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F67025DB0D;
+	Tue, 11 Mar 2025 15:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705901; cv=none; b=BDQPwGv9OXm8LLvlDIj6tSD8ngcUQ8wIwt1UU1sCTXRnn+VNFAeKjeGrDX+L75T5PnjqJ60PiLO8bETuHGzBsxsk4AJND4yoDXu0smrNc8ed2asLn+9fVaVmhSwW8EI5M/8hom1KB0DbCziqYLDl2fCvgVYCQxawAFr7QZnlHy0=
+	t=1741707173; cv=none; b=T27GyGswYS9qhWXm+ekNfdvqEgO6GbwDHi6f5gXc50kfcz3f3rY2Z9uze+y/mRqg/BxRmav9GsWiJyqaB/u3ddRfR7wEFiJ1cmXbDjqJrW1NbijgZaYSawF5DkkaW2IoE/wsTsfBM/mr6ChzHrEM1Cjj0hdXiHLQHYS+fs6xsD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705901; c=relaxed/simple;
-	bh=UknQmDxGXovqXruIIq/yLrR0tweB0Ig8+877FuDr/UI=;
+	s=arc-20240116; t=1741707173; c=relaxed/simple;
+	bh=IzY8FWb0ELqwXCRELokulGVIGJiFxmuS4z5If22y+0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dvSJ0T/2wQ0MzkqKcu6IBwVJmQ4GFMarr9m6txEsEvOI6RQ54DOs50bGj0zb3ewhRA9LZg6pEmuxPFRO7OJY6yUjPiTq0iHK8xLFjHDLtqYyPrWMlwZoVzGHMbflNPeSqWWGdILXfacxMUAcaFDI+k8P7swUfBEp2z+/Kx6Nuzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtqaR7d9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91316C4CEE9;
-	Tue, 11 Mar 2025 15:11:40 +0000 (UTC)
+	 MIME-Version; b=R/U84aDVWRfcdvyQDfkQ0LVuVbSkhOSVZEYWFh+gUg8J29KvyFqfg9pcA2j/k04I6kPLxhLDOBSoMuYH5R1VfsPi4coNnFHYvEdKJ8eglKAQ2y9fCIJnnGXACA6I87FFrRlm+jBE4Vt16M0jnnqvV7KGpRHvLWooWQ7+T1k+GXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqLbITcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD416C4CEE9;
+	Tue, 11 Mar 2025 15:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705900;
-	bh=UknQmDxGXovqXruIIq/yLrR0tweB0Ig8+877FuDr/UI=;
+	s=korg; t=1741707173;
+	bh=IzY8FWb0ELqwXCRELokulGVIGJiFxmuS4z5If22y+0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtqaR7d96ndXfVDExO2C7Ahp1nnSLILnVlXBJt11Zdvfodvo6bM0t9PJRubZDEmVa
-	 hOJTi1PKpPpBUmGgU60Vro17oHsjZ2RvPuc/27+NdG/2S80OE6VZQKn03OooHopaGk
-	 fOPJID+t/7zb1fZSg3QPe8KZTZ4B97JEl13IREio=
+	b=YqLbITcRQ95jxBNvOtusqRZqhSBKtLDvKgZtzPcMJNyUeZPC/X1lWLcklIOKYj33y
+	 BVlvWrOSYsr7Nqlfm2tBegNWtMF6eIxdCnWE+qmIRjSLCXrf7cHX2n0HAGwmA7IJrE
+	 ulL3Z/evhi1Z2rXdsABHqBxx7WBhcKtjv52GJ2VU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.4 194/328] can: j1939: j1939_sk_send_loop(): fix unable to send messages with data length zero
+	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH 5.10 298/462] can: ems_pci: move ASIX AX99100 ids to pci_ids.h
 Date: Tue, 11 Mar 2025 15:59:24 +0100
-Message-ID: <20250311145722.612411353@linuxfoundation.org>
+Message-ID: <20250311145810.135863434@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Hölzl <alexander.hoelzl@gmx.net>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-commit 44de577e61ed239db09f0da9d436866bef9b77dd upstream.
+commit 3029ad91335353a70feb42acd24d580d70ab258b upstream.
 
-The J1939 standard requires the transmission of messages of length 0.
+Move PCI Vendor and Device ID of ASIX AX99100 PCIe to Multi I/O
+Controller to pci_ids.h for its serial and parallel port driver
+support in subsequent patches.
 
-For example proprietary messages are specified with a data length of 0
-to 1785. The transmission of such messages is not possible. Sending
-results in no error being returned but no corresponding can frame
-being generated.
-
-Enable the transmission of zero length J1939 messages. In order to
-facilitate this two changes are necessary:
-
-1) If the transmission of a new message is requested from user space
-the message is segmented in j1939_sk_send_loop(). Let the segmentation
-take into account zero length messages, do not terminate immediately,
-queue the corresponding skb.
-
-2) j1939_session_skb_get_by_offset() selects the next skb to transmit
-for a session. Take into account that there might be zero length skbs
-in the queue.
-
-Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250205174651.103238-1-alexander.hoelzl@gmx.net
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Cc: stable@vger.kernel.org
-[mkl: commit message rephrased]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/r/20230724083933.3173513-3-jiaqing.zhao@linux.intel.com
+[Moeko: Drop changes in drivers/net/can/sja1000/ems_pci.c]
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/socket.c    |    4 ++--
- net/can/j1939/transport.c |    5 +++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ include/linux/pci_ids.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -1055,7 +1055,7 @@ static int j1939_sk_send_loop(struct j19
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -1765,6 +1765,10 @@
+ #define PCI_SUBDEVICE_ID_AT_2700FX	0x2701
+ #define PCI_SUBDEVICE_ID_AT_2701FX	0x2703
  
- 	todo_size = size;
- 
--	while (todo_size) {
-+	do {
- 		struct j1939_sk_buff_cb *skcb;
- 
- 		segment_size = min_t(size_t, J1939_MAX_TP_PACKET_SIZE,
-@@ -1100,7 +1100,7 @@ static int j1939_sk_send_loop(struct j19
- 
- 		todo_size -= segment_size;
- 		session->total_queued_size += segment_size;
--	}
-+	} while (todo_size);
- 
- 	switch (ret) {
- 	case 0: /* OK */
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -378,8 +378,9 @@ sk_buff *j1939_session_skb_get_by_offset
- 	skb_queue_walk(&session->skb_queue, do_skb) {
- 		do_skcb = j1939_skb_to_cb(do_skb);
- 
--		if (offset_start >= do_skcb->offset &&
--		    offset_start < (do_skcb->offset + do_skb->len)) {
-+		if ((offset_start >= do_skcb->offset &&
-+		     offset_start < (do_skcb->offset + do_skb->len)) ||
-+		     (offset_start == 0 && do_skcb->offset == 0 && do_skb->len == 0)) {
- 			skb = do_skb;
- 		}
- 	}
++#define PCI_VENDOR_ID_ASIX		0x125b
++#define PCI_DEVICE_ID_ASIX_AX99100	0x9100
++#define PCI_DEVICE_ID_ASIX_AX99100_LB	0x9110
++
+ #define PCI_VENDOR_ID_ESS		0x125d
+ #define PCI_DEVICE_ID_ESS_ESS1968	0x1968
+ #define PCI_DEVICE_ID_ESS_ESS1978	0x1978
 
 
 
