@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-123321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87C3A5C4DF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D885FA5C71C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB438189A9D6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18ED317B91B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74CD25E829;
-	Tue, 11 Mar 2025 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7029025E805;
+	Tue, 11 Mar 2025 15:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7vyUvcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKJMhQw/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CFF25E806;
-	Tue, 11 Mar 2025 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0C215820C;
+	Tue, 11 Mar 2025 15:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705614; cv=none; b=ZRMQ5CNEmms5nAewlwDhpo7DQJMXmfnvnHZQWf4owpvZDJdaRg6MrNQIpOHDRTO+rHtxqfc7EVRWLpvbm3p6Q90WKjo0qs51GsxvfmoRTxobwJ70nINGgxXRbp3yYLP3Ng0sOhF4O8YVNtFS4UuJ1ZuNfnkpXrE3jvnzrlL7Frk=
+	t=1741706881; cv=none; b=POeJP/YS0HCPmWMj2/4oSYWottdyWeeBv537iNHf8CPJG5UTRSI7kr+o6243RPwTEkvxj9UZDOYWj4xmKEwHwV39/ijHbnjnTDfk4KGcP130Yz05synLESYY3Z4+JsCPW/H29lCdlx4mWWbouRmwV8hse2IqaWibRWr8N50A0jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705614; c=relaxed/simple;
-	bh=xGERKXDn2RgYdaxTU0rkWKVjHRUdiSYKZWLCiiE9qSY=;
+	s=arc-20240116; t=1741706881; c=relaxed/simple;
+	bh=UGQVnmJSlK/gtpekNyzVuA24NKw4RMfshtl/VMwSy5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=It8pX2/EBS+BrP2ZJNzc9sr8GLK6QwflLAClJmirjVHQq5gPGzLHy+OD9F1HTLVrRTfQJRODbZ8ToomXU8sw6BWqHbe6KREMlkjzR5b+E8qgmA2og16ASFA5bzbfvR01OADtqTevQzLhN7LNiCT6wfYtEOjzbAhB8877XzLfca0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7vyUvcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC06FC4CEEA;
-	Tue, 11 Mar 2025 15:06:53 +0000 (UTC)
+	 MIME-Version; b=UsArB5N3w/7Pfn24+YOWeE7xuVxdRMSLMZtmR8C2tBNuStQ1aIZnsLtLj+wSmdCq+QcQyG8uEO7GPvSc694q3bJaAkxaPHQNlYX8jwsovdrsQeOg+9DWrMzVRNEgzrL+IREUCxPf77znT39TX9OjRdGUmWXLHsVsBlh8at6DE6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKJMhQw/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4B1C4CEE9;
+	Tue, 11 Mar 2025 15:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705614;
-	bh=xGERKXDn2RgYdaxTU0rkWKVjHRUdiSYKZWLCiiE9qSY=;
+	s=korg; t=1741706881;
+	bh=UGQVnmJSlK/gtpekNyzVuA24NKw4RMfshtl/VMwSy5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7vyUvcCGWv7SuOHJAJmKp3PVsVFm79OaBo5X9jCmMw5opeZGrj1j5KYWGom0advn
-	 ag3d2Wg+GTh49q0GDVxJLmhCX+RmSKUSw8vgYyi/4LhSU2Olk7c34GV4hw1VqYKKU1
-	 Ub+Utb6nKoGqa9Z6rBHODOdJj11s6fPiW5NGPJHQ=
+	b=bKJMhQw/DFhIHxPGSpaIlUrTP5KyrpjhGxYC9HZhVDImbsxUPHw4eym3scC7NulQK
+	 S3aRA42LuOsu4gjGtUq3/eOHWyeEWMDK59tdlnJ1et8h/YSl/LQRjXHGg69pIlbMku
+	 n3rf2HrAm7XtamEYw0wtGbIFQRcgoByJjQ0XWHiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.4 095/328] x86/mm: Dont disable PCID when INVLPG has been fixed by microcode
+	stable@kernel.org,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 199/462] scsi: storvsc: Set correct data length for sending SCSI command without payload
 Date: Tue, 11 Mar 2025 15:57:45 +0100
-Message-ID: <20250311145718.668295448@linuxfoundation.org>
+Message-ID: <20250311145806.218909200@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Long Li <longli@microsoft.com>
 
-commit f24f669d03f884a6ef95cca84317d0f329e93961 upstream.
+commit 87c4b5e8a6b65189abd9ea5010ab308941f964a4 upstream.
 
-Per the "Processor Specification Update" documentations referred by
-the intel-microcode-20240312 release note, this microcode release has
-fixed the issue for all affected models.
+In StorVSC, payload->range.len is used to indicate if this SCSI command
+carries payload. This data is allocated as part of the private driver data
+by the upper layer and may get passed to lower driver uninitialized.
 
-So don't disable PCID if the microcode is new enough.  The precise
-minimum microcode revision fixing the issue was provided by Pawan
-Intel.
+For example, the SCSI error handling mid layer may send TEST_UNIT_READY or
+REQUEST_SENSE while reusing the buffer from a failed command. The private
+data section may have stale data from the previous command.
 
-[ dhansen: comment and changelog tweaks ]
+If the SCSI command doesn't carry payload, the driver may use this value as
+is for communicating with host, resulting in possible corruption.
 
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Link: https://lore.kernel.org/all/168436059559.404.13934972543631851306.tip-bot2@tip-bot2/
-Link: https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/releases/tag/microcode-20240312
-Link: https://cdrdv2.intel.com/v1/dl/getContent/740518 # RPL042, rev. 13
-Link: https://cdrdv2.intel.com/v1/dl/getContent/682436 # ADL063, rev. 24
-Link: https://lore.kernel.org/all/20240325231300.qrltbzf6twm43ftb@desk/
-Link: https://lore.kernel.org/all/20240522020625.69418-1-xry111%40xry111.site
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Fix this by always initializing this value.
+
+Fixes: be0cf6ca301c ("scsi: storvsc: Set the tablesize based on the information given by the host")
+Cc: stable@kernel.org
+Tested-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://lore.kernel.org/r/1737601642-7759-1-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/init.c |   32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ drivers/scsi/storvsc_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -211,33 +211,39 @@ static void __init probe_page_size_mask(
- 	}
- }
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1759,6 +1759,7 @@ static int storvsc_queuecommand(struct S
  
--#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
--			      .family  = 6,			\
--			      .model = _model,			\
--			    }
-+#define INTEL_MATCH(_model, ucode) { .vendor  = X86_VENDOR_INTEL,	\
-+				     .family  = 6,			\
-+				     .model = _model,			\
-+				     .driver_data = ucode,		\
-+				   }
- /*
-- * INVLPG may not properly flush Global entries
-- * on these CPUs when PCIDs are enabled.
-+ * INVLPG may not properly flush Global entries on
-+ * these CPUs.  New microcode fixes the issue.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE,	0x2e),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L,	0x42c),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N,	0x11),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE,	0x118),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P,	0x4117),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S,	0x2e),
- 	{}
- };
+ 	length = scsi_bufflen(scmnd);
+ 	payload = (struct vmbus_packet_mpb_array *)&cmd_request->mpb;
++	payload->range.len = 0;
+ 	payload_sz = 0;
  
- static void setup_pcid(void)
- {
-+	const struct x86_cpu_id *invlpg_miss_match;
-+
- 	if (!IS_ENABLED(CONFIG_X86_64))
- 		return;
- 
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
--	if (x86_match_cpu(invlpg_miss_ids)) {
-+	invlpg_miss_match = x86_match_cpu(invlpg_miss_ids);
-+
-+	if (invlpg_miss_match &&
-+	    boot_cpu_data.microcode < invlpg_miss_match->driver_data) {
- 		pr_info("Incomplete global flushes, disabling PCID");
- 		setup_clear_cpu_cap(X86_FEATURE_PCID);
- 		return;
+ 	if (sg_count) {
 
 
 
