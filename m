@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A1CA5C535
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8860A5C71A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B17189AD11
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A83E7ACCE1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C30725EF82;
-	Tue, 11 Mar 2025 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E77525EF96;
+	Tue, 11 Mar 2025 15:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6Zlo2LX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4p+JFYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E9A25E83A;
-	Tue, 11 Mar 2025 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA153EA76;
+	Tue, 11 Mar 2025 15:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705766; cv=none; b=fyT2FPH7PcZjTR9B/8uvezOu9CSkxPDgahFnzueUh56ApZuKqWknLS3BnG1Bgl/7k4MqWE5X7DliZIKC1FCDtKGU84xAD1Hz0dwHgnJbEeAqLGQj6ETP1vtII188IzWukngcZsb/DTRDOFNh17NT3M6Zlzt6GIzyexmwMJdEbEs=
+	t=1741707038; cv=none; b=svuFkl5iCJrV8c8KAgT9vNk+Ggg/M0lYbRJmuuhAAb49OPle6S+LXX1oqGRb+G85SzMSFg3k0c3n1ViFW+lH7Gew9GYpD9J4GJp0/+0QLCz9NacIk78kuwotYBh3+47ZD1jZtfDYIljzjIZww3VNXDwxzjVTdzL2+tspbblTTwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705766; c=relaxed/simple;
-	bh=DxmCYpsXkH/gzY70bvSd3vWCJoH4KQd1y/Z4SueMg18=;
+	s=arc-20240116; t=1741707038; c=relaxed/simple;
+	bh=c4ynthUPRNcVJJ1p9buziHgRvHHehoY5GVVKwerHVBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWlaAsX+uNqUR0O+0ohlYB6+iAGdE23RT5FfjKaPs50XZ+MRNGPLoazulef6wEWLaWtrMKThQK9rr5fV3kGUh4n+QLlERaA/LZJ8tVYu27UWqdHRgxVkLicSOeTA5WDlNiugFiOI+A1WXodvvu111EeEaDY01EuEYogOQ5u5lEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6Zlo2LX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9658C4CEEC;
-	Tue, 11 Mar 2025 15:09:25 +0000 (UTC)
+	 MIME-Version; b=gJzlLXaygEaPz6WZoZh0ucxgJ/Ro4KIXZz05E0JSSMcpcBU1lBhkKwSxpD3L+w7yRN4+qmrpy0e6Cmbr3JqlvVaoJIVV9EuGvTWtOb13zWiQFZaCsFgm2iNvKslpeIf1aPS4/7oruDV7Y/sxgX+/injW6US3XgKQdZn9zSOb5Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4p+JFYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE44C4CEE9;
+	Tue, 11 Mar 2025 15:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705766;
-	bh=DxmCYpsXkH/gzY70bvSd3vWCJoH4KQd1y/Z4SueMg18=;
+	s=korg; t=1741707037;
+	bh=c4ynthUPRNcVJJ1p9buziHgRvHHehoY5GVVKwerHVBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6Zlo2LXtUKbtULwV+6PdwfA0JbYcuHggnA8sLezjs8fuY8AsBY6DqmhWgviPBF7x
-	 4UZuDQvyFYY953nP+qLs9dHyVLH3DGI6tSg/nDfrBRfzrjf26WEi8IKjgv5AVupke9
-	 nuhbt8d0PpLVBCjzYCXKmPVP/P56BHOGKt/DoFxo=
+	b=s4p+JFYfGwHLu07BME8ZbYEDw3NXBTlBpl7XyeoORedrZVz9MY/pzwCo+QbtGoaTu
+	 8fwD+X9KmzgdByQyP9rIjPH+PBYJI/c3BOKpWTfdi6FSPFCpxwCgmyW1DvaGJbgLbs
+	 n2pyUcCkT5WwgraySs20NkaWhRsE/VqR8ytNscwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.4 148/328] crypto: qce - fix goto jump in error path
-Date: Tue, 11 Mar 2025 15:58:38 +0100
-Message-ID: <20250311145720.789026870@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Forest <forestix@nom.one>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 253/462] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+Date: Tue, 11 Mar 2025 15:58:39 +0100
+Message-ID: <20250311145808.356225560@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 5278275c1758a38199b43530adfc50098f4b41c7 upstream.
+commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
 
-If qce_check_version() fails, we should jump to err_dma as we already
-called qce_dma_request() a couple lines before.
+The fastboot tool for communicating with Android bootloaders does not
+work reliably with this device if USB 2 Link Power Management (LPM)
+is enabled.
 
-Cc: stable@vger.kernel.org
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Various fastboot commands are affected, including the
+following, which usually reproduces the problem within two tries:
+
+  fastboot getvar kernel
+  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
+
+This issue was hidden on many systems up until commit 63a1f8454962
+("xhci: stored cached port capability values in one place") as the xhci
+driver failed to detect USB 2 LPM support if USB 3 ports were listed
+before USB 2 ports in the "supported protocol capabilities".
+
+Adding the quirk resolves the issue. No drawbacks are expected since
+the device uses different USB product IDs outside of fastboot mode, and
+since fastboot commands worked before, until LPM was enabled on the
+tested system by the aforementioned commit.
+
+Based on a patch from Forest <forestix@nom.one> from which most of the
+code and commit message is taken.
+
+Cc: stable <stable@kernel.org>
+Reported-by: Forest <forestix@nom.one>
+Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
+Tested-by: Forest <forestix@nom.one>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qce/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/crypto/qce/core.c
-+++ b/drivers/crypto/qce/core.c
-@@ -214,7 +214,7 @@ static int qce_crypto_probe(struct platf
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -430,6 +430,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
+ 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
  
- 	ret = qce_check_version(qce);
- 	if (ret)
--		goto err_clks;
-+		goto err_dma;
- 
- 	spin_lock_init(&qce->lock);
- 	tasklet_init(&qce->done_tasklet, qce_tasklet_req_done,
++	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
++	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Action Semiconductor flash disk */
+ 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
+ 			USB_QUIRK_STRING_FETCH_255 },
 
 
 
