@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE36A5C4C9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638DAA5C759
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE093B7426
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADA723AAD19
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B5925E83F;
-	Tue, 11 Mar 2025 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D31A25E821;
+	Tue, 11 Mar 2025 15:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoAqfkHq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxGrh0Of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243D325E820;
-	Tue, 11 Mar 2025 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07DD25E807;
+	Tue, 11 Mar 2025 15:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705553; cv=none; b=PcM8BUANCYdL2lYjTA9NYKdCYZ9zAefMD9JCzLXw7pX1jPa5Nt61jtkmay/Bs0KuNRcce+82rsq6qE4cs+NAnHbK1MicYaxmexFp+peUj1TgA1cjRGAIuSH5X/jVCxuaPP4K9+C34KU26l8liQoDlAoa8wKPaPIIUieJndWr2Xc=
+	t=1741706912; cv=none; b=THVWXPur/EXyIqZWQEl/NJZrBxr9GsP5xSgveLMTK/gkjsGHDU2NAHEIPSRWcH/k6LQQ+NDLpFmYvU2tOTpVNyCXye2hNo/PB9o87yVUCmBH5XEKtvkSjkbIQ55J0ht1pOK8Tv2uE+Qgi1C2rDIZ02rt3VtxFdNYlLlH25Cl3LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705553; c=relaxed/simple;
-	bh=cukIYENDLyOTLXoRos3k0vtulIJIAtu9RMD0iRXn6aU=;
+	s=arc-20240116; t=1741706912; c=relaxed/simple;
+	bh=4Vjv+nSnwLV1X5xuP8MIxRJgyTrPPcW8OMAo6kmZ8Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mpx8rM2PC+mQIfah+X/oEwJn1UHu1ExlCCrxfsqFwNZwDMU+cBFLT3v12+gPeBfN4CnzVna/kWp3p2SlQxpWr3ElZxNVMwFgk1BCsw4uswTFT3qqvz1eAfrHTQHDTLjgKCCPPcFpmS7U2Jye2JP7QlYjA9mcmSRkUpb+DSMd0q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoAqfkHq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9239BC4CEEA;
-	Tue, 11 Mar 2025 15:05:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s43JbujUcQdNOOdv7U2GP5IvmSoW11+fzOwiKdCEaFcEcpBxBUlu9Op2+Xdhn/EmV5TnDGvqV67vL9qZI5jSFpM8udwzh6yIxtTBEtAiBiXj2pqXnVQptTl5HaDnEFEEpGg8YVzqoeV1vYUlO9//GxPMZiYVk8uZJtyOAsMpKeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxGrh0Of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54DDEC4CEEA;
+	Tue, 11 Mar 2025 15:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705553;
-	bh=cukIYENDLyOTLXoRos3k0vtulIJIAtu9RMD0iRXn6aU=;
+	s=korg; t=1741706912;
+	bh=4Vjv+nSnwLV1X5xuP8MIxRJgyTrPPcW8OMAo6kmZ8Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoAqfkHq9w10hI7IUAUmnAGkEW0gemXd/tdo0UapoLk8I7hrnCKstIL05H5h52Vku
-	 h8Z20ss7azt6dDMgPa9pf8mkr1lvWp2vIJOS6F9WZ4Dm0NcO0jKEcmdrh3ieumg/Va
-	 F0oPtHCWtkUBUk1prrdW57GqgRCHwr89x5VKcnjc=
+	b=QxGrh0OfmKzJXc5+1p6sDPSgDvdEA+YN1J8FaeES/ZViDvYbT2QsGXP+D5OJD5faF
+	 NtlYWkR5fLdGiizxhs/h+MnxeRyhBoK1BryU33wa4b/15yJ21Xt644maWGA/3Nw5M2
+	 W1u1EMiKePAx2wsixJssW9E9GZgm+phSaxGbIhmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Yujun <linyujun809@huawei.com>,
-	Brian Cain <bcain@quicinc.com>,
-	Brian Cain <brian.cain@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 074/328] hexagon: Fix unbalanced spinlock in die()
-Date: Tue, 11 Mar 2025 15:57:24 +0100
-Message-ID: <20250311145717.833875854@linuxfoundation.org>
+	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
+	Jakub Jelinek <jakub@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.10 179/462] efi: libstub: Use -std=gnu11 to fix build with GCC 15
+Date: Tue, 11 Mar 2025 15:57:25 +0100
+Message-ID: <20250311145805.427657931@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Yujun <linyujun809@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 03410e87563a122075c3721acc7d5510e41d8332 ]
+commit 8ba14d9f490aef9fd535c04e9e62e1169eb7a055 upstream.
 
-die executes holding the spinlock of &die.lock and unlock
-it after printing the oops message.
-However in the code if the notify_die() returns NOTIFY_STOP
-, die() exit with returning 1 but never unlocked the spinlock.
+GCC 15 changed the default C standard version to C23, which should not
+have impacted the kernel because it requests the gnu11 standard via
+'-std=' in the main Makefile. However, the EFI libstub Makefile uses its
+own set of KBUILD_CFLAGS for x86 without a '-std=' value (i.e., using
+the default), resulting in errors from the kernel's definitions of bool,
+true, and false in stddef.h, which are reserved keywords under C23.
 
-Fix this by adding spin_unlock_irq(&die.lock) before returning.
+  ./include/linux/stddef.h:11:9: error: expected identifier before ‘false’
+     11 |         false   = 0,
+  ./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
+     35 | typedef _Bool                   bool;
 
-Fixes: cf9750bae262 ("Hexagon: Provide basic debugging and system trap support.")
-Signed-off-by: Lin Yujun <linyujun809@huawei.com>
-Link: https://lore.kernel.org/r/20230522025608.2515558-1-linyujun809@huawei.com
-Signed-off-by: Brian Cain <bcain@quicinc.com>
-Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set '-std=gnu11' in the x86 cflags to resolve the error and consistently
+use the same C standard version for the entire kernel. All other
+architectures reuse KBUILD_CFLAGS from the rest of the kernel, so this
+issue is not visible for them.
+
+Cc: stable@vger.kernel.org
+Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
+Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
+Reported-by: Jakub Jelinek <jakub@redhat.com>
+Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/hexagon/kernel/traps.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/hexagon/kernel/traps.c b/arch/hexagon/kernel/traps.c
-index f69eae3f32bd2..ec98052b148d1 100644
---- a/arch/hexagon/kernel/traps.c
-+++ b/arch/hexagon/kernel/traps.c
-@@ -202,8 +202,10 @@ int die(const char *str, struct pt_regs *regs, long err)
- 	printk(KERN_EMERG "Oops: %s[#%d]:\n", str, ++die.counter);
- 
- 	if (notify_die(DIE_OOPS, str, regs, err, pt_cause(regs), SIGSEGV) ==
--	    NOTIFY_STOP)
-+	    NOTIFY_STOP) {
-+		spin_unlock_irq(&die.lock);
- 		return 1;
-+	}
- 
- 	print_modules();
- 	show_regs(regs);
--- 
-2.39.5
-
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -7,7 +7,7 @@
+ #
+ cflags-$(CONFIG_X86_32)		:= -march=i386
+ cflags-$(CONFIG_X86_64)		:= -mcmodel=small
+-cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
++cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
+ 				   -fPIC -fno-strict-aliasing -mno-red-zone \
+ 				   -mno-mmx -mno-sse -fshort-wchar \
+ 				   -Wno-pointer-sign \
 
 
 
