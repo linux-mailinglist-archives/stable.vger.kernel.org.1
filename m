@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA7BA5C48A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D51EA5C6B3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2CF4178B63
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B6A717B634
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE6E25E813;
-	Tue, 11 Mar 2025 15:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC5625C6ED;
+	Tue, 11 Mar 2025 15:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJw5K4dG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tk4NAfQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5ED25DD0F;
-	Tue, 11 Mar 2025 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B836846D;
+	Tue, 11 Mar 2025 15:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705420; cv=none; b=TBk4GKofGM0nWjpGXdpRa4DIHLg8iANvsaK2JJS+n82RbK5aGWnRPdNWYyVMRqzBSUA+qdUggTtFyVw5ceVSUD5E1XArp+bUefS6DFH9UNukrLMV1MQgDBeG2V8DyRtF7vhgQ6EGEvi4FjliL8lJejtjG0ljDegkG6N1oi9gd/Y=
+	t=1741706693; cv=none; b=bMd+2yrgVnVtMQkH7lXrcIZbcIwkQQQqzDK2HxC/AjN7ks+YBaIVAfF01yuF1TdrW0eO0QemGHqT2xY1VwDD2aG9XOSrgSXLDLCA5/7oRFx9alY16Mj1Gn9+ejDYw/emPm1V4JVEVRXx/qzJq5se6yX1s4bceK8GzpLEKQfwuA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705420; c=relaxed/simple;
-	bh=Xof3FgNAl+tkuzAsNgvord3SVgHY06+OfMAsVTFVVH8=;
+	s=arc-20240116; t=1741706693; c=relaxed/simple;
+	bh=4NQ35ZIus6ZPkGKy047kmMSKK77xn6LFvtClwif/WaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaVnh3fk7Fo9cL30CAAgDuxF2aTEsi3bjrLh71g2oWZHEVeWNEinBUbCNfJhgE8hR3MP/t0kdXfD6ho0LRvmhRpOdttssDo7iakqkzyjNh6RO54ccxrq+x7C7eE+1fvHheP3gdkELLawjUETRTdF4o/8+hhIh1S1jz8/LN+H10U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJw5K4dG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E90C4CEE9;
-	Tue, 11 Mar 2025 15:03:39 +0000 (UTC)
+	 MIME-Version; b=OMw22dXFw0t7SFTKZJD4n6CmK5n4CXJsVFPnDP9OUU9VhZPEkrjvt9CtnHXov+oCkjgdtcGR1LgXfgS06Wnrxs6PMhMWTZMoM/KI5HdeBj7f3Lw9btqHZCTq4e2Jl42xWbh9GkqfNl2oldTn40dB/te/YEPUZIqduC7IXs2uMY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tk4NAfQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F00C4CEEA;
+	Tue, 11 Mar 2025 15:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705419;
-	bh=Xof3FgNAl+tkuzAsNgvord3SVgHY06+OfMAsVTFVVH8=;
+	s=korg; t=1741706692;
+	bh=4NQ35ZIus6ZPkGKy047kmMSKK77xn6LFvtClwif/WaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJw5K4dG7FGI4wQnM6B590rCqy7i3ttGa5CFEv05HFAtr3rLcfQM2N+4sUMlay9e4
-	 zHmEpWS7kNXxf687lt/oKCXnO7xWai9ODGnt9YXxc1uUFVKhmNVCybmdxVF7DZ8364
-	 kvGR8/xFng5kSO+BdF6WqhQqu2Ajh8CJaneW/vnk=
+	b=Tk4NAfQGU99eLtiApeFVoIEG5XkrhurZRjLgqwWFrNI2kHw9lTdRt69FDsZqpGkn2
+	 B7hzpXJKndARm9fZHIe1JltdXzBQJP0xi0MtaluwYLPUHGYx8vyVB9KoNGy4jx6XcF
+	 g8RedxfySYg0kyyUQmLr525vvGBtkv4RnfT3bkok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo Gan <ganboing@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/328] clk: analogbits: Fix incorrect calculation of vco rate delta
-Date: Tue, 11 Mar 2025 15:56:39 +0100
-Message-ID: <20250311145716.052261940@linuxfoundation.org>
+Subject: [PATCH 5.10 134/462] mmc: core: Respect quirk_max_rate for non-UHS SDIO card
+Date: Tue, 11 Mar 2025 15:56:40 +0100
+Message-ID: <20250311145803.652127009@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo Gan <ganboing@gmail.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit d7f12857f095ef38523399d47e68787b357232f6 ]
+[ Upstream commit a2a44f8da29352f76c99c6904ee652911b8dc7dd ]
 
-In wrpll_configure_for_rate() we try to determine the best PLL
-configuration for a target rate. However, in the loop where we try
-values of R, we should compare the derived `vco` with `target_vco_rate`.
-However, we were in fact comparing it with `target_rate`, which is
-actually after Q shift. This is incorrect, and sometimes can result in
-suboptimal clock rates. Fix it.
+The card-quirk was added to limit the clock-rate for a card with UHS-mode
+support, although let's respect the quirk for non-UHS mode too, to make the
+behaviour consistent.
 
-Fixes: 7b9487a9a5c4 ("clk: analogbits: add Wide-Range PLL library")
-Signed-off-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/r/20240830061639.2316-1-ganboing@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <1732268242-72799-1-git-send-email-shawn.lin@rock-chips.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/analogbits/wrpll-cln28hpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/sdio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/analogbits/wrpll-cln28hpc.c b/drivers/clk/analogbits/wrpll-cln28hpc.c
-index 776ead319ae9c..9df572579afb4 100644
---- a/drivers/clk/analogbits/wrpll-cln28hpc.c
-+++ b/drivers/clk/analogbits/wrpll-cln28hpc.c
-@@ -287,7 +287,7 @@ int wrpll_configure_for_rate(struct wrpll_cfg *c, u32 target_rate,
- 			vco = vco_pre * f;
- 		}
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index 85c2947ed45e3..a719f23fa1e95 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -443,6 +443,8 @@ static unsigned mmc_sdio_get_max_clock(struct mmc_card *card)
+ 	if (card->type == MMC_TYPE_SD_COMBO)
+ 		max_dtr = min(max_dtr, mmc_sd_get_max_clock(card));
  
--		delta = abs(target_rate - vco);
-+		delta = abs(target_vco_rate - vco);
- 		if (delta < best_delta) {
- 			best_delta = delta;
- 			best_r = r;
++	max_dtr = min_not_zero(max_dtr, card->quirk_max_rate);
++
+ 	return max_dtr;
+ }
+ 
 -- 
 2.39.5
 
