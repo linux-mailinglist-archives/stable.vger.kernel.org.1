@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53600A5C4AD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E770FA5C4BE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E99C21884A88
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA8D179E80
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC5F25E829;
-	Tue, 11 Mar 2025 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9391D25E822;
+	Tue, 11 Mar 2025 15:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ7fVqTW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tcQ6RLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13D025DD02;
-	Tue, 11 Mar 2025 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516E125DD00;
+	Tue, 11 Mar 2025 15:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705515; cv=none; b=KVl0ke2jl5vrfitovQ/RbFHrXFDgZehWLhPhHsUtiU0kQaModojq8g298jy/LDXYcHGHxnJlzdN5XSB0GBYLbO35sS/roVNQgLyOed6DG4HqJ+4jlAlub2JGtQrZ0K2veUDhQOaoQ/SXSa+8Lulxj9hVfm0PdWhq0dwl+QBH3hg=
+	t=1741705547; cv=none; b=DPPjSxZoov7Ns0Egof1F2M/n+dUCz9faAgr1xF6WkzSbfCVEKr7cKji1V7c0cicDlbIf/Rzkg3nI+Xlh9WZ6+JFRP9bz1POyVTaCYCehq/dOh6XXhB5me7fx9HGr3haxFXOr7ptX41dzNZmn3f6fEPFTZeW9VsRqZMNPeyWEfU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705515; c=relaxed/simple;
-	bh=RUk56bMGXmTlHJFC9mRV6Zdd5n93xG44uM7dUnPYpOA=;
+	s=arc-20240116; t=1741705547; c=relaxed/simple;
+	bh=JCs2ZuVQgJSCewp0K6SlKOl2/XaV3aGun7qj+nztoiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+W0CSGEDeqedBgBgn08quiqKpzmE6buDMd+2fVAppgrqmMnn8lRastu76/o1BK8HmbkEW9E0YuU6HqkthW4a6GCEbv5C+l7j3oVTaUYWtf1tyX8t9rR7vUCBU0QA9ZdH14VYBIk7YUp6TwJwqvyk7k9WoOteqLGCM3arpFae7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ7fVqTW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD83C4CEE9;
-	Tue, 11 Mar 2025 15:05:14 +0000 (UTC)
+	 MIME-Version; b=YPRb6KAVAaiFpiK5b8kl4t04WR3UJqltjMXkFZ9BhwwbrI9oGtx6ZfL4nspF+wT8uHs9SZi0YgTHUTlOgJ9s6yGaQB7SPHyU/B0IEe8Hj1emDE1c53L2bx+9m+ZZZmyt9mzBBBTIe5xnzDgRLKJ0SsPRbK5X5PxwiAAmmeBLnYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tcQ6RLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD411C4CEE9;
+	Tue, 11 Mar 2025 15:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705515;
-	bh=RUk56bMGXmTlHJFC9mRV6Zdd5n93xG44uM7dUnPYpOA=;
+	s=korg; t=1741705547;
+	bh=JCs2ZuVQgJSCewp0K6SlKOl2/XaV3aGun7qj+nztoiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZ7fVqTWYnlZwECyXq9pLFCl0wz+ijFceXM8AMvMJCA3hpb+3Ak3YS+WEFfPRxdOe
-	 Iv7ZIP2tpeBzKhsShoqoCm2EVsdBS0X8pOHwgNfWfoMxXhRTwyF7xQS2AJtoWm07ow
-	 Tau9GzMZvnmv9zcVg+lLfoyAU+H8yOM81TCd6wGk=
+	b=1tcQ6RLwvFxYqENsJC2ecsmsy4XekT8Yf1to9AYkbY/zrtWXwDcS1frxObU2u3eqr
+	 APzW4jmDrAYK+NOaPB8eR8fNVM22a1Qqxj/CmfUBzK12JdMPOyH/n73Harlngt72wb
+	 srUgHLkQlYf8Bdu8k+1mYRiDxzYySnrtI/DT9onM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/328] media: uvcvideo: Propagate buf->error to userspace
-Date: Tue, 11 Mar 2025 15:57:04 +0100
-Message-ID: <20250311145717.045753103@linuxfoundation.org>
+Subject: [PATCH 5.4 055/328] staging: media: imx: fix OF node leak in imx_media_add_of_subdevs()
+Date: Tue, 11 Mar 2025 15:57:05 +0100
+Message-ID: <20250311145717.086918563@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -68,42 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 87ce177654e388451850905a1d376658aebe8699 ]
+[ Upstream commit 094f5c315f756b19198e6c401aa821ac0e868750 ]
 
-Now we return VB2_BUF_STATE_DONE for valid and invalid frames. Propagate
-the correct value, so the user can know if the frame is valid or not via
-struct v4l2_buffer->flags.
+imx_media_add_of_subdevs() calls of_parse_phandle() and passes the
+obtained node to imx_media_of_add_csi(). The passed node is used in
+v4l2_async_nf_add_fwnode(), which increments the refcount of the node.
+Therefore, while the current implementation only releases the node when
+imx_media_of_add_csi() fails, but should always release it. Call
+of_node_put() right after imx_media_of_add_csi().
 
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/84b0f212-cd88-46bb-8e6f-b94ec3eccba6@redhat.com
-Fixes: 6998b6fb4b1c ("[media] uvcvideo: Use videobuf2-vmalloc")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241218-uvc-deprecate-v2-1-ab814139e983@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: dee747f88167 ("media: imx: Don't register IPU subdevs/links if CSI port missing")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/staging/media/imx/imx-media-of.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-index da72577c29986..d7c81e205e8bb 100644
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -486,7 +486,8 @@ static void uvc_queue_buffer_complete(struct kref *ref)
+diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
+index 2d3efd2a6dde0..d9b34605ff9bc 100644
+--- a/drivers/staging/media/imx/imx-media-of.c
++++ b/drivers/staging/media/imx/imx-media-of.c
+@@ -55,23 +55,19 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
+ 			break;
  
- 	buf->state = buf->error ? UVC_BUF_STATE_ERROR : UVC_BUF_STATE_DONE;
- 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, buf->bytesused);
--	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
-+	vb2_buffer_done(&buf->buf.vb2_buf, buf->error ? VB2_BUF_STATE_ERROR :
-+							VB2_BUF_STATE_DONE);
+ 		ret = imx_media_of_add_csi(imxmd, csi_np);
++		of_node_put(csi_np);
+ 		if (ret) {
+ 			/* unavailable or already added is not an error */
+ 			if (ret == -ENODEV || ret == -EEXIST) {
+-				of_node_put(csi_np);
+ 				continue;
+ 			}
+ 
+ 			/* other error, can't continue */
+-			goto err_out;
++			return ret;
+ 		}
+ 	}
+ 
+ 	return 0;
+-
+-err_out:
+-	of_node_put(csi_np);
+-	return ret;
  }
+ EXPORT_SYMBOL_GPL(imx_media_add_of_subdevs);
  
- /*
 -- 
 2.39.5
 
