@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-123701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77663A5C677
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:25:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AEAA5C722
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A39207AC086
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B98E189F79C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2E525DAEC;
-	Tue, 11 Mar 2025 15:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542EE15820C;
+	Tue, 11 Mar 2025 15:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCeiw6fG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExWdfKw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED35B1684AC;
-	Tue, 11 Mar 2025 15:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111621DF749;
+	Tue, 11 Mar 2025 15:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706716; cv=none; b=dOIq9kf4p44/ooyfUgUmlg6mrYdMGT9oIk4MjRxh8jmmbQ8lBARCBmlwND+qeCDjbwJIUhCOB7SXoBOib2IevLhTC+VhiH3e09I2kPVITugZZ++1ZjuOD/yYQiqxWYpxLEU04VA/5ow18Ux5iHTBUNcmm11j+9JDci4LEdlkcB0=
+	t=1741706832; cv=none; b=lRLhz2xjGJzCjlpDVwGlfIiMcFIDISD+OTg2RGKCiYWMslizq7gHRSyWbU45mCx/RCRR1VElNCFdZv/Ocp4f+7A2EEfv1wqEIXEdb0XYGmj/3PdoGdf3uDZGwI+SRL0C2DLrnUHojwGPYDYX2Gx4YW8fnYV+WkOpC3y1e6lpPAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706716; c=relaxed/simple;
-	bh=zP9IZ49SBSvdxCfs4zu8X8O8emftP9G4Q7PZ3aG91ao=;
+	s=arc-20240116; t=1741706832; c=relaxed/simple;
+	bh=iKOBv68xWAnkPFpMeXEzQ0Zx2kz1oO2ZpIix+OPJx/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzBvHALO7bu+V6LdwChtx764b4ZRKjucSntcGMr63faQP1CNVZy307g/RKrNGF++5NJJ2QIHVfaK/KyRwgP5l9Uq52qF3FUniJPWEa/s/LAvzSM3/dBSJO4c5wYzLbEOguif7aVUpSiRZmxM7lzVqGbB5Ia9pXJ1QSF0vYD+KVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCeiw6fG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C90C4CEED;
-	Tue, 11 Mar 2025 15:25:15 +0000 (UTC)
+	 MIME-Version; b=h5inYQaLDdvV641Q7O7icWB9ZBFD+tNgpgjMjRhBXVU+boVndVohX7GagaGG49iWVMWWV8PXk0u5oLJLj1D0Q5lQ1n+OZTm/b3d7h5vQa5grFyqaYW83bl0fFOskeZF5izuppZGlbKHVh+K/x2PLdokgsrOUgMVAvdOODIOlFXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExWdfKw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC77C4CEE9;
+	Tue, 11 Mar 2025 15:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706715;
-	bh=zP9IZ49SBSvdxCfs4zu8X8O8emftP9G4Q7PZ3aG91ao=;
+	s=korg; t=1741706831;
+	bh=iKOBv68xWAnkPFpMeXEzQ0Zx2kz1oO2ZpIix+OPJx/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCeiw6fGftLNzV5Aw/eKQjepU336DH6UVnj9X+RTi4zzYuNUISx6hCiIG40XXVPGd
-	 PH3v8yekmeWBAbvvXN0hVkm/H+kSyP1/Xmv/7MZr/LCsILQDcIwELKkEtkIIo4ZNdM
-	 34q+4H69yweKwXMSIubcdLc15WFOTc1WcNQNsoVA=
+	b=ExWdfKw1JO0UXkzlEwrvJcU+vVEo2pY8oZgnAT7sUEV3PJfF/G8J2zuiizSV8BXmb
+	 TXdevplKTap0CRJNHsNS/og1CciWoTbDDyb2btjWSa4wurKlBYXpp7+4p6BezQbELY
+	 R1UcKzFJmUzpEm0edNEytMfTkLUBsWqz9FaJ/QZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yuanjie Yang <quic_yuanjiey@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/462] APEI: GHES: Have GHES honor the panic= setting
-Date: Tue, 11 Mar 2025 15:56:47 +0100
-Message-ID: <20250311145803.927474604@linuxfoundation.org>
+Subject: [PATCH 5.10 142/462] mmc: sdhci-msm: Correctly set the load for the regulator
+Date: Tue, 11 Mar 2025 15:56:48 +0100
+Message-ID: <20250311145803.966590579@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -68,70 +67,120 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Borislav Petkov <bp@alien8.de>
+From: Yuanjie Yang <quic_yuanjiey@quicinc.com>
 
-[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
+[ Upstream commit 20a0c37e44063997391430c4ae09973e9cbc3911 ]
 
-The GHES driver overrides the panic= setting by force-rebooting the
-system after a fatal hw error has been reported. The intent being that
-such an error would be reported earlier.
+Qualcomm regulator supports two power supply modes: HPM and LPM.
+Currently, the sdhci-msm.c driver does not set the load to adjust
+the current for eMMC and SD. If the regulator dont't set correct
+load in LPM state, it will lead to the inability to properly
+initialize eMMC and SD.
 
-However, this is not optimal when a hard-to-debug issue requires long
-time to reproduce and when that happens, the box will get rebooted after
-30 seconds and thus destroy the whole hw context of when the error
-happened.
+Set the correct regulator current for eMMC and SD to ensure that the
+device can work normally even when the regulator is in LPM.
 
-So rip out the default GHES panic timeout and honor the global one.
-
-In the panic disabled (panic=0) case, the error will still be logged to
-dmesg for later inspection and if panic after a hw error is really
-required, then that can be controlled the usual way - use panic= on the
-cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
-
-Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250114083514.258379-1-quic_yuanjiey@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mmc/host/sdhci-msm.c | 53 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 160606af8b4f5..a6c8514110736 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -155,8 +155,6 @@ static unsigned long ghes_estatus_pool_size_request;
- static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 3366956a4ff18..c9298a986ef0a 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -131,9 +131,18 @@
+ /* Timeout value to avoid infinite waiting for pwr_irq */
+ #define MSM_PWR_IRQ_TIMEOUT_MS 5000
  
--static int ghes_panic_timeout __read_mostly = 30;
--
- static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
- {
- 	phys_addr_t paddr;
-@@ -858,14 +856,16 @@ static void __ghes_panic(struct ghes *ghes,
- 			 struct acpi_hest_generic_status *estatus,
- 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
- {
-+	const char *msg = GHES_PFX "Fatal hardware error";
++/* Max load for eMMC Vdd supply */
++#define MMC_VMMC_MAX_LOAD_UA	570000
 +
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ /* Max load for eMMC Vdd-io supply */
+ #define MMC_VQMMC_MAX_LOAD_UA	325000
  
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
--	/* reboot to log the error! */
- 	if (!panic_timeout)
--		panic_timeout = ghes_panic_timeout;
--	panic("Fatal hardware error!");
-+		pr_emerg("%s but panic disabled\n", msg);
++/* Max load for SD Vdd supply */
++#define SD_VMMC_MAX_LOAD_UA	800000
 +
-+	panic(msg);
++/* Max load for SD Vdd-io supply */
++#define SD_VQMMC_MAX_LOAD_UA	22000
++
+ #define msm_host_readl(msm_host, host, offset) \
+ 	msm_host->var_ops->msm_readl_relaxed(host, offset)
+ 
+@@ -1383,11 +1392,48 @@ static int sdhci_msm_set_pincfg(struct sdhci_msm_host *msm_host, bool level)
+ 	return ret;
  }
  
- static int ghes_proc(struct ghes *ghes)
+-static int sdhci_msm_set_vmmc(struct mmc_host *mmc)
++static void msm_config_vmmc_regulator(struct mmc_host *mmc, bool hpm)
++{
++	int load;
++
++	if (!hpm)
++		load = 0;
++	else if (!mmc->card)
++		load = max(MMC_VMMC_MAX_LOAD_UA, SD_VMMC_MAX_LOAD_UA);
++	else if (mmc_card_mmc(mmc->card))
++		load = MMC_VMMC_MAX_LOAD_UA;
++	else if (mmc_card_sd(mmc->card))
++		load = SD_VMMC_MAX_LOAD_UA;
++	else
++		return;
++
++	regulator_set_load(mmc->supply.vmmc, load);
++}
++
++static void msm_config_vqmmc_regulator(struct mmc_host *mmc, bool hpm)
++{
++	int load;
++
++	if (!hpm)
++		load = 0;
++	else if (!mmc->card)
++		load = max(MMC_VQMMC_MAX_LOAD_UA, SD_VQMMC_MAX_LOAD_UA);
++	else if (mmc_card_sd(mmc->card))
++		load = SD_VQMMC_MAX_LOAD_UA;
++	else
++		return;
++
++	regulator_set_load(mmc->supply.vqmmc, load);
++}
++
++static int sdhci_msm_set_vmmc(struct sdhci_msm_host *msm_host,
++			      struct mmc_host *mmc, bool hpm)
+ {
+ 	if (IS_ERR(mmc->supply.vmmc))
+ 		return 0;
+ 
++	msm_config_vmmc_regulator(mmc, hpm);
++
+ 	return mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, mmc->ios.vdd);
+ }
+ 
+@@ -1400,6 +1446,8 @@ static int msm_toggle_vqmmc(struct sdhci_msm_host *msm_host,
+ 	if (msm_host->vqmmc_enabled == level)
+ 		return 0;
+ 
++	msm_config_vqmmc_regulator(mmc, level);
++
+ 	if (level) {
+ 		/* Set the IO voltage regulator to default voltage level */
+ 		if (msm_host->caps_0 & CORE_3_0V_SUPPORT)
+@@ -1622,7 +1670,8 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
+ 	}
+ 
+ 	if (pwr_state) {
+-		ret = sdhci_msm_set_vmmc(mmc);
++		ret = sdhci_msm_set_vmmc(msm_host, mmc,
++					 pwr_state & REQ_BUS_ON);
+ 		if (!ret)
+ 			ret = sdhci_msm_set_vqmmc(msm_host, mmc,
+ 					pwr_state & REQ_BUS_ON);
 -- 
 2.39.5
 
