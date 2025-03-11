@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-124012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD7DA5C836
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CCAA5C8BA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07A947A878C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35470188B97F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9566B25EFB6;
-	Tue, 11 Mar 2025 15:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6478E1E3DC4;
+	Tue, 11 Mar 2025 15:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ntxcnAJ9"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DWC/El3w"
 X-Original-To: stable@vger.kernel.org
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0326D25EF93;
-	Tue, 11 Mar 2025 15:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A20536AF5;
+	Tue, 11 Mar 2025 15:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707610; cv=none; b=tBxd7uNKYk+YnUKMq+HgGEMpnjdgD0rSLHTITUpHpAJHIZ0hyh915YMBQReEkz3POHC9qvTMcusQQ4D49eB6YUQSIzO3OOU12E37f1mkAwMXYO5Dmxq1ZX9mNsDev6Hmp1a4kVWLYiTpRB0pMb3GX6iFxlXR/iY/ulCeYox074s=
+	t=1741707935; cv=none; b=dZINmvIDwmr80lpI5ExRMCe98+dt0IBeSFwUH49QR3jHWPyrrtStdkv/Ok6prIh96RrsU23V9JgTSAvrG5ao5EUiPLFv5hQC25YjDap4gyLWPpSKiatQq0Xx7/x6405OL30ESaCB/UuPId4JSDucwVpDBDKbw7X8D1sr2Fnxcew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707610; c=relaxed/simple;
-	bh=wbyT0+v1ST8uruSSTX+ZtF/NQ4C2rLtGDx0e9UMt+bA=;
+	s=arc-20240116; t=1741707935; c=relaxed/simple;
+	bh=3p9vA95z8w5LxA3QuauyU+SzbyVhLtcmUOVWRhH/qdw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OaoGXQodqcRAgM2AGGVTwrO27tElhhh/6H3L6ngZpLvojs+iCkcoftvM1B1jsK18m7xBKXO4341RLskdR2od6kM7y4X0wqHTJYiJSCalvV7XDSnoFfhq0UTqDUwnucZZUMqsV/tn6KO7hB9YktBvuwS9dD3I1JyO7QyOpd33yf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ntxcnAJ9; arc=none smtp.client-ip=90.155.92.199
+	 Content-Type:MIME-Version; b=ms2IHK7L+hxwzTSGD8rRmALatjfdcvdjgVDxlspbOqDv7VjFBU+CTDjyuXwctDXTE4BVqp1RreMhCWpwKJT+C2Wv8eHca5Hhkfx/I+B8Iiv5VMRD0Xni3x69jP6WtgAarZphWKViwHSoIAzmVhnBuzGZRgB2A+zU0yxAdkMAOjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DWC/El3w; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wbyT0+v1ST8uruSSTX+ZtF/NQ4C2rLtGDx0e9UMt+bA=; b=ntxcnAJ9HPfIdnkmLgZ8weyN5L
-	diqDpAlVR5BnyNc+ZUI4gz7kIVfNpeBRMQQboevi6shX67cd9ksTsbw2dsMcKVqvj63CmwavWl+xr
-	ze6nmcNmz+cN4mowV3toX0iJdwEq4wDRQ7yOik3fLUBdVnmBf/hwLc48ln2p+0c1LMYJh4ZsDi33Y
-	JGicZ9AOwO2w1J5kCKd9U8H0QCP2P7H6rfTNsz0r+kJ7zGqEWZzDv+Gozj7mamVhVCsd0WEMFSFHq
-	ClD5+GsL51SrVR3bSZI1LkMio7cExjhjV9BttB5BQprUvgHHR4U8A9szvz42EVvRS2V7TC4NM6+Eu
-	0Gqr+HyQ==;
+	bh=3p9vA95z8w5LxA3QuauyU+SzbyVhLtcmUOVWRhH/qdw=; b=DWC/El3wJnFFtsZHGUUUWwtdLc
+	hKycbRlY+h04VXbzzZvzOoG3lx665ZTV/wTtZQhsy4tV03Ui8n7udy1MYAY7HLKF5UBDbVkvitf7S
+	3okE6dlKxqhTmrV7Rfn0qqouyFPHf/8CA3j2bGnSa3+goqItZWInKJJEYCfHVpwGojs/1+aYXlMGU
+	uDQJTt2h8mBMefJOMG1lW4ENBC0HY/GVu6HiWyV13d1oDfIJAUuJt4MJBYy69jbuZYeaAXylEXauh
+	dWWI7N55KI/owbtCWaWAYBRoe1a5qQ1u9+cN1SGovP6LyVOzfQ7ST+N1eFDCPegpMoI3CuE+KcJxg
+	S3xL/xPw==;
 Received: from [217.92.198.105] (helo=u09cd745991455d.ant.amazon.com)
 	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1ts1i2-00000002BfL-0LWl;
-	Tue, 11 Mar 2025 15:39:58 +0000
-Message-ID: <c7fd4e4b9e9f5a217b9ccbf14eed0cdad49772be.camel@infradead.org>
-Subject: Re: [EXTERNAL] [PATCH 5.10 304/462] x86/i8253: Disable PIT timer 0
- when not in use
+	id 1ts1nO-00000002BhB-0DCE;
+	Tue, 11 Mar 2025 15:45:30 +0000
+Message-ID: <c4a1af46f7edcdf20274e384ec3b48781a350aaa.camel@infradead.org>
+Subject: Re: [EXTERNAL] [PATCH 6.13 089/443] x86/kexec: Allocate PGD for
+ x86_64 transition page tables separately
 From: David Woodhouse <dwmw2@infradead.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Michael
- Kelley <mhkelley@outlook.com>
-Date: Tue, 11 Mar 2025 16:39:56 +0100
-In-Reply-To: <20250311145810.371054352@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
-	 <20250311145810.371054352@linuxfoundation.org>
+Cc: patches@lists.linux.dev, Ingo Molnar <mingo@kernel.org>, Baoquan He
+ <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Dave Young
+ <dyoung@redhat.com>,  Eric Biederman <ebiederm@xmission.com>, Ard
+ Biesheuvel <ardb@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,  Sasha
+ Levin <sashal@kernel.org>
+Date: Tue, 11 Mar 2025 16:45:26 +0100
+In-Reply-To: <20250213142444.044525855@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
+	 <20250213142444.044525855@linuxfoundation.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Zome6fqFXSeAkl3Ii3d3"
+	boundary="=-0f5MABY2trX4Ogn6xsYt"
 User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,40 +71,49 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-Zome6fqFXSeAkl3Ii3d3
+--=-0f5MABY2trX4Ogn6xsYt
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2025-03-11 at 15:59 +0100, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.=C2=A0 If anyone has any objections, please let =
+On Thu, 2025-02-13 at 15:24 +0100, Greg Kroah-Hartman wrote:
+> 6.13-stable review patch.=C2=A0 If anyone has any objections, please let =
 me know.
 >=20
 > ------------------
 >=20
 > From: David Woodhouse <dwmw@amazon.co.uk>
 >=20
-> commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60 upstream.
+> [ Upstream commit 4b5bc2ec9a239bce261ffeafdd63571134102323 ]
 >=20
-> Leaving the PIT interrupt running can cause noticeable steal time for
-> virtual guests. The VMM generally has a timer which toggles the IRQ input
-> to the PIC and I/O APIC, which takes CPU time away from the guest. Even
-> on real hardware, running the counter may use power needlessly (albeit
-> not much).
+> Now that the following fix:
 >=20
-> Make sure it's turned off if it isn't going to be used.
+> =C2=A0 d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating=
+ userspace page tables")
 >=20
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Tested-by: Michael Kelley <mhkelley@outlook.com>
-> Link: https://lore.kernel.org/all/20240802135555.564941-1-dwmw2@infradead=
-.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> stops kernel_ident_mapping_init() from scribbling over the end of a
+> 4KiB PGD by assuming the following 4KiB will be a userspace PGD,
+> there's no good reason for the kexec PGD to be part of a single
+> 8KiB allocation with the control_code_page.
+>=20
+> ( It's not clear that that was the reason for x86_64 kexec doing it that
+> =C2=A0 way in the first place either; there were no comments to that effe=
+ct and
+> =C2=A0 it seems to have been the case even before PTI came along. It look=
+s like
+> =C2=A0 it was just a happy accident which prevented memory corruption on =
+kexec. )
+>=20
+> Either way, it definitely isn't needed now. Just allocate the PGD
+> separately on x86_64, like i386 already does.
 
-You probably want commit 531b2ca0a940ac ("clockevents/drivers/i8253:
-Fix stop sequence for timer 0") too, to make sure it *does* actually
-stop the PIT correctly.
+No objection (which is just as well given how late I am in replying)
+but I'm just not sure *why*. This doesn't fix a real bug; it's just a
+cleanup.
 
---=-Zome6fqFXSeAkl3Ii3d3
+Does this mean I should have written my original commit message better,
+to make it clearer that this *isn't* a bugfix?
+
+--=-0f5MABY2trX4Ogn6xsYt
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -180,22 +192,22 @@ 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
-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
+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
-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
+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
 
 
---=-Zome6fqFXSeAkl3Ii3d3--
+--=-0f5MABY2trX4Ogn6xsYt--
 
