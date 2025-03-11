@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-123326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A550BA5C4E2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A279A5C728
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E225B18820AF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72FAB189FF7D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA9425E81D;
-	Tue, 11 Mar 2025 15:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE6B25E815;
+	Tue, 11 Mar 2025 15:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaMuDgZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxygN8gm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481ED25DAFF;
-	Tue, 11 Mar 2025 15:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8821DF749;
+	Tue, 11 Mar 2025 15:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705629; cv=none; b=fqOtGkWupvRGpN3m4nkIBqzN/jvIRzsv3rSNs2VUZSPqYxCMo/kWU4fCHw9or22zu+o0Z8s7YtSxctL66KP4u0C8GIqp9zfBg5GCpfjvp/JPhS5Da4Ir7IILoD8/lu2FJ2SWaSKa7WkZ/v/nAx2FnUwARaJisX/+84Iiw9smcaM=
+	t=1741706843; cv=none; b=KuuFN3MYs3DowXq+V//hDqiIbnO2pRlnxybafHlXCdaX60Ia1MxOkmY2d8gSlOZjv5z4ooQhPCXBnavAxFCr8os+KyEywFpKJ8mX2RFzQAoKDfbfcuDZRrYZgK//J6T34f9PMQAcZ3XwoIqAyYmj7JpvBcbJoFs+sXd4M5w69vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705629; c=relaxed/simple;
-	bh=K2gdVGll4hvYDKtsTc/VNer/jlE4y3ALeScnY7zOiJ8=;
+	s=arc-20240116; t=1741706843; c=relaxed/simple;
+	bh=LZG9Qr3md11er0F4vfneixaaqRYv8latpYuCEAodobg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNWKvmjmeXglSSEdGNRhlyKkZZ2GlaEPCI70Hbx4+kG1mRpZezizvTCUHTx0LLCdKWQPs2b8uUNHFjKHzYcBBrdQ70GN55hTaTWDFGNgLZ94ZGdRJ9wWx01mJCEogIFzNIg2pYUiIQfRRqV/ub4q5eKU2q/3qlD4zE9ZA30OPzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaMuDgZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CDDC4CEE9;
-	Tue, 11 Mar 2025 15:07:08 +0000 (UTC)
+	 MIME-Version; b=KCJqvKlQ3QQ2Gu7PgwcthqmlorceaR0d5Mn4TC0tFCWrnB6dyvfoswso8TjFIgH8Zi3EcHgMxs6ZZ1JhLKefNXvbr/YfK62iKGNhShhrZtCG4zyhaRBSI8CrzfAnuK6+Llu115iKf6g4KzwuBzgDiEkmJYWAORny5a2UO4Ml0eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxygN8gm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB27C4CEE9;
+	Tue, 11 Mar 2025 15:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705628;
-	bh=K2gdVGll4hvYDKtsTc/VNer/jlE4y3ALeScnY7zOiJ8=;
+	s=korg; t=1741706843;
+	bh=LZG9Qr3md11er0F4vfneixaaqRYv8latpYuCEAodobg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jaMuDgZfd8A6LJOqApM/TZqXfujGZMMk7KxxXRE7DuwFR9BO9A809X+zggmftA5SJ
-	 PkzkIqDJZoNRqMwJCgtlyf2HlNiBuLG94/Mk9PS3BAOdiG/kRIXvcWXODZu0+DWfhd
-	 EecqxLRhHCrbbkWWiG8chFbNrmoSpy3h5RgPD+jk=
+	b=DxygN8gmFNtanXY9daEfkdqIdeSyWHu5yrPqmCVpIjFtyeU5/C9ijelE4YtL7ut2q
+	 7zFgQHJmhzdD3xXjyQnt5CS/uJPNOlMtseqWTmRm8v0hVpj1kbJ8breeezKspYgmIN
+	 rEwtDE8JkPWpZoZ8xIPkwvAJ7pqxY9hNJFhYix7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Anton Mitterer <calestyo@scientia.org>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 082/328] btrfs: output the reason for open_ctree() failure
-Date: Tue, 11 Mar 2025 15:57:32 +0100
-Message-ID: <20250311145718.145399232@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 187/462] usb: gadget: f_tcm: Translate error to sense
+Date: Tue, 11 Mar 2025 15:57:33 +0100
+Message-ID: <20250311145805.745052440@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit d0f038104fa37380e2a725e669508e43d0c503e9 upstream.
+commit 98fa00fd3ae43b857b4976984a135483d89d9281 upstream.
 
-There is a recent ML report that mounting a large fs backed by hardware
-RAID56 controller (with one device missing) took too much time, and
-systemd seems to kill the mount attempt.
+When respond with check_condition error status, clear from_transport
+input so the target layer can translate the sense reason reported by
+f_tcm.
 
-In that case, the only error message is:
-
-  BTRFS error (device sdj): open_ctree failed
-
-There is no reason on why the failure happened, making it very hard to
-understand the reason.
-
-At least output the error number (in the particular case it should be
--EINTR) to provide some clue.
-
-Link: https://lore.kernel.org/linux-btrfs/9b9c4d2810abcca2f9f76e32220ed9a90febb235.camel@scientia.org/
-Reported-by: Christoph Anton Mitterer <calestyo@scientia.org>
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
 Cc: stable@vger.kernel.org
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/b2a5577efe7abd0af0051229622cf7d3be5cdcd0.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_tcm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1217,7 +1217,7 @@ static int btrfs_fill_super(struct super
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1067,7 +1067,7 @@ static void usbg_cmd_work(struct work_st
  
- 	err = open_ctree(sb, fs_devices, (char *)data);
- 	if (err) {
--		btrfs_err(fs_info, "open_ctree failed");
-+		btrfs_err(fs_info, "open_ctree failed: %d", err);
- 		return err;
- 	}
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+-			TCM_UNSUPPORTED_SCSI_OPCODE, 1);
++			TCM_UNSUPPORTED_SCSI_OPCODE, 0);
+ }
  
+ static struct usbg_cmd *usbg_get_cmd(struct f_uas *fu,
+@@ -1197,7 +1197,7 @@ static void bot_cmd_work(struct work_str
+ 
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+-				TCM_UNSUPPORTED_SCSI_OPCODE, 1);
++				TCM_UNSUPPORTED_SCSI_OPCODE, 0);
+ }
+ 
+ static int bot_submit_command(struct f_uas *fu,
 
 
 
