@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE395A5C594
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67FEA5C81F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DEC172726
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD963189C4C9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C7425E80C;
-	Tue, 11 Mar 2025 15:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE74E25E83E;
+	Tue, 11 Mar 2025 15:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0FZ+5zs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9mesR/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCB225D53A;
-	Tue, 11 Mar 2025 15:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95D25DCFA;
+	Tue, 11 Mar 2025 15:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706082; cv=none; b=Km2Zj9sMBBOm3BEDRwHULYSvk4Wmb1dL4OQ/O3L9G0M9VyenUtrNJAFxZlUwHAMI/Z0NVZB0bHW19RHJYuXUY3RFvhibYD9Hyesv7Zafyy4qxkk9HhDiCsd4ypSmktIlbOeLpVum8c1lCZmzJbaeAmI2W63G6RrYCFeau1djq7E=
+	t=1741707354; cv=none; b=LGP+wb50UbzeCwyQUaGC9pbVJHlO7t46ziv1A6p4d/wDa3/lKQWzEkxsbzJFw6i95CgEBPBpr9g6kJfbI7lHyxlAjIAAI8KUI0qDbp12l1zFPvoD1n/T+xNCvpWGLHJRE/3XwBzYk0FqeS8gwQmVyZT9LDCiEA5KhTcGJWhKdOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706082; c=relaxed/simple;
-	bh=P9gK7o0l2kkZOOFk3bpzYfXJNAt9FTeCmM06JJBjm0s=;
+	s=arc-20240116; t=1741707354; c=relaxed/simple;
+	bh=7crTIl72n4GI1SVa85E06v2LOE4uCADByiV52bdGFZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBnk2NIf+PSGp+kOnXZ4vjHhQcVp4jl4+T8phFNxfmcYBq+wpIwlLPyAt70aUS7z/bON1D0ztgTnM76pBd7C0AnyOP2pImuM+Tu2QYOHUV/SltrrOKO2LtGwh3XY8eAoMfC4NDtvgvDE1JhQXCN2ilKnNCHAXsfazRPpmzw1VLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0FZ+5zs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A3FC4CEE9;
-	Tue, 11 Mar 2025 15:14:41 +0000 (UTC)
+	 MIME-Version; b=bgNYwSZtpDtD/oalJagEP7ibg+ui0ibr8tzrPgtj0GCnyQFDxUr81pUJzV6rjDVqFnmPumf1GdpqApOlFByb/+Fab2kHOdx+f3oclUb5kG7YRy2xctt2pOQTidc7GCxYtUUELJyylsqKltg6KQf1/D7CC+9t0I0SnHZC1G2PmrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9mesR/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990C0C4CEE9;
+	Tue, 11 Mar 2025 15:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706082;
-	bh=P9gK7o0l2kkZOOFk3bpzYfXJNAt9FTeCmM06JJBjm0s=;
+	s=korg; t=1741707354;
+	bh=7crTIl72n4GI1SVa85E06v2LOE4uCADByiV52bdGFZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0FZ+5zs8Hxu/gin8QvtWCe7iLkonFK0TEDKAr0j+zjwWpcizjWp5WrqLWQuvde32
-	 +zJIfQ6LT5ms+q6XsFqghMu5OuJ6Q5MDympqduto72XQ5ua2UGDmWOpenied7iA6um
-	 DcLSn/DhBgUhbLSmHH1AjfxTkFJt5rEx2EPh4iJg=
+	b=c9mesR/fHydZTmQu6lEjFBMeJyeCeYviyLVxm+j7486oNdrSgyExaQkXubiCgvMEy
+	 bfoDRaN69HBvpx/9dekRXQsxNgziaEHrjywHQageWv/FlHtBA6pX2OUdlNNGIL3b+X
+	 0B+fZJIHub2qpjkH8/m7Rg+AhBaRHMkiohT0PgJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.4 256/328] batman-adv: Ignore neighbor throughput metrics in error case
-Date: Tue, 11 Mar 2025 16:00:26 +0100
-Message-ID: <20250311145725.085414799@linuxfoundation.org>
+	Harshal Chaudhari <hchaudhari@marvell.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 361/462] net: mvpp2: cls: Fixed Non IP flow, with vlan tag flow defination.
+Date: Tue, 11 Mar 2025 16:00:27 +0100
+Message-ID: <20250311145812.614759560@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,132 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Harshal Chaudhari <hchaudhari@marvell.com>
 
-commit e7e34ffc976aaae4f465b7898303241b81ceefc3 upstream.
+[ Upstream commit 2d253726ff7106b39a44483b6864398bba8a2f74 ]
 
-If a temporary error happened in the evaluation of the neighbor throughput
-information, then the invalid throughput result should not be stored in the
-throughtput EWMA.
+Non IP flow, with vlan tag not working as expected while
+running below command for vlan-priority. fixed that.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ethtool -N eth1 flow-type ether vlan 0x8000 vlan-mask 0x1fff action 0 loc 0
+
+Fixes: 1274daede3ef ("net: mvpp2: cls: Add steering based on vlan Id and priority.")
+Signed-off-by: Harshal Chaudhari <hchaudhari@marvell.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250225042058.2643838-1-hchaudhari@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_v_elp.c |   41 ++++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -58,11 +58,13 @@ static void batadv_v_elp_start_timer(str
- /**
-  * batadv_v_elp_get_throughput() - get the throughput towards a neighbour
-  * @neigh: the neighbour for which the throughput has to be obtained
-+ * @pthroughput: calculated throughput towards the given neighbour in multiples
-+ *  of 100kpbs (a value of '1' equals 0.1Mbps, '10' equals 1Mbps, etc).
-  *
-- * Return: The throughput towards the given neighbour in multiples of 100kpbs
-- *         (a value of '1' equals to 0.1Mbps, '10' equals 1Mbps, etc).
-+ * Return: true when value behind @pthroughput was set
-  */
--static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
-+static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
-+					u32 *pthroughput)
- {
- 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
- 	struct net_device *soft_iface = hard_iface->soft_iface;
-@@ -76,14 +78,16 @@ static u32 batadv_v_elp_get_throughput(s
- 	 * batman-adv interface
- 	 */
- 	if (!soft_iface)
--		return BATADV_THROUGHPUT_DEFAULT_VALUE;
-+		return false;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+index 41d935d1aaf6f..3ad1327395877 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+@@ -318,7 +318,7 @@ static const struct mvpp2_cls_flow cls_flows[MVPP2_N_PRS_FLOWS] = {
+ 		       MVPP2_PRS_RI_VLAN_MASK),
+ 	/* Non IP flow, with vlan tag */
+ 	MVPP2_DEF_FLOW(MVPP22_FLOW_ETHERNET, MVPP2_FL_NON_IP_TAG,
+-		       MVPP22_CLS_HEK_OPT_VLAN,
++		       MVPP22_CLS_HEK_TAGGED,
+ 		       0, 0),
+ };
  
- 	/* if the user specified a customised value for this interface, then
- 	 * return it directly
- 	 */
- 	throughput =  atomic_read(&hard_iface->bat_v.throughput_override);
--	if (throughput != 0)
--		return throughput;
-+	if (throughput != 0) {
-+		*pthroughput = throughput;
-+		return true;
-+	}
- 
- 	/* if this is a wireless device, then ask its throughput through
- 	 * cfg80211 API
-@@ -110,14 +114,16 @@ static u32 batadv_v_elp_get_throughput(s
- 			 * possible to delete this neighbor. For now set
- 			 * the throughput metric to 0.
- 			 */
--			return 0;
-+			*pthroughput = 0;
-+			return true;
- 		}
- 		if (ret)
- 			goto default_throughput;
- 		if (!(sinfo.filled & BIT(NL80211_STA_INFO_EXPECTED_THROUGHPUT)))
- 			goto default_throughput;
- 
--		return sinfo.expected_throughput / 100;
-+		*pthroughput = sinfo.expected_throughput / 100;
-+		return true;
- 	}
- 
- 	/* if not a wifi interface, check if this device provides data via
-@@ -135,8 +141,10 @@ static u32 batadv_v_elp_get_throughput(s
- 			hard_iface->bat_v.flags &= ~BATADV_FULL_DUPLEX;
- 
- 		throughput = link_settings.base.speed;
--		if (throughput && throughput != SPEED_UNKNOWN)
--			return throughput * 10;
-+		if (throughput && throughput != SPEED_UNKNOWN) {
-+			*pthroughput = throughput * 10;
-+			return true;
-+		}
- 	}
- 
- default_throughput:
-@@ -150,7 +158,8 @@ default_throughput:
- 	}
- 
- 	/* if none of the above cases apply, return the base_throughput */
--	return BATADV_THROUGHPUT_DEFAULT_VALUE;
-+	*pthroughput = BATADV_THROUGHPUT_DEFAULT_VALUE;
-+	return true;
- }
- 
- /**
-@@ -162,15 +171,21 @@ void batadv_v_elp_throughput_metric_upda
- {
- 	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
- 	struct batadv_hardif_neigh_node *neigh;
-+	u32 throughput;
-+	bool valid;
- 
- 	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
- 				   metric_work);
- 	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
- 			     bat_v);
- 
--	ewma_throughput_add(&neigh->bat_v.throughput,
--			    batadv_v_elp_get_throughput(neigh));
-+	valid = batadv_v_elp_get_throughput(neigh, &throughput);
-+	if (!valid)
-+		goto put_neigh;
-+
-+	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
- 
-+put_neigh:
- 	/* decrement refcounter to balance increment performed before scheduling
- 	 * this task
- 	 */
+-- 
+2.39.5
+
 
 
 
