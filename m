@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-123989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7E0A5C812
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F28A5C60F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C2617AD1CB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D540618891F9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A7225E83C;
-	Tue, 11 Mar 2025 15:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CA125DB0A;
+	Tue, 11 Mar 2025 15:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qi9QNEqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cf6x4quL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501B325E47F;
-	Tue, 11 Mar 2025 15:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118FD1BD00C;
+	Tue, 11 Mar 2025 15:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707546; cv=none; b=O1V3qv0KjjtyDsx7/AOwGhHTTUMEK/dsXhGXgxiEbmf+kGDmVrVbRWuUYcu9JGOWGo4UQUjcZLx1/4/GX1mfi3GU8NyQC2dr9qVEWS90gdW14OLTM0XXG7LTozC8TEDC3ftLH1iqqFzp8G7kmtI+2umk9MY5lwHK2l6nQ4MSB8U=
+	t=1741706278; cv=none; b=HFLiwCZVmQkH26fN0ahz8YbPs0ma/oIfBnxWsN4DEfCjtz8CY8hBuOTZ6TCchsiPSXeMllRTbIxMq53cb2X1V/ZdSCLqTf0mNB+O+Ph24z/74VS+U55uhquVVUNDy5LQZ9+W+MpXRvMFIztYz7caWsy4nnYvE2d3LduRfG0zGXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707546; c=relaxed/simple;
-	bh=d9IU3pXkKNAgAIbgAmxYcVA6qlZoGRdxKcwzSnRyhZ8=;
+	s=arc-20240116; t=1741706278; c=relaxed/simple;
+	bh=BWPt6A2IDfJypA+9QNv91m4cuBvOM6nWX+C3G10kk8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HM+2kBITkjTiVksN8WqF0bUtr/sXnjFuGchRtdyICvZ9wiZHSAxWqgwU61maU09Y6E6R21JO1D5SSNdsANgNs4m0g04uBG7CijUg8M5rn3PeGA8AijWggY/L3PBmqpXxXqVVw/qdbKbff6NM1gNkJuGN3kt6GhHltnwShW593L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qi9QNEqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5CAC4CEEA;
-	Tue, 11 Mar 2025 15:39:05 +0000 (UTC)
+	 MIME-Version; b=mzrYvFdm1NGKHscRMiHnJdZZzVoza6ZLh0YoNpcVNnB9hOLR80F05Mgp+p+04pokGAUgQwEL8YyUhXtHRqMh6hhnZnK7rJlPs4eX5tjlINJuEtpmPlt9VFkR1HC2StwOrIM6M2VqetsFZekccqdi4EybhhYnDx+wyHs5NIgGVJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cf6x4quL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8924AC4CEE9;
+	Tue, 11 Mar 2025 15:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707546;
-	bh=d9IU3pXkKNAgAIbgAmxYcVA6qlZoGRdxKcwzSnRyhZ8=;
+	s=korg; t=1741706277;
+	bh=BWPt6A2IDfJypA+9QNv91m4cuBvOM6nWX+C3G10kk8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qi9QNEqrayW2AdY5tC0+DMdVWjp9Lhe3WfzRcevFzwTAKVhYFlvS5ht6C7oR92qiw
-	 1Tou5wd2B3+UJLzx457mvEoYhVihDx5xQxBBQnAWLnH2z9j4ty0fDslEvzu3MIbhph
-	 iL6Ms5bxAQkD+Wd2LYcRIylmAInutLkicLo4xJsw=
+	b=cf6x4quLe6GhDTgBI4QD9T2AGOfchrB9t9Au2UNZMvP6fb3DjHr/azDWPDz2emjcW
+	 FGefT//GEjxnPnRN0Zmuh0Jyx1d3pY2fHMaSe1F05RG7bL3rJo5sugnKKBsWPbWskK
+	 bxeKcqR0NV8EhSiksI097OXClKSGGr3fIAFxLgTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.10 426/462] usb: renesas_usbhs: Call clk_put()
-Date: Tue, 11 Mar 2025 16:01:32 +0100
-Message-ID: <20250311145815.165452935@linuxfoundation.org>
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	"Ubisectech Sirius" <bugreport@ubisectech.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.4 323/328] Squashfs: check the inode number is not the invalid value of zero
+Date: Tue, 11 Mar 2025 16:01:33 +0100
+Message-ID: <20250311145727.736648716@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit b5ea08aa883da05106fcc683d12489a4292d1122 upstream.
+commit 9253c54e01b6505d348afbc02abaa4d9f8a01395 upstream.
 
-Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
-clk_put() on priv->clks[0] on error path.
+Syskiller has produced an out of bounds access in fill_meta_index().
 
-Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com
+That out of bounds access is ultimately caused because the inode
+has an inode number with the invalid value of zero, which was not checked.
+
+The reason this causes the out of bounds access is due to following
+sequence of events:
+
+1. Fill_meta_index() is called to allocate (via empty_meta_index())
+   and fill a metadata index.  It however suffers a data read error
+   and aborts, invalidating the newly returned empty metadata index.
+   It does this by setting the inode number of the index to zero,
+   which means unused (zero is not a valid inode number).
+
+2. When fill_meta_index() is subsequently called again on another
+   read operation, locate_meta_index() returns the previous index
+   because it matches the inode number of 0.  Because this index
+   has been returned it is expected to have been filled, and because
+   it hasn't been, an out of bounds access is performed.
+
+This patch adds a sanity check which checks that the inode number
+is not zero when the inode is created and returns -EINVAL if it is.
+
+[phillip@squashfs.org.uk: whitespace fix]
+  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
+Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/squashfs/inode.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device
- 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
- 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
- 		priv->clks[1] = NULL;
--	else if (IS_ERR(priv->clks[1]))
-+	else if (IS_ERR(priv->clks[1])) {
-+		clk_put(priv->clks[0]);
- 		return PTR_ERR(priv->clks[1]);
-+	}
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
+ 	gid_t i_gid;
+ 	int err;
  
- 	return 0;
- }
++	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
++	if (inode->i_ino == 0)
++		return -EINVAL;
++
+ 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
+ 	if (err)
+ 		return err;
+@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
+ 
+ 	i_uid_write(inode, i_uid);
+ 	i_gid_write(inode, i_gid);
+-	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
+ 	inode->i_mtime.tv_sec = le32_to_cpu(sqsh_ino->mtime);
+ 	inode->i_atime.tv_sec = inode->i_mtime.tv_sec;
+ 	inode->i_ctime.tv_sec = inode->i_mtime.tv_sec;
 
 
 
