@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A575CA5C716
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF01A5C4D5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E24E617B7B0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F151178822
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB4C25EF84;
-	Tue, 11 Mar 2025 15:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFC025EF80;
+	Tue, 11 Mar 2025 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZRyypCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHi2HUb3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9BC25BACC;
-	Tue, 11 Mar 2025 15:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C162E25E821;
+	Tue, 11 Mar 2025 15:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706864; cv=none; b=Hf2TrqAW8STtLlqY2a3cA2jwAJ04kEztZY5yY/XQcnC0k/DWi9uu9+WdXEjxZpD/z6rej3YAyjUsTTUNpB5rDDAVAhiWw7JyUu0THIIIWGPXQ3lIqjVzDwo4oNogeVyA9XVMdVIdI3bFuN+2W4ePjdBWCbCTjecyYS1hcbTZL/k=
+	t=1741705596; cv=none; b=nVqWGggqMGvgVEKHRqh4AUP+ZC12IAPqnikOWuGOnteeOfFZuRtj87XXumTxJhVwWmagL48lnUqzU0wXvmvvAEA0B9dU6p3wGxVRmHttvqRRnh6fDoJwp7iPWNhkyHO/2oM7rjwG3ihdr4Tix1v30ct4Vfy+Tum4+EnpyoqJdGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706864; c=relaxed/simple;
-	bh=iAKAPYErsQi5pgcRP+RzcYQ0GazQNb7UwhSsnNjFQTc=;
+	s=arc-20240116; t=1741705596; c=relaxed/simple;
+	bh=tgc1mQTPIjxnEOa3aYtK6OYmULeLSvh3Sv0XohHQDGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPdSk0yw+z04iBRIyRi8wpt+RaQ4NaYlYyxzKO9JIb5b5p8bs8GUzaDmWIJB5K0GtVf4CLzH/fYrTEFnwqjRV84XOA7N3Kdh+GdD9PXqyKEAUi69qPYfQa4Xk0GNcmGOVvB57ai7/ElZLbEGBZemqXw+CIF8Ab3nMZeUWKiqEzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZRyypCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7655AC4CEE9;
-	Tue, 11 Mar 2025 15:27:43 +0000 (UTC)
+	 MIME-Version; b=F2kfUoM4djuMY2ooq6Iz6tc7B+AcDG2v1d6SV5bJN6H2m9dBslyuK+hAKo7Z4yOqdwDgB29hlTVRmx6bV9iO7O+jjpAdz15NpJ5mc9JXlExitIEpT+fYJOK7zQ/g6JRJDIJvk7doM1paEekOeduCgOi9QFrbF7viqSbv7/A0+zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHi2HUb3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EFFC4CEEC;
+	Tue, 11 Mar 2025 15:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706863;
-	bh=iAKAPYErsQi5pgcRP+RzcYQ0GazQNb7UwhSsnNjFQTc=;
+	s=korg; t=1741705596;
+	bh=tgc1mQTPIjxnEOa3aYtK6OYmULeLSvh3Sv0XohHQDGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZRyypCWTUivIT8xzf0miVooJ+OR+NlNjnJzN/vDLsrPGucfwCOlBPq121m1ERJwi
-	 clie0HvXG/VPnjz4BOHeY8ORA1/bltPipvL3TYiQtNhwkDdSDyd+ALiseP2k4n05bg
-	 QU6KP7Hb1TXvs6sfEtw9AK4xJOoBHHUW1G8skb8o=
+	b=ZHi2HUb3hjNQvIcfmTOIf/fPRqp7FRH8Ux1uVcOHNfaP2RS9kwr2e7QVKDRY2RtZ0
+	 O+zXCe48jpAyR+sfMWyE0EtJIVmw1tMhWUGyCLqtWuIgEYLsISbVOxKURBusolmbxo
+	 SgnE6vBhvXlnsatbyqXZlZ2Ed98IjHS6zRRZr/Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 5.10 194/462] powerpc/pseries/eeh: Fix get PE state translation
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 090/328] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
 Date: Tue, 11 Mar 2025 15:57:40 +0100
-Message-ID: <20250311145806.023231375@linuxfoundation.org>
+Message-ID: <20250311145718.462774127@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 11b93559000c686ad7e5ab0547e76f21cc143844 upstream.
+[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
 
-The PE Reset State "0" returned by RTAS calls
-"ibm_read_slot_reset_[state|state2]" indicates that the reset is
-deactivated and the PE is in a state where MMIO and DMA are allowed.
-However, the current implementation of "pseries_eeh_get_state()" does
-not reflect this, causing drivers to incorrectly assume that MMIO and
-DMA operations cannot be resumed.
+In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
+instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
+Compile tested only.
 
-The userspace drivers as a part of EEH recovery using VFIO ioctls fail
-to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
-ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
-userspace drivers from functioning properly on pseries systems.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The patch addresses this issue by updating 'pseries_eeh_get_state()'
-to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
-the result mask for PE Reset State "0". This ensures correct state
-reporting to the callers, aligning the behavior with the PAPR specification
-and fixing the bug in EEH recovery for VFIO user workflows.
-
-Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Link: https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250116103954.17324-1-nnmlinux@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/eeh_pseries.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-+++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-@@ -578,8 +578,10 @@ static int pseries_eeh_get_state(struct
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+index a3f094568cfb2..90ae800cbccd0 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+@@ -23445,6 +23445,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
+ 			}
+ 		}
  
- 	switch(rets[0]) {
- 	case 0:
--		result = EEH_STATE_MMIO_ACTIVE |
--			 EEH_STATE_DMA_ACTIVE;
-+		result = EEH_STATE_MMIO_ACTIVE	|
-+			 EEH_STATE_DMA_ACTIVE	|
-+			 EEH_STATE_MMIO_ENABLED	|
-+			 EEH_STATE_DMA_ENABLED;
- 		break;
- 	case 1:
- 		result = EEH_STATE_RESET_ACTIVE |
++		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
++			return;
++
+ 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
+ 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
+ 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
+-- 
+2.39.5
+
 
 
 
