@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-123993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFACA5C897
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FB8A5C894
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F23443BC85C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51C6A3A032E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FA525F796;
-	Tue, 11 Mar 2025 15:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238893C0B;
+	Tue, 11 Mar 2025 15:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvk+OhWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGfkM2/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B32925EF99;
-	Tue, 11 Mar 2025 15:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A5225EFB4;
+	Tue, 11 Mar 2025 15:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707558; cv=none; b=hwVNvCV9P12pQbhAlUSDtNCWO6oB1606Q6Mf73e57bXUcAMNLdDQN8p29+dZyuZCDbtXt5IXshDrpadUgZYX1i3PC3hFJDigQNkNJMVReEf894wxK6oiHcMyqIV2FOUSnF+QJ2gQyGqE9V+e9iG7WLopRVYdAyvzfNmbhNYVpbk=
+	t=1741707563; cv=none; b=B7U3j8/PN+4W8MawPRQ8Z/S616MPX1NoFwEEDWSK+FsH4YJgl6f/O279Yuo0ae5wmhFtaCjs6cw9Zy7Q6OUHtJLT5LT41N8QAebXhA6PW9E+s/6EhI01nQgIZHUG/BAsq8Yyy+lWzFTyNs/SgUuLQbPwkiZvwKbUez0NO03NT38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707558; c=relaxed/simple;
-	bh=oZgeyVZ9nWAD4owHEDYtv5fQktogh9bMIUBZxWhAEko=;
+	s=arc-20240116; t=1741707563; c=relaxed/simple;
+	bh=hjwbALbaSPJdaIVjtnd/F8jwjwz+ZGekAd5eI8jJnpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HM+cAfrFAFk6zAikJT+x8Rm+4nlWgIatDaKVXOnwtl5+oFR7U/gQaw6W/YHXc33Z1g+KZ0ZkgZq+XyY1NfZDq9QaJk27aqBXPR3uiUZQ1UpFt1AaPEmpdb/Mma+qOCb0oUNjJEeU62KzEI/LbVBICUWOJjnyRt+SmFTSnAwGyX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvk+OhWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852B4C4CEE9;
-	Tue, 11 Mar 2025 15:39:17 +0000 (UTC)
+	 MIME-Version; b=sx6pIQ+pQpgo1UrnD6DI9JFlMEKqpQMmNUyTwKH13NIUYiE/i6FBxA0Uo/QJUhfmYJJ8D9d6lT8whs1Topf8MyFW7nRRAgP2E5fV5QtNM+J3wWAF3wKZGzRCeIVDyh24WcHhrXJw6MXHJbK8HTYJqg7fEqwp2uSQjX6D8P1VvlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGfkM2/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555ECC4CEE9;
+	Tue, 11 Mar 2025 15:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707557;
-	bh=oZgeyVZ9nWAD4owHEDYtv5fQktogh9bMIUBZxWhAEko=;
+	s=korg; t=1741707563;
+	bh=hjwbALbaSPJdaIVjtnd/F8jwjwz+ZGekAd5eI8jJnpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvk+OhWjA6QH1tXeR9Z40MpnPFESZKHpcqeQ0rDJr4C2u8zExEhoOImfdFG9AKaTI
-	 XixB0SRYwtYz+nkoG5TpKszqkyDV8xBkpWp8jEl7GMcAen8BPLw6uQcpjhcwpJBoxJ
-	 9MweCXEKwOXhjJX9oZ7hw3bc1XO07JDxb28tUicY=
+	b=jGfkM2/VKr2pxgCpjtinZr1qK8R0f3vBHm7DZPjyYsqybSiuf60kF9oHk7XUls5qr
+	 rkRi+LF9xha7tn1bGS3vHMMw184ILJY9blMG+otCj5XxjXegqevmCkzJN06GaLU2FC
+	 1qVI4cm1Z3TPl+lXgECSi8YhBrJAm1liGrbQc65k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	syzbot+ccbbc229a024fa3e13b5@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 430/462] usb: atm: cxacru: fix a flaw in existing endpoint checks
-Date: Tue, 11 Mar 2025 16:01:36 +0100
-Message-ID: <20250311145815.322173614@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <boddah8794@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 431/462] usb: typec: ucsi: increase timeout for PPM reset operations
+Date: Tue, 11 Mar 2025 16:01:37 +0100
+Message-ID: <20250311145815.361390948@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -66,84 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Fedor Pchelkin <boddah8794@gmail.com>
 
-commit c90aad369899a607cfbc002bebeafd51e31900cd upstream.
+commit bf4f9ae1cb08ccaafbe6874be6c46f59b83ae778 upstream.
 
-Syzbot once again identified a flaw in usb endpoint checking, see [1].
-This time the issue stems from a commit authored by me (2eabb655a968
-("usb: atm: cxacru: fix endpoint checking in cxacru_bind()")).
+It is observed that on some systems an initial PPM reset during the boot
+phase can trigger a timeout:
 
-While using usb_find_common_endpoints() may usually be enough to
-discard devices with wrong endpoints, in this case one needs more
-than just finding and identifying the sufficient number of endpoints
-of correct types - one needs to check the endpoint's address as well.
+[    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
+[    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
 
-Since cxacru_bind() fills URBs with CXACRU_EP_CMD address in mind,
-switch the endpoint verification approach to usb_check_XXX_endpoints()
-instead to fix incomplete ep testing.
+Still, increasing the timeout value, albeit being the most straightforward
+solution, eliminates the problem: the initial PPM reset may take up to
+~8000-10000ms on some Lenovo laptops. When it is reset after the above
+period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
+works as expected.
 
-[1] Syzbot report:
-usb 5-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 0 PID: 1378 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
-...
-RIP: 0010:usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
-...
-Call Trace:
- <TASK>
- cxacru_cm+0x3c8/0xe50 drivers/usb/atm/cxacru.c:649
- cxacru_card_status drivers/usb/atm/cxacru.c:760 [inline]
- cxacru_bind+0xcf9/0x1150 drivers/usb/atm/cxacru.c:1223
- usbatm_usb_probe+0x314/0x1d30 drivers/usb/atm/usbatm.c:1058
- cxacru_usb_probe+0x184/0x220 drivers/usb/atm/cxacru.c:1377
- usb_probe_interface+0x641/0xbb0 drivers/usb/core/driver.c:396
- really_probe+0x2b9/0xad0 drivers/base/dd.c:658
- __driver_probe_device+0x1a2/0x390 drivers/base/dd.c:800
- driver_probe_device+0x50/0x430 drivers/base/dd.c:830
-...
+Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
+system has booted, reading the CCI values and resetting the PPM works
+perfectly, without any timeout. Thus it's only a boot-time issue.
 
-Reported-and-tested-by: syzbot+ccbbc229a024fa3e13b5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ccbbc229a024fa3e13b5
-Fixes: 2eabb655a968 ("usb: atm: cxacru: fix endpoint checking in cxacru_bind()")
-Cc: stable@kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20250213122259.730772-1-n.zhandarovich@fintech.ru
+The reason for this behavior is not clear but it may be the consequence
+of some tricks that the firmware performs or be an actual firmware bug.
+As a workaround, increase the timeout to avoid failing the UCSI
+initialization prematurely.
+
+Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion timeout value")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250217105442.113486-3-boddah8794@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/atm/cxacru.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -1134,7 +1134,10 @@ static int cxacru_bind(struct usbatm_dat
- 	struct cxacru_data *instance;
- 	struct usb_device *usb_dev = interface_to_usbdev(intf);
- 	struct usb_host_endpoint *cmd_ep = usb_dev->ep_in[CXACRU_EP_CMD];
--	struct usb_endpoint_descriptor *in, *out;
-+	static const u8 ep_addrs[] = {
-+		CXACRU_EP_CMD + USB_DIR_IN,
-+		CXACRU_EP_CMD + USB_DIR_OUT,
-+		0};
- 	int ret;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -25,7 +25,7 @@
+  * difficult to estimate the time it takes for the system to process the command
+  * before it is actually passed to the PPM.
+  */
+-#define UCSI_TIMEOUT_MS		5000
++#define UCSI_TIMEOUT_MS		10000
  
- 	/* instance init */
-@@ -1182,13 +1185,11 @@ static int cxacru_bind(struct usbatm_dat
- 	}
- 
- 	if (usb_endpoint_xfer_int(&cmd_ep->desc))
--		ret = usb_find_common_endpoints(intf->cur_altsetting,
--						NULL, NULL, &in, &out);
-+		ret = usb_check_int_endpoints(intf, ep_addrs);
- 	else
--		ret = usb_find_common_endpoints(intf->cur_altsetting,
--						&in, &out, NULL, NULL);
-+		ret = usb_check_bulk_endpoints(intf, ep_addrs);
- 
--	if (ret) {
-+	if (!ret) {
- 		usb_err(usbatm_instance, "cxacru_bind: interface has incorrect endpoints\n");
- 		ret = -ENODEV;
- 		goto fail;
+ /*
+  * UCSI_SWAP_TIMEOUT_MS - Timeout for role swap requests
 
 
 
