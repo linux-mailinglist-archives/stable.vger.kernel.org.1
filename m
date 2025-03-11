@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-123456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EA7A5C59D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE03A5C58C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96F9F189BE78
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C340189B486
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AF725DAFD;
-	Tue, 11 Mar 2025 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBA325E800;
+	Tue, 11 Mar 2025 15:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmHny3kc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9OqTU2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06CA25C715;
-	Tue, 11 Mar 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E136D25DD0B;
+	Tue, 11 Mar 2025 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706007; cv=none; b=fNaxM3MOoSaUKgzR+4P4bQphbAiGkCPAxMakaYJFoB0VTERGGxJEGnMbEa3Tvtv69lL9cLDRddiO/hNRT9ynr8owQ5ifHT9cJMCcGJyqCcx2EJx0F5khiB7e85cru5iNkLRvzd5+ZP7sHDKaL1HoKu4IGO2b6lBsy1fKGqcT/js=
+	t=1741705950; cv=none; b=MlPO//o0tt5udNVpGLVTS54qa3tqnY4qTRY9RUk4Lpm85scnoZMVgln3mtLpRPfVb25IwHZjNeECGiwm6/lsZL5LNRC4MHUt8+4ELIc/qFhohiJ9Mmeg+ErzShdTVbGpB515PVl1RBBKqR7UI6JfT6eGXFdBY7h1CB6rl2a/nxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706007; c=relaxed/simple;
-	bh=doguaz9OUDOcmyJ4aLim7jlsPL7ZttvNhc66ZdF2hmc=;
+	s=arc-20240116; t=1741705950; c=relaxed/simple;
+	bh=7N3a5h6knIjxQJTKzEVzofJ3DOrBsYwxVVCmcdaMYao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2CTvhE/q11TY3fKbXEeR1MxOr7ab10sv2MYZiz4+U9U18QxHQbn7xUwdXoovpk7WYM8TjZhyK1pnwbZSfY4h/wjqSo5bgDvBe5D0Jam8SRen1DRMPU1WphuhDPUJDg5GoeRp6515+SuW4HPX1P9OpJcapDrF5NzYrrk1n5+78M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZmHny3kc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CCFC4CEE9;
-	Tue, 11 Mar 2025 15:13:27 +0000 (UTC)
+	 MIME-Version; b=se3vzwtCk4MYjkrLEqXpEogB07xsRhTkXzUshPNI/ZlWjc1ike+M90ZxY9wuBPw2hIP+fmeq55QvKIDvIhH0K+k30ND+Hj9Je0UvqYepMbJK8pQRikpAL7zY7mg33ryKlEM2CnZotH1ZX+9NT9HRc72sn6HK8Fou1+PGyqnZ6b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9OqTU2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64265C4CEE9;
+	Tue, 11 Mar 2025 15:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706007;
-	bh=doguaz9OUDOcmyJ4aLim7jlsPL7ZttvNhc66ZdF2hmc=;
+	s=korg; t=1741705949;
+	bh=7N3a5h6knIjxQJTKzEVzofJ3DOrBsYwxVVCmcdaMYao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZmHny3kcBoxMoCDOjQwmvc063YR7uAYXOdQUJheyRjUa2i/7wMa7wK669g7L/yuZD
-	 ShCmbiMnadEe7E8Wqzu/mZebqkyYqFmLeMhPBKZ0PkPw4r6S0shAtTrcW/P1ACPysq
-	 caC8m87HNzt7bmUjCLUzaoKC9p9z+Uh7NuOgvVO0=
+	b=b9OqTU2dV0eSo6DnD288rBrtkExx2F4YDJVvRKXq7TMOarFiT8dEn1W3eyahx4uOM
+	 vTXqrLniqGbCAJP9RzAqXxa3bERfMk87WMvwT1i8TfArm7/H/T3CWphiaCzH+oEouy
+	 B0iKpP0PobA9pnq8ow4cmG2uWhiEQhLH/DBeHSdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 202/328] net: add dev_net_rcu() helper
-Date: Tue, 11 Mar 2025 15:59:32 +0100
-Message-ID: <20250311145722.930511203@linuxfoundation.org>
+Subject: [PATCH 5.4 203/328] ipv4: use RCU protection in rt_is_expired()
+Date: Tue, 11 Mar 2025 15:59:33 +0100
+Message-ID: <20250311145722.970388252@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -69,58 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 482ad2a4ace2740ca0ff1cbc8f3c7f862f3ab507 ]
+[ Upstream commit dd205fcc33d92d54eee4d7f21bb073af9bd5ce2b ]
 
-dev->nd_net can change, readers should either
-use rcu_read_lock() or RTNL.
+rt_is_expired() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-We currently use a generic helper, dev_net() with
-no debugging support. We probably have many hidden bugs.
-
-Add dev_net_rcu() helper for callers using rcu_read_lock()
-protection.
-
+Fixes: e84f84f27647 ("netns: place rt_genid into struct net")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-2-edumazet@google.com
+Link: https://patch.msgid.link/20250205155120.1676781-6-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: dd205fcc33d9 ("ipv4: use RCU protection in rt_is_expired()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h   | 6 ++++++
- include/net/net_namespace.h | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ net/ipv4/route.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index a6bb64dccb888..f5c1058f565c8 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2216,6 +2216,12 @@ struct net *dev_net(const struct net_device *dev)
- 	return read_pnet(&dev->nd_net);
- }
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f3e77b1e1d4b9..da280a2df4e66 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -423,7 +423,13 @@ static inline int ip_rt_proc_init(void)
  
-+static inline
-+struct net *dev_net_rcu(const struct net_device *dev)
-+{
-+	return read_pnet_rcu(&dev->nd_net);
-+}
+ static inline bool rt_is_expired(const struct rtable *rth)
+ {
+-	return rth->rt_genid != rt_genid_ipv4(dev_net(rth->dst.dev));
++	bool res;
 +
- static inline
- void dev_net_set(struct net_device *dev, struct net *net)
- {
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 6ce0ec2dd2032..334286b57994b 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -330,7 +330,7 @@ static inline struct net *read_pnet(const possible_net_t *pnet)
- #endif
++	rcu_read_lock();
++	res = rth->rt_genid != rt_genid_ipv4(dev_net_rcu(rth->dst.dev));
++	rcu_read_unlock();
++
++	return res;
  }
  
--static inline struct net *read_pnet_rcu(possible_net_t *pnet)
-+static inline struct net *read_pnet_rcu(const possible_net_t *pnet)
- {
- #ifdef CONFIG_NET_NS
- 	return rcu_dereference(pnet->net);
+ void rt_cache_flush(struct net *net)
 -- 
 2.39.5
 
