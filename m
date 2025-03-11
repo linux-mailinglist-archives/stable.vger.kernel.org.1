@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563B4A5C621
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:22:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8822A5C876
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20F433A9616
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BCF0188ADFE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F260D249F9;
-	Tue, 11 Mar 2025 15:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E1825EFAB;
+	Tue, 11 Mar 2025 15:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1g4bYDDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAwo4cSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AC11BD00C;
-	Tue, 11 Mar 2025 15:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C610C1E98EC;
+	Tue, 11 Mar 2025 15:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706260; cv=none; b=jwSqF90BtU0Yld82TNZdRK7UPe+g06xmkUgabukDBFYD9Gw7hM5vYHoGxlxVYr1F6yzl85viMjrfe+qf/E9UeKXaIjGZkmt6eMZ/D02DLgDqxTFwAA+WYqs6w3iAd201YRLaTzU9ZviRklyKgv+2+zpA5IbenT9l76oocSdcJvA=
+	t=1741707531; cv=none; b=cSM7E/5YfRRwbCTWjk579gsaQdP87W3WfEVHpwdCyMwka3G99m9Yi6ohwO650NwLFIll15zzCr8DviQWIGYkYgOzzFP0awSdcqOwiEEOAx0snnf7KeRa++EVFR+xyxU19SgYNUD1jOSF3jFTVeMF64a/lMdyZRa0vMEroKdWFpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706260; c=relaxed/simple;
-	bh=i5xMx2i0cv5AHmxPBhn2dB1V87/zj+Ay56z9s60mpwo=;
+	s=arc-20240116; t=1741707531; c=relaxed/simple;
+	bh=sVzDzMYGqHnXQLu3h9/YG9OHpf8eeZuLtq9adn9fWqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JC9LfMH4CZgRzPA6yAPJGIq267TH/bbyTLIl5vXEkGcKbWRMm0KkVqObcSdC12kQj5DnR8q41C6JyPhEvmNvKQf1vUuPBtKrVwsbbLnzrltzvaSDjEhNV56Txt3LWS1A806PrBWyH7vg+sPZi6wuvGIUdWLgzJ6ZPwajjJEffmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1g4bYDDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACF6C4CEE9;
-	Tue, 11 Mar 2025 15:17:40 +0000 (UTC)
+	 MIME-Version; b=P83XjUelXIIa7JFao8uovJB1oVieik9QWx9T1j0aRAyXjYo5vSBtToqIIq/f+fbGL4ACNqrxwlvbWIe1sVrQvM8lpJeXpWaI0EpvceHP2JMxpnuZIrdUMIRIaJ+3kY70mEFXg29zJWTx6IEhBcm3OZutOARAP7nadXzxSSK3XS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAwo4cSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC8DC4CEE9;
+	Tue, 11 Mar 2025 15:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706260;
-	bh=i5xMx2i0cv5AHmxPBhn2dB1V87/zj+Ay56z9s60mpwo=;
+	s=korg; t=1741707531;
+	bh=sVzDzMYGqHnXQLu3h9/YG9OHpf8eeZuLtq9adn9fWqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1g4bYDDvzAcxR8XyBIV33AgvNMMCE5OybSqVqzmj2WKjlySUCOEE8IYJgBIRbmYJS
-	 Ln8EcMjC/J0qfXAqKVYEhnJEkFCgr8hVhXR3qhzs5fAZT30c285WpeGGBqCXkVXoOd
-	 tCQ7xdc1mUSnAFktAgr/KioJrZRc5VEwYoND5lF4=
+	b=pAwo4cSKqhogXBZ2GEylodp/QHMMALt907Ye+F/xTRKcnJFLYTKgxg+ezwNSB1YFZ
+	 TB4pU6SdfyoxSoSYWXl8TSyhfpy/wkWj2smyvCYqmfSLtB38G9pYuoAq9i4LM3FH8X
+	 pqd1AZJPWJvQWZ1KXj4CnEVgvn+QZ8gCMRfTwcg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <boddah8794@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 317/328] usb: typec: ucsi: increase timeout for PPM reset operations
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 421/462] net-timestamp: support TCP GSO case for a few missing flags
 Date: Tue, 11 Mar 2025 16:01:27 +0100
-Message-ID: <20250311145727.501272953@linuxfoundation.org>
+Message-ID: <20250311145814.967573874@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <boddah8794@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-commit bf4f9ae1cb08ccaafbe6874be6c46f59b83ae778 upstream.
+[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
 
-It is observed that on some systems an initial PPM reset during the boot
-phase can trigger a timeout:
+When I read through the TSO codes, I found out that we probably
+miss initializing the tx_flags of last seg when TSO is turned
+off, which means at the following points no more timestamp
+(for this last one) will be generated. There are three flags
+to be handled in this patch:
+1. SKBTX_HW_TSTAMP
+2. SKBTX_BPF
+3. SKBTX_SCHED_TSTAMP
+Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
+6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
+and only belongs to net-next branch material for now. The common
+issue of the above three flags can be fixed by this single patch.
 
-[    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
-[    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
+This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
+the UDP GSO does to make the newly segmented last skb inherit the
+tx_flags so that requested timestamp will be generated in each
+certain layer, or else that last one has zero value of tx_flags
+which leads to no timestamp at all.
 
-Still, increasing the timeout value, albeit being the most straightforward
-solution, eliminates the problem: the initial PPM reset may take up to
-~8000-10000ms on some Lenovo laptops. When it is reset after the above
-period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
-works as expected.
-
-Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
-system has booted, reading the CCI values and resetting the PPM works
-perfectly, without any timeout. Thus it's only a boot-time issue.
-
-The reason for this behavior is not clear but it may be the consequence
-of some tricks that the firmware performs or be an actual firmware bug.
-As a workaround, increase the timeout to avoid failing the UCSI
-initialization prematurely.
-
-Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion timeout value")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250217105442.113486-3-boddah8794@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_offload.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -28,7 +28,7 @@
-  * difficult to estimate the time it takes for the system to process the command
-  * before it is actually passed to the PPM.
-  */
--#define UCSI_TIMEOUT_MS		5000
-+#define UCSI_TIMEOUT_MS		10000
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index fc61cd3fea652..27b7887f4f4eb 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -11,12 +11,15 @@
+ #include <net/tcp.h>
+ #include <net/protocol.h>
  
- /*
-  * UCSI_SWAP_TIMEOUT_MS - Timeout for role swap requests
+-static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
++static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
+ 			   unsigned int seq, unsigned int mss)
+ {
++	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
++	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
++
+ 	while (skb) {
+ 		if (before(ts_seq, seq + mss)) {
+-			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
++			skb_shinfo(skb)->tx_flags |= flags;
+ 			skb_shinfo(skb)->tskey = ts_seq;
+ 			return;
+ 		}
+@@ -115,8 +118,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	th = tcp_hdr(skb);
+ 	seq = ntohl(th->seq);
+ 
+-	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
+-		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
++	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
++		tcp_gso_tstamp(segs, gso_skb, seq, mss);
+ 
+ 	newcheck = ~csum_fold((__force __wsum)((__force u32)th->check +
+ 					       (__force u32)delta));
+-- 
+2.39.5
+
 
 
 
