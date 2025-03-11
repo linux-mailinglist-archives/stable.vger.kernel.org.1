@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D8BA5C839
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47412A5C5FF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24B7818838B9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:37:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436CC3B3C67
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F6D3C0B;
-	Tue, 11 Mar 2025 15:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51B02571D8;
+	Tue, 11 Mar 2025 15:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0OgTV6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M835Fcl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58E425B691;
-	Tue, 11 Mar 2025 15:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9381C249F9;
+	Tue, 11 Mar 2025 15:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707438; cv=none; b=Y/IOI0eLQCDJAGl4x7J97wbPbwStGWAtS3vbhjBWz4/BAN98A6DT5JYJntuWd1364ZfuzHI/0t0POQ4l1MK6cVRBMw6SmfaeSbPCEeKGg7SZd1e/q4V7Qb0KzmLRhlAmJP6yTtb5/SyPO60owiGhhBKpzgvTneZYuMrN4JCGJS8=
+	t=1741706196; cv=none; b=Q2Wifl5Gm4zDNUtsWdtpcg/5mXypLkx9Kiel0hI4um+DtutGQj/qeFpTKYnUf1rJtUeW/E856xbekpnLuOhj297z4PudTWKnvzNa3iLNzbtQ1vI4cj2JLCeZY/AIKnRNfpzWh24om11paj6xpRa7y0w+kGAmrjFNb8VW84MC7zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707438; c=relaxed/simple;
-	bh=zVlNGeoHeG9x4da/9GpXLK5gN8oA+GKMqwXnU6oD1wg=;
+	s=arc-20240116; t=1741706196; c=relaxed/simple;
+	bh=tXmmBOUcHqxivsTqE3ADx+bPBmH0j/Yv3LZDuXMOyXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTRwTccqWL7ZfFab5zhX/ih1MOqKkrs8QL09p+oWp24b1uNkZW+qNpk9QFq/hhVM+iDa23AvdMf+KxgS0iMa7a/iv07H7AY4sWVdcY0WDjIanP6kQVqch+bfo32EiQ5/s7hxfAlGEYmPq2ZpAka6NewccJUTfJbcPrpgSuvr2vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0OgTV6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB45C4CEE9;
-	Tue, 11 Mar 2025 15:37:18 +0000 (UTC)
+	 MIME-Version; b=YNBGAMW3KUFpocCjW5Hhutj65b6+hCACZlLahAW/Y6o+ObmHWwEd8RLE1nyCZQJ3MK4TY7W5TJ6BGblpEE40Ac2TKH5QdsLWvIRJkI5P0ShBLq/QWMucEDeszz2VnKDl7wUVT1nm/+gpfAZw3/mP84wwOqudhRrr+WLP20dbtXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M835Fcl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFB6C4CEE9;
+	Tue, 11 Mar 2025 15:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707438;
-	bh=zVlNGeoHeG9x4da/9GpXLK5gN8oA+GKMqwXnU6oD1wg=;
+	s=korg; t=1741706196;
+	bh=tXmmBOUcHqxivsTqE3ADx+bPBmH0j/Yv3LZDuXMOyXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0OgTV6E1dTAseM6LGmqrsw4mU5gqBxlOgj7md+qMQezgk2ffdVv5fY4MFpjx9Dfl
-	 9FeNzYLwa+39Ub8I7Q1Uf6bz/LDKovF9dEwAnoXH+MdTSz3YpPp4H8XlkIGjMWSLaS
-	 +2RDlkToLmq5Ux2TTUd9PWi/S+Z6C7BSBG+I/3dc=
+	b=M835Fcl6HXE13AF8R1DPGngJUgJ2XIp0WgR0mXHCozYYX+ghUBseS6fJGIh9yRNg3
+	 xrG6rY2eza8BFc1lldFf8NtS/72KD2eBK3WXJ45IF2mDNH53AaNxSTSIhbsDWU/33Q
+	 RcDPFuWVmIYhH593vOgbzjo7fu//GA0zvbUKNoB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.10 390/462] gpio: aggregator: protect driver attr handlers against module unload
-Date: Tue, 11 Mar 2025 16:00:56 +0100
-Message-ID: <20250311145813.746852499@linuxfoundation.org>
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.4 287/328] x86/cpu: Properly parse CPUID leaf 0x2 TLB descriptor 0x63
+Date: Tue, 11 Mar 2025 16:00:57 +0100
+Message-ID: <20250311145726.317252906@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,137 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit 12f65d1203507f7db3ba59930fe29a3b8eee9945 upstream.
+commit f6bdaab79ee4228a143ee1b4cb80416d6ffc0c63 upstream.
 
-Both new_device_store and delete_device_store touch module global
-resources (e.g. gpio_aggregator_lock). To prevent race conditions with
-module unload, a reference needs to be held.
+CPUID leaf 0x2's one-byte TLB descriptors report the number of entries
+for specific TLB types, among other properties.
 
-Add try_module_get() in these handlers.
+Typically, each emitted descriptor implies the same number of entries
+for its respective TLB type(s).  An emitted 0x63 descriptor is an
+exception: it implies 4 data TLB entries for 1GB pages and 32 data TLB
+entries for 2MB or 4MB pages.
 
-For new_device_store, this eliminates what appears to be the most dangerous
-scenario: if an id is allocated from gpio_aggregator_idr but
-platform_device_register has not yet been called or completed, a concurrent
-module unload could fail to unregister/delete the device, leaving behind a
-dangling platform device/GPIO forwarder. This can result in various issues.
-The following simple reproducer demonstrates these problems:
+For the TLB descriptors parsing code, the entry count for 1GB pages is
+encoded at the intel_tlb_table[] mapping, but the 2MB/4MB entry count is
+totally ignored.
 
-  #!/bin/bash
-  while :; do
-    # note: whether 'gpiochip0 0' exists or not does not matter.
-    echo 'gpiochip0 0' > /sys/bus/platform/drivers/gpio-aggregator/new_device
-  done &
-  while :; do
-    modprobe gpio-aggregator
-    modprobe -r gpio-aggregator
-  done &
-  wait
+Update leaf 0x2's parsing logic 0x2 to account for 32 data TLB entries
+for 2MB/4MB pages implied by the 0x63 descriptor.
 
-  Starting with the following warning, several kinds of warnings will appear
-  and the system may become unstable:
-
-  ------------[ cut here ]------------
-  list_del corruption, ffff888103e2e980->next is LIST_POISON1 (dead000000000100)
-  WARNING: CPU: 1 PID: 1327 at lib/list_debug.c:56 __list_del_entry_valid_or_report+0xa3/0x120
-  [...]
-  RIP: 0010:__list_del_entry_valid_or_report+0xa3/0x120
-  [...]
-  Call Trace:
-   <TASK>
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   ? __warn.cold+0x93/0xf2
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   ? report_bug+0xe6/0x170
-   ? __irq_work_queue_local+0x39/0xe0
-   ? handle_bug+0x58/0x90
-   ? exc_invalid_op+0x13/0x60
-   ? asm_exc_invalid_op+0x16/0x20
-   ? __list_del_entry_valid_or_report+0xa3/0x120
-   gpiod_remove_lookup_table+0x22/0x60
-   new_device_store+0x315/0x350 [gpio_aggregator]
-   kernfs_fop_write_iter+0x137/0x1f0
-   vfs_write+0x262/0x430
-   ksys_write+0x60/0xd0
-   do_syscall_64+0x6c/0x180
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   [...]
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-Fixes: 828546e24280 ("gpio: Add GPIO Aggregator")
-Cc: stable@vger.kernel.org
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Link: https://lore.kernel.org/r/20250224143134.3024598-2-koichiro.den@canonical.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-4-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-aggregator.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/intel.c |   60 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 39 insertions(+), 21 deletions(-)
 
---- a/drivers/gpio/gpio-aggregator.c
-+++ b/drivers/gpio/gpio-aggregator.c
-@@ -173,10 +173,15 @@ static ssize_t new_device_store(struct d
- 	struct platform_device *pdev;
- 	int res, id;
- 
-+	if (!try_module_get(THIS_MODULE))
-+		return -ENOENT;
-+
- 	/* kernfs guarantees string termination, so count + 1 is safe */
- 	aggr = kzalloc(sizeof(*aggr) + count + 1, GFP_KERNEL);
--	if (!aggr)
--		return -ENOMEM;
-+	if (!aggr) {
-+		res = -ENOMEM;
-+		goto put_module;
-+	}
- 
- 	memcpy(aggr->args, buf, count + 1);
- 
-@@ -215,6 +220,7 @@ static ssize_t new_device_store(struct d
- 	}
- 
- 	aggr->pdev = pdev;
-+	module_put(THIS_MODULE);
- 	return count;
- 
- remove_table:
-@@ -229,6 +235,8 @@ free_table:
- 	kfree(aggr->lookups);
- free_ga:
- 	kfree(aggr);
-+put_module:
-+	module_put(THIS_MODULE);
- 	return res;
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -795,26 +795,37 @@ static unsigned int intel_size_cache(str
  }
+ #endif
  
-@@ -257,13 +265,19 @@ static ssize_t delete_device_store(struc
- 	if (error)
- 		return error;
- 
-+	if (!try_module_get(THIS_MODULE))
-+		return -ENOENT;
+-#define TLB_INST_4K	0x01
+-#define TLB_INST_4M	0x02
+-#define TLB_INST_2M_4M	0x03
+-
+-#define TLB_INST_ALL	0x05
+-#define TLB_INST_1G	0x06
+-
+-#define TLB_DATA_4K	0x11
+-#define TLB_DATA_4M	0x12
+-#define TLB_DATA_2M_4M	0x13
+-#define TLB_DATA_4K_4M	0x14
+-
+-#define TLB_DATA_1G	0x16
+-
+-#define TLB_DATA0_4K	0x21
+-#define TLB_DATA0_4M	0x22
+-#define TLB_DATA0_2M_4M	0x23
+-
+-#define STLB_4K		0x41
+-#define STLB_4K_2M	0x42
++#define TLB_INST_4K		0x01
++#define TLB_INST_4M		0x02
++#define TLB_INST_2M_4M		0x03
 +
- 	mutex_lock(&gpio_aggregator_lock);
- 	aggr = idr_remove(&gpio_aggregator_idr, id);
- 	mutex_unlock(&gpio_aggregator_lock);
--	if (!aggr)
-+	if (!aggr) {
-+		module_put(THIS_MODULE);
- 		return -ENOENT;
-+	}
++#define TLB_INST_ALL		0x05
++#define TLB_INST_1G		0x06
++
++#define TLB_DATA_4K		0x11
++#define TLB_DATA_4M		0x12
++#define TLB_DATA_2M_4M		0x13
++#define TLB_DATA_4K_4M		0x14
++
++#define TLB_DATA_1G		0x16
++#define TLB_DATA_1G_2M_4M	0x17
++
++#define TLB_DATA0_4K		0x21
++#define TLB_DATA0_4M		0x22
++#define TLB_DATA0_2M_4M		0x23
++
++#define STLB_4K			0x41
++#define STLB_4K_2M		0x42
++
++/*
++ * All of leaf 0x2's one-byte TLB descriptors implies the same number of
++ * entries for their respective TLB types.  The 0x63 descriptor is an
++ * exception: it implies 4 dTLB entries for 1GB pages 32 dTLB entries
++ * for 2MB or 4MB pages.  Encode descriptor 0x63 dTLB entry count for
++ * 2MB/4MB pages here, as its count for dTLB 1GB pages is already at the
++ * intel_tlb_table[] mapping.
++ */
++#define TLB_0x63_2M_4M_ENTRIES	32
  
- 	gpio_aggregator_free(aggr);
-+	module_put(THIS_MODULE);
- 	return count;
- }
- static DRIVER_ATTR_WO(delete_device);
+ static const struct _tlb_table intel_tlb_table[] = {
+ 	{ 0x01, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages, 4-way set associative" },
+@@ -836,7 +847,8 @@ static const struct _tlb_table intel_tlb
+ 	{ 0x5c, TLB_DATA_4K_4M,		128,	" TLB_DATA 4 KByte and 4 MByte pages" },
+ 	{ 0x5d, TLB_DATA_4K_4M,		256,	" TLB_DATA 4 KByte and 4 MByte pages" },
+ 	{ 0x61, TLB_INST_4K,		48,	" TLB_INST 4 KByte pages, full associative" },
+-	{ 0x63, TLB_DATA_1G,		4,	" TLB_DATA 1 GByte pages, 4-way set associative" },
++	{ 0x63, TLB_DATA_1G_2M_4M,	4,	" TLB_DATA 1 GByte pages, 4-way set associative"
++						" (plus 32 entries TLB_DATA 2 MByte or 4 MByte pages, not encoded here)" },
+ 	{ 0x6b, TLB_DATA_4K,		256,	" TLB_DATA 4 KByte pages, 8-way associative" },
+ 	{ 0x6c, TLB_DATA_2M_4M,		128,	" TLB_DATA 2 MByte or 4 MByte pages, 8-way associative" },
+ 	{ 0x6d, TLB_DATA_1G,		16,	" TLB_DATA 1 GByte pages, fully associative" },
+@@ -936,6 +948,12 @@ static void intel_tlb_lookup(const unsig
+ 		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
+ 			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
+ 		break;
++	case TLB_DATA_1G_2M_4M:
++		if (tlb_lld_2m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
++			tlb_lld_2m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
++		if (tlb_lld_4m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
++			tlb_lld_4m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
++		fallthrough;
+ 	case TLB_DATA_1G:
+ 		if (tlb_lld_1g[ENTRIES] < intel_tlb_table[k].entries)
+ 			tlb_lld_1g[ENTRIES] = intel_tlb_table[k].entries;
 
 
 
