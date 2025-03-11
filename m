@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295D1A5C7A5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9933EA5C561
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D953B94BD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6128F3B3FCA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC0A1CAA8F;
-	Tue, 11 Mar 2025 15:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D562125E805;
+	Tue, 11 Mar 2025 15:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2BkzS/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uvwa9Bpv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8953E25BAAA;
-	Tue, 11 Mar 2025 15:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FE125DB0D;
+	Tue, 11 Mar 2025 15:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707075; cv=none; b=gH95Uf6kYSSnE03hbPT+wrvP87RAoQ9a0Y6N7g/ZV7B3ft4BStCDpPYWCC1dQZ1Sn4k4ghtv4zVTgaYDVlWcseT4AgvKIFp38DVWamtqskfqQzSXsalZKEe/EtD4pwGl2wMLBZjCk1P0eEH8Mn89CCFZFylNLRVVssXVzX+aOlk=
+	t=1741705866; cv=none; b=WO8BG4LGBa7MY6aGcy3KEjeO47cJhh2mD2aNXKi8H5e5giBWRxhnHtjIf4imC1bBfRcFd7IV5Lb5nY8gWJDiEIaWeBvXUdnIQZXIIEryw505GT8VKzRrUkAz8e23fPhuaCf+GVvs+rGbSGrQNHacPGqsJo0ES6uXTXJH8NXmgaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707075; c=relaxed/simple;
-	bh=M244cNiTGIOXJn9+do7OoUwu3QAj4hvpbWtPWSGSvA0=;
+	s=arc-20240116; t=1741705866; c=relaxed/simple;
+	bh=Qj4QAnVcZ/Fz+ofw4DqlHSZ5rdPGuab+cnB9JkXQzro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atF65TN8SleArDhnBYrD5Cf7RFW3mmDUbVgliwZrUNRFYOKUM65gRqokUGkTQySfAZHOnAlaZ30vDKUWHi3bS3AWfmpqDBQEb7aMAVleGGt9jefGEnaktEiAuHtUUyvQOPouDb46VmWNvvYeHFv9qDeprNrV/i3mmXYP4u2EXco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2BkzS/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC15C4CEE9;
-	Tue, 11 Mar 2025 15:31:14 +0000 (UTC)
+	 MIME-Version; b=RqcM28inept6ds7tvyG4BOXW9U695BGu8uTBbgamwhghRrlMdSvH5eJ9pp2j5LXiEh2mrpwSJ4tClKhO+Oz3WTKSNN3XIHLSgp2W5f+4k3oiBx4NUKBI62kDBoG+T9hYRCMZpk2lw19JBSXSOkeQKi7Rhf3Zd1XO5JiPkwKWU3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uvwa9Bpv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14565C4CEE9;
+	Tue, 11 Mar 2025 15:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707075;
-	bh=M244cNiTGIOXJn9+do7OoUwu3QAj4hvpbWtPWSGSvA0=;
+	s=korg; t=1741705866;
+	bh=Qj4QAnVcZ/Fz+ofw4DqlHSZ5rdPGuab+cnB9JkXQzro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2BkzS/V1JbMYcLcQWpKX4JXVkrrunU4YplVEctzbZ7vES5hcT10mG5O3PuUQAk84
-	 JveGYGsjiVAqemUn66abeTwnUfd/7YskVz9AAWpJYxyzFSLsLraNj7AqVJ6Va6uBg+
-	 ssNh85MZ1sjJKapHzd4z8I+6RBZ80ak4MiUv/B9w=
+	b=Uvwa9Bpvoqvhn2q+GmP7UU8d+bJ8fYgVsQVupG2KwcrnlVsZ1nOq9O2N0CXI4G/Tt
+	 +XJLa6nlz0xChRA/zmP5xHinQDueVZ/RkJOPk26qhyAKlFkzA00bXphF2GeLw0vbri
+	 jQIbgjeUKYxUoc/3EHt91Q6QEw4s18On1j41My80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 5.10 265/462] alpha: make stack 16-byte aligned (most cases)
-Date: Tue, 11 Mar 2025 15:58:51 +0100
-Message-ID: <20250311145808.835258592@linuxfoundation.org>
+	Charles Han <hanchunchao@inspur.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 162/328] HID: multitouch: Add NULL check in mt_input_configured
+Date: Tue, 11 Mar 2025 15:58:52 +0100
+Message-ID: <20250311145721.344143822@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Charles Han <hanchunchao@inspur.com>
 
-commit 0a0f7362b0367634a2d5cb7c96226afc116f19c9 upstream.
+[ Upstream commit 9b8e2220d3a052a690b1d1b23019673e612494c5 ]
 
-The problem is that GCC expects 16-byte alignment of the incoming stack
-since early 2004, as Maciej found out [1]:
-  Having actually dug speculatively I can see that the psABI was changed in
- GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
- improperly aligned)") back in Mar 2004, when the stack pointer alignment
- was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
- various suspicious stack pointer adjustments, starting with SP_OFF which
- is not a whole multiple of 16.
+devm_kasprintf() can return a NULL pointer on failure,but this
+returned value in mt_input_configured() is not checked.
+Add NULL check in mt_input_configured(), to handle kernel NULL
+pointer dereference error.
 
-Also, as Magnus noted, "ALPHA Calling Standard" [2] required the same:
- D.3.1 Stack Alignment
-  This standard requires that stacks be octaword aligned at the time a
-  new procedure is invoked.
-
-However:
-- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
-  the odd number of 64-bit words in 'struct pt_regs', which is the very
-  first thing pushed onto the kernel thread stack;
-- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
-  stack depending on numerous factors.
-
-Somehow we got away with it until recently, when we ended up with
-a stack corruption in kernel/smp.c:smp_call_function_single() due to
-its use of 32-byte aligned local data and the compiler doing clever
-things allocating it on the stack.
-
-This adds padding between the PAL-saved and kernel-saved registers
-so that 'struct pt_regs' have an even number of 64-bit words.
-This makes the stack properly aligned for most of the kernel
-code, except two handlers which need special threatment.
-
-Note: struct pt_regs doesn't belong in uapi/asm; this should be fixed,
-but let's put this off until later.
-
-Link: https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/ [1]
-Link: https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf [2]
-
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 479439463529 ("HID: multitouch: Correct devm device reference for hidinput input_dev name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/include/uapi/asm/ptrace.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-multitouch.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/alpha/include/uapi/asm/ptrace.h
-+++ b/arch/alpha/include/uapi/asm/ptrace.h
-@@ -42,6 +42,8 @@ struct pt_regs {
- 	unsigned long trap_a0;
- 	unsigned long trap_a1;
- 	unsigned long trap_a2;
-+/* This makes the stack 16-byte aligned as GCC expects */
-+	unsigned long __pad0;
- /* These are saved by PAL-code: */
- 	unsigned long ps;
- 	unsigned long pc;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 5994e7d1b82d9..cb0bbba5c1c95 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1601,9 +1601,12 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ 		break;
+ 	}
+ 
+-	if (suffix)
++	if (suffix) {
+ 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
+ 						 "%s %s", hdev->name, suffix);
++		if (!hi->input->name)
++			return -ENOMEM;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
