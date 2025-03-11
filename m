@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D29A5C6F7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E05EA5C4B1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553A21770FE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC7577AB1A8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AA125DAEC;
-	Tue, 11 Mar 2025 15:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F2E25E817;
+	Tue, 11 Mar 2025 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llUCANty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqSjdoKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C641A5BA4;
-	Tue, 11 Mar 2025 15:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2AA25DAFF;
+	Tue, 11 Mar 2025 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706800; cv=none; b=sTQsm5ZiBKjTqAVRQ7xi2FPTU4x9QtFGwrJVAqrrws7vq/xLa7V+nqEcVsSN18KdgOYh8kqnTX8sjBhJftCjSq2bs/mdumvA69HI9gBrZb8iwDomEL5l4v0RYo7RZbuKMFrRE0rLwLxfl9Qlp769Ngie9k2Cm+asLN6v/yOWSPI=
+	t=1741705533; cv=none; b=uCXSvvFfaD5jMKkcoU0im1esoOHK/hdMPzqiJJbkVbveSUufcjb6xt1cwxQwUXAxoswrfr47IlUJPrV5V6l8KgFcgexSFXf6Is66r3urDOsx0BLiSdZ9MluXrsI7BLms9fYpFw6VjzuygIPas6DD9r/GgGDOQ3hwj94VRBfxz+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706800; c=relaxed/simple;
-	bh=GIxytDoFBcafkV8wGFs01uTHgYNWPTLDjAShGlgqRD8=;
+	s=arc-20240116; t=1741705533; c=relaxed/simple;
+	bh=6xc3rIASQ0oUb+GyVrlQM/3j5a9lPwqfugJvINy55Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZYDpR/eT+ffODzto7deDzfT681K46PF/CIK9ke2paKyvjf2lcZHd60mtSd2U1Al7ca3gSqqrOGxXX0U//Y0uF0+x+hw/nuMjx/AdG06GNu5xoezCWOIg6zgTBTTBhnQ0vJ7w1VpUq9lea1rX9UNigiWKWnAabi1E3WlmkCBspI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llUCANty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD00FC4CEEA;
-	Tue, 11 Mar 2025 15:26:39 +0000 (UTC)
+	 MIME-Version; b=RGdl7RImil2mxCJ5a/6tEcPrxayZ88ZBCccEc1Dlt/LWw0P3UI7ed51/Ha5UB6H1kmDG+xykIAQ3ItjeunfeOSRkjXkYQb64abTQLFKv7nzLVC5kbIUgXzvItCNcmlqs8LMRveVEadcsCej11BuVtPbxA6GXis0KehCVyGlok/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqSjdoKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C0FC4CEE9;
+	Tue, 11 Mar 2025 15:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706800;
-	bh=GIxytDoFBcafkV8wGFs01uTHgYNWPTLDjAShGlgqRD8=;
+	s=korg; t=1741705532;
+	bh=6xc3rIASQ0oUb+GyVrlQM/3j5a9lPwqfugJvINy55Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=llUCANtywTqdg85e/nCtyLoE5Rtp1pNtqGXRMF2P79pdv6KSYUkpMvslwouDq7Cc5
-	 qaQ5ehyd3AKE4JT9sigrEM4ft280GQaEeB9GST+N+CA2U2cudjsnapnPYcotsGJbMD
-	 6lWpNJ7dxFnaxkU07gulFSkEZoAWnlC2ARySPNsM=
+	b=aqSjdoKN78cn/9/huQK8qigMXQ2R2B2Cosu2ZJ58JCgWdNsBweWuRgKzT+rvC8JZ5
+	 praU6vZ2Fy8RkeBPWxomHkVdoJ8baL945DLEkjBMUYxi101lTZS1GBx2lWaeiZRehL
+	 HF/CObGtJ5Ub11EOsuU9JIF1chGN+BTEedWz8SwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Christoph Schlameuss <schlameuss@linux.ibm.com>
-Subject: [PATCH 5.10 171/462] KVM: s390: vsie: fix some corner-cases when grabbing vsie pages
-Date: Tue, 11 Mar 2025 15:57:17 +0100
-Message-ID: <20250311145805.110998296@linuxfoundation.org>
+	Howard Chu <howardchu95@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 068/328] perf trace: Fix runtime error of index out of bounds
+Date: Tue, 11 Mar 2025 15:57:18 +0100
+Message-ID: <20250311145717.596810473@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Howard Chu <howardchu95@gmail.com>
 
-commit 5f230f41fdd9e799f43a699348dc572bca7159aa upstream.
+[ Upstream commit c7b87ce0dd10b64b68a0b22cb83bbd556e28fe81 ]
 
-We try to reuse the same vsie page when re-executing the vsie with a
-given SCB address. The result is that we use the same shadow SCB --
-residing in the vsie page -- and can avoid flushing the TLB when
-re-running the vsie on a CPU.
+libtraceevent parses and returns an array of argument fields, sometimes
+larger than RAW_SYSCALL_ARGS_NUM (6) because it includes "__syscall_nr",
+idx will traverse to index 6 (7th element) whereas sc->fmt->arg holds 6
+elements max, creating an out-of-bounds access. This runtime error is
+found by UBsan. The error message:
 
-So, when we allocate a fresh vsie page, or when we reuse a vsie page for
-a different SCB address -- reusing the shadow SCB in different context --
-we set ihcpu=0xffff to trigger the flush.
+  $ sudo UBSAN_OPTIONS=print_stacktrace=1 ./perf trace -a --max-events=1
+  builtin-trace.c:1966:35: runtime error: index 6 out of bounds for type 'syscall_arg_fmt [6]'
+    #0 0x5c04956be5fe in syscall__alloc_arg_fmts /home/howard/hw/linux-perf/tools/perf/builtin-trace.c:1966
+    #1 0x5c04956c0510 in trace__read_syscall_info /home/howard/hw/linux-perf/tools/perf/builtin-trace.c:2110
+    #2 0x5c04956c372b in trace__syscall_info /home/howard/hw/linux-perf/tools/perf/builtin-trace.c:2436
+    #3 0x5c04956d2f39 in trace__init_syscalls_bpf_prog_array_maps /home/howard/hw/linux-perf/tools/perf/builtin-trace.c:3897
+    #4 0x5c04956d6d25 in trace__run /home/howard/hw/linux-perf/tools/perf/builtin-trace.c:4335
+    #5 0x5c04956e112e in cmd_trace /home/howard/hw/linux-perf/tools/perf/builtin-trace.c:5502
+    #6 0x5c04956eda7d in run_builtin /home/howard/hw/linux-perf/tools/perf/perf.c:351
+    #7 0x5c04956ee0a8 in handle_internal_command /home/howard/hw/linux-perf/tools/perf/perf.c:404
+    #8 0x5c04956ee37f in run_argv /home/howard/hw/linux-perf/tools/perf/perf.c:448
+    #9 0x5c04956ee8e9 in main /home/howard/hw/linux-perf/tools/perf/perf.c:556
+    #10 0x79eb3622a3b7 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #11 0x79eb3622a47a in __libc_start_main_impl ../csu/libc-start.c:360
+    #12 0x5c04955422d4 in _start (/home/howard/hw/linux-perf/tools/perf/perf+0x4e02d4) (BuildId: 5b6cab2d59e96a4341741765ad6914a4d784dbc6)
 
-However, after we looked up the SCB address in the radix tree, but before
-we grabbed the vsie page by raising the refcount to 2, someone could reuse
-the vsie page for a different SCB address, adjusting page->index and the
-radix tree. In that case, we would be reusing the vsie page with a
-wrong page->index.
+     0.000 ( 0.014 ms): Chrome_ChildIO/117244 write(fd: 238, buf: !, count: 1)                                      = 1
 
-Another corner case is that we might set the SCB address for a vsie
-page, but fail the insertion into the radix tree. Whoever would reuse
-that page would remove the corresponding radix tree entry -- which might
-now be a valid entry pointing at another page, resulting in the wrong
-vsie page getting removed from the radix tree.
-
-Let's handle such races better, by validating that the SCB address of a
-vsie page didn't change after we grabbed it (not reuse for a different
-SCB; the alternative would be performing another tree lookup), and by
-setting the SCB address to invalid until the insertion in the tree
-succeeded (SCB addresses are aligned to 512, so ULONG_MAX is invalid).
-
-These scenarios are rare, the effects a bit unclear, and these issues were
-only found by code inspection. Let's CC stable to be safe.
-
-Fixes: a3508fbe9dc6 ("KVM: s390: vsie: initial support for nested virtualization")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Tested-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Message-ID: <20250107154344.1003072-2-david@redhat.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e58fcfaf4c6 ("perf trace: Allow allocating sc->arg_fmt even without the syscall tracepoint")
+Signed-off-by: Howard Chu <howardchu95@gmail.com>
+Link: https://lore.kernel.org/r/20250122025519.361873-1-howardchu95@gmail.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/vsie.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ tools/perf/builtin-trace.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/s390/kvm/vsie.c
-+++ b/arch/s390/kvm/vsie.c
-@@ -1316,8 +1316,14 @@ static struct vsie_page *get_vsie_page(s
- 	page = radix_tree_lookup(&kvm->arch.vsie.addr_to_page, addr >> 9);
- 	rcu_read_unlock();
- 	if (page) {
--		if (page_ref_inc_return(page) == 2)
--			return page_to_virt(page);
-+		if (page_ref_inc_return(page) == 2) {
-+			if (page->index == addr)
-+				return page_to_virt(page);
-+			/*
-+			 * We raced with someone reusing + putting this vsie
-+			 * page before we grabbed it.
-+			 */
-+		}
- 		page_ref_dec(page);
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index c8c01e706118e..6a444123a0954 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1582,8 +1582,12 @@ static int trace__read_syscall_info(struct trace *trace, int id)
+ 		return PTR_ERR(sc->tp_format);
  	}
  
-@@ -1347,15 +1353,20 @@ static struct vsie_page *get_vsie_page(s
- 			kvm->arch.vsie.next++;
- 			kvm->arch.vsie.next %= nr_vcpus;
- 		}
--		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
-+		if (page->index != ULONG_MAX)
-+			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
-+					  page->index >> 9);
- 	}
--	page->index = addr;
--	/* double use of the same address */
-+	/* Mark it as invalid until it resides in the tree. */
-+	page->index = ULONG_MAX;
-+
-+	/* Double use of the same address or allocation failure. */
- 	if (radix_tree_insert(&kvm->arch.vsie.addr_to_page, addr >> 9, page)) {
- 		page_ref_dec(page);
- 		mutex_unlock(&kvm->arch.vsie.mutex);
- 		return NULL;
- 	}
-+	page->index = addr;
- 	mutex_unlock(&kvm->arch.vsie.mutex);
++	/*
++	 * The tracepoint format contains __syscall_nr field, so it's one more
++	 * than the actual number of syscall arguments.
++	 */
+ 	if (syscall__alloc_arg_fmts(sc, IS_ERR(sc->tp_format) ?
+-					RAW_SYSCALL_ARGS_NUM : sc->tp_format->format.nr_fields))
++					RAW_SYSCALL_ARGS_NUM : sc->tp_format->format.nr_fields - 1))
+ 		return -ENOMEM;
  
- 	vsie_page = page_to_virt(page);
-@@ -1448,7 +1459,9 @@ void kvm_s390_vsie_destroy(struct kvm *k
- 		vsie_page = page_to_virt(page);
- 		release_gmap_shadow(vsie_page);
- 		/* free the radix tree entry */
--		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
-+		if (page->index != ULONG_MAX)
-+			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
-+					  page->index >> 9);
- 		__free_page(page);
- 	}
- 	kvm->arch.vsie.page_count = 0;
+ 	sc->args = sc->tp_format->format.fields;
+-- 
+2.39.5
+
 
 
 
