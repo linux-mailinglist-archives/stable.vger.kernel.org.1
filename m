@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AE9A5C749
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CFFBA5C4F6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40E321884945
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77F9168054
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081E825E815;
-	Tue, 11 Mar 2025 15:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B19225E816;
+	Tue, 11 Mar 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f84+l4o1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOMFtBUN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B4B25B676;
-	Tue, 11 Mar 2025 15:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5110D25D8E8;
+	Tue, 11 Mar 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706938; cv=none; b=dnGib2KLs5VH0sNTWobg+VVx1GoWA01/GRJSntOjiqKjpqdiQmdO0FGw8RRXMR/hFv8XRNrvG6AZrY+b7v3CdLjcuxR2mubmAEJY2cjekrUv+ILbgoS8+9D4qCbS+87RsGV3VEJ6Yun2AKBlRrOqxTUw2NM1nC9spolRPFBXgvM=
+	t=1741705676; cv=none; b=MTaMFVEM3krMcu6ft3VlPNUSHOfduYZCemF2kopCY+gPQItvE1nBqFfzPeiTfS2gx2+BlLt67jz1mcuTqNxvLt3h/kKovrMKOPjwsAPONtwN8mlwvtRGewVxvbzxhNPc8pOp8RFiMxs1j4pdfDxEJZMrfgnZdJOHuIcD9hmn47E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706938; c=relaxed/simple;
-	bh=AobJAF72IgYl/H9qNP7YH+QoWOwZiqPbVRSleD/KXaE=;
+	s=arc-20240116; t=1741705676; c=relaxed/simple;
+	bh=qiIhzAI+4V+uF9kegcud4nhtalgSQ7TQ7nOlXBxJzw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kogd7OiosLSafOOa0Y1XlpgWl3N+Rswfyye9bHp8CUy1hlZC5TY6yQxYlyPit8xyUuSbuLncWsq4yeF+JlQd/P/1CyDc0slt+JVL/96ggIQsokuB2v09L+o5A1GOKC9vZOTwrYBn41zkyJREuCftYnEgk1g99cEKtymSM7Qq5R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f84+l4o1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406D6C4CEE9;
-	Tue, 11 Mar 2025 15:28:58 +0000 (UTC)
+	 MIME-Version; b=gL/OePhla7aN4WZtZjfm737FV5ExhELptw89hGmpRlKlbyZsTH3VagroLLYGWVt10F0t23ZOIXjuPWF7Y07XkZ7V8KtCmAj0ZmUbgLPv5FKjqwi7mDxu8g7shWJYIaFe2HdERH/u4tjfMvSr2gr93bFf5pz2PKr6vooLb6LIJ50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOMFtBUN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA963C4CEE9;
+	Tue, 11 Mar 2025 15:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706938;
-	bh=AobJAF72IgYl/H9qNP7YH+QoWOwZiqPbVRSleD/KXaE=;
+	s=korg; t=1741705676;
+	bh=qiIhzAI+4V+uF9kegcud4nhtalgSQ7TQ7nOlXBxJzw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f84+l4o1ToRHRVe40JEdOq+fanKJY58by9Gk5e5Qe05ODpuqib5L0AUOiuSGq6mIz
-	 ojf6Buh78RdEFoD2/F7y7r4/rQM5r/wAQhXlun1mTlDWUBZkBr/y0kSZfvVJuM8ull
-	 zi8rBrwom6Hp8fYLSbXpQdEHj4b8sxGkWYtri9Yo=
+	b=jOMFtBUNkXfb1ws2LvP1YW78yedglv6YvOhQSZ78fhx9aO52RnqxJJpirISjc9Chn
+	 P5ggZ1MTX94FcaJB4tpOBm20AN708uW96t4iSuY93Md35Q5mz2NzsCT9D7LwFanJfq
+	 9CuyW5VVxsuGQZexKY9RL1kjWUNVrTKM5atkB4Ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 220/462] net/ncsi: wait for the last response to Deselect Package before configuring channel
+	Willem de Bruijn <willemb@google.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Stas Sergeev <stsp2@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 116/328] tun: revert fix group permission check
 Date: Tue, 11 Mar 2025 15:58:06 +0100
-Message-ID: <20250311145807.054879834@linuxfoundation.org>
+Message-ID: <20250311145719.506335996@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 6bb194d036c6e1b329dcdff459338cdd9a54802a upstream.
+[ Upstream commit a70c7b3cbc0688016810bb2e0b9b8a0d6a530045 ]
 
-The NCSI state machine as it's currently implemented assumes that
-transition to the next logical state is performed either explicitly by
-calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
-after processing the predefined (ndp->pending_req_num) number of
-replies. Thus to avoid the configuration FSM from advancing prematurely
-and getting out of sync with the process it's essential to not skip
-waiting for a reply.
+This reverts commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3.
 
-This patch makes the code wait for reception of the Deselect Package
-response for the last package probed before proceeding to channel
-configuration.
+The blamed commit caused a regression when neither tun->owner nor
+tun->group is set. This is intended to be allowed, but now requires
+CAP_NET_ADMIN.
 
-Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
-testing.
+Discussion in the referenced thread pointed out that the original
+issue that prompted this patch can be resolved in userspace.
 
-Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Link: https://patch.msgid.link/20250116152900.8656-1-fercerpav@gmail.com
+The relaxed access control may also make a device accessible when it
+previously wasn't, while existing users may depend on it to not be.
+
+This is a clean pure git revert, except for fixing the indentation on
+the gid_valid line that checkpatch correctly flagged.
+
+Fixes: 3ca459eaba1b ("tun: fix group permission check")
+Link: https://lore.kernel.org/netdev/CAFqZXNtkCBT4f+PwyVRmQGoT3p1eVa01fCG_aNtpt6dakXncUg@mail.gmail.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Stas Sergeev <stsp2@yandex.ru>
+Link: https://patch.msgid.link/20250204161015.739430-1-willemdebruijn.kernel@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-manage.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/tun.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1345,6 +1345,12 @@ static void ncsi_probe_channel(struct nc
- 		nd->state = ncsi_dev_state_probe_package;
- 		break;
- 	case ncsi_dev_state_probe_package:
-+		if (ndp->package_probe_id >= 8) {
-+			/* Last package probed, finishing */
-+			ndp->flags |= NCSI_DEV_PROBED;
-+			break;
-+		}
-+
- 		ndp->pending_req_num = 1;
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 87cc7d778c3cf..1a6b4cdc3bd5d 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -636,18 +636,14 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	return ret;
+ }
  
- 		nca.type = NCSI_PKT_CMD_SP;
-@@ -1461,13 +1467,8 @@ static void ncsi_probe_channel(struct nc
- 		if (ret)
- 			goto error;
+-static inline bool tun_capable(struct tun_struct *tun)
++static inline bool tun_not_capable(struct tun_struct *tun)
+ {
+ 	const struct cred *cred = current_cred();
+ 	struct net *net = dev_net(tun->dev);
  
--		/* Probe next package */
-+		/* Probe next package after receiving response */
- 		ndp->package_probe_id++;
--		if (ndp->package_probe_id >= 8) {
--			/* Probe finished */
--			ndp->flags |= NCSI_DEV_PROBED;
--			break;
--		}
- 		nd->state = ncsi_dev_state_probe_package;
- 		ndp->active_package = NULL;
- 		break;
+-	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
+-		return 1;
+-	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
+-		return 1;
+-	if (gid_valid(tun->group) && in_egroup_p(tun->group))
+-		return 1;
+-	return 0;
++	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
++		(gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
++		!ns_capable(net->user_ns, CAP_NET_ADMIN);
+ }
+ 
+ static void tun_set_real_num_queues(struct tun_struct *tun)
+@@ -2842,7 +2838,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		    !!(tun->flags & IFF_MULTI_QUEUE))
+ 			return -EINVAL;
+ 
+-		if (!tun_capable(tun))
++		if (tun_not_capable(tun))
+ 			return -EPERM;
+ 		err = security_tun_dev_open(tun->security);
+ 		if (err < 0)
+-- 
+2.39.5
+
 
 
 
