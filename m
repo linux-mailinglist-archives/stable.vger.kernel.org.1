@@ -1,58 +1,68 @@
-Return-Path: <stable+bounces-123699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59A1A5C6D7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF25A5C4A7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 943F2188A6E2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:25:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72C643A6ABC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EF025E822;
-	Tue, 11 Mar 2025 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D327B25E835;
+	Tue, 11 Mar 2025 15:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xU3fyGsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWn4a7uu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4843325DB0A;
-	Tue, 11 Mar 2025 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD3225D54A;
+	Tue, 11 Mar 2025 15:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706710; cv=none; b=a5R3gRUWmouKu7tgTyIrU8BUwDywsLtLnbujFlChjBFBu2S1bjYiAIEu6Y7bqlw2OjMV3Ypnlm5QYiH4wUdTxsbMJx9jIlZg96bHhkdA2Ynffi+W9QdffReekaQ5mVHh/WB5Pgsznr1sQLQQefbqqu7uozX9IYIxmMIov9kVe+A=
+	t=1741705460; cv=none; b=CnhkQ66t9ZoDr+XW+kUHCZz+jMGKZhKrPFbxtLMP6FqEzAZEpjPwmcQk3eTDmBedd8liqp4KOjZlqETFA1z9XQmk969pfvvdEjxf7nZMyLrZ9jVTLrChgjpA5PukcimjzvBzIObwvD4bmnMiCiLaRqEjMDfrjsUShw7YBIIKnjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706710; c=relaxed/simple;
-	bh=u7wCV+MLHfHhoy3JJkdVHIP67TezJDjSx+K1zUz0/rg=;
+	s=arc-20240116; t=1741705460; c=relaxed/simple;
+	bh=Vs3fpiYlZ/uXNOZ7BKmM0fFmuZSMkKeCB5ELxusx878=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qu6dCKGKIB6N0vY2nMix89usfYkIP9klNxLz30ZyGYXqiDstUCuyfatj50By9U8F0rlAgccCN3wdq5ZnsX1Yj3itbxoU791HUW2haZgC3noqEF99Q0C6Nmh4EjU6ULn7W9rxj9j+MVNuA8gR8OQKObm4wRgPYwQUWpMwvlj5gOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU3fyGsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2243C4CEE9;
-	Tue, 11 Mar 2025 15:25:09 +0000 (UTC)
+	 MIME-Version; b=jCS08d5hgzZhtNnm6u5Q9R5Cyb8kVd/H9TCwhfltrwoHvZnHWgOyJRcails6TTpHSCOtGpL8GgmI6ywPou6mhLxOfwmu/XEOSMqGPoc5IQOSKPg79d2OQVYPtfUovaJhE2+NmXye3Tq+0G0sRwWQSsnJa+UzgmFDN7a2YAAHu3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWn4a7uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C20C4CEE9;
+	Tue, 11 Mar 2025 15:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706710;
-	bh=u7wCV+MLHfHhoy3JJkdVHIP67TezJDjSx+K1zUz0/rg=;
+	s=korg; t=1741705460;
+	bh=Vs3fpiYlZ/uXNOZ7BKmM0fFmuZSMkKeCB5ELxusx878=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xU3fyGshgvp5HNtqF4ZeL4RBcRhKFVzk2i+d3ujonlWGC63R4GxVXf5xQv6xhJQq8
-	 r8g3L8sMW42I7sQBY3Xv4oYcvZT1RwHQbrYz3/i+n/ntB6rt346V1ibaxgI76fC0sb
-	 jqXe+5f85sutC/dc1lGw5Ne0ASghfUT7isA/PlMI=
+	b=QWn4a7uunpZEOMRtJbC4NAXJ0avkStpzjp/n/N4mCNhF8DVT1zvVfZi5SakU3wvrj
+	 nzdN8qD1qKc8yyDK/Xsp+Az3tmU1S1XRVcBFc6GabmF9/0V4hQIu+2i0PGeCDnBTZk
+	 RABBjyl3KIBe1cysUYhFelcW67TK0VfUc/tIhQkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Vadim Fedorenko <vadfed@meta.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <song@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/462] net/mlx5: use do_aux_work for PHC overflow checks
+Subject: [PATCH 5.4 035/328] perf header: Fix one memory leakage in process_bpf_btf()
 Date: Tue, 11 Mar 2025 15:56:45 +0100
-Message-ID: <20250311145803.849918888@linuxfoundation.org>
+Message-ID: <20250311145716.290118335@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +74,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Fedorenko <vadfed@meta.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit e61e6c415ba9ff2b32bb6780ce1b17d1d76238f1 ]
+[ Upstream commit 875d22980a062521beed7b5df71fb13a1af15d83 ]
 
-The overflow_work is using system wq to do overflow checks and updates
-for PHC device timecounter, which might be overhelmed by other tasks.
-But there is dedicated kthread in PTP subsystem designed for such
-things. This patch changes the work queue to proper align with PTP
-subsystem and to avoid overloading system work queue.
-The adjfine() function acts the same way as overflow check worker,
-we can postpone ptp aux worker till the next overflow period after
-adjfine() was called.
+If __perf_env__insert_btf() returns false due to a duplicate btf node
+insertion, the temporary node will leak. Add a check to ensure the memory
+is freed if the function returns false.
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
-Acked-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250107104812.380225-1-vadfed@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a70a1123174ab592 ("perf bpf: Save BTF information as headers to perf.data")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20241205084500.823660-2-quic_zhonhan@quicinc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/lib/clock.c   | 24 ++++++++++---------
- include/linux/mlx5/driver.h                   |  1 -
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ tools/perf/util/header.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-index 80dee8c692495..3d0029fb5b579 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -150,17 +150,16 @@ static void mlx5_pps_out(struct work_struct *work)
- 	}
- }
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index a68feeb3eb00d..6dc99378b191b 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -2777,7 +2777,8 @@ static int process_bpf_btf(struct feat_fd *ff, void *data __maybe_unused)
+ 		if (__do_read(ff, node->data, data_size))
+ 			goto out;
  
--static void mlx5_timestamp_overflow(struct work_struct *work)
-+static long mlx5_timestamp_overflow(struct ptp_clock_info *ptp_info)
- {
--	struct delayed_work *dwork = to_delayed_work(work);
- 	struct mlx5_core_dev *mdev;
- 	struct mlx5_timer *timer;
- 	struct mlx5_clock *clock;
- 	unsigned long flags;
- 
--	timer = container_of(dwork, struct mlx5_timer, overflow_work);
--	clock = container_of(timer, struct mlx5_clock, timer);
-+	clock = container_of(ptp_info, struct mlx5_clock, ptp_info);
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
-+	timer = &clock->timer;
- 
- 	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
- 		goto out;
-@@ -171,7 +170,7 @@ static void mlx5_timestamp_overflow(struct work_struct *work)
- 	write_sequnlock_irqrestore(&clock->lock, flags);
- 
- out:
--	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
-+	return timer->overflow_period;
- }
- 
- static int mlx5_ptp_settime(struct ptp_clock_info *ptp, const struct timespec64 *ts)
-@@ -253,6 +252,7 @@ static int mlx5_ptp_adjfreq(struct ptp_clock_info *ptp, s32 delta)
- 				       timer->nominal_c_mult + diff;
- 	mlx5_update_clock_info_page(mdev);
- 	write_sequnlock_irqrestore(&clock->lock, flags);
-+	ptp_schedule_worker(clock->ptp, timer->overflow_period);
- 
- 	return 0;
- }
-@@ -467,6 +467,7 @@ static const struct ptp_clock_info mlx5_ptp_clock_info = {
- 	.settime64	= mlx5_ptp_settime,
- 	.enable		= NULL,
- 	.verify		= NULL,
-+	.do_aux_work	= mlx5_timestamp_overflow,
- };
- 
- static int mlx5_query_mtpps_pin_mode(struct mlx5_core_dev *mdev, u8 pin,
-@@ -649,12 +650,11 @@ static void mlx5_init_overflow_period(struct mlx5_clock *clock)
- 	do_div(ns, NSEC_PER_SEC / HZ);
- 	timer->overflow_period = ns;
- 
--	INIT_DELAYED_WORK(&timer->overflow_work, mlx5_timestamp_overflow);
--	if (timer->overflow_period)
--		schedule_delayed_work(&timer->overflow_work, 0);
--	else
-+	if (!timer->overflow_period) {
-+		timer->overflow_period = HZ;
- 		mlx5_core_warn(mdev,
--			       "invalid overflow period, overflow_work is not scheduled\n");
-+			       "invalid overflow period, overflow_work is scheduled once per second\n");
-+	}
- 
- 	if (clock_info)
- 		clock_info->overflow_period = timer->overflow_period;
-@@ -718,6 +718,9 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
- 
- 	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
- 	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
-+
-+	if (clock->ptp)
-+		ptp_schedule_worker(clock->ptp, 0);
- }
- 
- void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
-@@ -734,7 +737,6 @@ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+-		__perf_env__insert_btf(env, node);
++		if (!__perf_env__insert_btf(env, node))
++			free(node);
+ 		node = NULL;
  	}
  
- 	cancel_work_sync(&clock->pps_info.out_work);
--	cancel_delayed_work_sync(&clock->timer.overflow_work);
- 
- 	if (mdev->clock_info) {
- 		free_page((unsigned long)mdev->clock_info);
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 68a12caf5eb16..56cb2fbc496e6 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -651,7 +651,6 @@ struct mlx5_timer {
- 	struct timecounter         tc;
- 	u32                        nominal_c_mult;
- 	unsigned long              overflow_period;
--	struct delayed_work        overflow_work;
- };
- 
- struct mlx5_clock {
 -- 
 2.39.5
 
