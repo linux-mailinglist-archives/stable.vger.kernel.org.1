@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02322A5C627
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:22:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C892A5C811
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAB9E3AA5DE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E07C07AC803
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5621E98FB;
-	Tue, 11 Mar 2025 15:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74EF25F792;
+	Tue, 11 Mar 2025 15:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoUChumX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsgDq0SG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EFD249F9;
-	Tue, 11 Mar 2025 15:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3ED25E82C;
+	Tue, 11 Mar 2025 15:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706272; cv=none; b=T8E9T4Dh4LseZh4y5Z4Hc3Xhpgrb2YoqGDiNiLK8aszMo3/rQihAtaCAVlya1t6tBBVUcBGoJ+hGLlnrmUcLAaXexS5CG8EZmWyH8hK2nHoNyi/merUjogJrlOQPuwDUxPyecrVek+Wkr7IYlzPpf788NNM3RUS6RNu6OiHOtGU=
+	t=1741707543; cv=none; b=Eu6TxnrtthblHWa1qH2vi6yYbcNrqRbLRuG73xwY++mbNWzsmcf9jGhxP9+7EnklHbtsdXctGtXuab11vahlnqyyLBYzmB3pO6Xt8wNTF8NBDGqhQeOUk4F2lTSTgVNEuYfCmIAi40T9ERERzEe4W++VuBMYSf3jtwJjFJn24jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706272; c=relaxed/simple;
-	bh=94aqw5A1pdKoOTGM7TkWWa+sR/5DlzxX6XmUQa+5j9Y=;
+	s=arc-20240116; t=1741707543; c=relaxed/simple;
+	bh=wwtcMdNj5a9yL18+RFDrT+qasYZcrv6eoc10DTR1F8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJ4VJrL1UbID4Ginh3sYfjlbJ10xOfi6PlLr4+m4l1bKQusOTjO+uAYNc/7bu1uqPtQtS1RlPLEFLznOUa4uShn+9Dc7malaB2/0eAuEkcE7Mj0ONK18l0zBSjldwabt2v5QAPv3y23y5AtUzt25e/8T6bWKihpDgSRuIhrRDUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoUChumX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3071C4CEE9;
-	Tue, 11 Mar 2025 15:17:51 +0000 (UTC)
+	 MIME-Version; b=aPg/pT2Rt+1pnSDqhWFxEKDHja9R52KG2dxHYntEqPeJlx3bRQ5ohiwXAMV0n+jup3z/zM4RuptHEgvEPl0XIqSNZPi5C7/0Wo4/q6eNJeS4bnIfsYiITMeS9YWjLldZpQPLS8kfwEohW4dao3DkrbqMpsbjwBeqamgDNzkKZS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsgDq0SG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E57C4CEE9;
+	Tue, 11 Mar 2025 15:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706272;
-	bh=94aqw5A1pdKoOTGM7TkWWa+sR/5DlzxX6XmUQa+5j9Y=;
+	s=korg; t=1741707543;
+	bh=wwtcMdNj5a9yL18+RFDrT+qasYZcrv6eoc10DTR1F8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JoUChumXny0tRAVe22Q/NdXdkbPAaVPANToqICh9NJZgOlbsEldlEr7F/+mvjyTDe
-	 OsIiSGj7odaXRgLFTEg3WG1oMZb7FkbVm9Y645SxPQu0FFZ4Jx6+7gXvt3H2xzyjOw
-	 oYNX/ELdhYiUaz9tzEQIP5Cty3qew4w7zKpyVARc=
+	b=qsgDq0SGg3+N06QOV6V/WdY8o1tAfb0hmQhXjcmN59W1hJc8V1pUNIMig81+ocUk2
+	 AJdms97jiKz7FzEOQtwnPIlbY2+Zzl+ljH04cALx6x9wFkSfCi4cEJXgi0DxFma6pl
+	 uCbbKJVhash+5mqPCcbxa5cYwvU+RAFkvAw/xK14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 5.4 321/328] usb: gadget: Check bmAttributes only if configuration is valid
+	qf <quintafeira@tutanota.com>,
+	Christian Heusel <christian@heusel.eu>
+Subject: [PATCH 5.10 425/462] Revert "drivers/card_reader/rtsx_usb: Restore interrupt based detection"
 Date: Tue, 11 Mar 2025 16:01:31 +0100
-Message-ID: <20250311145727.657791102@linuxfoundation.org>
+Message-ID: <20250311145815.126299679@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Christian Heusel <christian@heusel.eu>
 
-commit 8e812e9355a6f14dffd54a33d951ca403b9732f5 upstream.
+commit 2397d61ee45cddb8f3bd3a3a9840ef0f0b5aa843 upstream.
 
-If the USB configuration is not valid, then avoid checking for
-bmAttributes to prevent null pointer deference.
+This reverts commit 235b630eda072d7e7b102ab346d6b8a2c028a772.
 
-Cc: stable <stable@kernel.org>
-Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250224085604.417327-1-prashanth.k@oss.qualcomm.com
+This commit was found responsible for issues with SD card recognition,
+as users had to re-insert their cards in the readers and wait for a
+while. As for some people the SD card was involved in the boot process
+it also caused boot failures.
+
+Cc: stable@vger.kernel.org
+Link: https://bbs.archlinux.org/viewtopic.php?id=303321
+Fixes: 235b630eda07 ("drivers/card_reader/rtsx_usb: Restore interrupt based detection")
+Reported-by: qf <quintafeira@tutanota.com>
+Closes: https://lore.kernel.org/all/1de87dfa-1e81-45b7-8dcb-ad86c21d5352@heusel.eu
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://lore.kernel.org/r/20250224-revert-sdcard-patch-v1-1-d1a457fbb796@heusel.eu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/cardreader/rtsx_usb.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -916,7 +916,7 @@ static int set_config(struct usb_composi
- 		power = min(power, 900U);
- done:
- 	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
--	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
-+	    (c && !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER)))
- 		usb_gadget_clear_selfpowered(gadget);
- 	else
- 		usb_gadget_set_selfpowered(gadget);
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -286,7 +286,6 @@ static int rtsx_usb_get_status_with_bulk
+ int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+ {
+ 	int ret;
+-	u8 interrupt_val = 0;
+ 	u16 *buf;
+ 
+ 	if (!status)
+@@ -309,20 +308,6 @@ int rtsx_usb_get_card_status(struct rtsx
+ 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
+ 	}
+ 
+-	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
+-	/* Cross check presence with interrupts */
+-	if (*status & XD_CD)
+-		if (!(interrupt_val & XD_INT))
+-			*status &= ~XD_CD;
+-
+-	if (*status & SD_CD)
+-		if (!(interrupt_val & SD_INT))
+-			*status &= ~SD_CD;
+-
+-	if (*status & MS_CD)
+-		if (!(interrupt_val & MS_INT))
+-			*status &= ~MS_CD;
+-
+ 	/* usb_control_msg may return positive when success */
+ 	if (ret < 0)
+ 		return ret;
 
 
 
