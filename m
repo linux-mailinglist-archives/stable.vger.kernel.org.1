@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2466A5C501
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DDBA5C71D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 687F7175088
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA4216AE0D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8132425E83B;
-	Tue, 11 Mar 2025 15:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486B725E813;
+	Tue, 11 Mar 2025 15:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhJ9zDMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9z4sHmX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB2F25DB0B;
-	Tue, 11 Mar 2025 15:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A7F15820C;
+	Tue, 11 Mar 2025 15:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705703; cv=none; b=pQozpAM/crYvrhVQqUaVrqYTgkM7rloa8k5w/5wSrS+C0karbJ9Bh0gFgE8sFPVZ2wwglaz1qwPsYWopk/fosFOCeLgV472wMUXyRJmeXYUAn6UxrWcooJs8NuV5CcLEi24Ib4DLWY2Iekwg4/olDjZvwteYsmozzUQd8SksesY=
+	t=1741706884; cv=none; b=o+uHXDJOTam55QwfSsX5F9p9n8G9RIJMT8BSezfpnvGdtDxjlCWAnAL0FurgWLc0nOhCRuk4JDAF+IDkNHX6V+Oae8DnSx7ubS7p8c7Gy2catI4BL3AGNO3Dl6kkfgs4M12/PwAGQyVjQxFPgTe4TNGQVUriCd4vS/rLOuWd7hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705703; c=relaxed/simple;
-	bh=CfkrHfSPi6rCcw4xXlo5kId5rgjpc/CMshDtMKpeFFQ=;
+	s=arc-20240116; t=1741706884; c=relaxed/simple;
+	bh=VRH0uEjLB4SvSTiFwSy/omoo0MJJKlUzjaTJvVm6eUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPWedLvVndTRH8pNQU3slfT9HETntooKNNCV9sZtoroU0SNz5mppIVuBLIbd58WGqXImPlctbnQU1CRYd3uJnw+bbJiaEp8SnQHKZnxtg8saAIbYpghn/1HSFwEXnb11zTifcmWedCzR8D6B63XvQ0pfHIE7SsN51RCf+OX2z6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhJ9zDMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E75FC4CEE9;
-	Tue, 11 Mar 2025 15:08:22 +0000 (UTC)
+	 MIME-Version; b=cQ9Eiac/MfRJbYXEGv2tuEvVB6xVACL0eAwvH6T3quL7VnaeuGrNMjxrIINC8WfPE3+Vhe5Pygaz9neFQ4eJpv+a7HoV3DeOpJHnxvu1g2fBl2waSvoWp/m8haScj2Ao8HQ5grU8Yxm/iwXDA5BYpVu769Din+imacTVgnPlAko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9z4sHmX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BCAC4CEE9;
+	Tue, 11 Mar 2025 15:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705702;
-	bh=CfkrHfSPi6rCcw4xXlo5kId5rgjpc/CMshDtMKpeFFQ=;
+	s=korg; t=1741706883;
+	bh=VRH0uEjLB4SvSTiFwSy/omoo0MJJKlUzjaTJvVm6eUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhJ9zDMOOazsYQMO+usj5dB9Y6bsryoUsbvGo8C7GcLqk4Ze5hOW3BtgyE9o7TZCs
-	 drX0r/bRZspF6flWDNv/9vjXINiUWg+1t92N6OySG622B8kEg0alkQV4X5juU+kDiU
-	 k/+Sr/0nzAUyyhyK27OJ9YiOXdjU34JDBkidbp80=
+	b=c9z4sHmXFPEhSpA9YG1q6u9aJMpOHIGdRTIMJ1IHr2AlQvzq/XqUpdrB5bhGhgayO
+	 IZKehejlG730oqKNgg3d44YctM2hH9yfpkD/vfEYQH9Io6kFV5HRHRKwdZQg7ULoDR
+	 3LCJ1iRXWj4eVqQjlPzVpvFFkELR1O1TAOGMC8jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Schlatterbeck <rsc@runtux.com>,
-	Mark Brown <broonie@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 5.4 096/328] spi-mxs: Fix chipselect glitch
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 200/462] kbuild: Move -Wenum-enum-conversion to W=2
 Date: Tue, 11 Mar 2025 15:57:46 +0100
-Message-ID: <20250311145718.708339936@linuxfoundation.org>
+Message-ID: <20250311145806.257500169@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Schlatterbeck <rsc@runtux.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 269e31aecdd0b70f53a05def79480f15cbcc0fd6 upstream.
+commit 8f6629c004b193d23612641c3607e785819e97ab upstream.
 
-There was a change in the mxs-dma engine that uses a new custom flag.
-The change was not applied to the mxs spi driver.
-This results in chipselect being deasserted too early.
-This fixes the chipselect problem by using the new flag in the mxs-spi
-driver.
+-Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
+caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
+Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
+there were numerous instances that would break builds with -Werror.
+Unfortunately, this is not a full solution, as more and more developers,
+subsystems, and distributors are building with W=1 as well, so they
+continue to see the numerous instances of this warning.
 
-Fixes: ceeeb99cd821 ("dmaengine: mxs: rename custom flag")
-Signed-off-by: Ralf Schlatterbeck <rsc@runtux.com>
-Link: https://msgid.link/r/20240202115330.wxkbfmvd76sy3a6a@runtux.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Stefan Wahren <wahrenst@gmx.net>
+Since the move to W=1, there have not been many new instances that have
+appeared through various build reports and the ones that have appeared
+seem to be following similar existing patterns, suggesting that most
+instances of this warning will not be real issues. The only alternatives
+for silencing this warning are adding casts (which is generally seen as
+an ugly practice) or refactoring the enums to macro defines or a unified
+enum (which may be undesirable because of type safety in other parts of
+the code).
+
+Move the warning to W=2, where warnings that occur frequently but may be
+relevant should reside.
+
+Cc: stable@vger.kernel.org
+Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
+Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mxs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/Makefile.extrawarn |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -40,6 +40,7 @@
- #include <linux/spi/spi.h>
- #include <linux/spi/mxs-spi.h>
- #include <trace/events/spi.h>
-+#include <linux/dma/mxs-dma.h>
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -37,6 +37,10 @@ KBUILD_CFLAGS += -Wno-missing-field-init
+ KBUILD_CFLAGS += -Wno-sign-compare
+ KBUILD_CFLAGS += -Wno-type-limits
  
- #define DRIVER_NAME		"mxs-spi"
++ifdef CONFIG_CC_IS_CLANG
++KBUILD_CFLAGS += -Wno-enum-enum-conversion
++endif
++
+ KBUILD_CPPFLAGS += -DKBUILD_EXTRA_WARN1
  
-@@ -253,7 +254,7 @@ static int mxs_spi_txrx_dma(struct mxs_s
- 		desc = dmaengine_prep_slave_sg(ssp->dmach,
- 				&dma_xfer[sg_count].sg, 1,
- 				(flags & TXRX_WRITE) ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
--				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+				DMA_PREP_INTERRUPT | MXS_DMA_CTRL_WAIT4END);
+ else
+@@ -54,7 +58,6 @@ KBUILD_CFLAGS += -Wno-tautological-const
+ KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
+ KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
+ KBUILD_CFLAGS += -Wno-enum-compare-conditional
+-KBUILD_CFLAGS += -Wno-enum-enum-conversion
+ endif
  
- 		if (!desc) {
- 			dev_err(ssp->dev,
+ endif
 
 
 
