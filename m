@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D782A5C7CB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB6BA5C598
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 737071888E00
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A6893B61DE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A27025F798;
-	Tue, 11 Mar 2025 15:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A92825DCE5;
+	Tue, 11 Mar 2025 15:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIJ7wXh5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwrJ199V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF2425F787;
-	Tue, 11 Mar 2025 15:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F275E25D8F9;
+	Tue, 11 Mar 2025 15:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707205; cv=none; b=Wp8cY/qa7AE1SrzpDm+bbunS+Ij+6np1mi7awuomj0t1Fmegwa7zt0oOP2kBE834gboE/0YmxLFR1AQGy5Jr2LvoKeMOIp9tRLP5jnlZMuJ765JzzXp6uHTD9P+tZf39k2gewD0WZHAMuNB47+vzNEyfmzVTA6woSVH9dEThkgI=
+	t=1741705982; cv=none; b=KRX8qVBzBT7cAS9yXdZqI/NSrrO6JH32LrlDePLkEknLRO3IHl5wQngJ7LFap0VkNV2krXXy0WjfMbZ1sz51QGfZCXmqcHjdUQgMzK1GIjjvTEEun2Pa2lG3X3lcK/cor8slr/wj1cwBGjqS8PmZcssBl09g1OG4QFZinrGLl3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707205; c=relaxed/simple;
-	bh=CVrOb7i60bhQO1IDKRU+f0OX10S6yvOvqGoQXnW0At8=;
+	s=arc-20240116; t=1741705982; c=relaxed/simple;
+	bh=Wc2Q3aAhXGziNnmluTG4SPz30b7gLplJZPL1d0ZxLYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBxntGZVdQzJZlvgk8PLSwb0RgY9ZFvVbyGiXjrUHSwaqdbdVn+ZLS7IJxZndWk1dMnqqMTMqX0E2lERGxfr08sFzxUUEfs98PdoMqZG5T8ySSkLolPKammltXuGB3oRatzcOif1EZTVhbgePnH6hwRa7SUGMJdVvN9UH45a/Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIJ7wXh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB3FC4CEE9;
-	Tue, 11 Mar 2025 15:33:24 +0000 (UTC)
+	 MIME-Version; b=U4f0Jc/lpZL/iYIUxWpUun+vW8kj/EJxHqPfTQE+VbXVmSCGz8Oi8BgvaLxEtaYYsSKD+AvUfmJl89EECL545sYGMVIt6sZxtPrMSO8FyCBnvZ7OYkqKUcI3EClYcayOeXyGXvdEMjXQR40K6dwfPn49tChwaFLtG73NRRBCMbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwrJ199V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ECFC4CEE9;
+	Tue, 11 Mar 2025 15:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707204;
-	bh=CVrOb7i60bhQO1IDKRU+f0OX10S6yvOvqGoQXnW0At8=;
+	s=korg; t=1741705981;
+	bh=Wc2Q3aAhXGziNnmluTG4SPz30b7gLplJZPL1d0ZxLYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIJ7wXh5FgzC6rbNQD0Cl0wZSo3X9FfjdjnT6mTTEFOtX9d1SjJnIYC2grQQZIY+d
-	 yX0vpZWhgf+BVMyhr54UYnIxsFc0uxZkAXTiW7EV+pnTE9NgD5kBm5Q408zTLCOKaX
-	 vqdeqv1F2imqI96SjaZWriw9I8I3dmWn6KhZ95sc=
+	b=kwrJ199VO6bUtg1QTK64DXv9abBnNDwRDY89jH/AhghRwRaOJG/HKK5TT1pF1ilHX
+	 NZ4VIuyPlJY3eEwfE2DZ9IioZtkV57kiooO07NZniMHsHq1PNwGePEZxx/w+g0KRBH
+	 zqkn3DfIf6NdMOFhvfoapmVh8oYunDl+uU6V5+v0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Subject: [PATCH 5.10 308/462] ima: Fix use-after-free on a dentrys dname.name
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 204/328] ipv4: use RCU protection in inet_select_addr()
 Date: Tue, 11 Mar 2025 15:59:34 +0100
-Message-ID: <20250311145810.527195746@linuxfoundation.org>
+Message-ID: <20250311145723.017307719@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit be84f32bb2c981ca670922e047cdde1488b233de upstream.
+[ Upstream commit 719817cd293e4fa389e1f69c396f3f816ed5aa41 ]
 
-->d_name.name can change on rename and the earlier value can be freed;
-there are conditions sufficient to stabilize it (->d_lock on dentry,
-->d_lock on its parent, ->i_rwsem exclusive on the parent's inode,
-rename_lock), but none of those are met at any of the sites. Take a stable
-snapshot of the name instead.
+inet_select_addr() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-Link: https://lore.kernel.org/all/20240202182732.GE2087318@ZenIV/
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-[ Samasth: bp to fix CVE-2024-39494; Minor conflict resolved due to code context change ]
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c4544c724322 ("[NETNS]: Process inet_select_addr inside a namespace.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_api.c          |   16 ++++++++++++----
- security/integrity/ima/ima_template_lib.c |   17 ++++++++++++++---
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ net/ipv4/devinet.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -213,7 +213,7 @@ int ima_collect_measurement(struct integ
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
- 	struct inode *real_inode = d_real_inode(file_dentry(file));
--	const char *filename = file->f_path.dentry->d_name.name;
-+	struct name_snapshot filename;
- 	int result = 0;
- 	int length;
- 	void *tmpbuf;
-@@ -276,9 +276,13 @@ out:
- 		if (file->f_flags & O_DIRECT)
- 			audit_cause = "failed(directio)";
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 9910844c890ba..6855372d57a34 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -1317,10 +1317,11 @@ __be32 inet_select_addr(const struct net_device *dev, __be32 dst, int scope)
+ 	__be32 addr = 0;
+ 	unsigned char localnet_scope = RT_SCOPE_HOST;
+ 	struct in_device *in_dev;
+-	struct net *net = dev_net(dev);
++	struct net *net;
+ 	int master_idx;
  
-+		take_dentry_name_snapshot(&filename, file->f_path.dentry);
-+
- 		integrity_audit_msg(AUDIT_INTEGRITY_DATA, inode,
--				    filename, "collect_data", audit_cause,
--				    result, 0);
-+				    filename.name.name, "collect_data",
-+				    audit_cause, result, 0);
-+
-+		release_dentry_name_snapshot(&filename);
- 	}
- 	return result;
- }
-@@ -391,6 +395,7 @@ out:
-  */
- const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
- {
-+	struct name_snapshot filename;
- 	char *pathname = NULL;
- 
- 	*pathbuf = __getname();
-@@ -404,7 +409,10 @@ const char *ima_d_path(const struct path
- 	}
- 
- 	if (!pathname) {
--		strlcpy(namebuf, path->dentry->d_name.name, NAME_MAX);
-+		take_dentry_name_snapshot(&filename, path->dentry);
-+		strscpy(namebuf, filename.name.name, NAME_MAX);
-+		release_dentry_name_snapshot(&filename);
-+
- 		pathname = namebuf;
- 	}
- 
---- a/security/integrity/ima/ima_template_lib.c
-+++ b/security/integrity/ima/ima_template_lib.c
-@@ -385,7 +385,10 @@ static int ima_eventname_init_common(str
- 				     bool size_limit)
- {
- 	const char *cur_filename = NULL;
-+	struct name_snapshot filename;
- 	u32 cur_filename_len = 0;
-+	bool snapshot = false;
-+	int ret;
- 
- 	BUG_ON(event_data->filename == NULL && event_data->file == NULL);
- 
-@@ -398,7 +401,10 @@ static int ima_eventname_init_common(str
- 	}
- 
- 	if (event_data->file) {
--		cur_filename = event_data->file->f_path.dentry->d_name.name;
-+		take_dentry_name_snapshot(&filename,
-+					  event_data->file->f_path.dentry);
-+		snapshot = true;
-+		cur_filename = filename.name.name;
- 		cur_filename_len = strlen(cur_filename);
- 	} else
- 		/*
-@@ -407,8 +413,13 @@ static int ima_eventname_init_common(str
- 		 */
- 		cur_filename_len = IMA_EVENT_NAME_LEN_MAX;
- out:
--	return ima_write_template_field_data(cur_filename, cur_filename_len,
--					     DATA_FMT_STRING, field_data);
-+	ret = ima_write_template_field_data(cur_filename, cur_filename_len,
-+					    DATA_FMT_STRING, field_data);
-+
-+	if (snapshot)
-+		release_dentry_name_snapshot(&filename);
-+
-+	return ret;
- }
- 
- /*
+ 	rcu_read_lock();
++	net = dev_net_rcu(dev);
+ 	in_dev = __in_dev_get_rcu(dev);
+ 	if (!in_dev)
+ 		goto no_in_dev;
+-- 
+2.39.5
+
 
 
 
