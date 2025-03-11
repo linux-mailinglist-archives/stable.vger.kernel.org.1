@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F015AA5C7B2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA757A5C54F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0CA71683F0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3771C17A176
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E292C25BABF;
-	Tue, 11 Mar 2025 15:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF33F25E806;
+	Tue, 11 Mar 2025 15:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8VP6jMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Etk8LhE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F91E25BAAA;
-	Tue, 11 Mar 2025 15:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF4925D8F9;
+	Tue, 11 Mar 2025 15:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707160; cv=none; b=HZpVQND0XDI2PJ+gYknXzazOViKXTskwX66Rru/NFyJoM+nBTdQgYzjfs8VRknFyTT0rxlUGfLzD0lxQ4P+0Q5908qvhk9rOe9xmqtL2fHu53hm1Fxh/KZnwnKFLUJ1z0nNfwX6S9ZzqtGPgqmEMZz+JpUHiQhvqAIZZ0RGELvM=
+	t=1741705895; cv=none; b=GXOU70cuiuWax/lSB96aPsynLNXzgOHrowE/GjPT/6rzmagYmhwtmT/CSobFjgdqnjVaWsUmLrhg1+7hZLZM0UOTYkyJzOxsaIHpsPHNzbqnxbd8WVZ4POLvlkXT3yp3Mqw8xXr599VQ5l2iiRrDKUkQpdCelaMlnOdfg3YV2j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707160; c=relaxed/simple;
-	bh=QCfJAYwxiZN5wXIPZH+AHLTBgQo+3mY2QhO61yZoxU8=;
+	s=arc-20240116; t=1741705895; c=relaxed/simple;
+	bh=0wUSA8CGBeNTNwiTZUozt8pGIcXFy60KLqXSM7L2VdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CP+d/pxrR6y0FzQ8dtwifo4/NT1RfEWM3cy6Zd34TEgWSaXsGn/kSUfS4ekftEcCdT/syC8mg9ahSPqbLF5snwkr04KhDShXTHg7IjJEQwXFlOPjVlFYbIYoridK9tk6vM2sNEZv7AZ8RtoJRuawyxmXF6DFamQ/y0OWvZjNzrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8VP6jMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28747C4CEE9;
-	Tue, 11 Mar 2025 15:32:39 +0000 (UTC)
+	 MIME-Version; b=XE6xn2fIw3YCxt05eX1X2Prd4XhUCZERxl4z2PyjP/xtXon4U4Hr6LrSfxTK08JRTyUZ+oTxJaAHztaUXW5lUpyyVoXxiNIaNp6jaygiG8DnPv9VlCfGY6J0XrMObDrVfiO9oH8ttK1aurxUgypM9SEwC3gtVHZyWsHseJMELKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Etk8LhE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4841C4CEE9;
+	Tue, 11 Mar 2025 15:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707160;
-	bh=QCfJAYwxiZN5wXIPZH+AHLTBgQo+3mY2QhO61yZoxU8=;
+	s=korg; t=1741705895;
+	bh=0wUSA8CGBeNTNwiTZUozt8pGIcXFy60KLqXSM7L2VdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8VP6jMjsSab6n1tU+uKR9vlxO8bQO3AO3OK6+P4jWJnFm1ZKD3RHo1lT/HHCPPSU
-	 BFpfXO2WJGvg3Pto0wutt7jVP6LFF4ox665EHBpwtedDCu7oZxj49UnKpL0rhLzHCC
-	 0tX6yCvol7zP4pZBc5Adyj7yrScvSNhDZeE71cYg=
+	b=0Etk8LhEcPTMy5nRtS5BV89ocaSuE8uezq+KTJ+mAE1wH4GAvs+nrFHb04B5TWJXG
+	 +4gloOKc47MekvyWwIbwM7QbHC7KyE6P9Lzkor/4eWIAPB/4sOArFomQA0Hy2fCh81
+	 ZMd0Zs77hMYIFLugzyqy+3eD66zsTsc9fOP9ILvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: [PATCH 5.10 295/462] nilfs2: do not output warnings when clearing dirty buffers
-Date: Tue, 11 Mar 2025 15:59:21 +0100
-Message-ID: <20250311145810.018470698@linuxfoundation.org>
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 192/328] USB: serial: option: drop MeiG Smart defines
+Date: Tue, 11 Mar 2025 15:59:22 +0100
+Message-ID: <20250311145722.529639846@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 299910dcb4525ac0274f3efa9527876315ba4f67 upstream.
+commit 6aa8a63c471eb6756aabd03f880feffe6a7af6c9 upstream.
 
-After detecting file system corruption and degrading to a read-only mount,
-dirty folios and buffers in the page cache are cleared, and a large number
-of warnings are output at that time, often filling up the kernel log.
+Several MeiG Smart modems apparently use the same product id, making the
+defines even less useful.
 
-In this case, since the degrading to a read-only mount is output to the
-kernel log, these warnings are not very meaningful, and are rather a
-nuisance in system management and debugging.
+Drop them in favour of using comments consistently to make the id table
+slightly less unwieldy.
 
-The related nilfs2-specific page/folio routines have a silent argument
-that suppresses the warning output, but since it is not currently used
-meaningfully, remove both the silent argument and the warning output.
-
-[konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
-Link: https://lkml.kernel.org/r/20240816090128.4561-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ca76bb226bf4 ("nilfs2: do not force clear folio if buffer is referenced")
+Cc: stable@vger.kernel.org
+Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c |    4 ++--
- fs/nilfs2/mdt.c   |    6 +++---
- fs/nilfs2/page.c  |   20 +++-----------------
- fs/nilfs2/page.h  |    4 ++--
- 4 files changed, 10 insertions(+), 24 deletions(-)
+ drivers/usb/serial/option.c |   28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -162,7 +162,7 @@ static int nilfs_writepages(struct addre
- 	int err = 0;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -619,18 +619,6 @@ static void option_instat_callback(struc
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
  
- 	if (sb_rdonly(inode->i_sb)) {
--		nilfs_clear_dirty_pages(mapping, false);
-+		nilfs_clear_dirty_pages(mapping);
- 		return -EROFS;
- 	}
- 
-@@ -185,7 +185,7 @@ static int nilfs_writepage(struct page *
- 		 * have dirty pages that try to be flushed in background.
- 		 * So, here we simply discard this dirty page.
- 		 */
--		nilfs_clear_dirty_page(page, false);
-+		nilfs_clear_dirty_page(page);
- 		unlock_page(page);
- 		return -EROFS;
- 	}
---- a/fs/nilfs2/mdt.c
-+++ b/fs/nilfs2/mdt.c
-@@ -410,7 +410,7 @@ nilfs_mdt_write_page(struct page *page,
- 		 * have dirty pages that try to be flushed in background.
- 		 * So, here we simply discard this dirty page.
- 		 */
--		nilfs_clear_dirty_page(page, false);
-+		nilfs_clear_dirty_page(page);
- 		unlock_page(page);
- 		return -EROFS;
- 	}
-@@ -631,10 +631,10 @@ void nilfs_mdt_restore_from_shadow_map(s
- 	if (mi->mi_palloc_cache)
- 		nilfs_palloc_clear_cache(inode);
- 
--	nilfs_clear_dirty_pages(inode->i_mapping, true);
-+	nilfs_clear_dirty_pages(inode->i_mapping);
- 	nilfs_copy_back_pages(inode->i_mapping, shadow->inode->i_mapping);
- 
--	nilfs_clear_dirty_pages(ii->i_assoc_inode->i_mapping, true);
-+	nilfs_clear_dirty_pages(ii->i_assoc_inode->i_mapping);
- 	nilfs_copy_back_pages(ii->i_assoc_inode->i_mapping,
- 			      NILFS_I(shadow->inode)->i_assoc_inode->i_mapping);
- 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -354,9 +354,8 @@ repeat:
- /**
-  * nilfs_clear_dirty_pages - discard dirty pages in address space
-  * @mapping: address space with dirty pages for discarding
-- * @silent: suppress [true] or print [false] warning messages
-  */
--void nilfs_clear_dirty_pages(struct address_space *mapping, bool silent)
-+void nilfs_clear_dirty_pages(struct address_space *mapping)
- {
- 	struct pagevec pvec;
- 	unsigned int i;
-@@ -377,7 +376,7 @@ void nilfs_clear_dirty_pages(struct addr
- 			 * was acquired.  Skip processing in that case.
- 			 */
- 			if (likely(page->mapping == mapping))
--				nilfs_clear_dirty_page(page, silent);
-+				nilfs_clear_dirty_page(page);
- 
- 			unlock_page(page);
- 		}
-@@ -389,19 +388,11 @@ void nilfs_clear_dirty_pages(struct addr
- /**
-  * nilfs_clear_dirty_page - discard dirty page
-  * @page: dirty page that will be discarded
-- * @silent: suppress [true] or print [false] warning messages
-  */
--void nilfs_clear_dirty_page(struct page *page, bool silent)
-+void nilfs_clear_dirty_page(struct page *page)
- {
--	struct inode *inode = page->mapping->host;
--	struct super_block *sb = inode->i_sb;
+-/* MeiG Smart Technology products */
+-#define MEIGSMART_VENDOR_ID			0x2dee
+-/*
+- * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
+- * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
+- */
+-#define MEIGSMART_PRODUCT_SRM825L		0x4d22
+-/* MeiG Smart SLM320 based on UNISOC UIS8910 */
+-#define MEIGSMART_PRODUCT_SLM320		0x4d41
+-/* MeiG Smart SLM770A based on ASR1803 */
+-#define MEIGSMART_PRODUCT_SLM770A		0x4d57
 -
- 	BUG_ON(!PageLocked(page));
+ /* Device flags */
  
--	if (!silent)
--		nilfs_warn(sb, "discard dirty page: offset=%lld, ino=%lu",
--			   page_offset(page), inode->i_ino);
--
- 	ClearPageUptodate(page);
- 	ClearPageMappedToDisk(page);
- 	ClearPageChecked(page);
-@@ -417,11 +408,6 @@ void nilfs_clear_dirty_page(struct page
- 		bh = head = page_buffers(page);
- 		do {
- 			lock_buffer(bh);
--			if (!silent)
--				nilfs_warn(sb,
--					   "discard dirty block: blocknr=%llu, size=%zu",
--					   (u64)bh->b_blocknr, bh->b_size);
--
- 			set_mask_bits(&bh->b_state, clear_bits, 0);
- 			unlock_buffer(bh);
- 		} while (bh = bh->b_this_page, bh != head);
---- a/fs/nilfs2/page.h
-+++ b/fs/nilfs2/page.h
-@@ -41,8 +41,8 @@ void nilfs_page_bug(struct page *);
- 
- int nilfs_copy_dirty_pages(struct address_space *, struct address_space *);
- void nilfs_copy_back_pages(struct address_space *, struct address_space *);
--void nilfs_clear_dirty_page(struct page *, bool);
--void nilfs_clear_dirty_pages(struct address_space *, bool);
-+void nilfs_clear_dirty_page(struct page *page);
-+void nilfs_clear_dirty_pages(struct address_space *mapping);
- void nilfs_mapping_init(struct address_space *mapping, struct inode *inode);
- unsigned int nilfs_page_count_clean_buffers(struct page *, unsigned int,
- 					    unsigned int);
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2366,6 +2354,14 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+@@ -2422,14 +2418,6 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+ 	  .driver_info = NCTRL(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
 
 
 
