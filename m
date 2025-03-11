@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-123298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E770FA5C4BE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64804A5C729
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA8D179E80
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5958D3B9BB7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9391D25E822;
-	Tue, 11 Mar 2025 15:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E2725EFA9;
+	Tue, 11 Mar 2025 15:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tcQ6RLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNOEmg5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516E125DD00;
-	Tue, 11 Mar 2025 15:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3102425DD08;
+	Tue, 11 Mar 2025 15:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705547; cv=none; b=DPPjSxZoov7Ns0Egof1F2M/n+dUCz9faAgr1xF6WkzSbfCVEKr7cKji1V7c0cicDlbIf/Rzkg3nI+Xlh9WZ6+JFRP9bz1POyVTaCYCehq/dOh6XXhB5me7fx9HGr3haxFXOr7ptX41dzNZmn3f6fEPFTZeW9VsRqZMNPeyWEfU4=
+	t=1741706762; cv=none; b=c72qh2bAdvXfsR435FKyIxZkSJKZvfG+o2UOrHOD7W5EYKesxa3WO+GYKxYrl/+zSRj0OZ5mZx92dnS2FrJVc81udgM2DU40yDVLHVgf1RvtkQ+t1JxTmjTqFo4i2U2Kisi0a0fyG/FYYR7l3glg+n/iz0dfyrPpTK7MdMavT1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705547; c=relaxed/simple;
-	bh=JCs2ZuVQgJSCewp0K6SlKOl2/XaV3aGun7qj+nztoiM=;
+	s=arc-20240116; t=1741706762; c=relaxed/simple;
+	bh=hnjVQsCIbFaXL7UCtCx+HvRK7tiX3nxeLDqpqEhuDME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPRb6KAVAaiFpiK5b8kl4t04WR3UJqltjMXkFZ9BhwwbrI9oGtx6ZfL4nspF+wT8uHs9SZi0YgTHUTlOgJ9s6yGaQB7SPHyU/B0IEe8Hj1emDE1c53L2bx+9m+ZZZmyt9mzBBBTIe5xnzDgRLKJ0SsPRbK5X5PxwiAAmmeBLnYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tcQ6RLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD411C4CEE9;
-	Tue, 11 Mar 2025 15:05:46 +0000 (UTC)
+	 MIME-Version; b=lMKaxHEfueiuBnRJywg9uAYBQGzB/Mq8eKyuIr4u63n++Y0tFOCZnJGUMf2gwsNucJCxLYKcev/X54Ay7FUJIyJmmcc9zB4d2TU2Qm+Avm6qBBdu8EYDR5+jm+u9hfKxRyf/sU/Mdcg73JjH9S0mBRLcQKlV/GKJ2b1M7m2ldX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNOEmg5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8EFC4CEE9;
+	Tue, 11 Mar 2025 15:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705547;
-	bh=JCs2ZuVQgJSCewp0K6SlKOl2/XaV3aGun7qj+nztoiM=;
+	s=korg; t=1741706762;
+	bh=hnjVQsCIbFaXL7UCtCx+HvRK7tiX3nxeLDqpqEhuDME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tcQ6RLwvFxYqENsJC2ecsmsy4XekT8Yf1to9AYkbY/zrtWXwDcS1frxObU2u3eqr
-	 APzW4jmDrAYK+NOaPB8eR8fNVM22a1Qqxj/CmfUBzK12JdMPOyH/n73Harlngt72wb
-	 srUgHLkQlYf8Bdu8k+1mYRiDxzYySnrtI/DT9onM=
+	b=dNOEmg5yZXUco5Kt4EeVKwknAGg+FYMij5TTsqUTjBqGpA6bD8MoaW92pGMIaDUbd
+	 8Ag1p+hwM56yLehAeFTBZV19EUZMCdGMgZEodBp+Mk0h/7k87ppiR+cjC83tn1xAHc
+	 RlX4MK4uLZsq3L1j0EleWAHqG3xYn40h7pF2ZPOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Juergen Gross <jgross@suse.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/328] staging: media: imx: fix OF node leak in imx_media_add_of_subdevs()
+Subject: [PATCH 5.10 159/462] x86/xen: fix xen_hypercall_hvm() to not clobber %rbx
 Date: Tue, 11 Mar 2025 15:57:05 +0100
-Message-ID: <20250311145717.086918563@linuxfoundation.org>
+Message-ID: <20250311145804.625513231@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 094f5c315f756b19198e6c401aa821ac0e868750 ]
+[ Upstream commit 98a5cfd2320966f40fe049a9855f8787f0126825 ]
 
-imx_media_add_of_subdevs() calls of_parse_phandle() and passes the
-obtained node to imx_media_of_add_csi(). The passed node is used in
-v4l2_async_nf_add_fwnode(), which increments the refcount of the node.
-Therefore, while the current implementation only releases the node when
-imx_media_of_add_csi() fails, but should always release it. Call
-of_node_put() right after imx_media_of_add_csi().
+xen_hypercall_hvm(), which is used when running as a Xen PVH guest at
+most only once during early boot, is clobbering %rbx. Depending on
+whether the caller relies on %rbx to be preserved across the call or
+not, this clobbering might result in an early crash of the system.
 
-Fixes: dee747f88167 ("media: imx: Don't register IPU subdevs/links if CSI port missing")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+This can be avoided by using an already saved register instead of %rbx.
+
+Fixes: b4845bb63838 ("x86/xen: add central hypercall functions")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/imx/imx-media-of.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/xen/xen-head.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
-index 2d3efd2a6dde0..d9b34605ff9bc 100644
---- a/drivers/staging/media/imx/imx-media-of.c
-+++ b/drivers/staging/media/imx/imx-media-of.c
-@@ -55,23 +55,19 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
- 			break;
- 
- 		ret = imx_media_of_add_csi(imxmd, csi_np);
-+		of_node_put(csi_np);
- 		if (ret) {
- 			/* unavailable or already added is not an error */
- 			if (ret == -ENODEV || ret == -EEXIST) {
--				of_node_put(csi_np);
- 				continue;
- 			}
- 
- 			/* other error, can't continue */
--			goto err_out;
-+			return ret;
- 		}
- 	}
- 
- 	return 0;
--
--err_out:
--	of_node_put(csi_np);
--	return ret;
- }
- EXPORT_SYMBOL_GPL(imx_media_add_of_subdevs);
- 
+diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
+index 152bbe900a174..0dce73077c8cb 100644
+--- a/arch/x86/xen/xen-head.S
++++ b/arch/x86/xen/xen-head.S
+@@ -115,8 +115,8 @@ SYM_FUNC_START(xen_hypercall_hvm)
+ 	pop %ebx
+ 	pop %eax
+ #else
+-	lea xen_hypercall_amd(%rip), %rbx
+-	cmp %rax, %rbx
++	lea xen_hypercall_amd(%rip), %rcx
++	cmp %rax, %rcx
+ #ifdef CONFIG_FRAME_POINTER
+ 	pop %rax	/* Dummy pop. */
+ #endif
 -- 
 2.39.5
 
