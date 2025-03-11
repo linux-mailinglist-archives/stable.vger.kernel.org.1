@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-123309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08298A5C4CE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C35A5C4D9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6DD17A281
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CD7D178E4C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6017725E83A;
-	Tue, 11 Mar 2025 15:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD87125E830;
+	Tue, 11 Mar 2025 15:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oe53AFx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0FPJ1y0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5F725E81A;
-	Tue, 11 Mar 2025 15:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD0725DD02;
+	Tue, 11 Mar 2025 15:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705579; cv=none; b=OUcczF+xy+Tzui4L6tWc5gXvuVNlQ1LGBixKo7xNuprrEjef1dgyb30FMrvJluTcj2AD2VPAqQKIftnv6IqvrxezMEja8VivAMSZtjzF5NAE2tCEQR+XlG65ZhlKYr3z/EI9rrkbDoUuvt2Ngs6iYbi2mcwC818+seNes61SyVo=
+	t=1741705611; cv=none; b=M3bCekL1LKxIXMOAigolndpCluokca/6RoAx3yFNuY+2mjcQCfhZD/b0tqRLvnSxMhQOQiFVIyQrRDZ/yA7pdj7mPb3rYYmQ0p+Me5rmPxJcbwlrpwtbtbqvqUKAPDQY+b8use1H8scZ3gFPaXamj4u1LSynDh79NcpfDKbaqFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705579; c=relaxed/simple;
-	bh=fY7AZMK8mgHf7Mr7KtLu7hhwSbZESfu3E1NgsXyQ+Po=;
+	s=arc-20240116; t=1741705611; c=relaxed/simple;
+	bh=LmAu+5QNkv5Q9drm+US42GPj1DpNFU0VExyYw8MpqlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YrYXR4RxHF8pXntcdOnoUH0lmP5bSlinKZrB0zLjQwNDhLBjKdKEjNX0x6+yLoVPKkhQMpHYj0y0tP89vU1jh1ir931T8lpFxTHkDg/7+MXJY+fmiLCgimcdo2nzCRG9avwo/YPAjrxtghXXQ9hC/aW0TbU+NVP5GpOO6KRpp3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oe53AFx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EBDC4CEE9;
-	Tue, 11 Mar 2025 15:06:18 +0000 (UTC)
+	 MIME-Version; b=j5jt+5SWDTNyYNHQHU/2vnr25jRTBNjEETroxuYZZYSDoaTBpTgO2whw70PaB4915OKUq/AAp88+BYFEB5qsU9zI6u5g05wui8i/Lfls2IoGPqk8oVeWBakbWW8KeIVXa+2PReyzfqVdFPrSsGRInjWky0MAZvdjRRKX8eg5UeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0FPJ1y0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14850C4CEE9;
+	Tue, 11 Mar 2025 15:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705579;
-	bh=fY7AZMK8mgHf7Mr7KtLu7hhwSbZESfu3E1NgsXyQ+Po=;
+	s=korg; t=1741705611;
+	bh=LmAu+5QNkv5Q9drm+US42GPj1DpNFU0VExyYw8MpqlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oe53AFx2oBUDyA46Frj02jxzhcnPEHZBC2I0vp2QelEINkwBM59IzuJQ2T7YbeKZL
-	 K33wO2a5LpReoPN2Qzw0ks+CtTfBvS992amrS23GSuWrh33yXEn68PESS15X8LhhjQ
-	 4QZQbNSMVrbwRUqkcgSWYE0570YwZdSSBSB0TowU=
+	b=p0FPJ1y0SLhcSEFL4Gk+rlvMrxHg+ObCCgwaaOAbcNMYbZo82x43WklxBqUeQPhfi
+	 IG2hQvWZrxLjMKwJWrwROyRMPmFfRjawYsz1zZjxpSrGjLNi2L5KGXhLQIhXFe2bw9
+	 rc6nlMJyfEjIrDD0plJiIUl5j393CnDgHMM2wKio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	"Ricardo B. Marliere" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 5.4 076/328] ktest.pl: Check kernelrelease return in get_version
-Date: Tue, 11 Mar 2025 15:57:26 +0100
-Message-ID: <20250311145717.910388206@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Sean Rhodes <sean@starlabs.systems>
+Subject: [PATCH 5.4 077/328] drivers/card_reader/rtsx_usb: Restore interrupt based detection
+Date: Tue, 11 Mar 2025 15:57:27 +0100
+Message-ID: <20250311145717.949396272@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -66,41 +65,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo B. Marliere <rbm@suse.com>
+From: Sean Rhodes <sean@starlabs.systems>
 
-commit a4e17a8f239a545c463f8ec27db4ed6e74b31841 upstream.
+commit 235b630eda072d7e7b102ab346d6b8a2c028a772 upstream.
 
-In the case of a test that uses the special option ${KERNEL_VERSION} in one
-of its settings but has no configuration available in ${OUTPUT_DIR}, for
-example if it's a new empty directory, then the `make kernelrelease` call
-will fail and the subroutine will chomp an empty string, silently. Fix that
-by adding an empty configuration and retrying.
+This commit reintroduces interrupt-based card detection previously
+used in the rts5139 driver. This functionality was removed in commit
+00d8521dcd23 ("staging: remove rts5139 driver code").
 
+Reintroducing this mechanism fixes presence detection for certain card
+readers, which with the current driver, will taken approximately 20
+seconds to enter S3 as `mmc_rescan` has to be frozen.
+
+Fixes: 00d8521dcd23 ("staging: remove rts5139 driver code")
 Cc: stable@vger.kernel.org
-Cc: John Hawley <warthog9@eaglescrag.net>
-Fixes: 5f9b6ced04a4e ("ktest: Bisecting, install modules, add logging")
-Link: https://lore.kernel.org/20241205-ktest_kver_fallback-v2-1-869dae4c7777@suse.com
-Signed-off-by: Ricardo B. Marliere <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Rhodes <sean@starlabs.systems>
+Link: https://lore.kernel.org/r/20241119085815.11769-1-sean@starlabs.systems
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/misc/cardreader/rtsx_usb.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2319,6 +2319,11 @@ sub get_version {
-     return if ($have_version);
-     doprint "$make kernelrelease ... ";
-     $version = `$make -s kernelrelease | tail -1`;
-+    if (!length($version)) {
-+	run_command "$make allnoconfig" or return 0;
-+	doprint "$make kernelrelease ... ";
-+	$version = `$make -s kernelrelease | tail -1`;
-+    }
-     chomp($version);
-     doprint "$version\n";
-     $have_version = 1;
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -286,6 +286,7 @@ static int rtsx_usb_get_status_with_bulk
+ int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+ {
+ 	int ret;
++	u8 interrupt_val = 0;
+ 	u16 *buf;
+ 
+ 	if (!status)
+@@ -308,6 +309,20 @@ int rtsx_usb_get_card_status(struct rtsx
+ 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
+ 	}
+ 
++	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
++	/* Cross check presence with interrupts */
++	if (*status & XD_CD)
++		if (!(interrupt_val & XD_INT))
++			*status &= ~XD_CD;
++
++	if (*status & SD_CD)
++		if (!(interrupt_val & SD_INT))
++			*status &= ~SD_CD;
++
++	if (*status & MS_CD)
++		if (!(interrupt_val & MS_INT))
++			*status &= ~MS_CD;
++
+ 	/* usb_control_msg may return positive when success */
+ 	if (ret < 0)
+ 		return ret;
 
 
 
