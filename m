@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-123804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB9AA5C786
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69F2A5C545
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB02C3B6F71
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26BED3AA964
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5798025EF99;
-	Tue, 11 Mar 2025 15:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D57C25C70A;
+	Tue, 11 Mar 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iw9r5EXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrmfgOvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1448925F782;
-	Tue, 11 Mar 2025 15:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290E32B9CD;
+	Tue, 11 Mar 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707012; cv=none; b=LxbMbqurDM5xb6j38gOx86sfSYfyrEQ/Ok8SVkogGejaHgzP086rbFnQyE4Cu8dwiUhIi7CDP1wpdZYQVsS6FEj9ZxVTOPMUn0lp/9q+xx/x/3LttQ5iiGWopaqkX7o58CvYE03FSURzRXBRbzh8x2QUHTzAu2Og2kZbEfczbEc=
+	t=1741705823; cv=none; b=KWkiQvFQQk6l6Ht2rwUwMbE5vEuRTItV2Y870MGcxMUvZCWWZoWtv5QJIb8dusOrz0PWP/xaLC3oBJGPAbwkM6MJ+/6ZGu1MvzozQb+HqcF0sWj9uwjuwYLJlUUhPqbOjYVDQ4tMk16n1Iqv6QIp+kduSSgOgvvA3QrkAzhdU0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707012; c=relaxed/simple;
-	bh=PsvQaLu8mtfMgCHnTyPG1rgBcIn3Y9ajB5oZhvcPsf0=;
+	s=arc-20240116; t=1741705823; c=relaxed/simple;
+	bh=uFmMlI7q24HwIdDg4R6AE8zudMCTVvSg76j3xVLoi0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWN56/d5OGeDCO26ATrYMIKU4zkvSpGqYTKsu1rIdvbCMI+/58YNOnOOZqglDGLokyIH3Pu7PbwicuZGK/h2FEYMJzxSXjzg7bGH8M0QcFFCto/8XXwyWiJzhbkv8PbhYreX7o5yd6VGOKCacWWq8qsmJsYY5cxGLndln3zLiUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iw9r5EXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101A3C4CEE9;
-	Tue, 11 Mar 2025 15:30:10 +0000 (UTC)
+	 MIME-Version; b=HocUajKk7vabXnrShroSly6a/7/3o3Q73MyP7raFWyrO9gVu2bzP2NiNn++qK0q47U61yMnRtV2ixEKZSoa0So7NrGypGD/yKi9wIAXum/TYRCtwlnCt9tHpt2bQKJPp3TjRTRBYwiB24j18Pmq6fyFTUf7a9bIPUYb1rGsUwhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrmfgOvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00FEC4CEE9;
+	Tue, 11 Mar 2025 15:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707011;
-	bh=PsvQaLu8mtfMgCHnTyPG1rgBcIn3Y9ajB5oZhvcPsf0=;
+	s=korg; t=1741705823;
+	bh=uFmMlI7q24HwIdDg4R6AE8zudMCTVvSg76j3xVLoi0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iw9r5EXuDxQy3z4xaJpavxkw2GLOm9Ogrfx3DB17ygMG/L6loHNDb/1TPZEp6Ppjl
-	 yBYn9M93dWqwbZBX/IfEDa2QBjC/qVcVjCbPeMgdD2QV+tXIAyYbiXw+ZLIcmhcIIN
-	 6Xmc+9gSpnt5Ks2znaZbjzHgQ0twzfzgWJhZIqek=
+	b=GrmfgOvKzNKoMbh48xkOKyOIRcIUg+/nGvBcELZlONuGaSrRX2NqXMZXuKEbzApBu
+	 DTUs+P/yhMvboUsPGatJjNKqNrdKyK47oLMUlNreLHDOurc7CPf58nIqCQ+sn/wnMr
+	 bbA9bdXErz5aZUNhhvgCBANvPu+UrMETgrbPu6IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
-	syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 242/462] orangefs: fix a oob in orangefs_debug_write
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.4 138/328] usb: gadget: f_tcm: Dont prepare BOT write request twice
 Date: Tue, 11 Mar 2025 15:58:28 +0100
-Message-ID: <20250311145807.929652325@linuxfoundation.org>
+Message-ID: <20250311145720.388579741@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit f7c848431632598ff9bce57a659db6af60d75b39 ]
+commit 94d9bf671ae314cacc2d7bf96bd233b4abc7cede upstream.
 
-I got a syzbot report: slab-out-of-bounds Read in
-orangefs_debug_write... several people suggested fixes,
-I tested Al Viro's suggestion and made this patch.
+The duplicate kmalloc here is causing memory leak. The request
+preparation in bot_send_write_request is also done in
+usbg_prepare_w_request. Remove the duplicate work.
 
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Reported-by: syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/f4f26c3d586cde0d46f8c3bcb4e8ae32311b650d.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |   17 -----------------
+ 1 file changed, 17 deletions(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index 1b508f5433846..fa41db0884880 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -393,9 +393,9 @@ static ssize_t orangefs_debug_write(struct file *file,
- 	 * Thwart users who try to jamb a ridiculous number
- 	 * of bytes into the debug file...
- 	 */
--	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN + 1) {
-+	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 		silly = count;
--		count = ORANGEFS_MAX_DEBUG_STRING_LEN + 1;
-+		count = ORANGEFS_MAX_DEBUG_STRING_LEN;
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -245,7 +245,6 @@ static int bot_send_write_request(struct
+ {
+ 	struct f_uas *fu = cmd->fu;
+ 	struct se_cmd *se_cmd = &cmd->se_cmd;
+-	struct usb_gadget *gadget = fuas_to_gadget(fu);
+ 	int ret;
+ 
+ 	init_completion(&cmd->write_complete);
+@@ -256,22 +255,6 @@ static int bot_send_write_request(struct
+ 		return -EINVAL;
  	}
  
- 	buf = kzalloc(ORANGEFS_MAX_DEBUG_STRING_LEN, GFP_KERNEL);
--- 
-2.39.5
-
+-	if (!gadget->sg_supported) {
+-		cmd->data_buf = kmalloc(se_cmd->data_length, GFP_KERNEL);
+-		if (!cmd->data_buf)
+-			return -ENOMEM;
+-
+-		fu->bot_req_out->buf = cmd->data_buf;
+-	} else {
+-		fu->bot_req_out->buf = NULL;
+-		fu->bot_req_out->num_sgs = se_cmd->t_data_nents;
+-		fu->bot_req_out->sg = se_cmd->t_data_sg;
+-	}
+-
+-	fu->bot_req_out->complete = usbg_data_write_cmpl;
+-	fu->bot_req_out->length = se_cmd->data_length;
+-	fu->bot_req_out->context = cmd;
+-
+ 	ret = usbg_prepare_w_request(cmd, fu->bot_req_out);
+ 	if (ret)
+ 		goto cleanup;
 
 
 
