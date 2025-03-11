@@ -1,125 +1,81 @@
-Return-Path: <stable+bounces-124043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE9FA5CAB3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:21:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D37A5CAC6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE6D1779B7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6F40189BC09
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C3B25F790;
-	Tue, 11 Mar 2025 16:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B952E25F988;
+	Tue, 11 Mar 2025 16:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="g46Q8Yyd"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Hzs6x+Rz"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6F52080D9;
-	Tue, 11 Mar 2025 16:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDEA25F790
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 16:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741710082; cv=none; b=lGXfeZ5NiBk2TAXlrskc/b31GlJrik2ivEf4pOKKzRw8VD1Vpya+fqCRoxnHj1KhsboVITnc5K4eU/HxB7I0fK06W1DCzpNvp361VbE+ZBYjogJbURngt7fSNhoQwDfgvrb6MuEBZq3rijoHwjkL5J+Xq/r/B2ncVdRU12F0qEw=
+	t=1741710404; cv=none; b=Gs2YPsMl+kkne6hBcTbTrerosoeKhbqY7X5+l49TXYTcV3Qe9BqOD7wyTHL6PSCOluBV9noowwbvh25njV9t2cv4/IXsyTb30G52QhqR5ucWzU43XD5a1uFmXfaD2X4xHDQmG3bF/Srhyl1yzQcrZn+S6IBchdMGxao8Xfcn5xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741710082; c=relaxed/simple;
-	bh=GYGQSWMmGehgUQ3u9W6vrBEz0DsLmVxBYZw6fjbC130=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=IHje4rT8hdv7aifhHGxd6B+wy3UvYLvm7sQLjFLolH9+8OQ6KuTwz9NYvTkE7QSU2RMRMyTPs2CWYzYm1J0DXKDwjB505gKHKxXSrolH0Mgp45VeGLsnuNzElrw8tAcYF0DJ4KAiUWsAWz9L5Dn404a/S/r8fndLkBldYzcAP0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=g46Q8Yyd; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Andrey Kalachev <kalachev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1741710073;
+	s=arc-20240116; t=1741710404; c=relaxed/simple;
+	bh=hKC54g++R1G+XXuF0lAdxlj7rxnHNuR8kyyjmE1wPkA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YH5d6xhk9uzdPjsWm/Wm4BhwQJbge0kRS8HMj9iIwqa1bnM73+qd2cyUAarZtvFMW7r6A2Ld5UJydejguf6n82axK6QwzU/vGQtzpI6TrsH3tZg16WDPndFobtU8nTbZe/52S7cDd7TFTTsrH1v9Ig9JK0BJLHdqcQUYBP7rxmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Hzs6x+Rz; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 11 Mar 2025 16:26:34 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1741710399;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zklo9sF/IW4Ipfk3DqbkxcZ3lU6yko995bFAigRpWDs=;
-	b=g46Q8YydqPHV7NqdGzBBQfWeqfU6qsbIaTcpcQmVber2J0xqxZr6UNDXNMtos9ehtNx2zE
-	GUlvtX5/1T/oOzE5isljsNSNk3y8h967jjYLOrEFaCFZ5X4ZtpDJO4toCODM3TGF89Mrt5
-	XllMb5u1Uiua+mUkpz1M8ZMVhzjwCmw=
-To: stable@vger.kernel.org
-Cc: shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	npache@redhat.com,
-	kalachev@swemel.ru,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1.y] selftests/vm: fix undefined reference of the `default_huge_page_size`
-Date: Tue, 11 Mar 2025 19:21:13 +0300
-Message-Id: <20250311162113.12458-1-kalachev@swemel.ru>
+	 in-reply-to:in-reply-to:references:references;
+	bh=V2mnFFnUijG9A/gZIz5QOKtJPBK4Pn57c7YnZizYs6g=;
+	b=Hzs6x+Rzgb48DJUaYA8dcBu9P4KaphhCvBK6PDI/xDYc20+Ix1DnzuXl3MLVpFHc+/5WNz
+	o7sF8qDuDp6OvmiiOtY5vEtxYtmTHnvOXi1bMCoUzOw0PS8BMWxBNkdMb5WPcADd3UrWwe
+	FbNy/uDzx8xH2be/izyHuAW905pj/5M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] memcg: drain obj stock on cpu hotplug teardown
+Message-ID: <Z9BkOgZIK1iSQKd5@google.com>
+References: <20250310230934.2913113-1-shakeel.butt@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250310230934.2913113-1-shakeel.butt@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 
-The commit a584c7734a4d ("selftests: mm: fix map_hugetlb failure on
-64K page size systems") backported the fix from v6.8 to stable v6.1.
-The patch uses default_huge_page_size() function, which definition
-moved into vm_util.[ch] by commit bd4d67e76f699 ("selftests/mm:
-merge default_huge_page_size() into one") merged to upsream since
-v6.4. However, in v6.1 common definition/declaration for the
-default_huge_page_size() we doesn't have, the following build
-error is seen:
+On Mon, Mar 10, 2025 at 04:09:34PM -0700, Shakeel Butt wrote:
+> Currently on cpu hotplug teardown, only memcg stock is drained but we
+> need to drain the obj stock as well otherwise we will miss the stats
+> accumulated on the target cpu as well as the nr_bytes cached. The stats
+> include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
+> addition we are leaking reference to struct obj_cgroup object.
+> 
+> Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: <stable@vger.kernel.org>
 
-map_hugetlb.c:79:25: warning: implicit declaration of function
-‘default_huge_page_size’ [-Wimplicit-function-declaration]
-   79 |         hugepage_size = default_huge_page_size();
-      |                         ^~~~~~~~~~~~~~~~~~~~~~
-/usr/bin/ld: /tmp/ccx95BZz.o: in function `main':
-map_hugetlb.c:(.text+0x104): undefined reference to
-`default_huge_page_size'
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
 
-Place default_huge_page_size() function body into map_hugetlb.c
-to fix this issue.
-
-Fixes: a584c7734a4d ("selftests: mm: fix map_hugetlb failure on 64K page size systems")
-Signed-off-by: Andrey Kalachev <kalachev@swemel.ru>
----
- tools/testing/selftests/vm/map_hugetlb.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/tools/testing/selftests/vm/map_hugetlb.c b/tools/testing/selftests/vm/map_hugetlb.c
-index c65c55b7a789..5826c50b6736 100644
---- a/tools/testing/selftests/vm/map_hugetlb.c
-+++ b/tools/testing/selftests/vm/map_hugetlb.c
-@@ -67,6 +67,30 @@ static int read_bytes(char *addr, size_t length)
- 	return 0;
- }
- 
-+/*
-+ * default_huge_page_size copied from mlock2-tests.c
-+ */
-+unsigned long default_huge_page_size(void)
-+{
-+	unsigned long hps = 0;
-+	char *line = NULL;
-+	size_t linelen = 0;
-+	FILE *f = fopen("/proc/meminfo", "r");
-+
-+	if (!f)
-+		return 0;
-+	while (getline(&line, &linelen, f) > 0) {
-+		if (sscanf(line, "Hugepagesize:       %lu kB", &hps) == 1) {
-+			hps <<= 10;
-+			break;
-+		}
-+	}
-+
-+	free(line);
-+	fclose(f);
-+	return hps;
-+}
-+
- int main(int argc, char **argv)
- {
- 	void *addr;
--- 
-2.39.5
-
+Thanks!
 
