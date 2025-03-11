@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613E0A5C723
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BB5A5C4C6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D83C4189F8EF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0AB3B738B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAED25DB0A;
-	Tue, 11 Mar 2025 15:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD65B25EF86;
+	Tue, 11 Mar 2025 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mi3rL/W3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPqRhlVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4841DF749;
-	Tue, 11 Mar 2025 15:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D6625E81E;
+	Tue, 11 Mar 2025 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706835; cv=none; b=fFGB0akPTCAi4ICAZKMeeW2TDQw8qrrm+q8w90zkGT/lhH4d0f7AjdTCS2kZoOAtXd2CkEpWkLhh0gdCw43ckpQCpir/FMD9iQgDLh729ivcUmc9bgHU4b/BTpTY5yVnNCEYbTQ+YN0DYwRM4Os1UW8fhdzgTTmmRtwu844j8n4=
+	t=1741705544; cv=none; b=rCtbJtjgb4s85MHfHtdp369a9MmXruta+qqLSHScntFvUOFem4lPz1ELjZLNVie6Yk2uXmX7VPlOMG38AumJkDTI9XLWh0lzg13hAXPRr/W81iGM/xYlzG5Sd+DLPF/eoptjyS7qTmYXFGezhDYHw8RSFMfxrAb8lNttKWuMAxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706835; c=relaxed/simple;
-	bh=sQjvohlMReDGeLrJU9dRAz6Mlve+axNVYWIEaus73Ps=;
+	s=arc-20240116; t=1741705544; c=relaxed/simple;
+	bh=gCu73TJomzmRZp5OhGIFflOk/2q4fnlhZunfqZvg1QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFXNns/96tlcwHrVsO+/9LielHwVAWhfIIKCb68Ri9llyisURL/Ri1LbwJgdK19a7GV2B6j5j6hFHWcuAEW5KngZWpCgC9jxOl2H7Sa4+ChEJtOeIqAS+L10RCh6VEARAaMCvcYSn834E5ZmvWJtUTRNWIGBVwO4w2U8ouRUq3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mi3rL/W3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7284AC4CEE9;
-	Tue, 11 Mar 2025 15:27:14 +0000 (UTC)
+	 MIME-Version; b=CLoEWT8ZcKelmZbCK+uWNZQp9/X7RxkXGMZq07DrgGruuSBQ9+dvXyLBrP2zoIB+e4XrfBTaK9/zp+bqjA+WXnifGS0wP6Uz54kdIkfc+gWNp8GeUGWKnq7HFb9CEXIZqCPM5x4z3LrMdmHNocdujcp6QKdRQ19r+LjDt7WYdWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPqRhlVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5568C4CEE9;
+	Tue, 11 Mar 2025 15:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706834;
-	bh=sQjvohlMReDGeLrJU9dRAz6Mlve+axNVYWIEaus73Ps=;
+	s=korg; t=1741705544;
+	bh=gCu73TJomzmRZp5OhGIFflOk/2q4fnlhZunfqZvg1QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mi3rL/W36Mo18hqix7xGkEecXHpv0jfJMFQVu6S135ealpaE4snv86l2WgynjOTaA
-	 ubCpPcFq3tMR/A2+RQaYCL4eaoHqZuluuf+uSaiE7h+ceHEQLrfWX4pR9H/RhY0GPU
-	 slt++d+W26rz4QigTcsFcWBOROmKIPpauTdtfkQA=
+	b=VPqRhlVDByxOT1a/vOtvq1ib0v/vfQWMY7aUfQPUM4gttO7w+QhNjXfikN9cU2oaI
+	 FZWL46xISWc5Do/pSTr9B/zBri9ndJOr2VhGcspTVCAxiLmqtLuLCHaC0rr2w5FVXK
+	 8bPiDWMsYjAEkgFxm2bspSL24wKHcN29zUjuehpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 176/462] clk: qcom: clk-alpha-pll: fix alpha mode configuration
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 072/328] genksyms: fix memory leak when the same symbol is read from *.symref file
 Date: Tue, 11 Mar 2025 15:57:22 +0100
-Message-ID: <20250311145805.306799910@linuxfoundation.org>
+Message-ID: <20250311145717.755453097@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 33f1722eb86e45320a3dd7b3d42f6593a1d595c2 upstream.
+[ Upstream commit be2fa44b5180a1f021efb40c55fdf63c249c3209 ]
 
-Commit c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
-added support for configuring alpha mode, but it seems that the feature
-was never working in practice.
+When a symbol that is already registered is read again from *.symref
+file, __add_symbol() removes the previous one from the hash table without
+freeing it.
 
-The value of the alpha_{en,mode}_mask members of the configuration gets
-added to the value parameter passed to the regmap_update_bits() function,
-however the same values are not getting applied to the bitmask. As the
-result, the respective bits in the USER_CTL register are never modifed
-which leads to improper configuration of several PLLs.
+[Test Case]
 
-The following table shows the PLL configurations where the 'alpha_en_mask'
-member is set and which are passed as a parameter for the
-clk_alpha_pll_configure() function. In the table the 'expected rate' column
-shows the rate the PLL should run at with the given configuration, and
-the 'real rate' column shows the rate the PLL runs at actually. The real
-rates has been verified on hardwareOn IPQ* platforms, on other platforms,
-those are computed values only.
+  $ cat foo.c
+  #include <linux/export.h>
+  void foo(void);
+  void foo(void) {}
+  EXPORT_SYMBOL(foo);
 
-      file                 pll         expected rate   real rate
-  dispcc-qcm2290.c     disp_cc_pll0      768.0 MHz     768.0 MHz
-  dispcc-sm6115.c      disp_cc_pll0      768.0 MHz     768.0 MHz
-  gcc-ipq5018.c        ubi32_pll        1000.0 MHz !=  984.0 MHz
-  gcc-ipq6018.c        nss_crypto_pll   1200.0 MHz    1200.0 MHz
-  gcc-ipq6018.c        ubi32_pll        1497.6 MHz != 1488.0 MHz
-  gcc-ipq8074.c        nss_crypto_pll   1200.0 MHz != 1190.4 MHz
-  gcc-qcm2290.c        gpll11            532.0 MHz !=  518.4 MHz
-  gcc-qcm2290.c        gpll8             533.2 MHz !=  518.4 MHz
-  gcc-qcs404.c         gpll3             921.6 MHz     921.6 MHz
-  gcc-sm6115.c         gpll11            600.0 MHz !=  595.2 MHz
-  gcc-sm6115.c         gpll8             800.0 MHz !=  787.2 MHz
-  gpucc-sdm660.c       gpu_cc_pll0       800.0 MHz !=  787.2 MHz
-  gpucc-sdm660.c       gpu_cc_pll1       740.0 MHz !=  729.6 MHz
-  gpucc-sm6115.c       gpu_cc_pll0      1200.0 MHz != 1190.4 MHz
-  gpucc-sm6115.c       gpu_cc_pll1       640.0 MHz !=  633.6 MHz
-  gpucc-sm6125.c       gpu_pll0         1020.0 MHz != 1017.6 MHz
-  gpucc-sm6125.c       gpu_pll1          930.0 MHz !=  921.6 MHz
-  mmcc-sdm660.c        mmpll8            930.0 MHz !=  921.6 MHz
-  mmcc-sdm660.c        mmpll5            825.0 MHz !=  806.4 MHz
+  $ cat foo.symref
+  foo void foo ( void )
+  foo void foo ( void )
 
-As it can be seen from the above, there are several PLLs which are
-configured incorrectly.
+When a symbol is removed from the hash table, it must be freed along
+with its ->name and ->defn members. However, sym->name cannot be freed
+because it is sometimes shared with node->string, but not always. If
+sym->name and node->string share the same memory, free(sym->name) could
+lead to a double-free bug.
 
-Change the code to apply both 'alpha_en_mask' and 'alpha_mode_mask'
-values to the bitmask in order to configure the alpha mode correctly.
+To resolve this issue, always assign a strdup'ed string to sym->name.
 
-Applying the 'alpha_en_mask' fixes the initial rate of the PLLs showed
-in the table above. Since the 'alpha_mode_mask' is not used by any driver
-currently, that part of the change causes no functional changes.
-
-Cc: stable@vger.kernel.org
-Fixes: c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/r/20241021-fix-alpha-mode-config-v1-1-f32c254e02bc@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 64e6c1e12372 ("genksyms: track symbol checksum changes")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ scripts/genksyms/genksyms.c | 8 ++++++--
+ scripts/genksyms/genksyms.h | 2 +-
+ scripts/genksyms/parse.y    | 4 ++--
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -240,6 +240,8 @@ void clk_alpha_pll_configure(struct clk_
- 	mask |= config->pre_div_mask;
- 	mask |= config->post_div_mask;
- 	mask |= config->vco_mask;
-+	mask |= config->alpha_en_mask;
-+	mask |= config->alpha_mode_mask;
+diff --git a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
+index d74bad87ef1a7..a87fafbbec268 100644
+--- a/scripts/genksyms/genksyms.c
++++ b/scripts/genksyms/genksyms.c
+@@ -274,11 +274,15 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
+ 				break;
+ 			}
+ 		}
++
++		free_list(sym->defn, NULL);
++		free(sym->name);
++		free(sym);
+ 		--nsyms;
+ 	}
  
- 	regmap_update_bits(regmap, PLL_USER_CTL(pll), mask, val);
+ 	sym = xmalloc(sizeof(*sym));
+-	sym->name = name;
++	sym->name = xstrdup(name);
+ 	sym->type = type;
+ 	sym->defn = defn;
+ 	sym->expansion_trail = NULL;
+@@ -485,7 +489,7 @@ static void read_reference(FILE *f)
+ 			defn = def;
+ 			def = read_node(f);
+ 		}
+-		subsym = add_reference_symbol(xstrdup(sym->string), sym->tag,
++		subsym = add_reference_symbol(sym->string, sym->tag,
+ 					      defn, is_extern);
+ 		subsym->is_override = is_override;
+ 		free_node(sym);
+diff --git a/scripts/genksyms/genksyms.h b/scripts/genksyms/genksyms.h
+index 2bcdb9bebab40..4ead4e0adb821 100644
+--- a/scripts/genksyms/genksyms.h
++++ b/scripts/genksyms/genksyms.h
+@@ -32,7 +32,7 @@ struct string_list {
  
+ struct symbol {
+ 	struct symbol *hash_next;
+-	const char *name;
++	char *name;
+ 	enum symbol_type type;
+ 	struct string_list *defn;
+ 	struct symbol *expansion_trail;
+diff --git a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
+index 7df3fe290d535..84813ce54a2dd 100644
+--- a/scripts/genksyms/parse.y
++++ b/scripts/genksyms/parse.y
+@@ -479,12 +479,12 @@ enumerator_list:
+ enumerator:
+ 	IDENT
+ 		{
+-			const char *name = strdup((*$1)->string);
++			const char *name = (*$1)->string;
+ 			add_symbol(name, SYM_ENUM_CONST, NULL, 0);
+ 		}
+ 	| IDENT '=' EXPRESSION_PHRASE
+ 		{
+-			const char *name = strdup((*$1)->string);
++			const char *name = (*$1)->string;
+ 			struct string_list *expr = copy_list_range(*$3, *$2);
+ 			add_symbol(name, SYM_ENUM_CONST, expr, 0);
+ 		}
+-- 
+2.39.5
+
 
 
 
