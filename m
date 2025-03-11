@@ -1,69 +1,72 @@
-Return-Path: <stable+bounces-123208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156CEA5C21A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:13:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A17ABA5C221
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52B4016E35B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 13:13:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54FD73B1D1D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 13:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8094A137932;
-	Tue, 11 Mar 2025 13:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75431B6D06;
+	Tue, 11 Mar 2025 13:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQrtOQMY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYoDqYaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A4878F52;
-	Tue, 11 Mar 2025 13:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73C81ADC86;
+	Tue, 11 Mar 2025 13:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741698830; cv=none; b=DOz2826sb7LImiW0qt/1dzQp67QRpoQDlFzjsWi0rO0Q0In1djMFjmn9aqiPh2yqE9sTOJFjvdPUqk12DwBzRva1KDBGtNCPCEcziRxIdfqMF0V+vLPpcTw0HwgLs1nkqU676shKxQ7SEcXRtj6KAnjo7otXZ1ErdMrlkmuDmJg=
+	t=1741698833; cv=none; b=NyPBRCsVV9QbFaOdMDzcryTZErx6znbvZEsziJTv/C4CRy3BGjj/Kgg44WY7ysVGhnmm3CL03TcKYf//Cx5AqOpsEekD11w6yIrf3kphxqXii6UHiRXuNyS0tZgM74aZKdVdJBif+h7Zl62Wnvb060E28sKCcOjQpr/9rjtAzkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741698830; c=relaxed/simple;
-	bh=W5TW3ItKe0zCXjEoHNcQyGj1KCK/QSQc7spLlCVjgow=;
+	s=arc-20240116; t=1741698833; c=relaxed/simple;
+	bh=9mLY5RPTw27hiwcuML8iH9RHXhIJmFi/AX1Jr9j1JCk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gkbc41CZE2vAsoslzFzRZg3huXh41ulKWUTOS441U0N90CJChuxE6m3oYRmWHaqQct0ByNyF2Asm0aWwM/j1BNRlKdp+B8Vg5tkNbTi7LBymj3FeIVPJMzfPH7OD0tOXNUmkvheEPtLqCuK3+icRTmiabPnsqUthaCy66TCdNLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQrtOQMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0536C4CEEC;
-	Tue, 11 Mar 2025 13:13:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=emzWXD0s90TrGASP5PsE8muH8Q2FWJhLTfeKrURmK7kPlk5VohLgz0Vx9Ys7BG3X13YRuiM5m1jGiDK5DXE/zxEqqhkVFIIAS4dgHUgOhaXc30uUgCn9vTBv9Q5Uo+Lq0KSjn5Z0oj1hrtqQ4jgaPuNimhAz76g9/mu35rquxgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYoDqYaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BB1C4CEF1;
+	Tue, 11 Mar 2025 13:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741698829;
-	bh=W5TW3ItKe0zCXjEoHNcQyGj1KCK/QSQc7spLlCVjgow=;
+	s=k20201202; t=1741698833;
+	bh=9mLY5RPTw27hiwcuML8iH9RHXhIJmFi/AX1Jr9j1JCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQrtOQMYMPMYlS/buZhQKhd0yPkZTs6SrqVzwdmGj4OUORYyFjIwCtSkrmyNRkxaU
-	 hwTij4rzs46Ky1AOTB8HpRT2IG/XT7zsP/KijrhWYiRhHQ93n+jSnglTaRa93MPQEW
-	 G/Qf5R2NSma/6n+KVhg0dt3fRdBTCUw2kubMbukoUaL4cUixdk0itiwLmVzWs3VVC0
-	 S0qyqOhcGAN4haUtooV0AcirdKVCHJRI4FtYz3jj/ny+jfq6b9B0FJpU+fbNnaC2mL
-	 oHXR8OKBUdbo/KWOKbg7E1N0EFLcYDw1ik86bkNGCLXLSDUqgSEQK8m8uQLVpmyQT2
-	 8ns50s61k3GAA==
+	b=DYoDqYaXzESca1O7TObIN8QSpxSi/xD2PB5a7T8nvZu0sEJsCWrrsMoJXaXy3Fb+N
+	 X7A95Kqrb5awRQksIXyMSoiLCNYjl0o+kx7k8Wk5RKYDfjkxNQOzqlvA7yM6ZtDsn4
+	 deqaqfMz09WXH5uLgU5IFZs3P7QKPkNn9njuibwzmyoJAo8UxOdeuW+VrQOPoOs1D3
+	 yefAl2q65NMfEp+6AiAcunyhBorOrlsEdQ0MYRyOukfnB8uyTxezqeLid6YukzwDx2
+	 mlh1HRPPRSA4aa+gJgZwu2yExKSzdcr09E2E1wrHuSihYDNTez4BmfZFnvmIM2izCO
+	 Jk/h5MDUhypdw==
 From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Piotr Jaroszynski <pjaroszynski@nvidia.com>
+To: anshuman.khandual@arm.com,
+	catalin.marinas@arm.com,
+	david@redhat.com,
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>
 Cc: kernel-team@android.com,
 	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	SeongJae Park <sj@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	iommu@lists.linux.dev,
+	ardb@kernel.org,
+	ryan.roberts@arm.com,
+	mark.rutland@arm.com,
+	joey.gouly@arm.com,
+	dave.hansen@linux.intel.com,
+	akpm@linux-foundation.org,
+	chenfeiyang@loongson.cn,
+	chenhuacai@kernel.org,
 	linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH] [arm64/tlb] Fix mmu notifiers for range-based invalidates
-Date: Tue, 11 Mar 2025 13:13:36 +0000
-Message-Id: <174169306404.278141.17801949874773526998.b4-ty@kernel.org>
+	quic_tingweiz@quicinc.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v9] arm64: mm: Populate vmemmap at the page level if not section aligned
+Date: Tue, 11 Mar 2025 13:13:37 +0000
+Message-Id: <174169292046.277676.9363571702356367812.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250304085127.2238030-1-pjaroszynski@nvidia.com>
-References: <20250304085127.2238030-1-pjaroszynski@nvidia.com>
+In-Reply-To: <20250304072700.3405036-1-quic_zhenhuah@quicinc.com>
+References: <20250304072700.3405036-1-quic_zhenhuah@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,21 +76,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Tue, 04 Mar 2025 00:51:27 -0800, Piotr Jaroszynski wrote:
-> Update the __flush_tlb_range_op macro not to modify its parameters as
-> these are unexepcted semantics. In practice, this fixes the call to
-> mmu_notifier_arch_invalidate_secondary_tlbs() in
-> __flush_tlb_range_nosync() to use the correct range instead of an empty
-> range with start=end. The empty range was (un)lucky as it results in
-> taking the invalidate-all path that doesn't cause correctness issues,
-> but can certainly result in suboptimal perf.
+On Tue, 04 Mar 2025 15:27:00 +0800, Zhenhua Huang wrote:
+> On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+> to 27, making one section 128M. The related page struct which vmemmap
+> points to is 2M then.
+> Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+> vmemmap to populate at the PMD section level which was suitable
+> initially since hot plug granule is always one section(128M). However,
+> commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+> existing arm64 assumptions.
 > 
 > [...]
 
 Applied to arm64 (for-next/fixes), thanks!
 
-[1/1] Fix mmu notifiers for range-based invalidates
-      https://git.kernel.org/arm64/c/f7edb07ad7c6
+[1/1] arm64: mm: Populate vmemmap at the page level if not section aligned
+      https://git.kernel.org/arm64/c/d4234d131b0a
 
 Cheers,
 -- 
