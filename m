@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D6AA5C712
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD2EA5C4D2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5184517B6CD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D9417A54B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7FF25E834;
-	Tue, 11 Mar 2025 15:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A50025EF89;
+	Tue, 11 Mar 2025 15:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgP70WhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj4TpuKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAF11DF749;
-	Tue, 11 Mar 2025 15:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C2C25E808;
+	Tue, 11 Mar 2025 15:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706855; cv=none; b=BBDpDx6gdskBd+k/X4t6tSgyuR80rM2Oilr5jm82Ti/t8wRQ64z2ngaBqoFdoH0gaCcKM93PVQr8DfqqQrBugdDA9fLebp1RtFD77Czium4YPZhZSRynlTxBk6kO6p3DvS7h3rJXiQdzQ1c7mFwqetK6ILmEtygppzAx+PTsKlA=
+	t=1741705588; cv=none; b=CaOxe+U4VS6vfJyrqBAEnO8tk1396XMafyqF1KjGvdMU4of2BAJ6hjUwKvk9vUPPBIpW5phU4I6fQ1FwaXGNzTN/Fb59ahPCF84uXVjByJhuEfusKRUT7UMEnyPqi4ubOScZhTsQKflL3CRWtEZYWDVgTcUKl70BSKfBosuxXto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706855; c=relaxed/simple;
-	bh=6zf5aQFEC3G2f7U76uJjRnqZJr0974TBbISpkGonUcI=;
+	s=arc-20240116; t=1741705588; c=relaxed/simple;
+	bh=hn1DtNsiWbNuidKA+ATWAmUri529VLRwxoaiPPT2PKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kz1cbjeBlu6CjDFINkGNtBJJEn5+wIorQiZsjaU4PerKevMNGf9S0U2Y1HOiKi2v9nkFuUmqJqkHqKRI7A9ZO7hZ9uS+rcc6BpuWomhAG7+UPdp3DFjZx5uOTA1/yLWjMbXJTPh3KArmtH9WQutPkXF7UuyhKdx8zpoxxlMbFCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgP70WhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC284C4CEEA;
-	Tue, 11 Mar 2025 15:27:34 +0000 (UTC)
+	 MIME-Version; b=E/v7DFeDE9BD8w63K4LqMFWznYPgP+Xp3Ca++jdKhIhHnHEmT4IDg0Q56rKOrXrvVog8DWqvtEhisZl1098gNdXBXDtsnFDe93WwD+Ot+grYh71S0JnowdwPu2qo2gNkAoahulMnFK8zNum+Jm7FHvlnVKrgABX+v6lk8s0bhJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mj4TpuKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A4FC4CEE9;
+	Tue, 11 Mar 2025 15:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706855;
-	bh=6zf5aQFEC3G2f7U76uJjRnqZJr0974TBbISpkGonUcI=;
+	s=korg; t=1741705587;
+	bh=hn1DtNsiWbNuidKA+ATWAmUri529VLRwxoaiPPT2PKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgP70WhUnip1J4sO3W7eMR5/+XHv2p5F9szCHBmGw+5MHl/cDGUwQVA6foLfdD+FZ
-	 YLU+sgWLDEyO8J/6DHWhI3I/M9D2GRVQkrNK4Zyz2kadO+ur95EphsVXtbfSqQ6kuz
-	 PuA5Wk7PICw6fo/gMtncxyAI45WIaRoX/X0YZDYI=
+	b=mj4TpuKmxGSVQofBFVGOF77aG5iYRQquxQQpTSZn8mQu3FJf94ZGa9FYT2FRBWWPV
+	 vxjcUW4RjVntrcmbTrD4N74VulTXo5NLu5ZEdVPmT/Ggy1DtK1iANESpFmATNr4e0t
+	 QnKMKW9TEz0axTV9u7O4DVQZ04t6C7/hGl7+O1Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 191/462] soc: qcom: socinfo: Avoid out of bounds read of serial number
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 087/328] printk: Fix signed integer overflow when defining LOG_BUF_LEN_MAX
 Date: Tue, 11 Mar 2025 15:57:37 +0100
-Message-ID: <20250311145805.906310636@linuxfoundation.org>
+Message-ID: <20250311145718.345963109@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
+[ Upstream commit 3d6f83df8ff2d5de84b50377e4f0d45e25311c7a ]
 
-On MSM8916 devices, the serial number exposed in sysfs is constant and does
-not change across individual devices. It's always:
+Shifting 1 << 31 on a 32-bit int causes signed integer overflow, which
+leads to undefined behavior. To prevent this, cast 1 to u32 before
+performing the shift, ensuring well-defined behavior.
 
-  db410c:/sys/devices/soc0$ cat serial_number
-  2644893864
+This change explicitly avoids any potential overflow by ensuring that
+the shift occurs on an unsigned 32-bit integer.
 
-The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
-have support for the serial_num field in the socinfo struct. There is an
-existing check to avoid exposing the serial number in that case, but it's
-not correct: When checking the item_size returned by SMEM, we need to make
-sure the *end* of the serial_num is within bounds, instead of comparing
-with the *start* offset. The serial_number currently exposed on MSM8916
-devices is just an out of bounds read of whatever comes after the socinfo
-struct in SMEM.
-
-Fix this by changing offsetof() to offsetofend(), so that the size of the
-field is also taken into account.
-
-Cc: stable@vger.kernel.org
-Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Acked-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240928113608.1438087-1-visitorckw@gmail.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
+ kernel/printk/printk.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -510,7 +510,7 @@ static int qcom_socinfo_probe(struct pla
- 	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
- 
--	if (offsetof(struct socinfo, serial_num) <= item_size) {
-+	if (offsetofend(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index ae1a97dd0c3cb..f6e1e154d9c18 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -457,7 +457,7 @@ static u32 clear_idx;
+ /* record buffer */
+ #define LOG_ALIGN __alignof__(struct printk_log)
+ #define __LOG_BUF_LEN (1 << CONFIG_LOG_BUF_SHIFT)
+-#define LOG_BUF_LEN_MAX (u32)(1 << 31)
++#define LOG_BUF_LEN_MAX ((u32)1 << 31)
+ static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN);
+ static char *log_buf = __log_buf;
+ static u32 log_buf_len = __LOG_BUF_LEN;
+-- 
+2.39.5
+
 
 
 
