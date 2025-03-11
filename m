@@ -1,180 +1,124 @@
-Return-Path: <stable+bounces-124037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F73A5C895
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:46:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D3BA5CA05
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:00:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF41F7A9793
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:45:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 844DC7A8F49
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728EC25EFA5;
-	Tue, 11 Mar 2025 15:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110F925EFBC;
+	Tue, 11 Mar 2025 15:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="E3DcecL9"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wP6guSR/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802DE25E83D
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 15:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24ED25EFBF
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 15:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707968; cv=none; b=AyenVqZHzig8h3cuUcrPawmN47oqLMKRyGvQucZ/0ThWOFJ3fu2USnQczgh7G9+fK6izMT+RczodSQBKrPcVcXpX4+QEa1i6aB13VWc8D4IKCyK3P8vOqs/YHNdkoSKRcIZmUw/R0zh3RtDhLAb7DOM+WVVoqgyLId/xar5Wu7w=
+	t=1741708697; cv=none; b=VPcpCNXyC5uB+V+Y82aoy6R2DfHcfVfu2XhB4W5qA2D77O40ZgVCtMOMLckDxIbWcIS8pmvGZV0Lro/BTrMEP+AJkAokzVFh1pM5S9GsCI0Cz1WuWXWysdBhbNAA5LYC/IIQuIletS7aemM3aqYe5DUS+SYai71UAwIRdF+CgTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707968; c=relaxed/simple;
-	bh=6fVO/vVddYoOEKURR6p+IYPBy9SXzCFfy4PK5pT2lzM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aJ1i1CTs8tDFXEsA2Rb+RwFW5fxp2FR3J2lWAMUQDAKv4U6svNdJ8anlqvzzNc0m+tCW+Cpi1VSTbk6lMUJ/4UPKA1DrELeQeE0+/swWSdRe62RGK3sEA7yTBUKjobuYCYF702sUzRc8QEJeNF5PRFJc9EouvSNq1FaaN4Il98c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=E3DcecL9; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7273b0d4409so1217703a34.1
-        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 08:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1741707963; x=1742312763; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TvX1YUIUz+ljyteedbXCuuqtjAef6ss4iRRjFDfHrXQ=;
-        b=E3DcecL9fW7/G922kRxSw/OBDRURXZSsqExhBupSz4R5FJxVf3pa9xUimGf9IP1Vxf
-         LbpRDGNGXviXTuM2p3m0HORzmBpv1PfJ88EiJ86Z8qJaibqLn+r4QZpGzrJEt/OyUCPS
-         /q6BxSYMoivPSTew9x+YBd3R7KZK48BGkbmPQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741707963; x=1742312763;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TvX1YUIUz+ljyteedbXCuuqtjAef6ss4iRRjFDfHrXQ=;
-        b=AoP2ZCjCIRNOMnv+e2sjhdb3lVda9D04s1dBJ913NLM8+BlhrtdRRRa9HzL71HViDM
-         ZdiDrlWk4/KYiXuLp9nsY0keUzNCh2M2S5maGM7pVW0+yqVUUM6PU5sF/nW49mNC1Sln
-         cvox29dZ8f+HkmwvuHVkuYk+1RKrtruh9DN6NQtC1mtlfB51DQI/tqEJ4qMjf4jZ8f2g
-         4LatrT4eHmlF/FofQRW20RP+tN1U4bsMmOPrKbcrgHtotu4+mS0LP0Fzx88W2W10aJwJ
-         Qd8uHoeTR5HiBxFeub3VxKCMS/yVr17OoerpOkmhtzOvbMyw1MvQ2TKhCu0Q99zvZbuM
-         O5CA==
-X-Gm-Message-State: AOJu0YyYJnviKpgrdolIcWDIPqD7x4yI7KJm8CqXL6HcCGN3rD1aMRmR
-	EIkHoHCqLeNP2LkgXcgnQtdjrhEYKrTAs6qMQKV/zg/gfP5YmgKle1pZlb9+2g==
-X-Gm-Gg: ASbGncvz/kTrcHrNJsDiX6JGBgeVb9FFhtMX+gYM+64vFdOO00v5LP2UgVCO9oZMFjF
-	ccLIVnMvaXfssvh0zvFbZz+S+/97jllw/Ox47F4jFFXdEV7DPXfJbvzstS7hPIXkO8j3wJPyFik
-	KSYiEkbbNbX0GxS0Wo6+0whx+D6WKNNZFgrvq8PVXwe9o15dYawOWXRy9TDjLOG6yfeFxrV4qAk
-	zEelYAeyOhBCi472Vx6Wtz30pbXMqKKKlktvUtMvlCTDbK2QUjWew6TENYVEFL6p6gOCwogLmmW
-	N9BiAaIG6VS2Vz9g15ugdE/NQVLuNxvOQd4TObe/Cbg7psvppkRjKmyGnjo3oQcggnoL1dKJYZD
-	YztDdQ9Nl
-X-Google-Smtp-Source: AGHT+IELjvN+XdLjKqh9jaffslYR98GQizJDSBHy2qffYsdvRDcijxUrqGkTRxSvndo2VK5SLo0wlg==
-X-Received: by 2002:a05:6830:3897:b0:72b:9387:84b2 with SMTP id 46e09a7af769-72b938794c3mr3908943a34.27.1741707963471;
-        Tue, 11 Mar 2025 08:46:03 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72a4634099esm1681482a34.61.2025.03.11.08.46.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Mar 2025 08:46:02 -0700 (PDT)
-Message-ID: <aa4284fa-1f68-4c7e-8d58-1c5129adda27@broadcom.com>
-Date: Tue, 11 Mar 2025 08:46:00 -0700
+	s=arc-20240116; t=1741708697; c=relaxed/simple;
+	bh=3+3TUVaFm9GEfB3rySJJ0OyIZLVSm0fUt+m+Qs961/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aUQow+Vm/Kh0rQzB/3LsZmyPfmEIQ2o9E87AKo/ethO2yd2XlcIKRilOkwvX0Xf1/GPPYrOQxLdjjH9Uc0/9iy9adGZiszz456pnk7+ykYOhOqx8xvxYXDD96XvV4L739gPoTxsC4ohG/I9jisqGJKbSUr530jgigQdWyZJw1rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wP6guSR/; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 11 Mar 2025 08:57:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1741708683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Cdi2NahSTQHVLLkiZwH5MHDxGkaNYRgi4IHLpPvMnQA=;
+	b=wP6guSR/EbtSQ0x/8Lw8512ytFiiLJPbotNAEXGZcmfcR9f+56DDzKK3bLO1NJxjsw0V29
+	aXQip9EAzwEydHE22SRhlTlNAgK46mh4OsIL9vMWQW6jKmJWMxjdTO58K7QFjH6Oz3t9se
+	1AJozzYmj3Bj0SV84Kw6CWkxagNZbjU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Meta kernel team <kernel-team@meta.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] memcg: drain obj stock on cpu hotplug teardown
+Message-ID: <orewawh6kpgrbl4jlvpeancg4s6cyrldlpbqbd7wyjn3xtqy5y@2edkh5ffbnas>
+References: <20250310230934.2913113-1-shakeel.butt@linux.dev>
+ <20250311153032.GB1211411@cmpxchg.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
-To: Kamal Dasu <kamal.dasu@broadcom.com>,
- Adrian Hunter <adrian.hunter@intel.com>, Al Cooper <alcooperx@gmail.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson
- <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250311150136.46938-1-kamal.dasu@broadcom.com>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20250311150136.46938-1-kamal.dasu@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250311153032.GB1211411@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
 
-On 3/11/25 08:01, Kamal Dasu wrote:
-> cqhci timeouts observed on brcmstb platforms during suspend:
->    ...
->    [  164.832853] mmc0: cqhci: timeout for tag 18
->    ...
+On Tue, Mar 11, 2025 at 11:30:32AM -0400, Johannes Weiner wrote:
+> On Mon, Mar 10, 2025 at 04:09:34PM -0700, Shakeel Butt wrote:
+> > Currently on cpu hotplug teardown, only memcg stock is drained but we
+> > need to drain the obj stock as well otherwise we will miss the stats
+> > accumulated on the target cpu as well as the nr_bytes cached. The stats
+> > include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
+> > addition we are leaking reference to struct obj_cgroup object.
+> > 
+> > Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Cc: <stable@vger.kernel.org>
 > 
-> Adding cqhci_suspend()/resume() calls to disable cqe
-> in sdhci_brcmstb_suspend()/resume() respectively to fix
-> CQE timeouts seen on PM suspend.
+> Wow, that's old. Good catch.
 > 
-> Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-> ---
->   drivers/mmc/host/sdhci-brcmstb.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
+> > ---
+> >  mm/memcontrol.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> > 
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 4de6acb9b8ec..59dcaf6a3519 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -1921,9 +1921,18 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+> >  static int memcg_hotplug_cpu_dead(unsigned int cpu)
+> >  {
+> >  	struct memcg_stock_pcp *stock;
+> > +	struct obj_cgroup *old;
+> > +	unsigned long flags;
+> >  
+> >  	stock = &per_cpu(memcg_stock, cpu);
+> > +
+> > +	/* drain_obj_stock requires stock_lock */
+> > +	local_lock_irqsave(&memcg_stock.stock_lock, flags);
+> > +	old = drain_obj_stock(stock);
+> > +	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
+> > +
+> >  	drain_stock(stock);
+> > +	obj_cgroup_put(old);
 > 
-> diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-> index 0ef4d578ade8..bf55a9185eb6 100644
-> --- a/drivers/mmc/host/sdhci-brcmstb.c
-> +++ b/drivers/mmc/host/sdhci-brcmstb.c
-> @@ -505,6 +505,12 @@ static int sdhci_brcmstb_suspend(struct device *dev)
->   	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
+> It might be better to call drain_local_stock() directly instead. That
+> would prevent a bug of this type to reoccur in the future.
 
-Missing an int ret declaration here, otherwise that won't build.
+The issue is drain_local_stock() works on the local cpu stock while here
+we are working on a remote cpu cpu which is dead (memcg_hotplug_cpu_dead
+is in PREPARE section of hotplug teardown which runs after the cpu is
+dead).
 
->   
->   	clk_disable_unprepare(priv->base_clk);
-> +	if (host->mmc->caps2 & MMC_CAP2_CQE) {
-> +		ret = cqhci_suspend(host->mmc);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->   	return sdhci_pltfm_suspend(dev);
->   }
->   
-> @@ -529,6 +535,9 @@ static int sdhci_brcmstb_resume(struct device *dev)
->   			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
->   	}
->   
-> +	if (host->mmc->caps2 & MMC_CAP2_CQE)
-> +		ret = cqhci_resume(host->mmc);
-> +
->   	return ret;
->   }
->   #endif
+We can safely call drain_stock() on remote cpu stock here but
+drain_obj_stock() is a bit tricky as it can __refill_stock() to local cpu
+stock and can call __mod_objcg_mlstate to flush stats. Both of these
+requires irq disable for NON-RT kernels and thus I added the local_lock
+here.
 
+Anyways I wanted a simple fix for the backports and in parallel I am
+working on cleaning up all the stock functions as I plan to add multi
+memcg support.
 
--- 
-Florian
+Thanks for taking a look.
 
