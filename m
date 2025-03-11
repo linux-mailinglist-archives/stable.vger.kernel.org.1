@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-123769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB2DA5C726
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D00A5C51D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3AF3165A77
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E2CE3B6D06
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB3725BACC;
-	Tue, 11 Mar 2025 15:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C815B25E826;
+	Tue, 11 Mar 2025 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rD0nYNiV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVs+npA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2551DF749;
-	Tue, 11 Mar 2025 15:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838C225E454;
+	Tue, 11 Mar 2025 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706910; cv=none; b=Qos6hn9XqgZeu45Rabaw3dE1zGxErgWXEMSh4C4EL3OlmaLdfObovC/SuN884xE3poKcGcJ8eGzseWmaclj4nGOJskGDATvuMPx6BWNTr3m2/0Q/E0GMvOs0kFRjX5jiP88Fa7odwAPT0ruPwYjtrf6qRpkS/AHRdpwLZBQKwG8=
+	t=1741705697; cv=none; b=VMzpgWINdrxW3wVkGBUZiwSRBHzRXA9XV5SlK9i42ys8mJdKTLRJ4YqD8xETOZPDD3roClISXWzO4AMr4aBIFtHtafAlb/vOB1HRJNIw301d3ilQ7Ob5Fo/09xQXXTZrmXU7XlG71bgp/iW469PBHMG37kA6dVRfFjQcfRR0gVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706910; c=relaxed/simple;
-	bh=aEnQ6sFAbR+YyVUS1asUnRQAcHTgfCmeGVGYU+6ugqQ=;
+	s=arc-20240116; t=1741705697; c=relaxed/simple;
+	bh=2MQlJfpxcvvFhhz73OYL7UN1WVYd68CmbJGWPCQRRKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/NaWjjNrRh6jMXUsi8b/XwCsfAUujWL0D239no2XFbEosR9hta2h8Uf7vghbanoPsWs9O68ErKWJlnCGZBBcRy7NtcWuum6xYm3oILgbBkgh3HLiyjdxD7JKcxD33zvpRjDKm+huG8XcUWKjbHX4lzbeYHJSdsvBUHhdwP1GXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rD0nYNiV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C36C4CEE9;
-	Tue, 11 Mar 2025 15:28:29 +0000 (UTC)
+	 MIME-Version; b=G7OJ2rRFDE7CJBGJCzZ79ckm7cpdsRUeNreqSW/qEsCFiqKIDU8s9f42/K4wG8GE+hXRrwyPuK4Zab0cDBc7VFj/Vg+beLtROq4E1kod+0hF7QZWVK0i3u6n1AxliaSM1Z4Qq8F8L2IUWawIyKVPwV/Wq8r9DQP3u4WE9CR9uz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVs+npA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11F3C4CEE9;
+	Tue, 11 Mar 2025 15:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706909;
-	bh=aEnQ6sFAbR+YyVUS1asUnRQAcHTgfCmeGVGYU+6ugqQ=;
+	s=korg; t=1741705697;
+	bh=2MQlJfpxcvvFhhz73OYL7UN1WVYd68CmbJGWPCQRRKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rD0nYNiVik66OGUlTag90EPyL6KL782gAqZKLi6azUIOQZkJyuKq8liReBPyr0N6d
-	 sZEzPR9POheCbHSoCQBqvyk2blaeEkbs3RqasdxCUI87RtJwr8sZekfiYmHhZVvEE1
-	 bsWTU0+kBV3yfuyyAIiEbr++WV4vlhJXsUkjXI6w=
+	b=HVs+npA9IuO1Z/T6xgI0Dti4mIiAV5I/cbECDqZ+WJyZaNZ7zYnHQSKcqPoQJkx41
+	 Ao7ZDGQPuPRxGYcpOLvZEke+3UFp9vqwCPUeIGWsaEinh0iIWoMMTyIrcbWPBE+gf1
+	 YuAZsvEKeWt0XY+cYi86VTsakAdTO0/Qu/8N/NXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 208/462] crypto: qce - fix goto jump in error path
+	Romain Perier <romain.perier@gmail.com>,
+	Allen Pais <allen.lkml@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Kees Cook <keescook@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 104/328] tasklet: Introduce new initialization API
 Date: Tue, 11 Mar 2025 15:57:54 +0100
-Message-ID: <20250311145806.579850112@linuxfoundation.org>
+Message-ID: <20250311145719.030411447@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Romain Perier <romain.perier@gmail.com>
 
-commit 5278275c1758a38199b43530adfc50098f4b41c7 upstream.
+[ Upstream commit 12cc923f1ccc1df467e046b02a72c2b3b321b6a2 ]
 
-If qce_check_version() fails, we should jump to err_dma as we already
-called qce_dma_request() a couple lines before.
+Nowadays, modern kernel subsystems that use callbacks pass the data
+structure associated with a given callback as argument to the callback.
+The tasklet subsystem remains one which passes an arbitrary unsigned
+long to the callback function. This has several problems:
 
-Cc: stable@vger.kernel.org
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- This keeps an extra field for storing the argument in each tasklet
+  data structure, it bloats the tasklet_struct structure with a redundant
+  .data field
+
+- No type checking can be performed on this argument. Instead of
+  using container_of() like other callback subsystems, it forces callbacks
+  to do explicit type cast of the unsigned long argument into the required
+  object type.
+
+- Buffer overflows can overwrite the .func and the .data field, so
+  an attacker can easily overwrite the function and its first argument
+  to whatever it wants.
+
+Add a new tasklet initialization API, via DECLARE_TASKLET() and
+tasklet_setup(), which will replace the existing ones.
+
+This work is greatly inspired by the timer_struct conversion series,
+see commit e99e88a9d2b0 ("treewide: setup_timer() -> timer_setup()")
+
+To avoid problems with both -Wcast-function-type (which is enabled in
+the kernel via -Wextra is several subsystems), and with mismatched
+function prototypes when build with Control Flow Integrity enabled,
+this adds the "use_callback" member to let the tasklet caller choose
+which union member to call through. Once all old API uses are removed,
+this and the .data member will be removed as well. (On 64-bit this does
+not grow the struct size as the new member fills the hole after atomic_t,
+which is also "int" sized.)
+
+Signed-off-by: Romain Perier <romain.perier@gmail.com>
+Co-developed-by: Allen Pais <allen.lkml@gmail.com>
+Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Co-developed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Stable-dep-of: 90b7f2961798 ("net: usb: rtl8150: enable basic endpoint checking")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qce/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/interrupt.h | 28 +++++++++++++++++++++++++++-
+ kernel/softirq.c          | 18 +++++++++++++++++-
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/qce/core.c
-+++ b/drivers/crypto/qce/core.c
-@@ -219,7 +219,7 @@ static int qce_crypto_probe(struct platf
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 01517747214a4..b70a35b97210d 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -575,6 +575,9 @@ static inline struct task_struct *this_cpu_ksoftirqd(void)
  
- 	ret = qce_check_version(qce);
- 	if (ret)
--		goto err_clks;
-+		goto err_dma;
+ /* Tasklets --- multithreaded analogue of BHs.
  
- 	spin_lock_init(&qce->lock);
- 	tasklet_init(&qce->done_tasklet, qce_tasklet_req_done,
++   This API is deprecated. Please consider using threaded IRQs instead:
++   https://lore.kernel.org/lkml/20200716081538.2sivhkj4hcyrusem@linutronix.de
++
+    Main feature differing them of generic softirqs: tasklet
+    is running only on one CPU simultaneously.
+ 
+@@ -598,10 +601,31 @@ struct tasklet_struct
+ 	struct tasklet_struct *next;
+ 	unsigned long state;
+ 	atomic_t count;
+-	void (*func)(unsigned long);
++	bool use_callback;
++	union {
++		void (*func)(unsigned long data);
++		void (*callback)(struct tasklet_struct *t);
++	};
+ 	unsigned long data;
+ };
+ 
++#define DECLARE_TASKLET(name, _callback)		\
++struct tasklet_struct name = {				\
++	.count = ATOMIC_INIT(0),			\
++	.callback = _callback,				\
++	.use_callback = true,				\
++}
++
++#define DECLARE_TASKLET_DISABLED(name, _callback)	\
++struct tasklet_struct name = {				\
++	.count = ATOMIC_INIT(1),			\
++	.callback = _callback,				\
++	.use_callback = true,				\
++}
++
++#define from_tasklet(var, callback_tasklet, tasklet_fieldname)	\
++	container_of(callback_tasklet, typeof(*var), tasklet_fieldname)
++
+ #define DECLARE_TASKLET_OLD(name, _func)		\
+ struct tasklet_struct name = {				\
+ 	.count = ATOMIC_INIT(0),			\
+@@ -681,6 +705,8 @@ extern void tasklet_kill(struct tasklet_struct *t);
+ extern void tasklet_kill_immediate(struct tasklet_struct *t, unsigned int cpu);
+ extern void tasklet_init(struct tasklet_struct *t,
+ 			 void (*func)(unsigned long), unsigned long data);
++extern void tasklet_setup(struct tasklet_struct *t,
++			  void (*callback)(struct tasklet_struct *));
+ 
+ /*
+  * Autoprobing for irqs:
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 0427a86743a46..c5518b39cb4e5 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -520,7 +520,10 @@ static void tasklet_action_common(struct softirq_action *a,
+ 				if (!test_and_clear_bit(TASKLET_STATE_SCHED,
+ 							&t->state))
+ 					BUG();
+-				t->func(t->data);
++				if (t->use_callback)
++					t->callback(t);
++				else
++					t->func(t->data);
+ 				tasklet_unlock(t);
+ 				continue;
+ 			}
+@@ -546,6 +549,18 @@ static __latent_entropy void tasklet_hi_action(struct softirq_action *a)
+ 	tasklet_action_common(a, this_cpu_ptr(&tasklet_hi_vec), HI_SOFTIRQ);
+ }
+ 
++void tasklet_setup(struct tasklet_struct *t,
++		   void (*callback)(struct tasklet_struct *))
++{
++	t->next = NULL;
++	t->state = 0;
++	atomic_set(&t->count, 0);
++	t->callback = callback;
++	t->use_callback = true;
++	t->data = 0;
++}
++EXPORT_SYMBOL(tasklet_setup);
++
+ void tasklet_init(struct tasklet_struct *t,
+ 		  void (*func)(unsigned long), unsigned long data)
+ {
+@@ -553,6 +568,7 @@ void tasklet_init(struct tasklet_struct *t,
+ 	t->state = 0;
+ 	atomic_set(&t->count, 0);
+ 	t->func = func;
++	t->use_callback = false;
+ 	t->data = data;
+ }
+ EXPORT_SYMBOL(tasklet_init);
+-- 
+2.39.5
+
 
 
 
