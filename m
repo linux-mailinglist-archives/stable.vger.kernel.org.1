@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266C5A5C822
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F368A5C5B5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0EE8189A7F7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BDDA3B3958
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4577D25B691;
-	Tue, 11 Mar 2025 15:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13C825E440;
+	Tue, 11 Mar 2025 15:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpNXvg/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tg+FHdNv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EE0221DA5;
-	Tue, 11 Mar 2025 15:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562DD25D8F9;
+	Tue, 11 Mar 2025 15:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707363; cv=none; b=Egfm+XIL+c8ETIhADDgr7GKvAUGprN/a6cbcXE3Gt6xaQENKKxXhacwCgyKfXPiKX2YbgWs/EAvKQieEanMPe2hMxmuD7w1J1K24FcIAbIrZdAU3T4hiEwnQagze/AgqNIt+c2iDxxOWPDKylC+U7xqjjdF1KbSHjeUi69RJNvI=
+	t=1741706041; cv=none; b=OWIAmbGQZM9N8KtmUg0jBvTfjGiukm4Io5HMKV1uP6QopNpyYj5pgbTsVLAPiSwmqtda6bUsed+Nt1CX62qAuybNEshP6ZvYJILaJ9+q6XQ4HN3B2AnOz6tZJEt8w4DL6b7+w81KLjFs8HWHcOIRMrx03st0A5mRYJALgzbyImY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707363; c=relaxed/simple;
-	bh=oPeeY4XF0BGFqeFnHLWjA9pR7SfE6YIy57AQwME7GpE=;
+	s=arc-20240116; t=1741706041; c=relaxed/simple;
+	bh=WmNGpJsdJm4bDqxjY15BVdH8rZDLgHnApw7NZ1A0ctU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiXcVIgnANLtpDkzD6qz0Y9cwlFAlm9824vr2syXzk07ZVJnkIwjP4tjtD433hcAc1F5rIVC+ZF1D14GpJS2ob9kTbEfLlBjwYhG2j4YT7peFSGDD4nhRsN0JTpZgkqbvVtHzki5d/Gw1cEOASIGKPZpCj8y8ngwyvEpz+Q/DgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpNXvg/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB8FC4CEE9;
-	Tue, 11 Mar 2025 15:36:02 +0000 (UTC)
+	 MIME-Version; b=rFEShyzX1X4J9yrk4y51k4PyIkeS8mBp87O1Ekjl8nBvp05J5whSVpWosCeyYJvSURiMxR6stPaabvqxgQ7oh/+sHgZQUhwhVm49ZlT5u60/2fqAFkFYO5sN1JSznLSSWCOd6Ij+SEkYYByWffEX/gQHxNDXlFdPorDv9SPc4L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tg+FHdNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3928C4CEE9;
+	Tue, 11 Mar 2025 15:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707362;
-	bh=oPeeY4XF0BGFqeFnHLWjA9pR7SfE6YIy57AQwME7GpE=;
+	s=korg; t=1741706041;
+	bh=WmNGpJsdJm4bDqxjY15BVdH8rZDLgHnApw7NZ1A0ctU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpNXvg/DB8G/e/jb7oZnJeW1csBWiFCPurCr/WEqDG3qf8NzeZkgI78ZrQNPxhVxu
-	 JSfrjq2MGCvQ/CP72Mh7TWsMF1E5w97dfIBOuXky/IHhHt4fihw9Noux+JjA15eSjf
-	 7HoHKOHokGx/zAzxROBzDzVpcnd/zXJRZk/QXkDg=
+	b=Tg+FHdNvVx6JNQdK3Uj+1ZMC0Qy3rN7xv/TWe3kg1KRPCgCXtDZ7vJV0219iWridw
+	 bqcAVFet3W1RvoP8U5vdZcpylMZLXzj6bWYpq6RXbexkvdbhN/vRIOJ5cJOevdW1q4
+	 0XxgOdyUNeROv17JjG+OO5PkTCw7101LGzJ0+hKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 346/462] acct: block access to kernel internal filesystems
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 242/328] ALSA: hda/realtek - Add type for ALC287
 Date: Tue, 11 Mar 2025 16:00:12 +0100
-Message-ID: <20250311145812.030245014@linuxfoundation.org>
+Message-ID: <20250311145724.532213433@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 890ed45bde808c422c3c27d3285fc45affa0f930 upstream.
+[ Upstream commit 99cee034c28947fc122799b0b7714e01b047f3f3 ]
 
-There's no point in allowing anything kernel internal nor procfs or
-sysfs.
+Add independent type for ALC287.
 
-Link: https://lore.kernel.org/r/20250127091811.3183623-1-quzicheng@huawei.com
-Link: https://lore.kernel.org/r/20250211-work-acct-v1-2-1c16aecab8b3@kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Reported-by: Zicheng Qu <quzicheng@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/2b7539c3e96f41a4ab458d53ea5f5784@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 174448badb44 ("ALSA: hda/realtek: Fixup ALC225 depop procedure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/acct.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ sound/pci/hda/patch_realtek.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/kernel/acct.c
-+++ b/kernel/acct.c
-@@ -216,6 +216,20 @@ static int acct_on(struct filename *path
- 		return -EACCES;
- 	}
- 
-+	/* Exclude kernel kernel internal filesystems. */
-+	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT)) {
-+		kfree(acct);
-+		filp_close(file, NULL);
-+		return -EINVAL;
-+	}
-+
-+	/* Exclude procfs and sysfs. */
-+	if (file_inode(file)->i_sb->s_iflags & SB_I_USERNS_VISIBLE) {
-+		kfree(acct);
-+		filp_close(file, NULL);
-+		return -EINVAL;
-+	}
-+
- 	if (!(file->f_mode & FMODE_CAN_WRITE)) {
- 		kfree(acct);
- 		filp_close(file, NULL);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 9b344b80f950a..069515b065386 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3111,6 +3111,7 @@ enum {
+ 	ALC269_TYPE_ALC257,
+ 	ALC269_TYPE_ALC215,
+ 	ALC269_TYPE_ALC225,
++	ALC269_TYPE_ALC287,
+ 	ALC269_TYPE_ALC294,
+ 	ALC269_TYPE_ALC300,
+ 	ALC269_TYPE_ALC623,
+@@ -3147,6 +3148,7 @@ static int alc269_parse_auto_config(struct hda_codec *codec)
+ 	case ALC269_TYPE_ALC257:
+ 	case ALC269_TYPE_ALC215:
+ 	case ALC269_TYPE_ALC225:
++	case ALC269_TYPE_ALC287:
+ 	case ALC269_TYPE_ALC294:
+ 	case ALC269_TYPE_ALC300:
+ 	case ALC269_TYPE_ALC623:
+@@ -9342,7 +9344,6 @@ static int patch_alc269(struct hda_codec *codec)
+ 	case 0x10ec0215:
+ 	case 0x10ec0245:
+ 	case 0x10ec0285:
+-	case 0x10ec0287:
+ 	case 0x10ec0289:
+ 		spec->codec_variant = ALC269_TYPE_ALC215;
+ 		spec->shutup = alc225_shutup;
+@@ -9357,6 +9358,12 @@ static int patch_alc269(struct hda_codec *codec)
+ 		spec->init_hook = alc225_init;
+ 		spec->gen.mixer_nid = 0; /* no loopback on ALC225, ALC295 and ALC299 */
+ 		break;
++	case 0x10ec0287:
++		spec->codec_variant = ALC269_TYPE_ALC287;
++		spec->shutup = alc225_shutup;
++		spec->init_hook = alc225_init;
++		spec->gen.mixer_nid = 0; /* no loopback on ALC287 */
++		break;
+ 	case 0x10ec0234:
+ 	case 0x10ec0274:
+ 	case 0x10ec0294:
+-- 
+2.39.5
+
 
 
 
