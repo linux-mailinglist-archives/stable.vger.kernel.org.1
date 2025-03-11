@@ -1,169 +1,109 @@
-Return-Path: <stable+bounces-123224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4911EA5C38E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BEAA5C3B4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D604A189992E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:15:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51FB77A24B8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E3D25BAB7;
-	Tue, 11 Mar 2025 14:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605672571D8;
+	Tue, 11 Mar 2025 14:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/kFUKlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Blk3qBcb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A8725BAAE;
-	Tue, 11 Mar 2025 14:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161E417C9F1;
+	Tue, 11 Mar 2025 14:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741702514; cv=none; b=G23wNXujBxHTxv2qcU0rqfujLeHMfpd4fIKNYXA6jkAI1ZvDRHiRps0MGt1BWSDI3XF4JPh2G1JauEbXFXPZMRtwIsEL/JNZD4pXjYzbTbxvw6cggloV3xIRw2CvJRjjUgg2cwj4R0c5+/zYv2Ymd1uEqfevsg4KXaufqGbSFmU=
+	t=1741702971; cv=none; b=pGNFpbqDo2HtV0/vdSk2uvggDH1PfsrIddu87IcCPfMdn03ywW7x2GejbVqMsZAijuUFwL8rxbVoMbUUIVkvOkZmejRZQIzFaqgE2BVM4hCbE4HDjByAevEIK6obczuzNzjAfDFMbdIBJYn+YVI0CzJUVdYp3vHUWv765OkTWF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741702514; c=relaxed/simple;
-	bh=Fl2EHoPu5bp/EQu9H9P/PviH867qLoW/sh72dVG/YG0=;
+	s=arc-20240116; t=1741702971; c=relaxed/simple;
+	bh=lW9JgeTCgja/9QF2Gj21kVDR6N5RMaq482Rv2AlFh9U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SlXtx7NHsEzvQRNANq8lzrmKl/zSBPPlnKEjq+sTibqX4caKCDW/8C5OTdF5ukj3EFyJaiKfIQOAEPt/m19VWtmgUPr/DokQ9nXUg8FIFxbtSKHX5CC7y2Hc4+3eZgUAcRmioZZc/hr1g1U2GoUwrthXu/dOpMQejb9pjcVS5sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/kFUKlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3518CC4CEE9;
-	Tue, 11 Mar 2025 14:15:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=qdzFRidb/ogaMRWi+YHNergwudCoPipmcPhxG2P44wPt5Mozgp8K4KZQ2Q8JMwzks2rx8Yqj1Z6RTe+zTDkgP96DTWQ6e9FpimHuG4+LIrofXwUY+ylnlbPdtXAT5rdLOJcm6G06/T6PRN/CEGlPx6+scecc/FZL2B3YhzUNGSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Blk3qBcb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CDBC4CEE9;
+	Tue, 11 Mar 2025 14:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741702513;
-	bh=Fl2EHoPu5bp/EQu9H9P/PviH867qLoW/sh72dVG/YG0=;
+	s=korg; t=1741702970;
+	bh=lW9JgeTCgja/9QF2Gj21kVDR6N5RMaq482Rv2AlFh9U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q/kFUKltAh5LAX8HNtd6Wv7rLWIvOZyGPEO8I3Tli9Aozau1n8V3y2NofgLHeYiMW
-	 M3ompJU5tDMNB1PqqG2Yh/8xNF0YyPw8vfy6suYeWqan14WFjQdaKnzMn85S4p0yBZ
-	 BcVrunDmYbnRj58J83KPMZzivyf3IxpIy7KfbgIQ=
-Date: Tue, 11 Mar 2025 15:15:10 +0100
+	b=Blk3qBcbEgQ5bZNcbUSI81pVjM0Gyrj+56eke5K3TPsaKF2o+/qXQzzuncj7BQClz
+	 xIzvoSoZS6gINQh76en8c56BGuiy1wskXzSh/H4FaIqCJPbsmPRScsODQ7aoskBgnR
+	 7mezpvRsEkiI+G1GmFCPrZcKk7EGVderUIMVFZXc=
+Date: Tue, 11 Mar 2025 15:22:47 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: rafael@kernel.org, "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: queue-5.10: Panic on shutdown at platform_shutdown+0x9
-Message-ID: <2025031100-busboy-lusty-334e@gregkh>
-References: <231c0362-f03e-4cef-8045-0787bca05d25@oracle.com>
- <2025020722-joyfully-viewless-4b03@gregkh>
- <0c84262b-c3e2-4855-9021-d170894f766c@oracle.com>
- <b3ce27d9-4b94-4e75-92fe-a42d6c97834e@oracle.com>
- <2025030703-translate-sterling-19d7@gregkh>
- <54ccf1f1-52d9-4444-ad23-fb74a8d64cf1@oracle.com>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io, gus@collabora.com, stable@vger.kernel.org
+Subject: Re: [REGRESSION] stable-rc/linux-5.10.y: (build) in vmlinux
+ (Makefile:1212) [logspec:kbuild,kbuild.other]
+Message-ID: <2025031121-aged-stand-c8f3@gregkh>
+References: <CACo-S-0BKPQcA2Qh-7jmuU-YuX9E_wWcHEgr8pDhgwkzt0K5cQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <54ccf1f1-52d9-4444-ad23-fb74a8d64cf1@oracle.com>
+In-Reply-To: <CACo-S-0BKPQcA2Qh-7jmuU-YuX9E_wWcHEgr8pDhgwkzt0K5cQ@mail.gmail.com>
 
-On Fri, Mar 07, 2025 at 09:30:31AM -0500, Chuck Lever wrote:
-> On 3/7/25 9:29 AM, Greg KH wrote:
-> > On Fri, Mar 07, 2025 at 08:55:55AM -0500, Chuck Lever wrote:
-> >> On 2/9/25 10:57 AM, Chuck Lever wrote:
-> >>> On 2/7/25 10:10 AM, Greg KH wrote:
-> >>>> On Thu, Feb 06, 2025 at 01:31:42PM -0500, Chuck Lever wrote:
-> >>>>> Hi -
-> >>>>>
-> >>>>> For the past 3-4 days, NFSD CI runs on queue-5.10.y have been failing. I
-> >>>>> looked into it today, and the test guest fails to reboot because it
-> >>>>> panics during a reboot shutdown:
-> >>>>>
-> >>>>> [  146.793087] BUG: unable to handle page fault for address:
-> >>>>> ffffffffffffffe8
-> >>>>> [  146.793918] #PF: supervisor read access in kernel mode
-> >>>>> [  146.794544] #PF: error_code(0x0000) - not-present page
-> >>>>> [  146.795172] PGD 3d5c14067 P4D 3d5c15067 PUD 3d5c17067 PMD 0
-> >>>>> [  146.795865] Oops: 0000 [#1] SMP NOPTI
-> >>>>> [  146.796326] CPU: 3 PID: 1 Comm: systemd-shutdow Not tainted
-> >>>>> 5.10.234-g99349f441fe1 #1
-> >>>>> [  146.797256] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-> >>>>> 1.16.3-2.fc40 04/01/2014
-> >>>>> [  146.798267] RIP: 0010:platform_shutdown+0x9/0x20
-> >>>>> [  146.798838] Code: b7 46 08 c3 cc cc cc cc 31 c0 83 bf a8 02 00 00 ff
-> >>>>> 75 ec c3 cc cc cc cc 66 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8b 47
-> >>>>> 68 <48> 8b 40 e8 48 85 c0 74 09 48 83 ef 10 ff e0 0f 1f 00 c3 cc cc cc
-> >>>>> [  146.801012] RSP: 0018:ff7f86f440013de0 EFLAGS: 00010246
-> >>>>> [  146.801651] RAX: 0000000000000000 RBX: ff4f0637469df418 RCX:
-> >>>>> 0000000000000000
-> >>>>> [  146.802500] RDX: 0000000000000001 RSI: ff4f0637469df418 RDI:
-> >>>>> ff4f0637469df410
-> >>>>> [  146.803350] RBP: ffffffffb2e79220 R08: ff4f0637469dd808 R09:
-> >>>>> ffffffffb2c5c698
-> >>>>> [  146.804203] R10: 0000000000000000 R11: 0000000000000000 R12:
-> >>>>> ff4f0637469df410
-> >>>>> [  146.805059] R13: ff4f0637469df490 R14: 00000000fee1dead R15:
-> >>>>> 0000000000000000
-> >>>>> [  146.805909] FS:  00007f4e7ecc6b80(0000) GS:ff4f063aafd80000(0000)
-> >>>>> knlGS:0000000000000000
-> >>>>> [  146.806866] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> >>>>> [  146.807558] CR2: ffffffffffffffe8 CR3: 000000010ecb2001 CR4:
-> >>>>> 0000000000771ee0
-> >>>>> [  146.808412] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-> >>>>> 0000000000000000
-> >>>>> [  146.809262] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
-> >>>>> 0000000000000400
-> >>>>> [  146.810109] PKRU: 55555554
-> >>>>> [  146.810460] Call Trace:
-> >>>>> [  146.810791]  ? __die_body.cold+0x1a/0x1f
-> >>>>> [  146.811282]  ? no_context.constprop.0+0xf8/0x2f0
-> >>>>> [  146.811854]  ? exc_page_fault+0xc5/0x150
-> >>>>> [  146.812342]  ? asm_exc_page_fault+0x1e/0x30
-> >>>>> [  146.812862]  ? platform_shutdown+0x9/0x20
-> >>>>> [  146.813362]  device_shutdown+0x158/0x1c0
-> >>>>> [  146.813853]  __do_sys_reboot.cold+0x2f/0x5b
-> >>>>> [  146.814370]  ? vfs_writev+0x9b/0x110
-> >>>>> [  146.814824]  ? do_writev+0x57/0xf0
-> >>>>> [  146.815254]  do_syscall_64+0x30/0x40
-> >>>>> [  146.815708]  entry_SYSCALL_64_after_hwframe+0x67/0xd1
-> >>>>>
-> >>>>> Let me know how to further assist.
-> >>>>
-> >>>> Bisect?
-> >>>
-> >>> First bad commit:
-> >>>
-> >>> commit a06b4817f3d20721ae729d8b353457ff9fe6ff9c
-> >>> Author:     Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de>
-> >>> AuthorDate: Thu Nov 19 13:46:11 2020 +0100
-> >>> Commit:     Sasha Levin <sashal@kernel.org>
-> >>> CommitDate: Tue Feb 4 13:04:31 2025 -0500
-> >>>
-> >>>     driver core: platform: use bus_type functions
-> >>>
-> >>>     [ Upstream commit 9c30921fe7994907e0b3e0637b2c8c0fc4b5171f ]
-> >>>
-> >>>     This works towards the goal mentioned in 2006 in commit 594c8281f905
-> >>>     ("[PATCH] Add bus_type probe, remove, shutdown methods.").
-> >>>
-> >>>     The functions are moved to where the other bus_type functions are
-> >>>     defined and renamed to match the already established naming scheme.
-> >>>
-> >>>     Signed-off-by: Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de>
-> >>>     Link:
-> >>> https://lore.kernel.org/r/20201119124611.2573057-3-u.kleine-koenig@pengutronix.de
-> >>>     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >>>     Stable-dep-of: bf5821909eb9 ("mtd: hyperbus: hbmc-am654: fix an OF
-> >>> node reference leak")
-> >>>     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >>>
-> >>
-> >> Hi Greg, I still see crashes on shutdown 100% of the time on queue/5.10
-> >> kernels. Is there a plan to revert this commit?
-> > 
-> > Yes, I haven't had the cycles to get to looking at the 5.10 queue in a
-> > while, which is why I haven't pushed out new 5.10-rc kernels.
-> > 
-> > I'll get to it "soon".  Hopefully.  Ugh.
+On Tue, Mar 11, 2025 at 01:47:06PM +0000, KernelCI bot wrote:
+> Hello,
 > 
-> Understood. Thanks!
+> New build issue found on stable-rc/linux-5.10.y:
+> 
+> ---
+>  in vmlinux (Makefile:1212) [logspec:kbuild,kbuild.other]
+> ---
+> 
+> - dashboard: https://d.kernelci.org/issue/maestro:d5c2be698989c7de46471109aae8df0339b713c1
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> - commit HEAD:  a0e8dfa03993fda7b4d4b696c50f69726522abba
+> 
+> 
+> Log excerpt:
+> =====================================================
+> .lds
+> In file included from ./include/linux/kernel.h:15,
+> net/ipv6/udp.c: In function ‘udp_v6_send_skb’:
+> ./include/linux/minmax.h:20:35: warning: comparison of distinct
+> pointer types lacks a cast
+> ./include/linux/minmax.h:26:18: note: in expansion of macro ‘__typecheck’
+> ./include/linux/minmax.h:36:31: note: in expansion of macro ‘__safe_cmp’
+> ./include/linux/minmax.h:45:25: note: in expansion of macro ‘__careful_cmp’
+> net/ipv6/udp.c:1213:28: note: in expansion of macro ‘min’
+> In file included from ./include/linux/uaccess.h:7,
+> net/ipv4/udp.c: In function ‘udp_send_skb’:
+> ./include/linux/minmax.h:20:35: warning: comparison of distinct
+> pointer types lacks a cast
+> ./include/linux/minmax.h:26:18: note: in expansion of macro ‘__typecheck’
+> ./include/linux/minmax.h:36:31: note: in expansion of macro ‘__safe_cmp’
+> ./include/linux/minmax.h:45:25: note: in expansion of macro ‘__careful_cmp’
+> net/ipv4/udp.c:926:28: note: in expansion of macro ‘min’
 
-Ok, all now dropped and cleaned up, thanks!
+This warnings I can understand, we'll just have to live with that.
+
+But:
+
+> FAILED unresolved symbol filp_close
+
+What is that from?
+
+Seems to be from 890ed45bde80 ("acct: block access to kernel internal
+filesystems")?  If so, that's really odd as this is not a new call to
+this function, but just some additional ones.
+
+thanks,
 
 greg k-h
 
