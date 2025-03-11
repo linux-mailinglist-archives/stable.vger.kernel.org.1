@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DC4A5C578
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE1FA5C818
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ECAA162554
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F313BD629
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA2F25DCE5;
-	Tue, 11 Mar 2025 15:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E541E1A18;
+	Tue, 11 Mar 2025 15:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y5SQZdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tc2tg+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4011625D8E8;
-	Tue, 11 Mar 2025 15:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB29F1CAA8F;
+	Tue, 11 Mar 2025 15:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705996; cv=none; b=JXeyixa6TVArCqoUCjR9AWgXmj3vliMYEzzczIbovekmHf9BkVEZUlD9fDepEiT0LOTurHF5B1jeR8WpUqivvNN+DQLvojLTXP2OrRoohOlk+3anNuyEALtpuGazPFmSIJTkDr4tXYodH8Cv++TW47PHNITqZOLrueq8TBZAVpw=
+	t=1741707263; cv=none; b=OFrAAlGyGGMTUSFcR6yOfg46xELLR//GsK3yliVKi7WmgLDLdOYZqu89veG3pxKGVBclYIJXVC4UtUS2iwNneTmYA6paPqiyOoITmCxGpQVg0H2O+QHom50DXWK4me7hLx7OvEFT34T6k/hKu0+42R4QHTA48/1b4rtqIBchvmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705996; c=relaxed/simple;
-	bh=g5Jjznzo9kUU2KCAi7/I9qNO+HicE7BPV8dxZBc2Mks=;
+	s=arc-20240116; t=1741707263; c=relaxed/simple;
+	bh=uT5hcAhTaboHHrIagFhtIAccrG3cObPNl/CMVghSiTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXh6SOrgnE8ZPziGrmH3Vh6/kdeJA24W57Q1rzudnefExHhPyAaH+SGNkZARJCionIKtoDg+Vse1TIa6LgfC8HTFHuodK9XaxE9WZFHJHV0RFzdSPgk31becEVi6KPmeTKOp35e0I54Jgjuyj9iFyDNPUupxMDjMKBJ4tkALxHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y5SQZdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA60BC4CEE9;
-	Tue, 11 Mar 2025 15:13:15 +0000 (UTC)
+	 MIME-Version; b=rBIFXA5j+F2GHNZ4qFfPqouXzLbMo1T0VVPTqKA8wVAOT9BaQcFDbLob+F84+7rCj0gO14Cc23VL6VFw0bbi6E/WrU4QozUVYsMREuJpMHz15dfUD1u9lxfwXFYdn7luFWR1Msv3dcNIt1IJ4NMUGMvms1MeIoBjvIfiSkwybPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tc2tg+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BFDC4CEE9;
+	Tue, 11 Mar 2025 15:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705996;
-	bh=g5Jjznzo9kUU2KCAi7/I9qNO+HicE7BPV8dxZBc2Mks=;
+	s=korg; t=1741707262;
+	bh=uT5hcAhTaboHHrIagFhtIAccrG3cObPNl/CMVghSiTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Y5SQZdQmAaIYBjLGlBE0qtJsGeztqa27Ds08UUx/EJM86zy137ZQDwvdY1tne+kf
-	 vnYUoymQ2QzjuUwaasenmgnID60ZkufNrj6MYSHHalcSaWIydZcTApwwgb7Y1fUDmV
-	 fkBmJtxJVAbeVVV2UBJ1v7nLu8kTj73X84A1B/eY=
+	b=1tc2tg+1hqkSck40On4BirmG9y9M43NOCqIdcWq0zJqCvLAJypTvUqiDiLm0+si+g
+	 shTW3I/uK/uwu/GlKxqiKJqdfYLy1AUr8d8dY61DmpCwbyhXzl8po3IfkLiRBfczNN
+	 Fu+fK+3mX27HnR4DX8KkOd+JZrTrwEDDg5SqAhNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 208/328] neighbour: use RCU protection in __neigh_notify()
+	"yang@os.amperecomputing.com, Naresh Kamboju" <naresh.kamboju@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>
+Subject: [PATCH 5.10 312/462] arm64: mte: Do not allow PROT_MTE on MAP_HUGETLB user mappings
 Date: Tue, 11 Mar 2025 15:59:38 +0100
-Message-ID: <20250311145723.172293580@linuxfoundation.org>
+Message-ID: <20250311145810.687607288@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
+PROT_MTE (memory tagging extensions) is not supported on all user mmap()
+types for various reasons (memory attributes, backing storage, CoW
+handling). The arm64 arch_validate_flags() function checks whether the
+VM_MTE_ALLOWED flag has been set for a vma during mmap(), usually by
+arch_calc_vm_flag_bits().
 
-__neigh_notify() can be called without RTNL or RCU protection.
+Linux prior to 6.13 does not support PROT_MTE hugetlb mappings. This was
+added by commit 25c17c4b55de ("hugetlb: arm64: add mte support").
+However, earlier kernels inadvertently set VM_MTE_ALLOWED on
+(MAP_ANONYMOUS | MAP_HUGETLB) mappings by only checking for
+MAP_ANONYMOUS.
 
-Use RCU protection to avoid potential UAF.
+Explicitly check MAP_HUGETLB in arch_calc_vm_flag_bits() and avoid
+setting VM_MTE_ALLOWED for such mappings.
 
-Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9f3419315f3c ("arm64: mte: Add PROT_MTE support to mmap() and mprotect()")
+Cc: <stable@vger.kernel.org> # 5.10.x-6.12.x
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/mman.h |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 3e007cbadb707..7ef3630ea20d7 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3364,10 +3364,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
- static void __neigh_notify(struct neighbour *n, int type, int flags,
- 			   u32 pid)
- {
--	struct net *net = dev_net(n->dev);
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
-+	struct net *net;
+--- a/arch/arm64/include/asm/mman.h
++++ b/arch/arm64/include/asm/mman.h
+@@ -31,9 +31,12 @@ static inline unsigned long arch_calc_vm
+ 	 * backed by tags-capable memory. The vm_flags may be overridden by a
+ 	 * filesystem supporting MTE (RAM-based).
+ 	 */
+-	if (system_supports_mte() &&
+-	    ((flags & MAP_ANONYMOUS) || shmem_file(file)))
+-		return VM_MTE_ALLOWED;
++	if (system_supports_mte()) {
++		if ((flags & MAP_ANONYMOUS) && !(flags & MAP_HUGETLB))
++			return VM_MTE_ALLOWED;
++		if (shmem_file(file))
++			return VM_MTE_ALLOWED;
++	}
  
-+	rcu_read_lock();
-+	net = dev_net_rcu(n->dev);
- 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
- 	if (skb == NULL)
- 		goto errout;
-@@ -3380,9 +3382,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 		goto errout;
- 	}
- 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
--	return;
-+	goto out;
- errout:
- 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-+out:
-+	rcu_read_unlock();
+ 	return 0;
  }
- 
- void neigh_app_ns(struct neighbour *n)
--- 
-2.39.5
-
 
 
 
