@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-123810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061B0A5C717
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E0BA5C765
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:34:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F00067ACB85
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEBA13AE98E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6205725DCFA;
-	Tue, 11 Mar 2025 15:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E50625E804;
+	Tue, 11 Mar 2025 15:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pNbXYTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yt3YIcc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202B21DF749;
-	Tue, 11 Mar 2025 15:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF3725BACC;
+	Tue, 11 Mar 2025 15:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707029; cv=none; b=EwiEx3HHWXBFk+T5eQ16jXdxyD44H3vMxtFiEH5HcACojSXZpAX37siZyZa5aUgNfTOxIyXU303iJCuZpPBDFllK4A2XZHpFiNcib6P6vooNSJcFhX2jikmExpi20OPFbvtyTZHjbeGGps4SMLEYXJcb28bRb5e8eZdZyunxhkw=
+	t=1741706936; cv=none; b=pJHTmtlnjZj3IO/8QeqjJqobEwrh4CcdwlcCff8Em+NNbaOv5iJ/A1E/XR96c7mEZg+O0PanZnJ7X3JzunPB4NvIMkMvGKcSaZgJ4+mmwcDscnsG1J7/lIvUT1YvzJ8Vfb3exmGm8Uml93uSelRvjq0BP1X587S2ZjIx+WYNha0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707029; c=relaxed/simple;
-	bh=Egjrp8vTtXDtXyT72sD73pK0NQo8qyVh8usbvvL5UTs=;
+	s=arc-20240116; t=1741706936; c=relaxed/simple;
+	bh=vG3K+fApvXWk21ClmTCg2mZJuJeO7lb8jE4a2ZP1Blg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNBmY6cpSv7pD6wuPaJ5i81JyVwjav/PfVlk0YlImOi3TTvEujCdlit0UBMrFxHN9U/dCg8RLqMnMUiuAcvW2kRyRDzJVfqqLwYeHkFU3mny0HyKK4dXyMxrBU5m+TOjHKvflxXwH50g49OVCc7leOF31Eyqe5WRiq2A3D0Jf80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pNbXYTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E952C4CEE9;
-	Tue, 11 Mar 2025 15:30:28 +0000 (UTC)
+	 MIME-Version; b=qWg55Cp9Y3BvZtNrmnvS1db36sDREdJvmEmEMEIvKmKJomP1mRIb7j+bl6X+5xQha7a2FePqa0eCTImWYSbILN/O106Fn2QW+b4Tlj1SsAgnZtskRqgi0knlpsqGpXRUUAbtN4J6LYGGZu9crnDuzcxK7P4fPD2vvPDU8DAOJ4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yt3YIcc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6904DC4CEEA;
+	Tue, 11 Mar 2025 15:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707029;
-	bh=Egjrp8vTtXDtXyT72sD73pK0NQo8qyVh8usbvvL5UTs=;
+	s=korg; t=1741706935;
+	bh=vG3K+fApvXWk21ClmTCg2mZJuJeO7lb8jE4a2ZP1Blg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pNbXYTSBYS9YJJ20R4L+ZYue79+0Y91Twk0xl5HaaL0hTUz/v68sQoyjyeDeg1lK
-	 3ARl4znWxPQCO2FzNBb7NzFplArLRTb4sHmFfKdql1h0093vJE+5HPVEwtGZ7LAV32
-	 1hNyBMLkcMm/b4JAyBk4inHS+EtpCBKBKnKDPMvQ=
+	b=0yt3YIccg/mQr2oEo6QyWu1benJRFclat30OJ5a1mKAcNOMVRfKOuEVIUHM30SqQo
+	 t4Dbj50aGBWNSRnEKQkPVt8Eb4IIN1k3uA+hAT2Kgvdk38QDdlCyJCDkIrMlbYNUnd
+	 7g19s6McMvt3DWJZFGhFoEJiF2meL0tO54qYZbUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 218/462] mtd: onenand: Fix uninitialized retlen in do_otp_read()
-Date: Tue, 11 Mar 2025 15:58:04 +0100
-Message-ID: <20250311145806.977265398@linuxfoundation.org>
+	stable@kernel.org,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.10 219/462] misc: fastrpc: Fix registered buffer page address
+Date: Tue, 11 Mar 2025 15:58:05 +0100
+Message-ID: <20250311145807.015697109@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -65,37 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit 70a71f8151b9879b0950668ce3ad76263261fee0 upstream.
+commit 6ca4ea1f88a06a04ed7b2c9c6bf9f00833b68214 upstream.
 
-The function do_otp_read() does not set the output parameter *retlen,
-which is expected to contain the number of bytes actually read.
-As a result, in onenand_otp_walk(), the tmp_retlen variable remains
-uninitialized after calling do_otp_walk() and used to change
-the values of the buf, len and retlen variables.
+For registered  buffers, fastrpc driver sends the buffer information
+to remote subsystem. There is a problem with current implementation
+where the page address is being sent with an offset leading to
+improper buffer address on DSP. This is leads to functional failures
+as DSP expects base address in page information and extracts offset
+information from remote arguments. Mask the offset and pass the base
+page address to DSP.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This issue is observed is a corner case when some buffer which is registered
+with fastrpc framework is passed with some offset by user and then the DSP
+implementation tried to read the data. As DSP expects base address and takes
+care of offsetting with remote arguments, passing an offsetted address will
+result in some unexpected data read in DSP.
 
-Fixes: 49dc08eeda70 ("[MTD] [OneNAND] fix numerous races")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+All generic usecases usually pass the buffer as it is hence is problem is
+not usually observed. If someone tries to pass offsetted buffer and then
+tries to compare data at HLOS and DSP end, then the ambiguity will be observed.
+
+Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
+Cc: stable@kernel.org
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20250110134239.123603-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/onenand/onenand_base.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/onenand/onenand_base.c
-+++ b/drivers/mtd/nand/onenand/onenand_base.c
-@@ -2916,6 +2916,7 @@ static int do_otp_read(struct mtd_info *
- 	ret = ONENAND_IS_4KB_PAGE(this) ?
- 		onenand_mlc_read_ops_nolock(mtd, from, &ops) :
- 		onenand_read_ops_nolock(mtd, from, &ops);
-+	*retlen = ops.retlen;
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -826,7 +826,7 @@ static int fastrpc_get_args(u32 kernel,
+ 			mmap_read_lock(current->mm);
+ 			vma = find_vma(current->mm, ctx->args[i].ptr);
+ 			if (vma)
+-				pages[i].addr += ctx->args[i].ptr -
++				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
+ 						 vma->vm_start;
+ 			mmap_read_unlock(current->mm);
  
- 	/* Exit OTP access mode */
- 	this->command(mtd, ONENAND_CMD_RESET, 0, 0);
 
 
 
