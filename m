@@ -1,56 +1,47 @@
-Return-Path: <stable+bounces-123137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC9CA5B472
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 01:40:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F3DA5B5F2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 02:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4AC188834D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 00:40:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D590188BF1D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 01:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1A1282F5;
-	Tue, 11 Mar 2025 00:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9697A1E0B62;
+	Tue, 11 Mar 2025 01:40:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0173AD5A;
-	Tue, 11 Mar 2025 00:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5F71DF977;
+	Tue, 11 Mar 2025 01:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741653608; cv=none; b=ibsuaaPSlwHSOYRlIhSrA/UBq04dDlkKmZH+TfYDy0Yqg2FcAq6PMuPERXoY+TW5N6AYBkXH94rl8WJgybosvPX0PRGm/GdABAy4TtAf+bviVXppstAx+TMwIc4kfYeWrVNB7j4k0lYwRbvs7yXmX/R0pB+36voSxzOha8eXNWs=
+	t=1741657200; cv=none; b=i3ysf2XZoey7y8FLyHexHDqsrwNRN2qF/H1RlhI/uCVcOEkO2nrP1uMmXtVIsCLTfF1cOW7rB/UEWHZMc52Ho2Olf2BitkU8EaXKOuQtopK+JDar6etFnrWr9DEJet4aCg+zvUvM9gr7mpmmeX7t8EezV2eNSOMVx8dq7JjAmQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741653608; c=relaxed/simple;
-	bh=IFxIDLySzcDt2s61LMkBUfkmcFfpQk5sYPpSp6OaGBA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CHBxKodzPZLyNQ1KVAzFUKDJ98O0VcfX/fXgFGSpSLRMJQ4/PWT1Fr3uZ0qbDc+i7dFPSm35nT1ZqneaIi3iNtYOE/8pVWxRGCyxId8OLDLmISqp8FoR8YqJixZqtfW0CVjzp8+RGTWBqJ3r3rTL3UzlYHbCq5P9l4mqHYq654I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B0Wilb020395;
-	Mon, 10 Mar 2025 17:39:53 -0700
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 458p9qjda1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 10 Mar 2025 17:39:53 -0700 (PDT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Mon, 10 Mar 2025 17:39:52 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 10 Mar 2025 17:39:50 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>, <liushixin2@huawei.com>
-CC: <linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-        <patches@lists.linux.dev>, <minchan@kernel.org>,
-        <senozhatsky@chromium.org>, <axboe@kernel.dk>,
-        <akpm@linux-foundation.org>, <linux-block@vger.kernel.org>
-Subject: [PATCH 6.6.y] zram: fix NULL pointer in comp_algorithm_show()
-Date: Tue, 11 Mar 2025 08:39:49 +0800
-Message-ID: <20250311003949.3927527-1-jianqi.ren.cn@windriver.com>
+	s=arc-20240116; t=1741657200; c=relaxed/simple;
+	bh=vhZIzTDN0OSeiT0046Ezc3Do+jQB3FRS93pF8EYxZIY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DgQwFUDLsanu3t08d98FCH9Gn9ZIiIhhc4WJm46AJuEspvn4TxK0qG6fvqzFu3KjXt/66V48CH2JVqcuWGU3r5WxcqrPzceqYLxUJummXLMZV59Eyix0ejSRavoAnW5xKSjohn+LxWMPPoDMsAkkQSktAba5FRAjSb534sS9yl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowABHsMlZlM9nXH7HEw--.388S2;
+	Tue, 11 Mar 2025 09:39:45 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: eli.billauer@gmail.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] char: xillybus: Fix error handling in xillybus_init_chrdev()
+Date: Tue, 11 Mar 2025 09:39:35 +0800
+Message-Id: <20250311013935.219615-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,108 +50,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=QNySRhLL c=1 sm=1 tr=0 ts=67cf8659 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=i0EeH86SAAAA:8 a=cm27Pg_UAAAA:8 a=Z4Rwk6OoAAAA:8 a=t7CeM3EgAAAA:8
- a=m3UGnVx-GgMgIQ9NKaQA:9 a=HkZW87K1Qel5hWWM3VKY:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: noMcFJsJb6vVsnykpK8onSoqLxEPRDmG
-X-Proofpoint-ORIG-GUID: noMcFJsJb6vVsnykpK8onSoqLxEPRDmG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-10_08,2025-03-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- phishscore=0 spamscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- clxscore=1011 adultscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.21.0-2502100000
- definitions=main-2503110002
+X-CM-TRANSID:zQCowABHsMlZlM9nXH7HEw--.388S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrKr4ktr47JrWfJF4kKry8Krg_yoW8JF1UpF
+	47W3WrKrW5Ja1jyr1DJa1DGFW3JayqvF9rur47K3sxZw15u3W8JFWrCrWUJFyDX3yrKay5
+	AFsxA3Z5JryxZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
+	evJa73UjIFyTuYvjfUY3kuUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-From: Liu Shixin <liushixin2@huawei.com>
+After cdev_alloc() succeed and cdev_add() failed, call cdev_del() to
+remove unit->cdev from the system properly.
 
-[ Upstream commit f364cdeb38938f9d03061682b8ff3779dd1730e5 ]
+Found by code review.
 
-LTP reported a NULL pointer dereference as followed:
-
- CPU: 7 UID: 0 PID: 5995 Comm: cat Kdump: loaded Not tainted 6.12.0-rc6+ #3
- Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
- pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __pi_strcmp+0x24/0x140
- lr : zcomp_available_show+0x60/0x100 [zram]
- sp : ffff800088b93b90
- x29: ffff800088b93b90 x28: 0000000000000001 x27: 0000000000400cc0
- x26: 0000000000000ffe x25: ffff80007b3e2388 x24: 0000000000000000
- x23: ffff80007b3e2390 x22: ffff0004041a9000 x21: ffff80007b3e2900
- x20: 0000000000000000 x19: 0000000000000000 x18: 0000000000000000
- x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
- x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
- x11: 0000000000000000 x10: ffff80007b3e2900 x9 : ffff80007b3cb280
- x8 : 0101010101010101 x7 : 0000000000000000 x6 : 0000000000000000
- x5 : 0000000000000040 x4 : 0000000000000000 x3 : 00656c722d6f7a6c
- x2 : 0000000000000000 x1 : ffff80007b3e2900 x0 : 0000000000000000
- Call trace:
-  __pi_strcmp+0x24/0x140
-  comp_algorithm_show+0x40/0x70 [zram]
-  dev_attr_show+0x28/0x80
-  sysfs_kf_seq_show+0x90/0x140
-  kernfs_seq_show+0x34/0x48
-  seq_read_iter+0x1d4/0x4e8
-  kernfs_fop_read_iter+0x40/0x58
-  new_sync_read+0x9c/0x168
-  vfs_read+0x1a8/0x1f8
-  ksys_read+0x74/0x108
-  __arm64_sys_read+0x24/0x38
-  invoke_syscall+0x50/0x120
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x38/0x138
-  el0t_64_sync_handler+0xc0/0xc8
-  el0t_64_sync+0x188/0x190
-
-The zram->comp_algs[ZRAM_PRIMARY_COMP] can be NULL in zram_add() if
-comp_algorithm_set() has not been called.  User can access the zram device
-by sysfs after device_add_disk(), so there is a time window to trigger the
-NULL pointer dereference.  Move it ahead device_add_disk() to make sure
-when user can access the zram device, it is ready.  comp_algorithm_set()
-is protected by zram->init_lock in other places and no such problem.
-
-Link: https://lkml.kernel.org/r/20241108100147.3776123-1-liushixin2@huawei.com
-Fixes: 7ac07a26dea7 ("zram: preparation for multi-zcomp support")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[This fix does not backport zram_comp_params_reset which was introduced after
- v6.6, in commit f2bac7ad187d ("zram: introduce zcomp_params structure")]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Cc: stable@vger.kernel.org
+Fixes: 8cb5d216ab33 ("char: xillybus: Move class-related functions to new xillybus_class.c")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
-Verified the build test
+Changes in v2:
+- modified the patch as suggestions to avoid UAF.
 ---
- drivers/block/zram/zram_drv.c | 4 ++--
+ drivers/char/xillybus/xillybus_class.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index b73038ad86f7..44cf0e51d7db 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2247,6 +2247,8 @@ static int zram_add(void)
- 	zram->disk->private_data = zram;
- 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
+diff --git a/drivers/char/xillybus/xillybus_class.c b/drivers/char/xillybus/xillybus_class.c
+index c92a628e389e..356af6551b0d 100644
+--- a/drivers/char/xillybus/xillybus_class.c
++++ b/drivers/char/xillybus/xillybus_class.c
+@@ -104,8 +104,7 @@ int xillybus_init_chrdev(struct device *dev,
+ 	if (rc) {
+ 		dev_err(dev, "Failed to add cdev.\n");
+ 		/* kobject_put() is normally done by cdev_del() */
+-		kobject_put(&unit->cdev->kobj);
+-		goto unregister_chrdev;
++		goto err_cdev;
+ 	}
  
-+	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
-+
- 	/* Actual capacity set using sysfs (/sys/block/zram<id>/disksize */
- 	set_capacity(zram->disk, 0);
- 	/* zram devices sort of resembles non-rotational disks */
-@@ -2281,8 +2283,6 @@ static int zram_add(void)
- 	if (ret)
- 		goto out_cleanup_disk;
+ 	for (i = 0; i < num_nodes; i++) {
+@@ -157,6 +156,7 @@ int xillybus_init_chrdev(struct device *dev,
+ 		device_destroy(&xillybus_class, MKDEV(unit->major,
+ 						     i + unit->lowest_minor));
  
--	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
--
- 	zram_debugfs_register(zram);
- 	pr_info("Added device: %s\n", zram->disk->disk_name);
- 	return device_id;
++err_cdev:
+ 	cdev_del(unit->cdev);
+ 
+ unregister_chrdev:
 -- 
 2.25.1
 
