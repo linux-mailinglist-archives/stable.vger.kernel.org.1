@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDF8A5C484
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F554A5C6F0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30B841788B3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95D53B6D05
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FBC25EF84;
-	Tue, 11 Mar 2025 15:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64761DF749;
+	Tue, 11 Mar 2025 15:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTswwZHO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiGk8lZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4B025EF86;
-	Tue, 11 Mar 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AE333EA;
+	Tue, 11 Mar 2025 15:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705405; cv=none; b=XU2kebHMZTxfgxjEPXEb7nn8hL/WOJg6qBAkBLnY92TRHG6JXX3BrOIw8eQEt0U7567hKa16VvQI3mk+wFcNOHEEn84mlX0C6Z3dbHW1aJE4LBrRMLsFsz3I2s2zSlXwJx0B1f9VwGWAlQN4JU1NJsesK1dzZV1of4NfCggu28s=
+	t=1741706675; cv=none; b=WHo0Sww1K+RjLg0r3NPKQfa9cX9nzOKbNO25AUyeFrPoT0LFYLMbWsLycfL2JTWtLUpfijxIkShAXxtj2odOpBhnPqi0M8usDCN/kTQwaPWMr7idcpJnMMOJbJR7efmuMPhmP1HTnWL53JYvP/CQi502gkdXXDMOThop3Kt9LkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705405; c=relaxed/simple;
-	bh=biVhzaU+Jlp21TpLIE0khQnQ11eX6k7DBU7mavC3tn8=;
+	s=arc-20240116; t=1741706675; c=relaxed/simple;
+	bh=GKYHwXtPOvqYCIP9v2P/j0zkL4YzK9AAaO7SFupgJ7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBsK/ZhHP2S/l/GMKKvoTu7FlGWO9y+iZTP4oNWmpcOyYiq4Ns9n/i1GrMcTlVcdmWDcn1j1gSzMl4f07VWLyBaBzbfRdLMIxAaNI34lEtH4tdJ4Mmj8UlccX3f02oWSqyB34qeOFtJzeeZcDNBvCgukUy0dyFWiXQZqjh8cETE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTswwZHO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03B3C4CEE9;
-	Tue, 11 Mar 2025 15:03:24 +0000 (UTC)
+	 MIME-Version; b=nKJhgIH7yals7eb/rFahSHj3GR8lB04Rx87qH0utKuyqp09qkImECGwkmFooZflKJsBwcyVJCcnVsgjF0JBtRjHeyazB0ymWgotbcWV4nFLJnzlp23fcrD2jZ/WKoi4G0AvBoVkdb2+e/ZdNewobnKu2w5oaqw+5kr/ufpYhqpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiGk8lZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CD9C4CEE9;
+	Tue, 11 Mar 2025 15:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705405;
-	bh=biVhzaU+Jlp21TpLIE0khQnQ11eX6k7DBU7mavC3tn8=;
+	s=korg; t=1741706675;
+	bh=GKYHwXtPOvqYCIP9v2P/j0zkL4YzK9AAaO7SFupgJ7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTswwZHOIlVDie82einNOhZFq8tQAC6WVL/QXM3/AfFG8FxexmD0xgGBvltR6Cci0
-	 nn+YvpX4h4h0fsVj4dVYjA+JZwmU8NpvciMVGArNYesbH9ywNWGPg4AMuLCe+5//Cm
-	 +J957elmBWIED1EqvF+ZGo8M+2z1xock0K2xMDgY=
+	b=ZiGk8lZP95uwR1lvnXzsL2WXXhFXDdQVHSN0qTDLnW71Vbz3jFzbT0W+Mwj38OHok
+	 mNOyk5f9azBbVuP6fhKQd0GNRy1roiB5CJYnRqzwAn5Hrlrj3STfalKaIL8GRS/506
+	 OyEIHNOCgtC2UY32u0lE4tWxhheckXZXAm9GPddk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3c47b5843403a45aef57@syzkaller.appspotmail.com,
-	Octavian Purdila <tavip@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Suleiman Souhlal <suleiman@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 024/328] team: prevent adding a device which is already a team device lower
+Subject: [PATCH 5.10 128/462] sched: Dont try to catch up excess steal time.
 Date: Tue, 11 Mar 2025 15:56:34 +0100
-Message-ID: <20250311145715.850010105@linuxfoundation.org>
+Message-ID: <20250311145803.416394955@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Suleiman Souhlal <suleiman@google.com>
 
-[ Upstream commit 3fff5da4ca2164bb4d0f1e6cd33f6eb8a0e73e50 ]
+[ Upstream commit 108ad0999085df2366dd9ef437573955cb3f5586 ]
 
-Prevent adding a device which is already a team device lower,
-e.g. adding veth0 if vlan1 was already added and veth0 is a lower of
-vlan1.
+When steal time exceeds the measured delta when updating clock_task, we
+currently try to catch up the excess in future updates.
+However, this results in inaccurate run times for the future things using
+clock_task, in some situations, as they end up getting additional steal
+time that did not actually happen.
+This is because there is a window between reading the elapsed time in
+update_rq_clock() and sampling the steal time in update_rq_clock_task().
+If the VCPU gets preempted between those two points, any additional
+steal time is accounted to the outgoing task even though the calculated
+delta did not actually contain any of that "stolen" time.
+When this race happens, we can end up with steal time that exceeds the
+calculated delta, and the previous code would try to catch up that excess
+steal time in future clock updates, which is given to the next,
+incoming task, even though it did not actually have any time stolen.
 
-This is not useful in practice and can lead to recursive locking:
+This behavior is particularly bad when steal time can be very long,
+which we've seen when trying to extend steal time to contain the duration
+that the host was suspended [0]. When this happens, clock_task stays
+frozen, during which the running task stays running for the whole
+duration, since its run time doesn't increase.
+However the race can happen even under normal operation.
 
-$ ip link add veth0 type veth peer name veth1
-$ ip link set veth0 up
-$ ip link set veth1 up
-$ ip link add link veth0 name veth0.1 type vlan protocol 802.1Q id 1
-$ ip link add team0 type team
-$ ip link set veth0.1 down
-$ ip link set veth0.1 master team0
-team0: Port device veth0.1 added
-$ ip link set veth0 down
-$ ip link set veth0 master team0
+Ideally we would read the elapsed cpu time and the steal time atomically,
+to prevent this race from happening in the first place, but doing so
+is non-trivial.
 
-============================================
-WARNING: possible recursive locking detected
-6.13.0-rc2-virtme-00441-ga14a429069bb #46 Not tainted
---------------------------------------------
-ip/7684 is trying to acquire lock:
-ffff888016848e00 (team->team_lock_key){+.+.}-{4:4}, at: team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
+Since the time between those two points isn't otherwise accounted anywhere,
+neither to the outgoing task nor the incoming task (because the "end of
+outgoing task" and "start of incoming task" timestamps are the same),
+I would argue that the right thing to do is to simply drop any excess steal
+time, in order to prevent these issues.
 
-but task is already holding lock:
-ffff888016848e00 (team->team_lock_key){+.+.}-{4:4}, at: team_add_slave (drivers/net/team/team_core.c:1147 drivers/net/team/team_core.c:1977)
+[0] https://lore.kernel.org/kvm/20240820043543.837914-1-suleiman@google.com/
 
-other info that might help us debug this:
-Possible unsafe locking scenario:
-
-CPU0
-----
-lock(team->team_lock_key);
-lock(team->team_lock_key);
-
-*** DEADLOCK ***
-
-May be due to missing lock nesting notation
-
-2 locks held by ip/7684:
-
-stack backtrace:
-CPU: 3 UID: 0 PID: 7684 Comm: ip Not tainted 6.13.0-rc2-virtme-00441-ga14a429069bb #46
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:122)
-print_deadlock_bug.cold (kernel/locking/lockdep.c:3040)
-__lock_acquire (kernel/locking/lockdep.c:3893 kernel/locking/lockdep.c:5226)
-? netlink_broadcast_filtered (net/netlink/af_netlink.c:1548)
-lock_acquire.part.0 (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5851)
-? team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
-? trace_lock_acquire (./include/trace/events/lock.h:24 (discriminator 2))
-? team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
-? lock_acquire (kernel/locking/lockdep.c:5822)
-? team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
-__mutex_lock (kernel/locking/mutex.c:587 kernel/locking/mutex.c:735)
-? team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
-? team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
-? fib_sync_up (net/ipv4/fib_semantics.c:2167)
-? team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
-team_device_event (drivers/net/team/team_core.c:2928 drivers/net/team/team_core.c:2951 drivers/net/team/team_core.c:2973)
-notifier_call_chain (kernel/notifier.c:85)
-call_netdevice_notifiers_info (net/core/dev.c:1996)
-__dev_notify_flags (net/core/dev.c:8993)
-? __dev_change_flags (net/core/dev.c:8975)
-dev_change_flags (net/core/dev.c:9027)
-vlan_device_event (net/8021q/vlan.c:85 net/8021q/vlan.c:470)
-? br_device_event (net/bridge/br.c:143)
-notifier_call_chain (kernel/notifier.c:85)
-call_netdevice_notifiers_info (net/core/dev.c:1996)
-dev_open (net/core/dev.c:1519 net/core/dev.c:1505)
-team_add_slave (drivers/net/team/team_core.c:1219 drivers/net/team/team_core.c:1977)
-? __pfx_team_add_slave (drivers/net/team/team_core.c:1972)
-do_set_master (net/core/rtnetlink.c:2917)
-do_setlink.isra.0 (net/core/rtnetlink.c:3117)
-
-Reported-by: syzbot+3c47b5843403a45aef57@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3c47b5843403a45aef57
-Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Suleiman Souhlal <suleiman@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241118043745.1857272-1-suleiman@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/sched/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index 56caff2d01c45..b0a9dd33a0196 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -1165,6 +1165,13 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
- 		return -EBUSY;
- 	}
- 
-+	if (netdev_has_upper_dev(port_dev, dev)) {
-+		NL_SET_ERR_MSG(extack, "Device is already a lower device of the team interface");
-+		netdev_err(dev, "Device %s is already a lower device of the team interface\n",
-+			   portname);
-+		return -EBUSY;
-+	}
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 7cf45d506688c..42dad8c8d6f28 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -279,13 +279,15 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
+ #endif
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+ 	if (static_key_false((&paravirt_steal_rq_enabled))) {
+-		steal = paravirt_steal_clock(cpu_of(rq));
++		u64 prev_steal;
 +
- 	if (port_dev->features & NETIF_F_VLAN_CHALLENGED &&
- 	    vlan_uses_dev(dev)) {
- 		NL_SET_ERR_MSG(extack, "Device is VLAN challenged and team device has VLAN set up");
++		steal = prev_steal = paravirt_steal_clock(cpu_of(rq));
+ 		steal -= rq->prev_steal_time_rq;
+ 
+ 		if (unlikely(steal > delta))
+ 			steal = delta;
+ 
+-		rq->prev_steal_time_rq += steal;
++		rq->prev_steal_time_rq = prev_steal;
+ 		delta -= steal;
+ 	}
+ #endif
 -- 
 2.39.5
 
