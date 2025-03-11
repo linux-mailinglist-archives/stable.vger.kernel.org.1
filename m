@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-123392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69F2A5C545
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1052A5C7C2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26BED3AA964
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8CBF3BB0C6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D57C25C70A;
-	Tue, 11 Mar 2025 15:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DAF25F988;
+	Tue, 11 Mar 2025 15:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrmfgOvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGF9dePV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290E32B9CD;
-	Tue, 11 Mar 2025 15:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B473225E83C;
+	Tue, 11 Mar 2025 15:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705823; cv=none; b=KWkiQvFQQk6l6Ht2rwUwMbE5vEuRTItV2Y870MGcxMUvZCWWZoWtv5QJIb8dusOrz0PWP/xaLC3oBJGPAbwkM6MJ+/6ZGu1MvzozQb+HqcF0sWj9uwjuwYLJlUUhPqbOjYVDQ4tMk16n1Iqv6QIp+kduSSgOgvvA3QrkAzhdU0o=
+	t=1741707131; cv=none; b=PbHk6ufCr5scupvYazcVGblcTrX8n+XSQy3UUjnAFjAalxkMq8W/K1Kxlw0s6vLK84FOc5wrgVIq/V0x20rIKcbgGDI/Gb2w9MhtF1fukcRPW6FwvxUBnBLMUqR5BMf8974n//NhA6+DkgvlFnD3z2h017gPaYhjANNN/ho3R8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705823; c=relaxed/simple;
-	bh=uFmMlI7q24HwIdDg4R6AE8zudMCTVvSg76j3xVLoi0w=;
+	s=arc-20240116; t=1741707131; c=relaxed/simple;
+	bh=sNVOQT7P+Ywk8VoCs99T9KU0DYWXA/0vpJpVRphaYbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HocUajKk7vabXnrShroSly6a/7/3o3Q73MyP7raFWyrO9gVu2bzP2NiNn++qK0q47U61yMnRtV2ixEKZSoa0So7NrGypGD/yKi9wIAXum/TYRCtwlnCt9tHpt2bQKJPp3TjRTRBYwiB24j18Pmq6fyFTUf7a9bIPUYb1rGsUwhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrmfgOvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00FEC4CEE9;
-	Tue, 11 Mar 2025 15:10:22 +0000 (UTC)
+	 MIME-Version; b=dcT//xBFnu8IYN3lNTH2SCK/v6gCQqVgz68K2uFXRFCyZKD47cfyz79X2Nz595kFcUi2Nvfmf1qTVoz1ISY3ctNrA59Q/wnoA03OXlYfXRt8V9+HTSpO7Mcc3HSG4ouSbjfkDO9tahNWul/2397w+VOjdIB6XbvNFUFi3o34EDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGF9dePV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DBD9C4CEEA;
+	Tue, 11 Mar 2025 15:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705823;
-	bh=uFmMlI7q24HwIdDg4R6AE8zudMCTVvSg76j3xVLoi0w=;
+	s=korg; t=1741707131;
+	bh=sNVOQT7P+Ywk8VoCs99T9KU0DYWXA/0vpJpVRphaYbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GrmfgOvKzNKoMbh48xkOKyOIRcIUg+/nGvBcELZlONuGaSrRX2NqXMZXuKEbzApBu
-	 DTUs+P/yhMvboUsPGatJjNKqNrdKyK47oLMUlNreLHDOurc7CPf58nIqCQ+sn/wnMr
-	 bbA9bdXErz5aZUNhhvgCBANvPu+UrMETgrbPu6IY=
+	b=LGF9dePVkUfGICvMkSEvcL144ts7DDPSOu+AeHRqDQ8dLFVvKRY5h0IXR7sP1njyF
+	 0AWPh9LjDwuqcZZLSt86O0ilT0acTzaFbX86oAGe3KEpUz0GxM/RZZsyg/rLyX7vnx
+	 z9lz3RA39Qt3vwWdg4ZespmbY33D4g+ObqCDqlOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.4 138/328] usb: gadget: f_tcm: Dont prepare BOT write request twice
-Date: Tue, 11 Mar 2025 15:58:28 +0100
-Message-ID: <20250311145720.388579741@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 243/462] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
+Date: Tue, 11 Mar 2025 15:58:29 +0100
+Message-ID: <20250311145807.968055466@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 94d9bf671ae314cacc2d7bf96bd233b4abc7cede upstream.
+[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
 
-The duplicate kmalloc here is causing memory leak. The request
-preparation in bot_send_write_request is also done in
-usbg_prepare_w_request. Remove the duplicate work.
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/f4f26c3d586cde0d46f8c3bcb4e8ae32311b650d.1733876548.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The 5V version mostly works with the BYTCR defaults, except that it is
+missing a CHAN package in its ACPI tables and the default of using
+SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
+detect signal is not inverted as it usually is.
+
+Add a DMI quirk for the 5V version to fix sound not working.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   17 -----------------
- 1 file changed, 17 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -245,7 +245,6 @@ static int bot_send_write_request(struct
- {
- 	struct f_uas *fu = cmd->fu;
- 	struct se_cmd *se_cmd = &cmd->se_cmd;
--	struct usb_gadget *gadget = fuas_to_gadget(fu);
- 	int ret;
- 
- 	init_completion(&cmd->write_complete);
-@@ -256,22 +255,6 @@ static int bot_send_write_request(struct
- 		return -EINVAL;
- 	}
- 
--	if (!gadget->sg_supported) {
--		cmd->data_buf = kmalloc(se_cmd->data_length, GFP_KERNEL);
--		if (!cmd->data_buf)
--			return -ENOMEM;
--
--		fu->bot_req_out->buf = cmd->data_buf;
--	} else {
--		fu->bot_req_out->buf = NULL;
--		fu->bot_req_out->num_sgs = se_cmd->t_data_nents;
--		fu->bot_req_out->sg = se_cmd->t_data_sg;
--	}
--
--	fu->bot_req_out->complete = usbg_data_write_cmpl;
--	fu->bot_req_out->length = se_cmd->data_length;
--	fu->bot_req_out->context = cmd;
--
- 	ret = usbg_prepare_w_request(cmd, fu->bot_req_out);
- 	if (ret)
- 		goto cleanup;
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 6fc6a1fcd935e..06559f2afe326 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -935,7 +935,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+-	{	/* Vexia Edu Atla 10 tablet */
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
++	{	/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
+-- 
+2.39.5
+
 
 
 
