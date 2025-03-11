@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41702A5C5B9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5CFA5C82C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CA653B5A24
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 877B8188633D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF8E25E46E;
-	Tue, 11 Mar 2025 15:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1756C25E47F;
+	Tue, 11 Mar 2025 15:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VU/3KRbz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="So0sT0Cb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DFE25DCE5;
-	Tue, 11 Mar 2025 15:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF5237701;
+	Tue, 11 Mar 2025 15:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706050; cv=none; b=dYV09lsHeB0VBVGi5hLOtvIxq+ji1Xk2044hMSnpEJfKap38WPEHKFRB8e5s3rvXgOoWhHYUYuNcyJNH/0ETdjZEiwLNEfFWyNB0pae3Ej9/k/6xvsxXiFDT6dfoxayXCkxYDRGFx1/FzlJ7wJpO3fr1Y9n5ThaHG9svFWb8Z9w=
+	t=1741707409; cv=none; b=D+s2YTVEz7ohqzmlmycfHpq2lBVkVgvuRNb1y4i/5Tq/TW9zOEoFB5leUKVcM3cUKFz6K9Acbm/cQmGS/x/VnS62yxPMJ9uKFDdyghvo+kbcjinlST0SpbyN1qila1buP4oGrNQVgrAcsN7ArZKz7SVL1ZPmEZxsAZxEUCEw1Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706050; c=relaxed/simple;
-	bh=w4OG1s7ItBW3vQ0mdc30F1Ha2CDvG4tX3svtv3dpVx0=;
+	s=arc-20240116; t=1741707409; c=relaxed/simple;
+	bh=h+0+rpQElP7E3upH7EFAtPocR+ZTPphJi498zYSGwVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUuH85BQsc9HV0KeTinOmFyAILoMygtNu58soMCLsgIf0h1q+CKPMI4HyHWcG0uLm1322nKztTtCFWh2jQiPJgVTzUQBrm+9wDqRM9abgXP0auvNg5KpvHBtDqB8OdjbiuaHpwH4foxLxo23LH9uXMAecXxqEhdyeZ6RyxHLPK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VU/3KRbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84082C4CEE9;
-	Tue, 11 Mar 2025 15:14:09 +0000 (UTC)
+	 MIME-Version; b=uxLPFaXIOjglIJK0SVhOv3jITArfTEf1VCzokQNu8w1CV5NTRqEugZUFYPe5E4R2Po8O2MZ7fyBW40geUTcXFqkdW6fOPe4dXrvoWsbgRpyBjJSGxsDttE8i70rvYwiJMK1pIEWT1bJ08C+/ujZIly8iAUyr6/BIRgK9CRpWVe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=So0sT0Cb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F82EC4CEE9;
+	Tue, 11 Mar 2025 15:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706049;
-	bh=w4OG1s7ItBW3vQ0mdc30F1Ha2CDvG4tX3svtv3dpVx0=;
+	s=korg; t=1741707409;
+	bh=h+0+rpQElP7E3upH7EFAtPocR+ZTPphJi498zYSGwVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VU/3KRbzHJ0IdG0rowmE8aYWzhTKg9qgtWDiAgDGl/b61Wa9u06hbhKDqaw8tIPgB
-	 bd0/Ml+YFfclSld4cVCu4RBwp1c7SwmufLZU3Avh6XB+T+r1aEaZ8zHndolcGUrOzc
-	 R8tSnjziIskZFnvNuBLEGBD0c5kTPqHUQ53GESMg=
+	b=So0sT0CbtX+0tRg18Am2xTNoI6bTmV1q2VpluSIaE4IDYVsJCeMLS/oF7faRV/kBg
+	 1S7zf5tONtOyOKeBjkDjN8YhjM55WUTB4qGUrjnzWqWVfizjjHoURQX0FEKF/uArRA
+	 bVvBFgWgtd6yU0c0n3uFJbgObt8KXbggL17FzE+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 244/328] powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 348/462] mtd: rawnand: cadence: use dma_map_resource for sdma address
 Date: Tue, 11 Mar 2025 16:00:14 +0100
-Message-ID: <20250311145724.611337575@linuxfoundation.org>
+Message-ID: <20250311145812.107895289@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +61,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-[ Upstream commit d262a192d38e527faa5984629aabda2e0d1c4f54 ]
+commit d76d22b5096c5b05208fd982b153b3f182350b19 upstream.
 
-Erhard reported the following KASAN hit while booting his PowerMac G4
-with a KASAN-enabled kernel 6.13-rc6:
+Remap the slave DMA I/O resources to enhance driver portability.
+Using a physical address causes DMA translation failure when the
+ARM SMMU is enabled.
 
-  BUG: KASAN: vmalloc-out-of-bounds in copy_to_kernel_nofault+0xd8/0x1c8
-  Write of size 8 at addr f1000000 by task chronyd/1293
-
-  CPU: 0 UID: 123 PID: 1293 Comm: chronyd Tainted: G        W          6.13.0-rc6-PMacG4 #2
-  Tainted: [W]=WARN
-  Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
-  Call Trace:
-  [c2437590] [c1631a84] dump_stack_lvl+0x70/0x8c (unreliable)
-  [c24375b0] [c0504998] print_report+0xdc/0x504
-  [c2437610] [c050475c] kasan_report+0xf8/0x108
-  [c2437690] [c0505a3c] kasan_check_range+0x24/0x18c
-  [c24376a0] [c03fb5e4] copy_to_kernel_nofault+0xd8/0x1c8
-  [c24376c0] [c004c014] patch_instructions+0x15c/0x16c
-  [c2437710] [c00731a8] bpf_arch_text_copy+0x60/0x7c
-  [c2437730] [c0281168] bpf_jit_binary_pack_finalize+0x50/0xac
-  [c2437750] [c0073cf4] bpf_int_jit_compile+0xb30/0xdec
-  [c2437880] [c0280394] bpf_prog_select_runtime+0x15c/0x478
-  [c24378d0] [c1263428] bpf_prepare_filter+0xbf8/0xc14
-  [c2437990] [c12677ec] bpf_prog_create_from_user+0x258/0x2b4
-  [c24379d0] [c027111c] do_seccomp+0x3dc/0x1890
-  [c2437ac0] [c001d8e0] system_call_exception+0x2dc/0x420
-  [c2437f30] [c00281ac] ret_from_syscall+0x0/0x2c
-  --- interrupt: c00 at 0x5a1274
-  NIP:  005a1274 LR: 006a3b3c CTR: 005296c8
-  REGS: c2437f40 TRAP: 0c00   Tainted: G        W           (6.13.0-rc6-PMacG4)
-  MSR:  0200f932 <VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24004422  XER: 00000000
-
-  GPR00: 00000166 af8f3fa0 a7ee3540 00000001 00000000 013b6500 005a5858 0200f932
-  GPR08: 00000000 00001fe9 013d5fc8 005296c8 2822244c 00b2fcd8 00000000 af8f4b57
-  GPR16: 00000000 00000001 00000000 00000000 00000000 00000001 00000000 00000002
-  GPR24: 00afdbb0 00000000 00000000 00000000 006e0004 013ce060 006e7c1c 00000001
-  NIP [005a1274] 0x5a1274
-  LR [006a3b3c] 0x6a3b3c
-  --- interrupt: c00
-
-  The buggy address belongs to the virtual mapping at
-   [f1000000, f1002000) created by:
-   text_area_cpu_up+0x20/0x190
-
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x76e30
-  flags: 0x80000000(zone=2)
-  raw: 80000000 00000000 00000122 00000000 00000000 00000000 ffffffff 00000001
-  raw: 00000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   f0ffff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   f0ffff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >f1000000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-             ^
-   f1000080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   f1000100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ==================================================================
-
-f8 corresponds to KASAN_VMALLOC_INVALID which means the area is not
-initialised hence not supposed to be used yet.
-
-Powerpc text patching infrastructure allocates a virtual memory area
-using get_vm_area() and flags it as VM_ALLOC. But that flag is meant
-to be used for vmalloc() and vmalloc() allocated memory is not
-supposed to be used before a call to __vmalloc_node_range() which is
-never called for that area.
-
-That went undetected until commit e4137f08816b ("mm, kasan, kmsan:
-instrument copy_from/to_kernel_nofault")
-
-The area allocated by text_area_cpu_up() is not vmalloc memory, it is
-mapped directly on demand when needed by map_kernel_page(). There is
-no VM flag corresponding to such usage, so just pass no flag. That way
-the area will be unpoisonned and usable immediately.
-
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/all/20250112135832.57c92322@yea/
-Fixes: 37bc3e5fd764 ("powerpc/lib/code-patching: Use alternate map for patch_instruction()")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/06621423da339b374f48c0886e3a5db18e896be8.1739342693.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/lib/code-patching.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |   29 +++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index a05f289e613ed..f1eab35bab603 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -45,7 +45,7 @@ static int text_area_cpu_up(unsigned int cpu)
- {
- 	struct vm_struct *area;
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -469,6 +469,8 @@ struct cdns_nand_ctrl {
+ 	struct {
+ 		void __iomem *virt;
+ 		dma_addr_t dma;
++		dma_addr_t iova_dma;
++		u32 size;
+ 	} io;
  
--	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
-+	area = get_vm_area(PAGE_SIZE, 0);
- 	if (!area) {
- 		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
- 			cpu);
--- 
-2.39.5
-
+ 	int irq;
+@@ -1830,11 +1832,11 @@ static int cadence_nand_slave_dma_transf
+ 	}
+ 
+ 	if (dir == DMA_FROM_DEVICE) {
+-		src_dma = cdns_ctrl->io.dma;
++		src_dma = cdns_ctrl->io.iova_dma;
+ 		dst_dma = buf_dma;
+ 	} else {
+ 		src_dma = buf_dma;
+-		dst_dma = cdns_ctrl->io.dma;
++		dst_dma = cdns_ctrl->io.iova_dma;
+ 	}
+ 
+ 	tx = dmaengine_prep_dma_memcpy(cdns_ctrl->dmac, dst_dma, src_dma, len,
+@@ -2831,6 +2833,7 @@ cadence_nand_irq_cleanup(int irqnum, str
+ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	dma_cap_mask_t mask;
++	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
+ 	int ret;
+ 
+ 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
+@@ -2874,6 +2877,16 @@ static int cadence_nand_init(struct cdns
+ 		}
+ 	}
+ 
++	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
++						  cdns_ctrl->io.size,
++						  DMA_BIDIRECTIONAL, 0);
++
++	ret = dma_mapping_error(dma_dev->dev, cdns_ctrl->io.iova_dma);
++	if (ret) {
++		dev_err(cdns_ctrl->dev, "Failed to map I/O resource to DMA\n");
++		goto dma_release_chnl;
++	}
++
+ 	nand_controller_init(&cdns_ctrl->controller);
+ 	INIT_LIST_HEAD(&cdns_ctrl->chips);
+ 
+@@ -2884,18 +2897,22 @@ static int cadence_nand_init(struct cdns
+ 	if (ret) {
+ 		dev_err(cdns_ctrl->dev, "Failed to register MTD: %d\n",
+ 			ret);
+-		goto dma_release_chnl;
++		goto unmap_dma_resource;
+ 	}
+ 
+ 	kfree(cdns_ctrl->buf);
+ 	cdns_ctrl->buf = kzalloc(cdns_ctrl->buf_size, GFP_KERNEL);
+ 	if (!cdns_ctrl->buf) {
+ 		ret = -ENOMEM;
+-		goto dma_release_chnl;
++		goto unmap_dma_resource;
+ 	}
+ 
+ 	return 0;
+ 
++unmap_dma_resource:
++	dma_unmap_resource(dma_dev->dev, cdns_ctrl->io.iova_dma,
++			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
++
+ dma_release_chnl:
+ 	if (cdns_ctrl->dmac)
+ 		dma_release_channel(cdns_ctrl->dmac);
+@@ -2917,6 +2934,8 @@ free_buf_desc:
+ static void cadence_nand_remove(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	cadence_nand_chips_cleanup(cdns_ctrl);
++	dma_unmap_resource(cdns_ctrl->dmac->device->dev, cdns_ctrl->io.iova_dma,
++			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
+ 	cadence_nand_irq_cleanup(cdns_ctrl->irq, cdns_ctrl);
+ 	kfree(cdns_ctrl->buf);
+ 	dma_free_coherent(cdns_ctrl->dev, sizeof(struct cadence_nand_cdma_desc),
+@@ -2985,7 +3004,9 @@ static int cadence_nand_dt_probe(struct
+ 	cdns_ctrl->io.virt = devm_platform_get_and_ioremap_resource(ofdev, 1, &res);
+ 	if (IS_ERR(cdns_ctrl->io.virt))
+ 		return PTR_ERR(cdns_ctrl->io.virt);
++
+ 	cdns_ctrl->io.dma = res->start;
++	cdns_ctrl->io.size = resource_size(res);
+ 
+ 	dt->clk = devm_clk_get(cdns_ctrl->dev, "nf_clk");
+ 	if (IS_ERR(dt->clk))
 
 
 
