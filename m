@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6ABA5C727
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF1AA5C49C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB573B99BA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8DD97AB02B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F291C1494BB;
-	Tue, 11 Mar 2025 15:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F3825EF84;
+	Tue, 11 Mar 2025 15:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiJzkDuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m09obQ5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE910846D;
-	Tue, 11 Mar 2025 15:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ADA25E807;
+	Tue, 11 Mar 2025 15:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706750; cv=none; b=lCvYbX/f/ZpQSEbEFwSr9uiuUP9BOuQM/ypIq8DmcSXJVjCW0NiYh9P1nZ5R7eff0kpX22gpoVtvB6Cp48MR1bSkvSA5n7r61fLlkI/crgHA+r26UoIOo6y4zB/+KVLdK4Br5GOL74doOoSXKluwcJ+ujBCcHmz7VcIEfXCYJeg=
+	t=1741705483; cv=none; b=cuLPFNowPHEECmCyhcP/RoQfMv0isNnBQlUtvIDLYrNKJ7/vc6JIlo6C4tXVnc4NzJh5+4xQ4y1xL7Nemx0BRPiY3DC5/N4BviZltk2gtGK+CI3omILoBPcnh4bxjP+SUaVYH5aXdNWptrnynTL2y2hhG+ajawpp0xSHw5gWPZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706750; c=relaxed/simple;
-	bh=uc3amqgBRrMon90x6KAhrcgNa0eqDXg3buXP5cxNCRY=;
+	s=arc-20240116; t=1741705483; c=relaxed/simple;
+	bh=QHuIbubvvd1G2YZpjpWq5Uxi9OFJWsJxTSsS/MbK/1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOxSwZhtOuo1ZhBe77HqwLBwlPYoSxqAXPAABIk4Hoz9NjF3lomRXLUjswGkp8wEuH387vbFrVqRg8yDs4wu+J/PaS8vBvuzkWRDbmMB/TtOrFwlXvM65u9fD+KgkdX/nBlVFDl0S4c6JFvzM+tolbmfJBEB+y1Ed76zQJiYWQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiJzkDuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33406C4CEE9;
-	Tue, 11 Mar 2025 15:25:50 +0000 (UTC)
+	 MIME-Version; b=uLICjDrL9n3PlpXPWkZATdp74aWiiGzBW7DfclgG6LZn225jKdbwLCOhjbEXMVjU5D/1wN095J+Iqymf0fwXAmr8bc+twGcwPu3XxHas8fqhCTV28b4oErn1/ZZTeL/Yv9hB3QwtMovInOCDmWxQVaDzzlSg/yi4IXhqXwTXAwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m09obQ5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F363C4CEE9;
+	Tue, 11 Mar 2025 15:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706750;
-	bh=uc3amqgBRrMon90x6KAhrcgNa0eqDXg3buXP5cxNCRY=;
+	s=korg; t=1741705483;
+	bh=QHuIbubvvd1G2YZpjpWq5Uxi9OFJWsJxTSsS/MbK/1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MiJzkDuStFLkx9OtL0JDcga/2QIn0ZfuZNdOvxZ/cS0ex70ICfy7m+xQ0HY7ZVEYk
-	 bhoNEaexBG3XPlbdKy+xb9T9F8r7etpLpoRZ0ITqPGJqLzMJOH4MTPedEpW95aRKuL
-	 KD+69TD6S2cLr5hRjqrfeWeqpBHakgipZjXo/dis=
+	b=m09obQ5SXJ+4PtSR9soD8WBwKh3a70dSWguL3VnrJAZUS3FXroPifuBewCIk32nRz
+	 spFH4A/5vzrHLObSTbC9bmeGWGQIQMfGQgwxkeQ/HTJ4nlKcB4Rz+4zImEZfdMAsnA
+	 QMo83XUmIRGLHM4kS9Q2lyRpoQlki0Gnxitr5H+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yan Zhai <yan@cloudflare.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/462] udp: gso: do not drop small packets when PMTU reduces
+Subject: [PATCH 5.4 051/328] PCI: endpoint: Destroy the EPC device in devm_pci_epc_destroy()
 Date: Tue, 11 Mar 2025 15:57:01 +0100
-Message-ID: <20250311145804.471602761@linuxfoundation.org>
+Message-ID: <20250311145716.924017831@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 235174b2bed88501fda689c113c55737f99332d8 ]
+[ Upstream commit d4929755e4d02bd3de3ae5569dab69cb9502c54f ]
 
-Commit 4094871db1d6 ("udp: only do GSO if # of segs > 1") avoided GSO
-for small packets. But the kernel currently dismisses GSO requests only
-after checking MTU/PMTU on gso_size. This means any packets, regardless
-of their payload sizes, could be dropped when PMTU becomes smaller than
-requested gso_size. We encountered this issue in production and it
-caused a reliability problem that new QUIC connection cannot be
-established before PMTU cache expired, while non GSO sockets still
-worked fine at the same time.
+The devm_pci_epc_destroy() comment says destroys the EPC device, but it
+does not actually do that since devres_destroy() does not call
+devm_pci_epc_release(), and it also can not fully undo what the API
+devm_pci_epc_create() does, so it is faulty.
 
-Ideally, do not check any GSO related constraints when payload size is
-smaller than requested gso_size, and return EMSGSIZE instead of EINVAL
-on MTU/PMTU check failure to be more specific on the error cause.
+Fortunately, the faulty API has not been used by current kernel tree.  Use
+devres_release() instead of devres_destroy() so the EPC device will be
+released.
 
-Fixes: 4094871db1d6 ("udp: only do GSO if # of segs > 1")
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20241210-pci-epc-core_fix-v3-1-4d86dd573e4b@quicinc.com
+Fixes: 5e8cb4033807 ("PCI: endpoint: Add EP core layer to enable EP controller and EP functions")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c                       |  4 ++--
- net/ipv6/udp.c                       |  4 ++--
- tools/testing/selftests/net/udpgso.c | 26 ++++++++++++++++++++++++++
- 3 files changed, 30 insertions(+), 4 deletions(-)
+ drivers/pci/endpoint/pci-epc-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 6ad25dc9710c1..b801759147a68 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -923,9 +923,9 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
- 		const int hlen = skb_network_header_len(skb) +
- 				 sizeof(struct udphdr);
+diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+index 2091508c16204..3c08c2c7d339c 100644
+--- a/drivers/pci/endpoint/pci-epc-core.c
++++ b/drivers/pci/endpoint/pci-epc-core.c
+@@ -578,7 +578,7 @@ void devm_pci_epc_destroy(struct device *dev, struct pci_epc *epc)
+ {
+ 	int r;
  
--		if (hlen + cork->gso_size > cork->fragsize) {
-+		if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
- 			kfree_skb(skb);
--			return -EINVAL;
-+			return -EMSGSIZE;
- 		}
- 		if (datalen > cork->gso_size * UDP_MAX_SEGMENTS) {
- 			kfree_skb(skb);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 203a6d64d7e99..224339c3d831d 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1210,9 +1210,9 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
- 		const int hlen = skb_network_header_len(skb) +
- 				 sizeof(struct udphdr);
- 
--		if (hlen + cork->gso_size > cork->fragsize) {
-+		if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
- 			kfree_skb(skb);
--			return -EINVAL;
-+			return -EMSGSIZE;
- 		}
- 		if (datalen > cork->gso_size * UDP_MAX_SEGMENTS) {
- 			kfree_skb(skb);
-diff --git a/tools/testing/selftests/net/udpgso.c b/tools/testing/selftests/net/udpgso.c
-index 7badaf215de28..0e137182a4f40 100644
---- a/tools/testing/selftests/net/udpgso.c
-+++ b/tools/testing/selftests/net/udpgso.c
-@@ -94,6 +94,19 @@ struct testcase testcases_v4[] = {
- 		.gso_len = CONST_MSS_V4,
- 		.r_num_mss = 1,
- 	},
-+	{
-+		/* datalen <= MSS < gso_len: will fall back to no GSO */
-+		.tlen = CONST_MSS_V4,
-+		.gso_len = CONST_MSS_V4 + 1,
-+		.r_num_mss = 0,
-+		.r_len_last = CONST_MSS_V4,
-+	},
-+	{
-+		/* MSS < datalen < gso_len: fail */
-+		.tlen = CONST_MSS_V4 + 1,
-+		.gso_len = CONST_MSS_V4 + 2,
-+		.tfail = true,
-+	},
- 	{
- 		/* send a single MSS + 1B */
- 		.tlen = CONST_MSS_V4 + 1,
-@@ -197,6 +210,19 @@ struct testcase testcases_v6[] = {
- 		.gso_len = CONST_MSS_V6,
- 		.r_num_mss = 1,
- 	},
-+	{
-+		/* datalen <= MSS < gso_len: will fall back to no GSO */
-+		.tlen = CONST_MSS_V6,
-+		.gso_len = CONST_MSS_V6 + 1,
-+		.r_num_mss = 0,
-+		.r_len_last = CONST_MSS_V6,
-+	},
-+	{
-+		/* MSS < datalen < gso_len: fail */
-+		.tlen = CONST_MSS_V6 + 1,
-+		.gso_len = CONST_MSS_V6 + 2,
-+		.tfail = true
-+	},
- 	{
- 		/* send a single MSS + 1B */
- 		.tlen = CONST_MSS_V6 + 1,
+-	r = devres_destroy(dev, devm_pci_epc_release, devm_pci_epc_match,
++	r = devres_release(dev, devm_pci_epc_release, devm_pci_epc_match,
+ 			   epc);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PCI EPC resource\n");
+ }
 -- 
 2.39.5
 
