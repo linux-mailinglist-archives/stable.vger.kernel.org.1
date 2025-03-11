@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F486A5C742
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:32:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F2AA5C4F5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29ED31883856
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42BD73A92CF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2B825E828;
-	Tue, 11 Mar 2025 15:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A6C25DCE5;
+	Tue, 11 Mar 2025 15:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZkQfboQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzbIPehm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6F325E818;
-	Tue, 11 Mar 2025 15:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CB325DD02;
+	Tue, 11 Mar 2025 15:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706924; cv=none; b=gjwevqiKXjY4PJ1nlKw79+rW5Agu2d2odq6yhb+itEDaZdKFQOwH9yV3pcKpPDA8gnuqPyp8EDLVvhR7f6rZ7Dvg92aCVwjr7P4sqoR1d3+a1BJWUo+z0BLGggag++ExgE+UtnvvH0T+epPOCVRVoFXVRBOAsC/Jvy4ICbHUBJk=
+	t=1741705623; cv=none; b=eWErmBuwGJHMERxKGZMPAwUQGwdKFQyyVwZkGjkbGGplcA51R6KHKtIgulI3ChEzghr1efc/IXs0Qt7iTSFjS3Y9CbJC87/Y3VlTIICM3vw28qH4UE53Yrpj404lkkicNLoVzXCyNH/E+QzhcQPBYkqm9eoTQWaL3suNOEvEVnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706924; c=relaxed/simple;
-	bh=L/ZNNfJhdTPj4Vaom/Z4LEbgJj87bh6thpBvhF5Uo+s=;
+	s=arc-20240116; t=1741705623; c=relaxed/simple;
+	bh=togxUCCNKdOUFs9Lp9Drv+EiyFKGqg08drJTonMoh98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sKVdCgg4dVVk6uxLSglVyUxY4hoPn1YlwRt2Dm0n9tDM7w1LBZlHOQfHKhUY8ynkV2PZjWrq272ybvxjCaquOxwo5YFdLWLnem19Bns6MAP7HuY02OynNg5RFvKTqm2CIqIL9BZiUCbDF1RV7Ia4pxazA0HTVzyEcmI38n2vlOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZkQfboQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02589C4CEE9;
-	Tue, 11 Mar 2025 15:28:43 +0000 (UTC)
+	 MIME-Version; b=OENkgMQs20roCWcgFG2K0Saxx8IWyrJ/lDw8hshcK01OdBu3evZxw9LHisqLUnvFTuW3NfxjCKwK02mhE2FdHVizvdhxVhpR6n22/6sL12GO8sEgYecxxmvpdVTQ1/DGzHfkgbivDoS0WmQBdH9AS8gneVhgjDinD6PrFk5+pn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzbIPehm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB68C4CEE9;
+	Tue, 11 Mar 2025 15:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706924;
-	bh=L/ZNNfJhdTPj4Vaom/Z4LEbgJj87bh6thpBvhF5Uo+s=;
+	s=korg; t=1741705622;
+	bh=togxUCCNKdOUFs9Lp9Drv+EiyFKGqg08drJTonMoh98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZkQfboQ3PKX1HSTSBmUfAs76zPeiF04TpDNlp1RteXni2Q9XxS08rPbxH48sUmOR
-	 wMWfzQ/xnEAd/ynygLG74XmjE8b+LnWAcvCOJ4KFpsXrbbAL5tV09lMDlWdP8/Mypf
-	 yMg3Rvm0CytHjujvn+DLgE0zfoNkrb5zXpiBpGmY=
+	b=FzbIPehmInqzBT00c0E26DIWItqVv14arXO7thyE47qvDsR4174LSUWtZOVRrf6AT
+	 F5xbMykt5vuDLvWDgPUgsMPdimIT5GNEgupqNRFm5Syy+voSYDLjf7adWT2Vdwjthb
+	 IbKJAF3/AmEKwJDzLHiX9QHBvsuhzo7njdgKgQAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.10 183/462] of: reserved-memory: Fix using wrong number of cells to get property alignment
-Date: Tue, 11 Mar 2025 15:57:29 +0100
-Message-ID: <20250311145805.583018869@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.4 080/328] media: uvcvideo: Fix double free in error path
+Date: Tue, 11 Mar 2025 15:57:30 +0100
+Message-ID: <20250311145718.067130572@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit 267b21d0bef8e67dbe6c591c9991444e58237ec9 upstream.
+commit c6ef3a7fa97ec823a1e1af9085cf13db9f7b3bac upstream.
 
-According to DT spec, size of property 'alignment' is based on parent
-node’s #size-cells property.
+If the uvc_status_init() function fails to allocate the int_urb, it will
+free the dev->status pointer but doesn't reset the pointer to NULL. This
+results in the kfree() call in uvc_status_cleanup() trying to
+double-free the memory. Fix it by resetting the dev->status pointer to
+NULL after freeing it.
 
-But __reserved_mem_alloc_size() wrongly uses @dt_root_addr_cells to get
-the property obviously.
-
-Fix by using @dt_root_size_cells instead of @dt_root_addr_cells.
-
-Fixes: 3f0c82066448 ("drivers: of: add initialization code for dynamic reserved memory")
+Fixes: a31a4055473b ("V4L/DVB:usbvideo:don't use part of buffer for USB transfer #4")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/r/20241107235130.31372-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/of_reserved_mem.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_status.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -94,12 +94,12 @@ static int __init __reserved_mem_alloc_s
- 
- 	prop = of_get_flat_dt_prop(node, "alignment", &len);
- 	if (prop) {
--		if (len != dt_root_addr_cells * sizeof(__be32)) {
-+		if (len != dt_root_size_cells * sizeof(__be32)) {
- 			pr_err("invalid alignment property in '%s' node.\n",
- 				uname);
- 			return -EINVAL;
- 		}
--		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
-+		align = dt_mem_next_cell(dt_root_size_cells, &prop);
+--- a/drivers/media/usb/uvc/uvc_status.c
++++ b/drivers/media/usb/uvc/uvc_status.c
+@@ -269,6 +269,7 @@ int uvc_status_init(struct uvc_device *d
+ 	dev->int_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (dev->int_urb == NULL) {
+ 		kfree(dev->status);
++		dev->status = NULL;
+ 		return -ENOMEM;
  	}
  
- 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
 
 
 
