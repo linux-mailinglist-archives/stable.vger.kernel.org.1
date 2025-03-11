@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10234A5C7B5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4112A5C584
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0F719C2041
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8271E3AC125
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA1925FA1F;
-	Tue, 11 Mar 2025 15:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3165825C715;
+	Tue, 11 Mar 2025 15:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfX1bGdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNrjO9JS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0C025FA14;
-	Tue, 11 Mar 2025 15:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F925DB0D;
+	Tue, 11 Mar 2025 15:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707149; cv=none; b=f0xdrkdKH1CSEZFvRTlWMsgiDA0gmZ927lOIiDgnIsJ//m9I4Ws1yIPIOT/WZuzzESIvXiDUEeK+3Fi9kvO5uCo6QmqII+XPW7XCnX/wR09La9pliS7JCIQA9JCVmdvfzhPygUf5oU+Mvkn9XPgwPC+CYdpg4F4ERBmNvZhpEuk=
+	t=1741705939; cv=none; b=YQ2aoNM0NoRytyKTaAPziPzDBSN9TOTtLmbdLC7SQPBSsxkKtsmOLCn9N2X4ANW/bCx62yyevpP06ggAtg526b8MDe7FrJzebNKBZMsIyl9yjCJX2X/hG+Jv0AOINIMkq6nuFYUfzJZibPRk0nQOyCqTpUZ1RJX4H4ysBBYs4pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707149; c=relaxed/simple;
-	bh=xcnKniclKUxTmLzFp2Uq8Jndjh0KGw9MGnkF7l94qcA=;
+	s=arc-20240116; t=1741705939; c=relaxed/simple;
+	bh=xqk5IuAoAWszbJhLgO/XM58I/a5TLmoWeuaqH7GSjVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Puc2XAVXlnRfbbarRQBXG3rNn6g/xso/1JnuZpA1bErH6Fct+O9RKtq2bNQRRwr8zr+p6AmvavipelmZj8JRsBuIa1bslno7ECXQDEy+wxNJksDwEUCjsNBFE+PAeJbitWb6Cynem/crJGe49cUAzOPmBJxKoaVcID64N0frCt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfX1bGdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988CBC4CEF0;
-	Tue, 11 Mar 2025 15:32:28 +0000 (UTC)
+	 MIME-Version; b=FPxg5Ra2INO9G2Kn5PsfLnxdHppa0ZN7qcQ2isD+rZRZffG/TvsJfFaJ1Cw4J+xDuct1RlvRc6znbKSVlUNCdmwZ9s7cENayIpdTvM1HztIiuh6sELWdvNQHutDR26pb2HGvgKbdjrk+8M61ixQgLZTGOsf6qn7HUTJAHISJpxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNrjO9JS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA69C4CEEA;
+	Tue, 11 Mar 2025 15:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707149;
-	bh=xcnKniclKUxTmLzFp2Uq8Jndjh0KGw9MGnkF7l94qcA=;
+	s=korg; t=1741705938;
+	bh=xqk5IuAoAWszbJhLgO/XM58I/a5TLmoWeuaqH7GSjVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfX1bGdUX9MACx6+SSCysfTipgDzbymME7er5ucQ/2McbtqHeHPuci80xzUUSs33Q
-	 eo7fgRU0ExnavCzroGQw8wtrkb1X5Fd08rceoRFBpNqaHUregldm+ILZPePOlohuVd
-	 DrsxEOZRiWrmUKUPZe79XctJR10tTknpfgefEkMI=
+	b=tNrjO9JSMq9bkSVI+/RpZI8wUxPnGdpr/EP1cNbhDojSq65Flqm/PDszaGlCHMHW3
+	 vhlqu7gkmPBqEaM4GIarzD55ofyYfpUnK30tjHh+eExb3K6otL5RD0ZSuVtfAbzeU9
+	 4Rxaftx1mziCeEIrS1yNK7GrnycR6Lj3Mz9TMuHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 5.10 291/462] drm/tidss: Clear the interrupt status for interrupts being disabled
-Date: Tue, 11 Mar 2025 15:59:17 +0100
-Message-ID: <20250311145809.862886461@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 5.4 188/328] usb: cdc-acm: Fix handling of oversized fragments
+Date: Tue, 11 Mar 2025 15:59:18 +0100
+Message-ID: <20250311145722.369939901@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devarsh Thakkar <devarsht@ti.com>
+From: Jann Horn <jannh@google.com>
 
-commit 361a2ebb5cad211732ec3c5d962de49b21895590 upstream.
+commit 12e712964f41d05ae034989892de445781c46730 upstream.
 
-The driver does not touch the irqstatus register when it is disabling
-interrupts.  This might cause an interrupt to trigger for an interrupt
-that was just disabled.
+If we receive an initial fragment of size 8 bytes which specifies a wLength
+of 1 byte (so the reassembled message is supposed to be 9 bytes long), and
+we then receive a second fragment of size 9 bytes (which is not supposed to
+happen), we currently wrongly bypass the fragment reassembly code but still
+pass the pointer to the acm->notification_buffer to
+acm_process_notification().
 
-To fix the issue, clear the irqstatus registers right after disabling
-the interrupts.
+Make this less wrong by always going through fragment reassembly when we
+expect more fragments.
 
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Reported-by: Jonathan Cormier <jcormier@criticallink.com>
-Closes: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1394222/am625-issue-about-tidss-rcu_preempt-self-detected-stall-on-cpu/5424479#5424479
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-[Tomi: mostly rewrote the patch]
-Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-5-82ddaec94e4a@ideasonboard.com
+Before this patch, receiving an overlong fragment could lead to `newctrl`
+in acm_process_notification() being uninitialized data (instead of data
+coming from the device).
+
+Cc: stable <stable@kernel.org>
+Fixes: ea2583529cd1 ("cdc-acm: reassemble fragmented notifications")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/usb/class/cdc-acm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -596,7 +596,7 @@ void dispc_k2g_set_irqenable(struct disp
- {
- 	dispc_irq_t old_mask = dispc_k2g_read_irqenable(dispc);
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -404,7 +404,7 @@ static void acm_ctrl_irq(struct urb *urb
+ 	expected_size = sizeof(struct usb_cdc_notification) +
+ 					le16_to_cpu(dr->wLength);
  
--	/* clear the irqstatus for newly enabled irqs */
-+	/* clear the irqstatus for irqs that will be enabled */
- 	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & mask);
- 
- 	dispc_k2g_vp_set_irqenable(dispc, 0, mask);
-@@ -604,6 +604,9 @@ void dispc_k2g_set_irqenable(struct disp
- 
- 	dispc_write(dispc, DISPC_IRQENABLE_SET, (1 << 0) | (1 << 7));
- 
-+	/* clear the irqstatus for irqs that were disabled */
-+	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & old_mask);
-+
- 	/* flush posted write */
- 	dispc_k2g_read_irqenable(dispc);
- }
-@@ -735,7 +738,7 @@ static void dispc_k3_set_irqenable(struc
- 
- 	old_mask = dispc_k3_read_irqenable(dispc);
- 
--	/* clear the irqstatus for newly enabled irqs */
-+	/* clear the irqstatus for irqs that will be enabled */
- 	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & mask);
- 
- 	for (i = 0; i < dispc->feat->num_vps; ++i) {
-@@ -760,6 +763,9 @@ static void dispc_k3_set_irqenable(struc
- 	if (main_disable)
- 		dispc_write(dispc, DISPC_IRQENABLE_CLR, main_disable);
- 
-+	/* clear the irqstatus for irqs that were disabled */
-+	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & old_mask);
-+
- 	/* Flush posted writes */
- 	dispc_read(dispc, DISPC_IRQENABLE_SET);
- }
+-	if (current_size < expected_size) {
++	if (acm->nb_index != 0 || current_size < expected_size) {
+ 		/* notification is transmitted fragmented, reassemble */
+ 		if (acm->nb_size < expected_size) {
+ 			u8 *new_buffer;
 
 
 
