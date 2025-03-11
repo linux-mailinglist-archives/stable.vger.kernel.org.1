@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45B3A5C512
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D661DA5C78E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B90B77A4F1A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E27E8189F9CB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519A725D8EB;
-	Tue, 11 Mar 2025 15:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C45025F7AF;
+	Tue, 11 Mar 2025 15:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbz7YPaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUAdrqLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDF425C715;
-	Tue, 11 Mar 2025 15:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A50725EFA4;
+	Tue, 11 Mar 2025 15:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705826; cv=none; b=rLbcx766RIpO80aF5MeuDPzmfHlqOwLqcmM6TgaN47qEUtlp0M4hEZg5DTj9qRbAqRU5YYfN7QICUF7f7kQfQfwVWD+EhxnJ0D2hr9kiwf6BgkZCLlqDhvesWe23kjqsSQv/D0AzusKwuv6PdsUToeq+U3OVA6QeDOQrRaUox6c=
+	t=1741707073; cv=none; b=S9+m6jaP1KDlDy4IgP0w9GhwirQ/v5m+hdewI5hY6N8mF++Kbs5IFW+Qp+k/6Iq6F1HmeSoIUvBYjEaGenAhhSt2dR0AyKO0HV4OfhhVHV/iwNCVbaASFMYjMfALhIuP2yUuZSg0p8CDHVTw3qYEuKON3lpAPEa6ZrF2mhZ551w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705826; c=relaxed/simple;
-	bh=Ygy9VyS/8fa2M+zo0KVpNk8PNI6jQ6aYV80C0IRPKzY=;
+	s=arc-20240116; t=1741707073; c=relaxed/simple;
+	bh=TJIcd67mGsg2lcLC5dTc76vuuTOT8zKnQsTF2OsxxD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YMeeP2UWki/CV47dP8qmJnvslW4te1RZoZ+E7eqyqk4N9RLc1H7YnOmJF7YB1wQMusB/MO1jYLoOZLCHIjEGnVShk/vlyMCjs3/wk9SfDx4/q1zw46NmV7nUvRptrx7PaOxMS59ramUwDjgk1ZWNvmHxIi1dmD0tjZqDH0TXlRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbz7YPaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86563C4CEE9;
-	Tue, 11 Mar 2025 15:10:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QdVgGRQ3H/RV9b2ZR4IVD2U+p6YKmg/y3vQl4FsuEANQkLXwobTvm+QTJBCFwhiUXsv9GaGz9OlMP9Ps7qAiM9cazxeKRFTNIZm0m6wwBPVmJZVFOpWwV20M3yPAGccLdiCbl8qtE/OFEQzxTUfPxRrt/w06O+kPEtHpbMgfiYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUAdrqLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE48C4CEE9;
+	Tue, 11 Mar 2025 15:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705825;
-	bh=Ygy9VyS/8fa2M+zo0KVpNk8PNI6jQ6aYV80C0IRPKzY=;
+	s=korg; t=1741707072;
+	bh=TJIcd67mGsg2lcLC5dTc76vuuTOT8zKnQsTF2OsxxD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbz7YPaEIpNSbb/uI5cCnbt+UBoQNBYcgTB6b8QeX95THIcgpW7WxxXjHQkaeVQVw
-	 IMnEmJDicmr+1guK7V5ptEjeMGw1CVxndwpzIFrQEzmEcnaixNEI8Px92JOl3rdIh2
-	 MTHCFIvz0WETEGHvRHx9XpSKALrdk0elfrrats7A=
+	b=pUAdrqLrU3SRVkWLHlo7VV3hmeX4GP/IFkjisp0BEih1ILOPf7St3Y8jIVR8MEnkG
+	 1mjlDTWGTpRvjoK+joX09U99qduN/bm/pihZ5TEt+1aR+qI0/b6zpOxvK/UkBsa2xG
+	 o0fXAZbVVfx4eWH0Sl8zs+PzVglYCAnpguN6wrp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.4 160/328] MIPS: ftrace: Declare ftrace_get_parent_ra_addr() as static
+	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 264/462] can: j1939: j1939_sk_send_loop(): fix unable to send messages with data length zero
 Date: Tue, 11 Mar 2025 15:58:50 +0100
-Message-ID: <20250311145721.265383056@linuxfoundation.org>
+Message-ID: <20250311145808.788752711@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Alexander Hölzl <alexander.hoelzl@gmx.net>
 
-commit ddd068d81445b17ac0bed084dfeb9e58b4df3ddd upstream.
+commit 44de577e61ed239db09f0da9d436866bef9b77dd upstream.
 
-Declare ftrace_get_parent_ra_addr() as static to suppress clang
-compiler warning that 'no previous prototype'. This function is
-not intended to be called from other parts.
+The J1939 standard requires the transmission of messages of length 0.
 
-Fix follow error with clang-19:
+For example proprietary messages are specified with a data length of 0
+to 1785. The transmission of such messages is not possible. Sending
+results in no error being returned but no corresponding can frame
+being generated.
 
-arch/mips/kernel/ftrace.c:251:15: error: no previous prototype for function 'ftrace_get_parent_ra_addr' [-Werror,-Wmissing-prototypes]
-  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-      |               ^
-arch/mips/kernel/ftrace.c:251:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-      | ^
-      | static
-1 error generated.
+Enable the transmission of zero length J1939 messages. In order to
+facilitate this two changes are necessary:
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+1) If the transmission of a new message is requested from user space
+the message is segmented in j1939_sk_send_loop(). Let the segmentation
+take into account zero length messages, do not terminate immediately,
+queue the corresponding skb.
+
+2) j1939_session_skb_get_by_offset() selects the next skb to transmit
+for a session. Take into account that there might be zero length skbs
+in the queue.
+
+Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250205174651.103238-1-alexander.hoelzl@gmx.net
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Cc: stable@vger.kernel.org
+[mkl: commit message rephrased]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/ftrace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/j1939/socket.c    |    4 ++--
+ net/can/j1939/transport.c |    5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -264,7 +264,7 @@ int ftrace_disable_ftrace_graph_caller(v
- #define S_R_SP	(0xafb0 << 16)	/* s{d,w} R, offset(sp) */
- #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -1055,7 +1055,7 @@ static int j1939_sk_send_loop(struct j19
  
--unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-+static unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
- 		old_parent_ra, unsigned long parent_ra_addr, unsigned long fp)
- {
- 	unsigned long sp, ip, tmp;
+ 	todo_size = size;
+ 
+-	while (todo_size) {
++	do {
+ 		struct j1939_sk_buff_cb *skcb;
+ 
+ 		segment_size = min_t(size_t, J1939_MAX_TP_PACKET_SIZE,
+@@ -1100,7 +1100,7 @@ static int j1939_sk_send_loop(struct j19
+ 
+ 		todo_size -= segment_size;
+ 		session->total_queued_size += segment_size;
+-	}
++	} while (todo_size);
+ 
+ 	switch (ret) {
+ 	case 0: /* OK */
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -378,8 +378,9 @@ sk_buff *j1939_session_skb_get_by_offset
+ 	skb_queue_walk(&session->skb_queue, do_skb) {
+ 		do_skcb = j1939_skb_to_cb(do_skb);
+ 
+-		if (offset_start >= do_skcb->offset &&
+-		    offset_start < (do_skcb->offset + do_skb->len)) {
++		if ((offset_start >= do_skcb->offset &&
++		     offset_start < (do_skcb->offset + do_skb->len)) ||
++		     (offset_start == 0 && do_skcb->offset == 0 && do_skb->len == 0)) {
+ 			skb = do_skb;
+ 		}
+ 	}
 
 
 
