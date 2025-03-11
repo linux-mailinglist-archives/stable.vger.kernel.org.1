@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18D5A5C7B6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFBDA5C50F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE293BA7FE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0DCC7AAE6C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43E425F7A5;
-	Tue, 11 Mar 2025 15:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F57255E37;
+	Tue, 11 Mar 2025 15:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZ4D5yKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BveDX+K4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28163EA76;
-	Tue, 11 Mar 2025 15:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DE625C70A;
+	Tue, 11 Mar 2025 15:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707120; cv=none; b=o05iCUyz1rXroPuIpLKH8dxi4hNrly72xx6FwBtFTX1gVsicBGSw0gCIgsXPstKNfBwDPaBAHuZeRmDu7kIYCiuCjdxLbb+gi1wriPvjUNPWd5BolE5gazbyC65Guk+61ANGkTiEa4QNWmiOrByipw6SWsneawmtgZdJlkq6CdQ=
+	t=1741705813; cv=none; b=CYvbyGd+f9r8L7yHeywewGtMmVjkav34WT/gVwcX/1j4f2SNKCU3s3DuJNFu6NN8grngEXh2cxbpgYwRlFDcSxvj3FUHxHqUS5t3pKmGzCMgzyFztkOWVawjofOMB3TgZqbT4pqCfT83LBfOzu3Q5b1Qb9pf8t42o20kl7X4omE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707120; c=relaxed/simple;
-	bh=23oQ845EIW2ByqLewdz0uXTXUcL/fa1BWPmfgeZXUsE=;
+	s=arc-20240116; t=1741705813; c=relaxed/simple;
+	bh=lxwsi0dDWyMwaJXHr2Cih7IEeJ1RbazRuTL2h3zEDuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnYmUWtG0OVC/wM1QehKdGZwupEcOBZcz+HDjyYLQ7im9M2xWp4MUT8aHnSCdtya+HK+stJYdEgjNh6bD4L1CDL/4pEEGU1CyAvVeldyepR8Q8644aWJ2RYUSLVqUP6tn2CGp7CYGf6saGaMU5deljUlMGGkMkdJuC+hmLsfK2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZ4D5yKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BD0C4CEEC;
-	Tue, 11 Mar 2025 15:31:59 +0000 (UTC)
+	 MIME-Version; b=MuhzecA+axln7qF8vjrYuEK7ZWIHA7mWhMMruVvxkRZfg8LAYCDo4RMXfafYYdFaPwIs/GM37/AYvPkuNMc+9XVA4dIilsXpnoqaMlLXv7JKL8LkFGyl1uQpkCtuFij+vp6G7tM96n+C3+SqYmbXI3uhWvDU+AiYNz6hRUb5m8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BveDX+K4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8C2C4CEE9;
+	Tue, 11 Mar 2025 15:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707120;
-	bh=23oQ845EIW2ByqLewdz0uXTXUcL/fa1BWPmfgeZXUsE=;
+	s=korg; t=1741705813;
+	bh=lxwsi0dDWyMwaJXHr2Cih7IEeJ1RbazRuTL2h3zEDuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZ4D5yKXpnWoJjt65xyT5O7eKmgi/AtrncbtVH7N7Eyvl8b5OiejVX5pXUok60yJT
-	 8nRBIX2E7NIp9W514611VTBbXwK1K7d+8ZbhMuwZy6e0j30/bdFuA9Y8393cJm/kco
-	 6uj+IyhsIWYuDvErXdJBTrmNq6mLLOtY32LgdjA4=
+	b=BveDX+K4kWT1jh1Hv2nSvB4dAWvB6ePDznjdftnDTn1P3xXzyhyctknNQQqlHVuU7
+	 7ifoQNZ2HoonthNVtSWG5a7mRz+p4MqJC0Ri/1TtbzEiaHfFcr8SW0WU55TTVDn4Qh
+	 KZkyWITiDz09F8JUiP1CrgQUg855wWvK33tQ/qlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Subject: [PATCH 5.10 249/462] usb: dwc2: gadget: remove of_node reference upon udc_stop
+	Sam Bobrowicz <sam@elite-embedded.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.4 145/328] media: ov5640: fix get_light_freq on auto
 Date: Tue, 11 Mar 2025 15:58:35 +0100
-Message-ID: <20250311145808.201028270@linuxfoundation.org>
+Message-ID: <20250311145720.671428648@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Sam Bobrowicz <sam@elite-embedded.com>
 
-commit 58cd423820d5b5610977e55e4acdd06628829ede upstream.
+commit 001d3753538d26ddcbef011f5643cfff58a7f672 upstream.
 
-In dwc2_hsotg_udc_start(), e.g. when binding composite driver, "of_node"
-is set to hsotg->dev->of_node.
+Light frequency was not properly returned when in auto
+mode and the detected frequency was 60Hz.
 
-It causes errors when binding the gadget driver several times, on
-stm32mp157c-ev1 board. Below error is seen:
-"pin PA10 already requested by 49000000.usb-otg; cannot claim for gadget.0"
-
-The first time, no issue is seen as when registering the driver, of_node
-isn't NULL:
--> gadget_dev_desc_UDC_store
-  -> usb_gadget_register_driver_owner
-    -> driver_register
-    ...
-      -> really_probe -> pinctrl_bind_pins (no effect)
-
-Then dwc2_hsotg_udc_start() sets of_node.
-
-The second time (stop the gadget, reconfigure it, then start it again),
-of_node has been set, so the probing code tries to acquire pins for the
-gadget. These pins are hold by the controller, hence the error.
-
-So clear gadget.dev.of_node in udc_stop() routine to avoid the issue.
-
-Fixes: 7d7b22928b90 ("usb: gadget: s3c-hsotg: Propagate devicetree to gadget drivers")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20250124173325.2747710-1-fabrice.gasnier@foss.st.com
+Fixes: 19a81c1426c1 ("[media] add Omnivision OV5640 sensor driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sam Bobrowicz <sam@elite-embedded.com>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/gadget.c |    1 +
+ drivers/media/i2c/ov5640.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -4581,6 +4581,7 @@ static int dwc2_hsotg_udc_stop(struct us
- 	spin_lock_irqsave(&hsotg->lock, flags);
- 
- 	hsotg->driver = NULL;
-+	hsotg->gadget.dev.of_node = NULL;
- 	hsotg->gadget.speed = USB_SPEED_UNKNOWN;
- 	hsotg->enabled = 0;
+--- a/drivers/media/i2c/ov5640.c
++++ b/drivers/media/i2c/ov5640.c
+@@ -1368,6 +1368,7 @@ static int ov5640_get_light_freq(struct
+ 			light_freq = 50;
+ 		} else {
+ 			/* 60Hz */
++			light_freq = 60;
+ 		}
+ 	}
  
 
 
