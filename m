@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-123407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9933EA5C561
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A88A5C78F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6128F3B3FCA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BAF3189FBBA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D562125E805;
-	Tue, 11 Mar 2025 15:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B2D25EFBC;
+	Tue, 11 Mar 2025 15:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uvwa9Bpv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXYk3VjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FE125DB0D;
-	Tue, 11 Mar 2025 15:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637E425BAAA;
+	Tue, 11 Mar 2025 15:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705866; cv=none; b=WO8BG4LGBa7MY6aGcy3KEjeO47cJhh2mD2aNXKi8H5e5giBWRxhnHtjIf4imC1bBfRcFd7IV5Lb5nY8gWJDiEIaWeBvXUdnIQZXIIEryw505GT8VKzRrUkAz8e23fPhuaCf+GVvs+rGbSGrQNHacPGqsJo0ES6uXTXJH8NXmgaw=
+	t=1741707078; cv=none; b=fTeW4ffpw2yIHSMHaPYA7GjrXXJdU5Mghh/uQ5TTZqfACQUCrOHx5o0I79MuAnkuDpbiOasJyFjwekWGJOsAJKtAtkoFnW433Q66odnjQXw6vOdfD3VHiIcPkgH7nLDvdJ4abrJjwCxA7sIr4aGgHHE5a/YxiNbnaKJYFm2gDFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705866; c=relaxed/simple;
-	bh=Qj4QAnVcZ/Fz+ofw4DqlHSZ5rdPGuab+cnB9JkXQzro=;
+	s=arc-20240116; t=1741707078; c=relaxed/simple;
+	bh=pFsR0SiFKrCu2qyQ1H8ophJmr11hbTRB5JOZ0YFn6sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqcM28inept6ds7tvyG4BOXW9U695BGu8uTBbgamwhghRrlMdSvH5eJ9pp2j5LXiEh2mrpwSJ4tClKhO+Oz3WTKSNN3XIHLSgp2W5f+4k3oiBx4NUKBI62kDBoG+T9hYRCMZpk2lw19JBSXSOkeQKi7Rhf3Zd1XO5JiPkwKWU3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uvwa9Bpv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14565C4CEE9;
-	Tue, 11 Mar 2025 15:11:05 +0000 (UTC)
+	 MIME-Version; b=uKmGhAqsrY2ETQ28FI2eg3mzLBE6CNk0rG3/7vpcH272wrOmmkksvzcvGehYLHwHE7Y7zsd1U2/+WfNEUYHLnLVyx/3lj+XbfkmRp4Y1nUtg8v5o4hz57KNT/WHl2PMnZASiApJbDU13qHia1qjbQCLmCiCEltWycElp+huw/FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXYk3VjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBE6C4CEE9;
+	Tue, 11 Mar 2025 15:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705866;
-	bh=Qj4QAnVcZ/Fz+ofw4DqlHSZ5rdPGuab+cnB9JkXQzro=;
+	s=korg; t=1741707078;
+	bh=pFsR0SiFKrCu2qyQ1H8ophJmr11hbTRB5JOZ0YFn6sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uvwa9Bpvoqvhn2q+GmP7UU8d+bJ8fYgVsQVupG2KwcrnlVsZ1nOq9O2N0CXI4G/Tt
-	 +XJLa6nlz0xChRA/zmP5xHinQDueVZ/RkJOPk26qhyAKlFkzA00bXphF2GeLw0vbri
-	 jQIbgjeUKYxUoc/3EHt91Q6QEw4s18On1j41My80=
+	b=OXYk3VjBXxp3zJo3kHa8tKdHraj/Q5C5K4RUDSEAeaR4TrPLiBrmyTQRlNQRfFZQR
+	 mOghHG4rwGg4bXLslS26rZvnAFFuW1JmzmUBHkTv+ENYBzJPj+VnK2WgoocBW076LA
+	 Wunycn4OQ0J//z5abCN7vj4poJ5PaMLwsshO6/eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 162/328] HID: multitouch: Add NULL check in mt_input_configured
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.10 266/462] efi: Avoid cold plugged memory for placing the kernel
 Date: Tue, 11 Mar 2025 15:58:52 +0100
-Message-ID: <20250311145721.344143822@linuxfoundation.org>
+Message-ID: <20250311145808.874787165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 9b8e2220d3a052a690b1d1b23019673e612494c5 ]
+commit ba69e0750b0362870294adab09339a0c39c3beaf upstream.
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in mt_input_configured() is not checked.
-Add NULL check in mt_input_configured(), to handle kernel NULL
-pointer dereference error.
+UEFI 2.11 introduced EFI_MEMORY_HOT_PLUGGABLE to annotate system memory
+regions that are 'cold plugged' at boot, i.e., hot pluggable memory that
+is available from early boot, and described as system RAM by the
+firmware.
 
-Fixes: 479439463529 ("HID: multitouch: Correct devm device reference for hidinput input_dev name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Existing loaders and EFI applications running in the boot context will
+happily use this memory for allocating data structures that cannot be
+freed or moved at runtime, and this prevents the memory from being
+unplugged. Going forward, the new EFI_MEMORY_HOT_PLUGGABLE attribute
+should be tested, and memory annotated as such should be avoided for
+such allocations.
+
+In the EFI stub, there are a couple of occurrences where, instead of the
+high-level AllocatePages() UEFI boot service, a low-level code sequence
+is used that traverses the EFI memory map and carves out the requested
+number of pages from a free region. This is needed, e.g., for allocating
+as low as possible, or for allocating pages at random.
+
+While AllocatePages() should presumably avoid special purpose memory and
+cold plugged regions, this manual approach needs to incorporate this
+logic itself, in order to prevent the kernel itself from ending up in a
+hot unpluggable region, preventing it from being unplugged.
+
+So add the EFI_MEMORY_HOTPLUGGABLE macro definition, and check for it
+where appropriate.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-multitouch.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/efi.c                 |    6 ++++--
+ drivers/firmware/efi/libstub/randomalloc.c |    3 +++
+ drivers/firmware/efi/libstub/relocate.c    |    3 +++
+ include/linux/efi.h                        |    1 +
+ 4 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 5994e7d1b82d9..cb0bbba5c1c95 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1601,9 +1601,12 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 		break;
- 	}
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -774,13 +774,15 @@ char * __init efi_md_typeattr_format(cha
+ 		     EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
+ 		     EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
+ 		     EFI_MEMORY_NV | EFI_MEMORY_SP | EFI_MEMORY_CPU_CRYPTO |
+-		     EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
++		     EFI_MEMORY_MORE_RELIABLE | EFI_MEMORY_HOT_PLUGGABLE |
++		     EFI_MEMORY_RUNTIME))
+ 		snprintf(pos, size, "|attr=0x%016llx]",
+ 			 (unsigned long long)attr);
+ 	else
+ 		snprintf(pos, size,
+-			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
++			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
+ 			 attr & EFI_MEMORY_RUNTIME		? "RUN" : "",
++			 attr & EFI_MEMORY_HOT_PLUGGABLE	? "HP"  : "",
+ 			 attr & EFI_MEMORY_MORE_RELIABLE	? "MR"  : "",
+ 			 attr & EFI_MEMORY_CPU_CRYPTO   	? "CC"  : "",
+ 			 attr & EFI_MEMORY_SP			? "SP"  : "",
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -24,6 +24,9 @@ static unsigned long get_entry_num_slots
+ 	if (md->type != EFI_CONVENTIONAL_MEMORY)
+ 		return 0;
  
--	if (suffix)
-+	if (suffix) {
- 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
- 						 "%s %s", hdev->name, suffix);
-+		if (!hi->input->name)
-+			return -ENOMEM;
-+	}
++	if (md->attribute & EFI_MEMORY_HOT_PLUGGABLE)
++		return 0;
++
+ 	if (efi_soft_reserve_enabled() &&
+ 	    (md->attribute & EFI_MEMORY_SP))
+ 		return 0;
+--- a/drivers/firmware/efi/libstub/relocate.c
++++ b/drivers/firmware/efi/libstub/relocate.c
+@@ -62,6 +62,9 @@ efi_status_t efi_low_alloc_above(unsigne
+ 		if (desc->type != EFI_CONVENTIONAL_MEMORY)
+ 			continue;
  
- 	return 0;
- }
--- 
-2.39.5
-
++		if (desc->attribute & EFI_MEMORY_HOT_PLUGGABLE)
++			continue;
++
+ 		if (efi_soft_reserve_enabled() &&
+ 		    (desc->attribute & EFI_MEMORY_SP))
+ 			continue;
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -125,6 +125,7 @@ typedef	struct {
+ #define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
+ #define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* soft reserved */
+ #define EFI_MEMORY_CPU_CRYPTO	((u64)0x0000000000080000ULL)	/* supports encryption */
++#define EFI_MEMORY_HOT_PLUGGABLE	BIT_ULL(20)	/* supports unplugging at runtime */
+ #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
+ #define EFI_MEMORY_DESCRIPTOR_VERSION	1
+ 
 
 
 
