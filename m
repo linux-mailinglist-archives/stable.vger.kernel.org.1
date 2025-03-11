@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-123538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE09A5C5A9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D5BA5C7AB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0E377AADAD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B4F87A6E53
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6838E2571D8;
-	Tue, 11 Mar 2025 15:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62D125D904;
+	Tue, 11 Mar 2025 15:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNjCgJCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edo+eD8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25517249F9;
-	Tue, 11 Mar 2025 15:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DBA3C0B;
+	Tue, 11 Mar 2025 15:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706243; cv=none; b=A/OlfQntfIsgEBzDmCjiCck0epfis3dDwJ4fEEXFyZy5XQLW1J6ouYrHE1XjoT9S1RPw/jR70rAaV+/5K1Li/h0OubFpvmrnmKu8CsIw8j63l3v9oWeEDTBvBJI9p+kb/7tzoxxQcVmnDFW7evTGfG15rTRJXT1DRYI6t/oYH9U=
+	t=1741707457; cv=none; b=QGi7T1QkgJS1WI52UrF8bY0N3rTLOibrbHAA8m3K7+98GVKNGMarQ4IrDSafafwZEeih2tDfJcrlmaOVykxNXwHHdQopFur0fiZr6jNUb4t8C7rYT9e0i4ZTXoxUB8HB0qvbYTETTo9gtdOd1gEPKUkXPEjCjYAyHD7DCoLp4kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706243; c=relaxed/simple;
-	bh=7AvGDmcQcTUyMR6fzSujGiQaxYxhyWMKlJd5vSV0KSA=;
+	s=arc-20240116; t=1741707457; c=relaxed/simple;
+	bh=X5VtVzBti04+ZzjIfw53YkCwuQgtUfodZNiPb0blIHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgiqqHEyU4O2C/c02Yqx+Z3Vcxss1fyEfEdxXnca/S8iyKsg9lNmonvCISuqIE+AoiYq2V7GDdd0JIpQjEZZIdI+WAt9Ovpyq3dbs/95ECmFuNzHY5L3hhlLWI9muundkxRiIaAx+C/Z9T/g6QXJde/mJ/qIIQ3gZARH37Cits0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNjCgJCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDD2C4CEE9;
-	Tue, 11 Mar 2025 15:17:22 +0000 (UTC)
+	 MIME-Version; b=CmVioQUyvPq8k6LFESSkBxjVibFI7m7eGSVNA4GP48IPBVMnhbZGt71FhvEx6MaNnc3zSM3XO/A19NLgGdaTzcv1ll/X5BFe+EXNDl/RCDQYbRn87d6B/HC94FN48VaS96GKmeFMRNrGvgIDUWpbCs0Gwye2Bemz9FavEJreCKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edo+eD8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E82C4CEEA;
+	Tue, 11 Mar 2025 15:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706243;
-	bh=7AvGDmcQcTUyMR6fzSujGiQaxYxhyWMKlJd5vSV0KSA=;
+	s=korg; t=1741707457;
+	bh=X5VtVzBti04+ZzjIfw53YkCwuQgtUfodZNiPb0blIHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNjCgJCq6yLzVRRxqyfn+FNPbsU+w0Aa5yWY7sPwytNHu4TpwDlfbcl37XnvBZgY0
-	 AWWUDElU1i/3Ax2DnHZS0rKvnxhSzAXs70JyO3GyBBHm+ApASHR0+erWZEI8p+uOBo
-	 aWGWbN/gfiNvIfsVuuyWAPaTPWRa/mCKzlXgnP3E=
+	b=edo+eD8MGXgthC0TbRiJG0zF0bCC0jJIm2MxNVh32973YqODaOp31kd6FyMqe+alr
+	 2ZgiGQCnZ4Rk0PSIg91GdcygvQQFyu4oTo8hyYqJx2kIzAIvugbck//OACgtUfsRZ/
+	 N4afEKZt7hnm5xWOcmCutb/jh0e7HwIE9E/eeK1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com,
-	Hao Zhang <zhanghao1@kylinos.cn>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 292/328] mm/page_alloc: fix uninitialized variable
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 396/462] x86/cpu: Validate CPUID leaf 0x2 EDX output
 Date: Tue, 11 Mar 2025 16:01:02 +0100
-Message-ID: <20250311145726.515841118@linuxfoundation.org>
+Message-ID: <20250311145813.979475506@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit 8fe9ed44dc29fba0786b7e956d2e87179e407582 upstream.
+commit 1881148215c67151b146450fb89ec22fd92337a7 upstream.
 
-The variable "compact_result" is not initialized in function
-__alloc_pages_slowpath().  It causes should_compact_retry() to use an
-uninitialized value.
+CPUID leaf 0x2 emits one-byte descriptors in its four output registers
+EAX, EBX, ECX, and EDX.  For these descriptors to be valid, the most
+significant bit (MSB) of each register must be clear.
 
-Initialize variable "compact_result" with the value COMPACT_SKIPPED.
+Leaf 0x2 parsing at intel.c only validated the MSBs of EAX, EBX, and
+ECX, but left EDX unchecked.
 
-BUG: KMSAN: uninit-value in __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
- alloc_pages_mpol+0x4cd/0x890 mm/mempolicy.c:2270
- alloc_frozen_pages_noprof mm/mempolicy.c:2341 [inline]
- alloc_pages_noprof mm/mempolicy.c:2361 [inline]
- folio_alloc_noprof+0x1dc/0x350 mm/mempolicy.c:2371
- filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1019
- __filemap_get_folio+0xb9a/0x1840 mm/filemap.c:1970
- grow_dev_folio fs/buffer.c:1039 [inline]
- grow_buffers fs/buffer.c:1105 [inline]
- __getblk_slow fs/buffer.c:1131 [inline]
- bdev_getblk+0x2c9/0xab0 fs/buffer.c:1431
- getblk_unmovable include/linux/buffer_head.h:369 [inline]
- ext4_getblk+0x3b7/0xe50 fs/ext4/inode.c:864
- ext4_bread_batch+0x9f/0x7d0 fs/ext4/inode.c:933
- __ext4_find_entry+0x1ebb/0x36c0 fs/ext4/namei.c:1627
- ext4_lookup_entry fs/ext4/namei.c:1729 [inline]
- ext4_lookup+0x189/0xb40 fs/ext4/namei.c:1797
- __lookup_slow+0x538/0x710 fs/namei.c:1793
- lookup_slow+0x6a/0xd0 fs/namei.c:1810
- walk_component fs/namei.c:2114 [inline]
- link_path_walk+0xf29/0x1420 fs/namei.c:2479
- path_openat+0x30f/0x6250 fs/namei.c:3985
- do_filp_open+0x268/0x600 fs/namei.c:4016
- do_sys_openat2+0x1bf/0x2f0 fs/open.c:1428
- do_sys_open fs/open.c:1443 [inline]
- __do_sys_openat fs/open.c:1459 [inline]
- __se_sys_openat fs/open.c:1454 [inline]
- __x64_sys_openat+0x2a1/0x310 fs/open.c:1454
- x64_sys_call+0x36f5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Validate EDX's most-significant bit as well.
 
-Local variable compact_result created at:
- __alloc_pages_slowpath+0x66/0x16c0 mm/page_alloc.c:4218
- __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
-
-Link: https://lkml.kernel.org/r/tencent_ED1032321D6510B145CDBA8CBA0093178E09@qq.com
-Reported-by: syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0cfd5e38e96a5596f2b6
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304085152.51092-3-darwi@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/intel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4469,6 +4469,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
- restart:
- 	compaction_retries = 0;
- 	no_progress_loops = 0;
-+	compact_result = COMPACT_SKIPPED;
- 	compact_priority = DEF_COMPACT_PRIORITY;
- 	cpuset_mems_cookie = read_mems_allowed_begin();
- 	zonelist_iter_cookie = zonelist_iter_begin();
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -911,7 +911,7 @@ static void intel_detect_tlb(struct cpui
+ 		cpuid(2, &regs[0], &regs[1], &regs[2], &regs[3]);
+ 
+ 		/* If bit 31 is set, this is an unknown format */
+-		for (j = 0 ; j < 3 ; j++)
++		for (j = 0 ; j < 4 ; j++)
+ 			if (regs[j] & (1 << 31))
+ 				regs[j] = 0;
+ 
 
 
 
