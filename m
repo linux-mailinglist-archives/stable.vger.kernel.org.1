@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A33A5C7BE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A1CA5C535
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15A873BC13A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B17189AD11
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BEA25F974;
-	Tue, 11 Mar 2025 15:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C30725EF82;
+	Tue, 11 Mar 2025 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaZiJm+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6Zlo2LX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469EC25E820;
-	Tue, 11 Mar 2025 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E9A25E83A;
+	Tue, 11 Mar 2025 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707129; cv=none; b=JNFceDwzqQpdpGRYvM/iQtffUx9QZxpGrgnsxXzdWgApLqzUK/Lc2B34qAfwnCS3WyDp4/47/LJu96iRV1DVBs+x7U60hlQqNnnCiwP8RLs8uBqFVtu2yjO4vtwztE3pv27wT8cncen1rGtsZUVc8RHtlKnBRcuOkeSXfJroPQw=
+	t=1741705766; cv=none; b=fyT2FPH7PcZjTR9B/8uvezOu9CSkxPDgahFnzueUh56ApZuKqWknLS3BnG1Bgl/7k4MqWE5X7DliZIKC1FCDtKGU84xAD1Hz0dwHgnJbEeAqLGQj6ETP1vtII188IzWukngcZsb/DTRDOFNh17NT3M6Zlzt6GIzyexmwMJdEbEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707129; c=relaxed/simple;
-	bh=fbqeguP59yw7kKmSCQSXJU2CmwfAMltU4a+bWs/HQmA=;
+	s=arc-20240116; t=1741705766; c=relaxed/simple;
+	bh=DxmCYpsXkH/gzY70bvSd3vWCJoH4KQd1y/Z4SueMg18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHZxklk0a4uhAnQayjsvFirUcpME3vYCnOv6/5XcSgOzEiqGTk+Zn6+nCuCg5atZB7fjGbqvKCgVycxRrG0dDBtFjU7EOsZ6gVEe0xFfI1xKKnpt7qwERMZXRQIYR4D2h6YEHQMLFp3rtzhyYgywkovtSff2eKr1/aHLRPEQ8V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaZiJm+r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA46C4CEE9;
-	Tue, 11 Mar 2025 15:32:08 +0000 (UTC)
+	 MIME-Version; b=FWlaAsX+uNqUR0O+0ohlYB6+iAGdE23RT5FfjKaPs50XZ+MRNGPLoazulef6wEWLaWtrMKThQK9rr5fV3kGUh4n+QLlERaA/LZJ8tVYu27UWqdHRgxVkLicSOeTA5WDlNiugFiOI+A1WXodvvu111EeEaDY01EuEYogOQ5u5lEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6Zlo2LX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9658C4CEEC;
+	Tue, 11 Mar 2025 15:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707128;
-	bh=fbqeguP59yw7kKmSCQSXJU2CmwfAMltU4a+bWs/HQmA=;
+	s=korg; t=1741705766;
+	bh=DxmCYpsXkH/gzY70bvSd3vWCJoH4KQd1y/Z4SueMg18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaZiJm+r4am5yArxaZMFzcO0tp1HhqM2Mx0AeTT0AsRKO4TRr6804MRdrrM+8nX2e
-	 NEfZwccV3betP1yqYc90abdSX1kZyl426XmkzAYSWBxcYvM/kYiJJ2TVvplgZ0hAVb
-	 EcZoRlmgjL8tqLfxcSyYw/C17q12WYywmo8IGUlc=
+	b=Y6Zlo2LXtUKbtULwV+6PdwfA0JbYcuHggnA8sLezjs8fuY8AsBY6DqmhWgviPBF7x
+	 4UZuDQvyFYY953nP+qLs9dHyVLH3DGI6tSg/nDfrBRfzrjf26WEi8IKjgv5AVupke9
+	 nuhbt8d0PpLVBCjzYCXKmPVP/P56BHOGKt/DoFxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 252/462] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.4 148/328] crypto: qce - fix goto jump in error path
 Date: Tue, 11 Mar 2025 15:58:38 +0100
-Message-ID: <20250311145808.317221243@linuxfoundation.org>
+Message-ID: <20250311145720.789026870@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
+commit 5278275c1758a38199b43530adfc50098f4b41c7 upstream.
 
-Teclast disk used on Huawei hisi platforms doesn't work well,
-losing connectivity intermittently if LPM is enabled.
-Add quirk disable LPM to resolve the issue.
+If qce_check_version() fails, we should jump to err_dma as we already
+called qce_dma_request() a couple lines before.
 
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
+Cc: stable@vger.kernel.org
+Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/qce/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -520,6 +520,9 @@ static const struct usb_device_id usb_qu
- 	/* Blackmagic Design UltraStudio SDI */
- 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
+--- a/drivers/crypto/qce/core.c
++++ b/drivers/crypto/qce/core.c
+@@ -214,7 +214,7 @@ static int qce_crypto_probe(struct platf
  
-+	/* Teclast disk */
-+	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
-+
- 	/* Hauppauge HVR-950q */
- 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+ 	ret = qce_check_version(qce);
+ 	if (ret)
+-		goto err_clks;
++		goto err_dma;
+ 
+ 	spin_lock_init(&qce->lock);
+ 	tasklet_init(&qce->done_tasklet, qce_tasklet_req_done,
 
 
 
