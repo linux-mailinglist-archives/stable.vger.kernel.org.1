@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B0AA5C5EE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 020A1A5C88D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25898189D790
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750183BC1F9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A829925DAF8;
-	Tue, 11 Mar 2025 15:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62E025F7B0;
+	Tue, 11 Mar 2025 15:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV4c7Lsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yi4dJj3C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B0F1C3BEB;
-	Tue, 11 Mar 2025 15:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E96B25E47F;
+	Tue, 11 Mar 2025 15:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706158; cv=none; b=QeqiHpXxGO3KlpG6iW6Fz6ngR6bn4Dxd+nAW/iJSiHY8RfhszK0l9u/I+Fnxh+CgRS8CcmSxPMr1CZinkX8Py45VuS6P0uCIBV9MpND4vV0gEDiDutcx7RiCffS4pRntK22AKJitJGmi1kgNK06j8kcG8nVbsz2Zwzw9HWwYsw4=
+	t=1741707520; cv=none; b=h1rYKUUWMQmJ3FGcyqL7QtP2ym1XTDxvGAgYJ6xLu6JwGr58YI97Et/5xHhgmBb772Cgro8e46fE46Zp+zykiKF3BPqBcmnRiAWSZZrpcl+pyk/tVf/abVOxD6mfaKzYfz8KrNl/8u6Pn8Jv+gWmPe+N2OP/+QI6OttdjbiYg3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706158; c=relaxed/simple;
-	bh=WpwJQKclFWAVokTj2MnyCssfSuXrKpXoE1euMND4z44=;
+	s=arc-20240116; t=1741707520; c=relaxed/simple;
+	bh=gA4RZybQQr8OT3HOmzbu9xB6THlgeZKDOSXFp5z6Btg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZbdU7lLMC/e09C341HW+F8W7ES2zOIsf7zq1GVD9mAQqYTCy+ngcvYUrRK+JleWA5G+vTqtlQC+06j3NeaQsisrusr89Me0aQzRZPoITfMD3g2TTrKBPbDmpLGOuD1d61+3nuPbgxpIDRGzxEUaTyEfVhUvRVxPnXOduEfJMAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV4c7Lsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C213C4CEE9;
-	Tue, 11 Mar 2025 15:15:57 +0000 (UTC)
+	 MIME-Version; b=tDxe6YZDgBbFjP6Oy03j+dVGKG2oyyDrI3mUL7VSQvpFvw4/4uFxEK8Ht0d/HxCFKorZMrbq6NnJAxnSWAmUPMJoifeZXeSdkST+bg8rL0q4OCYR6IekQucczlNFuSHHBYcfgoDCUFlHYFW6FoLfb7D94PajHt5NaSfCayu07aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yi4dJj3C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970C5C4CEE9;
+	Tue, 11 Mar 2025 15:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706157;
-	bh=WpwJQKclFWAVokTj2MnyCssfSuXrKpXoE1euMND4z44=;
+	s=korg; t=1741707520;
+	bh=gA4RZybQQr8OT3HOmzbu9xB6THlgeZKDOSXFp5z6Btg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV4c7LspNVVADm1gVS8gS0naf/ZeLqa4uI0Vwviruh7AP5V0OfF7pB1qTpOXrj2OB
-	 1qIStlGgbe6MDLoQU32+YYpmONCb+SDr/VcbMPOgadPIBisktQ6/KmqP5RrKoevuOG
-	 +0DTlTnwa2nSll26awQREwnG9sc0ivyEHxjcF8Rs=
+	b=Yi4dJj3C/YcCJCqJldWndpTtIa/rnm2Agjn8yjkekddGa6bYItcOgn6LL4Txblzva
+	 zowvhXZxWoTmtOfulJyCc7jw7IRPS35+6LsdpOUIlijQKol01w2CnZTU+nus9yFawY
+	 uK7TWeNqM4ZRlleepr1mxl4BuhTyWBzTWG9KCiLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 282/328] ALSA: hda/realtek: update ALC222 depop optimize
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 386/462] drm/amdgpu: disable BAR resize on Dell G5 SE
 Date: Tue, 11 Mar 2025 16:00:52 +0100
-Message-ID: <20250311145726.122422647@linuxfoundation.org>
+Message-ID: <20250311145813.594287039@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit ca0dedaff92307591f66c9206933fbdfe87add10 upstream.
+[ Upstream commit 099bffc7cadff40bfab1517c3461c53a7a38a0d7 ]
 
-Add ALC222 its own depop functions for alc_init and alc_shutup.
+There was a quirk added to add a workaround for a Sapphire
+RX 5600 XT Pulse that didn't allow BAR resizing.  However,
+the quirk caused a regression with runtime pm on Dell laptops
+using those chips, rather than narrowing the scope of the
+resizing quirk, add a quirk to prevent amdgpu from resizing
+the BAR on those Dell platforms unless runtime pm is disabled.
 
-[note: this fixes pop noise issues on the models with two headphone
- jacks -- tiwai ]
+v2: update commit message, add runpm check
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1707
+Fixes: 907830b0fc9e ("PCI: Add a REBAR size quirk for Sapphire RX 5600 XT Pulse")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5235053f443cef4210606e5fb71f99b915a9723d)
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   76 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3713,6 +3713,79 @@ static void alc225_shutup(struct hda_cod
- 	}
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index edb1b1cf05f29..40d2f0ed1c75f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1098,6 +1098,13 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
+ 	if (amdgpu_sriov_vf(adev))
+ 		return 0;
  
-+static void alc222_init(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	hda_nid_t hp_pin = alc_get_hp_pin(spec);
-+	bool hp1_pin_sense, hp2_pin_sense;
++	/* resizing on Dell G5 SE platforms causes problems with runtime pm */
++	if ((amdgpu_runtime_pm != 0) &&
++	    adev->pdev->vendor == PCI_VENDOR_ID_ATI &&
++	    adev->pdev->device == 0x731f &&
++	    adev->pdev->subsystem_vendor == PCI_VENDOR_ID_DELL)
++		return 0;
 +
-+	if (!hp_pin)
-+		return;
-+
-+	msleep(30);
-+
-+	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
-+	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
-+
-+	if (hp1_pin_sense || hp2_pin_sense) {
-+		msleep(2);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		msleep(75);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+
-+		msleep(75);
-+	}
-+}
-+
-+static void alc222_shutup(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	hda_nid_t hp_pin = alc_get_hp_pin(spec);
-+	bool hp1_pin_sense, hp2_pin_sense;
-+
-+	if (!hp_pin)
-+		hp_pin = 0x21;
-+
-+	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
-+	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
-+
-+	if (hp1_pin_sense || hp2_pin_sense) {
-+		msleep(2);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
-+
-+		msleep(75);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x14, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+
-+		msleep(75);
-+	}
-+	alc_auto_setup_eapd(codec, false);
-+	alc_shutup_pins(codec);
-+}
-+
- static void alc_default_init(struct hda_codec *codec)
- {
- 	struct alc_spec *spec = codec->spec;
-@@ -9377,8 +9450,11 @@ static int patch_alc269(struct hda_codec
- 		spec->codec_variant = ALC269_TYPE_ALC300;
- 		spec->gen.mixer_nid = 0; /* no loopback on ALC300 */
- 		break;
-+	case 0x10ec0222:
- 	case 0x10ec0623:
- 		spec->codec_variant = ALC269_TYPE_ALC623;
-+		spec->shutup = alc222_shutup;
-+		spec->init_hook = alc222_init;
- 		break;
- 	case 0x10ec0700:
- 	case 0x10ec0701:
+ 	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
+ 	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
+ 		DRM_WARN("System can't access extended configuration space,please check!!\n");
+-- 
+2.39.5
+
 
 
 
