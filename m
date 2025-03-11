@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9668DA5C502
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18604A5C743
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CB13175FDF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECBE9167883
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FC625E83D;
-	Tue, 11 Mar 2025 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A1C25E81B;
+	Tue, 11 Mar 2025 15:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlA1CW+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jQYlN9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65171C5D77;
-	Tue, 11 Mar 2025 15:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45FE25E807;
+	Tue, 11 Mar 2025 15:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705705; cv=none; b=MY1Rh8RTtnc4IxRwgfKSQo0ifOaIoZy79q3fWf4NXfIdWm+yyZA1rH74nBj3lYz/X/ataXIfUWROJvnszfASK4dmYZutM7o0pe3QMD5f6t+2nmMhFoN0CRjEKXhsjQuW8uTf3qPCEcM7JkrqmgrOCOCwiEXGlAEAJegsFKvG85U=
+	t=1741706950; cv=none; b=G0Q4GooMrTcKubuBv0CHD8PZPPjHyU8Nfi4oD/lqVlx3cY3/GaA8rZPYp3eKJthyeWX6Z3YVMljHW1CS6bUXf6vmVg2HD8hPIiKuYijyFvXbNDcOIQJM7FNuCeTPEgUDMzlG0mOUULoHVibDF5TeQfNc3lWrhj293MAHO4qi+jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705705; c=relaxed/simple;
-	bh=EGPr7gPkDBuzuBiix2d7satKbRZ4UW6UmA1mMn9diHI=;
+	s=arc-20240116; t=1741706950; c=relaxed/simple;
+	bh=BhEc1tKkjK+aqCNdI4k5ZCJRrhE4npCWfE20gZd7wgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmI/hsEcsZA+hmdoDgPI8WKf96vFS5Q06v3LCXfqreOUyBdkPTg3ACbhB2yfq8NwnhsGOAut2HweS+sfMBZVrjRmwt4mObbSYYMXpEzBGRPQbFPtWBUYLtDV91C7JJl1IhoA+7j48N7HtoNRBTnuPBRG6mq4aeWumsIZ4HCBo/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlA1CW+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45369C4CEE9;
-	Tue, 11 Mar 2025 15:08:25 +0000 (UTC)
+	 MIME-Version; b=IKJ5r0h/mciV+OX06zpGt0mwsrmjUjT9fyMdg1NE0S51vafei7NrbDbu1cCqHv//48t/Wq4EfPBE8x7pkQRvL9XJItZMGAPQjM30zBZqmRDx0R/RxxA+99Txchu6L5zeKmO1EsXYrmFh9B2JTksq7Cn3zaedPTLiRv9Xmge/KI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jQYlN9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C80C4CEEA;
+	Tue, 11 Mar 2025 15:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705705;
-	bh=EGPr7gPkDBuzuBiix2d7satKbRZ4UW6UmA1mMn9diHI=;
+	s=korg; t=1741706950;
+	bh=BhEc1tKkjK+aqCNdI4k5ZCJRrhE4npCWfE20gZd7wgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlA1CW+mEoafJShVcZMKA6LOOw3jz5VKsWQYlJvYCwJLddqBDvSHKujwojknNCCK0
-	 g7I4SUbutxHM03HTjCeTVrXDypMhgSTx84aFf+vuEtRoZGhCnQEqcnBcJNv5cwRSfW
-	 R6r4h2+2Zb42YQrLWjn7wcyQCk1hOV4qmgQ0rub4=
+	b=1jQYlN9puUjLfR3zVoRYOsh8/mF0iFjhILttS2anbfjmjS2Ctz0TzK3x5glJ5H5mJ
+	 SL+zlMBQG/Jc/QvbdoKEf78zU+qjixrm8HUCLn1MISU72U+SVi+OlmSnZll9f9i4BT
+	 IsfuE33dBZssXC2q3qo7/V11zDH49kNTXtK92n9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 5.4 119/328] s390/futex: Fix FUTEX_OP_ANDN implementation
-Date: Tue, 11 Mar 2025 15:58:09 +0100
-Message-ID: <20250311145719.625147729@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 224/462] mptcp: prevent excessive coalescing on receive
+Date: Tue, 11 Mar 2025 15:58:10 +0100
+Message-ID: <20250311145807.211480144@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 26701574cee6777f867f89b4a5c667817e1ee0dd upstream.
+commit 56b824eb49d6258aa0bad09a406ceac3f643cdae upstream.
 
-The futex operation FUTEX_OP_ANDN is supposed to implement
+Currently the skb size after coalescing is only limited by the skb
+layout (the skb must not carry frag_list). A single coalesced skb
+covering several MSS can potentially fill completely the receive
+buffer. In such a case, the snd win will zero until the receive buffer
+will be empty again, affecting tput badly.
 
-*(int *)UADDR2 &= ~OPARG;
-
-The s390 implementation just implements an AND instead of ANDN.
-Add the missing bitwise not operation to oparg to fix this.
-
-This is broken since nearly 19 years, so it looks like user space is
-not making use of this operation.
-
-Fixes: 3363fbdd6fb4 ("[PATCH] s390: futex atomic operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 8268ed4c9d19 ("mptcp: introduce and use mptcp_try_coalesce()")
+Cc: stable@vger.kernel.org # please delay 2 weeks after 6.13-final release
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-3-8608af434ceb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/futex.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/s390/include/asm/futex.h
-+++ b/arch/s390/include/asm/futex.h
-@@ -46,7 +46,7 @@ static inline int arch_futex_atomic_op_i
- 		break;
- 	case FUTEX_OP_ANDN:
- 		__futex_atomic_op("lr %2,%1\nnr %2,%5\n",
--				  ret, oldval, newval, uaddr, oparg);
-+				  ret, oldval, newval, uaddr, ~oparg);
- 		break;
- 	case FUTEX_OP_XOR:
- 		__futex_atomic_op("lr %2,%1\nxr %2,%5\n",
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -125,6 +125,7 @@ static bool mptcp_try_coalesce(struct so
+ 	int delta;
+ 
+ 	if (MPTCP_SKB_CB(from)->offset ||
++	    ((to->len + from->len) > (sk->sk_rcvbuf >> 3)) ||
+ 	    !skb_try_coalesce(to, from, &fragstolen, &delta))
+ 		return false;
+ 
 
 
 
