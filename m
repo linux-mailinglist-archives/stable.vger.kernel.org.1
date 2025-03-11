@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F342A5C52F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBB1A5C7BC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73FCA1647B7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865D33A0350
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1080625DB0B;
-	Tue, 11 Mar 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8411CAA8F;
+	Tue, 11 Mar 2025 15:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCctN/7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ahgtzlov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF45125D8EB;
-	Tue, 11 Mar 2025 15:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B5125BACC;
+	Tue, 11 Mar 2025 15:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705816; cv=none; b=XMhNog/k/g+91LLo4Km2XdmzcZcxHnTltn+dF26VdIKmVi68AMa1PJCKCT7YwJzVbj/86Obxifq3E8onrU8Rnuaw6JyBS97pVjF4izLcDbzBSIlDoASckCrgKychNUXwvgbrP2U7XgDi2WaBMvDWQtOgCv2lU08/WSTu0m14UcY=
+	t=1741707123; cv=none; b=uP4vBkJUtVtGhJXpBCFYLixhG4W0CLbwKWfvsxGfpRo/FrSwbLduV9cDhGa7a0mlQBA2Ute0IQp9Lz+0Dj6atNiUKvnGQSPBHsuNJLayKFd0zXcfA2/AlMUAw2CbrUJ+2IKMsVpcw1aCTno/o0s2sEub6p91KLDDfjZqQ9fJF8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705816; c=relaxed/simple;
-	bh=5A8DjUzRA2L5uxeDf0neXh1lv8xoQTI1udVko8Bjh7g=;
+	s=arc-20240116; t=1741707123; c=relaxed/simple;
+	bh=4l1JZ817b1HtvHlGnuuiVDTU5h/ocWFQQwRrcb6/qyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rI5OJyUMOGZnbc0yZ3sMoVwrgMODFl6UXTQkcYJWv1sDmvZj8YOMYHl0QPuXRFe/XyTDf12NicbBqjaLa7023G8CqJQ4/UWMi94zs4U3lbV38CObuNqgUyHIGsqCn3rUyR9dnGpeWkEY+J2IB7NA4IOhCZPykjOw6osWxGb+1IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCctN/7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D3DC4CEEA;
-	Tue, 11 Mar 2025 15:10:16 +0000 (UTC)
+	 MIME-Version; b=Iv/5lbzOyuScH2W4cqqYCPX5YcB2XJE+yVJWiohqBDsH8WZ/1rXOVwVTOTyRQTiJNJT8r7y1bJTDL1zZjWHqqQv2gf8ZJEEKJW15zWP5H1nRBPld7o+Ep9IwRTDNv2fDgE//HsBJBy2u2fnmS8TB0r98YCukLjHRMZZZJVnlAIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ahgtzlov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB7CC4CEE9;
+	Tue, 11 Mar 2025 15:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705816;
-	bh=5A8DjUzRA2L5uxeDf0neXh1lv8xoQTI1udVko8Bjh7g=;
+	s=korg; t=1741707122;
+	bh=4l1JZ817b1HtvHlGnuuiVDTU5h/ocWFQQwRrcb6/qyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCctN/7m7xtEEEZBEVe4iX5ZU8cZtHoEOS1vkgupw4ENKDFIU5SHVFmKNZTdM5gFG
-	 MyZF1daFJJeb8tRZTl3KyKY1AMxE60XAUU/laWml+i7IUn4nweQYOura/1oqmRJUf+
-	 5XTlI0KN4nwEOQ2qUeK4UHJWX/jZLwIkZvjvH2qk=
+	b=Ahgtzlov99q5j5Myekrr4V/SZVdc/77LaAc/LK4DZNjCkGzfbc/2O3cJNLT1SzPCC
+	 8NVbCKH08NcN5KgPgyaxCbZvQ4omzCSUm/+lM+fDlbJsg5LoikAi9PxvfSf2WNkmSM
+	 AP99Bs+ROQcF2mfvINzU1CGNPqHJpKdRGzTh5Yo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.4 146/328] media: uvcvideo: Fix event flags in uvc_ctrl_send_events
+	stable <stable@kernel.org>,
+	Baoqi Zhang <zhangbaoqi@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 5.10 250/462] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
 Date: Tue, 11 Mar 2025 15:58:36 +0100
-Message-ID: <20250311145720.709774618@linuxfoundation.org>
+Message-ID: <20250311145808.238934953@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit c31cffd5ae2c3d7ef21d9008977a9d117ce7a64e upstream.
+commit e71f7f42e3c874ac3314b8f250e8416a706165af upstream.
 
-If there is an event that needs the V4L2_EVENT_CTRL_CH_FLAGS flag, all
-the following events will have that flag, regardless if they need it or
-not.
+LS7A EHCI controller doesn't have extended capabilities, so the EECP
+(EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
+be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
+fixed in future, now just clear the EECP field to avoid error messages
+on boot:
 
-This is because we keep using the same variable all the time and we do
-not reset its original value.
+......
+[    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
+......
+[    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
+......
 
-Cc: stable@vger.kernel.org
-Fixes: 805e9b4a06bf ("[media] uvcvideo: Send control change events for slave ctrls when the master changes")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241114-uvc-roi-v15-1-64cfeb56b6f8@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250202124935.480500-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/pci-quirks.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1400,13 +1400,13 @@ static void uvc_ctrl_send_events(struct
- {
- 	struct uvc_control_mapping *mapping;
- 	struct uvc_control *ctrl;
--	u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
- 	unsigned int i;
- 	unsigned int j;
- 
- 	for (i = 0; i < xctrls_count; ++i) {
--		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
-+		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
- 
-+		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
- 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			/* Notification will be sent from an Interrupt event. */
- 			continue;
+--- a/drivers/usb/host/pci-quirks.c
++++ b/drivers/usb/host/pci-quirks.c
+@@ -948,6 +948,15 @@ static void quirk_usb_disable_ehci(struc
+ 	 * booting from USB disk or using a usb keyboard
+ 	 */
+ 	hcc_params = readl(base + EHCI_HCC_PARAMS);
++
++	/* LS7A EHCI controller doesn't have extended capabilities, the
++	 * EECP (EHCI Extended Capabilities Pointer) field of HCCPARAMS
++	 * register should be 0x0 but it reads as 0xa0.  So clear it to
++	 * avoid error messages on boot.
++	 */
++	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON && pdev->device == 0x7a14)
++		hcc_params &= ~(0xffL << 8);
++
+ 	offset = (hcc_params >> 8) & 0xff;
+ 	while (offset && --count) {
+ 		pci_read_config_dword(pdev, offset, &cap);
 
 
 
