@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411D3A5C57F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB4DA5C7F4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3841896479
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 159433BD0E3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97D225EF8E;
-	Tue, 11 Mar 2025 15:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3039025EF91;
+	Tue, 11 Mar 2025 15:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWlgDcUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjySuDw5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E2A25E820;
-	Tue, 11 Mar 2025 15:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20ED25D904;
+	Tue, 11 Mar 2025 15:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705909; cv=none; b=NQeNzJXLwjd8eKN8ir5cESvaMBSFhB5YUhubzwGGfkozWfSyaNIBVHT/nBcrypZfmp4TWM/DLALfUWMH5m7RP2WpfawFFUQhDM4v24/mxgEdgjme0/PYjopiekv3cWPm/WCu9yEm8gZl+9fStVKx/ILHNqgkAnDyQPvw7BNhxwE=
+	t=1741707182; cv=none; b=PhtaVEmfn/k+rADK4qQ72Zunhnaa4XicNjsx/FbCtoDoMWmpH1usyWleEgbqb7icw1L24ToQect69ZXITvrnSW8ZXj5MGa3fNdw6RDqiZ0ilmmjmlu/R8uIG66jQOqolaP0GrcTDzSZi7x+Kh/JIA9UN0JKUkBWBXbaV8gcaRCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705909; c=relaxed/simple;
-	bh=paBkyUNNPH7xJLoStv0cWVm19fTcn9OLxbxOzpEj/t0=;
+	s=arc-20240116; t=1741707182; c=relaxed/simple;
+	bh=rSnUy9T5XqusC1Fc8wFNbpo5Ih1MnGYgPF7jxLsGX3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAIcKLdQnKm3141I2HcGK6bQT07F+qegWX23BZwKqU0YUI7mJWVVOW15b7oij+pQf3jWmrvXoimZfNs3LUj5Z3k+n1e3A7qMs9B15iOVpJ8ne1yyOeUZFf3AlITu5aSktYOAx0235InQJFoO4XznoxTf2HWzbwelQdUCA5nBkHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWlgDcUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253CAC4CEF3;
-	Tue, 11 Mar 2025 15:11:48 +0000 (UTC)
+	 MIME-Version; b=K1kXtxA7SGn6uTG0yUSkkpYeuIZyfKb5xroTD2w5y0GgHh54UuQZV1tZZYrp2RQEKx2j1tTzHgnZ8TuQFW2Q6M+kxQaWiX3vGkemqfYg8IwDNUxAnd2aRfgJjbveXSGbsmJ5qfaxUvscG8/Dl6/fR2koep/QWkO7Faio+CL0M3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjySuDw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D834C4CEE9;
+	Tue, 11 Mar 2025 15:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705909;
-	bh=paBkyUNNPH7xJLoStv0cWVm19fTcn9OLxbxOzpEj/t0=;
+	s=korg; t=1741707181;
+	bh=rSnUy9T5XqusC1Fc8wFNbpo5Ih1MnGYgPF7jxLsGX3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWlgDcUgMT+MY8XvJZV9A2Wpcaz+B6/WMjCA71lqw05Fr8qkridgfQIxkPcRYyjG/
-	 g8CpXeTlz1a8P3QPOLboIsQGIKr0hN0JAIi8k3yAnf61WG2i9SHdkoD+lWPl9bUjeX
-	 +agR8tXdnXmk9ZkCUvzznhdPeEJ7QfaOlTXSRw44=
+	b=hjySuDw5tcRt16bgR6ZWDA6iyGfdJ6+wdeKLwknz3UfRgFfjXE0EuyWe6+z5cP29b
+	 qBvP7eCS1qvRry37eof9B12iMG7w8s8sGMvViMhnEPakeHEacgcfCgvpn9SKKw4qqM
+	 poAmr3noGzB5CTY/MvxwIoyPkDby/YCPeP5b5NTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 5.4 197/328] alpha: align stack for page fault and user unaligned trap handlers
+	Simon Horman <horms@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.10 301/462] netdevsim: print human readable IP address
 Date: Tue, 11 Mar 2025 15:59:27 +0100
-Message-ID: <20250311145722.733081903@linuxfoundation.org>
+Message-ID: <20250311145810.253425948@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
+commit c71bc6da6198a6d88df86094f1052bb581951d65 upstream.
 
-do_page_fault() and do_entUna() are special because they use
-non-standard stack frame layout. Fix them manually.
+Currently, IPSec addresses are printed in hexadecimal format, which is
+not user-friendly. e.g.
 
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
+  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] rx ipaddr=0x00000000 00000000 00000000 0100a8c0
+  sa[0]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] tx ipaddr=0x00000000 00000000 00000000 00000000
+  sa[1]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+
+This patch updates the code to print the IPSec address in a human-readable
+format for easier debug. e.g.
+
+ # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+ SA count=4 tx=40
+ sa[0] tx ipaddr=0.0.0.0
+ sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[1] rx ipaddr=192.168.0.1
+ sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[2] tx ipaddr=::
+ sa[2]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[2]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[3] rx ipaddr=2000::1
+ sa[3]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[3]    key=0x3167608a ca4f1397 43565909 941fa627
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241010040027.21440-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/alpha/kernel/entry.S |   20 ++++++++++----------
- arch/alpha/kernel/traps.c |    2 +-
- arch/alpha/mm/fault.c     |    4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/netdevsim/ipsec.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
- CFI_START_OSF_FRAME entMM
- 	SAVE_ALL
- /* save $9 - $15 so the inline exception code can manipulate them.  */
--	subq	$sp, 56, $sp
--	.cfi_adjust_cfa_offset	56
-+	subq	$sp, 64, $sp
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_rel_offset	$13, 32
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- /* handle the fault */
- 	lda	$8, 0x3fff
- 	bic	$sp, $8, $8
-@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	addq	$sp, 56, $sp
-+	addq	$sp, 64, $sp
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- /* finish up the syscall as normal.  */
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entMM
-@@ -383,8 +383,8 @@ entUnaUser:
- 	.cfi_restore	$0
- 	.cfi_adjust_cfa_offset	-256
- 	SAVE_ALL		/* setup normal kernel stack */
--	lda	$sp, -56($sp)
--	.cfi_adjust_cfa_offset	56
-+	lda	$sp, -64($sp)
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -400,7 +400,7 @@ entUnaUser:
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
- 	lda	$8, 0x3fff
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- 	bic	$sp, $8, $8
- 	jsr	$26, do_entUnaUser
- 	ldq	$9, 0($sp)
-@@ -410,7 +410,7 @@ entUnaUser:
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	lda	$sp, 56($sp)
-+	lda	$sp, 64($sp)
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -418,7 +418,7 @@ entUnaUser:
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entUna
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -39,10 +39,14 @@ static ssize_t nsim_dbg_netdev_ops_read(
+ 		if (!sap->used)
+ 			continue;
  
---- a/arch/alpha/kernel/traps.c
-+++ b/arch/alpha/kernel/traps.c
-@@ -709,7 +709,7 @@ s_reg_to_mem (unsigned long s_reg)
- static int unauser_reg_offsets[32] = {
- 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
- 	/* r9 ... r15 are stored in front of regs.  */
--	-56, -48, -40, -32, -24, -16, -8,
-+	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
- 	R(r16), R(r17), R(r18),
- 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
- 	R(r27), R(r28), R(gp),
---- a/arch/alpha/mm/fault.c
-+++ b/arch/alpha/mm/fault.c
-@@ -77,8 +77,8 @@ __load_new_mm_context(struct mm_struct *
- 
- /* Macro for exception fixup code to access integer registers.  */
- #define dpf_reg(r)							\
--	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
--				 (r) <= 18 ? (r)+10 : (r)-10])
-+	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
-+				 (r) <= 18 ? (r)+11 : (r)-10])
- 
- asmlinkage void
- do_page_fault(unsigned long address, unsigned long mmcsr,
+-		p += scnprintf(p, bufsize - (p - buf),
+-			       "sa[%i] %cx ipaddr=0x%08x %08x %08x %08x\n",
+-			       i, (sap->rx ? 'r' : 't'), sap->ipaddr[0],
+-			       sap->ipaddr[1], sap->ipaddr[2], sap->ipaddr[3]);
++		if (sap->xs->props.family == AF_INET6)
++			p += scnprintf(p, bufsize - (p - buf),
++				       "sa[%i] %cx ipaddr=%pI6c\n",
++				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr);
++		else
++			p += scnprintf(p, bufsize - (p - buf),
++				       "sa[%i] %cx ipaddr=%pI4\n",
++				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr[3]);
+ 		p += scnprintf(p, bufsize - (p - buf),
+ 			       "sa[%i]    spi=0x%08x proto=0x%x salt=0x%08x crypt=%d\n",
+ 			       i, be32_to_cpu(sap->xs->id.spi),
 
 
 
