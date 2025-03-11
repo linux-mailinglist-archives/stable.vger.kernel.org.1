@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F276DA5C5AE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2E7A5C7F1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 742931885BC6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AED417B4EE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D771425E800;
-	Tue, 11 Mar 2025 15:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443F325DCFA;
+	Tue, 11 Mar 2025 15:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPAdqp10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJ52utA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8734825DD0F;
-	Tue, 11 Mar 2025 15:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BDE25B691;
+	Tue, 11 Mar 2025 15:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706035; cv=none; b=VQKIoDQNCQqqYuP4O+9LC7F+hI7YBBgwSQ6maej2l+L+sabFBoRhMTrVHPt8XkH0Dk496QXvWCHPc9qbhwNJ5RRTKX4KwOfffxgkU10GtuY0C2DvQvNyZQXBzTmuwiUZ6vmCWsS3oIu0YKqfVGuXK8n1a7RLoTtPkn9ekym5FNQ=
+	t=1741707331; cv=none; b=opnABoj+K2Bdfwh1lCKJykIX0d2ipdSGLXbYAtlrwpvCcSGxfHMoP9E7F+OxHImwfCxFhNwQjL1jdHsPssuFDtKDcG9ukWmOFwsFcGP7CW6kEK1a8HoAu7D4jTOxQaIC8B1wi5gqSB0HUT+fUhMSV9GVs0DOtN9NkR8CGRMyj8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706035; c=relaxed/simple;
-	bh=kZjfeqQCd98yQdqwyvaO58+n464sF2IKhdmhdpTPNMs=;
+	s=arc-20240116; t=1741707331; c=relaxed/simple;
+	bh=dQ9bsNlgG29LW7M8IMstIqmCpB7Kn25akXtmsizGoGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1pIv1KMc3LR+bJjcht1xFhKPcejqGeDNd6tl6h3/FU9ujCBDNwcGNwFelOwf7ddyDbjABNZ4MBrET9iAzn7zMcOlL5IguTRAXHGD/jMbi6ZAcj1uuLNG4lx++RYW6vdRk13Aqp5CMY5hmPXvcIpH23W5pB8Mzc+8XVMN1ng3EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPAdqp10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2B5C4CEEA;
-	Tue, 11 Mar 2025 15:13:54 +0000 (UTC)
+	 MIME-Version; b=grtSoWwQiufrlIKs+ioIowSMDq21VeuGPctnl9mDTaoyvCy7Rdt0BQkbRcWKwbxxmjVn5X2LjWffF+aNrSXMgr+9Ve4YRqYcA0KVPW56pHr/PJ1R4DvB64MhtK4qHIF0EHws3yBqF2UPTX50wA8eiR44mSYt5XZY5pPjFxWf2XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJ52utA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAF4C4CEE9;
+	Tue, 11 Mar 2025 15:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706035;
-	bh=kZjfeqQCd98yQdqwyvaO58+n464sF2IKhdmhdpTPNMs=;
+	s=korg; t=1741707330;
+	bh=dQ9bsNlgG29LW7M8IMstIqmCpB7Kn25akXtmsizGoGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPAdqp10mSQKTYKiLYjYEd9PRfVV2ep8Cp2vB2e109L0vHPK/GkDEMQ1JURsO0qHW
-	 87ZFjjKb9O8Ya88KSA6KPRiEQbNs6q63hnsNSjGqufk4Qdch9F6kf11nO23JSYOPs2
-	 bncdbaw2U/iH4sR9DeqkE1HR4Lbd3DF9Tpx8u02Y=
+	b=cJ52utA7FINEEdxEND+XsSSHVQ+aiHEnTlyik7mHHvit8r+p6sLIcnTqh/cBMk0R1
+	 KGQVXewg6viE3d/YpHCOtOr7Zi1TxVsJXgdAPp0i/u/VsuccqQr5PEVKLdtNR5sYsj
+	 7mlxLVYj6TqgvItzfZRtCoudcP1jKyax5vcJcAvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 240/328] powerpc/64s/mm: Move __real_pte stubs into hash-4k.h
-Date: Tue, 11 Mar 2025 16:00:10 +0100
-Message-ID: <20250311145724.453385927@linuxfoundation.org>
+	John Veness <john-linux@pelago.org.uk>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 345/462] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
+Date: Tue, 11 Mar 2025 16:00:11 +0100
+Message-ID: <20250311145811.991793094@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: John Veness <john-linux@pelago.org.uk>
 
-[ Upstream commit 8ae4f16f7d7b59cca55aeca6db7c9636ffe7fbaa ]
+commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
 
-The stub versions of __real_pte() etc are only used with HPT & 4K pages,
-so move them into the hash-4k.h header.
+Allows the LED on the dedicated mute button on the HP ProBook 450 G4
+laptop to change colour correctly.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240821080729.872034-1-mpe@ellerman.id.au
-Stable-dep-of: 61bcc752d1b8 ("powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Veness <john-linux@pelago.org.uk>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/book3s/64/hash-4k.h | 20 +++++++++++++++
- arch/powerpc/include/asm/book3s/64/pgtable.h | 26 --------------------
- 2 files changed, 20 insertions(+), 26 deletions(-)
+ sound/pci/hda/patch_conexant.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-index 80c9534148821..3e35a7d7dfbaf 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-@@ -83,6 +83,26 @@ static inline int hash__hugepd_ok(hugepd_t hpd)
- }
- #endif
- 
-+/*
-+ * With 4K page size the real_pte machinery is all nops.
-+ */
-+#define __real_pte(e, p, o)		((real_pte_t){(e)})
-+#define __rpte_to_pte(r)	((r).pte)
-+#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
-+
-+#define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
-+	do {							         \
-+		index = 0;					         \
-+		shift = mmu_psize_defs[psize].shift;		         \
-+
-+#define pte_iterate_hashed_end() } while(0)
-+
-+/*
-+ * We expect this to be called only for user addresses or kernel virtual
-+ * addresses other than the linear mapping.
-+ */
-+#define pte_pagesize_index(mm, addr, pte)	MMU_PAGE_4K
-+
- /*
-  * 4K PTE format is different from 64K PTE format. Saving the hash_slot is just
-  * a matter of returning the PTE bits that need to be modified. On 64K PTE,
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index e1eb8aa9cfbbb..712bba181359b 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -324,32 +324,6 @@ extern unsigned long pci_io_base;
- 
- #ifndef __ASSEMBLY__
- 
--/*
-- * This is the default implementation of various PTE accessors, it's
-- * used in all cases except Book3S with 64K pages where we have a
-- * concept of sub-pages
-- */
--#ifndef __real_pte
--
--#define __real_pte(e, p, o)		((real_pte_t){(e)})
--#define __rpte_to_pte(r)	((r).pte)
--#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
--
--#define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
--	do {							         \
--		index = 0;					         \
--		shift = mmu_psize_defs[psize].shift;		         \
--
--#define pte_iterate_hashed_end() } while(0)
--
--/*
-- * We expect this to be called only for user addresses or kernel virtual
-- * addresses other than the linear mapping.
-- */
--#define pte_pagesize_index(mm, addr, pte)	MMU_PAGE_4K
--
--#endif /* __real_pte */
--
- static inline unsigned long pte_update(struct mm_struct *mm, unsigned long addr,
- 				       pte_t *ptep, unsigned long clr,
- 				       unsigned long set, int huge)
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -1025,6 +1025,7 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
+ 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
++	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
 
 
 
