@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-123525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA67A5C601
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B698DA5C7CC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E7C33B5271
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E02E57AC0BF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7971E98FB;
-	Tue, 11 Mar 2025 15:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED54925B691;
+	Tue, 11 Mar 2025 15:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+shlwBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHCEzvMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DE6249F9;
-	Tue, 11 Mar 2025 15:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CEF25E83E;
+	Tue, 11 Mar 2025 15:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706208; cv=none; b=gZZiWFzfwQYIPDGaZgMvDIH0RCjBT49MMvZOp8xHE4GFiNxsE7Cebbx/YPMJtpGQm5hJT+RJmcY8yIWDZ5pcKLX8AR46G/SHOe6NgtOOeTQUQN24up+8KAdpLnWNfFeczYUUH8uOVnxuezr3QtgaGQb2mpekR9EySPs4RtjNS28=
+	t=1741707483; cv=none; b=XcFqoaG2ut3tb/Hf2bEz7giEAjPcmrcxSXzWMSUyGEwGXLC9aSo9xAejXPCb/74l6ONuAKS7XI/2U3Mkj8soNHYCoRqA/ejJVapN2/SoiO6U3aezwoQ42CF+QPwu5XstiqQDw7+0I5EWwOMPfIbWhmn8W3UM12M/BLE6pWZxKh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706208; c=relaxed/simple;
-	bh=xAHTRjhC63lfhKis/kiVYvvGyk4ts6IC5FRaMSphWpU=;
+	s=arc-20240116; t=1741707483; c=relaxed/simple;
+	bh=b/ihejT0S2lHXTS7uqyY0XAttDdwmzfohHMDURGt63o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQVBJvyinT4TPpwDpaJaYXRSOmtG5CJs1e8uudZhbOdwuS/SKz9ZuqPl9w36bJ8SfIQI8t37tBA23T86/joIzfxUXCGSCmkyezKXEpUy7CDdpPktQ2R6552oJ2BOgYxRi+fO839WnLlfXeCYSMQqaBCbSCIgNh7xOyUCZ3G+uhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+shlwBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851F3C4CEE9;
-	Tue, 11 Mar 2025 15:16:47 +0000 (UTC)
+	 MIME-Version; b=FKDTZkRTtwerqXrBP3ZFLgvkLZ+c8ixMVz4mv1lCNgtDd8Xr/i669Dnv89sTsu5P5SUuCKX3JPn66gbPYa57ZQpSi38qg8wTR0kBpj8BvROtUZ7QCUat4BcYU2JcY5QmEBAJ8Dd7mMAB+gO9oBWCvD9oCWxEDfPaiArJLGzs7XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHCEzvMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC0DC4CEE9;
+	Tue, 11 Mar 2025 15:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706207;
-	bh=xAHTRjhC63lfhKis/kiVYvvGyk4ts6IC5FRaMSphWpU=;
+	s=korg; t=1741707483;
+	bh=b/ihejT0S2lHXTS7uqyY0XAttDdwmzfohHMDURGt63o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+shlwBZeMm11fcTWtSghdmlQUHv00v3o//Cftm4Ie9cYE44wjeXMgof97169UH5d
-	 ml07thPsAfo2+Zm8K5WO7loV0ksY+m3zfLEXRegjEnlYYbTVdNrJLnF5ArVvwukFgT
-	 EqtpVumijEQMxJlsopprrc99a3fcQ+rwB63Y6gAE=
+	b=DHCEzvMQgRdrCAub3VR8P31IUb2PkKLtRk3cdzuPjXCuUWpDekSY1Cf81wRHfKpQp
+	 DveU3Ir0EbhLTag1gld7bBXWc1m0kTcSoGdKUiL23E7lRqs5Amfd+UFZp1I2zXHW8R
+	 e0hfgAlJO0KxIS7AYM6sxHruQvBtZa7S2HIcWVZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 299/328] hwmon: (ntc_thermistor) Fix the ncpXXxh103 sensor table
-Date: Tue, 11 Mar 2025 16:01:09 +0100
-Message-ID: <20250311145726.788135233@linuxfoundation.org>
+	syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com,
+	Hao Zhang <zhanghao1@kylinos.cn>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 404/462] mm/page_alloc: fix uninitialized variable
+Date: Tue, 11 Mar 2025 16:01:10 +0100
+Message-ID: <20250311145814.293726559@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+From: Hao Zhang <zhanghao1@kylinos.cn>
 
-[ Upstream commit 1c7932d5ae0f5c22fa52ac811b4c427bbca5aff5 ]
+commit 8fe9ed44dc29fba0786b7e956d2e87179e407582 upstream.
 
-I could not find a single table that has the values currently present in
-the table, change it to the actual values that can be found in [1]/[2]
-and [3] (page 15 column 2)
+The variable "compact_result" is not initialized in function
+__alloc_pages_slowpath().  It causes should_compact_retry() to use an
+uninitialized value.
 
-[1]: https://www.murata.com/products/productdetail?partno=NCP15XH103F03RC
-[2]: https://www.murata.com/products/productdata/8796836626462/NTHCG83.txt?1437969843000
-[3]: https://nl.mouser.com/datasheet/2/281/r44e-522712.pdf
+Initialize variable "compact_result" with the value COMPACT_SKIPPED.
 
-Fixes: 54ce3a0d8011 ("hwmon: (ntc_thermistor) Add support for ncpXXxh103")
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Link: https://lore.kernel.org/r/20250227-ntc_thermistor_fixes-v1-3-70fa73200b52@gocontroll.com
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KMSAN: uninit-value in __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
+ __alloc_pages_slowpath+0xee8/0x16c0 mm/page_alloc.c:4416
+ __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
+ alloc_pages_mpol+0x4cd/0x890 mm/mempolicy.c:2270
+ alloc_frozen_pages_noprof mm/mempolicy.c:2341 [inline]
+ alloc_pages_noprof mm/mempolicy.c:2361 [inline]
+ folio_alloc_noprof+0x1dc/0x350 mm/mempolicy.c:2371
+ filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1019
+ __filemap_get_folio+0xb9a/0x1840 mm/filemap.c:1970
+ grow_dev_folio fs/buffer.c:1039 [inline]
+ grow_buffers fs/buffer.c:1105 [inline]
+ __getblk_slow fs/buffer.c:1131 [inline]
+ bdev_getblk+0x2c9/0xab0 fs/buffer.c:1431
+ getblk_unmovable include/linux/buffer_head.h:369 [inline]
+ ext4_getblk+0x3b7/0xe50 fs/ext4/inode.c:864
+ ext4_bread_batch+0x9f/0x7d0 fs/ext4/inode.c:933
+ __ext4_find_entry+0x1ebb/0x36c0 fs/ext4/namei.c:1627
+ ext4_lookup_entry fs/ext4/namei.c:1729 [inline]
+ ext4_lookup+0x189/0xb40 fs/ext4/namei.c:1797
+ __lookup_slow+0x538/0x710 fs/namei.c:1793
+ lookup_slow+0x6a/0xd0 fs/namei.c:1810
+ walk_component fs/namei.c:2114 [inline]
+ link_path_walk+0xf29/0x1420 fs/namei.c:2479
+ path_openat+0x30f/0x6250 fs/namei.c:3985
+ do_filp_open+0x268/0x600 fs/namei.c:4016
+ do_sys_openat2+0x1bf/0x2f0 fs/open.c:1428
+ do_sys_open fs/open.c:1443 [inline]
+ __do_sys_openat fs/open.c:1459 [inline]
+ __se_sys_openat fs/open.c:1454 [inline]
+ __x64_sys_openat+0x2a1/0x310 fs/open.c:1454
+ x64_sys_call+0x36f5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:258
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Local variable compact_result created at:
+ __alloc_pages_slowpath+0x66/0x16c0 mm/page_alloc.c:4218
+ __alloc_frozen_pages_noprof+0xa4c/0xe00 mm/page_alloc.c:4752
+
+Link: https://lkml.kernel.org/r/tencent_ED1032321D6510B145CDBA8CBA0093178E09@qq.com
+Reported-by: syzbot+0cfd5e38e96a5596f2b6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0cfd5e38e96a5596f2b6
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ntc_thermistor.c | 66 +++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ mm/page_alloc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
-index 7e20beb8b11f3..1305f81c4ae33 100644
---- a/drivers/hwmon/ntc_thermistor.c
-+++ b/drivers/hwmon/ntc_thermistor.c
-@@ -177,40 +177,40 @@ static const struct ntc_compensation ncpXXwf104[] = {
- };
- 
- static const struct ntc_compensation ncpXXxh103[] = {
--	{ .temp_c	= -40, .ohm	= 247565 },
--	{ .temp_c	= -35, .ohm	= 181742 },
--	{ .temp_c	= -30, .ohm	= 135128 },
--	{ .temp_c	= -25, .ohm	= 101678 },
--	{ .temp_c	= -20, .ohm	= 77373 },
--	{ .temp_c	= -15, .ohm	= 59504 },
--	{ .temp_c	= -10, .ohm	= 46222 },
--	{ .temp_c	= -5, .ohm	= 36244 },
--	{ .temp_c	= 0, .ohm	= 28674 },
--	{ .temp_c	= 5, .ohm	= 22878 },
--	{ .temp_c	= 10, .ohm	= 18399 },
--	{ .temp_c	= 15, .ohm	= 14910 },
--	{ .temp_c	= 20, .ohm	= 12169 },
-+	{ .temp_c	= -40, .ohm	= 195652 },
-+	{ .temp_c	= -35, .ohm	= 148171 },
-+	{ .temp_c	= -30, .ohm	= 113347 },
-+	{ .temp_c	= -25, .ohm	= 87559 },
-+	{ .temp_c	= -20, .ohm	= 68237 },
-+	{ .temp_c	= -15, .ohm	= 53650 },
-+	{ .temp_c	= -10, .ohm	= 42506 },
-+	{ .temp_c	= -5, .ohm	= 33892 },
-+	{ .temp_c	= 0, .ohm	= 27219 },
-+	{ .temp_c	= 5, .ohm	= 22021 },
-+	{ .temp_c	= 10, .ohm	= 17926 },
-+	{ .temp_c	= 15, .ohm	= 14674 },
-+	{ .temp_c	= 20, .ohm	= 12081 },
- 	{ .temp_c	= 25, .ohm	= 10000 },
--	{ .temp_c	= 30, .ohm	= 8271 },
--	{ .temp_c	= 35, .ohm	= 6883 },
--	{ .temp_c	= 40, .ohm	= 5762 },
--	{ .temp_c	= 45, .ohm	= 4851 },
--	{ .temp_c	= 50, .ohm	= 4105 },
--	{ .temp_c	= 55, .ohm	= 3492 },
--	{ .temp_c	= 60, .ohm	= 2985 },
--	{ .temp_c	= 65, .ohm	= 2563 },
--	{ .temp_c	= 70, .ohm	= 2211 },
--	{ .temp_c	= 75, .ohm	= 1915 },
--	{ .temp_c	= 80, .ohm	= 1666 },
--	{ .temp_c	= 85, .ohm	= 1454 },
--	{ .temp_c	= 90, .ohm	= 1275 },
--	{ .temp_c	= 95, .ohm	= 1121 },
--	{ .temp_c	= 100, .ohm	= 990 },
--	{ .temp_c	= 105, .ohm	= 876 },
--	{ .temp_c	= 110, .ohm	= 779 },
--	{ .temp_c	= 115, .ohm	= 694 },
--	{ .temp_c	= 120, .ohm	= 620 },
--	{ .temp_c	= 125, .ohm	= 556 },
-+	{ .temp_c	= 30, .ohm	= 8315 },
-+	{ .temp_c	= 35, .ohm	= 6948 },
-+	{ .temp_c	= 40, .ohm	= 5834 },
-+	{ .temp_c	= 45, .ohm	= 4917 },
-+	{ .temp_c	= 50, .ohm	= 4161 },
-+	{ .temp_c	= 55, .ohm	= 3535 },
-+	{ .temp_c	= 60, .ohm	= 3014 },
-+	{ .temp_c	= 65, .ohm	= 2586 },
-+	{ .temp_c	= 70, .ohm	= 2228 },
-+	{ .temp_c	= 75, .ohm	= 1925 },
-+	{ .temp_c	= 80, .ohm	= 1669 },
-+	{ .temp_c	= 85, .ohm	= 1452 },
-+	{ .temp_c	= 90, .ohm	= 1268 },
-+	{ .temp_c	= 95, .ohm	= 1110 },
-+	{ .temp_c	= 100, .ohm	= 974 },
-+	{ .temp_c	= 105, .ohm	= 858 },
-+	{ .temp_c	= 110, .ohm	= 758 },
-+	{ .temp_c	= 115, .ohm	= 672 },
-+	{ .temp_c	= 120, .ohm	= 596 },
-+	{ .temp_c	= 125, .ohm	= 531 },
- };
- 
- /*
--- 
-2.39.5
-
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4668,6 +4668,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
+ restart:
+ 	compaction_retries = 0;
+ 	no_progress_loops = 0;
++	compact_result = COMPACT_SKIPPED;
+ 	compact_priority = DEF_COMPACT_PRIORITY;
+ 	cpuset_mems_cookie = read_mems_allowed_begin();
+ 	zonelist_iter_cookie = zonelist_iter_begin();
 
 
 
