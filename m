@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF01A5C4D5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3626CA5C72E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F151178822
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1446518846BA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFC025EF80;
-	Tue, 11 Mar 2025 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E134625D918;
+	Tue, 11 Mar 2025 15:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHi2HUb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A05PDiqv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C162E25E821;
-	Tue, 11 Mar 2025 15:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4621494BB;
+	Tue, 11 Mar 2025 15:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705596; cv=none; b=nVqWGggqMGvgVEKHRqh4AUP+ZC12IAPqnikOWuGOnteeOfFZuRtj87XXumTxJhVwWmagL48lnUqzU0wXvmvvAEA0B9dU6p3wGxVRmHttvqRRnh6fDoJwp7iPWNhkyHO/2oM7rjwG3ihdr4Tix1v30ct4Vfy+Tum4+EnpyoqJdGA=
+	t=1741706869; cv=none; b=VHNGjqhJ0Dzjcg+xxIgNsJIYa8vRF83P2ZclNLAd08jnPKj7xACSCcEwOPos+/jjyxLO4YbmAORSgTBk7v6kioPg7zXffUziF2GUD3/8J3aXoVlKHEZq3jC0ZLdRy7IFMIK3mZan5d+FrAU/3nOR5FAhrT/efQFxiVmAQUX25bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705596; c=relaxed/simple;
-	bh=tgc1mQTPIjxnEOa3aYtK6OYmULeLSvh3Sv0XohHQDGI=;
+	s=arc-20240116; t=1741706869; c=relaxed/simple;
+	bh=rAwzPdP1XB3LDjQ7VnLYDFOVlNwMIVlpu12NWlSSo9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2kfUoM4djuMY2ooq6Iz6tc7B+AcDG2v1d6SV5bJN6H2m9dBslyuK+hAKo7Z4yOqdwDgB29hlTVRmx6bV9iO7O+jjpAdz15NpJ5mc9JXlExitIEpT+fYJOK7zQ/g6JRJDIJvk7doM1paEekOeduCgOi9QFrbF7viqSbv7/A0+zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHi2HUb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EFFC4CEEC;
-	Tue, 11 Mar 2025 15:06:36 +0000 (UTC)
+	 MIME-Version; b=JE6jJ1iH121jG0DVl9ckNLnCJbpS8Al7+ZY2+OZSR4rlxDcGZOXXk/3AOK3BShDzv6/7i+DHNcdokIsQd73W/4HjIgca7AbQkSPEPVJm26uRRQwdV6Y2+IsMR2xqXd60nUu0m64lsTUlyZvF6dN8jM6f2h8TN3yUX+YnzJXUL18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A05PDiqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260F6C4CEE9;
+	Tue, 11 Mar 2025 15:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705596;
-	bh=tgc1mQTPIjxnEOa3aYtK6OYmULeLSvh3Sv0XohHQDGI=;
+	s=korg; t=1741706869;
+	bh=rAwzPdP1XB3LDjQ7VnLYDFOVlNwMIVlpu12NWlSSo9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHi2HUb3hjNQvIcfmTOIf/fPRqp7FRH8Ux1uVcOHNfaP2RS9kwr2e7QVKDRY2RtZ0
-	 O+zXCe48jpAyR+sfMWyE0EtJIVmw1tMhWUGyCLqtWuIgEYLsISbVOxKURBusolmbxo
-	 SgnE6vBhvXlnsatbyqXZlZ2Ed98IjHS6zRRZr/Kw=
+	b=A05PDiqviLBgTuEUHySPQDM8yZwAN6unGna3UriwB2c8UrrrkH05NL8SouyIe2sY4
+	 iaATj0prbMQ8LbwexInbsFCOI5rtAPtMQfqeoWqrhO/mTI+bG6/6GrOyyRjMZQlB10
+	 kxpdYAG3JbtH2ZnUEb0rfuPcJxtxfMk9GExNdrsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/328] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
-Date: Tue, 11 Mar 2025 15:57:40 +0100
-Message-ID: <20250311145718.462774127@linuxfoundation.org>
+	Hou Tao <houtao1@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.10 195/462] dm-crypt: dont update io->sector after kcryptd_crypt_write_io_submit()
+Date: Tue, 11 Mar 2025 15:57:41 +0100
+Message-ID: <20250311145806.060956080@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
+commit 9fdbbdbbc92b1474a87b89f8b964892a63734492 upstream.
 
-In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
-instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
-Compile tested only.
+The updates of io->sector are the leftovers when dm-crypt allocated
+pages for partial write request. However, since commit cf2f1abfbd0db
+("dm crypt: don't allocate pages for a partial request"), there is no
+partial request anymore.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+After the introduction of write request rb-tree, the updates of
+io->sectors may interfere the insertion procedure, because ->sectors of
+these write requests which have already been added in the rb-tree may be
+changed during the insertion of new write request.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by removing these buggy updates of io->sectors. Considering these
+updates only effect the write request rb-tree, the commit which
+introduces the write request rb-tree is used as the fix tag.
+
+Fixes: b3c5fd305249 ("dm crypt: sort writes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/md/dm-crypt.c |   14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-index a3f094568cfb2..90ae800cbccd0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-@@ -23445,6 +23445,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
- 			}
- 		}
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -2015,7 +2015,6 @@ static void kcryptd_crypt_write_continue
+ 	struct crypt_config *cc = io->cc;
+ 	struct convert_context *ctx = &io->ctx;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
  
-+		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
-+			return;
-+
- 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
- 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
- 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
--- 
-2.39.5
-
+ 	wait_for_completion(&ctx->restart);
+@@ -2032,10 +2031,8 @@ static void kcryptd_crypt_write_continue
+ 	}
+ 
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
+ 
+ 	crypt_dec_pending(io);
+ }
+@@ -2046,14 +2043,13 @@ static void kcryptd_crypt_write_convert(
+ 	struct convert_context *ctx = &io->ctx;
+ 	struct bio *clone;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
+ 
+ 	/*
+ 	 * Prevent io from disappearing until this function completes.
+ 	 */
+ 	crypt_inc_pending(io);
+-	crypt_convert_init(cc, ctx, NULL, io->base_bio, sector);
++	crypt_convert_init(cc, ctx, NULL, io->base_bio, io->sector);
+ 
+ 	clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
+ 	if (unlikely(!clone)) {
+@@ -2070,8 +2066,6 @@ static void kcryptd_crypt_write_convert(
+ 		io->ctx.iter_in = clone->bi_iter;
+ 	}
+ 
+-	sector += bio_sectors(clone);
+-
+ 	crypt_inc_pending(io);
+ 	r = crypt_convert(cc, ctx,
+ 			  test_bit(DM_CRYPT_NO_WRITE_WORKQUEUE, &cc->flags), true);
+@@ -2095,10 +2089,8 @@ static void kcryptd_crypt_write_convert(
+ 	}
+ 
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
+ 
+ dec:
+ 	crypt_dec_pending(io);
 
 
 
