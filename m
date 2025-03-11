@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010A9A5C7DB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45873A5C5B4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07712170258
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9088A1884043
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76B625EFBB;
-	Tue, 11 Mar 2025 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FE325E801;
+	Tue, 11 Mar 2025 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="il7ne402"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxBVwRrF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37C0255E37;
-	Tue, 11 Mar 2025 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DD825DCE5;
+	Tue, 11 Mar 2025 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707271; cv=none; b=UNwdeVLGxt73d2Rrm6WRnW6cELSAvir1/5Ln53T3yMzUkCJMNf1nklMG6IFXU5gaNhZIUv5wzeG/BwTy68fDfdBtV4bJWl3lj62ctT2c7P0co7QYrezioyzr4fT3fNSxrGAv1NM6FXenFulf9YxCxvLhj7IPNk/M+L5HHAzpWY4=
+	t=1741706058; cv=none; b=s1lJ4yJLJwk5scWqTq1ldFS02xZVtEq0OIxOcTEkwPBt53tpHZEkf4bRJlDH5etQeLKnUk29hXOMKX7w/IzUg7FlJw7MRlbxobcuD8k0H4GvOdZdKe3wd+DGq5JjnUWE8W0SEUqYu0N+rofUcqFxca78NHoFFmEuNU3GuD9goDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707271; c=relaxed/simple;
-	bh=QssowxRwToPqvDABFQmpeuKff2uqDgzQpcIlM0b8NI4=;
+	s=arc-20240116; t=1741706058; c=relaxed/simple;
+	bh=CWl5V36yBhoBu5v98m5SCXH15vOFoHPxhE0tPghfIKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFe7QfTJI907M+wuXlQrRJ1M3TuSTkvy/QgX9z97D5u9yWNi8WNJabThXYXcifJMbSRVtpSZbRVI7T0jXt2slzRTnsg2t11FB+sRA6gEwp2EttHyxafAI9o6/eEqlgIBrO38j+uYfyZSjLCKRea02VlB/GWNvjh0asxRQS+7+Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=il7ne402; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD80C4CEE9;
-	Tue, 11 Mar 2025 15:34:30 +0000 (UTC)
+	 MIME-Version; b=GwGkS6M8spayI698r6TBnhUBlRGM3vVyOK504emfDb2NYvsrlOQH+CdA1ZaiB3E7OhFKhGmO12mxPgMSieVIA8Ss68jeA2yo7kCK0IqvZb28M87f/JQUcq7DuhWZ1iKIIE0YrVMLL/Lour6uTgpgL8Y7ihTNsTyFDchTMVpEOlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxBVwRrF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5EDC4CEE9;
+	Tue, 11 Mar 2025 15:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707271;
-	bh=QssowxRwToPqvDABFQmpeuKff2uqDgzQpcIlM0b8NI4=;
+	s=korg; t=1741706058;
+	bh=CWl5V36yBhoBu5v98m5SCXH15vOFoHPxhE0tPghfIKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=il7ne402fIBBVzz46vuFDE8jwuhg9AVTzk/8js/pA6NqSgIexRLScm+mrT+Vw+z/3
-	 /yWaCSKpB4soVXq94oMc8UtC2P24eWMwtbzkKvgC6J9DId6M6yDBkRuWz9Ri+F5z26
-	 onXAMo+FoJ2EjnDpHv2RIA+nbA4ZCpsGtspYnvTM=
+	b=sxBVwRrF86QK7MJ1FL39LgjMrYZW76G5bM60GDc5nNIjz7KQF5GTyxY6q1g1R/Ex+
+	 1WKagOJywuedtq3oXpN9CoxGMqlX2FdrU9BV9Su25eMWXpSE/WkXq/bjnxa45SayoJ
+	 SbX7WpFXfnE1nvPkJbq9LNEC2cldxllrsaSoieH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lei He <helei.sig11@bytedance.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 332/462] powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
+Subject: [PATCH 5.4 228/328] crypto: testmgr - fix wrong key length for pkcs1pad
 Date: Tue, 11 Mar 2025 15:59:58 +0100
-Message-ID: <20250311145811.478038813@linuxfoundation.org>
+Message-ID: <20250311145723.971269623@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Lei He <helei.sig11@bytedance.com>
 
-[ Upstream commit 61bcc752d1b81fde3cae454ff20c1d3c359df500 ]
+[ Upstream commit 39ef08517082a424b5b65c3dbaa6c0fa9d3303b9 ]
 
-Rewrite __real_pte() and __rpte_to_hidx() as static inline in order to
-avoid following warnings/errors when building with 4k page size:
+Fix wrong test data at testmgr.h, it seems to be caused
+by ignoring the last '\0' when calling sizeof.
 
-	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
-	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
-	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
-	   49 |         int i, offset;
-	      |                ^~~~~~
-
-	  CC      arch/powerpc/mm/book3s64/hash_native.o
-	arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
-	arch/powerpc/mm/book3s64/hash_native.c:782:29: error: variable 'index' set but not used [-Werror=unused-but-set-variable]
-	  782 |         unsigned long hash, index, hidx, shift, slot;
-	      |                             ^~~~~
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
-Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/e0d340a5b7bd478ecbf245d826e6ab2778b74e06.1736706263.git.christophe.leroy@csgroup.eu
+Signed-off-by: Lei He <helei.sig11@bytedance.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/book3s/64/hash-4k.h | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ crypto/testmgr.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-index 5a79dd66b2ed0..433d164374cb6 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-@@ -92,9 +92,17 @@ static inline int hash__hugepd_ok(hugepd_t hpd)
- /*
-  * With 4K page size the real_pte machinery is all nops.
-  */
--#define __real_pte(e, p, o)		((real_pte_t){(e)})
-+static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
-+{
-+	return (real_pte_t){pte};
-+}
-+
- #define __rpte_to_pte(r)	((r).pte)
--#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
-+
-+static inline unsigned long __rpte_to_hidx(real_pte_t rpte, unsigned long index)
-+{
-+	return pte_val(__rpte_to_pte(rpte)) >> H_PAGE_F_GIX_SHIFT;
-+}
- 
- #define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
- 	do {							         \
+diff --git a/crypto/testmgr.h b/crypto/testmgr.h
+index ef7d21f39d4a9..27ce9f94a3246 100644
+--- a/crypto/testmgr.h
++++ b/crypto/testmgr.h
+@@ -771,7 +771,7 @@ static const struct akcipher_testvec pkcs1pad_rsa_tv_template[] = {
+ 	"\xd1\x86\x48\x55\xce\x83\xee\x8e\x51\xc7\xde\x32\x12\x47\x7d\x46"
+ 	"\xb8\x35\xdf\x41\x02\x01\x00\x02\x01\x00\x02\x01\x00\x02\x01\x00"
+ 	"\x02\x01\x00",
+-	.key_len = 804,
++	.key_len = 803,
+ 	/*
+ 	 * m is SHA256 hash of following message:
+ 	 * "\x49\x41\xbe\x0a\x0c\xc9\xf6\x35\x51\xe4\x27\x56\x13\x71\x4b\xd0"
 -- 
 2.39.5
 
