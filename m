@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3277EA5C6AC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D50DEA5C4BD
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD537ACBBC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280BF3A878A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF79D25F792;
-	Tue, 11 Mar 2025 15:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0F025E815;
+	Tue, 11 Mar 2025 15:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTkysdnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCvBaB7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3BB15820C;
-	Tue, 11 Mar 2025 15:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79F825DD02;
+	Tue, 11 Mar 2025 15:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706794; cv=none; b=etb4EMhruH1/HssG6+b8UNGKjI1leY4fwPBDgXb13Kiwh4akRn5JbgpHuMP+kBnJHauMj2OSlnbx5AkcBILhIL5xWAAeyayatg9KPMVAE2P4QwgRARgYJE5w3K4IVD535wlhojAiBMXCY0wUPJ9l7YQ+VdKFa57/0Aw9CzHHdNk=
+	t=1741705524; cv=none; b=d72JJOVgJCxYNoBu/G2JsxGbebBel453u1m/j3m9WVpzStIEKlJatw57Xtlr0gALfFdu0U5opmKXLZ+lpr+tIGq6FAN52cDr23PJPf90WMva+W/rkv1tTp3GSHjULv/yjtbFoO01usT581IMzk7oQj7KFBtF3AbsIldBLCOCR+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706794; c=relaxed/simple;
-	bh=O7Mzw92EVQ1waAgiGe8lsxEuuAQFDuEimOCPDrD2kJU=;
+	s=arc-20240116; t=1741705524; c=relaxed/simple;
+	bh=vVdj862RCQXQkATd2/EYlbE8UcY5raQmKSZd7buo2GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3T5g+wgQ0LUrU2wyXCGQEDbDd5TPcEyh0j1gnGo3vTQvTIpiyFxwQUTq9mkq9UYkzss3ZKTOMfTfG/ClLZnIZFBveQwXKwmmrTTVrvB/t6Jd3qUs+e4XJLDC7ZarQFQhntycJaSB23bCy/jnCJ7Tmd+MlY7Mo33T0w0PMTkUgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTkysdnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AEAC4CEE9;
-	Tue, 11 Mar 2025 15:26:33 +0000 (UTC)
+	 MIME-Version; b=Qg6T8/JO6L9QegEDFhe+6Itijv/erfhOIvvPLFuceaT0Vusq6a+eNzKVGyxiRjpcTI6q8VpanbYWLSNHM3SVAFLH/inRHWCQBDjqFxnPRnbtCU2GbwZNMFiXkqnERpYDpb40RxLz/YdBHinY5Bmf3pqs+it4JYAu7OV0v/ZnGr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCvBaB7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6EDC4CEE9;
+	Tue, 11 Mar 2025 15:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706794;
-	bh=O7Mzw92EVQ1waAgiGe8lsxEuuAQFDuEimOCPDrD2kJU=;
+	s=korg; t=1741705524;
+	bh=vVdj862RCQXQkATd2/EYlbE8UcY5raQmKSZd7buo2GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTkysdnrAMxf9oxd+U9WuO9LfQNU+Wi21l7aUEwN9wq7pkVp2lPJx5q4qDpIs6+Va
-	 5K8DgFDc6n951NChPeQjFRmEs4H8c7Jj4bJhLrtE+yt+yGLg9B4hiKeU/rniNpuiP4
-	 G4mGp7FsAbyBWszSKhC8gZI02wMOtwU+jtD0C0gM=
+	b=wCvBaB7uckla+caqHd3lUMudoJx5gv44OQ9M7VlIADJeoqAwy2TTlfepWn1f62mn8
+	 DymRElI7M7/LNOHK2tZhiQh3+TWePVGkK/qWC1ZWD+zD/pcmWHYa7KR1R01tgZyeOs
+	 HWJY2Xd/lqRkksOjNzB8KY017eXmetsRXoYrFP3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 5.10 169/462] arm64: dts: rockchip: increase gmac rx_delay on rk3399-puma
+	Wentao Liang <vulab@iscas.ac.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 065/328] PM: hibernate: Add error handling for syscore_suspend()
 Date: Tue, 11 Mar 2025 15:57:15 +0100
-Message-ID: <20250311145805.031766893@linuxfoundation.org>
+Message-ID: <20250311145717.476002794@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Unterwurzacher <jakobunt@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 9d241b06802c6c2176ae7aa4f9f17f8a577ed337 upstream.
+[ Upstream commit e20a70c572539a486dbd91b225fa6a194a5e2122 ]
 
-During mass manufacturing, we noticed the mmc_rx_crc_error counter,
-as reported by "ethtool -S eth0 | grep mmc_rx_crc_error", to increase
-above zero during nuttcp speedtests. Most of the time, this did not
-affect the achieved speed, but it prompted this investigation.
+In hibernation_platform_enter(), the code did not check the
+return value of syscore_suspend(), potentially leading to a
+situation where syscore_resume() would be called even if
+syscore_suspend() failed. This could cause unpredictable
+behavior or system instability.
 
-Cycling through the rx_delay range on six boards (see table below) of
-various ages shows that there is a large good region from 0x12 to 0x35
-where we see zero crc errors on all tested boards.
+Modify the code sequence in question to properly handle errors returned
+by syscore_suspend(). If an error occurs in the suspend path, the code
+now jumps to label 'Enable_irqs' skipping the syscore_resume() call and
+only enabling interrupts after setting the system state to SYSTEM_RUNNING.
 
-The old rx_delay value (0x10) seems to have always been on the edge for
-the KSZ9031RNX that is usually placed on Puma.
-
-Choose "rx_delay = 0x23" to put us smack in the middle of the good
-region. This works fine as well with the KSZ9131RNX PHY that was used
-for a small number of boards during the COVID chip shortages.
-
-	Board S/N        PHY        rx_delay good region
-	---------        ---        --------------------
-	Puma TT0069903   KSZ9031RNX 0x11 0x35
-	Puma TT0157733   KSZ9031RNX 0x11 0x35
-	Puma TT0681551   KSZ9031RNX 0x12 0x37
-	Puma TT0681156   KSZ9031RNX 0x10 0x38
-	Puma 17496030079 KSZ9031RNX 0x10 0x37 (Puma v1.2 from 2017)
-	Puma TT0681720   KSZ9131RNX 0x02 0x39 (alternative PHY used in very few boards)
-
-	Intersection of good regions = 0x12 0x35
-	Middle of good region = 0x23
-
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # Puma v2.1 and v2.3 with KSZ9031
-Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-Link: https://lore.kernel.org/r/20241213-puma_rx_delay-v4-1-8e8e11cc6ed7@cherry.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 40dc166cb5dd ("PM / Core: Introduce struct syscore_ops for core subsystems PM")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250119143205.2103-1-vulab@iscas.ac.cn
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/power/hibernate.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -176,7 +176,7 @@
- 	snps,reset-active-low;
- 	snps,reset-delays-us = <0 10000 50000>;
- 	tx_delay = <0x10>;
--	rx_delay = <0x10>;
-+	rx_delay = <0x23>;
- 	status = "okay";
- };
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index f8934f9746e66..78d913a082bee 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -578,7 +578,11 @@ int hibernation_platform_enter(void)
  
+ 	local_irq_disable();
+ 	system_state = SYSTEM_SUSPEND;
+-	syscore_suspend();
++
++	error = syscore_suspend();
++	if (error)
++		goto Enable_irqs;
++
+ 	if (pm_wakeup_pending()) {
+ 		error = -EAGAIN;
+ 		goto Power_up;
+@@ -590,6 +594,7 @@ int hibernation_platform_enter(void)
+ 
+  Power_up:
+ 	syscore_resume();
++ Enable_irqs:
+ 	system_state = SYSTEM_RUNNING;
+ 	local_irq_enable();
+ 
+-- 
+2.39.5
+
 
 
 
