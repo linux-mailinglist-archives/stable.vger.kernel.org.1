@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D1DA5C6A6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0208A5C4C7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82E2E7AC791
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:25:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A211793E9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392C325E83D;
-	Tue, 11 Mar 2025 15:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F1125EF95;
+	Tue, 11 Mar 2025 15:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoMkdwaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1bQpfQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2A725E813;
-	Tue, 11 Mar 2025 15:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFD825EF8F;
+	Tue, 11 Mar 2025 15:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706780; cv=none; b=qC53oHzfdp/djOAJCJXpWZkODcoHQqSJmkx0CvqrV7s5f20twpWgI8DP1zIRVTq8llXj76vCesXpPFh6nTX7mU6M1VFHChn+tE4QpeRSOGFErUgOnsrGyZBX+UeXezflSkKyqHd61VCimUbVPKvA8PYKcvwzJxXTyuZJ3x/AQyo=
+	t=1741705571; cv=none; b=mBliKV8Doa6w8z3dNaz4+pvMWAShsElKbwwen1xEyVl5uX74RGEOztZTYDSt0jZrlKcTLmD6UUMe9x/LwkfB1XG4yBvKyceRJyZ7YVyUkzRKB1J/CJhnCK3jSiBO8Ul117ygb0KAEmT+nManpb+RU2/k4LTFwE1Rnb5YN/UEJTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706780; c=relaxed/simple;
-	bh=ji5iaIhy0bwjtz3gWufLx9UVU1L6ByZvwccEpHVMxKI=;
+	s=arc-20240116; t=1741705571; c=relaxed/simple;
+	bh=zBhdzl1Kdik27C1Rn1sJR0HViHEHpmXddO3myRRlOUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+Xi16z3kjNsr1eHI1MuhfscChAEJazhWeHtTifqtknH/POJYDjFPByUX2r8rxSQGZ156ULON2/EzxXIFZZV+vTlw66GTuCj1mVqJRQXwFT7LEUUoG5K8mT8A2LKej+0ZwrsjZ2gkbzWxuSIOWthkGIddhGvEc0Q5bZF+6e74DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoMkdwaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730BCC4CEE9;
-	Tue, 11 Mar 2025 15:26:19 +0000 (UTC)
+	 MIME-Version; b=nH0fkFKJ5AacPqARi7LQn7oYIEroKSgGUSySdPhYnsONw6Iq2DgHYHbJ0pFPqqjP+nx4l5TA88fsHKjNjTIt8KTYwjZA8ZhqSPCuSfPs8N+Ejs3jaWYoqzXeA4yFlZ3A7GOtBRy2hjGDtnWdWZCj1gCLmyJiq+8R6VY6bIpAIBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1bQpfQ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D71C4CEED;
+	Tue, 11 Mar 2025 15:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706779;
-	bh=ji5iaIhy0bwjtz3gWufLx9UVU1L6ByZvwccEpHVMxKI=;
+	s=korg; t=1741705570;
+	bh=zBhdzl1Kdik27C1Rn1sJR0HViHEHpmXddO3myRRlOUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoMkdwaUwf4Dr/EV3MO8RAB/wzHEU3SajKdPaF90STtHt7mv0EqIAXGzFAVAgYEfN
-	 +8JTRvCNK+vBzaDtb6hsRgJDyOpE/cvzIrT4zXrHOPwXC46KwxtN7yLavvzd9SKV7q
-	 LBMshiCuzuCV3KWegGDKCXZfSOTZ4AFTJMw4J3fQ=
+	b=C1bQpfQ/8478CSIJLXLI2U5m4O44mhbjAmeGOwfuM6f9bV10W7GtwzgGiyQI5ODMo
+	 IudQOgMnnZ3dYIqeZxYy8Q57oeAWHztiVjnGO9p2uXISMJQvxhYLfpSN8oSmNZYJWW
+	 4FMs0PuDTtq+texLNhVOj1a2ol1HVgwhxIryE9vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.10 164/462] leds: lp8860: Write full EEPROM, not only half of it
-Date: Tue, 11 Mar 2025 15:57:10 +0100
-Message-ID: <20250311145804.824665932@linuxfoundation.org>
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 061/328] rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read
+Date: Tue, 11 Mar 2025 15:57:11 +0100
+Message-ID: <20250311145717.320183631@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 0d2e820a86793595e2a776855d04701109e46663 upstream.
+[ Upstream commit 3ab8c5ed4f84fa20cd16794fe8dc31f633fbc70c ]
 
-I struggle to explain dividing an ARRAY_SIZE() by the size of an element
-once again. As the latter equals to 2, only the half of EEPROM was ever
-written. Drop the unexplainable division and write full ARRAY_SIZE().
+The nvmem interface supports variable buffer sizes, while the regmap
+interface operates with fixed-size storage. If an nvmem client uses a
+buffer size less than 4 bytes, regmap_read will write out of bounds
+as it expects the buffer to point at an unsigned int.
 
-Cc: stable@vger.kernel.org
-Fixes: 7a8685accb95 ("leds: lp8860: Introduce TI lp8860 4 channel LED driver")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20241114101402.2562878-1-alexander.sverdlin@siemens.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using an intermediary unsigned int to hold the value.
+
+Fixes: fadfd092ee91 ("rtc: pcf85063: add nvram support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20241218-rtc-pcf85063-stack-corruption-v1-1-12fd0ee0f046@pengutronix.de
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp8860.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-pcf85063.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/leds/leds-lp8860.c
-+++ b/drivers/leds/leds-lp8860.c
-@@ -267,7 +267,7 @@ static int lp8860_init(struct lp8860_led
- 		goto out;
- 	}
+diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
+index 3e7ea5244562e..5251b6cc2def0 100644
+--- a/drivers/rtc/rtc-pcf85063.c
++++ b/drivers/rtc/rtc-pcf85063.c
+@@ -332,7 +332,16 @@ static const struct rtc_class_ops pcf85063_rtc_ops_alarm = {
+ static int pcf85063_nvmem_read(void *priv, unsigned int offset,
+ 			       void *val, size_t bytes)
+ {
+-	return regmap_read(priv, PCF85063_REG_RAM, val);
++	unsigned int tmp;
++	int ret;
++
++	ret = regmap_read(priv, PCF85063_REG_RAM, &tmp);
++	if (ret < 0)
++		return ret;
++
++	*(u8 *)val = tmp;
++
++	return 0;
+ }
  
--	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs) / sizeof(lp8860_eeprom_disp_regs[0]);
-+	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs);
- 	for (i = 0; i < reg_count; i++) {
- 		ret = regmap_write(led->eeprom_regmap,
- 				lp8860_eeprom_disp_regs[i].reg,
+ static int pcf85063_nvmem_write(void *priv, unsigned int offset,
+-- 
+2.39.5
+
 
 
 
