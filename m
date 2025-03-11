@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5CFA5C82C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A204CA5C5E8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 877B8188633D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212F23B8ED2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1756C25E47F;
-	Tue, 11 Mar 2025 15:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7800625DD06;
+	Tue, 11 Mar 2025 15:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="So0sT0Cb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezPYLhgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF5237701;
-	Tue, 11 Mar 2025 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B3C25D918;
+	Tue, 11 Mar 2025 15:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707409; cv=none; b=D+s2YTVEz7ohqzmlmycfHpq2lBVkVgvuRNb1y4i/5Tq/TW9zOEoFB5leUKVcM3cUKFz6K9Acbm/cQmGS/x/VnS62yxPMJ9uKFDdyghvo+kbcjinlST0SpbyN1qila1buP4oGrNQVgrAcsN7ArZKz7SVL1ZPmEZxsAZxEUCEw1Ew=
+	t=1741706135; cv=none; b=sW/J7cB0VJRgA/LQVHIgf0rBRBfkrCB65cCv5ArdUNQ3lOg23AMMEd9GMIvjk3FExUn583I7SPJbVvkIB/L6euw7Xl/aKFEJ1FyQk1dm1vSq5VFlQoylYJR9hHT5NF2p6sTVSccOqVzJMqMJlxTAH8WwAtbkEDmDojoSg7J8bus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707409; c=relaxed/simple;
-	bh=h+0+rpQElP7E3upH7EFAtPocR+ZTPphJi498zYSGwVY=;
+	s=arc-20240116; t=1741706135; c=relaxed/simple;
+	bh=js08o6Pje6e0mth03oIjAmz78ISdNIbcsQ5NTRw4k4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxLPFaXIOjglIJK0SVhOv3jITArfTEf1VCzokQNu8w1CV5NTRqEugZUFYPe5E4R2Po8O2MZ7fyBW40geUTcXFqkdW6fOPe4dXrvoWsbgRpyBjJSGxsDttE8i70rvYwiJMK1pIEWT1bJ08C+/ujZIly8iAUyr6/BIRgK9CRpWVe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=So0sT0Cb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F82EC4CEE9;
-	Tue, 11 Mar 2025 15:36:49 +0000 (UTC)
+	 MIME-Version; b=OkZE4J1E8i/9Ifq7ZMCF5u+I3LMcQ+b7azvaX3psi0s7eV5v0g3AdIOfhMHlFl9Bf/6ZAkFPyW3mBxmEcIssuoF0tHjGcXYs/bjs5VqB2r1NHbN7cYkK21g0FHMwhksWgJk+GaZFxzvkESVYS1QbFxx104BuUM1ZM/XMqScRNxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezPYLhgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528F2C4CEE9;
+	Tue, 11 Mar 2025 15:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707409;
-	bh=h+0+rpQElP7E3upH7EFAtPocR+ZTPphJi498zYSGwVY=;
+	s=korg; t=1741706134;
+	bh=js08o6Pje6e0mth03oIjAmz78ISdNIbcsQ5NTRw4k4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=So0sT0CbtX+0tRg18Am2xTNoI6bTmV1q2VpluSIaE4IDYVsJCeMLS/oF7faRV/kBg
-	 1S7zf5tONtOyOKeBjkDjN8YhjM55WUTB4qGUrjnzWqWVfizjjHoURQX0FEKF/uArRA
-	 bVvBFgWgtd6yU0c0n3uFJbgObt8KXbggL17FzE+4=
+	b=ezPYLhgktTYkLd1Wc1KR6zhvfZaw4edCrr7IFnjMnjKB4rqC5aeLBa/uFtfxzipvO
+	 2xAuwHCfYHCqDQX9JqXpCcZO1oi8I1cjd8GX/vpyb+D3Mu/3hDzruEDQ3LcahLcxUS
+	 QHhe5JiPWI5uGpgZptvMI+UGOeX4+bchLQhgzigI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 348/462] mtd: rawnand: cadence: use dma_map_resource for sdma address
-Date: Tue, 11 Mar 2025 16:00:14 +0100
-Message-ID: <20250311145812.107895289@linuxfoundation.org>
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 245/328] geneve: Fix use-after-free in geneve_find_dev().
+Date: Tue, 11 Mar 2025 16:00:15 +0100
+Message-ID: <20250311145724.648966871@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +63,205 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit d76d22b5096c5b05208fd982b153b3f182350b19 upstream.
+[ Upstream commit 9593172d93b9f91c362baec4643003dc29802929 ]
 
-Remap the slave DMA I/O resources to enhance driver portability.
-Using a physical address causes DMA translation failure when the
-ARM SMMU is enabled.
+syzkaller reported a use-after-free in geneve_find_dev() [0]
+without repro.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+geneve_configure() links struct geneve_dev.next to
+net_generic(net, geneve_net_id)->geneve_list.
+
+The net here could differ from dev_net(dev) if IFLA_NET_NS_PID,
+IFLA_NET_NS_FD, or IFLA_TARGET_NETNSID is set.
+
+When dev_net(dev) is dismantled, geneve_exit_batch_rtnl() finally
+calls unregister_netdevice_queue() for each dev in the netns,
+and later the dev is freed.
+
+However, its geneve_dev.next is still linked to the backend UDP
+socket netns.
+
+Then, use-after-free will occur when another geneve dev is created
+in the netns.
+
+Let's call geneve_dellink() instead in geneve_destroy_tunnels().
+
+[0]:
+BUG: KASAN: slab-use-after-free in geneve_find_dev drivers/net/geneve.c:1295 [inline]
+BUG: KASAN: slab-use-after-free in geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
+Read of size 2 at addr ffff000054d6ee24 by task syz.1.4029/13441
+
+CPU: 1 UID: 0 PID: 13441 Comm: syz.1.4029 Not tainted 6.13.0-g0ad9617c78ac #24 dc35ca22c79fb82e8e7bc5c9c9adafea898b1e3d
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ show_stack+0x38/0x50 arch/arm64/kernel/stacktrace.c:466 (C)
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbc/0x108 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x16c/0x6f0 mm/kasan/report.c:489
+ kasan_report+0xc0/0x120 mm/kasan/report.c:602
+ __asan_report_load2_noabort+0x20/0x30 mm/kasan/report_generic.c:379
+ geneve_find_dev drivers/net/geneve.c:1295 [inline]
+ geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
+ geneve_newlink+0xb8/0x128 drivers/net/geneve.c:1634
+ rtnl_newlink_create+0x23c/0x868 net/core/rtnetlink.c:3795
+ __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+ rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
+ rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
+ netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
+ rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
+ sock_sendmsg_nosec net/socket.c:713 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
+ ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
+ __sys_sendmsg net/socket.c:2654 [inline]
+ __do_sys_sendmsg net/socket.c:2659 [inline]
+ __se_sys_sendmsg net/socket.c:2657 [inline]
+ __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
+
+Allocated by task 13247:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x68 mm/kasan/common.c:68
+ kasan_save_alloc_info+0x44/0x58 mm/kasan/generic.c:568
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x84/0xa0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4298 [inline]
+ __kmalloc_node_noprof+0x2a0/0x560 mm/slub.c:4304
+ __kvmalloc_node_noprof+0x9c/0x230 mm/util.c:645
+ alloc_netdev_mqs+0xb8/0x11a0 net/core/dev.c:11470
+ rtnl_create_link+0x2b8/0xb50 net/core/rtnetlink.c:3604
+ rtnl_newlink_create+0x19c/0x868 net/core/rtnetlink.c:3780
+ __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+ rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
+ rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
+ netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
+ rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
+ sock_sendmsg_nosec net/socket.c:713 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
+ ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
+ __sys_sendmsg net/socket.c:2654 [inline]
+ __do_sys_sendmsg net/socket.c:2659 [inline]
+ __se_sys_sendmsg net/socket.c:2657 [inline]
+ __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
+
+Freed by task 45:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x68 mm/kasan/common.c:68
+ kasan_save_free_info+0x58/0x70 mm/kasan/generic.c:582
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x48/0x68 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2353 [inline]
+ slab_free mm/slub.c:4613 [inline]
+ kfree+0x140/0x420 mm/slub.c:4761
+ kvfree+0x4c/0x68 mm/util.c:688
+ netdev_release+0x94/0xc8 net/core/net-sysfs.c:2065
+ device_release+0x98/0x1c0
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x2b0/0x438 lib/kobject.c:737
+ netdev_run_todo+0xe5c/0xfc8 net/core/dev.c:11185
+ rtnl_unlock+0x20/0x38 net/core/rtnetlink.c:151
+ cleanup_net+0x4fc/0x8c0 net/core/net_namespace.c:648
+ process_one_work+0x700/0x1398 kernel/workqueue.c:3236
+ process_scheduled_works kernel/workqueue.c:3317 [inline]
+ worker_thread+0x8c4/0xe10 kernel/workqueue.c:3398
+ kthread+0x4bc/0x608 kernel/kthread.c:464
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:862
+
+The buggy address belongs to the object at ffff000054d6e000
+ which belongs to the cache kmalloc-cg-4k of size 4096
+The buggy address is located 3620 bytes inside of
+ freed 4096-byte region [ffff000054d6e000, ffff000054d6f000)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x94d68
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+memcg:ffff000016276181
+flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
+page_type: f5(slab)
+raw: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
+head: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
+head: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
+head: 03fffe0000000003 fffffdffc1535a01 ffffffffffffffff 0000000000000000
+head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff000054d6ed00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff000054d6ed80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff000054d6ee00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                               ^
+ ffff000054d6ee80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff000054d6ef00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+
+Fixes: 2d07dc79fe04 ("geneve: add initial netdev driver for GENEVE tunnels")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250213043354.91368-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |   29 +++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ drivers/net/geneve.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -469,6 +469,8 @@ struct cdns_nand_ctrl {
- 	struct {
- 		void __iomem *virt;
- 		dma_addr_t dma;
-+		dma_addr_t iova_dma;
-+		u32 size;
- 	} io;
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 961cbd2b377d1..3e8b96de72a74 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -1872,16 +1872,11 @@ static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
+ 	/* gather any geneve devices that were moved into this ns */
+ 	for_each_netdev_safe(net, dev, aux)
+ 		if (dev->rtnl_link_ops == &geneve_link_ops)
+-			unregister_netdevice_queue(dev, head);
++			geneve_dellink(dev, head);
  
- 	int irq;
-@@ -1830,11 +1832,11 @@ static int cadence_nand_slave_dma_transf
- 	}
+ 	/* now gather any other geneve devices that were created in this ns */
+-	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next) {
+-		/* If geneve->dev is in the same netns, it was already added
+-		 * to the list by the previous loop.
+-		 */
+-		if (!net_eq(dev_net(geneve->dev), net))
+-			unregister_netdevice_queue(geneve->dev, head);
+-	}
++	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
++		geneve_dellink(geneve->dev, head);
+ }
  
- 	if (dir == DMA_FROM_DEVICE) {
--		src_dma = cdns_ctrl->io.dma;
-+		src_dma = cdns_ctrl->io.iova_dma;
- 		dst_dma = buf_dma;
- 	} else {
- 		src_dma = buf_dma;
--		dst_dma = cdns_ctrl->io.dma;
-+		dst_dma = cdns_ctrl->io.iova_dma;
- 	}
- 
- 	tx = dmaengine_prep_dma_memcpy(cdns_ctrl->dmac, dst_dma, src_dma, len,
-@@ -2831,6 +2833,7 @@ cadence_nand_irq_cleanup(int irqnum, str
- static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	dma_cap_mask_t mask;
-+	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
- 	int ret;
- 
- 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
-@@ -2874,6 +2877,16 @@ static int cadence_nand_init(struct cdns
- 		}
- 	}
- 
-+	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
-+						  cdns_ctrl->io.size,
-+						  DMA_BIDIRECTIONAL, 0);
-+
-+	ret = dma_mapping_error(dma_dev->dev, cdns_ctrl->io.iova_dma);
-+	if (ret) {
-+		dev_err(cdns_ctrl->dev, "Failed to map I/O resource to DMA\n");
-+		goto dma_release_chnl;
-+	}
-+
- 	nand_controller_init(&cdns_ctrl->controller);
- 	INIT_LIST_HEAD(&cdns_ctrl->chips);
- 
-@@ -2884,18 +2897,22 @@ static int cadence_nand_init(struct cdns
- 	if (ret) {
- 		dev_err(cdns_ctrl->dev, "Failed to register MTD: %d\n",
- 			ret);
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
- 
- 	kfree(cdns_ctrl->buf);
- 	cdns_ctrl->buf = kzalloc(cdns_ctrl->buf_size, GFP_KERNEL);
- 	if (!cdns_ctrl->buf) {
- 		ret = -ENOMEM;
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
- 
- 	return 0;
- 
-+unmap_dma_resource:
-+	dma_unmap_resource(dma_dev->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
-+
- dma_release_chnl:
- 	if (cdns_ctrl->dmac)
- 		dma_release_channel(cdns_ctrl->dmac);
-@@ -2917,6 +2934,8 @@ free_buf_desc:
- static void cadence_nand_remove(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	cadence_nand_chips_cleanup(cdns_ctrl);
-+	dma_unmap_resource(cdns_ctrl->dmac->device->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
- 	cadence_nand_irq_cleanup(cdns_ctrl->irq, cdns_ctrl);
- 	kfree(cdns_ctrl->buf);
- 	dma_free_coherent(cdns_ctrl->dev, sizeof(struct cadence_nand_cdma_desc),
-@@ -2985,7 +3004,9 @@ static int cadence_nand_dt_probe(struct
- 	cdns_ctrl->io.virt = devm_platform_get_and_ioremap_resource(ofdev, 1, &res);
- 	if (IS_ERR(cdns_ctrl->io.virt))
- 		return PTR_ERR(cdns_ctrl->io.virt);
-+
- 	cdns_ctrl->io.dma = res->start;
-+	cdns_ctrl->io.size = resource_size(res);
- 
- 	dt->clk = devm_clk_get(cdns_ctrl->dev, "nf_clk");
- 	if (IS_ERR(dt->clk))
+ static void __net_exit geneve_exit_batch_net(struct list_head *net_list)
+-- 
+2.39.5
+
 
 
 
