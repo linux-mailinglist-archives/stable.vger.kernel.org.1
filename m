@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8D5A5C725
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AC6A5C51C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 820501655F0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FFDE3B6D18
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE3625DB0A;
-	Tue, 11 Mar 2025 15:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F43C25E821;
+	Tue, 11 Mar 2025 15:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HASTV6WK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tq6Pwesr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACFF25B67F;
-	Tue, 11 Mar 2025 15:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1F425DB0B;
+	Tue, 11 Mar 2025 15:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706907; cv=none; b=IwuRb2xCuxH9BA5v1uWRfUFnqId2KhjbfvRXGwJZYsN9fNFbZs/YqBpV5m/z3vyHxDfLVmurjgdlssksuQ3aI3QozH9zMnLQBrCC7bTXWSjwUtkryzaSwmNHWa5q32uEkwUbfxGPjZf8UZ+uIa1vjjnEMM35dJQInVeA168qPEM=
+	t=1741705694; cv=none; b=iD37tw7whoxvoVUccg3NaYrA/zENhb7Mu7HRI+poEUomIm4TXIzP3qxawFkcXqARCWcgxQMtoa0pqA0ApgjfrddbDuQc3Kw64zZlHB9ThyqXTNasWGQLRIDZMbN9UHTY8HUmdOglxS17l64cne2n4Q7iToAdVirX4irv+t+Pssw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706907; c=relaxed/simple;
-	bh=Q9E/Oq1tEDZMosAzYcQXFOCQiLmICpyZctkn1aM6ilY=;
+	s=arc-20240116; t=1741705694; c=relaxed/simple;
+	bh=thDolxC6xc7O0zmMoGlP3FW+nyLihgtMh/pFWQ9vmis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jr+0KhAcievur61ZlwBCO4tdC9/630chl65MQ/uFh3ACYwzRLAbYVfAoWumwMzZuOZVJ6dsTr4Xxw+Qs0vyE7I/8MDjGwE1kp4Lrqw763Gqcdi8OF0RyEAePN6r+dkDtel8J6AkP981g0CnFi40N9sogcBrCjnANlyf1Ned00HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HASTV6WK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F2DC4CEE9;
-	Tue, 11 Mar 2025 15:28:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jd3/il2wqEnO3rZKztpGu7ISTYP2ve+EKv8hqrrQO3Pkz5zVbpbHOToUlkw5q2SAb7oPU+ugDg7rihk4Rzxsh185LVTogi1aFfC/i3NpA7agQxtv05cOJu1+B64jNs0YZTWWufseeLUksBbeh8uMx2O+OrYRlS55aqXpf4j+jSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tq6Pwesr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99FFC4CEE9;
+	Tue, 11 Mar 2025 15:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706906;
-	bh=Q9E/Oq1tEDZMosAzYcQXFOCQiLmICpyZctkn1aM6ilY=;
+	s=korg; t=1741705694;
+	bh=thDolxC6xc7O0zmMoGlP3FW+nyLihgtMh/pFWQ9vmis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HASTV6WKfxN5jvhQkcuI+sAR8JINj+FkcpdBmMIXNgJsprD5BiZDNdRWh3Xy4EzcA
-	 +Up0uUS33sWIFa93NiwW2Q21sRIjXdIcybCq8WDGTt+lp13RCI90pYXMFi7QxHewwx
-	 JfbT1O5x9i75P55E2sasSsGs+U7gZ/t5V7VnfYT0=
+	b=tq6PwesruRr9d7jJEuA0v58CjWBOhujvkx+8blHlL6UegqdLQ+lQe5vTE0ZgImd3y
+	 5d5rBLurAIDH5lA74ScQVGNeD5mOZU2k4U6IJ6RVf3J+wSvLfZj0Iu1ZH3P7V7bCiK
+	 ku75ntP9TWsujp4qrHt9Ift0Nf7GLu7fPnkhXeQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 207/462] media: uvcvideo: Remove redundant NULL assignment
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.4 103/328] kbuild: userprogs: use correct lld when linking through clang
 Date: Tue, 11 Mar 2025 15:57:53 +0100
-Message-ID: <20250311145806.539271838@linuxfoundation.org>
+Message-ID: <20250311145718.988196364@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: "Thomas Weiﬂschuh" <thomas.weissschuh@linutronix.de>
 
-commit 04d3398f66d2d31c4b8caea88f051a4257b7a161 upstream.
+commit dfc1b168a8c4b376fa222b27b97c2c4ad4b786e1 upstream.
 
-ctrl->handle will only be different than NULL for controls that have
-mappings. This is because that assignment is only done inside
-uvc_ctrl_set() for mapped controls.
+The userprog infrastructure links objects files through $(CC).
+Either explicitly by manually calling $(CC) on multiple object files or
+implicitly by directly compiling a source file to an executable.
+The documentation at Documentation/kbuild/llvm.rst indicates that ld.lld
+would be used for linking if LLVM=1 is specified.
+However clang instead will use either a globally installed cross linker
+from $PATH called ${target}-ld or fall back to the system linker, which
+probably does not support crosslinking.
+For the normal kernel build this is not an issue because the linker is
+always executed directly, without the compiler being involved.
 
-Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-2-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Explicitly pass --ld-path to clang so $(LD) is respected.
+As clang 13.0.1 is required to build the kernel, this option is available.
+
+Fixes: 7f3a59db274c ("kbuild: add infrastructure to build userspace programs")
+Cc: stable@vger.kernel.org # needs wrapping in $(cc-option) for < 6.9
+Signed-off-by: Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: use cc-option for 6.6 and older, as those trees support back to
+         clang-11]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ Makefile |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1367,10 +1367,8 @@ bool uvc_ctrl_status_event_async(struct
- 	struct uvc_device *dev = chain->dev;
- 	struct uvc_ctrl_work *w = &dev->async_ctrl;
+--- a/Makefile
++++ b/Makefile
+@@ -956,6 +956,11 @@ ifeq ($(CONFIG_RELR),y)
+ LDFLAGS_vmlinux	+= --pack-dyn-relocs=relr --use-android-relr-tags
+ endif
  
--	if (list_empty(&ctrl->info.mappings)) {
--		ctrl->handle = NULL;
-+	if (list_empty(&ctrl->info.mappings))
- 		return false;
--	}
++# userspace programs are linked via the compiler, use the correct linker
++ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
++KBUILD_USERLDFLAGS += $(call cc-option, --ld-path=$(LD))
++endif
++
+ # make the checker run with the right architecture
+ CHECKFLAGS += --arch=$(ARCH)
  
- 	w->data = data;
- 	w->urb = urb;
 
 
 
