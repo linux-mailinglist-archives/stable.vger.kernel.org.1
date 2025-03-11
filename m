@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEFFA5C5A6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE62EA5C804
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC67A1883EDD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33021188BCD0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A50825DD0B;
-	Tue, 11 Mar 2025 15:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFD2255E37;
+	Tue, 11 Mar 2025 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6lnuSrC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh27+B03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC66C2405F9;
-	Tue, 11 Mar 2025 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678343C0B;
+	Tue, 11 Mar 2025 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706029; cv=none; b=Vfazgn8RyAcoRmaCCdpw3DvGhwInAXJBeUuRY1yVwzROangRR1XjkE01/n9exKBIpDVW+wCY1pL1KyQ93pL5ZJnxuIFlDZXitXg9wndIKwzkhZx5HtBMKPerIkg9OTmd6a+t7JAWyYP3Iyw2v3rUCeCf2SIzYgydGQTU3O1cFGs=
+	t=1741707306; cv=none; b=dHRRRzbHghOx3TcKeYBAshRtseTvcPro3vP71mc/hWk+gCS/ZdI1Giach3tM82ptMvS98jE5oYDjxK18gp1IXyzLlA0F2UrrpJiRnSSKP5y6Zm5bjCpQvFlf25FH9g7PTNWFCPB+4ykL7EXRxSoHMLLzazFaJriv5Uc5qwEThLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706029; c=relaxed/simple;
-	bh=uiPNJeb9V72H9Nst+2OJd1uICSCsIQuDjWgEbwjv3/M=;
+	s=arc-20240116; t=1741707306; c=relaxed/simple;
+	bh=RXTClNfUJuG7QJKIYzO0YoNpnePjXbWCd/1kHvbeg9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEvp73aruMMHm0Ei3dg3AXmw5qpGvYo8GgCmAaY1mkJpAFaa+GtxKqc+CKCxyk+EmMuxDPNFPAfwR/1QUFss3S8P4xlc4kflKofmyr2ifDM4ioJgSLnJZc5/yJK4ArNLflucuV+Ive1upJvshqzKkHXi/35Jt9avqInpcBKaJ3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6lnuSrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16599C4CEEA;
-	Tue, 11 Mar 2025 15:13:48 +0000 (UTC)
+	 MIME-Version; b=AI5yzm6X6fAlgTy9fp2rTr2IM4HfVRYFC/4T6ODd2SNPvjOid130ZfLbYrP2YDt4Z9zOAuDJ+/r7frtfpyp6TanxjSYkLrs0mvgluCr7+LqnuxzK9Leu+YkGrHYVSq5OJPcoDPy0kNgbyj83mgb2F8mTHUa6qQclFeWDP/3JVcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh27+B03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B5CC4CEE9;
+	Tue, 11 Mar 2025 15:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706029;
-	bh=uiPNJeb9V72H9Nst+2OJd1uICSCsIQuDjWgEbwjv3/M=;
+	s=korg; t=1741707306;
+	bh=RXTClNfUJuG7QJKIYzO0YoNpnePjXbWCd/1kHvbeg9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6lnuSrCM7fi2fsHEvXW3RguqtoOHYQHdQ26K6/q2rKaQxLsngevT+KElpRrGan1q
-	 IDRFfh4RPnFm4YxSZXgq3eEEz6TCGJEVJ7a07iIH3EVVlFxrnVjrq+6YoKl/CpET8D
-	 Bw2dedbgPMGKoEC/KO210q2k1OrXsFZ5yMa07K/E=
+	b=Fh27+B03Zh2WQNtJy5+kiWmFEDEakAYoc06EdghyIGDa/zgP3QlfoRASrFdO6sX6t
+	 7JprNo/djT+ZQxlTv8LNJE2qxiNLWvWhk0W4NkF40IyFART+ewe2B84Cl2IgYkSAFF
+	 pHoItcrf+iOWGIe4ZTDUZK1U/QaUO4Ptf+11FdYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Felipe Balbi <balbi@kernel.org>,
-	Davidlohr Bueso <dbueso@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 238/328] usb/gadget: f_midi: Replace tasklet with work
-Date: Tue, 11 Mar 2025 16:00:08 +0100
-Message-ID: <20250311145724.373537889@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 5.10 343/462] tee: optee: Fix supplicant wait loop
+Date: Tue, 11 Mar 2025 16:00:09 +0100
+Message-ID: <20250311145811.914056851@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-[ Upstream commit 8653d71ce3763aedcf3d2331f59beda3fecd79e4 ]
+commit 70b0d6b0a199c5a3ee6c72f5e61681ed6f759612 upstream.
 
-Currently a tasklet is used to transmit input substream buffer
-data. However, tasklets have long been deprecated as being too
-heavy on the system by running in irq context - and this is not
-a performance critical path. If a higher priority process wants
-to run, it must wait for the tasklet to finish before doing so.
+OP-TEE supplicant is a user-space daemon and it's possible for it
+be hung or crashed or killed in the middle of processing an OP-TEE
+RPC call. It becomes more complicated when there is incorrect shutdown
+ordering of the supplicant process vs the OP-TEE client application which
+can eventually lead to system hang-up waiting for the closure of the
+client application.
 
-Deferring work to a workqueue and executing in process context
-should be fine considering the callback already does
-f_midi_do_transmit() under the transmit_lock and thus changes in
-semantics are ok regarding concurrency - tasklets being serialized
-against itself.
+Allow the client process waiting in kernel for supplicant response to
+be killed rather than indefinitely waiting in an unkillable state. Also,
+a normal uninterruptible wait should not have resulted in the hung-task
+watchdog getting triggered, but the endless loop would.
 
-Cc: Takashi Iwai <tiwai@suse.de>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Acked-by: Felipe Balbi <balbi@kernel.org>
-Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
-Link: https://lore.kernel.org/r/20210111042855.73289-1-dave@stgolabs.net
+This fixes issues observed during system reboot/shutdown when supplicant
+got hung for some reason or gets crashed/killed which lead to client
+getting hung in an unkillable state. It in turn lead to system being in
+hung up state requiring hard power off/on to recover.
+
+Fixes: 4fb0a5eb364d ("tee: add OP-TEE driver")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 4ab37fcb4283 ("USB: gadget: f_midi: f_midi_complete to call queue_work")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/tee/optee/supp.c |   35 ++++++++---------------------------
+ 1 file changed, 8 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
-index 71aeaa2302edd..01c5736d381ef 100644
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -87,7 +87,7 @@ struct f_midi {
- 	struct snd_rawmidi_substream *out_substream[MAX_PORTS];
+--- a/drivers/tee/optee/supp.c
++++ b/drivers/tee/optee/supp.c
+@@ -80,7 +80,6 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	struct optee *optee = tee_get_drvdata(ctx->teedev);
+ 	struct optee_supp *supp = &optee->supp;
+ 	struct optee_supp_req *req;
+-	bool interruptable;
+ 	u32 ret;
  
- 	unsigned long		out_triggered;
--	struct tasklet_struct	tasklet;
-+	struct work_struct	work;
- 	unsigned int in_ports;
- 	unsigned int out_ports;
- 	int index;
-@@ -698,9 +698,11 @@ static void f_midi_transmit(struct f_midi *midi)
- 	f_midi_drop_out_substreams(midi);
- }
+ 	/*
+@@ -111,36 +110,18 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	/*
+ 	 * Wait for supplicant to process and return result, once we've
+ 	 * returned from wait_for_completion(&req->c) successfully we have
+-	 * exclusive access again.
++	 * exclusive access again. Allow the wait to be killable such that
++	 * the wait doesn't turn into an indefinite state if the supplicant
++	 * gets hung for some reason.
+ 	 */
+-	while (wait_for_completion_interruptible(&req->c)) {
++	if (wait_for_completion_killable(&req->c)) {
+ 		mutex_lock(&supp->mutex);
+-		interruptable = !supp->ctx;
+-		if (interruptable) {
+-			/*
+-			 * There's no supplicant available and since the
+-			 * supp->mutex currently is held none can
+-			 * become available until the mutex released
+-			 * again.
+-			 *
+-			 * Interrupting an RPC to supplicant is only
+-			 * allowed as a way of slightly improving the user
+-			 * experience in case the supplicant hasn't been
+-			 * started yet. During normal operation the supplicant
+-			 * will serve all requests in a timely manner and
+-			 * interrupting then wouldn't make sense.
+-			 */
+-			if (req->in_queue) {
+-				list_del(&req->link);
+-				req->in_queue = false;
+-			}
++		if (req->in_queue) {
++			list_del(&req->link);
++			req->in_queue = false;
+ 		}
+ 		mutex_unlock(&supp->mutex);
+-
+-		if (interruptable) {
+-			req->ret = TEEC_ERROR_COMMUNICATION;
+-			break;
+-		}
++		req->ret = TEEC_ERROR_COMMUNICATION;
+ 	}
  
--static void f_midi_in_tasklet(struct tasklet_struct *t)
-+static void f_midi_in_work(struct work_struct *work)
- {
--	struct f_midi *midi = from_tasklet(midi, t, tasklet);
-+	struct f_midi *midi;
-+
-+	midi = container_of(work, struct f_midi, work);
- 	f_midi_transmit(midi);
- }
- 
-@@ -737,7 +739,7 @@ static void f_midi_in_trigger(struct snd_rawmidi_substream *substream, int up)
- 	VDBG(midi, "%s() %d\n", __func__, up);
- 	midi->in_ports_array[substream->number].active = up;
- 	if (up)
--		tasklet_hi_schedule(&midi->tasklet);
-+		queue_work(system_highpri_wq, &midi->work);
- }
- 
- static int f_midi_out_open(struct snd_rawmidi_substream *substream)
-@@ -875,7 +877,7 @@ static int f_midi_bind(struct usb_configuration *c, struct usb_function *f)
- 	int status, n, jack = 1, i = 0, endpoint_descriptor_index = 0;
- 
- 	midi->gadget = cdev->gadget;
--	tasklet_setup(&midi->tasklet, f_midi_in_tasklet);
-+	INIT_WORK(&midi->work, f_midi_in_work);
- 	status = f_midi_register_card(midi);
- 	if (status < 0)
- 		goto fail_register;
--- 
-2.39.5
-
+ 	ret = req->ret;
 
 
 
