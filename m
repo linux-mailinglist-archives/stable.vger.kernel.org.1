@@ -1,134 +1,109 @@
-Return-Path: <stable+bounces-123197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8648EA5BF83
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 12:45:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B520BA5BFB2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 12:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECB257A6826
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:44:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF3B176853
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499C124167A;
-	Tue, 11 Mar 2025 11:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCAA25523E;
+	Tue, 11 Mar 2025 11:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mz12ml6T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C0F1D514E;
-	Tue, 11 Mar 2025 11:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C51F254AE5
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 11:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741693527; cv=none; b=cqkV4Cvvz3hJsIqsnabD86hS7fcW3U1hXOGqUkrREMihUSiZCgr7roUBkigV7s8dGjSRjSyynCBeQGGr/dff7xswhp/mpPJVGKeFddKQGHBLeqd3EQWUkirMeAFhXaVbzR3wymje2bfdiQyy4V64kBWzDPeUj2F3MYqcNygLzKk=
+	t=1741693743; cv=none; b=vBHA+YmUJchrN91slxtBpbVEF5c3bJwjbg6yESwGKbrJpPyfNVUgIeigYNIa580JAk60FfeLXa0H6ZCY/k9+BP3yLZRgfAeZh16tjYmTCL+n3RwZ4AqORPjchiv4wJMDmfKBFHJy6x3XpU0/TVrkqaWmFOe19svkzx9csxtB3u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741693527; c=relaxed/simple;
-	bh=iBNg5mEvsajHG4sU2bcGfllId35XtLdM5A9w2n+8DnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=peYPW5KHZo84xHZ4cofB/s+E9iW0+zY0F0ju4dXyPd2ny5EH0kIqgSANWu/Dv0Z5sGO/zPp7jz7iADI4CXTiuagXiQaDdItuPCVM/+i0ZZeMgetodBopqixMh4MmxkrS4+wtIv+xlTOi9YUDSTBKGTd6ayhMqQ1Kgg182THq0gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249CBC4CEE9;
-	Tue, 11 Mar 2025 11:45:23 +0000 (UTC)
-Date: Tue, 11 Mar 2025 11:45:21 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Kees Cook <kees@kernel.org>, Peter Collingbourne <pcc@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] string: Disable read_word_at_a_time() optimizations if
- kernel MTE is enabled
-Message-ID: <Z9AiUQdC4o0g8sxu@arm.com>
-References: <20250308023314.3981455-1-pcc@google.com>
- <202503071927.1A795821A@keescook>
- <Z88jbhobIz2yWBbJ@arm.com>
- <Z88r5qFLOSo0itaq@J2N7QTR9R3.cambridge.arm.com>
- <Z88yC7Oaj9DGaswc@arm.com>
- <Z88_fFgr23_EtHMf@J2N7QTR9R3>
+	s=arc-20240116; t=1741693743; c=relaxed/simple;
+	bh=+vlO64ju7g/p+jl67/8W4wRBRR7WjAeT7Mpsl28ogfU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XDc/Y1G8zJma/tq8fKGhRNHyyrzuO/I4y6IDEW80DeZFAwojHIoRAXSw/oKI3sp0aIVQbmVf1jtAP4XN4DnhpxkbY/NkSfFT9DvuGKjEMQuceyhoPBEhy+osWUal0tYlnNolir9CExWBjXRU1d2rMUKwnoMU+WbwWh2Hmly1jKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mz12ml6T; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741693740;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+w6guCNStiWWD5AG2mGvq/2FQu/C03U9KRO9jThrbxU=;
+	b=Mz12ml6TxPy4L1j82NP3h/7zUqzfI26DZm9o2RSH13jNnRLQ3zQSZY1qqCjFTyEf1gwxEO
+	qA/x3kUwwUhQhBCxR+iBROu6im3rICw4ONXwsuRXs8gcILWixZJOPu+fjegp/CUVZGkOfj
+	ywkBn0RBf3b9rO1+bMBZq2Sdg9XfnY4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-mRMdkyNYM4O4MySSH-UrWg-1; Tue,
+ 11 Mar 2025 07:48:57 -0400
+X-MC-Unique: mRMdkyNYM4O4MySSH-UrWg-1
+X-Mimecast-MFC-AGG-ID: mRMdkyNYM4O4MySSH-UrWg_1741693736
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3B1F619560B7;
+	Tue, 11 Mar 2025 11:48:56 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.44.33.35])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D98251801747;
+	Tue, 11 Mar 2025 11:48:53 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] media: ov08x40: Extend sleep after reset to 5 ms
+Date: Tue, 11 Mar 2025 12:48:44 +0100
+Message-ID: <20250311114844.25593-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z88_fFgr23_EtHMf@J2N7QTR9R3>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Mon, Mar 10, 2025 at 07:37:32PM +0000, Mark Rutland wrote:
-> On Mon, Mar 10, 2025 at 06:40:11PM +0000, Catalin Marinas wrote:
-> > On Mon, Mar 10, 2025 at 06:13:58PM +0000, Mark Rutland wrote:
-> > > On Mon, Mar 10, 2025 at 05:37:50PM +0000, Catalin Marinas wrote:
-> > > > On Fri, Mar 07, 2025 at 07:36:31PM -0800, Kees Cook wrote:
-> > > > > On Fri, Mar 07, 2025 at 06:33:13PM -0800, Peter Collingbourne wrote:
-> > > > > > The optimized strscpy() and dentry_string_cmp() routines will read 8
-> > > > > > unaligned bytes at a time via the function read_word_at_a_time(), but
-> > > > > > this is incompatible with MTE which will fault on a partially invalid
-> > > > > > read. The attributes on read_word_at_a_time() that disable KASAN are
-> > > > > > invisible to the CPU so they have no effect on MTE. Let's fix the
-> > > > > > bug for now by disabling the optimizations if the kernel is built
-> > > > > > with HW tag-based KASAN and consider improvements for followup changes.
-> > > > > 
-> > > > > Why is faulting on a partially invalid read a problem? It's still
-> > > > > invalid, so ... it should fault, yes? What am I missing?
-> > > > 
-> > > > read_word_at_a_time() is used to read 8 bytes, potentially unaligned and
-> > > > beyond the end of string. The has_zero() function is then used to check
-> > > > where the string ends. For this uses, I think we can go with
-> > > > load_unaligned_zeropad() which handles a potential fault and pads the
-> > > > rest with zeroes.
-> > > 
-> > > If we only care about synchronous and asymmetric modes, that should be
-> > > possible, but that won't work in asynchronous mode. In asynchronous mode
-> > > the fault will accumulate into TFSR and will be detected later
-> > > asynchronously where it cannot be related to its source and fixed up.
-> > > 
-> > > That means that both read_word_at_a_time() and load_unaligned_zeropad()
-> > > are dodgy in async mode.
-> > 
-> > load_unaligned_zeropad() has a __mte_enable_tco_async() call to set
-> > PSTATE.TCO if in async mode, so that's covered. read_word_at_a_time() is
-> > indeed busted and I've had Vincezo's patches for a couple of years
-> > already, they just never made it to the list.
-> 
-> Sorry, I missed the __mte_{enable,disable}_tco_async() calls. So long as
-> we're happy to omit the check in that case, that's fine.
+Some users are reporting that ov08x40_identify_module() fails
+to identify the chip reading 0x00 as value for OV08X40_REG_CHIP_ID.
 
-That was the easiest. Alternatively we can try to sync the TFSR before
-and after the load but with the ISBs, that's too expensive. We could
-also do a dummy one byte load before setting TCO. read_word_at_a_time()
-does have an explicit kasan_check_read() but last time I checked it has
-no effect on MTE.
+Intel's out of tree IPU6 drivers include some ov08x40 changes
+including adding support for the reset GPIO for older kernels and
+Intel's patch for this uses 5 ms. Extend the sleep to 5 ms following
+Intel's example, this fixes the ov08x40_identify_module() problem.
 
-> I was worried that ex_handler_load_unaligned_zeropad() might not do the
-> right thing in response to a tag check fault (e.g. access the wrong 8
-> bytes), but it looks as though that's ok due to the way it generates the
-> offset and the aligned pointer.
-> 
-> If load_unaligned_zeropad() is handed a string that starts with an
-> unexpected tag (and even if that starts off aligned),
-> ex_handler_load_unaligned_zeropad() will access that and cause another
-> tag check fault, which will be reported.
+Link: https://github.com/intel/ipu6-drivers/blob/c09e2198d801e1eb701984d2948373123ba92a56/patch/v6.12/0008-media-ov08x40-Add-support-for-2-4-lanes-support-at-1.patch#L4607
+Fixes: df1ae2251a50 ("media: ov08x40: Add OF probe support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/media/i2c/ov08x40.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, it will report an async tag check fault on the
-exit_to_kernel_mode() path _if_ load_unaligned_zeropad() triggered the
-fault for other reasons (end of page). It's slightly inconsistent, we
-could set TCO for the async case in ex_handler_load_unaligned_zeropad()
-as well.
-
-For sync checks, we'd get the first fault ending up in
-ex_handler_load_unaligned_zeropad() and a second tag check fault while
-processing the first. This ends up in do_tag_recovery and we disable tag
-checking after the report. Not ideal but not that bad. We could adjust
-ex_handler_load_unaligned_zeropad() to return false if the pointer is
-already aligned but we need to check the semantics of
-load_unaligned_zeropad(), is it allowed to fault on the first byte?
-
+diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
+index cf0e41fc3071..54575eea3c49 100644
+--- a/drivers/media/i2c/ov08x40.c
++++ b/drivers/media/i2c/ov08x40.c
+@@ -1341,7 +1341,7 @@ static int ov08x40_power_on(struct device *dev)
+ 	}
+ 
+ 	gpiod_set_value_cansleep(ov08x->reset_gpio, 0);
+-	usleep_range(1500, 1800);
++	usleep_range(5000, 5500);
+ 
+ 	return 0;
+ 
 -- 
-Catalin
+2.48.1
+
 
