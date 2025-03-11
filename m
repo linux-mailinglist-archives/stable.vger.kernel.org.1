@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F44A5C519
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E0AA5C779
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60B6A17905D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89912189B724
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3418125E829;
-	Tue, 11 Mar 2025 15:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D1225E813;
+	Tue, 11 Mar 2025 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXIHQNRy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6JRLTYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E5E255E37;
-	Tue, 11 Mar 2025 15:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E4A25DD0A;
+	Tue, 11 Mar 2025 15:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705764; cv=none; b=denkjKvZ1UDwn4sH8/boYhC38OoHBVyxGXztAWy7CCSYdhT3hhPgBz4pwQVvAA18vA6IrlpjavcCw2h2yricH/03J9c5UKo6e1qXGh/Ng6joF9lgBrtoN2f/iiI/IpnkgTi/dP7phN8AEe1ZlGeTb0ClaBJuwOOo4RfA7rc8SC8=
+	t=1741707034; cv=none; b=l5ZPnwhZ37vkIzp9GgIx/JfKjagJOm8BWlKnzve+fQenExniP+EN5k4H0sFXcYbPrJHODtRrIXBhPG9SC1V0orYuRQqqw9szR3q0Ln/U23U8qHrqTOXpgI7C5SOAotNSXgMPg+lDAwDR0IQLc2J3F9UlovzJs6ci7Crs4wdvcRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705764; c=relaxed/simple;
-	bh=uDnRV1TbkKuRzypzHH26Iysd3klGqzK5otNgyOnBLfk=;
+	s=arc-20240116; t=1741707034; c=relaxed/simple;
+	bh=zQ3UnIiHw/hDFJgcQS7LJIdy3Dn/JQQUNfdAxcLa5sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyT+tebHwvJLqZs6gzeJTOhBCogz5PvKOajanPiojqJql/JAmAWUnBpC2tSlzz2xaHd8JnotkMPPnZ4pguFLWmCQEv4fF3Ycpjcbx3GpFW5eviW7HcARKFZfgwPYrLcdhKdNDcrBJZVb7a5aruhU6ktu43IuR7GTd3aLNBnxaX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXIHQNRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBC8C4CEE9;
-	Tue, 11 Mar 2025 15:09:22 +0000 (UTC)
+	 MIME-Version; b=CD/5MMBOp7qwVnO7T5tIbb1diVX0LUuNl1kLv+W5pmSssHcdRb4Ci4NFSt6ANhSuMm82lkjtqh/G9cN47VWNsAyYZK3A9y3ND/qzB0L7WWIWei6e7sK8yxERtyJa3/Iuvz4sxXzqO798Es50mh7DXN22fN3Y91uTAdwnC4Y8s9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6JRLTYB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3FDC4CEE9;
+	Tue, 11 Mar 2025 15:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705763;
-	bh=uDnRV1TbkKuRzypzHH26Iysd3klGqzK5otNgyOnBLfk=;
+	s=korg; t=1741707034;
+	bh=zQ3UnIiHw/hDFJgcQS7LJIdy3Dn/JQQUNfdAxcLa5sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXIHQNRy6t5QFGL2ZNdWvm6wKxjjOQ2i8xIDk1oQugTdSIoyODtCw6gzP/PavC/tu
-	 GmgD7wsIAH04ZIGUnY+yqCs/8iic9Rr0ZrN7OoQ+ubDJcU/lJmA5N+N6bPJC1JUc1Y
-	 xTMz8hC2QzaHRDVnRddkXetqr+39Aw6xWwjS2t/A=
+	b=B6JRLTYBaYzJNA2R/r1PQCtNhxRRfPbKfLtcXtvefdwIqk72T72+Qy1hjPTrlm3rh
+	 8aCGGVXKKtwLZ1w8bCJGMGPk0hUwVYfQwbieyBwb0g8oilIuBzCwkezcQgoumM/0Me
+	 FMAbstGIBRqHuIAArvSZqB2HzCC8d8enCLo2MTrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.4 139/328] soc: qcom: socinfo: Avoid out of bounds read of serial number
-Date: Tue, 11 Mar 2025 15:58:29 +0100
-Message-ID: <20250311145720.427952804@linuxfoundation.org>
+	Andy Strohman <andrew@andrewstrohman.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.10 244/462] batman-adv: fix panic during interface removal
+Date: Tue, 11 Mar 2025 15:58:30 +0100
+Message-ID: <20250311145808.006708854@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Andy Strohman <andrew@andrewstrohman.com>
 
-commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
+commit ccb7276a6d26d6f8416e315b43b45e15ee7f29e2 upstream.
 
-On MSM8916 devices, the serial number exposed in sysfs is constant and does
-not change across individual devices. It's always:
+Reference counting is used to ensure that
+batadv_hardif_neigh_node and batadv_hard_iface
+are not freed before/during
+batadv_v_elp_throughput_metric_update work is
+finished.
 
-  db410c:/sys/devices/soc0$ cat serial_number
-  2644893864
+But there isn't a guarantee that the hard if will
+remain associated with a soft interface up until
+the work is finished.
 
-The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
-have support for the serial_num field in the socinfo struct. There is an
-existing check to avoid exposing the serial number in that case, but it's
-not correct: When checking the item_size returned by SMEM, we need to make
-sure the *end* of the serial_num is within bounds, instead of comparing
-with the *start* offset. The serial_number currently exposed on MSM8916
-devices is just an out of bounds read of whatever comes after the socinfo
-struct in SMEM.
+This fixes a crash triggered by reboot that looks
+like this:
 
-Fix this by changing offsetof() to offsetofend(), so that the size of the
-field is also taken into account.
+Call trace:
+ batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
+ batadv_v_elp_throughput_metric_update+0x1c/0xa4
+ process_one_work+0x178/0x398
+ worker_thread+0x2e8/0x4d0
+ kthread+0xd8/0xdc
+ ret_from_fork+0x10/0x20
+
+(the batadv_v_mesh_free call is misleading,
+and does not actually happen)
+
+I was able to make the issue happen more reliably
+by changing hardif_neigh->bat_v.metric_work work
+to be delayed work. This allowed me to track down
+and confirm the fix.
 
 Cc: stable@vger.kernel.org
-Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
+[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
+ soft_iface]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/bat_v_elp.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -436,7 +436,7 @@ static int qcom_socinfo_probe(struct pla
- 	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -66,12 +66,19 @@ static void batadv_v_elp_start_timer(str
+ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ {
+ 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
++	struct net_device *soft_iface = hard_iface->soft_iface;
+ 	struct ethtool_link_ksettings link_settings;
+ 	struct net_device *real_netdev;
+ 	struct station_info sinfo;
+ 	u32 throughput;
+ 	int ret;
  
--	if (offsetof(struct socinfo, serial_num) <= item_size) {
-+	if (offsetofend(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
++	/* don't query throughput when no longer associated with any
++	 * batman-adv interface
++	 */
++	if (!soft_iface)
++		return BATADV_THROUGHPUT_DEFAULT_VALUE;
++
+ 	/* if the user specified a customised value for this interface, then
+ 	 * return it directly
+ 	 */
+@@ -142,7 +149,7 @@ static u32 batadv_v_elp_get_throughput(s
+ 
+ default_throughput:
+ 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
+-		batadv_info(hard_iface->soft_iface,
++		batadv_info(soft_iface,
+ 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
+ 			    hard_iface->net_dev->name,
+ 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
 
 
 
