@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DC2A5C4F2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A04D3A5C718
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01D5F7A1FD0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26E617ACC10
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1B825E82A;
-	Tue, 11 Mar 2025 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C691DF749;
+	Tue, 11 Mar 2025 15:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGk9IJiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVR+y+MC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEEA25D908;
-	Tue, 11 Mar 2025 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E942E25B69D;
+	Tue, 11 Mar 2025 15:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705700; cv=none; b=tKy+V5L2y8i62YaQAEP+gRmqR4+4Nqj5RhBKXUWy5RTp0sMsQBvjtq9bjbOJW8aa7H6nVNRPAYPR2Qshq2o1GMva+d3uMrn+Pui+IpdkNvODEVMezgOsMiAJzGWJ9U/TV3PUEvkf0OLTwrwJP0UFUjEaT54McHYaNgM+J1fsJcI=
+	t=1741707032; cv=none; b=AaJxsqlmWLT3Qkzwz/wNI9lvElMxRfJ0dnbOvfnafcjL6f/+vBjiOgMnsye4jIr/Tu5CBHpHJ2ElsAKGWLYLA00bzbTindOPRPqlws2ecR44wo7vgVz71sUI7iUXM+fFBpxhqJol6RiqLMf05g999I1Jpr/wGDqJxGCTJjiUCu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705700; c=relaxed/simple;
-	bh=qhdHe21oNq9cCTRf62YcsANo0iRE3krjSlxhYIE5jZI=;
+	s=arc-20240116; t=1741707032; c=relaxed/simple;
+	bh=5kyjepotPYcLicoiFFZXPTaG7m7vFQjS8jzOn2Iw7As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouvNMKyarKZE2KyeSHB6O0jCyRvP49kSsxLKHcrQwMcwu+jtShOQu5CmjsNCKtc3aohDseuXrkp86iShPTlTfuMApg5G4uz3FIr5Mv8uiK3xzIFnyqlBYWXpBeS1B8Mrp11ZVHoxdQFUHvUlfeNAx4urxpBQsz8QZ2A/Y1LnWAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGk9IJiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86640C4CEE9;
-	Tue, 11 Mar 2025 15:08:19 +0000 (UTC)
+	 MIME-Version; b=eWl1s2soR9jXw1yJtJ8pFVpFlEArjw4lMdmvbjSOebaQANnLxsMlN4bQ/FNAMNR2w85Q7TTOp3o3+PkV18u2esxqld5qdvb8alfXH3NfDwXTDMrGfqhaukekiaxSJsQxkMeRVtA7I2pvgI9090Fc/T7u+hMFW0eH5XyUUs+tGf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVR+y+MC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736CDC4CEE9;
+	Tue, 11 Mar 2025 15:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705699;
-	bh=qhdHe21oNq9cCTRf62YcsANo0iRE3krjSlxhYIE5jZI=;
+	s=korg; t=1741707031;
+	bh=5kyjepotPYcLicoiFFZXPTaG7m7vFQjS8jzOn2Iw7As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yGk9IJiH15HfBfLPmXzumWk+f+6PMrs3X1SCVpp5j5Hn2YeyzW836b7WgH25911ur
-	 iMGbPtEJy8PjolGkdbVbNxdicdgS1oO6TzbybuYFUPhPNHrR3r2AADOgLNpafaupCu
-	 Jg6yHJ6pLTlsHMTfwZZlCVA/svtkQSjamMSxBH8c=
+	b=HVR+y+MCXgaqeGFTs8zmhvEOybk1GcpjmEKB2eSzJ7+hxgk0v4+/yNvtobquXFLsI
+	 22iDxPDrgytuKzohL3DEtGnNEH7gVOLzYmltpaM8KVfGCMWativsIXWIBF1ACeZw0/
+	 sSBTTiOO9hEi+xixU67+QdaurVaHlN6Q9MDUN6bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 105/328] net: usb: rtl8150: use new tasklet API
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 209/462] crypto: qce - unregister previously registered algos in error path
 Date: Tue, 11 Mar 2025 15:57:55 +0100
-Message-ID: <20250311145719.070654024@linuxfoundation.org>
+Message-ID: <20250311145806.619497073@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Renner Berthing <kernel@esmil.dk>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 1999ad32d4ff00581007543adffc465694b2e77b ]
+commit e80cf84b608725303113d6fe98bb727bf7b7a40d upstream.
 
-This converts the driver to use the new tasklet API introduced in
-commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
+If we encounter an error when registering alorithms with the crypto
+framework, we just bail out and don't unregister the ones we
+successfully registered in prior iterations of the loop.
 
-Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 90b7f2961798 ("net: usb: rtl8150: enable basic endpoint checking")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add code that goes back over the algos and unregisters them before
+returning an error from qce_register_algs().
+
+Cc: stable@vger.kernel.org
+Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/crypto/qce/core.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 387091cb91340..cbadb53bac441 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -597,9 +597,9 @@ static void free_skb_pool(rtl8150_t *dev)
- 		dev_kfree_skb(dev->rx_skb_pool[i]);
- }
- 
--static void rx_fixup(unsigned long data)
-+static void rx_fixup(struct tasklet_struct *t)
+--- a/drivers/crypto/qce/core.c
++++ b/drivers/crypto/qce/core.c
+@@ -45,16 +45,19 @@ static void qce_unregister_algs(struct q
+ static int qce_register_algs(struct qce_device *qce)
  {
--	struct rtl8150 *dev = (struct rtl8150 *)data;
-+	struct rtl8150 *dev = from_tasklet(dev, t, tl);
- 	struct sk_buff *skb;
- 	int status;
+ 	const struct qce_algo_ops *ops;
+-	int i, ret = -ENODEV;
++	int i, j, ret = -ENODEV;
  
-@@ -899,7 +899,7 @@ static int rtl8150_probe(struct usb_interface *intf,
- 		return -ENOMEM;
+ 	for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
+ 		ops = qce_ops[i];
+ 		ret = ops->register_algs(qce);
+-		if (ret)
+-			break;
++		if (ret) {
++			for (j = i - 1; j >= 0; j--)
++				ops->unregister_algs(qce);
++			return ret;
++		}
  	}
  
--	tasklet_init(&dev->tl, rx_fixup, (unsigned long)dev);
-+	tasklet_setup(&dev->tl, rx_fixup);
- 	spin_lock_init(&dev->rx_pool_lock);
+-	return ret;
++	return 0;
+ }
  
- 	dev->udev = udev;
--- 
-2.39.5
-
+ static int qce_handle_request(struct crypto_async_request *async_req)
 
 
 
