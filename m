@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-123678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90654A5C6A7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BDFA5C48C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F112216AD1E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A84E87AB481
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C7925DD0A;
-	Tue, 11 Mar 2025 15:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867B625E830;
+	Tue, 11 Mar 2025 15:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuTeNWGK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1inYXJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F68D25E813;
-	Tue, 11 Mar 2025 15:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D3B25E821;
+	Tue, 11 Mar 2025 15:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706649; cv=none; b=uf8lriSGQwcOVb3qjVD/9nnj97C2WM38wus6sfIjwBSL4xMUF5bBAwFYjjSWVOhYBMTSzQi0vY2BlEL6WKZBcFOd1sBSDGSCJpkXVT2fdf0ZgAWzF3YU1cxKpdfIFEmq2WZY9OmnzRleIHtlpiu7lJuap362/I/jllWL4cjL9+0=
+	t=1741705437; cv=none; b=twQs3AIjMzY3+V59j+TNXb2+K9Ogx4eBHz938QM7/ykV7OmjXUVx41mnMxSL/AChjVjbsGIHcAjhdphTjju7bN8yE4h7BCjD+/yVKc6b2Aph4hCJj/69KZ1EjpvSFMqonUl076zUaz3NP/vJ461OmtzjEdpoMMecOKj1ZuTw3pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706649; c=relaxed/simple;
-	bh=3piwH3z7wFM9OWET56uBmNJqXOpqT8+tUBO+Pq9DTtI=;
+	s=arc-20240116; t=1741705437; c=relaxed/simple;
+	bh=qgw7vCRv+piknX4JyBFwYICVKi08FQjmkd+rEwFiR1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAts2qMnkiJKYn6oAJl6rtSCn/c/QlFPSQ/c7TwBG0GJMsFgvhVkLm30gcLQkYKfbof54xGPgQCEK2QqsnI44xd5jrPaM/i0TcigtQx1N2Oi/OPveJ7Xr3bqz5ch3CsBzoNSUT1t0+5k9APQNHCLPILV0j/KE5YaKed+3DtVUdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fuTeNWGK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5A3C4CEE9;
-	Tue, 11 Mar 2025 15:24:08 +0000 (UTC)
+	 MIME-Version; b=KAZH5/Gjosgld1fAaJWC1E7WFUMuytf46ib9qwIlk+cHpGbAv0l4uip1FpCXEFiGyI7aHtDqTKQmsT4LVtvaTXyHrmLkO8PdKFFLbkMyJqG8iJ9fct/RGxjp6i25L+YFEKzdppaMP2UsD3Pa6FG9oc4ZSeBrLeQiubs4G4CS5i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1inYXJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81B6C4CEE9;
+	Tue, 11 Mar 2025 15:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706649;
-	bh=3piwH3z7wFM9OWET56uBmNJqXOpqT8+tUBO+Pq9DTtI=;
+	s=korg; t=1741705437;
+	bh=qgw7vCRv+piknX4JyBFwYICVKi08FQjmkd+rEwFiR1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fuTeNWGK/hFucicFMHTyH/NQKE16bVTlEAwk/CK/Wd8zUyVvSoaRZNmJBvp4+rAE6
-	 +yrO6OdPbFS29ZUmWgrgJoUlwdrBqnCeul/4QlEd7PchXUAymAaVs/JQm7GtM6KAUX
-	 ZNVCr5xkC0YYCx+UnF2KhjtYbotbxOFdfZBT/wog=
+	b=k1inYXJcJxsZTGQlChuVY1DnczU8OQSlxrEvk8sdPWk/mNXraidtK3iF8X+HPP7EW
+	 F/HX0O/xxjWpH/M+fm9fGxx2E30YzlERG/Xbv12xovNLkTCq0lE7bwq0kbWk36Lwe3
+	 +spEmSI3DL87VHx07uVNBzJn8iyI4neBtZh0d9Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.10 120/462] usb: gadget: f_tcm: Fix Get/SetInterface return value
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 016/328] dt-bindings: mmc: controller: clarify the address-cells description
 Date: Tue, 11 Mar 2025 15:56:26 +0100
-Message-ID: <20250311145803.100644845@linuxfoundation.org>
+Message-ID: <20250311145715.526626164@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-commit 3b997089903b909684114aca6f79d683e5c64a0e upstream.
+[ Upstream commit b2b8e93ec00b8110cb37cbde5400d5abfdaed6a7 ]
 
-Check to make sure that the GetInterface and SetInterface are for valid
-interface. Return proper alternate setting number on GetInterface.
+The term "slot ID" has nothing to do with the SDIO function number
+which is specified in the reg property of the subnodes, rephrase
+the description to be more accurate.
 
-Fixes: 0b8b1a1fede0 ("usb: gadget: f_tcm: Provide support to get alternate setting in tcm function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/ffd91b4640945ea4d3b4f4091cf1abbdbd9cf4fc.1733876548.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f9b7989859dd ("dt-bindings: mmc: Add YAML schemas for the generic MMC options")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Message-ID: <20241128-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v4-1-11d9f9200a59@linaro.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -2102,9 +2102,14 @@ static void tcm_delayed_set_alt(struct w
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index 080754e0ef352..ccb9df705fb1c 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -21,7 +21,7 @@ properties:
+   "#address-cells":
+     const: 1
+     description: |
+-      The cell is the slot ID if a function subnode is used.
++      The cell is the SDIO function number if a function subnode is used.
  
- static int tcm_get_alt(struct usb_function *f, unsigned intf)
- {
--	if (intf == bot_intf_desc.bInterfaceNumber)
-+	struct f_uas *fu = to_f_uas(f);
-+
-+	if (fu->iface != intf)
-+		return -EOPNOTSUPP;
-+
-+	if (fu->flags & USBG_IS_BOT)
- 		return USB_G_ALT_INT_BBB;
--	if (intf == uasp_intf_desc.bInterfaceNumber)
-+	else if (fu->flags & USBG_IS_UAS)
- 		return USB_G_ALT_INT_UAS;
- 
- 	return -EOPNOTSUPP;
-@@ -2114,6 +2119,9 @@ static int tcm_set_alt(struct usb_functi
- {
- 	struct f_uas *fu = to_f_uas(f);
- 
-+	if (fu->iface != intf)
-+		return -EOPNOTSUPP;
-+
- 	if ((alt == USB_G_ALT_INT_BBB) || (alt == USB_G_ALT_INT_UAS)) {
- 		struct guas_setup_wq *work;
- 
+   "#size-cells":
+     const: 0
+-- 
+2.39.5
+
 
 
 
