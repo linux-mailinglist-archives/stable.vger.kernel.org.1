@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E60A5C78D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83961A5C56E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13EA189F85A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1B53B91BA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E4525F98D;
-	Tue, 11 Mar 2025 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1236425DD0F;
+	Tue, 11 Mar 2025 15:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYJOW30B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fg1nI3q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA9525EFB8;
-	Tue, 11 Mar 2025 15:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10EE25C715;
+	Tue, 11 Mar 2025 15:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707070; cv=none; b=o3FU+YEBqx9eB7cG6BBfhApU/G6JhYVc02lwrm3PBFYWHaMD7lNRdkUPZiU5Qz2f+IQpBAVgcgTKTMyfiY0bVnMbzSxt6hfbUhYUeNqQyHrOTKKzql/YqLDIBO5WOAzqA/e0qvAznKnRNyck0tMR5JuRqZSICABmktewPkj1nl0=
+	t=1741705886; cv=none; b=Tnj5huH9XyqZq6IHUcI78ovsnRNJuKP9mYAQegbQIZfhzc2A1P3FsZQ/xoR3HzhPOmL4ZSHBITOKZZsNbWAUosm9dbPGhbo4B7NOrCWzDrPtD/B8wANIaeHzKa+NhB2m3yroybKghRK57HqqeGKd5Ln1wSR4NAPqEnAF+wwiRss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707070; c=relaxed/simple;
-	bh=4EkXgRL6l4sRBmwvaSS+pUqmcxoNXT6wv6cQYMsqe2I=;
+	s=arc-20240116; t=1741705886; c=relaxed/simple;
+	bh=tHi5KybfWqbeVUS7pF7TAs8U6mGSGtrOsO1vApzORtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a72Jp560lRXzEjJPGU56EmuKaZ2fgESZHYpt7akXdxKPgnCSa9Ar/3zA0IOleuZ4vB6wBXG5EOZd5gEQTP39sWfyExKQ45KQzfchszJ+FI0HrGqOyU6gH/3+zZH24CsfEyFuhd0ElEwsR6zA4QBe3SptFrpWgj4UsjsXbizq74o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYJOW30B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D4EC4CEEA;
-	Tue, 11 Mar 2025 15:31:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=askpdIiGcM6Jrw3sOGkOdrtrQox5OLQuF2bLBeJIzNWtMsqYXZ9dhD9ERNFEs6/lwivp+10CjJV6ESpD4sBjkiA/lTuZ9DRkQhcxgJ7Iy4DhSHQHrl4bk1l/u4M8cgqUVlCq5VdRIqc91RLLzqJHYCK6dXzuZHNC0o44qB+o75U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fg1nI3q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C8CC4CEE9;
+	Tue, 11 Mar 2025 15:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707069;
-	bh=4EkXgRL6l4sRBmwvaSS+pUqmcxoNXT6wv6cQYMsqe2I=;
+	s=korg; t=1741705886;
+	bh=tHi5KybfWqbeVUS7pF7TAs8U6mGSGtrOsO1vApzORtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYJOW30B8S9G2MpnOBHb4m7bD8Z2MY+KjdB0rP17mXfbxt0xmhKlBUzsgSCz8HLX4
-	 zBjaDlToEV0cLNoeDPIkmQ4TiayRmAoKUTbZ6Aa/W4EBE3p8ojVxb2xQTRw/vdBqMr
-	 xi9IzUXOtSgqiaAAALv8EbIvy29/y6dpUV3mk6z0=
+	b=fg1nI3q8ayuvPj9AVv9lMqrigIMipb+KIQGhyXLQ61YUY2RZaT0TEoRbYZGhPtTrT
+	 H7DGgGMJ1psC/9H0XVHz3YsavTNcWRTI6Q/kzMDIw8DQV/l0de1TR4JLB+bE8XeN9p
+	 nFvBzO0v13/OXEYxxn6OBTcR0Ulxh3E2urCHnxEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 263/462] can: c_can: fix unbalanced runtime PM disable in error path
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 159/328] ptp: Ensure info->enable callback is always set
 Date: Tue, 11 Mar 2025 15:58:49 +0100
-Message-ID: <20250311145808.750250621@linuxfoundation.org>
+Message-ID: <20250311145721.227499832@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 257a2cd3eb578ee63d6bf90475dc4f4b16984139 upstream.
+commit fd53aa40e65f518453115b6f56183b0c201db26b upstream.
 
-Runtime PM is enabled as one of the last steps of probe(), so all
-earlier gotos to "exit_free_device" label were not correct and were
-leading to unbalanced runtime PM disable depth.
+The ioctl and sysfs handlers unconditionally call the ->enable callback.
+Not all drivers implement that callback, leading to NULL dereferences.
+Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
 
-Fixes: 6e2fe01dd6f9 ("can: c_can: move runtime PM enable/disable to c_can_platform")
+Instead use a dummy callback if no better was specified by the driver.
+
+Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250112-syscon-phandle-args-can-v1-1-314d9549906f@linaro.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/c_can/c_can_platform.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/ptp/ptp_clock.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/can/c_can/c_can_platform.c
-+++ b/drivers/net/can/c_can/c_can_platform.c
-@@ -392,15 +392,16 @@ static int c_can_plat_probe(struct platf
- 	if (ret) {
- 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
- 			KBUILD_MODNAME, ret);
--		goto exit_free_device;
-+		goto exit_pm_runtime;
- 	}
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -178,6 +178,11 @@ static void ptp_clock_release(struct dev
+ 	kfree(ptp);
+ }
  
- 	dev_info(&pdev->dev, "%s device registered (regs=%p, irq=%d)\n",
- 		 KBUILD_MODNAME, priv->base, dev->irq);
- 	return 0;
++static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
++{
++	return -EOPNOTSUPP;
++}
++
+ static void ptp_aux_kworker(struct kthread_work *work)
+ {
+ 	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
+@@ -223,6 +228,9 @@ struct ptp_clock *ptp_clock_register(str
+ 	mutex_init(&ptp->pincfg_mux);
+ 	init_waitqueue_head(&ptp->tsev_wq);
  
--exit_free_device:
-+exit_pm_runtime:
- 	pm_runtime_disable(priv->device);
-+exit_free_device:
- 	free_c_can_dev(dev);
- exit:
- 	dev_err(&pdev->dev, "probe failed\n");
++	if (!ptp->info->enable)
++		ptp->info->enable = ptp_enable;
++
+ 	if (ptp->info->do_aux_work) {
+ 		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
+ 		ptp->kworker = kthread_create_worker(0, "ptp%d", ptp->index);
 
 
 
