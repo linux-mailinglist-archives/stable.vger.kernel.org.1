@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-123550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F28A5C60F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EFFA5C893
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D540618891F9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DB33AF6E3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CA125DB0A;
-	Tue, 11 Mar 2025 15:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6AB25E82C;
+	Tue, 11 Mar 2025 15:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cf6x4quL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyXnXLLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118FD1BD00C;
-	Tue, 11 Mar 2025 15:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3781E3C0B;
+	Tue, 11 Mar 2025 15:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706278; cv=none; b=HFLiwCZVmQkH26fN0ahz8YbPs0ma/oIfBnxWsN4DEfCjtz8CY8hBuOTZ6TCchsiPSXeMllRTbIxMq53cb2X1V/ZdSCLqTf0mNB+O+Ph24z/74VS+U55uhquVVUNDy5LQZ9+W+MpXRvMFIztYz7caWsy4nnYvE2d3LduRfG0zGXM=
+	t=1741707549; cv=none; b=KCRsFK7TKgfXk5btsInP2E5Y1T6aNTkubum1hJX49AFuR5SAOGD71KRIOJC/N98LUilCE0vDuIAht5h/tElIs0D36wOZV20yiwXsPaOb3MEvPXi/artIOkPrUvi9H5RGxUlglWMOmHBIhMVblGUooof5AbQ/Y9iNjTv8uJXrAr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706278; c=relaxed/simple;
-	bh=BWPt6A2IDfJypA+9QNv91m4cuBvOM6nWX+C3G10kk8k=;
+	s=arc-20240116; t=1741707549; c=relaxed/simple;
+	bh=Pqk+mdQOjGATvldO+wEXpryQitMi7FNGL0vVOgZnU/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzrYvFdm1NGKHscRMiHnJdZZzVoza6ZLh0YoNpcVNnB9hOLR80F05Mgp+p+04pokGAUgQwEL8YyUhXtHRqMh6hhnZnK7rJlPs4eX5tjlINJuEtpmPlt9VFkR1HC2StwOrIM6M2VqetsFZekccqdi4EybhhYnDx+wyHs5NIgGVJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cf6x4quL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8924AC4CEE9;
-	Tue, 11 Mar 2025 15:17:57 +0000 (UTC)
+	 MIME-Version; b=gA0zmZfmdHfTwl/aR4d+Ckla4HaXG8HgAtLu3V6dqCChrGNrGQFbcrcja4sUWxfp5BuL/v4cA5kZsKGTWXz7j555JAmW5mLvQjXjHd/pO8nqDpoXh2F3Ad7I7nq3+PDljKMAsn7j0QZ1w5wAk6vuwACgwveuLbENbmQ6zSGQTcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyXnXLLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B043EC4CEEC;
+	Tue, 11 Mar 2025 15:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706277;
-	bh=BWPt6A2IDfJypA+9QNv91m4cuBvOM6nWX+C3G10kk8k=;
+	s=korg; t=1741707549;
+	bh=Pqk+mdQOjGATvldO+wEXpryQitMi7FNGL0vVOgZnU/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cf6x4quLe6GhDTgBI4QD9T2AGOfchrB9t9Au2UNZMvP6fb3DjHr/azDWPDz2emjcW
-	 FGefT//GEjxnPnRN0Zmuh0Jyx1d3pY2fHMaSe1F05RG7bL3rJo5sugnKKBsWPbWskK
-	 bxeKcqR0NV8EhSiksI097OXClKSGGr3fIAFxLgTM=
+	b=cyXnXLLsjj0X//Fi0h9v57nU/wI0uzNmOH4PuYBkRJNDWlKLIRXkOArd8yBzowm1A
+	 z4XsIo63ba5NQloCrawDWzSqcvfRO0AbFrBThdhH7jtCxXUXJKvatp8jYmCKqWgu3t
+	 PvtVM7YnFSpYgckWklhq1IC66nYiWP2yKWwhMOzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	"Ubisectech Sirius" <bugreport@ubisectech.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.4 323/328] Squashfs: check the inode number is not the invalid value of zero
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.10 427/462] usb: renesas_usbhs: Use devm_usb_get_phy()
 Date: Tue, 11 Mar 2025 16:01:33 +0100
-Message-ID: <20250311145727.736648716@linuxfoundation.org>
+Message-ID: <20250311145815.204518290@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 9253c54e01b6505d348afbc02abaa4d9f8a01395 upstream.
+commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
 
-Syskiller has produced an out of bounds access in fill_meta_index().
+The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
+never released. Use devm_usb_get_phy() to handle this scenario.
 
-That out of bounds access is ultimately caused because the inode
-has an inode number with the invalid value of zero, which was not checked.
+This issue was identified through code investigation. No issue was found
+without this change.
 
-The reason this causes the out of bounds access is due to following
-sequence of events:
-
-1. Fill_meta_index() is called to allocate (via empty_meta_index())
-   and fill a metadata index.  It however suffers a data read error
-   and aborts, invalidating the newly returned empty metadata index.
-   It does this by setting the inode number of the index to zero,
-   which means unused (zero is not a valid inode number).
-
-2. When fill_meta_index() is subsequently called again on another
-   read operation, locate_meta_index() returns the previous index
-   because it matches the inode number of 0.  Because this index
-   has been returned it is expected to have been filled, and because
-   it hasn't been, an out of bounds access is performed.
-
-This patch adds a sanity check which checks that the inode number
-is not zero when the inode is created and returns -EINVAL if it is.
-
-[phillip@squashfs.org.uk: whitespace fix]
-  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
- 	gid_t i_gid;
- 	int err;
+--- a/drivers/usb/renesas_usbhs/mod_gadget.c
++++ b/drivers/usb/renesas_usbhs/mod_gadget.c
+@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
+ 		goto usbhs_mod_gadget_probe_err_gpriv;
+ 	}
  
-+	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
-+	if (inode->i_ino == 0)
-+		return -EINVAL;
-+
- 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
- 	if (err)
- 		return err;
-@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
+-	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
++	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
+ 	dev_info(dev, "%stransceiver found\n",
+ 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
  
- 	i_uid_write(inode, i_uid);
- 	i_gid_write(inode, i_gid);
--	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
- 	inode->i_mtime.tv_sec = le32_to_cpu(sqsh_ino->mtime);
- 	inode->i_atime.tv_sec = inode->i_mtime.tv_sec;
- 	inode->i_ctime.tv_sec = inode->i_mtime.tv_sec;
 
 
 
