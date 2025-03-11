@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EFFA5C893
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:46:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A15A5C5E2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DB33AF6E3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4215166869
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6AB25E82C;
-	Tue, 11 Mar 2025 15:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415412571D8;
+	Tue, 11 Mar 2025 15:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyXnXLLs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi2tc68n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3781E3C0B;
-	Tue, 11 Mar 2025 15:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D6A7E110;
+	Tue, 11 Mar 2025 15:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707549; cv=none; b=KCRsFK7TKgfXk5btsInP2E5Y1T6aNTkubum1hJX49AFuR5SAOGD71KRIOJC/N98LUilCE0vDuIAht5h/tElIs0D36wOZV20yiwXsPaOb3MEvPXi/artIOkPrUvi9H5RGxUlglWMOmHBIhMVblGUooof5AbQ/Y9iNjTv8uJXrAr0=
+	t=1741706281; cv=none; b=m56T7gBEhz0ZOiUZX8zzY6GeulcBu23898ww15Aq8tKrjNQ0QiHoAXSscx1TRmJfjUL8QiZG03EG02kVD4FtRI+1r9Oi1gt+SGUssWbZWyg9KPsK6l0pIN+2KNMRLOebnjp7h3Y+OwPxOuNFmFeWgYuK7Z3VNNPII3qJOL1WtS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707549; c=relaxed/simple;
-	bh=Pqk+mdQOjGATvldO+wEXpryQitMi7FNGL0vVOgZnU/I=;
+	s=arc-20240116; t=1741706281; c=relaxed/simple;
+	bh=Pjjk5WaDTE0hoxOotWuOOdErxQGTwyxwR3+09V/cBaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gA0zmZfmdHfTwl/aR4d+Ckla4HaXG8HgAtLu3V6dqCChrGNrGQFbcrcja4sUWxfp5BuL/v4cA5kZsKGTWXz7j555JAmW5mLvQjXjHd/pO8nqDpoXh2F3Ad7I7nq3+PDljKMAsn7j0QZ1w5wAk6vuwACgwveuLbENbmQ6zSGQTcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyXnXLLs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B043EC4CEEC;
-	Tue, 11 Mar 2025 15:39:08 +0000 (UTC)
+	 MIME-Version; b=b5hb5Imn0FfckRwM3V5GZ6z+etrqeh7sBjjlfH5qypacGSWyJSX9FnRm2yI+12jewlbnPDl/x9k7HroFHOo5sU0AbweKimAbYMgdFgrM/Kcd2S2furKpKUnBwBTRoTItuhQSt57TlQp4txEKwGee2nzcodH7yNnbgVF6Q6NxcBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi2tc68n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7346AC4CEE9;
+	Tue, 11 Mar 2025 15:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707549;
-	bh=Pqk+mdQOjGATvldO+wEXpryQitMi7FNGL0vVOgZnU/I=;
+	s=korg; t=1741706280;
+	bh=Pjjk5WaDTE0hoxOotWuOOdErxQGTwyxwR3+09V/cBaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cyXnXLLsjj0X//Fi0h9v57nU/wI0uzNmOH4PuYBkRJNDWlKLIRXkOArd8yBzowm1A
-	 z4XsIo63ba5NQloCrawDWzSqcvfRO0AbFrBThdhH7jtCxXUXJKvatp8jYmCKqWgu3t
-	 PvtVM7YnFSpYgckWklhq1IC66nYiWP2yKWwhMOzY=
+	b=fi2tc68nH94JV/1VqzGslUytQQTfGVvnXDLi4YfqksJr79N9OKUZzBfM9ynDKqlOP
+	 zEnk4EERz5O4530/emDyx/JW+p6G0xmjJq3lM8JqSoRt9GUd5AbzSQgw6Gylv3vSYo
+	 FBwcZ94554AZ3qtATEWNF6xTWt063J7tyOwtQvs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.10 427/462] usb: renesas_usbhs: Use devm_usb_get_phy()
-Date: Tue, 11 Mar 2025 16:01:33 +0100
-Message-ID: <20250311145815.204518290@linuxfoundation.org>
+	Pawel Chmielewski <pawel.chmielewski@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.4 324/328] intel_th: pci: Add Arrow Lake support
+Date: Tue, 11 Mar 2025 16:01:34 +0100
+Message-ID: <20250311145727.776171408@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Pawel Chmielewski <pawel.chmielewski@intel.com>
 
-commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
+commit b5edccae9f447a92d475267d94c33f4926963eec upstream.
 
-The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
-never released. Use devm_usb_get_phy() to handle this scenario.
+Add support for the Trace Hub in Arrow Lake.
 
-This issue was identified through code investigation. No issue was found
-without this change.
-
-Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Pawel Chmielewski <pawel.chmielewski@intel.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20250211185017.1759193-4-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/renesas_usbhs/mod_gadget.c
-+++ b/drivers/usb/renesas_usbhs/mod_gadget.c
-@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
- 		goto usbhs_mod_gadget_probe_err_gpriv;
- 	}
- 
--	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
-+	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
- 	dev_info(dev, "%stransceiver found\n",
- 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
- 
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -325,6 +325,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Arrow Lake */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7724),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Rocket Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4c19),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
