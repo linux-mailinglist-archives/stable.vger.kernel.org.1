@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2314BA5C807
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B56AA5C564
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF113AE7B4
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780851684DB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EA725F7AD;
-	Tue, 11 Mar 2025 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69C325DD0F;
+	Tue, 11 Mar 2025 15:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdDHnZcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="All/XwmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFB225EFB5;
-	Tue, 11 Mar 2025 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9579025D8F9;
+	Tue, 11 Mar 2025 15:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707225; cv=none; b=OHqXt0VeHqTGucu1K1/47O6q1nDtNOtwvGNkYV7Sizczk3F2ya7tVrkZ6fLnWa6fnx6069LLUzPaEDpup5JGhr62SI/jVnMmVorNnRBy9ZmfrDeQXKsVFDWwqP99tPn/cs6dlIiQQxmk20lGQi1snx4FqNGk1ub5ru9KXKllr+M=
+	t=1741705921; cv=none; b=k4gO1FgG+TRmbbX6Yo+lsqDzCBOfc1/QRUoOvZA9GEe3XJKpyDJ6/QJQ7I/ay+zw/whGDs8vmehOhC9PmyoyV8+D9T6JxbXnuQY5Wnf15wzehS5ze2brqFqldyj7X70t6VgqVoNbSe4Vk6u7NAL6m2a+0jgIOWZzhsTTx4W7wQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707225; c=relaxed/simple;
-	bh=UvJjvku1j9/JYVrW864jAGwWBvhUyy1JlvnH8PKBKq4=;
+	s=arc-20240116; t=1741705921; c=relaxed/simple;
+	bh=RHaKIKHnJTBHkKnxOUgnbhnBjiFP/I2fX11x9fzFptA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/kGDUnDa1GcFHSkY/1F7M4j4ig4siCVP+Euqa9ilvJSuD4zbN8APpSVkXBki8LDkM/R2HcIj4aA6U0lC8zMWki3+sOFhhpNZUIlyqm5QyrzrxiiBDM9Kru1rBuhylLNQStJz0PdvDmYmmLh06t8dVQ0pXUplfVZhd8pdAse/7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdDHnZcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88043C4CEE9;
-	Tue, 11 Mar 2025 15:33:44 +0000 (UTC)
+	 MIME-Version; b=M70kru2sN07eBWG+fQc3aKZz1QlYUuk2htM1MfX7E+sQEuoP7GEDo4hPgJx+jT5ng4bSRZQyEgOXNK6L0sKRA11Oemy+BJVd+kwR30JZuYxwCwGE06IBunQni6QdOmK4eh6cbh/Ej6kKOy5pMQJKOaTwW4Ndb3ypxnKgQhpFWSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=All/XwmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4C6C4CEE9;
+	Tue, 11 Mar 2025 15:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707224;
-	bh=UvJjvku1j9/JYVrW864jAGwWBvhUyy1JlvnH8PKBKq4=;
+	s=korg; t=1741705921;
+	bh=RHaKIKHnJTBHkKnxOUgnbhnBjiFP/I2fX11x9fzFptA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VdDHnZcNkUsAUiSHU7jUqB4Jzqt3mXcfR+o2ojoM3xhJygJEcmIudvfsDfhwIuYmB
-	 psnywnsth/1qz03npF3M5bOeFAD0vgkXQqPi7MPel/bU+QLEEv1DKEipQ4gpfzOyO6
-	 gCqqiI8C4weUeOe8lk4JhAPZZjj2WNEJy0ZGF3pQ=
+	b=All/XwmZAGHchwVsdh8PKdR/f28J4wFQxHijuILHVduAdmwJQLBhaVtKQZmR0G4pJ
+	 x39dYoMVlungs7fqNnIkygAehxKHPYpiUeWEdUeb+tOfemkhDjIVOSCvt3XsGi9Itz
+	 0An3PI0oQKR6ynr1JzmIXqJXLxsvYEKUO2QWPneA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 286/462] neighbour: use RCU protection in __neigh_notify()
-Date: Tue, 11 Mar 2025 15:59:12 +0100
-Message-ID: <20250311145809.669625558@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Forest <forestix@nom.one>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.4 183/328] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+Date: Tue, 11 Mar 2025 15:59:13 +0100
+Message-ID: <20250311145722.174548065@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
+commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
 
-__neigh_notify() can be called without RTNL or RCU protection.
+The fastboot tool for communicating with Android bootloaders does not
+work reliably with this device if USB 2 Link Power Management (LPM)
+is enabled.
 
-Use RCU protection to avoid potential UAF.
+Various fastboot commands are affected, including the
+following, which usually reproduces the problem within two tries:
 
-Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  fastboot getvar kernel
+  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
+
+This issue was hidden on many systems up until commit 63a1f8454962
+("xhci: stored cached port capability values in one place") as the xhci
+driver failed to detect USB 2 LPM support if USB 3 ports were listed
+before USB 2 ports in the "supported protocol capabilities".
+
+Adding the quirk resolves the issue. No drawbacks are expected since
+the device uses different USB product IDs outside of fastboot mode, and
+since fastboot commands worked before, until LPM was enabled on the
+tested system by the aforementioned commit.
+
+Based on a patch from Forest <forestix@nom.one> from which most of the
+code and commit message is taken.
+
+Cc: stable <stable@kernel.org>
+Reported-by: Forest <forestix@nom.one>
+Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
+Tested-by: Forest <forestix@nom.one>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index bd017b220cfed..f04ba63e98515 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3369,10 +3369,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
- static void __neigh_notify(struct neighbour *n, int type, int flags,
- 			   u32 pid)
- {
--	struct net *net = dev_net(n->dev);
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
-+	struct net *net;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -430,6 +430,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
+ 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
  
-+	rcu_read_lock();
-+	net = dev_net_rcu(n->dev);
- 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
- 	if (skb == NULL)
- 		goto errout;
-@@ -3385,9 +3387,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 		goto errout;
- 	}
- 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
--	return;
-+	goto out;
- errout:
- 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-+out:
-+	rcu_read_unlock();
- }
- 
- void neigh_app_ns(struct neighbour *n)
--- 
-2.39.5
-
++	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
++	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Action Semiconductor flash disk */
+ 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
+ 			USB_QUIRK_STRING_FETCH_255 },
 
 
 
