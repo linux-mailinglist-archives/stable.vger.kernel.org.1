@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CF1A5C6FA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B08A5C49E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5D33B735C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D2433B63A3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FB325DD08;
-	Tue, 11 Mar 2025 15:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57B825EFA9;
+	Tue, 11 Mar 2025 15:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRHKinrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmvJxId0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4461684AC;
-	Tue, 11 Mar 2025 15:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6329C25EF94;
+	Tue, 11 Mar 2025 15:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706701; cv=none; b=mHjSPMXEBVH9GTyxEQshtTvz5hkVbPPgyfGOZ+8PqsmaAeEZL0YagTXqN3a/H5+wSSgErkRdg5P5YD02FZ2xXG8KEAJWPVcMQYwXQgO0BXiQ1Zbn9xgErglEPRc5u826uB0JBQnUHUoyVB4uPQKfbBHE+US36hQNTL/+CdGPufU=
+	t=1741705434; cv=none; b=QMbg//kGGrod9Ork/jeytM4/VEAFioyBRusWXxLC3s1JotLMSBbmTryWW6bz5rVO02nYjOtT7cHD86xFoNJ5smYxhbEpGpAhqx8YiEOMBpR4FMLnf506PjKLVAnG8nfq4w1PbjJCbdUOG9YPJidNiTVxpYbSTUNmE1PDzM6QBms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706701; c=relaxed/simple;
-	bh=tqKaQGlSIQTIqM8mQzzwEp3KfEgDy6jocl63CMS8DIE=;
+	s=arc-20240116; t=1741705434; c=relaxed/simple;
+	bh=yhs2CyrUL12GKyst24ykoAYnRc2qLrQ3ET1PFYZwGsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBmd4NE1XMnG4sdI6g/uCOkR1ysJej+9pUaRNEQdO8xsIUfbUiRyxx3A624sUgbR9bqT8lqYd4HpYtqn4qDF+6vlL6vfEI/fk6XCPWzN+X+BVl9FOaSc6wD8/+V/GpxkOFk9bLcTXBuL2CCQwbWl+s33Y5WFb6sAK6/V3VCOdIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRHKinrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3ABC4CEE9;
-	Tue, 11 Mar 2025 15:25:00 +0000 (UTC)
+	 MIME-Version; b=A/x+Q3nuDx9KSluAAMnFlBViUEzZQv2375wEpYTED9ACyDmnO75kEXYNdBbXOmT9Ns6VKu/Gceo25liodGfgB/GR+2MdY93mxNim0GM35/dO5cDFpwkI17BLM5JJDlG87rThxUITQKdnpwQpdMktXCtqz0ljGTy5ZnvQ8MHf5VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmvJxId0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFE8C4CEE9;
+	Tue, 11 Mar 2025 15:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706701;
-	bh=tqKaQGlSIQTIqM8mQzzwEp3KfEgDy6jocl63CMS8DIE=;
+	s=korg; t=1741705434;
+	bh=yhs2CyrUL12GKyst24ykoAYnRc2qLrQ3ET1PFYZwGsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRHKinrhxWRIWdloMBeQNBFAQdB6A2bIfdl6oA93o0BfceYgUIFvrmKJaM/2AJYuH
-	 VL4dgLM1asrAe3QPTKB2Sv32dSpl1sFNkNAzlIR5ng+mkRucLeYURnMPDAK6EJAiZq
-	 IqIIBG6LzzURsIx3IAdl7n+tBTNBVsEElLxlMBZk=
+	b=wmvJxId00Rhhhq9QX2gKHtvn6IDeFMchQIH9eWxYB+4a9WblC9wFCqfsxArGVZ6xZ
+	 SjXkfcpO7CFPQ0FBf3ulBsPS2VUHodSRjhe5l/IPEI1khAxfzjtm5gv0AkeToL5eqh
+	 b0semschHWDALeulmfCVU29++Qkbru8T/WEBaYck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Marco Leogrande <leogrande@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 137/462] mfd: lpc_ich: Add another Gemini Lake ISA bridge PCI device-id
+Subject: [PATCH 5.4 033/328] tools/testing/selftests/bpf/test_tc_tunnel.sh: Fix wait for server bind
 Date: Tue, 11 Mar 2025 15:56:43 +0100
-Message-ID: <20250311145803.770761015@linuxfoundation.org>
+Message-ID: <20250311145716.212299943@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Marco Leogrande <leogrande@google.com>
 
-[ Upstream commit 1e89d21f8189d286f80b900e1b7cf57cb1f3037e ]
+[ Upstream commit e2f0791124a1b6ca8d570110cbd487969d9d41ef ]
 
-On N4100 / N4120 Gemini Lake SoCs the ISA bridge PCI device-id is 31e8
-rather the 3197 found on e.g. the N4000 / N4020.
+Commit f803bcf9208a ("selftests/bpf: Prevent client connect before
+server bind in test_tc_tunnel.sh") added code that waits for the
+netcat server to start before the netcat client attempts to connect to
+it. However, not all calls to 'server_listen' were guarded.
 
-While at fix the existing GLK PCI-id table entry breaking the table
-being sorted by device-id.
+This patch adds the existing 'wait_for_port' guard after the remaining
+call to 'server_listen'.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241114193808.110132-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: f803bcf9208a ("selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh")
+Signed-off-by: Marco Leogrande <leogrande@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/r/20241202204530.1143448-1-leogrande@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/lpc_ich.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/test_tc_tunnel.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/lpc_ich.c b/drivers/mfd/lpc_ich.c
-index 2411b7a2e6f47..4c21c00124d5e 100644
---- a/drivers/mfd/lpc_ich.c
-+++ b/drivers/mfd/lpc_ich.c
-@@ -687,8 +687,9 @@ static const struct pci_device_id lpc_ich_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x2917), LPC_ICH9ME},
- 	{ PCI_VDEVICE(INTEL, 0x2918), LPC_ICH9},
- 	{ PCI_VDEVICE(INTEL, 0x2919), LPC_ICH9M},
--	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x2b9c), LPC_COUGARMOUNTAIN},
-+	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
-+	{ PCI_VDEVICE(INTEL, 0x31e8), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x3a14), LPC_ICH10DO},
- 	{ PCI_VDEVICE(INTEL, 0x3a16), LPC_ICH10R},
- 	{ PCI_VDEVICE(INTEL, 0x3a18), LPC_ICH10},
+diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+index 21bde60c95230..e42d8959cbf1c 100755
+--- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
++++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+@@ -286,6 +286,7 @@ else
+ 	client_connect
+ 	verify_data
+ 	server_listen
++	wait_for_port ${port} ${netcat_opt}
+ fi
+ 
+ # bpf_skb_net_shrink does not take tunnel flags yet, cannot update L3.
 -- 
 2.39.5
 
