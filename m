@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2498A5C4F1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEE2A5C74F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD533A6A31
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 059E13BBA5D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E530E25DCE3;
-	Tue, 11 Mar 2025 15:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB5825DCE3;
+	Tue, 11 Mar 2025 15:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtwCPlm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjv2gaAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B6C25E446;
-	Tue, 11 Mar 2025 15:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCD515820C;
+	Tue, 11 Mar 2025 15:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705599; cv=none; b=AXqJ+a/KJt9fi5U+1h7olGfbyyZyC/ANyzW4HEw9y7x6MHileNJr4PuFS7HMbBh228//IuJFonYMTUJE+gyVxb3jWkrL71UYKNl0jpRhR0e8izFHWbJUx+MUdSWtEAY0YMYaOOXOXk3AW+JRjP/+3UvvTs3RQB8yE4cUHPTWKGs=
+	t=1741706872; cv=none; b=Sfg8OGQiKF2U247LVlSUBLmESgAQg76TVLDYgDvYPykJhSuDirJyLc/zMOsns0sZt9kBkKoO7ccpCGGzPslPo/Eky0Koqq/VHZiZX2kAQlYarzzw14dc2skiA2Eo1tRtYqNaX73TImFJwM17GleFfnH3SIoDggnvdiXpBwiNRsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705599; c=relaxed/simple;
-	bh=aQvNJNI4doWF1nT+EMUy8HOdy3sIx9qi1cWhWM4p9wI=;
+	s=arc-20240116; t=1741706872; c=relaxed/simple;
+	bh=NBU9EQZ4P4ze7iSVOPkzWRjVlVe7v70S/7Qbdo66yxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clXM82L7HTqT8rUmdHm+m1CTXklg4WsOvQHSG9updPKR3VC6mSUpev4guwYnwfPE7oOG8nOUmfd45zl6I7nusxq0oZa0Smn9sHJfSLx7JMtUQE302WLe6VoknSahqkpjJMVpBRKnNpcBuY5NTNzbq0sTsQKRR0d9IV2p5mjOfJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtwCPlm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B661C4CEE9;
-	Tue, 11 Mar 2025 15:06:38 +0000 (UTC)
+	 MIME-Version; b=nKpjEDPsd4spdUO8PCX+wie0uLwg6/iPgQNFuWXaNCYAvx6NwR+rcZ0uQtrV+RXSC14iY8ODlkHBScvaO0cOx3FFd/vuV2edJdUXLAfghqgUmG323/vJ9qhJp2cBJfWMk39UyeTTa1vB3XMYvjZic2MMCVFMaTuJnusnZ6wfglk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjv2gaAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139CDC4CEE9;
+	Tue, 11 Mar 2025 15:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705599;
-	bh=aQvNJNI4doWF1nT+EMUy8HOdy3sIx9qi1cWhWM4p9wI=;
+	s=korg; t=1741706872;
+	bh=NBU9EQZ4P4ze7iSVOPkzWRjVlVe7v70S/7Qbdo66yxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtwCPlm6x7T+tU7H5cU4ZY91N6RgurADEcaLqe+1flhdLsco/B7AKMfzHHPdYDBB/
-	 KF+TYO12K8wDl56AACrSDsJ0RToGkL5H+UMYnLvcbncKJ83DiAO2pJrBaDs1FaA6NH
-	 0ZcE5fI1oz8U+kvZcv8vdFMYWNhBuk9OFnnSQ4os=
+	b=cjv2gaAYKbv6YTjJyh+f2pSRxc7928z/rfQe37Kqny/saHaNe/9ygpWRW56LrSrst
+	 Y5thGtMm0xKy+dPpvabNCeMByAat+sVpPoWX4zGPqdscg8+VuytHMltpnVRmDyIWk3
+	 QD34GlZzitoHVa3mZiqj6nZnrbh0qCiTzujgSDKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com,
-	Leo Stone <leocstone@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/328] tomoyo: dont emit warning in tomoyo_write_control()
-Date: Tue, 11 Mar 2025 15:57:41 +0100
-Message-ID: <20250311145718.502333578@linuxfoundation.org>
+	Hou Tao <houtao1@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.10 196/462] dm-crypt: track tag_offset in convert_context
+Date: Tue, 11 Mar 2025 15:57:42 +0100
+Message-ID: <20250311145806.100722370@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 3df7546fc03b8f004eee0b9e3256369f7d096685 ]
+commit 8b8f8037765757861f899ed3a2bfb34525b5c065 upstream.
 
-syzbot is reporting too large allocation warning at tomoyo_write_control(),
-for one can write a very very long line without new line character. To fix
-this warning, I use __GFP_NOWARN rather than checking for KMALLOC_MAX_SIZE,
-for practically a valid line should be always shorter than 32KB where the
-"too small to fail" memory-allocation rule applies.
+dm-crypt uses tag_offset to index the integrity metadata for each crypt
+sector. When the initial crypt_convert() returns BLK_STS_DEV_RESOURCE,
+dm-crypt will try to continue the crypt/decrypt procedure in a kworker.
+However, it resets tag_offset as zero instead of using the tag_offset
+related with current sector. It may return unexpected data when using
+random IV or return unexpected integrity related error.
 
-One might try to write a valid line that is longer than 32KB, but such
-request will likely fail with -ENOMEM. Therefore, I feel that separately
-returning -EINVAL when a line is longer than KMALLOC_MAX_SIZE is redundant.
-There is no need to distinguish over-32KB and over-KMALLOC_MAX_SIZE.
+Fix the problem by tracking tag_offset in per-IO convert_context.
+Therefore, when the crypt/decrypt procedure continues in a kworker, it
+could use the next tag_offset saved in convert_context.
 
-Reported-by: syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7536f77535e5210a5c76
-Reported-by: Leo Stone <leocstone@gmail.com>
-Closes: https://lkml.kernel.org/r/20241216021459.178759-2-leocstone@gmail.com
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8abec36d1274 ("dm crypt: do not wait for backlogged crypto request completion in softirq")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/tomoyo/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-crypt.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/security/tomoyo/common.c b/security/tomoyo/common.c
-index 1b467381986f7..360cf2960f349 100644
---- a/security/tomoyo/common.c
-+++ b/security/tomoyo/common.c
-@@ -2674,7 +2674,7 @@ ssize_t tomoyo_write_control(struct tomoyo_io_buffer *head,
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -52,6 +52,7 @@ struct convert_context {
+ 	struct bio *bio_out;
+ 	struct bvec_iter iter_out;
+ 	atomic_t cc_pending;
++	unsigned int tag_offset;
+ 	u64 cc_sector;
+ 	union {
+ 		struct skcipher_request *req;
+@@ -1218,6 +1219,7 @@ static void crypt_convert_init(struct cr
+ 	if (bio_out)
+ 		ctx->iter_out = bio_out->bi_iter;
+ 	ctx->cc_sector = sector + cc->iv_offset;
++	ctx->tag_offset = 0;
+ 	init_completion(&ctx->restart);
+ }
  
- 		if (head->w.avail >= head->writebuf_size - 1) {
- 			const int len = head->writebuf_size * 2;
--			char *cp = kzalloc(len, GFP_NOFS);
-+			char *cp = kzalloc(len, GFP_NOFS | __GFP_NOWARN);
+@@ -1543,7 +1545,6 @@ static void crypt_free_req(struct crypt_
+ static blk_status_t crypt_convert(struct crypt_config *cc,
+ 			 struct convert_context *ctx, bool atomic, bool reset_pending)
+ {
+-	unsigned int tag_offset = 0;
+ 	unsigned int sector_step = cc->sector_size >> SECTOR_SHIFT;
+ 	int r;
  
- 			if (!cp) {
- 				error = -ENOMEM;
--- 
-2.39.5
-
+@@ -1566,9 +1567,9 @@ static blk_status_t crypt_convert(struct
+ 		atomic_inc(&ctx->cc_pending);
+ 
+ 		if (crypt_integrity_aead(cc))
+-			r = crypt_convert_block_aead(cc, ctx, ctx->r.req_aead, tag_offset);
++			r = crypt_convert_block_aead(cc, ctx, ctx->r.req_aead, ctx->tag_offset);
+ 		else
+-			r = crypt_convert_block_skcipher(cc, ctx, ctx->r.req, tag_offset);
++			r = crypt_convert_block_skcipher(cc, ctx, ctx->r.req, ctx->tag_offset);
+ 
+ 		switch (r) {
+ 		/*
+@@ -1588,8 +1589,8 @@ static blk_status_t crypt_convert(struct
+ 					 * exit and continue processing in a workqueue
+ 					 */
+ 					ctx->r.req = NULL;
++					ctx->tag_offset++;
+ 					ctx->cc_sector += sector_step;
+-					tag_offset++;
+ 					return BLK_STS_DEV_RESOURCE;
+ 				}
+ 			} else {
+@@ -1603,8 +1604,8 @@ static blk_status_t crypt_convert(struct
+ 		 */
+ 		case -EINPROGRESS:
+ 			ctx->r.req = NULL;
++			ctx->tag_offset++;
+ 			ctx->cc_sector += sector_step;
+-			tag_offset++;
+ 			continue;
+ 		/*
+ 		 * The request was already processed (synchronously).
+@@ -1612,7 +1613,7 @@ static blk_status_t crypt_convert(struct
+ 		case 0:
+ 			atomic_dec(&ctx->cc_pending);
+ 			ctx->cc_sector += sector_step;
+-			tag_offset++;
++			ctx->tag_offset++;
+ 			if (!atomic)
+ 				cond_resched();
+ 			continue;
 
 
 
