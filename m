@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-123398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A228BA5C539
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAED8A5C7A9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1462117ABD5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 508461885481
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15F0249F9;
-	Tue, 11 Mar 2025 15:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6596125EF93;
+	Tue, 11 Mar 2025 15:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DPrxYQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha1xA/LY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F75125DB0D;
-	Tue, 11 Mar 2025 15:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2161C25DCFA;
+	Tue, 11 Mar 2025 15:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705840; cv=none; b=ajkuSLXpWKDQzQPyxcQ3hTxqPZcznctt4wk5HA+wbkYqEKwdX5HOLLnAkhtSoUzmlvCPLGimxSG6RdO4UZSMgDs1OINrZWkk/wcCrUDE8KAHXpK/MONzIhf1FFMcj8zGf+iPzkzg+7JngfWEY+YVoqK+blbIdF30RRlCw6obMM0=
+	t=1741707135; cv=none; b=Wum2ztsZI89ZTYwYCVv7SKnny2YJ9BpdJBe4Bjvm2CNEKeAfSp6voeQziHsK45VRUC8aQEurd9yPu0cIM1EwGBWOB9suqwiieMD2sUuuxhf+plbZBcsXTsTRHa2vwij2ZV4yeWVlmeHPi920DoNgImaNuONLksN2PFPQZeJa+co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705840; c=relaxed/simple;
-	bh=y5OHewpNqtP78jxV+GuSTeK2PGP0qXuoPMS+qbAlotI=;
+	s=arc-20240116; t=1741707135; c=relaxed/simple;
+	bh=Wx2iLpF2obO2sFtbX03L778uq74+mMbmX022S6fquS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8rTy1VN2nRiMF8gVIRD9OrlA+HCSfprHSGZ+dvavoM9XzfjlW9b7m4Fc5yQKULpCWAKngdZFWVnRiHz5W6OHn01wSrgrk2qzi6sYF3XalTj/jydSD7oJnqj8w5B8rC1cyPokBLyZcm1sJArN6QzNpzH91+EldIx20y9xuk6jm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DPrxYQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF732C4CEEF;
-	Tue, 11 Mar 2025 15:10:39 +0000 (UTC)
+	 MIME-Version; b=MzQ6LK8wN6+oA10hP78GgAx0RblTs9TyfAPEUPSmdfPSbBpAnH3sgmm9Wj5rZgkKtxfeTD8OQEvn7L7qn4lkss39j6a+N4x5HGVwmKg/B8ZOsqKa+r7fT81vjeR4RT0nPmdx/nkAEU/bmxpcnb4wm+wP+rcLTkBcnsO+8uK1MZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha1xA/LY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C1CC4CEE9;
+	Tue, 11 Mar 2025 15:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705840;
-	bh=y5OHewpNqtP78jxV+GuSTeK2PGP0qXuoPMS+qbAlotI=;
+	s=korg; t=1741707134;
+	bh=Wx2iLpF2obO2sFtbX03L778uq74+mMbmX022S6fquS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2DPrxYQbnqaI5+6h/vB79/4zb1HTZW+scDwFvT09Pqx8u3qzETvjOL4nf6b5jPUSr
-	 jP0W3kuLWNqxzs4SyHqkVoJDcp45z4rrsgSMNNljPJOh8SmleBLnA6SIC4ODsqKDNg
-	 F1PUG1WwlQ6nJ0FZWOTsNJToohz6hRth3fpSsMgM=
+	b=Ha1xA/LYa/J1d6pWlN3a4fqmb1tOUQOcYWWRiroab+5Bj+cqtDwESwA5wUyoCwUyO
+	 9knGjd/9n/G58D//8A/Od9WBThnJ06NyI4RQ6e7qspq0zUYoTAOHlokN6Xa5hKFpK5
+	 zaqnWcsxY8K36qSZQqYIxp0pKTqvfOCZjxj7mrLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramesh Thomas <ramesh.thomas@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 173/328] vfio/pci: Enable iowrite64 and ioread64 for vfio pci
-Date: Tue, 11 Mar 2025 15:59:03 +0100
-Message-ID: <20250311145721.784355672@linuxfoundation.org>
+Subject: [PATCH 5.10 278/462] clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context
+Date: Tue, 11 Mar 2025 15:59:04 +0100
+Message-ID: <20250311145809.349732957@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramesh Thomas <ramesh.thomas@intel.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 2b938e3db335e3670475e31a722c2bee34748c5a ]
+[ Upstream commit 6bb05a33337b2c842373857b63de5c9bf1ae2a09 ]
 
-Definitions of ioread64 and iowrite64 macros in asm/io.h called by vfio
-pci implementations are enclosed inside check for CONFIG_GENERIC_IOMAP.
-They don't get defined if CONFIG_GENERIC_IOMAP is defined. Include
-linux/io-64-nonatomic-lo-hi.h to define iowrite64 and ioread64 macros
-when they are not defined. io-64-nonatomic-lo-hi.h maps the macros to
-generic implementation in lib/iomap.c. The generic implementation does
-64 bit rw if readq/writeq is defined for the architecture, otherwise it
-would do 32 bit back to back rw.
+The following bug report happened with a PREEMPT_RT kernel:
 
-Note that there are two versions of the generic implementation that
-differs in the order the 32 bit words are written if 64 bit support is
-not present. This is not the little/big endian ordering, which is
-handled separately. This patch uses the lo followed by hi word ordering
-which is consistent with current back to back implementation in the
-vfio/pci code.
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2012, name: kwatchdog
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  get_random_u32+0x4f/0x110
+  clocksource_verify_choose_cpus+0xab/0x1a0
+  clocksource_verify_percpu.part.0+0x6b/0x330
+  clocksource_watchdog_kthread+0x193/0x1a0
 
-Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241210131938.303500-2-ramesh.thomas@intel.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+It is due to the fact that clocksource_verify_choose_cpus() is invoked with
+preemption disabled.  This function invokes get_random_u32() to obtain
+random numbers for choosing CPUs.  The batched_entropy_32 local lock and/or
+the base_crng.lock spinlock in driver/char/random.c will be acquired during
+the call. In PREEMPT_RT kernel, they are both sleeping locks and so cannot
+be acquired in atomic context.
+
+Fix this problem by using migrate_disable() to allow smp_processor_id() to
+be reliably used without introducing atomic context. preempt_disable() is
+then called after clocksource_verify_choose_cpus() but before the
+clocksource measurement is being run to avoid introducing unexpected
+latency.
+
+Fixes: 7560c02bdffb ("clocksource: Check per-CPU clock synchronization when marked unstable")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/all/20250131173323.891943-2-longman@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_rdwr.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/clocksource.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-index 83f81d24df78e..94e3fb9f42243 100644
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -16,6 +16,7 @@
- #include <linux/io.h>
- #include <linux/vfio.h>
- #include <linux/vgaarb.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
- 
- #include "vfio_pci_private.h"
- 
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 21dfee6c0d936..b22508c5d2d96 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -336,10 +336,10 @@ static void clocksource_verify_percpu(struct clocksource *cs)
+ 	cpumask_clear(&cpus_ahead);
+ 	cpumask_clear(&cpus_behind);
+ 	cpus_read_lock();
+-	preempt_disable();
++	migrate_disable();
+ 	clocksource_verify_choose_cpus();
+ 	if (cpumask_empty(&cpus_chosen)) {
+-		preempt_enable();
++		migrate_enable();
+ 		cpus_read_unlock();
+ 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
+ 		return;
+@@ -347,6 +347,7 @@ static void clocksource_verify_percpu(struct clocksource *cs)
+ 	testcpu = smp_processor_id();
+ 	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
+ 		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
++	preempt_disable();
+ 	for_each_cpu(cpu, &cpus_chosen) {
+ 		if (cpu == testcpu)
+ 			continue;
+@@ -367,6 +368,7 @@ static void clocksource_verify_percpu(struct clocksource *cs)
+ 			cs_nsec_min = cs_nsec;
+ 	}
+ 	preempt_enable();
++	migrate_enable();
+ 	cpus_read_unlock();
+ 	if (!cpumask_empty(&cpus_ahead))
+ 		pr_warn("        CPUs %*pbl ahead of CPU %d for clocksource %s.\n",
 -- 
 2.39.5
 
