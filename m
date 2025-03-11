@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87CDA5C5C6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:18:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E42A5C81C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CC257A4DE4
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B276F7A1A0F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CDB1C3BEB;
-	Tue, 11 Mar 2025 15:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9F5255E37;
+	Tue, 11 Mar 2025 15:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mO+r5lon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdpSiAgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFD27E110;
-	Tue, 11 Mar 2025 15:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6721E9B2C;
+	Tue, 11 Mar 2025 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706295; cv=none; b=TZPgfk0i0Iar3p/JVkcoTw7nOHvOh2Sw73iZgLpZSmg/S57A8rjLNRrd6ek5BqyvPlDNuokSgnTV6+/g996nAgMAttsunHVPHEQWvsCLCYS7UpA50A+ixhw/xIgBsTKvcCa6AgLbiCsYx1WZZyLKdrU+oMozBcBZskyNF3/tH3A=
+	t=1741707567; cv=none; b=Qt+7qPxdrJ/LWeEW3QPjJoj0AI2qb1ogujwB/daNv1p8sb4ByG1LlBcuprhE0hGBQYbvLUrk2tgVfRjnkHORj183uiIkKagCaDzS9VntZO1WWmicuDQSuDv4zg159LeftUKR4fRhovuNg7eHuDGRxxV3gEbCrkXYElZZj1YEJuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706295; c=relaxed/simple;
-	bh=TGpPjInJ29f+hPylNgihQzk6lcDzsi5u0hUdWg0SRxo=;
+	s=arc-20240116; t=1741707567; c=relaxed/simple;
+	bh=qa5cGbJgmsI0FMc/8rDIMEWUk3CGg94AsWLnSRtn6k0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DgD3DVgBNfMEAtidns+keb6cgd9Dy0ahYZhL7g/tM9q0HttzOvKiuAUCBzvAx+uuhu51ypTAhyP6wApH/KUzJkqjNk8fY3dJxxefIzyv1rJtNYpADz1PWgdqthhYhHBDzwQ7Ccwg5qR3I+c7g9nT64SI4siQIrYCSYWsD8EDUsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mO+r5lon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A11C4CEE9;
-	Tue, 11 Mar 2025 15:18:15 +0000 (UTC)
+	 MIME-Version; b=hQxfTvIIfRuy9HKzlFRDOZg302uHXbUe/xqNUfnPcpJ5UFT4DC0DVxhieP7ysNbwNzjdfeVNN++QBuj1qXaC75yjSqF47Ii/9u8KJT/g/1moC1Fqo0DKsFFz9DQGQ43E8lXapGj7P79iN+u7Md/RBR57gQ9w6bcjVwEpHQ9Vb1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdpSiAgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7AEC4CEE9;
+	Tue, 11 Mar 2025 15:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706295;
-	bh=TGpPjInJ29f+hPylNgihQzk6lcDzsi5u0hUdWg0SRxo=;
+	s=korg; t=1741707566;
+	bh=qa5cGbJgmsI0FMc/8rDIMEWUk3CGg94AsWLnSRtn6k0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mO+r5lon2336Iz7UJ+t1o5N0PJe/Q04SECzrzCZ+mA71fvaK+OOrWtyHbTpUh3DIn
-	 Fmu79MYwrYMrCHZp/ec5mGRvm0PfYXU53RrnZuQS1/GwHLyieIvNlbysaP7a9AJeJ6
-	 dUiwepeYhMNOnVkmpOO4AKGOrP8JjrtNJli8Yk98=
+	b=KdpSiAgxqng7LsRpA4QrS9Pizr80JFctsyjLcrsAGD0LIUkrNcOyznv3WdsE8gRcE
+	 rqQvqfiJkfTm5it4SSxk/LtxMghBPCFovZdtkkqoNzZvXsbn/7v0RdF2RluQaVqNgw
+	 tH13JaCA0gnl1ERTUZWsKs+mPnS2hWIGsxmSqufU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.4 328/328] eeprom: digsy_mtc: Make GPIO lookup table match the device
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.10 432/462] usb: typec: tcpci_rt1711h: Unmask alert interrupts to fix functionality
 Date: Tue, 11 Mar 2025 16:01:38 +0100
-Message-ID: <20250311145727.930970870@linuxfoundation.org>
+Message-ID: <20250311145815.399915347@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit 038ef0754aae76f79b147b8867f9250e6a976872 upstream.
+commit d6b82dafd17db0658f089b9cdec573982ca82bc5 upstream.
 
-The dev_id value in the GPIO lookup table must match to
-the device instance name, which in this case is combined
-of name and platform device ID, i.e. "spi_gpio.1". But
-the table assumed that there was no platform device ID
-defined, which is wrong. Fix the dev_id value accordingly.
+During probe, the TCPC alert interrupts are getting masked to
+avoid unwanted interrupts during chip setup: this is ok to do
+but there is no unmasking happening at any later time, which
+means that the chip will not raise any interrupt, essentially
+making it not functional as, while internally it does perform
+all of the intended functions, it won't signal anything to the
+outside.
 
-Fixes: 9b00bc7b901f ("spi: spi-gpio: Rewrite to use GPIO descriptors")
+Unmask the alert interrupts to fix functionality.
+
+Fixes: ce08eaeb6388 ("staging: typec: rt1711h typec chip driver")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206220311.1554075-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250219114700.41700-1-angelogioacchino.delregno@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/eeprom/digsy_mtc_eeprom.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpci_rt1711h.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/misc/eeprom/digsy_mtc_eeprom.c
-+++ b/drivers/misc/eeprom/digsy_mtc_eeprom.c
-@@ -60,7 +60,7 @@ static struct platform_device digsy_mtc_
- };
+--- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
++++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
+@@ -217,6 +217,11 @@ static int rt1711h_probe(struct i2c_clie
+ {
+ 	int ret;
+ 	struct rt1711h_chip *chip;
++	const u16 alert_mask = TCPC_ALERT_TX_SUCCESS | TCPC_ALERT_TX_DISCARDED |
++			       TCPC_ALERT_TX_FAILED | TCPC_ALERT_RX_HARD_RST |
++			       TCPC_ALERT_RX_STATUS | TCPC_ALERT_POWER_STATUS |
++			       TCPC_ALERT_CC_STATUS | TCPC_ALERT_RX_BUF_OVF |
++			       TCPC_ALERT_FAULT;
  
- static struct gpiod_lookup_table eeprom_spi_gpiod_table = {
--	.dev_id         = "spi_gpio",
-+	.dev_id         = "spi_gpio.1",
- 	.table          = {
- 		GPIO_LOOKUP("gpio@b00", GPIO_EEPROM_CLK,
- 			    "sck", GPIO_ACTIVE_HIGH),
+ 	ret = rt1711h_check_revision(client);
+ 	if (ret < 0) {
+@@ -258,6 +263,12 @@ static int rt1711h_probe(struct i2c_clie
+ 					dev_name(chip->dev), chip);
+ 	if (ret < 0)
+ 		return ret;
++
++	/* Enable alert interrupts */
++	ret = rt1711h_write16(chip, TCPC_ALERT_MASK, alert_mask);
++	if (ret < 0)
++		return ret;
++
+ 	enable_irq_wake(client->irq);
+ 
+ 	return 0;
 
 
 
