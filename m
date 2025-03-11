@@ -1,138 +1,94 @@
-Return-Path: <stable+bounces-123191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C2BA5BE92
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 12:13:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4938A5BEA3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 12:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 849DC1898518
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:13:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C40B7A9753
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C85254847;
-	Tue, 11 Mar 2025 11:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A14253B5C;
+	Tue, 11 Mar 2025 11:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HInScGlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef+fzoWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD41253F2D;
-	Tue, 11 Mar 2025 11:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03BC22D4FD;
+	Tue, 11 Mar 2025 11:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741691576; cv=none; b=bIuglpbQDOsUBPqvGU8d3/lYu27A1qvrYXAEP8/YnJvocpyGZdmv0H7G7hpWFjR2TFsNxBSlZU5SrtMLhfk0BPi9M8fCA+7v6qfw51EJS8Qy+Lwbuiqr1C0feHGYQgOIsCDuPzvw4IJp2ZJEYTGZt/XrU5MxLkLoH5iDoz4mD5U=
+	t=1741691687; cv=none; b=l7BBH7oVCMR1pniGnIUFUr2MgV1ERgcC3VHyAD1ftfCzHIWqs8mdfJJ6NNG2jmh1qL9V3QBXGpNKZvNhu7Y1xAn+oBO491nMlb2TmgTBUGN0fWqUWSf+sb9iOLpqjStFhKmOZFZoFhyE+XydpIbe/2BWdVDEd9Mc/eZlwTqcrrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741691576; c=relaxed/simple;
-	bh=jDLLN1t9mGvmDd7/tVVldiT8g8qW1ayloljLmPeRd9g=;
+	s=arc-20240116; t=1741691687; c=relaxed/simple;
+	bh=NsbwoYuOc8TjNu/BedDdrpYil/xgrNL/Le/UmwKzotw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fxtMTWOntejsXU2WFb66lSR000Yzy/J69cNIYUNn6vqOcCnOKP/0hD16qdpRnFAGEzMQagnLqKd7Knyqksd/ASbAMtZVF2V6Zf72vkBDyjYBz1eI2VMRb80fK4KcQdTebcv7J4D3WrLqcymKnvJXfTegvtsOqBCq8gPomi62IjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HInScGlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA8DC4CEE9;
-	Tue, 11 Mar 2025 11:12:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=e3mHTv98avQJZJEwT2i88rCtuUT/GeMPzcql+43b7e4dZffeznu+o7+HyDLXmdh63d8JRqMj/2otNTiJmsBdEsn6GVYqP+w3g8HaHxbecKe0shtv9xaqx3IXh53hKZ0aRDI/ghap0hKLylQ62I2/fMPPT8xJlsuRAY4eulflgMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef+fzoWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F4EC4CEED;
+	Tue, 11 Mar 2025 11:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741691576;
-	bh=jDLLN1t9mGvmDd7/tVVldiT8g8qW1ayloljLmPeRd9g=;
+	s=korg; t=1741691686;
+	bh=NsbwoYuOc8TjNu/BedDdrpYil/xgrNL/Le/UmwKzotw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HInScGlt7pN5cATJjdHsmqdzi97bvvyxN0OH8dStbVwrocv9k5dXSdsfH5aYrGgXT
-	 9CO5g9wnrczKTJaIxyecqCuE1b17fAYUoeyBgxtYvkVUt4fZfiIM9ydvzELQ/ft9+Z
-	 OYzUK1EgNgxcpQW1J6tPStLPmbxB4F7wChpnK6uA=
-Date: Tue, 11 Mar 2025 12:12:52 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ron Economos <re@w6rz.net>
-Cc: Jon Hunter <jonathanh@nvidia.com>, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	linux-tegra@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5.15 000/620] 5.15.179-rc1 review
-Message-ID: <2025031138-disprove-walmart-d238@gregkh>
-References: <20250310170545.553361750@linuxfoundation.org>
- <65b397b4-d3f9-4b20-9702-7a4131369f50@rnnvmail205.nvidia.com>
- <07b8296d-ad04-4499-9c76-e57464331737@nvidia.com>
- <a97e013b-67cd-4db6-bb65-ba0319a4f38c@w6rz.net>
+	b=Ef+fzoWOncZwpPmM3cZy2wEnuwm0HwpMRV2bvPqkhV2C0hDzghYYk4F+0LH/Hluty
+	 Ql8y/F5regP7c2S803DdzE7ojlTt4D7YC+qOgnb6U31DVLEto+WTlxhTcL3WmlrdbJ
+	 0WKAD24nWNEYQmjStm/oosm1OXWmonCkf6VcilWU=
+Date: Tue, 11 Mar 2025 12:14:43 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chen Linxuan <chenlinxuan@deepin.org>
+Cc: Jiri Olsa <jolsa@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Jann Horn <jannh@google.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>, stable@vger.kernel.org,
+	Eduard Zingerman <eddyz87@gmail.com>, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH stable 6.6] lib/buildid: Handle memfd_secret() files in
+ build_id_parse()
+Message-ID: <2025031100-impromptu-pastrami-925c@gregkh>
+References: <05D0A9F7DE394601+20250311100555.310788-2-chenlinxuan@deepin.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a97e013b-67cd-4db6-bb65-ba0319a4f38c@w6rz.net>
+In-Reply-To: <05D0A9F7DE394601+20250311100555.310788-2-chenlinxuan@deepin.org>
 
-On Tue, Mar 11, 2025 at 03:38:51AM -0700, Ron Economos wrote:
-> On 3/11/25 03:11, Jon Hunter wrote:
-> > Hi Greg,
-> > 
-> > On 11/03/2025 10:02, Jon Hunter wrote:
-> > > On Mon, 10 Mar 2025 17:57:26 +0100, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 5.15.179 release.
-> > > > There are 620 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > > 
-> > > > Responses should be made by Wed, 12 Mar 2025 17:04:00 +0000.
-> > > > Anything received after that time might be too late.
-> > > > 
-> > > > The whole patch series can be found in one patch at:
-> > > >     https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.179-rc1.gz
-> > > > 
-> > > > or in the git tree and branch at:
-> > > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> > > > linux-5.15.y
-> > > > and the diffstat can be found below.
-> > > > 
-> > > > thanks,
-> > > > 
-> > > > greg k-h
-> > > 
-> > > Failures detected for Tegra ...
-> > > 
-> > > Test results for stable-v5.15:
-> > >      10 builds:    10 pass, 0 fail
-> > >      28 boots:    28 pass, 0 fail
-> > >      101 tests:    100 pass, 1 fail
-> > > 
-> > > Linux version:    5.15.179-rc1-gcfe01cd80d85
-> > > Boards tested:    tegra124-jetson-tk1, tegra186-p2771-0000,
-> > >                  tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-> > >                  tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-> > >                  tegra210-p2371-2180, tegra210-p3450-0000,
-> > >                  tegra30-cardhu-a04
-> > > 
-> > > Test failures:    tegra194-p2972-0000: boot.py
-> > 
-> > 
-> > With this update I am seeing the following kernel warnings for Tegra ...
-> > 
-> >  WARNING KERN gpio gpiochip0: (max77620-gpio): not an immutable chip,
-> > please consider fixing it!
-> >  WARNING KERN gpio gpiochip1: (tegra194-gpio): not an immutable chip,
-> > please consider fixing it!
-> >  WARNING KERN gpio gpiochip2: (tegra194-gpio-aon): not an immutable
-> > chip, please consider fixing it!
-> > 
-> > The above warning comes from commit 6c846d026d49 ("gpio: Don't fiddle
-> > with irqchips marked as immutable") and to fix this for Tegra I believe
-> > that we need commits bba00555ede7 ("gpio: tegra186: Make the irqchip
-> > immutable") and 7f42aa7b008c ("gpio: max77620: Make the irqchip
-> > immutable"). There are other similar patches in the original series that
-> > I am guessing would be needed too.
-> > 
-> > Thanks
-> > Jon
+On Tue, Mar 11, 2025 at 06:05:55PM +0800, Chen Linxuan wrote:
+> Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
+> Handle memfd_secret() files in build_id_parse()") to address an issue
+> where accessing secret memfd contents through build_id_parse() would
+> trigger faults.
 > 
-> Also seeing this on RISC-V.
+> Original report and repro can be found in [0].
 > 
-> [    0.281617] gpio gpiochip0: (10060000.gpio): not an immutable chip,
-> please consider fixing it!
+>   [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
+> 
+> This repro will cause BUG: unable to handle kernel paging request in
+> build_id_parse in 5.15/6.1/6.6.
+> 
+> Some other discussions can be found in [1].
+> 
+>   [1] https://lore.kernel.org/bpf/20241104175256.2327164-1-jolsa@kernel.org/T/#u
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+> Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
 
-Ugh, I think I know what that is, a patch slipped back in again, let me
-go dig...
+You dropped all the original signed-off-by and changelog text.  Just
+provide a backport with all of the original information, and then if you
+had to do something "different", put that in the signed-off-by area.
+THere are loads of examples on the list for how that was done.
+
+thanks,
+
+greg k-h
 
