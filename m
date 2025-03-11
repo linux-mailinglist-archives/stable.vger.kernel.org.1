@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9218DA5C537
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBA9A5C77E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07F87189B530
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1959188C796
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB5C25EF8B;
-	Tue, 11 Mar 2025 15:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDD625F7B3;
+	Tue, 11 Mar 2025 15:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrgUh3Wq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Opc8Tsvt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C31225DCE3;
-	Tue, 11 Mar 2025 15:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EBA25F7AD;
+	Tue, 11 Mar 2025 15:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705772; cv=none; b=Wzc2qsfpRA5bCfFSQvMu+y0bW0W4EbzwLTJr/FMeSk8Z1VsIuqktO17y+oZFHJ2cXBQOLC7ceFo0xwV6MCPzgZU+CaGM0ezLT8596thdfRUmTUr1t38/oUk03RpuM52o56O0vHBxXje5j/SbpJkzxExur+9oGl/ECXgOKEawHhw=
+	t=1741707040; cv=none; b=pSPOU+3fkadwE44YXW8uF8gN6B6PrKS3PbtB+HdhzfWUgSseEW9CCL9A8r+8GXF/cJ6gMbPiXXd7Vt8qYhPCdSDmo9d5bfROBpV88QDVvs4TX2VAcYBQFcV8DoOW3I/iHN72GK3Dvl7cnWJ4E2ngo8G2+k7H/J4dY8Pp1eoFCSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705772; c=relaxed/simple;
-	bh=4vKpUhsk54IdKvZSdzYScGOoZlGtlfsr635KVWhV6ns=;
+	s=arc-20240116; t=1741707040; c=relaxed/simple;
+	bh=KXnmrrZ8Qb5qdCvja3Bt48CJXeLfctnFGZpEfvCa+sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBlgdKvK/eC6OUOoBQnI+nBGTsyyvX4mtQrqK7PQ+WpCzWTs/Gfpq+fkZAmT3NrXY5wWw1ltz/hFOzZIsa1MJ3+cpWlKRfJ6vfL9RTXGOjF69plJYnLNHSZVCoacgeMZAMB/ilgyY5rK60fMz5Q2XrdecrlCrux4BwN9dPiRan8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrgUh3Wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8237AC4CEEA;
-	Tue, 11 Mar 2025 15:09:31 +0000 (UTC)
+	 MIME-Version; b=mGTLXBQe8opFwrRxsTP0s85ogRZ44exC3ZarSyakM/F2PULSzdrzN/g8USJff3+B/B9zfxs/Q9oR6X2778+jy0uM4z1ffMBQjt2C6VyJSQ6rgDQ0SMRHXAh+rRHr28h+lUCG5PmA0AExkxeb0tMmpqW4RIp2E2arYgv9nK/dFeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Opc8Tsvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22324C4CEEF;
+	Tue, 11 Mar 2025 15:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705771;
-	bh=4vKpUhsk54IdKvZSdzYScGOoZlGtlfsr635KVWhV6ns=;
+	s=korg; t=1741707040;
+	bh=KXnmrrZ8Qb5qdCvja3Bt48CJXeLfctnFGZpEfvCa+sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrgUh3WqqM3Jx0ZCqORExgXxb4wTzxojfXPCDwnkFEkMBRxckkMhRqvnXQgFKEFuZ
-	 mxQCrCZ87Si0/z/WWS1ksi7x7IcqOgUtQbPRaW2rGYGpBJAHyWtOl8f25caM82Ip8Q
-	 lCSNLbwKMyYRaXdpZteDeTo7zOdEj01oMWZ9avEA=
+	b=Opc8Tsvt+dGUjVfbthe5IG8D1wtc7nw46e0aFMKNnAO6R8UD2lB8Zs9oaYW/C+qqA
+	 D9lL14eakh8raovHNgMNpZ7kvW5EL+RvJaLQh68lnLoI8iXWC0DVB+musOh5elb1BD
+	 U0GwEackd7DY8n7H5U+/MhUqfNk25YjY6xf4tBIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jennifer Berringer <jberring@redhat.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 5.4 150/328] nvmem: core: improve range check for nvmem_cell_write()
+	stable <stable@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 254/462] usb: gadget: f_midi: fix MIDI Streaming descriptor lengths
 Date: Tue, 11 Mar 2025 15:58:40 +0100
-Message-ID: <20250311145720.867643977@linuxfoundation.org>
+Message-ID: <20250311145808.396373078@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jennifer Berringer <jberring@redhat.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-commit 31507fc2ad36e0071751a710449db19c85d82a7f upstream.
+commit da1668997052ed1cb00322e1f3b63702615c9429 upstream.
 
-When __nvmem_cell_entry_write() is called for an nvmem cell that does
-not need bit shifting, it requires that the len parameter exactly
-matches the nvmem cell size. However, when the nvmem cell has a nonzero
-bit_offset, it was skipping this check.
+While the MIDI jacks are configured correctly, and the MIDIStreaming
+endpoint descriptors are filled with the correct information,
+bNumEmbMIDIJack and bLength are set incorrectly in these descriptors.
 
-Accepting values of len larger than the cell size results in
-nvmem_cell_prepare_write_buffer() trying to write past the end of a heap
-buffer that it allocates. Add a check to avoid that problem and instead
-return -EINVAL when len doesn't match the number of bits expected by the
-nvmem cell when bit_offset is nonzero.
+This does not matter when the numbers of in and out ports are equal, but
+when they differ the host will receive broken descriptors with
+uninitialized stack memory leaking into the descriptor for whichever
+value is smaller.
 
-This check uses cell->nbits in order to allow providing the smaller size
-to cells that are shifted into another byte by bit_offset. For example,
-a cell with nbits=8 and nonzero bit_offset would have bytes=2 but should
-accept a 1-byte write here, although no current callers depend on this.
+The precise meaning of "in" and "out" in the port counts is not clearly
+defined and can be confusing.  But elsewhere the driver consistently
+uses this to match the USB meaning of IN and OUT viewed from the host,
+so that "in" ports send data to the host and "out" ports receive data
+from it.
 
-Fixes: 69aba7948cbe ("nvmem: Add a simple NVMEM framework for consumers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jennifer Berringer <jberring@redhat.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-7-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable <stable@kernel.org>
+Fixes: c8933c3f79568 ("USB: gadget: f_midi: allow a dynamic number of input and output ports")
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20250130195035.3883857-1-jkeeping@inmusicbrands.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/function/f_midi.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -1083,6 +1083,8 @@ int nvmem_cell_write(struct nvmem_cell *
- 		return -EINVAL;
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -997,11 +997,11 @@ static int f_midi_bind(struct usb_config
+ 	}
  
- 	if (cell->bit_offset || cell->nbits) {
-+		if (len != BITS_TO_BYTES(cell->nbits) && len != cell->bytes)
-+			return -EINVAL;
- 		buf = nvmem_cell_prepare_write_buffer(cell, buf, len);
- 		if (IS_ERR(buf))
- 			return PTR_ERR(buf);
+ 	/* configure the endpoint descriptors ... */
+-	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
+-	ms_out_desc.bNumEmbMIDIJack = midi->in_ports;
++	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
++	ms_out_desc.bNumEmbMIDIJack = midi->out_ports;
+ 
+-	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
+-	ms_in_desc.bNumEmbMIDIJack = midi->out_ports;
++	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
++	ms_in_desc.bNumEmbMIDIJack = midi->in_ports;
+ 
+ 	/* ... and add them to the list */
+ 	endpoint_descriptor_index = i;
 
 
 
