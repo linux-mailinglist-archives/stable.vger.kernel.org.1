@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-124015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F133A5C875
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B420A5C5CF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:18:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75949166005
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:40:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D30857A51D6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A26725F784;
-	Tue, 11 Mar 2025 15:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B56D1BD00C;
+	Tue, 11 Mar 2025 15:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N566ctaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiplxJL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B871E98EC;
-	Tue, 11 Mar 2025 15:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FB5249F9;
+	Tue, 11 Mar 2025 15:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707619; cv=none; b=tbaRx5UXLtUxtuUCGyPxXKG+XBnyEQofqwSsQ9OfvwsJGO5sg3/6XO9WEQWrEJnL9qSlU0z/ylouWkSWwaLOtrsr/PLw4za9kUuqIIOGY/laL5lLM3g7irImzvMXw2HFjh/Dky4GX50cbv+QG3X5y2lGW6gzQIxJNJGUMbY7tuU=
+	t=1741706313; cv=none; b=nQnRG6nr/IKURZz6yqmrjbi939KpVaxqY5fcfDizYC/6gLSOKJ/0ZEPG5Od8haEdxiWmrqmdK4DF8WMP1jStH9Gu5bNOU1iLr/DVBMynlRYBNDIVKQ8AszEsh9QbprPB0xeLX2IizD2I1vjmG1g0JcExpRURlj6O6rEnrWXRFlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707619; c=relaxed/simple;
-	bh=3K9c/U5ktvCQHsF2fVFgQ3ShowHTgo/1DSZL9nfW9Fc=;
+	s=arc-20240116; t=1741706313; c=relaxed/simple;
+	bh=QuSPnLALlhmG+WFtHtFeuzGCf2GJyjSJoMEvBoripLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsBZTsOqFG/ZCX4EJwWWGWxvx8QWAJzcKRiEMr+GNQu/ycoRAZM/gQLVGin3PFzcdVsaU//COIFz+Qar8ApZUWppjeqXBRznIfvWmE5ZlBoh/7PQY8Aiuxvic2dIJQL3acE6oKAVvk8AvpCyiFtNDcJcbFrk4OIg0RQWxLH5grA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N566ctaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72876C4CEE9;
-	Tue, 11 Mar 2025 15:40:18 +0000 (UTC)
+	 MIME-Version; b=tyX1Fo0Crsuc4bPZkDafvsKyaUq9wqopCbkajhw+ognmlay+WdBEwPZ6e2M+8+WQC4zpBVVbhpPFdjMqG8WwXgBF5xrmIjFyY0uQfPr2jw4L227umcZGBMciutCJI490FftSsu4qtRdy5wtKxZScOHltA2oOn2d97zW9Op3AJFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiplxJL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6C9C4CEE9;
+	Tue, 11 Mar 2025 15:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707618;
-	bh=3K9c/U5ktvCQHsF2fVFgQ3ShowHTgo/1DSZL9nfW9Fc=;
+	s=korg; t=1741706312;
+	bh=QuSPnLALlhmG+WFtHtFeuzGCf2GJyjSJoMEvBoripLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N566ctaLMNhRqcMg5BfEqojIN99eSJD3BBvKNm0zSSNNMAhg0kBDoBz9rRrVqY7iF
-	 DhQSxAg02+GJeVFjXTEe2L4v2+VI5SrSva04eLLce7NzoTVYmG9eI5g+Vhy+3RmBqQ
-	 j4lbufRqn7hxxyp1/YYdS15PIT9RezMC7HqPe694=
+	b=JiplxJL7clTZQlIKZPQSpI6DrQ9uamGUF5ApCtQ1AyxSg1i0PutfrK4lkViXird4N
+	 BXI3D69NYOLarTarA+o/aBLtLw7kcqyfX66ZpcVMbFJgJ0Y5IaskFblUg+siIVZMuc
+	 PIkA4B9BBlljDTboXc3KgO+2PrS95aH7cyUxw8pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Mackerras <paulus@samba.org>,
-	syzbot+853242d9c9917165d791@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 419/462] ppp: Fix KMSAN uninit-value warning with bpf
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.4 315/328] usb: renesas_usbhs: Flush the notify_hotplug_work
 Date: Tue, 11 Mar 2025 16:01:25 +0100
-Message-ID: <20250311145814.888405210@linuxfoundation.org>
+Message-ID: <20250311145727.423624829@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 4c2d14c40a68678d885eab4008a0129646805bae ]
+commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
 
-Syzbot caught an "KMSAN: uninit-value" warning [1], which is caused by the
-ppp driver not initializing a 2-byte header when using socket filter.
+When performing continuous unbind/bind operations on the USB drivers
+available on the Renesas RZ/G2L SoC, a kernel crash with the message
+"Unable to handle kernel NULL pointer dereference at virtual address"
+may occur. This issue points to the usbhsc_notify_hotplug() function.
 
-The following code can generate a PPP filter BPF program:
-'''
-struct bpf_program fp;
-pcap_t *handle;
-handle = pcap_open_dead(DLT_PPP_PPPD, 65535);
-pcap_compile(handle, &fp, "ip and outbound", 0, 0);
-bpf_dump(&fp, 1);
-'''
-Its output is:
-'''
-(000) ldh [2]
-(001) jeq #0x21 jt 2 jf 5
-(002) ldb [0]
-(003) jeq #0x1 jt 4 jf 5
-(004) ret #65535
-(005) ret #0
-'''
-Wen can find similar code at the following link:
-https://github.com/ppp-project/ppp/blob/master/pppd/options.c#L1680
-The maintainer of this code repository is also the original maintainer
-of the ppp driver.
+Flush the delayed work to avoid its execution when driver resources are
+unavailable.
 
-As you can see the BPF program skips 2 bytes of data and then reads the
-'Protocol' field to determine if it's an IP packet. Then it read the first
-byte of the first 2 bytes to determine the direction.
-
-The issue is that only the first byte indicating direction is initialized
-in current ppp driver code while the second byte is not initialized.
-
-For normal BPF programs generated by libpcap, uninitialized data won't be
-used, so it's not a problem. However, for carefully crafted BPF programs,
-such as those generated by syzkaller [2], which start reading from offset
-0, the uninitialized data will be used and caught by KMSAN.
-
-[1] https://syzkaller.appspot.com/bug?extid=853242d9c9917165d791
-[2] https://syzkaller.appspot.com/text?tag=ReproC&x=11994913980000
-
-Cc: Paul Mackerras <paulus@samba.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/000000000000dea025060d6bc3bc@google.com/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250228141408.393864-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ppp/ppp_generic.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index e2bca6fa08220..d9d1f3519f0a7 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -72,6 +72,17 @@
- #define PPP_PROTO_LEN	2
- #define PPP_LCP_HDRLEN	4
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -779,6 +779,8 @@ static int usbhs_remove(struct platform_
  
-+/* The filter instructions generated by libpcap are constructed
-+ * assuming a four-byte PPP header on each packet, where the last
-+ * 2 bytes are the protocol field defined in the RFC and the first
-+ * byte of the first 2 bytes indicates the direction.
-+ * The second byte is currently unused, but we still need to initialize
-+ * it to prevent crafted BPF programs from reading them which would
-+ * cause reading of uninitialized data.
-+ */
-+#define PPP_FILTER_OUTBOUND_TAG 0x0100
-+#define PPP_FILTER_INBOUND_TAG  0x0000
+ 	dev_dbg(&pdev->dev, "usb remove\n");
+ 
++	flush_delayed_work(&priv->notify_hotplug_work);
 +
- /*
-  * An instance of /dev/ppp can be associated with either a ppp
-  * interface unit or a ppp channel.  In both cases, file->private_data
-@@ -1629,10 +1640,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
- 
- 	if (proto < 0x8000) {
- #ifdef CONFIG_PPP_FILTER
--		/* check if we should pass this packet */
--		/* the filter instructions are constructed assuming
--		   a four-byte PPP header on each packet */
--		*(u8 *)skb_push(skb, 2) = 1;
-+		/* check if the packet passes the pass and active filters.
-+		 * See comment for PPP_FILTER_OUTBOUND_TAG above.
-+		 */
-+		*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_OUTBOUND_TAG);
- 		if (ppp->pass_filter &&
- 		    BPF_PROG_RUN(ppp->pass_filter, skb) == 0) {
- 			if (ppp->debug & 1)
-@@ -2311,14 +2322,13 @@ ppp_receive_nonmp_frame(struct ppp *ppp, struct sk_buff *skb)
- 		/* network protocol frame - give it to the kernel */
- 
- #ifdef CONFIG_PPP_FILTER
--		/* check if the packet passes the pass and active filters */
--		/* the filter instructions are constructed assuming
--		   a four-byte PPP header on each packet */
- 		if (ppp->pass_filter || ppp->active_filter) {
- 			if (skb_unclone(skb, GFP_ATOMIC))
- 				goto err;
--
--			*(u8 *)skb_push(skb, 2) = 0;
-+			/* Check if the packet passes the pass and active filters.
-+			 * See comment for PPP_FILTER_INBOUND_TAG above.
-+			 */
-+			*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_INBOUND_TAG);
- 			if (ppp->pass_filter &&
- 			    BPF_PROG_RUN(ppp->pass_filter, skb) == 0) {
- 				if (ppp->debug & 1)
--- 
-2.39.5
-
+ 	/* power off */
+ 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+ 		usbhsc_power_ctrl(priv, 0);
 
 
 
