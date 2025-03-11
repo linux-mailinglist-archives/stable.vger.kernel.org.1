@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-123605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0156A5C687
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:26:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84E5A5C645
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8845C3BA68E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:21:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB7323B641E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E1625E807;
-	Tue, 11 Mar 2025 15:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169AC25E826;
+	Tue, 11 Mar 2025 15:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahfy8exe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgU04qjp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028CF25DB0A;
-	Tue, 11 Mar 2025 15:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F7525E81B;
+	Tue, 11 Mar 2025 15:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706436; cv=none; b=ZIOQZnWKOtentvWeA2LWGqCKg27jeLjlUMVOkZOlBuAy/lKPGBa7PDAql55ETDVlI7MrX6SJSYILDaJc304mFt7Jmn65Dt8lqz0mXmDw+DY4bAYQfugjH/oOVxueaWFjuNISASQ3onrSXuHuVQK6C7My6xIfoTEwV9yn+f5MBts=
+	t=1741706348; cv=none; b=Pow/hQxLZ3aZ3F6G+ZKaB1dKJ5JHkGoRNezV51/IvYnkMF4jbqPyBGz7dWsOyhet2B27vEoHz13xTBqJxsHTe4x1zpQ0sYenvtdMETroJqOJ9v1kV6BHHKD/qYahTHNEedT3lRd50TcfYd7geGiLdI3gP10mf6nEsr9CHyVtx4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706436; c=relaxed/simple;
-	bh=NoAozUw09wU6WqGrDzYrEft92bg9GBGDmca+5jK3RzQ=;
+	s=arc-20240116; t=1741706348; c=relaxed/simple;
+	bh=pJ44pDbfpJwHbo7InH7ChF30mQqWhBJsyc2Abw+OAkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEJSm1ek01qFm8GHFLSPTtHq2ZS5P0Fe/I/kxTWBGG9NB1nUAbvgRN9VeE+4K7XjSx/qQZrDjrV5lKfE448Sl5dtFDX1V/SrzvDHjg7H9ggGE/PF86SfURLWcJUhDDEF1QqGpWQAhDiVV4tGbeeZGwZlTLFx6A/xGD+k9IygyKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahfy8exe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF40C4CEE9;
-	Tue, 11 Mar 2025 15:20:35 +0000 (UTC)
+	 MIME-Version; b=HGPM74Dhea/ZhWrf3xZiXe9M7ByBOMqc0yKmyOHOYZitH4SUSpeoSQV6NfKwL+raA1UC8WYsplROjDpD8Mb03nM1XmgESg7xV37MxqQGv4zplk0JIaZxYiC4xuc9Fb2X0YOaBbF6LLrksiPwsg/sK0hC4RKWC/T+RU+5ZwsAdEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgU04qjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9CAC4CEE9;
+	Tue, 11 Mar 2025 15:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706435;
-	bh=NoAozUw09wU6WqGrDzYrEft92bg9GBGDmca+5jK3RzQ=;
+	s=korg; t=1741706348;
+	bh=pJ44pDbfpJwHbo7InH7ChF30mQqWhBJsyc2Abw+OAkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahfy8exe461+/H43NOhPcoJQWvpdyg5VkhFbk0uTHoo9CjZ9VZqpDZWqAG85YNe9P
-	 w7e/LgkXzn+RKS20o0s+XcZA4ZeUReCtXfTvXjE1ZWCxYMGfLhEaSNq566/JO7fxZ4
-	 HUA0ZXXOkvq6V5ViTliDq6d7eXr4OavwFkMnnEHY=
+	b=SgU04qjpdMWVupPMFtYUGfaOmPoBsRm9IdzFlcuf6gcFJT4zFrGUP0d6LsGNO+W8f
+	 73ui4iVpuIG3TiSAI5kw4aYXSJ2FuqPW7jjg8ZE6nYepTFy7o5PrWHFNq/6DEDVUVU
+	 PqolCVS2l2eFZKprx+cP2VyQ3KN0ALK+8F7blTL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Mingwei Zheng <zmw12306@gmail.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/462] wifi: rtlwifi: usb: fix workqueue leak when probe fails
-Date: Tue, 11 Mar 2025 15:54:43 +0100
-Message-ID: <20250311145759.031742474@linuxfoundation.org>
+Subject: [PATCH 5.10 018/462] spi: zynq-qspi: Add check for clk_enable()
+Date: Tue, 11 Mar 2025 15:54:44 +0100
+Message-ID: <20250311145759.070348113@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -66,36 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Mingwei Zheng <zmw12306@gmail.com>
 
-[ Upstream commit f79bc5c67867c19ce2762e7934c20dbb835ed82c ]
+[ Upstream commit 8332e667099712e05ec87ba2058af394b51ebdc9 ]
 
-rtl_init_core creates a workqueue that is then assigned to rtl_wq.
-rtl_deinit_core does not destroy it. It is left to rtl_usb_deinit, which
-must be called in the probe error path.
+Add check for the return value of clk_enable() to catch the potential
+error.
 
-Fixes: 2ca20f79e0d8 ("rtlwifi: Add usb driver")
-Fixes: 851639fdaeac ("rtlwifi: Modify some USB de-initialize code.")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-6-cascardo@igalia.com
+Fixes: c618a90dcaf3 ("spi: zynq-qspi: Drop GPIO header")
+Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://patch.msgid.link/20241207015206.3689364-1-zmw12306@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-zynq-qspi.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 66af56a79dbe5..08ab2482c00cc 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1083,6 +1083,7 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	wait_for_completion(&rtlpriv->firmware_loading_complete);
- 	rtlpriv->cfg->ops->deinit_sw_vars(hw);
- error_out:
-+	rtl_usb_deinit(hw);
- 	rtl_deinit_core(hw);
- error_out2:
- 	_rtl_usb_io_handler_release(hw);
+diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+index 13c0b15fe1764..2be764d5460d3 100644
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -379,12 +379,21 @@ static int zynq_qspi_setup_op(struct spi_device *spi)
+ {
+ 	struct spi_controller *ctlr = spi->master;
+ 	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
++	int ret;
+ 
+ 	if (ctlr->busy)
+ 		return -EBUSY;
+ 
+-	clk_enable(qspi->refclk);
+-	clk_enable(qspi->pclk);
++	ret = clk_enable(qspi->refclk);
++	if (ret)
++		return ret;
++
++	ret = clk_enable(qspi->pclk);
++	if (ret) {
++		clk_disable(qspi->refclk);
++		return ret;
++	}
++
+ 	zynq_qspi_write(qspi, ZYNQ_QSPI_ENABLE_OFFSET,
+ 			ZYNQ_QSPI_ENABLE_ENABLE_MASK);
+ 
 -- 
 2.39.5
 
