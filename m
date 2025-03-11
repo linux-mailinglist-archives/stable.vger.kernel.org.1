@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-123510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3800BA5C5BD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1C7A5C852
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 723101683D1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67ECD3AE4E6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AD67E110;
-	Tue, 11 Mar 2025 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C42325EF99;
+	Tue, 11 Mar 2025 15:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fhaaq8Qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2M0D0OR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C522F15820C;
-	Tue, 11 Mar 2025 15:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E180025EF89;
+	Tue, 11 Mar 2025 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706163; cv=none; b=P9VmDvmhuFwmG4jCLIWSJGSw07A/v4DF+JtoxpgrfDhqZlQYnqo6FnCeBcLtmCM9tv28p244TOhExsjyKbVBmbmnRmOPUkd7YQjheVsQ2KcxiuZ/9bW0t+PpPgV2zmxG8d6KVnqNmz5tfqJwoyo4frMNGkU+AR7is/oSfWpfNtU=
+	t=1741707433; cv=none; b=QRWQPTNiZ1zPyAh7dFB97Ep4gk59hAoybCdwbaMbvLfLcRXfLTRDYiLwzCpAc53cOFoR6RbYo+qwdLJ7qIHqW6wEcKmQt6ihSsBMBkTw5buF3R4bWuuG8nmNMnfzbAmP4vrkLEQ+Gel6czlvpAZC3tTeu+dd+X45v6EgElUG4KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706163; c=relaxed/simple;
-	bh=qIO2eJPOThoAtiQg/YzH8b5m8vyNiN8qTiPcp2teSL4=;
+	s=arc-20240116; t=1741707433; c=relaxed/simple;
+	bh=/yRnkhh5FGzkWbhS6eFgxifnDpfOUW0Wx5uyDtWrHx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ctM8ow3RG8BVnwmQPsjPvQAhofJbQgZLE4mVqLQXrE98Goi5fCfGR/qeGO0R2kP8fmOF/y1BUYPnZvM2feJnQcmHejpSE5cDFm+RBcBE6we8Expd21TCMyB+AqQOrXgF7eRw3YLZKP223y5Pw6fqBonR4Xs6Wb1mO8FifSuqCq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fhaaq8Qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB33C4CEE9;
-	Tue, 11 Mar 2025 15:16:03 +0000 (UTC)
+	 MIME-Version; b=LU+hl5DQFXTCnzZ3Q+AJwCW8oC/RGZ8O9c1XbhxY1CQFbqaDxVnnFFFf6/KIPJF8p4ckGUDYKX4AnHFlFe0Vscx9wwaSskBkYA+yvGzq9MoDgUj/XLFO9IuW+WczaJuiD+tHvSjA+sASfJd7TzaT8kT8p/hp6N5AwFZUUVyXkTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2M0D0OR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A1DC4CEE9;
+	Tue, 11 Mar 2025 15:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706163;
-	bh=qIO2eJPOThoAtiQg/YzH8b5m8vyNiN8qTiPcp2teSL4=;
+	s=korg; t=1741707432;
+	bh=/yRnkhh5FGzkWbhS6eFgxifnDpfOUW0Wx5uyDtWrHx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fhaaq8Qfglqxa+mg9a0m4XOLK5DKx0u2ZNjjLHfL852d5MvHmrOXhrw6s4b1wd79K
-	 G+PdRDahdrYPynNf7tutb7GBVy+KN2CKRlAXr0qTnJhTSY1EruusoiXs5ap3GOcpxF
-	 pvMxUyQ+yOOl2cQdHICAREcM3a0VhRXfUnfMy9hQ=
+	b=x2M0D0ORVjmelLwdwjfLuh7GIyfzScGijbkM0AVQQizIvDbK2qSktpAaGG3RddYID
+	 mjdi6TxneZpXN/4WhIvps9m2MpZa7DCpJTV596qGu5hdmkom562aWtp6AnlFcdsMpF
+	 38Ql30klN9gp+dvt2iul1DdIxLzXGyPs2mwYen6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Yang <804284660@qq.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.4 284/328] platform/x86: thinkpad_acpi: Add battery quirk for ThinkPad X131e
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.10 388/462] Revert "of: reserved-memory: Fix using wrong number of cells to get property alignment"
 Date: Tue, 11 Mar 2025 16:00:54 +0100
-Message-ID: <20250311145726.199110207@linuxfoundation.org>
+Message-ID: <20250311145813.671190950@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-commit d0d10eaedcb53740883d7e5d53c5e15c879b48fb upstream.
+commit 75f1f311d883dfaffb98be3c1da208d6ed5d4df9 upstream.
 
-Based on the dmesg messages from the original reporter:
+This reverts commit 267b21d0bef8e67dbe6c591c9991444e58237ec9.
 
-[    4.964073] ACPI: \_SB_.PCI0.LPCB.EC__.HKEY: BCTG evaluated but flagged as error
-[    4.964083] thinkpad_acpi: Error probing battery 2
+Turns out some DTs do depend on this behavior. Specifically, a
+downstream Pixel 6 DT. Revert the change at least until we can decide if
+the DT spec can be changed instead.
 
-Lenovo ThinkPad X131e also needs this battery quirk.
-
-Reported-by: Fan Yang <804284660@qq.com>
-Tested-by: Fan Yang <804284660@qq.com>
-Co-developed-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250221164825.77315-1-jeffbai@aosc.io
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/of/of_reserved_mem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -9699,6 +9699,7 @@ static const struct tpacpi_quirk battery
- 	 * Individual addressing is broken on models that expose the
- 	 * primary battery as BAT1.
- 	 */
-+	TPACPI_Q_LNV('G', '8', true),       /* ThinkPad X131e */
- 	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
- 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
- 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -94,12 +94,12 @@ static int __init __reserved_mem_alloc_s
+ 
+ 	prop = of_get_flat_dt_prop(node, "alignment", &len);
+ 	if (prop) {
+-		if (len != dt_root_size_cells * sizeof(__be32)) {
++		if (len != dt_root_addr_cells * sizeof(__be32)) {
+ 			pr_err("invalid alignment property in '%s' node.\n",
+ 				uname);
+ 			return -EINVAL;
+ 		}
+-		align = dt_mem_next_cell(dt_root_size_cells, &prop);
++		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
+ 	}
+ 
+ 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
 
 
 
