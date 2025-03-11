@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD007A5C828
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFDFA5C5F2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20418188DE42
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC141189AF46
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A898025B691;
-	Tue, 11 Mar 2025 15:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEBB1E98FB;
+	Tue, 11 Mar 2025 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXTej/Vi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e93XCF2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661293C0B;
-	Tue, 11 Mar 2025 15:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E5F1EA80;
+	Tue, 11 Mar 2025 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707392; cv=none; b=VFGx7+jgpHDFillB1uxNA9QvfOTvAyR3JpDeLrhK9PlXEechVAQFD3ydxMAzS+Gw+5UDPIU77aM1Fh1pkoivi3B+kMOxrL0kr0VCqDzhV6SqylFv7CxYMqnZPAk8pgCb8P4UgXBWhdU+2b5w9IYoSBQ46qo/kdPAueJaJtU1JoI=
+	t=1741706173; cv=none; b=BPIFs+5I7qdSbQHfP0sKf1Nhrc17Pw4OjHilb+CkjVuDIhS1eqCVNLUHdCtBbfjeZV/gyoVKpGAiUyZ4Zi5OaYhMyv2JA2QcrAC/Gyzc9u3DahPrGqioKXP2q0Pt9SCQ4eSXV9q4LIR9ps6ATiN/RD2U8PShF22CNqtX7bBnu/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707392; c=relaxed/simple;
-	bh=agIpXUwRQVuO9ihvxkgYZUkaU5RQQTlZYtpKZdEs9tw=;
+	s=arc-20240116; t=1741706173; c=relaxed/simple;
+	bh=/VDs2nhg9zdPQvEYsvk7J1hH4W7hJmiYmzAqJw5xsd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpmqiUfhWmHoIM+VVlpUVOYOn7BbuKWC28+00VHLphJZ3qQjcFf8smiM862Ap76X8jSp6IDmf+Ldg1Au8eYYweCa9RT3GgLVfUiV6e2q/QQp5DwK9LY4J94NETEdtK0+xxAjhj1R0EwOfftYGwTDVkM3IIGZ547NWi8whzMHVwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXTej/Vi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F6DC4CEE9;
-	Tue, 11 Mar 2025 15:36:31 +0000 (UTC)
+	 MIME-Version; b=XpI71qHiVlMLUhSChTF1sP+g5y5KlfTaX8eMWM+2Q+kD3wsjS3EekDXle8LB0h6acj+vcmVqI2ZnslzHSY7WTR/Mtac3llkdBqsAEhdNufXApn6t94NWdtih7rQXjECErQMQbCtgHGuL+VEpjflBP1LDlKpdSceiJq0xxvuPMa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e93XCF2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56C3C4CEE9;
+	Tue, 11 Mar 2025 15:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707392;
-	bh=agIpXUwRQVuO9ihvxkgYZUkaU5RQQTlZYtpKZdEs9tw=;
+	s=korg; t=1741706173;
+	bh=/VDs2nhg9zdPQvEYsvk7J1hH4W7hJmiYmzAqJw5xsd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXTej/Vi7Xi4auYt6us8A0E8bHi7ejr3K+nBD8wDF04fvFtSmgtA5f9qWHczGAO7R
-	 z0QgQAoOHu8OX9AN7RWAp85+CYLSuYJJfoCJnFHKhQrnL74ZXMB2X92pY3x1dF1RY0
-	 7BLnzdn4jA0KbxjO3fu2bSc3YVhJBp70GmAD8CZA=
+	b=e93XCF2WJ+Oql/78wodR5JrFXvCVecUF9EsI9cVh2NHNPg/OHPpAMuteFursumB0k
+	 eWGQxD6/kzemU8u1sUgcx6GMxkegPoI4NjJvMLA1apW3lHqXS8YlKdo+V8xGQg6M3/
+	 f8IXuEWE0jM+/fsz3eb7dnRsbCAaZ5nR7/pm8hCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	BH Hsieh <bhsieh@nvidia.com>,
-	Henry Lin <henryl@nvidia.com>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Anand Moon <linux.amoon@gmail.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 373/462] phy: tegra: xusb: reset VBUS & ID OVERRIDE
+Subject: [PATCH 5.4 269/328] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and SSC_REFCLKSEL masks in refclk
 Date: Tue, 11 Mar 2025 16:00:39 +0100
-Message-ID: <20250311145813.090318108@linuxfoundation.org>
+Message-ID: <20250311145725.599321981@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: BH Hsieh <bhsieh@nvidia.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-commit 55f1a5f7c97c3c92ba469e16991a09274410ceb7 upstream.
+commit e2158c953c973adb49383ddea2504faf08d375b7 upstream.
 
-Observed VBUS_OVERRIDE & ID_OVERRIDE might be programmed
-with unexpected value prior to XUSB PADCTL driver, this
-could also occur in virtualization scenario.
+In exynos5_usbdrd_{pipe3,utmi}_set_refclk(), the masks
+PHYCLKRST_MPLL_MULTIPLIER_MASK and PHYCLKRST_SSC_REFCLKSEL_MASK are not
+inverted when applied to the register values. Fix it.
 
-For example, UEFI firmware programs ID_OVERRIDE=GROUNDED to set
-a type-c port to host mode and keeps the value to kernel.
-If the type-c port is connected a usb host, below errors can be
-observed right after usb host mode driver gets probed. The errors
-would keep until usb role class driver detects the type-c port
-as device mode and notifies usb device mode driver to set both
-ID_OVERRIDE and VBUS_OVERRIDE to correct value by XUSB PADCTL
-driver.
-
-[  173.765814] usb usb3-port2: Cannot enable. Maybe the USB cable is bad?
-[  173.765837] usb usb3-port2: config error
-
-Taking virtualization into account, asserting XUSB PADCTL
-reset would break XUSB functions used by other guest OS,
-hence only reset VBUS & ID OVERRIDE of the port in
-utmi_phy_init.
-
-Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
 Cc: stable@vger.kernel.org
-Change-Id: Ic63058d4d49b4a1f8f9ab313196e20ad131cc591
-Signed-off-by: BH Hsieh <bhsieh@nvidia.com>
-Signed-off-by: Henry Lin <henryl@nvidia.com>
-Link: https://lore.kernel.org/r/20250122105943.8057-1-henryl@nvidia.com
+Fixes: 59025887fb08 ("phy: Add new Exynos5 USB 3.0 PHY driver")
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Anand Moon <linux.amoon@gmail.com>
+Link: https://lore.kernel.org/r/20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/phy/samsung/phy-exynos5-usbdrd.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -510,6 +510,7 @@ static int tegra186_utmi_phy_exit(struct
- 	unsigned int index = lane->index;
- 	struct device *dev = padctl->dev;
- 	int err;
-+	u32 reg;
+--- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
++++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+@@ -287,9 +287,9 @@ exynos5_usbdrd_pipe3_set_refclk(struct p
+ 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
  
- 	port = tegra_xusb_find_usb2_port(padctl, index);
- 	if (!port) {
-@@ -517,6 +518,16 @@ static int tegra186_utmi_phy_exit(struct
- 		return -ENODEV;
- 	}
+ 	/* FSEL settings corresponding to reference clock */
+-	reg &= ~PHYCLKRST_FSEL_PIPE_MASK |
+-		PHYCLKRST_MPLL_MULTIPLIER_MASK |
+-		PHYCLKRST_SSC_REFCLKSEL_MASK;
++	reg &= ~(PHYCLKRST_FSEL_PIPE_MASK |
++		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
++		 PHYCLKRST_SSC_REFCLKSEL_MASK);
+ 	switch (phy_drd->extrefclk) {
+ 	case EXYNOS5_FSEL_50MHZ:
+ 		reg |= (PHYCLKRST_MPLL_MULTIPLIER_50M_REF |
+@@ -331,9 +331,9 @@ exynos5_usbdrd_utmi_set_refclk(struct ph
+ 	reg &= ~PHYCLKRST_REFCLKSEL_MASK;
+ 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
  
-+	if (port->mode == USB_DR_MODE_OTG ||
-+	    port->mode == USB_DR_MODE_PERIPHERAL) {
-+		/* reset VBUS&ID OVERRIDE */
-+		reg = padctl_readl(padctl, USB2_VBUS_ID);
-+		reg &= ~VBUS_OVERRIDE;
-+		reg &= ~ID_OVERRIDE(~0);
-+		reg |= ID_OVERRIDE_FLOATING;
-+		padctl_writel(padctl, reg, USB2_VBUS_ID);
-+	}
-+
- 	if (port->supply && port->mode == USB_DR_MODE_HOST) {
- 		err = regulator_disable(port->supply);
- 		if (err) {
+-	reg &= ~PHYCLKRST_FSEL_UTMI_MASK |
+-		PHYCLKRST_MPLL_MULTIPLIER_MASK |
+-		PHYCLKRST_SSC_REFCLKSEL_MASK;
++	reg &= ~(PHYCLKRST_FSEL_UTMI_MASK |
++		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
++		 PHYCLKRST_SSC_REFCLKSEL_MASK);
+ 	reg |= PHYCLKRST_FSEL(phy_drd->extrefclk);
+ 
+ 	return reg;
 
 
 
