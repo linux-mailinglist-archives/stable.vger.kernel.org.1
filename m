@@ -1,240 +1,148 @@
-Return-Path: <stable+bounces-123225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FB4A5C3A0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB35A5C365
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB65316BC18
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:17:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8A83AFE03
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF1325BAAA;
-	Tue, 11 Mar 2025 14:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B65B25BAC5;
+	Tue, 11 Mar 2025 14:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="FqUZnOD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xul0Oswn"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A8A1917E3
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 14:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D4325B685;
+	Tue, 11 Mar 2025 14:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741702649; cv=none; b=Yqk9oQiHm6rhmUK4AI6DmpDkCDBrHi/GFfK3IjjJPOhjznP+Zvu2Y44MM/wRZAt3aRsc7o/+dpy0sDhj9T9gEzcsQSEMZ+/cpLtc8GeHYLk55qN9nsAbazPR3m6JmOEHjzSI4fmDl9DOdL+P42nWVtmFRv+mNOzC7NoOh9pdEVI=
+	t=1741702342; cv=none; b=Viw0EyyyL15Vj4TiRn3vjnKrGPfs7WpuQjC8vtRerlraLsxP8ybMo307trNWEU2fq/8xNTtHx4lDM9LQ8lJPX3ejkfprjP6p1UDbZsFyDm7B37cDl65WnjVtWw9VftkEvyt+d+mJKRKtQvPFl9XVJO2ShHUgETiOIbp7vxZCUuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741702649; c=relaxed/simple;
-	bh=zuVi/E1Al6TUmc/+jkkv6LNyuS+TtK/JPKUr/5q7Lmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ibJbXvg5PL7umXiPJDovIIZajoW598+d5z1mxlUq3I2fA4ZuojClV/ay5svGH3CxGFQGvMXWPQkxa6n2j5aSzLc+qxQM6EO3r/78Nd1HJapsI20e0C8ZqHoNDJ6ArZ2GaKgIpTLI47A49q3hdGvprPgBdFNjGLHSoGLR1AFbRXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=FqUZnOD1; arc=none smtp.client-ip=185.136.65.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20250311140717a5f3b724c1e267d663
-        for <stable@vger.kernel.org>;
-        Tue, 11 Mar 2025 15:07:17 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=felix.moessbauer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=W7gdTvCCbDeK3IYfYXUgbt4+QqIUYRanJjLcRGdDaGM=;
- b=FqUZnOD19JNRvztWfWX4fNsOIeGHvkLNDFvhMuUsFZdA4HJOT8ed7nV4n8k2XSXSE/UeY3
- XBN0MOgVtQAnCWf2y4JFOow+qjrzPyDk7oh+iXRDgJvlMqLMN4F1d32OKrzSF29jAXKbEnrw
- rmNDjoDXENRajJyx8mJPHztSFon5AWjBsbMqZ+rrMHxmUbabNf9LSqoBMIRJtqd986ep4Jxk
- edu67kdMlFI+j7JwtQ1iTpUW3VrxmiCiii2AKnQaQY4cRQec2NXc3b6x9oYkXYmywVxn77FX
- +WJrAGjy9tuWYV5ZDrO8I+QXbeIW8vjgdZrfAOefwPIa+tyWHl0bkVJw==;
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
-To: stable@vger.kernel.org
-Cc: Felix Moessbauer <felix.moessbauer@siemens.com>,
-	linux-kernel@vger.kernel.org,
-	tglx@linutronix.de,
-	qyousef@layalina.io,
-	frederic@kernel.org,
-	jan.kiszka@siemens.com,
-	bigeasy@linutronix.de,
-	anna-maria@linutronix.de
-Subject: [PATCH 6.1.y 1/1] hrtimer: Use and report correct timerslack values for realtime tasks
-Date: Tue, 11 Mar 2025 15:07:05 +0100
-Message-ID: <20250311140706.435615-1-felix.moessbauer@siemens.com>
+	s=arc-20240116; t=1741702342; c=relaxed/simple;
+	bh=s5tTPf8M/qtOoqE+Z9Xr/jAqha+ckvdOZ+a8jimc0Ws=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VFEimG6h3Ju2hYqDrBRTkWdzQnCkVgiD4J8Wh9b1tjBzNZdscQH4T8I1t7JMf4IAGWFQ+ZWAKQZ8AOUDjEmdHDyz9Ei/WpM+bZqRPC34xIKIFa5MVd0I5GSVLVVk6BDyiuFgU5vr+QmI37VPJ3ZiZ6Qsm122L/g/3hQBnpnRZ3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xul0Oswn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F408C4CEE9;
+	Tue, 11 Mar 2025 14:12:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741702341;
+	bh=s5tTPf8M/qtOoqE+Z9Xr/jAqha+ckvdOZ+a8jimc0Ws=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xul0Oswng8OAYUFcawvPSaIWfdo5VVFNJZlHB2L2mgvk5pYP3FsTvU2o32nZVmwb3
+	 vBG9PH5p5LAs4UeGQYGm2G+z+9NCb+q+UGVwbsASQV1PE6QR+Qjx9mKKECsHb9rCC5
+	 teocnBstL2/me4zfoVEKWm1SSC7+uLw6poyEhb0I=
+Date: Tue, 11 Mar 2025 15:12:13 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Florent Revest <revest@chromium.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>, bpf <bpf@vger.kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.13 102/207] fprobe: Rewrite fprobe on function-graph
+ tracer
+Message-ID: <2025031155-alabaster-sudoku-61c8@gregkh>
+References: <20250310170447.729440535@linuxfoundation.org>
+ <20250310170451.816958751@linuxfoundation.org>
+ <a66df96f-2280-49c0-875c-7cca4b4a6a71@kernel.org>
+ <8ea06b5e-ec85-42e5-a2e9-9ad747fef217@kernel.org>
+ <76c5a00f-ae15-43b8-a917-093ca63cc396@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1321639:519-21489:flowmailer
+In-Reply-To: <76c5a00f-ae15-43b8-a917-093ca63cc396@kernel.org>
 
-commit ed4fb6d7ef68111bb539283561953e5c6e9a6e38 upstream.
+On Tue, Mar 11, 2025 at 10:56:26AM +0100, Jiri Slaby wrote:
+> On 11. 03. 25, 10:49, Jiri Slaby wrote:
+> > On 11. 03. 25, 10:46, Jiri Slaby wrote:
+> > > On 10. 03. 25, 18:04, Greg Kroah-Hartman wrote:
+> > > > 6.13-stable review patch.  If anyone has any objections, please
+> > > > let me know.
+> > > > 
+> > > > ------------------
+> > > > 
+> > > > From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > > > 
+> > > > [ Upstream commit 4346ba1604093305a287e08eb465a9c15ba05b80 ]
+> > > ...
+> > > > --- a/kernel/trace/Kconfig
+> > > > +++ b/kernel/trace/Kconfig
+> > > > @@ -302,11 +302,9 @@ config DYNAMIC_FTRACE_WITH_ARGS
+> > > >   config FPROBE
+> > > >       bool "Kernel Function Probe (fprobe)"
+> > > > -    depends on FUNCTION_TRACER
+> > > > -    depends on DYNAMIC_FTRACE_WITH_REGS || DYNAMIC_FTRACE_WITH_ARGS
+> > > > -    depends on HAVE_FTRACE_REGS_HAVING_PT_REGS || !
+> > > > HAVE_DYNAMIC_FTRACE_WITH_ARGS
+> > > > -    depends on HAVE_RETHOOK
+> > > > -    select RETHOOK
+> > > > +    depends on HAVE_FUNCTION_GRAPH_FREGS && HAVE_FTRACE_GRAPH_FUNC
+> > > 
+> > > HAVE_FTRACE_GRAPH_FUNC does not exist on 6.13, so FPROBE is
+> > > effectively disabled by this backport.
+> > > 
+> > > Is this missing (and only this?):
+> > > commit a762e9267dca843ced943ec24f20e110ba7c8431
+> > > Author: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > > Date:   Thu Dec 26 14:13:34 2024 +0900
+> > > 
+> > >      ftrace: Add CONFIG_HAVE_FTRACE_GRAPH_FUNC
+> > 
+> > With this applied, x86_64 is fixed. But ppc and s390 still loose it.
+> 
+> 
+> HAVE_FTRACE_GRAPH_FUNC is missing in ppc completely in upstream too (a
+> bug?).
+> 
+> s390 has it only through (here omitted):
+> commit 7495e179b478801433cec3cc4a82d2dcea35bf06
+> Author: Sven Schnelle <svens@linux.ibm.com>
+> Date:   Thu Dec 26 14:13:48 2024 +0900
+> 
+>     s390/tracing: Enable HAVE_FTRACE_GRAPH_FUNC
 
-The timerslack_ns setting is used to specify how much the hardware
-timers should be delayed, to potentially dispatch multiple timers in a
-single interrupt. This is a performance optimization. Timers of
-realtime tasks (having a realtime scheduling policy) should not be
-delayed.
+Yeah, this isn't right.  I've dropped all of these from the queue now,
+thanks for the review!
 
-This logic was inconsitently applied to the hrtimers, leading to delays
-of realtime tasks which used timed waits for events (e.g. condition
-variables). Due to the downstream override of the slack for rt tasks,
-the procfs reported incorrect (non-zero) timerslack_ns values.
-
-This is changed by setting the timer_slack_ns task attribute to 0 for
-all tasks with a rt policy. By that, downstream users do not need to
-specially handle rt tasks (w.r.t. the slack), and the procfs entry
-shows the correct value of "0". Setting non-zero slack values (either
-via procfs or PR_SET_TIMERSLACK) on tasks with a rt policy is ignored,
-as stated in "man 2 PR_SET_TIMERSLACK":
-
-  Timer slack is not applied to threads that are scheduled under a
-  real-time scheduling policy (see sched_setscheduler(2)).
-
-The special handling of timerslack on rt tasks in downstream users
-is removed as well.
-
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240814121032.368444-2-felix.moessbauer@siemens.com
----
- fs/proc/base.c        |  9 +++++----
- fs/select.c           | 11 ++++-------
- kernel/sched/core.c   |  8 ++++++++
- kernel/sys.c          |  2 ++
- kernel/time/hrtimer.c | 18 +++---------------
- 5 files changed, 22 insertions(+), 26 deletions(-)
-
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index ecc45389ea793..82e4a8805bae6 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -2633,10 +2633,11 @@ static ssize_t timerslack_ns_write(struct file *file, const char __user *buf,
- 	}
- 
- 	task_lock(p);
--	if (slack_ns == 0)
--		p->timer_slack_ns = p->default_timer_slack_ns;
--	else
--		p->timer_slack_ns = slack_ns;
-+	if (task_is_realtime(p))
-+		slack_ns = 0;
-+	else if (slack_ns == 0)
-+		slack_ns = p->default_timer_slack_ns;
-+	p->timer_slack_ns = slack_ns;
- 	task_unlock(p);
- 
- out:
-diff --git a/fs/select.c b/fs/select.c
-index 3f730b8581f65..e66b6189845ea 100644
---- a/fs/select.c
-+++ b/fs/select.c
-@@ -77,19 +77,16 @@ u64 select_estimate_accuracy(struct timespec64 *tv)
- {
- 	u64 ret;
- 	struct timespec64 now;
-+	u64 slack = current->timer_slack_ns;
- 
--	/*
--	 * Realtime tasks get a slack of 0 for obvious reasons.
--	 */
--
--	if (rt_task(current))
-+	if (slack == 0)
- 		return 0;
- 
- 	ktime_get_ts64(&now);
- 	now = timespec64_sub(*tv, now);
- 	ret = __estimate_accuracy(&now);
--	if (ret < current->timer_slack_ns)
--		return current->timer_slack_ns;
-+	if (ret < slack)
-+		return slack;
- 	return ret;
- }
- 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 0a483fd9f5de5..9be8a509b5f3f 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7380,6 +7380,14 @@ static void __setscheduler_params(struct task_struct *p,
- 	else if (fair_policy(policy))
- 		p->static_prio = NICE_TO_PRIO(attr->sched_nice);
- 
-+	/* rt-policy tasks do not have a timerslack */
-+	if (task_is_realtime(p)) {
-+		p->timer_slack_ns = 0;
-+	} else if (p->timer_slack_ns == 0) {
-+		/* when switching back to non-rt policy, restore timerslack */
-+		p->timer_slack_ns = p->default_timer_slack_ns;
-+	}
-+
- 	/*
- 	 * __sched_setscheduler() ensures attr->sched_priority == 0 when
- 	 * !rt_policy. Always setting this ensures that things like
-diff --git a/kernel/sys.c b/kernel/sys.c
-index d06eda1387b69..06a9a87a8d3e0 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2477,6 +2477,8 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 			error = current->timer_slack_ns;
- 		break;
- 	case PR_SET_TIMERSLACK:
-+		if (task_is_realtime(current))
-+			break;
- 		if (arg2 <= 0)
- 			current->timer_slack_ns =
- 					current->default_timer_slack_ns;
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 8db65e2db14c7..f6d799646dd9c 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2090,14 +2090,9 @@ long hrtimer_nanosleep(ktime_t rqtp, const enum hrtimer_mode mode,
- 	struct restart_block *restart;
- 	struct hrtimer_sleeper t;
- 	int ret = 0;
--	u64 slack;
--
--	slack = current->timer_slack_ns;
--	if (dl_task(current) || rt_task(current))
--		slack = 0;
- 
- 	hrtimer_init_sleeper_on_stack(&t, clockid, mode);
--	hrtimer_set_expires_range_ns(&t.timer, rqtp, slack);
-+	hrtimer_set_expires_range_ns(&t.timer, rqtp, current->timer_slack_ns);
- 	ret = do_nanosleep(&t, mode);
- 	if (ret != -ERESTART_RESTARTBLOCK)
- 		goto out;
-@@ -2278,7 +2273,7 @@ void __init hrtimers_init(void)
- /**
-  * schedule_hrtimeout_range_clock - sleep until timeout
-  * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
-+ * @delta:	slack in expires timeout (ktime_t)
-  * @mode:	timer mode
-  * @clock_id:	timer clock to be used
-  */
-@@ -2305,13 +2300,6 @@ schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
- 		return -EINTR;
- 	}
- 
--	/*
--	 * Override any slack passed by the user if under
--	 * rt contraints.
--	 */
--	if (rt_task(current))
--		delta = 0;
--
- 	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
- 	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
- 	hrtimer_sleeper_start_expires(&t, mode);
-@@ -2331,7 +2319,7 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
- /**
-  * schedule_hrtimeout_range - sleep until timeout
-  * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
-+ * @delta:	slack in expires timeout (ktime_t)
-  * @mode:	timer mode
-  *
-  * Make the current task sleep until the given expiry time has
--- 
-2.47.2
-
+greg k-h
 
