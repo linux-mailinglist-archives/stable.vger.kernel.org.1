@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E960A5C4DC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F486A5C742
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EEBF178F8D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29ED31883856
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACE125E833;
-	Tue, 11 Mar 2025 15:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2B825E828;
+	Tue, 11 Mar 2025 15:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFRVpXTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZkQfboQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3015E25E818;
-	Tue, 11 Mar 2025 15:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6F325E818;
+	Tue, 11 Mar 2025 15:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705620; cv=none; b=P9zSvr7oBSzKYk6QkiqnYiiLkhPODx1mE2m3H0I80RAL21Y9CuPVTECK855+7/m+QOPaMrZA+DnxipRsoFQY2ir7JDzwYxHsOCT4SOyNltOEeKgIWKOw6t2+0Fp8D2v6PMoAU7iaXmQ/ezk0ATUQzgp4BhmuAIAxG+gEx/1dCBw=
+	t=1741706924; cv=none; b=gjwevqiKXjY4PJ1nlKw79+rW5Agu2d2odq6yhb+itEDaZdKFQOwH9yV3pcKpPDA8gnuqPyp8EDLVvhR7f6rZ7Dvg92aCVwjr7P4sqoR1d3+a1BJWUo+z0BLGggag++ExgE+UtnvvH0T+epPOCVRVoFXVRBOAsC/Jvy4ICbHUBJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705620; c=relaxed/simple;
-	bh=sbNkraD5pKmPWPqQJ2cmDLupobcN8HNFTJXCoRHdTNI=;
+	s=arc-20240116; t=1741706924; c=relaxed/simple;
+	bh=L/ZNNfJhdTPj4Vaom/Z4LEbgJj87bh6thpBvhF5Uo+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrK9wsyHiyIDTtn2iMQ7oIXFJvrrb0Qeyr0nLuNkVL3yyGhg0GiVZal15HlSABtmwbzgRHBB8GRBsqI/XrAb9qApUqLOJZ6k4aTvUAKVmdwImEMNZHgbIgU7dC/tGuDht6+Pbyhhf0iFR88j2X8O3tDy+rtwzyEeoicJkpHBu/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFRVpXTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5D5C4CEE9;
-	Tue, 11 Mar 2025 15:06:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sKVdCgg4dVVk6uxLSglVyUxY4hoPn1YlwRt2Dm0n9tDM7w1LBZlHOQfHKhUY8ynkV2PZjWrq272ybvxjCaquOxwo5YFdLWLnem19Bns6MAP7HuY02OynNg5RFvKTqm2CIqIL9BZiUCbDF1RV7Ia4pxazA0HTVzyEcmI38n2vlOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZkQfboQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02589C4CEE9;
+	Tue, 11 Mar 2025 15:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705620;
-	bh=sbNkraD5pKmPWPqQJ2cmDLupobcN8HNFTJXCoRHdTNI=;
+	s=korg; t=1741706924;
+	bh=L/ZNNfJhdTPj4Vaom/Z4LEbgJj87bh6thpBvhF5Uo+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFRVpXTTF372pV/6h8Cnl/ePe1DrfdpcceirSSNX0yDbRpdeMESU1SHdCdriOgWrN
-	 vtjxD93eT2eCiq0M1LBsV/GZu73jR163at2Gw2I+7jCLygQyMH7/DaLDG/7Thpcdkw
-	 KE8RQHQBNPOnHXDcYCCnTPqHaiNvSmNSgQR6Up08=
+	b=GZkQfboQ3PKX1HSTSBmUfAs76zPeiF04TpDNlp1RteXni2Q9XxS08rPbxH48sUmOR
+	 wMWfzQ/xnEAd/ynygLG74XmjE8b+LnWAcvCOJ4KFpsXrbbAL5tV09lMDlWdP8/Mypf
+	 yMg3Rvm0CytHjujvn+DLgE0zfoNkrb5zXpiBpGmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 079/328] HID: core: Fix assumption that Resolution Multipliers must be in Logical Collections
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.10 183/462] of: reserved-memory: Fix using wrong number of cells to get property alignment
 Date: Tue, 11 Mar 2025 15:57:29 +0100
-Message-ID: <20250311145718.027589482@linuxfoundation.org>
+Message-ID: <20250311145805.583018869@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 64f2657b579343cf923aa933f08074e6258eb07b upstream.
+commit 267b21d0bef8e67dbe6c591c9991444e58237ec9 upstream.
 
-A report in 2019 by the syzbot fuzzer was found to be connected to two
-errors in the HID core associated with Resolution Multipliers.  One of
-the errors was fixed by commit ea427a222d8b ("HID: core: Fix deadloop
-in hid_apply_multiplier."), but the other has not been fixed.
+According to DT spec, size of property 'alignment' is based on parent
+node’s #size-cells property.
 
-This error arises because hid_apply_multipler() assumes that every
-Resolution Multiplier control is contained in a Logical Collection,
-i.e., there's no way the routine can ever set multiplier_collection to
-NULL.  This is in spite of the fact that the function starts with a
-big comment saying:
+But __reserved_mem_alloc_size() wrongly uses @dt_root_addr_cells to get
+the property obviously.
 
-	 * "The Resolution Multiplier control must be contained in the same
-	 * Logical Collection as the control(s) to which it is to be applied.
-	   ...
-	 *  If no Logical Collection is
-	 * defined, the Resolution Multiplier is associated with all
-	 * controls in the report."
-	 * HID Usage Table, v1.12, Section 4.3.1, p30
-	 *
-	 * Thus, search from the current collection upwards until we find a
-	 * logical collection...
+Fix by using @dt_root_size_cells instead of @dt_root_addr_cells.
 
-The comment and the code overlook the possibility that none of the
-collections found may be a Logical Collection.
-
-The fix is to set the multiplier_collection pointer to NULL if the
-collection found isn't a Logical Collection.
-
-Reported-by: syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000109c040597dc5843@google.com/
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: Peter Hutterer <peter.hutterer@who-t.net>
-Fixes: 5a4abb36f312 ("HID: core: process the Resolution Multiplier")
+Fixes: 3f0c82066448 ("drivers: of: add initialization code for dynamic reserved memory")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/of/of_reserved_mem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1117,6 +1117,8 @@ static void hid_apply_multiplier(struct
- 	while (multiplier_collection->parent_idx != -1 &&
- 	       multiplier_collection->type != HID_COLLECTION_LOGICAL)
- 		multiplier_collection = &hid->collection[multiplier_collection->parent_idx];
-+	if (multiplier_collection->type != HID_COLLECTION_LOGICAL)
-+		multiplier_collection = NULL;
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -94,12 +94,12 @@ static int __init __reserved_mem_alloc_s
  
- 	effective_multiplier = hid_calculate_multiplier(hid, multiplier);
+ 	prop = of_get_flat_dt_prop(node, "alignment", &len);
+ 	if (prop) {
+-		if (len != dt_root_addr_cells * sizeof(__be32)) {
++		if (len != dt_root_size_cells * sizeof(__be32)) {
+ 			pr_err("invalid alignment property in '%s' node.\n",
+ 				uname);
+ 			return -EINVAL;
+ 		}
+-		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
++		align = dt_mem_next_cell(dt_root_size_cells, &prop);
+ 	}
  
+ 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
 
 
 
