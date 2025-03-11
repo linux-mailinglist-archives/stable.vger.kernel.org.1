@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-123493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6DDA5C5A7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEE8A5C81B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B96E317A17C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4194D189B9EF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1334025D918;
-	Tue, 11 Mar 2025 15:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2062325E47F;
+	Tue, 11 Mar 2025 15:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYAtjhEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M02TD+BD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22251EA80;
-	Tue, 11 Mar 2025 15:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27263C0B;
+	Tue, 11 Mar 2025 15:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706116; cv=none; b=gAiyWZddZqUIrKoHc+PNAB2nbmoJPSHc0UI3V4u7Iq93FNqg7iphVkvBWSnCI1wtAkrGE14Q6KP1TxxXBQta0s1YXAtaviIQeUgAP2EDseLKn24V1hIvboFxxJ8YCgAjC0TwFQgaLFV3HmOXnroeI0XQIRcxUxmtrnhYLR0RBAQ=
+	t=1741707333; cv=none; b=YweVWR7GAFcXSukwB7Uh8rJr1naR0dM+/4LLGUk4l1UuJwmme1qOw8qMAkZbOUFIz7HFJSqdnunrFsoaWIzbDKTwlHAHp7i7T+rg6N9riW3TpXJ6k/OPz+JpuOKWWNtSVFtAAuwLCZ663FfYizoMQU/1T4+3iTEAPUeooT1xs/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706116; c=relaxed/simple;
-	bh=voTvg72XFtngNqi+OskHM2bvDQ6+QVOoLPuzVG0KLEE=;
+	s=arc-20240116; t=1741707333; c=relaxed/simple;
+	bh=LAJy2WxoAeTrZEX5liyxKSNS/UDc74L5JPfpASYFa1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ubc/eJ6P8wLk8We5WM1RtFIWqxw2kkDt3a0qTYciD3Tit++f4RxhmuJF60IxJKERooHo/CbEO1+ybV2GyTeYyF6OEDNt4W+ja7xyvkSPjnNdAg9iFJR9DjzhzeUgHEt0zwujkvpZC3VTzYLthNKKV9O+Z1yZZlBDSrrhQ/T4xeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYAtjhEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4823FC4CEEA;
-	Tue, 11 Mar 2025 15:15:16 +0000 (UTC)
+	 MIME-Version; b=VXSi28HZvKCgqvZrhqNeUYWCPoISTrsVS+qlh5q35wwtK4Hurmlo1P6+MsMMtwwv11SrxgUfMaQRilCP2qesaHF+e25wh9tMLmJlFtUXnzgsPxQVTLLt/92Q6GcvjXB+I1H+d7EkzEllVPo3Ml/H8Gvx5Ms4Nx/SqcvUXHjOrU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M02TD+BD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5977EC4CEEA;
+	Tue, 11 Mar 2025 15:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706116;
-	bh=voTvg72XFtngNqi+OskHM2bvDQ6+QVOoLPuzVG0KLEE=;
+	s=korg; t=1741707333;
+	bh=LAJy2WxoAeTrZEX5liyxKSNS/UDc74L5JPfpASYFa1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYAtjhEn7iauJy238aX6njIe2ZzuENAh2BijGlbcZJpFMjQAXFb/G7jHEY+00E4/X
-	 fqenEuAiYd46N1DpklLwA0FKLnNzTiCf73ekxKX/2QbApgHuyzIR3Z+mXKA5/CzzjK
-	 aUemKhfqXfX1A/s53ikYS+HjncXFd5YDeA1ekcTs=
+	b=M02TD+BD7Ril26gLehk8DvINfDg7Y9v9EezsalzJmL9+OF7VkDEAhbmmruNIgG4fP
+	 A+0yGSbpaJnJU9DG4aZc0Zc4leLZBFjJA0UjaVpg3q2YjJKsnn1T4dN4mvBarCMD0/
+	 zZZ9FqSd8p6vqB+IAwt86YrEMJHy7EDmXeBX1Oo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <dtzq01@gmail.com>,
-	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 249/328] flow_dissector: Fix handling of mixed port and port-range keys
-Date: Tue, 11 Mar 2025 16:00:19 +0100
-Message-ID: <20250311145724.806485543@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 5.10 354/462] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
+Date: Tue, 11 Mar 2025 16:00:20 +0100
+Message-ID: <20250311145812.340090399@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
+[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
 
-This patch fixes a bug in TC flower filter where rules combining a
-specific destination port with a source port range weren't working
-correctly.
+We fixed the UAF issue in USB MIDI code by canceling the pending work
+at closing each MIDI output device in the commit below.  However, this
+assumed that it's the only one that is tied with the endpoint, and it
+resulted in unexpected data truncations when multiple devices are
+assigned to a single endpoint and opened simultaneously.
 
-The specific case was when users tried to configure rules like:
+For addressing the unexpected MIDI message drops, simply replace
+cancel_work_sync() with flush_work().  The drain callback should have
+been already invoked before the close callback, hence the port->active
+flag must be already cleared.  So this just assures that the pending
+work is finished before freeing the resources.
 
-tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
-dst_port 5000 src_port 2000-3000 action drop
-
-The root cause was in the flow dissector code. While both
-FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
-were being set correctly in the classifier, the __skb_flow_dissect_ports()
-function was only populating one of them: whichever came first in
-the enum check. This meant that when the code needed both a specific
-port and a port range, one of them would be left as 0, causing the
-filter to not match packets as expected.
-
-Fix it by removing the either/or logic and instead checking and
-populating both key types independently when they're in use.
-
-Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
-Reported-by: Qiang Zhang <dtzq01@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
-Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
+Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
+Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
+Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/flow_dissector.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ sound/usb/midi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 5daa72a930a9c..f4cc3710be94a 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -705,23 +705,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
- 			 void *target_container, void *data, int nhoff,
- 			 u8 ip_proto, int hlen)
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index b02e1a33304f0..f0a70e912bddc 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1161,7 +1161,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
  {
--	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
--	struct flow_dissector_key_ports *key_ports;
-+	struct flow_dissector_key_ports_range *key_ports_range = NULL;
-+	struct flow_dissector_key_ports *key_ports = NULL;
-+	__be32 ports;
+ 	struct usbmidi_out_port *port = substream->runtime->private_data;
  
- 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
--		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
--	else if (dissector_uses_key(flow_dissector,
--				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
--		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
-+		key_ports = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_PORTS,
-+						      target_container);
-+
-+	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
-+		key_ports_range = skb_flow_dissector_target(flow_dissector,
-+							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
-+							    target_container);
- 
--	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
-+	if (!key_ports && !key_ports_range)
- 		return;
- 
--	key_ports = skb_flow_dissector_target(flow_dissector,
--					      dissector_ports,
--					      target_container);
--	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
--						data, hlen);
-+	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
-+
-+	if (key_ports)
-+		key_ports->ports = ports;
-+
-+	if (key_ports_range)
-+		key_ports_range->tp.ports = ports;
+-	cancel_work_sync(&port->ep->work);
++	flush_work(&port->ep->work);
+ 	return substream_open(substream, 0, 0);
  }
  
- static void
 -- 
 2.39.5
 
