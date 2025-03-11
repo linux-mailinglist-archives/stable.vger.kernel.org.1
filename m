@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CB7A5C606
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13723A5C5D4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68A71189E509
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5D9C178521
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2558225E80B;
-	Tue, 11 Mar 2025 15:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B457E110;
+	Tue, 11 Mar 2025 15:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ/nj+j8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXCikSKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A161BD00C;
-	Tue, 11 Mar 2025 15:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B901525DB0A;
+	Tue, 11 Mar 2025 15:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706226; cv=none; b=KydAM7h49UXV/a7fDsWw1SZqPNkUIIC5LL/zgySe+aetcshKYZ+BErtJOdGwoGmK7DrVoxk+wLOFX8nFrUooWjvY5gdDnXkxHe9904ueJeiONDjMy2p6Uk3apw3NYIynKFAzGPzKM+Ezag578FyNncP3xfqysR0K7qGaXzm33Xo=
+	t=1741706231; cv=none; b=c9UiF2lwex4KhIFxWmilRdgRixACKpEt185JcBULKIANxN2JczVaYJUjtzXaT/tUZSs9a+YCyKQC9VT64FQJBMTmkF2NatvTPIvwXT3IBnaOFk8R7E7unMvWdbQ4ds3FuOnOjNjnx9BydtTojnBUUoXi6eXQfFOo3O7/14zt5QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706226; c=relaxed/simple;
-	bh=O/qvqWSmcL5Ocvbl2k3zg6YZ/PRcNJV3BMZZPun9WDs=;
+	s=arc-20240116; t=1741706231; c=relaxed/simple;
+	bh=v8rr5nAqV+bswViHWuL2m7j2drlOXpv78lPl38M1ILo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYSRoXbX3w6kpy/GxTCYyju3D2dTd4T9WU1mceZ9RVjcSYTKE/xxUfMDHqRRLGKK/obB4QYs/jCaF3Q1leJbZz798CbxTARBDpgxzaCI9DXVQ+/7lp4pHANXlx05tcRF18/G74aaxUpLIUgEC56eCms09KV7QWbeVPbL3iD0T8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ/nj+j8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A62BC4CEE9;
-	Tue, 11 Mar 2025 15:17:05 +0000 (UTC)
+	 MIME-Version; b=LkDIkWZh5ONhay2JFsh7PKO79lCLeaehdqR2QzAtG3mh4bkv0iVq3YSQ3QolgmXfkBwuY3HIJdcyj8pkXX3nAhYDuAMs++KxlsttnF5RZnFkKI30vnVn1qOhwfuB99DLjMhfSX+B2WN0gbQKoqOFFchqWRJwUsGrmbzSyzYMDRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXCikSKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175F3C4CEEA;
+	Tue, 11 Mar 2025 15:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706225;
-	bh=O/qvqWSmcL5Ocvbl2k3zg6YZ/PRcNJV3BMZZPun9WDs=;
+	s=korg; t=1741706231;
+	bh=v8rr5nAqV+bswViHWuL2m7j2drlOXpv78lPl38M1ILo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZ/nj+j8ss4+vCZBLonxSqSHx37COAthegmB0uDByVg6TXwAwmLWax8rLUJo6viAz
-	 tW/op6HbChwNbFo9O8+4RMYWGi6mu4P3Fsu6z+e6zPJ6de+LiVFcwJcueRcOtEtOu6
-	 +vwE7NEsrabluuUEwT2xRXwyPaWMh2Jc7gAHGoeg=
+	b=oXCikSKqZ2T5QePzWODpBrW7pr5yrP3wn/0Jao4hfA9i5fdQRrAfIL3jsiiy3rBTX
+	 1t+XJAf/olitlWYw1Q/mWryaL9ppLoNMMPmN/QcKxPvFfxXL9eI8MdhdRscmMzxaZ3
+	 bk7h4XRCrA/AbLxypG2a2gs9auQ5wdlTBnTAO9so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Mackerras <paulus@samba.org>,
-	syzbot+853242d9c9917165d791@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Simon Horman <horms@kernel.org>,
+	syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com,
+	Oscar Maes <oscmaes92@gmail.com>,
+	Jiri Pirko <jiri@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 305/328] ppp: Fix KMSAN uninit-value warning with bpf
-Date: Tue, 11 Mar 2025 16:01:15 +0100
-Message-ID: <20250311145727.032007164@linuxfoundation.org>
+Subject: [PATCH 5.4 306/328] vlan: enforce underlying device type
+Date: Tue, 11 Mar 2025 16:01:16 +0100
+Message-ID: <20250311145727.070993010@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -69,119 +68,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit 4c2d14c40a68678d885eab4008a0129646805bae ]
+[ Upstream commit b33a534610067ade2bdaf2052900aaad99701353 ]
 
-Syzbot caught an "KMSAN: uninit-value" warning [1], which is caused by the
-ppp driver not initializing a 2-byte header when using socket filter.
+Currently, VLAN devices can be created on top of non-ethernet devices.
 
-The following code can generate a PPP filter BPF program:
-'''
-struct bpf_program fp;
-pcap_t *handle;
-handle = pcap_open_dead(DLT_PPP_PPPD, 65535);
-pcap_compile(handle, &fp, "ip and outbound", 0, 0);
-bpf_dump(&fp, 1);
-'''
-Its output is:
-'''
-(000) ldh [2]
-(001) jeq #0x21 jt 2 jf 5
-(002) ldb [0]
-(003) jeq #0x1 jt 4 jf 5
-(004) ret #65535
-(005) ret #0
-'''
-Wen can find similar code at the following link:
-https://github.com/ppp-project/ppp/blob/master/pppd/options.c#L1680
-The maintainer of this code repository is also the original maintainer
-of the ppp driver.
+Besides the fact that it doesn't make much sense, this also causes a
+bug which leaks the address of a kernel function to usermode.
 
-As you can see the BPF program skips 2 bytes of data and then reads the
-'Protocol' field to determine if it's an IP packet. Then it read the first
-byte of the first 2 bytes to determine the direction.
+When creating a VLAN device, we initialize GARP (garp_init_applicant)
+and MRP (mrp_init_applicant) for the underlying device.
 
-The issue is that only the first byte indicating direction is initialized
-in current ppp driver code while the second byte is not initialized.
+As part of the initialization process, we add the multicast address of
+each applicant to the underlying device, by calling dev_mc_add.
 
-For normal BPF programs generated by libpcap, uninitialized data won't be
-used, so it's not a problem. However, for carefully crafted BPF programs,
-such as those generated by syzkaller [2], which start reading from offset
-0, the uninitialized data will be used and caught by KMSAN.
+__dev_mc_add uses dev->addr_len to determine the length of the new
+multicast address.
 
-[1] https://syzkaller.appspot.com/bug?extid=853242d9c9917165d791
-[2] https://syzkaller.appspot.com/text?tag=ReproC&x=11994913980000
+This causes an out-of-bounds read if dev->addr_len is greater than 6,
+since the multicast addresses provided by GARP and MRP are only 6
+bytes long.
 
-Cc: Paul Mackerras <paulus@samba.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/000000000000dea025060d6bc3bc@google.com/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250228141408.393864-1-jiayuan.chen@linux.dev
+This behaviour can be reproduced using the following commands:
+
+ip tunnel add gretest mode ip6gre local ::1 remote ::2 dev lo
+ip l set up dev gretest
+ip link add link gretest name vlantest type vlan id 100
+
+Then, the following command will display the address of garp_pdu_rcv:
+
+ip maddr show | grep 01:80:c2:00:00:21
+
+Fix the bug by enforcing the type of the underlying device during VLAN
+device initialization.
+
+Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
+Reported-by: syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/000000000000ca9a81061a01ec20@google.com/
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20250303155619.8918-1-oscmaes92@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ net/8021q/vlan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 3cd4196b36b21..7b9337e16d6e1 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -72,6 +72,17 @@
- #define PPP_PROTO_LEN	2
- #define PPP_LCP_HDRLEN	4
+diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
+index 796d95797ab40..c75fca3eed49e 100644
+--- a/net/8021q/vlan.c
++++ b/net/8021q/vlan.c
+@@ -124,7 +124,8 @@ int vlan_check_real_dev(struct net_device *real_dev,
+ {
+ 	const char *name = real_dev->name;
  
-+/* The filter instructions generated by libpcap are constructed
-+ * assuming a four-byte PPP header on each packet, where the last
-+ * 2 bytes are the protocol field defined in the RFC and the first
-+ * byte of the first 2 bytes indicates the direction.
-+ * The second byte is currently unused, but we still need to initialize
-+ * it to prevent crafted BPF programs from reading them which would
-+ * cause reading of uninitialized data.
-+ */
-+#define PPP_FILTER_OUTBOUND_TAG 0x0100
-+#define PPP_FILTER_INBOUND_TAG  0x0000
-+
- /*
-  * An instance of /dev/ppp can be associated with either a ppp
-  * interface unit or a ppp channel.  In both cases, file->private_data
-@@ -1541,10 +1552,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
- 
- 	if (proto < 0x8000) {
- #ifdef CONFIG_PPP_FILTER
--		/* check if we should pass this packet */
--		/* the filter instructions are constructed assuming
--		   a four-byte PPP header on each packet */
--		*(u8 *)skb_push(skb, 2) = 1;
-+		/* check if the packet passes the pass and active filters.
-+		 * See comment for PPP_FILTER_OUTBOUND_TAG above.
-+		 */
-+		*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_OUTBOUND_TAG);
- 		if (ppp->pass_filter &&
- 		    BPF_PROG_RUN(ppp->pass_filter, skb) == 0) {
- 			if (ppp->debug & 1)
-@@ -2223,14 +2234,13 @@ ppp_receive_nonmp_frame(struct ppp *ppp, struct sk_buff *skb)
- 		/* network protocol frame - give it to the kernel */
- 
- #ifdef CONFIG_PPP_FILTER
--		/* check if the packet passes the pass and active filters */
--		/* the filter instructions are constructed assuming
--		   a four-byte PPP header on each packet */
- 		if (ppp->pass_filter || ppp->active_filter) {
- 			if (skb_unclone(skb, GFP_ATOMIC))
- 				goto err;
--
--			*(u8 *)skb_push(skb, 2) = 0;
-+			/* Check if the packet passes the pass and active filters.
-+			 * See comment for PPP_FILTER_INBOUND_TAG above.
-+			 */
-+			*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_INBOUND_TAG);
- 			if (ppp->pass_filter &&
- 			    BPF_PROG_RUN(ppp->pass_filter, skb) == 0) {
- 				if (ppp->debug & 1)
+-	if (real_dev->features & NETIF_F_VLAN_CHALLENGED) {
++	if (real_dev->features & NETIF_F_VLAN_CHALLENGED ||
++	    real_dev->type != ARPHRD_ETHER) {
+ 		pr_info("VLANs not supported on %s\n", name);
+ 		NL_SET_ERR_MSG_MOD(extack, "VLANs not supported on device");
+ 		return -EOPNOTSUPP;
 -- 
 2.39.5
 
