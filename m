@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50DEA5C4BD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AF0A5C70A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280BF3A878A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E147D189CE25
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0F025E815;
-	Tue, 11 Mar 2025 15:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA6225D918;
+	Tue, 11 Mar 2025 15:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCvBaB7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFwss2Ie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79F825DD02;
-	Tue, 11 Mar 2025 15:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EBD1DF749;
+	Tue, 11 Mar 2025 15:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705524; cv=none; b=d72JJOVgJCxYNoBu/G2JsxGbebBel453u1m/j3m9WVpzStIEKlJatw57Xtlr0gALfFdu0U5opmKXLZ+lpr+tIGq6FAN52cDr23PJPf90WMva+W/rkv1tTp3GSHjULv/yjtbFoO01usT581IMzk7oQj7KFBtF3AbsIldBLCOCR+k=
+	t=1741706797; cv=none; b=eqVDpWuKGEBemSeybwD4VXwmfxofwwjOY17h6Umq1bEzuIFrTwEo2PD25oCt87wHbPcYBxvDv6D6a1Fubn55t7xhI1fElGhQSSBm0016HOAOFjsNfNv/oDwaig6oOF+SnRJnVl+tWYQzH4peLBlByhrwKnRdO9TlPzTjjPu7rho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705524; c=relaxed/simple;
-	bh=vVdj862RCQXQkATd2/EYlbE8UcY5raQmKSZd7buo2GM=;
+	s=arc-20240116; t=1741706797; c=relaxed/simple;
+	bh=Wz8RcnS3U6a8RHf38kfH8oJuzMkMNpJ+fqZyavtN3wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qg6T8/JO6L9QegEDFhe+6Itijv/erfhOIvvPLFuceaT0Vusq6a+eNzKVGyxiRjpcTI6q8VpanbYWLSNHM3SVAFLH/inRHWCQBDjqFxnPRnbtCU2GbwZNMFiXkqnERpYDpb40RxLz/YdBHinY5Bmf3pqs+it4JYAu7OV0v/ZnGr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCvBaB7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6EDC4CEE9;
-	Tue, 11 Mar 2025 15:05:23 +0000 (UTC)
+	 MIME-Version; b=rGaTL+BW9l6/XzconmDWPzy20wysAQ0d/9zRnIXMmwe2W+I20FkKauUvIFF1irt6CARHnv2i1bbPFmTGleYYxKqQO3xis9gSLn7JqDQvPwl/pK3d2wh4TZrH6TBCeMqTQGy0KG3OCw5Zx1fOlQ2g/j9bz7lRKwkUM7ffbUKQBZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFwss2Ie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED567C4CEE9;
+	Tue, 11 Mar 2025 15:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705524;
-	bh=vVdj862RCQXQkATd2/EYlbE8UcY5raQmKSZd7buo2GM=;
+	s=korg; t=1741706797;
+	bh=Wz8RcnS3U6a8RHf38kfH8oJuzMkMNpJ+fqZyavtN3wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wCvBaB7uckla+caqHd3lUMudoJx5gv44OQ9M7VlIADJeoqAwy2TTlfepWn1f62mn8
-	 DymRElI7M7/LNOHK2tZhiQh3+TWePVGkK/qWC1ZWD+zD/pcmWHYa7KR1R01tgZyeOs
-	 HWJY2Xd/lqRkksOjNzB8KY017eXmetsRXoYrFP3U=
+	b=OFwss2Ier2vJKPh65d7gL830FVZN13+Ain+u9K4D9tNsOBUxkGWc3xqNM4K7aSDBc
+	 d5v9C/EzBgtIREnjJkK/f8Y49fzH+zVir3lmNrKBTxIISDAFN6mY620yV0wHI3EhY7
+	 LxnIwdzrEnsIsyRz3J3Dn8ZclOAjj3izs1kKNGnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 065/328] PM: hibernate: Add error handling for syscore_suspend()
-Date: Tue, 11 Mar 2025 15:57:15 +0100
-Message-ID: <20250311145717.476002794@linuxfoundation.org>
+	Will Deacon <will@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10 170/462] KVM: Explicitly verify target vCPU is online in kvm_get_vcpu()
+Date: Tue, 11 Mar 2025 15:57:16 +0100
+Message-ID: <20250311145805.072182489@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit e20a70c572539a486dbd91b225fa6a194a5e2122 ]
+commit 1e7381f3617d14b3c11da80ff5f8a93ab14cfc46 upstream.
 
-In hibernation_platform_enter(), the code did not check the
-return value of syscore_suspend(), potentially leading to a
-situation where syscore_resume() would be called even if
-syscore_suspend() failed. This could cause unpredictable
-behavior or system instability.
+Explicitly verify the target vCPU is fully online _prior_ to clamping the
+index in kvm_get_vcpu().  If the index is "bad", the nospec clamping will
+generate '0', i.e. KVM will return vCPU0 instead of NULL.
 
-Modify the code sequence in question to properly handle errors returned
-by syscore_suspend(). If an error occurs in the suspend path, the code
-now jumps to label 'Enable_irqs' skipping the syscore_resume() call and
-only enabling interrupts after setting the system state to SYSTEM_RUNNING.
+In practice, the bug is unlikely to cause problems, as it will only come
+into play if userspace or the guest is buggy or misbehaving, e.g. KVM may
+send interrupts to vCPU0 instead of dropping them on the floor.
 
-Fixes: 40dc166cb5dd ("PM / Core: Introduce struct syscore_ops for core subsystems PM")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250119143205.2103-1-vulab@iscas.ac.cn
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, returning vCPU0 when it shouldn't exist per online_vcpus is
+problematic now that KVM uses an xarray for the vCPUs array, as KVM needs
+to insert into the xarray before publishing the vCPU to userspace (see
+commit c5b077549136 ("KVM: Convert the kvm->vcpus array to a xarray")),
+i.e. before vCPU creation is guaranteed to succeed.
+
+As a result, incorrectly providing access to vCPU0 will trigger a
+use-after-free if vCPU0 is dereferenced and kvm_vm_ioctl_create_vcpu()
+bails out of vCPU creation due to an error and frees vCPU0.  Commit
+afb2acb2e3a3 ("KVM: Fix vcpu_array[0] races") papered over that issue, but
+in doing so introduced an unsolvable teardown conundrum.  Preventing
+accesses to vCPU0 before it's fully online will allow reverting commit
+afb2acb2e3a3, without re-introducing the vcpu_array[0] UAF race.
+
+Fixes: 1d487e9bf8ba ("KVM: fix spectrev1 gadgets")
+Cc: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241009150455.1057573-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/hibernate.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/kvm_host.h |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index f8934f9746e66..78d913a082bee 100644
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -578,7 +578,11 @@ int hibernation_platform_enter(void)
- 
- 	local_irq_disable();
- 	system_state = SYSTEM_SUSPEND;
--	syscore_suspend();
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -575,6 +575,15 @@ static inline struct kvm_io_bus *kvm_get
+ static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
+ {
+ 	int num_vcpus = atomic_read(&kvm->online_vcpus);
 +
-+	error = syscore_suspend();
-+	if (error)
-+		goto Enable_irqs;
++	/*
++	 * Explicitly verify the target vCPU is online, as the anti-speculation
++	 * logic only limits the CPU's ability to speculate, e.g. given a "bad"
++	 * index, clamping the index to 0 would return vCPU0, not NULL.
++	 */
++	if (i >= num_vcpus)
++		return NULL;
 +
- 	if (pm_wakeup_pending()) {
- 		error = -EAGAIN;
- 		goto Power_up;
-@@ -590,6 +594,7 @@ int hibernation_platform_enter(void)
+ 	i = array_index_nospec(i, num_vcpus);
  
-  Power_up:
- 	syscore_resume();
-+ Enable_irqs:
- 	system_state = SYSTEM_RUNNING;
- 	local_irq_enable();
- 
--- 
-2.39.5
-
+ 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
 
 
 
