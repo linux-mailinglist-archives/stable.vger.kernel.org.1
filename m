@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-123716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2388FA5C6FF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E739A5C4CD
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23F35188AA1A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A136117A260
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16AA25EFA0;
-	Tue, 11 Mar 2025 15:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F1425E83E;
+	Tue, 11 Mar 2025 15:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kj0MziZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tr+/u/Ec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFC225DD08;
-	Tue, 11 Mar 2025 15:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A101425EFB2;
+	Tue, 11 Mar 2025 15:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706756; cv=none; b=ReZGNO/nmwvMS+RBJ6ZROSQjSrLTFdVxFrgIRRHb1G3fg6V7gqyknmEntLkTj2ofu25gNZS4Kp9okA8iAtTm+PfINWMpEcNwLlM822d7CLfxPm64IXnqt0tun3qZggwQxa+KsbDT/TmDN6lt73fKTVWya56Xgv/BFTdkckFRFR0=
+	t=1741705576; cv=none; b=Ks9EBoyIqWIkgVa+WJVb4DZMRT2BQPhgdYfb/p2HYKDC3FaxMDL/sJW1R3My4vwbzAIooJwoLiKu0kyEP4XEkmo8DFRfJVWtEMBSQcHE00XkGUNQntBiPKzISpnBZylBm7RdI5j7gd+nYbBWKg15yKosIBgBb+S6JWp6XgzKW7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706756; c=relaxed/simple;
-	bh=gEAUum8UlgNk8lwxb10X6EEv5N4cTGb9c2I1WCfTiro=;
+	s=arc-20240116; t=1741705576; c=relaxed/simple;
+	bh=v0O7dDS8UJVRhfkD7298ncnDXTU0KWQAQ0kaDyJ9sdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SN+azObZOokGyK1hli6zP5qb4uJXRou68y5tHOS+YZmLgCSBifVSCOShlnXQNLdJEY1sFerMTCZWMhFAIfIMCp+u34LlgwsJXaLhRgG2xLv5I7xyWouA1FT9EcJv/RrGmBEVNDnLiVBFJXexacwmVRqvCW/oZ/ODVckIPj8fkow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kj0MziZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1833C4CEE9;
-	Tue, 11 Mar 2025 15:25:55 +0000 (UTC)
+	 MIME-Version; b=LCa+nSu2UUZHiFR5x86GVFu4lgoiQGj2xMVpGa8lxeXDU+1wz1MwTV3GIgprLFuCShUIdJDg5RtrwFR6fEnf4MkTT+6RYkN1lOJDxfuWq3+BMrGdu/NvS8SZYQUmAg1W6f+C0ZrC9mJgE/BwB882F7sjmsecEY9oZCR6AewAzXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tr+/u/Ec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0651C4CEEF;
+	Tue, 11 Mar 2025 15:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706756;
-	bh=gEAUum8UlgNk8lwxb10X6EEv5N4cTGb9c2I1WCfTiro=;
+	s=korg; t=1741705576;
+	bh=v0O7dDS8UJVRhfkD7298ncnDXTU0KWQAQ0kaDyJ9sdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kj0MziZS6dM10bGxETVjF4BU94zleZYVuvK0M5eqKgKGbkVq4H7DAU6v42O1Thh4R
-	 fMMQeNChG88tLdQmDXm3m3Zdscdf1vXilGzKn3MzJBBhR+4/jkS8RUQoBUbMD0xCUf
-	 dKZG1xrQs/BGNTuoW3oCSLpijTS2n49cZMExMyxU=
+	b=tr+/u/Ecf0M4C37e8e/gbRfuEiOBZWL8X34udLc0P2uUC1UJjx78sNXpmVX0oPtVy
+	 T4XFRzMaJG8EtZjFslP04Dl3YNtLd1ViMopCHvVirQrRbzqj6dctdQJdL8RVcZJ5aM
+	 gaEOSkeCWPHrcTF0ow2MEWnyq38MiuMy8oMWGw4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <mail@jakemoroni.com>,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/462] net: atlantic: fix warning during hot unplug
+Subject: [PATCH 5.4 053/328] media: camif-core: Add check for clk_enable()
 Date: Tue, 11 Mar 2025 15:57:03 +0100
-Message-ID: <20250311145804.548187195@linuxfoundation.org>
+Message-ID: <20250311145717.003397902@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <mail@jakemoroni.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 028676bb189ed6d1b550a0fc570a9d695b6acfd3 ]
+[ Upstream commit 77ed2470ac09c2b0a33cf3f98cc51d18ba9ed976 ]
 
-Firmware deinitialization performs MMIO accesses which are not
-necessary if the device has already been removed. In some cases,
-these accesses happen via readx_poll_timeout_atomic which ends up
-timing out, resulting in a warning at hw_atl2_utils_fw.c:112:
+Add check for the return value of clk_enable() to gurantee the success.
 
-[  104.595913] Call Trace:
-[  104.595915]  <TASK>
-[  104.595918]  ? show_regs+0x6c/0x80
-[  104.595923]  ? __warn+0x8d/0x150
-[  104.595925]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
-[  104.595934]  ? report_bug+0x182/0x1b0
-[  104.595938]  ? handle_bug+0x6e/0xb0
-[  104.595940]  ? exc_invalid_op+0x18/0x80
-[  104.595942]  ? asm_exc_invalid_op+0x1b/0x20
-[  104.595944]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
-[  104.595952]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
-[  104.595959]  aq_nic_deinit.part.0+0xbd/0xf0 [atlantic]
-[  104.595964]  aq_nic_deinit+0x17/0x30 [atlantic]
-[  104.595970]  aq_ndev_close+0x2b/0x40 [atlantic]
-[  104.595975]  __dev_close_many+0xad/0x160
-[  104.595978]  dev_close_many+0x99/0x170
-[  104.595979]  unregister_netdevice_many_notify+0x18b/0xb20
-[  104.595981]  ? __call_rcu_common+0xcd/0x700
-[  104.595984]  unregister_netdevice_queue+0xc6/0x110
-[  104.595986]  unregister_netdev+0x1c/0x30
-[  104.595988]  aq_pci_remove+0xb1/0xc0 [atlantic]
-
-Fix this by skipping firmware deinitialization altogether if the
-PCI device is no longer present.
-
-Tested with an AQC113 attached via Thunderbolt by performing
-repeated unplug cycles while traffic was running via iperf.
-
-Fixes: 97bde5c4f909 ("net: ethernet: aquantia: Support for NIC-specific code")
-Signed-off-by: Jacob Moroni <mail@jakemoroni.com>
-Reviewed-by: Igor Russkikh <irusskikh@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250203143604.24930-3-mail@jakemoroni.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_nic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/s3c-camif/camif-core.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-index 2d491efa11bdf..54aa84f06e403 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-@@ -1294,7 +1294,9 @@ void aq_nic_deinit(struct aq_nic_s *self, bool link_down)
- 	aq_ptp_ring_free(self);
- 	aq_ptp_free(self);
+diff --git a/drivers/media/platform/s3c-camif/camif-core.c b/drivers/media/platform/s3c-camif/camif-core.c
+index ee624804862e2..3c8c262e3c687 100644
+--- a/drivers/media/platform/s3c-camif/camif-core.c
++++ b/drivers/media/platform/s3c-camif/camif-core.c
+@@ -529,10 +529,19 @@ static int s3c_camif_remove(struct platform_device *pdev)
+ static int s3c_camif_runtime_resume(struct device *dev)
+ {
+ 	struct camif_dev *camif = dev_get_drvdata(dev);
++	int ret;
++
++	ret = clk_enable(camif->clock[CLK_GATE]);
++	if (ret)
++		return ret;
  
--	if (likely(self->aq_fw_ops->deinit) && link_down) {
-+	/* May be invoked during hot unplug. */
-+	if (pci_device_is_present(self->pdev) &&
-+	    likely(self->aq_fw_ops->deinit) && link_down) {
- 		mutex_lock(&self->fwreq_mutex);
- 		self->aq_fw_ops->deinit(self->aq_hw);
- 		mutex_unlock(&self->fwreq_mutex);
+-	clk_enable(camif->clock[CLK_GATE]);
+ 	/* null op on s3c244x */
+-	clk_enable(camif->clock[CLK_CAM]);
++	ret = clk_enable(camif->clock[CLK_CAM]);
++	if (ret) {
++		clk_disable(camif->clock[CLK_GATE]);
++		return ret;
++	}
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
