@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E584A5C4A4
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42666A5C693
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3701882195
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 870277AC679
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E4B25E473;
-	Tue, 11 Mar 2025 15:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D0925EF8A;
+	Tue, 11 Mar 2025 15:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ4IVJ8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5HkFw1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DB225DD00;
-	Tue, 11 Mar 2025 15:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1467E25E83F;
+	Tue, 11 Mar 2025 15:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705496; cv=none; b=ZQGefraMwzbi385p29EgG27ISqqxnAEXcphCZb1uZTpfwykN0khiWMh1OLO3at4iqNx7ZSo7lnF9eDzOGfWIyT47m9BCTyesNkvVsb3aLN3swWEa5mNSOPF4sljjJWGL4pQEb/3UDjwKa8XC0tT6+OI7z9jQPcoDKvn0k/mkCbk=
+	t=1741706739; cv=none; b=dK73VoydsCOANYU4dW/7/muO+Lo2uSyPBtRtwbrJTLB4WbcOCqh/e44+9kzSHmQjqlWlOLp5ag3h6osvl+ncqSrqNd2iY6gKute/WClOtc/YzuJvBlti6cNU5YVKu5gepSrhkdADI4wkazv5NwQ8I3RjZQdPjASKNnH6F9Z/oOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705496; c=relaxed/simple;
-	bh=/c/N3wVi6o07S7ECS/KCn57g5EwjFzEB1Nb9vBULMtE=;
+	s=arc-20240116; t=1741706739; c=relaxed/simple;
+	bh=yzf0UoDGisbrU4dfmdptap/uAvos1QKhIIePzd/Wd04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ryw8/UiKT7zIGfxTySbxAwjn6Fgwki9mmdVRKMLz/zJ6tMku5BZzUkNWtdANb2qcXKGP6ENZx9sf0dSuIzlon1Tj952wy0FKFtAgtOqJVAe2JmG1HefuLX9sR3kUDlEvkXHXqOv38hp3JI3eAs6ctdhRtnwyWVSnl8PAfo41k38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ4IVJ8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0957AC4CEE9;
-	Tue, 11 Mar 2025 15:04:54 +0000 (UTC)
+	 MIME-Version; b=Tw8UkgB/El8I/dyXWeDzzC78hsCPglech8NcGPMXIJzKW/6MpcWRBUQoTnM95TkGnMbv0j1CuE2R7RDUXYxMH1LJhXp25ERF8zX3+xRF7/Zo4p4b+Ri1tn6BL4qhdoR7SUkWUsq1jTZSf/BEtBAw8LYUPt/LsmhN3CcUA3JR77c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5HkFw1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCE2C4CEEA;
+	Tue, 11 Mar 2025 15:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705495;
-	bh=/c/N3wVi6o07S7ECS/KCn57g5EwjFzEB1Nb9vBULMtE=;
+	s=korg; t=1741706738;
+	bh=yzf0UoDGisbrU4dfmdptap/uAvos1QKhIIePzd/Wd04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQ4IVJ8QSYbgfLDzQ9RjNpBbAhFwiRtr4AJ22vJf+PG2Zwuiy3hkP5Dmf3mjdg7uL
-	 B5GSadeVhwiXw/d10w8xsEDiCeF4+JD0L4gUBDqO1g5K0tU0I+3A1lUXO4yUZxEeG8
-	 HaXaQMFp9Id/OnjzCLfdLQWAPYGk9+TeFzEmhRMw=
+	b=c5HkFw1NoxNhUPZ9aqiuRQ1pTATftMO0bg7/2lewI8Hf65k56S450zou1to/fEFO9
+	 zhLPWu9E7593SJKFxEz2naQBo2AqAzp+JvfvHD1SsE2gyNk0YWOjY+60ufO0UClbm8
+	 v19uPvACEuCeSNKWcSYtbOYU0mvKCw9vpBira5OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/328] padata: fix sysfs store callback check
-Date: Tue, 11 Mar 2025 15:56:48 +0100
-Message-ID: <20250311145716.408816969@linuxfoundation.org>
+Subject: [PATCH 5.10 143/462] tipc: re-order conditions in tipc_crypto_key_rcv()
+Date: Tue, 11 Mar 2025 15:56:49 +0100
+Message-ID: <20250311145804.006240850@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9ff6e943bce67d125781fe4780a5d6f072dc44c0 ]
+[ Upstream commit 5fe71fda89745fc3cd95f70d06e9162b595c3702 ]
 
-padata_sysfs_store() was copied from padata_sysfs_show() but this check
-was not adapted. Today there is no attribute which can fail this
-check, but if there is one it may as well be correct.
+On a 32bit system the "keylen + sizeof(struct tipc_aead_key)" math could
+have an integer wrapping issue.  It doesn't matter because the "keylen"
+is checked on the next line, but just to make life easier for static
+analysis tools, let's re-order these conditions and avoid the integer
+overflow.
 
-Fixes: 5e017dc3f8bc ("padata: Added sysfs primitives to padata subsystem")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tipc/crypto.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index a544da60014c0..47aebcda65d5d 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -940,7 +940,7 @@ static ssize_t padata_sysfs_store(struct kobject *kobj, struct attribute *attr,
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index b5aa0a835bced..bf384bd126963 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -2297,8 +2297,8 @@ static bool tipc_crypto_key_rcv(struct tipc_crypto *rx, struct tipc_msg *hdr)
+ 	keylen = ntohl(*((__be32 *)(data + TIPC_AEAD_ALG_NAME)));
  
- 	pinst = kobj2pinst(kobj);
- 	pentry = attr2pentry(attr);
--	if (pentry->show)
-+	if (pentry->store)
- 		ret = pentry->store(pinst, attr, buf, count);
- 
- 	return ret;
+ 	/* Verify the supplied size values */
+-	if (unlikely(size != keylen + sizeof(struct tipc_aead_key) ||
+-		     keylen > TIPC_AEAD_KEY_SIZE_MAX)) {
++	if (unlikely(keylen > TIPC_AEAD_KEY_SIZE_MAX ||
++		     size != keylen + sizeof(struct tipc_aead_key))) {
+ 		pr_debug("%s: invalid MSG_CRYPTO key size\n", rx->name);
+ 		goto exit;
+ 	}
 -- 
 2.39.5
 
