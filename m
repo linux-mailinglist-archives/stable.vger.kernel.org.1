@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-123727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6501DA5C708
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EC2A5C4BB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F052188CAB5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31123B68D2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E668025EFB8;
-	Tue, 11 Mar 2025 15:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61AD25E821;
+	Tue, 11 Mar 2025 15:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAjbL/I/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnMC314O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A293925DD06;
-	Tue, 11 Mar 2025 15:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9336725E446;
+	Tue, 11 Mar 2025 15:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706788; cv=none; b=SYmMviJYsipWuSGXUgO3JvCkDsi65eSNfNbzhMoTCVpLY3AVUacEyE2lNZEUKX7GVQfFRnW5Brlgq+zfGGaG5H93TedbOc46lqorTkDCnOzVeprCibFWIkkgWvoR6qUvfH0bI5TYfrM8C92AEuvLbe2dIu6kUgZwQQ3h98NiQQs=
+	t=1741705518; cv=none; b=aHgFef559rb4wWFze9wloo0IDnVYD8jzg/BHkRXv34tACMcM1xq3d5+MN5M7ujQJ656Ae6JT22IUf6TIk/KIWm8msxBmIjSf4GFchjdtRA7QeuS2KK9NcRFW3kywdrVm+BfOkRKPveeb4WbyJ6BRhMz9k3RUaMOZQeYItqnxgw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706788; c=relaxed/simple;
-	bh=Jyzfswtbd02+H1SwTO3SSgnzdRQxYiZaNhQsjF2XmFE=;
+	s=arc-20240116; t=1741705518; c=relaxed/simple;
+	bh=7n1b3OBXTMllGhT7IWorDaAKTPU2Sve78nXDdjGNkjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUh2YiPDEzdKf8IWz6QM7Ubq1XyjNKWzG8JqXTGf4x422mklge1W3sxoafnK3mskw4v0d/s51BkOWKtiv5mwKDmXLuZMDUWUs+6uOilp4vDvfgbXd77uaXhsgH9necd0Hq1ZMVjhHTNPz1/YtwMuGcoWha1kbnp+TKOid9roQEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAjbL/I/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAB6C4CEE9;
-	Tue, 11 Mar 2025 15:26:27 +0000 (UTC)
+	 MIME-Version; b=RZd1sgJbaOF0t8KxclLJ+c3PtNnXXvwAjr/N41EdlwXQwUXGwjcJ7pugYtL5V6+H4FEhJr34LqXYe2PDH2Bt+FATmmZ6OX7opWqRfUyEQAbPxAH5wN1m8bGaNcuqmReFJN6jh7POTKfCX7DlueYfPSuVBoZmJq+np8zQyGzfMi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnMC314O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCB9C4CEE9;
+	Tue, 11 Mar 2025 15:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706788;
-	bh=Jyzfswtbd02+H1SwTO3SSgnzdRQxYiZaNhQsjF2XmFE=;
+	s=korg; t=1741705518;
+	bh=7n1b3OBXTMllGhT7IWorDaAKTPU2Sve78nXDdjGNkjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAjbL/I/vxRRdLGb5A0S/jIQ+/+yik2NXVyFeZND/IIvS0H2xVdDxf25vbqrnbPvu
-	 WlG5vf++zsKBFpAHusknq8DhYDRyznU0uRTVHb/q9/JDfnlVEwomrEwCw+Eo7ClzC9
-	 4jIJeAADnWrRHAwBJlbXY/REK0XDTU3zMcuzHTDo=
+	b=pnMC314OP+zBlzfSe4PQsyS3vQ3C0jS8Hrukzt0C+rXDhD71EGS1soa0/lKfqvTJo
+	 NMU6KSoCiqdDGUSqwaG1m6TfiPM2t6ASDsg3Uh7sm9shO/sRmKBKlf0fRuF5QCJ5wN
+	 +rJD2jbf5oyyOM/yLkAc7uguzW1avO2RH1yBYXkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 167/462] m68k: vga: Fix I/O defines
+	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 063/328] net: fec: implement TSO descriptor cleanup
 Date: Tue, 11 Mar 2025 15:57:13 +0100
-Message-ID: <20250311145804.950923052@linuxfoundation.org>
+Message-ID: <20250311145717.397144160@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
 
-commit 53036937a101b5faeaf98e7438555fa854a1a844 upstream.
+[ Upstream commit 61dc1fd9205bc9d9918aa933a847b08e80b4dc20 ]
 
-Including m68k's <asm/raw_io.h> in vga.h on nommu platforms results
-in conflicting defines with io_no.h for various I/O macros from the
-__raw_read and __raw_write families. An example error is
+Implement cleanup of descriptors in the TSO error path of
+fec_enet_txq_submit_tso(). The cleanup
 
-   In file included from arch/m68k/include/asm/vga.h:12,
-                 from include/video/vga.h:22,
-                 from include/linux/vgaarb.h:34,
-		 from drivers/video/aperture.c:12:
->> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
-      39 | #define __raw_readb in_8
-	 |
-   In file included from arch/m68k/include/asm/io.h:6,
-		    from include/linux/io.h:13,
-		    from include/linux/irq.h:20,
-		    from include/asm-generic/hardirq.h:17,
-		    from ./arch/m68k/include/generated/asm/hardirq.h:1,
-		    from include/linux/hardirq.h:11,
-		    from include/linux/interrupt.h:11,
-                    from include/linux/trace_recursion.h:5,
-		    from include/linux/ftrace.h:10,
-		    from include/linux/kprobes.h:28,
-		    from include/linux/kgdb.h:19,
-		    from include/linux/fb.h:6,
-		    from drivers/video/aperture.c:5:
-   arch/m68k/include/asm/io_no.h:16: note: this is the location of the previous definition
-      16 | #define __raw_readb(addr) \
-	 |
+- Unmaps DMA buffers for data descriptors skipping TSO header
+- Clears all buffer descriptors
+- Handles extended descriptors by clearing cbd_esc when enabled
 
-Include <asm/io.h>, which avoids raw_io.h on nommu platforms.
-Also change the defined values of some of the read/write symbols in
-vga.h to __raw_read/__raw_write as the raw_in/raw_out symbols are not
-generally available.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@intel.com/
-Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v3.5+
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/20250107095912.130530-1-tzimmermann@suse.de
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79f339125ea3 ("net: fec: Add software TSO support")
+Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250120085430.99318-1-dheeraj.linuxdev@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/vga.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 31 ++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
---- a/arch/m68k/include/asm/vga.h
-+++ b/arch/m68k/include/asm/vga.h
-@@ -9,7 +9,7 @@
-  */
- #ifndef CONFIG_PCI
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index f11824a078e9e..5660a83356eb0 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -732,6 +732,8 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
+ 	int hdr_len = skb_transport_offset(skb) + tcp_hdrlen(skb);
+ 	int total_len, data_left;
+ 	struct bufdesc *bdp = txq->bd.cur;
++	struct bufdesc *tmp_bdp;
++	struct bufdesc_ex *ebdp;
+ 	struct tso_t tso;
+ 	unsigned int index = 0;
+ 	int ret;
+@@ -805,7 +807,34 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
+ 	return 0;
  
--#include <asm/raw_io.h>
-+#include <asm/io.h>
- #include <asm/kmap.h>
+ err_release:
+-	/* TODO: Release all used data descriptors for TSO */
++	/* Release all used data descriptors for TSO */
++	tmp_bdp = txq->bd.cur;
++
++	while (tmp_bdp != bdp) {
++		/* Unmap data buffers */
++		if (tmp_bdp->cbd_bufaddr &&
++		    !IS_TSO_HEADER(txq, fec32_to_cpu(tmp_bdp->cbd_bufaddr)))
++			dma_unmap_single(&fep->pdev->dev,
++					 fec32_to_cpu(tmp_bdp->cbd_bufaddr),
++					 fec16_to_cpu(tmp_bdp->cbd_datlen),
++					 DMA_TO_DEVICE);
++
++		/* Clear standard buffer descriptor fields */
++		tmp_bdp->cbd_sc = 0;
++		tmp_bdp->cbd_datlen = 0;
++		tmp_bdp->cbd_bufaddr = 0;
++
++		/* Handle extended descriptor if enabled */
++		if (fep->bufdesc_ex) {
++			ebdp = (struct bufdesc_ex *)tmp_bdp;
++			ebdp->cbd_esc = 0;
++		}
++
++		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
++	}
++
++	dev_kfree_skb_any(skb);
++
+ 	return ret;
+ }
  
- /*
-@@ -29,9 +29,9 @@
- #define inw_p(port)		0
- #define outb_p(port, val)	do { } while (0)
- #define outw(port, val)		do { } while (0)
--#define readb			raw_inb
--#define writeb			raw_outb
--#define writew			raw_outw
-+#define readb			__raw_readb
-+#define writeb			__raw_writeb
-+#define writew			__raw_writew
- 
- #endif /* CONFIG_PCI */
- #endif /* _ASM_M68K_VGA_H */
+-- 
+2.39.5
+
 
 
 
