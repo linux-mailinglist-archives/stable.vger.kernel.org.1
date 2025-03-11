@@ -1,130 +1,269 @@
-Return-Path: <stable+bounces-123184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EA4A5BD6F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:15:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AECAA5BD96
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEF077AA02A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 10:14:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0ABC1899188
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 10:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8F42309BD;
-	Tue, 11 Mar 2025 10:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E518C23645D;
+	Tue, 11 Mar 2025 10:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="v38GcD+o"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="DKdR3hNc"
 X-Original-To: stable@vger.kernel.org
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DA623099C
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 10:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1377123536B;
+	Tue, 11 Mar 2025 10:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741687985; cv=none; b=tN0z5ikLLcm/oAAQNYuwmlgrFdB7G8I3m38tygOBx4P5uyDZ+lH5QASRhLl1pDGAGs3k9mCxtCsnxyaSR56D5M/XuUex2UZkIjx+BCde1DBqXgsM1SR3iw+pu/Nkcm4kM7nWiblchwwvAPJLWaty99TQNSi8NVm5AknEalncl3Y=
+	t=1741688270; cv=none; b=KTmKkGNBXDRbRsJHHl6nAg/kr5WW7jUGfmVSSR4GGI95Wvo8+QM0EAmL0pW8I8mWa7djyTniI2MuoW+U6LqcoC+MmCnleryvSLLdd+7iS/0AjGrIkLU5FdtgetUhoF4HbXgQSwKkVVcdleicCJ+42jRtlfkhuaJswYhhBx/LL2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741687985; c=relaxed/simple;
-	bh=eKZ21sAfzTBNzYWki/MIvFoXRYxeTYoWGzwrhM4B4YA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aC7p8tBPg6kQcEwQf+Hm34N33Ivwjo3jDKSmA5SQYsax0zCxAzQfpjU302YrnYovDet0avJMN1Rn3s17OxdEStGt+B6rp1cb+n1WZzCtXwA8WX89HFLJ3lIFqI4t5/Y2elvQTZt3bKAr0r/LqidwEeLIOOiVzPd37p2bbiUNS40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=v38GcD+o; arc=none smtp.client-ip=44.202.169.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6001a.ext.cloudfilter.net ([10.0.30.140])
-	by cmsmtp with ESMTPS
-	id reoltO5ihXshwrwbdtZGGg; Tue, 11 Mar 2025 10:13:02 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id rwbdtVmDKsTV2rwbdtR4dX; Tue, 11 Mar 2025 10:13:01 +0000
-X-Authority-Analysis: v=2.4 cv=GquJ+V1C c=1 sm=1 tr=0 ts=67d00cad
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=c9ZH/a8/3JJBb4/soWP2O1bASmEOVWhEZDkVB/Rb6R8=; b=v38GcD+oSGsQ0DQwnq3R/bbbPn
-	dhUusb3SXIcH/Y1rFzkkgUoUTkB8jyADUWx/Xp9dZbXjvfdJmGgUePl7BJgcp6+zcbU5pkltkbiTm
-	bEqsvl/3AkzjO+3U1kHQlgB5+5wu0FAjt3tEFUgwAJMfoKO6F9bwxJwKa86aKRaDigPxhvQ4Yg4Jk
-	vIY+1zBLRu+3aj44ngGSLqYAzRtsN0UoKuzm+c0kw6pW1vr2xb67I/h9ZZCTUMm7AwM1qhLzdy0LK
-	/I9gZAMOzYZ9h13X5FfKTuWU3Xv8IQw+o9raQrDMmngbbdNYtsTAVdgAIYFqRx/Co1qsxxvNzmGqU
-	QZLhwriA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:41848 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1trwbb-00000001VIl-0O7N;
-	Tue, 11 Mar 2025 04:12:59 -0600
-Message-ID: <c958fd6f-9381-4571-a1be-b2080122f78f@w6rz.net>
-Date: Tue, 11 Mar 2025 03:12:55 -0700
+	s=arc-20240116; t=1741688270; c=relaxed/simple;
+	bh=gEA0nXFBms+HWX2P/CIFZxEPTxaDz5j+Kw7gu5O9yzc=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=aX+Ofy+5+SHjTXmX7zeOIFgon2sjSJ+eSdxT1nln1E45pMFI+fI0+zMuo7YAQhZUpvyToC8sMMI5UNpjCmzY/rbYSrVrZh4VXk87C+LrbnGq3KoaAbXei5cu8bTHQpJQdhugIvFclKhKk2A1dTg2nyxdO63j9rl7/EZAY4OJLSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=DKdR3hNc; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 446652111429; Tue, 11 Mar 2025 03:17:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 446652111429
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741688262;
+	bh=Z3q4FAF402fR6u9iuGXblXXKEqtvUQCXlYjYHQqCarc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DKdR3hNcLub+nBQJW4kjAybXsjCC6G+OWdZdQ29ODhE0EbcpsJPrnS9BYyF3MzWA2
+	 zKBhGqw1AUfq2Zltf54vHRmLQIWhYJowODvqdCR92uc5tWkG9R+4jDvyivcW5BCKD4
+	 ujVU+6LhV45G/q9l/zXUD4kucc/eFTIWYqUuaFDw=
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Long Li <longli@microsoft.com>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Erick Archer <erick.archer@outlook.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>
+Cc: Shradha Gupta <shradhagupta@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: mana: cleanup mana struct after debugfs_remove()
+Date: Tue, 11 Mar 2025 03:17:40 -0700
+Message-Id: <1741688260-28922-1-git-send-email-shradhagupta@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/145] 6.6.83-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250310170434.733307314@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250310170434.733307314@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1trwbb-00000001VIl-0O7N
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:41848
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 37
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNQ8stXlCE06/SjkE/yxpPcNgc9+bzJ9UlLUv12sGwtZhms/r5CPSd9c8nPtiVVjHirK6ip7hEqaXelMMDDIt9ctXnHYK7uDJ/ge/B+8G3asvS10+5hW
- 0EVbAJKQ0cqPvLXNRPBsXFCOUvGaVTZB6o5OQEGUQBPHzQGKg9IYBBXXKJra6J3iA+ZqJ4CoiyTNuQ==
 
-On 3/10/25 10:04, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.83 release.
-> There are 145 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 12 Mar 2025 17:04:00 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.83-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When on a MANA VM hibernation is triggered, as part of hibernate_snapshot(),
+mana_gd_suspend() and mana_gd_resume() are called. If during this
+mana_gd_resume(), a failure occurs with HWC creation, mana_port_debugfs
+pointer does not get reinitialized and ends up pointing to older,
+cleaned-up dentry.
+Further in the hibernation path, as part of power_down(), mana_gd_shutdown()
+is triggered. This call, unaware of the failures in resume, tries to cleanup
+the already cleaned up  mana_port_debugfs value and hits the following bug:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+[  191.359296] mana 7870:00:00.0: Shutdown was called
+[  191.359918] BUG: kernel NULL pointer dereference, address: 0000000000000098
+[  191.360584] #PF: supervisor write access in kernel mode
+[  191.361125] #PF: error_code(0x0002) - not-present page
+[  191.361727] PGD 1080ea067 P4D 0
+[  191.362172] Oops: Oops: 0002 [#1] SMP NOPTI
+[  191.362606] CPU: 11 UID: 0 PID: 1674 Comm: bash Not tainted 6.14.0-rc5+ #2
+[  191.363292] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+[  191.364124] RIP: 0010:down_write+0x19/0x50
+[  191.364537] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 53 48 89 fb e8 de cd ff ff 31 c0 ba 01 00 00 00 <f0> 48 0f b1 13 75 16 65 48 8b 05 88 24 4c 6a 48 89 43 08 48 8b 5d
+[  191.365867] RSP: 0000:ff45fbe0c1c037b8 EFLAGS: 00010246
+[  191.366350] RAX: 0000000000000000 RBX: 0000000000000098 RCX: ffffff8100000000
+[  191.366951] RDX: 0000000000000001 RSI: 0000000000000064 RDI: 0000000000000098
+[  191.367600] RBP: ff45fbe0c1c037c0 R08: 0000000000000000 R09: 0000000000000001
+[  191.368225] R10: ff45fbe0d2b01000 R11: 0000000000000008 R12: 0000000000000000
+[  191.368874] R13: 000000000000000b R14: ff43dc27509d67c0 R15: 0000000000000020
+[  191.369549] FS:  00007dbc5001e740(0000) GS:ff43dc663f380000(0000) knlGS:0000000000000000
+[  191.370213] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  191.370830] CR2: 0000000000000098 CR3: 0000000168e8e002 CR4: 0000000000b73ef0
+[  191.371557] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  191.372192] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+[  191.372906] Call Trace:
+[  191.373262]  <TASK>
+[  191.373621]  ? show_regs+0x64/0x70
+[  191.374040]  ? __die+0x24/0x70
+[  191.374468]  ? page_fault_oops+0x290/0x5b0
+[  191.374875]  ? do_user_addr_fault+0x448/0x800
+[  191.375357]  ? exc_page_fault+0x7a/0x160
+[  191.375971]  ? asm_exc_page_fault+0x27/0x30
+[  191.376416]  ? down_write+0x19/0x50
+[  191.376832]  ? down_write+0x12/0x50
+[  191.377232]  simple_recursive_removal+0x4a/0x2a0
+[  191.377679]  ? __pfx_remove_one+0x10/0x10
+[  191.378088]  debugfs_remove+0x44/0x70
+[  191.378530]  mana_detach+0x17c/0x4f0
+[  191.378950]  ? __flush_work+0x1e2/0x3b0
+[  191.379362]  ? __cond_resched+0x1a/0x50
+[  191.379787]  mana_remove+0xf2/0x1a0
+[  191.380193]  mana_gd_shutdown+0x3b/0x70
+[  191.380642]  pci_device_shutdown+0x3a/0x80
+[  191.381063]  device_shutdown+0x13e/0x230
+[  191.381480]  kernel_power_off+0x35/0x80
+[  191.381890]  hibernate+0x3c6/0x470
+[  191.382312]  state_store+0xcb/0xd0
+[  191.382734]  kobj_attr_store+0x12/0x30
+[  191.383211]  sysfs_kf_write+0x3e/0x50
+[  191.383640]  kernfs_fop_write_iter+0x140/0x1d0
+[  191.384106]  vfs_write+0x271/0x440
+[  191.384521]  ksys_write+0x72/0xf0
+[  191.384924]  __x64_sys_write+0x19/0x20
+[  191.385313]  x64_sys_call+0x2b0/0x20b0
+[  191.385736]  do_syscall_64+0x79/0x150
+[  191.386146]  ? __mod_memcg_lruvec_state+0xe7/0x240
+[  191.386676]  ? __lruvec_stat_mod_folio+0x79/0xb0
+[  191.387124]  ? __pfx_lru_add+0x10/0x10
+[  191.387515]  ? queued_spin_unlock+0x9/0x10
+[  191.387937]  ? do_anonymous_page+0x33c/0xa00
+[  191.388374]  ? __handle_mm_fault+0xcf3/0x1210
+[  191.388805]  ? __count_memcg_events+0xbe/0x180
+[  191.389235]  ? handle_mm_fault+0xae/0x300
+[  191.389588]  ? do_user_addr_fault+0x559/0x800
+[  191.390027]  ? irqentry_exit_to_user_mode+0x43/0x230
+[  191.390525]  ? irqentry_exit+0x1d/0x30
+[  191.390879]  ? exc_page_fault+0x86/0x160
+[  191.391235]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  191.391745] RIP: 0033:0x7dbc4ff1c574
+[  191.392111] Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
+[  191.393412] RSP: 002b:00007ffd95a23ab8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+[  191.393990] RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007dbc4ff1c574
+[  191.394594] RDX: 0000000000000005 RSI: 00005a6eeadb0ce0 RDI: 0000000000000001
+[  191.395215] RBP: 00007ffd95a23ae0 R08: 00007dbc50003b20 R09: 0000000000000000
+[  191.395805] R10: 0000000000000001 R11: 0000000000000202 R12: 0000000000000005
+[  191.396404] R13: 00005a6eeadb0ce0 R14: 00007dbc500045c0 R15: 00007dbc50001ee0
+[  191.396987]  </TASK>
 
-Tested-by: Ron Economos <re@w6rz.net>
+To fix this, we explicitly set such mana debugfs variables to NULL after
+debugfs_remove() is called.
+
+Fixes: 6607c17c6c5e ("net: mana: Enable debugfs files for MANA device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 11 ++++++++++-
+ drivers/net/ethernet/microsoft/mana/mana_en.c   | 10 ++++++----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index c15a5ef4674e..f1966788c98e 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -1579,6 +1579,7 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 * adapter-MTU file and apc->mana_pci_debugfs folder.
+ 	 */
+ 	debugfs_remove_recursive(gc->mana_pci_debugfs);
++	gc->mana_pci_debugfs = NULL;
+ 	pci_iounmap(pdev, bar0_va);
+ free_gc:
+ 	pci_set_drvdata(pdev, NULL);
+@@ -1601,6 +1602,8 @@ static void mana_gd_remove(struct pci_dev *pdev)
+ 
+ 	debugfs_remove_recursive(gc->mana_pci_debugfs);
+ 
++	gc->mana_pci_debugfs = NULL;
++
+ 	pci_iounmap(pdev, gc->bar0_va);
+ 
+ 	vfree(gc);
+@@ -1656,6 +1659,8 @@ static void mana_gd_shutdown(struct pci_dev *pdev)
+ 
+ 	debugfs_remove_recursive(gc->mana_pci_debugfs);
+ 
++	gc->mana_pci_debugfs = NULL;
++
+ 	pci_disable_device(pdev);
+ }
+ 
+@@ -1682,8 +1687,10 @@ static int __init mana_driver_init(void)
+ 	mana_debugfs_root = debugfs_create_dir("mana", NULL);
+ 
+ 	err = pci_register_driver(&mana_driver);
+-	if (err)
++	if (err) {
+ 		debugfs_remove(mana_debugfs_root);
++		mana_debugfs_root = NULL;
++	}
+ 
+ 	return err;
+ }
+@@ -1693,6 +1700,8 @@ static void __exit mana_driver_exit(void)
+ 	pci_unregister_driver(&mana_driver);
+ 
+ 	debugfs_remove(mana_debugfs_root);
++
++	mana_debugfs_root = NULL;
+ }
+ 
+ module_init(mana_driver_init);
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 2d826077d38c..9a8171f099b6 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -748,12 +748,11 @@ static const struct net_device_ops mana_devops = {
+ static void mana_cleanup_port_context(struct mana_port_context *apc)
+ {
+ 	/*
+-	 * at this point all dir/files under the vport directory
+-	 * are already cleaned up.
+-	 * We are sure the apc->mana_port_debugfs remove will not
+-	 * cause any freed memory access issues
++	 * make sure subsequent cleanup attempts don't end up removing already
++	 * cleaned dentry pointer
+ 	 */
+ 	debugfs_remove(apc->mana_port_debugfs);
++	apc->mana_port_debugfs = NULL;
+ 	kfree(apc->rxqs);
+ 	apc->rxqs = NULL;
+ }
+@@ -1264,6 +1263,7 @@ static void mana_destroy_eq(struct mana_context *ac)
+ 		return;
+ 
+ 	debugfs_remove_recursive(ac->mana_eqs_debugfs);
++	ac->mana_eqs_debugfs = NULL;
+ 
+ 	for (i = 0; i < gc->max_num_queues; i++) {
+ 		eq = ac->eqs[i].eq;
+@@ -1926,6 +1926,7 @@ static void mana_destroy_txq(struct mana_port_context *apc)
+ 
+ 	for (i = 0; i < apc->num_queues; i++) {
+ 		debugfs_remove_recursive(apc->tx_qp[i].mana_tx_debugfs);
++		apc->tx_qp[i].mana_tx_debugfs = NULL;
+ 
+ 		napi = &apc->tx_qp[i].tx_cq.napi;
+ 		if (apc->tx_qp[i].txq.napi_initialized) {
+@@ -2113,6 +2114,7 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
+ 		return;
+ 
+ 	debugfs_remove_recursive(rxq->mana_rx_debugfs);
++	rxq->mana_rx_debugfs = NULL;
+ 
+ 	napi = &rxq->rx_cq.napi;
+ 
+-- 
+2.34.1
 
 
