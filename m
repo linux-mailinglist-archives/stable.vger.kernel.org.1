@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-123334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E10A5C509
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1126A5C707
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CDEA3B6010
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D32D37AB175
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24DA25F78B;
-	Tue, 11 Mar 2025 15:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0359525EFA0;
+	Tue, 11 Mar 2025 15:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1s/bvwYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaaGGgXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAB925F783;
-	Tue, 11 Mar 2025 15:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA81825EFB5;
+	Tue, 11 Mar 2025 15:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705652; cv=none; b=AVC1DYM2MCziuerUkQ9GQbxQUE8OOAzPJJDluZVntOQ645toX7nDzmJrvIhA4w6CM1Gbac+VFmlZ0b8pCmHzCvk8xfoCfHT5/GYjphovAruZYmVu9C5+jjIBBgHYNC7pD2BrO2bfEXfPCXO5Wz5ox+bEkOOwwHjkanznOD6G1Ac=
+	t=1741707014; cv=none; b=HsQCk2nTf4QYZqLf+M3+2LZZcPMylc9JTRYB5F9yzLxqPFjNMaKBQ0TQK6TKl5wz3CJ0WwLUrs0h5+kCH2DwYiDh3WQ1Gz0oLDcPbPDws2TIdj1DHay+bcSS6z/XCVI6Jq2iya8M79L0PAQSqkFj98o1lBx2rBfr5m0D28DVVm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705652; c=relaxed/simple;
-	bh=uddGBTqsGf5EPcuKJpP0Bx3M9U6BACxe8CjTd0qJIeo=;
+	s=arc-20240116; t=1741707014; c=relaxed/simple;
+	bh=xBKHH9ybQgvnCC4xBXMPBfzXh/PEMGf08/35+Kbw+O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJpZqj73qKqKBAJk9WjGmW7bhtMsxYDMR/HdTs5KcsA9UP4M5933W1ifBTidg2A9Fc1QgyzuiddIPEqLEMq0ZdEzVOHmvAMf2amtOE1sImJnQVGBhKXzueH1O4+abtnCUMzuDTmz1Nq2yTqfMUJSOMPN/+R02TMy/GIdy0OShWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1s/bvwYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B098FC4CEE9;
-	Tue, 11 Mar 2025 15:07:31 +0000 (UTC)
+	 MIME-Version; b=FrK732Yc4UumKkjLCyns+cbG8ivzxQTHvpMRJ1eQRa2KeWE3cQftHb3jr88baV09hIv34kV888UpO6qmyLz8S/vu/kcKOijh0GRh6TAa749IDVHV6GM+VHLxthRX3CJoPOqbJY/YoOKDRx/XCGpyD4GrHcKVm2cvYuqUVqFhuII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaaGGgXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E896C4CEE9;
+	Tue, 11 Mar 2025 15:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705652;
-	bh=uddGBTqsGf5EPcuKJpP0Bx3M9U6BACxe8CjTd0qJIeo=;
+	s=korg; t=1741707014;
+	bh=xBKHH9ybQgvnCC4xBXMPBfzXh/PEMGf08/35+Kbw+O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1s/bvwYgVrMMKZEl+akSlOT/6BjISMsePECyA03VPCju7lnBjjGslFsrA4AI5AXSU
-	 3tiNoxMryqx8PtyKRP35z1BmAqcxYfaxiJasez7epCr39kSXQZjjHMmU91jixuYZ4U
-	 pB5fF5QB+v+zfgbG/SHQX9bKsNn4TgWN4OMAjPf0=
+	b=GaaGGgXpZUM/d5dKoTD2L/yoLDV95TTuP7VPhkn7/fchjJaOSZa5tFEN9CsBoK2yj
+	 bWZYj3hN1EXnfSRv11N2nzf8Vr/KAi1HpWb7OnQ6ORnwx9fmHDweLasn1oZL11GX8a
+	 HC/y6Td65EyGMsPfxa4bJ1+uiUlBc8+DHMnne9aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/328] nvme: handle connectivity loss in nvme_set_queue_count
+	Mike Snitzer <snitzer@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 5.10 213/462] pnfs/flexfiles: retry getting layout segment for reads
 Date: Tue, 11 Mar 2025 15:57:59 +0100
-Message-ID: <20250311145719.229137968@linuxfoundation.org>
+Message-ID: <20250311145806.777430484@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Mike Snitzer <snitzer@kernel.org>
 
-[ Upstream commit 294b2b7516fd06a8dd82e4a6118f318ec521e706 ]
+commit eb3fabde15bccdf34f1c9b35a83aa4c0dacbb4ca upstream.
 
-When the set feature attempts fails with any NVME status code set in
-nvme_set_queue_count, the function still report success. Though the
-numbers of queues set to 0. This is done to support controllers in
-degraded state (the admin queue is still up and running but no IO
-queues).
+If ff_layout_pg_get_read()'s attempt to get a layout segment results
+in -EAGAIN have ff_layout_pg_init_read() retry it after sleeping.
 
-Though there is an exception. When nvme_set_features reports an host
-path error, nvme_set_queue_count should propagate this error as the
-connectivity is lost, which means also the admin queue is not working
-anymore.
+If "softerr" mount is used, use 'io_maxretrans' to limit the number of
+attempts to get a layout segment.
 
-Fixes: 9a0be7abb62f ("nvme: refactor set_queue_count")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a long-standing issue of O_DIRECT reads failing with
+-EAGAIN (11) when using flexfiles Client Side Mirroring (CSM).
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c |   27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index a841fd4929adc..dd4b99ea956ac 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1251,7 +1251,13 @@ int nvme_set_queue_count(struct nvme_ctrl *ctrl, int *count)
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -840,6 +840,9 @@ ff_layout_pg_init_read(struct nfs_pageio
+ 	struct nfs4_pnfs_ds *ds;
+ 	u32 ds_idx;
  
- 	status = nvme_set_features(ctrl, NVME_FEAT_NUM_QUEUES, q_count, NULL, 0,
- 			&result);
--	if (status < 0)
-+
-+	/*
-+	 * It's either a kernel error or the host observed a connection
-+	 * lost. In either case it's not possible communicate with the
-+	 * controller and thus enter the error code path.
-+	 */
-+	if (status < 0 || status == NVME_SC_HOST_PATH_ERROR)
- 		return status;
++	if (NFS_SERVER(pgio->pg_inode)->flags &
++			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
++		pgio->pg_maxretrans = io_maxretrans;
+ retry:
+ 	ff_layout_pg_check_layout(pgio, req);
+ 	/* Use full layout for now */
+@@ -853,6 +856,8 @@ retry:
+ 		if (!pgio->pg_lseg)
+ 			goto out_nolseg;
+ 	}
++	/* Reset wb_nio, since getting layout segment was successful */
++	req->wb_nio = 0;
  
- 	/*
--- 
-2.39.5
-
+ 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
+ 	if (!ds) {
+@@ -869,14 +874,24 @@ retry:
+ 	pgm->pg_bsize = mirror->mirror_ds->ds_versions[0].rsize;
+ 
+ 	pgio->pg_mirror_idx = ds_idx;
+-
+-	if (NFS_SERVER(pgio->pg_inode)->flags &
+-			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
+-		pgio->pg_maxretrans = io_maxretrans;
+ 	return;
+ out_nolseg:
+-	if (pgio->pg_error < 0)
+-		return;
++	if (pgio->pg_error < 0) {
++		if (pgio->pg_error != -EAGAIN)
++			return;
++		/* Retry getting layout segment if lower layer returned -EAGAIN */
++		if (pgio->pg_maxretrans && req->wb_nio++ > pgio->pg_maxretrans) {
++			if (NFS_SERVER(pgio->pg_inode)->flags & NFS_MOUNT_SOFTERR)
++				pgio->pg_error = -ETIMEDOUT;
++			else
++				pgio->pg_error = -EIO;
++			return;
++		}
++		pgio->pg_error = 0;
++		/* Sleep for 1 second before retrying */
++		ssleep(1);
++		goto retry;
++	}
+ out_mds:
+ 	trace_pnfs_mds_fallback_pg_init_read(pgio->pg_inode,
+ 			0, NFS4_MAX_UINT64, IOMODE_READ,
 
 
 
