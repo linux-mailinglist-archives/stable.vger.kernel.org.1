@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C29A5C48E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0373A5C6B4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7797A3B0505
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B04F16C16A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F6A25E818;
-	Tue, 11 Mar 2025 15:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980A11DF749;
+	Tue, 11 Mar 2025 15:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dc2vEBn0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZnI3zbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C632725DD0F;
-	Tue, 11 Mar 2025 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5530E1494BB;
+	Tue, 11 Mar 2025 15:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705422; cv=none; b=ZRwO4w8RyTRs/Hcs8KtgnJSNS0T2iNMW0BAlq0zCGkE2Qncc12sWzcSoWaivMBvu/DBYX3IXhIuBWOB6psf94siqaG2dA8glqEKbSE2ZrWMWvVdMuamWbEwZwH6PHvp/Pvikl4Tkue/2xTCDcylGlr8pwdVl7GRH+PQa+WTWQ8w=
+	t=1741706696; cv=none; b=XYFUZTXpvvTj9NpQIJ+MDEoZ6gVXuUuR/RuOQWQF9PWakT4+mq89Tv4tr1GQQCq4BZroumunt3+uukL+T/meugvwFn0Z2hoXFASJa1Aa6EBZXxPmkI1KJIKiwjiPBunoeiud02Cs7FNFequHSd2j7mXF1xlLkl6kdSGMJcUCBbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705422; c=relaxed/simple;
-	bh=yCXKJa9NPOnvx89/fRM599i4E5Re9qCPe2KqAeQG/Bk=;
+	s=arc-20240116; t=1741706696; c=relaxed/simple;
+	bh=3DpbZc2duZ7oawCOkl1T8pxbCBozvvOxNI3RsnuY0XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fm0o74klifPbDS0SlG2fdfLvS2x666WLwRg/N5kA6io/e7oa1zaBiqlv8mYlsXLoWZBl/7fNh2z27OdZi+SWNmjB+/urfh2jP+aomhulmWEcpmasJhOIRhYZ4eeNzc3eRctb0kv42RFJkAMLIynjYwn9xDHmtipRXyGpbau4z0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dc2vEBn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E89C4CEE9;
-	Tue, 11 Mar 2025 15:03:42 +0000 (UTC)
+	 MIME-Version; b=GadISUr3JCYa2NmTtVRfx/2kelIyiERkQasL1RVdt7ALGm3hxFPnKXaDOSTDXwlbz37ZhtK37rlp6dGwIOWUiyvTk/sc39BJF36TL349WOIXBPMXWYsCmNpLCgKaSIwL7bJ3Sze4ff+47XfZA/RcWedZWMNIrBgG45qy9q3cyHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZnI3zbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78389C4CEE9;
+	Tue, 11 Mar 2025 15:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705422;
-	bh=yCXKJa9NPOnvx89/fRM599i4E5Re9qCPe2KqAeQG/Bk=;
+	s=korg; t=1741706695;
+	bh=3DpbZc2duZ7oawCOkl1T8pxbCBozvvOxNI3RsnuY0XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dc2vEBn0eis+R6xQTcWyUk0Qg0ahqD2u+yNmmRPekTAuNqEGhfdCisMbf/57kuvfL
-	 0nIauZ4Y7GgY2JfviTgc+RyRfFjP/OeSol9znc6pPQl7RyKh+ZIKlnoseX+RK6lSph
-	 jfPjIHzbpDVjrhqkFFXYJtYB++Z1vgYWdRD8BKpM=
+	b=uZnI3zbIkJWv0F3LltSAFXQoQHKx95Fm4YKVW+w31c5tI+ptUcb5ONpn/YgjL6Uz1
+	 63MficYuuMtKZeHOmSkBYq+H3iXNJ+qLzl24fqwiSU7tSLrofCrc2wqgQRNyXaLFrR
+	 74fXui4iNOWCDfbG/jKTsyX4T+TB8toSdKUPYaH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Jian <liujian56@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/328] net: let net.core.dev_weight always be non-zero
-Date: Tue, 11 Mar 2025 15:56:40 +0100
-Message-ID: <20250311145716.092765704@linuxfoundation.org>
+Subject: [PATCH 5.10 135/462] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
+Date: Tue, 11 Mar 2025 15:56:41 +0100
+Message-ID: <20250311145803.692666264@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit d1f9f79fa2af8e3b45cffdeef66e05833480148a ]
+[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
 
-The following problem was encountered during stability test:
+In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
+instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
+Compile tested only.
 
-(NULL net_device): NAPI poll function process_backlog+0x0/0x530 \
-	returned 1, exceeding its budget of 0.
-------------[ cut here ]------------
-list_add double add: new=ffff88905f746f48, prev=ffff88905f746f48, \
-	next=ffff88905f746e40.
-WARNING: CPU: 18 PID: 5462 at lib/list_debug.c:35 \
-	__list_add_valid_or_report+0xf3/0x130
-CPU: 18 UID: 0 PID: 5462 Comm: ping Kdump: loaded Not tainted 6.13.0-rc7+
-RIP: 0010:__list_add_valid_or_report+0xf3/0x130
-Call Trace:
-? __warn+0xcd/0x250
-? __list_add_valid_or_report+0xf3/0x130
-enqueue_to_backlog+0x923/0x1070
-netif_rx_internal+0x92/0x2b0
-__netif_rx+0x15/0x170
-loopback_xmit+0x2ef/0x450
-dev_hard_start_xmit+0x103/0x490
-__dev_queue_xmit+0xeac/0x1950
-ip_finish_output2+0x6cc/0x1620
-ip_output+0x161/0x270
-ip_push_pending_frames+0x155/0x1a0
-raw_sendmsg+0xe13/0x1550
-__sys_sendto+0x3bf/0x4e0
-__x64_sys_sendto+0xdc/0x1b0
-do_syscall_64+0x5b/0x170
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The reproduction command is as follows:
-  sysctl -w net.core.dev_weight=0
-  ping 127.0.0.1
-
-This is because when the napi's weight is set to 0, process_backlog() may
-return 0 and clear the NAPI_STATE_SCHED bit of napi->state, causing this
-napi to be re-polled in net_rx_action() until __do_softirq() times out.
-Since the NAPI_STATE_SCHED bit has been cleared, napi_schedule_rps() can
-be retriggered in enqueue_to_backlog(), causing this issue.
-
-Making the napi's weight always non-zero solves this problem.
-
-Triggering this issue requires system-wide admin (setting is
-not namespaced).
-
-Fixes: e38766054509 ("[NET]: Fix sysctl net.core.dev_weight")
-Fixes: 3d48b53fb2ae ("net: dev_weight: TX/RX orthogonality")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Link: https://patch.msgid.link/20250116143053.4146855-1-liujian56@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sysctl_net_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 586598887095d..b3b39b0e0745b 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -242,7 +242,7 @@ static int proc_do_dev_weight(struct ctl_table *table, int write,
- 	int ret, weight;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+index 8580a27547891..42e7bc67e9143 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+@@ -23427,6 +23427,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
+ 				break;
+ 		}
  
- 	mutex_lock(&dev_weight_mutex);
--	ret = proc_dointvec(table, write, buffer, lenp, ppos);
-+	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 	if (!ret && write) {
- 		weight = READ_ONCE(weight_p);
- 		WRITE_ONCE(dev_rx_weight, weight * dev_weight_rx_bias);
-@@ -356,6 +356,7 @@ static struct ctl_table net_core_table[] = {
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_do_dev_weight,
-+		.extra1         = SYSCTL_ONE,
- 	},
- 	{
- 		.procname	= "dev_weight_rx_bias",
-@@ -363,6 +364,7 @@ static struct ctl_table net_core_table[] = {
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_do_dev_weight,
-+		.extra1         = SYSCTL_ONE,
- 	},
- 	{
- 		.procname	= "dev_weight_tx_bias",
-@@ -370,6 +372,7 @@ static struct ctl_table net_core_table[] = {
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_do_dev_weight,
-+		.extra1         = SYSCTL_ONE,
- 	},
- 	{
- 		.procname	= "netdev_max_backlog",
++		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
++			return;
++
+ 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
+ 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
+ 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
 -- 
 2.39.5
 
