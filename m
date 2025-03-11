@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-123778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E0BA5C765
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:34:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007E6A5C4F9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEBA13AE98E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23F86189BE4A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E50625E804;
-	Tue, 11 Mar 2025 15:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A67225DD06;
+	Tue, 11 Mar 2025 15:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yt3YIcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DllIP9Sr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF3725BACC;
-	Tue, 11 Mar 2025 15:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ECB25D8E8;
+	Tue, 11 Mar 2025 15:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706936; cv=none; b=pJHTmtlnjZj3IO/8QeqjJqobEwrh4CcdwlcCff8Em+NNbaOv5iJ/A1E/XR96c7mEZg+O0PanZnJ7X3JzunPB4NvIMkMvGKcSaZgJ4+mmwcDscnsG1J7/lIvUT1YvzJ8Vfb3exmGm8Uml93uSelRvjq0BP1X587S2ZjIx+WYNha0=
+	t=1741705672; cv=none; b=aQ4SfZEPw248Ev7lJR/kHa8T3AyIwJxR+AlHJkJJkPflkG6/TrlnKMUWeqphRCVdpDGto2AaoKnMKDMRi1uKD4GX4VaO6+KAMZN63W6NgWu9kXug22tq7TFhlxKAygtCK8nz/iZS5DSmSVruYaCRrma1MKLXlHOQ5ft2xHxM5wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706936; c=relaxed/simple;
-	bh=vG3K+fApvXWk21ClmTCg2mZJuJeO7lb8jE4a2ZP1Blg=;
+	s=arc-20240116; t=1741705672; c=relaxed/simple;
+	bh=7us1H0Y8ZXGLq8oBNN6b8ovgQUoNgCFTaY19bVyZ51s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWg55Cp9Y3BvZtNrmnvS1db36sDREdJvmEmEMEIvKmKJomP1mRIb7j+bl6X+5xQha7a2FePqa0eCTImWYSbILN/O106Fn2QW+b4Tlj1SsAgnZtskRqgi0knlpsqGpXRUUAbtN4J6LYGGZu9crnDuzcxK7P4fPD2vvPDU8DAOJ4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yt3YIcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6904DC4CEEA;
-	Tue, 11 Mar 2025 15:28:55 +0000 (UTC)
+	 MIME-Version; b=Sw7nSOae1FxN5t+6h1/HCJZlbChzI4oI5bNdl71pKFdliC+ZQLNa6C3ZaEdbj2n1awKXG4soy3Jgs92zkO40/ApO12t0CZyLN4L9oMvBs43C4qvJOw4KHqOIR0WueTjMLsZN0/6M/lISkiZB0bB/Fwxpb73foZ6JHR07P/jC2kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DllIP9Sr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB769C4CEE9;
+	Tue, 11 Mar 2025 15:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706935;
-	bh=vG3K+fApvXWk21ClmTCg2mZJuJeO7lb8jE4a2ZP1Blg=;
+	s=korg; t=1741705670;
+	bh=7us1H0Y8ZXGLq8oBNN6b8ovgQUoNgCFTaY19bVyZ51s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yt3YIccg/mQr2oEo6QyWu1benJRFclat30OJ5a1mKAcNOMVRfKOuEVIUHM30SqQo
-	 t4Dbj50aGBWNSRnEKQkPVt8Eb4IIN1k3uA+hAT2Kgvdk38QDdlCyJCDkIrMlbYNUnd
-	 7g19s6McMvt3DWJZFGhFoEJiF2meL0tO54qYZbUY=
+	b=DllIP9SrAU5P88VWPoUiH0otAqoUACxrhfk9gNTeGnMgE2QNEjchgUeYIFWUAV/Ov
+	 RLUQmMNyAI0uegepVBmb2uemyPT2ZiSurHvMIZ8bHvXPshzX+169RtRhBEx906st3v
+	 FDfvNdsSIxlDq4qpiFCmCfUPU5Cf+4GqIAA6mlM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 5.10 219/462] misc: fastrpc: Fix registered buffer page address
+	Martin Ottens <martin.ottens@fau.de>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 115/328] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
 Date: Tue, 11 Mar 2025 15:58:05 +0100
-Message-ID: <20250311145807.015697109@linuxfoundation.org>
+Message-ID: <20250311145719.467358510@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-commit 6ca4ea1f88a06a04ed7b2c9c6bf9f00833b68214 upstream.
+[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
 
-For registered  buffers, fastrpc driver sends the buffer information
-to remote subsystem. There is a problem with current implementation
-where the page address is being sent with an offset leading to
-improper buffer address on DSP. This is leads to functional failures
-as DSP expects base address in page information and extracts offset
-information from remote arguments. Mask the offset and pass the base
-page address to DSP.
+qdisc_tree_reduce_backlog() notifies parent qdisc only if child
+qdisc becomes empty, therefore we need to reduce the backlog of the
+child qdisc before calling it. Otherwise it would miss the opportunity
+to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
+since DRR uses ->qlen_notify() to maintain its active list.
 
-This issue is observed is a corner case when some buffer which is registered
-with fastrpc framework is passed with some offset by user and then the DSP
-implementation tried to read the data. As DSP expects base address and takes
-care of offsetting with remote arguments, passing an offsetted address will
-result in some unexpected data read in DSP.
-
-All generic usecases usually pass the buffer as it is hence is problem is
-not usually observed. If someone tries to pass offsetted buffer and then
-tries to compare data at HLOS and DSP end, then the ambiguity will be observed.
-
-Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
-Cc: stable@kernel.org
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Cc: Martin Ottens <martin.ottens@fau.de>
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
+ net/sched/sch_netem.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -826,7 +826,7 @@ static int fastrpc_get_args(u32 kernel,
- 			mmap_read_lock(current->mm);
- 			vma = find_vma(current->mm, ctx->args[i].ptr);
- 			if (vma)
--				pages[i].addr += ctx->args[i].ptr -
-+				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
- 						 vma->vm_start;
- 			mmap_read_unlock(current->mm);
- 
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 73c952d482752..27bd18c74e858 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -739,9 +739,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 				if (err != NET_XMIT_SUCCESS) {
+ 					if (net_xmit_drop_count(err))
+ 						qdisc_qstats_drop(sch);
+-					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 					sch->qstats.backlog -= pkt_len;
+ 					sch->q.qlen--;
++					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
+-- 
+2.39.5
+
 
 
 
