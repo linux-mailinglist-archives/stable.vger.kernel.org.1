@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D14A5C597
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A032BA5C7C1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D39A3B5D63
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AF0516DA4B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FFD25DD0F;
-	Tue, 11 Mar 2025 15:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7A225EF93;
+	Tue, 11 Mar 2025 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4gx3f/0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyn1lwb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133B225D8F9;
-	Tue, 11 Mar 2025 15:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7531CAA8F;
+	Tue, 11 Mar 2025 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705970; cv=none; b=FYLsiIY+1PJJX90UnXyV+928cYMCG+cYes8IDEy91GZq7VHpm1ZllWyHIWivgJJEpF0FBluFMMBkzuSAdfhcss2xojoaJ55q8R4+uOUoLqQqCf8AcJaqiu+CF9RLCbhcNkgnkSA/Ksf5jEQjfCk2zJtBUgxkvBoBXKz3lMcskac=
+	t=1741707239; cv=none; b=D9dqfrhqrAlANYV4cCp6aoeACMmRE0i9yBosmJsdYlgqkcAfxKBmFMj8+ekC+cdu4LvFdn5hFtI4d4/xmloJInW+Ykm24KINb1AiqcaDIh3nwGCG/6wB/lFA9McigLtnFqyDgAiUX7JPtoAszlXie/DN8dafCNKxkBJKUx5QlC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705970; c=relaxed/simple;
-	bh=witE3sD9lM79GurezhQU6gZOzEpjQ2yBDp1bz+9pYKM=;
+	s=arc-20240116; t=1741707239; c=relaxed/simple;
+	bh=3Xx/6nNVL39wU6IxSuWPPBQfJ4uL+mwnZW5YmLpe5B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfIkDOzWU0Eu75JSttzqrVjsoajmCqSqmcXd/UkWp78mKf8p5t0Te4qHfEiAjOi755pb3c+NTN9f1GAM5rK3ooEyoDVVf7DFD2MHU7g8yJFToIOV1nfqReBb9BsB8C/8VBdhtw0tIUD7elsCmD8x0oWTm83JzTDRs6wKryZhdSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4gx3f/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D078C4CEE9;
-	Tue, 11 Mar 2025 15:12:49 +0000 (UTC)
+	 MIME-Version; b=rLaXEdwjnwafaIfcalxO2BXQDj5hGPxcbRLyosgqU1TpBNmvKcpntbcRUh19R/64AwNyY3dk6LLGJPyCD8m7UDzChpg3q4suoh+YkbNHznfBGfU2suEmAU/LRqFyYWVCytlWNdY/7jxHgxbYrab92zaJT9r7RxGMLQ0NXdN3uc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyn1lwb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33ABC4CEE9;
+	Tue, 11 Mar 2025 15:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705969;
-	bh=witE3sD9lM79GurezhQU6gZOzEpjQ2yBDp1bz+9pYKM=;
+	s=korg; t=1741707239;
+	bh=3Xx/6nNVL39wU6IxSuWPPBQfJ4uL+mwnZW5YmLpe5B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4gx3f/0V3EhpwiU07clbxiNFQJ2B6q68UmlfhLbTaPpdOR4TpSY3mRW6hU70V/WG
-	 dCncBcLdrrFfJVEaH1MhOjGHCs+pY6ZzOptm2FBd7P4tRTFwpeyuMG4op1lD4eUruj
-	 75Xa7rcITMb5dO9iCvx0zkYMB2im95a/VQbJFtXs=
+	b=eyn1lwb+1pUry0uYvEJPgP+z64YWUedd8TEcUSWmOOu0Tv1Not+pHuFj8EQkOQVwe
+	 U5rw1nCznJWG9g4awq0ZvoZV/fX2IPgmcfGMGy2bqNKKKe7ckt60b9YqdFu6jxGhpc
+	 V0HvWU/L807yTGM6euliBxWAb3ix8vmGlajUZnF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 5.4 218/328] parport_pc: add support for ASIX AX99100
+	Eddie James <eajames@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 322/462] tpm: Use managed allocation for bios event log
 Date: Tue, 11 Mar 2025 15:59:48 +0100
-Message-ID: <20250311145723.567902924@linuxfoundation.org>
+Message-ID: <20250311145811.083329817@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-commit 16aae4c64600a6319a6f10dbff833fa198bf9599 upstream.
+[ Upstream commit 441b7152729f4a2bdb100135a58625fa0aeb69e4 ]
 
-The PCI function 2 on ASIX AX99100 PCIe to Multi I/O Controller can be
-configured as a single-port parallel port controller. The subvendor id
-is 0x2000 when configured as parallel port. It supports IEEE-1284 EPP /
-ECP with its ECR on BAR1.
+Since the bios event log is freed in the device release function,
+let devres handle the deallocation. This will allow other memory
+allocation/mapping functions to be used for the bios event log.
 
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/20230724083933.3173513-5-jiaqing.zhao@linux.intel.com
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Stable-dep-of: a3a860bc0fd6 ("tpm: Change to kvalloc() in eventlog/acpi.c")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/parport_pc.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/char/tpm/eventlog/acpi.c |  5 +++--
+ drivers/char/tpm/eventlog/efi.c  | 13 +++++++------
+ drivers/char/tpm/eventlog/of.c   |  3 ++-
+ drivers/char/tpm/tpm-chip.c      |  1 -
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
---- a/drivers/parport/parport_pc.c
-+++ b/drivers/parport/parport_pc.c
-@@ -2624,6 +2624,7 @@ enum parport_pc_pci_cards {
- 	netmos_9815,
- 	netmos_9901,
- 	netmos_9865,
-+	asix_ax99100,
- 	quatech_sppxp100,
- 	wch_ch382l,
- 	brainboxes_uc146,
-@@ -2689,6 +2690,7 @@ static struct parport_pc_pci {
- 	/* netmos_9815 */		{ 2, { { 0, 1 }, { 2, 3 }, } },
- 	/* netmos_9901 */               { 1, { { 0, -1 }, } },
- 	/* netmos_9865 */               { 1, { { 0, -1 }, } },
-+	/* asix_ax99100 */		{ 1, { { 0, 1 }, } },
- 	/* quatech_sppxp100 */		{ 1, { { 0, 1 }, } },
- 	/* wch_ch382l */		{ 1, { { 2, -1 }, } },
- 	/* brainboxes_uc146 */	{ 1, { { 3, -1 }, } },
-@@ -2779,6 +2781,9 @@ static const struct pci_device_id parpor
- 	  0xA000, 0x1000, 0, 0, netmos_9865 },
- 	{ PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9865,
- 	  0xA000, 0x2000, 0, 0, netmos_9865 },
-+	/* ASIX AX99100 PCIe to Multi I/O Controller */
-+	{ PCI_VENDOR_ID_ASIX, PCI_DEVICE_ID_ASIX_AX99100,
-+	  0xA000, 0x2000, 0, 0, asix_ax99100 },
- 	/* Quatech SPPXP-100 Parallel port PCI ExpressCard */
- 	{ PCI_VENDOR_ID_QUATECH, PCI_DEVICE_ID_QUATECH_SPPXP_100,
- 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, quatech_sppxp100 },
+diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
+index cd266021d0103..bd757d836c5cf 100644
+--- a/drivers/char/tpm/eventlog/acpi.c
++++ b/drivers/char/tpm/eventlog/acpi.c
+@@ -14,6 +14,7 @@
+  * Access to the event log extended by the TCG BIOS of PC platform
+  */
+ 
++#include <linux/device.h>
+ #include <linux/seq_file.h>
+ #include <linux/fs.h>
+ #include <linux/security.h>
+@@ -135,7 +136,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	}
+ 
+ 	/* malloc EventLog space */
+-	log->bios_event_log = kmalloc(len, GFP_KERNEL);
++	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
+ 
+@@ -164,7 +165,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	return format;
+ 
+ err:
+-	kfree(log->bios_event_log);
++	devm_kfree(&chip->dev, log->bios_event_log);
+ 	log->bios_event_log = NULL;
+ 	return ret;
+ }
+diff --git a/drivers/char/tpm/eventlog/efi.c b/drivers/char/tpm/eventlog/efi.c
+index e6cb9d525e30c..4e9d7c2bf32ee 100644
+--- a/drivers/char/tpm/eventlog/efi.c
++++ b/drivers/char/tpm/eventlog/efi.c
+@@ -6,6 +6,7 @@
+  *      Thiebaud Weksteen <tweek@google.com>
+  */
+ 
++#include <linux/device.h>
+ #include <linux/efi.h>
+ #include <linux/tpm_eventlog.h>
+ 
+@@ -55,7 +56,7 @@ int tpm_read_log_efi(struct tpm_chip *chip)
+ 	}
+ 
+ 	/* malloc EventLog space */
+-	log->bios_event_log = kmemdup(log_tbl->log, log_size, GFP_KERNEL);
++	log->bios_event_log = devm_kmemdup(&chip->dev, log_tbl->log, log_size, GFP_KERNEL);
+ 	if (!log->bios_event_log) {
+ 		ret = -ENOMEM;
+ 		goto out;
+@@ -76,7 +77,7 @@ int tpm_read_log_efi(struct tpm_chip *chip)
+ 			     MEMREMAP_WB);
+ 	if (!final_tbl) {
+ 		pr_err("Could not map UEFI TPM final log\n");
+-		kfree(log->bios_event_log);
++		devm_kfree(&chip->dev, log->bios_event_log);
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -91,11 +92,11 @@ int tpm_read_log_efi(struct tpm_chip *chip)
+ 	 * Allocate memory for the 'combined log' where we will append the
+ 	 * 'final events log' to.
+ 	 */
+-	tmp = krealloc(log->bios_event_log,
+-		       log_size + final_events_log_size,
+-		       GFP_KERNEL);
++	tmp = devm_krealloc(&chip->dev, log->bios_event_log,
++			    log_size + final_events_log_size,
++			    GFP_KERNEL);
+ 	if (!tmp) {
+-		kfree(log->bios_event_log);
++		devm_kfree(&chip->dev, log->bios_event_log);
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+diff --git a/drivers/char/tpm/eventlog/of.c b/drivers/char/tpm/eventlog/of.c
+index a9ce66d09a754..741ab2204b11a 100644
+--- a/drivers/char/tpm/eventlog/of.c
++++ b/drivers/char/tpm/eventlog/of.c
+@@ -10,6 +10,7 @@
+  * Read the event log created by the firmware on PPC64
+  */
+ 
++#include <linux/device.h>
+ #include <linux/slab.h>
+ #include <linux/of.h>
+ #include <linux/tpm_eventlog.h>
+@@ -65,7 +66,7 @@ int tpm_read_log_of(struct tpm_chip *chip)
+ 		return -EIO;
+ 	}
+ 
+-	log->bios_event_log = kmemdup(__va(base), size, GFP_KERNEL);
++	log->bios_event_log = devm_kmemdup(&chip->dev, __va(base), size, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index ed600473ad7e3..1e4f1a5049a55 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -267,7 +267,6 @@ static void tpm_dev_release(struct device *dev)
+ 	idr_remove(&dev_nums_idr, chip->dev_num);
+ 	mutex_unlock(&idr_lock);
+ 
+-	kfree(chip->log.bios_event_log);
+ 	kfree(chip->work_space.context_buf);
+ 	kfree(chip->work_space.session_buf);
+ 	kfree(chip->allocated_banks);
+-- 
+2.39.5
+
 
 
 
