@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF9FA5C787
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB0DA5C56B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9EF017E973
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA0883B6D3B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C4D25E818;
-	Tue, 11 Mar 2025 15:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5469325EF88;
+	Tue, 11 Mar 2025 15:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKSkkaFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5cPuz6Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EF025E804;
-	Tue, 11 Mar 2025 15:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F05F25E83B;
+	Tue, 11 Mar 2025 15:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707087; cv=none; b=WDwYq/GQrWRv4zVZMfYY3L0l5vvnmki2T/5WnuJGmCy2af420rdT5lPZ5Iw6wRz2eWtJ7x9qeeAaExubeiCHWToQwdtOlaGRptgdht94jEOaDQlBlI/PzcaUPkjcTGX4G/prx0gzVGZM/1AhxKHr5/BQgIitl9O899wAe8xZeYI=
+	t=1741705878; cv=none; b=D61eGlBisFWtteToEEFwyoBcWW6BvJUMJSOCILqUBl0SZabbfq8GT4jeTueaFu/xs3dLMjOkaIc0GONMp61YmFKdOwFQx8i7gP4BncHXKN0Qp8M6kYNKP/sLZOImsRQ5rzvFdtcxahfH4nyR1UUDWLt1UD61scP8aA/03JoAhRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707087; c=relaxed/simple;
-	bh=1g15QBDiiX48szBpEAvX936ChXMK4A32gGfIxaNPxxk=;
+	s=arc-20240116; t=1741705878; c=relaxed/simple;
+	bh=CeDsqQKS6WLXPECIW/WEZ19Ap0h7L1oJelUSSuClPgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZqXckfA1YUPHzWXjVCkowlztfcivySAaw8FGLaAqVh8EJMtD9snmDsqIeAQOZ7u/8qRX7te/9la5A5oB82KY7F7fbjNxTWZJ6UdhBs3wivQJ2nguNGy1amAnzW/QxCNLzal83utFv7ByIcuU/WKUywWQ67+OFTcneWwttOMZhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKSkkaFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3C9C4CEE9;
-	Tue, 11 Mar 2025 15:31:26 +0000 (UTC)
+	 MIME-Version; b=jUsL6v0HVqdeCTEiO33a6Y0zsvH/Ji3axywhyF091BHEmRw/IsEVwcklrXHM3fR+RrNrbwlY/45Cyri0bs9mrgAmwJ/F3D9RwWB6PYJKUXdiy/L+myY/8U4ztOrwunZeqHFi9XHvQAjE8ozzv1iiUH9GQc9rVENAKEwA9+O/TFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5cPuz6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802AAC4CEE9;
+	Tue, 11 Mar 2025 15:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707086;
-	bh=1g15QBDiiX48szBpEAvX936ChXMK4A32gGfIxaNPxxk=;
+	s=korg; t=1741705877;
+	bh=CeDsqQKS6WLXPECIW/WEZ19Ap0h7L1oJelUSSuClPgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKSkkaFRxRtte+0DsMN0a+nVsjl98TXcWYaTdQ0EY4jm1Z0O4BfljMnWsRnTV9weg
-	 PIxqfCTEH/OoqW2EUGZV7EAQJ+QPEt97cp56IMejsDJtMvWMZiUviDpdSGlKfbQesv
-	 DeNvzlgy/arD/y2OgMyrG9VWiEcbSGljbHpnngnk=
+	b=S5cPuz6YmTY9MEQxuXwEUN2fyIvcy9oK4yPTcJdyh8EBuRhwx6eZpmWxZnAFYWtiM
+	 ymtkQGJTiNG1reFcQQxANNgKuhVrlY4oIMTkRlsOaqPhCYiW6uY0RBdAKDeId+Xvpg
+	 o4TW2MAUGskRzHAk/NKkModLBSAAbpPebRyiHzXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.10 269/462] gpio: stmpe: Check return value of stmpe_reg_read in stmpe_gpio_irq_sync_unlock
-Date: Tue, 11 Mar 2025 15:58:55 +0100
-Message-ID: <20250311145808.992210719@linuxfoundation.org>
+	Radu Rendec <rrendec@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 166/328] arm64: cacheinfo: Avoid out-of-bounds write to cacheinfo array
+Date: Tue, 11 Mar 2025 15:58:56 +0100
+Message-ID: <20250311145721.504409803@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Radu Rendec <rrendec@redhat.com>
 
-commit b9644fbfbcab13da7f8b37bef7c51e5b8407d031 upstream.
+[ Upstream commit 875d742cf5327c93cba1f11e12b08d3cce7a88d2 ]
 
-The stmpe_reg_read function can fail, but its return value is not checked
-in stmpe_gpio_irq_sync_unlock. This can lead to silent failures and
-incorrect behavior if the hardware access fails.
+The loop that detects/populates cache information already has a bounds
+check on the array size but does not account for cache levels with
+separate data/instructions cache. Fix this by incrementing the index
+for any populated leaf (instead of any populated level).
 
-This patch adds checks for the return value of stmpe_reg_read. If the
-function fails, an error message is logged and the function returns
-early to avoid further issues.
+Fixes: 5d425c186537 ("arm64: kernel: add support for cpu cache information")
 
-Fixes: b888fb6f2a27 ("gpio: stmpe: i2c transfer are forbiden in atomic context")
-Cc: stable@vger.kernel.org # 4.16+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20250212021849.275-1-vulab@iscas.ac.cn
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Radu Rendec <rrendec@redhat.com>
+Link: https://lore.kernel.org/r/20250206174420.2178724-1-rrendec@redhat.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-stmpe.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/arm64/kernel/cacheinfo.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/gpio/gpio-stmpe.c
-+++ b/drivers/gpio/gpio-stmpe.c
-@@ -191,7 +191,7 @@ static void stmpe_gpio_irq_sync_unlock(s
- 		[REG_IE][CSB] = STMPE_IDX_IEGPIOR_CSB,
- 		[REG_IE][MSB] = STMPE_IDX_IEGPIOR_MSB,
- 	};
--	int i, j;
-+	int ret, i, j;
+diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
+index 97c42be71338a..1510f457b6154 100644
+--- a/arch/arm64/kernel/cacheinfo.c
++++ b/arch/arm64/kernel/cacheinfo.c
+@@ -87,16 +87,18 @@ int populate_cache_leaves(unsigned int cpu)
+ 	unsigned int level, idx;
+ 	enum cache_type type;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+-	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
++	struct cacheinfo *infos = this_cpu_ci->info_list;
  
- 	/*
- 	 * STMPE1600: to be able to get IRQ from pins,
-@@ -199,8 +199,16 @@ static void stmpe_gpio_irq_sync_unlock(s
- 	 * GPSR or GPCR registers
- 	 */
- 	if (stmpe->partnum == STMPE1600) {
--		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
--		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
-+		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
-+		if (ret < 0) {
-+			dev_err(stmpe->dev, "Failed to read GPMR_LSB: %d\n", ret);
-+			goto err;
-+		}
-+		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
-+		if (ret < 0) {
-+			dev_err(stmpe->dev, "Failed to read GPMR_CSB: %d\n", ret);
-+			goto err;
-+		}
- 	}
- 
- 	for (i = 0; i < CACHE_NR_REGS; i++) {
-@@ -222,6 +230,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 	for (idx = 0, level = 1; level <= this_cpu_ci->num_levels &&
+-	     idx < this_cpu_ci->num_leaves; idx++, level++) {
++	     idx < this_cpu_ci->num_leaves; level++) {
+ 		type = get_cache_type(level);
+ 		if (type == CACHE_TYPE_SEPARATE) {
+-			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+-			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
++			if (idx + 1 >= this_cpu_ci->num_leaves)
++				break;
++			ci_leaf_init(&infos[idx++], CACHE_TYPE_DATA, level);
++			ci_leaf_init(&infos[idx++], CACHE_TYPE_INST, level);
+ 		} else {
+-			ci_leaf_init(this_leaf++, type, level);
++			ci_leaf_init(&infos[idx++], type, level);
  		}
  	}
- 
-+err:
- 	mutex_unlock(&stmpe_gpio->irq_lock);
- }
- 
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
