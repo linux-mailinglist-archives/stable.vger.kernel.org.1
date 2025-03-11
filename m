@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41403A5C5EC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3983AA5C872
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B4FA16450D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BEAB164E53
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F3B2571D8;
-	Tue, 11 Mar 2025 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C5225DCFA;
+	Tue, 11 Mar 2025 15:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUcrjB+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpNMnNS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71346249F9;
-	Tue, 11 Mar 2025 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822881E98EC;
+	Tue, 11 Mar 2025 15:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706301; cv=none; b=OI8AzK0B/ESJ8IbisBi4ePK1Z+wzTiToxf3JnXAPwxTr7lOoafmOM5hOYvpgD9nevh/9TEEgndqxyKdsnsNz9ZbGtTZL9xeBlTw064duM/TiWGXIQhD9owyaIRpLQ2soWhGukS9NZviwU0XJj093wQVUoLlGmUb0fNK7rR+QFus=
+	t=1741707607; cv=none; b=Us5ACKEn4dnGLgJ2QxmrflIbkOfwlUoUG8Bdia2yEZWzHp02otzY7bUWPIoAVFvbkMe4vbvBCxSNE4VV1oQGyXTTYPNDEwdMzVsleTE1AgP8juqZ/LQfZGYFG2gmE0VRCihZ+19vCSdsUAiwIYveFiSsle5LXOvUtF2CBtX3xTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706301; c=relaxed/simple;
-	bh=MpQP9kXp6RlUusHGVQXWRNZFuMnwlpqwnjP+JcUWKMM=;
+	s=arc-20240116; t=1741707607; c=relaxed/simple;
+	bh=Snon2EbzQsbHMtpWHXF/R3MC13ejz8Be8GOn6LgFokY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5VygbdHb20m7NmP9BTyXOp1zKrOgB/aVbRGFizEj+UkytdSaGwyCm7Mw7mTPNO9A4fb8tZWwbRfaotk05pQWDdi0WdG7e0/I8y3pkiVmJ1ZrEiiFr2dsHdlH5iz1msm0tip8CY93Abu6hpkT7dju/e3gpoJIADnOZyfZ1BwyF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUcrjB+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37AAC4CEE9;
-	Tue, 11 Mar 2025 15:18:20 +0000 (UTC)
+	 MIME-Version; b=ch9WdTuq5oPYN7m8Qbmf9CuSXfFMlyNocaLxjaHHrvHjdmHdwpNLvAL5Gno2Lv9uNvOwDk/2lJomO1TfaILMt/cl7JrEGrP1Kft/6jJ84tBfPsh/4tFIprbYyKRDIfdZHeBCb+0zF0hFzb1K/DhjvbbSIZTTtRfm2qqH1U6KXwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpNMnNS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04256C4CEE9;
+	Tue, 11 Mar 2025 15:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706301;
-	bh=MpQP9kXp6RlUusHGVQXWRNZFuMnwlpqwnjP+JcUWKMM=;
+	s=korg; t=1741707607;
+	bh=Snon2EbzQsbHMtpWHXF/R3MC13ejz8Be8GOn6LgFokY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUcrjB+R9oOJCnNHwdJ3Bx55vR1eVfbaStpLw0QsuGMhiHP34fLFg2EzH5SU0v1md
-	 0E3fOwnfVLBwxlZM1IbSiDwXlUnFZxdnoSlG5Db8bj6fssaY9p5oA7VeBkTcpXedlP
-	 VzIgEyps3zLZorbLbBGUgHAL6oNsD0yKEqBmDelM=
+	b=kpNMnNS/AP7Ua5l0aiwq4z7tTV4Y2sEpu53U1Fo0o/bF/IyxiHDGr2vy6H+Aj4D5B
+	 MvKohaIjb9o465BPzX5CbHAlqcVpjmx1XYr9jfGK2pQDQKGxhUkLi80DgStdSkE/rw
+	 gDmCpgA1dy4M11MyL4PSa5y+JebhaXqTZCEmTuG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qf <quintafeira@tutanota.com>,
-	Christian Heusel <christian@heusel.eu>
-Subject: [PATCH 5.4 311/328] Revert "drivers/card_reader/rtsx_usb: Restore interrupt based detection"
+	syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 415/462] llc: do not use skb_get() before dev_queue_xmit()
 Date: Tue, 11 Mar 2025 16:01:21 +0100
-Message-ID: <20250311145727.268936067@linuxfoundation.org>
+Message-ID: <20250311145814.727448122@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +64,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Heusel <christian@heusel.eu>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 2397d61ee45cddb8f3bd3a3a9840ef0f0b5aa843 upstream.
+[ Upstream commit 64e6a754d33d31aa844b3ee66fb93ac84ca1565e ]
 
-This reverts commit 235b630eda072d7e7b102ab346d6b8a2c028a772.
+syzbot is able to crash hosts [1], using llc and devices
+not supporting IFF_TX_SKB_SHARING.
 
-This commit was found responsible for issues with SD card recognition,
-as users had to re-insert their cards in the readers and wait for a
-while. As for some people the SD card was involved in the boot process
-it also caused boot failures.
+In this case, e1000 driver calls eth_skb_pad(), while
+the skb is shared.
 
-Cc: stable@vger.kernel.org
-Link: https://bbs.archlinux.org/viewtopic.php?id=303321
-Fixes: 235b630eda07 ("drivers/card_reader/rtsx_usb: Restore interrupt based detection")
-Reported-by: qf <quintafeira@tutanota.com>
-Closes: https://lore.kernel.org/all/1de87dfa-1e81-45b7-8dcb-ad86c21d5352@heusel.eu
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-Link: https://lore.kernel.org/r/20250224-revert-sdcard-patch-v1-1-d1a457fbb796@heusel.eu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Simply replace skb_get() by skb_clone() in net/llc/llc_s_ac.c
+
+Note that e1000 driver might have an issue with pktgen,
+because it does not clear IFF_TX_SKB_SHARING, this is an
+orthogonal change.
+
+We need to audit other skb_get() uses in net/llc.
+
+[1]
+
+kernel BUG at net/core/skbuff.c:2178 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 16371 Comm: syz.2.2764 Not tainted 6.14.0-rc4-syzkaller-00052-gac9c34d1e45a #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+ RIP: 0010:pskb_expand_head+0x6ce/0x1240 net/core/skbuff.c:2178
+Call Trace:
+ <TASK>
+  __skb_pad+0x18a/0x610 net/core/skbuff.c:2466
+  __skb_put_padto include/linux/skbuff.h:3843 [inline]
+  skb_put_padto include/linux/skbuff.h:3862 [inline]
+  eth_skb_pad include/linux/etherdevice.h:656 [inline]
+  e1000_xmit_frame+0x2d99/0x5800 drivers/net/ethernet/intel/e1000/e1000_main.c:3128
+  __netdev_start_xmit include/linux/netdevice.h:5151 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5160 [inline]
+  xmit_one net/core/dev.c:3806 [inline]
+  dev_hard_start_xmit+0x9a/0x7b0 net/core/dev.c:3822
+  sch_direct_xmit+0x1ae/0xc30 net/sched/sch_generic.c:343
+  __dev_xmit_skb net/core/dev.c:4045 [inline]
+  __dev_queue_xmit+0x13d4/0x43e0 net/core/dev.c:4621
+  dev_queue_xmit include/linux/netdevice.h:3313 [inline]
+  llc_sap_action_send_test_c+0x268/0x320 net/llc/llc_s_ac.c:144
+  llc_exec_sap_trans_actions net/llc/llc_sap.c:153 [inline]
+  llc_sap_next_state net/llc/llc_sap.c:182 [inline]
+  llc_sap_state_process+0x239/0x510 net/llc/llc_sap.c:209
+  llc_ui_sendmsg+0xd0d/0x14e0 net/llc/af_llc.c:993
+  sock_sendmsg_nosec net/socket.c:718 [inline]
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67c020c0.050a0220.222324.0011.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   15 ---------------
- 1 file changed, 15 deletions(-)
+ net/llc/llc_s_ac.c | 49 +++++++++++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 22 deletions(-)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -286,7 +286,6 @@ static int rtsx_usb_get_status_with_bulk
- int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+diff --git a/net/llc/llc_s_ac.c b/net/llc/llc_s_ac.c
+index df26557a02448..942ace4af18d8 100644
+--- a/net/llc/llc_s_ac.c
++++ b/net/llc/llc_s_ac.c
+@@ -24,7 +24,7 @@
+ #include <net/llc_s_ac.h>
+ #include <net/llc_s_ev.h>
+ #include <net/llc_sap.h>
+-
++#include <net/sock.h>
+ 
+ /**
+  *	llc_sap_action_unit_data_ind - forward UI PDU to network layer
+@@ -40,6 +40,26 @@ int llc_sap_action_unitdata_ind(struct llc_sap *sap, struct sk_buff *skb)
+ 	return 0;
+ }
+ 
++static int llc_prepare_and_xmit(struct sk_buff *skb)
++{
++	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
++	struct sk_buff *nskb;
++	int rc;
++
++	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
++	if (rc)
++		return rc;
++
++	nskb = skb_clone(skb, GFP_ATOMIC);
++	if (!nskb)
++		return -ENOMEM;
++
++	if (skb->sk)
++		skb_set_owner_w(nskb, skb->sk);
++
++	return dev_queue_xmit(nskb);
++}
++
+ /**
+  *	llc_sap_action_send_ui - sends UI PDU resp to UNITDATA REQ to MAC layer
+  *	@sap: SAP
+@@ -52,17 +72,12 @@ int llc_sap_action_unitdata_ind(struct llc_sap *sap, struct sk_buff *skb)
+ int llc_sap_action_send_ui(struct llc_sap *sap, struct sk_buff *skb)
  {
- 	int ret;
--	u8 interrupt_val = 0;
- 	u16 *buf;
+ 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
+-	int rc;
  
- 	if (!status)
-@@ -309,20 +308,6 @@ int rtsx_usb_get_card_status(struct rtsx
- 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
- 	}
+ 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U, ev->saddr.lsap,
+ 			    ev->daddr.lsap, LLC_PDU_CMD);
+ 	llc_pdu_init_as_ui_cmd(skb);
+-	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
+-	if (likely(!rc)) {
+-		skb_get(skb);
+-		rc = dev_queue_xmit(skb);
+-	}
+-	return rc;
++
++	return llc_prepare_and_xmit(skb);
+ }
  
--	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
--	/* Cross check presence with interrupts */
--	if (*status & XD_CD)
--		if (!(interrupt_val & XD_INT))
--			*status &= ~XD_CD;
--
--	if (*status & SD_CD)
--		if (!(interrupt_val & SD_INT))
--			*status &= ~SD_CD;
--
--	if (*status & MS_CD)
--		if (!(interrupt_val & MS_INT))
--			*status &= ~MS_CD;
--
- 	/* usb_control_msg may return positive when success */
- 	if (ret < 0)
- 		return ret;
+ /**
+@@ -77,17 +92,12 @@ int llc_sap_action_send_ui(struct llc_sap *sap, struct sk_buff *skb)
+ int llc_sap_action_send_xid_c(struct llc_sap *sap, struct sk_buff *skb)
+ {
+ 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
+-	int rc;
+ 
+ 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U_XID, ev->saddr.lsap,
+ 			    ev->daddr.lsap, LLC_PDU_CMD);
+ 	llc_pdu_init_as_xid_cmd(skb, LLC_XID_NULL_CLASS_2, 0);
+-	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
+-	if (likely(!rc)) {
+-		skb_get(skb);
+-		rc = dev_queue_xmit(skb);
+-	}
+-	return rc;
++
++	return llc_prepare_and_xmit(skb);
+ }
+ 
+ /**
+@@ -133,17 +143,12 @@ int llc_sap_action_send_xid_r(struct llc_sap *sap, struct sk_buff *skb)
+ int llc_sap_action_send_test_c(struct llc_sap *sap, struct sk_buff *skb)
+ {
+ 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
+-	int rc;
+ 
+ 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U, ev->saddr.lsap,
+ 			    ev->daddr.lsap, LLC_PDU_CMD);
+ 	llc_pdu_init_as_test_cmd(skb);
+-	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
+-	if (likely(!rc)) {
+-		skb_get(skb);
+-		rc = dev_queue_xmit(skb);
+-	}
+-	return rc;
++
++	return llc_prepare_and_xmit(skb);
+ }
+ 
+ int llc_sap_action_send_test_r(struct llc_sap *sap, struct sk_buff *skb)
+-- 
+2.39.5
+
 
 
 
