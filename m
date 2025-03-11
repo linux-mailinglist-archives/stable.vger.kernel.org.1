@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C79A5C79B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A597AA5C53F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 975563B8733
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5955A189B6B3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7091B25EF99;
-	Tue, 11 Mar 2025 15:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C001255E37;
+	Tue, 11 Mar 2025 15:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR2sSN3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDcStIw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCCD3EA76;
-	Tue, 11 Mar 2025 15:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A589249F9;
+	Tue, 11 Mar 2025 15:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707061; cv=none; b=ZQZBq9QDG6unKEuN98ZY6DiB2lEX7TZiZ9XPeNt03v4OG21iBOoUfMfvNjKsNJRVAQGIoz8kPwqi+szpe0Vw70v6cFFYGCDKvZrZ0vW0HKrUvMQ0ZkNCoJiPhBNHLozsuWocNBfsKICPJVJXJh5hjLiVUqvT3o4BfF2bP5RYKJc=
+	t=1741705799; cv=none; b=mq7DA3qbo8pmst71aaZ6DWLTLqX3f/9uUh2EtWeOeHPbcmEdX7L6svN9DzQrDg+iL3A3OjIiJkcmCffrAGO2Pz7giIcbPHYsiOFyt1cziAuMcJ72Xrzl2TH2rRed+fDvJePnnyFjUCJJcUfdrpWYo1w/yyHI3XIoDhZHg5rnwWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707061; c=relaxed/simple;
-	bh=FpFBy/Zp1YgO2AuQcnke2KFEj6CCusY8SaTQxEcdR0A=;
+	s=arc-20240116; t=1741705799; c=relaxed/simple;
+	bh=lo0K+fvXYiFdP6ooTaoI51r2Ub+kykTIXT5E7Av/6WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meP0Owl72m0vRUMqnmFrttqJ9Y8tQhza6eGamRXdcyMPFFNZHyTn9Ru9VdAanN75t2BeLXUAsRGqUfua0hMfWZCLwjQtoiZAPmixG4uxswrEm1Yx2V/xw+oj9ifPgOjOkCXRlPf4aDt5DCTUSQSGvAIf/M1e+b3+Q18k7uNp7Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR2sSN3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3865C4CEE9;
-	Tue, 11 Mar 2025 15:31:00 +0000 (UTC)
+	 MIME-Version; b=PeSSX2uNZHSkiusVWMqJojIMKj7yo7TaM+ejYbWqxa7zO/ffGtw78wn8moNfkoI1ig7p/IWuj1L8XoDBFcVk7u6bo9Ev/SqYSUwTo/WnKeSS2lRZhj0NgZSv56d74hGJwSWi0gljlJQKFR6fuqw1zKVRqZX4wSsjpjY4yAdFmQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDcStIw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2F4C4CEE9;
+	Tue, 11 Mar 2025 15:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707061;
-	bh=FpFBy/Zp1YgO2AuQcnke2KFEj6CCusY8SaTQxEcdR0A=;
+	s=korg; t=1741705799;
+	bh=lo0K+fvXYiFdP6ooTaoI51r2Ub+kykTIXT5E7Av/6WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oR2sSN3YzNIjWpYJVj8OyAeWR4WAcTr1opnTK7Be61xszUhycC8wazsdx5MCmH2Zr
-	 h43fCpvXHnoXZiy3esiMJYvTAVOLMYWL+V81lLcf7J0b312V958LXd4J6Q49XnoOm3
-	 jBkKVllKG9w5MFMV8g+6oRvTLw4XWNAQafRXgoX8=
+	b=fDcStIw0FKiC/ReUJMRmBJD5yZofGi9P3eXTX+xmpkb63ITKjvrSu7uHS7GMAgmB9
+	 yiS3qHDC3G3teP0Wi36obii4Z1o+HoRFLlFvqAWbLqBJcLFubrRsQxNqxu3ibVHUqJ
+	 qRF4kwqr5W5bRUSv7mYfGOFgzdCdREl0nSnlbO3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 261/462] USB: serial: option: fix Telit Cinterion FN990A name
-Date: Tue, 11 Mar 2025 15:58:47 +0100
-Message-ID: <20250311145808.673078513@linuxfoundation.org>
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 158/328] net/ncsi: wait for the last response to Deselect Package before configuring channel
+Date: Tue, 11 Mar 2025 15:58:48 +0100
+Message-ID: <20250311145721.188532307@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Paul Fertser <fercerpav@gmail.com>
 
-commit 12606fe73f33647c5e79bf666833bf0b225e649d upstream.
+commit 6bb194d036c6e1b329dcdff459338cdd9a54802a upstream.
 
-The correct name for FN990 is FN990A so use it in order to avoid
-confusion with FN990B.
+The NCSI state machine as it's currently implemented assumes that
+transition to the next logical state is performed either explicitly by
+calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
+after processing the predefined (ndp->pending_req_num) number of
+replies. Thus to avoid the configuration FSM from advancing prematurely
+and getting out of sync with the process it's essential to not skip
+waiting for a reply.
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+This patch makes the code wait for reception of the Deselect Package
+response for the last package probed before proceeding to channel
+configuration.
+
+Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
+testing.
+
+Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250116152900.8656-1-fercerpav@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/ncsi/ncsi-manage.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1370,15 +1370,15 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1063, 0xff),	/* Telit LN920 (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990 (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990A (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990 (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990A (MBIM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990 (RNDIS) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990A (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990 (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990 (PCIe) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1295,6 +1295,12 @@ static void ncsi_probe_channel(struct nc
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		break;
+ 	case ncsi_dev_state_probe_package:
++		if (ndp->package_probe_id >= 8) {
++			/* Last package probed, finishing */
++			ndp->flags |= NCSI_DEV_PROBED;
++			break;
++		}
++
+ 		ndp->pending_req_num = 1;
+ 
+ 		nca.type = NCSI_PKT_CMD_SP;
+@@ -1373,13 +1379,8 @@ static void ncsi_probe_channel(struct nc
+ 		if (ret)
+ 			goto error;
+ 
+-		/* Probe next package */
++		/* Probe next package after receiving response */
+ 		ndp->package_probe_id++;
+-		if (ndp->package_probe_id >= 8) {
+-			/* Probe finished */
+-			ndp->flags |= NCSI_DEV_PROBED;
+-			break;
+-		}
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		ndp->active_package = NULL;
+ 		break;
 
 
 
