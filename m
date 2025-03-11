@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-123720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C3DA5C6EB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D76BA5C4CB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2790216CF57
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 844093B746C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555AD25EFAD;
-	Tue, 11 Mar 2025 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3253925E82A;
+	Tue, 11 Mar 2025 15:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6U4XwTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0X2VH6hc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041FE1E9B06;
-	Tue, 11 Mar 2025 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A2225DD00;
+	Tue, 11 Mar 2025 15:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706768; cv=none; b=T1w26dy0/lasNGaLcNx69L70s4qofKH4/SKTEzA70yUFBfvzpGTyFhwHwubcISK0VBfljVCKsCF1RcJz59009O79u313SCxkQvUxJe8uTFdQeLy1PTmpz6/Ue0VwOYr+Y6Ae4F3Lmk4TyEiBmXhhk16Azqwlkj+5qKT2oOOI+n0=
+	t=1741705559; cv=none; b=mQ5h+OLQf8H7GRWmPlo6NonMQHHCqcJTdk93WlALl1ppdOEGdLoksPNusHLUkIAqSGBUG6/FBY1b90YMWd0vFUmyPKMHQzx8zKfx0kCB+SEtACYVLPA4sWOOdk/30Ng0cvjyU4ltNWwNR4ilDtjaA95+6/KtsqfNXyb4Y7lnWAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706768; c=relaxed/simple;
-	bh=6bqZwl7TB8vD3poVAe6YXOpzXj8epYYqnS147BX4zc0=;
+	s=arc-20240116; t=1741705559; c=relaxed/simple;
+	bh=5VYs5xgPIIRDictuIV/raeswaguBI3p7oDhpMSJ8f7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuTWPyqabGTo8OKjTHbgO0p8b2c8qJMMiRMrk2ttGXiadcQMHvetgkx//pLMeRM3mAdwNvUtcjypvVQrUAUeDTr6L400cq6C+UGZqCw27RH44GqctPAaocmvx2L2AaHSEaxh2RJeP1WD6OPXy0uGQMuEkRc/R/RkGBP93pn6yWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6U4XwTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FC2C4CEE9;
-	Tue, 11 Mar 2025 15:26:07 +0000 (UTC)
+	 MIME-Version; b=QDpJdzDwSZaJ6xlK8PIANT4XBVan8QrUeEujkJ3hZKQNm1zuoEJww71IpvUzmvr0r2Ez96Ktby2rikOH/5OAp+rWqd17iPRJLRNIO8z1n/AONYNN3IOB0BXcChg9PannN4Fq2f+019zwl+/hQh9wg5Glh8Y9aX5AQlemVxr5NCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0X2VH6hc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC34C4CEE9;
+	Tue, 11 Mar 2025 15:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706767;
-	bh=6bqZwl7TB8vD3poVAe6YXOpzXj8epYYqnS147BX4zc0=;
+	s=korg; t=1741705558;
+	bh=5VYs5xgPIIRDictuIV/raeswaguBI3p7oDhpMSJ8f7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6U4XwTrIzlxOKG0L4uK72V644sRDUDi4oQh1FtWm6eFmsMUrnif7LXF+LE92dVDS
-	 gajAumQ8HlOTSLj7gbWxODEL7oTcJPEnoJr4uXMnfwDOWKGJw5DWkOfufl3qA2DEBJ
-	 uIsXA4E4yKYkLm902DegmJqPGnqczXdRki8SgXM0=
+	b=0X2VH6hcbaV6QLQBKWzOf1Bc9f4sXeCEQtGfQ/Ps/YR5zNsgWwwhtY5c7VgU+SP8X
+	 nuSoEb0asycG3Krgq7aEdXThE60r3NDsJK+shwPOi83td1T/FLMOvllJTnix7vio2y
+	 fpjCeG3KrQg0T0y1O9B3wwpmcKL+LJ6j90DrEK10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Ottens <martin.ottens@fau.de>,
-	Mingi Cho <mincho@theori.io>,
-	Cong Wang <cong.wang@bytedance.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 161/462] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
+Subject: [PATCH 5.4 057/328] scsi: ufs: bsg: Delete bsg_dev when setting up bsg fails
 Date: Tue, 11 Mar 2025 15:57:07 +0100
-Message-ID: <20250311145804.703500753@linuxfoundation.org>
+Message-ID: <20250311145717.162687420@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
+[ Upstream commit fcf247deb3c3e1c6be5774e3fa03bbd018eff1a9 ]
 
-qdisc_tree_reduce_backlog() notifies parent qdisc only if child
-qdisc becomes empty, therefore we need to reduce the backlog of the
-child qdisc before calling it. Otherwise it would miss the opportunity
-to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
-since DRR uses ->qlen_notify() to maintain its active list.
+We should remove the bsg device when bsg_setup_queue() fails to release the
+resources.
 
-Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
-Cc: Martin Ottens <martin.ottens@fau.de>
-Reported-by: Mingi Cho <mincho@theori.io>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: df032bf27a41 ("scsi: ufs: Add a bsg endpoint that supports UPIUs")
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241218014214.64533-2-kanie@linux.alibaba.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/ufs/ufs_bsg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index f459e34684ad3..22f5d9421f6a6 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -739,9 +739,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
- 				if (err != NET_XMIT_SUCCESS) {
- 					if (net_xmit_drop_count(err))
- 						qdisc_qstats_drop(sch);
--					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 					sch->qstats.backlog -= pkt_len;
- 					sch->q.qlen--;
-+					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 				}
- 				goto tfifo_dequeue;
- 			}
+diff --git a/drivers/scsi/ufs/ufs_bsg.c b/drivers/scsi/ufs/ufs_bsg.c
+index bad366e491591..78e72a1aec9b1 100644
+--- a/drivers/scsi/ufs/ufs_bsg.c
++++ b/drivers/scsi/ufs/ufs_bsg.c
+@@ -213,6 +213,7 @@ int ufs_bsg_probe(struct ufs_hba *hba)
+ 	q = bsg_setup_queue(bsg_dev, dev_name(bsg_dev), ufs_bsg_request, NULL, 0);
+ 	if (IS_ERR(q)) {
+ 		ret = PTR_ERR(q);
++		device_del(bsg_dev);
+ 		goto out;
+ 	}
+ 
 -- 
 2.39.5
 
