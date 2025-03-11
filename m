@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-123851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C22A5C74E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EDFA5C583
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 118A07A26F7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB34189A930
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B9225F795;
-	Tue, 11 Mar 2025 15:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D08D25E81B;
+	Tue, 11 Mar 2025 15:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzKqlpUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWVssUQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FA725F78B;
-	Tue, 11 Mar 2025 15:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4C225D8EB;
+	Tue, 11 Mar 2025 15:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707146; cv=none; b=qpT3NLT4QqMZwnX9X/U0vDnJP80IuCQH5qynWKGjoso9Wew4L67uRFlHFvxnrw3KHVZRYL4Ar5yHNLv/ctv5XsYC0FLppRA06CzUqL4ddXT1U+mn6eYkyla6I+daVMM1yqsbE5fQ+yVa5oFqg96yNtE5GTlpGXjMiDUWuZRK0EI=
+	t=1741705938; cv=none; b=GVWDCDFs67P5jn4UgJcUshT3+euFKNfAtJMsIRTNgxvFcYfF+n0IWMd7N1q+A93CPbp0eabjVR0G8kEH2bDz6WDzFK6ULm+Y7yzDQx9Mr5OrcqL81kVdVJDvnfGFaIYL9dJqdWHPZQd+oN8mjCTjI8E2j6JGRmGRI3IrW1YMRvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707146; c=relaxed/simple;
-	bh=M0Dn5Uq8ij6IIG6xAZ/kvWW+XUpsokzGI4MOMLv8PL0=;
+	s=arc-20240116; t=1741705938; c=relaxed/simple;
+	bh=1CA176fC0lQde24hpZ41UIgJgzcFbvQr9p8qd5MqCQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJBKFQwMx47Q/XTswf6t4GagkheJtpkIx859+YwC2U+cDbPZm9Wt7/c4gbEaHxMH7NmFp3hPZev9UbPw6uF9WT637CxHGtYE6ceOB8qmd3TxB2d4tQ0iM+NbGBTf/CHYbNAkiqCrbph1gFCwMlk/M1l377ndSYRptPEz3IfSt7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzKqlpUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2792C4CEEA;
-	Tue, 11 Mar 2025 15:32:25 +0000 (UTC)
+	 MIME-Version; b=joGo7PWTiX21C/+ZeLf3dbnhIbkhqfe7hpi2M6yxyu0tTzVbazG7FhWromIDSN00Np1WaoLf7FyY8CxZPoKx3+3JTa5/xneMawoyy4t/MnxBG4OHbNOTn49f5znivVnOd5ySZ+48Q7C1TjmdyoXTvsNrf4QkilJPGplx10HM0qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWVssUQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6C7C4CEE9;
+	Tue, 11 Mar 2025 15:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707146;
-	bh=M0Dn5Uq8ij6IIG6xAZ/kvWW+XUpsokzGI4MOMLv8PL0=;
+	s=korg; t=1741705935;
+	bh=1CA176fC0lQde24hpZ41UIgJgzcFbvQr9p8qd5MqCQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzKqlpUBS+E4byGmCNPCThGlqwEeH8mJY7WBEqBzBt/Vq4Q1xbwOvgcf6BC0V76w1
-	 jf1qELP8uZoIkbzLvVMfv3K9/9E4ImaCf9f0Y/nQzoSZG3GPVKcFkCMviOBGD2XOMa
-	 myK5bJ2mA6S+KgvNsiOmABy61SjTQzB3BxZ3vByY=
+	b=fWVssUQDIjDr1jEFHyBRRJs062WAgvfA6Dd+sgiwFXA72FVpuHJMtVcWjXIJWGlZ0
+	 UFChF8xa9bQE1Cd0C6qeMIpJWjneNf+5bSioyaZzV6WfBZM/9+h84NOszhOJ+3E6G9
+	 Kcyi8C0Q6S98K+0kL8bAPEWrpsGOL09gMOjnRaq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 5.10 290/462] drm/tidss: Fix issue in irq handling causing irq-flood issue
-Date: Tue, 11 Mar 2025 15:59:16 +0100
-Message-ID: <20250311145809.824492971@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 5.4 187/328] usb: cdc-acm: Check control transfer buffer size before access
+Date: Tue, 11 Mar 2025 15:59:17 +0100
+Message-ID: <20250311145722.332386405@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Jann Horn <jannh@google.com>
 
-commit 44b6730ab53ef04944fbaf6da0e77397531517b7 upstream.
+commit e563b01208f4d1f609bcab13333b6c0e24ce6a01 upstream.
 
-It has been observed that sometimes DSS will trigger an interrupt and
-the top level interrupt (DISPC_IRQSTATUS) is not zero, but the VP and
-VID level interrupt-statuses are zero.
+If the first fragment is shorter than struct usb_cdc_notification, we can't
+calculate an expected_size. Log an error and discard the notification
+instead of reading lengths from memory outside the received data, which can
+lead to memory corruption when the expected_size decreases between
+fragments, causing `expected_size - acm->nb_index` to wrap.
 
-As the top level irqstatus is supposed to tell whether we have VP/VID
-interrupts, the thinking of the driver authors was that this particular
-case could never happen. Thus the driver only clears the DISPC_IRQSTATUS
-bits which has corresponding interrupts in VP/VID status. So when this
-issue happens, the driver will not clear DISPC_IRQSTATUS, and we get an
-interrupt flood.
+This issue has been present since the beginning of git history; however,
+it only leads to memory corruption since commit ea2583529cd1
+("cdc-acm: reassemble fragmented notifications").
 
-It is unclear why the issue happens. It could be a race issue in the
-driver, but no such race has been found. It could also be an issue with
-the HW. However a similar case can be easily triggered by manually
-writing to DISPC_IRQSTATUS_RAW. This will forcibly set a bit in the
-DISPC_IRQSTATUS and trigger an interrupt, and as the driver never clears
-the bit, we get an interrupt flood.
+A mitigating factor is that acm_ctrl_irq() can only execute after userspace
+has opened /dev/ttyACM*; but if ModemManager is running, ModemManager will
+do that automatically depending on the USB device's vendor/product IDs and
+its other interfaces.
 
-To fix the issue, always clear DISPC_IRQSTATUS. The concern with this
-solution is that if the top level irqstatus is the one that triggers the
-interrupt, always clearing DISPC_IRQSTATUS might leave some interrupts
-unhandled if VP/VID interrupt statuses have bits set. However, testing
-shows that if any of the irqstatuses is set (i.e. even if
-DISPC_IRQSTATUS == 0, but a VID irqstatus has a bit set), we will get an
-interrupt.
-
-Co-developed-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Co-developed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-1-82ddaec94e4a@ideasonboard.com
+Cc: stable <stable@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/usb/class/cdc-acm.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -676,24 +676,20 @@ static
- void dispc_k3_clear_irqstatus(struct dispc_device *dispc, dispc_irq_t clearmask)
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -359,7 +359,7 @@ static void acm_process_notification(str
+ static void acm_ctrl_irq(struct urb *urb)
  {
- 	unsigned int i;
--	u32 top_clear = 0;
+ 	struct acm *acm = urb->context;
+-	struct usb_cdc_notification *dr = urb->transfer_buffer;
++	struct usb_cdc_notification *dr;
+ 	unsigned int current_size = urb->actual_length;
+ 	unsigned int expected_size, copy_size, alloc_size;
+ 	int retval;
+@@ -386,9 +386,20 @@ static void acm_ctrl_irq(struct urb *urb
  
- 	for (i = 0; i < dispc->feat->num_vps; ++i) {
--		if (clearmask & DSS_IRQ_VP_MASK(i)) {
-+		if (clearmask & DSS_IRQ_VP_MASK(i))
- 			dispc_k3_vp_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(i);
--		}
- 	}
- 	for (i = 0; i < dispc->feat->num_planes; ++i) {
--		if (clearmask & DSS_IRQ_PLANE_MASK(i)) {
-+		if (clearmask & DSS_IRQ_PLANE_MASK(i))
- 			dispc_k3_vid_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(4 + i);
--		}
- 	}
- 	if (dispc->feat->subrev == DISPC_K2G)
- 		return;
+ 	usb_mark_last_busy(acm->dev);
  
--	dispc_write(dispc, DISPC_IRQSTATUS, top_clear);
-+	/* always clear the top level irqstatus */
-+	dispc_write(dispc, DISPC_IRQSTATUS, dispc_read(dispc, DISPC_IRQSTATUS));
- 
- 	/* Flush posted writes */
- 	dispc_read(dispc, DISPC_IRQSTATUS);
+-	if (acm->nb_index)
++	if (acm->nb_index == 0) {
++		/*
++		 * The first chunk of a message must contain at least the
++		 * notification header with the length field, otherwise we
++		 * can't get an expected_size.
++		 */
++		if (current_size < sizeof(struct usb_cdc_notification)) {
++			dev_dbg(&acm->control->dev, "urb too short\n");
++			goto exit;
++		}
++		dr = urb->transfer_buffer;
++	} else {
+ 		dr = (struct usb_cdc_notification *)acm->notification_buffer;
+-
++	}
+ 	/* size = notification-header + (optional) data */
+ 	expected_size = sizeof(struct usb_cdc_notification) +
+ 					le16_to_cpu(dr->wLength);
 
 
 
