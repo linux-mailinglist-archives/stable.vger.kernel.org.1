@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94075A5C75B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08298A5C4CE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985003ABE6D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6DD17A281
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221F725B69D;
-	Tue, 11 Mar 2025 15:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6017725E83A;
+	Tue, 11 Mar 2025 15:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yafZu/ay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oe53AFx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F8E15820C;
-	Tue, 11 Mar 2025 15:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5F725E81A;
+	Tue, 11 Mar 2025 15:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706915; cv=none; b=GaojohSvOJW2UVU2jvgiyxhmxLzrvdJ/gt6VDiwiFvifW+Ho8u8ZqvSUMXCrv8gK35u4Dqu8iSYNN69F60iVCJ8RxKe0U0ia37Seumf9blFItmwd3d7sVu8Ees54xSRTV42mJbF02k53xJS/ZsSe7w9xHUC9wqTFiY3ntbFx0AM=
+	t=1741705579; cv=none; b=OUcczF+xy+Tzui4L6tWc5gXvuVNlQ1LGBixKo7xNuprrEjef1dgyb30FMrvJluTcj2AD2VPAqQKIftnv6IqvrxezMEja8VivAMSZtjzF5NAE2tCEQR+XlG65ZhlKYr3z/EI9rrkbDoUuvt2Ngs6iYbi2mcwC818+seNes61SyVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706915; c=relaxed/simple;
-	bh=NG5zL50oIKiu5IbpQsiVBgbzVe0AnJgHrfLySnRzdDk=;
+	s=arc-20240116; t=1741705579; c=relaxed/simple;
+	bh=fY7AZMK8mgHf7Mr7KtLu7hhwSbZESfu3E1NgsXyQ+Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9U/KhePpvkKW8rDCjdZx53WrObvNjY0UY3JI/7tU90f/g/hPAcb59pzdhAMVC3naCd14vTeJ/BeRcvXPFQazpRVAQTSgENEctz9PMlxoHzCc1knTbLptIsnFN+tC11ntivQVdS67qIHLtJMz5eX+Pvxvz3NzQHwtfaQB+UVdqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yafZu/ay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5909EC4CEE9;
-	Tue, 11 Mar 2025 15:28:35 +0000 (UTC)
+	 MIME-Version; b=YrYXR4RxHF8pXntcdOnoUH0lmP5bSlinKZrB0zLjQwNDhLBjKdKEjNX0x6+yLoVPKkhQMpHYj0y0tP89vU1jh1ir931T8lpFxTHkDg/7+MXJY+fmiLCgimcdo2nzCRG9avwo/YPAjrxtghXXQ9hC/aW0TbU+NVP5GpOO6KRpp3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oe53AFx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EBDC4CEE9;
+	Tue, 11 Mar 2025 15:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706915;
-	bh=NG5zL50oIKiu5IbpQsiVBgbzVe0AnJgHrfLySnRzdDk=;
+	s=korg; t=1741705579;
+	bh=fY7AZMK8mgHf7Mr7KtLu7hhwSbZESfu3E1NgsXyQ+Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yafZu/ay88L3Pr4OP4ewpuHiE7yVxchYaWA72KvqFpx4jZY2gqtXBTK/68XZjIwbY
-	 kS9uumfd8hYMdrhfWFg8J6/UnHIXQxVFQhGxVzIj0MNWZdfpWpqbAn4uJEClznu9qL
-	 CGlcItXE59+RsG4ZXEcE8Jo4zHyEdzLfdtkiCez8=
+	b=Oe53AFx2oBUDyA46Frj02jxzhcnPEHZBC2I0vp2QelEINkwBM59IzuJQ2T7YbeKZL
+	 K33wO2a5LpReoPN2Qzw0ks+CtTfBvS992amrS23GSuWrh33yXEn68PESS15X8LhhjQ
+	 4QZQbNSMVrbwRUqkcgSWYE0570YwZdSSBSB0TowU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 5.10 180/462] perf bench: Fix undefined behavior in cmpworker()
+	John Hawley <warthog9@eaglescrag.net>,
+	"Ricardo B. Marliere" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 5.4 076/328] ktest.pl: Check kernelrelease return in get_version
 Date: Tue, 11 Mar 2025 15:57:26 +0100
-Message-ID: <20250311145805.466468329@linuxfoundation.org>
+Message-ID: <20250311145717.910388206@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Ricardo B. Marliere <rbm@suse.com>
 
-commit 62892e77b8a64b9dc0e1da75980aa145347b6820 upstream.
+commit a4e17a8f239a545c463f8ec27db4ed6e74b31841 upstream.
 
-The comparison function cmpworker() violates the C standard's
-requirements for qsort() comparison functions, which mandate symmetry
-and transitivity:
+In the case of a test that uses the special option ${KERNEL_VERSION} in one
+of its settings but has no configuration available in ${OUTPUT_DIR}, for
+example if it's a new empty directory, then the `make kernelrelease` call
+will fail and the subroutine will chomp an empty string, silently. Fix that
+by adding an empty configuration and retrying.
 
-Symmetry: If x < y, then y > x.
-Transitivity: If x < y and y < z, then x < z.
-
-In its current implementation, cmpworker() incorrectly returns 0 when
-w1->tid < w2->tid, which breaks both symmetry and transitivity. This
-violation causes undefined behavior, potentially leading to issues such
-as memory corruption in glibc [1].
-
-Fix the issue by returning -1 when w1->tid < w2->tid, ensuring
-compliance with the C standard and preventing undefined behavior.
-
-Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-Fixes: 121dd9ea0116 ("perf bench: Add epoll parallel epoll_wait benchmark")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250116110842.4087530-1-visitorckw@gmail.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: John Hawley <warthog9@eaglescrag.net>
+Fixes: 5f9b6ced04a4e ("ktest: Bisecting, install modules, add logging")
+Link: https://lore.kernel.org/20241205-ktest_kver_fallback-v2-1-869dae4c7777@suse.com
+Signed-off-by: Ricardo B. Marliere <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/bench/epoll-wait.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/tools/perf/bench/epoll-wait.c
-+++ b/tools/perf/bench/epoll-wait.c
-@@ -407,7 +407,12 @@ static int cmpworker(const void *p1, con
- 
- 	struct worker *w1 = (struct worker *) p1;
- 	struct worker *w2 = (struct worker *) p2;
--	return w1->tid > w2->tid;
-+
-+	if (w1->tid > w2->tid)
-+		return 1;
-+	if (w1->tid < w2->tid)
-+		return -1;
-+	return 0;
- }
- 
- int bench_epoll_wait(int argc, const char **argv)
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2319,6 +2319,11 @@ sub get_version {
+     return if ($have_version);
+     doprint "$make kernelrelease ... ";
+     $version = `$make -s kernelrelease | tail -1`;
++    if (!length($version)) {
++	run_command "$make allnoconfig" or return 0;
++	doprint "$make kernelrelease ... ";
++	$version = `$make -s kernelrelease | tail -1`;
++    }
+     chomp($version);
+     doprint "$version\n";
+     $have_version = 1;
 
 
 
