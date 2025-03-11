@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-123976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65897A5C84C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D18A5C581
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E0716AB12
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6240D7A9530
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024A25EFB4;
-	Tue, 11 Mar 2025 15:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9565F25E822;
+	Tue, 11 Mar 2025 15:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsJGjbLa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3Z7E+kz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B42255E37;
-	Tue, 11 Mar 2025 15:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5259B25E818;
+	Tue, 11 Mar 2025 15:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707508; cv=none; b=BvMtHPMfCqDU52Jsm/Fr3NmEUNn9rdtFI1TwTzIeMSpincIqeO/Myyaibbph/WZ7uM9RVABetuHKxtBIfLc9U5XaJVG+DR9moik8xj4hC42xNwwgRB1L8ZAheEjFawnoWMOuo4rYXXP+Ig6PYSeaHyYqC/0PjTsaXJbLJCS0BQI=
+	t=1741706149; cv=none; b=CQsM06G1LfWgXoR+p0MCNKyynwjxhMQzNe/Iwioa6GTCwNbR4nYere/bX1npQMnfEmzI1ogX//CjSAlWtz6wduZ9yrANVRqFSxVdHQBLBZUS1UNqHjr5tnWBg9ODCs/uFf/sNc1kA4lIrzmHzZd6EYH5IU1/t5ROlTfCwUXfg+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707508; c=relaxed/simple;
-	bh=oc+O386Yz6cwTDbYEFmBgrH+Bbk3ryPf6Yrdlv/hFu8=;
+	s=arc-20240116; t=1741706149; c=relaxed/simple;
+	bh=HkvljbijVOE2x2lp/P5OoY4VLegOxoN0XOxXQwTIyUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHE0BcOrwBoa82Bf0Yp1fgCakAVSSs7HqU1QFq5uaxVFWTcrV5cjIayDC8C+xYtbyjTVWtyTcG8z+8pe6XQdWWCYI51z2/aQQeqLR/LD6XRCV6JQFQGlu8YShnfYFiVF2MiW4OA5KbSfII3q2qNwiznQUUVKNtZGkzj+/LrKcHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsJGjbLa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6768C4CEEA;
-	Tue, 11 Mar 2025 15:38:27 +0000 (UTC)
+	 MIME-Version; b=H1iBBpbnTuq7gCNcsbdI/nddE1MOaaoT6aKAfZiEBy/i1/YmUZkKWJlsL6vmtbrWP6AxKm5tzNEZRAx7jbV6JYQKUXX15EELjnWZx2E4MoMJNdBp96YgtmvuJxj435IBtnG968SfKjrE9Oq3x6/aqvO9vSMkbFL81pIlXogmcJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3Z7E+kz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB97C4CEED;
+	Tue, 11 Mar 2025 15:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707508;
-	bh=oc+O386Yz6cwTDbYEFmBgrH+Bbk3ryPf6Yrdlv/hFu8=;
+	s=korg; t=1741706149;
+	bh=HkvljbijVOE2x2lp/P5OoY4VLegOxoN0XOxXQwTIyUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsJGjbLanV4Q2SzxjYETf57mr+Vw1qXqrXM7utpfLe/H0pVe34DGdUfFwwqzYqvzz
-	 RHI481aVrl1OyBXhiHaUB4NmTNYQGjtmjcL8tx2MlmYnp9u6RJqoyjm9eqzmuFOtYT
-	 9Vvvw0kLQ/SFOf6XksO5D570F4t/QhlgxzsCZRMc=
+	b=V3Z7E+kz93tcA47slAINjqmvUQxd8NmtSrVNs86fEgfhkzOO/B+wGpDt9ZywH+UXL
+	 WXGR2/Ep/I/HxxNNJDEwTSmW4muCvDC/4+ckBwAoKpyG2FYYY3u5PIr5OWEc0K/GlL
+	 IEyiGXUM5Oq95ke7MC4A7nII/gSgZVvVyjreu9T4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Zeal Robot <zealci@zte.com.cn>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"sh_def@163.com" <sh_def@163.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 382/462] kernel/acct.c: use dedicated helper to access rlimit values
-Date: Tue, 11 Mar 2025 16:00:48 +0100
-Message-ID: <20250311145813.439502106@linuxfoundation.org>
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.4 279/328] Revert "of: reserved-memory: Fix using wrong number of cells to get property alignment"
+Date: Tue, 11 Mar 2025 16:00:49 +0100
+Message-ID: <20250311145726.005219872@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <yang.yang29@zte.com.cn>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 3c91dda97eea704ac257ddb138d1154adab8db62 ]
+commit 75f1f311d883dfaffb98be3c1da208d6ed5d4df9 upstream.
 
-Use rlimit() helper instead of manually writing whole chain from
-task to rlimit value. See patch "posix-cpu-timers: Use dedicated
-helper to access rlimit values".
+This reverts commit 267b21d0bef8e67dbe6c591c9991444e58237ec9.
 
-Link: https://lkml.kernel.org/r/20210728030822.524789-1-yang.yang29@zte.com.cn
-Signed-off-by: Yang Yang <yang.yang29@zte.com.cn>
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: sh_def@163.com <sh_def@163.com>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 56d5f3eba3f5 ("acct: perform last write from workqueue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Turns out some DTs do depend on this behavior. Specifically, a
+downstream Pixel 6 DT. Revert the change at least until we can decide if
+the DT spec can be changed instead.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/acct.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/of_reserved_mem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/acct.c b/kernel/acct.c
-index a7e29ca8f3591..2b2224b7ae55a 100644
---- a/kernel/acct.c
-+++ b/kernel/acct.c
-@@ -494,7 +494,7 @@ static void do_acct_process(struct bsd_acct_struct *acct)
- 	/*
- 	 * Accounting records are not subject to resource limits.
- 	 */
--	flim = current->signal->rlim[RLIMIT_FSIZE].rlim_cur;
-+	flim = rlimit(RLIMIT_FSIZE);
- 	current->signal->rlim[RLIMIT_FSIZE].rlim_cur = RLIM_INFINITY;
- 	/* Perform file operations on behalf of whoever enabled accounting */
- 	orig_cred = override_creds(file->f_cred);
--- 
-2.39.5
-
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -96,12 +96,12 @@ static int __init __reserved_mem_alloc_s
+ 
+ 	prop = of_get_flat_dt_prop(node, "alignment", &len);
+ 	if (prop) {
+-		if (len != dt_root_size_cells * sizeof(__be32)) {
++		if (len != dt_root_addr_cells * sizeof(__be32)) {
+ 			pr_err("invalid alignment property in '%s' node.\n",
+ 				uname);
+ 			return -EINVAL;
+ 		}
+-		align = dt_mem_next_cell(dt_root_size_cells, &prop);
++		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
+ 	}
+ 
+ 	/* Need adjust the alignment to satisfy the CMA requirement */
 
 
 
