@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-123343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9830DA5C4FA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42EDA5C4FF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A320168F78
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BA2C7AC302
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F04325E83E;
-	Tue, 11 Mar 2025 15:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5667725E81A;
+	Tue, 11 Mar 2025 15:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vx6zM4t3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4nrpy+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4C625E835;
-	Tue, 11 Mar 2025 15:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A088632E;
+	Tue, 11 Mar 2025 15:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705679; cv=none; b=ccCGwQk9CBJul3WM01Vq03LcoFeIAMcPWYZl7oUN3GEswecsd8Ru/jIFfnQYfI4WRNl1McvWhHAlEmTLKEywGgwELAFmvrEli/9DpKNtEaBjcubtXhng2z6lMf+EwOsJWPo+QPG7xA+487Bzw1qXZSaH/pfGKvVFDmPZGvK4M8U=
+	t=1741705761; cv=none; b=hCMJhvt7Ds7p0YnkDl6Zc07xvY99nyphp+Hm5x4o+TLNwcG4mF60opsYNtVRnz+XArLk7q7BbH7oNufuM27GcjAiN2Iau6tpK5iIyn/mtJ8VG+pI9nBEgXWF0+umbeOxAgQiruDivct2xp8OUB48Vxvpe5XN6Y4grD3MYils9w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705679; c=relaxed/simple;
-	bh=YEqZ8wP7iiq/94dqR7t1mG9RLX/IwaZ+WxHp29FkIKo=;
+	s=arc-20240116; t=1741705761; c=relaxed/simple;
+	bh=kBXOq6hKD0Z3iV45vJuTkWCbnSSb+VlL+m3gV38sjh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYz7dhcmRbPaxl8QkXXKoMqSSkvXq2yPMFKkbyyBqL21YV6r5JEA3fDzSeegC5TtyQUYWaBEeJsPUCA9/qdafklBt5O69W7zLqmefe2cx7FbxbVFevMn31XLPQOtPOTAwWN5jxcaPRB0ZV+TwY6AvrcapYYdbmmN8fKiovZBGgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vx6zM4t3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8537C4CEEF;
-	Tue, 11 Mar 2025 15:07:58 +0000 (UTC)
+	 MIME-Version; b=oj2BCOkfNhbFncFJS1LpuZEHpLbtdXbPfX7R0FH4rbYBzSj93XFdBZancyQddpB6CThNJVIAqOUBB9ypRXV9mSfiKku3DLrmEENwMh1F1n/O3nJ5rP7Ut83QzfzhYnnjmjRPn71S9OMMnSW70rvGvkdhNxgDrisX7XcvF1pp0Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4nrpy+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F35C4CEE9;
+	Tue, 11 Mar 2025 15:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705679;
-	bh=YEqZ8wP7iiq/94dqR7t1mG9RLX/IwaZ+WxHp29FkIKo=;
+	s=korg; t=1741705760;
+	bh=kBXOq6hKD0Z3iV45vJuTkWCbnSSb+VlL+m3gV38sjh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vx6zM4t3QZ+fyQrzru9kl7+yQdPDmD0iU+YsV7Ji5N3B2e2lAYrg5Qs8Bv+hM9Twr
-	 4cwAPCKC3MOQerl/bG2Mne8O+4FMGjzPDbhg9KfrmsUjszJrCbapCByEPZLvRI702G
-	 +1q4GiDmEDZf3rgMunxOVu/sW4nDLrm0c4Vnpx+4=
+	b=B4nrpy+JZVnzt0mP3XE/lxpGZ7O6inmY0aPGSY+IE+c5AE0QwctXu+1sJlEOXUDKJ
+	 VhOYaTtzwbOEdDlxfXcJCHfFl2rGXEQZJoUOL9ssjF4BMDhthcYu9a2FP7R69VCFAi
+	 60hk3VpLkzeRp3wNswpKgvaV9rl10zQLOTL0U0XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 117/328] cpufreq: s3c64xx: Fix compilation warning
-Date: Tue, 11 Mar 2025 15:58:07 +0100
-Message-ID: <20250311145719.545471430@linuxfoundation.org>
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.4 118/328] leds: lp8860: Write full EEPROM, not only half of it
+Date: Tue, 11 Mar 2025 15:58:08 +0100
+Message-ID: <20250311145719.586442551@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -66,71 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-commit 43855ac61483cb914f060851535ea753c094b3e0 upstream.
+commit 0d2e820a86793595e2a776855d04701109e46663 upstream.
 
-The driver generates following warning when regulator support isn't
-enabled in the kernel. Fix it.
+I struggle to explain dividing an ARRAY_SIZE() by the size of an element
+once again. As the latter equals to 2, only the half of EEPROM was ever
+written. Drop the unexplainable division and write full ARRAY_SIZE().
 
-   drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
->> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
-      55 |         unsigned int old_freq, new_freq;
-         |                      ^~~~~~~~
->> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
-      54 |         struct s3c64xx_dvfs *dvfs;
-         |                              ^~~~
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
-Cc: 5.4+ <stable@vger.kernel.org> # v5.4+
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 7a8685accb95 ("leds: lp8860: Introduce TI lp8860 4 channel LED driver")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20241114101402.2562878-1-alexander.sverdlin@siemens.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/s3c64xx-cpufreq.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/leds/leds-lp8860.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/s3c64xx-cpufreq.c
-+++ b/drivers/cpufreq/s3c64xx-cpufreq.c
-@@ -25,6 +25,7 @@ struct s3c64xx_dvfs {
- 	unsigned int vddarm_max;
- };
+--- a/drivers/leds/leds-lp8860.c
++++ b/drivers/leds/leds-lp8860.c
+@@ -267,7 +267,7 @@ static int lp8860_init(struct lp8860_led
+ 		goto out;
+ 	}
  
-+#ifdef CONFIG_REGULATOR
- static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
- 	[0] = { 1000000, 1150000 },
- 	[1] = { 1050000, 1150000 },
-@@ -32,6 +33,7 @@ static struct s3c64xx_dvfs s3c64xx_dvfs_
- 	[3] = { 1200000, 1350000 },
- 	[4] = { 1300000, 1350000 },
- };
-+#endif
- 
- static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
- 	{ 0, 0,  66000 },
-@@ -53,15 +55,16 @@ static struct cpufreq_frequency_table s3
- static int s3c64xx_cpufreq_set_target(struct cpufreq_policy *policy,
- 				      unsigned int index)
- {
--	struct s3c64xx_dvfs *dvfs;
--	unsigned int old_freq, new_freq;
-+	unsigned int new_freq = s3c64xx_freq_table[index].frequency;
- 	int ret;
- 
-+#ifdef CONFIG_REGULATOR
-+	struct s3c64xx_dvfs *dvfs;
-+	unsigned int old_freq;
-+
- 	old_freq = clk_get_rate(policy->clk) / 1000;
--	new_freq = s3c64xx_freq_table[index].frequency;
- 	dvfs = &s3c64xx_dvfs_table[s3c64xx_freq_table[index].driver_data];
- 
--#ifdef CONFIG_REGULATOR
- 	if (vddarm && new_freq > old_freq) {
- 		ret = regulator_set_voltage(vddarm,
- 					    dvfs->vddarm_min,
+-	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs) / sizeof(lp8860_eeprom_disp_regs[0]);
++	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs);
+ 	for (i = 0; i < reg_count; i++) {
+ 		ret = regmap_write(led->eeprom_regmap,
+ 				lp8860_eeprom_disp_regs[i].reg,
 
 
 
