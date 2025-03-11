@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FB8A5C894
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:46:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7317A5C612
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51C6A3A032E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C5E61887113
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238893C0B;
-	Tue, 11 Mar 2025 15:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B23D25DD08;
+	Tue, 11 Mar 2025 15:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGfkM2/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyG0jOJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A5225EFB4;
-	Tue, 11 Mar 2025 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7E2249F9;
+	Tue, 11 Mar 2025 15:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707563; cv=none; b=B7U3j8/PN+4W8MawPRQ8Z/S616MPX1NoFwEEDWSK+FsH4YJgl6f/O279Yuo0ae5wmhFtaCjs6cw9Zy7Q6OUHtJLT5LT41N8QAebXhA6PW9E+s/6EhI01nQgIZHUG/BAsq8Yyy+lWzFTyNs/SgUuLQbPwkiZvwKbUez0NO03NT38=
+	t=1741706292; cv=none; b=NwC8DGZG3rBMV3k3gFdOBD6YEjeYf00Zxuu/AFi5n1KgRNCkEOEU57X7qkXXzkZfcn2YfVaELTyITT0r9UNgI5Tye4TmW+Yr2yl1GtErIKuM96LHTYzxJvDcZ0h1obrk/HBkiBYNZ6/SQaALAhKlVA/05WPvs66VFlJW5Qu3BPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707563; c=relaxed/simple;
-	bh=hjwbALbaSPJdaIVjtnd/F8jwjwz+ZGekAd5eI8jJnpw=;
+	s=arc-20240116; t=1741706292; c=relaxed/simple;
+	bh=wp47NKlEn12z7/0Z1Yg9ozr/OzcSI103E610BT2Zppg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sx6pIQ+pQpgo1UrnD6DI9JFlMEKqpQMmNUyTwKH13NIUYiE/i6FBxA0Uo/QJUhfmYJJ8D9d6lT8whs1Topf8MyFW7nRRAgP2E5fV5QtNM+J3wWAF3wKZGzRCeIVDyh24WcHhrXJw6MXHJbK8HTYJqg7fEqwp2uSQjX6D8P1VvlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGfkM2/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555ECC4CEE9;
-	Tue, 11 Mar 2025 15:39:23 +0000 (UTC)
+	 MIME-Version; b=hWxzXdrgshUMLzuZfy9iOKjXy57MKwKycQ94O1y043GzkkQaokDsiTiBaKxIBdmJ8SvFnOkNISWWW40faaLQpk7u1bezXu/npXUurRTw+kdHC7vcDo/5eJV/K5/c64gsByeaJsaiESMj/AFd48mBR+CMBefei5rEW65aImiltUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyG0jOJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1BCC4CEE9;
+	Tue, 11 Mar 2025 15:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707563;
-	bh=hjwbALbaSPJdaIVjtnd/F8jwjwz+ZGekAd5eI8jJnpw=;
+	s=korg; t=1741706292;
+	bh=wp47NKlEn12z7/0Z1Yg9ozr/OzcSI103E610BT2Zppg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGfkM2/VKr2pxgCpjtinZr1qK8R0f3vBHm7DZPjyYsqybSiuf60kF9oHk7XUls5qr
-	 rkRi+LF9xha7tn1bGS3vHMMw184ILJY9blMG+otCj5XxjXegqevmCkzJN06GaLU2FC
-	 1qVI4cm1Z3TPl+lXgECSi8YhBrJAm1liGrbQc65k=
+	b=QyG0jOJOZq/0sM62N46L1iic65fBLnVahldxuTuRRae9uz+I3t+I6dNO0mwlFwXd5
+	 GPXAtm6XuRq9Q7fLQww4xUmblyD1l57W9VYNYkthTezDXVOO8ypDJg86mexY6fEX4r
+	 3Qe5790XseMKiXSeMsphohp8lsQdfyBg+6XTV/aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Fedor Pchelkin <boddah8794@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 431/462] usb: typec: ucsi: increase timeout for PPM reset operations
+	Visweswara Tanuku <quic_vtanuku@quicinc.com>
+Subject: [PATCH 5.4 327/328] slimbus: messaging: Free transaction ID in delayed interrupt scenario
 Date: Tue, 11 Mar 2025 16:01:37 +0100
-Message-ID: <20250311145815.361390948@linuxfoundation.org>
+Message-ID: <20250311145727.892191152@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <boddah8794@gmail.com>
+From: Visweswara Tanuku <quic_vtanuku@quicinc.com>
 
-commit bf4f9ae1cb08ccaafbe6874be6c46f59b83ae778 upstream.
+commit dcb0d43ba8eb9517e70b1a0e4b0ae0ab657a0e5a upstream.
 
-It is observed that on some systems an initial PPM reset during the boot
-phase can trigger a timeout:
+In case of interrupt delay for any reason, slim_do_transfer()
+returns timeout error but the transaction ID (TID) is not freed.
+This results into invalid memory access inside
+qcom_slim_ngd_rx_msgq_cb() due to invalid TID.
 
-[    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
-[    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
+Fix the issue by freeing the TID in slim_do_transfer() before
+returning timeout error to avoid invalid memory access.
 
-Still, increasing the timeout value, albeit being the most straightforward
-solution, eliminates the problem: the initial PPM reset may take up to
-~8000-10000ms on some Lenovo laptops. When it is reset after the above
-period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
-works as expected.
+Call trace:
+__memcpy_fromio+0x20/0x190
+qcom_slim_ngd_rx_msgq_cb+0x130/0x290 [slim_qcom_ngd_ctrl]
+vchan_complete+0x2a0/0x4a0
+tasklet_action_common+0x274/0x700
+tasklet_action+0x28/0x3c
+_stext+0x188/0x620
+run_ksoftirqd+0x34/0x74
+smpboot_thread_fn+0x1d8/0x464
+kthread+0x178/0x238
+ret_from_fork+0x10/0x20
+Code: aa0003e8 91000429 f100044a 3940002b (3800150b)
+---[ end trace 0fe00bec2b975c99 ]---
+Kernel panic - not syncing: Oops: Fatal exception in interrupt.
 
-Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
-system has booted, reading the CCI values and resetting the PPM works
-perfectly, without any timeout. Thus it's only a boot-time issue.
-
-The reason for this behavior is not clear but it may be the consequence
-of some tricks that the firmware performs or be an actual firmware bug.
-As a workaround, increase the timeout to avoid failing the UCSI
-initialization prematurely.
-
-Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion timeout value")
+Fixes: afbdcc7c384b ("slimbus: Add messaging APIs to slimbus framework")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250217105442.113486-3-boddah8794@gmail.com
+Signed-off-by: Visweswara Tanuku <quic_vtanuku@quicinc.com>
+Link: https://lore.kernel.org/r/20250124125740.16897-1-quic_vtanuku@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/slimbus/messaging.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -25,7 +25,7 @@
-  * difficult to estimate the time it takes for the system to process the command
-  * before it is actually passed to the PPM.
-  */
--#define UCSI_TIMEOUT_MS		5000
-+#define UCSI_TIMEOUT_MS		10000
+--- a/drivers/slimbus/messaging.c
++++ b/drivers/slimbus/messaging.c
+@@ -147,8 +147,9 @@ int slim_do_transfer(struct slim_control
+ 	}
  
- /*
-  * UCSI_SWAP_TIMEOUT_MS - Timeout for role swap requests
+ 	ret = ctrl->xfer_msg(ctrl, txn);
+-
+-	if (!ret && need_tid && !txn->msg->comp) {
++	if (ret == -ETIMEDOUT) {
++		slim_free_txn_tid(ctrl, txn);
++	} else if (!ret && need_tid && !txn->msg->comp) {
+ 		unsigned long ms = txn->rl + HZ;
+ 
+ 		timeout = wait_for_completion_timeout(txn->comp,
 
 
 
