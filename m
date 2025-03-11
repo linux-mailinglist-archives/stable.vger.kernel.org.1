@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E892A5C791
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF46A5C5F5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F25AC7AAAE1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C402C189AD4E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D0425E805;
-	Tue, 11 Mar 2025 15:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529AC25BACC;
+	Tue, 11 Mar 2025 15:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztSz6k7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nd2r28mg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144A53C0B;
-	Tue, 11 Mar 2025 15:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3621EA80;
+	Tue, 11 Mar 2025 15:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707398; cv=none; b=pHxrAB523xVpKpnZkhMYvEw+yuFqWsDhvV6LpBlZLRBf8QgjQPo83obllznRF3iTbmx5ejso596BQliUnzrZzUbN5ovLu7pzvIMfPf0ORrnhVV4c1TLekvO67kO4BlZ/sxkaPeXIdw/wm+L7aRotc+GXlsk0BXnnZxYNvxZFO1k=
+	t=1741706179; cv=none; b=u+d8eHnNmJJfXJu0ZN3KaFFTDmq2BPoz7YSbsIL/GQS0SBAnQFxt0ooh7gez4shR5aBHoC8+CH5MnqBWro6ygxQFrfayyvmMgG+1BS55WTRR9hrC5u8iXlC1RcHjpDwz2F8WsH+shKTbEr7cAw1B69jSCRSdXeEdHwLXJ7t4IrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707398; c=relaxed/simple;
-	bh=bocX1LtcoicrXytXxK6GudPTQm1guxe+WHRUrX9qM1k=;
+	s=arc-20240116; t=1741706179; c=relaxed/simple;
+	bh=NtEllXi31qcwRyJhPoO1VzNs3GeX7Upnq06pSEvXiEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTlmXFBQDXv2q4xfpY44sTBfmcwOG2GFs+WAh0r3bzCBNxp0OjvC4+unISBKoEOr/+4Rfnms+PRabEesrcR9RfEPi1ZRWQk8SQPDl5XfCpuLrdBCDDFOSzIPiz7835lq6lMYCxbtyrwXtYN9dbaSZPflttOQYFSBpJRpG4MGmgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztSz6k7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C498C4CEE9;
-	Tue, 11 Mar 2025 15:36:37 +0000 (UTC)
+	 MIME-Version; b=Z3iS3CLka3lVYxpCT3WsXORl9XM5O7b7ySYL0kNEc1ly92RgUpGJErYaUmHO5h0FV54MJkd1qtrDwUzs4CArYLzPzC406LMdAech9OCNy5ENSmL6Mje57rT1lba1LbRcZ1QH8nGTMkI05mzQzBihcVQeeisjbpfgOiMQFGGT0cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nd2r28mg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C642C4CEE9;
+	Tue, 11 Mar 2025 15:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707397;
-	bh=bocX1LtcoicrXytXxK6GudPTQm1guxe+WHRUrX9qM1k=;
+	s=korg; t=1741706178;
+	bh=NtEllXi31qcwRyJhPoO1VzNs3GeX7Upnq06pSEvXiEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ztSz6k7tMQSLa9J47mS4encppHqhgiUpwJ5NPqlW1XWVQ0z5wbfdf6keK1r6iRFf8
-	 r6Yt0seBdk2gB7vdDHAhPAiuC3DSTy0MwjSJTgRqI8oyT+FY6njdoVY6Q3YV9i2gN2
-	 HlHtxQZ5qUl2pL8OVlwlriKUP2sRlH7gZyN2M4BM=
+	b=Nd2r28mgHa0Q8eAeCoEnW2ZOEnPJOeojJIjhx3buBWUZ5Ip3JJlVjK3024whM6Fgw
+	 3Af4hkx/VHEqmwZOYph3/UxTqiV0386JcLVdrkusb786FkjySffFeW9tPpwgTlR5eb
+	 C55OlGAB8LSk969HWzqEiycLjRnvCnqELTYAAMvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 374/462] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and SSC_REFCLKSEL masks in refclk
-Date: Tue, 11 Mar 2025 16:00:40 +0100
-Message-ID: <20250311145813.128911017@linuxfoundation.org>
+	Quang Le <quanglex97@gmail.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.4 271/328] pfifo_tail_enqueue: Drop new packet when sch->limit == 0
+Date: Tue, 11 Mar 2025 16:00:41 +0100
+Message-ID: <20250311145725.683049660@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Quang Le <quanglex97@gmail.com>
 
-commit e2158c953c973adb49383ddea2504faf08d375b7 upstream.
+commit 647cef20e649c576dff271e018d5d15d998b629d upstream.
 
-In exynos5_usbdrd_{pipe3,utmi}_set_refclk(), the masks
-PHYCLKRST_MPLL_MULTIPLIER_MASK and PHYCLKRST_SSC_REFCLKSEL_MASK are not
-inverted when applied to the register values. Fix it.
+Expected behaviour:
+In case we reach scheduler's limit, pfifo_tail_enqueue() will drop a
+packet in scheduler's queue and decrease scheduler's qlen by one.
+Then, pfifo_tail_enqueue() enqueue new packet and increase
+scheduler's qlen by one. Finally, pfifo_tail_enqueue() return
+`NET_XMIT_CN` status code.
 
-Cc: stable@vger.kernel.org
-Fixes: 59025887fb08 ("phy: Add new Exynos5 USB 3.0 PHY driver")
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Anand Moon <linux.amoon@gmail.com>
-Link: https://lore.kernel.org/r/20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Weird behaviour:
+In case we set `sch->limit == 0` and trigger pfifo_tail_enqueue() on a
+scheduler that has no packet, the 'drop a packet' step will do nothing.
+This means the scheduler's qlen still has value equal 0.
+Then, we continue to enqueue new packet and increase scheduler's qlen by
+one. In summary, we can leverage pfifo_tail_enqueue() to increase qlen by
+one and return `NET_XMIT_CN` status code.
+
+The problem is:
+Let's say we have two qdiscs: Qdisc_A and Qdisc_B.
+ - Qdisc_A's type must have '->graft()' function to create parent/child relationship.
+   Let's say Qdisc_A's type is `hfsc`. Enqueue packet to this qdisc will trigger `hfsc_enqueue`.
+ - Qdisc_B's type is pfifo_head_drop. Enqueue packet to this qdisc will trigger `pfifo_tail_enqueue`.
+ - Qdisc_B is configured to have `sch->limit == 0`.
+ - Qdisc_A is configured to route the enqueued's packet to Qdisc_B.
+
+Enqueue packet through Qdisc_A will lead to:
+ - hfsc_enqueue(Qdisc_A) -> pfifo_tail_enqueue(Qdisc_B)
+ - Qdisc_B->q.qlen += 1
+ - pfifo_tail_enqueue() return `NET_XMIT_CN`
+ - hfsc_enqueue() check for `NET_XMIT_SUCCESS` and see `NET_XMIT_CN` => hfsc_enqueue() don't increase qlen of Qdisc_A.
+
+The whole process lead to a situation where Qdisc_A->q.qlen == 0 and Qdisc_B->q.qlen == 1.
+Replace 'hfsc' with other type (for example: 'drr') still lead to the same problem.
+This violate the design where parent's qlen should equal to the sum of its childrens'qlen.
+
+Bug impact: This issue can be used for user->kernel privilege escalation when it is reachable.
+
+Fixes: 57dbb2d83d10 ("sched: add head drop fifo queue")
+Reported-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/samsung/phy-exynos5-usbdrd.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/sched/sch_fifo.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
-+++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-@@ -288,9 +288,9 @@ exynos5_usbdrd_pipe3_set_refclk(struct p
- 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
+--- a/net/sched/sch_fifo.c
++++ b/net/sched/sch_fifo.c
+@@ -38,6 +38,9 @@ static int pfifo_tail_enqueue(struct sk_
+ {
+ 	unsigned int prev_backlog;
  
- 	/* FSEL settings corresponding to reference clock */
--	reg &= ~PHYCLKRST_FSEL_PIPE_MASK |
--		PHYCLKRST_MPLL_MULTIPLIER_MASK |
--		PHYCLKRST_SSC_REFCLKSEL_MASK;
-+	reg &= ~(PHYCLKRST_FSEL_PIPE_MASK |
-+		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
-+		 PHYCLKRST_SSC_REFCLKSEL_MASK);
- 	switch (phy_drd->extrefclk) {
- 	case EXYNOS5_FSEL_50MHZ:
- 		reg |= (PHYCLKRST_MPLL_MULTIPLIER_50M_REF |
-@@ -332,9 +332,9 @@ exynos5_usbdrd_utmi_set_refclk(struct ph
- 	reg &= ~PHYCLKRST_REFCLKSEL_MASK;
- 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
++	if (unlikely(READ_ONCE(sch->limit) == 0))
++		return qdisc_drop(skb, sch, to_free);
++
+ 	if (likely(sch->q.qlen < sch->limit))
+ 		return qdisc_enqueue_tail(skb, sch);
  
--	reg &= ~PHYCLKRST_FSEL_UTMI_MASK |
--		PHYCLKRST_MPLL_MULTIPLIER_MASK |
--		PHYCLKRST_SSC_REFCLKSEL_MASK;
-+	reg &= ~(PHYCLKRST_FSEL_UTMI_MASK |
-+		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
-+		 PHYCLKRST_SSC_REFCLKSEL_MASK);
- 	reg |= PHYCLKRST_FSEL(phy_drd->extrefclk);
- 
- 	return reg;
 
 
 
