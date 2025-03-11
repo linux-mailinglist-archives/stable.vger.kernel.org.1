@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1A3A5C548
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7914BA5C7ED
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCD6E7A51F9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EC5917AF47
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9038025DD0F;
-	Tue, 11 Mar 2025 15:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD2125F790;
+	Tue, 11 Mar 2025 15:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aa3nA01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnOs4J92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F92825D8E8;
-	Tue, 11 Mar 2025 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA8025F78A;
+	Tue, 11 Mar 2025 15:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706002; cv=none; b=jPLSkAp9XegTcvkO0S1dl42UHi+yaZXq/9oVjTQRHXtUz2ZF9e1HIAihst2AnaumvR4HYpPNRugaDVT7BmaTQNl2g0i0DnzUEmYAmv7vzvHh2l2y6mt95t1TVskn/zReDTQZoP/G/pKXGqy//hpORmr6nsVHE43MbNpLGABze5o=
+	t=1741707312; cv=none; b=TgsXiju1Fk04xN1BCdQp6iNmwNxqVMOitYBJTw2Wc4CKTXs6iwAK0BZCsA+/vdjz3vdOVUNZkNMDQe78Pu7/GRJRJWsCuzzDTA1jTozN3aD3VL8su/6zQNTMr6aRR3Fjsa3Vyp34Xn85ch9k6X6YqgPTxZbtFBalBYGnSjStECE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706002; c=relaxed/simple;
-	bh=IfgKTd0jvau6TftmiFJQOav+Os1jt2rZjoKnkKFGhUQ=;
+	s=arc-20240116; t=1741707312; c=relaxed/simple;
+	bh=knmTFYVHLn6wWrFx7xXBlCkLAOi3FP22ZzLww15drfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iO5UK2rWBkybVp8gsdyM5w/ChPrXj856/XYxhTIxHz8GfsFbGERwADoyNj0wvi6J8StZ2uEb/mUXpFei5KPbdMvLfmZLg7IoI+suvhLT1j9GmNbAMbT2/BKRhEqnO0iTxYcge5ZJYGXJoc+w/zKpfA05ckFfswks8TWzqr01+uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aa3nA01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637CAC4CEE9;
-	Tue, 11 Mar 2025 15:13:21 +0000 (UTC)
+	 MIME-Version; b=ZmSKludbp39rmbma4WAEGd+/VM4tBmDwqhG143TzaS0yHkqOonCmRs7KEKcUmTvjxK/GESmyh1Hgw2B01FZ7iZAksXQs8BtEUjG7KPgABXhnqIBMc+Bs2XKxPTppfcBhhly1f6QaaC5SygWWM2jBsSTjufn+EJ11OUc8WyGEeEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnOs4J92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE280C4CEEC;
+	Tue, 11 Mar 2025 15:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706001;
-	bh=IfgKTd0jvau6TftmiFJQOav+Os1jt2rZjoKnkKFGhUQ=;
+	s=korg; t=1741707312;
+	bh=knmTFYVHLn6wWrFx7xXBlCkLAOi3FP22ZzLww15drfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2aa3nA01pxmpYS1vJWN+JKx/0qPYlhFubQrK4/VHEzWatBeFYBytsi61o5rjXNtbi
-	 kSMqUYqAfCSVgVXscQU8ih2cmx+7/hVW6lh7eKw2HJHrzdzbbzrSW08vO9mMkKBGl0
-	 PBkZN9EZbDRjsPvktofVQ7DwI8SN2BRlnGj7iA9I=
+	b=bnOs4J92j6LEcKAApvZk+LAAaZpqR1xxZbm4f++2dXzPa5lWhgNkADF5Yuk2Cgc+V
+	 1gQHUzs5j1P5xzPostL1b9AwndN9xNvJxhydLLWyo8KAsz7tBTFWjNxrKa0tZ6FCLG
+	 RngqoVwLEkA4/tqv7fhmvT/k+x3+A1i31K14uxKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	lei he <helei.sig11@bytedance.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 210/328] openvswitch: use RCU protection in ovs_vport_cmd_fill_info()
-Date: Tue, 11 Mar 2025 15:59:40 +0100
-Message-ID: <20250311145723.250357871@linuxfoundation.org>
+Subject: [PATCH 5.10 315/462] crypto: testmgr - fix version number of RSA tests
+Date: Tue, 11 Mar 2025 15:59:41 +0100
+Message-ID: <20250311145810.805548719@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: lei he <helei.sig11@bytedance.com>
 
-[ Upstream commit 90b2f49a502fa71090d9f4fe29a2f51fe5dff76d ]
+[ Upstream commit 0bb8f125253843c445b70fc6ef4fb21aa7b25625 ]
 
-ovs_vport_cmd_fill_info() can be called without RTNL or RCU.
+According to PKCS#1 standard, the 'otherPrimeInfos' field contains
+the information for the additional primes r_3, ..., r_u, in order.
+It shall be omitted if the version is 0 and shall contain at least
+one instance of OtherPrimeInfo if the version is 1, see:
+	https://www.rfc-editor.org/rfc/rfc3447#page-44
 
-Use RCU protection and dev_net_rcu() to avoid potential UAF.
+Replace the version number '1' with 0, otherwise, some drivers may
+not pass the run-time tests.
 
-Fixes: 9354d4520342 ("openvswitch: reliable interface indentification in port dumps")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: lei he <helei.sig11@bytedance.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/datapath.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ crypto/testmgr.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index 4c537e74b18c7..20a57a3dc2813 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -1912,6 +1912,7 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- {
- 	struct ovs_header *ovs_header;
- 	struct ovs_vport_stats vport_stats;
-+	struct net *net_vport;
- 	int err;
- 
- 	ovs_header = genlmsg_put(skb, portid, seq, &dp_vport_genl_family,
-@@ -1928,12 +1929,15 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- 	    nla_put_u32(skb, OVS_VPORT_ATTR_IFINDEX, vport->dev->ifindex))
- 		goto nla_put_failure;
- 
--	if (!net_eq(net, dev_net(vport->dev))) {
--		int id = peernet2id_alloc(net, dev_net(vport->dev), gfp);
-+	rcu_read_lock();
-+	net_vport = dev_net_rcu(vport->dev);
-+	if (!net_eq(net, net_vport)) {
-+		int id = peernet2id_alloc(net, net_vport, GFP_ATOMIC);
- 
- 		if (nla_put_s32(skb, OVS_VPORT_ATTR_NETNSID, id))
--			goto nla_put_failure;
-+			goto nla_put_failure_unlock;
- 	}
-+	rcu_read_unlock();
- 
- 	ovs_vport_get_stats(vport, &vport_stats);
- 	if (nla_put_64bit(skb, OVS_VPORT_ATTR_STATS,
-@@ -1951,6 +1955,8 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- 	genlmsg_end(skb, ovs_header);
- 	return 0;
- 
-+nla_put_failure_unlock:
-+	rcu_read_unlock();
- nla_put_failure:
- 	err = -EMSGSIZE;
- error:
+diff --git a/crypto/testmgr.h b/crypto/testmgr.h
+index 24bc1924edb72..8a31946899f05 100644
+--- a/crypto/testmgr.h
++++ b/crypto/testmgr.h
+@@ -184,7 +184,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ #ifndef CONFIG_CRYPTO_FIPS
+ 	.key =
+ 	"\x30\x81\x9A" /* sequence of 154 bytes */
+-	"\x02\x01\x01" /* version - integer of 1 byte */
++	"\x02\x01\x00" /* version - integer of 1 byte */
+ 	"\x02\x41" /* modulus - integer of 65 bytes */
+ 	"\x00\xAA\x36\xAB\xCE\x88\xAC\xFD\xFF\x55\x52\x3C\x7F\xC4\x52\x3F"
+ 	"\x90\xEF\xA0\x0D\xF3\x77\x4A\x25\x9F\x2E\x62\xB4\xC5\xD9\x9C\xB5"
+@@ -214,7 +214,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ 	}, {
+ 	.key =
+ 	"\x30\x82\x01\x1D" /* sequence of 285 bytes */
+-	"\x02\x01\x01" /* version - integer of 1 byte */
++	"\x02\x01\x00" /* version - integer of 1 byte */
+ 	"\x02\x81\x81" /* modulus - integer of 129 bytes */
+ 	"\x00\xBB\xF8\x2F\x09\x06\x82\xCE\x9C\x23\x38\xAC\x2B\x9D\xA8\x71"
+ 	"\xF7\x36\x8D\x07\xEE\xD4\x10\x43\xA4\x40\xD6\xB6\xF0\x74\x54\xF5"
+@@ -258,7 +258,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ #endif
+ 	.key =
+ 	"\x30\x82\x02\x20" /* sequence of 544 bytes */
+-	"\x02\x01\x01" /* version - integer of 1 byte */
++	"\x02\x01\x00" /* version - integer of 1 byte */
+ 	"\x02\x82\x01\x01\x00" /* modulus - integer of 256 bytes */
+ 	"\xDB\x10\x1A\xC2\xA3\xF1\xDC\xFF\x13\x6B\xED\x44\xDF\xF0\x02\x6D"
+ 	"\x13\xC7\x88\xDA\x70\x6B\x54\xF1\xE8\x27\xDC\xC3\x0F\x99\x6A\xFA"
 -- 
 2.39.5
 
