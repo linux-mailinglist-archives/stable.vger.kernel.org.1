@@ -1,112 +1,138 @@
-Return-Path: <stable+bounces-123138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F3DA5B5F2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 02:40:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F47A5B697
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 03:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D590188BF1D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 01:40:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58EBA3AA999
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 02:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9697A1E0B62;
-	Tue, 11 Mar 2025 01:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9981E32D9;
+	Tue, 11 Mar 2025 02:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ba0lMRoX"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5F71DF977;
-	Tue, 11 Mar 2025 01:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7148C15820C;
+	Tue, 11 Mar 2025 02:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741657200; cv=none; b=i3ysf2XZoey7y8FLyHexHDqsrwNRN2qF/H1RlhI/uCVcOEkO2nrP1uMmXtVIsCLTfF1cOW7rB/UEWHZMc52Ho2Olf2BitkU8EaXKOuQtopK+JDar6etFnrWr9DEJet4aCg+zvUvM9gr7mpmmeX7t8EezV2eNSOMVx8dq7JjAmQk=
+	t=1741659566; cv=none; b=Zk0vJpaMK9Oq14zdCtELF9KnaqwunXtPwqC6FfxOudFSFZ2vt+hwG9dTEaUa8XBOHnw3r4tlQTpT198rYCbhM7HRr8cOxQL8OsKKxpfP4S5Nra0AjYqYlEb47ss9aL4iDTjssJnI2OhLSfOSsRAQx13CLQ+kMb4QzKugx08ucws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741657200; c=relaxed/simple;
-	bh=vhZIzTDN0OSeiT0046Ezc3Do+jQB3FRS93pF8EYxZIY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DgQwFUDLsanu3t08d98FCH9Gn9ZIiIhhc4WJm46AJuEspvn4TxK0qG6fvqzFu3KjXt/66V48CH2JVqcuWGU3r5WxcqrPzceqYLxUJummXLMZV59Eyix0ejSRavoAnW5xKSjohn+LxWMPPoDMsAkkQSktAba5FRAjSb534sS9yl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowABHsMlZlM9nXH7HEw--.388S2;
-	Tue, 11 Mar 2025 09:39:45 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: eli.billauer@gmail.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] char: xillybus: Fix error handling in xillybus_init_chrdev()
-Date: Tue, 11 Mar 2025 09:39:35 +0800
-Message-Id: <20250311013935.219615-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1741659566; c=relaxed/simple;
+	bh=mfAmdbFQbLlMZDckT+cuqEi3rf2Re5oZ+lu2lZ/dX1Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PWhLSn2eQqu8BTIiriw2kUwcMVxO8TO9ex+oJwWCl78B7ljP3illJvHBq+2YwCRoZf6pe+ggzETMLkK/kCG0AsjGUqDbZGtXJK82WPFyy8Yjk5EKTlY7QzxN/A4AalRMue5S1Iu0u27n3Zz92psPq986Cpi7koYkwT8dJuO50DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ba0lMRoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DCC8DC4CEE5;
+	Tue, 11 Mar 2025 02:19:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741659565;
+	bh=mfAmdbFQbLlMZDckT+cuqEi3rf2Re5oZ+lu2lZ/dX1Q=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ba0lMRoXy/XRrv3mYJAKFSr3WPmRFH+7UUaL7GFJYFSfW9bWCxbbAAii4MBnE6CPe
+	 G8SuKgd+ObzFc6TWDRbQrG2NW+3eQlFdp8dXTvw7KNEipn2ooVhKj1CPhzD1Tq7ri0
+	 BDN6erjXK3ZfpDTeZUusbFL9QA+QzbOvsZw8WRiI/Lk6IR9TtuzTodgPa0Ho+FYV8s
+	 hW7l51R14P+h37qy15TH+nkXcCQST3piLUuJ9R7zELbnBVgdWvi/qVTRASgqWPzvLc
+	 xJVYA08Erp7/WJUnrwgR7Q//s7kwi7PnJuBdF0kmTv1VMxmn68aKxm6ThBrGgKfRsH
+	 eNwpvMh1yMjEA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D17FBC282DE;
+	Tue, 11 Mar 2025 02:19:25 +0000 (UTC)
+From: Amit Sunil Dhamne via B4 Relay <devnull+amitsd.google.com@kernel.org>
+Date: Mon, 10 Mar 2025 19:19:07 -0700
+Subject: [PATCH] usb: typec: tcpm: fix state transition for
+ SNK_WAIT_CAPABILITIES state in run_state_machine()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABHsMlZlM9nXH7HEw--.388S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrKr4ktr47JrWfJF4kKry8Krg_yoW8JF1UpF
-	47W3WrKrW5Ja1jyr1DJa1DGFW3JayqvF9rur47K3sxZw15u3W8JFWrCrWUJFyDX3yrKay5
-	AFsxA3Z5JryxZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
-	evJa73UjIFyTuYvjfUY3kuUUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250310-fix-snk-wait-timeout-v6-14-rc6-v1-1-5db14475798f@google.com>
+X-B4-Tracking: v=1; b=H4sIAJqdz2cC/x2NQQqDMBQFryJ/7YPEWiW9irgw8Vs/pbEkqQri3
+ Q0uZzEzB0UOwpFexUGBV4my+Ay6LMjNg38zZMxMlaqe6qEVJtkR/QfbIAlJvrz8E9YGukZwDVp
+ bj2ayxjpjKEd+gbNxD7r+PC8ebybscAAAAA==
+X-Change-ID: 20250310-fix-snk-wait-timeout-v6-14-rc6-7b4d9fb9bc99
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Badhri Jagan Sridharan <badhri@google.com>, 
+ RD Babiera <rdbabiera@google.com>, Kyle Tso <kyletso@google.com>, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ Xu Yang <xu.yang_2@nxp.com>, stable@vger.kernel.org, 
+ Amit Sunil Dhamne <amitsd@google.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741659565; l=1869;
+ i=amitsd@google.com; s=20241031; h=from:subject:message-id;
+ bh=XWKs46l6MPTHMIBPMpAx7vxNIqzh3Rjw4va51+i3hu0=;
+ b=mOi/HQ11Z/dzJ5PxxlT67S+U9on/YeTBQANmHH5IF/SogEd0hxlPmReJW7KBH8mte5yaCXODy
+ Z0P5YiKv/lqDw0c7ak5BFfx5wnO/acB2v7BH7AEhFAbAbhHPwrtfGqe
+X-Developer-Key: i=amitsd@google.com; a=ed25519;
+ pk=wD+XZSST4dmnNZf62/lqJpLm7fiyT8iv462zmQ3H6bI=
+X-Endpoint-Received: by B4 Relay for amitsd@google.com/20241031 with
+ auth_id=262
+X-Original-From: Amit Sunil Dhamne <amitsd@google.com>
+Reply-To: amitsd@google.com
 
-After cdev_alloc() succeed and cdev_add() failed, call cdev_del() to
-remove unit->cdev from the system properly.
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-Found by code review.
+A subtle error got introduced while manually fixing merge conflict in
+tcpm.c for commit 85c4efbe6088 ("Merge v6.12-rc6 into usb-next"). As a
+result of this error, the next state is unconditionally set to
+SNK_WAIT_CAPABILITIES_TIMEOUT while handling SNK_WAIT_CAPABILITIES state
+in run_state_machine(...).
+
+Fix this by setting new state of TCPM state machine to `upcoming_state`
+(that is set to different values based on conditions).
 
 Cc: stable@vger.kernel.org
-Fixes: 8cb5d216ab33 ("char: xillybus: Move class-related functions to new xillybus_class.c")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Fixes: 85c4efbe60888 ("Merge v6.12-rc6 into usb-next")
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 ---
-Changes in v2:
-- modified the patch as suggestions to avoid UAF.
----
- drivers/char/xillybus/xillybus_class.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/xillybus/xillybus_class.c b/drivers/char/xillybus/xillybus_class.c
-index c92a628e389e..356af6551b0d 100644
---- a/drivers/char/xillybus/xillybus_class.c
-+++ b/drivers/char/xillybus/xillybus_class.c
-@@ -104,8 +104,7 @@ int xillybus_init_chrdev(struct device *dev,
- 	if (rc) {
- 		dev_err(dev, "Failed to add cdev.\n");
- 		/* kobject_put() is normally done by cdev_del() */
--		kobject_put(&unit->cdev->kobj);
--		goto unregister_chrdev;
-+		goto err_cdev;
- 	}
- 
- 	for (i = 0; i < num_nodes; i++) {
-@@ -157,6 +156,7 @@ int xillybus_init_chrdev(struct device *dev,
- 		device_destroy(&xillybus_class, MKDEV(unit->major,
- 						     i + unit->lowest_minor));
- 
-+err_cdev:
- 	cdev_del(unit->cdev);
- 
- unregister_chrdev:
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 47be450d2be352698e9dee2e283664cd4db8081b..758933d4ac9e4e55d45940b068f3c416e7e51ee8 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5117,16 +5117,16 @@ static void run_state_machine(struct tcpm_port *port)
+ 		 */
+ 		if (port->vbus_never_low) {
+ 			port->vbus_never_low = false;
+-			tcpm_set_state(port, SNK_SOFT_RESET,
+-				       port->timings.sink_wait_cap_time);
++			upcoming_state = SNK_SOFT_RESET;
+ 		} else {
+ 			if (!port->self_powered)
+ 				upcoming_state = SNK_WAIT_CAPABILITIES_TIMEOUT;
+ 			else
+ 				upcoming_state = hard_reset_state(port);
+-			tcpm_set_state(port, SNK_WAIT_CAPABILITIES_TIMEOUT,
+-				       port->timings.sink_wait_cap_time);
+ 		}
++
++		tcpm_set_state(port, upcoming_state,
++			       port->timings.sink_wait_cap_time);
+ 		break;
+ 	case SNK_WAIT_CAPABILITIES_TIMEOUT:
+ 		/*
+
+---
+base-commit: 5c8c229261f14159b54b9a32f12e5fa89d88b905
+change-id: 20250310-fix-snk-wait-timeout-v6-14-rc6-7b4d9fb9bc99
+
+Best regards,
 -- 
-2.25.1
+Amit Sunil Dhamne <amitsd@google.com>
+
 
 
