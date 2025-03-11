@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AEAA5C722
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E584A5C4A4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B98E189F79C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3701882195
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542EE15820C;
-	Tue, 11 Mar 2025 15:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E4B25E473;
+	Tue, 11 Mar 2025 15:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExWdfKw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ4IVJ8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111621DF749;
-	Tue, 11 Mar 2025 15:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DB225DD00;
+	Tue, 11 Mar 2025 15:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706832; cv=none; b=lRLhz2xjGJzCjlpDVwGlfIiMcFIDISD+OTg2RGKCiYWMslizq7gHRSyWbU45mCx/RCRR1VElNCFdZv/Ocp4f+7A2EEfv1wqEIXEdb0XYGmj/3PdoGdf3uDZGwI+SRL0C2DLrnUHojwGPYDYX2Gx4YW8fnYV+WkOpC3y1e6lpPAs=
+	t=1741705496; cv=none; b=ZQGefraMwzbi385p29EgG27ISqqxnAEXcphCZb1uZTpfwykN0khiWMh1OLO3at4iqNx7ZSo7lnF9eDzOGfWIyT47m9BCTyesNkvVsb3aLN3swWEa5mNSOPF4sljjJWGL4pQEb/3UDjwKa8XC0tT6+OI7z9jQPcoDKvn0k/mkCbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706832; c=relaxed/simple;
-	bh=iKOBv68xWAnkPFpMeXEzQ0Zx2kz1oO2ZpIix+OPJx/A=;
+	s=arc-20240116; t=1741705496; c=relaxed/simple;
+	bh=/c/N3wVi6o07S7ECS/KCn57g5EwjFzEB1Nb9vBULMtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5inYQaLDdvV641Q7O7icWB9ZBFD+tNgpgjMjRhBXVU+boVndVohX7GagaGG49iWVMWWV8PXk0u5oLJLj1D0Q5lQ1n+OZTm/b3d7h5vQa5grFyqaYW83bl0fFOskeZF5izuppZGlbKHVh+K/x2PLdokgsrOUgMVAvdOODIOlFXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExWdfKw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC77C4CEE9;
-	Tue, 11 Mar 2025 15:27:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ryw8/UiKT7zIGfxTySbxAwjn6Fgwki9mmdVRKMLz/zJ6tMku5BZzUkNWtdANb2qcXKGP6ENZx9sf0dSuIzlon1Tj952wy0FKFtAgtOqJVAe2JmG1HefuLX9sR3kUDlEvkXHXqOv38hp3JI3eAs6ctdhRtnwyWVSnl8PAfo41k38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ4IVJ8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0957AC4CEE9;
+	Tue, 11 Mar 2025 15:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706831;
-	bh=iKOBv68xWAnkPFpMeXEzQ0Zx2kz1oO2ZpIix+OPJx/A=;
+	s=korg; t=1741705495;
+	bh=/c/N3wVi6o07S7ECS/KCn57g5EwjFzEB1Nb9vBULMtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExWdfKw1JO0UXkzlEwrvJcU+vVEo2pY8oZgnAT7sUEV3PJfF/G8J2zuiizSV8BXmb
-	 TXdevplKTap0CRJNHsNS/og1CciWoTbDDyb2btjWSa4wurKlBYXpp7+4p6BezQbELY
-	 R1UcKzFJmUzpEm0edNEytMfTkLUBsWqz9FaJ/QZk=
+	b=yQ4IVJ8QSYbgfLDzQ9RjNpBbAhFwiRtr4AJ22vJf+PG2Zwuiy3hkP5Dmf3mjdg7uL
+	 B5GSadeVhwiXw/d10w8xsEDiCeF4+JD0L4gUBDqO1g5K0tU0I+3A1lUXO4yUZxEeG8
+	 HaXaQMFp9Id/OnjzCLfdLQWAPYGk9+TeFzEmhRMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanjie Yang <quic_yuanjiey@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/462] mmc: sdhci-msm: Correctly set the load for the regulator
+Subject: [PATCH 5.4 038/328] padata: fix sysfs store callback check
 Date: Tue, 11 Mar 2025 15:56:48 +0100
-Message-ID: <20250311145803.966590579@linuxfoundation.org>
+Message-ID: <20250311145716.408816969@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanjie Yang <quic_yuanjiey@quicinc.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 20a0c37e44063997391430c4ae09973e9cbc3911 ]
+[ Upstream commit 9ff6e943bce67d125781fe4780a5d6f072dc44c0 ]
 
-Qualcomm regulator supports two power supply modes: HPM and LPM.
-Currently, the sdhci-msm.c driver does not set the load to adjust
-the current for eMMC and SD. If the regulator dont't set correct
-load in LPM state, it will lead to the inability to properly
-initialize eMMC and SD.
+padata_sysfs_store() was copied from padata_sysfs_show() but this check
+was not adapted. Today there is no attribute which can fail this
+check, but if there is one it may as well be correct.
 
-Set the correct regulator current for eMMC and SD to ensure that the
-device can work normally even when the regulator is in LPM.
-
-Signed-off-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250114083514.258379-1-quic_yuanjiey@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 5e017dc3f8bc ("padata: Added sysfs primitives to padata subsystem")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 53 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 51 insertions(+), 2 deletions(-)
+ kernel/padata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 3366956a4ff18..c9298a986ef0a 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -131,9 +131,18 @@
- /* Timeout value to avoid infinite waiting for pwr_irq */
- #define MSM_PWR_IRQ_TIMEOUT_MS 5000
+diff --git a/kernel/padata.c b/kernel/padata.c
+index a544da60014c0..47aebcda65d5d 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -940,7 +940,7 @@ static ssize_t padata_sysfs_store(struct kobject *kobj, struct attribute *attr,
  
-+/* Max load for eMMC Vdd supply */
-+#define MMC_VMMC_MAX_LOAD_UA	570000
-+
- /* Max load for eMMC Vdd-io supply */
- #define MMC_VQMMC_MAX_LOAD_UA	325000
+ 	pinst = kobj2pinst(kobj);
+ 	pentry = attr2pentry(attr);
+-	if (pentry->show)
++	if (pentry->store)
+ 		ret = pentry->store(pinst, attr, buf, count);
  
-+/* Max load for SD Vdd supply */
-+#define SD_VMMC_MAX_LOAD_UA	800000
-+
-+/* Max load for SD Vdd-io supply */
-+#define SD_VQMMC_MAX_LOAD_UA	22000
-+
- #define msm_host_readl(msm_host, host, offset) \
- 	msm_host->var_ops->msm_readl_relaxed(host, offset)
- 
-@@ -1383,11 +1392,48 @@ static int sdhci_msm_set_pincfg(struct sdhci_msm_host *msm_host, bool level)
  	return ret;
- }
- 
--static int sdhci_msm_set_vmmc(struct mmc_host *mmc)
-+static void msm_config_vmmc_regulator(struct mmc_host *mmc, bool hpm)
-+{
-+	int load;
-+
-+	if (!hpm)
-+		load = 0;
-+	else if (!mmc->card)
-+		load = max(MMC_VMMC_MAX_LOAD_UA, SD_VMMC_MAX_LOAD_UA);
-+	else if (mmc_card_mmc(mmc->card))
-+		load = MMC_VMMC_MAX_LOAD_UA;
-+	else if (mmc_card_sd(mmc->card))
-+		load = SD_VMMC_MAX_LOAD_UA;
-+	else
-+		return;
-+
-+	regulator_set_load(mmc->supply.vmmc, load);
-+}
-+
-+static void msm_config_vqmmc_regulator(struct mmc_host *mmc, bool hpm)
-+{
-+	int load;
-+
-+	if (!hpm)
-+		load = 0;
-+	else if (!mmc->card)
-+		load = max(MMC_VQMMC_MAX_LOAD_UA, SD_VQMMC_MAX_LOAD_UA);
-+	else if (mmc_card_sd(mmc->card))
-+		load = SD_VQMMC_MAX_LOAD_UA;
-+	else
-+		return;
-+
-+	regulator_set_load(mmc->supply.vqmmc, load);
-+}
-+
-+static int sdhci_msm_set_vmmc(struct sdhci_msm_host *msm_host,
-+			      struct mmc_host *mmc, bool hpm)
- {
- 	if (IS_ERR(mmc->supply.vmmc))
- 		return 0;
- 
-+	msm_config_vmmc_regulator(mmc, hpm);
-+
- 	return mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, mmc->ios.vdd);
- }
- 
-@@ -1400,6 +1446,8 @@ static int msm_toggle_vqmmc(struct sdhci_msm_host *msm_host,
- 	if (msm_host->vqmmc_enabled == level)
- 		return 0;
- 
-+	msm_config_vqmmc_regulator(mmc, level);
-+
- 	if (level) {
- 		/* Set the IO voltage regulator to default voltage level */
- 		if (msm_host->caps_0 & CORE_3_0V_SUPPORT)
-@@ -1622,7 +1670,8 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
- 	}
- 
- 	if (pwr_state) {
--		ret = sdhci_msm_set_vmmc(mmc);
-+		ret = sdhci_msm_set_vmmc(msm_host, mmc,
-+					 pwr_state & REQ_BUS_ON);
- 		if (!ret)
- 			ret = sdhci_msm_set_vqmmc(msm_host, mmc,
- 					pwr_state & REQ_BUS_ON);
 -- 
 2.39.5
 
