@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-123688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36C7A5C666
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:25:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8F1A5C486
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CE817A0FA0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:23:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70428178992
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4A025DD08;
-	Tue, 11 Mar 2025 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE69225DD07;
+	Tue, 11 Mar 2025 15:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR89OjWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nif4dPd5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00A25D8FF;
-	Tue, 11 Mar 2025 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1BC25E805;
+	Tue, 11 Mar 2025 15:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706678; cv=none; b=lOPsoc+9xUZq6CxiDDVYJBIrPIlGT3xt6kIltVLor6BrPNArBp/lbWaJuzoXpTBRcilTV6tvBwzTxtgdXJYIUKplxbeXMgPT+SWv9JU8/s6ltfaUfEirN5hWI7G+YtqMrCjyt62VCNaBMcYoWc9RSqwsWfwaHHScsKaZU5zQgQY=
+	t=1741705408; cv=none; b=NnIMTLQccmZI4A5vAGwon66g4K+GbUxYjKkVC0br360OqpteQ+QVGZCnllSS8yyWQYxgP9VBF4MuFm7bbrqu9juSXagtRqd78BN6qZDwLGfrQl+/ne8m3FodTWZuZeERcTr4YhonAxBsbvDFIJmMaYcsYXyqjqYIkwO8YLb8khs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706678; c=relaxed/simple;
-	bh=ZHplpihe/1p2nUtbUsVr+ylhdstR/SRfyB30JZuXQhQ=;
+	s=arc-20240116; t=1741705408; c=relaxed/simple;
+	bh=+I1fGV5iNpUsW5Lapb1an4XDk/tKZlGn8tCswLEtrgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQRgQwLROYarq8cvSKEXU8OnE5lmEfTwEJKMhaHwVBTsfYrOS1joRfIs1nRpozrHnsLdOUgJnc6ODJnNdKjUK5KCyIz6RVZQuHeEM+jMrWVCFd/bEaIZjSh8dh95C1sFip05FnDbK5FO6ZeK/7LSgs7Et9KrqqRYbmB4OaAwDOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR89OjWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A0EC4CEE9;
-	Tue, 11 Mar 2025 15:24:37 +0000 (UTC)
+	 MIME-Version; b=rj6HDBhywd4JWL+GzVBGQBXjIy3Awtz/N83z6+D252KmL7NhmOj52EQ/IlrDtMWvY4pg6muWl/3DzpgVELfTxaGaaCuVZVqVTPeLiF1hdPxh5e/sij/Bifoffs9V95SfgV8jP5Ivkz5qKHwWQfolNNbjgM9ZRnvwu3iFM10yufM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nif4dPd5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2929C4CEE9;
+	Tue, 11 Mar 2025 15:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706678;
-	bh=ZHplpihe/1p2nUtbUsVr+ylhdstR/SRfyB30JZuXQhQ=;
+	s=korg; t=1741705408;
+	bh=+I1fGV5iNpUsW5Lapb1an4XDk/tKZlGn8tCswLEtrgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YR89OjWAkVFLFE+QkG0m2xS0ZfXjBjqPjOVS589POyaYZT52+mgCaXl3TRQaEhDTX
-	 E50e3fbgr7LKrq0CmowDxrGK7xbMQxctXMzYxDNU0eMJQe3b+bwsfpr3gLVMUE8wAF
-	 GH8y66IgXVh9NKOI9GBGO7/g4TN/vaLNmFS68j90=
+	b=nif4dPd5+cQ5XjGaxSo+/0RY1ZvzbDu+jFUoJAyh4890KZJVXiSJr005gAOGABMrV
+	 /c/y7Kt5tSk7G8JlBXTxvT686Ac+s8zXUPE8oDF4ku13fUEx9/xkJsWGQh/WnucZ/l
+	 A+R1km+Qf/byPyD9frlLjuWSUO/qM5VqFGVu0H0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"J. R. Okajima" <hooanon05g@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/462] lockdep: Fix upper limit for LOCKDEP_*_BITS configs
+Subject: [PATCH 5.4 025/328] regulator: of: Implement the unwind path of of_regulator_match()
 Date: Tue, 11 Mar 2025 15:56:35 +0100
-Message-ID: <20250311145803.455280942@linuxfoundation.org>
+Message-ID: <20250311145715.888594834@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit e638072e61726cae363d48812815197a2a0e097f ]
+[ Upstream commit dddca3b2fc676113c58b04aaefe84bfb958ac83e ]
 
-Lockdep has a set of configs used to determine the size of the static
-arrays that it uses. However, the upper limit that was initially setup
-for these configs is too high (30 bit shift). This equates to several
-GiB of static memory for individual symbols. Using such high values
-leads to linker errors:
+of_regulator_match() does not release the OF node reference in the error
+path, resulting in an OF node leak. Therefore, call of_node_put() on the
+obtained nodes before returning the EINVAL error.
 
-  $ make defconfig
-  $ ./scripts/config -e PROVE_LOCKING --set-val LOCKDEP_BITS 30
-  $ make olddefconfig all
-  [...]
-  ld: kernel image bigger than KERNEL_IMAGE_SIZE
-  ld: section .bss VMA wraps around address space
+Since it is possible that some drivers call this function and do not
+exit on failure, such as s2mps11_pmic_driver, clear the init_data and
+of_node in the error path.
 
-Adjust the upper limits to the maximum values that avoid these issues.
-The need for anything more, likely points to a problem elsewhere. Note
-that LOCKDEP_CHAINS_BITS was intentionally left out as its upper limit
-had a different symptom and has already been fixed [1].
+This was reported by an experimental verification tool that I am
+developing. As I do not have access to actual devices nor the QEMU board
+configuration to test drivers that call this function, no runtime test
+was able to be performed.
 
-Reported-by: J. R. Okajima <hooanon05g@gmail.com>
-Closes: https://lore.kernel.org/all/30795.1620913191@jrobl/ [1]
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20241024183631.643450-2-cmllamas@google.com
+Fixes: 1c8fa58f4750 ("regulator: Add generic DT parsing for regulators")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20250104080453.2153592-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/Kconfig.debug | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/regulator/of_regulator.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 24ca61cf86ddc..c20729cd67b1e 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1315,7 +1315,7 @@ config LOCKDEP_SMALL
- config LOCKDEP_BITS
- 	int "Bitsize for MAX_LOCKDEP_ENTRIES"
- 	depends on LOCKDEP && !LOCKDEP_SMALL
--	range 10 30
-+	range 10 24
- 	default 15
- 	help
- 	  Try increasing this value if you hit "BUG: MAX_LOCKDEP_ENTRIES too low!" message.
-@@ -1331,7 +1331,7 @@ config LOCKDEP_CHAINS_BITS
- config LOCKDEP_STACK_TRACE_BITS
- 	int "Bitsize for MAX_STACK_TRACE_ENTRIES"
- 	depends on LOCKDEP && !LOCKDEP_SMALL
--	range 10 30
-+	range 10 26
- 	default 19
- 	help
- 	  Try increasing this value if you hit "BUG: MAX_STACK_TRACE_ENTRIES too low!" message.
-@@ -1339,7 +1339,7 @@ config LOCKDEP_STACK_TRACE_BITS
- config LOCKDEP_STACK_TRACE_HASH_BITS
- 	int "Bitsize for STACK_TRACE_HASH_SIZE"
- 	depends on LOCKDEP && !LOCKDEP_SMALL
--	range 10 30
-+	range 10 26
- 	default 14
- 	help
- 	  Try increasing this value if you need large MAX_STACK_TRACE_ENTRIES.
-@@ -1347,7 +1347,7 @@ config LOCKDEP_STACK_TRACE_HASH_BITS
- config LOCKDEP_CIRCULAR_QUEUE_BITS
- 	int "Bitsize for elements in circular_queue struct"
- 	depends on LOCKDEP
--	range 10 30
-+	range 10 26
- 	default 12
- 	help
- 	  Try increasing this value if you hit "lockdep bfs error:-1" warning due to __cq_enqueue() failure.
+diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+index 7a0a235e44658..c4b72fa8ad815 100644
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -377,7 +377,7 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 					"failed to parse DT for regulator %pOFn\n",
+ 					child);
+ 				of_node_put(child);
+-				return -EINVAL;
++				goto err_put;
+ 			}
+ 			match->of_node = of_node_get(child);
+ 			count++;
+@@ -386,6 +386,18 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 	}
+ 
+ 	return count;
++
++err_put:
++	for (i = 0; i < num_matches; i++) {
++		struct of_regulator_match *match = &matches[i];
++
++		match->init_data = NULL;
++		if (match->of_node) {
++			of_node_put(match->of_node);
++			match->of_node = NULL;
++		}
++	}
++	return -EINVAL;
+ }
+ EXPORT_SYMBOL_GPL(of_regulator_match);
+ 
 -- 
 2.39.5
 
