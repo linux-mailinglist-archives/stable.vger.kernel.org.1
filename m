@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-123492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB82A5C5A5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B611A5C7A1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B39117A054
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FFD17ABDCC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC5625E820;
-	Tue, 11 Mar 2025 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868A825F78F;
+	Tue, 11 Mar 2025 15:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3r7qCzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJOG7YmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5B414BF89;
-	Tue, 11 Mar 2025 15:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F80E25F785;
+	Tue, 11 Mar 2025 15:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706114; cv=none; b=FHIPPHi8oO/xSi7H37fdiBySNrFGiFEgBxc+zhwyMnc40YH+GAMvD0Xc00PBGRvDWRDaThj/xUygFNudv6Y0Hsou9jDrQVviKvHe2sotaR/SriLQWBaOHTDGWtx5tq2F71kqwBF38nhMJhvgPMwqdYBfOpotJ8W0gxdFBtN0bXo=
+	t=1741707424; cv=none; b=Y2s/2z3DVqUUoFa6ViKzSC6Cudcv3Fnyq3IBaaZ3KTXOomTIYn8QAY334Xv9z2RHZis5eP7kylI0ArD+pgZbNUQCTKUAj5vpVP68y1Nj1cMheqD7Wa3S8iPJbLXsZ73Ec6B1gBMUtS2OwFQO+DN44LE3MGFkV9RoyWgXUU2p6ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706114; c=relaxed/simple;
-	bh=OrT6x6EYLT7dQWd5f084i2XHWqJ/JASYfJhHMXenU6E=;
+	s=arc-20240116; t=1741707424; c=relaxed/simple;
+	bh=PsuhaR2X64gTlOFudbr7m3zq5scY2WscD6WaxSXmRgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3vajHwkN97FpY5D/wuCXq9l+TsZ+Gj5Xm5ogPgJNhouWuJtTeh0iT0rZAZN7XouT//973SzBlkO/JzJ6XmIJegOlmabqY/mykb5cpF8N7PfDMqbgGyykCWP5QRCBOTHLnfpjYW9AWGz28cgQKYS+U6PaRGX0i2r+4yj8t/otK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3r7qCzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A97C4CEE9;
-	Tue, 11 Mar 2025 15:15:13 +0000 (UTC)
+	 MIME-Version; b=dEDDUj0ZSUv8BSm4RrqScEnctiQrF3WIdj9PiYI+bpqI6lBETjY9d8Kqz7VBTeT2l5S9SR5DdGi7673iAbr92SHpwKfBOs+C4yBv7iFoNzkQeYpcZnlRiUaBCHvzCpBTcxtmUzpWI/zw0q2+ZRBLXXuruhKd0VyeGBE2jETKT6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJOG7YmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD433C4CEED;
+	Tue, 11 Mar 2025 15:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706113;
-	bh=OrT6x6EYLT7dQWd5f084i2XHWqJ/JASYfJhHMXenU6E=;
+	s=korg; t=1741707424;
+	bh=PsuhaR2X64gTlOFudbr7m3zq5scY2WscD6WaxSXmRgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3r7qCzMYdr29WHsiNVJqPZsLgubn1A8nEnmpaCX0Kq/PhDesPZto+HbGsKEZH4h4
-	 2jZ0ml41nO8Rvdqi2p1fFTGM6WWX2Yv6QMWh/S2gxUf8+GS55R2dHuZuEKvcs1VdOo
-	 NmUFGZcXvt1eUzE/rW0IoYFfa+eX8Leq9Aq5kIY4=
+	b=FJOG7YmU9zHnm8R+xHa+uwHVOQ8/A2wWcKmWpq3FZxwOwEV0pPHZsO3E1mPeksOk3
+	 EHSa+OHQl3diU1VJx6FKoE84delpHH0R9Ero1sD2wWBwh+T71zPPDHdJqq03SAoAxn
+	 qyEfVpt0HHFVBqiyV59mxmzbCUmmZXlYEdHPpLrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Volodymyr Mytnyk <volodymyr.mytnyk@plvision.eu>,
-	Maksym Glubokiy <maksym.glubokiy@plvision.eu>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 248/328] net: extract port range fields from fl_flow_key
-Date: Tue, 11 Mar 2025 16:00:18 +0100
-Message-ID: <20250311145724.767027530@linuxfoundation.org>
+Subject: [PATCH 5.10 353/462] sunrpc: suppress warnings for unused procfs functions
+Date: Tue, 11 Mar 2025 16:00:19 +0100
+Message-ID: <20250311145812.301280181@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maksym Glubokiy <maksym.glubokiy@plvision.eu>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 83d85bb069152b790caad905fa53e6d50cd3734d ]
+[ Upstream commit 1f7a4f98c11fbeb18ed21f3b3a497e90a50ad2e0 ]
 
-So it can be used for port range filter offloading.
+There is a warning about unused variables when building with W=1 and no procfs:
 
-Co-developed-by: Volodymyr Mytnyk <volodymyr.mytnyk@plvision.eu>
-Signed-off-by: Volodymyr Mytnyk <volodymyr.mytnyk@plvision.eu>
-Signed-off-by: Maksym Glubokiy <maksym.glubokiy@plvision.eu>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 3e5796862c69 ("flow_dissector: Fix handling of mixed port and port-range keys")
+net/sunrpc/cache.c:1660:30: error: 'cache_flush_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1660 | static const struct proc_ops cache_flush_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~~~~~
+net/sunrpc/cache.c:1622:30: error: 'content_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1622 | static const struct proc_ops content_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~
+net/sunrpc/cache.c:1598:30: error: 'cache_channel_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1598 | static const struct proc_ops cache_channel_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
+
+These are used inside of an #ifdef, so replacing that with an
+IS_ENABLED() check lets the compiler see how they are used while
+still dropping them during dead code elimination.
+
+Fixes: dbf847ecb631 ("knfsd: allow cache_register to return error on failure")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/flow_dissector.h | 16 ++++++++++++++++
- include/net/flow_offload.h   |  6 ++++++
- net/core/flow_offload.c      |  7 +++++++
- net/sched/cls_flower.c       |  8 +-------
- 4 files changed, 30 insertions(+), 7 deletions(-)
+ net/sunrpc/cache.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index 02171416c68eb..efd7987982a8c 100644
---- a/include/net/flow_dissector.h
-+++ b/include/net/flow_dissector.h
-@@ -158,6 +158,22 @@ struct flow_dissector_key_ports {
- 	};
- };
- 
-+/**
-+ * struct flow_dissector_key_ports_range
-+ * @tp: port number from packet
-+ * @tp_min: min port number in range
-+ * @tp_max: max port number in range
-+ */
-+struct flow_dissector_key_ports_range {
-+	union {
-+		struct flow_dissector_key_ports tp;
-+		struct {
-+			struct flow_dissector_key_ports tp_min;
-+			struct flow_dissector_key_ports tp_max;
-+		};
-+	};
-+};
-+
- /**
-  * flow_dissector_key_icmp:
-  *	@ports: type and code of ICMP header
-diff --git a/include/net/flow_offload.h b/include/net/flow_offload.h
-index c6f7bd22db609..dc4274dcdec7f 100644
---- a/include/net/flow_offload.h
-+++ b/include/net/flow_offload.h
-@@ -48,6 +48,10 @@ struct flow_match_ports {
- 	struct flow_dissector_key_ports *key, *mask;
- };
- 
-+struct flow_match_ports_range {
-+	struct flow_dissector_key_ports_range *key, *mask;
-+};
-+
- struct flow_match_icmp {
- 	struct flow_dissector_key_icmp *key, *mask;
- };
-@@ -90,6 +94,8 @@ void flow_rule_match_ip(const struct flow_rule *rule,
- 			struct flow_match_ip *out);
- void flow_rule_match_ports(const struct flow_rule *rule,
- 			   struct flow_match_ports *out);
-+void flow_rule_match_ports_range(const struct flow_rule *rule,
-+				 struct flow_match_ports_range *out);
- void flow_rule_match_tcp(const struct flow_rule *rule,
- 			 struct flow_match_tcp *out);
- void flow_rule_match_icmp(const struct flow_rule *rule,
-diff --git a/net/core/flow_offload.c b/net/core/flow_offload.c
-index 45b6a59ac1243..3d54eca5960dc 100644
---- a/net/core/flow_offload.c
-+++ b/net/core/flow_offload.c
-@@ -97,6 +97,13 @@ void flow_rule_match_ports(const struct flow_rule *rule,
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 522e43f66ecd0..486c466ab4668 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -1678,12 +1678,14 @@ static void remove_cache_proc_entries(struct cache_detail *cd)
+ 	}
  }
- EXPORT_SYMBOL(flow_rule_match_ports);
  
-+void flow_rule_match_ports_range(const struct flow_rule *rule,
-+				 struct flow_match_ports_range *out)
-+{
-+	FLOW_DISSECTOR_MATCH(rule, FLOW_DISSECTOR_KEY_PORTS_RANGE, out);
-+}
-+EXPORT_SYMBOL(flow_rule_match_ports_range);
-+
- void flow_rule_match_tcp(const struct flow_rule *rule,
- 			 struct flow_match_tcp *out)
+-#ifdef CONFIG_PROC_FS
+ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
  {
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index c92318f68f92d..803107b30814e 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -54,13 +54,7 @@ struct fl_flow_key {
- 	struct flow_dissector_key_ip ip;
- 	struct flow_dissector_key_ip enc_ip;
- 	struct flow_dissector_key_enc_opts enc_opts;
--	union {
--		struct flow_dissector_key_ports tp;
--		struct {
--			struct flow_dissector_key_ports tp_min;
--			struct flow_dissector_key_ports tp_max;
--		};
--	} tp_range;
-+	struct flow_dissector_key_ports_range tp_range;
- 	struct flow_dissector_key_ct ct;
- } __aligned(BITS_PER_LONG / 8); /* Ensure that we can do comparisons as longs. */
+ 	struct proc_dir_entry *p;
+ 	struct sunrpc_net *sn;
  
++	if (!IS_ENABLED(CONFIG_PROC_FS))
++		return 0;
++
+ 	sn = net_generic(net, sunrpc_net_id);
+ 	cd->procfs = proc_mkdir(cd->name, sn->proc_net_rpc);
+ 	if (cd->procfs == NULL)
+@@ -1711,12 +1713,6 @@ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+ 	remove_cache_proc_entries(cd);
+ 	return -ENOMEM;
+ }
+-#else /* CONFIG_PROC_FS */
+-static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+-{
+-	return 0;
+-}
+-#endif
+ 
+ void __init cache_initialize(void)
+ {
 -- 
 2.39.5
 
