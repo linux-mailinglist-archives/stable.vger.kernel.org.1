@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A08A5C841
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:42:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD5DA5C572
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AAA13B715E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F3D77A1CBC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1F425DD0B;
-	Tue, 11 Mar 2025 15:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0AA25DD00;
+	Tue, 11 Mar 2025 15:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MA0ag+1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIJtGZmD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1870A255E37;
-	Tue, 11 Mar 2025 15:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9850225E808;
+	Tue, 11 Mar 2025 15:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707366; cv=none; b=g9vyXQBcMfO33Vkgmc5jC0Rn6fDTYBApqSl8oyD5a5TPMQBolROYaIfvxUZhFiEJYDMgpqdzjqUz1rUA/+g2t/ee7yJm6dnBr3KEg8Plmoqi6me6hbov48OIJ9SqgTqsosqrjH63dPWuQP6UcFoZ5ArJK4ktGds3m3R/UVEGA64=
+	t=1741706096; cv=none; b=dDQjorgPuUqPtMb8IoiMW/T+xWBKHt0nunLJPkt1pPB4fZMoNyQQHG9FE2+SNrKtul6Imy/Eovwu90uEUASmpZtDEeoXDJQ/VS+gaNQrp9jf6ihki9l9KzSfZd481qllzi8s9+J+kvAnMTyXFrM+hNQKSKPvnzvlWaN66OBDjnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707366; c=relaxed/simple;
-	bh=tyh4ycTO/Tb2yG2DtgBQU791ttybsIVukaBJzKrD0nw=;
+	s=arc-20240116; t=1741706096; c=relaxed/simple;
+	bh=1PyaJFzgTxOstllkpDSJpAgr++VFHqzSHTsgFCTHR7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QB3lRE+s5rGHw12zFIYQhyzvcdorvdauzxNCPZvEdV2MdSeUcsk3uwQP0oBDh/fnORqlN2sehMvr7ei/goQhD+ZJRas3CbJrUC7m8DuWxkwdc4BhqrUfM9ztZWSW/B0s+ihcN1ktWO52dzG2jwhyzPlPBAKzmtBCTCaIpgd93GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MA0ag+1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F59C4CEED;
-	Tue, 11 Mar 2025 15:36:05 +0000 (UTC)
+	 MIME-Version; b=iK2h5caHjoXm/fIFzmvNUowIQSZZIVNhfZTRACAWaYzdOY4t+KnB98suk1vKgQDKru2RqDBjw5QBJTe9aKfxtw6W8FnMh5s3CpWBkeL1C7XQjhddf5A4JAxYJ3N0aV3XsGMR8FuVsSj8IvWCkLtrKtEp8M01mb2cRAp/5DHG0hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIJtGZmD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAE5C4CEF3;
+	Tue, 11 Mar 2025 15:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707366;
-	bh=tyh4ycTO/Tb2yG2DtgBQU791ttybsIVukaBJzKrD0nw=;
+	s=korg; t=1741706096;
+	bh=1PyaJFzgTxOstllkpDSJpAgr++VFHqzSHTsgFCTHR7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MA0ag+1CJTwZ5u7fMEmWwEBpip7nRMZDD1QU2lNMIesMwHRe968Mzm8SMdrc3LqcF
-	 yQxWYhIVWkrnKX1rRP7N3umzL1Xd9Pbr6acwZdMw+1IpvTYOPyjG8OZe5X103gnPv7
-	 PsEK1O4RONREYqeBh9QazjQFvuuU+KwUHnvTrZ3A=
+	b=iIJtGZmDKeIvcBZVBIHcGVLm8u5BtKqRyavCamxQtFEwnKozQX83LqUCZdk7+HHh0
+	 vKOnjPG/rJ0qVKQi9sl6YbM8lmcbPZx1pSo++frCRWYlFivcCYxeBRQcCyQ+zTgCUn
+	 eRq1ZZnSo/u2biB5BL0SEVWClQjg1pLyXofIT5vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Vazquez <brianvv@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 364/462] net: use indirect call helpers for dst_output
-Date: Tue, 11 Mar 2025 16:00:30 +0100
-Message-ID: <20250311145812.731372741@linuxfoundation.org>
+Subject: [PATCH 5.4 261/328] ASoC: es8328: fix route from DAC to output
+Date: Tue, 11 Mar 2025 16:00:31 +0100
+Message-ID: <20250311145725.282689560@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Vazquez <brianvv@google.com>
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-[ Upstream commit 6585d7dc491d9d5e323ed52ee32ad071e04c9dfa ]
+[ Upstream commit 5b0c02f9b8acf2a791e531bbc09acae2d51f4f9b ]
 
-This patch avoids the indirect call for the common case:
-ip6_output and ip_output
+The ES8328 codec driver, which is also used for the ES8388 chip that
+appears to have an identical register map, claims that the output can
+either take the route from DAC->Mixer->Output or through DAC->Output
+directly. To the best of what I could find, this is not true, and
+creates problems.
 
-Signed-off-by: Brian Vazquez <brianvv@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 13e55fbaec17 ("net: ipv6: fix dst ref loop on input in rpl lwt")
+Without DACCONTROL17 bit index 7 set for the left channel, as well as
+DACCONTROL20 bit index 7 set for the right channel, I cannot get any
+analog audio out on Left Out 2 and Right Out 2 respectively, despite the
+DAPM routes claiming that this should be possible. Furthermore, the same
+is the case for Left Out 1 and Right Out 1, showing that those two don't
+have a direct route from DAC to output bypassing the mixer either.
+
+Those control bits toggle whether the DACs are fed (stale bread?) into
+their respective mixers. If one "unmutes" the mixer controls in
+alsamixer, then sure, the audio output works, but if it doesn't work
+without the mixer being fed the DAC input then evidently it's not a
+direct output from the DAC.
+
+ES8328/ES8388 are seemingly not alone in this. ES8323, which uses a
+separate driver for what appears to be a very similar register map,
+simply flips those two bits on in its probe function, and then pretends
+there is no power management whatsoever for the individual controls.
+Fair enough.
+
+My theory as to why nobody has noticed this up to this point is that
+everyone just assumes it's their fault when they had to unmute an
+additional control in ALSA.
+
+Fix this in the es8328 driver by removing the erroneous direct route,
+then get rid of the playback switch controls and have those bits tied to
+the mixer's widget instead, which until now had no register to play
+with.
+
+Fixes: 567e4f98922c ("ASoC: add es8328 codec driver")
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Link: https://patch.msgid.link/20250222-es8328-route-bludgeoning-v1-1-99bfb7fb22d9@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h     | 8 +++++++-
- net/ipv4/ip_output.c  | 1 +
- net/ipv6/ip6_output.c | 1 +
- 3 files changed, 9 insertions(+), 1 deletion(-)
+ sound/soc/codecs/es8328.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 907b4b5893a67..af57a6284444c 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -431,10 +431,16 @@ static inline void dst_set_expires(struct dst_entry *dst, int timeout)
- 		dst->expires = expires;
- }
+diff --git a/sound/soc/codecs/es8328.c b/sound/soc/codecs/es8328.c
+index 4117ab6e9b6ff..83ffdb7e51200 100644
+--- a/sound/soc/codecs/es8328.c
++++ b/sound/soc/codecs/es8328.c
+@@ -234,7 +234,6 @@ static const struct snd_kcontrol_new es8328_right_line_controls =
  
-+INDIRECT_CALLABLE_DECLARE(int ip6_output(struct net *, struct sock *,
-+					 struct sk_buff *));
-+INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
-+					 struct sk_buff *));
- /* Output packet to network from transport.  */
- static inline int dst_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	return skb_dst(skb)->output(net, sk, skb);
-+	return INDIRECT_CALL_INET(skb_dst(skb)->output,
-+				  ip6_output, ip_output,
-+				  net, sk, skb);
- }
+ /* Left Mixer */
+ static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
+-	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL17, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL17, 6, 1, 0),
+ 	SOC_DAPM_SINGLE("Right Playback Switch", ES8328_DACCONTROL18, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL18, 6, 1, 0),
+@@ -244,7 +243,6 @@ static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
+ static const struct snd_kcontrol_new es8328_right_mixer_controls[] = {
+ 	SOC_DAPM_SINGLE("Left Playback Switch", ES8328_DACCONTROL19, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL19, 6, 1, 0),
+-	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL20, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL20, 6, 1, 0),
+ };
  
- INDIRECT_CALLABLE_DECLARE(int ip6_input(struct sk_buff *));
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 12ee857d6cfe4..1e430e135aa60 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -441,6 +441,7 @@ int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			    ip_finish_output,
- 			    !(IPCB(skb)->flags & IPSKB_REROUTED));
- }
-+EXPORT_SYMBOL(ip_output);
+@@ -337,10 +335,10 @@ static const struct snd_soc_dapm_widget es8328_dapm_widgets[] = {
+ 	SND_SOC_DAPM_DAC("Left DAC", "Left Playback", ES8328_DACPOWER,
+ 			ES8328_DACPOWER_LDAC_OFF, 1),
  
- /*
-  * copy saddr and daddr, possibly using 64bit load/stores
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 4da3238836b73..5003c5a23fa70 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -236,6 +236,7 @@ int ip6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			    ip6_finish_output,
- 			    !(IP6CB(skb)->flags & IP6SKB_REROUTED));
- }
-+EXPORT_SYMBOL(ip6_output);
+-	SND_SOC_DAPM_MIXER("Left Mixer", SND_SOC_NOPM, 0, 0,
++	SND_SOC_DAPM_MIXER("Left Mixer", ES8328_DACCONTROL17, 7, 0,
+ 		&es8328_left_mixer_controls[0],
+ 		ARRAY_SIZE(es8328_left_mixer_controls)),
+-	SND_SOC_DAPM_MIXER("Right Mixer", SND_SOC_NOPM, 0, 0,
++	SND_SOC_DAPM_MIXER("Right Mixer", ES8328_DACCONTROL20, 7, 0,
+ 		&es8328_right_mixer_controls[0],
+ 		ARRAY_SIZE(es8328_right_mixer_controls)),
  
- bool ip6_autoflowlabel(struct net *net, const struct ipv6_pinfo *np)
- {
+@@ -419,19 +417,14 @@ static const struct snd_soc_dapm_route es8328_dapm_routes[] = {
+ 	{ "Right Line Mux", "PGA", "Right PGA Mux" },
+ 	{ "Right Line Mux", "Differential", "Differential Mux" },
+ 
+-	{ "Left Out 1", NULL, "Left DAC" },
+-	{ "Right Out 1", NULL, "Right DAC" },
+-	{ "Left Out 2", NULL, "Left DAC" },
+-	{ "Right Out 2", NULL, "Right DAC" },
+-
+-	{ "Left Mixer", "Playback Switch", "Left DAC" },
++	{ "Left Mixer", NULL, "Left DAC" },
+ 	{ "Left Mixer", "Left Bypass Switch", "Left Line Mux" },
+ 	{ "Left Mixer", "Right Playback Switch", "Right DAC" },
+ 	{ "Left Mixer", "Right Bypass Switch", "Right Line Mux" },
+ 
+ 	{ "Right Mixer", "Left Playback Switch", "Left DAC" },
+ 	{ "Right Mixer", "Left Bypass Switch", "Left Line Mux" },
+-	{ "Right Mixer", "Playback Switch", "Right DAC" },
++	{ "Right Mixer", NULL, "Right DAC" },
+ 	{ "Right Mixer", "Right Bypass Switch", "Right Line Mux" },
+ 
+ 	{ "DAC DIG", NULL, "DAC STM" },
 -- 
 2.39.5
 
