@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE90A5C575
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2314BA5C807
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFD031888F34
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF113AE7B4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E215D25D90F;
-	Tue, 11 Mar 2025 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EA725F7AD;
+	Tue, 11 Mar 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVesuLnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdDHnZcN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E93225D8F9;
-	Tue, 11 Mar 2025 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFB225EFB5;
+	Tue, 11 Mar 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705889; cv=none; b=oh23y7Xsi50qShwGzCR5u5Wzcj1yL+wrx30qAoW2e80iTUStCRqwbr/LtR247bk3JY2jFQYI29Da4eGxT8Hbk5GHaykySxXT7Z9LJ6Aw/T4VtI7AolWmFKiUc+iJmXVWpEVZ1MX68/4cfAYJpW/schtTyOi/vWmknSV0X20rPlc=
+	t=1741707225; cv=none; b=OHqXt0VeHqTGucu1K1/47O6q1nDtNOtwvGNkYV7Sizczk3F2ya7tVrkZ6fLnWa6fnx6069LLUzPaEDpup5JGhr62SI/jVnMmVorNnRBy9ZmfrDeQXKsVFDWwqP99tPn/cs6dlIiQQxmk20lGQi1snx4FqNGk1ub5ru9KXKllr+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705889; c=relaxed/simple;
-	bh=m6GNFnZK+EqB+5UwBheXVT/AfejnbgbXUXVznenE/3w=;
+	s=arc-20240116; t=1741707225; c=relaxed/simple;
+	bh=UvJjvku1j9/JYVrW864jAGwWBvhUyy1JlvnH8PKBKq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqyLqlL67mhCsx/oqAiey4CR/2o10CPA2KCxoqRm4QdZk7Cfb2jg5EPAjWsK86Vphymh6borlOEgpDrDvm+Ji446OQN4FTAxkJidLerce1MO/8PIYMDqeab9WYi5BIx3l/iN3Xz4eMrgS5hRHNlnnt+9kA8icyeEd4z0FgI8pSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVesuLnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE8FC4CEE9;
-	Tue, 11 Mar 2025 15:11:28 +0000 (UTC)
+	 MIME-Version; b=S/kGDUnDa1GcFHSkY/1F7M4j4ig4siCVP+Euqa9ilvJSuD4zbN8APpSVkXBki8LDkM/R2HcIj4aA6U0lC8zMWki3+sOFhhpNZUIlyqm5QyrzrxiiBDM9Kru1rBuhylLNQStJz0PdvDmYmmLh06t8dVQ0pXUplfVZhd8pdAse/7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdDHnZcN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88043C4CEE9;
+	Tue, 11 Mar 2025 15:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705889;
-	bh=m6GNFnZK+EqB+5UwBheXVT/AfejnbgbXUXVznenE/3w=;
+	s=korg; t=1741707224;
+	bh=UvJjvku1j9/JYVrW864jAGwWBvhUyy1JlvnH8PKBKq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVesuLnlGkAz6ZZoLYKd6CZ7WKyIZGkuRpw4Y4uXAL9BQH3kV/ZLART0HF+eerRoI
-	 rhCmuHBE9SnPdIU1cSljSx0WEIkxhso9WiLhmqxqSw8pt/7j7s3wk4F7+OBJnNShG8
-	 3qfuCKmy7tPI4c+1aVPs5+edKGT9Osn+GNsH+b4M=
+	b=VdDHnZcNkUsAUiSHU7jUqB4Jzqt3mXcfR+o2ojoM3xhJygJEcmIudvfsDfhwIuYmB
+	 psnywnsth/1qz03npF3M5bOeFAD0vgkXQqPi7MPel/bU+QLEEv1DKEipQ4gpfzOyO6
+	 gCqqiI8C4weUeOe8lk4JhAPZZjj2WNEJy0ZGF3pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.4 182/328] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 286/462] neighbour: use RCU protection in __neigh_notify()
 Date: Tue, 11 Mar 2025 15:59:12 +0100
-Message-ID: <20250311145722.135590790@linuxfoundation.org>
+Message-ID: <20250311145809.669625558@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
+[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
 
-Teclast disk used on Huawei hisi platforms doesn't work well,
-losing connectivity intermittently if LPM is enabled.
-Add quirk disable LPM to resolve the issue.
+__neigh_notify() can be called without RTNL or RCU protection.
 
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use RCU protection to avoid potential UAF.
+
+Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/core/neighbour.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -520,6 +520,9 @@ static const struct usb_device_id usb_qu
- 	/* Blackmagic Design UltraStudio SDI */
- 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index bd017b220cfed..f04ba63e98515 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3369,10 +3369,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
+ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid)
+ {
+-	struct net *net = dev_net(n->dev);
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
++	struct net *net;
  
-+	/* Teclast disk */
-+	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
-+
- 	/* Hauppauge HVR-950q */
- 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
++	rcu_read_lock();
++	net = dev_net_rcu(n->dev);
+ 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
+ 	if (skb == NULL)
+ 		goto errout;
+@@ -3385,9 +3387,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 		goto errout;
+ 	}
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+-	return;
++	goto out;
+ errout:
+ 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++out:
++	rcu_read_unlock();
+ }
+ 
+ void neigh_app_ns(struct neighbour *n)
+-- 
+2.39.5
+
 
 
 
