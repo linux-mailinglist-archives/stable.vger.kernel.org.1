@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4507A5C49F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A13A5C6D8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99EF7179416
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 250B8166AD5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266CE25E804;
-	Tue, 11 Mar 2025 15:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBE325E815;
+	Tue, 11 Mar 2025 15:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHG5Ogq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXcVCsUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D509325D54A;
-	Tue, 11 Mar 2025 15:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064DE25DCFA;
+	Tue, 11 Mar 2025 15:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705474; cv=none; b=We0DvQPywsgjosMFjyqcxiiUvHFherQ5W70D9uYsCu++hf6yNzBXhjRzzb4judBx3HjBE4SSvJbCfnDxQfhwp6qiJwSjAbdQHpCWkN5k2tHdunszqFVWpOGKRz5KzvDuBvrSIPxrSFTL4/oqJ+IOc0mCwz/Kne+2q691nZUlL78=
+	t=1741706742; cv=none; b=aQfMsjqMFt/ETN0547fIrLaVxjmA3JIrWKpz0t3wDC/NxYexziFGiYomOJfFNE9st6slXp9UfxU/819crDaCqrxznwgPODKwcDdVJKrbiZ5rPxDE1+M3hsy7RKFlL0Gng+UfROyugx7IFd7re0PFBh8rv7Tf6txqxxcbmHKivOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705474; c=relaxed/simple;
-	bh=39bVXTAGvDFY8Wc1Dy2DpE2bMr5YgKTUn5bAULV0KtU=;
+	s=arc-20240116; t=1741706742; c=relaxed/simple;
+	bh=i1LPlJeAO/OYZiZke2E23OIXt9/sUtdsIY2KljFq67o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rApHWkTQfogDztscjSH9N/+Y7lodHuYxJBJ+B8FF/OAdSAXz+urmfuE66nMJhR7Zo980ujKCzckDAcjXCMBaM7JHPsQLK/KTb5mvVtV0UYWxYrzXCy5O9LJIS+Trgap7tqhqTtal4Zq69V6GJZuYJruszm+Y49TjLpA//JSBOPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHG5Ogq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F598C4CEE9;
-	Tue, 11 Mar 2025 15:04:34 +0000 (UTC)
+	 MIME-Version; b=d8eypwT1MVeoTZlp2eQ542W6qUQJaI9nS23+zxA+QnPKccYgVG53zGq8/amqkzRVMFNS1tXZYQNaVAnDe9PQUV3PE3LHrWyjxUdRFVp/ocCbsD84WbdbN7CccMH6jNh2nEHGiUeBei+5kvO9f/ac904I9TLmh6hhlpxAW1tAdhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXcVCsUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78931C4CEEC;
+	Tue, 11 Mar 2025 15:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705474;
-	bh=39bVXTAGvDFY8Wc1Dy2DpE2bMr5YgKTUn5bAULV0KtU=;
+	s=korg; t=1741706741;
+	bh=i1LPlJeAO/OYZiZke2E23OIXt9/sUtdsIY2KljFq67o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHG5Ogq+beYK1TKi+Doo4IE/9bIw42PjI6WWEbvgzYCQ49Ldor/0DnXpOTXOSMQyZ
-	 h+axobyPxUNiTUmY48J3KmmAP4ErXqe2odmdJDjQWuOxnJszbIlApafnETUXCoqjRg
-	 xILW9ddGGiyTAEjdHNtKH/FIH8prSlXZsC/pxnw8=
+	b=GXcVCsUdEH07rBemftD1PMRdx22a87imyEP6WI0srp2cqF8SjanQ7KKvHmMSrFoGt
+	 u6P5xNDD/GLwLkKEX7kl0Mx4UlVp0TM4olazSZ0N7BdScHJ6QAttBzYKvycWC6ovZX
+	 hp4vjHVFD1t/vxz/Z/5wPp6RQEMZ+HwUreBSH9js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Prasad Pandit <pjp@fedoraproject.org>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/328] media: rc: iguanair: handle timeouts
+Subject: [PATCH 5.10 152/462] firmware: iscsi_ibft: fix ISCSI_IBFT Kconfig entry
 Date: Tue, 11 Mar 2025 15:56:58 +0100
-Message-ID: <20250311145716.803238582@linuxfoundation.org>
+Message-ID: <20250311145804.354583594@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-[ Upstream commit b98d5000c50544f14bacb248c34e5219fbe81287 ]
+[ Upstream commit e1e17a1715982201034024863efbf238bee2bdf9 ]
 
-In case of a timeout the IO must be cancelled or
-the next IO using the URB will fail and/or overwrite
-an operational URB.
+Fix ISCSI_IBFT Kconfig entry, replace tab with a space character.
 
-The automatic bisection fails because it arrives
-at a commit that correctly lets the test case run
-without an error.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: e99a7cfe93fd ("[media] iguanair: reuse existing urb callback for command responses")
-Reported-by: syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/66f5cc9a.050a0220.46d20.0004.GAE@google.com/
-Tested-by: syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 138fe4e0697 ("Firmware: add iSCSI iBFT Support")
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/iguanair.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/firmware/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/rc/iguanair.c b/drivers/media/rc/iguanair.c
-index a7deca1fefb73..f50362bb59f27 100644
---- a/drivers/media/rc/iguanair.c
-+++ b/drivers/media/rc/iguanair.c
-@@ -200,8 +200,10 @@ static int iguanair_send(struct iguanair *ir, unsigned size)
- 	if (rc)
- 		return rc;
- 
--	if (wait_for_completion_timeout(&ir->completion, TIMEOUT) == 0)
-+	if (wait_for_completion_timeout(&ir->completion, TIMEOUT) == 0) {
-+		usb_kill_urb(ir->urb_out);
- 		return -ETIMEDOUT;
-+	}
- 
- 	return rc;
- }
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 807c5320dc0ff..a83101310e34f 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -171,7 +171,7 @@ config ISCSI_IBFT
+ 	select ISCSI_BOOT_SYSFS
+ 	select ISCSI_IBFT_FIND if X86
+ 	depends on ACPI && SCSI && SCSI_LOWLEVEL
+-	default	n
++	default n
+ 	help
+ 	  This option enables support for detection and exposing of iSCSI
+ 	  Boot Firmware Table (iBFT) via sysfs to userspace. If you wish to
 -- 
 2.39.5
 
