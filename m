@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-123259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B08A5C49E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E1EA5C4BA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D2433B63A3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AB9B3B701D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57B825EFA9;
-	Tue, 11 Mar 2025 15:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1458B25E830;
+	Tue, 11 Mar 2025 15:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmvJxId0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5I+X/DG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6329C25EF94;
-	Tue, 11 Mar 2025 15:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C443125E821;
+	Tue, 11 Mar 2025 15:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705434; cv=none; b=QMbg//kGGrod9Ork/jeytM4/VEAFioyBRusWXxLC3s1JotLMSBbmTryWW6bz5rVO02nYjOtT7cHD86xFoNJ5smYxhbEpGpAhqx8YiEOMBpR4FMLnf506PjKLVAnG8nfq4w1PbjJCbdUOG9YPJidNiTVxpYbSTUNmE1PDzM6QBms=
+	t=1741705512; cv=none; b=WlF1yPamgX6i/eTxFW15tjmlcFpgDcWp43D2kmSJ3CRNsgyJ5io5yoQj+T4QCq0S7mR1TePkNcTalbDXctPmiHi0l1HTrlbla6GSOEYwwFI0MHE766GorIwDWjUS1U52ZyHIJrq3zM5c1vWewtp6IEwAo94ZyASzXuzBLmZVX5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705434; c=relaxed/simple;
-	bh=yhs2CyrUL12GKyst24ykoAYnRc2qLrQ3ET1PFYZwGsI=;
+	s=arc-20240116; t=1741705512; c=relaxed/simple;
+	bh=NJ4Opzi2XqAKM3KMfR+WFlEI21jtqR8ZuXNaVJtSQ8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/x+Q3nuDx9KSluAAMnFlBViUEzZQv2375wEpYTED9ACyDmnO75kEXYNdBbXOmT9Ns6VKu/Gceo25liodGfgB/GR+2MdY93mxNim0GM35/dO5cDFpwkI17BLM5JJDlG87rThxUITQKdnpwQpdMktXCtqz0ljGTy5ZnvQ8MHf5VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmvJxId0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFE8C4CEE9;
-	Tue, 11 Mar 2025 15:03:53 +0000 (UTC)
+	 MIME-Version; b=mftaAUq5/K6KA5hwB8tyuczWmb+z81ParnmuYKXQgBFvONLLD9vTMMMylikbYIlBMtONTnPgiA8Ls8axo2XVo0YkNY5B9VuOL5CoWhiAKdS6A1j+I2YlRz1Qa174xZOjPMZyfEHhVusGT6K4k4luuOwYiNbbXNtrIpAb3HjVYcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5I+X/DG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A40FC4CEE9;
+	Tue, 11 Mar 2025 15:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705434;
-	bh=yhs2CyrUL12GKyst24ykoAYnRc2qLrQ3ET1PFYZwGsI=;
+	s=korg; t=1741705512;
+	bh=NJ4Opzi2XqAKM3KMfR+WFlEI21jtqR8ZuXNaVJtSQ8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmvJxId00Rhhhq9QX2gKHtvn6IDeFMchQIH9eWxYB+4a9WblC9wFCqfsxArGVZ6xZ
-	 SjXkfcpO7CFPQ0FBf3ulBsPS2VUHodSRjhe5l/IPEI1khAxfzjtm5gv0AkeToL5eqh
-	 b0semschHWDALeulmfCVU29++Qkbru8T/WEBaYck=
+	b=V5I+X/DGTKnDmRmdU5fzDO61GyCQINICDp9xoxiCUJIeEaiJuCOshPcLl4nD/gKav
+	 AkP7jveTayS8TawdwAKMXr84lSVxJEqTF63Mlgfxv6qnJj10wD9LX3b6tfGZjdWFiL
+	 yQq6oWgFCM/o8eTHjerve1h+H/yxwIOKF3QD8NyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Leogrande <leogrande@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
+	George Lander <lander@jagmn.com>,
+	Marcus Cooper <codekipper@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 033/328] tools/testing/selftests/bpf/test_tc_tunnel.sh: Fix wait for server bind
-Date: Tue, 11 Mar 2025 15:56:43 +0100
-Message-ID: <20250311145716.212299943@linuxfoundation.org>
+Subject: [PATCH 5.4 034/328] ASoC: sun4i-spdif: Add clock multiplier settings
+Date: Tue, 11 Mar 2025 15:56:44 +0100
+Message-ID: <20250311145716.251054610@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -67,40 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marco Leogrande <leogrande@google.com>
+From: George Lander <lander@jagmn.com>
 
-[ Upstream commit e2f0791124a1b6ca8d570110cbd487969d9d41ef ]
+[ Upstream commit 0a2319308de88b9e819c0b43d0fccd857123eb31 ]
 
-Commit f803bcf9208a ("selftests/bpf: Prevent client connect before
-server bind in test_tc_tunnel.sh") added code that waits for the
-netcat server to start before the netcat client attempts to connect to
-it. However, not all calls to 'server_listen' were guarded.
+There have been intermittent issues with the SPDIF output on H3
+and H2+ devices which has been fixed by setting the s_clk to 4
+times the audio pll.
+Add a quirk for the clock multiplier as not every supported SoC
+requires it. Without the multiplier, the audio at normal sampling
+rates was distorted and did not play at higher sampling rates.
 
-This patch adds the existing 'wait_for_port' guard after the remaining
-call to 'server_listen'.
-
-Fixes: f803bcf9208a ("selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh")
-Signed-off-by: Marco Leogrande <leogrande@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/r/20241202204530.1143448-1-leogrande@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 1bd92af877ab ("ASoC: sun4i-spdif: Add support for the H3 SoC")
+Signed-off-by: George Lander <lander@jagmn.com>
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
+Link: https://patch.msgid.link/20241111165600.57219-2-codekipper@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_tc_tunnel.sh | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sunxi/sun4i-spdif.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-index 21bde60c95230..e42d8959cbf1c 100755
---- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
-+++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-@@ -286,6 +286,7 @@ else
- 	client_connect
- 	verify_data
- 	server_listen
-+	wait_for_port ${port} ${netcat_opt}
- fi
+diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
+index 680d64e0d69f4..82f3a3e37e910 100644
+--- a/sound/soc/sunxi/sun4i-spdif.c
++++ b/sound/soc/sunxi/sun4i-spdif.c
+@@ -175,6 +175,7 @@ struct sun4i_spdif_quirks {
+ 	unsigned int reg_dac_txdata;
+ 	bool has_reset;
+ 	unsigned int val_fctl_ftx;
++	unsigned int mclk_multiplier;
+ };
  
- # bpf_skb_net_shrink does not take tunnel flags yet, cannot update L3.
+ struct sun4i_spdif_dev {
+@@ -311,6 +312,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
+ 	default:
+ 		return -EINVAL;
+ 	}
++	mclk *= host->quirks->mclk_multiplier;
+ 
+ 	ret = clk_set_rate(host->spdif_clk, mclk);
+ 	if (ret < 0) {
+@@ -345,6 +347,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
+ 	default:
+ 		return -EINVAL;
+ 	}
++	mclk_div *= host->quirks->mclk_multiplier;
+ 
+ 	reg_val = 0;
+ 	reg_val |= SUN4I_SPDIF_TXCFG_ASS;
+@@ -427,24 +430,28 @@ static struct snd_soc_dai_driver sun4i_spdif_dai = {
+ static const struct sun4i_spdif_quirks sun4i_a10_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun6i_a31_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
+ 	.has_reset	= true,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun8i_h3_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN8I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
+ 	.has_reset	= true,
++	.mclk_multiplier = 4,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun50i_h6_spdif_quirks = {
+ 	.reg_dac_txdata = SUN8I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN50I_H6_SPDIF_FCTL_FTX,
+ 	.has_reset      = true,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct of_device_id sun4i_spdif_of_match[] = {
 -- 
 2.39.5
 
