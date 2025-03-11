@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70928A5C4FB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ACDA5C720
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F96189BE5D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0801116373C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DC625E801;
-	Tue, 11 Mar 2025 15:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE44325D918;
+	Tue, 11 Mar 2025 15:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mX5Y3roC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9lESnde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87F325D8E8;
-	Tue, 11 Mar 2025 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD8E15820C;
+	Tue, 11 Mar 2025 15:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705673; cv=none; b=SfMU7e9b5d3HVopx6o/I9+Hpgd8WGQeavJAdvoKcS+kSYbOFCA0qbgOsMCTD5uTLRSe2IOEhlNMFqtyzWXv6L7OGKKM+P0MPIqoRdmfnedoviy2qSU2Rp1dJEaOQ7yQQeO3QGy1GIVaygxJg7UmleL6Q0clMfhzWeZmxiOZJOkA=
+	t=1741706892; cv=none; b=WHgPHU0XIDypkY7IUa8uyBPf+ewhP0Wmkib0v+ud26JXr/ffQUOBuAUO1eAAhVGLo6xwO10c14a/7Ja9JHGolld1JR4QbiSdEGAWH26kcdlEh5iWiUe2yFPkg9dM3aVTRgVviB0ZPfxG1LaIyEi9HDAnIaevz578WFHKDGNRCn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705673; c=relaxed/simple;
-	bh=4gIq/HFx0p4Mbch/tafQkGHMEXGQvh9i7WaKupkx7z0=;
+	s=arc-20240116; t=1741706892; c=relaxed/simple;
+	bh=DnlB87Dw2bI0FZtpGf1Hn41Slz5S7enWzBU7xNwHgPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AV8O9BtkqundhETFi/CtmShGYTm80MciNe+TDHmhI1dHsmI24JB82Symaj3xNjMu2Gt2/NCOrOUSYXwHtYULjo9o86sJlASimHi45rxIn7sVvetLQcbJDotaSt57vWSWuf9WtHLBEpAhtS5DTXLi/SmOVROTpfH8Qb6rRiXL9Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mX5Y3roC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33A9C4CEE9;
-	Tue, 11 Mar 2025 15:07:52 +0000 (UTC)
+	 MIME-Version; b=QFr0bkDXGQuFNaJJZdjWozu6ep3XDSCRLDXNVSSZSZ8WdxQyOhshNd2eT3fB5yuowPx5eJZwoIRFuagGDvMAORvE/RiNeEOdb4v2Ly1+61qT9YAuJ939daoYMgyicrIfQm6pH+y/dvsMfHPS+Yn0ISwsJyg/20E3ddk+tutNkNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9lESnde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B2AC4CEE9;
+	Tue, 11 Mar 2025 15:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705673;
-	bh=4gIq/HFx0p4Mbch/tafQkGHMEXGQvh9i7WaKupkx7z0=;
+	s=korg; t=1741706892;
+	bh=DnlB87Dw2bI0FZtpGf1Hn41Slz5S7enWzBU7xNwHgPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mX5Y3roCvmbl5DTXM947TO6VkvmdbdNBXdMXjrSxbCc6v/XlU+e4ySfEDPm8K3qIZ
-	 KdxjIGL2RKRSjKtGxH3oNmoxAKlJjAchRkE9CgH/jJwkgVmZ4INsxeG6H1bno7XSjL
-	 IhopF+XntyYziDCTIiAc9C8ofu99PTGxSfocRY4U=
+	b=H9lESndexUN0+R7njpYhf0/7BF/gHrd2q3aCo/HL/StaVfEQrjmtm3YtwGKH7u7n/
+	 ZDkfa9d24X9nXPKkRJO7pjuyJtoE7x/HJG5vj6Ju4Y3XZw7ghTBVi6K65nyuJ+S7MY
+	 kEUJkgJ/efzfKJrSTym9qTeiHd9NUW/1aPg4jpeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 098/328] nilfs2: eliminate staggered calls to kunmap in nilfs_rename
-Date: Tue, 11 Mar 2025 15:57:48 +0100
-Message-ID: <20250311145718.787507638@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.10 203/462] soc: qcom: smem_state: fix missing of_node_put in error path
+Date: Tue, 11 Mar 2025 15:57:49 +0100
+Message-ID: <20250311145806.373977080@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 8cf57c6df818f58fdad16a909506be213623a88e upstream.
+commit 70096b4990848229d0784c5e51dc3c7c072f1111 upstream.
 
-In nilfs_rename(), calls to nilfs_put_page() to release pages obtained
-with nilfs_find_entry() or nilfs_dotdot() are alternated in the normal
-path.
+If of_parse_phandle_with_args() succeeds, the OF node reference should
+be dropped, regardless of number of phandle arguments.
 
-When replacing the kernel memory mapping method from kmap to
-kmap_local_{page,folio}, this violates the constraint on the calling order
-of kunmap_local().
-
-Swap the order of nilfs_put_page calls where the kmap sections of multiple
-pages overlap so that they are nested, allowing direct replacement of
-nilfs_put_page() -> unmap_and_put_page().
-
-Without this reordering, that replacement will cause a kernel WARNING in
-kunmap_local_indexed() on architectures with high memory mapping.
-
-Link: https://lkml.kernel.org/r/20231127143036.2425-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
+Cc: stable@vger.kernel.org
+Fixes: 9460ae2ff308 ("soc: qcom: Introduce common SMEM state machine code")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240822164853.231087-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/namei.c |    3 ++-
+ drivers/soc/qcom/smem_state.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -428,13 +428,14 @@ static int nilfs_rename(struct inode *ol
- 	old_inode->i_ctime = current_time(old_inode);
+--- a/drivers/soc/qcom/smem_state.c
++++ b/drivers/soc/qcom/smem_state.c
+@@ -116,7 +116,8 @@ struct qcom_smem_state *qcom_smem_state_
  
- 	nilfs_delete_entry(old_de, old_page);
--	nilfs_put_page(old_page);
- 
- 	if (dir_de) {
- 		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
- 		nilfs_put_page(dir_page);
- 		drop_nlink(old_dir);
+ 	if (args.args_count != 1) {
+ 		dev_err(dev, "invalid #qcom,smem-state-cells\n");
+-		return ERR_PTR(-EINVAL);
++		state = ERR_PTR(-EINVAL);
++		goto put;
  	}
-+	nilfs_put_page(old_page);
-+
- 	nilfs_mark_inode_dirty(old_dir);
- 	nilfs_mark_inode_dirty(old_inode);
  
+ 	state = of_node_to_state(args.np);
 
 
 
