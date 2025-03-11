@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8160EA5C845
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:42:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826E6A5C5E0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F2BD3BDF1D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47029189CB73
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EF925EFB3;
-	Tue, 11 Mar 2025 15:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4405225E82D;
+	Tue, 11 Mar 2025 15:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gpiQpCZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rARGzDvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E1325EF99;
-	Tue, 11 Mar 2025 15:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A0C1C3BEB;
+	Tue, 11 Mar 2025 15:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707342; cv=none; b=K2628pYFVWqvwpBec/GZjVUKLxIsdp2euQu07jv6qiZCJLwHMTVvEo+7RWVcnaxvFnCKeVYS5nHXui78UeD0ANmPkut7USVL+kEHdzXgyvKNY/DeXz/YUlfNULaBzSaUEag/mJ8x4GlJbwwQMZ0UlhCLnpZSOsUx9follMM+yh8=
+	t=1741706132; cv=none; b=AsgNf2TlC3VCpQHW4hgJ/if0wdGuFrV2KMq/sMPiIr3cwvMt7gqVifi7E/+FD4CIn/wxRwLo1bfSmmy/AotU7boBVzf74L0wtpIsea0ZTa+XeCkE/84tzcvFP0HfTN9qK+AXAAjbql3USbVOYbIKjzhRpAocIVk01uj2nQoo2LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707342; c=relaxed/simple;
-	bh=L0uhnkeUQw5kOv97akqP4pJrwKYKUw6ct6vTlCUvI+0=;
+	s=arc-20240116; t=1741706132; c=relaxed/simple;
+	bh=vuQ2lbCOAx4Xsp8RevVqoGxkiNZk1FN/eCe74ikrwZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4NF3bb2RdtIf7irVZzBsCsULXFVz1uQWzq584tqQ6epfIiJb2JjNJ963OueNVEgPdgxRwD9plgMwEqIFnDiHNvKRFAPkqyjVDFfBbHeCyzaTt1u0f+0IthxgG2WQek4N5NQC1LVJ/28QZcgo+bRwHpDfve1NHACDADc8ydw7Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gpiQpCZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16EBC4CEEC;
-	Tue, 11 Mar 2025 15:35:41 +0000 (UTC)
+	 MIME-Version; b=NafR5N6rQ27W4EDM2oSrsTk7bcKD+TRG3NNO1PjA1T7fwvGjD1pPS9sk+8cishdCWO+JaVu+rKDvWu31jTREfI0WrnBEYuLU5E6pDeHmvZ0ImNlm0KtbHVaXaMfTCZu5dGVGD6f5I0H2fO7SJiiO+YASG/W8X2wVrqvkDiRGEwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rARGzDvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E770C4CEE9;
+	Tue, 11 Mar 2025 15:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707342;
-	bh=L0uhnkeUQw5kOv97akqP4pJrwKYKUw6ct6vTlCUvI+0=;
+	s=korg; t=1741706131;
+	bh=vuQ2lbCOAx4Xsp8RevVqoGxkiNZk1FN/eCe74ikrwZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gpiQpCZZupO1swf3fCK3r/QIk92YgYvsbzcXz0sDks+F1VKR1xSWmpqdPOAoNS5n
-	 MnEODU9Uu/S3Q5B5Em8Rc9OPm1n1cw891q5USDtvEvEVrL6XHoDDpWfYTy6ePfg3Hp
-	 vOWCbIWUDbC6BNXolmKYXgPc2g6LjoetAAKvAVfM=
+	b=rARGzDvqiyFAIgivwvborYQKe0ti6epIcG/TjepDaVWPhyCkyI2feS0jYKnBfTewJ
+	 2PsRnrA3BaesI6e5Bkpjyv1MqG44scGS/DTK1A4pwnuzX6Tli3KCwbMqo8DDnIRqqa
+	 ZyGMbGTXCwLKjECj+83qUdZjjrtxmezEHL9/UuHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 357/462] net: cadence: macb: Synchronize stats calculations
-Date: Tue, 11 Mar 2025 16:00:23 +0100
-Message-ID: <20250311145812.457684023@linuxfoundation.org>
+	John Veness <john-linux@pelago.org.uk>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 254/328] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
+Date: Tue, 11 Mar 2025 16:00:24 +0100
+Message-ID: <20250311145725.004836546@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: John Veness <john-linux@pelago.org.uk>
 
-[ Upstream commit fa52f15c745ce55261b92873676f64f7348cfe82 ]
+commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
 
-Stats calculations involve a RMW to add the stat update to the existing
-value. This is currently not protected by any synchronization mechanism,
-so data races are possible. Add a spinlock to protect the update. The
-reader side could be protected using u64_stats, but we would still need
-a spinlock for the update side anyway. And we always do an update
-immediately before reading the stats anyway.
+Allows the LED on the dedicated mute button on the HP ProBook 450 G4
+laptop to change colour correctly.
 
-Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250220162950.95941-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Veness <john-linux@pelago.org.uk>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb.h      |  2 ++
- drivers/net/ethernet/cadence/macb_main.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_conexant.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 5de47f6fde5ab..7ce391209cdd1 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -1191,6 +1191,8 @@ struct macb {
- 	struct clk		*rx_clk;
- 	struct clk		*tsu_clk;
- 	struct net_device	*dev;
-+	/* Protects hw_stats and ethtool_stats */
-+	spinlock_t		stats_lock;
- 	union {
- 		struct macb_stats	macb;
- 		struct gem_stats	gem;
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index c3a8f6fc05aed..0f18837def3c8 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1702,10 +1702,12 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
- 
- 		if (status & MACB_BIT(ISR_ROVR)) {
- 			/* We missed at least one packet */
-+			spin_lock(&bp->stats_lock);
- 			if (macb_is_gem(bp))
- 				bp->hw_stats.gem.rx_overruns++;
- 			else
- 				bp->hw_stats.macb.rx_overruns++;
-+			spin_unlock(&bp->stats_lock);
- 
- 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
- 				queue_writel(queue, ISR, MACB_BIT(ISR_ROVR));
-@@ -2748,6 +2750,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	if (!netif_running(bp->dev))
- 		return nstat;
- 
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 
- 	nstat->rx_errors = (hwstat->rx_frame_check_sequence_errors +
-@@ -2777,6 +2780,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- 	nstat->tx_aborted_errors = hwstat->tx_excessive_collisions;
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_sense_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underrun;
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
- }
-@@ -2784,12 +2788,13 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
- static void gem_get_ethtool_stats(struct net_device *dev,
- 				  struct ethtool_stats *stats, u64 *data)
- {
--	struct macb *bp;
-+	struct macb *bp = netdev_priv(dev);
- 
--	bp = netdev_priv(dev);
-+	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
- 			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+	spin_unlock_irq(&bp->stats_lock);
- }
- 
- static int gem_get_sset_count(struct net_device *dev, int sset)
-@@ -2839,6 +2844,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 		return gem_get_stats(bp);
- 
- 	/* read stats from hardware */
-+	spin_lock_irq(&bp->stats_lock);
- 	macb_update_stats(bp);
- 
- 	/* Convert HW stats into netdevice stats */
-@@ -2872,6 +2878,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
- 	nstat->tx_carrier_errors = hwstat->tx_carrier_errors;
- 	nstat->tx_fifo_errors = hwstat->tx_underruns;
- 	/* Don't know about heartbeat or window errors... */
-+	spin_unlock_irq(&bp->stats_lock);
- 
- 	return nstat;
- }
-@@ -4564,6 +4571,7 @@ static int macb_probe(struct platform_device *pdev)
- 	device_set_wakeup_capable(&pdev->dev, bp->wol & MACB_WOL_HAS_MAGIC_PACKET);
- 
- 	spin_lock_init(&bp->lock);
-+	spin_lock_init(&bp->stats_lock);
- 
- 	/* setup capabilities */
- 	macb_configure_caps(bp, macb_config);
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -949,6 +949,7 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
+ 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
++	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
 
 
 
