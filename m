@@ -1,116 +1,136 @@
-Return-Path: <stable+bounces-123793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC4EA5C752
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04205A5C77C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58A6B16468E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D939A188CA97
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A997825EF8A;
-	Tue, 11 Mar 2025 15:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9EE25EFA5;
+	Tue, 11 Mar 2025 15:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="x3k55r90"
+	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="Ni+W+Ssk"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D82F25B69D;
-	Tue, 11 Mar 2025 15:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5F625E828
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 15:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706976; cv=none; b=TyBnhCbAYss5CX16dIq5P85s5aVZsOazXpbThvPy+JUtp3xEdnXaBHVBDdtla3q5DOEv3RU71F+1mIN0mrd+k79dlt44t3JO8s9fkOsemP43LKuZVd1X8jH3NLRR8BYbHy91XRIwTxZVANWI1E1EfCcZdYStruNYKMsvWwNP67U=
+	t=1741707038; cv=none; b=puMWV2J8AFQzYhHrH1s7gegenZRQ5ni9v8LQWF0FyCdQJwf6U9GmFoR3gtU4jwB87Dvs/1KzBQ2J+JwMdo4GsnpJEEgBdDnQqlgLfwZuwXT0ZHVp18CmxEoBqaLUtZqJwpF7qAvVTvyy71lHwPu1Fj3C1lGvLZ3hre7aF94AHSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706976; c=relaxed/simple;
-	bh=qbsyL+UEeBCHOjUpWQIpphC96Qt1s7uj+6YFkvQVOuk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3q97+pgsiDH8XugNZzhC7u+ZY8LLl+xIBJqCa2qBVxxkZ+5cl2CzoqEI2e08llXIkX2ZMNac6iv5zbjveRHprVs14FuNc7CGsMW4cMTJ/r0oaiXKSdt2zr0Y1jNJZry8xm5flx83L1FXdz0+db6cCBjnSmje9bukH5G73A6DrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=x3k55r90; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52BFTNKP1221695
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 10:29:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741706963;
-	bh=WaIUReCTcoh94jk11jEfjg06go62dK/AeBJ/ZKOUjCc=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=x3k55r90Ny5iSVvvY6DGis99lOaOFRjbcemB+DWEmOnmPme+Y4b0T6Je8gMsSvmK8
-	 ZqAIkpn5zd47QXlKoJCDXXpya8b7T+Fzm9kAechpBUK8B2OTDTaoXNkwDMab2Q/KKl
-	 KvL8p9j3QGyrHI7zkd4eqztaPIIqHfd4Oz/QYCqY=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52BFTNgY124191
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 11 Mar 2025 10:29:23 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 11
- Mar 2025 10:29:22 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 11 Mar 2025 10:29:22 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52BFTLT3014640;
-	Tue, 11 Mar 2025 10:29:22 -0500
-Date: Tue, 11 Mar 2025 20:59:21 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <vigneshr@ti.com>, <manivannan.sadhasivam@linaro.org>,
-        <robh@kernel.org>, <bhelgaas@google.com>, <rogerq@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250311152921.cwb7obw5bmlrhvsi@uda0492258>
-References: <20250305132018.2260771-1-s-vadapalli@ti.com>
- <20250310210746.GA2377483@rocinante>
- <20250311051806.smcu4o4dxpngimth@uda0492258>
- <20250311072546.GA277060@rocinante>
- <20250311073216.ynw7rzmu36dwywij@uda0492258>
- <20250311152133.GC1381004@rocinante>
+	s=arc-20240116; t=1741707038; c=relaxed/simple;
+	bh=f8WXdNINpbVnO+wl6UpJ+DrRRinxZU2pLsjZyk1/OMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ai8WEZUpTtlwf/C8RjDrS9gPpR5/BD1lpvj7VLpwe8HMhuDt75SoJVjksRu3YS43lh8VMgJwkZm7L9/Zm8a2+N8qH9/0c1tN4PRVaMDa0N5u5MneQLrurlf9tHnI3LQjfGFFu1F4Y2ZqP2/6/nPJjkS+iRHcx9voyAozxGUk1MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=Ni+W+Ssk; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c55500cf80so164435385a.1
+        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 08:30:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1741707034; x=1742311834; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Tj/ZAgYAWLVaIefJKjFIbhLbjv4Cos+iOgFdwRh3dU=;
+        b=Ni+W+Sskbe5OzpQs8ep1GR5vNz+u13DhnuuUU0WYXQYJthBaCBozzMmxquhHB0Xc3f
+         ihpVHAQ0QKzbmJr3I3Xwa2LlLrLVsBOVM3V20+6r9L90Erju3fK2QATj+bEYe6Sx2+NH
+         +AiDf3EOkltq8jcXIoLCh9GmNiLOTOOCdQmRCXKi4uU8U/XHqDOYSZN9j+VI6kBFtKd5
+         l64EeCLSpGdyxGkHXMZ7p7dUcCW5c2ftVKMZnwdx4ibVIqBRhOE+n1EgKvtU80OSPZ86
+         DRLvvjdrSHXYxiKmOBil+2t5h/t8Cmzy03GFMIJbNwRQpS/svEG6z8kKOhX1lgNp8y5B
+         ppeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741707034; x=1742311834;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1Tj/ZAgYAWLVaIefJKjFIbhLbjv4Cos+iOgFdwRh3dU=;
+        b=PNSNHoPPEVt5/aHTj1Z7YBGMebG26nzuRguAXM5kwt/g04ozIM5vI3vAcSKH7lu1zU
+         3bWPFG9hmHOOVp3Mx1IaexcDYJL4PMyypSpCTFhao76fBcPFYUw5o2TxK3iG7QK1rwql
+         qcDh0AxlcBBVeAIDNd+Of6wC6IUYm1YnRP5BiOE3VPLBHhjeYmhi4cHcPlk3I0XPAEzL
+         1aqlG6/8pQtPCezzkfx7aoRVUbAtpOAeEOqK9D/kY+6F4OQev+x7ODR1m6umnEu7yUdE
+         qFeN1c9yUWU3RPfGettVvK+VaLFwxptM/OxpAumzoyhvrlMhY9adrKCinoOoEvAFh4bp
+         G8wA==
+X-Forwarded-Encrypted: i=1; AJvYcCWn/E9PHmnZhLD2DhoAPFjfYR7VebY3byDC89KjTEPQz2g4vDSUK8pjhz/NKNXTJc/TFQKHZPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTfjepe2zxLpfk/eIJd95+4dxJDvaV4nDCLFJgZ79cvSLDtpEV
+	48PZ7beFe8S11PlhZUOOFydzGISwCqeGG3CGJlcSqgxVKAXIIJSfRaJ6tnHKEqI=
+X-Gm-Gg: ASbGnctkaV7BLnwzGtchGZ7s1bxIDi+g3b1lVGqGBvex713pgfPHzwaTbEFs2g128rq
+	x81q25RuQ4w68bFM5efSwcil4g/mKNKnnGEC9nCADd+AXNjUVNqg1m7IfTqnyLRQ4Tsf9bSHxyo
+	ycFqK/SPi5eCCGMUJPtON6LDJ57l6fMTAkh3Dlbn+5D6wQmRfYfje04X2tL65e5PMCqlvdISPgK
+	RphmhJ/sifPB3muNhBLHdjjL2NTK1ls5i6BrrBZtVWHEDCaNZDX7REjqUuv40KsQODpxMBT+fl/
+	CWLELhcZUfmEU2LY/oSefWPmXXuhp2tODqROWAHXt3o=
+X-Google-Smtp-Source: AGHT+IENmNilEy0vcw7hrxou0wF3L/Z9Vv4f8uUpsENzYSWwJpybBI0+STVaLXgcmHtw+muodFyH0Q==
+X-Received: by 2002:a05:620a:618e:b0:7c5:4c49:76a5 with SMTP id af79cd13be357-7c54c4981admr1332276185a.12.1741707033689;
+        Tue, 11 Mar 2025 08:30:33 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:da5e:d3ff:fee7:26e7])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c553c14c37sm351315585a.112.2025.03.11.08.30.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Mar 2025 08:30:33 -0700 (PDT)
+Date: Tue, 11 Mar 2025 11:30:32 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] memcg: drain obj stock on cpu hotplug teardown
+Message-ID: <20250311153032.GB1211411@cmpxchg.org>
+References: <20250310230934.2913113-1-shakeel.butt@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250311152133.GC1381004@rocinante>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+In-Reply-To: <20250310230934.2913113-1-shakeel.butt@linux.dev>
 
-On Wed, Mar 12, 2025 at 12:21:33AM +0900, Krzysztof Wilczyński wrote:
-> Hello,
+On Mon, Mar 10, 2025 at 04:09:34PM -0700, Shakeel Butt wrote:
+> Currently on cpu hotplug teardown, only memcg stock is drained but we
+> need to drain the obj stock as well otherwise we will miss the stats
+> accumulated on the target cpu as well as the nr_bytes cached. The stats
+> include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
+> addition we are leaking reference to struct obj_cgroup object.
 > 
-> [...]
-> > > No need to send a new version.
-> > > 
-> > > I will update the branch directly when I pull the patch.  Not to worry.
-> > 
-> > Thank you Krzysztof :)
+> Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: <stable@vger.kernel.org>
+
+Wow, that's old. Good catch.
+
+> ---
+>  mm/memcontrol.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> Done.  Have a look at:
-> 
->   https://web.git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/j721e&id=01d04dcd6e80f63ca5e97324ec17c20553947e35
-> 
-> Let me know if there is anything else to update.
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 4de6acb9b8ec..59dcaf6a3519 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -1921,9 +1921,18 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+>  static int memcg_hotplug_cpu_dead(unsigned int cpu)
+>  {
+>  	struct memcg_stock_pcp *stock;
+> +	struct obj_cgroup *old;
+> +	unsigned long flags;
+>  
+>  	stock = &per_cpu(memcg_stock, cpu);
+> +
+> +	/* drain_obj_stock requires stock_lock */
+> +	local_lock_irqsave(&memcg_stock.stock_lock, flags);
+> +	old = drain_obj_stock(stock);
+> +	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
+> +
+>  	drain_stock(stock);
+> +	obj_cgroup_put(old);
 
-The changes look good to me. There seems to be a minor typo in the
-commit message:
-[kwilczynski: add a issing .linkdown_irq_regfield member set to
-
-You probably meant "missing".
-
-Thank you once again for fixing it without the need for a new patch.
-
-Regards,
-Siddharth.
+It might be better to call drain_local_stock() directly instead. That
+would prevent a bug of this type to reoccur in the future.
 
