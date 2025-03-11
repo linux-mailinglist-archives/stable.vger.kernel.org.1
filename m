@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FF2A5C6E5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9339A5C481
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1BEE3A758F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35CC77AB0E2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A791E9B06;
-	Tue, 11 Mar 2025 15:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4770425F7AA;
+	Tue, 11 Mar 2025 15:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cK8mTHsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWDyY5OF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D291DF749;
-	Tue, 11 Mar 2025 15:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0411125F798;
+	Tue, 11 Mar 2025 15:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706642; cv=none; b=oH2XOre9H7yYvdE3+q7XvcAeEYfXXKrbIt54QSJhvluElcp/xvbG3WRUAzsewxROrVy+yBok0G7u5capFjZYMTmGXhasLMdeYid5WNNjdWTR2wr1c90sqMoLm0NZs47qMzqp6klM0Z+v0FWCrgyx0+AMvkRoS6zY8BW6IQXeVyI=
+	t=1741705401; cv=none; b=l88wTCCNKF66he552HU20l7qABhEP8d4JyozOIkY6pMv9DiBkNsMk2Cb9RA1souonX+8gFBRAhLhohiUehhTf9l3vZfDwhGxho/sT88ZMqmVl0/3Uj6V50vnTybp9wEeSf6xUuJfn+Av4k/vOfWrFJ9i6GucGsQqMQLnVnwBEPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706642; c=relaxed/simple;
-	bh=aqxlDF+gFurza4xZ99gTuujUsi0BtfsRSySXoePZywc=;
+	s=arc-20240116; t=1741705401; c=relaxed/simple;
+	bh=EFd56TqzQsTj9Xf4XBweZReSIuHXhW1CIf8K3cQIw34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9zs67slxE+cWTKMLAogCQK5U9tS2D6CgycI4rJgK5fWN5wtplN3TzralYpTRHRXN+pPgPw+DrlzstaIo+7+JhyVINPEfW72BL5qvd5vDu00FjwITgsErh3EVnC94M07rhZF/xNTX36VnH3NqXqqcm9iY3vdYOYa1WxsC7kww8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cK8mTHsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C38C4CEE9;
-	Tue, 11 Mar 2025 15:24:01 +0000 (UTC)
+	 MIME-Version; b=eClFxMGPwmrKU7btQiUpc6jUBYERSjYhYm7/1eNYp6kqg6sBM0E0635nXu8qo2eeNf/zok1ndYy6l+kPkU8GeRx9CQPvfwNwzcUjD3T6vZjYbrJnN6T0UIDRcwsR0jAguTMKZfTtqZ9Txj/cUmzrKZ01qshKtEXHPeKZGzSxknE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWDyY5OF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E80C4CEE9;
+	Tue, 11 Mar 2025 15:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706642;
-	bh=aqxlDF+gFurza4xZ99gTuujUsi0BtfsRSySXoePZywc=;
+	s=korg; t=1741705399;
+	bh=EFd56TqzQsTj9Xf4XBweZReSIuHXhW1CIf8K3cQIw34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cK8mTHsJCtnu45Qaglxe7IyP5PnB4OT7aW6Sg1eooY5ZMPlqpGAotEBKKyG05BK+y
-	 o4p64CrQbn3551qYWwU0/6ekVoIFXn7gS6Bf6fX8awR+MNoI742R34mNi1Mqt+LSRV
-	 6FzWlqnVfePZuFRUIPB/0c0dzcmbelOPHFSh9xhM=
+	b=MWDyY5OFsrwMJX4vl2TbwDyUDH1o+2ZOmGi9Ek1eXHVLALOCFYKhH1S+fMvbkn9Bl
+	 VEkljmUxeAFFUP/214CvcCO1JK2azPdSiqUwcNDuGak42h0ib0mIQpGOPKWjML+AVH
+	 80sR+qhXopeuRX+QPpqY2PMF3TsMVvsN/FntxXS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	"Ricardo B. Marliere" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 5.10 118/462] ktest.pl: Check kernelrelease return in get_version
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 014/328] wifi: rtlwifi: rtl8192se: rise completion of firmware loading as last step
 Date: Tue, 11 Mar 2025 15:56:24 +0100
-Message-ID: <20250311145803.023533715@linuxfoundation.org>
+Message-ID: <20250311145715.445190759@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <rbm@suse.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit a4e17a8f239a545c463f8ec27db4ed6e74b31841 upstream.
+[ Upstream commit 8559a9e0c457729fe3edb3176bbf7c7874f482b0 ]
 
-In the case of a test that uses the special option ${KERNEL_VERSION} in one
-of its settings but has no configuration available in ${OUTPUT_DIR}, for
-example if it's a new empty directory, then the `make kernelrelease` call
-will fail and the subroutine will chomp an empty string, silently. Fix that
-by adding an empty configuration and retrying.
+Just like in commit 4dfde294b979 ("rtlwifi: rise completion at the last
+step of firmware callback"), only signal completion once the function is
+finished. Otherwise, the module removal waiting for the completion could
+free the memory that the callback will still use before returning.
 
-Cc: stable@vger.kernel.org
-Cc: John Hawley <warthog9@eaglescrag.net>
-Fixes: 5f9b6ced04a4e ("ktest: Bisecting, install modules, add logging")
-Link: https://lore.kernel.org/20241205-ktest_kver_fallback-v2-1-869dae4c7777@suse.com
-Signed-off-by: Ricardo B. Marliere <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b0302aba812b ("rtlwifi: Convert to asynchronous firmware load")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241107133322.855112-3-cascardo@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2350,6 +2350,11 @@ sub get_version {
-     return if ($have_version);
-     doprint "$make kernelrelease ... ";
-     $version = `$make -s kernelrelease | tail -1`;
-+    if (!length($version)) {
-+	run_command "$make allnoconfig" or return 0;
-+	doprint "$make kernelrelease ... ";
-+	$version = `$make -s kernelrelease | tail -1`;
-+    }
-     chomp($version);
-     doprint "$version\n";
-     $have_version = 1;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
+index 4c4a1201d420f..78547e4035dc6 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
+@@ -68,22 +68,23 @@ static void rtl92se_fw_cb(const struct firmware *firmware, void *context)
+ 
+ 	rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
+ 		"Firmware callback routine entered!\n");
+-	complete(&rtlpriv->firmware_loading_complete);
+ 	if (!firmware) {
+ 		pr_err("Firmware %s not available\n", fw_name);
+ 		rtlpriv->max_fw_size = 0;
+-		return;
++		goto exit;
+ 	}
+ 	if (firmware->size > rtlpriv->max_fw_size) {
+ 		pr_err("Firmware is too big!\n");
+ 		rtlpriv->max_fw_size = 0;
+ 		release_firmware(firmware);
+-		return;
++		goto exit;
+ 	}
+ 	pfirmware = (struct rt_firmware *)rtlpriv->rtlhal.pfirmware;
+ 	memcpy(pfirmware->sz_fw_tmpbuffer, firmware->data, firmware->size);
+ 	pfirmware->sz_fw_tmpbufferlen = firmware->size;
+ 	release_firmware(firmware);
++exit:
++	complete(&rtlpriv->firmware_loading_complete);
+ }
+ 
+ static int rtl92s_init_sw_vars(struct ieee80211_hw *hw)
+-- 
+2.39.5
+
 
 
 
