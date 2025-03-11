@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-123328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4DCA5C4E3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A94FA5C748
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 040DC178CEB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630EF3B8716
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E591825EFA9;
-	Tue, 11 Mar 2025 15:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED28525E820;
+	Tue, 11 Mar 2025 15:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nc+rKnix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgqrGOO0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DE61C3BEB;
-	Tue, 11 Mar 2025 15:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFB425C6ED;
+	Tue, 11 Mar 2025 15:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705634; cv=none; b=GrY/cYkoCA0lanIKi0g7L+JSOioE+OVdRlP0JQDnVMuN6dvoyKp8PqGJ8dyRhwo9OOXSugzc0lBOSplMbaqB9tV70jpEOhrp8+GHzKLUC69ST5KD9yrCNmoStYmkMFMkQxr1AmS7ZLnHpbkkvaPDg8ICdGmMZu/NFlTuPlZlUGE=
+	t=1741706846; cv=none; b=UUpB4LRvk2fF+42IXrrJUA3f3OU0x8P2OPXvcdMKhm+esmGIjkUAw6a0i5skylNE6kGsdulKQZK5c1cVxOAVWaq85MZkiC7zPBOK8AL59U4c56T3zrlxH+Nc4Nd8FM+IGj3RqBPWdxswf5qVvYWbTIgoQLYAkgANLz8QglKP1DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705634; c=relaxed/simple;
-	bh=bDbYitq8b1IKekQzWXAa+HhS/h0tOV+Mdd9RPuU5ZqU=;
+	s=arc-20240116; t=1741706846; c=relaxed/simple;
+	bh=bNwH6N9H8Dnf8lPFwKoL3SRpTQQG5m0V6FAqP8BC25c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4MZBjRjbZPjfVSXONMbe2LjdToTYVUwoYKZIhLB9IMAKWzK6FTzDCP5KKS9c7xQy0JzApvPgy4R0hQlPgfUPAmIJzg22NU06SsPQ9s/rxnS3cGO1dGZB55m+dfhW5cGX2us9GDkvQQu7PLyAjLJ/mKfPY1I5+elpfjcHzG/y/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nc+rKnix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBDFC4CEE9;
-	Tue, 11 Mar 2025 15:07:13 +0000 (UTC)
+	 MIME-Version; b=O+C9gPj09+baBt1Tt0YK8fIZy1SDjv6BbMaF6r8/M4HQAEyQpOV2KB7nkvKeqv0LivDIM3jY8jNAjbZftwiJ3s/hlOUsak7xuWX+WsThWPkY0qGSsLF7dj9vsDuqLOlCLhWkhfEezZWRT4YgLBFGyy7bOtktpRAppAdbKaUFID8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgqrGOO0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C34C4CEE9;
+	Tue, 11 Mar 2025 15:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705634;
-	bh=bDbYitq8b1IKekQzWXAa+HhS/h0tOV+Mdd9RPuU5ZqU=;
+	s=korg; t=1741706846;
+	bh=bNwH6N9H8Dnf8lPFwKoL3SRpTQQG5m0V6FAqP8BC25c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nc+rKnixbmmo73qqixZTAs6V0zlU9reJwEP1vx62yQRCt4e06DDGCiOnH+kuqBQh1
-	 ilHiZrfSjEOGCFDRyjEvnoxbbPVJaeyhOA7HdLMOjvo7viW8lGZi6ETMoCCJXA0Vxq
-	 8Uvr0Qwsn8RBSahDULpJPiDM0OaDKq+4RaXJGGkU=
+	b=JgqrGOO0Oq0LOA4A6YcCpc34ztLM1sQBmuK81otd/uj90yCrikgzzqe3yYZoOyysI
+	 QDBQsDhAKcJybXt439jUYTU5bUFPRlQ9+PLwjUtiw03iKEkovoPOHDhLoOjRffPXww
+	 47kukSTw2fwsKMa1HnDQER9PUHkTb+WzRWSibKzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 084/328] btrfs: convert BUG_ON in btrfs_reloc_cow_block() to proper error handling
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 188/462] usb: gadget: f_tcm: Decrement command ref count on cleanup
 Date: Tue, 11 Mar 2025 15:57:34 +0100
-Message-ID: <20250311145718.225783126@linuxfoundation.org>
+Message-ID: <20250311145805.783917147@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 6a4730b325aaa48f7a5d5ba97aff0a955e2d9cec ]
+commit 3b2a52e88ab0c9469eaadd4d4c8f57d072477820 upstream.
 
-This BUG_ON is meant to catch backref cache problems, but these can
-arise from either bugs in the backref cache or corruption in the extent
-tree.  Fix it to be a proper error.
+We submitted the command with TARGET_SCF_ACK_KREF, which requires
+acknowledgment of command completion. If the command fails, make sure to
+decrement the ref count.
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/3c667b4d9c8b0b580346a69ff53616b6a74cfea2.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/relocation.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 89ad7e12c08bb..062154c6a65f6 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4789,8 +4789,18 @@ int btrfs_reloc_cow_block(struct btrfs_trans_handle *trans,
- 		WARN_ON(!first_cow && level == 0);
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -973,6 +973,7 @@ static void usbg_data_write_cmpl(struct
+ 	return;
  
- 		node = rc->backref_cache.path[level];
--		BUG_ON(node->bytenr != buf->start &&
--		       node->new_bytenr != buf->start);
-+
-+		/*
-+		 * If node->bytenr != buf->start and node->new_bytenr !=
-+		 * buf->start then we've got the wrong backref node for what we
-+		 * expected to see here and the cache is incorrect.
-+		 */
-+		if (unlikely(node->bytenr != buf->start && node->new_bytenr != buf->start)) {
-+			btrfs_err(fs_info,
-+"bytenr %llu was found but our backref cache was expecting %llu or %llu",
-+				  buf->start, node->bytenr, node->new_bytenr);
-+			return -EUCLEAN;
-+		}
+ cleanup:
++	target_put_sess_cmd(se_cmd);
+ 	transport_generic_free_cmd(&cmd->se_cmd, 0);
+ }
  
- 		drop_node_buffer(node);
- 		extent_buffer_get(cow);
--- 
-2.39.5
-
 
 
 
