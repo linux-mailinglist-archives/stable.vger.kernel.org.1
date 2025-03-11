@@ -1,131 +1,123 @@
-Return-Path: <stable+bounces-124096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3C6A5CF90
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 20:38:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7734A5CF98
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 20:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60DC1897E01
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 19:39:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6283AF52B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 19:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A764B264607;
-	Tue, 11 Mar 2025 19:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A277B2641F5;
+	Tue, 11 Mar 2025 19:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fQG9Xq9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdLwz+qC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB36263F3C
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 19:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A531C2641F0
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 19:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741721926; cv=none; b=deHLVTW2hZoesnVjS1DHUoG+EXbXLmdGjYLeRxZwfPAVXq3xW1nPWZ7Cx1R24DV9JWXWwn9ozvF3ytvVIl1eRYYqy4RgzE93xe1lsw6tH6Svkh8ttel+DwcZ2ewM65k5LY1tz9rJXdhmH84LhbZIzjbNGmpKOLGbB65Xi/cOKEg=
+	t=1741722087; cv=none; b=g2YePZ7bmVCLPYcQuw3ZyODO5En6jbD2NBjGa8WLdgq3v/gQ+GeePukEaW2MMzvVvFPiImL6Yka78489bP1gw/dXTYNVixXZplArgOfoZtWqMRufCFXihxp71xfxGD9/xo2rO3msynne893BwSv0NzKwsVxQFC6Z4qIgX8882Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741721926; c=relaxed/simple;
-	bh=B1uh6rYksykV9cmassOV5zLeR8dCezQN4Xwwx+1rMT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QPrxgH0lPiaU2NHqIVr2tI887SzYJIg4tB7yMIM9DSr3Stiw3wdfqXemetMH9Q/+Sd6cZkm7fYgF45HGz0Y2Q7LX+MH/Qzyuz1wRQy+BPqp8sOcTrhj9l3rDoUGYoD9CguRa+PPThfLJudwuIjP77DSzLhYNzaeXBMI8HvQkbRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fQG9Xq9E; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43d0953d3e1so366355e9.2
-        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 12:38:44 -0700 (PDT)
+	s=arc-20240116; t=1741722087; c=relaxed/simple;
+	bh=er+9jjdFTitNlebJQVzJd8lxcEmN5HEy0TqS1l7wvJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kJScIzY7DAsS1GccgF7mZjOX6fy3RIz+BFZ8+YkxMObCB4GqlwBpIH6KyLpJ44xsDusSPKXqmEYM/i9vQB0tP3TqhZKswz87C2BlbLZTv73c+5bRkCgZX6lI1KeIazKBghWCCwYNK0X0iaR1XKdFy7Zcj+tJ03sO6PAkDuGuqu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdLwz+qC; arc=none smtp.client-ip=209.85.166.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-851c4ee2a37so373922139f.3
+        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 12:41:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741721923; x=1742326723; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hk8/jRHxFdOn9j6NilUq3fYq1U2KDGu3FX6e3aC3Pvk=;
-        b=fQG9Xq9Ec3q3EaxbKAjirOsEhIOKcVuAn5acIoCjjGiTx+Y8KSrJipiaMMHh9M0+eK
-         o6GH/s7IYsroeALZLhWzVpr0idJz2+Y2nQgsl05OoHgTIlPVD9c1I/d8GK3ZGu9YZFOd
-         SPj9o1g3b1UubQpe05ysJN2Y2G7koucdyf3pPmDf7MR33LMHEdiUtElRb24GfMcwrmXE
-         OM0LtjMwPErWkSAeevEDusdBLro8LRFlXJJ6XLC+TI4l8s+FLPvOfWFK7FeXvcFpftzC
-         1jJoInrUv2PTnU6bIcbz6EW22l1OUIE/LZnFjW3ilqxfCpISG+TocmYh8DXB+hhZ0Iab
-         lSog==
+        d=linuxfoundation.org; s=google; t=1741722085; x=1742326885; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ry9akgKcOnrDWDxgZkeI6/C0nkDIdOIWsdgWlSMcY+I=;
+        b=UdLwz+qCr3qaR0TXiZl8DuKxkS0+h3OgIBL4r9OVVTqONvYpb6s9YrTGzMWz53sF0Y
+         YPccOLKxMYheOd+9Nvux2zEvfK5ndkjUpKYPlVITnjhsQ/Osc4at8Vzoi9+XDRITYbNk
+         1arL7k1U6oZIl+RlZkz5szB2m2Kg7OgGqpItg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741721923; x=1742326723;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hk8/jRHxFdOn9j6NilUq3fYq1U2KDGu3FX6e3aC3Pvk=;
-        b=Ok3Mu/iSh1XWPXsyNadVGz1toqyTxj0tavoidvcaCvGMpCaEfoJNhvXss4Rx2Y5Hmp
-         Syoe5fpj1RV23zgtk8q9IPDj0tGw5hHWiDgVIhUnqpyzIk35GYB3easApUBHPdNdeLJo
-         nM+b8CAaiqDrFYhR9wLZJ07tQIRzXxrzFr5wkRsgYUq8DFm2uWPncGBgRIDjqGeyp5hz
-         s4EzGd+spNUfHDWOh0ZmDqRMmoLqzoBaAkYnsLZF1qc3fGWF4xz2oZexx27yH2dHf13o
-         YZQ+jgzGxdbre2lY5BKWhS5esLFcfbtD6wv3ef0eWyeL/jFXWEc+It4O4Xi0WrIFDOYh
-         5PLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoQLkz1pP7rNSDqWSr8iEA8+9C8vZDAcnxUwHTVIWdnK5qYb6AfMgnf7GeYH1HEaXxgPLkb/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjZiyObRnuQeMHtoI/lZ2i044DZ2cuiys2m5ZMyrOj8uvjceq6
-	ozhzuZZ7XpDmvkkGmOZ3qmJwJv1f6b6NfaE9rf9IMzeAxC7iVcD6gcX7ZOSRNag=
-X-Gm-Gg: ASbGncuh2myvNqGzkW5RUiXO9nNa8x/pYmRKI0Be8V16UI5eKV4d6DzQeWJneUuIhLb
-	vT0vh/Qz8pLKeVGrqMTlLKmOWzwjh10ap2PfHIsWVDUEuTIo7mKFalSxoq2yYCGi8TC3pM5REMR
-	03urlL6NYrVnxc9pfgORyXcRHMNZAxzs1T4EvGmsY+I9FcQMGql6JJLj3KJJa9iTGVmznr3p37R
-	k6itx/jxmOU8ydkba/1pRGlETJutGlznbWzvpOtaD5G10iJZvRo4yMj1kES0Rcauhhe1vcPBnXK
-	JaKEOiG3HV1SF2UbOqDGHXBNhITtn/6Rfdc9hsKi7oJF2QiAO5HZylFf2Q==
-X-Google-Smtp-Source: AGHT+IEEGrtv+WVqplhsyAIOJvjlmuBCpHGGUDzZq6EETtMUE4CHGK002+5IMzV1Oj/aRdFt9ZT1FA==
-X-Received: by 2002:a05:600c:548c:b0:439:8294:2115 with SMTP id 5b1f17b1804b1-43d01c2b40bmr22475345e9.8.1741721922987;
-        Tue, 11 Mar 2025 12:38:42 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.198.86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43cf892d380sm81727225e9.24.2025.03.11.12.38.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 12:38:42 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	andre.draszik@linaro.org,
-	tudor.ambarus@linaro.org,
-	willmcvicker@google.com,
-	semen.protsenko@linaro.org,
-	kernel-team@android.com,
-	jaewon02.kim@samsung.com,
-	stable@vger.kernel.org
-Subject: Re: (subset) [PATCH v4 1/4] pinctrl: samsung: add support for eint_fltcon_offset
-Date: Tue, 11 Mar 2025 20:38:38 +0100
-Message-ID: <174172189759.119514.8325135286672051459.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250307-pinctrl-fltcon-suspend-v4-1-2d775e486036@linaro.org>
-References: <20250307-pinctrl-fltcon-suspend-v4-0-2d775e486036@linaro.org> <20250307-pinctrl-fltcon-suspend-v4-1-2d775e486036@linaro.org>
+        d=1e100.net; s=20230601; t=1741722085; x=1742326885;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ry9akgKcOnrDWDxgZkeI6/C0nkDIdOIWsdgWlSMcY+I=;
+        b=CrIkE4hFJo40QqrWGT80TsmhcSPcnmu/iArCCPA+e1X/qKrwH/lYcEh+Wgd+HJGJzU
+         Pvg9NpbUVpohwHxf7mSqhQC3HCviE4aHPnWFz4cnUyO+svVM6PKFXWi9r6QQjnL5EAYz
+         9QVyxWJHUToml6c3JTFYXcmanq3dlTFawgjxDJPMzfu8EiWaQQPapUgZPWtF+MBXQutt
+         65Yi2kLG93jTt/BDMCJLnkuTeZ+zi/TUg0ahsylVbMmbKfZhos58ckA7Lt4IEzuNQm7s
+         8HQlgR2e72kZ14L65ynlHSWekIjQWkxC8EGbBcOkxxcPgd86Ty11+jBtJtGjPkml1sl4
+         U8Fw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLKARd/viCCK9KR9d4XuvJNUbR+1YQbZV+tke+Xq1PnuUsjp26H91WLSFMIxqnMqhC29J8YIA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsoxGw4OsoZiiOsM3snGtCXmGbEXqeWEr1AXi6pidyB+IRzUG5
+	wN9BpgBZ83ib0L+9YaJZ6VMx0yUjEQOM63Aoq/0Pgk1QKZ4m6LmY42QHvXlHK8c=
+X-Gm-Gg: ASbGncsQ/7F8m3TB9LFaFfQHiGana7ZjXTUoE7rUOfY24i29KRMsO1jqpqXPsKXE3FU
+	gXnCqoimzqSdToK23hUgiKR2zeshlrx7WjE+8JUr414TL/bidnY9yCymTNgrzD84SCp9wY1ch8j
+	LROObTgSvwg76jFOrtmcQBZV8cjz1kRUQ7PqIveyfR0wFN+wkJMTTMUVGiczBIGZlc0CDml90T1
+	opoRzFn0tjooGl9aQt3g4Xxkmx9hY9HQ2IJ4mlwp3awf0zoqIR/ZFKK3wcb0wJKriecLk4Sq2N8
+	sv/Y2/WYs7B5ZaGb4AFdcxwvioYZfbLEpbR7kzlEqYdv/x1h+pgQ9EQ=
+X-Google-Smtp-Source: AGHT+IE0dvgigbncy4JGuinRK+9BYgcnzpI1ilanDSCUJgDoIPF/Qbfo09x1YmeA3PCfK6PhoMafpA==
+X-Received: by 2002:a05:6e02:1706:b0:3d3:fdcc:8fb0 with SMTP id e9e14a558f8ab-3d44196231bmr217352935ab.20.1741722084502;
+        Tue, 11 Mar 2025 12:41:24 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3d45dc58885sm10179065ab.46.2025.03.11.12.41.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Mar 2025 12:41:23 -0700 (PDT)
+Message-ID: <3d2699c0-895b-4c78-8ee8-ed062c2eb9d1@linuxfoundation.org>
+Date: Tue, 11 Mar 2025 13:41:23 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/109] 6.1.131-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20250310170427.529761261@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-On Fri, 07 Mar 2025 10:29:05 +0000, Peter Griffin wrote:
-> On gs101 SoC the fltcon0 (filter configuration 0) offset
-> isn't at a fixed offset like previous SoCs as the fltcon1
-> register only exists when there are more than 4 pins in the
-> bank.
+On 3/10/25 11:05, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.131 release.
+> There are 109 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Add a eint_fltcon_offset and new GS101_PIN_BANK_EINT*
-> macros that take an additional fltcon_offs variable.
+> Responses should be made by Wed, 12 Mar 2025 17:04:00 +0000.
+> Anything received after that time might be too late.
 > 
-> [...]
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.131-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
+Compiled and booted on my test system. No dmesg regressions.
 
-Re-wrapped commit msg to match wrapping style.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Applied, thanks!
-
-[1/4] pinctrl: samsung: add support for eint_fltcon_offset
-      https://git.kernel.org/pinctrl/samsung/c/701d0e910955627734917c3587258aa7e73068bb
-
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+thanks,
+-- Shuah
 
