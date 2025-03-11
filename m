@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EB1A5C541
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4709A5C78C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0B23B8BCD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B07617EF21
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A54E2B9CD;
-	Tue, 11 Mar 2025 15:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A005C25EFA9;
+	Tue, 11 Mar 2025 15:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OYuYhdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npZCxdoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062FD25DAFF;
-	Tue, 11 Mar 2025 15:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA825EFA0;
+	Tue, 11 Mar 2025 15:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705808; cv=none; b=nMzxecfyEfaMxMK2hZ1EfCy5zIpkSvp6YmBXtZGADNVUW5VuGnp9B14N1VuejwhCrz/lyQH8apO99UEDKwwDboc1HAbo1DyAuqObSTNLi3q+v04578QSoiJ1bwHoJUJkf9JEbf30awETE5xAZR7XxSUB/PysqjXv99JrW0rr5yg=
+	t=1741707114; cv=none; b=umjeRsr7BcnKuHT0UhUBkHk3oYiTojjmXBsSzyXRH+J+1Yy8zFLoCYVn9VON/bR//ysJJv6Rpgp0GNACzrO4FnTfj+gSi8CQ2x19moOY8p8KFv+NaQ5ZwO5uG13BVSsPo6J5eyNHnPxpvcEJRt0BxJz+WcMyAlTqXOz9ynCP+g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705808; c=relaxed/simple;
-	bh=zXltKyRgoXI49LcXmdpsIHTMetd0FXglqVo5X0YdMqg=;
+	s=arc-20240116; t=1741707114; c=relaxed/simple;
+	bh=B8hFl3mLUJb13gTo5B1fAL3jWLcMdCKe2fQ4fiEJ/f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjNR2ea2Adbp6e9IIIimzVZILRTmVLGmBpDDaigDb0OJ3ROVmvq0rbbES/88BleslY5zmchAaFknNcy81hjQNS9ZP8yWsCRAYqEFlLeE2uUEXzDTJL3JT/G4Z3ErLa/ovDLcoqlfsVrYshNu0d/JekUrL5EfDcjcJ/NHYighbwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OYuYhdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D69C4CEF1;
-	Tue, 11 Mar 2025 15:10:07 +0000 (UTC)
+	 MIME-Version; b=ZoKg+7rMdV8NqQFSJtwBh0NRySfNEAkoyW4rKPIFr1elo58eZt+d+wekdaFuxVvT/MMU8NJ422AOzdhogL7REE0uSe3V3al1wYDIggVpu/Fmz+Aq2q4n96RXXZutVvT7jeYjYbszHO2zBV0MATOG7PVcKDynnpRghH+Vsr5m9iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npZCxdoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BC0C4CEE9;
+	Tue, 11 Mar 2025 15:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705807;
-	bh=zXltKyRgoXI49LcXmdpsIHTMetd0FXglqVo5X0YdMqg=;
+	s=korg; t=1741707114;
+	bh=B8hFl3mLUJb13gTo5B1fAL3jWLcMdCKe2fQ4fiEJ/f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OYuYhdxCSKhNg43nnVw6t200Z+PCj9/+FpKozhUjtZrhrTW5UMSYgeH8AiZQoZ2D
-	 YiyXuGb3h4YgsVFTEuusdsIkCZ3VhOz4yMds60cAqzeOoRurZUqDR/AYO6267wGIEC
-	 vriSxGOo6bCIkU1deLl5Aus0j3YovzXvwtiCwOdI=
+	b=npZCxdoESYFXdRxVDWdxmwebEFdz2I7+rlXoxiNvi/8R5NytLqxuNcgzmX/6TRBbc
+	 239XxXbXY0pHx4FiiCb728kIkXKYoL0NIKya9A4e6iTmKLoqRB8pob0WM73vLpgMN5
+	 3ghUhwpp6T8DADJn2Ll56o570VvwgYC1PjPkKBBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.4 143/328] kbuild: Move -Wenum-enum-conversion to W=2
+	stable <stable@kernel.org>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 247/462] usb: roles: set switch registered flag early on
 Date: Tue, 11 Mar 2025 15:58:33 +0100
-Message-ID: <20250311145720.593344367@linuxfoundation.org>
+Message-ID: <20250311145808.123185725@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-commit 8f6629c004b193d23612641c3607e785819e97ab upstream.
+commit 634775a752a86784511018a108f3b530cc3399a7 upstream.
 
--Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
-caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
-Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
-there were numerous instances that would break builds with -Werror.
-Unfortunately, this is not a full solution, as more and more developers,
-subsystems, and distributors are building with W=1 as well, so they
-continue to see the numerous instances of this warning.
+The role switch registration and set_role() can happen in parallel as they
+are invoked independent of each other. There is a possibility that a driver
+might spend significant amount of time in usb_role_switch_register() API
+due to the presence of time intensive operations like component_add()
+which operate under common mutex. This leads to a time window after
+allocating the switch and before setting the registered flag where the set
+role notifications are dropped. Below timeline summarizes this behavior
 
-Since the move to W=1, there have not been many new instances that have
-appeared through various build reports and the ones that have appeared
-seem to be following similar existing patterns, suggesting that most
-instances of this warning will not be real issues. The only alternatives
-for silencing this warning are adding casts (which is generally seen as
-an ugly practice) or refactoring the enums to macro defines or a unified
-enum (which may be undesirable because of type safety in other parts of
-the code).
+Thread1				|	Thread2
+usb_role_switch_register()	|
+	|			|
+	---> allocate switch	|
+	|			|
+	---> component_add()	|	usb_role_switch_set_role()
+	|			|	|
+	|			|	--> Drop role notifications
+	|			|	    since sw->registered
+	|			|	    flag is not set.
+	|			|
+	--->Set registered flag.|
 
-Move the warning to W=2, where warnings that occur frequently but may be
-relevant should reside.
+To avoid this, set the registered flag early on in the switch register
+API.
 
-Cc: stable@vger.kernel.org
-Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
-Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: b787a3e78175 ("usb: roles: don't get/set_role() when usb_role_switch is unregistered")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206193950.22421-1-quic_eserrao@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.extrawarn |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/roles/class.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -36,6 +36,10 @@ KBUILD_CFLAGS += $(call cc-option, -Wstr
- KBUILD_CFLAGS += -Wno-missing-field-initializers
- KBUILD_CFLAGS += -Wno-sign-compare
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -345,14 +345,15 @@ usb_role_switch_register(struct device *
+ 	dev_set_name(&sw->dev, "%s-role-switch",
+ 		     desc->name ? desc->name : dev_name(parent));
  
-+ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
++	sw->registered = true;
 +
- KBUILD_CPPFLAGS += -DKBUILD_EXTRA_WARN1
+ 	ret = device_register(&sw->dev);
+ 	if (ret) {
++		sw->registered = false;
+ 		put_device(&sw->dev);
+ 		return ERR_PTR(ret);
+ 	}
  
- else
-@@ -52,7 +56,6 @@ KBUILD_CFLAGS += $(call cc-disable-warni
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
- KBUILD_CFLAGS += -Wno-enum-compare-conditional
--KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+-	sw->registered = true;
+-
+ 	/* TODO: Symlinks for the host port and the device controller. */
  
- endif
+ 	return sw;
 
 
 
