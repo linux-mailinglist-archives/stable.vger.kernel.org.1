@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F512A5C846
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 299BAA5C5B7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F6413A246B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E93D3B3D8F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67CD25DCFA;
-	Tue, 11 Mar 2025 15:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4C625E440;
+	Tue, 11 Mar 2025 15:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYq8pSQJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwo6hpjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E7A25C6F9;
-	Tue, 11 Mar 2025 15:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A1625C715;
+	Tue, 11 Mar 2025 15:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707395; cv=none; b=KXsS3XRW73K3j2S4PPRdN7OqDoky68U4ChVacUfiSLd9Ho+Ug+RMmE3cWus+V4yJZEBS17viC/BBQSu0PKz9mXxuOuQv+mMKwW79AgNj9IQqLZ+5nfqWQcc5v/7b82/rb5nV42k2l0v5n/paX3AfAnvVAvVYZRAsDlDN2gFzKns=
+	t=1741706047; cv=none; b=KUWjuGwBa8K8oAqLbpaJj46kddGyS/Q9jkGiM+1ADsqsrpNuEmB/Wjl6WgCgTwzgQrejlDVR5qxNOWthfEUoigjN2hGLlMoXlBZTpHVNnaSh5+sMMcxuVsW/G8WILutzKmXndQiiW6tqqGgSqvF2XdQ8f7XrqW4ef48hluyTw/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707395; c=relaxed/simple;
-	bh=m0/p2BcFXyaHGIhtI8tFVkOqqxalv5aq1klAL4S67ng=;
+	s=arc-20240116; t=1741706047; c=relaxed/simple;
+	bh=K3A8zh6il/7/SFbBERNtvccNJ4T72aOgFn2EuMuj5Nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wc7LuJ77RNEefaCMhNv+Jg5P2A7fULAt8fFuFmpsGgE0BXWt0bHc47fPSolPhekn34zQHz9fU9sBpmExbuGMljn2bQs2h8Vx4KHV08CnWaoVHuk87gBOJirwAuG+9Gk3eLODQTCKWJoJF0YhYi/V2wDfW3ujIfG/UrnB39Oocvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYq8pSQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3193C4CEE9;
-	Tue, 11 Mar 2025 15:36:34 +0000 (UTC)
+	 MIME-Version; b=Sgo8wl0tRStfA8NvhmAIG5nevknqD8Ibk7tqu3b+mQJmNO2OdfHr/g4oMYyPtRc1vb1Y3fHnQ0oVb86jGbuAniK7YARXth44FClinN1hSUmqwAiCp0afWh/juy8nXRWBRmAMU9rpi8LEK296n5X9kQqzdMfwnhpnM2mwbhUenjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwo6hpjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B28C4CEE9;
+	Tue, 11 Mar 2025 15:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707395;
-	bh=m0/p2BcFXyaHGIhtI8tFVkOqqxalv5aq1klAL4S67ng=;
+	s=korg; t=1741706047;
+	bh=K3A8zh6il/7/SFbBERNtvccNJ4T72aOgFn2EuMuj5Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYq8pSQJtXKeTeNsXhiFBHq09z0PC/7l9p8fD4i1f0EtqcX+fWlUzAp0h4Tg/vDDx
-	 dmopMWW6CAgwaLGQLcEpGxQG5xno41PTqVaeapPxOVg5NZGUQaqohAV2SGnHyubiSh
-	 B7oeTZbg1WDt2OaviHUjgurQI3rlXfomwYqAaAGc=
+	b=qwo6hpjIypYCE0rVU2YH0Z2Qmx9Xd6pkqTe8J62u5kFkPThvC++ewSkrCnq6l7bUa
+	 s4xJLhZiExGGFM0ANTfVkrfQPsasRHZayoNoOi8wzBNhBZIL5rcohKNKUKsih2oe6u
+	 s5zlDPwAFAu0lBPLQIcIalb+VnLGaEifwj78G760=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 347/462] mtd: rawnand: cadence: fix error code in cadence_nand_init()
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 243/328] ALSA: hda/realtek: Fixup ALC225 depop procedure
 Date: Tue, 11 Mar 2025 16:00:13 +0100
-Message-ID: <20250311145812.069558238@linuxfoundation.org>
+Message-ID: <20250311145724.573160954@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 2b9df00cded911e2ca2cfae5c45082166b24f8aa upstream.
+[ Upstream commit 174448badb4409491bfba2e6b46f7aa078741c5e ]
 
-Replace dma_request_channel() with dma_request_chan_by_mask() and use
-helper functions to return proper error code instead of fixed -EBUSY.
+Headset MIC will no function when power_save=0.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1fd50509fe14 ("ALSA: hda/realtek: Update ALC225 depop procedure")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219743
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/0474a095ab0044d0939ec4bf4362423d@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2866,11 +2866,10 @@ static int cadence_nand_init(struct cdns
- 	dma_cap_set(DMA_MEMCPY, mask);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 069515b065386..755a93ad65500 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3658,6 +3658,7 @@ static void alc225_init(struct hda_codec *codec)
+ 				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
  
- 	if (cdns_ctrl->caps1->has_dma) {
--		cdns_ctrl->dmac = dma_request_channel(mask, NULL, NULL);
--		if (!cdns_ctrl->dmac) {
--			dev_err(cdns_ctrl->dev,
--				"Unable to get a DMA channel\n");
--			ret = -EBUSY;
-+		cdns_ctrl->dmac = dma_request_chan_by_mask(&mask);
-+		if (IS_ERR(cdns_ctrl->dmac)) {
-+			ret = dev_err_probe(cdns_ctrl->dev, PTR_ERR(cdns_ctrl->dmac),
-+					    "%d: Failed to get a DMA channel\n", ret);
- 			goto disable_irq;
- 		}
+ 		msleep(75);
++		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+ 		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
  	}
+ }
+-- 
+2.39.5
+
 
 
 
