@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F592A5C57E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB75A5C7C5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4C7D3A704C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B3761885ED0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD14625DD00;
-	Tue, 11 Mar 2025 15:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D244E25EFA0;
+	Tue, 11 Mar 2025 15:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZoURdpN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3jBNucG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A45825D8FF;
-	Tue, 11 Mar 2025 15:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F06625D904;
+	Tue, 11 Mar 2025 15:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705915; cv=none; b=MPDmRtsRRVBWXUdJpSWI+fW7YED5mOwLa3IwuIhd8ro13a7T+0GzvEZjJWhjv7nIMrLcXQ8R7puRtDC1ujHR4IFdzWaj8nSBov0uTmjBzJ+SM4VWo8i7GB31LsOkXzT25okggkUUCQ5fiFXNP/arHsEe448OmiZw+oE0Sntru+o=
+	t=1741707187; cv=none; b=JxGEaJ9hwAqmMwILzEyCQscTTO7pIjy+5mVStH1uKan7A6AmkgvZ2w8YbrqtUL4Nir4K4HNFWEiPo7puabpGFeVr/YMHOS1gYlhwvod63gx3nJxfe3HumOe3oUg2k+94RhtI4gpXdLwnpokFq9DXxe5O4fDjffB6ibF5CSOnCd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705915; c=relaxed/simple;
-	bh=aapL38zw9mPHpkJ2W23Mj2mo+zHwwxgLI/5CeMQJNVo=;
+	s=arc-20240116; t=1741707187; c=relaxed/simple;
+	bh=/C/IO6lNndSSRpvdZbpMSEIzngSQyxV2XRoWTGjgEW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYdoRi7eWIjqiOi7CoNTSyZMdeDiO+WexeDuGFWDpRO3ZGx20iYkBJETT7dvr/ykLqFxLiAuuw6sZpCSNkrRRcjRyLM/PwONM8vMeiIfOxgSCEzlUypvBI5WiROgkuQBiWIrHLjEYLxdPCVv42HAr3iiw4GKNCDndv3BwNVMamQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZoURdpN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5523C4CEE9;
-	Tue, 11 Mar 2025 15:11:54 +0000 (UTC)
+	 MIME-Version; b=ByC+r5/zOpVPGEP9uKVsIKOdyrrGi4dlNB5FqHC2suavtH7b8QiFmtEzUlyVlgfGoE020jMoSUUUSjg7iEnRe4qxRLV5zXoEl04B5fMbPRS9C6J9cgAL0JYBV+OOj7ODtugUOwagy928xE2bxWWFFCI5uVAXDJUbUcusuQEQ0YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3jBNucG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D810C4CEE9;
+	Tue, 11 Mar 2025 15:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705915;
-	bh=aapL38zw9mPHpkJ2W23Mj2mo+zHwwxgLI/5CeMQJNVo=;
+	s=korg; t=1741707187;
+	bh=/C/IO6lNndSSRpvdZbpMSEIzngSQyxV2XRoWTGjgEW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZoURdpNdzbD6kvbpNDDxlefhm54sCmZW0vhzY5zp0nyLhm5lEIQWmcMb5L8CGuTN
-	 kbuNbZ2mTOYyoAQGFAMXl1FkO/0mZXpYxODhMdCY3G7phuYwkxCA4PNvOTCrYWgfPK
-	 +BxJY3w4AASDKTEMrEOC1jb8EmIdwapvnd6gmTjk=
+	b=k3jBNucGvqk1QwDXs4SP9IL5zORUQ/tANxLtLovillX1SNd/0BmaTI53Bp26Ispep
+	 9Fa3vLk+oYD3eJ6y353NDG12a815fn/DILhOXuJUtL5TvPAtybWVF6frjABNOThOMZ
+	 M9ZR+dDxKshIlDR1IgpEAQ5uVa/YOCJOjZWrzIOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 199/328] partitions: mac: fix handling of bogus partition table
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.10 303/462] f2fs: fix to wait dio completion
 Date: Tue, 11 Mar 2025 15:59:29 +0100
-Message-ID: <20250311145722.812746722@linuxfoundation.org>
+Message-ID: <20250311145810.333741414@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 80e648042e512d5a767da251d44132553fe04ae0 upstream.
+commit 96cfeb0389530ae32ade8a48ae3ae1ac3b6c009d upstream.
 
-Fix several issues in partition probing:
-
- - The bailout for a bad partoffset must use put_dev_sector(), since the
-   preceding read_part_sector() succeeded.
- - If the partition table claims a silly sector size like 0xfff bytes
-   (which results in partition table entries straddling sector boundaries),
-   bail out instead of accessing out-of-bounds memory.
- - We must not assume that the partition table contains proper NUL
-   termination - use strnlen() and strncmp() instead of strlen() and
-   strcmp().
+It should wait all existing dio write IOs before block removal,
+otherwise, previous direct write IO may overwrite data in the
+block which may be reused by other inode.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20250214-partition-mac-v1-1-c1c626dffbd5@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/partitions/mac.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/f2fs/file.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/block/partitions/mac.c
-+++ b/block/partitions/mac.c
-@@ -51,13 +51,25 @@ int mac_partition(struct parsed_partitio
- 	}
- 	secsize = be16_to_cpu(md->block_size);
- 	put_dev_sector(sect);
-+
-+	/*
-+	 * If the "block size" is not a power of 2, things get weird - we might
-+	 * end up with a partition straddling a sector boundary, so we wouldn't
-+	 * be able to read a partition entry with read_part_sector().
-+	 * Real block sizes are probably (?) powers of two, so just require
-+	 * that.
-+	 */
-+	if (!is_power_of_2(secsize))
-+		return -1;
- 	datasize = round_down(secsize, 512);
- 	data = read_part_sector(state, datasize / 512, &sect);
- 	if (!data)
- 		return -1;
- 	partoffset = secsize % 512;
--	if (partoffset + sizeof(*part) > datasize)
-+	if (partoffset + sizeof(*part) > datasize) {
-+		put_dev_sector(sect);
- 		return -1;
-+	}
- 	part = (struct mac_partition *) (data + partoffset);
- 	if (be16_to_cpu(part->signature) != MAC_PARTITION_MAGIC) {
- 		put_dev_sector(sect);
-@@ -110,8 +122,8 @@ int mac_partition(struct parsed_partitio
- 				int i, l;
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -957,6 +957,13 @@ int f2fs_setattr(struct dentry *dentry,
+ 				return err;
+ 		}
  
- 				goodness++;
--				l = strlen(part->name);
--				if (strcmp(part->name, "/") == 0)
-+				l = strnlen(part->name, sizeof(part->name));
-+				if (strncmp(part->name, "/", sizeof(part->name)) == 0)
- 					goodness++;
- 				for (i = 0; i <= l - 4; ++i) {
- 					if (strncasecmp(part->name + i, "root",
++		/*
++		 * wait for inflight dio, blocks should be removed after
++		 * IO completion.
++		 */
++		if (attr->ia_size < old_size)
++			inode_dio_wait(inode);
++
+ 		down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
+ 		down_write(&F2FS_I(inode)->i_mmap_sem);
+ 
+@@ -1777,6 +1784,12 @@ static long f2fs_fallocate(struct file *
+ 	if (ret)
+ 		goto out;
+ 
++	/*
++	 * wait for inflight dio, blocks should be removed after IO
++	 * completion.
++	 */
++	inode_dio_wait(inode);
++
+ 	if (mode & FALLOC_FL_PUNCH_HOLE) {
+ 		if (offset >= inode->i_size)
+ 			goto out;
 
 
 
