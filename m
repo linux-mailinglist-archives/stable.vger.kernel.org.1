@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-123758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEA0A5C71B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A7FA5C4F3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC57B17B8CA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C56C3A77D6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A799125DD08;
-	Tue, 11 Mar 2025 15:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D900425DAE8;
+	Tue, 11 Mar 2025 15:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkuFDbyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3XDhVRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656AD1494BB;
-	Tue, 11 Mar 2025 15:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A7725DCE5;
+	Tue, 11 Mar 2025 15:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706878; cv=none; b=q2By2FVmSGvoiTK2ToVapobKcIA/F1mFvUmThbXXjNxNxWkpRbB6YHC1HEMgtD0cy2+xci9AEhKszSXdyboZJUsVQVQGQg3MAgE6J1jrXVuou6gRpYUnyWmrxKPz56XABgy80thS5v499aHlqYsgHvR0zHtxB0RoUtltIlV/1vE=
+	t=1741705608; cv=none; b=pcHRGkBAZDPzLgg7LKLwnGV9AESzdU9QqJe8NwJsArik8OPvrm+SLSEZWVW1TdY48ERBdsJeOyx9dLXXJ4xmsHDG+x1podk28ONLjW0n1KY8MrKr2nNSuW3WNN+cVN+PyPioNFJLpTwWQGfTVUIYiYqrO1Z14hzvgvGKH3s7rbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706878; c=relaxed/simple;
-	bh=S05734SS0QZIgXxPsgWt4eSLgCazgNUTR8YvArtG1Gk=;
+	s=arc-20240116; t=1741705608; c=relaxed/simple;
+	bh=YXKMS3tFC2cMAk+DhA17hP9q9JQhOsEaHmfI7F5kBx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9yepq7XCqOKn/yZfZc1X2iYIYU/w3/aQn9QJx5+jqtYlvZMPd9UcttBlqUHQDBc1en5K//sn3aB4nvpFpEg7Azo+g2fGufqqBCMWEY4wgvJg7rLhOWdcWt2ttO3n0GJJSZIqMrSl6L8BVN+rgL9UE7cRwlp62pIpO58Td+bnw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkuFDbyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1BBC4CEE9;
-	Tue, 11 Mar 2025 15:27:57 +0000 (UTC)
+	 MIME-Version; b=faPe3VpyEig6FCbnrnPAoO/3n7MgIbrobc6TcgBpLHQSojShUewX2FnTihSXpaFdAeM1wJOYXu7ky7nPX2PYpXZ3fBtUzGexmv7FLL+Q5wOTkimQiBhfBp41oqYUeVGy11GsW3V0ggb9/XNKoFE1DJ+ECGBHkgwf3yFFQo2CZpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3XDhVRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A257C4CEEC;
+	Tue, 11 Mar 2025 15:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706878;
-	bh=S05734SS0QZIgXxPsgWt4eSLgCazgNUTR8YvArtG1Gk=;
+	s=korg; t=1741705608;
+	bh=YXKMS3tFC2cMAk+DhA17hP9q9JQhOsEaHmfI7F5kBx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkuFDbylJcGmQjGxqnbmE1bWUSikA0w/URISVgbL4vMUP6SlrnStawwfD04709bo1
-	 x79yV9C3tz4qO6seh4O0csObh11S/K8T1LX2WfMHZwgLOyBmZAS8zuHoYX4S4YOuXV
-	 koMTjb8xnP596pB9Tm/V5jwBpymASnHX+HJN26OU=
+	b=l3XDhVRomsbVYNfm6tOTXiYPNA3IXoM011ROM4aQN5quITZhk2LqwXNOUdgvgXkay
+	 NqYl2diPp2YNRv+957g0b0gb9xWGDqN/ezHMcgAmoJNMGT5x6JkcB+AYqDeVcW/WNa
+	 vft1on39oaR4HC/M7aEmvs2pqyJXsa2NiVCmhUbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 198/462] scsi: qla2xxx: Move FCE Trace buffer allocation to user control
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 094/328] APEI: GHES: Have GHES honor the panic= setting
 Date: Tue, 11 Mar 2025 15:57:44 +0100
-Message-ID: <20250311145806.179595606@linuxfoundation.org>
+Message-ID: <20250311145718.628610427@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,302 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Borislav Petkov <bp@alien8.de>
 
-commit 841df27d619ee1f5ca6473e15227b39d6136562d upstream.
+[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
 
-Currently FCE Tracing is enabled to log additional ELS events. Instead,
-user will enable or disable this feature through debugfs.
+The GHES driver overrides the panic= setting by force-rebooting the
+system after a fatal hw error has been reported. The intent being that
+such an error would be reported earlier.
 
-Modify existing DFS knob to allow user to enable or disable this
-feature.
+However, this is not optimal when a hard-to-debug issue requires long
+time to reproduce and when that happens, the box will get rebooted after
+30 seconds and thus destroy the whole hw context of when the error
+happened.
 
-echo [1 | 0] > /sys/kernel/debug/qla2xxx/qla2xxx_??/fce
-cat  /sys/kernel/debug/qla2xxx/qla2xxx_??/fce
+So rip out the default GHES panic timeout and honor the global one.
 
-Cc: stable@vger.kernel.org
-Fixes: df613b96077c ("[SCSI] qla2xxx: Add Fibre Channel Event (FCE) tracing support.")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the panic disabled (panic=0) case, the error will still be logged to
+dmesg for later inspection and if panic after a hw error is really
+required, then that can be controlled the usual way - use panic= on the
+cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+
+Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h  |    2 
- drivers/scsi/qla2xxx/qla_dfs.c  |  124 ++++++++++++++++++++++++++++++++--------
- drivers/scsi/qla2xxx/qla_gbl.h  |    3 
- drivers/scsi/qla2xxx/qla_init.c |   28 ++++++---
- 4 files changed, 126 insertions(+), 31 deletions(-)
+ drivers/acpi/apei/ghes.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3883,6 +3883,8 @@ struct qla_hw_data {
- 		uint32_t	npiv_supported		:1;
- 		uint32_t	pci_channel_io_perm_failure	:1;
- 		uint32_t	fce_enabled		:1;
-+		uint32_t	user_enabled_fce	:1;
-+		uint32_t	fce_dump_buf_alloced	:1;
- 		uint32_t	fac_supported		:1;
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -128,8 +128,6 @@ static unsigned long ghes_estatus_pool_s
+ static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
+ static atomic_t ghes_estatus_cache_alloced;
  
- 		uint32_t	chip_reset_done		:1;
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -365,27 +365,32 @@ qla2x00_dfs_fce_show(struct seq_file *s,
- 
- 	mutex_lock(&ha->fce_mutex);
- 
--	seq_puts(s, "FCE Trace Buffer\n");
--	seq_printf(s, "In Pointer = %llx\n\n", (unsigned long long)ha->fce_wr);
--	seq_printf(s, "Base = %llx\n\n", (unsigned long long) ha->fce_dma);
--	seq_puts(s, "FCE Enable Registers\n");
--	seq_printf(s, "%08x %08x %08x %08x %08x %08x\n",
--	    ha->fce_mb[0], ha->fce_mb[2], ha->fce_mb[3], ha->fce_mb[4],
--	    ha->fce_mb[5], ha->fce_mb[6]);
+-static int ghes_panic_timeout __read_mostly = 30;
 -
--	fce = (uint32_t *) ha->fce;
--	fce_start = (unsigned long long) ha->fce_dma;
--	for (cnt = 0; cnt < fce_calc_size(ha->fce_bufs) / 4; cnt++) {
--		if (cnt % 8 == 0)
--			seq_printf(s, "\n%llx: ",
--			    (unsigned long long)((cnt * 4) + fce_start));
--		else
--			seq_putc(s, ' ');
--		seq_printf(s, "%08x", *fce++);
-+	if (ha->flags.user_enabled_fce) {
-+		seq_puts(s, "FCE Trace Buffer\n");
-+		seq_printf(s, "In Pointer = %llx\n\n", (unsigned long long)ha->fce_wr);
-+		seq_printf(s, "Base = %llx\n\n", (unsigned long long)ha->fce_dma);
-+		seq_puts(s, "FCE Enable Registers\n");
-+		seq_printf(s, "%08x %08x %08x %08x %08x %08x\n",
-+			   ha->fce_mb[0], ha->fce_mb[2], ha->fce_mb[3], ha->fce_mb[4],
-+			   ha->fce_mb[5], ha->fce_mb[6]);
-+
-+		fce = (uint32_t *)ha->fce;
-+		fce_start = (unsigned long long)ha->fce_dma;
-+		for (cnt = 0; cnt < fce_calc_size(ha->fce_bufs) / 4; cnt++) {
-+			if (cnt % 8 == 0)
-+				seq_printf(s, "\n%llx: ",
-+					   (unsigned long long)((cnt * 4) + fce_start));
-+			else
-+				seq_putc(s, ' ');
-+			seq_printf(s, "%08x", *fce++);
-+		}
-+
-+		seq_puts(s, "\nEnd\n");
-+	} else {
-+		seq_puts(s, "FCE Trace is currently not enabled\n");
-+		seq_puts(s, "\techo [ 1 | 0 ] > fce\n");
- 	}
- 
--	seq_puts(s, "\nEnd\n");
--
- 	mutex_unlock(&ha->fce_mutex);
- 
- 	return 0;
-@@ -423,7 +428,7 @@ qla2x00_dfs_fce_release(struct inode *in
- 	struct qla_hw_data *ha = vha->hw;
- 	int rval;
- 
--	if (ha->flags.fce_enabled)
-+	if (ha->flags.fce_enabled || !ha->fce)
- 		goto out;
- 
- 	mutex_lock(&ha->fce_mutex);
-@@ -444,11 +449,88 @@ out:
- 	return single_release(inode, file);
- }
- 
-+static ssize_t
-+qla2x00_dfs_fce_write(struct file *file, const char __user *buffer,
-+		      size_t count, loff_t *pos)
-+{
-+	struct seq_file *s = file->private_data;
-+	struct scsi_qla_host *vha = s->private;
-+	struct qla_hw_data *ha = vha->hw;
-+	char *buf;
-+	int rc = 0;
-+	unsigned long enable;
-+
-+	if (!IS_QLA25XX(ha) && !IS_QLA81XX(ha) && !IS_QLA83XX(ha) &&
-+	    !IS_QLA27XX(ha) && !IS_QLA28XX(ha)) {
-+		ql_dbg(ql_dbg_user, vha, 0xd034,
-+		       "this adapter does not support FCE.");
-+		return -EINVAL;
-+	}
-+
-+	buf = memdup_user_nul(buffer, count);
-+	if (IS_ERR(buf)) {
-+		ql_dbg(ql_dbg_user, vha, 0xd037,
-+		    "fail to copy user buffer.");
-+		return PTR_ERR(buf);
-+	}
-+
-+	enable = kstrtoul(buf, 0, 0);
-+	rc = count;
-+
-+	mutex_lock(&ha->fce_mutex);
-+
-+	if (enable) {
-+		if (ha->flags.user_enabled_fce) {
-+			mutex_unlock(&ha->fce_mutex);
-+			goto out_free;
-+		}
-+		ha->flags.user_enabled_fce = 1;
-+		if (!ha->fce) {
-+			rc = qla2x00_alloc_fce_trace(vha);
-+			if (rc) {
-+				ha->flags.user_enabled_fce = 0;
-+				mutex_unlock(&ha->fce_mutex);
-+				goto out_free;
-+			}
-+
-+			/* adjust fw dump buffer to take into account of this feature */
-+			if (!ha->flags.fce_dump_buf_alloced)
-+				qla2x00_alloc_fw_dump(vha);
-+		}
-+
-+		if (!ha->flags.fce_enabled)
-+			qla_enable_fce_trace(vha);
-+
-+		ql_dbg(ql_dbg_user, vha, 0xd045, "User enabled FCE .\n");
-+	} else {
-+		if (!ha->flags.user_enabled_fce) {
-+			mutex_unlock(&ha->fce_mutex);
-+			goto out_free;
-+		}
-+		ha->flags.user_enabled_fce = 0;
-+		if (ha->flags.fce_enabled) {
-+			qla2x00_disable_fce_trace(vha, NULL, NULL);
-+			ha->flags.fce_enabled = 0;
-+		}
-+
-+		qla2x00_free_fce_trace(ha);
-+		/* no need to re-adjust fw dump buffer */
-+
-+		ql_dbg(ql_dbg_user, vha, 0xd04f, "User disabled FCE .\n");
-+	}
-+
-+	mutex_unlock(&ha->fce_mutex);
-+out_free:
-+	kfree(buf);
-+	return rc;
-+}
-+
- static const struct file_operations dfs_fce_ops = {
- 	.open		= qla2x00_dfs_fce_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
- 	.release	= qla2x00_dfs_fce_release,
-+	.write		= qla2x00_dfs_fce_write,
- };
- 
- static int
-@@ -534,8 +616,6 @@ qla2x00_dfs_setup(scsi_qla_host_t *vha)
- 	if (!IS_QLA25XX(ha) && !IS_QLA81XX(ha) && !IS_QLA83XX(ha) &&
- 	    !IS_QLA27XX(ha) && !IS_QLA28XX(ha))
- 		goto out;
--	if (!ha->fce)
--		goto out;
- 
- 	if (qla2x00_dfs_root)
- 		goto create_dir;
---- a/drivers/scsi/qla2xxx/qla_gbl.h
-+++ b/drivers/scsi/qla2xxx/qla_gbl.h
-@@ -11,6 +11,9 @@
- /*
-  * Global Function Prototypes in qla_init.c source file.
-  */
-+int  qla2x00_alloc_fce_trace(scsi_qla_host_t *);
-+void qla2x00_free_fce_trace(struct qla_hw_data *ha);
-+void qla_enable_fce_trace(scsi_qla_host_t *);
- extern int qla2x00_initialize_adapter(scsi_qla_host_t *);
- 
- extern int qla2100_pci_config(struct scsi_qla_host *);
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2280,7 +2280,7 @@ exit:
- 	return rval;
- }
- 
--static void qla_enable_fce_trace(scsi_qla_host_t *vha)
-+void qla_enable_fce_trace(scsi_qla_host_t *vha)
+ static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
  {
- 	int rval;
- 	struct qla_hw_data *ha = vha->hw;
-@@ -3263,25 +3263,24 @@ qla24xx_chip_diag(scsi_qla_host_t *vha)
- 	return rval;
- }
- 
--static void
--qla2x00_alloc_fce_trace(scsi_qla_host_t *vha)
-+int qla2x00_alloc_fce_trace(scsi_qla_host_t *vha)
+ 	phys_addr_t paddr;
+@@ -707,14 +705,16 @@ static void __ghes_panic(struct ghes *gh
+ 			 struct acpi_hest_generic_status *estatus,
+ 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
  {
- 	dma_addr_t tc_dma;
- 	void *tc;
- 	struct qla_hw_data *ha = vha->hw;
- 
- 	if (!IS_FWI2_CAPABLE(ha))
--		return;
-+		return -EINVAL;
- 
- 	if (!IS_QLA25XX(ha) && !IS_QLA81XX(ha) && !IS_QLA83XX(ha) &&
- 	    !IS_QLA27XX(ha) && !IS_QLA28XX(ha))
--		return;
-+		return -EINVAL;
- 
- 	if (ha->fce) {
- 		ql_dbg(ql_dbg_init, vha, 0x00bd,
- 		       "%s: FCE Mem is already allocated.\n",
- 		       __func__);
--		return;
-+		return -EIO;
- 	}
- 
- 	/* Allocate memory for Fibre Channel Event Buffer. */
-@@ -3291,7 +3290,7 @@ qla2x00_alloc_fce_trace(scsi_qla_host_t
- 		ql_log(ql_log_warn, vha, 0x00be,
- 		       "Unable to allocate (%d KB) for FCE.\n",
- 		       FCE_SIZE / 1024);
--		return;
-+		return -ENOMEM;
- 	}
- 
- 	ql_dbg(ql_dbg_init, vha, 0x00c0,
-@@ -3300,6 +3299,16 @@ qla2x00_alloc_fce_trace(scsi_qla_host_t
- 	ha->fce_dma = tc_dma;
- 	ha->fce = tc;
- 	ha->fce_bufs = FCE_NUM_BUFFERS;
-+	return 0;
-+}
++	const char *msg = GHES_PFX "Fatal hardware error";
 +
-+void qla2x00_free_fce_trace(struct qla_hw_data *ha)
-+{
-+	if (!ha->fce)
-+		return;
-+	dma_free_coherent(&ha->pdev->dev, FCE_SIZE, ha->fce, ha->fce_dma);
-+	ha->fce = NULL;
-+	ha->fce_dma = 0;
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ 
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 
+-	/* reboot to log the error! */
+ 	if (!panic_timeout)
+-		panic_timeout = ghes_panic_timeout;
+-	panic("Fatal hardware error!");
++		pr_emerg("%s but panic disabled\n", msg);
++
++	panic(msg);
  }
  
- static void
-@@ -3390,9 +3399,10 @@ qla2x00_alloc_fw_dump(scsi_qla_host_t *v
- 		if (ha->tgt.atio_ring)
- 			mq_size += ha->tgt.atio_q_length * sizeof(request_t);
- 
--		qla2x00_alloc_fce_trace(vha);
--		if (ha->fce)
-+		if (ha->fce) {
- 			fce_size = sizeof(struct qla2xxx_fce_chain) + FCE_SIZE;
-+			ha->flags.fce_dump_buf_alloced = 1;
-+		}
- 		qla2x00_alloc_eft_trace(vha);
- 		if (ha->eft)
- 			eft_size = EFT_SIZE;
+ static int ghes_proc(struct ghes *ghes)
 
 
 
