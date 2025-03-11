@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5706CA5C6AA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6719A5C4A0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2467816AD49
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C61AD3B63D7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02D425D918;
-	Tue, 11 Mar 2025 15:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACDC25E824;
+	Tue, 11 Mar 2025 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhw1+U/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pl6+Fzwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665991DF749;
-	Tue, 11 Mar 2025 15:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7832E25DB0B;
+	Tue, 11 Mar 2025 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706652; cv=none; b=dRMh+StHD2m6Nq+/eBR9wy5yUn8QpQYLtSyR8c02obGWfZzAL9qqN2Sa1xHjhQkwc5P1RGmrFv6yDccxSuVidtJBi82UezvV/+ntdD/kCqmeiYHmHJWmG0DuLJd2XbTrs9unarLAlXjFGlX38E/jvM+sP/G2Ujpik/+HDC8hjUw=
+	t=1741705440; cv=none; b=tT8daGL0d7nFuNTF5w6d6rGpvUIUI07pWgMUH9SDK4OWKBd0CJeBK8/t3ioRzV0dg4qBrQQf4qSLd9CIfXVwmFyy6DwVpBlXII3wGT+RfIjpDJ4hv8aGZnWLVgzLAA99r1QZAGfsPo1zcaSjjNRrFvyaBxDw7cizVYiyCzHBOHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706652; c=relaxed/simple;
-	bh=3G1IBmgziWBcOqZN4X4UOK/ysts+o1nDh+9O9VPln80=;
+	s=arc-20240116; t=1741705440; c=relaxed/simple;
+	bh=FmG7N2f9MRQmNSFrn3C63mxG62Qoc5lEw0q6Jij/WRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YX3jWSNSlFNaohjyDWS2xW57ioxh141dReMx6183223i+9AZhqy/eVUGbSMPfCpk0Gin9p2VaemdWqh9B2QL/nOcHy5od9Gif2jIP5j+MsQWeooCT7x5ris+Vio9i7zJ1lu5WbsbCul2Scm2J/Teh3bEnNeXMJz8OxHTRhpYF0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhw1+U/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39EEC4CEE9;
-	Tue, 11 Mar 2025 15:24:11 +0000 (UTC)
+	 MIME-Version; b=qB2H5WY6NYq8AkbKpRoTD5NLCPCehFsL+UDQH5cePMUccmoxbvc9d60D9PiC9/nm8xgLppmUobVz3WuWBI44dHke/WKpMxfrv54VmqeH3uTEnMc/APENnOYjmXae/z/caEtdOnnx1q4PTZVYds9cTJcul7ckkk93ZwEz+8ouL2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pl6+Fzwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DFEC4CEE9;
+	Tue, 11 Mar 2025 15:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706652;
-	bh=3G1IBmgziWBcOqZN4X4UOK/ysts+o1nDh+9O9VPln80=;
+	s=korg; t=1741705440;
+	bh=FmG7N2f9MRQmNSFrn3C63mxG62Qoc5lEw0q6Jij/WRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhw1+U/TiIs4bCAU88qSSKXbbzih2WKWG7ih3x5cp+PKflIslfg10F25vxruyxkV9
-	 X06M9lUVn9n8uIayD+2QwX6m9CUdjojGlCyBuAz1dDJDkw+WRJguGlmBYfiaNPhkoc
-	 +rdvDism7WXCLVSFMgGz4Q4cpbzilEUVnTIDDrxM=
+	b=Pl6+Fzwz5BCc3uTAPjzyKRWC3tafwyP/HQd7eus7QpK3TacNsRuo2+yN6+PRGaYX9
+	 Gcn7ZREhrcOMM2V/evpKpOJVwx6IBnIsQiB4CMfdDeoC6RMBHtCWK3LCXZO4u044j9
+	 aFqpqWk+zIQNOSbM+VyAEBNdsiI0rbHIcXyAgLwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jos Wang <joswang@lenovo.com>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 5.10 121/462] usb: typec: tcpm: set SRC_SEND_CAPABILITIES timeout to PD_T_SENDER_RESPONSE
+	Jakob Koschel <jakobkoschel@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 017/328] rtlwifi: replace usage of found with dedicated list iterator variable
 Date: Tue, 11 Mar 2025 15:56:27 +0100
-Message-ID: <20250311145803.139316893@linuxfoundation.org>
+Message-ID: <20250311145715.565298672@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jos Wang <joswang@lenovo.com>
+From: Jakob Koschel <jakobkoschel@gmail.com>
 
-commit 2eb3da037c2c20fa30bc502bc092479b2a1aaae2 upstream.
+[ Upstream commit a0ff2a87194a968b9547fd4d824a09092171d1ea ]
 
-As PD2.0 spec ("8.3.3.2.3 PE_SRC_Send_Capabilities state"), after the
-Source receives the GoodCRC Message from the Sink in response to the
-Source_Capabilities message, it should start the SenderResponseTimer,
-after the timer times out, the state machine transitions to the
-HARD_RESET state.
+To move the list iterator variable into the list_for_each_entry_*()
+macro in the future it should be avoided to use the list iterator
+variable after the loop body.
 
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20250105135245.7493-1-joswang1221@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To *never* use the list iterator variable after the loop it was
+concluded to use a separate iterator variable instead of a
+found boolean [1].
+
+This removes the need to use a found variable and simply checking if
+the variable was set, can determine if the break/goto was hit.
+
+Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/
+Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220324072124.62458-1-jakobkoschel@gmail.com
+Stable-dep-of: 2fdac64c3c35 ("wifi: rtlwifi: remove unused check_buddy_priv")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/base.c | 13 ++++++-------
+ drivers/net/wireless/realtek/rtlwifi/pci.c  | 15 +++++++--------
+ 2 files changed, 13 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3195,7 +3195,7 @@ static void run_state_machine(struct tcp
- 			port->caps_count = 0;
- 			port->pd_capable = true;
- 			tcpm_set_state_cond(port, SRC_SEND_CAPABILITIES_TIMEOUT,
--					    PD_T_SEND_SOURCE_CAP);
-+					    PD_T_SENDER_RESPONSE);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
+index 8fb0b54738ca9..5898109b1c3e8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/base.c
++++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+@@ -1995,8 +1995,7 @@ void rtl_collect_scan_list(struct ieee80211_hw *hw, struct sk_buff *skb)
+ 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+ 	unsigned long flags;
+ 
+-	struct rtl_bssid_entry *entry;
+-	bool entry_found = false;
++	struct rtl_bssid_entry *entry = NULL, *iter;
+ 
+ 	/* check if it is scanning */
+ 	if (!mac->act_scanning)
+@@ -2009,10 +2008,10 @@ void rtl_collect_scan_list(struct ieee80211_hw *hw, struct sk_buff *skb)
+ 
+ 	spin_lock_irqsave(&rtlpriv->locks.scan_list_lock, flags);
+ 
+-	list_for_each_entry(entry, &rtlpriv->scan_list.list, list) {
+-		if (memcmp(entry->bssid, hdr->addr3, ETH_ALEN) == 0) {
+-			list_del_init(&entry->list);
+-			entry_found = true;
++	list_for_each_entry(iter, &rtlpriv->scan_list.list, list) {
++		if (memcmp(iter->bssid, hdr->addr3, ETH_ALEN) == 0) {
++			list_del_init(&iter->list);
++			entry = iter;
+ 			rtl_dbg(rtlpriv, COMP_SCAN, DBG_LOUD,
+ 				"Update BSSID=%pM to scan list (total=%d)\n",
+ 				hdr->addr3, rtlpriv->scan_list.num);
+@@ -2020,7 +2019,7 @@ void rtl_collect_scan_list(struct ieee80211_hw *hw, struct sk_buff *skb)
  		}
- 		break;
- 	case SRC_SEND_CAPABILITIES_TIMEOUT:
+ 	}
+ 
+-	if (!entry_found) {
++	if (!entry) {
+ 		entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
+ 
+ 		if (!entry)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index a31d013d8815a..f8e34ae09a800 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -300,14 +300,13 @@ static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
+-	bool find_buddy_priv = false;
+-	struct rtl_priv *tpriv;
++	struct rtl_priv *tpriv = NULL, *iter;
+ 	struct rtl_pci_priv *tpcipriv = NULL;
+ 
+ 	if (!list_empty(&rtlpriv->glb_var->glb_priv_list)) {
+-		list_for_each_entry(tpriv, &rtlpriv->glb_var->glb_priv_list,
++		list_for_each_entry(iter, &rtlpriv->glb_var->glb_priv_list,
+ 				    list) {
+-			tpcipriv = (struct rtl_pci_priv *)tpriv->priv;
++			tpcipriv = (struct rtl_pci_priv *)iter->priv;
+ 			rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+ 				"pcipriv->ndis_adapter.funcnumber %x\n",
+ 				pcipriv->ndis_adapter.funcnumber);
+@@ -321,19 +320,19 @@ static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
+ 			    tpcipriv->ndis_adapter.devnumber &&
+ 			    pcipriv->ndis_adapter.funcnumber !=
+ 			    tpcipriv->ndis_adapter.funcnumber) {
+-				find_buddy_priv = true;
++				tpriv = iter;
+ 				break;
+ 			}
+ 		}
+ 	}
+ 
+ 	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+-		"find_buddy_priv %d\n", find_buddy_priv);
++		"find_buddy_priv %d\n", tpriv != NULL);
+ 
+-	if (find_buddy_priv)
++	if (tpriv)
+ 		*buddy_priv = tpriv;
+ 
+-	return find_buddy_priv;
++	return tpriv != NULL;
+ }
+ 
+ static void rtl_pci_parse_configuration(struct pci_dev *pdev,
+-- 
+2.39.5
+
 
 
 
