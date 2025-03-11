@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACC4A5C511
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3604DA5C7A4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EB197A30D1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB31188429F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BDF25D8F9;
-	Tue, 11 Mar 2025 15:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D9025E83D;
+	Tue, 11 Mar 2025 15:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Em5PH8aC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaE8s6FG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60BF1C3BEB;
-	Tue, 11 Mar 2025 15:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB6225B69D;
+	Tue, 11 Mar 2025 15:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705819; cv=none; b=cRE6RCRC4vd1CP8r99RRbPrHNafZLVhW8DETQhqHa+WYwCOL59mKmUoZzvyMKVhDIsItb5BbzGXEX6UomA8crFTgDxXRQxMRbkr9DcGS8S4oGfEVSqVZ7W4BLalDe1AA60lHLw2B6+SNiYjWh8gNr1v8lb6R5hqaPKcqe+gJIsU=
+	t=1741707126; cv=none; b=Fh5M2wq7iM8IdH6yKgok/MpfLoy/vVLPCabgJiH9R5kjAatcC0LJKCng6lDzSZ9TUT59+yTJinV1xbIIoUzivnXwWDKWEyF1w9QJj2PEMoR3wNnWnVNMwdvbEmBMXYEMibFpWp+wCjWgxDlkGeMmH7oU8mPynJvoyDKUEQG/xDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705819; c=relaxed/simple;
-	bh=kXrhC85VwMPPVZqtbiPKoHRQQW1Ks/2aRgyLzwZvgxY=;
+	s=arc-20240116; t=1741707126; c=relaxed/simple;
+	bh=N5y0WpdYLlAn+IzXfTcugB4FRQqD0j44ro05I5SYmZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cb7CU1wut9kFJM0ZpMFet8rvYQQjGOqQDPvt+NG6sho3B0EPF8MyeCTkqOqdtQCEg0j4uPltYngwP8cRfSWpGCTUiThwRxfeU87UVh6XWV0tUKCXa0g1IVKxhjEyNH+U7nFcmjHQWcKuSuoimQi9rZVR2nxWRofeEcF/nSlrA+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Em5PH8aC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DE2C4CEEA;
-	Tue, 11 Mar 2025 15:10:18 +0000 (UTC)
+	 MIME-Version; b=VTk484tFSjxqUqn981x4QLG19vwfqJqXFF9VmuqL2WFi5zAW4IFGXky2hs0gZL2rDAnIkVMdAUIoB07TGBCVCQdBDC8hmrFhtU7jcjEzDm9itTKdLmlCi4h1pGO/HnnYzOEbQ3z3IkZP6sdVlRxixJ+HW3zM8H6BO7NziAfaUZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaE8s6FG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D90DC4CEEC;
+	Tue, 11 Mar 2025 15:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705819;
-	bh=kXrhC85VwMPPVZqtbiPKoHRQQW1Ks/2aRgyLzwZvgxY=;
+	s=korg; t=1741707125;
+	bh=N5y0WpdYLlAn+IzXfTcugB4FRQqD0j44ro05I5SYmZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Em5PH8aCASoZa5qeGzkynjEBCdQexJyyE4c7uiyNQYIsYjnrW/zrhq1pbKIXBoS9+
-	 G8kJCCZneByOKZ9tguLNlgKkhJP1yDRRdN5YniWObClfQgjrsls0R0eImxh/NYc+Lp
-	 S+3cmePNMUGAFEFhH8V4oiWPIF/HIFI66glgxcqI=
+	b=KaE8s6FGwyGBhqgCWVUKB0jweGP/tKP0npLGPSKRf3gwyNc0IMlCZiOHGqZM2iMdQ
+	 CLrseeP1Bnr9LVnlWOJ/gmimJqDtvKwclkKiBMw3CIjLqPleqXr8Lt19FnLxQYk4p9
+	 6L3XNuiK81gFMMvJpK4hLrik3SNOIhubS/2fBy4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.4 147/328] media: uvcvideo: Remove redundant NULL assignment
+	stable <stable@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 251/462] usb: core: fix pipe creation for get_bMaxPacketSize0
 Date: Tue, 11 Mar 2025 15:58:37 +0100
-Message-ID: <20250311145720.748844734@linuxfoundation.org>
+Message-ID: <20250311145808.277726301@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit 04d3398f66d2d31c4b8caea88f051a4257b7a161 upstream.
+commit 4aac0db5a0ebc599d4ad9bf5ebab78afa1f33e10 upstream.
 
-ctrl->handle will only be different than NULL for controls that have
-mappings. This is because that assignment is only done inside
-uvc_ctrl_set() for mapped controls.
+When usb_control_msg is used in the get_bMaxPacketSize0 function, the
+USB pipe does not include the endpoint device number. This can cause
+failures when a usb hub port is reinitialized after encountering a bad
+cable connection. As a result, the system logs the following error
+messages:
+usb usb2-port1: cannot reset (err = -32)
+usb usb2-port1: Cannot enable. Maybe the USB cable is bad?
+usb usb2-port1: attempt power cycle
+usb 2-1: new high-speed USB device number 5 using ci_hdrc
+usb 2-1: device descriptor read/8, error -71
 
-Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-2-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+The problem began after commit 85d07c556216 ("USB: core: Unite old
+scheme and new scheme descriptor reads"). There
+usb_get_device_descriptor was replaced with get_bMaxPacketSize0. Unlike
+usb_get_device_descriptor, the get_bMaxPacketSize0 function uses the
+macro usb_rcvaddr0pipe, which does not include the endpoint device
+number. usb_get_device_descriptor, on the other hand, used the macro
+usb_rcvctrlpipe, which includes the endpoint device number.
+
+By modifying the get_bMaxPacketSize0 function to use usb_rcvctrlpipe
+instead of usb_rcvaddr0pipe, the issue can be resolved. This change will
+ensure that the endpoint device number is included in the USB pipe,
+preventing reinitialization failures. If the endpoint has not set the
+device number yet, it will still work because the device number is 0 in
+udev.
+
+Cc: stable <stable@kernel.org>
+Fixes: 85d07c556216 ("USB: core: Unite old scheme and new scheme descriptor reads")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250203105840.17539-1-eichest@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/core/hub.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1367,10 +1367,8 @@ bool uvc_ctrl_status_event_async(struct
- 	struct uvc_device *dev = chain->dev;
- 	struct uvc_ctrl_work *w = &dev->async_ctrl;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -4644,7 +4644,6 @@ void usb_ep0_reinit(struct usb_device *u
+ EXPORT_SYMBOL_GPL(usb_ep0_reinit);
  
--	if (list_empty(&ctrl->info.mappings)) {
--		ctrl->handle = NULL;
-+	if (list_empty(&ctrl->info.mappings))
- 		return false;
--	}
+ #define usb_sndaddr0pipe()	(PIPE_CONTROL << 30)
+-#define usb_rcvaddr0pipe()	((PIPE_CONTROL << 30) | USB_DIR_IN)
  
- 	w->data = data;
- 	w->urb = urb;
+ static int hub_set_address(struct usb_device *udev, int devnum)
+ {
+@@ -4745,7 +4744,7 @@ static int get_bMaxPacketSize0(struct us
+ 	for (i = 0; i < GET_MAXPACKET0_TRIES; ++i) {
+ 		/* Start with invalid values in case the transfer fails */
+ 		buf->bDescriptorType = buf->bMaxPacketSize0 = 0;
+-		rc = usb_control_msg(udev, usb_rcvaddr0pipe(),
++		rc = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
+ 				USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
+ 				USB_DT_DEVICE << 8, 0,
+ 				buf, size,
 
 
 
