@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1358A5C510
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36150A5C75E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B73D179197
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB4711888359
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB88D25DB0B;
-	Tue, 11 Mar 2025 15:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE6225EFB5;
+	Tue, 11 Mar 2025 15:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXOJ3qid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frh34i0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6812D1C5D77;
-	Tue, 11 Mar 2025 15:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0939F25EFAD;
+	Tue, 11 Mar 2025 15:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705740; cv=none; b=s4jqfT2MfhHor7r6sSAtztlwY7mFp35uKjkyVv+7TLqJJQAgwB8grO3X13pzlfmjtkso5WweGcHN3XUBBzxYozwllyGI9kVfzNUs0t3Q6Tqf6mDO4l9PPTzNpBZQlO0DmiGElEhsV0nyPmAxztRoVAH7AI89OxxzSZTSkhJRa6I=
+	t=1741706956; cv=none; b=n7MU4eZe3NuPCFa6/JsmFk8HjbxWS4fYQJ2bim+CrRfdWRPj1zfxLgJrksJVSFfKfz5VazSw2TDVsnfsOsKcPfTpYC2up5Hr5Hc6vvLA41hMt1HoY57z+VsOUG0hJm4IGk/k/djzMH1+O+k6ru/aJK2y5eg2ygX3wR9kAUW8Ob0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705740; c=relaxed/simple;
-	bh=KjAEpoEANOgQ/2p8YJZmD6OTvNmPuTQbOLx3v8pyR7E=;
+	s=arc-20240116; t=1741706956; c=relaxed/simple;
+	bh=x9yY7GSriOhCB5RT9Vq2QMe0mnxi8k0dr2wh0/EpM/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pmle6WTNsiiZKfyAQpn3VsHuRewRPMAMt4re3bJXHUSbIIkGoQfTVRvlZflDS0P4vj6YKEcmx1Ypb8bcSUhELxX0igsdcOyU7eiexDfBZjgY0nfGekdk6hy3RC2RzBgHZ6/bIj8JMN6PN8gAybyO26auiQZ19aH+yOo9wRV0ngI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXOJ3qid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C6CC4CEE9;
-	Tue, 11 Mar 2025 15:08:59 +0000 (UTC)
+	 MIME-Version; b=lWZHiRDM4ZM6G6cE1+P17gQZW0raazFiGFGYaJxk2SJ5RjhhckIjMgFzXy/q6ughuL9A2uyn1xaDT67bwnPZCit63QHUCLaPv5L7jsAmeEDGMTzrcI/73kTcZNiGGEbAS67zSLTnzp0JvjEo1Vfp0LXDudfRRHpTZ0ryArUrYUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frh34i0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832DFC4CEE9;
+	Tue, 11 Mar 2025 15:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705740;
-	bh=KjAEpoEANOgQ/2p8YJZmD6OTvNmPuTQbOLx3v8pyR7E=;
+	s=korg; t=1741706955;
+	bh=x9yY7GSriOhCB5RT9Vq2QMe0mnxi8k0dr2wh0/EpM/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uXOJ3qid7LLEwsn90MBEzno+vWfIWFgxR3bj9NsML6ZuRIHRz9ThqvAkHG5VkrWys
-	 fSU3bO4jCmDncYSSt03tUovAXiGEClNOSARfqKnrZHR3h/FtGcNH2mLPL49tf8Pdys
-	 KSKVtnQc3jf8bemd7lnpnqCILOpsmp2q/6NfZ4W0=
+	b=frh34i0IXBl2k5efAy6BbhK1pj+r4rtjhcM+0H14rxRNb0nFI4nA3R7a1epMgK++W
+	 +FmVrHU5Nhghak1FB+9q2b/kgj71/Vlurim+pgHp1cp512Pv5BdlpnBLawQi/tSurw
+	 t5alEUoxyVMDzio/YQZ4tuPeIoqZMF+RjunodONM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Pitre <npitre@baylibre.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 5.4 121/328] binfmt_flat: Fix integer overflow bug on 32 bit systems
-Date: Tue, 11 Mar 2025 15:58:11 +0100
-Message-ID: <20250311145719.705766710@linuxfoundation.org>
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 226/462] NFSD: fix hang in nfsd4_shutdown_callback
+Date: Tue, 11 Mar 2025 15:58:12 +0100
+Message-ID: <20250311145807.290803346@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit 55cf2f4b945f6a6416cc2524ba740b83cc9af25a upstream.
+commit 036ac2778f7b28885814c6fbc07e156ad1624d03 upstream.
 
-Most of these sizes and counts are capped at 256MB so the math doesn't
-result in an integer overflow.  The "relocs" count needs to be checked
-as well.  Otherwise on 32bit systems the calculation of "full_data"
-could be wrong.
+If nfs4_client is in courtesy state then there is no point to send
+the callback. This causes nfsd4_shutdown_callback to hang since
+cl_cb_inflight is not 0. This hang lasts about 15 minutes until TCP
+notifies NFSD that the connection was dropped.
 
-	full_data = data_len + relocs * sizeof(unsigned long);
+This patch modifies nfsd4_run_cb_work to skip the RPC call if
+nfs4_client is in courtesy state.
 
-Fixes: c995ee28d29d ("binfmt_flat: prevent kernel dammage from corrupted executable headers")
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Fixes: 66af25799940 ("NFSD: add courteous server support for thread with only delegation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Nicolas Pitre <npitre@baylibre.com>
-Link: https://lore.kernel.org/r/5be17f6c-5338-43be-91ef-650153b975cb@stanley.mountain
-Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/binfmt_flat.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4callback.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/binfmt_flat.c
-+++ b/fs/binfmt_flat.c
-@@ -529,7 +529,7 @@ static int load_flat_file(struct linux_b
- 	 * 28 bits (256 MB) is way more than reasonable in this case.
- 	 * If some top bits are set we have probable binary corruption.
- 	*/
--	if ((text_len | data_len | bss_len | stack_len | full_data) >> 28) {
-+	if ((text_len | data_len | bss_len | stack_len | relocs | full_data) >> 28) {
- 		pr_err("bad header\n");
- 		ret = -ENOEXEC;
- 		goto err;
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1410,8 +1410,11 @@ nfsd4_run_cb_work(struct work_struct *wo
+ 		nfsd4_process_cb_update(cb);
+ 
+ 	clnt = clp->cl_cb_client;
+-	if (!clnt) {
+-		/* Callback channel broken, or client killed; give up: */
++	if (!clnt || clp->cl_state == NFSD4_COURTESY) {
++		/*
++		 * Callback channel broken, client killed or
++		 * nfs4_client in courtesy state; give up.
++		 */
+ 		nfsd41_destroy_cb(cb);
+ 		return;
+ 	}
 
 
 
