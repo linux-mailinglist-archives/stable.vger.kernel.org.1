@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-123903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6655CA5C7FF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127ABA5C5AA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81614188B303
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD9D3AB27F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC87C25D904;
-	Tue, 11 Mar 2025 15:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF11A25DD00;
+	Tue, 11 Mar 2025 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPaWTBKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6zfXejN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781623C0B;
-	Tue, 11 Mar 2025 15:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8BF25C715;
+	Tue, 11 Mar 2025 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707292; cv=none; b=pa4SMdT45/VJLtagCqWe1OWTStIQfNJNr8HDh4DNS5IzMa4Kj3B6RC0qhIYnAPKgJgvZDMi6drXbgt6Iv36ZvCNKpItRTFamn1V8cWofL1fu9kXwJmHr9z4EcEKM9p0MqudUAEwQqKRQOBDbZDa8srG22KFgoNqICWYdRa/FtbQ=
+	t=1741706023; cv=none; b=T6gavN9UumJ+7VFNIYMuNPhbqUvUaBmUDIiBhfBz4noZoAshAvavExymcm4GMHeLis4lVIVaBa35CYRHg0C2Oz8Doe42fB3qC/lDPmbztEzdp/VUgSZT8Jt0DYkVk5CfwAWx7+Bmwp2FDD0VIuMH37yhDJOP4ShZ3Gek/dTJ7MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707292; c=relaxed/simple;
-	bh=vllgVvW+fQOzytjzL+8HbXlvUZyerQS6ssfwNzUNaY0=;
+	s=arc-20240116; t=1741706023; c=relaxed/simple;
+	bh=vqGkoUEYLKCvH3w+XFm8U7fm7NCxjqNBWlfsp9xHSMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KN1UpatpOGuGmkGe8VzZ39HOTgH0+ZVHHGyjezAtPCoBkD9a4C66IRhUOhMLAjdLObgG2dWjynkklvZdGMQR8RR+UQvKH9hJk8D0uv1yvCgU7S46gEQJy45t2rAdpVmbdNm/m8CTkl8ippSTcM4ZKWnBqQGX3AfeoUcpiu4pepM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPaWTBKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912C0C4CEE9;
-	Tue, 11 Mar 2025 15:34:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FpodNMgY13qmmaXKy12i4fiBW8MD7fkBiGOjJxTGYDJGiU/+rpi2rcUzpPJauFUbB7R3pAgyobgSTakYy6QfkYIgxJmAF0Vh9XAIbjR1kVrlm7E5D2KAA2p9BMNrn4xbOYtUdSRz72V6qCrqqAlWQr6NLmgJp7XGtbfwuhzHYvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6zfXejN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BD3C4CEE9;
+	Tue, 11 Mar 2025 15:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707291;
-	bh=vllgVvW+fQOzytjzL+8HbXlvUZyerQS6ssfwNzUNaY0=;
+	s=korg; t=1741706023;
+	bh=vqGkoUEYLKCvH3w+XFm8U7fm7NCxjqNBWlfsp9xHSMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPaWTBKEvU+NCKRtE44i01p0ws1nbedyrrzRGhD2ao93sNRX+SzBT6B1SrhpaHvv7
-	 ENv2geoQoq4M0CEquQi5L1Dod0b0SHKIXe4LUw8gNfFQnRZO6EXxVpQ94Fi+H2zcYL
-	 k98fUBY0ndfr+aibLwrzbcr597FvNn4hb0aAvS8s=
+	b=X6zfXejNztDbQsZ0zRuP2hX0hE6mYFgR+quUYFultNnmC33D4WGryYMeAJCVyuddY
+	 eRUfZZ5iE/eVPAMvjOQIqCq47nIhwL9sno2dwEMVxjO3AcxhcOIASr4azUpi2LbeMp
+	 9DH/Btfu7UEpJwCRTjkEXIyI2qIwq20+rcXElZl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <dtzq01@gmail.com>,
-	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	stable <stable@kernel.org>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 339/462] flow_dissector: Fix handling of mixed port and port-range keys
-Date: Tue, 11 Mar 2025 16:00:05 +0100
-Message-ID: <20250311145811.757830938@linuxfoundation.org>
+Subject: [PATCH 5.4 236/328] usb: dwc3: Fix timeout issue during controller enter/exit from halt state
+Date: Tue, 11 Mar 2025 16:00:06 +0100
+Message-ID: <20250311145724.293800761@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
+[ Upstream commit d3a8c28426fc1fb3252753a9f1db0d691ffc21b0 ]
 
-This patch fixes a bug in TC flower filter where rules combining a
-specific destination port with a source port range weren't working
-correctly.
+There is a frequent timeout during controller enter/exit from halt state
+after toggling the run_stop bit by SW. This timeout occurs when
+performing frequent role switches between host and device, causing
+device enumeration issues due to the timeout. This issue was not present
+when USB2 suspend PHY was disabled by passing the SNPS quirks
+(snps,dis_u2_susphy_quirk and snps,dis_enblslpm_quirk) from the DTS.
+However, there is a requirement to enable USB2 suspend PHY by setting of
+GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY bits when controller starts
+in gadget or host mode results in the timeout issue.
 
-The specific case was when users tried to configure rules like:
+This commit addresses this timeout issue by ensuring that the bits
+GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
+the dwc3_gadget_run_stop sequence and restoring them after the
+dwc3_gadget_run_stop sequence is completed.
 
-tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
-dst_port 5000 src_port 2000-3000 action drop
-
-The root cause was in the flow dissector code. While both
-FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
-were being set correctly in the classifier, the __skb_flow_dissect_ports()
-function was only populating one of them: whichever came first in
-the enum check. This meant that when the code needed both a specific
-port and a port range, one of them would be left as 0, causing the
-filter to not match packets as expected.
-
-Fix it by removing the either/or logic and instead checking and
-populating both key types independently when they're in use.
-
-Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
-Reported-by: Qiang Zhang <dtzq01@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
-Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250201163903.459-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/flow_dissector.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ drivers/usb/dwc3/gadget.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 3d5192177560d..3f90f70d30060 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -716,23 +716,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
- 			 void *target_container, void *data, int nhoff,
- 			 u8 ip_proto, int hlen)
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index f9232c099f494..fd8b986794d0d 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1967,10 +1967,38 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
  {
--	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
--	struct flow_dissector_key_ports *key_ports;
-+	struct flow_dissector_key_ports_range *key_ports_range = NULL;
-+	struct flow_dissector_key_ports *key_ports = NULL;
-+	__be32 ports;
+ 	u32			reg;
+ 	u32			timeout = 2000;
++	u32			saved_config = 0;
  
- 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
--		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
--	else if (dissector_uses_key(flow_dissector,
--				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
--		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
-+		key_ports = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_PORTS,
-+						      target_container);
+ 	if (pm_runtime_suspended(dwc->dev))
+ 		return 0;
+ 
++	/*
++	 * When operating in USB 2.0 speeds (HS/FS), ensure that
++	 * GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
++	 * or stopping the controller. This resolves timeout issues that occur
++	 * during frequent role switches between host and device modes.
++	 *
++	 * Save and clear these settings, then restore them after completing the
++	 * controller start or stop sequence.
++	 *
++	 * This solution was discovered through experimentation as it is not
++	 * mentioned in the dwc3 programming guide. It has been tested on an
++	 * Exynos platforms.
++	 */
++	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++	if (reg & DWC3_GUSB2PHYCFG_SUSPHY) {
++		saved_config |= DWC3_GUSB2PHYCFG_SUSPHY;
++		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
++	}
 +
-+	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
-+		key_ports_range = skb_flow_dissector_target(flow_dissector,
-+							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
-+							    target_container);
- 
--	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
-+	if (!key_ports && !key_ports_range)
- 		return;
- 
--	key_ports = skb_flow_dissector_target(flow_dissector,
--					      dissector_ports,
--					      target_container);
--	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
--						data, hlen);
-+	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
++	if (reg & DWC3_GUSB2PHYCFG_ENBLSLPM) {
++		saved_config |= DWC3_GUSB2PHYCFG_ENBLSLPM;
++		reg &= ~DWC3_GUSB2PHYCFG_ENBLSLPM;
++	}
 +
-+	if (key_ports)
-+		key_ports->ports = ports;
++	if (saved_config)
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
 +
-+	if (key_ports_range)
-+		key_ports_range->tp.ports = ports;
- }
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	if (is_on) {
+ 		if (dwc->revision <= DWC3_REVISION_187A) {
+@@ -2003,6 +2031,12 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
+ 		reg &= DWC3_DSTS_DEVCTRLHLT;
+ 	} while (--timeout && !(!is_on ^ !reg));
  
- static void
++	if (saved_config) {
++		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++		reg |= saved_config;
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
++	}
++
+ 	if (!timeout)
+ 		return -ETIMEDOUT;
+ 
 -- 
 2.39.5
 
