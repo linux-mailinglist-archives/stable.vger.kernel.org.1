@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CA8A5C58A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7113BA5C805
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35BB5189B2FB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444DE3AE1CA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454B225E83F;
-	Tue, 11 Mar 2025 15:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6810425F961;
+	Tue, 11 Mar 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoxmWqec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMpWdF+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02D825E446;
-	Tue, 11 Mar 2025 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FDB25DAEC;
+	Tue, 11 Mar 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705947; cv=none; b=DKyclDuzJwiLXmVO445QyX2O+T0GrDwPW9G5R6KfQT7Ytcn7Hxoph3fbhsaqJ7STwPjZdbc+3aDTJKBFTHk1s2yU0oK15rqABVwINzlsB5XEu7p115ILwxuufswSUyuAO6i0QJ7atABimg/XRmUFzetdjg5XiSMfgpBSqTg5EM8=
+	t=1741707222; cv=none; b=QGo+oswWUEYtfbU0d2g3w/UN1/lz/ERU+wL8froJ/kuWWU56As85kKz8cLtgh+27Lcn2qlDUu+YPkxxUE+pJ9QNANMwYc4Z/qaiGoFztMyStwbKD5V2mdODv14KGBkcmSJfZIRivLwaEOmatszNR9HEY4S00TXsBCk5ClG3e6cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705947; c=relaxed/simple;
-	bh=bpxPJALYjDrt3O7uTJgtAgn8s+OY0skHS4xKspfpsMI=;
+	s=arc-20240116; t=1741707222; c=relaxed/simple;
+	bh=FhCIyObPoHC1yIGmCUV2N+6MDrbjM8QvAn22awu+1Xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCUziYDRhdhr86cQaKjEaHBIJqG/OgdE9rjfHPfKec1AEgwZUWdcNW7v58CxKVTEBbmVzSF+67y+qgdmIFCG5KLkHic0FO1qsn3QkFnkypnt/FBloiUQCvsbLp15scHP1NZaiCqN/u4bcWNiwrVoJs1TjFxoO/T9+QpXVGrSdN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoxmWqec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A6BC4CEED;
-	Tue, 11 Mar 2025 15:12:26 +0000 (UTC)
+	 MIME-Version; b=XWg42VPsMfJKHPguDEIJzBT6UIkmOuedN5NNVhXZLOtpwx6Rp2gOjUITdcaVqKkiSsJ331cSdvCONpEslCuIJBilyNALiaLOvrOfAD9E8/1o871mPlNXKPe4glSrZpaBmBO5N9lYOSWqTNRlZX0cH6oN3uOrpkXIkloTVWVO6iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMpWdF+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A64CC4CEEA;
+	Tue, 11 Mar 2025 15:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705946;
-	bh=bpxPJALYjDrt3O7uTJgtAgn8s+OY0skHS4xKspfpsMI=;
+	s=korg; t=1741707222;
+	bh=FhCIyObPoHC1yIGmCUV2N+6MDrbjM8QvAn22awu+1Xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoxmWqec3AvanwxxSFH40ynSB8JpAts/3/gaul1mPqADpQc5AOBxTwhlCHHjKXQ1H
-	 vTpIlruTF2IzpzaltXA+p7FSK8iY3lIVGHyrkxf2in96/uOJnxLIB3LrfOpXTABKcX
-	 +q3lcZT74D3qpb+UbQ9X7H/z4XkGKh/CBR66f4TA=
+	b=LMpWdF+SYaF31g6CU8aC54jADOv5Zv6Bl5RTAS2GO+lZ5mJgwNHQLGESeBmleq3st
+	 S7K7GF4g0qaPa+jc9AvjyvJFWFZvPQbUjL/JLRmrQ0uKEqAetmv2PR4Ma1SIuKVq3Q
+	 gS2MROogvZOUo57haeiw5k+yaIU/+iTwZHjXN5Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Baoqi Zhang <zhangbaoqi@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 5.4 181/328] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
+	Li Zetao <lizetao1@huawei.com>,
+	Petr Machata <petrm@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 285/462] neighbour: delete redundant judgment statements
 Date: Tue, 11 Mar 2025 15:59:11 +0100
-Message-ID: <20250311145722.096255037@linuxfoundation.org>
+Message-ID: <20250311145809.631176108@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Li Zetao <lizetao1@huawei.com>
 
-commit e71f7f42e3c874ac3314b8f250e8416a706165af upstream.
+[ Upstream commit c25bdd2ac8cf7da70a226f1a66cdce7af15ff86f ]
 
-LS7A EHCI controller doesn't have extended capabilities, so the EECP
-(EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
-be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
-fixed in future, now just clear the EECP field to avoid error messages
-on boot:
+The initial value of err is -ENOBUFS, and err is guaranteed to be
+less than 0 before all goto errout. Therefore, on the error path
+of errout, there is no need to repeatedly judge that err is less than 0,
+and delete redundant judgments to make the code more concise.
 
-......
-[    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
-......
-[    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
-......
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250202124935.480500-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: becbd5850c03 ("neighbour: use RCU protection in __neigh_notify()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/pci-quirks.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/core/neighbour.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/usb/host/pci-quirks.c
-+++ b/drivers/usb/host/pci-quirks.c
-@@ -945,6 +945,15 @@ static void quirk_usb_disable_ehci(struc
- 	 * booting from USB disk or using a usb keyboard
- 	 */
- 	hcc_params = readl(base + EHCI_HCC_PARAMS);
-+
-+	/* LS7A EHCI controller doesn't have extended capabilities, the
-+	 * EECP (EHCI Extended Capabilities Pointer) field of HCCPARAMS
-+	 * register should be 0x0 but it reads as 0xa0.  So clear it to
-+	 * avoid error messages on boot.
-+	 */
-+	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON && pdev->device == 0x7a14)
-+		hcc_params &= ~(0xffL << 8);
-+
- 	offset = (hcc_params >> 8) & 0xff;
- 	while (offset && --count) {
- 		pci_read_config_dword(pdev, offset, &cap);
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index c187eb951083b..bd017b220cfed 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3387,8 +3387,7 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+ 	return;
+ errout:
+-	if (err < 0)
+-		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
+ }
+ 
+ void neigh_app_ns(struct neighbour *n)
+-- 
+2.39.5
+
 
 
 
