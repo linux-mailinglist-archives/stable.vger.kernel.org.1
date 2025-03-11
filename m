@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04D3A5C718
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94AEA5C4ED
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26E617ACC10
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E7A9189BCE9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C691DF749;
-	Tue, 11 Mar 2025 15:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9EC25DD07;
+	Tue, 11 Mar 2025 15:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVR+y+MC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeG+w1XL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E942E25B69D;
-	Tue, 11 Mar 2025 15:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A241C3BEB;
+	Tue, 11 Mar 2025 15:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707032; cv=none; b=AaJxsqlmWLT3Qkzwz/wNI9lvElMxRfJ0dnbOvfnafcjL6f/+vBjiOgMnsye4jIr/Tu5CBHpHJ2ElsAKGWLYLA00bzbTindOPRPqlws2ecR44wo7vgVz71sUI7iUXM+fFBpxhqJol6RiqLMf05g999I1Jpr/wGDqJxGCTJjiUCu4=
+	t=1741705643; cv=none; b=OPY8rq0pLxHlI3k7RmrhSA15fsiIJhl7cKZcQF8DOmZNnmpenVzCUSnaps0Te2nuiHrBkXumBUE7dPzCBKTt3kWzCnFFHrikQw7IBwZzxrXnizvcgygDLRInu1lTPB+8VnZMvhwfnD59fbwEG3mH7eLAaQ5qLfWOxXDsHRT0ukE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707032; c=relaxed/simple;
-	bh=5kyjepotPYcLicoiFFZXPTaG7m7vFQjS8jzOn2Iw7As=;
+	s=arc-20240116; t=1741705643; c=relaxed/simple;
+	bh=OeXx6y7QpXUrthWx/FOHKTq7ixcZPeDwNtM0WJgu12Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWl1s2soR9jXw1yJtJ8pFVpFlEArjw4lMdmvbjSOebaQANnLxsMlN4bQ/FNAMNR2w85Q7TTOp3o3+PkV18u2esxqld5qdvb8alfXH3NfDwXTDMrGfqhaukekiaxSJsQxkMeRVtA7I2pvgI9090Fc/T7u+hMFW0eH5XyUUs+tGf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVR+y+MC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736CDC4CEE9;
-	Tue, 11 Mar 2025 15:30:31 +0000 (UTC)
+	 MIME-Version; b=Z+NB9ZnDOY60UL/9wx8n/e73Dzkl6VyeHS8SP1LpEacCWSrp42SrmsbrMu0cLpET5E/M4BnsSdyzp1jo1R1pbWk1/kLpq8MhO2Cil7UvqHc7P1HRF64bNu8JKWR8Go7VeAxszLLiSnbCRuNFWhUeOe1VCmgYfHXYcbjl0IOjvio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeG+w1XL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B6BC4CEED;
+	Tue, 11 Mar 2025 15:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707031;
-	bh=5kyjepotPYcLicoiFFZXPTaG7m7vFQjS8jzOn2Iw7As=;
+	s=korg; t=1741705643;
+	bh=OeXx6y7QpXUrthWx/FOHKTq7ixcZPeDwNtM0WJgu12Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVR+y+MCXgaqeGFTs8zmhvEOybk1GcpjmEKB2eSzJ7+hxgk0v4+/yNvtobquXFLsI
-	 22iDxPDrgytuKzohL3DEtGnNEH7gVOLzYmltpaM8KVfGCMWativsIXWIBF1ACeZw0/
-	 sSBTTiOO9hEi+xixU67+QdaurVaHlN6Q9MDUN6bQ=
+	b=YeG+w1XLjnsJ+YjxcEJpmfj2U1U+flfiIROv5LyGD45tHyIxiIExb//d/gJOiB9Q0
+	 eUlWDvtjkIO4nHHrqLCeB8k5jotydP2J/Cp7YZZZweLVDRwzh5FAbQm/pHIjUBpJTV
+	 oswtZDWiFQpqJxF6dOLmWILaqakYG36R2ZnKj2Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 209/462] crypto: qce - unregister previously registered algos in error path
-Date: Tue, 11 Mar 2025 15:57:55 +0100
-Message-ID: <20250311145806.619497073@linuxfoundation.org>
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d7e968426f644b567e31@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 106/328] net: usb: rtl8150: enable basic endpoint checking
+Date: Tue, 11 Mar 2025 15:57:56 +0100
+Message-ID: <20250311145719.109617129@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit e80cf84b608725303113d6fe98bb727bf7b7a40d upstream.
+[ Upstream commit 90b7f2961798793275b4844348619b622f983907 ]
 
-If we encounter an error when registering alorithms with the crypto
-framework, we just bail out and don't unregister the ones we
-successfully registered in prior iterations of the loop.
+Syzkaller reports [1] encountering a common issue of utilizing a wrong
+usb endpoint type during URB submitting stage. This, in turn, triggers
+a warning shown below.
 
-Add code that goes back over the algos and unregisters them before
-returning an error from qce_register_algs().
+For now, enable simple endpoint checking (specifically, bulk and
+interrupt eps, testing control one is not essential) to mitigate
+the issue with a view to do other related cosmetic changes later,
+if they are necessary.
 
+[1] Syzkaller report:
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 1 PID: 2586 at drivers/usb/core/urb.c:503 usb_submit_urb+0xe4b/0x1730 driv>
+Modules linked in:
+CPU: 1 UID: 0 PID: 2586 Comm: dhcpcd Not tainted 6.11.0-rc4-syzkaller-00069-gfc88bb11617>
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+RIP: 0010:usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
+Code: 84 3c 02 00 00 e8 05 e4 fc fc 4c 89 ef e8 fd 25 d7 fe 45 89 e0 89 e9 4c 89 f2 48 8>
+RSP: 0018:ffffc9000441f740 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff888112487a00 RCX: ffffffff811a99a9
+RDX: ffff88810df6ba80 RSI: ffffffff811a99b6 RDI: 0000000000000001
+RBP: 0000000000000003 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000001
+R13: ffff8881023bf0a8 R14: ffff888112452a20 R15: ffff888112487a7c
+FS:  00007fc04eea5740(0000) GS:ffff8881f6300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f0a1de9f870 CR3: 000000010dbd0000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ rtl8150_open+0x300/0xe30 drivers/net/usb/rtl8150.c:733
+ __dev_open+0x2d4/0x4e0 net/core/dev.c:1474
+ __dev_change_flags+0x561/0x720 net/core/dev.c:8838
+ dev_change_flags+0x8f/0x160 net/core/dev.c:8910
+ devinet_ioctl+0x127a/0x1f10 net/ipv4/devinet.c:1177
+ inet_ioctl+0x3aa/0x3f0 net/ipv4/af_inet.c:1003
+ sock_do_ioctl+0x116/0x280 net/socket.c:1222
+ sock_ioctl+0x22e/0x6c0 net/socket.c:1341
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __x64_sys_ioctl+0x193/0x220 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fc04ef73d49
+...
+
+This change has not been tested on real hardware.
+
+Reported-and-tested-by: syzbot+d7e968426f644b567e31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d7e968426f644b567e31
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250124093020.234642-1-n.zhandarovich@fintech.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qce/core.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/usb/rtl8150.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/drivers/crypto/qce/core.c
-+++ b/drivers/crypto/qce/core.c
-@@ -45,16 +45,19 @@ static void qce_unregister_algs(struct q
- static int qce_register_algs(struct qce_device *qce)
- {
- 	const struct qce_algo_ops *ops;
--	int i, ret = -ENODEV;
-+	int i, j, ret = -ENODEV;
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index cbadb53bac441..3829b7eb3fc90 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -71,6 +71,14 @@
+ #define MSR_SPEED		(1<<3)
+ #define MSR_LINK		(1<<2)
  
- 	for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
- 		ops = qce_ops[i];
- 		ret = ops->register_algs(qce);
--		if (ret)
--			break;
-+		if (ret) {
-+			for (j = i - 1; j >= 0; j--)
-+				ops->unregister_algs(qce);
-+			return ret;
-+		}
++/* USB endpoints */
++enum rtl8150_usb_ep {
++	RTL8150_USB_EP_CONTROL = 0,
++	RTL8150_USB_EP_BULK_IN = 1,
++	RTL8150_USB_EP_BULK_OUT = 2,
++	RTL8150_USB_EP_INT_IN = 3,
++};
++
+ /* Interrupt pipe data */
+ #define INT_TSR			0x00
+ #define INT_RSR			0x01
+@@ -886,6 +894,13 @@ static int rtl8150_probe(struct usb_interface *intf,
+ 	struct usb_device *udev = interface_to_usbdev(intf);
+ 	rtl8150_t *dev;
+ 	struct net_device *netdev;
++	static const u8 bulk_ep_addr[] = {
++		RTL8150_USB_EP_BULK_IN | USB_DIR_IN,
++		RTL8150_USB_EP_BULK_OUT | USB_DIR_OUT,
++		0};
++	static const u8 int_ep_addr[] = {
++		RTL8150_USB_EP_INT_IN | USB_DIR_IN,
++		0};
+ 
+ 	netdev = alloc_etherdev(sizeof(rtl8150_t));
+ 	if (!netdev)
+@@ -899,6 +914,13 @@ static int rtl8150_probe(struct usb_interface *intf,
+ 		return -ENOMEM;
  	}
  
--	return ret;
-+	return 0;
- }
++	/* Verify that all required endpoints are present */
++	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(intf, int_ep_addr)) {
++		dev_err(&intf->dev, "couldn't find required endpoints\n");
++		goto out;
++	}
++
+ 	tasklet_setup(&dev->tl, rx_fixup);
+ 	spin_lock_init(&dev->rx_pool_lock);
  
- static int qce_handle_request(struct crypto_async_request *async_req)
+-- 
+2.39.5
+
 
 
 
