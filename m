@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-123520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C37A5C58E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93C6A5C810
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F2D37A97BB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DF42167B08
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAFC25DB0A;
-	Tue, 11 Mar 2025 15:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC0725B691;
+	Tue, 11 Mar 2025 15:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kMexcsx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0owB9QR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4801EA80;
-	Tue, 11 Mar 2025 15:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5813C0B;
+	Tue, 11 Mar 2025 15:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706193; cv=none; b=KLE3ThlZdyKGfv4s+LLcnl2skW3nWV/ZSefJ44cZSYSQxkvLeBkIX1NRmU4dokgIEt0r48wJ+Qzc3Y2sx3gq4ejI7bmMkfTZ6ELRTVOwC5Ku+PF11gI2WEBfcrvKpq/78Ot5gJZ20oGC1joWFpv3EQJSDpodx74BXnU11pLgWqc=
+	t=1741707383; cv=none; b=QuSQd1MndxCa8xSaJgiFo9htcwBIzJ5LYc0ZhLlID3nz9qz5iUCHgXQFJrJbgXq4kNeTrrQ2c6nhL28Z/0OolnCdeGNPMM++fWygPGwk123+VCf1fQBuP4peXF0BnCyNtaDhWbnvrhEg5okVhVebZOtxjGZpYRWfU7wWQvgn1Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706193; c=relaxed/simple;
-	bh=3erE5VPvPXlIJiZS8DPbH4LPO+pGurxlwT92ZpgNNlw=;
+	s=arc-20240116; t=1741707383; c=relaxed/simple;
+	bh=z/rLeXWgQ380yO8SpReKAULfUToFKD2zwFxgQFgyIQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWgvlcs2CJcWvMIRXsG+BFyPETQyttA5a1ojr/0SNbBlif/xq+NUtoP9T9asVPt4a9OAti0LU8EjZBDpjbAtd7/AMv0b+2QpWF5f09vdGX1p0DRWPOucceUStOvAXfamYJijGVoByz8KrE3JdV7jWFJ6iCz2B/fSIdBNcELgNf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kMexcsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04874C4CEE9;
-	Tue, 11 Mar 2025 15:16:32 +0000 (UTC)
+	 MIME-Version; b=tgV4YTmvucp0ssLboho0fCPfY4EusZ0ronu21Q/ofJRr/FB5tQwCimecaco37qxokOrK0zT0Z4pUutdwU8XjajQg1cStKSKTbKD/JdW9PxmKTIpGFaLTj/Mc8rSEG43dfwx9dr90y+v+lnXUhtaE0HSGIw4qzQ8qDKtYLr7NKMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0owB9QR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE77C4CEE9;
+	Tue, 11 Mar 2025 15:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706193;
-	bh=3erE5VPvPXlIJiZS8DPbH4LPO+pGurxlwT92ZpgNNlw=;
+	s=korg; t=1741707383;
+	bh=z/rLeXWgQ380yO8SpReKAULfUToFKD2zwFxgQFgyIQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2kMexcsxaNcAw0Hh/Dzf2rrHrzEhUAcdyvnzfx6lgTueS9ZDrJHrTgZBr+ohVoBQF
-	 P8/XqPGjDaZ852Z4IH4trWQtcYm/taswfJ2mrHVaaa4U/AYCqmSF203HbmvBZkcl1N
-	 k9AMaAO5Bd1aMu4UlDLcBonQG42d+OEcAkm4hvB4=
+	b=V0owB9QRaCSXrxkXr5tLeeBwiDRhF9XQee0w7sbhwYqry+GFKObVB3wZrx9R6q/kc
+	 wpzk6DzY8kwMDtxIOlFrb712+Ww1jgsrFM7T+/kKAzjSCwPpYYcbbN3bcc6SxZxGkN
+	 18rPZ5kv2jZp8YXdA3qBgU1kup4QhTtRc+BEW7BI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ingo Molnar <mingo@kernel.org>,
 	Ravi Bangoria <ravi.bangoria@amd.com>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 5.4 266/328] perf/core: Fix low freq setting via IOC_PERIOD
+Subject: [PATCH 5.10 370/462] perf/core: Fix low freq setting via IOC_PERIOD
 Date: Tue, 11 Mar 2025 16:00:36 +0100
-Message-ID: <20250311145725.479327746@linuxfoundation.org>
+Message-ID: <20250311145812.965813724@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -97,7 +97,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -5217,14 +5217,15 @@ static int perf_event_period(struct perf
+@@ -5603,14 +5603,15 @@ static int _perf_event_period(struct per
  	if (!value)
  		return -EINVAL;
  
