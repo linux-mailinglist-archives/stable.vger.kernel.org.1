@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCEDAA5C802
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEFFA5C5A6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42949188A0D3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC67A1883EDD
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C924C25DB0A;
-	Tue, 11 Mar 2025 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A50825DD0B;
+	Tue, 11 Mar 2025 15:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HouMISvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6lnuSrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DE81E9B06;
-	Tue, 11 Mar 2025 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC66C2405F9;
+	Tue, 11 Mar 2025 15:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707303; cv=none; b=Wv1rMtypDPk8+00wnEgiW3I3LXecpta6NkTA6E7DiqxSFocdzDjHLCXumqy9O7Dwt6+vDz+xEdyaT3KH4RKTTheHdwMaHbEyueXOP7XE6de1uVv/kd6VaJVR2pb5HwReOYBsLBzNcFxZLy7D6B85hz81OKJdSgxxk57+XOVy+nI=
+	t=1741706029; cv=none; b=Vfazgn8RyAcoRmaCCdpw3DvGhwInAXJBeUuRY1yVwzROangRR1XjkE01/n9exKBIpDVW+wCY1pL1KyQ93pL5ZJnxuIFlDZXitXg9wndIKwzkhZx5HtBMKPerIkg9OTmd6a+t7JAWyYP3Iyw2v3rUCeCf2SIzYgydGQTU3O1cFGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707303; c=relaxed/simple;
-	bh=kDzOph7E7RgZbuac6dOhjgb+oG4sVt0LhTmKEmRdik0=;
+	s=arc-20240116; t=1741706029; c=relaxed/simple;
+	bh=uiPNJeb9V72H9Nst+2OJd1uICSCsIQuDjWgEbwjv3/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WhAZ/oDzBtE5i/xYVjOpPUCaVoEnFD/4ZydiRAxHPT+Up3rnIDXD43hgCNsRgw2aelo3N5/n12hxxovBwZ/+GS5rczLASumZDXQ2z+CiCYs6hNhkQUau9yNG2vwut00DSremDirs03NyJYaF9zf9AoxfIZLm6hOppAWATHds+0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HouMISvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EE9C4CEE9;
-	Tue, 11 Mar 2025 15:35:02 +0000 (UTC)
+	 MIME-Version; b=uEvp73aruMMHm0Ei3dg3AXmw5qpGvYo8GgCmAaY1mkJpAFaa+GtxKqc+CKCxyk+EmMuxDPNFPAfwR/1QUFss3S8P4xlc4kflKofmyr2ifDM4ioJgSLnJZc5/yJK4ArNLflucuV+Ive1upJvshqzKkHXi/35Jt9avqInpcBKaJ3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6lnuSrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16599C4CEEA;
+	Tue, 11 Mar 2025 15:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707303;
-	bh=kDzOph7E7RgZbuac6dOhjgb+oG4sVt0LhTmKEmRdik0=;
+	s=korg; t=1741706029;
+	bh=uiPNJeb9V72H9Nst+2OJd1uICSCsIQuDjWgEbwjv3/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HouMISvpqkkLrPJIQllM/MNVd+ePdZHALryh3tCHdt21aAqV7cyPt1yOuybuUjnrB
-	 laKgJme0yI7YEn1vCMCA38niGC/6uIGk3QuNF2HwBRjxWf5Gdx1AOF8VpB83dTZGMM
-	 mKDBGU1KAIP6FtsS0MOhDtGE7E56v6iMZn21CIyw=
+	b=D6lnuSrCM7fi2fsHEvXW3RguqtoOHYQHdQ26K6/q2rKaQxLsngevT+KElpRrGan1q
+	 IDRFfh4RPnFm4YxSZXgq3eEEz6TCGJEVJ7a07iIH3EVVlFxrnVjrq+6YoKl/CpET8D
+	 Bw2dedbgPMGKoEC/KO210q2k1OrXsFZ5yMa07K/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yan Zhai <yan@cloudflare.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Felipe Balbi <balbi@kernel.org>,
+	Davidlohr Bueso <dbueso@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 342/462] bpf: skip non exist keys in generic_map_lookup_batch
+Subject: [PATCH 5.4 238/328] usb/gadget: f_midi: Replace tasklet with work
 Date: Tue, 11 Mar 2025 16:00:08 +0100
-Message-ID: <20250311145811.875099933@linuxfoundation.org>
+Message-ID: <20250311145724.373537889@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-[ Upstream commit 5644c6b50ffee0a56c1e01430a8c88e34decb120 ]
+[ Upstream commit 8653d71ce3763aedcf3d2331f59beda3fecd79e4 ]
 
-The generic_map_lookup_batch currently returns EINTR if it fails with
-ENOENT and retries several times on bpf_map_copy_value. The next batch
-would start from the same location, presuming it's a transient issue.
-This is incorrect if a map can actually have "holes", i.e.
-"get_next_key" can return a key that does not point to a valid value. At
-least the array of maps type may contain such holes legitly. Right now
-these holes show up, generic batch lookup cannot proceed any more. It
-will always fail with EINTR errors.
+Currently a tasklet is used to transmit input substream buffer
+data. However, tasklets have long been deprecated as being too
+heavy on the system by running in irq context - and this is not
+a performance critical path. If a higher priority process wants
+to run, it must wait for the tasklet to finish before doing so.
 
-Rather, do not retry in generic_map_lookup_batch. If it finds a non
-existing element, skip to the next key. This simple solution comes with
-a price that transient errors may not be recovered, and the iteration
-might cycle back to the first key under parallel deletion. For example,
-Hou Tao <houtao@huaweicloud.com> pointed out a following scenario:
+Deferring work to a workqueue and executing in process context
+should be fine considering the callback already does
+f_midi_do_transmit() under the transmit_lock and thus changes in
+semantics are ok regarding concurrency - tasklets being serialized
+against itself.
 
-For LPM trie map:
-(1) ->map_get_next_key(map, prev_key, key) returns a valid key
-
-(2) bpf_map_copy_value() return -ENOMENT
-It means the key must be deleted concurrently.
-
-(3) goto next_key
-It swaps the prev_key and key
-
-(4) ->map_get_next_key(map, prev_key, key) again
-prev_key points to a non-existing key, for LPM trie it will treat just
-like prev_key=NULL case, the returned key will be duplicated.
-
-With the retry logic, the iteration can continue to the key next to the
-deleted one. But if we directly skip to the next key, the iteration loop
-would restart from the first key for the lpm_trie type.
-
-However, not all races may be recovered. For example, if current key is
-deleted after instead of before bpf_map_copy_value, or if the prev_key
-also gets deleted, then the loop will still restart from the first key
-for lpm_tire anyway. For generic lookup it might be better to stay
-simple, i.e. just skip to the next key. To guarantee that the output
-keys are not duplicated, it is better to implement map type specific
-batch operations, which can properly lock the trie and synchronize with
-concurrent mutators.
-
-Fixes: cb4d03ab499d ("bpf: Add generic support for lookup batch op")
-Closes: https://lore.kernel.org/bpf/Z6JXtA1M5jAZx8xD@debian.debian/
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/85618439eea75930630685c467ccefeac0942e2b.1739171594.git.yan@cloudflare.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Cc: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Felipe Balbi <balbi@kernel.org>
+Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+Link: https://lore.kernel.org/r/20210111042855.73289-1-dave@stgolabs.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 4ab37fcb4283 ("USB: gadget: f_midi: f_midi_complete to call queue_work")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/usb/gadget/function/f_midi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index b5d9bba738347..008bb4e5c4ddc 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -1406,8 +1406,6 @@ int generic_map_update_batch(struct bpf_map *map,
- 	return err;
+diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+index 71aeaa2302edd..01c5736d381ef 100644
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -87,7 +87,7 @@ struct f_midi {
+ 	struct snd_rawmidi_substream *out_substream[MAX_PORTS];
+ 
+ 	unsigned long		out_triggered;
+-	struct tasklet_struct	tasklet;
++	struct work_struct	work;
+ 	unsigned int in_ports;
+ 	unsigned int out_ports;
+ 	int index;
+@@ -698,9 +698,11 @@ static void f_midi_transmit(struct f_midi *midi)
+ 	f_midi_drop_out_substreams(midi);
  }
  
--#define MAP_LOOKUP_RETRIES 3
--
- int generic_map_lookup_batch(struct bpf_map *map,
- 				    const union bpf_attr *attr,
- 				    union bpf_attr __user *uattr)
-@@ -1417,8 +1415,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
- 	void __user *values = u64_to_user_ptr(attr->batch.values);
- 	void __user *keys = u64_to_user_ptr(attr->batch.keys);
- 	void *buf, *buf_prevkey, *prev_key, *key, *value;
--	int err, retry = MAP_LOOKUP_RETRIES;
- 	u32 value_size, cp, max_count;
-+	int err;
+-static void f_midi_in_tasklet(struct tasklet_struct *t)
++static void f_midi_in_work(struct work_struct *work)
+ {
+-	struct f_midi *midi = from_tasklet(midi, t, tasklet);
++	struct f_midi *midi;
++
++	midi = container_of(work, struct f_midi, work);
+ 	f_midi_transmit(midi);
+ }
  
- 	if (attr->batch.elem_flags & ~BPF_F_LOCK)
- 		return -EINVAL;
-@@ -1464,14 +1462,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
- 		err = bpf_map_copy_value(map, key, value,
- 					 attr->batch.elem_flags);
+@@ -737,7 +739,7 @@ static void f_midi_in_trigger(struct snd_rawmidi_substream *substream, int up)
+ 	VDBG(midi, "%s() %d\n", __func__, up);
+ 	midi->in_ports_array[substream->number].active = up;
+ 	if (up)
+-		tasklet_hi_schedule(&midi->tasklet);
++		queue_work(system_highpri_wq, &midi->work);
+ }
  
--		if (err == -ENOENT) {
--			if (retry) {
--				retry--;
--				continue;
--			}
--			err = -EINTR;
--			break;
--		}
-+		if (err == -ENOENT)
-+			goto next_key;
+ static int f_midi_out_open(struct snd_rawmidi_substream *substream)
+@@ -875,7 +877,7 @@ static int f_midi_bind(struct usb_configuration *c, struct usb_function *f)
+ 	int status, n, jack = 1, i = 0, endpoint_descriptor_index = 0;
  
- 		if (err)
- 			goto free_buf;
-@@ -1486,12 +1478,12 @@ int generic_map_lookup_batch(struct bpf_map *map,
- 			goto free_buf;
- 		}
- 
-+		cp++;
-+next_key:
- 		if (!prev_key)
- 			prev_key = buf_prevkey;
- 
- 		swap(prev_key, key);
--		retry = MAP_LOOKUP_RETRIES;
--		cp++;
- 		cond_resched();
- 	}
- 
+ 	midi->gadget = cdev->gadget;
+-	tasklet_setup(&midi->tasklet, f_midi_in_tasklet);
++	INIT_WORK(&midi->work, f_midi_in_work);
+ 	status = f_midi_register_card(midi);
+ 	if (status < 0)
+ 		goto fail_register;
 -- 
 2.39.5
 
