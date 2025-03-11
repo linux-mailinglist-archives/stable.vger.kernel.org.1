@@ -1,95 +1,95 @@
-Return-Path: <stable+bounces-124082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C418AA5CE49
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 19:55:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D35A5CE80
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 20:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81891189CE14
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 18:55:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B1D3AC2B6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 19:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403B1263C63;
-	Tue, 11 Mar 2025 18:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F412A2638AD;
+	Tue, 11 Mar 2025 19:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="qQxbR3Aw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NcIYL7Pd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77598263F21
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 18:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0613E262D37;
+	Tue, 11 Mar 2025 19:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741719319; cv=none; b=Q8l5CZJkBW1Zxe0DcOI21q7rHyElF5615nmZDmDZbUaoK+/Zkw1uHPbWA8JtzADxTc6rcSrsPrKYu1KowJdEp6rGJj7EkemsMuZC38FlrcTxiB71k1omxBHsCte1cKZ6xS4OrlckXE3fKNSk2CIQVyOQUBX/qeKtH5d3GEkLlvU=
+	t=1741719727; cv=none; b=HLVWzsI3v9k8jzi6jrqpi13c4FMFIxppTwihX7OrvVVZzof731KLT0iTTkz7aGnoHSFRpLnxzB6nQSexre35nb53etNOsS3VJcon6eWPpSuatYG9TaFqjCKMqII7trRgHP4cWgwzDUXx3iF5PAacmlg2DQOT0UGFaiC4HVH2ghA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741719319; c=relaxed/simple;
-	bh=lEv9KAefd2yfb86VxG1Rub41m4O0Iv5J9qHlmrrwolE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EuTVd1wnT0N8skjTA3rWyvezVF+4zfEFJfYqQlUmRMZDPoHOsB8fj/BMJIveMTK/NzozKQILLNPI8rZA73mw2XWwH7ejJ3tOtPpQCrgQfKpLl0pGAfFL3eBno38VHl39r4hEC7YrcgELhI/WqY4SGmP+S1IzqTc/3yXE15r5QGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=qQxbR3Aw; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 358DC3FCC9
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 18:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1741719309;
-	bh=RQ2VDqmBaVKoQBHQqIkL0ZuVfNAHWQdvrcZqI3qFMp0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=qQxbR3AwZO3pl5Mjo3g0Wn/bWwdFAjaHoWGqPb3Zu3wXZIBqIouTZEsluNZvO1W2G
-	 kFXREY/2kxcGtMg7zEuzziQ4jsegOGU7UmHGDTOYK/AbIdHfHJz2bzLeMPM8YCat87
-	 cgJA9B2Sh1hdu+vIIMyxvf8y2Z0B0BakePu9v9C2uvfRdAYC5kugLA9RJSA4x9LjKr
-	 ZHkRzVTb8noEND7jZLHzq7bZyvG+3d573Y37Bb88EKcl+//qZpYax3R3JxeUoWkmhQ
-	 s3iIgNAt1tH3QpKPLwgJOytME424MPPYRBgIu0elaH6jBsUSYnQOMnVMLfuWIk20kx
-	 hbuzv8PMQEHnQ==
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-22412127fd7so70149465ad.0
-        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 11:55:09 -0700 (PDT)
+	s=arc-20240116; t=1741719727; c=relaxed/simple;
+	bh=ZyKzSu+s1wOfR3oHKYaz0cQlG4dgr/gjkEwJavyClh0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dFKV/D/HtDD7SmdTStmHYl/n3NNydLi9K2yMzNWm73XoQhM9ZOWSTwIyBZQ4AdeRUdrErkCPf93yqAvWm5vj9UEbHWH4TGwjuln5yjOXj/WJH4AVb4bGUj153MKagaGAQy3NMwRM3447854LX2TUrtW94RlCvMXopI4FWFrgw4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NcIYL7Pd; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cfdc2c8c9so14350285e9.2;
+        Tue, 11 Mar 2025 12:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741719719; x=1742324519; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZM/C0Y6KtCo6GXxz4sTkdCklkA06E/YKrVilZFUzRyI=;
+        b=NcIYL7Pda1XBjInNUJICIMj7kAsZqWoRQXgY04wjFQ5m44DueBKzx85gPe2cubln/O
+         rt7o+9mA3ChGCPHbr4ymf/xI7Sv35GyLzbKejLJiEI4xEPCyPEvHuQJuPRPiKNFwLjz4
+         EuJMjl76er6Zhgw6k6OSq+94x2JlOA7A2SVFhSR4wKJuw8ajnHAFioB/+JRFJxFF4dcp
+         olI7vGu0Wu6VtUpWTpKx1prMbJAADTH9tlqMtuRSR01o5FRViM+TZmCrQYpi7Vmq0gvO
+         BXC6ndPsdCWoJYptrE5CiiwlNzfJZ7XK6UHW1QOj7M21Mai+sC05/fQ0EHuQF6E9kHCq
+         3EMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741719307; x=1742324107;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RQ2VDqmBaVKoQBHQqIkL0ZuVfNAHWQdvrcZqI3qFMp0=;
-        b=EDnvL9tbZ8qQwIt1+bMwWLeuB06td9cn65w7AnePSbZwXDC3rfb10qNjVXIBUBu/7G
-         Zpyde23tpVdonFggaEHah1R1HO+tm5VEnk0H2XSjMo2W3IyuHE9vDcErD6w91J66gU4D
-         l3e/K1hKJA7W2+QD9iOEa9wT5jzTZrUlbH9lxl+4ti/2J9aRbq/9087Ut8D8wubscTHN
-         uqngO/LnTZnFjDc3pX89EDYq9jX4xC820SbvJda/zJU4+HxDaHrA7oz4E9kp+pu0ajcJ
-         mGO3q5lsieQzBCeDeznk8DhWGnqBgE9oaDnrt0sbN/PL64uDeYGkdSXu4nBDMTiBxw0u
-         OgYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXDSRRCDq4O7MVKxq4oeV67J+wVxWCdqhg7dlZA5gyWdHi2q0erZHOIualGE9oyUr3kDEO+KVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLJU66f+QKzuFFw8zI/HZGLFPqp7/9uNCGRJuemrpQtQ9tesda
-	BqkuFcUM0ksmHUs6uilbwyIU/rBpMoNbtPCmR9G5NIWfSAneylqSTqX5ueq5B9IqChtZ+yUo6kp
-	CE8uSkGf/wPFJt+tn3vtIYoVwaslFKYvu9IiU6/YroEaXcz17nJu0S9L5sWzjtmM3aHL3WA==
-X-Gm-Gg: ASbGncs+5AWmpwcMpLaQIL1MUfQfJ3UH21dwHGS+T6dFYd2muIFC/8JHxt79NuMy28q
-	ioHpjqqrAz23Y73LAHMcBFdviYZF/4nOD/a17oul9+yUGkOX+Jvf1wppQihsWD3R6+WboxQVa7Z
-	np6zNARbTmHWA/HHg3uYFngl8FSGzbg1XvVmSddVBbvVdQIOvS1d2pnIGYlGJCSdEM0ASUI6c39
-	V1DiZ2Mr29Iwl2vHU0g6hSEfweAaXmxWlnq73RJ3QUbLylrAvHjRMEW6LdKh+F7k4Cu4GN/ASHd
-	2DT70SqzNZxk0RcY36b5tAvscLquxsJ0ufLNwI4=
-X-Received: by 2002:a17:902:e810:b0:223:432b:593d with SMTP id d9443c01a7336-22428c07537mr278500605ad.42.1741719307280;
-        Tue, 11 Mar 2025 11:55:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFODX0DpL067+G4X5LwxSNwfKA8jfMsrOgCmOYv3Sj+MLeddpbtqGnpwrNflh6318Q1zeKNIw==
-X-Received: by 2002:a17:902:e810:b0:223:432b:593d with SMTP id d9443c01a7336-22428c07537mr278500435ad.42.1741719306917;
-        Tue, 11 Mar 2025 11:55:06 -0700 (PDT)
-Received: from localhost.localdomain ([2804:14c:14a:818e:75a2:81f6:e60e:e8f1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410a7f77esm101765875ad.139.2025.03.11.11.55.05
+        d=1e100.net; s=20230601; t=1741719719; x=1742324519;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZM/C0Y6KtCo6GXxz4sTkdCklkA06E/YKrVilZFUzRyI=;
+        b=J71HXE3ToejnpKNijdzuFPX35ptOJRzAWmKEois8GsoE9ZfoF8n1KK8EfQfLrIiZ+f
+         /O3BFIZ8Yqx39Ivy4YaafFMGtGBhrHO1X31Y/2PlvgHs2Y+vmQocqJzPr4DNwXgCrJNI
+         1d9cH8Hk9mNW3EIA8g3j/p1YHckys2NlEw6vfaMOrdU0p3ryll/O4kV6oJe8Si3w6e0/
+         RicEoHDV8g0RPsJk4Spwq7E6AjK+J6tLECsE4ai4qeMcvbEccUro3iOa0oqYyobunC7z
+         LfFCrh8aW19GpCLyTdtx/RnUrFppBfDPIQ25lFvIMCmejfmoa2u7DAg3Uui9LZP4fHRt
+         zRdw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5036/7UGGl2yvhEOYNpaImj4QJQggymaL7y/WC7cN77+Q5g3LAb2ExRniutwWknmN+WQOuxIevi1sct0=@vger.kernel.org, AJvYcCWwJf/3tvbqBDfitKkqhpPj3a6s7CONgSCQe4zKL1GzWvMf0hAy4PkU+XQDNiK9s8G75900Z3U2@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmHGITXqfXD+B26v994t+5vHO4JjWXKk39Ik4LD6mHtt35HFGe
+	3b9bQcbk0jdCIXsN5/zvYIZP27bKPrq5Jy/8xiKbD3ckBJ1GPpOY
+X-Gm-Gg: ASbGncsLU+0P6R4RuA/hAdRStklHLNLLfaoUOmomtLS4XVEMtcol3Ou+RLE7SSBABgg
+	g9LABeiVmuQ6icxf9v9DCr7AraQ2J8zoyL5IWDGAAKsy+9idNmtmvnelQWtFsqaJkRw+sYDlWRX
+	jOILxtfOFzm14O5YAlqYOFmq7N5bkofDCKkvfzJtGiBzqB3tPcMYf+EawIbzE3CrthwTff4i8ea
+	RpGP857tT7xcMr+T0Awnky1Q7Ahw0cmQVUSQl8/Qbt0DPSmI8uavgUMgKKzJDRJSPKfMfOegtzo
+	5GfwEZh+foYq+U+XIHT1Y/i8dEXOS0pmfkxIOHzaft3CGQ==
+X-Google-Smtp-Source: AGHT+IF8L17vBaDo66fasMWl6iiHkxzIXdBOdv+IvwdgmD89ZI0aTDkON53jTbr9t1d4zfPaflVzqA==
+X-Received: by 2002:a05:600c:4ecb:b0:43c:eeee:b70f with SMTP id 5b1f17b1804b1-43ceeeeba17mr82834005e9.24.1741719718920;
+        Tue, 11 Mar 2025 12:01:58 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:e969:4b33:5aa2:11e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43cfcbdd0a7sm64617655e9.11.2025.03.11.12.01.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 11:55:06 -0700 (PDT)
-From: Magali Lemes <magali.lemes@canonical.com>
-To: gregkh@linuxfoundation.org,
+        Tue, 11 Mar 2025 12:01:58 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: christian.koenig@amd.com,
+	ray.huang@amd.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	thomas.hellstrom@linux.intel.com,
+	Arunpravin.PaneerSelvam@amd.com,
+	karolina.stolarek@intel.com,
+	jeff.johnson@oss.qualcomm.com,
+	bigeasy@linutronix.de
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.4 4/4] sctp: sysctl: auth_enable: avoid using current->nsproxy
-Date: Tue, 11 Mar 2025 15:54:27 -0300
-Message-Id: <20250311185427.1070104-5-magali.lemes@canonical.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250311185427.1070104-1-magali.lemes@canonical.com>
-References: <20250311185427.1070104-1-magali.lemes@canonical.com>
+Subject: [PATCH] drm/ttm/tests: fix potential null pointer dereference in ttm_bo_unreserve_bulk()
+Date: Tue, 11 Mar 2025 19:01:38 +0000
+Message-Id: <20250311190138.17276-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,53 +98,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+In the ttm_bo_unreserve_bulk() test function, resv is allocated 
+using kunit_kzalloc(), but the subsequent assertion mistakenly 
+verifies the ttm_dev pointer instead of checking the resv pointer. 
+This mistake means that if allocation for resv fails, the error will 
+go undetected, resv will be NULL and a call to dma_resv_init(resv) 
+will dereference a NULL pointer. 
 
-commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
+Fix the assertion to properly verify the resv pointer.
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
-
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
-
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'net' structure can be obtained from the table->data using
-container_of().
-
-Note that table->data could also be used directly, but that would
-increase the size of this fix, while 'sctp.ctl_sock' still needs to be
-retrieved from 'net' structure.
-
-Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
+Fixes: 588c4c8d58c4 ("drm/ttm/tests: Fix a warning in ttm_bo_unreserve_bulk")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
- net/sctp/sysctl.c | 2 +-
+ drivers/gpu/drm/ttm/tests/ttm_bo_test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/sysctl.c b/net/sctp/sysctl.c
-index 4116b3cd83c2..f6fe63f60acd 100644
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -442,7 +442,7 @@ static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
- 			     void __user *buffer, size_t *lenp,
- 			     loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
- 	struct ctl_table tbl;
- 	int new_value, ret;
+diff --git a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
+index f8f20d2f6174..e08e5a138420 100644
+--- a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
++++ b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
+@@ -340,7 +340,7 @@ static void ttm_bo_unreserve_bulk(struct kunit *test)
+ 	KUNIT_ASSERT_NOT_NULL(test, ttm_dev);
  
+ 	resv = kunit_kzalloc(test, sizeof(*resv), GFP_KERNEL);
+-	KUNIT_ASSERT_NOT_NULL(test, ttm_dev);
++	KUNIT_ASSERT_NOT_NULL(test, resv);
+ 
+ 	err = ttm_device_kunit_init(priv, ttm_dev, false, false);
+ 	KUNIT_ASSERT_EQ(test, err, 0);
 -- 
-2.48.1
+2.39.5
 
 
