@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-123503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F019A5C5EB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65897A5C84C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 469E73B90DE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E0716AB12
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1322E25C6ED;
-	Tue, 11 Mar 2025 15:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024A25EFB4;
+	Tue, 11 Mar 2025 15:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUHCbVkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsJGjbLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C329E1EA80;
-	Tue, 11 Mar 2025 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B42255E37;
+	Tue, 11 Mar 2025 15:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706146; cv=none; b=A5SKiG61rEp+uvrO7Ml4tyPKKqi23QjCZzxvbSrtZG1CJQ1rGKsqHeYwsB38QEEcMh2iTIeJkEzoJP7ksxU9lIhJgI5sHNy9UliR4QEBkdav7jhgBXN2ApCiTbALFxxn6o/zn2Oj1tbTqZ2tEKcK0KYQ5hu9/7ueuYKHWcmPZMM=
+	t=1741707508; cv=none; b=BvMtHPMfCqDU52Jsm/Fr3NmEUNn9rdtFI1TwTzIeMSpincIqeO/Myyaibbph/WZ7uM9RVABetuHKxtBIfLc9U5XaJVG+DR9moik8xj4hC42xNwwgRB1L8ZAheEjFawnoWMOuo4rYXXP+Ig6PYSeaHyYqC/0PjTsaXJbLJCS0BQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706146; c=relaxed/simple;
-	bh=1t/TFM5XFOOC5zVaHl5XXFRMna+o6Xe9KjiS3YRv+WI=;
+	s=arc-20240116; t=1741707508; c=relaxed/simple;
+	bh=oc+O386Yz6cwTDbYEFmBgrH+Bbk3ryPf6Yrdlv/hFu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rW5rgAC6nQpFVUC1m7EBpmaV3zkRk5NfLJ4TkFg2YxYeuFYW1UilynlThrBk4SfMLoV2KZqKQlurW9Dxifw9lfRLE2bSzEeftBz6mRrgqaJIyBmuCaDjRj5V4lt4w3RneD1qv/ItcXYuLYWwdn0XhzS//mtDZ/Y4TR6e1Ybv03s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUHCbVkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA66C4CEE9;
-	Tue, 11 Mar 2025 15:15:45 +0000 (UTC)
+	 MIME-Version; b=ZHE0BcOrwBoa82Bf0Yp1fgCakAVSSs7HqU1QFq5uaxVFWTcrV5cjIayDC8C+xYtbyjTVWtyTcG8z+8pe6XQdWWCYI51z2/aQQeqLR/LD6XRCV6JQFQGlu8YShnfYFiVF2MiW4OA5KbSfII3q2qNwiznQUUVKNtZGkzj+/LrKcHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsJGjbLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6768C4CEEA;
+	Tue, 11 Mar 2025 15:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706146;
-	bh=1t/TFM5XFOOC5zVaHl5XXFRMna+o6Xe9KjiS3YRv+WI=;
+	s=korg; t=1741707508;
+	bh=oc+O386Yz6cwTDbYEFmBgrH+Bbk3ryPf6Yrdlv/hFu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUHCbVkUs7vRMgi4R6ChcVRxWl+8V9ixD402t0p3TcWHrS0bfvjOEtO/CeE/uuEXY
-	 72ef/t1SE9/AhZDJXOm8JxkkiYqyPVQ34pMRGJSW3D0DEdHQMFvN3oGA//fC8CrmSc
-	 476rGRft2ihvDNIO8nEXHXq7/v0rujm84XZsk5/g=
+	b=YsJGjbLanV4Q2SzxjYETf57mr+Vw1qXqrXM7utpfLe/H0pVe34DGdUfFwwqzYqvzz
+	 RHI481aVrl1OyBXhiHaUB4NmTNYQGjtmjcL8tx2MlmYnp9u6RJqoyjm9eqzmuFOtYT
+	 9Vvvw0kLQ/SFOf6XksO5D570F4t/QhlgxzsCZRMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Yang <yang.yang29@zte.com.cn>,
+	Zeal Robot <zealci@zte.com.cn>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"sh_def@163.com" <sh_def@163.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 278/328] drm/amdgpu: disable BAR resize on Dell G5 SE
+Subject: [PATCH 5.10 382/462] kernel/acct.c: use dedicated helper to access rlimit values
 Date: Tue, 11 Mar 2025 16:00:48 +0100
-Message-ID: <20250311145725.966626873@linuxfoundation.org>
+Message-ID: <20250311145813.439502106@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +66,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Yang Yang <yang.yang29@zte.com.cn>
 
-[ Upstream commit 099bffc7cadff40bfab1517c3461c53a7a38a0d7 ]
+[ Upstream commit 3c91dda97eea704ac257ddb138d1154adab8db62 ]
 
-There was a quirk added to add a workaround for a Sapphire
-RX 5600 XT Pulse that didn't allow BAR resizing.  However,
-the quirk caused a regression with runtime pm on Dell laptops
-using those chips, rather than narrowing the scope of the
-resizing quirk, add a quirk to prevent amdgpu from resizing
-the BAR on those Dell platforms unless runtime pm is disabled.
+Use rlimit() helper instead of manually writing whole chain from
+task to rlimit value. See patch "posix-cpu-timers: Use dedicated
+helper to access rlimit values".
 
-v2: update commit message, add runpm check
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1707
-Fixes: 907830b0fc9e ("PCI: Add a REBAR size quirk for Sapphire RX 5600 XT Pulse")
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5235053f443cef4210606e5fb71f99b915a9723d)
-Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20210728030822.524789-1-yang.yang29@zte.com.cn
+Signed-off-by: Yang Yang <yang.yang29@zte.com.cn>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: sh_def@163.com <sh_def@163.com>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 56d5f3eba3f5 ("acct: perform last write from workqueue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/acct.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index dc8ed896d05f0..69bfaa9a8f90b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -766,6 +766,13 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
- 
-+	/* resizing on Dell G5 SE platforms causes problems with runtime pm */
-+	if ((amdgpu_runtime_pm != 0) &&
-+	    adev->pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    adev->pdev->device == 0x731f &&
-+	    adev->pdev->subsystem_vendor == PCI_VENDOR_ID_DELL)
-+		return 0;
-+
- 	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
- 	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
- 		DRM_WARN("System can't access extended configuration space,please check!!\n");
+diff --git a/kernel/acct.c b/kernel/acct.c
+index a7e29ca8f3591..2b2224b7ae55a 100644
+--- a/kernel/acct.c
++++ b/kernel/acct.c
+@@ -494,7 +494,7 @@ static void do_acct_process(struct bsd_acct_struct *acct)
+ 	/*
+ 	 * Accounting records are not subject to resource limits.
+ 	 */
+-	flim = current->signal->rlim[RLIMIT_FSIZE].rlim_cur;
++	flim = rlimit(RLIMIT_FSIZE);
+ 	current->signal->rlim[RLIMIT_FSIZE].rlim_cur = RLIM_INFINITY;
+ 	/* Perform file operations on behalf of whoever enabled accounting */
+ 	orig_cred = override_creds(file->f_cred);
 -- 
 2.39.5
 
