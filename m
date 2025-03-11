@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F062A5C605
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBAEA5C860
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0942E189B94B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D505189EF82
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD10525E820;
-	Tue, 11 Mar 2025 15:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37E125F7BD;
+	Tue, 11 Mar 2025 15:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDxUEESA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKtBeBkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DD825BACC;
-	Tue, 11 Mar 2025 15:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BCF255E37;
+	Tue, 11 Mar 2025 15:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706219; cv=none; b=tVoMJfJKUr5wIyliwstmrWUgum1uzckaY6iCwA3XUV5c390yI/MepQjT4CvAMcHlwDeWKUBNdTDiQaXseXfxhME27su4v7HkQKrI2fsnEFQK3yctmmWXswGMSwDydFwnI4wRIAF4QaON4XAk6NucClxEd8q7F70tLm22cjGSGi0=
+	t=1741707493; cv=none; b=Ffw8XcS2mZ8M5JxqW3HMzY4AyhO81wbKi0rvX1qmRBIUhrZr8S6Bw7mcqq9uB41gMZmuefhcQMW2OBh2DHe5+KxDi+ef2Lf0GGokjCzOyor8HaI0IXvfPyk5w936N2gRZCMFcMzlgGCSjNh0a6W1UNyqO74oxoWyjAwYeSp0pJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706219; c=relaxed/simple;
-	bh=JAomuqRT7RiwNi2PkFcuDGFeKAAHfsvriFsiS15YEHM=;
+	s=arc-20240116; t=1741707493; c=relaxed/simple;
+	bh=y5m6IlI+OyXD2p3W1CqR6xprUvOX64n/Fs41gQ4QS9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QShtexyFuK8tMWYX3dkOudPylqvYyJhwnRwB8wRcx7+6tXhe+FiHQYS/xvLvoQpPIPr8Cmvb0QPSLWfXKetofaY3lRefP31bkt53kNkZ25uf1cZAYqyxQO0Wq4r06inrlAgxAPrHxtZkdGCmTwgOY/lgStj/jCWJp8vJ23/60SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDxUEESA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA43C4CEE9;
-	Tue, 11 Mar 2025 15:16:58 +0000 (UTC)
+	 MIME-Version; b=sEWHXYhqA9TucLtoDFhWFIAPuQlHzJcBUGR5vLXECHGRgOuxHijnqAGi00kXLUvZ978UdH1QYx4ZSXWiMmxFFJR8xDtzAT/S+Q28+BxU0KPyraiMME3pUWgcjHmQo6FpbDxByyFhr+WrYL0GPEVoYzWXvIlC1/yEtzdg4YMGa9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKtBeBkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDECC4CEE9;
+	Tue, 11 Mar 2025 15:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706219;
-	bh=JAomuqRT7RiwNi2PkFcuDGFeKAAHfsvriFsiS15YEHM=;
+	s=korg; t=1741707493;
+	bh=y5m6IlI+OyXD2p3W1CqR6xprUvOX64n/Fs41gQ4QS9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDxUEESA6Tgbk3QP4oQfoOecW/dyr8khsnoTCX1poBlTtjg0x1RHRs+fH7MQbU9LO
-	 Ihl05hq9EiO06s+hXzuS5jK+3DRZZM52wH7KHcSQdxBj+OH5lycoTjMIz+MnjulC/i
-	 sO3etZ94XhphwkJ1vxlqgVeblTdR4+zKOJDuJMtU=
+	b=wKtBeBkQX+nTsZkf6f9c4va3wI4BUu22AjdF7yP9GmK/nvpvad5ZrEuBcJeFD+1xQ
+	 FHrbv0DilH6C2swChJ+8ZEWJMDL9+UVNGzMNtgjX+zjt+uSZUwksV2w+gmw59LpmGo
+	 7tAs6FsrxsIHCd8HGE4KrHPClwXnoNZ1mv+Qv2w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Philipp Stanner <phasta@kernel.org>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 303/328] drm/sched: Fix preprocessor guard
+Subject: [PATCH 5.10 407/462] HID: intel-ish-hid: Fix use-after-free issue in ishtp_hid_remove()
 Date: Tue, 11 Mar 2025 16:01:13 +0100
-Message-ID: <20250311145726.950683818@linuxfoundation.org>
+Message-ID: <20250311145814.410723738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 23e0832d6d7be2d3c713f9390c060b6f1c48bf36 ]
+[ Upstream commit 07583a0010696a17fb0942e0b499a62785c5fc9f ]
 
-When writing the header guard for gpu_scheduler_trace.h, a typo,
-apparently, occurred.
+The system can experience a random crash a few minutes after the driver is
+removed. This issue occurs due to improper handling of memory freeing in
+the ishtp_hid_remove() function.
 
-Fix the typo and document the scope of the guard.
+The function currently frees the `driver_data` directly within the loop
+that destroys the HID devices, which can lead to accessing freed memory.
+Specifically, `hid_destroy_device()` uses `driver_data` when it calls
+`hid_ishtp_set_feature()` to power off the sensor, so freeing
+`driver_data` beforehand can result in accessing invalid memory.
 
-Fixes: 353da3c520b4 ("drm/amdgpu: add tracepoint for scheduler (v2)")
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250218124149.118002-2-phasta@kernel.org
+This patch resolves the issue by storing the `driver_data` in a temporary
+variable before calling `hid_destroy_device()`, and then freeing the
+`driver_data` after the device is destroyed.
+
+Fixes: 0b28cb4bcb17 ("HID: intel-ish-hid: ISH HID client driver")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/gpu_scheduler_trace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/intel-ish-hid/ishtp-hid.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
-index d79086498affe..4fe2a87705040 100644
---- a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
-+++ b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
-@@ -21,7 +21,7 @@
-  *
+diff --git a/drivers/hid/intel-ish-hid/ishtp-hid.c b/drivers/hid/intel-ish-hid/ishtp-hid.c
+index b8aae69ad15d7..ef52368557715 100644
+--- a/drivers/hid/intel-ish-hid/ishtp-hid.c
++++ b/drivers/hid/intel-ish-hid/ishtp-hid.c
+@@ -263,12 +263,14 @@ int ishtp_hid_probe(unsigned int cur_hid_dev,
   */
+ void ishtp_hid_remove(struct ishtp_cl_data *client_data)
+ {
++	void *data;
+ 	int i;
  
--#if !defined(_GPU_SCHED_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
-+#if !defined(_GPU_SCHED_TRACE_H_) || defined(TRACE_HEADER_MULTI_READ)
- #define _GPU_SCHED_TRACE_H_
- 
- #include <linux/stringify.h>
-@@ -96,7 +96,7 @@ TRACE_EVENT(drm_sched_job_wait_dep,
- 		      __entry->seqno)
- );
- 
--#endif
-+#endif /* _GPU_SCHED_TRACE_H_ */
- 
- /* This part must be outside protection */
- #undef TRACE_INCLUDE_PATH
+ 	for (i = 0; i < client_data->num_hid_devices; ++i) {
+ 		if (client_data->hid_sensor_hubs[i]) {
+-			kfree(client_data->hid_sensor_hubs[i]->driver_data);
++			data = client_data->hid_sensor_hubs[i]->driver_data;
+ 			hid_destroy_device(client_data->hid_sensor_hubs[i]);
++			kfree(data);
+ 			client_data->hid_sensor_hubs[i] = NULL;
+ 		}
+ 	}
 -- 
 2.39.5
 
