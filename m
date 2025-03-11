@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A5AA5C72C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B676FA5C4CF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF103BA03C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40A3D3B7584
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5E525EF8C;
-	Tue, 11 Mar 2025 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D188825E82F;
+	Tue, 11 Mar 2025 15:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4mPiQJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEkqm6Wi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7176F25E813;
-	Tue, 11 Mar 2025 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F34325DAE8;
+	Tue, 11 Mar 2025 15:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706777; cv=none; b=G1T2lb8DoUxvPyXv8nnyAISPC6aXYKSAsxpmpxMNFbXg6fBRPzqPWNQmGDoNSW3IGsGmNVbSUM58hmF7mVNKAYRGVeSFk4zWYjrzh4rpnibIe0GwT2GmXBLE8IeIzPpsT52iHpmszZnrqMpBJIHItYRVzULsBcryP2F/uRlmiTA=
+	t=1741705567; cv=none; b=u/mt/HodTLD7IwAueiS/r1KMrnG6mT+3eXBqOKozQwYyFGM3PyiCI3cEqzDyLxjNajvoOum2tiC0TOt6KuRDumAZimi2TdQCQRKS0kkK+79+vQQ3y7fyC9HFFZtxqfLTlLSjdF7+sxgG2HDWSfiL0psChdCfqWWNtnHvCvW373U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706777; c=relaxed/simple;
-	bh=6+yqkTO0PdTuHvDyd2f6M5PD04a4qU7wsFNvcyo7wBM=;
+	s=arc-20240116; t=1741705567; c=relaxed/simple;
+	bh=vQzrv8nD1EUn8FS/g6xgfli8sroI01FCDsrJataKlMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLmQcZWKdI5CzmR56K0+j2F8/Sxv5EuHTXA+9JvThDAlAp1/oUtoYP3GbCJyGp1ruOGCN9MBYfWmPh0Nhsab6qnMK7Gko5q21exEaM+cJ9gUA0Bs2ZeNr/wh7oHpbI2m4x5do7mplEZHKueGRKfvjaqvXgovsQwGh4sF6ssmFjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4mPiQJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89244C4CEE9;
-	Tue, 11 Mar 2025 15:26:16 +0000 (UTC)
+	 MIME-Version; b=ik/6DaNGf4j9GxMuVW2drLoyoVs0FfgT0DQOOoDQ7wsB2snUG6KLos8LmkCay4M1ZGgXUB6STu8p8zuEXSdgrr3Tpc03LlMLIizzb2t5SxzaAjUtY7W9TNoaDBTkLBGzkCLDyN0a2/GT7tI5LOteJMAB22917msbGfWCzhdZV/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEkqm6Wi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D0FC4CEE9;
+	Tue, 11 Mar 2025 15:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706776;
-	bh=6+yqkTO0PdTuHvDyd2f6M5PD04a4qU7wsFNvcyo7wBM=;
+	s=korg; t=1741705567;
+	bh=vQzrv8nD1EUn8FS/g6xgfli8sroI01FCDsrJataKlMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4mPiQJEzgCQscJ0lGNt0vaF+m6u1GPmakwimtIpUdEB7eNqbRnYXfPf8qI/wWMpF
-	 69aCXFpeyUij8bwgPTYqq9SyDwtDXCrTR1QmXcK21pIX3CAz/r4JTDI/gk5fj09wSn
-	 K+AeICTgPnuBI9+CrfZUavZf5rbsPQ8+u4IZx5tA=
+	b=xEkqm6Wi7ftEc41nWFRKWseS8TdS0/5CKRKwk7BfF2+g0EWgyVKowk2WM6vch0jw1
+	 yb/SGX+CU1+re9/XRGjwkJgSqejVxmJbkMo4b98FhZcLZnjiZ0TObsYN5xBHShhxef
+	 IpPv9E0WXDNtlbqMauQjMk/5V6PPN/i9f8qLDiqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 163/462] cpufreq: s3c64xx: Fix compilation warning
-Date: Tue, 11 Mar 2025 15:57:09 +0100
-Message-ID: <20250311145804.784333135@linuxfoundation.org>
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 060/328] dmaengine: ti: edma: fix OF node reference leaks in edma_driver
+Date: Tue, 11 Mar 2025 15:57:10 +0100
+Message-ID: <20250311145717.282034579@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit 43855ac61483cb914f060851535ea753c094b3e0 upstream.
+[ Upstream commit e883c64778e5a9905fce955681f8ee38c7197e0f ]
 
-The driver generates following warning when regulator support isn't
-enabled in the kernel. Fix it.
+The .probe() of edma_driver calls of_parse_phandle_with_fixed_args() but
+does not release the obtained OF nodes. Thus add a of_node_put() call.
 
-   drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
->> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
-      55 |         unsigned int old_freq, new_freq;
-         |                      ^~~~~~~~
->> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
-      54 |         struct s3c64xx_dvfs *dvfs;
-         |                              ^~~~
+This bug was found by an experimental verification tool that I am
+developing.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
-Cc: 5.4+ <stable@vger.kernel.org> # v5.4+
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1be5336bc7ba ("dmaengine: edma: New device tree binding")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20241219020507.1983124-3-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/s3c64xx-cpufreq.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/dma/ti/edma.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/cpufreq/s3c64xx-cpufreq.c
-+++ b/drivers/cpufreq/s3c64xx-cpufreq.c
-@@ -24,6 +24,7 @@ struct s3c64xx_dvfs {
- 	unsigned int vddarm_max;
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index b570f08888eeb..01089e5c565f3 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -217,7 +217,6 @@ struct edma_desc {
+ struct edma_cc;
+ 
+ struct edma_tc {
+-	struct device_node		*node;
+ 	u16				id;
  };
  
-+#ifdef CONFIG_REGULATOR
- static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
- 	[0] = { 1000000, 1150000 },
- 	[1] = { 1050000, 1150000 },
-@@ -31,6 +32,7 @@ static struct s3c64xx_dvfs s3c64xx_dvfs_
- 	[3] = { 1200000, 1350000 },
- 	[4] = { 1300000, 1350000 },
- };
-+#endif
+@@ -2414,13 +2413,13 @@ static int edma_probe(struct platform_device *pdev)
+ 			if (ret || i == ecc->num_tc)
+ 				break;
  
- static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
- 	{ 0, 0,  66000 },
-@@ -51,15 +53,16 @@ static struct cpufreq_frequency_table s3
- static int s3c64xx_cpufreq_set_target(struct cpufreq_policy *policy,
- 				      unsigned int index)
- {
--	struct s3c64xx_dvfs *dvfs;
--	unsigned int old_freq, new_freq;
-+	unsigned int new_freq = s3c64xx_freq_table[index].frequency;
- 	int ret;
+-			ecc->tc_list[i].node = tc_args.np;
+ 			ecc->tc_list[i].id = i;
+ 			queue_priority_mapping[i][1] = tc_args.args[0];
+ 			if (queue_priority_mapping[i][1] > lowest_priority) {
+ 				lowest_priority = queue_priority_mapping[i][1];
+ 				info->default_queue = i;
+ 			}
++			of_node_put(tc_args.np);
+ 		}
+ 	}
  
-+#ifdef CONFIG_REGULATOR
-+	struct s3c64xx_dvfs *dvfs;
-+	unsigned int old_freq;
-+
- 	old_freq = clk_get_rate(policy->clk) / 1000;
--	new_freq = s3c64xx_freq_table[index].frequency;
- 	dvfs = &s3c64xx_dvfs_table[s3c64xx_freq_table[index].driver_data];
- 
--#ifdef CONFIG_REGULATOR
- 	if (vddarm && new_freq > old_freq) {
- 		ret = regulator_set_voltage(vddarm,
- 					    dvfs->vddarm_min,
+-- 
+2.39.5
+
 
 
 
