@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-123518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C306A5C5FE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A9AA5C7A3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573F23B9BE3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 532A87ABF0F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3E31EA80;
-	Tue, 11 Mar 2025 15:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E51F25E47F;
+	Tue, 11 Mar 2025 15:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GuglquJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtXzK/da"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6517E110;
-	Tue, 11 Mar 2025 15:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D14F25D8FF;
+	Tue, 11 Mar 2025 15:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706187; cv=none; b=eYkbIi4xN7RZcbYZkoEFJp8XyZb8FcAtJZGZWYZJ6BQhoqyNn1gSA8m+p13GHEmoYbEzyrsgZudKmRcEZTuWNqvBdoWjNoXfY095XDorigRSguL1w643KPmLWx2rhlGkv1IDp9+FcIUECT57sfbIGEhUaKODkZE2U8DWPJgB4ZY=
+	t=1741707430; cv=none; b=ZmlTP2NiLlDimZ3pUvhVlq1qZj+wUwzSDf7nZqGi0TBV2+zXdwiJyYB9rGGQsRBu3nC58QmB0qlf0CW7kKjXFoEF8cGNyYRSPm/E2D8xYwHHVIJzhK4MUN/mPLDKErwu6g5lfacS2Uazy0OzD9605rYecy4giZkL6F8fN/zO72Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706187; c=relaxed/simple;
-	bh=8atRGGi9WdjC6DyHKP0mpLz8dRH7eqMads1IqJZhgSU=;
+	s=arc-20240116; t=1741707430; c=relaxed/simple;
+	bh=vLsuRuBx0o6iv+i6PCnyQCi8VW8hyNlXMezewm8t3Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqyXHdfH1Jr/EqplaF114sBUYeTX0mdCWOQyMjsyLiHz5JVnVB7hcxKKpreeBWOXCf+PBsHHSV+ketMjE6Stv/rkAkCGLa2pO/WHL7JzU6GHeNpw6kI9vM6bbYF0FJYQ8pwEniwJ8O1heJgQQ2bVpxE9RFMQFHQ+wLuiAYyw77U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GuglquJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2272CC4CEE9;
-	Tue, 11 Mar 2025 15:16:26 +0000 (UTC)
+	 MIME-Version; b=qfqZR4G5gZDMH5yRATIpBVqUh3kQQhsTLzIi2pao7D7njIzIGbeq4XMUSBUSTjEv2SU7/vyKXVDABo5wZNXKVZAW12NXac54UPbnU5AL4d2pqcW9EWGyOBVVPWvbbuOHMpJXijqhqzXP1AsFrFHPi8sMxWVH/QOUk8VKkU4x4DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtXzK/da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCEFC4CEE9;
+	Tue, 11 Mar 2025 15:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706187;
-	bh=8atRGGi9WdjC6DyHKP0mpLz8dRH7eqMads1IqJZhgSU=;
+	s=korg; t=1741707429;
+	bh=vLsuRuBx0o6iv+i6PCnyQCi8VW8hyNlXMezewm8t3Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2GuglquJLsLz71Xzy4/0ZY3ELqcR4sDuE9yVH/I7a9nGqTmabWKIrbfATsKAoshYV
-	 NUb3V7/UohPYTssIycUVJL+q1leuNiLSjH8CCfx4rwz6mDUtcKzVGrc9aisHz9TnOr
-	 JcMSZdl5Of+TjAsPMGHoyIdUhaXlQ83NhMiLDA/Q=
+	b=PtXzK/da2/dFZC2D/j9ufGcam1NgozJAZAIioPpzQDq4mCcxOfKQr17H4PYxhX6p9
+	 a55xzl8Yzid/MZaTbrGbs/GxQGG1aRHxjg/ZmU7CUSkRedeKm4K43EqB2JoBvs4qp2
+	 ALRD9e1WnxPdXTnOvdoM6ur+pwKsR92T3ka1uluk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Zeal Robot <zealci@zte.com.cn>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"sh_def@163.com" <sh_def@163.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 274/328] kernel/acct.c: use dedicated helper to access rlimit values
-Date: Tue, 11 Mar 2025 16:00:44 +0100
-Message-ID: <20250311145725.803601612@linuxfoundation.org>
+	Quang Le <quanglex97@gmail.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 379/462] pfifo_tail_enqueue: Drop new packet when sch->limit == 0
+Date: Tue, 11 Mar 2025 16:00:45 +0100
+Message-ID: <20250311145813.321892103@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <yang.yang29@zte.com.cn>
+From: Quang Le <quanglex97@gmail.com>
 
-[ Upstream commit 3c91dda97eea704ac257ddb138d1154adab8db62 ]
+commit 647cef20e649c576dff271e018d5d15d998b629d upstream.
 
-Use rlimit() helper instead of manually writing whole chain from
-task to rlimit value. See patch "posix-cpu-timers: Use dedicated
-helper to access rlimit values".
+Expected behaviour:
+In case we reach scheduler's limit, pfifo_tail_enqueue() will drop a
+packet in scheduler's queue and decrease scheduler's qlen by one.
+Then, pfifo_tail_enqueue() enqueue new packet and increase
+scheduler's qlen by one. Finally, pfifo_tail_enqueue() return
+`NET_XMIT_CN` status code.
 
-Link: https://lkml.kernel.org/r/20210728030822.524789-1-yang.yang29@zte.com.cn
-Signed-off-by: Yang Yang <yang.yang29@zte.com.cn>
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: sh_def@163.com <sh_def@163.com>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 56d5f3eba3f5 ("acct: perform last write from workqueue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Weird behaviour:
+In case we set `sch->limit == 0` and trigger pfifo_tail_enqueue() on a
+scheduler that has no packet, the 'drop a packet' step will do nothing.
+This means the scheduler's qlen still has value equal 0.
+Then, we continue to enqueue new packet and increase scheduler's qlen by
+one. In summary, we can leverage pfifo_tail_enqueue() to increase qlen by
+one and return `NET_XMIT_CN` status code.
+
+The problem is:
+Let's say we have two qdiscs: Qdisc_A and Qdisc_B.
+ - Qdisc_A's type must have '->graft()' function to create parent/child relationship.
+   Let's say Qdisc_A's type is `hfsc`. Enqueue packet to this qdisc will trigger `hfsc_enqueue`.
+ - Qdisc_B's type is pfifo_head_drop. Enqueue packet to this qdisc will trigger `pfifo_tail_enqueue`.
+ - Qdisc_B is configured to have `sch->limit == 0`.
+ - Qdisc_A is configured to route the enqueued's packet to Qdisc_B.
+
+Enqueue packet through Qdisc_A will lead to:
+ - hfsc_enqueue(Qdisc_A) -> pfifo_tail_enqueue(Qdisc_B)
+ - Qdisc_B->q.qlen += 1
+ - pfifo_tail_enqueue() return `NET_XMIT_CN`
+ - hfsc_enqueue() check for `NET_XMIT_SUCCESS` and see `NET_XMIT_CN` => hfsc_enqueue() don't increase qlen of Qdisc_A.
+
+The whole process lead to a situation where Qdisc_A->q.qlen == 0 and Qdisc_B->q.qlen == 1.
+Replace 'hfsc' with other type (for example: 'drr') still lead to the same problem.
+This violate the design where parent's qlen should equal to the sum of its childrens'qlen.
+
+Bug impact: This issue can be used for user->kernel privilege escalation when it is reachable.
+
+Fixes: 57dbb2d83d10 ("sched: add head drop fifo queue")
+Reported-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/acct.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_fifo.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/acct.c b/kernel/acct.c
-index 79f93a45973fa..cdfe1b0ce0e39 100644
---- a/kernel/acct.c
-+++ b/kernel/acct.c
-@@ -492,7 +492,7 @@ static void do_acct_process(struct bsd_acct_struct *acct)
- 	/*
- 	 * Accounting records are not subject to resource limits.
- 	 */
--	flim = current->signal->rlim[RLIMIT_FSIZE].rlim_cur;
-+	flim = rlimit(RLIMIT_FSIZE);
- 	current->signal->rlim[RLIMIT_FSIZE].rlim_cur = RLIM_INFINITY;
- 	/* Perform file operations on behalf of whoever enabled accounting */
- 	orig_cred = override_creds(file->f_cred);
--- 
-2.39.5
-
+--- a/net/sched/sch_fifo.c
++++ b/net/sched/sch_fifo.c
+@@ -39,6 +39,9 @@ static int pfifo_tail_enqueue(struct sk_
+ {
+ 	unsigned int prev_backlog;
+ 
++	if (unlikely(READ_ONCE(sch->limit) == 0))
++		return qdisc_drop(skb, sch, to_free);
++
+ 	if (likely(sch->q.qlen < sch->limit))
+ 		return qdisc_enqueue_tail(skb, sch);
+ 
 
 
 
