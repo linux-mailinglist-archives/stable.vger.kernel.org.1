@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB50A5C87C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F062A5C605
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1268C3BAAEE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0942E189B94B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B957B25F790;
-	Tue, 11 Mar 2025 15:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD10525E820;
+	Tue, 11 Mar 2025 15:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJhNH5ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDxUEESA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A4D25C6F9;
-	Tue, 11 Mar 2025 15:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DD825BACC;
+	Tue, 11 Mar 2025 15:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707489; cv=none; b=es8+txT99ezO7RbKBTj95SP7+cNMDkErKi560X+Lk4NuIuvpmOMaNGZSXA1JWw6jRzMR4aPMYC9esBkiSgxMFisv9q8mHpk7GjR0wiwUhVEX4uhqMQ7lCGBZj4QSDcJUoUnduJsVcgJ9baAtH+D+3IXPfHpFbibvhlYqLx0vG4I=
+	t=1741706219; cv=none; b=tVoMJfJKUr5wIyliwstmrWUgum1uzckaY6iCwA3XUV5c390yI/MepQjT4CvAMcHlwDeWKUBNdTDiQaXseXfxhME27su4v7HkQKrI2fsnEFQK3yctmmWXswGMSwDydFwnI4wRIAF4QaON4XAk6NucClxEd8q7F70tLm22cjGSGi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707489; c=relaxed/simple;
-	bh=BbaLI/Wdzda8dR+AhNiFHrGMWyBvJI7HdvxxgXx/8So=;
+	s=arc-20240116; t=1741706219; c=relaxed/simple;
+	bh=JAomuqRT7RiwNi2PkFcuDGFeKAAHfsvriFsiS15YEHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=agh7SVvzHttwvHNiKZvchmCf9XplvjrUcUbHRx0fswHnjB875z0e5AuAsUgpz7rjjAJrj3RTjRkx3A2K265IAJR9YopSbmtDgiXmdN/5jGBmaziusQOUH4VFfhpqXWI98o2mFhgtVGwmnQdjfkl+ZAQCDcAjPhsDAk4dJr1pU4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJhNH5ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B0CC4CEE9;
-	Tue, 11 Mar 2025 15:38:08 +0000 (UTC)
+	 MIME-Version; b=QShtexyFuK8tMWYX3dkOudPylqvYyJhwnRwB8wRcx7+6tXhe+FiHQYS/xvLvoQpPIPr8Cmvb0QPSLWfXKetofaY3lRefP31bkt53kNkZ25uf1cZAYqyxQO0Wq4r06inrlAgxAPrHxtZkdGCmTwgOY/lgStj/jCWJp8vJ23/60SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDxUEESA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA43C4CEE9;
+	Tue, 11 Mar 2025 15:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707489;
-	bh=BbaLI/Wdzda8dR+AhNiFHrGMWyBvJI7HdvxxgXx/8So=;
+	s=korg; t=1741706219;
+	bh=JAomuqRT7RiwNi2PkFcuDGFeKAAHfsvriFsiS15YEHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJhNH5ok7NGVm4/GX4ZgaFUBxwwKrMnXTfe5lZNJzfpF8b2D6vQfZsqsX6Y9RzIUx
-	 WFAhFdsOmfHn2aalDVrfeYbw6AlkuotIK86nmtmWXeaINLJZbTd2oxhOND/9c83Hie
-	 2qhz4x4KT7q4xZVaFpDfAVosu3k1Nmo/BypKAIoo=
+	b=WDxUEESA6Tgbk3QP4oQfoOecW/dyr8khsnoTCX1poBlTtjg0x1RHRs+fH7MQbU9LO
+	 Ihl05hq9EiO06s+hXzuS5jK+3DRZZM52wH7KHcSQdxBj+OH5lycoTjMIz+MnjulC/i
+	 sO3etZ94XhphwkJ1vxlqgVeblTdR4+zKOJDuJMtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 406/462] HID: google: fix unused variable warning under !CONFIG_ACPI
-Date: Tue, 11 Mar 2025 16:01:12 +0100
-Message-ID: <20250311145814.371786690@linuxfoundation.org>
+Subject: [PATCH 5.4 303/328] drm/sched: Fix preprocessor guard
+Date: Tue, 11 Mar 2025 16:01:13 +0100
+Message-ID: <20250311145726.950683818@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
+[ Upstream commit 23e0832d6d7be2d3c713f9390c060b6f1c48bf36 ]
 
-As reported by the kernel test robot, the following warning occurs:
+When writing the header guard for gpu_scheduler_trace.h, a typo,
+apparently, occurred.
 
->> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
-     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
-         |                                    ^~~~~~~~~~~~~~~~
+Fix the typo and document the scope of the guard.
 
-The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
-Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
-prevents a compiler warning when ACPI is disabled.
-
-Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 353da3c520b4 ("drm/amdgpu: add tracepoint for scheduler (v2)")
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218124149.118002-2-phasta@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-google-hammer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/scheduler/gpu_scheduler_trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
-index 2f4c5b45d4096..b0df025c6abaf 100644
---- a/drivers/hid/hid-google-hammer.c
-+++ b/drivers/hid/hid-google-hammer.c
-@@ -266,11 +266,13 @@ static int cbas_ec_remove(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+index d79086498affe..4fe2a87705040 100644
+--- a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
++++ b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+@@ -21,7 +21,7 @@
+  *
+  */
  
-+#ifdef CONFIG_ACPI
- static const struct acpi_device_id cbas_ec_acpi_ids[] = {
- 	{ "GOOG000B", 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
-+#endif
+-#if !defined(_GPU_SCHED_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#if !defined(_GPU_SCHED_TRACE_H_) || defined(TRACE_HEADER_MULTI_READ)
+ #define _GPU_SCHED_TRACE_H_
  
- static struct platform_driver cbas_ec_driver = {
- 	.probe = cbas_ec_probe,
+ #include <linux/stringify.h>
+@@ -96,7 +96,7 @@ TRACE_EVENT(drm_sched_job_wait_dep,
+ 		      __entry->seqno)
+ );
+ 
+-#endif
++#endif /* _GPU_SCHED_TRACE_H_ */
+ 
+ /* This part must be outside protection */
+ #undef TRACE_INCLUDE_PATH
 -- 
 2.39.5
 
