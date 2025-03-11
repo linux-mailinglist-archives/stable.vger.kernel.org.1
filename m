@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDC3A5C632
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:22:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBAAA5C8AE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AAAD3B04E3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C3A33BD025
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8A41C3BEB;
-	Tue, 11 Mar 2025 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1382125EFB2;
+	Tue, 11 Mar 2025 15:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2aZ9xmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjH3e/pD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAEC249F9;
-	Tue, 11 Mar 2025 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69BD255E37;
+	Tue, 11 Mar 2025 15:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706318; cv=none; b=ux1FFXFTTjfU437Cn8mgaLbpN+p7ZjC3o51HO1DpT73YMmzCyaDtbfJjFVpxBhV//CXHZ08piIcQzCVZ6DHUsDXXP5aOfT7mLZDUwiWsPdwGYVlCT5Cs3iW4adrAtwlbT3R2Dp61nJBUjyeqJ7YrKDes9fj9kuYepBYvFMaIheg=
+	t=1741707624; cv=none; b=mLxzyxTulWTq4qcAedilhOD1VrW1fwfoYZWIcPodZfuk68ZcngfUj9zsy0YJzvxYpVbfNGRzfe9IKI9AGYCgwd8OeyCDGozj26Jy1xVsXxtZ4ASKR6eKMeq80Phee+p/9Ooo8OQcXqSIg2s/Z7H76xAByl3FLPYQLq4gfXwgVHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706318; c=relaxed/simple;
-	bh=b9OhwSzfPgo9+37stWMhfPs9zWu6PLT3tsVY/pDk2lA=;
+	s=arc-20240116; t=1741707624; c=relaxed/simple;
+	bh=Z/Q+vP7JYwfmzsFxWiajQ9U5D6LT4eqgZChYhUghVH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOleMYfyfsCg7EvTWXXW8s0aNgIEwxdO3djS2GkY3jP2wE0MP7Wu95vHF4tjrOYKfyykysChzkKcu9d15yJ7d84KU+BO/PbtdOZYxrdnZQtXnVuLH4K2P24RnXj1YwfzdEynn4hJZf90YmjbVmCDvmYaaZ5JRBwLLd6MTzSW5co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2aZ9xmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1D0C4CEE9;
-	Tue, 11 Mar 2025 15:18:38 +0000 (UTC)
+	 MIME-Version; b=dmzZieUt4MV0R4ZJiIGHNfc9/DUTIjgt2BisnMFLyVyjvMAtpE7U0dhuZZa4b0l1NL+uJZV4kmUiFTWYFX/rFljXWmRYzalvznf0UD6R8onpaizv60xGr8Hbr2KuwKX0hY6psHawYNy9+/3Hc9/m15yXRj4AD9Cm43zXYBLxcMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjH3e/pD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F052C4CEE9;
+	Tue, 11 Mar 2025 15:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706318;
-	bh=b9OhwSzfPgo9+37stWMhfPs9zWu6PLT3tsVY/pDk2lA=;
+	s=korg; t=1741707624;
+	bh=Z/Q+vP7JYwfmzsFxWiajQ9U5D6LT4eqgZChYhUghVH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2aZ9xmRxTmozg9z/cVPrI1HNN576wZBDlIx2sWZCSztRwc0KbOr2BrYkRSDg2QT+
-	 NRF7YrNDRshKKx5erSWK5j4G27a+l2HmWnl3SxmlylphaLafxFrIZGEQ9CjlZJNngX
-	 ey6twm09/5nNUhXFIc+6449FXHkM2CdS1HrJ2FQA=
+	b=gjH3e/pDwoYcxbVd6VSPYS3S78H7R4vawld+jqXZid2ihOrp1rUBkQc9qyuvFWso2
+	 NqfJV/f8NMyuz2OmBv4CXZNV50ERQxKS/LVP0LSJxNA/y3OiuAUo9khy7HBt5E1Jpw
+	 +b3iPMpBzvv+BYhyn20Xtj80uKwS0kKzgrIxInTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Titus Rwantare <titusr@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 307/328] net-timestamp: support TCP GSO case for a few missing flags
+Subject: [PATCH 5.10 411/462] hwmon: (pmbus) Initialise page count in pmbus_identify()
 Date: Tue, 11 Mar 2025 16:01:17 +0100
-Message-ID: <20250311145727.109375830@linuxfoundation.org>
+Message-ID: <20250311145814.568710097@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Titus Rwantare <titusr@google.com>
 
-[ Upstream commit 3c9231ea6497dfc50ac0ef69fff484da27d0df66 ]
+[ Upstream commit 6b6e2e8fd0de3fa7c6f4f8fe6841b01770b2e7bc ]
 
-When I read through the TSO codes, I found out that we probably
-miss initializing the tx_flags of last seg when TSO is turned
-off, which means at the following points no more timestamp
-(for this last one) will be generated. There are three flags
-to be handled in this patch:
-1. SKBTX_HW_TSTAMP
-2. SKBTX_BPF
-3. SKBTX_SCHED_TSTAMP
-Note that SKBTX_BPF[1] was added in 6.14.0-rc2 by commit
-6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")
-and only belongs to net-next branch material for now. The common
-issue of the above three flags can be fixed by this single patch.
+The `pmbus_identify()` function fails to correctly determine the number
+of supported pages on PMBus devices. This occurs because `info->pages`
+is implicitly zero-initialised, and `pmbus_set_page()` does not perform
+writes to the page register if `info->pages` is not yet initialised.
+Without this patch, `info->pages` is always set to the maximum after
+scanning.
 
-This patch initializes the tx_flags to SKBTX_ANY_TSTAMP like what
-the UDP GSO does to make the newly segmented last skb inherit the
-tx_flags so that requested timestamp will be generated in each
-certain layer, or else that last one has zero value of tx_flags
-which leads to no timestamp at all.
+This patch initialises `info->pages` to `PMBUS_PAGES` before the probing
+loop, enabling `pmbus_set_page()` writes to make it out onto the bus
+correctly identifying the number of pages. `PMBUS_PAGES` seemed like a
+reasonable non-zero number because that's the current result of the
+identification process.
 
-Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Testing was done with a PMBus device in QEMU.
+
+Signed-off-by: Titus Rwantare <titusr@google.com>
+Fixes: 442aba78728e7 ("hwmon: PMBus device driver")
+Link: https://lore.kernel.org/r/20250227222455.2583468-1-titusr@google.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_offload.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/hwmon/pmbus/pmbus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index fc61cd3fea652..27b7887f4f4eb 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -11,12 +11,15 @@
- #include <net/tcp.h>
- #include <net/protocol.h>
+diff --git a/drivers/hwmon/pmbus/pmbus.c b/drivers/hwmon/pmbus/pmbus.c
+index 20f1af9165c2d..2bfccbfbc2896 100644
+--- a/drivers/hwmon/pmbus/pmbus.c
++++ b/drivers/hwmon/pmbus/pmbus.c
+@@ -103,6 +103,8 @@ static int pmbus_identify(struct i2c_client *client,
+ 		if (pmbus_check_byte_register(client, 0, PMBUS_PAGE)) {
+ 			int page;
  
--static void tcp_gso_tstamp(struct sk_buff *skb, unsigned int ts_seq,
-+static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
- 			   unsigned int seq, unsigned int mss)
- {
-+	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
-+	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
++			info->pages = PMBUS_PAGES;
 +
- 	while (skb) {
- 		if (before(ts_seq, seq + mss)) {
--			skb_shinfo(skb)->tx_flags |= SKBTX_SW_TSTAMP;
-+			skb_shinfo(skb)->tx_flags |= flags;
- 			skb_shinfo(skb)->tskey = ts_seq;
- 			return;
- 		}
-@@ -115,8 +118,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
- 	th = tcp_hdr(skb);
- 	seq = ntohl(th->seq);
- 
--	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
--		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
-+	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
-+		tcp_gso_tstamp(segs, gso_skb, seq, mss);
- 
- 	newcheck = ~csum_fold((__force __wsum)((__force u32)th->check +
- 					       (__force u32)delta));
+ 			for (page = 1; page < PMBUS_PAGES; page++) {
+ 				if (pmbus_set_page(client, page, 0xff) < 0)
+ 					break;
 -- 
 2.39.5
 
