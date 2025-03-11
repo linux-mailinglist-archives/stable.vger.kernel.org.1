@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F2BA5C498
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13ECDA5C6C3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53FE23B62C6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 143E9188C6D3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D514225EF9E;
-	Tue, 11 Mar 2025 15:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F9725E834;
+	Tue, 11 Mar 2025 15:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhyGNrrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vb37YZO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC4825EF96;
-	Tue, 11 Mar 2025 15:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACFB25E820;
+	Tue, 11 Mar 2025 15:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705431; cv=none; b=J4K1/bbMFiySe9gTqbvwwv1HuopPzF3RvzyGzmSqtzQPcQJ1e5kI+EUh9sLLAAZgz0X+37mqMHOgPP4zN94JTbIuSOY44BCjCPOgWHXmtYsxYOjTACqSRuGc3MRdhxV3+OSqcjbCezAbBibKcfz5yCyx49IhNuNeoE1JB4CaaCQ=
+	t=1741706646; cv=none; b=DgEyXu5xX5xuab+7t68h+M5VsFdi+Ss2JkwfPnPWqEZ9RERME3QeJn5GBqggn8c8123QsiOuzSNEU6ljfiy/f7c6Cmz1qBTT6IClPbRrgghY4FaKu8U7Qfq90V8SlZaiEWo0ZpQ5Zh/EkwNMsC5foeFRwv9NkcUwx9Vb8Ssh6gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705431; c=relaxed/simple;
-	bh=iSQy0LUIQRgFMdxtxvatU2W4DR5/DjdBY3hUpM5DgW0=;
+	s=arc-20240116; t=1741706646; c=relaxed/simple;
+	bh=hmEX5/bmF0rJdx8ME58QfyaqcSqUdQordoWSUOStQvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPj+UhjwuQfbF/D9ChBtPHU6KGDBchZILV73lV805V3ZKjgLsrfndCQH6pIGe5G/JMbcd4a9B5ftvqFKVHMBUGK1k97FveD0T6weYWEpM4rYjrUw8Lr++x6fo5EIpzb6lEQwygTOXKTlqHi/CBpOjrdMbWbZemwqkUaEDkTHE4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhyGNrrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECD9C4CEF0;
-	Tue, 11 Mar 2025 15:03:50 +0000 (UTC)
+	 MIME-Version; b=eiy9afl7qsN0frF4d6BWFXIqFYbihKEnCt+zhu1Z/E38xdxFgCmzycmDfGTjykN8mSq9FnjQeJHe4HSplj3ZWStPz18KCw6yQHlK69JEirTKOjkFxCbkVF8o0bt0ABelalXcMLy7UBueFLbFjoD2qlvL8GY/vrJipGmDQFh6tsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vb37YZO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7174C4CEE9;
+	Tue, 11 Mar 2025 15:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705431;
-	bh=iSQy0LUIQRgFMdxtxvatU2W4DR5/DjdBY3hUpM5DgW0=;
+	s=korg; t=1741706646;
+	bh=hmEX5/bmF0rJdx8ME58QfyaqcSqUdQordoWSUOStQvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhyGNrrx2x2vmp6vN6Lei14gacrKdVik6xoo+4nvLggufZlUmNQN/WZuLw4GyhJT0
-	 6BsMXpoSauSKchJtK2f1NwKr2WiiD8GFtq9/bca4GGpBycn9mE186xdx1r8u7NV6cv
-	 8x4Nd6XhWXQ5C0l0S1I+lVjeJd1ELKTeW9C9VS1Y=
+	b=Vb37YZO5wc0SaAtz6ker+r4HRPhU6EXqQg9W154a8KtpXIUjpWIVZz4fnk9gO0XzK
+	 ZUdqqxB9+w7Fx01K9ND9vgoYMrADATQOvWcdSJqDsUsGIz9pBxdL2PaidImjSkh+TX
+	 9la1W8nAahQing97t6r0yE+Hc6pVRp4PfWV5Wfms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 015/328] wifi: rtlwifi: usb: fix workqueue leak when probe fails
+	Arnd Bergmann <arnd@arndb.de>,
+	Sean Rhodes <sean@starlabs.systems>
+Subject: [PATCH 5.10 119/462] drivers/card_reader/rtsx_usb: Restore interrupt based detection
 Date: Tue, 11 Mar 2025 15:56:25 +0100
-Message-ID: <20250311145715.484771440@linuxfoundation.org>
+Message-ID: <20250311145803.062371333@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Sean Rhodes <sean@starlabs.systems>
 
-[ Upstream commit f79bc5c67867c19ce2762e7934c20dbb835ed82c ]
+commit 235b630eda072d7e7b102ab346d6b8a2c028a772 upstream.
 
-rtl_init_core creates a workqueue that is then assigned to rtl_wq.
-rtl_deinit_core does not destroy it. It is left to rtl_usb_deinit, which
-must be called in the probe error path.
+This commit reintroduces interrupt-based card detection previously
+used in the rts5139 driver. This functionality was removed in commit
+00d8521dcd23 ("staging: remove rts5139 driver code").
 
-Fixes: 2ca20f79e0d8 ("rtlwifi: Add usb driver")
-Fixes: 851639fdaeac ("rtlwifi: Modify some USB de-initialize code.")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-6-cascardo@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reintroducing this mechanism fixes presence detection for certain card
+readers, which with the current driver, will taken approximately 20
+seconds to enter S3 as `mmc_rescan` has to be frozen.
+
+Fixes: 00d8521dcd23 ("staging: remove rts5139 driver code")
+Cc: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Rhodes <sean@starlabs.systems>
+Link: https://lore.kernel.org/r/20241119085815.11769-1-sean@starlabs.systems
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/cardreader/rtsx_usb.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index b5b95ec1231e0..9e31ce0a9f562 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1079,6 +1079,7 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	return 0;
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -286,6 +286,7 @@ static int rtsx_usb_get_status_with_bulk
+ int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+ {
+ 	int ret;
++	u8 interrupt_val = 0;
+ 	u16 *buf;
  
- error_out:
-+	rtl_usb_deinit(hw);
- 	rtl_deinit_core(hw);
- error_out2:
- 	_rtl_usb_io_handler_release(hw);
--- 
-2.39.5
-
+ 	if (!status)
+@@ -308,6 +309,20 @@ int rtsx_usb_get_card_status(struct rtsx
+ 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
+ 	}
+ 
++	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
++	/* Cross check presence with interrupts */
++	if (*status & XD_CD)
++		if (!(interrupt_val & XD_INT))
++			*status &= ~XD_CD;
++
++	if (*status & SD_CD)
++		if (!(interrupt_val & SD_INT))
++			*status &= ~SD_CD;
++
++	if (*status & MS_CD)
++		if (!(interrupt_val & MS_INT))
++			*status &= ~MS_CD;
++
+ 	/* usb_control_msg may return positive when success */
+ 	if (ret < 0)
+ 		return ret;
 
 
 
