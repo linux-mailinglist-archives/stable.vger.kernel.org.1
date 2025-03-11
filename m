@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-123797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E35CA5C761
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B9DA5C504
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 175EC177316
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:30:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A5CE176AF8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8F525DB0A;
-	Tue, 11 Mar 2025 15:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EAE25E80C;
+	Tue, 11 Mar 2025 15:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWZFMAVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBrXKNGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC16515820C;
-	Tue, 11 Mar 2025 15:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185CA8632E;
+	Tue, 11 Mar 2025 15:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706988; cv=none; b=Q061vlR43CbsnY0cEahb7ALf6g4WJX0zZND7vHBdnmFDhWX9uSSRGKfJKbuJQO/f43IBxgGYkSu/RS+gPn8+jvusycALbE2KVQhzCjfsmKIUzosIAR0zKHgWN6o4z27b2uhkt/MFhXgI3r4By1pTwQ6M8GVe5fgs3zLPrJTCInY=
+	t=1741705723; cv=none; b=ubdXCUUupIf2MpExxuVcdNKmIAAWpEK5KtOghg0hwRProhtWSGMYYRHgmJz+tXQDQfdNy5nbJ86jMiAne3Y1H6TmZZeUBCi7Hl9eZ594e0OAettQRa1mQ6xkMsCm37BpGzb3LS0bfC52B7djuQ0p5HZc+hmgqiTGOKz4qLVb5XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706988; c=relaxed/simple;
-	bh=qb8NdBrvkZ+EhYrOPZuyDERFUjwLEzWoIlyEaul3PwU=;
+	s=arc-20240116; t=1741705723; c=relaxed/simple;
+	bh=W+Tps3qGTXr2ZzQXVhdY1JJJp9tsQf2iZBMp4CqPEWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVELBMmIqdSgGSvuyIyNMnHAz+6RMK4ChjuH98qJyyoGcH3B99rDwxFK1drM/1EeHzbU1ATOlbVMAoG3T19zsQ/EDfYjfHdmFiBFfNHtg3uNxnCwyECFQMFzcQ1pbwehbLVQZqid4kaInYLZxOml3kF55EhEoxN/cYdnlokYi4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWZFMAVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD52C4CEE9;
-	Tue, 11 Mar 2025 15:29:47 +0000 (UTC)
+	 MIME-Version; b=KhLCFERpaiW1bsrpok2ZaUxP+34lVQIv9bzGQoyGEU7OFwCzfqZ9WPJQpec0n6pEn3XYHO984Weuk6MdaSEuKAuaoIX1W95Tyanrh+8WbYjTTZIzYk5AgbwUEpwuu5TLfTyzG0/6AFKX+mcdZeFal+f81Ks4oXGtqKnp07gJvr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBrXKNGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CE1C4CEE9;
+	Tue, 11 Mar 2025 15:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706987;
-	bh=qb8NdBrvkZ+EhYrOPZuyDERFUjwLEzWoIlyEaul3PwU=;
+	s=korg; t=1741705723;
+	bh=W+Tps3qGTXr2ZzQXVhdY1JJJp9tsQf2iZBMp4CqPEWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWZFMAVXBs79YLzdafOfC0HRPMWK1LVGgy47Algor49WW6mMDG1RSBnCkHN2j6Snk
-	 kd3eeJDGpby7Vs9X96OeKgezlHcRMuXz93k6cQ1118EVcziWUUub8aTuGd5X2XvFoh
-	 BlhzfNJjYk5F36GUBnC/DdSUkm2iXojdoRlEJArM=
+	b=KBrXKNGai7ZxQ7uEynGywgoTSKUvWyKoaWkUk2PBARKJw5D8Fvo7UJ3Sfj4tLuTFi
+	 rsZcbINbDzrLpoq3d3ilv3+zS0tZIwpK58Zd6T2Jy8zIatSPCiLhQYgs8X6NXWQHHr
+	 u5ySwMFq24QEJ1AVOJOVTfOOxZyTyBFNYZxHcSKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Alan Robinson <Alan.Robinson@fujitsu.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 236/462] x86/xen: allow larger contiguous memory regions in PV guests
-Date: Tue, 11 Mar 2025 15:58:22 +0100
-Message-ID: <20250311145807.691176511@linuxfoundation.org>
+	Heiko Stuebner <heiko@sntech.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.4 133/328] HID: hid-sensor-hub: dont use stale platform-data on remove
+Date: Tue, 11 Mar 2025 15:58:23 +0100
+Message-ID: <20250311145720.191727697@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,176 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit e93ec87286bd1fd30b7389e7a387cfb259f297e3 ]
+commit 8a5b38c3fd709e8acd2bfdedf66c25e6af759576 upstream.
 
-Today a PV guest (including dom0) can create 2MB contiguous memory
-regions for DMA buffers at max. This has led to problems at least
-with the megaraid_sas driver, which wants to allocate a 2.3MB DMA
-buffer.
+The hid-sensor-hub creates the individual device structs and transfers them
+to the created mfd platform-devices via the platform_data in the mfd_cell.
 
-The limiting factor is the frame array used to do the hypercall for
-making the memory contiguous, which has 512 entries and is just a
-static array in mmu_pv.c.
+Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+the sensor-hub was managing access centrally, with one "completion" in the
+hub's data structure, which needed to be finished on removal at the latest.
 
-In order to not waste memory for non-PV guests, put the initial
-frame array into .init.data section and dynamically allocate an array
-from the .init_after_bootmem hook of PV guests.
+The mentioned commit then moved this central management to each hid sensor
+device, resulting on a completion in each struct hid_sensor_hub_device.
+The remove procedure was adapted to go through all sensor devices and
+finish any pending "completion".
 
-In case a contiguous memory area larger than the initially supported
-2MB is requested, allocate a larger buffer for the frame list. Note
-that such an allocation is tried only after memory management has been
-initialized properly, which is tested via a flag being set in the
-.init_after_bootmem hook.
+What this didn't take into account was, platform_device_add_data() that is
+used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
+platform-data. So the data the platform-device gets is a copy of the
+original data, meaning that the device worked on a different completion
+than what sensor_hub_remove() currently wants to access.
 
-Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Alan Robinson <Alan.Robinson@fujitsu.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix that, use device_for_each_child() to go through each child-device
+similar to how mfd_remove_devices() unregisters the devices later and
+with that get the live platform_data to finalize the correct completion.
+
+Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Link: https://lore.kernel.org/r/20241107114712.538976-2-heiko@sntech.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/mmu_pv.c | 71 +++++++++++++++++++++++++++++++++++++------
- 1 file changed, 62 insertions(+), 9 deletions(-)
+ drivers/hid/hid-sensor-hub.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index b9844ab6086ea..b294ae8e44aa9 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -95,6 +95,51 @@ static pud_t level3_user_vsyscall[PTRS_PER_PUD] __page_aligned_bss;
-  */
- static DEFINE_SPINLOCK(xen_reservation_lock);
+--- a/drivers/hid/hid-sensor-hub.c
++++ b/drivers/hid/hid-sensor-hub.c
+@@ -730,23 +730,30 @@ err_stop_hw:
+ 	return ret;
+ }
  
-+/* Protected by xen_reservation_lock. */
-+#define MIN_CONTIG_ORDER 9 /* 2MB */
-+static unsigned int discontig_frames_order = MIN_CONTIG_ORDER;
-+static unsigned long discontig_frames_early[1UL << MIN_CONTIG_ORDER] __initdata;
-+static unsigned long *discontig_frames __refdata = discontig_frames_early;
-+static bool discontig_frames_dyn;
-+
-+static int alloc_discontig_frames(unsigned int order)
++static int sensor_hub_finalize_pending_fn(struct device *dev, void *data)
 +{
-+	unsigned long *new_array, *old_array;
-+	unsigned int old_order;
-+	unsigned long flags;
++	struct hid_sensor_hub_device *hsdev = dev->platform_data;
 +
-+	BUG_ON(order < MIN_CONTIG_ORDER);
-+	BUILD_BUG_ON(sizeof(discontig_frames_early) != PAGE_SIZE);
-+
-+	new_array = (unsigned long *)__get_free_pages(GFP_KERNEL,
-+						      order - MIN_CONTIG_ORDER);
-+	if (!new_array)
-+		return -ENOMEM;
-+
-+	spin_lock_irqsave(&xen_reservation_lock, flags);
-+
-+	old_order = discontig_frames_order;
-+
-+	if (order > discontig_frames_order || !discontig_frames_dyn) {
-+		if (!discontig_frames_dyn)
-+			old_array = NULL;
-+		else
-+			old_array = discontig_frames;
-+
-+		discontig_frames = new_array;
-+		discontig_frames_order = order;
-+		discontig_frames_dyn = true;
-+	} else {
-+		old_array = new_array;
-+	}
-+
-+	spin_unlock_irqrestore(&xen_reservation_lock, flags);
-+
-+	free_pages((unsigned long)old_array, old_order - MIN_CONTIG_ORDER);
++	if (hsdev->pending.status)
++		complete(&hsdev->pending.ready);
 +
 +	return 0;
 +}
 +
- /*
-  * Note about cr3 (pagetable base) values:
-  *
-@@ -791,6 +836,9 @@ static void __init xen_after_bootmem(void)
- 	static_branch_enable(&xen_struct_pages_ready);
- 	SetPagePinned(virt_to_page(level3_user_vsyscall));
- 	xen_pgd_walk(&init_mm, xen_mark_pinned, FIXADDR_TOP);
-+
-+	if (alloc_discontig_frames(MIN_CONTIG_ORDER))
-+		BUG();
- }
- 
- static void xen_unpin_page(struct mm_struct *mm, struct page *page,
-@@ -2149,10 +2197,6 @@ void __init xen_init_mmu_ops(void)
- 	memset(dummy_mapping, 0xff, PAGE_SIZE);
- }
- 
--/* Protected by xen_reservation_lock. */
--#define MAX_CONTIG_ORDER 9 /* 2MB */
--static unsigned long discontig_frames[1<<MAX_CONTIG_ORDER];
--
- #define VOID_PTE (mfn_pte(0, __pgprot(0)))
- static void xen_zap_pfn_range(unsigned long vaddr, unsigned int order,
- 				unsigned long *in_frames,
-@@ -2269,18 +2313,25 @@ int xen_create_contiguous_region(phys_addr_t pstart, unsigned int order,
- 				 unsigned int address_bits,
- 				 dma_addr_t *dma_handle)
+ static void sensor_hub_remove(struct hid_device *hdev)
  {
--	unsigned long *in_frames = discontig_frames, out_frame;
-+	unsigned long *in_frames, out_frame;
- 	unsigned long  flags;
- 	int            success;
- 	unsigned long vstart = (unsigned long)phys_to_virt(pstart);
+ 	struct sensor_hub_data *data = hid_get_drvdata(hdev);
+ 	unsigned long flags;
+-	int i;
  
--	if (unlikely(order > MAX_CONTIG_ORDER))
--		return -ENOMEM;
-+	if (unlikely(order > discontig_frames_order)) {
-+		if (!discontig_frames_dyn)
-+			return -ENOMEM;
+ 	hid_dbg(hdev, " hardware removed\n");
+ 	hid_hw_close(hdev);
+ 	hid_hw_stop(hdev);
 +
-+		if (alloc_discontig_frames(order))
-+			return -ENOMEM;
-+	}
- 
- 	memset((void *) vstart, 0, PAGE_SIZE << order);
- 
- 	spin_lock_irqsave(&xen_reservation_lock, flags);
- 
-+	in_frames = discontig_frames;
+ 	spin_lock_irqsave(&data->lock, flags);
+-	for (i = 0; i < data->hid_sensor_client_cnt; ++i) {
+-		struct hid_sensor_hub_device *hsdev =
+-			data->hid_sensor_hub_client_devs[i].platform_data;
+-		if (hsdev->pending.status)
+-			complete(&hsdev->pending.ready);
+-	}
++	device_for_each_child(&hdev->dev, NULL,
++			      sensor_hub_finalize_pending_fn);
+ 	spin_unlock_irqrestore(&data->lock, flags);
 +
- 	/* 1. Zap current PTEs, remembering MFNs. */
- 	xen_zap_pfn_range(vstart, order, in_frames, NULL);
- 
-@@ -2304,12 +2355,12 @@ int xen_create_contiguous_region(phys_addr_t pstart, unsigned int order,
- 
- void xen_destroy_contiguous_region(phys_addr_t pstart, unsigned int order)
- {
--	unsigned long *out_frames = discontig_frames, in_frame;
-+	unsigned long *out_frames, in_frame;
- 	unsigned long  flags;
- 	int success;
- 	unsigned long vstart;
- 
--	if (unlikely(order > MAX_CONTIG_ORDER))
-+	if (unlikely(order > discontig_frames_order))
- 		return;
- 
- 	vstart = (unsigned long)phys_to_virt(pstart);
-@@ -2317,6 +2368,8 @@ void xen_destroy_contiguous_region(phys_addr_t pstart, unsigned int order)
- 
- 	spin_lock_irqsave(&xen_reservation_lock, flags);
- 
-+	out_frames = discontig_frames;
-+
- 	/* 1. Find start MFN of contiguous extent. */
- 	in_frame = virt_to_mfn(vstart);
- 
--- 
-2.39.5
-
+ 	mfd_remove_devices(&hdev->dev);
+ 	mutex_destroy(&data->mutex);
+ }
 
 
 
