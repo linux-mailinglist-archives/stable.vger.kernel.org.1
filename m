@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D0AA5C675
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:25:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 652A9A5C4B0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62FF17AC054
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A6393B6680
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643DA25D8FF;
-	Tue, 11 Mar 2025 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD6E25DCE5;
+	Tue, 11 Mar 2025 15:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxdAQhYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cy5ujDpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207F21DF749;
-	Tue, 11 Mar 2025 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974531C5D77;
+	Tue, 11 Mar 2025 15:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706713; cv=none; b=MvLXYwC6fpmXnGswQKhzsekSY5vho0IBxb47d9Kz8k6RPVMtsIdi40cyC2J7I+xIQL4ZijpLljcvvSGSo16ZcuJoy8S3ad3i+7X8RFDOyWsBOBCZo/yp2kd/cW7B7SCA0b3TOY6HfJoayno4OdOq1RsW/R1YJS3tJwSJqAcdmr8=
+	t=1741705492; cv=none; b=a8TIqiBhi8ou/BylaAGShiKvvkO2aDFgh+vlc8eVS69IkcmpsPxTKJc4Hro2ogiHNtg8nsE+Msz1/AWzthCwal6jrRebAt1akUa83hAPMFahvZyObFZ1BQW3NA6YkFU+6pd+et/Da/IcfVOByhq0nhYJ5V5T7j91N12kJRreZ2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706713; c=relaxed/simple;
-	bh=yXrWHI76+XXsxkyTNKSF9kZjnzj5XXlNiMOhUUVA85c=;
+	s=arc-20240116; t=1741705492; c=relaxed/simple;
+	bh=dQy3lQBbwZkDiC34cFT3ersxLJBgCpGdCCC98t6jlyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2KOaZlH1WZ0kvuR0GHx67XdFXY5zghV64v2xaqMTRHckUtlhxH6DCYNnNx4vktRuNSODAxtlnm5DeAc0+bpwxm+M4OixB1VsBWJP05m5N6ckPyIjyx0gZ8ttjv7iSqWuaTKIPHHkNARjqk4qBrBbJ9pHaKd9SUh+qbmYcUkDyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxdAQhYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A42CC4CEEC;
-	Tue, 11 Mar 2025 15:25:12 +0000 (UTC)
+	 MIME-Version; b=gB1bn2kUffeLKjJD3W1KPdMER7+03vIte2W1Uyz4VWI+Ev/e1wFcCHtYa7jHTGVZmZvXOJ7gu2RrRMwoR0RkfplEH9vqNQvMrvTh5sNk9pmn2GIWPkJa2IUFNUxhm8wWfoQemBdvFq7XzgRdUwTE6iLlkM6IXoFQJ8blrFIaia0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cy5ujDpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C588C4CEE9;
+	Tue, 11 Mar 2025 15:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706713;
-	bh=yXrWHI76+XXsxkyTNKSF9kZjnzj5XXlNiMOhUUVA85c=;
+	s=korg; t=1741705492;
+	bh=dQy3lQBbwZkDiC34cFT3ersxLJBgCpGdCCC98t6jlyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxdAQhYCNqm1ncG/q2Gfizfw/2pqcaKqpZnx8fQQSjPkah62UBGTyzCC/eDPPI5fz
-	 i138Yt8ol/buTtHKQVBcDciO/7qSDitcjd3MmPAKp3O2Z/7oOj11fxRC0u18NbGP5Q
-	 TtPwX4u0ZJ2JMl9IhVpSx8puHlCAJK/QPy/OfO+8=
+	b=Cy5ujDpGtUNoloPtldC5AYkkYdfWfnj6jfbQzR9VbLWZinYnuBskBcT3ce83+pILY
+	 WzWNoF2evtlUYRED1YYcQLEE2ybMpdotmpEQc9Cyl2pfajrNVAAkyv9zkdyiUJuZnm
+	 eNTBM6qqqB0sBL789AxlLsaV3khD1dWljwfax2Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randolph Ha <rha051117@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ba Jing <bajing@cmss.chinamobile.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/462] i2c: Force ELAN06FA touchpad I2C bus freq to 100KHz
-Date: Tue, 11 Mar 2025 15:56:46 +0100
-Message-ID: <20250311145803.888932404@linuxfoundation.org>
+Subject: [PATCH 5.4 037/328] ktest.pl: Remove unused declarations in run_bisect_test function
+Date: Tue, 11 Mar 2025 15:56:47 +0100
+Message-ID: <20250311145716.370656516@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randolph Ha <rha051117@gmail.com>
+From: Ba Jing <bajing@cmss.chinamobile.com>
 
-[ Upstream commit bfd74cd1fbc026f04446e67d6915c7e199c2bffd ]
+[ Upstream commit 776735b954f49f85fd19e1198efa421fae2ad77c ]
 
-When a 400KHz freq is used on this model of ELAN touchpad in Linux,
-excessive smoothing (similar to when the touchpad's firmware detects
-a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
-V15 G4) ACPI tables specify a 400KHz frequency for this device and
-some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
-force the speed to 100KHz as a workaround.
+Since $output and $ret are not used in the subsequent code, the declarations
+should be removed.
 
-For future investigation: This problem may be related to the default
-HCNT/LCNT values given by some busses' drivers, because they are not
-specified in the aforementioned devices' ACPI tables, and because
-the device works without issues on Windows at what is expected to be
-a 400KHz frequency. The root cause of the issue is not known.
-
-Signed-off-by: Randolph Ha <rha051117@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: a75fececff3c ("ktest: Added sample.conf, new %default option format")
+Link: https://lore.kernel.org/20240902130735.6034-1-bajing@cmss.chinamobile.com
+Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tools/testing/ktest/ktest.pl | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 4b136d8710743..e7aed9442d56d 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -299,6 +299,25 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
- 	{}
- };
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index e7adb429018b2..184af2fcc1597 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2861,8 +2861,6 @@ sub run_bisect_test {
  
-+static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
-+	/*
-+	 * When a 400KHz freq is used on this model of ELAN touchpad in Linux,
-+	 * excessive smoothing (similar to when the touchpad's firmware detects
-+	 * a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
-+	 * V15 G4) ACPI tables specify a 400KHz frequency for this device and
-+	 * some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
-+	 * force the speed to 100KHz as a workaround.
-+	 *
-+	 * For future investigation: This problem may be related to the default
-+	 * HCNT/LCNT values given by some busses' drivers, because they are not
-+	 * specified in the aforementioned devices' ACPI tables, and because
-+	 * the device works without issues on Windows at what is expected to be
-+	 * a 400KHz frequency. The root cause of the issue is not known.
-+	 */
-+	{ "ELAN06FA", 0 },
-+	{}
-+};
-+
- static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 					   void *data, void **return_value)
- {
-@@ -320,6 +339,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
- 		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
+     my $failed = 0;
+     my $result;
+-    my $output;
+-    my $ret;
  
-+	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
-+		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
-+
- 	return AE_OK;
- }
+     $in_bisect = 1;
  
 -- 
 2.39.5
