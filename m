@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-123833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5314FA5C788
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FD9A5C54D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2F417EABF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28BCA17AE09
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E0B25EFB4;
-	Tue, 11 Mar 2025 15:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E8625EF9E;
+	Tue, 11 Mar 2025 15:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgftPmHq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QlNjj/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B2A25D904;
-	Tue, 11 Mar 2025 15:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6FD25D8E8;
+	Tue, 11 Mar 2025 15:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707093; cv=none; b=XhcGYNgXn8hKzM0PstXhn8agPi+j/T0/hzu4fQmj9wZ9AqYwAQ7LM3NQnIoUrt+FCMNLhnzRTxAjDZ7Eu7sdwXacPBJiAi/jh5nsvx/EMmquuzseRiGpJuhID/pc4ribtjiFd4q3E1WGSFz5B9cEjx79cPJGg0NaIj00nL2ndGM=
+	t=1741705881; cv=none; b=giymLpiaKZhfumJECWrPfgzLELTF/7TCMdXFpvu1cHeyWZDhsS0hMWmEC1GTRdgmCtC5/YcRV+dN+6E8nvHDtwFZxwTW402gixPSZ0P73+vsYwZIK+1rg5e63zXCX2fkvjBhmz8dO3DCmA/oUqbXP7zuQeOWjr8ZiBVihGBuNfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707093; c=relaxed/simple;
-	bh=Zs1908dru2ChVGRDYxFRs6qp8nTX0hBw0bvrq8fYCWQ=;
+	s=arc-20240116; t=1741705881; c=relaxed/simple;
+	bh=9a+MV44M84iZuMiPMf7XHBxR9rLJ8BB49JtcdfHE1DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jA34RU0l8SLHo7nfTksvutsVg+AWWOxSFCtFTlkYeD5K2jzyHm9uPXU8WLyY32qRw5d7TALVvM/gBsi/pkmkEt6ybczE5zuHpMXLDup3cvBUZRAfAn2+xZc+d2k7/ENdEDx6YFsrx9GKGbrkvi5wY8e0cu0HhvGgIM7E1tUoZ2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgftPmHq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6E2C4CEE9;
-	Tue, 11 Mar 2025 15:31:32 +0000 (UTC)
+	 MIME-Version; b=d+2FMvta1cqKh2zb+Vw8G/jE8mLIZzG4xIIgRYhFWuX+EgQklmpeANcpVb0snZxqQ68EZz4XzyKDuO9NGKSiVwY1O2G6/tK6sAoRwn0o7k3bEDObRRnr3GI6g4DDDmQcxDJ/E27EH48ndBYkJPRY2P5f5jH9khja9V1PrI3yMaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QlNjj/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71515C4CEEA;
+	Tue, 11 Mar 2025 15:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707092;
-	bh=Zs1908dru2ChVGRDYxFRs6qp8nTX0hBw0bvrq8fYCWQ=;
+	s=korg; t=1741705880;
+	bh=9a+MV44M84iZuMiPMf7XHBxR9rLJ8BB49JtcdfHE1DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgftPmHq/aHTnhsQW6AzqU6HM/av8iiyxqGN9wQPfyMjNeTBMSxEYmJutgujr1VpI
-	 wDBzuSNQsgqeSCAkrKmZxGZHbwGZ4tHFtjvfzkeyoqsuIIVy5gV7YhqX7pqklmDITo
-	 ZWQB7lZYCAuKmCW2mn9IPtqmBXP+LNbLOkmXHNMI=
+	b=2QlNjj/hdDf+biUkV1Wcy3/Zegd/vDxu44Nqu0fLMR1RqGUCD2Z2RHldMV7VurQ0T
+	 2i3ha6M36Uon8ABMCVz/w+2+U7fCL/hTrvEh7sscOu90cld/mP+ACmgdmj0Ug6TL6b
+	 X+J3QYbyYQhjQPegFc7YLpgndF/xliO6RGOXxbNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 271/462] regmap-irq: Add missing kfree()
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 167/328] gpio: bcm-kona: Fix GPIO lock/unlock for banks above bank 0
 Date: Tue, 11 Mar 2025 15:58:57 +0100
-Message-ID: <20250311145809.071491823@linuxfoundation.org>
+Message-ID: <20250311145721.542999571@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-commit 32ffed055dcee17f6705f545b069e44a66067808 upstream.
+[ Upstream commit de1d0d160f64ee76df1d364d521b2faf465a091c ]
 
-Add kfree() for "d->main_status_buf" to the error-handling path to prevent
-a memory leak.
+The GPIO lock/unlock functions clear/write a bit to the relevant
+register for each bank. However, due to an oversight the bit that
+was being written was based on the total GPIO number, not the index
+of the GPIO within the relevant bank, causing it to fail for any
+GPIO above 32 (thus any GPIO for banks above bank 0).
 
-Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
-Cc: stable@vger.kernel.org  # v5.1+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20250205004343.14413-1-jiashengjiangcool@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix lock/unlock for these banks by using the correct bit.
+
+Fixes: bdb93c03c550 ("gpio: bcm281xx: Centralize register locking")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Markus Mayer <mmayer@broadcom.com>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-1-409135eab780@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-irq.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-bcm-kona.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/base/regmap/regmap-irq.c
-+++ b/drivers/base/regmap/regmap-irq.c
-@@ -834,6 +834,7 @@ err_alloc:
- 	kfree(d->wake_buf);
- 	kfree(d->mask_buf_def);
- 	kfree(d->mask_buf);
-+	kfree(d->main_status_buf);
- 	kfree(d->status_buf);
- 	kfree(d->status_reg_buf);
- 	kfree(d);
-@@ -904,6 +905,7 @@ void regmap_del_irq_chip(int irq, struct
- 	kfree(d->wake_buf);
- 	kfree(d->mask_buf_def);
- 	kfree(d->mask_buf);
-+	kfree(d->main_status_buf);
- 	kfree(d->status_reg_buf);
- 	kfree(d->status_buf);
- 	kfree(d);
+diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
+index 100575973e1fd..840a4b7e6c4d1 100644
+--- a/drivers/gpio/gpio-bcm-kona.c
++++ b/drivers/gpio/gpio-bcm-kona.c
+@@ -94,11 +94,12 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	u32 val;
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
++	int bit = GPIO_BIT(gpio);
+ 
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+ 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val |= BIT(gpio);
++	val |= BIT(bit);
+ 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
+ 
+ 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
+@@ -110,11 +111,12 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	u32 val;
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
++	int bit = GPIO_BIT(gpio);
+ 
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+ 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val &= ~BIT(gpio);
++	val &= ~BIT(bit);
+ 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
+ 
+ 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
+-- 
+2.39.5
+
 
 
 
