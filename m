@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BDFA5C48C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5706CA5C6AA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A84E87AB481
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2467816AD49
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867B625E830;
-	Tue, 11 Mar 2025 15:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02D425D918;
+	Tue, 11 Mar 2025 15:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1inYXJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhw1+U/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D3B25E821;
-	Tue, 11 Mar 2025 15:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665991DF749;
+	Tue, 11 Mar 2025 15:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705437; cv=none; b=twQs3AIjMzY3+V59j+TNXb2+K9Ogx4eBHz938QM7/ykV7OmjXUVx41mnMxSL/AChjVjbsGIHcAjhdphTjju7bN8yE4h7BCjD+/yVKc6b2Aph4hCJj/69KZ1EjpvSFMqonUl076zUaz3NP/vJ461OmtzjEdpoMMecOKj1ZuTw3pI=
+	t=1741706652; cv=none; b=dRMh+StHD2m6Nq+/eBR9wy5yUn8QpQYLtSyR8c02obGWfZzAL9qqN2Sa1xHjhQkwc5P1RGmrFv6yDccxSuVidtJBi82UezvV/+ntdD/kCqmeiYHmHJWmG0DuLJd2XbTrs9unarLAlXjFGlX38E/jvM+sP/G2Ujpik/+HDC8hjUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705437; c=relaxed/simple;
-	bh=qgw7vCRv+piknX4JyBFwYICVKi08FQjmkd+rEwFiR1A=;
+	s=arc-20240116; t=1741706652; c=relaxed/simple;
+	bh=3G1IBmgziWBcOqZN4X4UOK/ysts+o1nDh+9O9VPln80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAZH5/Gjosgld1fAaJWC1E7WFUMuytf46ib9qwIlk+cHpGbAv0l4uip1FpCXEFiGyI7aHtDqTKQmsT4LVtvaTXyHrmLkO8PdKFFLbkMyJqG8iJ9fct/RGxjp6i25L+YFEKzdppaMP2UsD3Pa6FG9oc4ZSeBrLeQiubs4G4CS5i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1inYXJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81B6C4CEE9;
-	Tue, 11 Mar 2025 15:03:56 +0000 (UTC)
+	 MIME-Version; b=YX3jWSNSlFNaohjyDWS2xW57ioxh141dReMx6183223i+9AZhqy/eVUGbSMPfCpk0Gin9p2VaemdWqh9B2QL/nOcHy5od9Gif2jIP5j+MsQWeooCT7x5ris+Vio9i7zJ1lu5WbsbCul2Scm2J/Teh3bEnNeXMJz8OxHTRhpYF0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhw1+U/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39EEC4CEE9;
+	Tue, 11 Mar 2025 15:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705437;
-	bh=qgw7vCRv+piknX4JyBFwYICVKi08FQjmkd+rEwFiR1A=;
+	s=korg; t=1741706652;
+	bh=3G1IBmgziWBcOqZN4X4UOK/ysts+o1nDh+9O9VPln80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1inYXJcJxsZTGQlChuVY1DnczU8OQSlxrEvk8sdPWk/mNXraidtK3iF8X+HPP7EW
-	 F/HX0O/xxjWpH/M+fm9fGxx2E30YzlERG/Xbv12xovNLkTCq0lE7bwq0kbWk36Lwe3
-	 +spEmSI3DL87VHx07uVNBzJn8iyI4neBtZh0d9Hw=
+	b=uhw1+U/TiIs4bCAU88qSSKXbbzih2WKWG7ih3x5cp+PKflIslfg10F25vxruyxkV9
+	 X06M9lUVn9n8uIayD+2QwX6m9CUdjojGlCyBuAz1dDJDkw+WRJguGlmBYfiaNPhkoc
+	 +rdvDism7WXCLVSFMgGz4Q4cpbzilEUVnTIDDrxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 016/328] dt-bindings: mmc: controller: clarify the address-cells description
-Date: Tue, 11 Mar 2025 15:56:26 +0100
-Message-ID: <20250311145715.526626164@linuxfoundation.org>
+	Jos Wang <joswang@lenovo.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 5.10 121/462] usb: typec: tcpm: set SRC_SEND_CAPABILITIES timeout to PD_T_SENDER_RESPONSE
+Date: Tue, 11 Mar 2025 15:56:27 +0100
+Message-ID: <20250311145803.139316893@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Jos Wang <joswang@lenovo.com>
 
-[ Upstream commit b2b8e93ec00b8110cb37cbde5400d5abfdaed6a7 ]
+commit 2eb3da037c2c20fa30bc502bc092479b2a1aaae2 upstream.
 
-The term "slot ID" has nothing to do with the SDIO function number
-which is specified in the reg property of the subnodes, rephrase
-the description to be more accurate.
+As PD2.0 spec ("8.3.3.2.3 PE_SRC_Send_Capabilities state"), after the
+Source receives the GoodCRC Message from the Sink in response to the
+Source_Capabilities message, it should start the SenderResponseTimer,
+after the timer times out, the state machine transitions to the
+HARD_RESET state.
 
-Fixes: f9b7989859dd ("dt-bindings: mmc: Add YAML schemas for the generic MMC options")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Message-ID: <20241128-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v4-1-11d9f9200a59@linaro.org>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250105135245.7493-1-joswang1221@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
+ drivers/usb/typec/tcpm/tcpm.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-index 080754e0ef352..ccb9df705fb1c 100644
---- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-+++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-@@ -21,7 +21,7 @@ properties:
-   "#address-cells":
-     const: 1
-     description: |
--      The cell is the slot ID if a function subnode is used.
-+      The cell is the SDIO function number if a function subnode is used.
- 
-   "#size-cells":
-     const: 0
--- 
-2.39.5
-
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3195,7 +3195,7 @@ static void run_state_machine(struct tcp
+ 			port->caps_count = 0;
+ 			port->pd_capable = true;
+ 			tcpm_set_state_cond(port, SRC_SEND_CAPABILITIES_TIMEOUT,
+-					    PD_T_SEND_SOURCE_CAP);
++					    PD_T_SENDER_RESPONSE);
+ 		}
+ 		break;
+ 	case SRC_SEND_CAPABILITIES_TIMEOUT:
 
 
 
