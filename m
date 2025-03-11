@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-123640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5CDA5C6A1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8095A5C66F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6A6189FF48
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:23:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77626189DDEF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3188B25F783;
-	Tue, 11 Mar 2025 15:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B5925F98C;
+	Tue, 11 Mar 2025 15:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNzBymov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMMykdLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECC625EFBF;
-	Tue, 11 Mar 2025 15:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E181525F986;
+	Tue, 11 Mar 2025 15:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706535; cv=none; b=QixY7N50p1Q8aT4Y++s4LMSXx6cvAwk4DSbIAAFPxr1Hz5WW62zhTkWwdfVauZSNVQc46vUfP0v+K0beK63/J9NStn2gaxt9EiCVHTLzxK/+nDTtRhJEVk1fkA7XhME4j1S+1ZvxkSpqFIChVmFZAKSjecxZwCfYvCVfG87etSg=
+	t=1741706442; cv=none; b=Nw4FkmQa/kYherOhZTdFgNVoXX0VA4pVBHJaHo6e8kd971NFclFrSGQsZ/ToCYQSIkYBfJL3F00pVQJ5VZV6ZbyEQ9zw/wMvydVFd4IfadIEFSF0xWstDrOhvsjbAUQKhpYaRsd9b7x0IO83y1RFHOZ/k0oVkXVymieRDQuYo/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706535; c=relaxed/simple;
-	bh=3cC/KAc9HaBD60vQY4RdscHwphbXcoYkTpXLRSXosow=;
+	s=arc-20240116; t=1741706442; c=relaxed/simple;
+	bh=mHqgdP8iamB5aVs0UFHsocuzpUO0VwBzEO3sr0xsWoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxP98EZeqryYQilwMJMUk/aubPQ7I+r1eJ0gIDwolwktaWlJOAU8TzPUVY2zBQsS2LhodYKz5Gg2tCUZF00KT7OBXyXar+t4qpxaF7kKpqpbCZUYIelOwFhQw5hx8C7Ve/9w0F1Mb/dy97VyWab32RdjzS6+WwOJrl1qJaOpM4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNzBymov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0055C4CEE9;
-	Tue, 11 Mar 2025 15:22:13 +0000 (UTC)
+	 MIME-Version; b=tKgUs84GZynFQd8gykBm9A5ANyC1/l3ZBbDVa7d2DAowBbeJnTYfKHSt9DiegJbw+oBKqSaClkSFCoseQqpKJ0B7rox6IyQArcDRsHnAp8fLJecGQCOR0pFHLKCEQT4IAAKxznsDUcbZ0fYj02L9TvcdgWbyZE+syG1eD4OXf1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMMykdLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C42C4CEEA;
+	Tue, 11 Mar 2025 15:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706534;
-	bh=3cC/KAc9HaBD60vQY4RdscHwphbXcoYkTpXLRSXosow=;
+	s=korg; t=1741706441;
+	bh=mHqgdP8iamB5aVs0UFHsocuzpUO0VwBzEO3sr0xsWoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNzBymovWZ/3KdTNaXyZP+R7vRj9+q/s3Eu6pIQmgX4+o3OUoJc2wCmP+Lk27EW8b
-	 fBCbcB+SHlC1NbrRQxncBfkD0bw87T0iN4H4ht74dWV7/NAX7SX7Spfba4c8Sz7Nyx
-	 AAWZo70HHk3oND1g2AFHSRlavt8d0qaMIu00+3XQ=
+	b=uMMykdLLM7d9xGpxIs3ve3dxyN3DhCCOOF/9XyvhtxUZkdRTrQHcnrIjyJ+EeGsFP
+	 a0kJrH9fP8sYMJyVmGaTogE396+FYmWP7JGI/NwOgF5h0TpE+Eu+CgO4kRM62NGJBX
+	 cUHNxDSg9rdZeb2cEKyvnErvFxTEwE0ziGwIEM6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Bo Gan <ganboing@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/462] wifi: cfg80211: adjust allocation of colocated AP data
-Date: Tue, 11 Mar 2025 15:55:07 +0100
-Message-ID: <20250311145759.975512441@linuxfoundation.org>
+Subject: [PATCH 5.10 042/462] clk: analogbits: Fix incorrect calculation of vco rate delta
+Date: Tue, 11 Mar 2025 15:55:08 +0100
+Message-ID: <20250311145800.013336216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -66,39 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Bo Gan <ganboing@gmail.com>
 
-[ Upstream commit 1a0d24775cdee2b8dc14bfa4f4418c930ab1ac57 ]
+[ Upstream commit d7f12857f095ef38523399d47e68787b357232f6 ]
 
-In 'cfg80211_scan_6ghz()', an instances of 'struct cfg80211_colocated_ap'
-are allocated as if they would have 'ssid' as trailing VLA member. Since
-this is not so, extra IEEE80211_MAX_SSID_LEN bytes are not needed.
-Briefly tested with KUnit.
+In wrpll_configure_for_rate() we try to determine the best PLL
+configuration for a target rate. However, in the loop where we try
+values of R, we should compare the derived `vco` with `target_vco_rate`.
+However, we were in fact comparing it with `target_rate`, which is
+actually after Q shift. This is incorrect, and sometimes can result in
+suboptimal clock rates. Fix it.
 
-Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20250113155417.552587-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 7b9487a9a5c4 ("clk: analogbits: add Wide-Range PLL library")
+Signed-off-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/r/20240830061639.2316-1-ganboing@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/clk/analogbits/wrpll-cln28hpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 348b2fce25fc3..670fcdbef95be 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -821,9 +821,7 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 			if (ret)
- 				continue;
+diff --git a/drivers/clk/analogbits/wrpll-cln28hpc.c b/drivers/clk/analogbits/wrpll-cln28hpc.c
+index 776ead319ae9c..9df572579afb4 100644
+--- a/drivers/clk/analogbits/wrpll-cln28hpc.c
++++ b/drivers/clk/analogbits/wrpll-cln28hpc.c
+@@ -287,7 +287,7 @@ int wrpll_configure_for_rate(struct wrpll_cfg *c, u32 target_rate,
+ 			vco = vco_pre * f;
+ 		}
  
--			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
--					GFP_ATOMIC);
--
-+			entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
- 			if (!entry)
- 				continue;
- 
+-		delta = abs(target_rate - vco);
++		delta = abs(target_vco_rate - vco);
+ 		if (delta < best_delta) {
+ 			best_delta = delta;
+ 			best_r = r;
 -- 
 2.39.5
 
