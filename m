@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-123794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0071CA5C76D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:34:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6336A5C516
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5F518893BB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:30:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C16881886B85
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A98325F7BB;
-	Tue, 11 Mar 2025 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F7D25DD06;
+	Tue, 11 Mar 2025 15:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOH0k1aC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Or/pg+Cd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3715525F7B0;
-	Tue, 11 Mar 2025 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AFE8632E;
+	Tue, 11 Mar 2025 15:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706979; cv=none; b=JTIcVtol/4q9u3QD61dUMw+ABjKx7fOQvo/k2r1rXL+ZfEOPRV+1/++xzWq9HFDbEQ1DjSHNcMvDeBOgXFRsk9xHTLtBH2/qBL9ORRaRC8EfxZoOzjbmcvTlPH3/MExn49Tjb05+M0DkJXm0uZmYYdry24kfb/+4Ws8MfANfDQE=
+	t=1741705714; cv=none; b=sX9r9BLW5KkNYZPRjDd7jtmbc7MixIMFBTdVSpHS3XTe0ecLKjhZEdTLWl/vja3Ne69DfoM3Afa7EuiyUJfx4yfxvTQUC5VZZwrM1LjVUj6VoRdMmA537Lo7QeJKa5xMG0hHhQ24EXjCBoZBHV+DqHAdUxGSngZfC94BVwly9Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706979; c=relaxed/simple;
-	bh=M3JAkN+ueBNfssG+kO8TYo8ellPJv3KfaV9Wxs/OuAs=;
+	s=arc-20240116; t=1741705714; c=relaxed/simple;
+	bh=+hfaDzzaLSqf31Y6UWIIkgOa14vtiKqipkZkENe96BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Agg64H4FtvVZmkx//uLaKwqVki1URPR5THUrfnJyYNwRm5YoSferbf9jkGkbQD8b98kxGyLILGsssEJ+gNLgc8j8WLJSUWkoSn1iK8rtwHOtBvyU8gBBfdKVMInk71Cp4wVslDCX7zxpx6wQoGT1Njhhld9Zh01fFEtFj14sCJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOH0k1aC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FAEC4CEED;
-	Tue, 11 Mar 2025 15:29:38 +0000 (UTC)
+	 MIME-Version; b=mWR//B7gCnugtsX/Xtc1VDSJnSpdjzTl/sD3G/fBEXmLt/ciUB4k28baeKkpcODzrFe8rnokvZtsTNYvta5nHt3fCGxddVaIowte80vyTr/FYoUn/Tijpfv19wlPL95wzmfIGSyTVBL2kjDULivMgeoFcQlJ/yoNAAIyn7B5KPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Or/pg+Cd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BD3C4CEE9;
+	Tue, 11 Mar 2025 15:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706979;
-	bh=M3JAkN+ueBNfssG+kO8TYo8ellPJv3KfaV9Wxs/OuAs=;
+	s=korg; t=1741705714;
+	bh=+hfaDzzaLSqf31Y6UWIIkgOa14vtiKqipkZkENe96BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOH0k1aCUyd5Pukz8pAZDn7v0XdQoXKSenQg9N9zCwf2N1sq8EEnec+1uxx6igwlR
-	 57YCYIfCIdVkf8BOxuu6liR12Rdu+x5oDc4kuyFKN53pQToV1FwdgAsK2oNqKlGYLU
-	 usISUH3GaaO+o2D1uiTvWzY1kKQz0ti3VHC0Ibvo=
+	b=Or/pg+CdNG265M/0g9MEk4X8DeODP8Trp4L3XtzEkddeMCzY/2JvIA0Uep4HOsBMY
+	 GB6pSc0IBBHHLQT14pd4mZjDq79rci3JtgXswrGKy+FVHlTjDVZR8y31favst1Pu7D
+	 04ipFZ2UUDLHrW6TnGknfL7FtnOvdgB7Qi0KalE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Markus Mayer <mmayer@broadcom.com>,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 233/462] gpio: bcm-kona: Make sure GPIO bits are unlocked when requesting IRQ
-Date: Tue, 11 Mar 2025 15:58:19 +0100
-Message-ID: <20250311145807.573640137@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.4 130/328] of: Correct child specifier used as input of the 2nd nexus node
+Date: Tue, 11 Mar 2025 15:58:20 +0100
+Message-ID: <20250311145720.069146910@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,165 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 57f5db77a915cc29461a679a6bcae7097967be1a ]
+commit e4c00c9b1f70cd11792ff5b825899a6ee0234a62 upstream.
 
-The settings for all GPIOs are locked by default in bcm_kona_gpio_reset.
-The settings for a GPIO are unlocked when requesting it as a GPIO, but
-not when requesting it as an interrupt, causing the IRQ settings to not
-get applied.
+API of_parse_phandle_with_args_map() will use wrong input for nexus node
+Nexus_2 as shown below:
 
-Fix this by making sure to unlock the right bits when an IRQ is requested.
-To avoid a situation where an IRQ being released causes a lock despite
-the same GPIO being used by a GPIO request or vice versa, add an unlock
-counter and only lock if it reaches 0.
+    Node_1		Nexus_1                              Nexus_2
+&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
+		  map-pass-thru=<...>
 
-Fixes: 757651e3d60e ("gpio: bcm281xx: Add GPIO driver")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Markus Mayer <mmayer@broadcom.com>
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-2-409135eab780@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
+wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
+
+Fix by always making @match_array point to @initial_match_array into
+which to store nexus output.
+
+Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-bcm-kona.c | 67 +++++++++++++++++++++++++++++-------
- 1 file changed, 55 insertions(+), 12 deletions(-)
+ drivers/of/base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
-index 1cb663da85e76..46c7d399780ae 100644
---- a/drivers/gpio/gpio-bcm-kona.c
-+++ b/drivers/gpio/gpio-bcm-kona.c
-@@ -76,6 +76,22 @@ struct bcm_kona_gpio {
- struct bcm_kona_gpio_bank {
- 	int id;
- 	int irq;
-+	/*
-+	 * Used to keep track of lock/unlock operations for each GPIO in the
-+	 * bank.
-+	 *
-+	 * All GPIOs are locked by default (see bcm_kona_gpio_reset), and the
-+	 * unlock count for all GPIOs is 0 by default. Each unlock increments
-+	 * the counter, and each lock decrements the counter.
-+	 *
-+	 * The lock function only locks the GPIO once its unlock counter is
-+	 * down to 0. This is necessary because the GPIO is unlocked in two
-+	 * places in this driver: once for requested GPIOs, and once for
-+	 * requested IRQs. Since it is possible for a GPIO to be requested
-+	 * as both a GPIO and an IRQ, we need to ensure that we don't lock it
-+	 * too early.
-+	 */
-+	u8 gpio_unlock_count[GPIO_PER_BANK];
- 	/* Used in the interrupt handler */
- 	struct bcm_kona_gpio *kona_gpio;
- };
-@@ -94,14 +110,23 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
- 	int bit = GPIO_BIT(gpio);
-+	struct bcm_kona_gpio_bank *bank = &kona_gpio->banks[bank_id];
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1733,7 +1733,6 @@ int of_parse_phandle_with_args_map(const
+ 		 * specifier into the out_args structure, keeping the
+ 		 * bits specified in <list>-map-pass-thru.
+ 		 */
+-		match_array = map - new_size;
+ 		for (i = 0; i < new_size; i++) {
+ 			__be32 val = *(map - new_size + i);
  
--	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
-+	if (bank->gpio_unlock_count[bit] == 0) {
-+		dev_err(kona_gpio->gpio_chip.parent,
-+			"Unbalanced locks for GPIO %u\n", gpio);
-+		return;
-+	}
+@@ -1742,6 +1741,7 @@ int of_parse_phandle_with_args_map(const
+ 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
+ 			}
  
--	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val |= BIT(bit);
--	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
-+	if (--bank->gpio_unlock_count[bit] == 0) {
-+		raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
--	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
-+		val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
-+		val |= BIT(bit);
-+		bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
-+
-+		raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
-+	}
- }
- 
- static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
-@@ -111,14 +136,19 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
- 	int bit = GPIO_BIT(gpio);
-+	struct bcm_kona_gpio_bank *bank = &kona_gpio->banks[bank_id];
- 
--	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
-+	if (bank->gpio_unlock_count[bit] == 0) {
-+		raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
--	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val &= ~BIT(bit);
--	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
-+		val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
-+		val &= ~BIT(bit);
-+		bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
- 
--	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
-+		raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
-+	}
-+
-+	++bank->gpio_unlock_count[bit];
- }
- 
- static int bcm_kona_gpio_get_dir(struct gpio_chip *chip, unsigned gpio)
-@@ -369,6 +399,7 @@ static void bcm_kona_gpio_irq_mask(struct irq_data *d)
- 
- 	kona_gpio = irq_data_get_irq_chip_data(d);
- 	reg_base = kona_gpio->reg_base;
-+
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
- 	val = readl(reg_base + GPIO_INT_MASK(bank_id));
-@@ -391,6 +422,7 @@ static void bcm_kona_gpio_irq_unmask(struct irq_data *d)
- 
- 	kona_gpio = irq_data_get_irq_chip_data(d);
- 	reg_base = kona_gpio->reg_base;
-+
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
- 	val = readl(reg_base + GPIO_INT_MSKCLR(bank_id));
-@@ -488,15 +520,26 @@ static void bcm_kona_gpio_irq_handler(struct irq_desc *desc)
- static int bcm_kona_gpio_irq_reqres(struct irq_data *d)
- {
- 	struct bcm_kona_gpio *kona_gpio = irq_data_get_irq_chip_data(d);
-+	unsigned int gpio = d->hwirq;
-+
-+	/*
-+	 * We need to unlock the GPIO before any other operations are performed
-+	 * on the relevant GPIO configuration registers
-+	 */
-+	bcm_kona_gpio_unlock_gpio(kona_gpio, gpio);
- 
--	return gpiochip_reqres_irq(&kona_gpio->gpio_chip, d->hwirq);
-+	return gpiochip_reqres_irq(&kona_gpio->gpio_chip, gpio);
- }
- 
- static void bcm_kona_gpio_irq_relres(struct irq_data *d)
- {
- 	struct bcm_kona_gpio *kona_gpio = irq_data_get_irq_chip_data(d);
-+	unsigned int gpio = d->hwirq;
-+
-+	/* Once we no longer use it, lock the GPIO again */
-+	bcm_kona_gpio_lock_gpio(kona_gpio, gpio);
- 
--	gpiochip_relres_irq(&kona_gpio->gpio_chip, d->hwirq);
-+	gpiochip_relres_irq(&kona_gpio->gpio_chip, gpio);
- }
- 
- static struct irq_chip bcm_gpio_irq_chip = {
--- 
-2.39.5
-
++			initial_match_array[i] = val;
+ 			out_args->args[i] = be32_to_cpu(val);
+ 		}
+ 		out_args->args_count = list_size = new_size;
 
 
 
