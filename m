@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-123618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C096A5C658
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:24:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7639BA5C6B9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94CF716B3A0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:22:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB293AAFB0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA16125F78D;
-	Tue, 11 Mar 2025 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310D925E815;
+	Tue, 11 Mar 2025 15:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uL/unaPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vk5h3unf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EA925E83B;
-	Tue, 11 Mar 2025 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A0225D918;
+	Tue, 11 Mar 2025 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706474; cv=none; b=MhTqKHsLiDhuE2JjU/yKHzOeEV2pWV7d7J1q2FZEFij60ujG8YE3GKJpV5skJ0ORDFgtBUB9UPaPtCxlIJGgxsZMfzDQWHkoqBF3NzOq/xge2eIZGRABm+NfFQ3hBFyr97nxi4m+o5TYW1UFDao8jm7ZtODfcD6rFZrB05GtTsE=
+	t=1741706506; cv=none; b=qvlhaTfJPYJsUjGNyqMZPq06EUW5/8L713N4/MIFZ9xJMU/Y67EYtEnN9Umqr0zNHfZavrAbLBpN9d3EqkuQhHyrAoMxkthXwHoMzDeHHtsO8KEtwRSCCUMyYy+EJI+ym2NfcQyniCKBO+ElP8O23Ziwr52MKWj28kP+yTUSeU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706474; c=relaxed/simple;
-	bh=t9EUY2PCC8kkQfHmLZoVxVYKkhX9MTzBVMhuJNTO9Yo=;
+	s=arc-20240116; t=1741706506; c=relaxed/simple;
+	bh=wkb5BnnGEoNs49nV5tdNFRv5IRV4MWRO0PRMM6YzTuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GQdRE3eJadT5PZbGcPvDiJ3HjLtBtWO9LcUBRJdlGstOv+e7rt3AigHhAGvguLzW6F4+ckD83ttNZRkM/v/lPJ5uDUuTUexhCPRCEbulnCwazTSuQ1c7/kzv1KdzuRhvpLz6+WWGj+9sXObXje9GVbAqvlNwnjrcV7nToIMeIc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uL/unaPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8760DC4CEE9;
-	Tue, 11 Mar 2025 15:21:13 +0000 (UTC)
+	 MIME-Version; b=mY+AdwchE6VZgB+bKDLgL1VeySiSymBrPUmoAblVczPC1JHLHUMnxDOJaApdj8BSxPLwBNctgxwFNsp9QfV9QhgDHRD0hBc06rnCH1fNBBlDStkQ9oMTO+/0djP+UIVPdKjqdkjdPWetVYCYn4D+Hf74LFrpxW/UF+AOaC9zG/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vk5h3unf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B753C4CEE9;
+	Tue, 11 Mar 2025 15:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706473;
-	bh=t9EUY2PCC8kkQfHmLZoVxVYKkhX9MTzBVMhuJNTO9Yo=;
+	s=korg; t=1741706505;
+	bh=wkb5BnnGEoNs49nV5tdNFRv5IRV4MWRO0PRMM6YzTuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uL/unaPx1X39NueRJA5oe9KX1r1yFg/cZgxafM+2btKET/QeColOV64YX1PEUJVrx
-	 AZzmnEcE30SQcD8RZA9Er7BPXfCWYCaT9kjwxRKzYApGxzPBLL/mKokFoFZrDA+t4M
-	 s+g5cs527K1ZiDfz1jhFKGJ952xsdtTVtbXy/PRc=
+	b=vk5h3unfTZfDGeByxe+mJKscIRQVQtzqCoOnJBd++v2K9jQ71+l/08Awyl8L5r5Aj
+	 Ycac9/y57ipDNDjAcYjlEiP5+s7yJym6EJ5wiOc8mg+c+WcNCJLbB1+C4X4W/AVIqw
+	 5pn7bALn31eHyD9+JFPbvqkdTN1Q3G/wOSCt5S1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Liu Jian <liujian56@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/462] pwm: stm32: Add check for clk_enable()
-Date: Tue, 11 Mar 2025 15:55:09 +0100
-Message-ID: <20250311145800.052007204@linuxfoundation.org>
+Subject: [PATCH 5.10 044/462] net: let net.core.dev_weight always be non-zero
+Date: Tue, 11 Mar 2025 15:55:10 +0100
+Message-ID: <20250311145800.091611725@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -61,48 +60,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit e8c59791ebb60790c74b2c3ab520f04a8a57219a ]
+[ Upstream commit d1f9f79fa2af8e3b45cffdeef66e05833480148a ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+The following problem was encountered during stability test:
 
-Fixes: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241215224752.220318-1-zmw12306@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+(NULL net_device): NAPI poll function process_backlog+0x0/0x530 \
+	returned 1, exceeding its budget of 0.
+------------[ cut here ]------------
+list_add double add: new=ffff88905f746f48, prev=ffff88905f746f48, \
+	next=ffff88905f746e40.
+WARNING: CPU: 18 PID: 5462 at lib/list_debug.c:35 \
+	__list_add_valid_or_report+0xf3/0x130
+CPU: 18 UID: 0 PID: 5462 Comm: ping Kdump: loaded Not tainted 6.13.0-rc7+
+RIP: 0010:__list_add_valid_or_report+0xf3/0x130
+Call Trace:
+? __warn+0xcd/0x250
+? __list_add_valid_or_report+0xf3/0x130
+enqueue_to_backlog+0x923/0x1070
+netif_rx_internal+0x92/0x2b0
+__netif_rx+0x15/0x170
+loopback_xmit+0x2ef/0x450
+dev_hard_start_xmit+0x103/0x490
+__dev_queue_xmit+0xeac/0x1950
+ip_finish_output2+0x6cc/0x1620
+ip_output+0x161/0x270
+ip_push_pending_frames+0x155/0x1a0
+raw_sendmsg+0xe13/0x1550
+__sys_sendto+0x3bf/0x4e0
+__x64_sys_sendto+0xdc/0x1b0
+do_syscall_64+0x5b/0x170
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The reproduction command is as follows:
+  sysctl -w net.core.dev_weight=0
+  ping 127.0.0.1
+
+This is because when the napi's weight is set to 0, process_backlog() may
+return 0 and clear the NAPI_STATE_SCHED bit of napi->state, causing this
+napi to be re-polled in net_rx_action() until __do_softirq() times out.
+Since the NAPI_STATE_SCHED bit has been cleared, napi_schedule_rps() can
+be retriggered in enqueue_to_backlog(), causing this issue.
+
+Making the napi's weight always non-zero solves this problem.
+
+Triggering this issue requires system-wide admin (setting is
+not namespaced).
+
+Fixes: e38766054509 ("[NET]: Fix sysctl net.core.dev_weight")
+Fixes: 3d48b53fb2ae ("net: dev_weight: TX/RX orthogonality")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Link: https://patch.msgid.link/20250116143053.4146855-1-liujian56@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/core/sysctl_net_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index 7146b3f6755bc..2ca2855255be1 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -634,8 +634,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 0dfe9f255ab3a..3640be19a795e 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -239,7 +239,7 @@ static int proc_do_dev_weight(struct ctl_table *table, int write,
+ 	int ret, weight;
  
- 	/* Initialize clock refcount to number of enabled PWM channels. */
--	for (i = 0; i < num_enabled; i++)
--		clk_enable(priv->clk);
-+	for (i = 0; i < num_enabled; i++) {
-+		ret = clk_enable(priv->clk);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	ret = pwmchip_add(&priv->chip);
- 	if (ret < 0)
+ 	mutex_lock(&dev_weight_mutex);
+-	ret = proc_dointvec(table, write, buffer, lenp, ppos);
++	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (!ret && write) {
+ 		weight = READ_ONCE(weight_p);
+ 		WRITE_ONCE(dev_rx_weight, weight * dev_weight_rx_bias);
+@@ -351,6 +351,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_do_dev_weight,
++		.extra1         = SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "dev_weight_rx_bias",
+@@ -358,6 +359,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_do_dev_weight,
++		.extra1         = SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "dev_weight_tx_bias",
+@@ -365,6 +367,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_do_dev_weight,
++		.extra1         = SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "netdev_max_backlog",
 -- 
 2.39.5
 
