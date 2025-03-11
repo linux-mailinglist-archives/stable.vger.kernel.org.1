@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94481A5C827
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA9FA5C614
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 818A817F56B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6F633A3EE9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D402E25DCFA;
-	Tue, 11 Mar 2025 15:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962D325DAF8;
+	Tue, 11 Mar 2025 15:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+NP1oNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1e0m9F3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9365B1A5BA4;
-	Tue, 11 Mar 2025 15:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C2E1C3BEB;
+	Tue, 11 Mar 2025 15:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707460; cv=none; b=b3iQX2B7qlmxQmR3shD6pKntC1+N+Iu8CPuLqO8rGNhXr8ozAlj6m9Fh4151qZlyu+apCCowSvmyBehwKVIGlFmA8M3XIp+BWKTeGRolyQAlUwyCkx/1Fvceqhy3UcXu74fTMAFHq75Ov4EG3m/mSkCM1bsxPXyqkijS9BIXiSg=
+	t=1741706246; cv=none; b=kTAbqJtLu3bJthP1fYVa+FStwZY3IJOOYiDMMHAViTKI9K/fRoGN7wH2/WuLref8ju+APQi4zQc9Xk/lJ4ZQD2sSxb0AYzBHk03a+L2UzPQlNHt6daZ4mJCAADtqmxVRF5Powjrs4ITKHFoGceRKD7t13wk7OSsn5BuuI6eWVWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707460; c=relaxed/simple;
-	bh=91q8NUoW4In5l/4m4vVDxHkGjk9tXrsHQD19s5nWJlY=;
+	s=arc-20240116; t=1741706246; c=relaxed/simple;
+	bh=lpbFobZpTzG3ayUlLo6Fzy6tIGZw+7bHFb6RwS73fh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azflvlwPK/az7Q/ny/TJvslbALf1on7tt9jhWKRb+AoH3EhtBhHsEz2fmrBQf/89iNHzfXMn4SKYMnDU83QNJ10/Y+l/SE+c9yac883mQ4PcyKhCnmuQKaW4Zoq+u3QqMloh013XcGcw77ivw/IkBr007P4UVPim8WVDO6EPK70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+NP1oNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1668FC4CEE9;
-	Tue, 11 Mar 2025 15:37:39 +0000 (UTC)
+	 MIME-Version; b=tHN2Dgb7VHAplmEoXzCsZNxPLcIMBEFbgsv39fMKeVU6L5RjG8wFqD5j5nDiMLtYdkC1W4t2Vq4k6zvjSe6c9MKqTq+VnlXZY4HdDnZwAlEWHAKTONn6aFBLXAM7J5+uAg8rje2duqRxoynLAZ0OQQQnFnZrlE9QS36p0Mqx004=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1e0m9F3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE00C4CEF6;
+	Tue, 11 Mar 2025 15:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707460;
-	bh=91q8NUoW4In5l/4m4vVDxHkGjk9tXrsHQD19s5nWJlY=;
+	s=korg; t=1741706246;
+	bh=lpbFobZpTzG3ayUlLo6Fzy6tIGZw+7bHFb6RwS73fh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+NP1oNAxIxgRTDRkMQzcboEFY18pCDdMubbfAEnVRNwjrpVHtTR1az97a8egEX9Z
-	 moouGdDMxMK3sjPxY6TXylwq0HcAyIrHywVZ7IxfXwx+mk0tkcTlJcmaL/pl7az4i8
-	 1vHFRYtRgw02B5NofWw7c5BMlqnLLzd54lFFmbdI=
+	b=j1e0m9F3GQJgUJJJ7CNEJoMzCOBmpfZgyDF6OZ+VYNvF05wM/DmcD9KTaGEtnvPsw
+	 DzE+YLMd2SCw62b6nYutHrt7al7MiGOerT3zuYNJIDKu4FUw5T8IChqBm4ZoO9f0dr
+	 eIsb+DtsA/S8t1F4OvXi8VYQqxMb8GiDOh5eGJUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 397/462] x86/cpu: Properly parse CPUID leaf 0x2 TLB descriptor 0x63
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 293/328] wifi: iwlwifi: limit printed string from FW file
 Date: Tue, 11 Mar 2025 16:01:03 +0100
-Message-ID: <20250311145814.018164624@linuxfoundation.org>
+Message-ID: <20250311145726.554208068@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit f6bdaab79ee4228a143ee1b4cb80416d6ffc0c63 upstream.
+[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
 
-CPUID leaf 0x2's one-byte TLB descriptors report the number of entries
-for specific TLB types, among other properties.
+There's no guarantee here that the file is always with a
+NUL-termination, so reading the string may read beyond the
+end of the TLV. If that's the last TLV in the file, it can
+perhaps even read beyond the end of the file buffer.
 
-Typically, each emitted descriptor implies the same number of entries
-for its respective TLB type(s).  An emitted 0x63 descriptor is an
-exception: it implies 4 data TLB entries for 1GB pages and 32 data TLB
-entries for 2MB or 4MB pages.
+Fix that by limiting the print format to the size of the
+buffer we have.
 
-For the TLB descriptors parsing code, the entry count for 1GB pages is
-encoded at the intel_tlb_table[] mapping, but the 2MB/4MB entry count is
-totally ignored.
-
-Update leaf 0x2's parsing logic 0x2 to account for 32 data TLB entries
-for 2MB/4MB pages implied by the 0x63 descriptor.
-
-Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-4-darwi@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/intel.c |   60 ++++++++++++++++++++++++++++----------------
- 1 file changed, 39 insertions(+), 21 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -747,26 +747,37 @@ static unsigned int intel_size_cache(str
- }
- #endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 9e63230da1ec0..03de1ca54c948 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1113,7 +1113,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
  
--#define TLB_INST_4K	0x01
--#define TLB_INST_4M	0x02
--#define TLB_INST_2M_4M	0x03
--
--#define TLB_INST_ALL	0x05
--#define TLB_INST_1G	0x06
--
--#define TLB_DATA_4K	0x11
--#define TLB_DATA_4M	0x12
--#define TLB_DATA_2M_4M	0x13
--#define TLB_DATA_4K_4M	0x14
--
--#define TLB_DATA_1G	0x16
--
--#define TLB_DATA0_4K	0x21
--#define TLB_DATA0_4M	0x22
--#define TLB_DATA0_2M_4M	0x23
--
--#define STLB_4K		0x41
--#define STLB_4K_2M	0x42
-+#define TLB_INST_4K		0x01
-+#define TLB_INST_4M		0x02
-+#define TLB_INST_2M_4M		0x03
-+
-+#define TLB_INST_ALL		0x05
-+#define TLB_INST_1G		0x06
-+
-+#define TLB_DATA_4K		0x11
-+#define TLB_DATA_4M		0x12
-+#define TLB_DATA_2M_4M		0x13
-+#define TLB_DATA_4K_4M		0x14
-+
-+#define TLB_DATA_1G		0x16
-+#define TLB_DATA_1G_2M_4M	0x17
-+
-+#define TLB_DATA0_4K		0x21
-+#define TLB_DATA0_4M		0x22
-+#define TLB_DATA0_2M_4M		0x23
-+
-+#define STLB_4K			0x41
-+#define STLB_4K_2M		0x42
-+
-+/*
-+ * All of leaf 0x2's one-byte TLB descriptors implies the same number of
-+ * entries for their respective TLB types.  The 0x63 descriptor is an
-+ * exception: it implies 4 dTLB entries for 1GB pages 32 dTLB entries
-+ * for 2MB or 4MB pages.  Encode descriptor 0x63 dTLB entry count for
-+ * 2MB/4MB pages here, as its count for dTLB 1GB pages is already at the
-+ * intel_tlb_table[] mapping.
-+ */
-+#define TLB_0x63_2M_4M_ENTRIES	32
- 
- static const struct _tlb_table intel_tlb_table[] = {
- 	{ 0x01, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages, 4-way set associative" },
-@@ -788,7 +799,8 @@ static const struct _tlb_table intel_tlb
- 	{ 0x5c, TLB_DATA_4K_4M,		128,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x5d, TLB_DATA_4K_4M,		256,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x61, TLB_INST_4K,		48,	" TLB_INST 4 KByte pages, full associative" },
--	{ 0x63, TLB_DATA_1G,		4,	" TLB_DATA 1 GByte pages, 4-way set associative" },
-+	{ 0x63, TLB_DATA_1G_2M_4M,	4,	" TLB_DATA 1 GByte pages, 4-way set associative"
-+						" (plus 32 entries TLB_DATA 2 MByte or 4 MByte pages, not encoded here)" },
- 	{ 0x6b, TLB_DATA_4K,		256,	" TLB_DATA 4 KByte pages, 8-way associative" },
- 	{ 0x6c, TLB_DATA_2M_4M,		128,	" TLB_DATA 2 MByte or 4 MByte pages, 8-way associative" },
- 	{ 0x6d, TLB_DATA_1G,		16,	" TLB_DATA 1 GByte pages, fully associative" },
-@@ -888,6 +900,12 @@ static void intel_tlb_lookup(const unsig
- 		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
- 		break;
-+	case TLB_DATA_1G_2M_4M:
-+		if (tlb_lld_2m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_2m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		if (tlb_lld_4m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_4m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		fallthrough;
- 	case TLB_DATA_1G:
- 		if (tlb_lld_1g[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_1g[ENTRIES] = intel_tlb_table[k].entries;
+ 			if (tlv_len != sizeof(*fseq_ver))
+ 				goto invalid_tlv_len;
+-			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
++			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
+ 				 fseq_ver->version);
+ 			}
+ 			break;
+-- 
+2.39.5
+
 
 
 
