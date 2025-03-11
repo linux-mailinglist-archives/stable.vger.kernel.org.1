@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-123719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1458AA5C6E9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261EEA5C4CA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7F5817D874
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA653B37B9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AFB25E82F;
-	Tue, 11 Mar 2025 15:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463E525EF8E;
+	Tue, 11 Mar 2025 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPZ6MeVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhCpcpsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F5C25C6ED;
-	Tue, 11 Mar 2025 15:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0371925DD00;
+	Tue, 11 Mar 2025 15:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706765; cv=none; b=XIOvj4Bj3pKsTkn2fNbFZD7R7UMuNmzQ6tiKjWoC5E4j47YxqTldAnJHAS55XBFrC4H2QUqeGo2l55dEK6+SPsSXbqsG1Yy6nZPPDvWdBxkizWodK9NyoRoYfPw01mFtWJW/nzMEcE7oar+xAH3kTDaoNX3kHwgNzscubaCmJWI=
+	t=1741705556; cv=none; b=tCKwTNwnGnjJ36vdKYn9eCk3H3zkL1C6tADa6OyL3ay4pLD5BpyjZlFhIZE1v08UR3FIJx9seuswxBbyNfwBc9QcUbeDycuUrjwlGZGJfqt/D349+PAvxWeBdmZIfxYbXYHJLkwHTf6byw4DPWkS8ufW0TeTI7lh7/8a1EgkKPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706765; c=relaxed/simple;
-	bh=wnWPPbTKN2uK+14WKtL7mgRff71qUBP2omj5J5oX9OA=;
+	s=arc-20240116; t=1741705556; c=relaxed/simple;
+	bh=MrMrOjzd7csFCASmd5fi7rtCYh3BBeNU1gtGvtJ09oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqNf6Qf9V/C93rss3OgWp7pm/21DyPsw9ZHdLVfWoyorib27xxkZZERyZ7syqQD7zigX1oLJYF6xVtFxMO/dytXy7j1dmYSRltkKIS2qMem+HtJ7+AGmu4fXDLxWd2naTn+2OarelNr78BJcmrtgGKZ+A741TviEUAI7JG60/no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPZ6MeVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9164AC4CEE9;
-	Tue, 11 Mar 2025 15:26:04 +0000 (UTC)
+	 MIME-Version; b=Ttah2y75NC9wSXFDUOPYzWUWfic95buJldQo9e7379iVMgS16MPRAtgWmWGE0MlIoC3nc2s6Eb6HKh8HsMGDD+72jMQ3uASAB19GQPDj9IcYHoMeVWNncWEvj9BmwWlqQTwTzwecvKZmlwSHw5qJ2XtDvQYnB19x/2pfxHly90s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhCpcpsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B865C4CEE9;
+	Tue, 11 Mar 2025 15:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706765;
-	bh=wnWPPbTKN2uK+14WKtL7mgRff71qUBP2omj5J5oX9OA=;
+	s=korg; t=1741705555;
+	bh=MrMrOjzd7csFCASmd5fi7rtCYh3BBeNU1gtGvtJ09oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPZ6MeVFK1HimrUrUHjgJUHnW/+65+kW8Do3LKcFb5dheu92iwbAa0vAfxgGWoJlx
-	 Rr2CndnUG5HF2Msf0tVzQuecnNNDoVE9GgUaWXPxoYR3UdbTLXFfgwr30rpvNz5YS0
-	 ZF6XvYcXTMqfLM9DWmOwabBZ0pOhgv0brB+ZhB4U=
+	b=EhCpcpszejFjk1oaq4yrbzOaNLeWGouly1ETABUBFkfsEA2rI2iWrqzrMVzhFEf31
+	 DqVZ5VbqxIShQGzqaJtwwWXlm6uVjrHfldFYAoljs5MZpTCxIRkpaAXSe7ikXIVQV0
+	 FPSDtI3JCUY1rF35WOq9h0Rq9Vuu5w/IFfyqtY6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/462] x86/xen: add FRAME_END to xen_hypercall_hvm()
+Subject: [PATCH 5.4 056/328] scsi: mpt3sas: Set ioc->manu_pg11.EEDPTagMode directly to 1
 Date: Tue, 11 Mar 2025 15:57:06 +0100
-Message-ID: <20250311145804.663718813@linuxfoundation.org>
+Message-ID: <20250311145717.124157751@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit 0bd797b801bd8ee06c822844e20d73aaea0878dd ]
+[ Upstream commit ad7c3c0cb8f61d6d5a48b83e62ca4a9fd2f26153 ]
 
-xen_hypercall_hvm() is missing a FRAME_END at the end, add it.
+Currently, the code does:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502030848.HTNTTuo9-lkp@intel.com/
-Fixes: b4845bb63838 ("x86/xen: add central hypercall functions")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+    if (x == 0) {
+    	x &= ~0x3;
+	x |= 0x1;
+    }
+
+Zeroing bits 0 and 1 of a variable that is 0 is not necessary. So directly
+set the variable to 1.
+
+Cc: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Fixes: f92363d12359 ("[SCSI] mpt3sas: add new driver supporting 12GB SAS")
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Link: https://lore.kernel.org/r/20241212221817.78940-2-pmenzel@molgen.mpg.de
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/xen-head.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
-index 0dce73077c8cb..6105404ba5703 100644
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -130,6 +130,7 @@ SYM_FUNC_START(xen_hypercall_hvm)
- 	pop %rcx
- 	pop %rax
- #endif
-+	FRAME_END
- 	/* Use correct hypercall function. */
- 	jz xen_hypercall_amd
- 	jmp xen_hypercall_intel
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 69023ddceb59f..7df4e8cfeb923 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -4627,8 +4627,7 @@ _base_static_config_pages(struct MPT3SAS_ADAPTER *ioc)
+ 	if (!ioc->is_gen35_ioc && ioc->manu_pg11.EEDPTagMode == 0) {
+ 		pr_err("%s: overriding NVDATA EEDPTagMode setting\n",
+ 		    ioc->name);
+-		ioc->manu_pg11.EEDPTagMode &= ~0x3;
+-		ioc->manu_pg11.EEDPTagMode |= 0x1;
++		ioc->manu_pg11.EEDPTagMode = 0x1;
+ 		mpt3sas_config_set_manufacturing_pg11(ioc, &mpi_reply,
+ 		    &ioc->manu_pg11);
+ 	}
 -- 
 2.39.5
 
