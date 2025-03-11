@@ -1,146 +1,132 @@
-Return-Path: <stable+bounces-124073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900D4A5CD95
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 19:15:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212ADA5CDAB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 19:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1AC63BAE68
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 18:14:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A4916A527
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 18:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A1C2638BF;
-	Tue, 11 Mar 2025 18:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F2626389D;
+	Tue, 11 Mar 2025 18:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="e58DWT+C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a83LfgTq"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8D92638B0;
-	Tue, 11 Mar 2025 18:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD752627E7;
+	Tue, 11 Mar 2025 18:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741716871; cv=none; b=jlvfWNjlosNtLFWftXD7WzNUgEJq1wvxFFGoGScEDGuaqzSnGjrgTOjiFoh8/gvqLPrZ8So2pWSnFq0EhMUB6Kd6LuNJYcmliaEui5pi0Gquw/rIJq0z3Nj26BwZeAKZQT8Ruj80xybYRG9lUuUTjFUWrvaOWeASMqNNwKkGkzs=
+	t=1741717069; cv=none; b=fMgcWF95PgER1yGQyVmyzxxqpoIL1htSo7ClDsVJytFoBnkA6QIIaPBvkApmCNPyO0Jzd3WOQZnAwWf/t9yM+dbLHYIplUQ6Rckq7n+M6t9kmxCudRgnKoiLchkesXEwwAC4Dh8vgfH7wuT8AZ0cLvB3buOnMnDn7S+3/0mmT7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741716871; c=relaxed/simple;
-	bh=pUXjA+I7tCLIoH3bNrkO4IB28zYBbl1H9vaCVIpHHNI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kp11H8DKeETqwaVTIeBa62eiMTyICJJtKkhoYnEc2DnrehlqnE26zYiLwpZzMzRVqa4JQfu3/bkT3v8srPkmDitjAyvCQ6JK8Ac+VBEq9l7IisfUQbJwfNtbhxBLenyPeZKkcG+jwo2CVcWcWCPoI2yquKK39o0WPdsnsjioHJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=e58DWT+C; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=FcMGhykXB4u4YxIGnBy/HoDy7WeSl1BAMrtIHGKlZ4g=; b=e58DWT+C7c1Bp2eLmbP4LOczVo
-	1i71i9O+vt+vM7WVuujnwe6IWfG1C1cgSlQnleqnbfrokZOgsO/tppcsX5x+HqKcmyO/nnTlI3Dih
-	1LeX4TFKzc6V6BYtTUp3gQbQyA6Wu+DPG165K9DwytF9+dS1i/LhGngWa5ASHT6w5j2MPaE6YTMj0
-	chh7RdSUd4sFXtLSfb2r+Q4YhbnOGQz86adXO8hdp4fyVWw+ADljlzeMIZ3lIPC/rLjM/dpIHS1eL
-	XR9xwdsVyd4bi5748/GceuLbgVPsrsVxUiatR2Wqvb9j2JM7RyIxej0c2RomPmXlddVjp9WJDX6sH
-	JTMFMUeg==;
-Received: from [189.7.87.170] (helo=janis.local)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1ts47M-007Dal-LL; Tue, 11 Mar 2025 19:14:22 +0100
-From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Date: Tue, 11 Mar 2025 15:13:43 -0300
-Subject: [PATCH v3 1/7] drm/v3d: Don't run jobs that have errors flagged in
- its fence
+	s=arc-20240116; t=1741717069; c=relaxed/simple;
+	bh=amzaeUHYPxdXfgE5dqqUKy6QdRie3H51MlqUc45Ro3w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aFa7HnywXIWRghPL9eTs0uDC6oC8LE7yrbNoaszEss1BCF0a8xDIpekq2ReJl7nZqQAo6qXyjAeLyIwRViWg5sGahxicZkcGBUNuYZZw9nmzXQNhD8LYR1GykiOb5Twadn60/mwW9EdVs2NxJaxz3UxT0z4gsjnSxGU3RSXj8+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a83LfgTq; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5499614d3d2so5087186e87.3;
+        Tue, 11 Mar 2025 11:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741717065; x=1742321865; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=amzaeUHYPxdXfgE5dqqUKy6QdRie3H51MlqUc45Ro3w=;
+        b=a83LfgTqkvpxtQnqnPhn2ldUCCdvqNeKWbTuFECmo4RZVzrNSiR9pGeqJGPCFgT01Z
+         rJoTsc8qlwFnUjrdEdXRznSpIZu2cQOTlZXVshufZQIhlvt1PLf41LU9ItF8P07JpZyx
+         TMtz1l8tjcfvyEd+qr+SzDFNf2DixovBTZE5u9z0aSnaAsjwrNC4qShKNoHp75g+MNTl
+         iPMGAfcmKjGOHo43GQSjz97reiCohP07CV88FgsLtz7IzLid9ZKQG/DqmOzV1cPyq3K5
+         qxpI6YcW7xxIczZUqgRiXOh9/yrBFYOfro/VQ/furaiQl61cbro9mfY5vsBNb8PYNbGw
+         eTag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741717065; x=1742321865;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=amzaeUHYPxdXfgE5dqqUKy6QdRie3H51MlqUc45Ro3w=;
+        b=m6gKVBIs0yQDQ7dZ3XCX3Wbi0oMZ8H0bs/cibdN9khd3wMeCQwV/KN7vCN+WxnCsow
+         J2ldrKaYuJcz4hVCek8tkVuecYzrPq/kdrXkybnx8y/wWxSrxLSebjmk5NJ2gci03rac
+         ABaCnF2iDuP/+eBUqx6w7278TcD2/vuXbPp+o/tH5cSOSt0H++YImYE3DDpCOs197wt0
+         /woP/hYtsWesr85zhm1DhVW4OMIuP+Q8RD1YgUTdh56werG2ZB+n9FhvGhxMMqf8f+6N
+         zAV6nvkIfuBDGVxLhDJLDAnwgNL2rQPkI5o6M4ZgxY9xncxXg+ug2pzg/3WPsEuvfiKH
+         XU9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVhvaXpYBsOa8q3ZznliPXab24UwQEKhSmn1LSoiT6o5ocjCIJIQLq6ctOHpyU3mG9TCjVaWjizN7MJQSA=@vger.kernel.org, AJvYcCWw8kbHBbJAKlPZ7F7mD1PjlLRMObswxX5Fm1rxiUFSZ2CB2SYPY5c+eKfCCVVO5qtZ4An/phLO@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZVtQ6vozaZV87ggkA0BRCaNZlhL+H2tLdsXXfXaFgjM5c9isr
+	WvdQemQ6TL0pd1tPYHxArFdL/PO7Qm1fn+ieXM7mvX1zwd7QHzVWRX2eepTfKvxT8Oy0VsLlpZJ
+	OMwSMi82C7MJHohkMc8uoJf4D0lg=
+X-Gm-Gg: ASbGncvEpsIF9vCj1Y2jWA11r1164HVFrNHBdd8kJmcw/L36N9n0KDgXwXMKTuoZp2E
+	CvHMA5yPXYu1tV2e60QGr1TYOkRl1NMg9cLCT7szcdMojUZEwPWI2yu/qWnNfzjkSVW/H2r/IDS
+	Tje6cd52BfdU63lt+hF8BRVtYeHQ==
+X-Google-Smtp-Source: AGHT+IEYrR3iuVb9k7bTT8zIzdeCEs1XeQqQDE64pk/im8l6F+pZMmJa1FuK6qJVeCb7epxnxpHYTAZTWwaqAKTXhR4=
+X-Received: by 2002:a05:6512:2386:b0:545:60b:f381 with SMTP id
+ 2adb3069b0e04-54990e6764cmr5155120e87.29.1741717065084; Tue, 11 Mar 2025
+ 11:17:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250311-v3d-gpu-reset-fixes-v3-1-64f7a4247ec0@igalia.com>
-References: <20250311-v3d-gpu-reset-fixes-v3-0-64f7a4247ec0@igalia.com>
-In-Reply-To: <20250311-v3d-gpu-reset-fixes-v3-0-64f7a4247ec0@igalia.com>
-To: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>, 
- Jose Maria Casanova Crespo <jmcasanova@igalia.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Nicolas Saenz Julienne <nsaenz@kernel.org>
-Cc: Phil Elwell <phil@raspberrypi.com>, dri-devel@lists.freedesktop.org, 
- devicetree@vger.kernel.org, kernel-dev@igalia.com, stable@vger.kernel.org, 
- =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2200; i=mcanal@igalia.com;
- h=from:subject:message-id; bh=pUXjA+I7tCLIoH3bNrkO4IB28zYBbl1H9vaCVIpHHNI=;
- b=owEBbQGS/pANAwAIAT/zDop2iPqqAcsmYgBn0H10ZadohT0Zdp1KOMiUSWGwcglcntHOvWs1F
- 0hTzW1dejuJATMEAAEIAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCZ9B9dAAKCRA/8w6Kdoj6
- qoUiB/0anrK+NSftVWYLjQL2p7DgJPp4+B6tgcXgHNUpj6xgqw9/vvqJy1xN6tMCD7ENckWNaZY
- FAInnvfczIu4iGvcUYbMnc1cMrdr648aovc1xBFuPEiffMUrhPaAERCdaTELHt/FslW3Nfcs5hX
- yjs7WznET7F3mVh3+t0s1QRvNlJokggnKTVIVmZXvS61fdhLyb5rhz1AKPdSuDDUFaJ0EJMdsKK
- azQNPY6kA1C3AFNyZm30cnVu+5XcqAqkkAMuL/rBM+uzoJ/ENSlAlxF0KjTaVRKzERRyQ9+lO1d
- 2jtcXGdjD/t1IeXdAXU4yqmNJa/2AmO4k9+6UJj/YeSdJwjk
-X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
- fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
+References: <20250310-b4-qcom-smmu-v1-1-733a1398ff85@gmail.com>
+ <6f5f2047-b315-440b-b57d-2ed0dd7395f6@arm.com> <CALHNRZ87t7eXohTcpFnejFAPDsyE_1g0aPsASuQ7y5c_zxnLUw@mail.gmail.com>
+ <CAE2F3rB-ACt2rdVFYSpSap=t_poTi0-PxhgrYGg4vzjfic7vqA@mail.gmail.com>
+In-Reply-To: <CAE2F3rB-ACt2rdVFYSpSap=t_poTi0-PxhgrYGg4vzjfic7vqA@mail.gmail.com>
+From: Aaron Kling <webgeek1234@gmail.com>
+Date: Tue, 11 Mar 2025 13:17:33 -0500
+X-Gm-Features: AQ5f1Jotsyx4CiMaVUlC-vkoovHyzT3WerEGqfj6ILGnt1v6WPD-tu9VOLKyoNc
+Message-ID: <CALHNRZ8YUjMq0NfAT10wajFJGWaxGWarn-z2C=1Obf0ewT13gQ@mail.gmail.com>
+Subject: Re: [PATCH] iommu/arm: Allow disabling Qualcomm support in arm_smmu_v3
+To: Daniel Mentz <danielmentz@google.com>
+Cc: Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The V3D driver still relies on `drm_sched_increase_karma()` and
-`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
-The function `drm_sched_increase_karma()` marks the job as guilty, while
-`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
-that guilty job.
+On Tue, Mar 11, 2025 at 12:55=E2=80=AFPM Daniel Mentz <danielmentz@google.c=
+om> wrote:
+>
+> On Mon, Mar 10, 2025 at 9:51=E2=80=AFAM Aaron Kling <webgeek1234@gmail.co=
+m> wrote:
+> > I am working with the android kernel. The more recent setup enables a
+> > minimal setup of configs in a core kernel that works across all
+> > supported arch's, then requires further support to all be modules. I
+> > specifically am working with tegra devices. But as ARCH_QCOM is
+> > enabled in the core defconfig, when I build smmuv3 as a module, I end
+> > up with a dependency on qcom-scm which gets built as an additional
+> > module. And it would be preferable to not require qcom modules to boot
+> > a tegra device.
+>
+> If you want to build arm_smmu_v3.ko, you'd have
+>
+> # CONFIG_ARM_SMMU is not set
+> CONFIG_ARM_SMMU_V3=3Dm
+>
+> in your .config. I don't see how this would enable ARM_SMMU_QCOM or QCOM_=
+SCM.
 
-Because of this, we must check whether the job’s DMA fence has been
-flagged with an error before executing the job. Otherwise, the same guilty
-job may be resubmitted indefinitely, causing repeated GPU resets.
+I went and double checked my defconfig snippet and I have to
+apologize. I put the wrong thing in the commit message and caused
+confusion to myself and the entire discussion. This is what I've got:
 
-This patch adds a check for an error on the job's fence to prevent running
-a guilty job that was previously flagged when the GPU timed out.
+# MMU
+CONFIG_ARM_SMMU=3Dm
+# CONFIG_ARM_SMMU_QCOM is not set
 
-Note that the CPU and CACHE_CLEAN queues do not require this check, as
-their jobs are executed synchronously once the DRM scheduler starts them.
+Tegra186, tegra194, and tegra234 are supported by arm-smmu, not by
+arm-smmu-v3. And these are the relevant archs I'm trying to work on.
 
-Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- drivers/gpu/drm/v3d/v3d_sched.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Having the extra dep doesn't break anything, so worst case I continue
+to carry the extra dep or this as a downstream patch. But I had to at
+least try to decouple unnecessary dep.
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 80466ce8c7df669280e556c0793490b79e75d2c7..c2010ecdb08f4ba3b54f7783ed33901552d0eba1 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -327,11 +327,15 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
-+
-+	v3d->tfu_job = job;
-+
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
- 		return NULL;
- 
--	v3d->tfu_job = job;
- 	if (job->base.irq_fence)
- 		dma_fence_put(job->base.irq_fence);
- 	job->base.irq_fence = dma_fence_get(fence);
-@@ -369,6 +373,9 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	int i, csd_cfg0_reg;
- 
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
-+
- 	v3d->csd_job = job;
- 
- 	v3d_invalidate_caches(v3d);
-
--- 
-Git-154)
-
+Sincerely,
+Aaron
 
