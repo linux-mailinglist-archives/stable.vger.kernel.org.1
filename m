@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-123598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5556A5C67A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:25:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5CDA5C6A1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AA653A5931
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:20:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6A6189FF48
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0489D25F795;
-	Tue, 11 Mar 2025 15:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3188B25F783;
+	Tue, 11 Mar 2025 15:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWBXCXDX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNzBymov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E0425F78F;
-	Tue, 11 Mar 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECC625EFBF;
+	Tue, 11 Mar 2025 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706418; cv=none; b=P175swC85k9TTs7Uah9ULNX/uwLsI/8bId4e3sGJY9u+X46BvUhpjxuxsr21PPdzeSLPi+xiCsmUUNFVunxolIWdraMdJ9OFLoyupFotKiS/Wdf6oD6DhSb5U9BjeywQCSZtXw07xCMNj0AZBl6wvlxI38pVKqhk9gG33m5iC+E=
+	t=1741706535; cv=none; b=QixY7N50p1Q8aT4Y++s4LMSXx6cvAwk4DSbIAAFPxr1Hz5WW62zhTkWwdfVauZSNVQc46vUfP0v+K0beK63/J9NStn2gaxt9EiCVHTLzxK/+nDTtRhJEVk1fkA7XhME4j1S+1ZvxkSpqFIChVmFZAKSjecxZwCfYvCVfG87etSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706418; c=relaxed/simple;
-	bh=Liz5N/ddN72JfBwsXTmLTDQXdAW8GqqX93h7B0TMaxw=;
+	s=arc-20240116; t=1741706535; c=relaxed/simple;
+	bh=3cC/KAc9HaBD60vQY4RdscHwphbXcoYkTpXLRSXosow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsDQ9XKOvN47JMUZ1ap8YRHd8BD/XCid6VfAPbE6DFgAsK8fLYX9FZ/4ZHOgF6eihu1yK8MRlwOVJYj5FbziNYVQXM9V7TMJvE3+7rjASkw30sJUqvLrGK2Q67O5CEtuswHF/iY7zcudYSvDhz9majYcclRiI36wZuejALmb/bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWBXCXDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350CCC4CEE9;
-	Tue, 11 Mar 2025 15:20:18 +0000 (UTC)
+	 MIME-Version; b=HxP98EZeqryYQilwMJMUk/aubPQ7I+r1eJ0gIDwolwktaWlJOAU8TzPUVY2zBQsS2LhodYKz5Gg2tCUZF00KT7OBXyXar+t4qpxaF7kKpqpbCZUYIelOwFhQw5hx8C7Ve/9w0F1Mb/dy97VyWab32RdjzS6+WwOJrl1qJaOpM4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNzBymov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0055C4CEE9;
+	Tue, 11 Mar 2025 15:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706418;
-	bh=Liz5N/ddN72JfBwsXTmLTDQXdAW8GqqX93h7B0TMaxw=;
+	s=korg; t=1741706534;
+	bh=3cC/KAc9HaBD60vQY4RdscHwphbXcoYkTpXLRSXosow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWBXCXDX1w/STA0J/H+54EKIfo1SCDA4OmKyubVMNxcBk+5hFF7F4WV9BOvQJBRpp
-	 HwpBKvCBjBqrfIVPdy54mQUfCJtsqKkc/aTPH05u96NHbtQixLocGdO0Ma8+SMLH/E
-	 K3x5JQ19pWx2e1w6RCN1to20fzmdpryS1iaWHQM0=
+	b=YNzBymovWZ/3KdTNaXyZP+R7vRj9+q/s3Eu6pIQmgX4+o3OUoJc2wCmP+Lk27EW8b
+	 fBCbcB+SHlC1NbrRQxncBfkD0bw87T0iN4H4ht74dWV7/NAX7SX7Spfba4c8Sz7Nyx
+	 AAWZo70HHk3oND1g2AFHSRlavt8d0qaMIu00+3XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/462] wifi: cfg80211: Handle specific BSSID in 6GHz scanning
-Date: Tue, 11 Mar 2025 15:55:06 +0100
-Message-ID: <20250311145759.934763858@linuxfoundation.org>
+Subject: [PATCH 5.10 041/462] wifi: cfg80211: adjust allocation of colocated AP data
+Date: Tue, 11 Mar 2025 15:55:07 +0100
+Message-ID: <20250311145759.975512441@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -67,82 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 0fca7784b7a14d4ede64f479662afb98876ec7f8 ]
+[ Upstream commit 1a0d24775cdee2b8dc14bfa4f4418c930ab1ac57 ]
 
-When the scan parameters for a 6GHz scan specify a unicast
-BSSID address, and the corresponding AP is found in the scan
-list, add a corresponding entry in the collocated AP list,
-so this AP would be directly probed even if it was not
-advertised as a collocated AP.
+In 'cfg80211_scan_6ghz()', an instances of 'struct cfg80211_colocated_ap'
+are allocated as if they would have 'ssid' as trailing VLA member. Since
+this is not so, extra IEEE80211_MAX_SSID_LEN bytes are not needed.
+Briefly tested with KUnit.
 
-This is needed for handling a scan request that is intended
-for a ML probe flow, where user space can requests a scan
-to retrieve information for other links in the AP MLD.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230928172905.54b954bc02ad.I1c072793d3d77a4c8fbbc64b4db5cce1bbb00382@changeid
+Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20250113155417.552587-1-dmantipov@yandex.ru
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 1a0d24775cde ("wifi: cfg80211: adjust allocation of colocated AP data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ net/wireless/scan.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index f6307061aac49..348b2fce25fc3 100644
+index 348b2fce25fc3..670fcdbef95be 100644
 --- a/net/wireless/scan.c
 +++ b/net/wireless/scan.c
-@@ -796,10 +796,47 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 		list_for_each_entry(intbss, &rdev->bss_list, list) {
- 			struct cfg80211_bss *res = &intbss->pub;
- 			const struct cfg80211_bss_ies *ies;
-+			const struct element *ssid_elem;
-+			struct cfg80211_colocated_ap *entry;
-+			u32 s_ssid_tmp;
-+			int ret;
+@@ -821,9 +821,7 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
+ 			if (ret)
+ 				continue;
  
- 			ies = rcu_access_pointer(res->ies);
- 			count += cfg80211_parse_colocated_ap(ies,
- 							     &coloc_ap_list);
-+
-+			/* In case the scan request specified a specific BSSID
-+			 * and the BSS is found and operating on 6GHz band then
-+			 * add this AP to the collocated APs list.
-+			 * This is relevant for ML probe requests when the lower
-+			 * band APs have not been discovered.
-+			 */
-+			if (is_broadcast_ether_addr(rdev_req->bssid) ||
-+			    !ether_addr_equal(rdev_req->bssid, res->bssid) ||
-+			    res->channel->band != NL80211_BAND_6GHZ)
-+				continue;
-+
-+			ret = cfg80211_calc_short_ssid(ies, &ssid_elem,
-+						       &s_ssid_tmp);
-+			if (ret)
-+				continue;
-+
-+			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
-+					GFP_ATOMIC);
-+
-+			if (!entry)
-+				continue;
-+
-+			memcpy(entry->bssid, res->bssid, ETH_ALEN);
-+			entry->short_ssid = s_ssid_tmp;
-+			memcpy(entry->ssid, ssid_elem->data,
-+			       ssid_elem->datalen);
-+			entry->ssid_len = ssid_elem->datalen;
-+			entry->short_ssid_valid = true;
-+			entry->center_freq = res->channel->center_freq;
-+
-+			list_add_tail(&entry->list, &coloc_ap_list);
-+			count++;
- 		}
- 		spin_unlock_bh(&rdev->bss_lock);
- 	}
+-			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
+-					GFP_ATOMIC);
+-
++			entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
+ 			if (!entry)
+ 				continue;
+ 
 -- 
 2.39.5
 
