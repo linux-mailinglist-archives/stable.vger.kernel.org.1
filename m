@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-123858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D25A5C7B7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9510BA5C7C0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B010616873B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2DBC1882B94
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3A025F7B0;
-	Tue, 11 Mar 2025 15:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D7425F7BB;
+	Tue, 11 Mar 2025 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KuhocGMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1RbYxN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3E925BACC;
-	Tue, 11 Mar 2025 15:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7187525F782;
+	Tue, 11 Mar 2025 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707164; cv=none; b=Iad3IKNTorE2vQZGPou+9K/t6IFokCxocV6gZY/iICW8JxtXhXzbMtrKWhvVT1dxjWVTmiYvjAR4HCNGusNdEgdGwXlj3AAHpPKeM1fAusZWAFCLnhxpVhgf0IawUfBZuydlqwWqpmaizCIYa4mafFpQEZT5ieICHLo50dV0ue4=
+	t=1741707170; cv=none; b=ga8vfSd/B57ox1KaEtpUIENORGBYnsG457Gq+zqe5K9iEPbKaIzvQEUA+RjdNsVMmtGkKazzpT7XxSjtr7T0CnnnuPWYr+skERnJ9sGcfU99SNKCVy5Gh0QIIP5/UE1uBP7k4XauW1RjP3Xp4XRxY+QWouAPGDJF0BnJa68kQBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707164; c=relaxed/simple;
-	bh=NFeB5U1Ghp7KfUUljoD4g+lG+5xmcMzHh1j35P0sBf4=;
+	s=arc-20240116; t=1741707170; c=relaxed/simple;
+	bh=HxzEYQ1QCFjSq6hR0rUzKQ/fM3qsk/R/8jMJz/NAFmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/c/Rzq5mm+T2RAAHJ0Ch7xLM76gy+EWYhWiBFnI2W6MaJ6Nueic5eV5WoTib5wGbWx3QjVvtkqkUSrVJCgpfR7UPvWgQ4ll4LNeuwjcPqwQZkqoTVFVe4z7I+OtAt10RkdvKD0eomavFzW8YedQ5UEVjIdvV7QhjNXbV48fqRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuhocGMf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44EDC4CEE9;
-	Tue, 11 Mar 2025 15:32:43 +0000 (UTC)
+	 MIME-Version; b=pRCDtVy8Yqsx/Ta9q71dJPY0Fh/i3N7/5q9/g63TmJPIglY27ZQHBwYCcFH6LO6Seh12jFMe4r9maXS6npbAViaFQS5Ks+ZC9+ENNz7igyre4aE559wG3XBJKCbVm3GQkDPmLe2Vghn+Q4RihE0hvwYy7f3nSfKCGSalGcyeAm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1RbYxN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC164C4CEE9;
+	Tue, 11 Mar 2025 15:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707164;
-	bh=NFeB5U1Ghp7KfUUljoD4g+lG+5xmcMzHh1j35P0sBf4=;
+	s=korg; t=1741707170;
+	bh=HxzEYQ1QCFjSq6hR0rUzKQ/fM3qsk/R/8jMJz/NAFmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KuhocGMfhouyQBT22Ha5cW6TDaZtbEMT6dQPXduB1KCqJTytfMqzSETzfNuoCg6bS
-	 W9nTdktvj9PSSzaV+7RIbTA1Y3z32OJvXzvvY84PJZBv9TQOmxTlur6fJf7hCNmQFv
-	 etSVSkP6qkLRR3g7sx6v4CsEl5YF4e1q7rVB2I70=
+	b=E1RbYxN3ycW3Uul7CGKPNw0IMnkYb7m23NjeeoSs9rxK7gOY65/g8f/4JFPg4+/qU
+	 hu4RPXy7nmiTr+yc/B4z3cBl+ldg4yplNz0TZr2M2wsrnm0Tvw+ZoMnhC20p34FRpU
+	 5eTU5zLlFqMhflzHuOwZ9+6bFphJVBYAHTU1GFy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com,
-	syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 296/462] nilfs2: do not force clear folio if buffer is referenced
-Date: Tue, 11 Mar 2025 15:59:22 +0100
-Message-ID: <20250311145810.057156067@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: [PATCH 5.10 297/462] nilfs2: protect access to buffers with no active references
+Date: Tue, 11 Mar 2025 15:59:23 +0100
+Message-ID: <20250311145810.095799906@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -69,152 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit ca76bb226bf47ff04c782cacbd299f12ddee1ec1 upstream.
+commit 367a9bffabe08c04f6d725032cce3d891b2b9e1a upstream.
 
-Patch series "nilfs2: protect busy buffer heads from being force-cleared".
+nilfs_lookup_dirty_data_buffers(), which iterates through the buffers
+attached to dirty data folios/pages, accesses the attached buffers without
+locking the folios/pages.
 
-This series fixes the buffer head state inconsistency issues reported by
-syzbot that occurs when the filesystem is corrupted and falls back to
-read-only, and the associated buffer head use-after-free issue.
+For data cache, nilfs_clear_folio_dirty() may be called asynchronously
+when the file system degenerates to read only, so
+nilfs_lookup_dirty_data_buffers() still has the potential to cause use
+after free issues when buffers lose the protection of their dirty state
+midway due to this asynchronous clearing and are unintentionally freed by
+try_to_free_buffers().
 
-This patch (of 2):
-
-Syzbot has reported that after nilfs2 detects filesystem corruption and
-falls back to read-only, inconsistencies in the buffer state may occur.
-
-One of the inconsistencies is that when nilfs2 calls mark_buffer_dirty()
-to set a data or metadata buffer as dirty, but it detects that the buffer
-is not in the uptodate state:
-
- WARNING: CPU: 0 PID: 6049 at fs/buffer.c:1177 mark_buffer_dirty+0x2e5/0x520
-  fs/buffer.c:1177
- ...
- Call Trace:
-  <TASK>
-  nilfs_palloc_commit_alloc_entry+0x4b/0x160 fs/nilfs2/alloc.c:598
-  nilfs_ifile_create_inode+0x1dd/0x3a0 fs/nilfs2/ifile.c:73
-  nilfs_new_inode+0x254/0x830 fs/nilfs2/inode.c:344
-  nilfs_mkdir+0x10d/0x340 fs/nilfs2/namei.c:218
-  vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
-  do_mkdirat+0x264/0x3a0 fs/namei.c:4280
-  __do_sys_mkdirat fs/namei.c:4295 [inline]
-  __se_sys_mkdirat fs/namei.c:4293 [inline]
-  __x64_sys_mkdirat+0x87/0xa0 fs/namei.c:4293
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The other is when nilfs_btree_propagate(), which propagates the dirty
-state to the ancestor nodes of a b-tree that point to a dirty buffer,
-detects that the origin buffer is not dirty, even though it should be:
-
- WARNING: CPU: 0 PID: 5245 at fs/nilfs2/btree.c:2089
-  nilfs_btree_propagate+0xc79/0xdf0 fs/nilfs2/btree.c:2089
- ...
- Call Trace:
-  <TASK>
-  nilfs_bmap_propagate+0x75/0x120 fs/nilfs2/bmap.c:345
-  nilfs_collect_file_data+0x4d/0xd0 fs/nilfs2/segment.c:587
-  nilfs_segctor_apply_buffers+0x184/0x340 fs/nilfs2/segment.c:1006
-  nilfs_segctor_scan_file+0x28c/0xa50 fs/nilfs2/segment.c:1045
-  nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1216 [inline]
-  nilfs_segctor_collect fs/nilfs2/segment.c:1540 [inline]
-  nilfs_segctor_do_construct+0x1c28/0x6b90 fs/nilfs2/segment.c:2115
-  nilfs_segctor_construct+0x181/0x6b0 fs/nilfs2/segment.c:2479
-  nilfs_segctor_thread_construct fs/nilfs2/segment.c:2587 [inline]
-  nilfs_segctor_thread+0x69e/0xe80 fs/nilfs2/segment.c:2701
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-  </TASK>
-
-Both of these issues are caused by the callbacks that handle the
-page/folio write requests, forcibly clear various states, including the
-working state of the buffers they hold, at unexpected times when they
-detect read-only fallback.
-
-Fix these issues by checking if the buffer is referenced before clearing
-the page/folio state, and skipping the clear if it is.
+Eliminate this race issue by adjusting the lock section in this function.
 
 [konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
-Link: https://lkml.kernel.org/r/20250107200202.6432-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250107200202.6432-2-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20250107200202.6432-3-konishi.ryusuke@gmail.com
 Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b2b14916b77acf8626d7
-Reported-by: syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=d98fd19acd08b36ff422
 Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Tested-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/page.c |   35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ fs/nilfs2/segment.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -388,24 +388,44 @@ void nilfs_clear_dirty_pages(struct addr
- /**
-  * nilfs_clear_dirty_page - discard dirty page
-  * @page: dirty page that will be discarded
-+ *
-+ * nilfs_clear_dirty_page() clears working states including dirty state for
-+ * the page and its buffers.  If the page has buffers, clear only if it is
-+ * confirmed that none of the buffer heads are busy (none have valid
-+ * references and none are locked).
-  */
- void nilfs_clear_dirty_page(struct page *page)
- {
- 	BUG_ON(!PageLocked(page));
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -732,7 +732,6 @@ static size_t nilfs_lookup_dirty_data_bu
+ 		}
+ 		if (!page_has_buffers(page))
+ 			create_empty_buffers(page, i_blocksize(inode), 0);
+-		unlock_page(page);
  
--	ClearPageUptodate(page);
--	ClearPageMappedToDisk(page);
--	ClearPageChecked(page);
--
- 	if (page_has_buffers(page)) {
--		struct buffer_head *bh, *head;
-+		struct buffer_head *bh, *head = page_buffers(page);
- 		const unsigned long clear_bits =
- 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
- 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
- 			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
- 			 BIT(BH_Delay));
-+		bool busy, invalidated = false;
- 
--		bh = head = page_buffers(page);
-+recheck_buffers:
-+		busy = false;
-+		bh = head;
-+		do {
-+			if (atomic_read(&bh->b_count) | buffer_locked(bh)) {
-+				busy = true;
-+				break;
-+			}
-+		} while (bh = bh->b_this_page, bh != head);
-+
-+		if (busy) {
-+			if (invalidated)
-+				return;
-+			invalidate_bh_lrus();
-+			invalidated = true;
-+			goto recheck_buffers;
-+		}
-+
-+		bh = head;
+ 		bh = head = page_buffers(page);
  		do {
- 			lock_buffer(bh);
- 			set_mask_bits(&bh->b_state, clear_bits, 0);
-@@ -413,6 +433,9 @@ void nilfs_clear_dirty_page(struct page
+@@ -742,11 +741,14 @@ static size_t nilfs_lookup_dirty_data_bu
+ 			list_add_tail(&bh->b_assoc_buffers, listp);
+ 			ndirties++;
+ 			if (unlikely(ndirties >= nlimit)) {
++				unlock_page(page);
+ 				pagevec_release(&pvec);
+ 				cond_resched();
+ 				return ndirties;
+ 			}
  		} while (bh = bh->b_this_page, bh != head);
++
++		unlock_page(page);
  	}
- 
-+	ClearPageUptodate(page);
-+	ClearPageMappedToDisk(page);
-+	ClearPageChecked(page);
- 	__nilfs_clear_page_dirty(page);
- }
- 
+ 	pagevec_release(&pvec);
+ 	cond_resched();
 
 
 
