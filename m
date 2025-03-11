@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-123409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEFEA5C56A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22920A5C790
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06F77189DCDA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59D33189FF8A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE5525E81B;
-	Tue, 11 Mar 2025 15:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F3825EFAE;
+	Tue, 11 Mar 2025 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8qiavP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/dMKccM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5B225E80D;
-	Tue, 11 Mar 2025 15:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD9B25E818;
+	Tue, 11 Mar 2025 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705872; cv=none; b=Xdj6uF83pQSazjE4HwA9w+Io+zdesQqfiezBQTZuEbxWFiVnAqtCy5Mw1DHV2wjdzO0QQ/roVfyHPdQq5bjzoKMCl+5/GC2JB8PckrDtEnRlE1bYyfhvCm+OZmDiq3QZ4mPpfSNvDoCFfV/C3cR/l1wJe1RrZ8L8lTxPsQBseOE=
+	t=1741707084; cv=none; b=eJYSZThSIt8iLEpwbOXgDV8cA2yBkPZ9mUVtLLV/IPAkKBL3X23Rf1ia0zrqdb6+B2ElG73/28DREnSEOVT6ivnUi6LXLIiHwTqC0YAsOvj1nn3SRz9Qm0Y+CD0mQzJq1/R1/wZ4gjSqMZoFN0nLJmWGWk5xtTZX/KlZ/5uT2UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705872; c=relaxed/simple;
-	bh=EhIP3ZAOHDJFO0zChVsZaBXpAWqWSZuv+AUdTQYnXJg=;
+	s=arc-20240116; t=1741707084; c=relaxed/simple;
+	bh=9NZ4/madsos7CI68gfxrjAqSJIJXSJje4NXardSnQFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBO5EJWaWOFNuJLBrPmQn+8S14LFH6PeE6q7pIbOazoSHCl9v3EbE9suRJUyD66k7et152d3zUWY0rfT9xKDr3twxadJqWN1BuxpqqXXni/DGAqgjT5QGWEqQwBPCVXPdBqRYLgFJ+jEmUQ3LAbGjqkSx1rLUX8cEjdwxCf/8XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8qiavP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B700CC4CEE9;
-	Tue, 11 Mar 2025 15:11:11 +0000 (UTC)
+	 MIME-Version; b=gzpxPv44GdXOiyVhKDrlJ1FzATj1IGpuY0/OJtDOX+Aqr86lTf9UAvEuJjmz1/j+5lcGHuMytZoOGQqnuAKXh7fcyP0erNCxTfPQzv457bac2B5YHzBDqWGmBiONJHEGopcFmdaQoNDhemmKZcBgnCyDvcPCADAN/J1nrBpw88U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/dMKccM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CC3C4CEED;
+	Tue, 11 Mar 2025 15:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705872;
-	bh=EhIP3ZAOHDJFO0zChVsZaBXpAWqWSZuv+AUdTQYnXJg=;
+	s=korg; t=1741707083;
+	bh=9NZ4/madsos7CI68gfxrjAqSJIJXSJje4NXardSnQFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8qiavP7NGWiwPmz8hK8zNo4lzxqBIp63d/wFbCWcf/Du4d7+7WwpMGleYne0D7mr
-	 IPUr/1LJCb0VflPWc1aSp3L5ghglia9SVPrdf4mjq8s8P+V3muYndmY8sGr8OZfctq
-	 ETM4kdRBXXA+3wt3z3TSdNRYYFFOOSIRxhglw9oM=
+	b=d/dMKccMjVBMIWK7t81qAj2jVVkqJr8NWh92Y/lpD4/8oAbYbLWNlt4jzZ9vd+Kuu
+	 aUE6eLeMx8WBVwPpL/26LgY9ubCfYW2F/UL3ffAJLgIPP3lTzckgdeLbhFwsScpYrS
+	 ASaZ8yQzKFEXy9EcZM3DEKhnjNIfUeWSKyM9RmGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 164/328] vrf: use RCU protection in l3mdev_l3_out()
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 5.10 268/462] alpha: align stack for page fault and user unaligned trap handlers
 Date: Tue, 11 Mar 2025 15:58:54 +0100
-Message-ID: <20250311145721.424274068@linuxfoundation.org>
+Message-ID: <20250311145808.952946695@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-[ Upstream commit 6d0ce46a93135d96b7fa075a94a88fe0da8e8773 ]
+commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
 
-l3mdev_l3_out() can be called without RCU being held:
+do_page_fault() and do_entUna() are special because they use
+non-standard stack frame layout. Fix them manually.
 
-raw_sendmsg()
- ip_push_pending_frames()
-  ip_send_skb()
-   ip_local_out()
-    __ip_local_out()
-     l3mdev_ip_out()
-
-Add rcu_read_lock() / rcu_read_unlock() pair to avoid
-a potential UAF.
-
-Fixes: a8e3e1a9f020 ("net: l3mdev: Add hook to output path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/l3mdev.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/alpha/kernel/entry.S |   20 ++++++++++----------
+ arch/alpha/kernel/traps.c |    2 +-
+ arch/alpha/mm/fault.c     |    4 ++--
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/l3mdev.h b/include/net/l3mdev.h
-index e942372b077b5..062da1588be05 100644
---- a/include/net/l3mdev.h
-+++ b/include/net/l3mdev.h
-@@ -179,10 +179,12 @@ struct sk_buff *l3mdev_l3_out(struct sock *sk, struct sk_buff *skb, u16 proto)
- 	if (netif_is_l3_slave(dev)) {
- 		struct net_device *master;
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
+ CFI_START_OSF_FRAME entMM
+ 	SAVE_ALL
+ /* save $9 - $15 so the inline exception code can manipulate them.  */
+-	subq	$sp, 56, $sp
+-	.cfi_adjust_cfa_offset	56
++	subq	$sp, 64, $sp
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_rel_offset	$13, 32
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ /* handle the fault */
+ 	lda	$8, 0x3fff
+ 	bic	$sp, $8, $8
+@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	addq	$sp, 56, $sp
++	addq	$sp, 64, $sp
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ /* finish up the syscall as normal.  */
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entMM
+@@ -383,8 +383,8 @@ entUnaUser:
+ 	.cfi_restore	$0
+ 	.cfi_adjust_cfa_offset	-256
+ 	SAVE_ALL		/* setup normal kernel stack */
+-	lda	$sp, -56($sp)
+-	.cfi_adjust_cfa_offset	56
++	lda	$sp, -64($sp)
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -400,7 +400,7 @@ entUnaUser:
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+ 	lda	$8, 0x3fff
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ 	bic	$sp, $8, $8
+ 	jsr	$26, do_entUnaUser
+ 	ldq	$9, 0($sp)
+@@ -410,7 +410,7 @@ entUnaUser:
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	lda	$sp, 56($sp)
++	lda	$sp, 64($sp)
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -418,7 +418,7 @@ entUnaUser:
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entUna
  
-+		rcu_read_lock();
- 		master = netdev_master_upper_dev_get_rcu(dev);
- 		if (master && master->l3mdev_ops->l3mdev_l3_out)
- 			skb = master->l3mdev_ops->l3mdev_l3_out(master, sk,
- 								skb, proto);
-+		rcu_read_unlock();
- 	}
+--- a/arch/alpha/kernel/traps.c
++++ b/arch/alpha/kernel/traps.c
+@@ -709,7 +709,7 @@ s_reg_to_mem (unsigned long s_reg)
+ static int unauser_reg_offsets[32] = {
+ 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
+ 	/* r9 ... r15 are stored in front of regs.  */
+-	-56, -48, -40, -32, -24, -16, -8,
++	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
+ 	R(r16), R(r17), R(r18),
+ 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
+ 	R(r27), R(r28), R(gp),
+--- a/arch/alpha/mm/fault.c
++++ b/arch/alpha/mm/fault.c
+@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *
  
- 	return skb;
--- 
-2.39.5
-
+ /* Macro for exception fixup code to access integer registers.  */
+ #define dpf_reg(r)							\
+-	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
+-				 (r) <= 18 ? (r)+10 : (r)-10])
++	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
++				 (r) <= 18 ? (r)+11 : (r)-10])
+ 
+ asmlinkage void
+ do_page_fault(unsigned long address, unsigned long mmcsr,
 
 
 
