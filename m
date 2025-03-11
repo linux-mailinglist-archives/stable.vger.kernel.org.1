@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9963FA5C52E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A09A5C750
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AFEB3B782E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 741E917861C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EE125DAE8;
-	Tue, 11 Mar 2025 15:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27D925E815;
+	Tue, 11 Mar 2025 15:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUGqrkqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mO50kbgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E879F8632E;
-	Tue, 11 Mar 2025 15:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D87A25E83B;
+	Tue, 11 Mar 2025 15:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705752; cv=none; b=VuoAIz8lSc5qMji1a/8Yk4+F7XetaFtl9jGe6AMIlhHDrKdEzxI0pcLdXt5Z31IrnrNFuHCf6YdjBqR6G/z1seBs/LQwL0K/XFjTQbXaBYVZjHOt+4pQoBd3WRkn7QcgJZq1BG/Id7yel5xCPb+c2JuolKkiOEe2oqLRpIMNjTE=
+	t=1741706970; cv=none; b=fuI/mQQrdjPqTs7ck9S6bdO+f0EE0R5/SB4f/0mFH65SEFDT7RRkRJ4GAcM16udoWIWOyo84NHYaziWYsuUw92b6H6G6P5cWBiLXibYgk/AMyGEVyJOL/+5hvsWGbAdVP7VEhaqe+YMWkR9PWOaSSEgoqBH60woXtemKZTSH7/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705752; c=relaxed/simple;
-	bh=dB37TrhG258lkjFipD0a5UIGDfwpw84oI6Qav2q/qbA=;
+	s=arc-20240116; t=1741706970; c=relaxed/simple;
+	bh=K4Yd7JsnU/OUFcAD5DAm+cKXOwxIwJ6SXDnCVvV+XBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apnfwFyJm0YjEgmthxlsB4vcSb7eZxA0uQR0UPZ7CiObeTms9KoWrBXYHUu0MHnCtAmjSwQ55pKZuYHbamJ6cDOuGzsASl/2EDwn/yC3XK0r5ksAdU5m3j/bCSLsTMNGBpXaO2BIfnrAYvtIa5jJ9QILuTZ1X59xrsshH56pzyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUGqrkqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F988C4CEE9;
-	Tue, 11 Mar 2025 15:09:11 +0000 (UTC)
+	 MIME-Version; b=gIunyJlE2V9u5nYaUyE/Sf29+aXywZmi6rFfH34tUJ+gwDdnjkbdcdcvlW7b8Po1hzZXf04YBM1dWZYkp1GlNAXxs8bcCzz92Y8V9txfJD7vc9Uglk3Ko4wUyA6LLwx81FzDi+1eRFNB8cUexRlRQDC/YxM1TuLERobgjZfIVFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mO50kbgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E111FC4CEE9;
+	Tue, 11 Mar 2025 15:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705751;
-	bh=dB37TrhG258lkjFipD0a5UIGDfwpw84oI6Qav2q/qbA=;
+	s=korg; t=1741706970;
+	bh=K4Yd7JsnU/OUFcAD5DAm+cKXOwxIwJ6SXDnCVvV+XBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUGqrkqL8X6BnKjLDuBGzF8a60xEzytRQVoh994asSDxD7iFp9x6ARHdOQhcBbyvg
-	 Loows/ivkXaPxLEutrBBUenaH0HMgb8WyHnyBUQxCtjJ9mzfARJ8wC+FkhknEY4QN0
-	 Q6wtUXt4JIdd/BBa0vzPRxHszC2A6GX5je/WyMD4=
+	b=mO50kbgZbohZJLpjxkIhaXIuhRGGUCot19g50A6d0DKErYxKQSkYbsDTgXfCcv+v+
+	 8sXHS7X1MglTcp7y5cW6F2aIAQVqhBLH+2V/PdLOU3sXdjN3umM+VYpsLwwVeuTq23
+	 dytO6eMvmNoYfdoKFjfrBE2g/GsfJ2qPhPUzuax4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH 5.4 125/328] drm/komeda: Add check for komeda_get_layer_fourcc_list()
-Date: Tue, 11 Mar 2025 15:58:15 +0100
-Message-ID: <20250311145719.867265293@linuxfoundation.org>
+	syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 230/462] team: better TEAM_OPTION_TYPE_STRING validation
+Date: Tue, 11 Mar 2025 15:58:16 +0100
+Message-ID: <20250311145807.449652109@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 79fc672a092d93a7eac24fe20a571d4efd8fa5a4 upstream.
+[ Upstream commit 5bef3ac184b5626ea62385d6b82a1992b89d7940 ]
 
-Add check for the return value of komeda_get_layer_fourcc_list()
-to catch the potential exception.
+syzbot reported following splat [1]
 
-Fixes: 5d51f6c0da1b ("drm/komeda: Add writeback support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/r/20241219090256.146424-1-haoxiang_li2024@163.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure user-provided data contains one nul byte.
+
+[1]
+ BUG: KMSAN: uninit-value in string_nocheck lib/vsprintf.c:633 [inline]
+ BUG: KMSAN: uninit-value in string+0x3ec/0x5f0 lib/vsprintf.c:714
+  string_nocheck lib/vsprintf.c:633 [inline]
+  string+0x3ec/0x5f0 lib/vsprintf.c:714
+  vsnprintf+0xa5d/0x1960 lib/vsprintf.c:2843
+  __request_module+0x252/0x9f0 kernel/module/kmod.c:149
+  team_mode_get drivers/net/team/team_core.c:480 [inline]
+  team_change_mode drivers/net/team/team_core.c:607 [inline]
+  team_mode_option_set+0x437/0x970 drivers/net/team/team_core.c:1401
+  team_option_set drivers/net/team/team_core.c:375 [inline]
+  team_nl_options_set_doit+0x1339/0x1f90 drivers/net/team/team_core.c:2662
+  genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+  genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2543
+  genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1348
+  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1892
+  sock_sendmsg_nosec net/socket.c:718 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:733
+  ____sys_sendmsg+0x877/0xb60 net/socket.c:2573
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2627
+  __sys_sendmsg net/socket.c:2659 [inline]
+  __do_sys_sendmsg net/socket.c:2664 [inline]
+  __se_sys_sendmsg net/socket.c:2662 [inline]
+  __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2662
+  x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
+Reported-by: syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1fcd957a82e3a1baa94d
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20250212134928.1541609-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/team/team.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-@@ -159,6 +159,10 @@ static int komeda_wb_connector_add(struc
- 	formats = komeda_get_layer_fourcc_list(&mdev->fmt_tbl,
- 					       kwb_conn->wb_layer->layer_type,
- 					       &n_formats);
-+	if (!formats) {
-+		kfree(kwb_conn);
-+		return -ENOMEM;
-+	}
- 
- 	err = drm_writeback_connector_init(&kms->base, wb_conn,
- 					   &komeda_wb_connector_funcs,
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index 699076fbfb4d6..c05a60f23677c 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2664,7 +2664,9 @@ static int team_nl_cmd_options_set(struct sk_buff *skb, struct genl_info *info)
+ 				ctx.data.u32_val = nla_get_u32(attr_data);
+ 				break;
+ 			case TEAM_OPTION_TYPE_STRING:
+-				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN) {
++				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN ||
++				    !memchr(nla_data(attr_data), '\0',
++					    nla_len(attr_data))) {
+ 					err = -EINVAL;
+ 					goto team_put;
+ 				}
+-- 
+2.39.5
+
 
 
 
