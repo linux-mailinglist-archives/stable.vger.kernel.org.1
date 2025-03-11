@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19A8A5C55E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A62B7A5C806
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8951B3B68A3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8FB63AD8EE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C40225EF80;
-	Tue, 11 Mar 2025 15:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C2925F790;
+	Tue, 11 Mar 2025 15:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/dHXTQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHT1BFK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA3425C715;
-	Tue, 11 Mar 2025 15:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2DC14BF89;
+	Tue, 11 Mar 2025 15:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705855; cv=none; b=h6cPiMlYmfpTv8y/LHS4pujexmjXXnD+mPfEwjXDSbGh8gZnWn+hooFrpAxU0AKLXE8hmQ6TnI3IeiH1wotGP7p0wIc4DFoWnWkhEWUDcE6xuVmRFVUjKbwPA+gGmaESOtRBucOs9cdhCVSUStQwh7aCFHaqpGKZPSw1KEVyOlM=
+	t=1741707213; cv=none; b=efHNKWV7d43Puisy2SQWdme+WT4GbwMDcuQfTDC35U6I93JPXByaMvEgpcksWYUfNeuWPMc5EOyrwq8bwScXiD9/IV9wyaaBReyP6W9cMFxDqIlK6R5QW5tECgIePLtnLxXtnf3lvWsNfPMUJHADx1WIDcaWBSM1Y9ktprtzidE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705855; c=relaxed/simple;
-	bh=ROSh81onf8aYwHrMx4a82HCllqTmm2H6SHZKk5ozhaY=;
+	s=arc-20240116; t=1741707213; c=relaxed/simple;
+	bh=aEaxXfCfvC92kbwWmTpaCRuWOmRoKf0b987/trALE6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9geHjU/JlRqs96ztLVpZLTrYk5zZUeqTNqf5VUZfYyYwwlILT2k7FwCCTcHZMLdcMwrF1Y5+8eJwspI1UazplgcoTukcVlQ9b16Oe3cyaKsO7j5NNlOS/W7gp4I+gA5BkEIx01/MAp+fsx2zm3BurvSbUTrUlH1fWgZNoANzYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/dHXTQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7576FC4CEE9;
-	Tue, 11 Mar 2025 15:10:54 +0000 (UTC)
+	 MIME-Version; b=mGEg7SZUbYw5g5bqSNvSYjIafHueWD/PxHAFg1gwpAE4zXbcX/lg1sP/HN9X0g7xnpYevVI2qnUmB9ePTfXEgXvSXExzns4Dw4ygZiGQ4gN6cY0WovPHqJw8kzXMwdDxEexF62DvhLUIHO4uFH1HXw7HYH+zjI+47Qm62TeJFAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHT1BFK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CF6C4CEE9;
+	Tue, 11 Mar 2025 15:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705854;
-	bh=ROSh81onf8aYwHrMx4a82HCllqTmm2H6SHZKk5ozhaY=;
+	s=korg; t=1741707213;
+	bh=aEaxXfCfvC92kbwWmTpaCRuWOmRoKf0b987/trALE6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/dHXTQN2I14EiyXo8FbbyLgdbSOWP7ZZccMGvfofPB7JNKLMRG44sO2vjhnCLt1J
-	 dY0mpAey3sWADZ4xvov94pSPUMwV3BXwFs+alwhw7S5KAF9eDWcwrEWFVrHuhbk+MR
-	 qJQN776C3VLdE0pou58DUf9XQbtCPt+wrRZdkY/I=
+	b=kHT1BFK9gJXLpHg3LX87n15hIN+xzvU8pBzoFRfSU/L5PvAzzTA/9SIObtI6oJ2DX
+	 MoVIQ8/kVH/A2rSvdAgwoUfZxI3MLcK5SOhNDtP2BoOSBFyOnge31QzO0XsD0Xqk8e
+	 h0bBbIC36q2VXJlkPLWh+bUcvXYJYX16UrzPElmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Elson Roy Serrao <quic_eserrao@quicinc.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 178/328] usb: roles: set switch registered flag early on
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 282/462] ipv4: use RCU protection in inet_select_addr()
 Date: Tue, 11 Mar 2025 15:59:08 +0100
-Message-ID: <20250311145721.980063204@linuxfoundation.org>
+Message-ID: <20250311145809.512801039@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 634775a752a86784511018a108f3b530cc3399a7 upstream.
+[ Upstream commit 719817cd293e4fa389e1f69c396f3f816ed5aa41 ]
 
-The role switch registration and set_role() can happen in parallel as they
-are invoked independent of each other. There is a possibility that a driver
-might spend significant amount of time in usb_role_switch_register() API
-due to the presence of time intensive operations like component_add()
-which operate under common mutex. This leads to a time window after
-allocating the switch and before setting the registered flag where the set
-role notifications are dropped. Below timeline summarizes this behavior
+inet_select_addr() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-Thread1				|	Thread2
-usb_role_switch_register()	|
-	|			|
-	---> allocate switch	|
-	|			|
-	---> component_add()	|	usb_role_switch_set_role()
-	|			|	|
-	|			|	--> Drop role notifications
-	|			|	    since sw->registered
-	|			|	    flag is not set.
-	|			|
-	--->Set registered flag.|
-
-To avoid this, set the registered flag early on in the switch register
-API.
-
-Fixes: b787a3e78175 ("usb: roles: don't get/set_role() when usb_role_switch is unregistered")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206193950.22421-1-quic_eserrao@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c4544c724322 ("[NETNS]: Process inet_select_addr inside a namespace.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/roles/class.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/ipv4/devinet.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -317,14 +317,15 @@ usb_role_switch_register(struct device *
- 	sw->dev.type = &usb_role_dev_type;
- 	dev_set_name(&sw->dev, "%s-role-switch", dev_name(parent));
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 6918b3ced6713..2dc94109fc0ea 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -1317,10 +1317,11 @@ __be32 inet_select_addr(const struct net_device *dev, __be32 dst, int scope)
+ 	__be32 addr = 0;
+ 	unsigned char localnet_scope = RT_SCOPE_HOST;
+ 	struct in_device *in_dev;
+-	struct net *net = dev_net(dev);
++	struct net *net;
+ 	int master_idx;
  
-+	sw->registered = true;
-+
- 	ret = device_register(&sw->dev);
- 	if (ret) {
-+		sw->registered = false;
- 		put_device(&sw->dev);
- 		return ERR_PTR(ret);
- 	}
- 
--	sw->registered = true;
--
- 	/* TODO: Symlinks for the host port and the device controller. */
- 
- 	return sw;
+ 	rcu_read_lock();
++	net = dev_net_rcu(dev);
+ 	in_dev = __in_dev_get_rcu(dev);
+ 	if (!in_dev)
+ 		goto no_in_dev;
+-- 
+2.39.5
+
 
 
 
