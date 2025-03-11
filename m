@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899F8A5C53C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C79A5C79B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3BA33B88D0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 975563B8733
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF65E25DB0D;
-	Tue, 11 Mar 2025 15:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7091B25EF99;
+	Tue, 11 Mar 2025 15:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4qyY9Fj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR2sSN3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD97249F9;
-	Tue, 11 Mar 2025 15:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCCD3EA76;
+	Tue, 11 Mar 2025 15:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705793; cv=none; b=I6QszYwCMhpimnkA5NHGw2SnhoqMRiMG7vO6fxfGyRko9/gbiDnPoXhU8vB/3eZbfT6zJ+vcN7LzvyINrGli3Efju40BivmsoHi4I2Gu/w6eY+OSN6waMI60aigR8QhAAAlfjKiG9euSsL42Q848j3mJeFp0/g6oeUTGJBpGZcs=
+	t=1741707061; cv=none; b=ZQZBq9QDG6unKEuN98ZY6DiB2lEX7TZiZ9XPeNt03v4OG21iBOoUfMfvNjKsNJRVAQGIoz8kPwqi+szpe0Vw70v6cFFYGCDKvZrZ0vW0HKrUvMQ0ZkNCoJiPhBNHLozsuWocNBfsKICPJVJXJh5hjLiVUqvT3o4BfF2bP5RYKJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705793; c=relaxed/simple;
-	bh=nTvGUiJy18WIv4rqglqGj2aPg0YnX4gdCQO39D3V/MU=;
+	s=arc-20240116; t=1741707061; c=relaxed/simple;
+	bh=FpFBy/Zp1YgO2AuQcnke2KFEj6CCusY8SaTQxEcdR0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhB5AQUW4QemlHroeKwDeyJ3+u+Gz49XDHK7pila0ZaHm0zue/PJKhgFGvXPA+UrHgs77OQl7UqlNZjRvPB3DTPBBKdfJozAod6NG7H0z2isl8xO4MS4fMqW8jxXDtW1z3vDrbk6SFy2CCfqWILDMIlSDKNfjtMpzZtKpQ77ZSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4qyY9Fj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DB4C4CEE9;
-	Tue, 11 Mar 2025 15:09:52 +0000 (UTC)
+	 MIME-Version; b=meP0Owl72m0vRUMqnmFrttqJ9Y8tQhza6eGamRXdcyMPFFNZHyTn9Ru9VdAanN75t2BeLXUAsRGqUfua0hMfWZCLwjQtoiZAPmixG4uxswrEm1Yx2V/xw+oj9ifPgOjOkCXRlPf4aDt5DCTUSQSGvAIf/M1e+b3+Q18k7uNp7Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR2sSN3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3865C4CEE9;
+	Tue, 11 Mar 2025 15:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705793;
-	bh=nTvGUiJy18WIv4rqglqGj2aPg0YnX4gdCQO39D3V/MU=;
+	s=korg; t=1741707061;
+	bh=FpFBy/Zp1YgO2AuQcnke2KFEj6CCusY8SaTQxEcdR0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4qyY9FjiIGWcTX9QLf13x9AhuF5EHJTEv0JByax0MBnswAMWDMZwg6edOjL6wOUE
-	 Mv3r9p89tUM3D+tHR0NRyLkHFKB8V3lsVd0Cf9+wC5Yt0/hqxgLtznOKgYhmGVyi7Z
-	 OkVeWNNqZQsZjrF7WREzTyjNqeOS/2HUp4eXNXNE=
+	b=oR2sSN3YzNIjWpYJVj8OyAeWR4WAcTr1opnTK7Be61xszUhycC8wazsdx5MCmH2Zr
+	 h43fCpvXHnoXZiy3esiMJYvTAVOLMYWL+V81lLcf7J0b312V958LXd4J6Q49XnoOm3
+	 jBkKVllKG9w5MFMV8g+6oRvTLw4XWNAQafRXgoX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 5.4 157/328] misc: fastrpc: Fix registered buffer page address
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 261/462] USB: serial: option: fix Telit Cinterion FN990A name
 Date: Tue, 11 Mar 2025 15:58:47 +0100
-Message-ID: <20250311145721.149846869@linuxfoundation.org>
+Message-ID: <20250311145808.673078513@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 6ca4ea1f88a06a04ed7b2c9c6bf9f00833b68214 upstream.
+commit 12606fe73f33647c5e79bf666833bf0b225e649d upstream.
 
-For registered  buffers, fastrpc driver sends the buffer information
-to remote subsystem. There is a problem with current implementation
-where the page address is being sent with an offset leading to
-improper buffer address on DSP. This is leads to functional failures
-as DSP expects base address in page information and extracts offset
-information from remote arguments. Mask the offset and pass the base
-page address to DSP.
+The correct name for FN990 is FN990A so use it in order to avoid
+confusion with FN990B.
 
-This issue is observed is a corner case when some buffer which is registered
-with fastrpc framework is passed with some offset by user and then the DSP
-implementation tried to read the data. As DSP expects base address and takes
-care of offsetting with remote arguments, passing an offsetted address will
-result in some unexpected data read in DSP.
-
-All generic usecases usually pass the buffer as it is hence is problem is
-not usually observed. If someone tries to pass offsetted buffer and then
-tries to compare data at HLOS and DSP end, then the ambiguity will be observed.
-
-Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
-Cc: stable@kernel.org
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -801,7 +801,7 @@ static int fastrpc_get_args(u32 kernel,
- 
- 			vma = find_vma(current->mm, ctx->args[i].ptr);
- 			if (vma)
--				pages[i].addr += ctx->args[i].ptr -
-+				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
- 						 vma->vm_start;
- 
- 			pg_start = (ctx->args[i].ptr & PAGE_MASK) >> PAGE_SHIFT;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1370,15 +1370,15 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1063, 0xff),	/* Telit LN920 (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990 (rmnet) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990A (rmnet) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990 (MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990A (MBIM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990 (RNDIS) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990A (RNDIS) */
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990 (ECM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990 (PCIe) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
+ 	  .driver_info = RSVD(0) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
 
 
 
