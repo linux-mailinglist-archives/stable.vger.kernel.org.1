@@ -1,227 +1,132 @@
-Return-Path: <stable+bounces-124050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85282A5CB41
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:54:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B501AA5CB72
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB041898E38
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 553583A8F29
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5988260A5E;
-	Tue, 11 Mar 2025 16:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FD6261368;
+	Tue, 11 Mar 2025 16:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mho+3EqC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c80JGyfj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF3A260A2A
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 16:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03DE260A20
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 16:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741712062; cv=none; b=O2j/v/USEl/8daWxx5JI/NpkXMv8Plw1o0Vqh+RJAqp7rthgkajrtGH93/h9Xrx0oLOoboHxa14GOtRuWdPQqaRTGqxX630nPxiHO1Vcn7rfV3is7hQzx+HZ7p16ZYlCHfVrNF4hHWmhX59XkYp+Lf5g2D5373TMZO8SED8ANmg=
+	t=1741712338; cv=none; b=udMeyQru8wJuA18OTM2hqC5JfBSTnHGhMKmFKm6078En2Bw3VNhrMkfPdKp5Z+V1ADF9fkM0AGVOJNakwTgOydeyq6iJ0MDTJwoWZtlT0tLa2Gb0YLQi7l1/vxdGvhchbyIhPeRIcoCOBAnGqRNKRUiaWOT0+ec5jtbD4xputAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741712062; c=relaxed/simple;
-	bh=cz1rge6ZO3cbRKCfoW40CzF8wJgqYYd6srscVWKDQMo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BxSZNqOl/XxBeYFhgmk3oIWteCvvIDLnTaYwbKM/vPY2oSw6vGq7DEmFM8jsO62dZTfHBD4F3MrppuckrUFJVYqlpHMoxvwafSNk/QxJ+uhtskWYemMVM8Erbm5WFctj7639Xp/CkHEcbeUp8n11R9tnt9uADoVdFChVtcmZtTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mho+3EqC; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30613802a59so63525701fa.0
-        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 09:54:20 -0700 (PDT)
+	s=arc-20240116; t=1741712338; c=relaxed/simple;
+	bh=bqa4Zo5G3EvpwSCUBlVCZ/hQ7UKYLe4xSoHICsRADqY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ye+jsQpBvGAGsUUShsQ1J/7C3r0dVFyJ37zCHCuQTC1iH71nZgw4c4hfgqWbc+t6l+B0wv+GsHRjIdYhFwEkmhK99YDYQw1xi5DQ+SY6hJPa8F5M8WbzXsjJ7CPZ/DaMLXgFEJ3GxLT//AlI7ftxJq/A4IRrNNbb5knQHKvDkOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c80JGyfj; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c0a159ded2so611315085a.0
+        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 09:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741712059; x=1742316859; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dZjgJFaB8mFwH4mPIJpshY1olfQj3pOfnp0rhFTjrtY=;
-        b=Mho+3EqCVfRS7rQPsehRlr4fXDdb9iI4oKohiZ40UH0D6J/mh29OlcLdM6KFF9lLKE
-         m8IR6MitVhLZ/ib5yI4CbrJKEZ2iFjKe2tqNF+DwWAT5KzIvaUCc2ob9O26jdzHbmN2a
-         OZ11P6Ef3dyH3tDhflOM5CCILkc534vgeF/8Y6z6LzeQzNwTUO6PBTEG7SmKOhWwnpVw
-         EKy2x2j6h0O4ZplWt+6beJaK/pmJuWO2WXfMx62f+2S+LezV3Whae1SWf95a72Lyv6oD
-         Q08Bc5g+LjGopMv+lqHgMUD2A5PKiGaisE7qBapHfX+/5R70UMQAr1NEb7P8+DGBsLu2
-         ldug==
+        d=google.com; s=20230601; t=1741712335; x=1742317135; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iA4x+zsdoa1/Ttu5kIO7FqzRTujqnaAXXb7vBTWVWBw=;
+        b=c80JGyfj5X+61ZpH4baWjodKLunRd4jl6Ki5DHfBdpfkqAX3zVGHofWpx+Lb905tQq
+         8AHnsvQa3vFWfTV2yzcvuMJ4IbMA3woYh222xNjcXJrJgem+hI8mSj9/SObYlUMTEc+C
+         fPC8ul4xqEIgJIJAAWCH7cjOdkskfwKTIg78btMIM5piH0VoxKphXDVirY4e+LRp1dZs
+         zuEkRCIHKR2Fuv09IirbdL4Aj8Hkv5mIZpf9GopV2OQOS+/7C6DxN/jyqwky8FuDKti0
+         kz7C+N4AdNe7yUwFOUbYJPEpGZdLkeIBN6a5aKusETd4uPfUqIMqz//4aIo6MQHin1zT
+         eueA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741712059; x=1742316859;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dZjgJFaB8mFwH4mPIJpshY1olfQj3pOfnp0rhFTjrtY=;
-        b=fpDZGpZwP10tRNUgfgwvgLkjhjVeUlpnaEPyy4K6lzVwa6rwQ1jgOzdycy4Sm7dAgA
-         b1srMj5OUQv1hyCXttcy9L8q8MfHZCLB2COA0Ha3Vv2G3IvMxbAWiAHy/ddWaV0IazSx
-         HhkKoFfrWhWP+tVHjb79nw36c85tHctjkOglVd9aO+yO9AUBrS/ZuNvoXJrSBaUi/aeE
-         szWa4glZJbJzFhB8ZuoQpFrz1ICFrv/nUhulQItCwgvqK0kpnBqQyFcGsGFP4EWp4SYs
-         eKVCLHj81t25ARqL64OXfhqimT0DgdG8wvpCQd9KEqI3nYYmYzZL46BigFBQhMLT0Mfv
-         SzHA==
-X-Gm-Message-State: AOJu0YzES3vF9RM7EooBYGZsRxUCoVeHlegoxrd8a+fpCoa3sEUPtvFu
-	zGbrBW9QGsVfvpo7UWapxHOI3TmspSfVhD+zL1DMJkUocF3k3kWD9X0+tQ==
-X-Gm-Gg: ASbGncsNAe3dqZeDkYXOnADqTgLf4Nxhtm2cHkGmZPNRuxARST0bu5kwpoSb9rjOISk
-	/je8Gvu9mA0ySZio+6PbnkrVu4L4UEmIvdnfOTvFy7WBqp4qE3p9CvmYVhwD36QmQUW0zT+ki87
-	60RZj9V6oQ1voc4wlTf/InUgXox+n3oECGWkTDe5CAq6wjTh4SDVKfnZLTnlTbTIaYhoDt0WdPM
-	m2V5lTZQdqpYWeW4clfIpzWFavVpA2CPUzFg7ysGXVqHmxzn9QQxhybgEO/TCRPOnGM9B4L29fI
-	lL2ZlDtEIbIUdI40azHMVNFKyR6McHdSB9/nXY29
-X-Google-Smtp-Source: AGHT+IEoLo+OGY2dCBJJackJu0Wn/YGw9r7gkt5CXls1Axqbhb6PnSE5kvF1oe/WJxp40pJvmcaiWw==
-X-Received: by 2002:a2e:9dca:0:b0:30b:ee78:79d2 with SMTP id 38308e7fff4ca-30bf462cc6amr51227021fa.36.1741712058511;
-        Tue, 11 Mar 2025 09:54:18 -0700 (PDT)
-Received: from pc638.lan ([2001:9b1:d5a0:a500:2d8:61ff:fec9:d743])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30bfead2e76sm15186301fa.7.2025.03.11.09.54.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 09:54:17 -0700 (PDT)
-From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-To: stable@vger.kernel.org
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Oleksiy Avramchenko <oleksiy.avramchenko@sony.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: [PATCH 6.12.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
-Date: Tue, 11 Mar 2025 17:54:16 +0100
-Message-Id: <20250311165416.108043-1-urezki@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        d=1e100.net; s=20230601; t=1741712335; x=1742317135;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iA4x+zsdoa1/Ttu5kIO7FqzRTujqnaAXXb7vBTWVWBw=;
+        b=n4+OB3poE7RyEicrogrUwGrpRqslIHwoAflL5RTlgFwvLfaCwoOZhryKGAtv0tN+la
+         V+pLNZlDDyZcw+jvJ9GaUSLVVScHzdWmbPWX6yF/oKa45lxMEFkPVdW69HDvqxagF08u
+         OVv1/1q8lakVTF6w3JS0oN6OCPhfFHviUOf5xm9EZdeAH47mD5MV8WnkCXu6YXXdG23z
+         rTeAVjIbp5skO+ZKV6dsFwJf5+LNftaceYAPS+k25NtrGCzN0zR4UAL8edaYdfFO+m7+
+         Q7XrOKceRdpIAPnv4YHpi0/CflHnwtlGMtnyMEvby/aX3w0ADDwu56QmTPsEcyy28m4b
+         7lrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTqSYspNlsxxpsYib4o43F5JoSLb+oSEpsXYoYnh2hldjrauYCTQFk8ZVULqBiDyBh4wVm9C8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHwMdUo8nX1cMsV/SqMABCWyZsHuDwMmsy9kS2S7WN85lCMY6D
+	QlnU7wN59AddONm+Z+xfhZ9SkpL+e+JoB8uO6IZ3wP2WhxnVg8JGMzDNJxNxul7bkJy9blwvjhC
+	pH9PDTH+6Gq8d2EuTys4uy6ijzq768wm++8KS
+X-Gm-Gg: ASbGncsJTIflDNZ8IKtxB+PtwDkuyNQRyJmMNpZ9uzImZc9aBmmoKYjx9tufBaiiJ79
+	SYQMVhhyIZobBAP9MavK5Ga5WiZ8VaVyZgIK921UFvVT+N9ArJbUZL3zC2TcMHlXKuJPtI+Darx
+	NlTrk73wWRxCwp1wV2+3j2USmK4tD749afRIQh3GEeX+o64phsT31nGaw=
+X-Google-Smtp-Source: AGHT+IGXTV6jt8zy0b/a5jQLG+eKvtaOTrGi6iFpSH7vWvwWk2XXzc4vkIrgDbePZzBUnokoYaBHhAtlF7Osr8wlR60=
+X-Received: by 2002:a05:620a:838c:b0:7c0:a0ba:2029 with SMTP id
+ af79cd13be357-7c4e6178ce4mr2882337785a.40.1741712335418; Tue, 11 Mar 2025
+ 09:58:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250306053724.9DF85C4CEE4@smtp.kernel.org>
+In-Reply-To: <20250306053724.9DF85C4CEE4@smtp.kernel.org>
+From: Alexander Potapenko <glider@google.com>
+Date: Tue, 11 Mar 2025 12:58:17 -0400
+X-Gm-Features: AQ5f1Jo0wKRvS-Sw6eU2fJMQMU5J89-Jhq8EBJNyzSQhqhPzSEtZkom-oS0Ybcw
+Message-ID: <CAG_fn=W0KFnHq0=M1FovTHPTnve=W2Hqvq1Hny4TQuU+rL2fiQ@mail.gmail.com>
+Subject: Re: [merged mm-hotfixes-stable] dma-kmsan-export-kmsan_handle_dma-for-modules.patch
+ removed from -mm tree
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: mm-commits@vger.kernel.org, tglx@linutronix.de, stable@vger.kernel.org, 
+	peterz@infradead.org, lkp@intel.com, elver@google.com, dvyukov@google.com, 
+	bigeasy@linutronix.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently kvfree_rcu() APIs use a system workqueue which is
-"system_unbound_wq" to driver RCU machinery to reclaim a memory.
+On Thu, Mar 6, 2025 at 12:37=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+>
+> The quilt patch titled
+>      Subject: dma: kmsan: export kmsan_handle_dma() for modules
+> has been removed from the -mm tree.  Its filename was
+>      dma-kmsan-export-kmsan_handle_dma-for-modules.patch
+>
+> This patch was dropped because it was merged into the mm-hotfixes-stable =
+branch
+> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>
+> ------------------------------------------------------
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Subject: dma: kmsan: export kmsan_handle_dma() for modules
+> Date: Tue, 18 Feb 2025 10:14:11 +0100
+>
+> kmsan_handle_dma() is used by virtio_ring() which can be built as a
+> module.  kmsan_handle_dma() needs to be exported otherwise building the
+> virtio_ring fails.
+>
+> Export kmsan_handle_dma for modules.
+>
+> Link: https://lkml.kernel.org/r/20250218091411.MMS3wBN9@linutronix.de
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202502150634.qjxwSeJR-lkp@i=
+ntel.com/
+> Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: Alexander Potapenko <glider@google.com>
+> Cc: Dmitriy Vyukov <dvyukov@google.com>
+> Cc: Macro Elver <elver@google.com>
+> Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Recently, it has been noted that the following kernel warning can
-be observed:
-
-<snip>
-workqueue: WQ_MEM_RECLAIM nvme-wq:nvme_scan_work is flushing !WQ_MEM_RECLAIM events_unbound:kfree_rcu_work
-  WARNING: CPU: 21 PID: 330 at kernel/workqueue.c:3719 check_flush_dependency+0x112/0x120
-  Modules linked in: intel_uncore_frequency(E) intel_uncore_frequency_common(E) skx_edac(E) ...
-  CPU: 21 UID: 0 PID: 330 Comm: kworker/u144:6 Tainted: G            E      6.13.2-0_g925d379822da #1
-  Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM20 02/01/2023
-  Workqueue: nvme-wq nvme_scan_work
-  RIP: 0010:check_flush_dependency+0x112/0x120
-  Code: 05 9a 40 14 02 01 48 81 c6 c0 00 00 00 48 8b 50 18 48 81 c7 c0 00 00 00 48 89 f9 48 ...
-  RSP: 0018:ffffc90000df7bd8 EFLAGS: 00010082
-  RAX: 000000000000006a RBX: ffffffff81622390 RCX: 0000000000000027
-  RDX: 00000000fffeffff RSI: 000000000057ffa8 RDI: ffff88907f960c88
-  RBP: 0000000000000000 R08: ffffffff83068e50 R09: 000000000002fffd
-  R10: 0000000000000004 R11: 0000000000000000 R12: ffff8881001a4400
-  R13: 0000000000000000 R14: ffff88907f420fb8 R15: 0000000000000000
-  FS:  0000000000000000(0000) GS:ffff88907f940000(0000) knlGS:0000000000000000
-  CR2: 00007f60c3001000 CR3: 000000107d010005 CR4: 00000000007726f0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __warn+0xa4/0x140
-   ? check_flush_dependency+0x112/0x120
-   ? report_bug+0xe1/0x140
-   ? check_flush_dependency+0x112/0x120
-   ? handle_bug+0x5e/0x90
-   ? exc_invalid_op+0x16/0x40
-   ? asm_exc_invalid_op+0x16/0x20
-   ? timer_recalc_next_expiry+0x190/0x190
-   ? check_flush_dependency+0x112/0x120
-   ? check_flush_dependency+0x112/0x120
-   __flush_work.llvm.1643880146586177030+0x174/0x2c0
-   flush_rcu_work+0x28/0x30
-   kvfree_rcu_barrier+0x12f/0x160
-   kmem_cache_destroy+0x18/0x120
-   bioset_exit+0x10c/0x150
-   disk_release.llvm.6740012984264378178+0x61/0xd0
-   device_release+0x4f/0x90
-   kobject_put+0x95/0x180
-   nvme_put_ns+0x23/0xc0
-   nvme_remove_invalid_namespaces+0xb3/0xd0
-   nvme_scan_work+0x342/0x490
-   process_scheduled_works+0x1a2/0x370
-   worker_thread+0x2ff/0x390
-   ? pwq_release_workfn+0x1e0/0x1e0
-   kthread+0xb1/0xe0
-   ? __kthread_parkme+0x70/0x70
-   ret_from_fork+0x30/0x40
-   ? __kthread_parkme+0x70/0x70
-   ret_from_fork_asm+0x11/0x20
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-<snip>
-
-To address this switch to use of independent WQ_MEM_RECLAIM
-workqueue, so the rules are not violated from workqueue framework
-point of view.
-
-Apart of that, since kvfree_rcu() does reclaim memory it is worth
-to go with WQ_MEM_RECLAIM type of wq because it is designed for
-this purpose.
-
-Fixes: 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-Reported-by: Keith Busch <kbusch@kernel.org>
-Closes: https://lore.kernel.org/all/Z7iqJtCjHKfo8Kho@kbusch-mbp/
-Cc: stable@vger.kernel.org
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- kernel/rcu/tree.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 3e486ccaa4ca..8e52c1dd0628 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -3191,6 +3191,8 @@ void call_rcu(struct rcu_head *head, rcu_callback_t func)
- }
- EXPORT_SYMBOL_GPL(call_rcu);
- 
-+static struct workqueue_struct *rcu_reclaim_wq;
-+
- /* Maximum number of jiffies to wait before draining a batch. */
- #define KFREE_DRAIN_JIFFIES (5 * HZ)
- #define KFREE_N_BATCHES 2
-@@ -3519,10 +3521,10 @@ __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
- 	if (delayed_work_pending(&krcp->monitor_work)) {
- 		delay_left = krcp->monitor_work.timer.expires - jiffies;
- 		if (delay < delay_left)
--			mod_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-+			mod_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
- 		return;
- 	}
--	queue_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-+	queue_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
- }
- 
- static void
-@@ -3620,7 +3622,7 @@ kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
- 			// "free channels", the batch can handle. Break
- 			// the loop since it is done with this CPU thus
- 			// queuing an RCU work is _always_ success here.
--			queued = queue_rcu_work(system_unbound_wq, &krwp->rcu_work);
-+			queued = queue_rcu_work(rcu_reclaim_wq, &krwp->rcu_work);
- 			WARN_ON_ONCE(!queued);
- 			break;
- 		}
-@@ -3708,7 +3710,7 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
- 	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
- 			!atomic_xchg(&krcp->work_in_progress, 1)) {
- 		if (atomic_read(&krcp->backoff_page_cache_fill)) {
--			queue_delayed_work(system_unbound_wq,
-+			queue_delayed_work(rcu_reclaim_wq,
- 				&krcp->page_cache_work,
- 					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
- 		} else {
-@@ -5662,6 +5664,10 @@ static void __init kfree_rcu_batch_init(void)
- 	int i, j;
- 	struct shrinker *kfree_rcu_shrinker;
- 
-+	rcu_reclaim_wq = alloc_workqueue("kvfree_rcu_reclaim",
-+			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-+	WARN_ON(!rcu_reclaim_wq);
-+
- 	/* Clamp it to [0:100] seconds interval. */
- 	if (rcu_delay_page_cache_fill_msec < 0 ||
- 		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
--- 
-2.39.5
-
+Note: I think the Reviewed-by: I left on the patch is missing here,
+but I don't mind (no need to respin)
 
