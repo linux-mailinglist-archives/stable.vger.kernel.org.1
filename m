@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-123836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B704A5C7AA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEED2A5C54A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2753B9B38
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5224B3AC221
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5673F25E83C;
-	Tue, 11 Mar 2025 15:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2A725E813;
+	Tue, 11 Mar 2025 15:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFmw1SFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXAC2EIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1364B249F9;
-	Tue, 11 Mar 2025 15:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8ABB25DB0D;
+	Tue, 11 Mar 2025 15:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707103; cv=none; b=SJRSlcwI9fYKotlZKUrN3/tIF6zV8TaZGLL+SXUD+8xK3xSgR6SBocEPvA8hpggH3L3zYzGQ0h7OZ9nxHCuH20dBhKjpcbMwWzPDoxg3PaAECSZ18vKjmj2d0ThhFbQ6Ip2dDTINZaj00ijd4+RGmwHJKzXg3RLySW3KbgrnqKQ=
+	t=1741705829; cv=none; b=Mv5s5T3prm3WSZ+QBsToTATkuKm1jUJORLn4sWmjkw4QNz6saAuP1LLwwikep8sIDr7aAUqSO2vrkqgV73cpusjrBIOdsNjOac0uawXKHE9KhWaneNAa0axcpE8Cl6Ybw8vZZd1GCxUqzdat0EixruPMMaEyrzptalWwL4XIXHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707103; c=relaxed/simple;
-	bh=2ZBVz6s5IstM3dSSa0uurAA6Bynjyr4v5RuhRaxE72Q=;
+	s=arc-20240116; t=1741705829; c=relaxed/simple;
+	bh=x+OiVJCv/XGs32VGxp+UX95FhKNMAo64KiZuyRd9ZQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbH0GKLsI+4T9CDE+tusuDH6/GbdfjZMR9r30RBIdPho1zh9CJHP+7eCkU9dkJMWbbadG1Cn9zrAmW3UByhhlpc9kOwMtJF98pqrrNKxXrNiYIwSLrAWlXhlEOZFzzysWDcxHVFdCbcboJfYXkm3JxHbUwajKpzbLGIyRWp+T24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFmw1SFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392AAC4CEE9;
-	Tue, 11 Mar 2025 15:31:42 +0000 (UTC)
+	 MIME-Version; b=Ud6YO7ucD7L1pj5VgT4sVk19q7ekFWan7RR/TCuycxNbjSC/e7IPHIhgE8+Z0zH1/25PisGsws/+OrzJcEo4E4igh3gve70JMsMLir+3onm2+9kV075jj8r3MBytn/I4GS6Q3DPs64Pr+ddUJoit8eXoFwRLijH7+oOsQvnKoJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXAC2EIS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8D3C4CEEA;
+	Tue, 11 Mar 2025 15:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707102;
-	bh=2ZBVz6s5IstM3dSSa0uurAA6Bynjyr4v5RuhRaxE72Q=;
+	s=korg; t=1741705828;
+	bh=x+OiVJCv/XGs32VGxp+UX95FhKNMAo64KiZuyRd9ZQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qFmw1SFRgym1MD1FBoERx/0UrLluXBs+GKDsnnw10oxaJK5kUjteDmLZ8gatg/r8c
-	 FLiSQ4YFVWKH4hne18vcM319eTb7/s4jWM40VV60Muha06sgOdVd+p6epQ5+mloYOW
-	 icKYWOJBIQl3NUg9BSYL3Z0TcyFNpBE59rw026hg=
+	b=VXAC2EIS8jb2z9stqxzRnk9FMe7OZloyRI4j8oozSx873rvi2yy3oW29U4ymjoA+f
+	 qCPi1UhnmOG9BOt9EeAxGz2zQLXziaE/vohz922Ubk3/2TIapbXZzQTh+1V0T8J2Lj
+	 InAu/Pyob7IHYZXHarf7hiQUkpdDqStd32hCGnME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 273/462] mlxsw: Add return value check for mlxsw_sp_port_get_stats_raw()
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 169/328] gpio: bcm-kona: Add missing newline to dev_err format string
 Date: Tue, 11 Mar 2025 15:58:59 +0100
-Message-ID: <20250311145809.149072687@linuxfoundation.org>
+Message-ID: <20250311145721.621875117@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-commit fee5d688940690cc845937459e340e4e02598e90 upstream.
+[ Upstream commit 615279db222c3ac56d5c93716efd72b843295c1f ]
 
-Add a check for the return value of mlxsw_sp_port_get_stats_raw()
-in __mlxsw_sp_port_get_stats(). If mlxsw_sp_port_get_stats_raw()
-returns an error, exit the function to prevent further processing
-with potentially invalid data.
+Add a missing newline to the format string of the "Couldn't get IRQ
+for bank..." error message.
 
-Fixes: 614d509aa1e7 ("mlxsw: Move ethtool_ops to spectrum_ethtool.c")
-Cc: stable@vger.kernel.org # 5.9+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/20250212152311.1332-1-vulab@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 757651e3d60e ("gpio: bcm281xx: Add GPIO driver")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Markus Mayer <mmayer@broadcom.com>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-3-409135eab780@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-bcm-kona.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
-@@ -761,7 +761,9 @@ static void __mlxsw_sp_port_get_stats(st
- 	err = mlxsw_sp_get_hw_stats_by_group(&hw_stats, &len, grp);
- 	if (err)
- 		return;
--	mlxsw_sp_port_get_stats_raw(dev, grp, prio, ppcnt_pl);
-+	err = mlxsw_sp_port_get_stats_raw(dev, grp, prio, ppcnt_pl);
-+	if (err)
-+		return;
- 	for (i = 0; i < len; i++) {
- 		data[data_index + i] = hw_stats[i].getter(ppcnt_pl);
- 		if (!hw_stats[i].cells_bytes)
+diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
+index aad1d5af6382b..35bf2ecc71b49 100644
+--- a/drivers/gpio/gpio-bcm-kona.c
++++ b/drivers/gpio/gpio-bcm-kona.c
+@@ -674,7 +674,7 @@ static int bcm_kona_gpio_probe(struct platform_device *pdev)
+ 		bank->irq = platform_get_irq(pdev, i);
+ 		bank->kona_gpio = kona_gpio;
+ 		if (bank->irq < 0) {
+-			dev_err(dev, "Couldn't get IRQ for bank %d", i);
++			dev_err(dev, "Couldn't get IRQ for bank %d\n", i);
+ 			ret = -ENOENT;
+ 			goto err_irq_domain;
+ 		}
+-- 
+2.39.5
+
 
 
 
