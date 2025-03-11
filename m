@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-123377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACD9A5C538
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E30FA5C76E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02EAB3B86B0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAB3C17B7D1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD7C25DCE3;
-	Tue, 11 Mar 2025 15:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCC625F787;
+	Tue, 11 Mar 2025 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nh4Svi6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyFrkchj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A895825DD07;
-	Tue, 11 Mar 2025 15:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C22B25EFB5;
+	Tue, 11 Mar 2025 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705777; cv=none; b=CzYFElvtQXAWEgQxuju236evQVYHFreYWhh34Y1ebWN/Yzw8UKEWlTjiFrMFTpCem10EHAfNVBRnSBHoGQhWzkgfkau9h1rIjP00/g1qPdu1cnasCQGFf6IrUQG1nOJwfWIx/1FmfgSlL9LJTpScugxTGiHttCRAyQSRZXM72DY=
+	t=1741707046; cv=none; b=KhgTL4JYXexSwL+Lb11tb/ZVZXCKRx7eCWSmPEwlUipkQogF1+SoLTxCMBdp5KPvVcmx2bs5entVx5lAJKr2G0M31T/U2mw/jSjY2S9fZJJxbn/h6izfjoWwktIURPq8VjKccacvb0+an5NOUrgohUMgtZJAzI09wHHIFrDawh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705777; c=relaxed/simple;
-	bh=dpmaZf9m1LWvdG03Y5+uVHnKDe4Cmb+eWqKVSUhq3vs=;
+	s=arc-20240116; t=1741707046; c=relaxed/simple;
+	bh=Pt0Rmc18eJO+GC+6ww1ocoiHDJD0qhRsS2ukvJejigs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoK9+Vv6LErUkNb84Hj80gWfd5gosohuLWn1BNpUJFj5z0YPpjTUVNlEIgHmrP8UIfN/Zz3GMiZyHBzvPGn6mmUglRXmSh9iq24tiTV+qee91SyvoQNn3ptYZ7QRB8xiPNJNZUuAA6IvPlasrXx3xjQCYfVdu7g2R18yZ7q0E60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nh4Svi6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6C6C4CEE9;
-	Tue, 11 Mar 2025 15:09:37 +0000 (UTC)
+	 MIME-Version; b=TuW9qIShee/BGb3I5W62LpLbwySViOqyt4vGO2ThRpQKTHV3xml5X4MxivyHNyf8HGOKeW/k79YfwVjM6zk0uiahtuYRy/2t1GAEX2tR1efnPFYSFRpKygTgrjqM2BVWEWmqSfIPjdI4ozGvlzQ5lLHP4r9Po08kApRZvwtT4VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyFrkchj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A9CC4CEE9;
+	Tue, 11 Mar 2025 15:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705777;
-	bh=dpmaZf9m1LWvdG03Y5+uVHnKDe4Cmb+eWqKVSUhq3vs=;
+	s=korg; t=1741707046;
+	bh=Pt0Rmc18eJO+GC+6ww1ocoiHDJD0qhRsS2ukvJejigs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nh4Svi6UW21olDYXEUrE/BcJsruQL6BoUqNLVCN9KNOrF56xlR9B6/yiRKg4qLWm+
-	 Wbn2kog3bHM/kohYG/SlzjFuykvcIOmc+EQphqP6M3LUpHn/mDNjFGQ5EGTAmgZFdh
-	 FiU6Kpp9x6IHGLw338xAt6aw83Z4iq11IVCrkSQ8=
+	b=ZyFrkchjE+5dfkmXSqipv0PIe3Cx5du2HBEFVXPuytsCCmwwT31mX1NcAY7Kwqia8
+	 nGw7yQAIs9JyYmNtBp4OImw07NO0GS9plbyNs39LW2gVsDUHI1X6ORiiEbDgJ64k6x
+	 fk9C5pJPYceyR3XjymGctp1XGmCMWjkJuFOd9wiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 152/328] ocfs2: fix incorrect CPU endianness conversion causing mount failure
+	stable <stable@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 5.10 256/462] USB: cdc-acm: Fill in Renesas R-Car D3 USB Download mode quirk
 Date: Tue, 11 Mar 2025 15:58:42 +0100
-Message-ID: <20250311145720.948794565@linuxfoundation.org>
+Message-ID: <20250311145808.476061227@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,46 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit f921da2c34692dfec5f72b5ae347b1bea22bb369 upstream.
+commit 7284922f3e4fa285dff1b8bb593aa9a0b8458f30 upstream.
 
-Commit 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
-introduced a regression bug.  The blksz_bits value is already converted to
-CPU endian in the previous code; therefore, the code shouldn't use
-le32_to_cpu() anymore.
+Add Renesas R-Car D3 USB Download mode quirk and update comments
+on all the other Renesas R-Car USB Download mode quirks to discern
+them from each other. This follows R-Car Series, 3rd Generation
+reference manual Rev.2.00 chapter 19.2.8 USB download mode .
 
-Link: https://lkml.kernel.org/r/20250121112204.12834-1-heming.zhao@suse.com
-Fixes: 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d853c9e4104 ("usb: cdc-acm: Add DISABLE_ECHO for Renesas USB Download mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250209145708.106914-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/cdc-acm.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/ocfs2/super.c
-+++ b/fs/ocfs2/super.c
-@@ -2350,7 +2350,7 @@ static int ocfs2_verify_volume(struct oc
- 			mlog(ML_ERROR, "found superblock with incorrect block "
- 			     "size bits: found %u, should be 9, 10, 11, or 12\n",
- 			     blksz_bits);
--		} else if ((1 << le32_to_cpu(blksz_bits)) != blksz) {
-+		} else if ((1 << blksz_bits) != blksz) {
- 			mlog(ML_ERROR, "found superblock with incorrect block "
- 			     "size: found %u, should be %u\n", 1 << blksz_bits, blksz);
- 		} else if (le16_to_cpu(di->id2.i_super.s_major_rev_level) !=
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1723,13 +1723,16 @@ static const struct usb_device_id acm_id
+ 	{ USB_DEVICE(0x0870, 0x0001), /* Metricom GS Modem */
+ 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas R-Car H3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x0247),	/* Renesas R-Car D3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas R-Car M3-N USB Download mode */
++	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
++	},
++	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas R-Car E3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+ 	{ USB_DEVICE(0x0e8d, 0x0003), /* FIREFLY, MediaTek Inc; andrey.arapov@gmail.com */
 
 
 
