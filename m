@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-123522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4918FA5C600
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4B2A5C842
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697873B9DFB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6605168698
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3884415820C;
-	Tue, 11 Mar 2025 15:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4349225EF99;
+	Tue, 11 Mar 2025 15:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rt0kuWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amunz2mc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96101C3BEB;
-	Tue, 11 Mar 2025 15:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018A025EF89;
+	Tue, 11 Mar 2025 15:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706200; cv=none; b=GeIjsMOG2OoXOU6I8sUpaBPoW4231Zb9B2cb5R7QZE7c5/bNb/lWXB5a5pL72U8wfvgjPawJnHwQp/ajYCmrOD1F1VC8rZ9vPJ7jWY0ff+d5j1PmHSQ0WCLyhBIgQjukN0B9Xa/AHLcqbJ42i9fDnfxErgkR7skpUtViocJyNKU=
+	t=1741707475; cv=none; b=ATPy/RS994iTzs8oybAld7f+NotB1E31j10gn2KY568FLzJFiYiRULaBTgrS7SEAb3oq9CSpMERljrMgfJc3JSjwQdNf7w6KhTKtleYpbNXt9zvew+X1MseYdL0idJAqZN0xB2k0jsT3Vwq3iPMmw0ffQ6kwX8f7ydfxnbiSPds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706200; c=relaxed/simple;
-	bh=wWOw7zQMYSSSGSGk6THglX/BV3W6QvVfO0BrX8LDtZ4=;
+	s=arc-20240116; t=1741707475; c=relaxed/simple;
+	bh=CBggDLJ2dX2gPogFOntile3JmO2Yet8wU3+AITW0RGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXf5qZDlQKynFVHstws70c0WGRZ6qe7ibIUzjh8+OsEG2juxITZG1Wpo2UaySzFNC/fcGBx0dydepdePwu5TS/uc7T01o+4OSKTQv67/HqwwShh7JvyR1h96Abew6ACPKq5hm2F4/B5aTK2BOjcBd5ivmKrq7n1naF8/NxIwcyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rt0kuWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC51FC4CEEC;
-	Tue, 11 Mar 2025 15:16:38 +0000 (UTC)
+	 MIME-Version; b=JWTXSOihIW638d3O6HU5katlQ9D+w9YyEkeC80FCClFDfGUGmKwLS5jhGh3sPqpw7+yQv//2B6gEWfd1wLaPkkVAGIMCCwupXWCKWw72u1yU5uFtuYjTsdRDloelaUxgVSxg1LQdY+yuwvNn/PjEB33AAP+KDA6DJ/YKFCzvluc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amunz2mc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9E8C4CEE9;
+	Tue, 11 Mar 2025 15:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706199;
-	bh=wWOw7zQMYSSSGSGk6THglX/BV3W6QvVfO0BrX8LDtZ4=;
+	s=korg; t=1741707474;
+	bh=CBggDLJ2dX2gPogFOntile3JmO2Yet8wU3+AITW0RGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rt0kuWnH2cXfsBTwX/K9KVSkPNZoJ8nFVxfgdO2PBV7DQf9/MSCkvx9LPqXEoZHg
-	 +0fPl6Imxc/PD9EkgR6/Js3KswN5HCauaSYjQLn/W2WfCSi19tksql7IQBQXKt/Jws
-	 javSZ1bTM8XV9OaUd5/J17iTJK8Ypf/rvHhJo6Lw=
+	b=amunz2mc8+dOn+0i4S2WNJSG6MMTaC6FQ4C4Shpqqfh0O1ahmwJDZihGoYze/Mtco
+	 fvD5ddKOhLWhJvZi0jn8GsbnVRXoL6MIEZwIqukpznUVXP7SwaSm2mmglzdf8Sr7vy
+	 yzK7OWSn8ODG6/dS5MpRcELeckZcjne7ttV2kw+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 296/328] net: gso: fix ownership in __udp_gso_segment
-Date: Tue, 11 Mar 2025 16:01:06 +0100
-Message-ID: <20250311145726.671696992@linuxfoundation.org>
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 401/462] rapidio: fix an API misues when rio_add_net() fails
+Date: Tue, 11 Mar 2025 16:01:07 +0100
+Message-ID: <20250311145814.177119407@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
+commit b2ef51c74b0171fde7eb69b6152d3d2f743ef269 upstream.
 
-In __udp_gso_segment the skb destructor is removed before segmenting the
-skb but the socket reference is kept as-is. This is an issue if the
-original skb is later orphaned as we can hit the following bug:
+rio_add_net() calls device_register() and fails when device_register()
+fails.  Thus, put_device() should be used rather than kfree().  Add
+"mport->net = NULL;" to avoid a use after free issue.
 
-  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
-  RIP: 0010:ip_rcv_core+0x8b2/0xca0
-  Call Trace:
-   ip_rcv+0xab/0x6e0
-   __netif_receive_skb_one_core+0x168/0x1b0
-   process_backlog+0x384/0x1100
-   __napi_poll.constprop.0+0xa1/0x370
-   net_rx_action+0x925/0xe50
-
-The above can happen following a sequence of events when using
-OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
-OVS_ACTION_ATTR_OUTPUT action:
-
-1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
-   goes through queue_gso_packets and then __udp_gso_segment, where its
-   destructor is removed.
-2. The segments' data are copied and sent to userspace.
-3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
-   same original skb is sent to its path.
-4. If it later hits skb_orphan, we hit the bug.
-
-Fix this by also removing the reference to the socket in
-__udp_gso_segment.
-
-Fixes: ad405857b174 ("udp: better wmem accounting on gso")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250227073409.3696854-1-haoxiang_li2024@163.com
+Fixes: e8de370188d0 ("rapidio: add mport char device driver")
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Yang Yingliang <yangyingliang@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/rapidio/devices/rio_mport_cdev.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 487a92d75c703..6505a6fd245a6 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -204,13 +204,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 
- 	/* clear destructor to avoid skb_segment assigning it to tail */
- 	copy_dtor = gso_skb->destructor == sock_wfree;
--	if (copy_dtor)
-+	if (copy_dtor) {
- 		gso_skb->destructor = NULL;
-+		gso_skb->sk = NULL;
-+	}
- 
- 	segs = skb_segment(gso_skb, features);
- 	if (IS_ERR_OR_NULL(segs)) {
--		if (copy_dtor)
-+		if (copy_dtor) {
- 			gso_skb->destructor = sock_wfree;
-+			gso_skb->sk = sk;
-+		}
- 		return segs;
+--- a/drivers/rapidio/devices/rio_mport_cdev.c
++++ b/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -1739,7 +1739,8 @@ static int rio_mport_add_riodev(struct m
+ 		err = rio_add_net(net);
+ 		if (err) {
+ 			rmcd_debug(RDEV, "failed to register net, err=%d", err);
+-			kfree(net);
++			put_device(&net->dev);
++			mport->net = NULL;
+ 			goto cleanup;
+ 		}
  	}
- 
--- 
-2.39.5
-
 
 
 
