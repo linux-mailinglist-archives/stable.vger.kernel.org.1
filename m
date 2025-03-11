@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-123629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66FCA5C6B8
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:28:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E149AA5C638
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E753AAC95
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:22:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D5C7A959D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F72F25BAAA;
-	Tue, 11 Mar 2025 15:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1242725EF84;
+	Tue, 11 Mar 2025 15:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbxaH5mf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQeecgyD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8C225DCFA;
-	Tue, 11 Mar 2025 15:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FBC25E828;
+	Tue, 11 Mar 2025 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706503; cv=none; b=JUNsdg1wbQLCKZoIE+d7bwY+NT1KRzmSJXftGl8ocxjnkOocA0I+cgOEGdWjfSn2A1MkWXP9GOX7MbdPS0XbENuHEUv6U1zIIpw60qAPhXAM/QbLbGgyslaHkElvG3VTF3H06ng8tNFEelg1iN2R2v1gDrU+5vx0HNvvTeHYSrg=
+	t=1741706508; cv=none; b=I+nkH1IdJ5lvabaD5+jq82ixtf8jgdv7q5bIKyNg9Qkl5ISoxKg/zOXUEslhmzDA9S66z9eOSZcljhuWwBOjzGoBq3HZmGEosE0wUiKXixrQNc8vrsu2+cPbMOp5rZmonMJHtL9t9zHBho6DAV0FofbeKWBChkE2CEM8gr2wPpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706503; c=relaxed/simple;
-	bh=jNrETtR01/t3naMwLeGRh0YmapofbVyrDAjFwVHTyjE=;
+	s=arc-20240116; t=1741706508; c=relaxed/simple;
+	bh=oaIW2CtUAiWzIyVk56vh4HyJseA83eDacItgJt24x2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NCGwUHiiVpirj3mVPDyyG7dhSoBJVpzsjGCdFUWsAmskck0ICrka2TJTSJKtuI5Gu9YRg5q46hXB0bTEzyjqkiiGCakq0nxaygAw40E/t/7+zy16zrKZbE7hYIT6pAEopfiPILdXRi2pKtZHrn0zm3PEZHVSN40lBLVu2v/PW8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbxaH5mf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88870C4CEE9;
-	Tue, 11 Mar 2025 15:21:42 +0000 (UTC)
+	 MIME-Version; b=KpXqVq8exvK+TUu7BC3eU/f4eUyMoH0jPdTl4EdXwPBwBjhu357IPoU9R5X7CK6J4CRtxJ5bsIr6qCzLA3Sl+QUd5hGBeqkJ7fLK2ZdCjLJWwCQYlASfM52nM9VedFDgrZ84KDrnTqMLg5FVMRguACVJT1Wm14xABw5jNgwtmPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQeecgyD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C40BC4CEE9;
+	Tue, 11 Mar 2025 15:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706502;
-	bh=jNrETtR01/t3naMwLeGRh0YmapofbVyrDAjFwVHTyjE=;
+	s=korg; t=1741706508;
+	bh=oaIW2CtUAiWzIyVk56vh4HyJseA83eDacItgJt24x2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbxaH5mfKjHXlb8quI61TjapzWgR2HHjIlooiWvF78oeoxPKNmheOyTvMk/i9Vf2+
-	 4pfkSDvCAXLJwGsbqwtebq45Z94eL7nM0EyZmrDrtKClun5TlBsP0sSeBjje/XB67e
-	 HXsp9Mlt4aGPdUh6XCtVKJoPFwncQzDxdeoTD3qA=
+	b=TQeecgyDOkWEA7btvsWdQM9YdUAAN6dkM7Oy0yAV9GOd2QyzMeQ1h5NdX3GD6Sd+y
+	 wOBFz1GI5ioZ0VGPP8bwyxSURfQOfV5RP1FI9qdYautUP+0vD20vD+Aa0xlsKWSUOv
+	 Ae0TU4jOEegMjp6hn+GKbhDlVKL9f8/0VgAa3qo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 070/462] arm64: dts: mediatek: mt8173-evb: Drop regulator-compatible property
-Date: Tue, 11 Mar 2025 15:55:36 +0100
-Message-ID: <20250311145801.116217094@linuxfoundation.org>
+Subject: [PATCH 5.10 071/462] arm64: dts: mediatek: mt8173-elm: Drop regulator-compatible property
+Date: Tue, 11 Mar 2025 15:55:37 +0100
+Message-ID: <20250311145801.155267420@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit a6d5983e40f5d5b219337569cdd269727f5a3e2e ]
+[ Upstream commit 4b907b3ea5fba240808136cc5599d14b52230b39 ]
 
 The "regulator-compatible" property has been deprecated since 2012 in
 commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
@@ -83,21 +83,21 @@ Drop the "regulator-compatible" property from the board dts. The
 property values are the same as the node name, so everything should
 continue to work.
 
-Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
+Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
 Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-3-wenst@chromium.org
+Link: https://lore.kernel.org/r/20241211052427.4178367-4-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 23 ---------------------
+ arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi | 23 --------------------
  1 file changed, 23 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-index 2b66afcf026e1..66f0e5b24fda4 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-@@ -307,7 +307,6 @@
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
+index 44a0346133cde..908b87735819e 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
+@@ -921,7 +921,6 @@
  			compatible = "mediatek,mt6397-regulator";
  
  			mt6397_vpca15_reg: buck_vpca15 {
@@ -105,7 +105,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vpca15";
  				regulator-min-microvolt = < 700000>;
  				regulator-max-microvolt = <1350000>;
-@@ -316,7 +315,6 @@
+@@ -931,7 +930,6 @@
  			};
  
  			mt6397_vpca7_reg: buck_vpca7 {
@@ -113,7 +113,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vpca7";
  				regulator-min-microvolt = < 700000>;
  				regulator-max-microvolt = <1350000>;
-@@ -325,7 +323,6 @@
+@@ -941,7 +939,6 @@
  			};
  
  			mt6397_vsramca15_reg: buck_vsramca15 {
@@ -121,7 +121,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vsramca15";
  				regulator-min-microvolt = < 700000>;
  				regulator-max-microvolt = <1350000>;
-@@ -334,7 +331,6 @@
+@@ -950,7 +947,6 @@
  			};
  
  			mt6397_vsramca7_reg: buck_vsramca7 {
@@ -129,7 +129,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vsramca7";
  				regulator-min-microvolt = < 700000>;
  				regulator-max-microvolt = <1350000>;
-@@ -343,7 +339,6 @@
+@@ -959,7 +955,6 @@
  			};
  
  			mt6397_vcore_reg: buck_vcore {
@@ -137,7 +137,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vcore";
  				regulator-min-microvolt = < 700000>;
  				regulator-max-microvolt = <1350000>;
-@@ -352,7 +347,6 @@
+@@ -968,7 +963,6 @@
  			};
  
  			mt6397_vgpu_reg: buck_vgpu {
@@ -145,7 +145,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vgpu";
  				regulator-min-microvolt = < 700000>;
  				regulator-max-microvolt = <1350000>;
-@@ -361,7 +355,6 @@
+@@ -977,7 +971,6 @@
  			};
  
  			mt6397_vdrm_reg: buck_vdrm {
@@ -153,7 +153,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vdrm";
  				regulator-min-microvolt = <1200000>;
  				regulator-max-microvolt = <1400000>;
-@@ -370,7 +363,6 @@
+@@ -986,7 +979,6 @@
  			};
  
  			mt6397_vio18_reg: buck_vio18 {
@@ -161,7 +161,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vio18";
  				regulator-min-microvolt = <1620000>;
  				regulator-max-microvolt = <1980000>;
-@@ -379,19 +371,16 @@
+@@ -995,18 +987,15 @@
  			};
  
  			mt6397_vtcxo_reg: ldo_vtcxo {
@@ -173,15 +173,14 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  			mt6397_va28_reg: ldo_va28 {
 -				regulator-compatible = "ldo_va28";
  				regulator-name = "va28";
- 				regulator-always-on;
  			};
  
  			mt6397_vcama_reg: ldo_vcama {
 -				regulator-compatible = "ldo_vcama";
  				regulator-name = "vcama";
- 				regulator-min-microvolt = <1500000>;
- 				regulator-max-microvolt = <2800000>;
-@@ -399,18 +388,15 @@
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -1014,18 +1003,15 @@
  			};
  
  			mt6397_vio28_reg: ldo_vio28 {
@@ -200,7 +199,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vmc";
  				regulator-min-microvolt = <1800000>;
  				regulator-max-microvolt = <3300000>;
-@@ -418,7 +404,6 @@
+@@ -1033,7 +1019,6 @@
  			};
  
  			mt6397_vmch_reg: ldo_vmch {
@@ -208,7 +207,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vmch";
  				regulator-min-microvolt = <3000000>;
  				regulator-max-microvolt = <3300000>;
-@@ -426,7 +411,6 @@
+@@ -1041,7 +1026,6 @@
  			};
  
  			mt6397_vemc_3v3_reg: ldo_vemc3v3 {
@@ -216,31 +215,31 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vemc_3v3";
  				regulator-min-microvolt = <3000000>;
  				regulator-max-microvolt = <3300000>;
-@@ -434,7 +418,6 @@
+@@ -1049,7 +1033,6 @@
  			};
  
  			mt6397_vgp1_reg: ldo_vgp1 {
 -				regulator-compatible = "ldo_vgp1";
  				regulator-name = "vcamd";
- 				regulator-min-microvolt = <1220000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -442,7 +425,6 @@
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -1057,7 +1040,6 @@
  			};
  
  			mt6397_vgp2_reg: ldo_vgp2 {
 -				regulator-compatible = "ldo_vgp2";
  				regulator-name = "vcamio";
- 				regulator-min-microvolt = <1000000>;
+ 				regulator-min-microvolt = <3300000>;
  				regulator-max-microvolt = <3300000>;
-@@ -450,7 +432,6 @@
+@@ -1065,7 +1047,6 @@
  			};
  
  			mt6397_vgp3_reg: ldo_vgp3 {
 -				regulator-compatible = "ldo_vgp3";
  				regulator-name = "vcamaf";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -458,7 +439,6 @@
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -1073,7 +1054,6 @@
  			};
  
  			mt6397_vgp4_reg: ldo_vgp4 {
@@ -248,7 +247,7 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vgp4";
  				regulator-min-microvolt = <1200000>;
  				regulator-max-microvolt = <3300000>;
-@@ -466,7 +446,6 @@
+@@ -1081,7 +1061,6 @@
  			};
  
  			mt6397_vgp5_reg: ldo_vgp5 {
@@ -256,15 +255,15 @@ index 2b66afcf026e1..66f0e5b24fda4 100644
  				regulator-name = "vgp5";
  				regulator-min-microvolt = <1200000>;
  				regulator-max-microvolt = <3000000>;
-@@ -474,7 +453,6 @@
+@@ -1089,7 +1068,6 @@
  			};
  
  			mt6397_vgp6_reg: ldo_vgp6 {
 -				regulator-compatible = "ldo_vgp6";
  				regulator-name = "vgp6";
- 				regulator-min-microvolt = <1200000>;
+ 				regulator-min-microvolt = <3300000>;
  				regulator-max-microvolt = <3300000>;
-@@ -482,7 +460,6 @@
+@@ -1098,7 +1076,6 @@
  			};
  
  			mt6397_vibr_reg: ldo_vibr {
