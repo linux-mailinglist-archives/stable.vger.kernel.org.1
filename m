@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-123923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8395FA5C83C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:42:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE395A5C594
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 113363B24B7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DEC172726
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8682225E832;
-	Tue, 11 Mar 2025 15:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C7425E80C;
+	Tue, 11 Mar 2025 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCveLUdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0FZ+5zs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37729221DA5;
-	Tue, 11 Mar 2025 15:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCB225D53A;
+	Tue, 11 Mar 2025 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707351; cv=none; b=hjt9pKiTGPrAhOCIn/SEV/KH3ZRzceUBZEZJkN+xooBALRp+dtVV3XNk7PFj3isVSIwJnnjLUCfwH3IL3vp5k+Sfxpa2SX88YTnUV1OkwKahrgMOuLQ/yNUx4cLv68WL/0TY5FgcT22/QB3Wq45BdsgIyg92VlqTn5WE2aAyKrc=
+	t=1741706082; cv=none; b=Km2Zj9sMBBOm3BEDRwHULYSvk4Wmb1dL4OQ/O3L9G0M9VyenUtrNJAFxZlUwHAMI/Z0NVZB0bHW19RHJYuXUY3RFvhibYD9Hyesv7Zafyy4qxkk9HhDiCsd4ypSmktIlbOeLpVum8c1lCZmzJbaeAmI2W63G6RrYCFeau1djq7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707351; c=relaxed/simple;
-	bh=/P3tfELBVNWPao/vZ1SMxLddUQ7e4/lm5KyZrUusDyE=;
+	s=arc-20240116; t=1741706082; c=relaxed/simple;
+	bh=P9gK7o0l2kkZOOFk3bpzYfXJNAt9FTeCmM06JJBjm0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOf2Yom7lztz08UdFgAZXv2WWtzR5Soed5vFelauMSNk4wgG2Kuu7s5NJNl/f8IS/M1gVKfwW5+lzAw/TDOT6qCD9/NrsTm30/tZjURASp3hs3BKDjPxVeGfZTmJGpir+9e2zOZHbt+QYlE3QU/MTlW7A3PYpLJiUT6DcVjzg+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCveLUdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41C4C4CEE9;
-	Tue, 11 Mar 2025 15:35:50 +0000 (UTC)
+	 MIME-Version; b=OBnk2NIf+PSGp+kOnXZ4vjHhQcVp4jl4+T8phFNxfmcYBq+wpIwlLPyAt70aUS7z/bON1D0ztgTnM76pBd7C0AnyOP2pImuM+Tu2QYOHUV/SltrrOKO2LtGwh3XY8eAoMfC4NDtvgvDE1JhQXCN2ilKnNCHAXsfazRPpmzw1VLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0FZ+5zs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A3FC4CEE9;
+	Tue, 11 Mar 2025 15:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707351;
-	bh=/P3tfELBVNWPao/vZ1SMxLddUQ7e4/lm5KyZrUusDyE=;
+	s=korg; t=1741706082;
+	bh=P9gK7o0l2kkZOOFk3bpzYfXJNAt9FTeCmM06JJBjm0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCveLUdJbAZpELCMDXxzmL2EJj7SnuJbbob/uzdp/sVgVy0DvL90/FLPtE1aatsgw
-	 jTJV3V50J2gliYCb9ACSlDYlIWh7eRF/NNr7byZCKHtmzvUg8Tp7dnQueRKWYTB+Q2
-	 OD9E0MA1AbROzV7cAQaVqP2QZ1opmXFjHc6ZgphY=
+	b=a0FZ+5zs8Hxu/gin8QvtWCe7iLkonFK0TEDKAr0j+zjwWpcizjWp5WrqLWQuvde32
+	 +zJIfQ6LT5ms+q6XsFqghMu5OuJ6Q5MDympqduto72XQ5ua2UGDmWOpenied7iA6um
+	 DcLSn/DhBgUhbLSmHH1AjfxTkFJt5rEx2EPh4iJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 360/462] tcp: Defer ts_recent changes until req is owned
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.4 256/328] batman-adv: Ignore neighbor throughput metrics in error case
 Date: Tue, 11 Mar 2025 16:00:26 +0100
-Message-ID: <20250311145812.575942432@linuxfoundation.org>
+Message-ID: <20250311145725.085414799@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +61,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 8d52da23b6c68a0f6bad83959ebb61a2cf623c4e ]
+commit e7e34ffc976aaae4f465b7898303241b81ceefc3 upstream.
 
-Recently a bug was discovered where the server had entered TCP_ESTABLISHED
-state, but the upper layers were not notified.
+If a temporary error happened in the evaluation of the neighbor throughput
+information, then the invalid throughput result should not be stored in the
+throughtput EWMA.
 
-The same 5-tuple packet may be processed by different CPUSs, so two
-CPUs may receive different ack packets at the same time when the
-state is TCP_NEW_SYN_RECV.
-
-In that case, req->ts_recent in tcp_check_req may be changed concurrently,
-which will probably cause the newsk's ts_recent to be incorrectly large.
-So that tcp_validate_incoming will fail. At this point, newsk will not be
-able to enter the TCP_ESTABLISHED.
-
-cpu1                                    cpu2
-tcp_check_req
-                                        tcp_check_req
- req->ts_recent = rcv_tsval = t1
-                                         req->ts_recent = rcv_tsval = t2
-
- syn_recv_sock
-  tcp_sk(child)->rx_opt.ts_recent = req->ts_recent = t2 // t1 < t2
-tcp_child_process
- tcp_rcv_state_process
-  tcp_validate_incoming
-   tcp_paws_check
-    if ((s32)(rx_opt->ts_recent - rx_opt->rcv_tsval) <= paws_win)
-        // t2 - t1 > paws_win, failed
-                                        tcp_v4_do_rcv
-                                         tcp_rcv_state_process
-                                         // TCP_ESTABLISHED
-
-The cpu2's skb or a newly received skb will call tcp_v4_do_rcv to get
-the newsk into the TCP_ESTABLISHED state, but at this point it is no
-longer possible to notify the upper layer application. A notification
-mechanism could be added here, but the fix is more complex, so the
-current fix is used.
-
-In tcp_check_req, req->ts_recent is used to assign a value to
-tcp_sk(child)->rx_opt.ts_recent, so removing the change in req->ts_recent
-and changing tcp_sk(child)->rx_opt.ts_recent directly after owning the
-req fixes this bug.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_minisocks.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/batman-adv/bat_v_elp.c |   41 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index 01e27620b7ee5..866055e1b8014 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -726,12 +726,6 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -58,11 +58,13 @@ static void batadv_v_elp_start_timer(str
+ /**
+  * batadv_v_elp_get_throughput() - get the throughput towards a neighbour
+  * @neigh: the neighbour for which the throughput has to be obtained
++ * @pthroughput: calculated throughput towards the given neighbour in multiples
++ *  of 100kpbs (a value of '1' equals 0.1Mbps, '10' equals 1Mbps, etc).
+  *
+- * Return: The throughput towards the given neighbour in multiples of 100kpbs
+- *         (a value of '1' equals to 0.1Mbps, '10' equals 1Mbps, etc).
++ * Return: true when value behind @pthroughput was set
+  */
+-static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
++static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
++					u32 *pthroughput)
+ {
+ 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
+ 	struct net_device *soft_iface = hard_iface->soft_iface;
+@@ -76,14 +78,16 @@ static u32 batadv_v_elp_get_throughput(s
+ 	 * batman-adv interface
+ 	 */
+ 	if (!soft_iface)
+-		return BATADV_THROUGHPUT_DEFAULT_VALUE;
++		return false;
  
- 	/* In sequence, PAWS is OK. */
+ 	/* if the user specified a customised value for this interface, then
+ 	 * return it directly
+ 	 */
+ 	throughput =  atomic_read(&hard_iface->bat_v.throughput_override);
+-	if (throughput != 0)
+-		return throughput;
++	if (throughput != 0) {
++		*pthroughput = throughput;
++		return true;
++	}
  
--	/* TODO: We probably should defer ts_recent change once
--	 * we take ownership of @req.
--	 */
--	if (tmp_opt.saw_tstamp && !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
--		WRITE_ONCE(req->ts_recent, tmp_opt.rcv_tsval);
--
- 	if (TCP_SKB_CB(skb)->seq == tcp_rsk(req)->rcv_isn) {
- 		/* Truncate SYN, it is out of window starting
- 		   at tcp_rsk(req)->rcv_isn + 1. */
-@@ -780,6 +774,10 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
- 	if (!child)
- 		goto listen_overflow;
+ 	/* if this is a wireless device, then ask its throughput through
+ 	 * cfg80211 API
+@@ -110,14 +114,16 @@ static u32 batadv_v_elp_get_throughput(s
+ 			 * possible to delete this neighbor. For now set
+ 			 * the throughput metric to 0.
+ 			 */
+-			return 0;
++			*pthroughput = 0;
++			return true;
+ 		}
+ 		if (ret)
+ 			goto default_throughput;
+ 		if (!(sinfo.filled & BIT(NL80211_STA_INFO_EXPECTED_THROUGHPUT)))
+ 			goto default_throughput;
  
-+	if (own_req && tmp_opt.saw_tstamp &&
-+	    !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
-+		tcp_sk(child)->rx_opt.ts_recent = tmp_opt.rcv_tsval;
+-		return sinfo.expected_throughput / 100;
++		*pthroughput = sinfo.expected_throughput / 100;
++		return true;
+ 	}
+ 
+ 	/* if not a wifi interface, check if this device provides data via
+@@ -135,8 +141,10 @@ static u32 batadv_v_elp_get_throughput(s
+ 			hard_iface->bat_v.flags &= ~BATADV_FULL_DUPLEX;
+ 
+ 		throughput = link_settings.base.speed;
+-		if (throughput && throughput != SPEED_UNKNOWN)
+-			return throughput * 10;
++		if (throughput && throughput != SPEED_UNKNOWN) {
++			*pthroughput = throughput * 10;
++			return true;
++		}
+ 	}
+ 
+ default_throughput:
+@@ -150,7 +158,8 @@ default_throughput:
+ 	}
+ 
+ 	/* if none of the above cases apply, return the base_throughput */
+-	return BATADV_THROUGHPUT_DEFAULT_VALUE;
++	*pthroughput = BATADV_THROUGHPUT_DEFAULT_VALUE;
++	return true;
+ }
+ 
+ /**
+@@ -162,15 +171,21 @@ void batadv_v_elp_throughput_metric_upda
+ {
+ 	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
+ 	struct batadv_hardif_neigh_node *neigh;
++	u32 throughput;
++	bool valid;
+ 
+ 	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
+ 				   metric_work);
+ 	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
+ 			     bat_v);
+ 
+-	ewma_throughput_add(&neigh->bat_v.throughput,
+-			    batadv_v_elp_get_throughput(neigh));
++	valid = batadv_v_elp_get_throughput(neigh, &throughput);
++	if (!valid)
++		goto put_neigh;
 +
- 	if (own_req && rsk_drop_req(req)) {
- 		reqsk_queue_removed(&inet_csk(sk)->icsk_accept_queue, req);
- 		inet_csk_reqsk_queue_drop_and_put(sk, req);
--- 
-2.39.5
-
++	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
+ 
++put_neigh:
+ 	/* decrement refcounter to balance increment performed before scheduling
+ 	 * this task
+ 	 */
 
 
 
