@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AF0A5C70A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D76A5C4B3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E147D189CE25
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0C1C1790B1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA6225D918;
-	Tue, 11 Mar 2025 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD2225DD0B;
+	Tue, 11 Mar 2025 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFwss2Ie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Uzpkon"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EBD1DF749;
-	Tue, 11 Mar 2025 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB3525DAE8;
+	Tue, 11 Mar 2025 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706797; cv=none; b=eqVDpWuKGEBemSeybwD4VXwmfxofwwjOY17h6Umq1bEzuIFrTwEo2PD25oCt87wHbPcYBxvDv6D6a1Fubn55t7xhI1fElGhQSSBm0016HOAOFjsNfNv/oDwaig6oOF+SnRJnVl+tWYQzH4peLBlByhrwKnRdO9TlPzTjjPu7rho=
+	t=1741705527; cv=none; b=d1qkuQ3zrsUq49gppUSOavQKgoeYrMw1vqvAnecM8aGQbp+2PT+1lPXgKEV9ZegH/DG1lvfLZRi1VgzRBtyntf85N4ZD3pvuwuB+mIETwbzg80Xa9GzByFKQElv75+dBKHy+1GLhxfnHVflkc7NTn6f0k+QTy7Pols8rP1nd2sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706797; c=relaxed/simple;
-	bh=Wz8RcnS3U6a8RHf38kfH8oJuzMkMNpJ+fqZyavtN3wk=;
+	s=arc-20240116; t=1741705527; c=relaxed/simple;
+	bh=++ZcogB6CdTRSAUo9aWNYIuq4odkXbzxD2JVaWndWjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGaTL+BW9l6/XzconmDWPzy20wysAQ0d/9zRnIXMmwe2W+I20FkKauUvIFF1irt6CARHnv2i1bbPFmTGleYYxKqQO3xis9gSLn7JqDQvPwl/pK3d2wh4TZrH6TBCeMqTQGy0KG3OCw5Zx1fOlQ2g/j9bz7lRKwkUM7ffbUKQBZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFwss2Ie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED567C4CEE9;
-	Tue, 11 Mar 2025 15:26:36 +0000 (UTC)
+	 MIME-Version; b=LgOly/Du4kGnggX78KvEGiMXBmocdQnmaTEmsmHFKEpBfIG3R5oS45tK/GYcllHsQGI1g0PstIoxQamqAVp/w1C4x3EXjSHiIrc81khRoxeHD/cy8bKd/ESYZx9UfbrYAuQKMdtggUtVLq5R+oCHIdGFx1tvGcRDMNOGDEsoLxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/Uzpkon; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3817C4CEE9;
+	Tue, 11 Mar 2025 15:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706797;
-	bh=Wz8RcnS3U6a8RHf38kfH8oJuzMkMNpJ+fqZyavtN3wk=;
+	s=korg; t=1741705527;
+	bh=++ZcogB6CdTRSAUo9aWNYIuq4odkXbzxD2JVaWndWjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFwss2Ier2vJKPh65d7gL830FVZN13+Ain+u9K4D9tNsOBUxkGWc3xqNM4K7aSDBc
-	 d5v9C/EzBgtIREnjJkK/f8Y49fzH+zVir3lmNrKBTxIISDAFN6mY620yV0wHI3EhY7
-	 LxnIwdzrEnsIsyRz3J3Dn8ZclOAjj3izs1kKNGnU=
+	b=P/UzpkonXmUpePTS7w1HR1WtNqy2SRtIa1KQWEmctrQ2/skNtvlAuVPhVJMcsG8cG
+	 F8imhWrZdLNKccaNmUH0CZUWIWmSIkC0dbURU6Ue7KJpRBeroB2PDQb3cpMlkdwHLb
+	 nBgxGlfNmQwk6KZc9tdQuxNGuiBYVmJPuuxeJayE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Michal Luczaj <mhal@rbox.co>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.10 170/462] KVM: Explicitly verify target vCPU is online in kvm_get_vcpu()
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 066/328] net: rose: fix timer races against user threads
 Date: Tue, 11 Mar 2025 15:57:16 +0100
-Message-ID: <20250311145805.072182489@linuxfoundation.org>
+Message-ID: <20250311145717.518694563@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 1e7381f3617d14b3c11da80ff5f8a93ab14cfc46 upstream.
+[ Upstream commit 5de7665e0a0746b5ad7943554b34db8f8614a196 ]
 
-Explicitly verify the target vCPU is fully online _prior_ to clamping the
-index in kvm_get_vcpu().  If the index is "bad", the nospec clamping will
-generate '0', i.e. KVM will return vCPU0 instead of NULL.
+Rose timers only acquire the socket spinlock, without
+checking if the socket is owned by one user thread.
 
-In practice, the bug is unlikely to cause problems, as it will only come
-into play if userspace or the guest is buggy or misbehaving, e.g. KVM may
-send interrupts to vCPU0 instead of dropping them on the floor.
+Add a check and rearm the timers if needed.
 
-However, returning vCPU0 when it shouldn't exist per online_vcpus is
-problematic now that KVM uses an xarray for the vCPUs array, as KVM needs
-to insert into the xarray before publishing the vCPU to userspace (see
-commit c5b077549136 ("KVM: Convert the kvm->vcpus array to a xarray")),
-i.e. before vCPU creation is guaranteed to succeed.
+BUG: KASAN: slab-use-after-free in rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
+Read of size 2 at addr ffff88802f09b82a by task swapper/0/0
 
-As a result, incorrectly providing access to vCPU0 will trigger a
-use-after-free if vCPU0 is dereferenced and kvm_vm_ioctl_create_vcpu()
-bails out of vCPU creation due to an error and frees vCPU0.  Commit
-afb2acb2e3a3 ("KVM: Fix vcpu_array[0] races") papered over that issue, but
-in doing so introduced an unsolvable teardown conundrum.  Preventing
-accesses to vCPU0 before it's fully online will allow reverting commit
-afb2acb2e3a3, without re-introducing the vcpu_array[0] UAF race.
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <IRQ>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0x169/0x550 mm/kasan/report.c:489
+  kasan_report+0x143/0x180 mm/kasan/report.c:602
+  rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
+  call_timer_fn+0x187/0x650 kernel/time/timer.c:1793
+  expire_timers kernel/time/timer.c:1844 [inline]
+  __run_timers kernel/time/timer.c:2418 [inline]
+  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2430
+  run_timer_base kernel/time/timer.c:2439 [inline]
+  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2449
+  handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
+  __do_softirq kernel/softirq.c:595 [inline]
+  invoke_softirq kernel/softirq.c:435 [inline]
+  __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1049
+ </IRQ>
 
-Fixes: 1d487e9bf8ba ("KVM: fix spectrev1 gadgets")
-Cc: stable@vger.kernel.org
-Cc: Will Deacon <will@kernel.org>
-Cc: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241009150455.1057573-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250122180244.1861468-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kvm_host.h |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/rose/rose_timer.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -575,6 +575,15 @@ static inline struct kvm_io_bus *kvm_get
- static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
- {
- 	int num_vcpus = atomic_read(&kvm->online_vcpus);
-+
-+	/*
-+	 * Explicitly verify the target vCPU is online, as the anti-speculation
-+	 * logic only limits the CPU's ability to speculate, e.g. given a "bad"
-+	 * index, clamping the index to 0 would return vCPU0, not NULL.
-+	 */
-+	if (i >= num_vcpus)
-+		return NULL;
-+
- 	i = array_index_nospec(i, num_vcpus);
+diff --git a/net/rose/rose_timer.c b/net/rose/rose_timer.c
+index f06ddbed3fed6..1525773e94aa1 100644
+--- a/net/rose/rose_timer.c
++++ b/net/rose/rose_timer.c
+@@ -122,6 +122,10 @@ static void rose_heartbeat_expiry(struct timer_list *t)
+ 	struct rose_sock *rose = rose_sk(sk);
  
- 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &sk->sk_timer, jiffies + HZ/20);
++		goto out;
++	}
+ 	switch (rose->state) {
+ 	case ROSE_STATE_0:
+ 		/* Magic here: If we listen() and a new link dies before it
+@@ -152,6 +156,7 @@ static void rose_heartbeat_expiry(struct timer_list *t)
+ 	}
+ 
+ 	rose_start_heartbeat(sk);
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
+@@ -162,6 +167,10 @@ static void rose_timer_expiry(struct timer_list *t)
+ 	struct sock *sk = &rose->sock;
+ 
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &rose->timer, jiffies + HZ/20);
++		goto out;
++	}
+ 	switch (rose->state) {
+ 	case ROSE_STATE_1:	/* T1 */
+ 	case ROSE_STATE_4:	/* T2 */
+@@ -182,6 +191,7 @@ static void rose_timer_expiry(struct timer_list *t)
+ 		}
+ 		break;
+ 	}
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
+@@ -192,6 +202,10 @@ static void rose_idletimer_expiry(struct timer_list *t)
+ 	struct sock *sk = &rose->sock;
+ 
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &rose->idletimer, jiffies + HZ/20);
++		goto out;
++	}
+ 	rose_clear_queues(sk);
+ 
+ 	rose_write_internal(sk, ROSE_CLEAR_REQUEST);
+@@ -207,6 +221,7 @@ static void rose_idletimer_expiry(struct timer_list *t)
+ 		sk->sk_state_change(sk);
+ 		sock_set_flag(sk, SOCK_DEAD);
+ 	}
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
+-- 
+2.39.5
+
 
 
 
