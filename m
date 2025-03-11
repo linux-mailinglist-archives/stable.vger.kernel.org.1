@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC64A5C52B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9EAA5C789
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEE2517A930
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BC1F17EBDF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E9D25DAE3;
-	Tue, 11 Mar 2025 15:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3D725E826;
+	Tue, 11 Mar 2025 15:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZh2Yfj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWT2jsgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FE71C3BEB;
-	Tue, 11 Mar 2025 15:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCBA14BF89;
+	Tue, 11 Mar 2025 15:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705805; cv=none; b=qIR6qN4pDKbDTIzjYyi3BYq06Rz1kmx+y2z/ESHDOLDPJS9td5tFkDMZpHNBbompDkrbEJ9xHme0nRu5ofP7teeO0ZlFP38hoTaFcN949ZWAvGEFjIjIHbfTafljcYUpDiUSQyW8fROPZLmlYgbmML3tQZgXRf/Gi23RF8JPp4M=
+	t=1741707100; cv=none; b=OX+6nQ41diMz2yhzqQKz44QmBxO8CAPFxIRYAY5lq1utHNQAB8wPbzMV6mApjvpDRm4vpLyx4sYv/0rNusqR46LPpULbsikY9jJSJmZKlkYLoCwu2mcJK+jvomtuv/DHDK2zymp2dG8AiBkSkWnmT1vRibDdQlBhv+MyzXq0Jlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705805; c=relaxed/simple;
-	bh=FKDplNzf8UNKtiNYxj9Xzb6OlJYAoT5dIrx98cNMOPI=;
+	s=arc-20240116; t=1741707100; c=relaxed/simple;
+	bh=uSpb3pu4CsKMRiuobGfaBI+YbIxmJHgGw0Lyv+dwzJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJ7uv2RwcVqKqX+NOvoCDH7g85x3N70nrLZBMVBRwDSavIJguTdh2tCHfGqktQjVLMbrPXL2C1sVhImrq3iv2FPOyqVNqVBtxprSKY3Z7C0USJ47R8yw+AGG1cGmL7tk9Jp4w4NarFpoB3WGKPWNLMMjQfg2oUQjZ0SRFeLC5t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZh2Yfj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923DDC4CEE9;
-	Tue, 11 Mar 2025 15:10:04 +0000 (UTC)
+	 MIME-Version; b=PCmlNSEwTy7uLOtVNV0+Wte//CfXmQ3Ynt2F4RtRbXk/l0s4t5n3uaRWA0F1tveGYyRzZoV6hBjgwjsWlfiFQgtF2OJ5OAFI3oWHYKD+lKm6X7kQUagk+PVAN1bpreJKusW0hKxmox+eSzMoYvg+HO1lNi6O6I1v96xcdvkn5fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWT2jsgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6794FC4CEE9;
+	Tue, 11 Mar 2025 15:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705805;
-	bh=FKDplNzf8UNKtiNYxj9Xzb6OlJYAoT5dIrx98cNMOPI=;
+	s=korg; t=1741707099;
+	bh=uSpb3pu4CsKMRiuobGfaBI+YbIxmJHgGw0Lyv+dwzJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZh2Yfj/+zlVGl6+UMUV4LHf96kyqYSIcnY4zmk0k+kHA+ucM/PIjvHngs8olrKS4
-	 /bdtZNNDMBkhhjrXRB/hdEVVBR4Y28CMQCxmOYpju7v+CQERjqwrpzn6Gf9Y9TRQF+
-	 pZbdfPLeIyKHQ2+iUiuq2Xbxdu03UywYRROBUBww=
+	b=mWT2jsgbo3ZeP4L24P2czjXxOO4r+I47KNmZKcH4UpakJY5r0H6IjICctzlRVMSLj
+	 oWT4vWS+j9kgvG2N90Bh1mHYQQzy61H5mS/y1nQ41HIa5FSyXu3vj+6oD8Vl+w9We8
+	 FGnqerILfJhh4KwIdWTNYC4JXsc+jM6pS4dt0tJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 5.4 142/328] powerpc/pseries/eeh: Fix get PE state translation
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.10 246/462] perf/x86/intel: Ensure LBRs are disabled when a CPU is starting
 Date: Tue, 11 Mar 2025 15:58:32 +0100
-Message-ID: <20250311145720.552847873@linuxfoundation.org>
+Message-ID: <20250311145808.082529582@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 11b93559000c686ad7e5ab0547e76f21cc143844 upstream.
+commit c631a2de7ae48d50434bdc205d901423f8577c65 upstream.
 
-The PE Reset State "0" returned by RTAS calls
-"ibm_read_slot_reset_[state|state2]" indicates that the reset is
-deactivated and the PE is in a state where MMIO and DMA are allowed.
-However, the current implementation of "pseries_eeh_get_state()" does
-not reflect this, causing drivers to incorrectly assume that MMIO and
-DMA operations cannot be resumed.
+Explicitly clear DEBUGCTL.LBR when a CPU is starting, prior to purging the
+LBR MSRs themselves, as at least one system has been found to transfer
+control to the kernel with LBRs enabled (it's unclear whether it's a BIOS
+flaw or a CPU goof).  Because the kernel preserves the original DEBUGCTL,
+even when toggling LBRs, leaving DEBUGCTL.LBR as is results in running
+with LBRs enabled at all times.
 
-The userspace drivers as a part of EEH recovery using VFIO ioctls fail
-to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
-ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
-userspace drivers from functioning properly on pseries systems.
-
-The patch addresses this issue by updating 'pseries_eeh_get_state()'
-to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
-the result mask for PE Reset State "0". This ensures correct state
-reporting to the callers, aligning the behavior with the PAPR specification
-and fixing the bug in EEH recovery for VFIO user workflows.
-
-Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
+Closes: https://lore.kernel.org/all/c9d8269bff69f6359731d758e3b1135dedd7cc61.camel@redhat.com
+Reported-by: Maxim Levitsky <mlevitsk@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Link: https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250116103954.17324-1-nnmlinux@linux.ibm.com
+Link: https://lkml.kernel.org/r/20250131010721.470503-1-seanjc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/eeh_pseries.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/core.c     |    5 ++++-
+ arch/x86/include/asm/msr-index.h |    3 ++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-+++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-@@ -472,8 +472,10 @@ static int pseries_eeh_get_state(struct
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4078,8 +4078,11 @@ static void intel_pmu_cpu_starting(int c
  
- 	switch(rets[0]) {
- 	case 0:
--		result = EEH_STATE_MMIO_ACTIVE |
--			 EEH_STATE_DMA_ACTIVE;
-+		result = EEH_STATE_MMIO_ACTIVE	|
-+			 EEH_STATE_DMA_ACTIVE	|
-+			 EEH_STATE_MMIO_ENABLED	|
-+			 EEH_STATE_DMA_ENABLED;
- 		break;
- 	case 1:
- 		result = EEH_STATE_RESET_ACTIVE |
+ 	init_debug_store_on_cpu(cpu);
+ 	/*
+-	 * Deal with CPUs that don't clear their LBRs on power-up.
++	 * Deal with CPUs that don't clear their LBRs on power-up, and that may
++	 * even boot with LBRs enabled.
+ 	 */
++	if (!static_cpu_has(X86_FEATURE_ARCH_LBR) && x86_pmu.lbr_nr)
++		msr_clear_bit(MSR_IA32_DEBUGCTLMSR, DEBUGCTLMSR_LBR_BIT);
+ 	intel_pmu_lbr_reset();
+ 
+ 	cpuc->lbr_sel = NULL;
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -326,7 +326,8 @@
+ #define MSR_IA32_PASID_VALID		BIT_ULL(31)
+ 
+ /* DEBUGCTLMSR bits (others vary by model): */
+-#define DEBUGCTLMSR_LBR			(1UL <<  0) /* last branch recording */
++#define DEBUGCTLMSR_LBR_BIT		0	     /* last branch recording */
++#define DEBUGCTLMSR_LBR			(1UL <<  DEBUGCTLMSR_LBR_BIT)
+ #define DEBUGCTLMSR_BTF_SHIFT		1
+ #define DEBUGCTLMSR_BTF			(1UL <<  1) /* single-step on branches */
+ #define DEBUGCTLMSR_TR			(1UL <<  6)
 
 
 
