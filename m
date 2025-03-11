@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-123412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FD9A5C54D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2E7A5C7A8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28BCA17AE09
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B39E3B9898
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E8625EF9E;
-	Tue, 11 Mar 2025 15:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CDE25E813;
+	Tue, 11 Mar 2025 15:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QlNjj/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llufXUuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6FD25D8E8;
-	Tue, 11 Mar 2025 15:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF3525D904;
+	Tue, 11 Mar 2025 15:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705881; cv=none; b=giymLpiaKZhfumJECWrPfgzLELTF/7TCMdXFpvu1cHeyWZDhsS0hMWmEC1GTRdgmCtC5/YcRV+dN+6E8nvHDtwFZxwTW402gixPSZ0P73+vsYwZIK+1rg5e63zXCX2fkvjBhmz8dO3DCmA/oUqbXP7zuQeOWjr8ZiBVihGBuNfA=
+	t=1741707097; cv=none; b=M/s1YTOsFnzNSY2/w+vjiaNpbjjXCNISAssI7upFhN4qMGVcW7TjCIEt8f40Tm8W3TDSjHa8L8msDYqfK+K4vtbjZDKVNKC97qegSvEXKMNh2K3ZPI8ZN1I9diw7QfwpcyDSKVVrJOG+3qj7eUXQbj42kYGY+2wTTBDs9ifa3HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705881; c=relaxed/simple;
-	bh=9a+MV44M84iZuMiPMf7XHBxR9rLJ8BB49JtcdfHE1DU=;
+	s=arc-20240116; t=1741707097; c=relaxed/simple;
+	bh=ktbz6UzuH6HCfwzBbfWwzc1146HdKwumRwSfvV3ZzXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+2FMvta1cqKh2zb+Vw8G/jE8mLIZzG4xIIgRYhFWuX+EgQklmpeANcpVb0snZxqQ68EZz4XzyKDuO9NGKSiVwY1O2G6/tK6sAoRwn0o7k3bEDObRRnr3GI6g4DDDmQcxDJ/E27EH48ndBYkJPRY2P5f5jH9khja9V1PrI3yMaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QlNjj/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71515C4CEEA;
-	Tue, 11 Mar 2025 15:11:20 +0000 (UTC)
+	 MIME-Version; b=sh3Dg+PPqm9hruZiIZq5T5s2YqcQmqGuqILbuMfO9BPJQtt3z6aZE3mFGCu7vVoD+VHMLiBoSd2Xy99OyBKeUsO9682O4XEpOkq9b7m9qi9dvMhoWW67pRTgCUA3wchae5vhyCgr5zd67rqlSoyPEAc/qtnPuU/OwnncIuBgPQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llufXUuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C46C4CEE9;
+	Tue, 11 Mar 2025 15:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705880;
-	bh=9a+MV44M84iZuMiPMf7XHBxR9rLJ8BB49JtcdfHE1DU=;
+	s=korg; t=1741707096;
+	bh=ktbz6UzuH6HCfwzBbfWwzc1146HdKwumRwSfvV3ZzXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2QlNjj/hdDf+biUkV1Wcy3/Zegd/vDxu44Nqu0fLMR1RqGUCD2Z2RHldMV7VurQ0T
-	 2i3ha6M36Uon8ABMCVz/w+2+U7fCL/hTrvEh7sscOu90cld/mP+ACmgdmj0Ug6TL6b
-	 X+J3QYbyYQhjQPegFc7YLpgndF/xliO6RGOXxbNs=
+	b=llufXUuctr13A6pqB2HhmsXstbNfbvA6bJKZRw+NxamicUrBqK0ZIYBMDReqe1RLW
+	 0RrMh1rual+s8uxwo77C/xzGJYMM7A1ymsrY52aQKQk7IAL2MmmEumJL3a4Jzk4MsA
+	 lnf3fAw6iwrTHV+q6XVynYoaHreAwykAAdSVTFv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Markus Mayer <mmayer@broadcom.com>,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 167/328] gpio: bcm-kona: Fix GPIO lock/unlock for banks above bank 0
-Date: Tue, 11 Mar 2025 15:58:57 +0100
-Message-ID: <20250311145721.542999571@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10 272/462] arm64: Handle .ARM.attributes section in linker scripts
+Date: Tue, 11 Mar 2025 15:58:58 +0100
+Message-ID: <20250311145809.110353590@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit de1d0d160f64ee76df1d364d521b2faf465a091c ]
+commit ca0f4fe7cf7183bfbdc67ca2de56ae1fc3a8db2b upstream.
 
-The GPIO lock/unlock functions clear/write a bit to the relevant
-register for each bank. However, due to an oversight the bit that
-was being written was based on the total GPIO number, not the index
-of the GPIO within the relevant bank, causing it to fail for any
-GPIO above 32 (thus any GPIO for banks above bank 0).
+A recent LLVM commit [1] started generating an .ARM.attributes section
+similar to the one that exists for 32-bit, which results in orphan
+section warnings (or errors if CONFIG_WERROR is enabled) from the linker
+because it is not handled in the arm64 linker scripts.
 
-Fix lock/unlock for these banks by using the correct bit.
+  ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
 
-Fixes: bdb93c03c550 ("gpio: bcm281xx: Centralize register locking")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Markus Mayer <mmayer@broadcom.com>
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-1-409135eab780@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+
+Discard the new sections in the necessary linker scripts to resolve the
+warnings, as the kernel and vDSO do not need to retain it, similar to
+the .note.gnu.property section.
+
+Cc: stable@vger.kernel.org
+Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
+Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250206-arm64-handle-arm-attributes-in-linker-script-v3-1-d53d169913eb@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-bcm-kona.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/vdso/vdso.lds.S |    1 +
+ arch/arm64/kernel/vmlinux.lds.S   |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
-index 100575973e1fd..840a4b7e6c4d1 100644
---- a/drivers/gpio/gpio-bcm-kona.c
-+++ b/drivers/gpio/gpio-bcm-kona.c
-@@ -94,11 +94,12 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	u32 val;
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
-+	int bit = GPIO_BIT(gpio);
+--- a/arch/arm64/kernel/vdso/vdso.lds.S
++++ b/arch/arm64/kernel/vdso/vdso.lds.S
+@@ -37,6 +37,7 @@ SECTIONS
+ 	 */
+ 	/DISCARD/	: {
+ 		*(.note.GNU-stack .note.gnu.property)
++		*(.ARM.attributes)
+ 	}
+ 	.note		: { *(.note.*) }		:text	:note
  
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -113,6 +113,7 @@ SECTIONS
+ 	/DISCARD/ : {
+ 		*(.interp .dynamic)
+ 		*(.dynsym .dynstr .hash .gnu.hash)
++		*(.ARM.attributes)
+ 	}
  
- 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val |= BIT(gpio);
-+	val |= BIT(bit);
- 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
- 
- 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
-@@ -110,11 +111,12 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	u32 val;
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
-+	int bit = GPIO_BIT(gpio);
- 
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
- 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val &= ~BIT(gpio);
-+	val &= ~BIT(bit);
- 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
- 
- 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
--- 
-2.39.5
-
+ 	. = KIMAGE_VADDR;
 
 
 
