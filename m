@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03695A5C5ED
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6854A5C851
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3C2189D6B4
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AADA816E699
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB61825C6ED;
-	Tue, 11 Mar 2025 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7439525F790;
+	Tue, 11 Mar 2025 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYcafrQJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcbRXHUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C12249F9;
-	Tue, 11 Mar 2025 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A33825EF8E;
+	Tue, 11 Mar 2025 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706155; cv=none; b=XBWTDTtiUMbQUYKJZFnYO/S995SAaQkUrFAY8cKDzB35ADYid10YAtSgOAUVA/M6M6XntqGZ2mmAWJgUtWhuLYxueU/p5W0zAPps9zEhcWWQGC+CMk3Cef8xSax0bo4SKLul250Bdlt5hNWT3t9cbaRqOUOJIB8fFg1AIE4nOfE=
+	t=1741707517; cv=none; b=P/3AO3rZ7fjzRafT8nrf2YMUB+efCueXXTC/lXylQuUjsJaEGjhExpKRcejcbzCpKgWILIdjSehNF6G4Ftb6FqhpbG4/METQ3F4hPBOaGQ4mZ2gsxsOO1OBEiVtEXMcW2V4fi6n+3czS4njLdrkMSHs6pwvp8QZNmGm/nEhMS6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706155; c=relaxed/simple;
-	bh=xVtMNozGGbzaE3MdwYEl8Ys9KCOwX3mX2C2ctIAhZvw=;
+	s=arc-20240116; t=1741707517; c=relaxed/simple;
+	bh=6imcdZwZnve/AGqnG6lszDOknkldn32kM6HzxqL+hNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClQB89xWOWUBX0miAAkHe2YRipeyxwnD+aeBcWy+eeletZmtnS2HjpUe5lWr0GQYaIvL8SMRJcCCIXdpNdpyr9nB6K1pJPC9VwYgGdf8dNLPe0VSHx7Zcr9kxJhS7+BG6tkGwBVY65s5GGaMfjdntSLfY3MW8UmE9kgCtR2pGMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYcafrQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CE4C4CEE9;
-	Tue, 11 Mar 2025 15:15:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BriicoXX4OifD0kVzCQ3KFuibiBeQUyd4ejBWGlbWz1dnbk34I4i3iISS8/y7rb8Eba3GVFCGnQS9BtFN+OK79NE+x3xyNnuR4FAxv1/AjRz+t+Qu+sBvMRR0Q+KL4csqqILLfgTrjwdC+P5j/QfvLDzCNhSThueIZR8sBPPuF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcbRXHUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E13C4CEE9;
+	Tue, 11 Mar 2025 15:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706155;
-	bh=xVtMNozGGbzaE3MdwYEl8Ys9KCOwX3mX2C2ctIAhZvw=;
+	s=korg; t=1741707517;
+	bh=6imcdZwZnve/AGqnG6lszDOknkldn32kM6HzxqL+hNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYcafrQJMN6Au0NNbYHRvbVs4RsZfV92PagmmMJRn/jVvVJXyQOJB/vbUIk9/PZdr
-	 RLEex/HAyGtl+lZQhC31NY/VNgJXBV0qFeERMqa5PwSgrX4NpwmTAw3HV+TmXtJS0I
-	 pJqwtmI+d/1ShIFfNQUMNztC1CzQgUjQSjv3IkJ8=
+	b=VcbRXHUeL+dvea0tyLTnz8uk61ee2AEZY64Nt4a7AeO0s7Hh5PHFN4ZGZSmZa/xS6
+	 QHOY4f/+DkGEy0IA5WdbyEOgi3Bx9VCE+7HMeSVEQdP3kuZqq7UNhZbN2dzVEZLL6R
+	 VKTShsLDx37a/FqNv8mRPvr36ogUTiuKbJolKhC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hoku Ishibe <me@hokuishi.be>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 281/328] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
+	Ma Jun <Jun.Ma2@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 385/462] drm/amdgpu: Check extended configuration space register when system uses large bar
 Date: Tue, 11 Mar 2025 16:00:51 +0100
-Message-ID: <20250311145726.083634959@linuxfoundation.org>
+Message-ID: <20250311145813.556447625@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hoku Ishibe <me@hokuishi.be>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
+[ Upstream commit e372baeb3d336b20fd9463784c577fd8824497cd ]
 
-Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
-persistent humming noise when the power_save mode is enabled.
-This issue occurs when the codec enters power saving mode,
-leading to unwanted noise from the speakers.
+Some customer platforms do not enable mmconfig for various reasons,
+such as bios bug, and therefore cannot access the GPU extend configuration
+space through mmio.
 
-This patch adds the affected model (PCI ID 0x1028:0x0962) to the
-power_save denylist to ensure power_save is disabled by default,
-preventing power-off related noise issues.
+When the system enters the d3cold state and resumes, the amdgpu driver
+fails to resume because the extend configuration space registers of
+GPU can't be restored. At this point, Usually we only see some failure
+dmesg log printed by amdgpu driver, it is difficult to find the root
+cause.
 
-Steps to Reproduce
-1. Boot the system with `snd_hda_intel` loaded.
-2. Verify that `power_save` mode is enabled:
-```sh
-cat /sys/module/snd_hda_intel/parameters/power_save
-````
-output: 10 (default power save timeout)
-3. Wait for the power save timeout
-4. Observe a persistent humming noise from the speakers
-5. Disable `power_save` manually:
-```sh
-echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
-````
-6. Confirm that the noise disappears immediately.
+Therefor print a warnning message if the system can't access the
+extended configuration space register when using large bar.
 
-This issue has been observed on my system, and this patch
-successfully eliminates the unwanted noise. If other users
-experience similar issues, additional reports would be helpful.
-
-Signed-off-by: Hoku Ishibe <me@hokuishi.be>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 099bffc7cadf ("drm/amdgpu: disable BAR resize on Dell G5 SE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2246,6 +2246,8 @@ static struct snd_pci_quirk power_save_b
- 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
- 	/* KONTRON SinglePC may cause a stall at runtime resume */
- 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
-+	/* Dell ALC3271 */
-+	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 2f42471e578ad..edb1b1cf05f29 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1098,6 +1098,10 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
+ 	if (amdgpu_sriov_vf(adev))
+ 		return 0;
+ 
++	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
++	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
++		DRM_WARN("System can't access extended configuration space,please check!!\n");
++
+ 	/* skip if the bios has already enabled large BAR */
+ 	if (adev->gmc.real_vram_size &&
+ 	    (pci_resource_len(adev->pdev, 0) >= adev->gmc.real_vram_size))
+-- 
+2.39.5
+
 
 
 
