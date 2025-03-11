@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CD9A5C5DB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFEFA5C898
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:46:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED3F6179FCD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4163A3897
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEA925E830;
-	Tue, 11 Mar 2025 15:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460DD25E832;
+	Tue, 11 Mar 2025 15:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHgijoIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2RDZ+OB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEC725E824;
-	Tue, 11 Mar 2025 15:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0308A25B691;
+	Tue, 11 Mar 2025 15:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706258; cv=none; b=ORW4s86UnP6BNCqP3KkQYpU3WS1Sj5/QIO0wqJdkxJ2PNAlcwY9dxgp9T77g6CUT+cswlV09Zi66VkS6X5AdUV5wqVuVBaghbL7n736/Jc4SsrEBmITiavv8EFRqG6sfDm/Q+mEs2tnznJ1boIWD4GoKSROemS30hYQttcdKLKA=
+	t=1741707561; cv=none; b=qtDXBjxSHMFns/8jiyOb0TG9p0QYLy9NDyR2fJUhRDnpN5kn7je3ogM0YyINQzFehmi1Z7/63x6fSeMCgmwlAoWi6EUOTuLr0Hk+ysImSQMBd2UCeDaqLQhW1b+S1+2qaoLBrqZjPDD0Wjt7U6x8W6+/DIqVPmcNuHuUoADLPOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706258; c=relaxed/simple;
-	bh=X3HI5RqDy2KSJ2al6jwpufxy/m0rNpmJ9yT7mwcOfFc=;
+	s=arc-20240116; t=1741707561; c=relaxed/simple;
+	bh=7LJh5uSR09DRGc8gYaBvd8+GImI2YxAHfeosdKLz0no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfeqR8c46Rzfja4e11pK1s1fEExFtXnb/GVs6ztgHHycl6hmZeunbmV7g+CdGm36md7xWYPJQJ3bh+JTT/lsPQJxf3IGHykfTKCOcQiTN7iB5CJ/GtPAyZYK7Gj5XMCqYI7FIFFaC0oDmUnarZrhWt3CGmDHt4oofk3dSG3RXnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHgijoIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E73C4CEF0;
-	Tue, 11 Mar 2025 15:17:37 +0000 (UTC)
+	 MIME-Version; b=PkjwT0jAk3LepuXrZyjI2KxuGcCKpdSlCu5XEX9hgZvJNL4pYcuCqf7WjmyRLloRNPp6MBCYrLfzOd1YAwlRB92VZbepse/VB5f2XaABPNe5OoQ3uYUjHIOCR2bSNzixevWvTWPP+ReyAssljjs40/mkDqAWiuvOolTn9IEPz3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2RDZ+OB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753B0C4CEE9;
+	Tue, 11 Mar 2025 15:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706257;
-	bh=X3HI5RqDy2KSJ2al6jwpufxy/m0rNpmJ9yT7mwcOfFc=;
+	s=korg; t=1741707560;
+	bh=7LJh5uSR09DRGc8gYaBvd8+GImI2YxAHfeosdKLz0no=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHgijoISwWReffOr8+doNMWf2N/+8xp9eZlNIb9z9EgQvsNtNZCGpYxuiFNjk7kj6
-	 fcjvVQsCVehl9AlGx139AGa05MEH9DKCfrmz/5yfcMrgVG5YS7VkCkhHQRg3CKWqXa
-	 jHpTalcheNtmcUOrs+O4cWJJwpmosCRSLzH+Y+rA=
+	b=b2RDZ+OB4/MActr275nW+6jvchDlg0R58W8XnoTFbAtSH1mCrdQNbQhdc6LacHpMW
+	 QML8V+DjU8rEUzk6NcoZ5pbTiwY9IWtBepehGFXVgKvRNmrIe9gIWIaksKURI1kLc8
+	 l/8oWakbJuu9ARYDfy8FINieY78AGjH2ePoU3cog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Herbert <tom@herbertland.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 308/328] net: ipv6: fix dst ref loop in ila lwtunnel
-Date: Tue, 11 Mar 2025 16:01:18 +0100
-Message-ID: <20250311145727.148606714@linuxfoundation.org>
+Subject: [PATCH 5.10 413/462] hwmon: (ad7314) Validate leading zero bits and return error
+Date: Tue, 11 Mar 2025 16:01:19 +0100
+Message-ID: <20250311145814.648694975@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-[ Upstream commit 0e7633d7b95b67f1758aea19f8e85621c5f506a3 ]
+[ Upstream commit e278d5e8aef4c0a1d9a9fa8b8910d713a89aa800 ]
 
-This patch follows commit 92191dd10730 ("net: ipv6: fix dst ref loops in
-rpl, seg6 and ioam6 lwtunnels") and, on a second thought, the same patch
-is also needed for ila (even though the config that triggered the issue
-was pathological, but still, we don't want that to happen).
+Leading zero bits are sent on the bus before the temperature value is
+transmitted. If any of these bits are high, the connection might be
+unstable or there could be no AD7314 / ADT730x (or compatible) at all.
+Return -EIO in that case.
 
-Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
-Cc: Tom Herbert <tom@herbertland.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250304181039.35951-1-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Fixes: 4f3a659581cab ("hwmon: AD7314 driver (ported from IIO)")
+Link: https://lore.kernel.org/r/24a50c2981a318580aca8f50d23be7987b69ea00.camel@iris-sensing.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila_lwt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/ad7314.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 6a6a30e82810d..dc01cdb043498 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -88,7 +88,8 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+diff --git a/drivers/hwmon/ad7314.c b/drivers/hwmon/ad7314.c
+index 7802bbf5f9587..59424103f6348 100644
+--- a/drivers/hwmon/ad7314.c
++++ b/drivers/hwmon/ad7314.c
+@@ -22,11 +22,13 @@
+  */
+ #define AD7314_TEMP_MASK		0x7FE0
+ #define AD7314_TEMP_SHIFT		5
++#define AD7314_LEADING_ZEROS_MASK	BIT(15)
  
--		if (ilwt->connected) {
-+		/* cache only if we don't create a dst reference loop */
-+		if (ilwt->connected && orig_dst->lwtstate != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
- 			local_bh_enable();
+ /*
+  * ADT7301 and ADT7302 temperature masks
+  */
+ #define ADT7301_TEMP_MASK		0x3FFF
++#define ADT7301_LEADING_ZEROS_MASK	(BIT(15) | BIT(14))
+ 
+ enum ad7314_variant {
+ 	adt7301,
+@@ -65,12 +67,20 @@ static ssize_t ad7314_temperature_show(struct device *dev,
+ 		return ret;
+ 	switch (spi_get_device_id(chip->spi_dev)->driver_data) {
+ 	case ad7314:
++		if (ret & AD7314_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		data = (ret & AD7314_TEMP_MASK) >> AD7314_TEMP_SHIFT;
+ 		data = sign_extend32(data, 9);
+ 
+ 		return sprintf(buf, "%d\n", 250 * data);
+ 	case adt7301:
+ 	case adt7302:
++		if (ret & ADT7301_LEADING_ZEROS_MASK) {
++			/* Invalid read-out, leading zero part is missing */
++			return -EIO;
++		}
+ 		/*
+ 		 * Documented as a 13 bit twos complement register
+ 		 * with a sign bit - which is a 14 bit 2's complement
 -- 
 2.39.5
 
