@@ -1,160 +1,132 @@
-Return-Path: <stable+bounces-124057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A807A5CC0C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 18:24:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AAFA5CC1E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 18:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8E32189907D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:24:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF564177AF1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942AA2620D1;
-	Tue, 11 Mar 2025 17:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BDC2627F2;
+	Tue, 11 Mar 2025 17:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4XuMbUo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwLeDAsr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4EE255E20;
-	Tue, 11 Mar 2025 17:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917522620D1;
+	Tue, 11 Mar 2025 17:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741713841; cv=none; b=dRszGBJVRH1WroNxrZ9f592pair2wS2Mnmq31JEhNTqTmsOfHcyc4o+hfzbg7LUnubKfhf7AH5wgPNbvTIqyaUETaYdoRQalcCCVmYISdyVYvLbvX10g0TuSgjr911paoKsASyhIFxn7vs7PUKiwASROXk4y//7W7rwujKZUQ68=
+	t=1741714124; cv=none; b=aKixyMGuRFlydO8Iyd0uON9tsfJv20pEN1Wbk0qU5ixUGV6ff+TaoSaVks52lEzXdltDi+OSjHkHdZoQevcWCXLlYE5R20HGnyXmDZShrW2DxfLezl3a8uCgKsRVAE9RMa8s/hGKB9Y7YsSA9QqylCz7O1P00+ih+RqSZP0Y7MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741713841; c=relaxed/simple;
-	bh=owns9l5JLbWYp17TZuEzyhli5LeKH4b9XdYYGM2SdTk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=dEW0AJeadrPl01ZlWMJzsWGAte3rb8tRqgeuVjZnezgqegMohYuMhsnnL0WW6mzn4WPopioU9IjGJd4SzfEzf10R9gpcJvJHfRfsTkny53XUFbeaxI+mDriln2QUMoXA6GvUGDSj2ptf3hmrYDMbpR3dvOXNL+IxhYujafJRnEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4XuMbUo; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4394036c0efso34857515e9.2;
-        Tue, 11 Mar 2025 10:23:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741713838; x=1742318638; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2CblXRDFSbYzBfdZvOZoTbib8TKXWZ1Do7JX0N+BLKY=;
-        b=d4XuMbUoBqUpKKWoFYNfWAbTXK3mS3KEReiFjkzbPB7gBOA+NQAf5CkS0d5+PsFF8P
-         u2XP7BbyxeeUfc2S/vtt5QRsiaq6HR8e1/kFWBMwmmnHTWl15Fy7awI/RoFWE6sarNoj
-         arf4vzzl7UHE7CKtG4d4lPvY0TsCJpeTvSHWuKae9YjnkRqwhS3VaOGqqhZJVGUWI2hU
-         mUecpSANozejnJ+pD9UVXPSsfDo0zOKN4g88Tqt79Bkt02Ca2knfi6Auo1kHSsLdj7Qm
-         MM4btfJ6rprNLTU9jdN72i6Kb2fVth85vJQJiSgQl5v51ByL7QOdU2ox9Fdzq1f7lm4W
-         tFQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741713838; x=1742318638;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2CblXRDFSbYzBfdZvOZoTbib8TKXWZ1Do7JX0N+BLKY=;
-        b=NeHhQgUf/Z6O6Hu5v6E6+HhgP5wYhP0SCfnp3YRIkgoQmCX0zt1QuNuNv/v4YoI7Vu
-         oVUcBFR/gpMwz/qTF+CxmfzTHotirw9Pnw7QnF/dkEUzLLGoh5Su3UUbZKlm/1Km30+O
-         UwqqG/Yc6hIem072VAI/pGAZT/9NwXRGVwDLQs48Xzz+h22++8sNfvLq44zd7E6a8zBx
-         hbCYZ+H5D9T86qVzBxTmpWCykU74uhh8xIOAo3OjCNWpxX45p5pRdgdBkE118f15NsoJ
-         s/EIGtUKgbYJxW2+XPoVLEhf80lMugXp+8G9WwpYPEFyTzt70UdRVnnwfOlQCsnGh//V
-         6dCw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDAqCf+IgxDKugK5sSL2hJ/n8wdu97R8PCT1aaynDoKyEQGoeahmq5rkQmFKpmv91PVx0MfOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+ZEEEHk4JDm/87+PV/AyG007P7ipuLBuXqs1GPH0XL+URG0bu
-	uugIqa3ylPct+NycTB6nm+fc6EZ8q7ZRtyp6KHaRHFERqnQ428TS
-X-Gm-Gg: ASbGnctKDWxHGbAg4Blr3rFc+sqddHmHlc9XDoHpjTY1Zk+SeZQu6HBo6XsS5WNICe6
-	hYofHgzMiiP3UJDafQTxyFgY6LtN7cdLWa0Y+LtguOqQDT4YS4pxVe2k3b73H3I99hJYbFFIhvH
-	3gISeQ6WcSDOyOflwYBlIOFUce4URMcbez7zRUXse2/s8ytMEu3Z7t7ezb3pzOUT44F3CtWzOuM
-	R6UBOhHKQHvWvF4F8TfnLp9KqttBct8SJf2kiWYbwRO37U7ENYgdhKddw8N+eIwlF/E90NH9Ppq
-	2DYJAYhoQBfwlrurCkjotb5ndxE/HNB8sd0NuIvpXMF+YS/NPMeks6pP36cmY62k9NpKhROTJm9
-	1y0Cem4bI1Mc=
-X-Google-Smtp-Source: AGHT+IHmQIwKqmpw/iCa+vydvbfQuzaYeiFEWI+fVAggDgqfNeIzbmu5lpU7cflubg+ifd7aRx+85w==
-X-Received: by 2002:a5d:5886:0:b0:391:4674:b136 with SMTP id ffacd0b85a97d-3914674b5f1mr8616572f8f.29.1741713837608;
-        Tue, 11 Mar 2025 10:23:57 -0700 (PDT)
-Received: from [93.173.93.237] (93-173-93-237.bb.netvision.net.il. [93.173.93.237])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfb79cfsm18745734f8f.10.2025.03.11.10.23.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Mar 2025 10:23:57 -0700 (PDT)
-Message-ID: <b3eda642-f181-de6c-9975-42ce3e149db3@outbound.gmail.com>
-Date: Tue, 11 Mar 2025 19:23:20 +0200
+	s=arc-20240116; t=1741714124; c=relaxed/simple;
+	bh=d8BD4WOnmIjNqhK1wComNzTCrFFiicudBQP2VVmq7Z8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LzpDZhqqnmdxxn5IgMrNbKSNEgFOQH1whq128XKhYaZD3l+FGHJa2Rm1wbhj8maWPoT+dfUNllITQsDiPj5/yZabtPXz5Pbti4t/+3s7hLh6T4/irnukSNiM/2lTB12XiR9bx9T2INmjUGTzqxtu0F8ohCFxO5hgnojRkJf4PXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwLeDAsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1465BC4AF0B;
+	Tue, 11 Mar 2025 17:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741714124;
+	bh=d8BD4WOnmIjNqhK1wComNzTCrFFiicudBQP2VVmq7Z8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SwLeDAsrdikx6ereOClwlIDaeHpYUaVCYIdWA/gqU4jEb9otOGjjdZGvIpu9QgrFU
+	 BasH3tSjPtBd6wmXUUXmgtGXJE1c2mXPzeOs5dY12INMsI/tPwBJUSi4YJKLmECtes
+	 TM5UDohghrM4x2jKsArUS5J2Jh/ME+ZxorEGi8wdg/Qhbk5gvSSWtSAyI/PAUsy4Le
+	 zPfJmpwJpspt5Y9mXygKFmynxFUwMwdwlu93nj0LoEg/bOD7NQ94mwt8hicFAJE+JB
+	 WROxkOJm/Xr98WkIyDZQrpXSAOENYiYSOTFinIa11QBYrcNDfZOo/1nUA1Ez3Bu0mX
+	 56ptjUZ6gzRiw==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5499614d3d2so5034557e87.3;
+        Tue, 11 Mar 2025 10:28:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUyYL5vswrvcs1L4DDawe1qUtvfUpA9efcU/hxYKMaxHaiEufKMygCbnGmgJx6QqX8jlKanJeSW@vger.kernel.org, AJvYcCW/VK+oEQbhrtiUpuMPFCeJYcoOLAdo7oZSFlDm+D/e1AMONu69jGYLo2QSVEFnYIqMKtVM0UhRc4Mf9hM=@vger.kernel.org, AJvYcCWI8v/xSmB6sjFYUTcVsxwzb9I5AYP9k/HRoa3l0fM3cMNrOVyUUOkio+t2vUytrGVAke/t2zDtV3EylSudtdnwZQaL@vger.kernel.org, AJvYcCWo4p6E7PDjcdg3k5QZRiMU8xB+YyTVlvo+PWcMzMh66u2SOJiRW71clnyUaptehnkQSvZYSrEZx5COplvRsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwEuDIkczTfCM4S5/BsZXWkPj5N8xDNRXQaj5KDrdoEdKdy5bm
+	sSUXgNoOAP1UrrKzQZIreLdxhH3SB/SMDMMFKDzyi8Da90ffLKd/iYyOCqi9Acq3lBZhiJbMwBe
+	hg46MN5X+nxqhFmuL6S5Pf4ydCfk=
+X-Google-Smtp-Source: AGHT+IFsHDduF+cR7BKl2mu6ZO3HqQftxmEu5BM2vjBQCDt55EMsQyof7sw3rtliSMsgS7q7uQEOkP4A3gh75uedz9s=
+X-Received: by 2002:a05:6512:6cd:b0:545:f9c:a80f with SMTP id
+ 2adb3069b0e04-54990e2bf27mr5120145e87.1.1741714122784; Tue, 11 Mar 2025
+ 10:28:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-From: Eli Billauer <eli.billauer@gmail.com>
-Subject: Re: [PATCH v2] char: xillybus: Fix error handling in
- xillybus_init_chrdev()
-To: Ma Ke <make24@iscas.ac.cn>, arnd@arndb.de, gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- stable@vger.kernel.org
-References: <20250311013935.219615-1-make24@iscas.ac.cn>
-Content-Language: en-US
-In-Reply-To: <20250311013935.219615-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250307165335.3110476-1-kris.van.hees@oracle.com>
+In-Reply-To: <20250307165335.3110476-1-kris.van.hees@oracle.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 12 Mar 2025 02:28:06 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQe5ZEd17v=zdP9xNMXFXa=Zjh=YUww2+_4Qerh=CdQOQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jqd8Dw99Dgh75IrGcKerpY-dzmShj5KMqxECut3Sko0l64ED8VLDnizrPM
+Message-ID: <CAK7LNAQe5ZEd17v=zdP9xNMXFXa=Zjh=YUww2+_4Qerh=CdQOQ@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: exclude .rodata.(cst|str)* when building ranges
+To: Kris Van Hees <kris.van.hees@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Nick Alcock <nick.alcock@oracle.com>, Alan Maguire <alan.maguire@oracle.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Sam James <sam@gentoo.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Jiri Olsa <olsajiri@gmail.com>, 
+	Elena Zannoni <elena.zannoni@oracle.com>, Daniel Gomez <da.gomez@samsung.com>, stable@vger.kernel.org, 
+	Jack Vogel <jack.vogel@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-In what way is this better? cdev_del() calls cdev_unmap() to undo the 
-mapping that a successful call to cdev_add() performs, but that's 
-unnecessary, because the whole point is that the latter failed. And then 
-cdev_del() calls kobject_put(), and then returns.
-
-So the existing code calls kobject_put() directly, achieving the same 
-effect. It's a matter of coding style. Which is better? I don't know.
-
-What is the common convention in the kernel? Not clear either. For 
-example, in fs/fuse/cuse.c a failure of cdev_add() leads to a call to 
-cdev_del(), like you suggested. However, in uio/uio.c the same scenario 
-is handled by a call to kobject_put(), exactly as in my driver.
-
-Has this topic been discussed in the past? Any decision made?
-
-Besides, if we remove the call to kobject_put(), so should the comment 
-explaining it.
-
-Regards,
-    Eli
-
-On 11/03/2025 3:39, Ma Ke wrote:
-> After cdev_alloc() succeed and cdev_add() failed, call cdev_del() to
-> remove unit->cdev from the system properly.
-> 
-> Found by code review.
-> 
+On Sat, Mar 8, 2025 at 1:54=E2=80=AFAM Kris Van Hees <kris.van.hees@oracle.=
+com> wrote:
+>
+> The .rodata.(cst|str)* sections are often resized during the final
+> linking and since these sections do not cover actual symbols there is
+> no need to include them in the modules.builtin.ranges data.
+>
+> When these sections were included in processing and resizing occurred,
+> modules were reported with ranges that extended beyond their true end,
+> causing subsequent symbols (in address order) to be associated with
+> the wrong module.
+>
+> Fixes: 5f5e7344322f ("kbuild: generate offset range data for builtin modu=
+les")
 > Cc: stable@vger.kernel.org
-> Fixes: 8cb5d216ab33 ("char: xillybus: Move class-related functions to new xillybus_class.c")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> Signed-off-by: Kris Van Hees <kris.van.hees@oracle.com>
+> Reviewed-by: Jack Vogel <jack.vogel@oracle.com>
 > ---
-> Changes in v2:
-> - modified the patch as suggestions to avoid UAF.
-> ---
->   drivers/char/xillybus/xillybus_class.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/char/xillybus/xillybus_class.c b/drivers/char/xillybus/xillybus_class.c
-> index c92a628e389e..356af6551b0d 100644
-> --- a/drivers/char/xillybus/xillybus_class.c
-> +++ b/drivers/char/xillybus/xillybus_class.c
-> @@ -104,8 +104,7 @@ int xillybus_init_chrdev(struct device *dev,
->   	if (rc) {
->   		dev_err(dev, "Failed to add cdev.\n");
->   		/* kobject_put() is normally done by cdev_del() */
-> -		kobject_put(&unit->cdev->kobj);
-> -		goto unregister_chrdev;
-> +		goto err_cdev;
->   	}
->   
->   	for (i = 0; i < num_nodes; i++) {
-> @@ -157,6 +156,7 @@ int xillybus_init_chrdev(struct device *dev,
->   		device_destroy(&xillybus_class, MKDEV(unit->major,
->   						     i + unit->lowest_minor));
->   
-> +err_cdev:
->   	cdev_del(unit->cdev);
->   
->   unregister_chrdev:
 
+Applied to linux-kbuild. Thanks.
+
+>  scripts/generate_builtin_ranges.awk | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/scripts/generate_builtin_ranges.awk b/scripts/generate_built=
+in_ranges.awk
+> index b9ec761b3bef..d4bd5c2b998c 100755
+> --- a/scripts/generate_builtin_ranges.awk
+> +++ b/scripts/generate_builtin_ranges.awk
+> @@ -282,6 +282,11 @@ ARGIND =3D=3D 2 && !anchor && NF =3D=3D 2 && $1 ~ /^=
+0x/ && $2 !~ /^0x/ {
+>  # section.
+>  #
+>  ARGIND =3D=3D 2 && sect && NF =3D=3D 4 && /^ [^ \*]/ && !($1 in sect_add=
+end) {
+> +       # There are a few sections with constant data (without symbols) t=
+hat
+> +       # can get resized during linking, so it is best to ignore them.
+> +       if ($1 ~ /^\.rodata\.(cst|str)[0-9]/)
+> +               next;
+> +
+>         if (!($1 in sect_base)) {
+>                 sect_base[$1] =3D base;
+>
+> --
+> 2.45.2
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
