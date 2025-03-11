@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CF9A5C7F7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61E9A5C58F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E134188B194
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8DC174C2D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D00255E37;
-	Tue, 11 Mar 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D703C25DD0F;
+	Tue, 11 Mar 2025 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlXep4Qe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNI78DNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507583C0B;
-	Tue, 11 Mar 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948882571D8;
+	Tue, 11 Mar 2025 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707280; cv=none; b=ctCi2vXRaQb9jFsN3Q6Ow6gYyakX0PBf83p3SUDqovCJw3enVHIGYMQAgPkmh+QhIHVmG5wA4Qs0niWu7moPjeXWv9eRfBOz+D7+l5raQJAZDvYxVjBfg9lS3UboL69oe83+kFCyoTjq/bImnjYR8vKUJmFcRFqxNcbJXmfZAnE=
+	t=1741706070; cv=none; b=h6hIf8ufxCE9SSnk8WWH4xHKau4N1FVbGd872NTFzuBW494rmym6/M75rplPFwnvu8gtxAY6ZmGU2/ZpmTE0MhTaScIt1qf7Q/cVJToyHyzOc4kSwsY4NOZZ37LyftYBSEqHhPBw4lbnq86XN4TOilsdIBUMAvpo2ppyyctFj7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707280; c=relaxed/simple;
-	bh=bkVHJIbEoDWCwLhYlT552kTkZzFK5ibp1Y8ePkWc2hg=;
+	s=arc-20240116; t=1741706070; c=relaxed/simple;
+	bh=/eJzzbZ6jnZA2mPtVsS0kUVw94qeJDcVEdW28U8pxSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eT98yXa+Txm0QM69EuAqCkm5B7RrW9f+GemxOFn6w96rqSacb1wItnTQ2jU0i7jc4wtsKoLPa+o0TNfIELHkVxhqFuRa01cSU0NjkKqXuIblwWAZPfwd2IZX4HPAXuqkSdsueYjaA4UcxuBAs/qEcEChRchgDSnMi1sF0kHwCmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlXep4Qe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA117C4CEE9;
-	Tue, 11 Mar 2025 15:34:39 +0000 (UTC)
+	 MIME-Version; b=B+ClN4TUY5m9AEBMMWOUuplr/yXsiW0iN2WCoVLuWXRi2PsgW7Fx2F+z08mW1kg/6Q1+YU4bn4lv7wWaWwjcqUv5xVauDGsUyiSCoqIoD+oWzXvaAuBYLBo/5l0YBkWq7oNgTCbwf8/fSVKyV3py5fIHqMXJN4d+lcnKp7yg6oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNI78DNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E11C4CEE9;
+	Tue, 11 Mar 2025 15:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707280;
-	bh=bkVHJIbEoDWCwLhYlT552kTkZzFK5ibp1Y8ePkWc2hg=;
+	s=korg; t=1741706070;
+	bh=/eJzzbZ6jnZA2mPtVsS0kUVw94qeJDcVEdW28U8pxSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlXep4Qeb9DtqoN8njO/jyQZo/El+rYizJTdNtuwQeGTZYQoK2NwZCvw/iQS3fZ+z
-	 KnU/PkO0fkf1V7ekt2OdZgq4WFSA1wa6TADoTRMrVW0o0xpcGLwg2QS/0QLbuHm/U9
-	 xcOSf+kxZEh/dwnmNxL/m0FhT7lZNNJuG/Vy6za0=
+	b=LNI78DNnvcS1M1A3yk9EjhZxt+c4B3eKVSXv7EsJd8R2zfqFHnmAuxz6rf+gj2Ok3
+	 2O+R73OkdaeHmHlX6/JJkoJl2sVoEIcjtlqwwzwG1DHuACyvOzGgqJlQxsNPJk7zdf
+	 CVBs5yfMgZeVLge9AXCN808LdleKCTjYhABuzvVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 335/462] geneve: Fix use-after-free in geneve_find_dev().
-Date: Tue, 11 Mar 2025 16:00:01 +0100
-Message-ID: <20250311145811.602630557@linuxfoundation.org>
+Subject: [PATCH 5.4 232/328] crypto: testmgr - some more fixes to RSA test vectors
+Date: Tue, 11 Mar 2025 16:00:02 +0100
+Message-ID: <20250311145724.133250231@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,202 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 9593172d93b9f91c362baec4643003dc29802929 ]
+[ Upstream commit 9d2bb9a74b2877f100637d6ab5685bcd33c69d44 ]
 
-syzkaller reported a use-after-free in geneve_find_dev() [0]
-without repro.
+Two more fixes:
 
-geneve_configure() links struct geneve_dev.next to
-net_generic(net, geneve_net_id)->geneve_list.
+  * some test vectors in commit 79e6e2f3f3ff ("crypto: testmgr - populate
+    RSA CRT parameters in RSA test vectors") had misplaced commas, which
+    break the test and trigger KASAN warnings at least on x86-64
 
-The net here could differ from dev_net(dev) if IFLA_NET_NS_PID,
-IFLA_NET_NS_FD, or IFLA_TARGET_NETNSID is set.
+  * pkcs1pad test vector did not have its CRT parameters
 
-When dev_net(dev) is dismantled, geneve_exit_batch_rtnl() finally
-calls unregister_netdevice_queue() for each dev in the netns,
-and later the dev is freed.
-
-However, its geneve_dev.next is still linked to the backend UDP
-socket netns.
-
-Then, use-after-free will occur when another geneve dev is created
-in the netns.
-
-Let's call geneve_dellink() instead in geneve_destroy_tunnels().
-
-[0]:
-BUG: KASAN: slab-use-after-free in geneve_find_dev drivers/net/geneve.c:1295 [inline]
-BUG: KASAN: slab-use-after-free in geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
-Read of size 2 at addr ffff000054d6ee24 by task syz.1.4029/13441
-
-CPU: 1 UID: 0 PID: 13441 Comm: syz.1.4029 Not tainted 6.13.0-g0ad9617c78ac #24 dc35ca22c79fb82e8e7bc5c9c9adafea898b1e3d
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x38/0x50 arch/arm64/kernel/stacktrace.c:466 (C)
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xbc/0x108 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x16c/0x6f0 mm/kasan/report.c:489
- kasan_report+0xc0/0x120 mm/kasan/report.c:602
- __asan_report_load2_noabort+0x20/0x30 mm/kasan/report_generic.c:379
- geneve_find_dev drivers/net/geneve.c:1295 [inline]
- geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
- geneve_newlink+0xb8/0x128 drivers/net/geneve.c:1634
- rtnl_newlink_create+0x23c/0x868 net/core/rtnetlink.c:3795
- __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
- rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
- rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
- netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
- rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
- netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
- netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
- netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
- sock_sendmsg_nosec net/socket.c:713 [inline]
- __sock_sendmsg net/socket.c:728 [inline]
- ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
- ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
- __sys_sendmsg net/socket.c:2654 [inline]
- __do_sys_sendmsg net/socket.c:2659 [inline]
- __se_sys_sendmsg net/socket.c:2657 [inline]
- __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
- el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
-
-Allocated by task 13247:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x30/0x68 mm/kasan/common.c:68
- kasan_save_alloc_info+0x44/0x58 mm/kasan/generic.c:568
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0x84/0xa0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4298 [inline]
- __kmalloc_node_noprof+0x2a0/0x560 mm/slub.c:4304
- __kvmalloc_node_noprof+0x9c/0x230 mm/util.c:645
- alloc_netdev_mqs+0xb8/0x11a0 net/core/dev.c:11470
- rtnl_create_link+0x2b8/0xb50 net/core/rtnetlink.c:3604
- rtnl_newlink_create+0x19c/0x868 net/core/rtnetlink.c:3780
- __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
- rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
- rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
- netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
- rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
- netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
- netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
- netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
- sock_sendmsg_nosec net/socket.c:713 [inline]
- __sock_sendmsg net/socket.c:728 [inline]
- ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
- ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
- __sys_sendmsg net/socket.c:2654 [inline]
- __do_sys_sendmsg net/socket.c:2659 [inline]
- __se_sys_sendmsg net/socket.c:2657 [inline]
- __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
- el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
-
-Freed by task 45:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x30/0x68 mm/kasan/common.c:68
- kasan_save_free_info+0x58/0x70 mm/kasan/generic.c:582
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x48/0x68 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2353 [inline]
- slab_free mm/slub.c:4613 [inline]
- kfree+0x140/0x420 mm/slub.c:4761
- kvfree+0x4c/0x68 mm/util.c:688
- netdev_release+0x94/0xc8 net/core/net-sysfs.c:2065
- device_release+0x98/0x1c0
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x2b0/0x438 lib/kobject.c:737
- netdev_run_todo+0xe5c/0xfc8 net/core/dev.c:11185
- rtnl_unlock+0x20/0x38 net/core/rtnetlink.c:151
- cleanup_net+0x4fc/0x8c0 net/core/net_namespace.c:648
- process_one_work+0x700/0x1398 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3317 [inline]
- worker_thread+0x8c4/0xe10 kernel/workqueue.c:3398
- kthread+0x4bc/0x608 kernel/kthread.c:464
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:862
-
-The buggy address belongs to the object at ffff000054d6e000
- which belongs to the cache kmalloc-cg-4k of size 4096
-The buggy address is located 3620 bytes inside of
- freed 4096-byte region [ffff000054d6e000, ffff000054d6f000)
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x94d68
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-memcg:ffff000016276181
-flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
-page_type: f5(slab)
-raw: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
-head: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
-head: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
-head: 03fffe0000000003 fffffdffc1535a01 ffffffffffffffff 0000000000000000
-head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff000054d6ed00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff000054d6ed80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff000054d6ee00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                               ^
- ffff000054d6ee80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff000054d6ef00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-
-Fixes: 2d07dc79fe04 ("geneve: add initial netdev driver for GENEVE tunnels")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250213043354.91368-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 79e6e2f3f3ff ("crypto: testmgr - populate RSA CRT parameters in RSA test vectors")
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/geneve.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ crypto/testmgr.h | 102 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 63 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index e7412edb84dcd..a79cebd7041be 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -1968,16 +1968,11 @@ static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
- 	/* gather any geneve devices that were moved into this ns */
- 	for_each_netdev_safe(net, dev, aux)
- 		if (dev->rtnl_link_ops == &geneve_link_ops)
--			unregister_netdevice_queue(dev, head);
-+			geneve_dellink(dev, head);
- 
- 	/* now gather any other geneve devices that were created in this ns */
--	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next) {
--		/* If geneve->dev is in the same netns, it was already added
--		 * to the list by the previous loop.
--		 */
--		if (!net_eq(dev_net(geneve->dev), net))
--			unregister_netdevice_queue(geneve->dev, head);
--	}
-+	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
-+		geneve_dellink(geneve->dev, head);
- }
- 
- static void __net_exit geneve_exit_batch_net(struct list_head *net_list)
+diff --git a/crypto/testmgr.h b/crypto/testmgr.h
+index d57c911649180..601cbee29cca9 100644
+--- a/crypto/testmgr.h
++++ b/crypto/testmgr.h
+@@ -265,7 +265,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ 	"\x61\xAD\xBD\x3A\x8A\x7E\x99\x1C\x5C\x05\x56\xA9\x4C\x31\x46\xA7"
+ 	"\xF9\x80\x3F\x8F\x6F\x8A\xE3\x42\xE9\x31\xFD\x8A\xE4\x7A\x22\x0D"
+ 	"\x1B\x99\xA4\x95\x84\x98\x07\xFE\x39\xF9\x24\x5A\x98\x36\xDA\x3D"
+-	"\x02\x41", /* coefficient - integer of 65 bytes */
++	"\x02\x41" /* coefficient - integer of 65 bytes */
+ 	"\x00\xB0\x6C\x4F\xDA\xBB\x63\x01\x19\x8D\x26\x5B\xDB\xAE\x94\x23"
+ 	"\xB3\x80\xF2\x71\xF7\x34\x53\x88\x50\x93\x07\x7F\xCD\x39\xE2\x11"
+ 	"\x9F\xC9\x86\x32\x15\x4F\x58\x83\xB1\x67\xA9\x67\xBF\x40\x2B\x4E"
+@@ -362,7 +362,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+ 	"\x6A\x37\x3B\x86\x6C\x51\x37\x5B\x1D\x79\xF2\xA3\x43\x10\xC6\xA7"
+ 	"\x21\x79\x6D\xF9\xE9\x04\x6A\xE8\x32\xFF\xAE\xFD\x1C\x7B\x8C\x29"
+ 	"\x13\xA3\x0C\xB2\xAD\xEC\x6C\x0F\x8D\x27\x12\x7B\x48\xB2\xDB\x31"
+-	"\x02\x81\x81", /* coefficient - integer of 129 bytes */
++	"\x02\x81\x81" /* coefficient - integer of 129 bytes */
+ 	"\x00\x8D\x1B\x05\xCA\x24\x1F\x0C\x53\x19\x52\x74\x63\x21\xFA\x78"
+ 	"\x46\x79\xAF\x5C\xDE\x30\xA4\x6C\x20\x38\xE6\x97\x39\xB8\x7A\x70"
+ 	"\x0D\x8B\x6C\x6D\x13\x74\xD5\x1C\xDE\xA9\xF4\x60\x37\xFE\x68\x77"
+@@ -799,7 +799,7 @@ static const struct akcipher_testvec ecrdsa_tv_template[] = {
+ static const struct akcipher_testvec pkcs1pad_rsa_tv_template[] = {
+ 	{
+ 	.key =
+-	"\x30\x82\x03\x1f\x02\x01\x00\x02\x82\x01\x01\x00\xd7\x1e\x77\x82"
++	"\x30\x82\x04\xa5\x02\x01\x00\x02\x82\x01\x01\x00\xd7\x1e\x77\x82"
+ 	"\x8c\x92\x31\xe7\x69\x02\xa2\xd5\x5c\x78\xde\xa2\x0c\x8f\xfe\x28"
+ 	"\x59\x31\xdf\x40\x9c\x60\x61\x06\xb9\x2f\x62\x40\x80\x76\xcb\x67"
+ 	"\x4a\xb5\x59\x56\x69\x17\x07\xfa\xf9\x4c\xbd\x6c\x37\x7a\x46\x7d"
+@@ -815,42 +815,66 @@ static const struct akcipher_testvec pkcs1pad_rsa_tv_template[] = {
+ 	"\x9e\x49\x63\x6e\x02\xc1\xc9\x3a\x9b\xa5\x22\x1b\x07\x95\xd6\x10"
+ 	"\x02\x50\xfd\xfd\xd1\x9b\xbe\xab\xc2\xc0\x74\xd7\xec\x00\xfb\x11"
+ 	"\x71\xcb\x7a\xdc\x81\x79\x9f\x86\x68\x46\x63\x82\x4d\xb7\xf1\xe6"
+-	"\x16\x6f\x42\x63\xf4\x94\xa0\xca\x33\xcc\x75\x13\x02\x82\x01\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+-	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x01"
+-	"\x02\x82\x01\x00\x62\xb5\x60\x31\x4f\x3f\x66\x16\xc1\x60\xac\x47"
+-	"\x2a\xff\x6b\x69\x00\x4a\xb2\x5c\xe1\x50\xb9\x18\x74\xa8\xe4\xdc"
+-	"\xa8\xec\xcd\x30\xbb\xc1\xc6\xe3\xc6\xac\x20\x2a\x3e\x5e\x8b\x12"
+-	"\xe6\x82\x08\x09\x38\x0b\xab\x7c\xb3\xcc\x9c\xce\x97\x67\xdd\xef"
+-	"\x95\x40\x4e\x92\xe2\x44\xe9\x1d\xc1\x14\xfd\xa9\xb1\xdc\x71\x9c"
+-	"\x46\x21\xbd\x58\x88\x6e\x22\x15\x56\xc1\xef\xe0\xc9\x8d\xe5\x80"
+-	"\x3e\xda\x7e\x93\x0f\x52\xf6\xf5\xc1\x91\x90\x9e\x42\x49\x4f\x8d"
+-	"\x9c\xba\x38\x83\xe9\x33\xc2\x50\x4f\xec\xc2\xf0\xa8\xb7\x6e\x28"
+-	"\x25\x56\x6b\x62\x67\xfe\x08\xf1\x56\xe5\x6f\x0e\x99\xf1\xe5\x95"
+-	"\x7b\xef\xeb\x0a\x2c\x92\x97\x57\x23\x33\x36\x07\xdd\xfb\xae\xf1"
+-	"\xb1\xd8\x33\xb7\x96\x71\x42\x36\xc5\xa4\xa9\x19\x4b\x1b\x52\x4c"
+-	"\x50\x69\x91\xf0\x0e\xfa\x80\x37\x4b\xb5\xd0\x2f\xb7\x44\x0d\xd4"
+-	"\xf8\x39\x8d\xab\x71\x67\x59\x05\x88\x3d\xeb\x48\x48\x33\x88\x4e"
+-	"\xfe\xf8\x27\x1b\xd6\x55\x60\x5e\x48\xb7\x6d\x9a\xa8\x37\xf9\x7a"
+-	"\xde\x1b\xcd\x5d\x1a\x30\xd4\xe9\x9e\x5b\x3c\x15\xf8\x9c\x1f\xda"
+-	"\xd1\x86\x48\x55\xce\x83\xee\x8e\x51\xc7\xde\x32\x12\x47\x7d\x46"
+-	"\xb8\x35\xdf\x41\x02\x01\x00\x02\x01\x00\x02\x01\x00\x02\x01\x00"
+-	"\x02\x01\x00",
+-	.key_len = 803,
++	"\x16\x6f\x42\x63\xf4\x94\xa0\xca\x33\xcc\x75\x13\x02\x03\x01\x00"
++	"\x01\x02\x82\x01\x00\x62\xb5\x60\x31\x4f\x3f\x66\x16\xc1\x60\xac"
++	"\x47\x2a\xff\x6b\x69\x00\x4a\xb2\x5c\xe1\x50\xb9\x18\x74\xa8\xe4"
++	"\xdc\xa8\xec\xcd\x30\xbb\xc1\xc6\xe3\xc6\xac\x20\x2a\x3e\x5e\x8b"
++	"\x12\xe6\x82\x08\x09\x38\x0b\xab\x7c\xb3\xcc\x9c\xce\x97\x67\xdd"
++	"\xef\x95\x40\x4e\x92\xe2\x44\xe9\x1d\xc1\x14\xfd\xa9\xb1\xdc\x71"
++	"\x9c\x46\x21\xbd\x58\x88\x6e\x22\x15\x56\xc1\xef\xe0\xc9\x8d\xe5"
++	"\x80\x3e\xda\x7e\x93\x0f\x52\xf6\xf5\xc1\x91\x90\x9e\x42\x49\x4f"
++	"\x8d\x9c\xba\x38\x83\xe9\x33\xc2\x50\x4f\xec\xc2\xf0\xa8\xb7\x6e"
++	"\x28\x25\x56\x6b\x62\x67\xfe\x08\xf1\x56\xe5\x6f\x0e\x99\xf1\xe5"
++	"\x95\x7b\xef\xeb\x0a\x2c\x92\x97\x57\x23\x33\x36\x07\xdd\xfb\xae"
++	"\xf1\xb1\xd8\x33\xb7\x96\x71\x42\x36\xc5\xa4\xa9\x19\x4b\x1b\x52"
++	"\x4c\x50\x69\x91\xf0\x0e\xfa\x80\x37\x4b\xb5\xd0\x2f\xb7\x44\x0d"
++	"\xd4\xf8\x39\x8d\xab\x71\x67\x59\x05\x88\x3d\xeb\x48\x48\x33\x88"
++	"\x4e\xfe\xf8\x27\x1b\xd6\x55\x60\x5e\x48\xb7\x6d\x9a\xa8\x37\xf9"
++	"\x7a\xde\x1b\xcd\x5d\x1a\x30\xd4\xe9\x9e\x5b\x3c\x15\xf8\x9c\x1f"
++	"\xda\xd1\x86\x48\x55\xce\x83\xee\x8e\x51\xc7\xde\x32\x12\x47\x7d"
++	"\x46\xb8\x35\xdf\x41\x02\x81\x81\x00\xe4\x4c\xae\xde\x16\xfd\x9f"
++	"\x83\x55\x5b\x84\x4a\xcf\x1c\xf1\x37\x95\xad\xca\x29\x7f\x2d\x6e"
++	"\x32\x81\xa4\x2b\x26\x14\x96\x1d\x40\x05\xec\x0c\xaf\x3f\x2c\x6f"
++	"\x2c\xe8\xbf\x1d\xee\xd0\xb3\xef\x7c\x5b\x9e\x88\x4f\x2a\x8b\x0e"
++	"\x4a\xbd\xb7\x8c\xfa\x10\x0e\x3b\xda\x68\xad\x41\x2b\xe4\x96\xfa"
++	"\x7f\x80\x52\x5f\x07\x9f\x0e\x3b\x5e\x96\x45\x1a\x13\x2b\x94\xce"
++	"\x1f\x07\x69\x85\x35\xfc\x69\x63\x5b\xf8\xf8\x3f\xce\x9d\x40\x1e"
++	"\x7c\xad\xfb\x9e\xce\xe0\x01\xf8\xef\x59\x5d\xdc\x00\x79\xab\x8a"
++	"\x3f\x80\xa2\x76\x32\x94\xa9\xea\x65\x02\x81\x81\x00\xf1\x38\x60"
++	"\x90\x0d\x0c\x2e\x3d\x34\xe5\x90\xea\x21\x43\x1f\x68\x63\x16\x7b"
++	"\x25\x8d\xde\x82\x2b\x52\xf8\xa3\xfd\x0f\x39\xe7\xe9\x5e\x32\x75"
++	"\x15\x7d\xd0\xc9\xce\x06\xe5\xfb\xa9\xcb\x22\xe5\xdb\x49\x09\xf2"
++	"\xe6\xb7\xa5\xa7\x75\x2e\x91\x2d\x2b\x5d\xf1\x48\x61\x45\x43\xd7"
++	"\xbd\xfc\x11\x73\xb5\x11\x9f\xb2\x18\x3a\x6f\x36\xa7\xc2\xd3\x18"
++	"\x4d\xf0\xc5\x1f\x70\x8c\x9b\xc5\x1d\x95\xa8\x5a\x9e\x8c\xb1\x4b"
++	"\x6a\x2a\x84\x76\x2c\xd8\x4f\x47\xb0\x81\x84\x02\x45\xf0\x85\xf8"
++	"\x0c\x6d\xa7\x0c\x4d\x2c\xb2\x5b\x81\x70\xfd\x6e\x17\x02\x81\x81"
++	"\x00\x8d\x07\xc5\xfa\x92\x4f\x48\xcb\xd3\xdd\xfe\x02\x4c\xa1\x7f"
++	"\x6d\xab\xfc\x38\xe7\x9b\x95\xcf\xfe\x49\x51\xc6\x09\xf7\x2b\xa8"
++	"\x94\x15\x54\x75\x9d\x88\xb4\x05\x55\xc3\xcd\xd4\x4a\xe4\x08\x53"
++	"\xc8\x09\xbd\x0c\x4d\x83\x65\x75\x85\xbc\x5e\xf8\x2a\xbd\xe2\x5d"
++	"\x1d\x16\x0e\xf9\x34\x89\x38\xaf\x34\x36\x6c\x2c\x22\x44\x22\x81"
++	"\x90\x73\xd9\xea\x3a\xaf\x70\x74\x48\x7c\xc6\xb5\xb0\xdc\xe5\xa9"
++	"\xa8\x76\x4b\xbc\xf7\x00\xf3\x4c\x22\x0f\x44\x62\x1d\x40\x0a\x57"
++	"\xe2\x5b\xdd\x7c\x7b\x9a\xad\xda\x70\x52\x21\x8a\x4c\xc2\xc3\x98"
++	"\x75\x02\x81\x81\x00\xed\x24\x5c\xa2\x21\x81\xa1\x0f\xa1\x2a\x33"
++	"\x0e\x49\xc7\x00\x60\x92\x51\x6e\x9d\x9b\xdc\x6d\x22\x04\x7e\xd6"
++	"\x51\x19\x9f\xf6\xe3\x91\x2c\x8f\xb8\xa2\x29\x19\xcc\x47\x31\xdf"
++	"\xf8\xab\xf0\xd2\x02\x83\xca\x99\x16\xc2\xe2\xc3\x3f\x4b\x99\x83"
++	"\xcb\x87\x9e\x86\x66\xc2\x3e\x91\x21\x80\x66\xf3\xd6\xc5\xcd\xb6"
++	"\xbb\x64\xef\x22\xcf\x48\x94\x58\xe7\x7e\xd5\x7c\x34\x1c\xb7\xa2"
++	"\xd0\x93\xe9\x9f\xb5\x11\x61\xd7\x5f\x37\x0f\x64\x52\x70\x11\x78"
++	"\xcc\x08\x77\xeb\xf8\x30\x1e\xb4\x9e\x1b\x4a\xc7\xa8\x33\x51\xe0"
++	"\xed\xdf\x53\xf6\xdf\x02\x81\x81\x00\x86\xd9\x4c\xee\x65\x61\xc1"
++	"\x19\xa9\xd5\x74\x9b\xd5\xca\xf6\x83\x2b\x06\xb4\x20\xfe\x45\x29"
++	"\xe8\xe3\xfa\xe1\x4f\x28\x8e\x63\x2f\x74\xc3\x3a\x5c\x9a\xf5\x9e"
++	"\x0e\x0d\xc5\xfe\xa0\x4c\x00\xce\x7b\xa4\x19\x17\x59\xaf\x13\x3a"
++	"\x03\x8f\x54\xf5\x60\x39\x2e\xd9\x06\xb3\x7c\xd6\x90\x06\x41\x77"
++	"\xf3\x93\xe1\x7a\x01\x41\xc1\x8f\xfe\x4c\x88\x39\xdb\xde\x71\x9e"
++	"\x58\xd1\x49\x50\x80\xb2\x5a\x4f\x69\x8b\xb8\xfe\x63\xd4\x42\x3d"
++	"\x37\x61\xa8\x4c\xff\xb6\x99\x4c\xf4\x51\xe0\x44\xaa\x69\x79\x3f"
++	"\x81\xa4\x61\x3d\x26\xe9\x04\x52\x64",
++	.key_len = 1193,
+ 	/*
+ 	 * m is SHA256 hash of following message:
+ 	 * "\x49\x41\xbe\x0a\x0c\xc9\xf6\x35\x51\xe4\x27\x56\x13\x71\x4b\xd0"
 -- 
 2.39.5
 
