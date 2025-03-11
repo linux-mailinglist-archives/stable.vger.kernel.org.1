@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F482A5C86B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03695A5C5ED
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7CB21888CEA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3C2189D6B4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FCA25F798;
-	Tue, 11 Mar 2025 15:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB61825C6ED;
+	Tue, 11 Mar 2025 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gI+hNc8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYcafrQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1AE25F78A;
-	Tue, 11 Mar 2025 15:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C12249F9;
+	Tue, 11 Mar 2025 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707514; cv=none; b=Ku8Oete+EFYUfg/CNFl80TZYG5zX3d2iSAOI9+is6K3pUo8J1zaTUTzgcbGLIM6VvDSGwUNv5UcZ3R4jkfB7NX3026LQKX1FUWfvtZV4yiS0jL5J2m9ia1b+s42bFvR5bBYKbhmCd5zvsVJNZsdvssATon/F03GCd2bHybKHY5E=
+	t=1741706155; cv=none; b=XBWTDTtiUMbQUYKJZFnYO/S995SAaQkUrFAY8cKDzB35ADYid10YAtSgOAUVA/M6M6XntqGZ2mmAWJgUtWhuLYxueU/p5W0zAPps9zEhcWWQGC+CMk3Cef8xSax0bo4SKLul250Bdlt5hNWT3t9cbaRqOUOJIB8fFg1AIE4nOfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707514; c=relaxed/simple;
-	bh=qVHgm5LDMoH4ntyK9wGhTJaanxvvrdUwkiCmN2ekzXw=;
+	s=arc-20240116; t=1741706155; c=relaxed/simple;
+	bh=xVtMNozGGbzaE3MdwYEl8Ys9KCOwX3mX2C2ctIAhZvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o67Ft/KKGvbORrOAytnGcE6iaDERRYG5U7P1yiMMHXjKRNB7z297tifknmRWR+u4hDSYRBObMDKghOwLdIvfOtFxYEWPpc2BZ++ya3ijekkU7DPAftp8gpMRy1fB8UnFTuTywPweUDD/oJMXmhZI570+boci1C8QBorCEhW2LUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gI+hNc8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC41C4CEE9;
-	Tue, 11 Mar 2025 15:38:33 +0000 (UTC)
+	 MIME-Version; b=ClQB89xWOWUBX0miAAkHe2YRipeyxwnD+aeBcWy+eeletZmtnS2HjpUe5lWr0GQYaIvL8SMRJcCCIXdpNdpyr9nB6K1pJPC9VwYgGdf8dNLPe0VSHx7Zcr9kxJhS7+BG6tkGwBVY65s5GGaMfjdntSLfY3MW8UmE9kgCtR2pGMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYcafrQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CE4C4CEE9;
+	Tue, 11 Mar 2025 15:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707514;
-	bh=qVHgm5LDMoH4ntyK9wGhTJaanxvvrdUwkiCmN2ekzXw=;
+	s=korg; t=1741706155;
+	bh=xVtMNozGGbzaE3MdwYEl8Ys9KCOwX3mX2C2ctIAhZvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gI+hNc8KPP0EFMUcz6cgL3hA5oPFFrG1aHHiRHG1CsquK4u453LcWj9lfu3LMLl5H
-	 Kz3m94AhwxSM3bCWbMqfo19q+fatvJ5k6qU/Mf++aN8CBnakljHsCl1atR1ezkX6o4
-	 32PnCDpIlAdS0Hh/H3eDbP6TDSZbZXPzPxJfq4O4=
+	b=jYcafrQJMN6Au0NNbYHRvbVs4RsZfV92PagmmMJRn/jVvVJXyQOJB/vbUIk9/PZdr
+	 RLEex/HAyGtl+lZQhC31NY/VNgJXBV0qFeERMqa5PwSgrX4NpwmTAw3HV+TmXtJS0I
+	 pJqwtmI+d/1ShIFfNQUMNztC1CzQgUjQSjv3IkJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 384/462] smb: client: Add check for next_buffer in receive_encrypted_standard()
-Date: Tue, 11 Mar 2025 16:00:50 +0100
-Message-ID: <20250311145813.516784294@linuxfoundation.org>
+	Hoku Ishibe <me@hokuishi.be>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 281/328] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
+Date: Tue, 11 Mar 2025 16:00:51 +0100
+Message-ID: <20250311145726.083634959@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Hoku Ishibe <me@hokuishi.be>
 
-[ Upstream commit 860ca5e50f73c2a1cef7eefc9d39d04e275417f7 ]
+commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
 
-Add check for the return value of cifs_buf_get() and cifs_small_buf_get()
-in receive_encrypted_standard() to prevent null pointer dereference.
+Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
+persistent humming noise when the power_save mode is enabled.
+This issue occurs when the codec enters power saving mode,
+leading to unwanted noise from the speakers.
 
-Fixes: eec04ea11969 ("smb: client: fix OOB in receive_encrypted_standard()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds the affected model (PCI ID 0x1028:0x0962) to the
+power_save denylist to ensure power_save is disabled by default,
+preventing power-off related noise issues.
+
+Steps to Reproduce
+1. Boot the system with `snd_hda_intel` loaded.
+2. Verify that `power_save` mode is enabled:
+```sh
+cat /sys/module/snd_hda_intel/parameters/power_save
+````
+output: 10 (default power save timeout)
+3. Wait for the power save timeout
+4. Observe a persistent humming noise from the speakers
+5. Disable `power_save` manually:
+```sh
+echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+````
+6. Confirm that the noise disappears immediately.
+
+This issue has been observed on my system, and this patch
+successfully eliminates the unwanted noise. If other users
+experience similar issues, additional reports would be helpful.
+
+Signed-off-by: Hoku Ishibe <me@hokuishi.be>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2ops.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index 68f93de2b1527..70a4d101b5428 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -4938,6 +4938,10 @@ receive_encrypted_standard(struct TCP_Server_Info *server,
- 			next_buffer = (char *)cifs_buf_get();
- 		else
- 			next_buffer = (char *)cifs_small_buf_get();
-+		if (!next_buffer) {
-+			cifs_server_dbg(VFS, "No memory for (large) SMB response\n");
-+			return -1;
-+		}
- 		memcpy(next_buffer, buf + next_cmd, pdu_length - next_cmd);
- 	}
- 
--- 
-2.39.5
-
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2246,6 +2246,8 @@ static struct snd_pci_quirk power_save_b
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
+ 	/* KONTRON SinglePC may cause a stall at runtime resume */
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
++	/* Dell ALC3271 */
++	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
+ 	{}
+ };
+ #endif /* CONFIG_PM */
 
 
 
