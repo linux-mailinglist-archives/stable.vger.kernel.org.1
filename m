@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-123606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD3DA5C615
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7558FA5C631
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:22:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F48B7A49F1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:20:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41D09188AD33
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372BB25E81B;
-	Tue, 11 Mar 2025 15:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43D4249F9;
+	Tue, 11 Mar 2025 15:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ce1FrcYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oi4Mr4lA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96D825E473;
-	Tue, 11 Mar 2025 15:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C13B25E818;
+	Tue, 11 Mar 2025 15:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706439; cv=none; b=drK8GUfJ/dLvXqzFFllemICj5f9QynxVudUB4ItdqONoqS7lqEB5SFIAoEXhkskS/6RCXS1vetUHIzU2z5qcY+6CpwR8nIQf1ON39u7y5x8SEThs0pEmnzeVypO1LBqDD0Q3QY52kYRzXkRxUao6hUamTe+f5s38g7W1U5W1K8Q=
+	t=1741706345; cv=none; b=FiOf0hJ8bs4YWTmSGiJs7JNGYM3nxLAlIjA2JrhAbyXdMtwcogFIFH8qA3mFcd+Uo0f0jF4Igpf1T+QKd1VArkMg18DVxAKOIRJfmXhfug4hNhxuC9xfxpyTwScckpmvZb7z1ZLM1ICH74wqu8XMbDfahDJST6I48hSNiKRBlKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706439; c=relaxed/simple;
-	bh=as8gJBDh5AsvZDHvWsjuXsp0TuqWFg5nZ5JZCb6QuCI=;
+	s=arc-20240116; t=1741706345; c=relaxed/simple;
+	bh=PxIMEXPdxXbpaqg8LxpCWR3rIbqw5WjISDVkjPy+M80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+Qr+aihpVMe8KuJnNTKJY/Nz3kxgn+6HbIf/vLJCP0Sr5bs/jaFG16FgZfrRd8kDbwM+7Y4Lff2ufCO8W04kTIBEp0yiqLjLJZF0UQNwfJstF5IxuRi1SArVYLTfTlpiEooHPv9D4leo8X9oVLZZAHAh+NLeMkxQitmlW/E+qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ce1FrcYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66680C4CEE9;
-	Tue, 11 Mar 2025 15:20:38 +0000 (UTC)
+	 MIME-Version; b=VIKMAdhrj9P9pblqipVYo0gSULc1/bLGwr0yM01lvg5hls7f+XZweuekX0T6VcGX+lEQl2TCYjrExrfLRDpO9D0tdxnwb4+mwY6wQq4AOwuz7iAMFhgB5aWew+QyBJ1RtTX/R2Esz5Z6MIyGComPCkWiojOn6Rfai9z2j6dINV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oi4Mr4lA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3041C4CEE9;
+	Tue, 11 Mar 2025 15:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706438;
-	bh=as8gJBDh5AsvZDHvWsjuXsp0TuqWFg5nZ5JZCb6QuCI=;
+	s=korg; t=1741706345;
+	bh=PxIMEXPdxXbpaqg8LxpCWR3rIbqw5WjISDVkjPy+M80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ce1FrcYM2SZC3FuUGKdBD+5vzodSUtQ9mI+S1Pw9kTCPedKPu5YyF+GwFiHpoL3fs
-	 vP6yA3WmYEiyDLJC3jhwTRDVLaEeNzX25KQJXd+3Mfw7+C5mLnuTkjgWzUtZKKadNf
-	 +zf2iaswOCRDo2xzGzy0FTKeoI5oG1sVJbLi1A0c=
+	b=Oi4Mr4lAwa74hwWAJ5LK07fqVNyUketq3bpFcJu8ZGdPKJ/JlOm7zoowLfEasbJhc
+	 7Dh1o6cS5LvUbOx1HdaFCnnKrgPOfgMGhkYezUJz0uhxLEQg04Bv6s2GcNBfxuPEFo
+	 r40J8LZVo/p6M0Md1i1ZBZOECX+PaCUSt+UjrRSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/462] drm/etnaviv: Fix page property being used for non writecombine buffers
-Date: Tue, 11 Mar 2025 15:54:34 +0100
-Message-ID: <20250311145758.681342616@linuxfoundation.org>
+Subject: [PATCH 5.10 009/462] drm/amdgpu: Fix potential NULL pointer dereference in atomctrl_get_smc_sclk_range_table
+Date: Tue, 11 Mar 2025 15:54:35 +0100
+Message-ID: <20250311145758.720145614@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -66,57 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sui Jingfeng <sui.jingfeng@linux.dev>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-[ Upstream commit 834f304192834d6f0941954f3277ae0ba11a9a86 ]
+[ Upstream commit 357445e28ff004d7f10967aa93ddb4bffa5c3688 ]
 
-In the etnaviv_gem_vmap_impl() function, the driver vmap whatever buffers
-with write combine(WC) page property, this is incorrect. Cached buffers
-should be mapped with the cached page property and uncached buffers should
-be mapped with the uncached page property.
+The function atomctrl_get_smc_sclk_range_table() does not check the return
+value of smu_atom_get_data_table(). If smu_atom_get_data_table() fails to
+retrieve SMU_Info table, it returns NULL which is later dereferenced.
 
-Fixes: a0a5ab3e99b8 ("drm/etnaviv: call correct function when trying to vmap a DMABUF")
-Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+In practice this should never happen as this code only gets called
+on polaris chips and the vbios data table will always be present on
+those chips.
+
+Fixes: a23eefa2f461 ("drm/amd/powerplay: enable dpm for baffin.")
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gem.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-index aa372982335e9..bdd3564634e79 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-@@ -351,6 +351,7 @@ void *etnaviv_gem_vmap(struct drm_gem_object *obj)
- static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
- {
- 	struct page **pages;
-+	pgprot_t prot;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+index 165af862d0542..04dbd9f89a45d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+@@ -1370,6 +1370,8 @@ int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr *hwmgr, struct pp_atom_ctr
+ 			GetIndexIntoMasterTable(DATA, SMU_Info),
+ 			&size, &frev, &crev);
  
- 	lockdep_assert_held(&obj->lock);
++	if (!psmu_info)
++		return -EINVAL;
  
-@@ -358,8 +359,19 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
- 	if (IS_ERR(pages))
- 		return NULL;
- 
--	return vmap(pages, obj->base.size >> PAGE_SHIFT,
--			VM_MAP, pgprot_writecombine(PAGE_KERNEL));
-+	switch (obj->flags & ETNA_BO_CACHE_MASK) {
-+	case ETNA_BO_CACHED:
-+		prot = PAGE_KERNEL;
-+		break;
-+	case ETNA_BO_UNCACHED:
-+		prot = pgprot_noncached(PAGE_KERNEL);
-+		break;
-+	case ETNA_BO_WC:
-+	default:
-+		prot = pgprot_writecombine(PAGE_KERNEL);
-+	}
-+
-+	return vmap(pages, obj->base.size >> PAGE_SHIFT, VM_MAP, prot);
- }
- 
- static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
+ 	for (i = 0; i < psmu_info->ucSclkEntryNum; i++) {
+ 		table->entry[i].ucVco_setting = psmu_info->asSclkFcwRangeEntry[i].ucVco_setting;
 -- 
 2.39.5
 
