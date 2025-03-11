@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABC0A5C604
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB50A5C87C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5C0D189E01B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1268C3BAAEE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0056025E83D;
-	Tue, 11 Mar 2025 15:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B957B25F790;
+	Tue, 11 Mar 2025 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoFLoahm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJhNH5ok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B344C25E83B;
-	Tue, 11 Mar 2025 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A4D25C6F9;
+	Tue, 11 Mar 2025 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706216; cv=none; b=bq7UaDEt+CbbH811ryPKyoO6CnfrGfaswLVrxBZJcol4DGmDVTMCJsxr6BrmT8VPjCqdKTRtSMUGQdbjvMGOK9lkYEKwOA31QqTyzr9oQH8pImIbTTAjbclIE1yutudl/qDst35CmWeZ0oK1mOW7RnVcLWizCevLV0RW13Tut/c=
+	t=1741707489; cv=none; b=es8+txT99ezO7RbKBTj95SP7+cNMDkErKi560X+Lk4NuIuvpmOMaNGZSXA1JWw6jRzMR4aPMYC9esBkiSgxMFisv9q8mHpk7GjR0wiwUhVEX4uhqMQ7lCGBZj4QSDcJUoUnduJsVcgJ9baAtH+D+3IXPfHpFbibvhlYqLx0vG4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706216; c=relaxed/simple;
-	bh=2rOzjLWupE/+qGhGqGgEPmt+o6VKbyh8d7/z19yyLbg=;
+	s=arc-20240116; t=1741707489; c=relaxed/simple;
+	bh=BbaLI/Wdzda8dR+AhNiFHrGMWyBvJI7HdvxxgXx/8So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IRbWCAcsaHqLs/cP5WCa1qjWfp3HeNZizjBvQkPIOwt0LOx1NrDXprHVJdhcYP6Pwut4+cXsqDjNTLKOnSyMXrQ7T1ZipTsChClOEnfqLdj0uNHFrLn2ioqheEXAbOVS2qH2/c9pHvCQxJZyS9THd8SFkL9uw+wIRRVD5v1jJkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoFLoahm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8BDC4CEED;
-	Tue, 11 Mar 2025 15:16:56 +0000 (UTC)
+	 MIME-Version; b=agh7SVvzHttwvHNiKZvchmCf9XplvjrUcUbHRx0fswHnjB875z0e5AuAsUgpz7rjjAJrj3RTjRkx3A2K265IAJR9YopSbmtDgiXmdN/5jGBmaziusQOUH4VFfhpqXWI98o2mFhgtVGwmnQdjfkl+ZAQCDcAjPhsDAk4dJr1pU4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJhNH5ok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B0CC4CEE9;
+	Tue, 11 Mar 2025 15:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706216;
-	bh=2rOzjLWupE/+qGhGqGgEPmt+o6VKbyh8d7/z19yyLbg=;
+	s=korg; t=1741707489;
+	bh=BbaLI/Wdzda8dR+AhNiFHrGMWyBvJI7HdvxxgXx/8So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zoFLoahm+a2apKXfdRW2uC6JczY6GueouD0FfwMIRqHNAkIFqBQCpkVk4m9liHmGJ
-	 VjcHBmoXqCY9TLrcAT0tSuCafODStYCXmEAojATnu/ktuHSfqSs2MdP/AK5SzPA1PE
-	 rBm/j/QEi+GE1mjoPKe7Qdcvospv+mJIbLuqVcMM=
+	b=rJhNH5ok7NGVm4/GX4ZgaFUBxwwKrMnXTfe5lZNJzfpF8b2D6vQfZsqsX6Y9RzIUx
+	 WFAhFdsOmfHn2aalDVrfeYbw6AlkuotIK86nmtmWXeaINLJZbTd2oxhOND/9c83Hie
+	 2qhz4x4KT7q4xZVaFpDfAVosu3k1Nmo/BypKAIoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinghuo Chen <xinghuo.chen@foxmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 302/328] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
+Subject: [PATCH 5.10 406/462] HID: google: fix unused variable warning under !CONFIG_ACPI
 Date: Tue, 11 Mar 2025 16:01:12 +0100
-Message-ID: <20250311145726.909443738@linuxfoundation.org>
+Message-ID: <20250311145814.371786690@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinghuo Chen <xinghuo.chen@foxmail.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
+[ Upstream commit 4bd0725c09f377ffaf22b834241f6c050742e4fc ]
 
-The devm_memremap() function returns error pointers on error,
-it doesn't return NULL.
+As reported by the kernel test robot, the following warning occurs:
 
-Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
-Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>> drivers/hid/hid-google-hammer.c:261:36: warning: 'cbas_ec_acpi_ids' defined but not used [-Wunused-const-variable=]
+     261 | static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+         |                                    ^~~~~~~~~~~~~~~~
+
+The 'cbas_ec_acpi_ids' array is only used when CONFIG_ACPI is enabled.
+Wrapping its definition and 'MODULE_DEVICE_TABLE' in '#ifdef CONFIG_ACPI'
+prevents a compiler warning when ACPI is disabled.
+
+Fixes: eb1aac4c8744f75 ("HID: google: add support tablet mode switch for Whiskers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501201141.jctFH5eB-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-google-hammer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index f5d3cf86753f7..559a73bab51e8 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -719,7 +719,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
- 			goto out;
- 		}
+diff --git a/drivers/hid/hid-google-hammer.c b/drivers/hid/hid-google-hammer.c
+index 2f4c5b45d4096..b0df025c6abaf 100644
+--- a/drivers/hid/hid-google-hammer.c
++++ b/drivers/hid/hid-google-hammer.c
+@@ -266,11 +266,13 @@ static int cbas_ec_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
--		if (!ctx->pcc_comm_addr) {
-+		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
- 			dev_err(&pdev->dev,
- 				"Failed to ioremap PCC comm region\n");
- 			rc = -ENOMEM;
++#ifdef CONFIG_ACPI
+ static const struct acpi_device_id cbas_ec_acpi_ids[] = {
+ 	{ "GOOG000B", 0 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, cbas_ec_acpi_ids);
++#endif
+ 
+ static struct platform_driver cbas_ec_driver = {
+ 	.probe = cbas_ec_probe,
 -- 
 2.39.5
 
