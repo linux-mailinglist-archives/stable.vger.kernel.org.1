@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61E9A5C58F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCF4A5C82A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8DC174C2D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C6103BD882
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D703C25DD0F;
-	Tue, 11 Mar 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0B525E83E;
+	Tue, 11 Mar 2025 15:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNI78DNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liW96ulZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948882571D8;
-	Tue, 11 Mar 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9950C25B691;
+	Tue, 11 Mar 2025 15:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706070; cv=none; b=h6hIf8ufxCE9SSnk8WWH4xHKau4N1FVbGd872NTFzuBW494rmym6/M75rplPFwnvu8gtxAY6ZmGU2/ZpmTE0MhTaScIt1qf7Q/cVJToyHyzOc4kSwsY4NOZZ37LyftYBSEqHhPBw4lbnq86XN4TOilsdIBUMAvpo2ppyyctFj7Q=
+	t=1741707283; cv=none; b=YLTEqfKBZWZQZBwzNY58zwxe/8oW0m0Eo42j7/laWyPTS6ml/2qJzVIq5BkZrVpPno1JUdRS6hGaqSDBv+trJ5Kq3LWjZxy1DDApb0gD9s9lhPncrF9niXqXjpCJE/XdbrRSIWkn1Ll6i5SAdy9yZ0EqOiPk/6L/ishwrAfujQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706070; c=relaxed/simple;
-	bh=/eJzzbZ6jnZA2mPtVsS0kUVw94qeJDcVEdW28U8pxSw=;
+	s=arc-20240116; t=1741707283; c=relaxed/simple;
+	bh=CcwXLYiAJqiSYy3VESWZRp7j2L1bjKvcZ4d91Fc+810=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+ClN4TUY5m9AEBMMWOUuplr/yXsiW0iN2WCoVLuWXRi2PsgW7Fx2F+z08mW1kg/6Q1+YU4bn4lv7wWaWwjcqUv5xVauDGsUyiSCoqIoD+oWzXvaAuBYLBo/5l0YBkWq7oNgTCbwf8/fSVKyV3py5fIHqMXJN4d+lcnKp7yg6oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNI78DNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E11C4CEE9;
-	Tue, 11 Mar 2025 15:14:29 +0000 (UTC)
+	 MIME-Version; b=oRiAwJq+Z/hXTg5XJFhg2iH/A9UrjddNr58fwAuJIiJyvhO2orooR7+SE0xGvLThSbNtbEaKRJrDB9KQeqMeqjIZHnC1s+nIFBUpUzh9DCB0UuUJRFKJMhJA4znu7zCi9LXokovmoVp57Ex5Lrga1Qw4giA7F2YL8LyRzH/EiFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liW96ulZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3AAC4CEE9;
+	Tue, 11 Mar 2025 15:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706070;
-	bh=/eJzzbZ6jnZA2mPtVsS0kUVw94qeJDcVEdW28U8pxSw=;
+	s=korg; t=1741707283;
+	bh=CcwXLYiAJqiSYy3VESWZRp7j2L1bjKvcZ4d91Fc+810=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNI78DNnvcS1M1A3yk9EjhZxt+c4B3eKVSXv7EsJd8R2zfqFHnmAuxz6rf+gj2Ok3
-	 2O+R73OkdaeHmHlX6/JJkoJl2sVoEIcjtlqwwzwG1DHuACyvOzGgqJlQxsNPJk7zdf
-	 CVBs5yfMgZeVLge9AXCN808LdleKCTjYhABuzvVU=
+	b=liW96ulZT0nT/J7RINQ5579unUArJUGbrkLxzFdSdjGj2tvT9nWuIvPZU8vxT+2ZJ
+	 nYzhCoAMM3j8/3WAsj2iYzk77gPVjbdevczxdofqtfq71OwWrAirCAnHg5/Eb3rvYS
+	 wBDMeHEvXtQ+yWoLwF0qtbByF5zJRZu6RGa4ESTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Brad Spengler <spender@grsecurity.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 232/328] crypto: testmgr - some more fixes to RSA test vectors
+Subject: [PATCH 5.10 336/462] gtp: Suppress list corruption splat in gtp_net_exit_batch_rtnl().
 Date: Tue, 11 Mar 2025 16:00:02 +0100
-Message-ID: <20250311145724.133250231@linuxfoundation.org>
+Message-ID: <20250311145811.641378495@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 9d2bb9a74b2877f100637d6ab5685bcd33c69d44 ]
+[ Upstream commit 4ccacf86491d33d2486b62d4d44864d7101b299d ]
 
-Two more fixes:
+Brad Spengler reported the list_del() corruption splat in
+gtp_net_exit_batch_rtnl(). [0]
 
-  * some test vectors in commit 79e6e2f3f3ff ("crypto: testmgr - populate
-    RSA CRT parameters in RSA test vectors") had misplaced commas, which
-    break the test and trigger KASAN warnings at least on x86-64
+Commit eb28fd76c0a0 ("gtp: Destroy device along with udp socket's netns
+dismantle.") added the for_each_netdev() loop in gtp_net_exit_batch_rtnl()
+to destroy devices in each netns as done in geneve and ip tunnels.
 
-  * pkcs1pad test vector did not have its CRT parameters
+However, this could trigger ->dellink() twice for the same device during
+->exit_batch_rtnl().
 
-Fixes: 79e6e2f3f3ff ("crypto: testmgr - populate RSA CRT parameters in RSA test vectors")
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Say we have two netns A & B and gtp device B that resides in netns B but
+whose UDP socket is in netns A.
+
+  1. cleanup_net() processes netns A and then B.
+
+  2. gtp_net_exit_batch_rtnl() finds the device B while iterating
+     netns A's gn->gtp_dev_list and calls ->dellink().
+
+  [ device B is not yet unlinked from netns B
+    as unregister_netdevice_many() has not been called. ]
+
+  3. gtp_net_exit_batch_rtnl() finds the device B while iterating
+     netns B's for_each_netdev() and calls ->dellink().
+
+gtp_dellink() cleans up the device's hash table, unlinks the dev from
+gn->gtp_dev_list, and calls unregister_netdevice_queue().
+
+Basically, calling gtp_dellink() multiple times is fine unless
+CONFIG_DEBUG_LIST is enabled.
+
+Let's remove for_each_netdev() in gtp_net_exit_batch_rtnl() and
+delegate the destruction to default_device_exit_batch() as done
+in bareudp.
+
+[0]:
+list_del corruption, ffff8880aaa62c00->next (autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc00/0x1000 [slab object]) is LIST_POISON1 (ffffffffffffff02) (prev is 0xffffffffffffff04)
+kernel BUG at lib/list_debug.c:58!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 UID: 0 PID: 1804 Comm: kworker/u8:7 Tainted: G                T   6.12.13-grsec-full-20250211091339 #1
+Tainted: [T]=RANDSTRUCT
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: netns cleanup_net
+RIP: 0010:[<ffffffff84947381>] __list_del_entry_valid_or_report+0x141/0x200 lib/list_debug.c:58
+Code: c2 76 91 31 c0 e8 9f b1 f7 fc 0f 0b 4d 89 f0 48 c7 c1 02 ff ff ff 48 89 ea 48 89 ee 48 c7 c7 e0 c2 76 91 31 c0 e8 7f b1 f7 fc <0f> 0b 4d 89 e8 48 c7 c1 04 ff ff ff 48 89 ea 48 89 ee 48 c7 c7 60
+RSP: 0018:fffffe8040b4fbd0 EFLAGS: 00010283
+RAX: 00000000000000cc RBX: dffffc0000000000 RCX: ffffffff818c4054
+RDX: ffffffff84947381 RSI: ffffffff818d1512 RDI: 0000000000000000
+RBP: ffff8880aaa62c00 R08: 0000000000000001 R09: fffffbd008169f32
+R10: fffffe8040b4f997 R11: 0000000000000001 R12: a1988d84f24943e4
+R13: ffffffffffffff02 R14: ffffffffffffff04 R15: ffff8880aaa62c08
+RBX: kasan shadow of 0x0
+RCX: __wake_up_klogd.part.0+0x74/0xe0 kernel/printk/printk.c:4554
+RDX: __list_del_entry_valid_or_report+0x141/0x200 lib/list_debug.c:58
+RSI: vprintk+0x72/0x100 kernel/printk/printk_safe.c:71
+RBP: autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc00/0x1000 [slab object]
+RSP: process kstack fffffe8040b4fbd0+0x7bd0/0x8000 [kworker/u8:7+netns 1804 ]
+R09: kasan shadow of process kstack fffffe8040b4f990+0x7990/0x8000 [kworker/u8:7+netns 1804 ]
+R10: process kstack fffffe8040b4f997+0x7997/0x8000 [kworker/u8:7+netns 1804 ]
+R15: autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc08/0x1000 [slab object]
+FS:  0000000000000000(0000) GS:ffff888116000000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000748f5372c000 CR3: 0000000015408000 CR4: 00000000003406f0 shadow CR4: 00000000003406f0
+Stack:
+ 0000000000000000 ffffffff8a0c35e7 ffffffff8a0c3603 ffff8880aaa62c00
+ ffff8880aaa62c00 0000000000000004 ffff88811145311c 0000000000000005
+ 0000000000000001 ffff8880aaa62000 fffffe8040b4fd40 ffffffff8a0c360d
+Call Trace:
+ <TASK>
+ [<ffffffff8a0c360d>] __list_del_entry_valid include/linux/list.h:131 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] __list_del_entry include/linux/list.h:248 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] list_del include/linux/list.h:262 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] gtp_dellink+0x16d/0x360 drivers/net/gtp.c:1557 fffffe8040b4fc28
+ [<ffffffff8a0d0404>] gtp_net_exit_batch_rtnl+0x124/0x2c0 drivers/net/gtp.c:2495 fffffe8040b4fc88
+ [<ffffffff8e705b24>] cleanup_net+0x5a4/0xbe0 net/core/net_namespace.c:635 fffffe8040b4fcd0
+ [<ffffffff81754c97>] process_one_work+0xbd7/0x2160 kernel/workqueue.c:3326 fffffe8040b4fd88
+ [<ffffffff81757195>] process_scheduled_works kernel/workqueue.c:3407 [inline] fffffe8040b4fec0
+ [<ffffffff81757195>] worker_thread+0x6b5/0xfa0 kernel/workqueue.c:3488 fffffe8040b4fec0
+ [<ffffffff817782a0>] kthread+0x360/0x4c0 kernel/kthread.c:397 fffffe8040b4ff78
+ [<ffffffff814d8594>] ret_from_fork+0x74/0xe0 arch/x86/kernel/process.c:172 fffffe8040b4ffb8
+ [<ffffffff8110f509>] ret_from_fork_asm+0x29/0xc0 arch/x86/entry/entry_64.S:399 fffffe8040b4ffe8
+ </TASK>
+Modules linked in:
+
+Fixes: eb28fd76c0a0 ("gtp: Destroy device along with udp socket's netns dismantle.")
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250217203705.40342-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/testmgr.h | 102 +++++++++++++++++++++++++++++------------------
- 1 file changed, 63 insertions(+), 39 deletions(-)
+ drivers/net/gtp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index d57c911649180..601cbee29cca9 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -265,7 +265,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
- 	"\x61\xAD\xBD\x3A\x8A\x7E\x99\x1C\x5C\x05\x56\xA9\x4C\x31\x46\xA7"
- 	"\xF9\x80\x3F\x8F\x6F\x8A\xE3\x42\xE9\x31\xFD\x8A\xE4\x7A\x22\x0D"
- 	"\x1B\x99\xA4\x95\x84\x98\x07\xFE\x39\xF9\x24\x5A\x98\x36\xDA\x3D"
--	"\x02\x41", /* coefficient - integer of 65 bytes */
-+	"\x02\x41" /* coefficient - integer of 65 bytes */
- 	"\x00\xB0\x6C\x4F\xDA\xBB\x63\x01\x19\x8D\x26\x5B\xDB\xAE\x94\x23"
- 	"\xB3\x80\xF2\x71\xF7\x34\x53\x88\x50\x93\x07\x7F\xCD\x39\xE2\x11"
- 	"\x9F\xC9\x86\x32\x15\x4F\x58\x83\xB1\x67\xA9\x67\xBF\x40\x2B\x4E"
-@@ -362,7 +362,7 @@ static const struct akcipher_testvec rsa_tv_template[] = {
- 	"\x6A\x37\x3B\x86\x6C\x51\x37\x5B\x1D\x79\xF2\xA3\x43\x10\xC6\xA7"
- 	"\x21\x79\x6D\xF9\xE9\x04\x6A\xE8\x32\xFF\xAE\xFD\x1C\x7B\x8C\x29"
- 	"\x13\xA3\x0C\xB2\xAD\xEC\x6C\x0F\x8D\x27\x12\x7B\x48\xB2\xDB\x31"
--	"\x02\x81\x81", /* coefficient - integer of 129 bytes */
-+	"\x02\x81\x81" /* coefficient - integer of 129 bytes */
- 	"\x00\x8D\x1B\x05\xCA\x24\x1F\x0C\x53\x19\x52\x74\x63\x21\xFA\x78"
- 	"\x46\x79\xAF\x5C\xDE\x30\xA4\x6C\x20\x38\xE6\x97\x39\xB8\x7A\x70"
- 	"\x0D\x8B\x6C\x6D\x13\x74\xD5\x1C\xDE\xA9\xF4\x60\x37\xFE\x68\x77"
-@@ -799,7 +799,7 @@ static const struct akcipher_testvec ecrdsa_tv_template[] = {
- static const struct akcipher_testvec pkcs1pad_rsa_tv_template[] = {
- 	{
- 	.key =
--	"\x30\x82\x03\x1f\x02\x01\x00\x02\x82\x01\x01\x00\xd7\x1e\x77\x82"
-+	"\x30\x82\x04\xa5\x02\x01\x00\x02\x82\x01\x01\x00\xd7\x1e\x77\x82"
- 	"\x8c\x92\x31\xe7\x69\x02\xa2\xd5\x5c\x78\xde\xa2\x0c\x8f\xfe\x28"
- 	"\x59\x31\xdf\x40\x9c\x60\x61\x06\xb9\x2f\x62\x40\x80\x76\xcb\x67"
- 	"\x4a\xb5\x59\x56\x69\x17\x07\xfa\xf9\x4c\xbd\x6c\x37\x7a\x46\x7d"
-@@ -815,42 +815,66 @@ static const struct akcipher_testvec pkcs1pad_rsa_tv_template[] = {
- 	"\x9e\x49\x63\x6e\x02\xc1\xc9\x3a\x9b\xa5\x22\x1b\x07\x95\xd6\x10"
- 	"\x02\x50\xfd\xfd\xd1\x9b\xbe\xab\xc2\xc0\x74\xd7\xec\x00\xfb\x11"
- 	"\x71\xcb\x7a\xdc\x81\x79\x9f\x86\x68\x46\x63\x82\x4d\xb7\xf1\xe6"
--	"\x16\x6f\x42\x63\xf4\x94\xa0\xca\x33\xcc\x75\x13\x02\x82\x01\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
--	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x01"
--	"\x02\x82\x01\x00\x62\xb5\x60\x31\x4f\x3f\x66\x16\xc1\x60\xac\x47"
--	"\x2a\xff\x6b\x69\x00\x4a\xb2\x5c\xe1\x50\xb9\x18\x74\xa8\xe4\xdc"
--	"\xa8\xec\xcd\x30\xbb\xc1\xc6\xe3\xc6\xac\x20\x2a\x3e\x5e\x8b\x12"
--	"\xe6\x82\x08\x09\x38\x0b\xab\x7c\xb3\xcc\x9c\xce\x97\x67\xdd\xef"
--	"\x95\x40\x4e\x92\xe2\x44\xe9\x1d\xc1\x14\xfd\xa9\xb1\xdc\x71\x9c"
--	"\x46\x21\xbd\x58\x88\x6e\x22\x15\x56\xc1\xef\xe0\xc9\x8d\xe5\x80"
--	"\x3e\xda\x7e\x93\x0f\x52\xf6\xf5\xc1\x91\x90\x9e\x42\x49\x4f\x8d"
--	"\x9c\xba\x38\x83\xe9\x33\xc2\x50\x4f\xec\xc2\xf0\xa8\xb7\x6e\x28"
--	"\x25\x56\x6b\x62\x67\xfe\x08\xf1\x56\xe5\x6f\x0e\x99\xf1\xe5\x95"
--	"\x7b\xef\xeb\x0a\x2c\x92\x97\x57\x23\x33\x36\x07\xdd\xfb\xae\xf1"
--	"\xb1\xd8\x33\xb7\x96\x71\x42\x36\xc5\xa4\xa9\x19\x4b\x1b\x52\x4c"
--	"\x50\x69\x91\xf0\x0e\xfa\x80\x37\x4b\xb5\xd0\x2f\xb7\x44\x0d\xd4"
--	"\xf8\x39\x8d\xab\x71\x67\x59\x05\x88\x3d\xeb\x48\x48\x33\x88\x4e"
--	"\xfe\xf8\x27\x1b\xd6\x55\x60\x5e\x48\xb7\x6d\x9a\xa8\x37\xf9\x7a"
--	"\xde\x1b\xcd\x5d\x1a\x30\xd4\xe9\x9e\x5b\x3c\x15\xf8\x9c\x1f\xda"
--	"\xd1\x86\x48\x55\xce\x83\xee\x8e\x51\xc7\xde\x32\x12\x47\x7d\x46"
--	"\xb8\x35\xdf\x41\x02\x01\x00\x02\x01\x00\x02\x01\x00\x02\x01\x00"
--	"\x02\x01\x00",
--	.key_len = 803,
-+	"\x16\x6f\x42\x63\xf4\x94\xa0\xca\x33\xcc\x75\x13\x02\x03\x01\x00"
-+	"\x01\x02\x82\x01\x00\x62\xb5\x60\x31\x4f\x3f\x66\x16\xc1\x60\xac"
-+	"\x47\x2a\xff\x6b\x69\x00\x4a\xb2\x5c\xe1\x50\xb9\x18\x74\xa8\xe4"
-+	"\xdc\xa8\xec\xcd\x30\xbb\xc1\xc6\xe3\xc6\xac\x20\x2a\x3e\x5e\x8b"
-+	"\x12\xe6\x82\x08\x09\x38\x0b\xab\x7c\xb3\xcc\x9c\xce\x97\x67\xdd"
-+	"\xef\x95\x40\x4e\x92\xe2\x44\xe9\x1d\xc1\x14\xfd\xa9\xb1\xdc\x71"
-+	"\x9c\x46\x21\xbd\x58\x88\x6e\x22\x15\x56\xc1\xef\xe0\xc9\x8d\xe5"
-+	"\x80\x3e\xda\x7e\x93\x0f\x52\xf6\xf5\xc1\x91\x90\x9e\x42\x49\x4f"
-+	"\x8d\x9c\xba\x38\x83\xe9\x33\xc2\x50\x4f\xec\xc2\xf0\xa8\xb7\x6e"
-+	"\x28\x25\x56\x6b\x62\x67\xfe\x08\xf1\x56\xe5\x6f\x0e\x99\xf1\xe5"
-+	"\x95\x7b\xef\xeb\x0a\x2c\x92\x97\x57\x23\x33\x36\x07\xdd\xfb\xae"
-+	"\xf1\xb1\xd8\x33\xb7\x96\x71\x42\x36\xc5\xa4\xa9\x19\x4b\x1b\x52"
-+	"\x4c\x50\x69\x91\xf0\x0e\xfa\x80\x37\x4b\xb5\xd0\x2f\xb7\x44\x0d"
-+	"\xd4\xf8\x39\x8d\xab\x71\x67\x59\x05\x88\x3d\xeb\x48\x48\x33\x88"
-+	"\x4e\xfe\xf8\x27\x1b\xd6\x55\x60\x5e\x48\xb7\x6d\x9a\xa8\x37\xf9"
-+	"\x7a\xde\x1b\xcd\x5d\x1a\x30\xd4\xe9\x9e\x5b\x3c\x15\xf8\x9c\x1f"
-+	"\xda\xd1\x86\x48\x55\xce\x83\xee\x8e\x51\xc7\xde\x32\x12\x47\x7d"
-+	"\x46\xb8\x35\xdf\x41\x02\x81\x81\x00\xe4\x4c\xae\xde\x16\xfd\x9f"
-+	"\x83\x55\x5b\x84\x4a\xcf\x1c\xf1\x37\x95\xad\xca\x29\x7f\x2d\x6e"
-+	"\x32\x81\xa4\x2b\x26\x14\x96\x1d\x40\x05\xec\x0c\xaf\x3f\x2c\x6f"
-+	"\x2c\xe8\xbf\x1d\xee\xd0\xb3\xef\x7c\x5b\x9e\x88\x4f\x2a\x8b\x0e"
-+	"\x4a\xbd\xb7\x8c\xfa\x10\x0e\x3b\xda\x68\xad\x41\x2b\xe4\x96\xfa"
-+	"\x7f\x80\x52\x5f\x07\x9f\x0e\x3b\x5e\x96\x45\x1a\x13\x2b\x94\xce"
-+	"\x1f\x07\x69\x85\x35\xfc\x69\x63\x5b\xf8\xf8\x3f\xce\x9d\x40\x1e"
-+	"\x7c\xad\xfb\x9e\xce\xe0\x01\xf8\xef\x59\x5d\xdc\x00\x79\xab\x8a"
-+	"\x3f\x80\xa2\x76\x32\x94\xa9\xea\x65\x02\x81\x81\x00\xf1\x38\x60"
-+	"\x90\x0d\x0c\x2e\x3d\x34\xe5\x90\xea\x21\x43\x1f\x68\x63\x16\x7b"
-+	"\x25\x8d\xde\x82\x2b\x52\xf8\xa3\xfd\x0f\x39\xe7\xe9\x5e\x32\x75"
-+	"\x15\x7d\xd0\xc9\xce\x06\xe5\xfb\xa9\xcb\x22\xe5\xdb\x49\x09\xf2"
-+	"\xe6\xb7\xa5\xa7\x75\x2e\x91\x2d\x2b\x5d\xf1\x48\x61\x45\x43\xd7"
-+	"\xbd\xfc\x11\x73\xb5\x11\x9f\xb2\x18\x3a\x6f\x36\xa7\xc2\xd3\x18"
-+	"\x4d\xf0\xc5\x1f\x70\x8c\x9b\xc5\x1d\x95\xa8\x5a\x9e\x8c\xb1\x4b"
-+	"\x6a\x2a\x84\x76\x2c\xd8\x4f\x47\xb0\x81\x84\x02\x45\xf0\x85\xf8"
-+	"\x0c\x6d\xa7\x0c\x4d\x2c\xb2\x5b\x81\x70\xfd\x6e\x17\x02\x81\x81"
-+	"\x00\x8d\x07\xc5\xfa\x92\x4f\x48\xcb\xd3\xdd\xfe\x02\x4c\xa1\x7f"
-+	"\x6d\xab\xfc\x38\xe7\x9b\x95\xcf\xfe\x49\x51\xc6\x09\xf7\x2b\xa8"
-+	"\x94\x15\x54\x75\x9d\x88\xb4\x05\x55\xc3\xcd\xd4\x4a\xe4\x08\x53"
-+	"\xc8\x09\xbd\x0c\x4d\x83\x65\x75\x85\xbc\x5e\xf8\x2a\xbd\xe2\x5d"
-+	"\x1d\x16\x0e\xf9\x34\x89\x38\xaf\x34\x36\x6c\x2c\x22\x44\x22\x81"
-+	"\x90\x73\xd9\xea\x3a\xaf\x70\x74\x48\x7c\xc6\xb5\xb0\xdc\xe5\xa9"
-+	"\xa8\x76\x4b\xbc\xf7\x00\xf3\x4c\x22\x0f\x44\x62\x1d\x40\x0a\x57"
-+	"\xe2\x5b\xdd\x7c\x7b\x9a\xad\xda\x70\x52\x21\x8a\x4c\xc2\xc3\x98"
-+	"\x75\x02\x81\x81\x00\xed\x24\x5c\xa2\x21\x81\xa1\x0f\xa1\x2a\x33"
-+	"\x0e\x49\xc7\x00\x60\x92\x51\x6e\x9d\x9b\xdc\x6d\x22\x04\x7e\xd6"
-+	"\x51\x19\x9f\xf6\xe3\x91\x2c\x8f\xb8\xa2\x29\x19\xcc\x47\x31\xdf"
-+	"\xf8\xab\xf0\xd2\x02\x83\xca\x99\x16\xc2\xe2\xc3\x3f\x4b\x99\x83"
-+	"\xcb\x87\x9e\x86\x66\xc2\x3e\x91\x21\x80\x66\xf3\xd6\xc5\xcd\xb6"
-+	"\xbb\x64\xef\x22\xcf\x48\x94\x58\xe7\x7e\xd5\x7c\x34\x1c\xb7\xa2"
-+	"\xd0\x93\xe9\x9f\xb5\x11\x61\xd7\x5f\x37\x0f\x64\x52\x70\x11\x78"
-+	"\xcc\x08\x77\xeb\xf8\x30\x1e\xb4\x9e\x1b\x4a\xc7\xa8\x33\x51\xe0"
-+	"\xed\xdf\x53\xf6\xdf\x02\x81\x81\x00\x86\xd9\x4c\xee\x65\x61\xc1"
-+	"\x19\xa9\xd5\x74\x9b\xd5\xca\xf6\x83\x2b\x06\xb4\x20\xfe\x45\x29"
-+	"\xe8\xe3\xfa\xe1\x4f\x28\x8e\x63\x2f\x74\xc3\x3a\x5c\x9a\xf5\x9e"
-+	"\x0e\x0d\xc5\xfe\xa0\x4c\x00\xce\x7b\xa4\x19\x17\x59\xaf\x13\x3a"
-+	"\x03\x8f\x54\xf5\x60\x39\x2e\xd9\x06\xb3\x7c\xd6\x90\x06\x41\x77"
-+	"\xf3\x93\xe1\x7a\x01\x41\xc1\x8f\xfe\x4c\x88\x39\xdb\xde\x71\x9e"
-+	"\x58\xd1\x49\x50\x80\xb2\x5a\x4f\x69\x8b\xb8\xfe\x63\xd4\x42\x3d"
-+	"\x37\x61\xa8\x4c\xff\xb6\x99\x4c\xf4\x51\xe0\x44\xaa\x69\x79\x3f"
-+	"\x81\xa4\x61\x3d\x26\xe9\x04\x52\x64",
-+	.key_len = 1193,
- 	/*
- 	 * m is SHA256 hash of following message:
- 	 * "\x49\x41\xbe\x0a\x0c\xc9\xf6\x35\x51\xe4\x27\x56\x13\x71\x4b\xd0"
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index dda9b4503e9ce..155ae9b1e4d9a 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1398,11 +1398,6 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
+ 	list_for_each_entry(net, net_list, exit_list) {
+ 		struct gtp_net *gn = net_generic(net, gtp_net_id);
+ 		struct gtp_dev *gtp, *gtp_next;
+-		struct net_device *dev;
+-
+-		for_each_netdev(net, dev)
+-			if (dev->rtnl_link_ops == &gtp_link_ops)
+-				gtp_dellink(dev, dev_to_kill);
+ 
+ 		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
+ 			gtp_dellink(gtp->dev, dev_to_kill);
 -- 
 2.39.5
 
