@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-123545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147D3A5C622
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:22:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FE4A5C878
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 348B63A9B19
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CA921884C63
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38E61BD00C;
-	Tue, 11 Mar 2025 15:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1204D25E824;
+	Tue, 11 Mar 2025 15:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djKHOd7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVB/1Q0R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B051E98FB;
-	Tue, 11 Mar 2025 15:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9AE1E98EC;
+	Tue, 11 Mar 2025 15:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706263; cv=none; b=OmphZJoX45htLGa8hcdMT5FSegGAnihf8tkBH5Pr87mSeq1ux+mlNkUDju45DgWrlC8tpXg2Yf87RVTzOeVtaaUHwq+3AAmztOQysjxr+VakvJY4qckGCP3UB9z1b2chjroh25D2TmA/b1Sah/XMYZ8L9fS6kH/xl65kIXdzolM=
+	t=1741707534; cv=none; b=AIsZtYVLxS2RnwzSYef0b7OTg9zCN2GlEnXcV0F5ZvXIUJyG8mE41FnNkjxnHnCLIpOrHa448ALsmVorWbZlrmi4e8EAo/gt6WO0AC/3s6A0xZA+3iYn42oyxAUjP9P+25vdxgim/lIIzebtfBRgefZfBBYX73hg2d+K15qBHu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706263; c=relaxed/simple;
-	bh=IaxhjUYlo6Re1LtGQYFQpV4FI8dcSM9T1/gKI0BEbPo=;
+	s=arc-20240116; t=1741707534; c=relaxed/simple;
+	bh=b0VNiRAegLgF+QuH7dIVcZkl1wMqKOszlgnl2i08NQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q29XDjhZWVcLG1IOMSyyWRS6veS7do5K8UQCLqt3N/XQd+G9ev4r8FGJEMNBCuUHZEyILz8wUKx+onPtyu3KaCAzyqwxHrlMmevUlVsZcbqWiaZqBIfy05YddOXM5Iz6XcaFQI3LMXjeGjONA7wzNt+xoyC9scxARLkbHMEJIto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djKHOd7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A8AC4CEEC;
-	Tue, 11 Mar 2025 15:17:42 +0000 (UTC)
+	 MIME-Version; b=kW1u0qsc6JoB7f1XoC3Dp6f4Qh4o9gCaJj3dPh+ALU3+EitVaT09IRQxGk9seUlon1OzM87ddO37juiHi/4ouuVItoTr/G3jXQZ4Y0XQFPIy3KmYkUmWLtRNq0JnNgWQ/3PY1iPLRVA/xifmqyY72K9Byg44XK8lRUxAbSS9vwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVB/1Q0R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42911C4CEE9;
+	Tue, 11 Mar 2025 15:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706263;
-	bh=IaxhjUYlo6Re1LtGQYFQpV4FI8dcSM9T1/gKI0BEbPo=;
+	s=korg; t=1741707534;
+	bh=b0VNiRAegLgF+QuH7dIVcZkl1wMqKOszlgnl2i08NQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djKHOd7lUhdnnmFgI5Z59ixmah6Y6mxCMnh1Ax7U6+89YXQT+eYQWySmNDxzkdbtQ
-	 kDugcw7Hu3/iOlFQpZ/pMm+tglEDjGtvhMf4ltsAi7gSfEDJ1u7nsLwYzZdpjPQD2A
-	 zTbLgzsixpymnTxGYKu9zLkHkYxAoCMPbhMl0GCc=
+	b=dVB/1Q0Rkq0KiWI6g53eX39GfNEQVNhECWmE4iS9WQdsfyzCJM3FIN3r0Ju416KXy
+	 agfEyQjDWyYs2FPdnDwEYDWAlsexleb3bhGPz3Nq9/BDJHEPZ8+QF3ZoM6GX1548rv
+	 Vof6UXBNuA7J/TarZpz+zz+sNjnoOdTHRqwrAkPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 5.4 318/328] usb: typec: tcpci_rt1711h: Unmask alert interrupts to fix functionality
+	Tom Herbert <tom@herbertland.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 422/462] net: ipv6: fix dst ref loop in ila lwtunnel
 Date: Tue, 11 Mar 2025 16:01:28 +0100
-Message-ID: <20250311145727.540421427@linuxfoundation.org>
+Message-ID: <20250311145815.006485891@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-commit d6b82dafd17db0658f089b9cdec573982ca82bc5 upstream.
+[ Upstream commit 0e7633d7b95b67f1758aea19f8e85621c5f506a3 ]
 
-During probe, the TCPC alert interrupts are getting masked to
-avoid unwanted interrupts during chip setup: this is ok to do
-but there is no unmasking happening at any later time, which
-means that the chip will not raise any interrupt, essentially
-making it not functional as, while internally it does perform
-all of the intended functions, it won't signal anything to the
-outside.
+This patch follows commit 92191dd10730 ("net: ipv6: fix dst ref loops in
+rpl, seg6 and ioam6 lwtunnels") and, on a second thought, the same patch
+is also needed for ila (even though the config that triggered the issue
+was pathological, but still, we don't want that to happen).
 
-Unmask the alert interrupts to fix functionality.
-
-Fixes: ce08eaeb6388 ("staging: typec: rt1711h typec chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250219114700.41700-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79ff2fc31e0f ("ila: Cache a route to translated address")
+Cc: Tom Herbert <tom@herbertland.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Link: https://patch.msgid.link/20250304181039.35951-1-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci_rt1711h.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/ipv6/ila/ila_lwt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-+++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-@@ -217,6 +217,11 @@ static int rt1711h_probe(struct i2c_clie
- {
- 	int ret;
- 	struct rt1711h_chip *chip;
-+	const u16 alert_mask = TCPC_ALERT_TX_SUCCESS | TCPC_ALERT_TX_DISCARDED |
-+			       TCPC_ALERT_TX_FAILED | TCPC_ALERT_RX_HARD_RST |
-+			       TCPC_ALERT_RX_STATUS | TCPC_ALERT_POWER_STATUS |
-+			       TCPC_ALERT_CC_STATUS | TCPC_ALERT_RX_BUF_OVF |
-+			       TCPC_ALERT_FAULT;
+diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
+index 9d37f7164e732..6d37dda3d26fc 100644
+--- a/net/ipv6/ila/ila_lwt.c
++++ b/net/ipv6/ila/ila_lwt.c
+@@ -88,7 +88,8 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
- 	ret = rt1711h_check_revision(client);
- 	if (ret < 0) {
-@@ -258,6 +263,12 @@ static int rt1711h_probe(struct i2c_clie
- 					dev_name(chip->dev), chip);
- 	if (ret < 0)
- 		return ret;
-+
-+	/* Enable alert interrupts */
-+	ret = rt1711h_write16(chip, TCPC_ALERT_MASK, alert_mask);
-+	if (ret < 0)
-+		return ret;
-+
- 	enable_irq_wake(client->irq);
- 
- 	return 0;
+-		if (ilwt->connected) {
++		/* cache only if we don't create a dst reference loop */
++		if (ilwt->connected && orig_dst->lwtstate != dst->lwtstate) {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
+ 			local_bh_enable();
+-- 
+2.39.5
+
 
 
 
