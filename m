@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-123948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B611A5C7A1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6DDA5C5A7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FFD17ABDCC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B96E317A17C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868A825F78F;
-	Tue, 11 Mar 2025 15:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1334025D918;
+	Tue, 11 Mar 2025 15:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJOG7YmU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYAtjhEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F80E25F785;
-	Tue, 11 Mar 2025 15:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22251EA80;
+	Tue, 11 Mar 2025 15:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707424; cv=none; b=Y2s/2z3DVqUUoFa6ViKzSC6Cudcv3Fnyq3IBaaZ3KTXOomTIYn8QAY334Xv9z2RHZis5eP7kylI0ArD+pgZbNUQCTKUAj5vpVP68y1Nj1cMheqD7Wa3S8iPJbLXsZ73Ec6B1gBMUtS2OwFQO+DN44LE3MGFkV9RoyWgXUU2p6ZE=
+	t=1741706116; cv=none; b=gAiyWZddZqUIrKoHc+PNAB2nbmoJPSHc0UI3V4u7Iq93FNqg7iphVkvBWSnCI1wtAkrGE14Q6KP1TxxXBQta0s1YXAtaviIQeUgAP2EDseLKn24V1hIvboFxxJ8YCgAjC0TwFQgaLFV3HmOXnroeI0XQIRcxUxmtrnhYLR0RBAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707424; c=relaxed/simple;
-	bh=PsuhaR2X64gTlOFudbr7m3zq5scY2WscD6WaxSXmRgE=;
+	s=arc-20240116; t=1741706116; c=relaxed/simple;
+	bh=voTvg72XFtngNqi+OskHM2bvDQ6+QVOoLPuzVG0KLEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEDDUj0ZSUv8BSm4RrqScEnctiQrF3WIdj9PiYI+bpqI6lBETjY9d8Kqz7VBTeT2l5S9SR5DdGi7673iAbr92SHpwKfBOs+C4yBv7iFoNzkQeYpcZnlRiUaBCHvzCpBTcxtmUzpWI/zw0q2+ZRBLXXuruhKd0VyeGBE2jETKT6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJOG7YmU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD433C4CEED;
-	Tue, 11 Mar 2025 15:37:03 +0000 (UTC)
+	 MIME-Version; b=Ubc/eJ6P8wLk8We5WM1RtFIWqxw2kkDt3a0qTYciD3Tit++f4RxhmuJF60IxJKERooHo/CbEO1+ybV2GyTeYyF6OEDNt4W+ja7xyvkSPjnNdAg9iFJR9DjzhzeUgHEt0zwujkvpZC3VTzYLthNKKV9O+Z1yZZlBDSrrhQ/T4xeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYAtjhEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4823FC4CEEA;
+	Tue, 11 Mar 2025 15:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707424;
-	bh=PsuhaR2X64gTlOFudbr7m3zq5scY2WscD6WaxSXmRgE=;
+	s=korg; t=1741706116;
+	bh=voTvg72XFtngNqi+OskHM2bvDQ6+QVOoLPuzVG0KLEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJOG7YmU9zHnm8R+xHa+uwHVOQ8/A2wWcKmWpq3FZxwOwEV0pPHZsO3E1mPeksOk3
-	 EHSa+OHQl3diU1VJx6FKoE84delpHH0R9Ero1sD2wWBwh+T71zPPDHdJqq03SAoAxn
-	 qyEfVpt0HHFVBqiyV59mxmzbCUmmZXlYEdHPpLrY=
+	b=EYAtjhEn7iauJy238aX6njIe2ZzuENAh2BijGlbcZJpFMjQAXFb/G7jHEY+00E4/X
+	 fqenEuAiYd46N1DpklLwA0FKLnNzTiCf73ekxKX/2QbApgHuyzIR3Z+mXKA5/CzzjK
+	 aUemKhfqXfX1A/s53ikYS+HjncXFd5YDeA1ekcTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Qiang Zhang <dtzq01@gmail.com>,
+	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 353/462] sunrpc: suppress warnings for unused procfs functions
+Subject: [PATCH 5.4 249/328] flow_dissector: Fix handling of mixed port and port-range keys
 Date: Tue, 11 Mar 2025 16:00:19 +0100
-Message-ID: <20250311145812.301280181@linuxfoundation.org>
+Message-ID: <20250311145724.806485543@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +67,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 1f7a4f98c11fbeb18ed21f3b3a497e90a50ad2e0 ]
+[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
 
-There is a warning about unused variables when building with W=1 and no procfs:
+This patch fixes a bug in TC flower filter where rules combining a
+specific destination port with a source port range weren't working
+correctly.
 
-net/sunrpc/cache.c:1660:30: error: 'cache_flush_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1660 | static const struct proc_ops cache_flush_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1622:30: error: 'content_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1622 | static const struct proc_ops content_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1598:30: error: 'cache_channel_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1598 | static const struct proc_ops cache_channel_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~~~
+The specific case was when users tried to configure rules like:
 
-These are used inside of an #ifdef, so replacing that with an
-IS_ENABLED() check lets the compiler see how they are used while
-still dropping them during dead code elimination.
+tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
+dst_port 5000 src_port 2000-3000 action drop
 
-Fixes: dbf847ecb631 ("knfsd: allow cache_register to return error on failure")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+The root cause was in the flow dissector code. While both
+FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
+were being set correctly in the classifier, the __skb_flow_dissect_ports()
+function was only populating one of them: whichever came first in
+the enum check. This meant that when the code needed both a specific
+port and a port range, one of them would be left as 0, causing the
+filter to not match packets as expected.
+
+Fix it by removing the either/or logic and instead checking and
+populating both key types independently when they're in use.
+
+Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
+Reported-by: Qiang Zhang <dtzq01@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
+Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ net/core/flow_dissector.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 522e43f66ecd0..486c466ab4668 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1678,12 +1678,14 @@ static void remove_cache_proc_entries(struct cache_detail *cd)
- 	}
- }
- 
--#ifdef CONFIG_PROC_FS
- static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 5daa72a930a9c..f4cc3710be94a 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -705,23 +705,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
+ 			 void *target_container, void *data, int nhoff,
+ 			 u8 ip_proto, int hlen)
  {
- 	struct proc_dir_entry *p;
- 	struct sunrpc_net *sn;
+-	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
+-	struct flow_dissector_key_ports *key_ports;
++	struct flow_dissector_key_ports_range *key_ports_range = NULL;
++	struct flow_dissector_key_ports *key_ports = NULL;
++	__be32 ports;
  
-+	if (!IS_ENABLED(CONFIG_PROC_FS))
-+		return 0;
+ 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
+-	else if (dissector_uses_key(flow_dissector,
+-				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
++		key_ports = skb_flow_dissector_target(flow_dissector,
++						      FLOW_DISSECTOR_KEY_PORTS,
++						      target_container);
 +
- 	sn = net_generic(net, sunrpc_net_id);
- 	cd->procfs = proc_mkdir(cd->name, sn->proc_net_rpc);
- 	if (cd->procfs == NULL)
-@@ -1711,12 +1713,6 @@ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
- 	remove_cache_proc_entries(cd);
- 	return -ENOMEM;
- }
--#else /* CONFIG_PROC_FS */
--static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
--{
--	return 0;
--}
--#endif
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
++		key_ports_range = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
++							    target_container);
  
- void __init cache_initialize(void)
- {
+-	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
++	if (!key_ports && !key_ports_range)
+ 		return;
+ 
+-	key_ports = skb_flow_dissector_target(flow_dissector,
+-					      dissector_ports,
+-					      target_container);
+-	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
+-						data, hlen);
++	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
++
++	if (key_ports)
++		key_ports->ports = ports;
++
++	if (key_ports_range)
++		key_ports_range->tp.ports = ports;
+ }
+ 
+ static void
 -- 
 2.39.5
 
