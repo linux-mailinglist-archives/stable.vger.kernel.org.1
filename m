@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6854A5C851
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B0AA5C5EE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AADA816E699
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25898189D790
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7439525F790;
-	Tue, 11 Mar 2025 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A829925DAF8;
+	Tue, 11 Mar 2025 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcbRXHUe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV4c7Lsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A33825EF8E;
-	Tue, 11 Mar 2025 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B0F1C3BEB;
+	Tue, 11 Mar 2025 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707517; cv=none; b=P/3AO3rZ7fjzRafT8nrf2YMUB+efCueXXTC/lXylQuUjsJaEGjhExpKRcejcbzCpKgWILIdjSehNF6G4Ftb6FqhpbG4/METQ3F4hPBOaGQ4mZ2gsxsOO1OBEiVtEXMcW2V4fi6n+3czS4njLdrkMSHs6pwvp8QZNmGm/nEhMS6s=
+	t=1741706158; cv=none; b=QeqiHpXxGO3KlpG6iW6Fz6ngR6bn4Dxd+nAW/iJSiHY8RfhszK0l9u/I+Fnxh+CgRS8CcmSxPMr1CZinkX8Py45VuS6P0uCIBV9MpND4vV0gEDiDutcx7RiCffS4pRntK22AKJitJGmi1kgNK06j8kcG8nVbsz2Zwzw9HWwYsw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707517; c=relaxed/simple;
-	bh=6imcdZwZnve/AGqnG6lszDOknkldn32kM6HzxqL+hNE=;
+	s=arc-20240116; t=1741706158; c=relaxed/simple;
+	bh=WpwJQKclFWAVokTj2MnyCssfSuXrKpXoE1euMND4z44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BriicoXX4OifD0kVzCQ3KFuibiBeQUyd4ejBWGlbWz1dnbk34I4i3iISS8/y7rb8Eba3GVFCGnQS9BtFN+OK79NE+x3xyNnuR4FAxv1/AjRz+t+Qu+sBvMRR0Q+KL4csqqILLfgTrjwdC+P5j/QfvLDzCNhSThueIZR8sBPPuF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcbRXHUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E13C4CEE9;
-	Tue, 11 Mar 2025 15:38:36 +0000 (UTC)
+	 MIME-Version; b=DZbdU7lLMC/e09C341HW+F8W7ES2zOIsf7zq1GVD9mAQqYTCy+ngcvYUrRK+JleWA5G+vTqtlQC+06j3NeaQsisrusr89Me0aQzRZPoITfMD3g2TTrKBPbDmpLGOuD1d61+3nuPbgxpIDRGzxEUaTyEfVhUvRVxPnXOduEfJMAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV4c7Lsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C213C4CEE9;
+	Tue, 11 Mar 2025 15:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707517;
-	bh=6imcdZwZnve/AGqnG6lszDOknkldn32kM6HzxqL+hNE=;
+	s=korg; t=1741706157;
+	bh=WpwJQKclFWAVokTj2MnyCssfSuXrKpXoE1euMND4z44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcbRXHUeL+dvea0tyLTnz8uk61ee2AEZY64Nt4a7AeO0s7Hh5PHFN4ZGZSmZa/xS6
-	 QHOY4f/+DkGEy0IA5WdbyEOgi3Bx9VCE+7HMeSVEQdP3kuZqq7UNhZbN2dzVEZLL6R
-	 VKTShsLDx37a/FqNv8mRPvr36ogUTiuKbJolKhC4=
+	b=EV4c7LspNVVADm1gVS8gS0naf/ZeLqa4uI0Vwviruh7AP5V0OfF7pB1qTpOXrj2OB
+	 1qIStlGgbe6MDLoQU32+YYpmONCb+SDr/VcbMPOgadPIBisktQ6/KmqP5RrKoevuOG
+	 +0DTlTnwa2nSll26awQREwnG9sc0ivyEHxjcF8Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 385/462] drm/amdgpu: Check extended configuration space register when system uses large bar
-Date: Tue, 11 Mar 2025 16:00:51 +0100
-Message-ID: <20250311145813.556447625@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 282/328] ALSA: hda/realtek: update ALC222 depop optimize
+Date: Tue, 11 Mar 2025 16:00:52 +0100
+Message-ID: <20250311145726.122422647@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +59,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit e372baeb3d336b20fd9463784c577fd8824497cd ]
+commit ca0dedaff92307591f66c9206933fbdfe87add10 upstream.
 
-Some customer platforms do not enable mmconfig for various reasons,
-such as bios bug, and therefore cannot access the GPU extend configuration
-space through mmio.
+Add ALC222 its own depop functions for alc_init and alc_shutup.
 
-When the system enters the d3cold state and resumes, the amdgpu driver
-fails to resume because the extend configuration space registers of
-GPU can't be restored. At this point, Usually we only see some failure
-dmesg log printed by amdgpu driver, it is difficult to find the root
-cause.
+[note: this fixes pop noise issues on the models with two headphone
+ jacks -- tiwai ]
 
-Therefor print a warnning message if the system can't access the
-extended configuration space register when using large bar.
-
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 099bffc7cadf ("drm/amdgpu: disable BAR resize on Dell G5 SE")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/hda/patch_realtek.c |   76 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 2f42471e578ad..edb1b1cf05f29 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1098,6 +1098,10 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3713,6 +3713,79 @@ static void alc225_shutup(struct hda_cod
+ 	}
+ }
  
-+	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
-+	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
-+		DRM_WARN("System can't access extended configuration space,please check!!\n");
++static void alc222_init(struct hda_codec *codec)
++{
++	struct alc_spec *spec = codec->spec;
++	hda_nid_t hp_pin = alc_get_hp_pin(spec);
++	bool hp1_pin_sense, hp2_pin_sense;
 +
- 	/* skip if the bios has already enabled large BAR */
- 	if (adev->gmc.real_vram_size &&
- 	    (pci_resource_len(adev->pdev, 0) >= adev->gmc.real_vram_size))
--- 
-2.39.5
-
++	if (!hp_pin)
++		return;
++
++	msleep(30);
++
++	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
++	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
++
++	if (hp1_pin_sense || hp2_pin_sense) {
++		msleep(2);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++
++		msleep(75);
++	}
++}
++
++static void alc222_shutup(struct hda_codec *codec)
++{
++	struct alc_spec *spec = codec->spec;
++	hda_nid_t hp_pin = alc_get_hp_pin(spec);
++	bool hp1_pin_sense, hp2_pin_sense;
++
++	if (!hp_pin)
++		hp_pin = 0x21;
++
++	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
++	hp2_pin_sense = snd_hda_jack_detect(codec, 0x14);
++
++	if (hp1_pin_sense || hp2_pin_sense) {
++		msleep(2);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x14, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++	}
++	alc_auto_setup_eapd(codec, false);
++	alc_shutup_pins(codec);
++}
++
+ static void alc_default_init(struct hda_codec *codec)
+ {
+ 	struct alc_spec *spec = codec->spec;
+@@ -9377,8 +9450,11 @@ static int patch_alc269(struct hda_codec
+ 		spec->codec_variant = ALC269_TYPE_ALC300;
+ 		spec->gen.mixer_nid = 0; /* no loopback on ALC300 */
+ 		break;
++	case 0x10ec0222:
+ 	case 0x10ec0623:
+ 		spec->codec_variant = ALC269_TYPE_ALC623;
++		spec->shutup = alc222_shutup;
++		spec->init_hook = alc222_init;
+ 		break;
+ 	case 0x10ec0700:
+ 	case 0x10ec0701:
 
 
 
