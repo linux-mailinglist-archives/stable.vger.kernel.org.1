@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002FEA5C577
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F4DA5C801
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52D561788DC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C1A3BD1F3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A663525DAFD;
-	Tue, 11 Mar 2025 15:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C07225F79E;
+	Tue, 11 Mar 2025 15:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+W7XSky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IF3r3qCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620D725DCE5;
-	Tue, 11 Mar 2025 15:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF11425F790;
+	Tue, 11 Mar 2025 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705987; cv=none; b=uT84VPih9OYt0NrUE5BeaW39Rm1Itpgbu/sM7eU3IqHrgHFd1c6zEn4raf94fH4RDEZDoU8jaEOGobd5C+MOpx4uAedneIM7NgAQJD1s9niEl4Mq3pJWFk2+UxLfDYS5jZ+xt0hpWZCjOkxuI38gNKSt8K1zeYm3oiKczDuudlE=
+	t=1741707207; cv=none; b=V6fCm8xsycYQpg9gPxQDycTfAPmu3VCZxZY8ShGvraURLu/5SbycJlGAE4Hnatk49885mEOSSl6wbNycTvAe+VrA//CZG2SG1i1UFHLjhoge6T0HGf+X8zb6FzqC2j0tJSqQ/zvBQVoGAPM7HrB5cIFb7cC5vlTpn67koWH/UYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705987; c=relaxed/simple;
-	bh=lpx7osaaPRWZSbA1GdAMYTpRo0T8qjgGrSmWSDDIH8c=;
+	s=arc-20240116; t=1741707207; c=relaxed/simple;
+	bh=J3MLoOQsxTRc6urU98tzulelVyKY6z1NjIDRGiitPOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oiUBlvzSGsqMnkoq/oShGSTYQ8SJ/xBKPC3QKfDueVNRTGeBH1/oYKJkNdpC0L2M/xkivnLKkrD1mlPtems5CcEdtfIdsbJgIE1+4wuXeLb6IWRy7W4Uh5XWBv21ihr4qmFegwDQsbVudkxEkn6O67pUFCm3mWWDKhNtKxBLEjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+W7XSky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA520C4CEE9;
-	Tue, 11 Mar 2025 15:13:06 +0000 (UTC)
+	 MIME-Version; b=tiNrclRh6xxzDDz6myVRHGXeDPGyl5rgQrAnbZ0bEb72lq3hMYewI8EDCT6YcvJKKIFammEnqgATmlwNhV9xYw+KBDTgRyllPECD6z5uqzGNvlmbD9JirjGVPSiDBTaNPo5QwKMFQvDbxcW3G+umRqbFUJsFxxnXR3iKm0IF1oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IF3r3qCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547EAC4CEE9;
+	Tue, 11 Mar 2025 15:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705987;
-	bh=lpx7osaaPRWZSbA1GdAMYTpRo0T8qjgGrSmWSDDIH8c=;
+	s=korg; t=1741707207;
+	bh=J3MLoOQsxTRc6urU98tzulelVyKY6z1NjIDRGiitPOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+W7XSkyYg+0jf1LpbwGuL5uW+roLcZgdKqRfQKzVOxmQEJWYUSOuD06cxsmCv4UK
-	 M/rkYNLFVM4fz+P/X3a93p426Dt6Yg/I91SJXawZjJmJAui2wwRmuSmIxFTmrwQocH
-	 DUo3Tf5mUSMKRPaVXQNZvz+H4+idi16wZFaMpl3A=
+	b=IF3r3qCOOl52Q9kwTeD1TDNaZ3LzOpHW4xEBIBnQPRHebRWVJ2XX6CTCXBL1z4RPT
+	 gxdtvgsV4dRBfZC/rTvR9+ym0b9gFmPm8RzinJwMLLc3b62smZ8qKyZZNeMG0OdXGn
+	 nEXoamYvDjwFNYJqd1jm0qk5WVDH3F7RyUnX4NOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 205/328] ipv6: use RCU protection in ip6_default_advmss()
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Olivier Matz <olivier.matz@6wind.com>,
+	Ivan Delalande <colona@arista.com>
+Subject: [PATCH 5.10 309/462] vlan: introduce vlan_dev_free_egress_priority
 Date: Tue, 11 Mar 2025 15:59:35 +0100
-Message-ID: <20250311145723.056258655@linuxfoundation.org>
+Message-ID: <20250311145810.567031935@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 3c8ffcd248da34fc41e52a46e51505900115fc2a ]
+commit 37aa50c539bcbcc01767e515bd170787fcfc0f33 upstream.
 
-ip6_default_advmss() needs rcu protection to make
-sure the net structure it reads does not disappear.
+This patch is to introduce vlan_dev_free_egress_priority() to
+free egress priority for vlan dev, and keep vlan_dev_uninit()
+static as .ndo_uninit. It makes the code more clear and safer
+when adding new code in vlan_dev_uninit() in the future.
 
-Fixes: 5578689a4e3c ("[NETNS][IPV6] route6 - make route6 per namespace")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-11-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
+Signed-off-by: Ivan Delalande <colona@arista.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/8021q/vlan.h         |    2 +-
+ net/8021q/vlan_dev.c     |    7 ++++++-
+ net/8021q/vlan_netlink.c |    7 ++++---
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 364abcf4b6c14..99908861246d3 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3090,13 +3090,18 @@ static unsigned int ip6_default_advmss(const struct dst_entry *dst)
+--- a/net/8021q/vlan.h
++++ b/net/8021q/vlan.h
+@@ -124,6 +124,7 @@ void vlan_dev_set_ingress_priority(const
+ 				   u32 skb_prio, u16 vlan_prio);
+ int vlan_dev_set_egress_priority(const struct net_device *dev,
+ 				 u32 skb_prio, u16 vlan_prio);
++void vlan_dev_free_egress_priority(const struct net_device *dev);
+ int vlan_dev_change_flags(const struct net_device *dev, u32 flag, u32 mask);
+ void vlan_dev_get_realdev_name(const struct net_device *dev, char *result);
+ 
+@@ -133,7 +134,6 @@ int vlan_check_real_dev(struct net_devic
+ void vlan_setup(struct net_device *dev);
+ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack);
+ void unregister_vlan_dev(struct net_device *dev, struct list_head *head);
+-void vlan_dev_uninit(struct net_device *dev);
+ bool vlan_dev_inherit_address(struct net_device *dev,
+ 			      struct net_device *real_dev);
+ 
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -613,7 +613,7 @@ static int vlan_dev_init(struct net_devi
+ }
+ 
+ /* Note: this function might be called multiple times for the same device. */
+-void vlan_dev_uninit(struct net_device *dev)
++void vlan_dev_free_egress_priority(const struct net_device *dev)
  {
- 	struct net_device *dev = dst->dev;
- 	unsigned int mtu = dst_mtu(dst);
--	struct net *net = dev_net(dev);
-+	struct net *net;
+ 	struct vlan_priority_tci_mapping *pm;
+ 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+@@ -627,6 +627,11 @@ void vlan_dev_uninit(struct net_device *
+ 	}
+ }
  
- 	mtu -= sizeof(struct ipv6hdr) + sizeof(struct tcphdr);
- 
-+	rcu_read_lock();
++static void vlan_dev_uninit(struct net_device *dev)
++{
++	vlan_dev_free_egress_priority(dev);
++}
 +
-+	net = dev_net_rcu(dev);
- 	if (mtu < net->ipv6.sysctl.ip6_rt_min_advmss)
- 		mtu = net->ipv6.sysctl.ip6_rt_min_advmss;
+ static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
+ 	netdev_features_t features)
+ {
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -187,10 +187,11 @@ static int vlan_newlink(struct net *src_
+ 		return -EINVAL;
  
-+	rcu_read_unlock();
-+
- 	/*
- 	 * Maximal non-jumbo IPv6 payload is IPV6_MAXPLEN and
- 	 * corresponding MSS is IPV6_MAXPLEN - tcp_header_size.
--- 
-2.39.5
-
+ 	err = vlan_changelink(dev, tb, data, extack);
+-	if (!err)
+-		err = register_vlan_dev(dev, extack);
+ 	if (err)
+-		vlan_dev_uninit(dev);
++		return err;
++	err = register_vlan_dev(dev, extack);
++	if (err)
++		vlan_dev_free_egress_priority(dev);
+ 	return err;
+ }
+ 
 
 
 
