@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B7FA5C4BF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D29A5C6F7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829273B7143
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553A21770FE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B944B25E801;
-	Tue, 11 Mar 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AA125DAEC;
+	Tue, 11 Mar 2025 15:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnWiMaHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llUCANty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B7C25DAFF;
-	Tue, 11 Mar 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C641A5BA4;
+	Tue, 11 Mar 2025 15:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705530; cv=none; b=hmk3/GPme3y20CSUTUcoT2ipD2hMJViOsh5WN6XGEHl3n7CjaY/jZ0AnETdeuNlRv1wii6r/g+/PBKlx4IKBAGeB51AI+ZmL34LSXB6eJNv8IaIldGi7Z88DkXWVMQgOaKUZH0gieKG3ztH+fBrqafJcoUtmkHqJTdw/upBwaPU=
+	t=1741706800; cv=none; b=sTQsm5ZiBKjTqAVRQ7xi2FPTU4x9QtFGwrJVAqrrws7vq/xLa7V+nqEcVsSN18KdgOYh8kqnTX8sjBhJftCjSq2bs/mdumvA69HI9gBrZb8iwDomEL5l4v0RYo7RZbuKMFrRE0rLwLxfl9Qlp769Ngie9k2Cm+asLN6v/yOWSPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705530; c=relaxed/simple;
-	bh=G3O1D0gYw+TvdXJgZfDnHBDQaWGGHcYKITEq81szfmw=;
+	s=arc-20240116; t=1741706800; c=relaxed/simple;
+	bh=GIxytDoFBcafkV8wGFs01uTHgYNWPTLDjAShGlgqRD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DeXkquB9k5gqAwzyVAy7yhhybHjwjvG9AslPz97HjguV6j5No7kRpLxRCoWn9E/Vjpqp22oq9RsnECfpWdZ3PQ00Jh24FKcyE0k9ikSdxIjAilO9ji05+aqhZ/Jg15WlkcFw1gImlbTKjADMLhYo89534pp2by2WC5ku1Hmy8dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnWiMaHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F7FC4CEE9;
-	Tue, 11 Mar 2025 15:05:29 +0000 (UTC)
+	 MIME-Version; b=tZYDpR/eT+ffODzto7deDzfT681K46PF/CIK9ke2paKyvjf2lcZHd60mtSd2U1Al7ca3gSqqrOGxXX0U//Y0uF0+x+hw/nuMjx/AdG06GNu5xoezCWOIg6zgTBTTBhnQ0vJ7w1VpUq9lea1rX9UNigiWKWnAabi1E3WlmkCBspI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llUCANty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD00FC4CEEA;
+	Tue, 11 Mar 2025 15:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705529;
-	bh=G3O1D0gYw+TvdXJgZfDnHBDQaWGGHcYKITEq81szfmw=;
+	s=korg; t=1741706800;
+	bh=GIxytDoFBcafkV8wGFs01uTHgYNWPTLDjAShGlgqRD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnWiMaHSI5xU/xWuaMHvIVX/8JiCT3G3mHJ1tfUpvh5lRiXk6dT2NTKzqmAeQH4eu
-	 f8/D0flzA8QDKXXwSvaOGQa25AxovgpodMANEcbfCfyzUWwf7gb1HS4FoOUTXQNjF+
-	 qNwSZs258x9Mn9iuduSJHaGQfAqdFzaai/ceXp24=
+	b=llUCANtywTqdg85e/nCtyLoE5Rtp1pNtqGXRMF2P79pdv6KSYUkpMvslwouDq7Cc5
+	 qaQ5ehyd3AKE4JT9sigrEM4ft280GQaEeB9GST+N+CA2U2cudjsnapnPYcotsGJbMD
+	 6lWpNJ7dxFnaxkU07gulFSkEZoAWnlC2ARySPNsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/328] net: davicom: fix UAF in dm9000_drv_remove
+	David Hildenbrand <david@redhat.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christoph Schlameuss <schlameuss@linux.ibm.com>
+Subject: [PATCH 5.10 171/462] KVM: s390: vsie: fix some corner-cases when grabbing vsie pages
 Date: Tue, 11 Mar 2025 15:57:17 +0100
-Message-ID: <20250311145717.557599910@linuxfoundation.org>
+Message-ID: <20250311145805.110998296@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 19e65c45a1507a1a2926649d2db3583ed9d55fd9 ]
+commit 5f230f41fdd9e799f43a699348dc572bca7159aa upstream.
 
-dm is netdev private data and it cannot be
-used after free_netdev() call. Using dm after free_netdev()
-can cause UAF bug. Fix it by moving free_netdev() at the end of the
-function.
+We try to reuse the same vsie page when re-executing the vsie with a
+given SCB address. The result is that we use the same shadow SCB --
+residing in the vsie page -- and can avoid flushing the TLB when
+re-running the vsie on a CPU.
 
-This is similar to the issue fixed in commit
-ad297cd2db89 ("net: qcom/emac: fix UAF in emac_remove").
+So, when we allocate a fresh vsie page, or when we reuse a vsie page for
+a different SCB address -- reusing the shadow SCB in different context --
+we set ihcpu=0xffff to trigger the flush.
 
-This bug is detected by our static analysis tool.
+However, after we looked up the SCB address in the radix tree, but before
+we grabbed the vsie page by raising the refcount to 2, someone could reuse
+the vsie page for a different SCB address, adjusting page->index and the
+radix tree. In that case, we would be reusing the vsie page with a
+wrong page->index.
 
-Fixes: cf9e60aa69ae ("net: davicom: Fix regulator not turned off on driver removal")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-CC: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250123214213.623518-1-chenyuan0y@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Another corner case is that we might set the SCB address for a vsie
+page, but fail the insertion into the radix tree. Whoever would reuse
+that page would remove the corresponding radix tree entry -- which might
+now be a valid entry pointing at another page, resulting in the wrong
+vsie page getting removed from the radix tree.
+
+Let's handle such races better, by validating that the SCB address of a
+vsie page didn't change after we grabbed it (not reuse for a different
+SCB; the alternative would be performing another tree lookup), and by
+setting the SCB address to invalid until the insertion in the tree
+succeeded (SCB addresses are aligned to 512, so ULONG_MAX is invalid).
+
+These scenarios are rare, the effects a bit unclear, and these issues were
+only found by code inspection. Let's CC stable to be safe.
+
+Fixes: a3508fbe9dc6 ("KVM: s390: vsie: initial support for nested virtualization")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Tested-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Message-ID: <20250107154344.1003072-2-david@redhat.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/davicom/dm9000.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/kvm/vsie.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
-index 1d5d8984b49a3..fdf69fe78fbb6 100644
---- a/drivers/net/ethernet/davicom/dm9000.c
-+++ b/drivers/net/ethernet/davicom/dm9000.c
-@@ -1781,10 +1781,11 @@ dm9000_drv_remove(struct platform_device *pdev)
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -1316,8 +1316,14 @@ static struct vsie_page *get_vsie_page(s
+ 	page = radix_tree_lookup(&kvm->arch.vsie.addr_to_page, addr >> 9);
+ 	rcu_read_unlock();
+ 	if (page) {
+-		if (page_ref_inc_return(page) == 2)
+-			return page_to_virt(page);
++		if (page_ref_inc_return(page) == 2) {
++			if (page->index == addr)
++				return page_to_virt(page);
++			/*
++			 * We raced with someone reusing + putting this vsie
++			 * page before we grabbed it.
++			 */
++		}
+ 		page_ref_dec(page);
+ 	}
  
- 	unregister_netdev(ndev);
- 	dm9000_release_board(pdev, dm);
--	free_netdev(ndev);		/* free device structure */
- 	if (dm->power_supply)
- 		regulator_disable(dm->power_supply);
- 
-+	free_netdev(ndev);		/* free device structure */
+@@ -1347,15 +1353,20 @@ static struct vsie_page *get_vsie_page(s
+ 			kvm->arch.vsie.next++;
+ 			kvm->arch.vsie.next %= nr_vcpus;
+ 		}
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 	}
+-	page->index = addr;
+-	/* double use of the same address */
++	/* Mark it as invalid until it resides in the tree. */
++	page->index = ULONG_MAX;
 +
- 	dev_dbg(&pdev->dev, "released and freed device\n");
- 	return 0;
- }
--- 
-2.39.5
-
++	/* Double use of the same address or allocation failure. */
+ 	if (radix_tree_insert(&kvm->arch.vsie.addr_to_page, addr >> 9, page)) {
+ 		page_ref_dec(page);
+ 		mutex_unlock(&kvm->arch.vsie.mutex);
+ 		return NULL;
+ 	}
++	page->index = addr;
+ 	mutex_unlock(&kvm->arch.vsie.mutex);
+ 
+ 	vsie_page = page_to_virt(page);
+@@ -1448,7 +1459,9 @@ void kvm_s390_vsie_destroy(struct kvm *k
+ 		vsie_page = page_to_virt(page);
+ 		release_gmap_shadow(vsie_page);
+ 		/* free the radix tree entry */
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 		__free_page(page);
+ 	}
+ 	kvm->arch.vsie.page_count = 0;
 
 
 
