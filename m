@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD5AA5C499
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12321A5C705
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D74C17927A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B79F716B3AB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B21325DB0D;
-	Tue, 11 Mar 2025 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8872B25F783;
+	Tue, 11 Mar 2025 15:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwy73r/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLs95bQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49ED225D54A;
-	Tue, 11 Mar 2025 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4797925EFBA;
+	Tue, 11 Mar 2025 15:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705466; cv=none; b=fdrw0OgvoO/ExBtpsjH+EV5wgt4113irXhgwlPqR2hOU21Jt7AlZPVatZOcils89/DbeX8so2jeuUfpW4axO0BzNV5M9pDiSq1JqxQuJkqDBUY86ufRL1yxfXw1u8sa0179vGoRWaiHpfbOaV39KnDz7CHZEezv7ORkFdFYo82k=
+	t=1741706826; cv=none; b=NNDqVffNkdhNqDso6lADWPw5CkbwdUZ298xvpEMWrIeR9POWmqGv+46AvAUtCUs8bP4DXr2QFfMRE9JU+LKgpp3PDxculIhRG5KFHs/rCoxB7sKr1zwprGmSt8VQYsB4R+OEgybh67u4jkHxkkfBQuJEuAqoHn5nsw6gYP6ovcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705466; c=relaxed/simple;
-	bh=s7etVw+K/5Y+gQDrbLz7jqKtb48cS9+GhoIe7J3wKUk=;
+	s=arc-20240116; t=1741706826; c=relaxed/simple;
+	bh=LqEEUMkFKZxH8vhMMOeP8i9E++OMv8141T/M/v/o3rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFE000y49GMRqlbAJcsZ0fpMbvqljPv3kC3W8CHjrQuuWhL50XXh58Y/q+N9r34i8U/3ipGhuNRSunMOnpd8ENe+s9VotNn4r/zQo1ixH8Sr+Jq8GU7aY1hIeGCS9gwgAnbERIplHw4e5LbEnizDfaNaI+BySVjQMoc/JcJ7bn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwy73r/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93D6C4CEE9;
-	Tue, 11 Mar 2025 15:04:25 +0000 (UTC)
+	 MIME-Version; b=pI75wgTYqvD/a4sqLbtUNkAEmFlv7JgE9D7LAucszrI48GOidUa60lnJ6k36n2xgdfO2e5IQ9yRgZXs97B2dn2u9DY/NAV72Y0eCqoeZ03dkqIDj3pyf+VcTloDsCWf5V7NdtTQaIoX+PecD3SjEF10C0ibYZxBcfLAymqH4Myw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLs95bQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21ECC4CEEC;
+	Tue, 11 Mar 2025 15:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705466;
-	bh=s7etVw+K/5Y+gQDrbLz7jqKtb48cS9+GhoIe7J3wKUk=;
+	s=korg; t=1741706826;
+	bh=LqEEUMkFKZxH8vhMMOeP8i9E++OMv8141T/M/v/o3rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwy73r/tdRpecmslhbBflaAg9ipUYVnaRUEqpX0fMAhi7ocEExvnMGRF/l18oJV/j
-	 yh/pMbrzVAHyo6rrT9lHL8t2H0gceOVMRZgL8quipEOAYpIpAk78ayjNtwfc2pMfLI
-	 E0kSRbH2+yP7qNYwHlYgMLGIdezYTWGpCZW4NMlw=
+	b=TLs95bQRGgUHVZ0upi802SVXrYRLyGVeeiCVvTkInYh6tUrCUL3Lf/7f7lH3g2Lt/
+	 OPQ4AcuF4Hj4B/UKd4HnAPUxkZAwaeJOh6VrdpqhvzslKKnrEF1YjJ4grbzT+uWKZK
+	 Ac1862sfWOuHE/YbpefbIu8Tzut0ueaqXZqn48wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 045/328] arm64: dts: mediatek: mt8173-evb: Fix MT6397 PMIC sub-node names
-Date: Tue, 11 Mar 2025 15:56:55 +0100
-Message-ID: <20250311145716.684176370@linuxfoundation.org>
+Subject: [PATCH 5.10 150/462] usb: xhci: Fix NULL pointer dereference on certain command aborts
+Date: Tue, 11 Mar 2025 15:56:56 +0100
+Message-ID: <20250311145804.277260127@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 9545ba142865b9099d43c972b9ebcf463606499a ]
+[ Upstream commit 1e0a19912adb68a4b2b74fd77001c96cd83eb073 ]
 
-The MT6397 PMIC bindings specify exact names for its sub-nodes. The
-names used in the current dts don't match, causing a validation error.
+If a command is queued to the final usable TRB of a ring segment, the
+enqueue pointer is advanced to the subsequent link TRB and no further.
+If the command is later aborted, when the abort completion is handled
+the dequeue pointer is advanced to the first TRB of the next segment.
 
-Fix up the names. Also drop the label for the regulators node, since
-any reference should be against the individual regulator sub-nodes.
+If no further commands are queued, xhci_handle_stopped_cmd_ring() sees
+the ring pointers unequal and assumes that there is a pending command,
+so it calls xhci_mod_cmd_timer() which crashes if cur_cmd was NULL.
 
-Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241210092614.3951748-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Don't attempt timer setup if cur_cmd is NULL. The subsequent doorbell
+ring likely is unnecessary too, but it's harmless. Leave it alone.
+
+This is probably Bug 219532, but no confirmation has been received.
+
+The issue has been independently reproduced and confirmed fixed using
+a USB MCU programmed to NAK the Status stage of SET_ADDRESS forever.
+Everything continued working normally after several prevented crashes.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219532
+Fixes: c311e391a7ef ("xhci: rework command timeout and cancellation,")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241227120142.1035206-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-index 66f0e5b24fda4..1158bee050e13 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-@@ -303,7 +303,7 @@
- 		interrupt-controller;
- 		#interrupt-cells = <2>;
- 
--		mt6397regulator: mt6397regulator {
-+		regulators {
- 			compatible = "mediatek,mt6397-regulator";
- 
- 			mt6397_vpca15_reg: buck_vpca15 {
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 100f392cd1dfc..954cd962e113c 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -335,7 +335,8 @@ static void xhci_handle_stopped_cmd_ring(struct xhci_hcd *xhci,
+ 	if ((xhci->cmd_ring->dequeue != xhci->cmd_ring->enqueue) &&
+ 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
+ 		xhci->current_cmd = cur_cmd;
+-		xhci_mod_cmd_timer(xhci);
++		if (cur_cmd)
++			xhci_mod_cmd_timer(xhci);
+ 		xhci_ring_cmd_db(xhci);
+ 	}
+ }
 -- 
 2.39.5
 
