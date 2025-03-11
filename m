@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94AEA5C4ED
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9ACA5C746
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E7A9189BCE9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122131884313
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9EC25DD07;
-	Tue, 11 Mar 2025 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD4B25B69D;
+	Tue, 11 Mar 2025 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeG+w1XL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GicS/GjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A241C3BEB;
-	Tue, 11 Mar 2025 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A10625B67F;
+	Tue, 11 Mar 2025 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705643; cv=none; b=OPY8rq0pLxHlI3k7RmrhSA15fsiIJhl7cKZcQF8DOmZNnmpenVzCUSnaps0Te2nuiHrBkXumBUE7dPzCBKTt3kWzCnFFHrikQw7IBwZzxrXnizvcgygDLRInu1lTPB+8VnZMvhwfnD59fbwEG3mH7eLAaQ5qLfWOxXDsHRT0ukE=
+	t=1741706933; cv=none; b=ddh3qqtT+Sj9jMcGHTQ4KgFIo+EXHInt/FZrtuoIzNebkxUW7bWaUSKazP71vN2vuU6pCeV8oAwTY2RhAVx7dYpa9s6M8dA5ngaBR/msGlro6rm5fyY40WVik83m+uwyEWtIH9VSJn/DGHBU4wgFS1qdr090hQYBYPzMCwu5od8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705643; c=relaxed/simple;
-	bh=OeXx6y7QpXUrthWx/FOHKTq7ixcZPeDwNtM0WJgu12Q=;
+	s=arc-20240116; t=1741706933; c=relaxed/simple;
+	bh=QmHBiyfvT2WsStgPL3H6muOMcZMqzV60y5bgsPXje5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+NB9ZnDOY60UL/9wx8n/e73Dzkl6VyeHS8SP1LpEacCWSrp42SrmsbrMu0cLpET5E/M4BnsSdyzp1jo1R1pbWk1/kLpq8MhO2Cil7UvqHc7P1HRF64bNu8JKWR8Go7VeAxszLLiSnbCRuNFWhUeOe1VCmgYfHXYcbjl0IOjvio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeG+w1XL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B6BC4CEED;
-	Tue, 11 Mar 2025 15:07:22 +0000 (UTC)
+	 MIME-Version; b=kxoljibtJj0/svW/6I721bjIu56JAhz674fHIBL6uQI6THcRm2nTj6qG/MurmZqLFpmx+LyR4ZAP2u/kPpLxuo0TpNOgUWbVSh9kkAv/k9dVLhgpc3xrQT8bVy3GGWhELerkkDqe1p/hBcrt/hffJJOJD1BVFc+wMAl6wSEmvvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GicS/GjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FDDC4CEE9;
+	Tue, 11 Mar 2025 15:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705643;
-	bh=OeXx6y7QpXUrthWx/FOHKTq7ixcZPeDwNtM0WJgu12Q=;
+	s=korg; t=1741706932;
+	bh=QmHBiyfvT2WsStgPL3H6muOMcZMqzV60y5bgsPXje5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YeG+w1XLjnsJ+YjxcEJpmfj2U1U+flfiIROv5LyGD45tHyIxiIExb//d/gJOiB9Q0
-	 eUlWDvtjkIO4nHHrqLCeB8k5jotydP2J/Cp7YZZZweLVDRwzh5FAbQm/pHIjUBpJTV
-	 oswtZDWiFQpqJxF6dOLmWILaqakYG36R2ZnKj2Lo=
+	b=GicS/GjSbxp4FyF/1yQJ4xVm91mxh86EdI5xCKJG2ZyKbS/WxcH+m9BwVNaANLgt7
+	 ryx4xl9tEzZvtaoDtHKDnS0UT1LCpUu8/G4cTG0WJ0DV1WOzjc3Wkis8k3wkJS+R0v
+	 kg3YTVxocCvWdilBQiTrNj7DopXm6lP26RNaBJwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+d7e968426f644b567e31@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 106/328] net: usb: rtl8150: enable basic endpoint checking
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.10 210/462] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
 Date: Tue, 11 Mar 2025 15:57:56 +0100
-Message-ID: <20250311145719.109617129@linuxfoundation.org>
+Message-ID: <20250311145806.658663418@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 90b7f2961798793275b4844348619b622f983907 ]
+commit e88f516ea417c71bb3702603ac6af9e95338cfa6 upstream.
 
-Syzkaller reports [1] encountering a common issue of utilizing a wrong
-usb endpoint type during URB submitting stage. This, in turn, triggers
-a warning shown below.
+Let the nvmem core know what size the SDAM is, most notably this fixes
+the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+user space work with that file.
 
-For now, enable simple endpoint checking (specifically, bulk and
-interrupt eps, testing control one is not essential) to mitigate
-the issue with a view to do other related cosmetic changes later,
-if they are necessary.
+  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+  *
+  00000080
 
-[1] Syzkaller report:
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 1 PID: 2586 at drivers/usb/core/urb.c:503 usb_submit_urb+0xe4b/0x1730 driv>
-Modules linked in:
-CPU: 1 UID: 0 PID: 2586 Comm: dhcpcd Not tainted 6.11.0-rc4-syzkaller-00069-gfc88bb11617>
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-RIP: 0010:usb_submit_urb+0xe4b/0x1730 drivers/usb/core/urb.c:503
-Code: 84 3c 02 00 00 e8 05 e4 fc fc 4c 89 ef e8 fd 25 d7 fe 45 89 e0 89 e9 4c 89 f2 48 8>
-RSP: 0018:ffffc9000441f740 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff888112487a00 RCX: ffffffff811a99a9
-RDX: ffff88810df6ba80 RSI: ffffffff811a99b6 RDI: 0000000000000001
-RBP: 0000000000000003 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000001
-R13: ffff8881023bf0a8 R14: ffff888112452a20 R15: ffff888112487a7c
-FS:  00007fc04eea5740(0000) GS:ffff8881f6300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f0a1de9f870 CR3: 000000010dbd0000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- rtl8150_open+0x300/0xe30 drivers/net/usb/rtl8150.c:733
- __dev_open+0x2d4/0x4e0 net/core/dev.c:1474
- __dev_change_flags+0x561/0x720 net/core/dev.c:8838
- dev_change_flags+0x8f/0x160 net/core/dev.c:8910
- devinet_ioctl+0x127a/0x1f10 net/ipv4/devinet.c:1177
- inet_ioctl+0x3aa/0x3f0 net/ipv4/af_inet.c:1003
- sock_do_ioctl+0x116/0x280 net/socket.c:1222
- sock_ioctl+0x22e/0x6c0 net/socket.c:1341
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl fs/ioctl.c:893 [inline]
- __x64_sys_ioctl+0x193/0x220 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc04ef73d49
-...
-
-This change has not been tested on real hardware.
-
-Reported-and-tested-by: syzbot+d7e968426f644b567e31@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7e968426f644b567e31
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250124093020.234642-1-n.zhandarovich@fintech.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-6-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/nvmem/qcom-spmi-sdam.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index cbadb53bac441..3829b7eb3fc90 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -71,6 +71,14 @@
- #define MSR_SPEED		(1<<3)
- #define MSR_LINK		(1<<2)
- 
-+/* USB endpoints */
-+enum rtl8150_usb_ep {
-+	RTL8150_USB_EP_CONTROL = 0,
-+	RTL8150_USB_EP_BULK_IN = 1,
-+	RTL8150_USB_EP_BULK_OUT = 2,
-+	RTL8150_USB_EP_INT_IN = 3,
-+};
-+
- /* Interrupt pipe data */
- #define INT_TSR			0x00
- #define INT_RSR			0x01
-@@ -886,6 +894,13 @@ static int rtl8150_probe(struct usb_interface *intf,
- 	struct usb_device *udev = interface_to_usbdev(intf);
- 	rtl8150_t *dev;
- 	struct net_device *netdev;
-+	static const u8 bulk_ep_addr[] = {
-+		RTL8150_USB_EP_BULK_IN | USB_DIR_IN,
-+		RTL8150_USB_EP_BULK_OUT | USB_DIR_OUT,
-+		0};
-+	static const u8 int_ep_addr[] = {
-+		RTL8150_USB_EP_INT_IN | USB_DIR_IN,
-+		0};
- 
- 	netdev = alloc_etherdev(sizeof(rtl8150_t));
- 	if (!netdev)
-@@ -899,6 +914,13 @@ static int rtl8150_probe(struct usb_interface *intf,
- 		return -ENOMEM;
- 	}
- 
-+	/* Verify that all required endpoints are present */
-+	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
-+	    !usb_check_int_endpoints(intf, int_ep_addr)) {
-+		dev_err(&intf->dev, "couldn't find required endpoints\n");
-+		goto out;
-+	}
-+
- 	tasklet_setup(&dev->tl, rx_fixup);
- 	spin_lock_init(&dev->rx_pool_lock);
- 
--- 
-2.39.5
-
+--- a/drivers/nvmem/qcom-spmi-sdam.c
++++ b/drivers/nvmem/qcom-spmi-sdam.c
+@@ -143,6 +143,7 @@ static int sdam_probe(struct platform_de
+ 	sdam->sdam_config.id = NVMEM_DEVID_AUTO;
+ 	sdam->sdam_config.owner = THIS_MODULE,
+ 	sdam->sdam_config.stride = 1;
++	sdam->sdam_config.size = sdam->size;
+ 	sdam->sdam_config.word_size = 1;
+ 	sdam->sdam_config.reg_read = sdam_read;
+ 	sdam->sdam_config.reg_write = sdam_write;
 
 
 
