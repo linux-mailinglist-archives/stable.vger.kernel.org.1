@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-123749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E07A5C74B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A93A5C4D1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAAEF3BB7D8
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 687FE17A4D5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC91525E831;
-	Tue, 11 Mar 2025 15:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB92925F788;
+	Tue, 11 Mar 2025 15:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5iVxKaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iMhC3Ms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE0225E813;
-	Tue, 11 Mar 2025 15:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBE25F783;
+	Tue, 11 Mar 2025 15:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706852; cv=none; b=nJ2BQ2Dl8cj4unxGhIz/ovLnczMdG1Si9jClZN0VXFQ8CnEa48RJ81atLDOuG9cgrwrWQhjgwalhRwfb23UD8Pg9ucjQa/XL4gfWIYdowEHVqTJIacVeVvSGpgJOrjzGNlfp0RyXb301vvIAqdk0zABwM+k18Ean5K7eQXwJ4wY=
+	t=1741705585; cv=none; b=XqGi7VYCtpCsi+uy8P6CTv4FvY2SDngF5ZJ25GuolWVPI3os6FCuLurvJOsUjhns9Qi5DKXCBV8gnBPy9pcy9XB23YoP77akcg2YEmd2dN8N/69At2s4Mfmbu/qwLYbdGns4IlhKlQhc6TWrTz5AL15WQU00ZbSV6CsqQOzz34I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706852; c=relaxed/simple;
-	bh=0wCnFc3paZjDGlOGn7cpZOH3eAWY+tFvtRsp6MsJ8w8=;
+	s=arc-20240116; t=1741705585; c=relaxed/simple;
+	bh=m3XXxe8BRsCKg0ccgovl2urHpeYU2LqXuOoH5MacTsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0eEY5gJQsbmU8AA79g+jv0zTGfma5QzwiF6HQBma23MsNOaSv48kh9zfo6b06tbxrAzGATOuah3VYLq6laBHHJLpNTJio1vU4Yi/VFLdnMXujJCZYhdQ5UPiLE6j0l9LhcPvyrMFJdr8dQeGlW3tMrgDXDU5FyDU6HkazUW6Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5iVxKaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E7CC4CEE9;
-	Tue, 11 Mar 2025 15:27:31 +0000 (UTC)
+	 MIME-Version; b=ekV4AEZzu5AO4F4Fz3A0poThaobsd1hSw4f9iJ9eHMFasvoU/Ab/cmozzg+qQMWT2jjQdgIZRvkFptUScwbJhTd1ncbtXwK1y3ChzHYwqxR4+3h5BuyvNV3UTkyzxiBzquI6bQE7OlJ9dBrR2MFNeB8YGF5QaHbqkO8EsO8LWNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iMhC3Ms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9463BC4AF09;
+	Tue, 11 Mar 2025 15:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706852;
-	bh=0wCnFc3paZjDGlOGn7cpZOH3eAWY+tFvtRsp6MsJ8w8=;
+	s=korg; t=1741705585;
+	bh=m3XXxe8BRsCKg0ccgovl2urHpeYU2LqXuOoH5MacTsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5iVxKaj8bwGGXsFfqvQNuY4ANeCZmcGneu1MF4Un7Hp3LicOUihUk/6hSPLk/JWP
-	 KqrC/IoNxyqSanJyf8JShRWOvFZG/Cyf3l4LUZKs9QZ5BhUkaKdkdmdX1LSCATZ6al
-	 CE/cs2B4Q9Lvi/Ku7ift6GkOqNX1DH+O1yvfjwac=
+	b=2iMhC3MsAhDp85gjfc5RcygRRHvl49SRMh8m01Ki5jyglM4O79KqXM7xzfc/u1XPV
+	 m+QWhrd1EveQETK4hsZ/lORbeXKl51IJR2iS/F2zJqbjsg7KGVuGe4roP0QPC+IgQb
+	 y7SHOnKOQHkXyH0hS6lLwi/QBVlfyHYmJ/ks1v/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.10 190/462] usb: gadget: f_tcm: Dont prepare BOT write request twice
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 086/328] x86/amd_nb: Restrict init function to AMD-based systems
 Date: Tue, 11 Mar 2025 15:57:36 +0100
-Message-ID: <20250311145805.865920530@linuxfoundation.org>
+Message-ID: <20250311145718.306645046@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit 94d9bf671ae314cacc2d7bf96bd233b4abc7cede upstream.
+[ Upstream commit bee9e840609cc67d0a7d82f22a2130fb7a0a766d ]
 
-The duplicate kmalloc here is causing memory leak. The request
-preparation in bot_send_write_request is also done in
-usbg_prepare_w_request. Remove the duplicate work.
+The code implicitly operates on AMD-based systems by matching on PCI
+IDs. However, the use of these IDs is going away.
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/f4f26c3d586cde0d46f8c3bcb4e8ae32311b650d.1733876548.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add an explicit CPU vendor check instead of relying on PCI IDs.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241206161210.163701-3-yazen.ghannam@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   17 -----------------
- 1 file changed, 17 deletions(-)
+ arch/x86/kernel/amd_nb.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -245,7 +245,6 @@ static int bot_send_write_request(struct
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index e3b5de7b95988..ead78f981345c 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -538,6 +538,10 @@ static __init void fix_erratum_688(void)
+ 
+ static __init int init_amd_nbs(void)
  {
- 	struct f_uas *fu = cmd->fu;
- 	struct se_cmd *se_cmd = &cmd->se_cmd;
--	struct usb_gadget *gadget = fuas_to_gadget(fu);
- 	int ret;
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
++	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
++		return 0;
++
+ 	amd_cache_northbridges();
+ 	amd_cache_gart();
  
- 	init_completion(&cmd->write_complete);
-@@ -256,22 +255,6 @@ static int bot_send_write_request(struct
- 		return -EINVAL;
- 	}
- 
--	if (!gadget->sg_supported) {
--		cmd->data_buf = kmalloc(se_cmd->data_length, GFP_KERNEL);
--		if (!cmd->data_buf)
--			return -ENOMEM;
--
--		fu->bot_req_out->buf = cmd->data_buf;
--	} else {
--		fu->bot_req_out->buf = NULL;
--		fu->bot_req_out->num_sgs = se_cmd->t_data_nents;
--		fu->bot_req_out->sg = se_cmd->t_data_sg;
--	}
--
--	fu->bot_req_out->complete = usbg_data_write_cmpl;
--	fu->bot_req_out->length = se_cmd->data_length;
--	fu->bot_req_out->context = cmd;
--
- 	ret = usbg_prepare_w_request(cmd, fu->bot_req_out);
- 	if (ret)
- 		goto cleanup;
+-- 
+2.39.5
+
 
 
 
