@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-123830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22920A5C790
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4C5A5C566
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59D33189FF8A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF2F73B504F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F3825EFAE;
-	Tue, 11 Mar 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F53825E80D;
+	Tue, 11 Mar 2025 15:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/dMKccM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0U/auYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD9B25E818;
-	Tue, 11 Mar 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7ED25D8E8;
+	Tue, 11 Mar 2025 15:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707084; cv=none; b=eJYSZThSIt8iLEpwbOXgDV8cA2yBkPZ9mUVtLLV/IPAkKBL3X23Rf1ia0zrqdb6+B2ElG73/28DREnSEOVT6ivnUi6LXLIiHwTqC0YAsOvj1nn3SRz9Qm0Y+CD0mQzJq1/R1/wZ4gjSqMZoFN0nLJmWGWk5xtTZX/KlZ/5uT2UY=
+	t=1741705875; cv=none; b=kj7ll6Tskkn61tNAJhhO/aL3xdhUVWkU6WNRD9h3Y3emh21EolT9OmZ97cubJWM8C9aljQ15ZJku5j47PWBl01f3rK7hltNOCOOlWKOldTomVDRyHAiev20MeXAfdTsSNnaLZc7K0sNZRTkZfRlWdoahixy1aLx3jmiJodJHgTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707084; c=relaxed/simple;
-	bh=9NZ4/madsos7CI68gfxrjAqSJIJXSJje4NXardSnQFQ=;
+	s=arc-20240116; t=1741705875; c=relaxed/simple;
+	bh=rFRVvN33Gqqfy2pmf9OyI6TXCwqiI/JIiH8Hxr/KPZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzpxPv44GdXOiyVhKDrlJ1FzATj1IGpuY0/OJtDOX+Aqr86lTf9UAvEuJjmz1/j+5lcGHuMytZoOGQqnuAKXh7fcyP0erNCxTfPQzv457bac2B5YHzBDqWGmBiONJHEGopcFmdaQoNDhemmKZcBgnCyDvcPCADAN/J1nrBpw88U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/dMKccM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CC3C4CEED;
-	Tue, 11 Mar 2025 15:31:23 +0000 (UTC)
+	 MIME-Version; b=lcaN369vj3EMQamzODlaDi0HnflyEqUd4DCXaP5He64LKW0JGdQQh4X+WsX39Cpn1OHTN+x1SHoI1UFjGjohrwYK1eoPy2Py9oFJDqbNPXKli6l7RPCgwnoO1G330Jaz7+t1oSXsbQCW7djgU+/6P+6lNo+ei0QV1/Ws5CEh84U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0U/auYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9915EC4CEE9;
+	Tue, 11 Mar 2025 15:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707083;
-	bh=9NZ4/madsos7CI68gfxrjAqSJIJXSJje4NXardSnQFQ=;
+	s=korg; t=1741705875;
+	bh=rFRVvN33Gqqfy2pmf9OyI6TXCwqiI/JIiH8Hxr/KPZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/dMKccMjVBMIWK7t81qAj2jVVkqJr8NWh92Y/lpD4/8oAbYbLWNlt4jzZ9vd+Kuu
-	 aUE6eLeMx8WBVwPpL/26LgY9ubCfYW2F/UL3ffAJLgIPP3lTzckgdeLbhFwsScpYrS
-	 ASaZ8yQzKFEXy9EcZM3DEKhnjNIfUeWSKyM9RmGg=
+	b=s0U/auYImvzgy192RZzKsFCZ6qTByZEDzcYpz9XyXoRArD86YDAb2NOVHSMb+tkIB
+	 mvZeGSrEMiqG9MUeTTPl4niBKE7L1j47Ca/20sfJMnRP+XffTCjf/2MFuBjF0TWpzn
+	 z2RxqOC+0dconGlQywbeykYMauXeC+A4Dz5Lr7cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 5.10 268/462] alpha: align stack for page fault and user unaligned trap handlers
-Date: Tue, 11 Mar 2025 15:58:54 +0100
-Message-ID: <20250311145808.952946695@linuxfoundation.org>
+	syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 165/328] team: better TEAM_OPTION_TYPE_STRING validation
+Date: Tue, 11 Mar 2025 15:58:55 +0100
+Message-ID: <20250311145721.465308348@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
+[ Upstream commit 5bef3ac184b5626ea62385d6b82a1992b89d7940 ]
 
-do_page_fault() and do_entUna() are special because they use
-non-standard stack frame layout. Fix them manually.
+syzbot reported following splat [1]
 
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure user-provided data contains one nul byte.
+
+[1]
+ BUG: KMSAN: uninit-value in string_nocheck lib/vsprintf.c:633 [inline]
+ BUG: KMSAN: uninit-value in string+0x3ec/0x5f0 lib/vsprintf.c:714
+  string_nocheck lib/vsprintf.c:633 [inline]
+  string+0x3ec/0x5f0 lib/vsprintf.c:714
+  vsnprintf+0xa5d/0x1960 lib/vsprintf.c:2843
+  __request_module+0x252/0x9f0 kernel/module/kmod.c:149
+  team_mode_get drivers/net/team/team_core.c:480 [inline]
+  team_change_mode drivers/net/team/team_core.c:607 [inline]
+  team_mode_option_set+0x437/0x970 drivers/net/team/team_core.c:1401
+  team_option_set drivers/net/team/team_core.c:375 [inline]
+  team_nl_options_set_doit+0x1339/0x1f90 drivers/net/team/team_core.c:2662
+  genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+  genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2543
+  genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1348
+  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1892
+  sock_sendmsg_nosec net/socket.c:718 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:733
+  ____sys_sendmsg+0x877/0xb60 net/socket.c:2573
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2627
+  __sys_sendmsg net/socket.c:2659 [inline]
+  __do_sys_sendmsg net/socket.c:2664 [inline]
+  __se_sys_sendmsg net/socket.c:2662 [inline]
+  __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2662
+  x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
+Reported-by: syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1fcd957a82e3a1baa94d
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20250212134928.1541609-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/kernel/entry.S |   20 ++++++++++----------
- arch/alpha/kernel/traps.c |    2 +-
- arch/alpha/mm/fault.c     |    4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/team/team.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
- CFI_START_OSF_FRAME entMM
- 	SAVE_ALL
- /* save $9 - $15 so the inline exception code can manipulate them.  */
--	subq	$sp, 56, $sp
--	.cfi_adjust_cfa_offset	56
-+	subq	$sp, 64, $sp
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_rel_offset	$13, 32
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- /* handle the fault */
- 	lda	$8, 0x3fff
- 	bic	$sp, $8, $8
-@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	addq	$sp, 56, $sp
-+	addq	$sp, 64, $sp
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- /* finish up the syscall as normal.  */
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entMM
-@@ -383,8 +383,8 @@ entUnaUser:
- 	.cfi_restore	$0
- 	.cfi_adjust_cfa_offset	-256
- 	SAVE_ALL		/* setup normal kernel stack */
--	lda	$sp, -56($sp)
--	.cfi_adjust_cfa_offset	56
-+	lda	$sp, -64($sp)
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -400,7 +400,7 @@ entUnaUser:
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
- 	lda	$8, 0x3fff
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- 	bic	$sp, $8, $8
- 	jsr	$26, do_entUnaUser
- 	ldq	$9, 0($sp)
-@@ -410,7 +410,7 @@ entUnaUser:
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	lda	$sp, 56($sp)
-+	lda	$sp, 64($sp)
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -418,7 +418,7 @@ entUnaUser:
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entUna
- 
---- a/arch/alpha/kernel/traps.c
-+++ b/arch/alpha/kernel/traps.c
-@@ -709,7 +709,7 @@ s_reg_to_mem (unsigned long s_reg)
- static int unauser_reg_offsets[32] = {
- 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
- 	/* r9 ... r15 are stored in front of regs.  */
--	-56, -48, -40, -32, -24, -16, -8,
-+	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
- 	R(r16), R(r17), R(r18),
- 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
- 	R(r27), R(r28), R(gp),
---- a/arch/alpha/mm/fault.c
-+++ b/arch/alpha/mm/fault.c
-@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *
- 
- /* Macro for exception fixup code to access integer registers.  */
- #define dpf_reg(r)							\
--	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
--				 (r) <= 18 ? (r)+10 : (r)-10])
-+	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
-+				 (r) <= 18 ? (r)+11 : (r)-10])
- 
- asmlinkage void
- do_page_fault(unsigned long address, unsigned long mmcsr,
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index b0a9dd33a0196..197aea66b30dd 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2663,7 +2663,9 @@ static int team_nl_cmd_options_set(struct sk_buff *skb, struct genl_info *info)
+ 				ctx.data.u32_val = nla_get_u32(attr_data);
+ 				break;
+ 			case TEAM_OPTION_TYPE_STRING:
+-				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN) {
++				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN ||
++				    !memchr(nla_data(attr_data), '\0',
++					    nla_len(attr_data))) {
+ 					err = -EINVAL;
+ 					goto team_put;
+ 				}
+-- 
+2.39.5
+
 
 
 
